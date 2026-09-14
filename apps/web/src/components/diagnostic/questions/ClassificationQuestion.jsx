@@ -58,7 +58,7 @@ export default function ClassificationQuestion({ question, onChange, disabled })
                 type="button"
                 onClick={() => setSelected(it.id)}
                 aria-pressed={selected === it.id}
-                className={`px-3 py-2.5 rounded-xl border-2 text-sm font-medium text-left max-w-[260px] transition-all min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+                className={`px-3 py-2.5 rounded-xl border-2 text-sm font-medium text-left rtl:text-right max-w-[260px] transition-all min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                   selected === it.id
                     ? 'bg-blue-50 border-blue-500 ring-2 ring-blue-300 text-blue-900'
                     : 'bg-white border-slate-200 text-slate-700 hover:border-slate-400'
@@ -95,7 +95,7 @@ export default function ClassificationQuestion({ question, onChange, disabled })
                   e.stopPropagation();
                   unassign(it.id);
                 }}
-                className="w-full text-left px-3 py-2 rounded-lg border-2 border-slate-200 bg-white text-sm text-slate-700 hover:opacity-80 transition-colors"
+                className="w-full text-left rtl:text-right px-3 py-2 rounded-lg border-2 border-slate-200 bg-white text-sm text-slate-700 hover:opacity-80 transition-colors"
               >
                 {it.text}
               </motion.button>

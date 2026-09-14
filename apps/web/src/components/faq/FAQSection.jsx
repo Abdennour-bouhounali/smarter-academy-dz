@@ -89,7 +89,7 @@ export default function FAQSection() {
               <button
                 onClick={() => toggle(i)}
                 aria-expanded={openIndex === i}
-                className="w-full p-6 text-left flex items-center justify-between gap-4 font-space font-bold text-slate-800 text-base sm:text-lg hover:text-blue-600 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset rounded-t-[20px]"
+                className="w-full p-6 text-left rtl:text-right flex items-center justify-between gap-4 font-space font-bold text-slate-800 text-base sm:text-lg hover:text-blue-600 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset rounded-t-[20px]"
               >
                 <span className="flex items-center gap-3">
                   <HelpCircle size={20} className={`flex-shrink-0 transition-colors ${openIndex === i ? 'text-blue-600' : 'text-blue-500'}`} />

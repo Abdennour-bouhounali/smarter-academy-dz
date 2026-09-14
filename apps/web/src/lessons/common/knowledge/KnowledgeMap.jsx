@@ -7,6 +7,21 @@ import { useWorkspaceLayout } from '../../../context/WorkspaceLayoutContext';
 import { buildStructure, progressionByModule, HIGHLIGHT_CAT } from './knowledgeStructure';
 import ConceptVisual from './ConceptVisual';
 
+/*
+ * RTL (ar-DZ — src/locale.js) : ce panneau reste ANCRÉ À DROITE dans les deux
+ * directions, par exception documentée (voir index.css, section « ESPACE DE
+ * TRAVAIL »). Sa géométrie d'ouverture (`initial={{ x: '100%' }}` plus bas) et
+ * son calcul de position en mode colonne (`priorGeom.left = vpOuter -
+ * maCarteWidth`) sont câblés sur le bord droit PHYSIQUE de la fenêtre, pas
+ * dérivés de la mesure direction-aware de `useLessonViewport`. Miroiter
+ * correctement ce composant demanderait de retoucher son animation et son
+ * calcul de position — sur un composant que l'audit documente comme ayant
+ * un historique de rupture silencieuse malgré des tests verts
+ * (KNOWLEDGE_MAP_MIGRATION_2NDE.md) — ce qui dépasse le périmètre de
+ * fondation de Phase 4. `UNKNOWN — REQUIRES VERIFICATION` : dépôt d'un
+ * miroir complet (bord gauche sous RTL) pour une phase ultérieure dédiée.
+ */
+
 /* ─────────────────────────────────────────────────────────────────────────
    PRINT STYLES
    Injected once into <head>. Panel is portalled to body, so:
@@ -153,7 +168,7 @@ function KnowledgeRow({ item, onSelect, dotClass }) {
       onClick={() => onSelect(item)}
       data-km-item={item.id}
       data-km-new={item.isNew ? 'true' : undefined}
-      className="group w-full text-left flex items-baseline gap-2.5 py-1.5 px-2 -mx-2 rounded-lg hover:bg-slate-50 transition-colors"
+      className="group w-full text-left rtl:text-right flex items-baseline gap-2.5 py-1.5 px-2 -mx-2 rounded-lg hover:bg-slate-50 transition-colors"
     >
       <span className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${dotClass}`} aria-hidden="true" />
       <span className="min-w-0 flex-1">
@@ -221,10 +236,10 @@ function StructuredView({ items, onSelect, columns = 1 }) {
                 <span className={`h-3 w-1 rounded-full ${accent.rule}`} aria-hidden="true" />
                 <h3 className={`text-[11px] font-bold tracking-[0.14em] ${accent.label}`}>{stratum.label}</h3>
                 <span className="text-[10px] text-slate-400">{stratum.caption}</span>
-                <span className="ml-auto text-[10px] font-mono text-slate-300">{stratum.count}</span>
+                <span className="ml-auto rtl:ml-0 rtl:mr-auto text-[10px] font-mono text-slate-300">{stratum.count}</span>
               </div>
 
-              <div className="pl-3 border-l border-slate-100 space-y-3">
+              <div className="pl-3 rtl:pl-0 rtl:pr-3 border-l rtl:border-l-0 rtl:border-r border-slate-100 space-y-3">
                 {stratum.groups.map((g) => (
                   <div key={g.category.id} data-km-group={g.category.id}>
                     {/* Sous-titre de catégorie — seulement si la strate en compte plusieurs */}
@@ -254,7 +269,7 @@ function StructuredView({ items, onSelect, columns = 1 }) {
       {/* Fil cumulatif — la carte s'enrichit module après module */}
       {steps.length > 0 && (
         <div className="pt-3 border-t border-slate-100 flex items-center gap-1.5 flex-wrap" data-km-progression="true">
-          <span className="text-[10px] text-slate-400 mr-1">Ta carte&nbsp;:</span>
+          <span className="text-[10px] text-slate-400 mr-1 rtl:mr-0 rtl:ml-1">Ta carte&nbsp;:</span>
           {steps.map((s, i) => (
             <React.Fragment key={s.module}>
               {i > 0 && <span className="text-slate-200 text-[10px]" aria-hidden="true">→</span>}
@@ -356,7 +371,7 @@ function CategoryDetailView({ category, items, onBack }) {
       <div className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold ${theme.hdr} border`}>
         <span aria-hidden="true">{category.emoji}</span>
         <span className="font-mono tracking-wider">{category.label}</span>
-        <span className={`ml-auto text-xs px-2 py-0.5 rounded-full ${theme.badge}`}>{items.length}</span>
+        <span className={`ml-auto rtl:ml-0 rtl:mr-auto text-xs px-2 py-0.5 rounded-full ${theme.badge}`}>{items.length}</span>
       </div>
 
       {/* CompleteCards for this category */}
@@ -489,7 +504,7 @@ function PrintView({ items, printTitle = 'MA CARTE', printSubject = 'Mathématiq
             Ma carte de connaissances
           </div>
         </div>
-        <div className="text-right">
+        <div className="text-right rtl:text-left">
           <div className="text-[9pt] font-bold text-[#172033]">SMARTER ACADEMY</div>
           <div className="text-[8pt] text-[#667085]">{printSubject}</div>
         </div>
@@ -504,7 +519,7 @@ function PrintView({ items, printTitle = 'MA CARTE', printSubject = 'Mathématiq
           <div key={stratum.id} className="print-section mb-6 break-inside-avoid">
             <div className={`text-[11pt] font-bold uppercase tracking-widest mb-1 pb-1 border-b-2 ${PRINT_STRATUM[stratum.accent] ?? PRINT_STRATUM.blue}`}>
               {stratum.label}
-              <span className="ml-2 text-[7.5pt] font-normal normal-case tracking-normal text-[#667085]">
+              <span className="ml-2 rtl:ml-0 rtl:mr-2 text-[7.5pt] font-normal normal-case tracking-normal text-[#667085]">
                 {stratum.caption}
               </span>
             </div>
@@ -585,9 +600,9 @@ export function CompleteView({ items, printable = true, columns = 1 }) {
           <div className="flex items-baseline gap-2">
             <span className="h-3 w-1 rounded-full bg-rose-400" aria-hidden="true" />
             <h3 className="text-[11px] font-bold tracking-[0.14em] text-rose-700">À RETENIR</h3>
-            <span className="ml-auto text-[10px] font-mono text-slate-300">{highlight.length}</span>
+            <span className="ml-auto rtl:ml-0 rtl:mr-auto text-[10px] font-mono text-slate-300">{highlight.length}</span>
           </div>
-          <div className="pl-3 border-l border-rose-100 space-y-2">
+          <div className="pl-3 rtl:pl-0 rtl:pr-3 border-l rtl:border-l-0 rtl:border-r border-rose-100 space-y-2">
             {highlight.map(item => (
               <CompleteCard key={item.id} item={item} catColor="red" />
             ))}
@@ -608,10 +623,10 @@ export function CompleteView({ items, printable = true, columns = 1 }) {
                 <span className={`h-3 w-1 rounded-full ${accent.rule}`} aria-hidden="true" />
                 <h3 className={`text-[11px] font-bold tracking-[0.14em] ${accent.label}`}>{stratum.label}</h3>
                 <span className="text-[10px] text-slate-400">{stratum.caption}</span>
-                <span className="ml-auto text-[10px] font-mono text-slate-300">{stratum.count}</span>
+                <span className="ml-auto rtl:ml-0 rtl:mr-auto text-[10px] font-mono text-slate-300">{stratum.count}</span>
               </div>
 
-              <div className="pl-3 border-l border-slate-100 space-y-3">
+              <div className="pl-3 rtl:pl-0 rtl:pr-3 border-l rtl:border-l-0 rtl:border-r border-slate-100 space-y-3">
                 {stratum.groups.map(g => (
                   <div key={g.category.id} data-km-group={g.category.id} className="space-y-2">
                     {stratum.groups.length > 1 && (

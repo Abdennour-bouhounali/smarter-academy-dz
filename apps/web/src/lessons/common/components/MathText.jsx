@@ -24,6 +24,18 @@ import { InlineMath, BlockMath } from 'react-katex';
  * Usage — with className:
  *   <MathText className="font-mono text-blue-700">$f(x)=2x$</MathText>
  */
+// Math LTR isolation (ALGERIA_PLATFORM_MASTER_SPEC.md §14): the platform's
+// UI direction is RTL (ar-DZ — see src/locale.js), but mathematical notation
+// is read left-to-right regardless of surrounding text direction — this is
+// not a stylistic choice, it's how `2x + 3 = 7` or a fraction bar is
+// mathematically structured. `dir="ltr"` fixes ordering AND the direction
+// KaTeX's own internal layout assumes; `unicodeBidi: isolate` keeps the
+// expression's bidi run from being reordered by surrounding Arabic text
+// (critical for something like "احسب $x+5=12$", where an Arabic sentence
+// wraps an LTR expression). This is the single chokepoint — 364+ call sites
+// across the app get this for free without individual changes.
+const MATH_LTR_STYLE = { direction: 'ltr', unicodeBidi: 'isolate' };
+
 export default function MathText({ children, className }) {
   if (typeof children !== 'string') {
     if (process.env.NODE_ENV !== 'production') {
@@ -40,10 +52,18 @@ export default function MathText({ children, className }) {
 
   const rendered = parts.map((part, index) => {
     if (part.startsWith('$$') && part.endsWith('$$') && part.length > 4) {
-      return <BlockMath key={index} math={part.slice(2, -2)} />;
+      return (
+        <span key={index} dir="ltr" style={MATH_LTR_STYLE}>
+          <BlockMath math={part.slice(2, -2)} />
+        </span>
+      );
     }
     if (part.startsWith('$') && part.endsWith('$') && part.length > 2) {
-      return <InlineMath key={index} math={`\\displaystyle ${part.slice(1, -1)}`} />;
+      return (
+        <span key={index} dir="ltr" style={MATH_LTR_STYLE}>
+          <InlineMath math={`\\displaystyle ${part.slice(1, -1)}`} />
+        </span>
+      );
     }
     return part ? <span key={index}>{part}</span> : null;
   });

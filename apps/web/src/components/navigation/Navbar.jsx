@@ -1,9 +1,10 @@
 import { useState, useEffect, useContext } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ArrowRight, LogOut, ShieldCheck, LayoutDashboard } from 'lucide-react';
+import { Menu, X, ArrowRight, ArrowLeft, LogOut, ShieldCheck, LayoutDashboard } from 'lucide-react';
 import { AuthContext } from '../../context/AuthContext';
 import { navLinks } from '../../data/navigation';
+import { IS_RTL } from '../../locale.js';
 
 function AuthCluster({ compact = false, onNavigate }) {
   const { user, logout } = useContext(AuthContext);
@@ -88,7 +89,12 @@ function AuthCluster({ compact = false, onNavigate }) {
         style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)', boxShadow: '0 4px 14px rgba(59,130,246,0.3)' }}
       >
         Commencer gratuitement
-        <ArrowRight size={14} />
+        {/* ArrowRight points "forward" in LTR reading order; under RTL,
+            forward visually points left — IS_RTL (src/locale.js) picks the
+            mirrored icon rather than CSS-transforming an arrow (a
+            transformed icon can look subtly off vs. the icon set's own
+            mirrored glyph). */}
+        {IS_RTL ? <ArrowLeft size={14} /> : <ArrowRight size={14} />}
       </Link>
     </div>
   );
@@ -212,7 +218,11 @@ export default function Navbar() {
               {navLinks.map((link, i) => (
                 <motion.div
                   key={link.path}
-                  initial={{ opacity: 0, x: -20 }}
+                  // Slide-in direction follows reading start, not a fixed
+                  // physical side: under RTL (IS_RTL, src/locale.js) items
+                  // enter from the right (+20), matching where the eye
+                  // starts reading each row, mirroring the LTR -20 default.
+                  initial={{ opacity: 0, x: IS_RTL ? 20 : -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.05 }}
                 >
@@ -220,7 +230,7 @@ export default function Navbar() {
                     to={link.path}
                     end={link.path === '/'}
                     className={({ isActive }) =>
-                      `block w-full text-left px-4 py-3 rounded-xl font-inter text-sm font-medium transition-all duration-200 ${
+                      `block w-full text-left rtl:text-right px-4 py-3 rounded-xl font-inter text-sm font-medium transition-all duration-200 ${
                         isActive
                           ? 'text-blue-600 bg-blue-50 font-semibold'
                           : 'text-slate-700 hover:bg-slate-50'

@@ -117,7 +117,7 @@ export default function Hero() {
             <div className="relative bg-white border border-slate-200 rounded-[2rem] shadow-xl overflow-hidden hover:border-emerald-300 transition-colors duration-500">
 
               {/* Badge */}
-              <div className="absolute top-0 right-0 bg-emerald-100 text-emerald-700 text-[10px] font-bold px-3 py-1.5 rounded-bl-2xl font-mono tracking-wider z-10">
+              <div className="absolute top-0 right-0 rtl:right-auto rtl:left-0 bg-emerald-100 text-emerald-700 text-[10px] font-bold px-3 py-1.5 rounded-bl-2xl rtl:rounded-bl-none rtl:rounded-br-2xl font-mono tracking-wider z-10">
                 SANS COMPTE
               </div>
 
@@ -132,7 +132,7 @@ export default function Hero() {
               {/* Header */}
               <div className="flex items-center gap-3 px-5 sm:px-7 pt-5 sm:pt-7 pb-4">
                 <div className="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl flex-shrink-0">🎮</div>
-                <div className="min-w-0 text-left">
+                <div className="min-w-0 text-left rtl:text-right">
                   <h3 className="font-space font-bold text-xl sm:text-2xl text-slate-900 leading-none">Touch Math</h3>
                   <p className="text-xs sm:text-sm text-slate-500 font-inter mt-1 leading-snug">
                     Modifiez{' '}

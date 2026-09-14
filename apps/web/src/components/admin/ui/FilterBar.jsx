@@ -9,14 +9,14 @@ export function FilterBar({ children }) {
 export function SearchInput({ value, onChange, placeholder = 'Rechercher…', label = 'Rechercher' }) {
   return (
     <div className="relative min-w-[200px] flex-1">
-      <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+      <Search size={15} className="pointer-events-none absolute left-3 rtl:left-auto rtl:right-3 top-1/2 -translate-y-1/2 text-slate-400" />
       <input
         type="search"
         aria-label={label}
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="w-full rounded-lg border border-slate-300 bg-white py-2 pl-9 pr-3 font-inter text-xs text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+        className="w-full rounded-lg border border-slate-300 bg-white py-2 pl-9 pr-3 rtl:pl-3 rtl:pr-9 font-inter text-xs text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
       />
     </div>
   );

@@ -108,7 +108,7 @@ export function ChoiceGrid({
             onClick={() => !revealed && !disabled && onSelect(i)}
             disabled={revealed || disabled}
             aria-pressed={isSel}
-            className={`text-left px-4 py-3 rounded-xl border-2 text-sm font-medium transition-all min-h-[48px] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${tone}`}
+            className={`text-left rtl:text-right px-4 py-3 rounded-xl border-2 text-sm font-medium transition-all min-h-[48px] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${tone}`}
           >
             <span className="flex items-center gap-2">
               {isRight && <CheckCircle2 className="w-4 h-4 shrink-0" aria-hidden="true" />}
@@ -245,7 +245,7 @@ export function QuantityCard({ emoji, label, value, unit, selected, onClick, dis
       type={onClick ? 'button' : undefined}
       onClick={onClick}
       disabled={disabled}
-      className={`w-full text-left rounded-2xl border-2 p-4 transition-all ${
+      className={`w-full text-left rtl:text-right rounded-2xl border-2 p-4 transition-all ${
         selected
           ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-200'
           : 'border-slate-200 bg-white'
@@ -341,7 +341,7 @@ export function XPBurst({ amount, tick }) {
           animate={{ opacity: 1, y: -22, scale: 1 }}
           exit={{ opacity: 0, y: -34 }}
           transition={{ duration: 0.7, ease: 'easeOut' }}
-          className="pointer-events-none absolute -top-1 right-3 font-mono font-extrabold text-sm text-emerald-500 drop-shadow-sm"
+          className="pointer-events-none absolute -top-1 right-3 rtl:right-auto rtl:left-3 font-mono font-extrabold text-sm text-emerald-500 drop-shadow-sm"
           aria-hidden="true"
         >
           +{amount} XP

@@ -94,7 +94,7 @@ export default function OrderingQuestion({ question, onChange, disabled }) {
             onClick={reset}
             className="px-4 py-2.5 rounded-xl bg-white border-2 border-slate-200 text-slate-500 hover:border-slate-400 font-mono-jetbrains text-xs font-bold min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
           >
-            <RotateCcw className="inline w-3.5 h-3.5 mr-1" aria-hidden="true" /> Recommencer
+            <RotateCcw className="inline w-3.5 h-3.5 mr-1 rtl:mr-0 rtl:ml-1" aria-hidden="true" /> Recommencer
           </button>
         )}
       </div>

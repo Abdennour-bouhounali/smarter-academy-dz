@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff } from 'lucide-react';
@@ -8,6 +9,7 @@ import LegalConsentCheckbox from '../components/auth/LegalConsentCheckbox';
 import GoogleButton from '../components/auth/GoogleButton';
 
 export default function Register() {
+  const { t } = useTranslation('auth');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -72,7 +74,7 @@ export default function Register() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col justify-center px-4 pt-24 pb-12 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Background decorations */}
+      {/* Background decorations — decorative, direction-neutral (see Login.jsx). */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-400/20 blur-3xl pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-teal-400/20 blur-3xl pointer-events-none" />
 
@@ -82,10 +84,10 @@ export default function Register() {
         className="sm:mx-auto sm:w-full sm:max-w-md z-10"
       >
         <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-slate-900 font-display">
-          Smarter Academy
+          {t('registerTitle')}
         </h2>
         <p className="mt-2 text-center text-sm text-slate-600">
-          Créez votre compte gratuit en 30 secondes
+          {t('registerSubtitle')}
         </p>
       </motion.div>
 
@@ -96,11 +98,11 @@ export default function Register() {
         className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10"
       >
         <div className="bg-white/70 backdrop-blur-xl py-8 px-4 shadow-xl shadow-slate-200/50 sm:rounded-2xl sm:px-10 border border-white/50">
-          <GoogleButton label="S’inscrire avec Google" />
+          <GoogleButton label={t('continueWithGoogleRegister')} />
 
           <div className="my-6 flex items-center gap-4">
             <span className="h-px flex-1 bg-slate-200" />
-            <span className="text-xs font-medium uppercase tracking-wider text-slate-400">ou</span>
+            <span className="text-xs font-medium uppercase tracking-wider text-slate-400">{t('common:or')}</span>
             <span className="h-px flex-1 bg-slate-200" />
           </div>
 
@@ -113,42 +115,49 @@ export default function Register() {
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-slate-700">
-                Adresse Email
+                {t('emailLabel')}
               </label>
               <div className="mt-1">
+                {/* dir="ltr": see Login.jsx — email content reads better LTR
+                    even inside an RTL form. */}
                 <input
                   id="email"
                   name="email"
                   type="email"
+                  dir="ltr"
                   required
                   autoFocus
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full appearance-none rounded-xl border border-slate-300 px-4 py-3 placeholder-slate-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm bg-white/50 backdrop-blur-sm"
+                  className="block w-full appearance-none rounded-xl border border-slate-300 px-4 py-3 placeholder-slate-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm bg-white/50 backdrop-blur-sm text-left rtl:text-right"
                 />
               </div>
             </div>
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-slate-700">
-                Mot de passe
+                {t('passwordLabel')}
               </label>
               <div className="mt-1 relative">
                 <input
                   id="password"
                   name="password"
                   type={showPassword ? "text" : "password"}
+                  dir="ltr"
                   required
                   minLength={8}
                   autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full appearance-none rounded-xl border border-slate-300 px-4 py-3 pr-12 placeholder-slate-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm bg-white/50 backdrop-blur-sm"
+                  className="block w-full appearance-none rounded-xl border border-slate-300 px-4 py-3 pr-12 rtl:pr-4 rtl:pl-12 placeholder-slate-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm bg-white/50 backdrop-blur-sm text-left rtl:text-right"
                 />
+                {/* Reveal-password toggle follows the field's own (LTR) end
+                    — see Login.jsx for the same pattern/rationale. */}
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 focus:outline-none"
+                  aria-label={showPassword ? t('hidePassword') : t('showPassword')}
+                  className="absolute inset-y-0 right-0 rtl:right-auto rtl:left-0 flex items-center pr-3 rtl:pr-0 rtl:pl-3 text-slate-400 hover:text-slate-600 focus:outline-none"
                 >
                   {showPassword ? (
                     <EyeOff className="h-5 w-5" aria-hidden="true" />
@@ -157,7 +166,7 @@ export default function Register() {
                   )}
                 </button>
               </div>
-              <p className="mt-1 text-xs text-slate-500">Au moins 8 caractères, avec une lettre et un chiffre.</p>
+              <p className="mt-1 text-xs text-slate-500">{t('passwordHint')}</p>
             </div>
 
             <LegalConsentCheckbox
@@ -176,15 +185,15 @@ export default function Register() {
                 disabled={loading}
                 className="flex w-full justify-center rounded-xl border border-transparent bg-blue-600 py-3 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-70"
               >
-                {loading ? 'Création du compte...' : "Créer mon compte"}
+                {loading ? t('registerButtonLoading') : t('registerButton')}
               </button>
             </div>
           </form>
 
           <p className="mt-6 text-center text-sm text-slate-600">
-            Déjà un compte ?{' '}
+            {t('alreadyHaveAccount')}{' '}
             <Link to="/login" className="font-medium text-blue-600 hover:text-blue-500">
-              Connectez-vous
+              {t('loginLink')}
             </Link>
           </p>
         </div>

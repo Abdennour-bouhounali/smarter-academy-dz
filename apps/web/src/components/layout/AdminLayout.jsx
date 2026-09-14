@@ -23,8 +23,11 @@ export default function AdminLayout() {
       <AdminMobileBar />
 
       <main
+        // RTL (ar-DZ, the platform default — src/locale.js): AdminSidebar
+        // anchors to the right edge (see AdminSidebar.jsx), so <main> must
+        // reserve its width on the right instead of the left.
         className={`min-h-screen pt-14 transition-[padding] duration-300 lg:pt-0 ${
-          collapsed ? 'lg:pl-20' : 'lg:pl-64'
+          collapsed ? 'lg:pl-20 lg:rtl:pl-0 lg:rtl:pr-20' : 'lg:pl-64 lg:rtl:pl-0 lg:rtl:pr-64'
         }`}
       >
         <Outlet />

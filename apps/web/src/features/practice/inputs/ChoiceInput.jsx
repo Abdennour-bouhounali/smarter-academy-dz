@@ -32,11 +32,11 @@ export default function ChoiceInput({ question, value, onChange, disabled }) {
               onClick={() => toggle(choice.id)}
               disabled={disabled}
               aria-pressed={on}
-              className={`text-left px-4 py-3 rounded-xl border-2 min-h-[48px] transition-colors ${
+              className={`text-left rtl:text-right px-4 py-3 rounded-xl border-2 min-h-[48px] transition-colors ${
                 on ? 'border-indigo-500 bg-indigo-50 text-slate-900' : 'border-slate-200 bg-white text-slate-700 hover:border-slate-400'
               } ${disabled ? 'opacity-70 cursor-default' : ''}`}
             >
-              <span className="font-mono font-bold text-xs text-slate-500 mr-2">{choice.id}</span>
+              <span className="font-mono font-bold text-xs text-slate-500 mr-2 rtl:mr-0 rtl:ml-2">{choice.id}</span>
               <RichText>{choice.content}</RichText>
             </button>
           );

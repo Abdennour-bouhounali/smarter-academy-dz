@@ -58,7 +58,7 @@ export default function Methode() {
               whileHover={{ y: -3 }}
               className="glass-card p-6 relative overflow-hidden"
             >
-              <span className="absolute top-4 right-5 font-mono-jetbrains text-2xl font-black text-slate-100 select-none">
+              <span className="absolute top-4 right-5 rtl:right-auto rtl:left-5 font-mono-jetbrains text-2xl font-black text-slate-100 select-none">
                 {String(i + 1).padStart(2, '0')}
               </span>
               <div

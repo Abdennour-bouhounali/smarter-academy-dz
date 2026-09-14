@@ -53,7 +53,7 @@ export default function LevelSelector({ levels, recommendedLevel, onSelect, busy
             type="button"
             onClick={() => onSelect(level.level)}
             disabled={busyLevel != null}
-            className={`text-left rounded-2xl border-2 bg-white p-5 space-y-2 min-h-[128px] transition-colors disabled:opacity-70 ${RING[meta.tone]}`}
+            className={`text-left rtl:text-right rounded-2xl border-2 bg-white p-5 space-y-2 min-h-[128px] transition-colors disabled:opacity-70 ${RING[meta.tone]}`}
           >
             <div className="flex items-center justify-between gap-2 flex-wrap">
               <span className="font-space font-bold text-slate-900">Niveau {level.level}</span>

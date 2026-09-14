@@ -63,8 +63,9 @@ export default function MathInput({
   }, [placeholder]);
 
   return (
-    <math-field 
-      ref={mfRef} 
+    <math-field
+      ref={mfRef}
+      dir="ltr"
       disabled={disabled ? '' : undefined} // math-field uses empty string for true
       read-only={readOnly ? '' : undefined}
       aria-label={ariaLabel}
@@ -78,6 +79,12 @@ export default function MathInput({
         fontSize: '1.25rem',
         outline: 'none',
         boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+        // Math LTR isolation (ALGERIA_PLATFORM_MASTER_SPEC.md §14), same
+        // rationale as MathText.jsx: equation entry must keep LTR cursor/
+        // editing semantics regardless of the RTL page shell around it.
+        // `dir="ltr"` on the element controls MathLive's own internal
+        // editing direction, not just the CSS box.
+        unicodeBidi: 'isolate',
         ...style
       }}
     >

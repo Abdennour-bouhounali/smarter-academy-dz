@@ -45,6 +45,13 @@ export default {
         'space': ['"Space Grotesk"', 'sans-serif'],
         'inter': ['Inter', 'sans-serif'],
         'mono': ['"JetBrains Mono"', 'monospace'],
+        // Arabic UI text (ar-DZ, RTL — see src/locale.js). `font-sans`'s
+        // default is redefined in index.css under [dir="rtl"] to Tajawal
+        // first, so most components need no per-component font change;
+        // `font-arabic` exists for spots that want it explicitly (e.g.
+        // alongside `dir="ltr"` math, where the surrounding text should
+        // stay Arabic even if a parent's default font were ever Latin).
+        'arabic': ['Tajawal', '"Space Grotesk"', 'sans-serif'],
       },
       colors: {
         accent: {

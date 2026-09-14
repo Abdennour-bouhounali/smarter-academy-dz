@@ -34,7 +34,7 @@ export default function FounderNote() {
                 <img src={profileImg} alt="Abdennour BOUHOUNALI, fondateur de Smarter Academy" className="w-full h-full object-cover" />
               </div>
             </div>
-            <div className="text-center sm:text-left">
+            <div className="text-center sm:text-left sm:rtl:text-right">
               <p className="font-inter text-slate-600 leading-relaxed mb-4">
                 Après plusieurs années à enseigner les mathématiques en lycée et en accompagnement individuel,
                 j'ai vu le même schéma se répéter : des élèves capables, mais convaincus d'être "nuls en maths"

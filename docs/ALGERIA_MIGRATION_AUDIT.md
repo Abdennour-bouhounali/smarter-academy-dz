@@ -264,6 +264,8 @@ This is the single best-positioned subsystem for reuse in the entire audit.
 
 **Conclusion**: RTL support is not a toggle — it requires (a) introducing an i18n framework from scratch, (b) a systematic Tailwind utility migration (physical → logical properties or `rtl:` variants) across ~222 files, (c) a `dir="rtl"` root switch plus per-component verification, and (d) hands-on browser testing for every math-rendering surface. This is correctly scoped in the roadmap as its own foundational phase before any curriculum work.
 
+**Phase 4 implementation update (2026-09-15)** — see `ALGERIA_IMPLEMENTATION_ROADMAP.md` Phase 4 for full detail. Two corrections to the estimate above: the actual sitewide count was 656 files / 3356 occurrences, not 222/469 (this table's count was scoped to `components/` only) — but 573 of those 656 files are dormant French lesson content with zero mounted routes (Phase 3), so the real load-bearing surface was ~90 files, all addressed. `dir="rtl" lang="ar"` is live at the document root; `react-i18next` is wired in with real Arabic translations for the shared shell (auth, nav, common strings); Tajawal typography is live under `[dir="rtl"]`; KaTeX (`MathText.jsx`) LTR isolation is implemented and verified working via a Playwright probe (screenshot + computed-style check); `CoordPlane.jsx` and `MathInput.jsx` received the same defensive LTR treatment but could not be visually verified live (no mounted lesson content exists yet to exercise them) — remains `UNKNOWN — REQUIRES VERIFICATION` until Phase 8+. Icon mirroring was resolved case-by-case for the icons actually encountered in scope (documented in the roadmap), not as a blanket sitewide policy. One additional, unplanned finding: `Courses.jsx` crashed on an empty `courseLevels` array (a Phase 3 side-effect nobody had exercised yet) — fixed with an explicit empty state.
+
 ## 14. Math-LTR Audit
 
 The platform's math rendering funnels through a small number of chokepoints, which is good news for RTL isolation:
@@ -274,6 +276,8 @@ The platform's math rendering funnels through a small number of chokepoints, whi
 - **Fractions, powers, inequalities, equations** — explicitly called out in the master spec §14 as needing individual verification; none of this is resolvable by code reading and must be a QA-phase task with real rendered examples (see roadmap Phase 4 and Phase 5 QA steps).
 
 No structural incompatibility was found that would block Arabic+math mixed rendering — the risk is testing and polish, not architecture.
+
+**Phase 4 verification (2026-09-15)**: the exact scenario this section anticipated ("احسب $x + 5 = 12$") was tested via a standalone Playwright probe against the real `MathText.jsx` component (see `ALGERIA_IMPLEMENTATION_ROADMAP.md` Phase 4) — confirmed PASS: the Arabic sentence reads right-to-left, the embedded equation reads correctly left-to-right in the correct position, and computed styles confirm `direction: ltr` + `unicode-bidi: isolate` on every KaTeX output (inline and block, including a fraction and an inequality). `CoordPlane.jsx` received the anticipated `dir="ltr"` protection for its `textAnchor`-based labels but could not be visually verified live — no lesson using it is currently mounted (Phase 3 isolation). MathLive remains dead code; still `UNKNOWN — REQUIRES VERIFICATION` for the reason predicted here.
 
 ## 15. Dormant-Content Isolation Plan
 

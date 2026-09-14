@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect, useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { Sparkles, Lock, Crown, Play, Search, ArrowRight } from 'lucide-react';
 import { courseLevels } from '@smarter-academy/core';
 import { getResumeLesson } from '../lessons/common/utils/progress/getResumeLesson';
@@ -12,6 +13,7 @@ import { useDocumentMeta } from '../hooks/useDocumentMeta';
 import LessonCard from '../components/student/LessonCard';
 
 export default function CoursesPage() {
+  const { t } = useTranslation('common');
   useDocumentMeta(
     'Cours',
     "Explore le programme de mathématiques du Collège au Lycée — 6e, 5e, 4e, 3e, 2nde, 1ère, Terminale. La 6e est l'expérience la plus complète aujourd'hui."
@@ -61,8 +63,16 @@ export default function CoursesPage() {
     return level.grades.find(g => g.id === gradeId) ? gradeId : null;
   };
 
-  const effectiveGradeId = getValidGradeId(effectiveLevelId, urlGrade) || getValidGradeId(effectiveLevelId, profileGrade) || getValidGradeId(effectiveLevelId, lsGrade) || levelData.grades[levelData.grades.length - 1].id;
-  const gradeData = levelData.grades.find(g => g.id === effectiveGradeId);
+  // courseLevels is filtered to ACTIVE_GRADE_IDS (activeGrades.js) and is
+  // currently empty — no Algerian grade exists yet (roadmap Phase 7). Every
+  // level/grade lookup above then comes back empty/null, so this page must
+  // render an explicit "nothing active yet" state rather than dereference
+  // levelData.grades below.
+  const hasActiveCurriculum = Boolean(levelData);
+  const effectiveGradeId = hasActiveCurriculum
+    ? (getValidGradeId(effectiveLevelId, urlGrade) || getValidGradeId(effectiveLevelId, profileGrade) || getValidGradeId(effectiveLevelId, lsGrade) || levelData.grades[levelData.grades.length - 1]?.id)
+    : null;
+  const gradeData = hasActiveCurriculum ? levelData.grades.find(g => g.id === effectiveGradeId) : null;
 
   const getValidChapterId = (grade, chapterId) => {
     if (!grade) return null;
@@ -76,7 +86,7 @@ export default function CoursesPage() {
   // fallback never gets permanently baked into the URL before we know
   // whether a logged-in student's profile grade should apply instead.
   useEffect(() => {
-    if (authLoading) return;
+    if (authLoading || !hasActiveCurriculum) return;
 
     let changed = false;
     const newParams = new URLSearchParams(searchParams);
@@ -154,9 +164,24 @@ export default function CoursesPage() {
     return Math.round(totalPercent / availableLessons.length);
   };
 
+  if (!hasActiveCurriculum) {
+    return (
+      <div className="min-h-screen bg-slate-50 pt-24 pb-20 px-4 flex items-center justify-center text-center">
+        <div className="max-w-md">
+          <h1 className="font-space font-bold text-2xl text-slate-900 mb-2">
+            {t('coursesComingSoon')}
+          </h1>
+          <p className="font-inter text-slate-500 text-sm">
+            {t('coursesComingSoonBody')}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={`min-h-screen bg-slate-50 pb-20 ${user ? 'pt-6 lg:pt-10' : 'pt-16'}`}>
-      
+
       {!user ? (
         <section className="bg-white border-b border-slate-200 py-10 px-4 text-center">
           <div className="max-w-4xl mx-auto">
@@ -264,13 +289,13 @@ export default function CoursesPage() {
              )}
           </div>
           <div className="relative w-full md:w-72">
-            <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input 
+            <Search size={18} className="absolute left-3 rtl:left-auto rtl:right-3 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input
               type="text"
               placeholder={`Rechercher en ${gradeData.name}...`}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm font-inter focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow shadow-sm"
+              className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 rtl:pl-4 rtl:pr-10 py-2.5 text-sm font-inter focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow shadow-sm"
             />
           </div>
         </section>

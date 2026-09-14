@@ -54,9 +54,15 @@ export default function StudentNavbar() {
 
   return (
     <>
-      {/* Desktop sidebar */}
+      {/* Desktop sidebar.
+          RTL (ar-DZ, the platform default — see src/locale.js): the sidebar
+          anchors to the visual RIGHT edge instead of the left, matching where
+          a start-aligned rail belongs in an RTL shell. `rtl:`/`ltr:` are
+          Tailwind's built-in `[dir="rtl"]`/`[dir="ltr"]` variants (no plugin
+          needed) — kept explicit per-utility rather than a blanket logical-
+          property rewrite, so each flip is a reviewable, individual decision. */}
       <aside
-        className={`sa-workspace-sidebar hidden lg:flex lg:flex-col fixed top-0 left-0 bottom-0 bg-white border-r border-slate-200 z-40 ${sidebarCollapsed ? 'w-20' : 'w-64'}`}
+        className={`sa-workspace-sidebar hidden lg:flex lg:flex-col fixed top-0 left-0 rtl:left-auto rtl:right-0 bottom-0 bg-white border-r rtl:border-r-0 rtl:border-l border-slate-200 z-40 ${sidebarCollapsed ? 'w-20' : 'w-64'}`}
         data-sidebar-collapsed={sidebarCollapsed ? 'true' : undefined}
       >
         {/* ── Bascule ouvrir / réduire ───────────────────────────────────────
@@ -80,7 +86,7 @@ export default function StudentNavbar() {
             : sidebarCollapsed ? 'Ouvrir la barre latérale' : 'Réduire la barre latérale'}
           data-sidebar-toggle="true"
           className={[
-            'absolute top-20 -right-3 z-50 w-6 h-6 rounded-full',
+            'absolute top-20 -right-3 rtl:right-auto rtl:-left-3 z-50 w-6 h-6 rounded-full',
             'flex items-center justify-center',
             'bg-white border border-slate-200 text-slate-400 shadow-sm',
             'transition-colors duration-150',
@@ -90,9 +96,15 @@ export default function StudentNavbar() {
               : 'hover:text-slate-700 hover:border-slate-300 cursor-pointer',
           ].join(' ')}
         >
+          {/* Chevron points toward the edge the sidebar collapses INTO — that
+              edge is now the RIGHT under RTL (the sidebar's own anchor
+              above), so the two icons swap meaning, not just position. */}
           {sidebarCollapsed
-            ? <ChevronRight className="w-3.5 h-3.5" aria-hidden="true" />
-            : <ChevronLeft className="w-3.5 h-3.5" aria-hidden="true" />}
+            ? <ChevronRight className="w-3.5 h-3.5 rtl:hidden" aria-hidden="true" />
+            : <ChevronLeft className="w-3.5 h-3.5 rtl:hidden" aria-hidden="true" />}
+          {sidebarCollapsed
+            ? <ChevronLeft className="hidden w-3.5 h-3.5 rtl:block" aria-hidden="true" />
+            : <ChevronRight className="hidden w-3.5 h-3.5 rtl:block" aria-hidden="true" />}
         </button>
 
         {/* L'EN-TÊTE EST UNE MARQUE, PAS UNE PORTE.

@@ -31,6 +31,32 @@
     color: #0F172A;
   }
 
+  /* Arabic UI default (ar-DZ, RTL — src/locale.js). Tajawal replaces Inter/
+     Space Grotesk for body text and headings alike: this is the ONLY locale
+     the platform serves today, so the base font is Arabic-first rather than
+     a per-component override. Math stays on its own fonts regardless — see
+     MathText.jsx/MathInput.jsx, which isolate `dir="ltr"` and are never
+     affected by this rule since KaTeX/MathLive render their own glyphs.
+     Slightly taller line-height than the Latin default: tight leading reads
+     as cramped in Arabic, per ALGERIA_PLATFORM_MASTER_SPEC.md §14. */
+  [dir="rtl"] html {
+    font-family: 'Tajawal', 'Space Grotesk', sans-serif;
+  }
+
+  [dir="rtl"] body {
+    line-height: 1.85;
+  }
+
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3,
+  [dir="rtl"] h4,
+  [dir="rtl"] h5,
+  [dir="rtl"] h6 {
+    font-family: 'Tajawal', 'Space Grotesk', sans-serif;
+    line-height: 1.4;
+  }
+
   ::selection {
     background: rgba(59, 130, 246, 0.2);
     color: #1e40af;
@@ -335,6 +361,19 @@ svg [role="slider"]:focus-visible {
    `transition: padding` — la coquille « fait de la place » ; c'est le même
    mouvement, et la même durée, que la compression de la barre latérale.
    ───────────────────────────────────────────────────────────────────────── */
+/* RTL (ar-DZ, le défaut de la plateforme — src/locale.js) : la barre latérale
+   (StudentNavbar/AdminSidebar) s'ancre au bord DROIT sous RTL, donc c'est la
+   gouttière de GAUCHE que <main> doit réserver pour elle.
+   « Ma carte » (KnowledgeMap.jsx), elle, reste délibérément ancrée à DROITE
+   dans les deux directions — voir le commentaire dans KnowledgeMap.jsx :
+   sa géométrie d'ouverture/glissement (`x: '100%'`, `left = vpOuter -
+   maCarteWidth`) est câblée sur le bord droit physique de la fenêtre, pas
+   dérivée de la mesure `useLessonViewport`. La retourner correctement
+   demanderait de retoucher cette animation et ce calcul de position —
+   un composant que l'audit documente comme ayant un historique de rupture
+   silencieuse (KNOWLEDGE_MAP_MIGRATION_2NDE.md) — ce qui dépasse le
+   périmètre de fondation de cette phase. Exception documentée, pas un
+   oubli : `--sa-gutter-w` reste donc réservé à DROITE même sous RTL. */
 .sa-workspace-main {
   padding-right: var(--sa-gutter-w, 0px);
   /* Même durée et même courbe que l'entrée du panneau (KnowledgeMap.jsx) :
@@ -346,6 +385,11 @@ svg [role="slider"]:focus-visible {
 @media (min-width: 1024px) {
   .sa-workspace-main {
     padding-left: var(--sa-sidebar-w, 0px);
+  }
+
+  [dir="rtl"] .sa-workspace-main {
+    padding-left: 0px;
+    padding-right: var(--sa-sidebar-w, 0px);
   }
 }
 

@@ -1,5 +1,9 @@
 <!doctype html>
-<html lang="fr">
+<!-- lang/dir are the Algerian platform's fixed foundation (ar-DZ, RTL) — see
+     src/locale.js. SEO/OG metadata below still names the French domain and
+     is French-language: real Algerian domain/copy is a Phase 13 (SEO/Public
+     Surface) concern, marked here rather than silently left wrong. -->
+<html lang="ar" dir="rtl">
 
 <head>
   <meta charset="UTF-8" />
@@ -7,31 +11,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Primary Title & Meta Tags -->
-  <title>Smarter Academy — Comprendre les mathématiques, pas les réciter</title>
+  <!-- [À VÉRIFIER DANS LE PROGRAMME OFFICIEL] real copy/domain/keywords are
+       Phase 13 work; title/description below are placeholders only so the
+       tab/share preview isn't French while the rest of the shell is Arabic. -->
+  <title>Smarter Academy — تعلّم الرياضيات بالفهم، لا بالحفظ</title>
   <meta name="description"
-    content="Smarter Academy est une plateforme interactive pour manipuler, découvrir et maîtriser les mathématiques, du Collège au Lycée. Essaie sans compte, commence gratuitement." />
-  <meta name="keywords"
-    content="Smarter Academy, cours de mathématiques en ligne, mathématiques collège, mathématiques lycée, apprentissage interactif, programme officiel français, exercices de maths, 6e 5e 4e 3e, seconde première terminale" />
+    content="Smarter Academy منصة تفاعلية لفهم واكتشاف وإتقان الرياضيات." />
   <meta name="author" content="Smarter Academy" />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://smarter-academy.fr/" />
 
   <!-- Open Graph / Facebook / WhatsApp Meta Tags -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://smarter-academy.fr/" />
-  <meta property="og:title" content="Smarter Academy — Comprendre les mathématiques, pas les réciter" />
+  <meta property="og:title" content="Smarter Academy — تعلّم الرياضيات بالفهم، لا بالحفظ" />
   <meta property="og:description"
-    content="Une plateforme interactive pour manipuler, découvrir et maîtriser les mathématiques, du Collège au Lycée. Essaie sans compte." />
-  <meta property="og:image" content="https://smarter-academy.fr/smarter-academy-logo.webp" />
-  <meta property="og:locale" content="fr_FR" />
-  <meta property="og:site_name" content="Smarter Academy" />
+    content="منصة تفاعلية لفهم واكتشاف وإتقان الرياضيات." />
+  <meta property="og:locale" content="ar_DZ" />
+  <meta property="og:site_name" content="Smarter Academy DZ" />
 
   <!-- Twitter Card Meta Tags -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Smarter Academy — Comprendre les mathématiques, pas les réciter" />
+  <meta name="twitter:title" content="Smarter Academy — تعلّم الرياضيات بالفهم، لا بالحفظ" />
   <meta name="twitter:description"
-    content="Une plateforme interactive pour manipuler, découvrir et maîtriser les mathématiques, du Collège au Lycée." />
-  <meta name="twitter:image" content="https://smarter-academy.fr/smarter-academy-logo.webp" />
+    content="منصة تفاعلية لفهم واكتشاف وإتقان الرياضيات." />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -48,36 +49,40 @@
        immédiatement dans la police de repli, puis l'échange — l'identité
        visuelle est conservée, elle arrive juste sans retenir la page.
        <noscript> garde le comportement classique sans JavaScript. -->
+  <!-- Tajawal added for Arabic UI text (see tailwind.config.js's `font-arabic`
+       and index.css's [dir="rtl"] body default) — chosen for Arabic
+       legibility; the existing Latin fonts stay for math/code and any
+       remaining Latin UI surfaces. -->
   <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Tajawal:wght@300;400;500;700;800&display=swap"
     rel="stylesheet" media="print" onload="this.media='all'" />
   <noscript>
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Tajawal:wght@300;400;500;700;800&display=swap"
       rel="stylesheet" />
   </noscript>
 
 
 
   <!-- Structured Data (JSON-LD) -->
+  <!-- url/@id omitted: no Algerian production domain exists yet (Phase 2/13).
+       knowsAbout is intentionally generic ("Mathematics"), not
+       grade-specific — naming 4AM/Terminale-DZ here is curriculum content,
+       out of scope for this phase (Phase 4 is RTL/i18n infrastructure only). -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "EducationalOrganization",
-      "@id": "https://smarter-academy.fr/#organization",
-      "name": "Smarter Academy",
-      "description": "Plateforme éducative interactive de mathématiques, du Collège au Lycée, conforme au programme officiel français.",
-      "url": "https://smarter-academy.fr/",
+      "name": "Smarter Academy DZ",
+      "description": "منصة تعليمية تفاعلية للرياضيات.",
       "email": "abdennour.bouhounali@gmail.com",
       "areaServed": {
         "@type": "Country",
-        "name": "France"
+        "name": "Algeria"
       },
       "knowsAbout": [
-        "Mathématiques collège",
-        "Mathématiques lycée",
-        "Programme officiel français",
-        "Apprentissage interactif"
+        "الرياضيات",
+        "التعلم التفاعلي"
       ]
     }
     </script>
@@ -91,7 +96,7 @@
         .root-spinner { width: 40px; height: 40px; border: 4px solid #3b82f6; border-top-color: transparent; border-radius: 50%; animation: root-spin 1s linear infinite; margin-bottom: 20px; }
       </style>
       <div class="root-spinner"></div>
-      <p style="color: #64748b; font-weight: 500;">Chargement de Smarter Academy...</p>
+      <p style="color: #64748b; font-weight: 500; font-family: 'Tajawal', sans-serif;">جارٍ تحميل Smarter Academy...</p>
     </div>
   </div>
   <script type="module" src="/src/main.jsx"></script>

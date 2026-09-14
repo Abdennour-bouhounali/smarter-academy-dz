@@ -111,7 +111,7 @@ export default function AdminRegistryHealth() {
                 <p key={stage} className="font-inter text-xs text-slate-700">
                   {stage} <span className="tabular-nums font-semibold">{count}</span>
                   {(stage === 'prerequisite_check' || stage === 'evaluation') && (
-                    <span className="ml-1 text-slate-400">— attendu, ces étapes n’enseignent pas</span>
+                    <span className="ml-1 rtl:ml-0 rtl:mr-1 text-slate-400">— attendu, ces étapes n’enseignent pas</span>
                   )}
                 </p>
               ))}
