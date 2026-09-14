@@ -1,0 +1,1525 @@
+{
+  "version": 1,
+  "_comment": "Mathematical vocabulary and notation whose FIRST exposure the audit checks. `grade` is the level at which the term becomes the student's own material: a term from an earlier grade is prior knowledge and is only reported under --strict. Never lower a grade to silence a finding — declare it in the lesson's priorKnowledge and diagnose it in Module 0 instead. See docs/architecture/KNOWLEDGE_DEPENDENCY.md.",
+  "gradeOrder": [
+    "6e",
+    "5e",
+    "4e",
+    "3e",
+    "seconde",
+    "premiere_specialite",
+    "premiere",
+    "terminale"
+  ],
+  "terms": [
+    {
+      "id": "abscisse",
+      "label": "abscisse",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])abscisses?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "ordonnee",
+      "label": "ordonnée",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])ordonn[ée]es?(?<![\\p{L}\\p{N}_])(?!\\s+[àa]\\s+l)"
+      ]
+    },
+    {
+      "id": "coordonnees",
+      "label": "coordonnées",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])coordonn[ée]es(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "origine-repere",
+      "label": "origine du repère",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])l['’]origine(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "tables-multiplication",
+      "label": "tables de multiplication",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])tables? de multiplication(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "comparer-entiers",
+      "label": "comparer des entiers",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])comparer des (?:nombres |entiers)"
+      ]
+    },
+    {
+      "id": "quotient",
+      "label": "quotient",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])quotients?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "pourcentage",
+      "label": "pourcentage",
+      "grade": "5e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])pourcentages?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "proportionnalite",
+      "label": "proportionnalité",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])proportionnalit[ée](?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])coefficient de proportionnalit[ée](?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "perimetre",
+      "label": "périmètre",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])p[ée]rim[èe]tres?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "aire",
+      "label": "aire",
+      "grade": "6e",
+      "_comment": "Bornes Unicode explicites, et non \\b : en JavaScript \\b reste ASCII même sous le drapeau /u, si bien que \\baires?\\b se déclenchait à l'intérieur de « lin-éaire » (le é n'étant pas un caractère de mot ASCII, il crée une frontière). Toute leçon parlant de fonctions linéaires était signalée pour « aire ».",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])aires?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "droites-paralleles",
+      "label": "droites parallèles",
+      "grade": "6e",
+      "patterns": [
+        "droites? parall[èe]les?"
+      ]
+    },
+    {
+      "id": "notation-segment",
+      "label": "notation [AB] / (AB) / AB",
+      "grade": "6e",
+      "_comment": "Segment, droite et longueur se distinguent par leurs crochets. Sans rapport avec les crochets d'intervalle de seconde.",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])segments?\\s+\\[",
+        "crochets?(?=[^\\]]*(?<![\\p{L}\\p{N}_])segment)"
+      ],
+      "notationPatterns": [
+        "^\\[[A-Z]{2}\\]$"
+      ]
+    },
+    {
+      "id": "angle-droit",
+      "label": "angle droit",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])angle droit(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "mediatrice",
+      "label": "médiatrice",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])m[ée]diatrices?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "bissectrice",
+      "label": "bissectrice",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])bissectrices?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "calcul-litteral",
+      "label": "calcul littéral (remplacer x par une valeur)",
+      "grade": "4e",
+      "patterns": [
+        "calcul litt[ée]ral",
+        "(?<![\\p{L}\\p{N}_])expression litt[ée]rale(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "triangle-rectangle",
+      "label": "triangle rectangle",
+      "grade": "6e",
+      "patterns": [
+        "triangle rectangle"
+      ]
+    },
+    {
+      "id": "somme-angles-triangle",
+      "label": "somme des angles d'un triangle",
+      "grade": "5e",
+      "patterns": [
+        "somme des angles"
+      ]
+    },
+    {
+      "id": "arrondi",
+      "label": "arrondi",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])arrondis?(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])arrondie?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "hypotenuse",
+      "label": "hypoténuse",
+      "grade": "4e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])hypot[ée]nuse(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "puissance",
+      "label": "puissance",
+      "grade": "4e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])puissances?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "racine-carree",
+      "label": "racine carrée",
+      "grade": "4e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])racines? carr[ée]es?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "image",
+      "label": "image (d'un nombre par une fonction)",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])images?(?<![\\p{L}\\p{N}_])(?!\\s+(vaut|d['’]un tableau))"
+      ],
+      "targetPatterns": [
+        "(?<![\\p{L}\\p{N}_])image(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "antecedent",
+      "label": "antécédent",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])ant[ée]c[ée]dents?(?![\\p{L}\\p{N}_])"
+      ],
+      "targetPatterns": [
+        "(?<![\\p{L}\\p{N}_])ant[ée]c[ée]dent(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "notation-fx",
+      "label": "notation f(x)",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])f\\(\\s*-?[0-9a-z]"
+      ],
+      "notationPatterns": [
+        "(?<![\\p{L}\\p{N}_])[fgh]\\(\\s*[^);]*\\)"
+      ],
+      "targetPatterns": [
+        "notation f\\(x\\)",
+        "(?<![\\p{L}\\p{N}_])f\\(x\\)"
+      ],
+      "_comment": "La notation f(x) d'une fonction. À ne pas confondre avec un point nommé suivi de ses coordonnées — « F (3 ; 4) » — qui s'écrit en majuscule et dont les coordonnées sont séparées par un point-virgule."
+    },
+    {
+      "id": "fonction",
+      "label": "fonction",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])fonctions?(?![\\p{L}\\p{N}_])"
+      ],
+      "targetPatterns": [
+        "(?<![\\p{L}\\p{N}_])fonction(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "tableau-de-valeurs",
+      "label": "tableau de valeurs",
+      "grade": "3e",
+      "patterns": [
+        "tableau de valeurs"
+      ]
+    },
+    {
+      "id": "echelle-axe",
+      "label": "échelle d'un axe gradué",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])(?:un|le|chaque|ce)\\s+carreau\\s+(?:\\w+\\s+)?vaut(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])(?:par|au)\\s+carreaux?(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])entre\\s+deux\\s+graduations?(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])sur\\s+(?:une|la|cette|chaque)\\s+graduation(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])[ée]chelles?(?![\\p{L}\\p{N}_])\\s+(de l['’]axe|du rep[èe]re|verticale|horizontale)"
+      ],
+      "targetPatterns": [
+        "(?<![\\p{L}\\p{N}_])[ée]chelle(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "representation-graphique",
+      "label": "représentation graphique",
+      "grade": "3e",
+      "patterns": [
+        "repr[ée]sentation graphique",
+        "(?<![\\p{L}\\p{N}_])courbe repr[ée]sentative(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "fonction-lineaire",
+      "label": "fonction linéaire",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])lin[ée]aires?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "fonction-affine",
+      "label": "fonction affine",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])affines?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "coefficient-directeur",
+      "label": "coefficient directeur",
+      "grade": "3e",
+      "patterns": [
+        "coefficient directeur"
+      ]
+    },
+    {
+      "id": "coefficient-lineaire",
+      "label": "coefficient (d'une fonction linéaire)",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])coefficients?(?![\\p{L}\\p{N}_])(?!\\s*(de proportionnalit[ée]|directeur|multiplicateur|est|[ab](?![\\p{L}\\p{N}_])|[0-9]|‹›|\\?|:|,|\\.|$))"
+      ],
+      "_comment": "Le mot « coefficient » employé SEUL. Toutes ses formes qualifiées — directeur, de proportionnalité, multiplicateur — sont d'autres entrées, et « le coefficient a » ou « le coefficient 0,065 » désignent une valeur précise. Comme la notation et les valeurs interpolées sont extraites du texte, on écarte aussi ce qui suit immédiatement le mot quand c'est une lettre, un nombre, le marqueur ‹› d'interpolation, ou une ponctuation."
+    },
+    {
+      "id": "pente",
+      "label": "pente",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])pentes?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "ordonnee-origine",
+      "label": "ordonnée à l'origine",
+      "grade": "3e",
+      "patterns": [
+        "ordonn[ée]e [àa] l['’]origine"
+      ]
+    },
+    {
+      "id": "secantes",
+      "label": "droites sécantes",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])s[ée]cantes?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "cote-oppose",
+      "label": "côté opposé",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])c[ôo]t[ée] oppos[ée](?![\\p{L}\\p{N}_])(?!s)(?!\\s+[àa] l['’]angle droit)",
+        "(?<![\\p{L}\\p{N}_])OPPOS[ÉE](?![\\p{L}\\p{N}_])\\s+[àa]\\s+l['’]angle(?!\\s+droit)",
+        "(?<![\\p{L}\\p{N}_])l['’]oppos[ée](?![\\p{L}\\p{N}_])(?=\\s*(÷|/|,|\\.|\\set\\s|\\squi\\s|\\sne\\s|\\stouche))"
+      ],
+      "_comment": "Le « côté opposé » de la trigonométrie se dit d'un ANGLE AIGU étudié. « opposé à l'angle droit » définit l'hypoténuse, « s'opposer à » est un verbe, et « opposés par le sommet » désigne des angles : trois emplois qu'il ne faut pas confondre."
+    },
+    {
+      "id": "cote-adjacent",
+      "label": "côté adjacent",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])adjacents?(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])ADJACENT(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "cosinus",
+      "label": "cosinus",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])cosinus(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])cos(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "sinus",
+      "label": "sinus",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])sinus(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])sin(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "tangente",
+      "label": "tangente",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])tangente(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])tan(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "theoreme-thales",
+      "label": "théorème de Thalès",
+      "grade": "3e",
+      "patterns": [
+        "Thal[èe]s"
+      ]
+    },
+    {
+      "id": "composante",
+      "label": "composante (d'un vecteur)",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])composantes?(?![\\p{L}\\p{N}_])"
+      ],
+      "targetPatterns": [
+        "(?<![\\p{L}\\p{N}_])composantes?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "vecteur",
+      "label": "vecteur",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])vecteurs?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "translation",
+      "label": "translation",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])translations?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "homothetie",
+      "label": "homothétie",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])homoth[ée]ties?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "pgcd",
+      "label": "PGCD",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])PGCD(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "nombre-premier",
+      "label": "nombre premier",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])nombres? premiers?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "equation-produit",
+      "label": "équation produit",
+      "grade": "3e",
+      "patterns": [
+        "[ée]quation[- ]produit"
+      ]
+    },
+    {
+      "id": "identite-remarquable",
+      "label": "identité remarquable",
+      "grade": "3e",
+      "patterns": [
+        "identit[ée]s? remarquables?"
+      ]
+    },
+    {
+      "id": "mediane-stat",
+      "label": "médiane (statistique)",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])m[ée]dianes?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "etendue",
+      "label": "étendue",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])[ée]tendue(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "frequence",
+      "label": "fréquence",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])fr[ée]quences?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "probabilite",
+      "label": "probabilité",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])probabilit[ée]s?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "issue-evenement",
+      "label": "issue / événement",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])issues?(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])[ée]v[ée]nements?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "intervalle",
+      "label": "intervalle",
+      "grade": "seconde",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])intervalles?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "intervalle-crochets",
+      "label": "crochets d'intervalle",
+      "grade": "seconde",
+      "patterns": [
+        "\\]\\s*-?[0-9∞]+\\s*;",
+        "(?<![\\p{L}\\p{N}_])crochets?(?![\\p{L}\\p{N}_])(?=[^.]*intervalle)",
+        "intervalle[^.]*(?<![\\p{L}\\p{N}_])crochets?(?![\\p{L}\\p{N}_])"
+      ],
+      "notationPatterns": [
+        "[\\[\\]]\\s*[^;\\[\\]]+\\s*;\\s*[^;\\[\\]]+\\s*[\\[\\]]"
+      ],
+      "_comment": "L'orientation des crochets d'un intervalle. Le crochet sert aussi à noter un segment [AB] depuis la 6e : on exige donc le contexte « intervalle »."
+    },
+    {
+      "id": "ensemble-reels",
+      "label": "ensemble ℝ",
+      "grade": "seconde",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])ℝ(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])nombres? r[ée]els?(?![\\p{L}\\p{N}_])"
+      ],
+      "notationPatterns": [
+        "\\\\mathbb\\{R\\}",
+        "ℝ"
+      ]
+    },
+    {
+      "id": "appartient",
+      "label": "symbole ∈",
+      "grade": "seconde",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])appartient(?![\\p{L}\\p{N}_])\\s*[àa]\\s*(?:l['’](?:ensemble|intervalle)|un\\s+(?:ensemble|intervalle)|cet\\s+(?:ensemble|intervalle)|ℕ|ℤ|ℚ|ℝ|\\[|\\]|\\()",
+        "(?<![\\p{L}\\p{N}_])appartenance(?![\\p{L}\\p{N}_])",
+        "∈"
+      ],
+      "notationPatterns": [
+        "\\\\in(?![\\p{L}\\p{N}_])",
+        "∈"
+      ],
+      "_comment": "Le verbe « appartenir » au sens ENSEMBLISTE. Employé seul il est du français courant (« une question qui appartient à une autre leçon ») : seules les tournures où il désigne l'appartenance à un ensemble ou à un intervalle sont retenues, en plus du symbole ∈ lui-même."
+    },
+    {
+      "id": "inclus",
+      "label": "symbole ⊂",
+      "grade": "seconde",
+      "_comment": "Le symbole ⊂ d'inclusion entre ensembles. « inclus » seul est l'adjectif courant (« bornes incluses ») : on exige « inclus dans » ou le symbole.",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])inclus(?:e|es)?\\s+dans(?![\\p{L}\\p{N}_])",
+        "⊂"
+      ],
+      "notationPatterns": [
+        "\\\\subset(?![\\p{L}\\p{N}_])",
+        "⊂"
+      ]
+    },
+    {
+      "id": "colineaire",
+      "label": "colinéaire",
+      "grade": "seconde",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])colin[ée]aires?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "valeur-absolue",
+      "label": "valeur absolue",
+      "grade": "5e",
+      "patterns": [
+        "valeur absolue"
+      ],
+      "_comment": "Introduite en 5e par le nouveau programme du cycle 4 (BO n°10 du 5 mars 2026, NOR MENE2602912A) : l'objet officiel 5e `nombres_relatifs` inclut « Définir nombres positifs/négatifs, opposé, valeur absolue ». La Seconde l'APPROFONDIT (distance entre deux réels, |x-a| ≤ r) via l'objet `valeur_absolue_et_distance` — d'où le niveau 5e ici, qui est celui de la PREMIÈRE rencontre, pas celui de la maîtrise."
+    },
+    {
+      "id": "ensemble-definition",
+      "label": "ensemble de définition",
+      "grade": "seconde",
+      "patterns": [
+        "ensemble de d[ée]finition"
+      ]
+    },
+    {
+      "id": "variations",
+      "label": "variations / croissante / décroissante",
+      "grade": "seconde",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])croissante?(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])d[ée]croissante?(?![\\p{L}\\p{N}_])",
+        "tableau de variations?"
+      ]
+    },
+    {
+      "id": "extremum",
+      "label": "extremum / maximum / minimum",
+      "grade": "seconde",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])extremums?(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])maximum(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])minimum(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "quartile",
+      "label": "quartile",
+      "grade": "seconde",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])quartiles?(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])Q1(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])Q3(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "mediane-boite",
+      "label": "boîte à moustaches",
+      "grade": "seconde",
+      "patterns": [
+        "bo[îi]te [àa] moustaches"
+      ]
+    },
+    {
+      "id": "frequence-conditionnelle",
+      "label": "fréquence conditionnelle",
+      "grade": "seconde",
+      "patterns": [
+        "fr[ée]quence conditionnelle",
+        "(?<![\\p{L}\\p{N}_])conditionnelles?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "echantillon",
+      "label": "échantillon",
+      "grade": "seconde",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])[ée]chantillons?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "equation-premier-degre",
+      "label": "équation du premier degré",
+      "grade": "4e",
+      "patterns": [
+        "[ée]quation du premier degr[ée]",
+        "R[ée]soudre\\s+[^.]{0,30}="
+      ]
+    },
+    {
+      "id": "modele",
+      "label": "modèle",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])mod[èe]les?(?<![\\p{L}\\p{N}_])(?!\\s+[A-Z])",
+        "(?<![\\p{L}\\p{N}_])mod[ée]lis(?:er|ez|ation|ations)(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "domaine-validite",
+      "label": "domaine de validité",
+      "grade": "3e",
+      "patterns": [
+        "domaine de validit[ée]"
+      ]
+    },
+    {
+      "id": "extrapolation",
+      "label": "extrapolation",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])extrapol\\w*"
+      ]
+    },
+    {
+      "id": "moyenne",
+      "label": "moyenne",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])moyennes?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "moyenne-ponderee",
+      "label": "moyenne pondérée",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])moyenne pond[ée]r[ée]e(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])pond[ée]r[ée]e?s?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "effectif",
+      "label": "effectif",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])effectifs?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "serie-statistique",
+      "label": "série statistique",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])s[ée]ries? statistiques?(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])s[ée]rie statistique(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "dispersion",
+      "label": "dispersion",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])dispersions?(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])dispers[ée]e?s?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "mode-stat",
+      "label": "mode (statistique)",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])le mode(?![\\p{L}\\p{N}_])(?!\\s+(?:de |d.|«))",
+        "(?<![\\p{L}\\p{N}_])mode d['’]une s[ée]rie(?![\\p{L}\\p{N}_])"
+      ],
+      "_comment": "La valeur la plus fréquente d'une série. Le mot désigne aussi un état d'interface (« en mode altitude ») : on exige donc un contexte statistique."
+    },
+    {
+      "id": "indicateur-stat",
+      "label": "indicateur statistique",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])indicateurs?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "experience-aleatoire",
+      "label": "expérience aléatoire",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])exp[ée]riences? al[ée]atoires?(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])al[ée]atoires?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "equiprobable",
+      "label": "équiprobabilité / dé équilibré",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])[ée]quiprobables?(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])[ée]quiprobabilit[ée](?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "calcul-numerique",
+      "label": "calcul numérique (somme, quotient)",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])calcul num[ée]rique(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "nombres-relatifs",
+      "label": "nombres relatifs",
+      "grade": "5e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])(?:nombres? )?relatifs?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "ordre-nombres",
+      "label": "ranger des nombres (ordre)",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])ordre croissant(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])ordre d[ée]croissant(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "axe-tronque",
+      "label": "axe tronqué / troncature",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])axes?\\s+tronqu[ée]s?(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])troncatures?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "tendance",
+      "label": "tendance d'un nuage de points",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])tendances?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "relier-ou-non",
+      "label": "relier les points (grandeur continue ou discrète)",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])vari[ea]\\s+contin[uû]",
+        "(?<![\\p{L}\\p{N}_])continûment(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])grandeurs?\\s+discr[èe]tes?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "distributivite",
+      "label": "distributivité",
+      "grade": "4e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])distributivit[ée]s?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "terme-algebrique",
+      "label": "terme (d’une expression)",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])termes?(?![\\p{L}\\p{N}_])\\s+(?:de l['’]expression|d['’]une expression|constants?|en\\s+x(?![\\p{L}\\p{N}_])|du milieu|central)",
+        "(?:chaque|les deux|tous les|ses|le second|le premier)\\s+termes?\\s+(?:de la parenth[èe]se|de l['’]expression|de la somme)"
+      ],
+      "_comment": "Le mot « terme » au sens ALGÉBRIQUE (les morceaux additionnés d'une expression littérale). Le mot seul est aussi le langage courant des fractions (« les deux termes »), des rapports et des suites : n'y répondre que sur les collocations algébriques évite de signaler des leçons qui n'enseignent pas le calcul littéral."
+    },
+    {
+      "id": "facteur",
+      "label": "facteur",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])facteurs?(?![\\p{L}\\p{N}_])\\s+(?:de l['’]expression|du (?:terme|produit)|de ce (?:terme|produit)|premiers?(?![\\p{L}\\p{N}_]))",
+        "(?:les deux|chaque|ses|tous les)\\s+facteurs?(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])facteurs?\\s+de\\s+(?:5x|décomposition)(?![\\p{L}\\p{N}_])"
+      ],
+      "_comment": "Le mot « facteur » au sens ALGÉBRIQUE. Employé seul il désigne aussi bien un diviseur (« un facteur ≤ 7 ») qu'un coefficient multiplicateur : on ne retient que les collocations où il nomme les morceaux multipliés d'un produit ou d'un terme."
+    },
+    {
+      "id": "termes-semblables",
+      "label": "termes semblables",
+      "grade": "3e",
+      "patterns": [
+        "termes? semblables?"
+      ]
+    },
+    {
+      "id": "reduire-expression",
+      "label": "réduire une expression",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])r[ée]du(?:ire|is|it|ite|ites|its)(?![\\p{L}\\p{N}_])\\s+(?:l['’]expression|cette expression|une expression|au m[êe]me d[ée]nominateur)",
+        "(?:forme|[ée]criture)s?\\s+r[ée]duites?(?![\\p{L}\\p{N}_])",
+        "r[ée]duction\\s+d['’]une expression"
+      ],
+      "_comment": "Le verbe « réduire » au sens du calcul littéral. « Réduire une fraction », « réduire une figure » et « réduire au même dénominateur » sont d'autres gestes — seule la première variante est ici volontairement gardée hors périmètre du présent terme."
+    },
+    {
+      "id": "developper",
+      "label": "développer",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])d[ée]velopp(?:er|e|es|ez|ons|ée?s?|ement|ant)(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "factoriser",
+      "label": "factoriser",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])factoris(?:er|e|es|ez|ons|ée?s?|ation|ations|ant)(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "facteur-commun",
+      "label": "facteur commun",
+      "grade": "3e",
+      "patterns": [
+        "facteur commun"
+      ]
+    },
+    {
+      "id": "nombre-rationnel",
+      "label": "nombre rationnel",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])(?:nombres? )?rationnels?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "irreductible",
+      "label": "fraction irréductible",
+      "grade": "5e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])irr[ée]ductibles?(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])irr[ée]ductibilit[ée](?![\\p{L}\\p{N}_])"
+      ],
+      "_comment": "Rendre une fraction irréductible se travaille dès la 5e ; ce que la 3e ajoute est le lien avec le PGCD, couvert par l'entrée « pgcd ». Le niveau 5e évite de signaler comme neuf, dans une leçon de géométrie, un simple constat sur une fraction simplifiée."
+    },
+    {
+      "id": "ppcm",
+      "label": "PPCM",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])PPCM(?![\\p{L}\\p{N}_])",
+        "plus petit multiple commun"
+      ]
+    },
+    {
+      "id": "inverse-nombre",
+      "label": "inverse d’un nombre",
+      "grade": "3e",
+      "patterns": [
+        "(?:l|d)['’]inverse(?![\\p{L}\\p{N}_])\\s*(?:de\\s+(?:la\\s+)?(?:fraction|deuxi[èe]me|premi[èe]re|division|ce\\s+(?:nombre|quotient))|d['’]un\\s+(?:nombre|rationnel|quotient))",
+        "(?<![\\p{L}\\p{N}_])multiplier\\s+par\\s+(?:l['’])?inverse(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])inverses?(?![\\p{L}\\p{N}_])\\s+(?:de\\s+la\\s+fraction|du\\s+nombre|d['’]un\\s+nombre)"
+      ],
+      "_comment": "Le mot « inverse » au sens ARITHMÉTIQUE (le nombre dont le produit avec l'original vaut 1). Employé seul il désigne le contraire — « l'inverse de l'histoire », « c'est l'inverse » — ou un sens de lecture : on ne retient que les tournures où il porte sur un nombre ou une fraction."
+    },
+    {
+      "id": "denominateur-commun",
+      "label": "dénominateur commun",
+      "grade": "5e",
+      "patterns": [
+        "d[ée]nominateur commun",
+        "m[êe]me d[ée]nominateur"
+      ]
+    },
+    {
+      "id": "multiplication-repetee",
+      "label": "multiplication répétée",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])multiplication r[ée]p[ée]t[ée]e(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "decalage-virgule",
+      "label": "décalage de la virgule (×10, ÷10)",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])d[ée]cal(?:er|e|es|age|ages)\\s+la\\s+virgule(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "fraction-decimale",
+      "label": "fraction décimale",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])fractions? d[ée]cimales?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "exposant",
+      "label": "exposant",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])exposants?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "base-puissance",
+      "label": "base d’une puissance",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])bases?\\s+(?:de\\s+la\\s+|d[’']une\\s+)?puissance(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "notation-scientifique",
+      "label": "écriture / notation scientifique",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])[ée]critures?\\s+scientifiques?(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])notations?\\s+scientifiques?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "ordre-de-grandeur",
+      "label": "ordre de grandeur",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])ordres?\\s+de\\s+grandeur(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "face-solide",
+      "label": "face d'un solide",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])faces?(?![\\p{L}\\p{N}_])\\s+(?:d['’]un|du|de\\s+la|de\\s+ce|planes?|triangulaires?|lat[ée]rales?)",
+        "(?<![\\p{L}\\p{N}_])(?:six|6|cinq|5|quatre|4|deux|2)\\s+faces?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "arete",
+      "label": "arête",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])ar[êe]tes?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "sommet-solide",
+      "label": "sommet d'un solide",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])sommets?(?![\\p{L}\\p{N}_])\\s+(?:d['’]un\\s+solide|du\\s+cube|du\\s+solide|cach[ée]s?|visibles?)",
+        "(?<![\\p{L}\\p{N}_])(?:huit|8|cinq|5|quatre|4|six|6)\\s+sommets?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "polyedre",
+      "label": "polyèdre",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])poly[èe]dres?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "relation-euler",
+      "label": "relation d'Euler",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])(?:relation|formule)\\s+d['’]Euler(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])Euler(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "solide-convexe",
+      "label": "solide convexe",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])convexes?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "arete-cachee",
+      "label": "arête cachée (pointillé)",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])ar[êe]tes?\\s+cach[ée]es?(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])en\\s+pointill[ée]s?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "perspective-cavaliere",
+      "label": "perspective cavalière",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])perspective\\s+cavali[èe]re(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])fuyantes?(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])coefficient\\s+de\\s+r[ée]duction(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "point-de-fuite",
+      "label": "point de fuite (perspective conique)",
+      "grade": "seconde",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])points?\\s+de\\s+fuite(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "non-coplanaires",
+      "label": "droites non coplanaires",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])non[- ]coplanaires?(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])coplanaires?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "trois-vues",
+      "label": "les trois vues (de face, de dessus, de côté)",
+      "grade": "3e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])vues?\\s+de\\s+(?:face|dessus|c[ôo]t[ée])(?![\\p{L}\\p{N}_])"
+      ],
+      "_comment": "Les vues de face / de dessus / de côté d'un solide. « Trois vues » seul est du français courant (« trois vues de la même machine ») : on exige les vues nommées."
+    },
+    {
+      "id": "numerateur",
+      "label": "numérateur",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])num[ée]rateurs?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "denominateur",
+      "label": "dénominateur",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])d[ée]nominateurs?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "valeur-position",
+      "label": "valeur de position (chiffre / nombre)",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])valeurs?\\s+de\\s+position(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])chiffre\\s+des\\s+(?:unit[ée]s|dizaines|centaines|milliers|dixi[èe]mes|centi[èe]mes)(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "encadrement",
+      "label": "encadrer un nombre",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])encadr(?:er|ement|e|ements)(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "contenance",
+      "label": "contenance",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])contenances?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "rapporteur",
+      "label": "rapporteur",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])rapporteurs?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "angle-aigu-obtus",
+      "label": "angle aigu / obtus",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])angles?\\s+aigus?(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])angles?\\s+obtus(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])angles?\\s+plats?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "demi-droite",
+      "label": "demi-droite",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])demi[- ]droites?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "milieu-segment",
+      "label": "milieu d’un segment",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])milieux?\\s+(?:du|d[’']un|de\\s+la)\\s+segment(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "droites-perpendiculaires",
+      "label": "droites perpendiculaires",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])perpendiculaires?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "axe-symetrie",
+      "label": "axe de symétrie",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])axes?\\s+de\\s+sym[ée]trie(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])sym[ée]triques?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "quadrilatere",
+      "label": "quadrilatère",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])quadrilat[èe]res?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "losange",
+      "label": "losange",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])losanges?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "parallelogramme",
+      "label": "parallélogramme",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])parall[ée]logrammes?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "diagonale",
+      "label": "diagonale",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])diagonales?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "patron-solide",
+      "label": "patron d’un solide",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])patrons?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "pave-droit",
+      "label": "pavé droit",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])pav[ée]s?\\s+droits?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "coefficient-proportionnalite",
+      "label": "coefficient de proportionnalité",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])coefficients?\\s+de\\s+proportionnalit[ée](?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "tableau-double-entree",
+      "label": "tableau à double entrée",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])tableaux?\\s+[àa]\\s+double\\s+entr[ée]e(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "instruction-programme",
+      "label": "instruction (programme)",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])instructions?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "boucle",
+      "label": "boucle",
+      "grade": "6e",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])boucles?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "discriminant",
+      "label": "discriminant",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])discriminants?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "trinome",
+      "label": "trinôme",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])trin[oô]mes?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "racine-trinome",
+      "label": "racine d’un trinôme",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "racines?\\s+(?:du|d[eu]s?\\s+)?trin[oô]me",
+        "racines?\\s+de\\s+l['’]?[ée]quation\\s+du\\s+second\\s+degr[ée]"
+      ]
+    },
+    {
+      "id": "forme-factorisee",
+      "label": "forme factorisée",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "forme\\s+factoris[ée]e\\s+(?:du|d['’]un)\\s+trin[oô]me"
+      ]
+    },
+    {
+      "id": "suite-numerique",
+      "label": "suite numérique",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "suites?\\s+num[ée]riques?"
+      ]
+    },
+    {
+      "id": "suite-arithmetique",
+      "label": "suite arithmétique",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "suites?\\s+arithm[ée]tiques?"
+      ]
+    },
+    {
+      "id": "suite-geometrique",
+      "label": "suite géométrique",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "suites?\\s+g[ée]om[ée]triques?"
+      ]
+    },
+    {
+      "id": "raison-suite",
+      "label": "raison d’une suite",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "raisons?\\s+(?:de\\s+la\\s+|d['’]une\\s+)?suite",
+        "raisons?\\s+(?:arithm[ée]tique|g[ée]om[ée]trique)"
+      ]
+    },
+    {
+      "id": "relation-recurrence",
+      "label": "relation de récurrence",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "r[ée]currence"
+      ]
+    },
+    {
+      "id": "terme-general",
+      "label": "terme général",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "terme g[ée]n[ée]ral",
+        "formule explicite"
+      ]
+    },
+    {
+      "id": "taux-de-variation",
+      "label": "taux de variation",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "taux de variation"
+      ]
+    },
+    {
+      "id": "nombre-derive",
+      "label": "nombre dérivé",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "nombre d[ée]riv[ée]"
+      ]
+    },
+    {
+      "id": "fonction-derivee",
+      "label": "fonction dérivée",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "fonction\\s+d[ée]riv[ée]e",
+        "d[ée]riv[ée]e\\s+de\\s+la\\s+fonction"
+      ]
+    },
+    {
+      "id": "tangente-courbe",
+      "label": "tangente à une courbe",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "tangente [àa] la courbe"
+      ]
+    },
+    {
+      "id": "exponentielle",
+      "label": "exponentielle",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])exponentielles?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "radian",
+      "label": "radian",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])radians?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "cercle-trigonometrique",
+      "label": "cercle trigonométrique",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "cercle trigonom[ée]trique"
+      ]
+    },
+    {
+      "id": "periodicite",
+      "label": "périodicité",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "p[ée]riodicit[ée]\\s+(?:de\\s+la\\s+|d['’]une\\s+)?fonction",
+        "fonctions?\\s+p[ée]riodiques?"
+      ]
+    },
+    {
+      "id": "produit-scalaire",
+      "label": "produit scalaire",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "produits? scalaires?"
+      ]
+    },
+    {
+      "id": "orthogonal",
+      "label": "orthogonal",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])orthogonal(?:e|es|aux)?(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])orthogonaux(?![\\p{L}\\p{N}_])",
+        "(?<![\\p{L}\\p{N}_])orthogonalit[ée](?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "vecteur-normal",
+      "label": "vecteur normal",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "vecteurs? normal(?:e|es|aux)?",
+        "vecteurs? normaux"
+      ]
+    },
+    {
+      "id": "projection-orthogonale",
+      "label": "projection orthogonale",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "projection orthogonale",
+        "(?<![\\p{L}\\p{N}_])projet[ée]e?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "representation-parametrique",
+      "label": "représentation paramétrique",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "repr[ée]sentation param[ée]trique"
+      ]
+    },
+    {
+      "id": "variable-aleatoire",
+      "label": "variable aléatoire",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "variables? al[ée]atoires?"
+      ]
+    },
+    {
+      "id": "loi-de-probabilite",
+      "label": "loi de probabilité",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "lois? de probabilit[ée]"
+      ]
+    },
+    {
+      "id": "esperance",
+      "label": "espérance",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "(?<![\\p{L}\\p{N}_])esp[ée]rances?\\s+(?:math[ée]matique|de\\s+[XY]|d['’]une\\s+variable)",
+        "(?<![\\p{L}\\p{N}_])esp[ée]rance(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "ecart-type",
+      "label": "écart type",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "[ée]cart[- ]types?"
+      ]
+    },
+    {
+      "id": "schema-bernoulli",
+      "label": "schéma de Bernoulli",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "Bernoulli"
+      ]
+    },
+    {
+      "id": "loi-binomiale",
+      "label": "loi binomiale",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "lois? binomiales?",
+        "(?<![\\p{L}\\p{N}_])binomiale?s?(?![\\p{L}\\p{N}_])"
+      ]
+    },
+    {
+      "id": "probabilites-totales",
+      "label": "probabilités totales",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "probabilit[ée]s totales"
+      ]
+    },
+    {
+      "id": "independance",
+      "label": "indépendance",
+      "grade": "premiere_specialite",
+      "patterns": [
+        "ind[ée]pendan(?:ce|ts?|tes?)\\s+(?:de\\s+deux\\s+)?[ée]v[ée]nements?",
+        "[ée]v[ée]nements?\\s+ind[ée]pendants?",
+        "ind[ée]pendance\\s+en\\s+probabilit"
+      ]
+    }
+  ],
+  "_boundaryNote": "Les motifs utilisent des bornes Unicode explicites (?<![\\p{L}\\p{N}_]) … (?![\\p{L}\\p{N}_]) et jamais \\b : en JavaScript \\b reste ASCII même sous le drapeau /u, si bien qu'une lettre accentuée crée une frontière au milieu d'un mot — « aire » se déclenchait dans « linéaire ». Conserver cette convention."
+}

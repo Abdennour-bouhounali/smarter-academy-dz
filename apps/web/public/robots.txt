@@ -1,0 +1,5 @@
+# robots.txt for Smarter Academy
+User-agent: *
+Allow: /
+
+Sitemap: https://smarter-academy.fr/sitemap.xml

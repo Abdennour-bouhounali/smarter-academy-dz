@@ -1,0 +1,481 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+  }
+
+  body {
+    background-color: #FAFAFA;
+    color: #111827;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #0F172A;
+  }
+
+  ::selection {
+    background: rgba(59, 130, 246, 0.2);
+    color: #1e40af;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #F8FAFC;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #3B82F6, #8B5CF6);
+    border-radius: 3px;
+  }
+}
+
+@layer components {
+  .section-title {
+    @apply font-space text-4xl md:text-5xl font-bold text-slate-900 mb-4;
+  }
+
+  .section-subtitle {
+    @apply font-inter text-lg text-slate-500 mb-8 md:mb-16 max-w-2xl mx-auto;
+  }
+
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-xl shadow-slate-200/50;
+    border-radius: 20px;
+  }
+
+  .glass-card-dark {
+    @apply bg-slate-900/90 backdrop-blur-md border border-slate-700/50 shadow-xl;
+    border-radius: 20px;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #3B82F6, #8B5CF6, #06B6D4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-text-blue-purple {
+    background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white transition-all duration-300;
+    background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.4);
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-slate-700 border border-slate-200 bg-white hover:bg-slate-50 transition-all duration-300;
+  }
+
+  .btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .tech-chip {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-mono font-semibold;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .section-wrapper {
+    @apply relative z-10 py-12 sm:py-16 lg:py-24 px-4;
+  }
+
+  /* ─────────────────────────────────────────────────────────────────────
+     L'ACCENT PREMIUM — un seul endroit, deux états
+
+     Une leçon payante doit se RECONNAÎTRE dans une grille de cartes, sans
+     pour autant se déguiser en publicité. D'où le violet du système
+     (#8B5CF6, la seconde moitié du dégradé de marque) plutôt qu'un or de
+     « VIP » : le premium est une famille de contenu, pas une récompense.
+
+     Deux états, et la distinction est TOUTE la question :
+
+       .sa-premium-card         — payant ET ouvert à cet élève. Une bordure
+                                  violette sur fond blanc : la carte reste
+                                  une carte normale, elle est juste marquée.
+       .sa-premium-card-locked  — payant et FERMÉ. Le même violet, en teinte
+                                  de fond : c'est la seule différence, parce
+                                  qu'il ne s'agit pas d'un autre contenu mais
+                                  du même, vu d'ailleurs.
+
+     Le verrouillé n'est PAS grisé : une leçon fermée reste désirable, et la
+     griser la ferait passer pour « en préparation » — l'état voisin, qui a
+     déjà son propre gris et signifie tout autre chose.
+
+     Les jetons sont des variables pour que le survol et l'anneau de focus
+     se déduisent de la même couleur au lieu d'être re-choisis à la main.
+     ───────────────────────────────────────────────────────────────────── */
+  .sa-premium-card,
+  .sa-premium-card-locked {
+    --sa-premium: #8B5CF6;
+    --sa-premium-strong: #7C3AED;
+    --sa-premium-soft: #EDE9FE;
+  }
+
+  .sa-premium-card {
+    border-color: #C4B5FD;
+  }
+
+  .sa-premium-card:hover {
+    border-color: var(--sa-premium);
+  }
+
+  .sa-premium-card-locked {
+    border-color: #C4B5FD;
+    background-image: linear-gradient(to bottom right, rgba(237, 233, 254, 0.55), #ffffff);
+  }
+
+  .sa-premium-card-locked:hover {
+    border-color: var(--sa-premium);
+  }
+
+  /* Le badge « Premium ». Contraste violet-700 sur violet-100 : 7,4:1,
+     au-dessus du seuil AA même à cette taille de texte. */
+  .sa-premium-badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-full font-mono-jetbrains text-[10px] font-bold;
+    background-color: #EDE9FE;
+    color: #6D28D9;
+  }
+
+  /* Focus clavier : l'anneau suit l'accent de la carte, pas le bleu
+     générique — sinon le premium perd son identité dès qu'on tabule. */
+  .sa-premium-card:focus-visible,
+  .sa-premium-card-locked:focus-visible {
+    outline: 2px solid var(--sa-premium-strong);
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .font-space {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .font-inter {
+    font-family: 'Inter', sans-serif;
+  }
+
+  .font-mono-jetbrains {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animation-delay-100 { animation-delay: 100ms; }
+  .animation-delay-200 { animation-delay: 200ms; }
+  .animation-delay-300 { animation-delay: 300ms; }
+  .animation-delay-500 { animation-delay: 500ms; }
+  .animation-delay-700 { animation-delay: 700ms; }
+  .animation-delay-1000 { animation-delay: 1000ms; }
+}
+
+/* Gradient ring animation */
+@keyframes gradientSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.gradient-ring {
+  background: conic-gradient(from 0deg, #3B82F6, #8B5CF6, #06B6D4, #3B82F6);
+  animation: gradientSpin 4s linear infinite;
+}
+
+/* Constellation SVG */
+.constellation-node {
+  animation: pulse 3s ease-in-out infinite;
+}
+
+/* Timeline vertical line */
+.timeline-line {
+  background: linear-gradient(to bottom, #3B82F6, #8B5CF6, #06B6D4);
+}
+
+/* Badge float animation */
+@keyframes badgeFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.badge-float {
+  animation: badgeFloat 4s ease-in-out infinite;
+}
+
+/* Typing cursor */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.typing-cursor::after {
+  content: '|';
+  animation: blink 1s step-end infinite;
+  color: #3B82F6;
+}
+
+/* Count-up animation */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-up {
+  animation: slideUp 0.6s ease-out forwards;
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   POIGNÉES DE MANIPULATION EN SVG
+   ─────────────────────────────────────────────────────────────────────────
+   Une poignée de labo est un <rect>/<circle> SVG TRANSPARENT et volontairement
+   large (≥ 44 px, la zone de captation du doigt), rendu focalisable par
+   `role="slider"` + `tabIndex`. Au clic comme au focus, le navigateur y trace
+   son contour par défaut : un grand cadre noir qui n'entoure pas la poignée
+   mais sa zone de captation — signalé par l'utilisateur le 2026-09-07.
+
+   On retire ce contour UNIQUEMENT sur ces zones transparentes. L'indicateur de
+   focus n'est pas supprimé pour autant : chaque composant dessine un anneau
+   sur la pastille VISIBLE de sa poignée (voir StructureLab), ce qui est à la
+   fois plus lisible et conforme à l'exigence d'un focus visible.
+   ───────────────────────────────────────────────────────────────────────── */
+svg [role="slider"]:focus,
+svg [role="slider"]:focus-visible {
+  outline: none;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Visuels de connaissance — la taille est décidée par ConceptVisual.
+
+   Chaque schéma de leçon porte la largeur à laquelle il a été DESSINÉ
+   (`style="max-width: 140px"`, `width="200"`…). Utile isolément, cette borne
+   devenait un plafond : dans une carte de 686 px le schéma restait une
+   vignette, et agrandir la carte ne changeait rien.
+
+   On la neutralise ici, pour les seuls enfants directs d'un ConceptVisual.
+   Le `viewBox` conserve la géométrie exacte — traits, étiquettes et
+   épaisseurs grandissent ensemble, sans flou ni déformation. La largeur
+   affichée vient alors de `visualSize` (sm / md / lg / full).
+   ───────────────────────────────────────────────────────────────────────── */
+/* Descendant à toute profondeur : un schéma est souvent enveloppé dans un
+   <div> ou une <figure> qui lui est propre. `!important` est nécessaire — la
+   borne d'origine est un style INLINE (`style="max-width: 132px"`), qu'une
+   règle ordinaire ne peut pas dépasser. On ne cible que l'intérieur d'un
+   ConceptVisual : partout ailleurs les schémas gardent leur taille. */
+.sa-concept-visual svg {
+  width: 100% !important;
+  height: auto !important;
+  max-width: none !important;
+}
+
+.sa-concept-visual figcaption {
+  max-width: none;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   ESPACE DE TRAVAIL — MODE COLONNE DE « MA CARTE »
+   (context/WorkspaceLayoutContext.jsx)
+
+   Trois régions, une seule source de vérité :
+
+     ┌────┬────────────────────────────┬────────────┐
+     │ S  │        CONTENU             │  MA CARTE  │
+     └────┴────────────────────────────┴────────────┘
+
+   Les deux coquilles posent `--sa-sidebar-w` et `--sa-gutter-w` sur leur
+   <main>. La réservation elle-même se fait ICI, en CSS, et non par des classes
+   Tailwind calculées : le décalage de la barre latérale n'existe qu'à partir
+   de `lg`, et une media query est le seul endroit qui puisse le dire sans
+   dupliquer le point de rupture dans du JavaScript. Les variables sont
+   optionnelles — une page sans elles retombe sur `0px` et garde exactement sa
+   mise en page d'avant.
+
+   `transition: padding` — la coquille « fait de la place » ; c'est le même
+   mouvement, et la même durée, que la compression de la barre latérale.
+   ───────────────────────────────────────────────────────────────────────── */
+.sa-workspace-main {
+  padding-right: var(--sa-gutter-w, 0px);
+  /* Même durée et même courbe que l'entrée du panneau (KnowledgeMap.jsx) :
+     la leçon fait de la place PENDANT que la carte arrive, et les deux
+     mouvements se terminent ensemble. */
+  transition: padding 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (min-width: 1024px) {
+  .sa-workspace-main {
+    padding-left: var(--sa-sidebar-w, 0px);
+  }
+}
+
+/* Pendant un redimensionnement à la poignée, la gouttière doit suivre le
+   pointeur À L'IMAGE PRÈS : une transition de 300ms ferait traîner le contenu
+   derrière la carte. On la coupe le temps du geste (le panneau pose le
+   drapeau sur <html>), et elle revient pour les changements de mode. */
+html[data-sa-resizing] .sa-workspace-main {
+  transition: none;
+}
+
+/* Le mouvement est une commodité, pas une information : qui demande moins
+   d'animation obtient le même état final, immédiatement. */
+@media (prefers-reduced-motion: reduce) {
+  .sa-workspace-main,
+  .sa-workspace-sidebar {
+    transition: none;
+  }
+}
+
+/* Barre latérale comprimée — les libellés ne sont pas `display:none` (ils
+   resteraient dans l'arbre d'accessibilité tout en cassant l'alignement) :
+   ils s'effacent et cessent d'occuper de la place, pendant que le lien se
+   recentre sur son icône. Le nom reste lisible par un lecteur d'écran via le
+   `title`/`aria-label` porté par le lien lui-même. */
+.sa-workspace-sidebar {
+  transition: width 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   PLANCHER DES TAILLES FIXES EN PIXELS
+   ─────────────────────────────────────────────────────────────────────────
+   L'échelle de `tailwind.config.js` (+25%) atteint `text-xs`/`text-sm`, mais
+   PAS les tailles écrites en dur : `text-[10px]` vaut 10px quelle que soit
+   l'échelle. Elles subsistent dans 274 fichiers de leçons (étiquettes de
+   figures, pastilles, légendes) et se retrouveraient aujourd'hui plus
+   petites que tout ce qui les entoure — exactement le défaut que §19 demande
+   de corriger.
+
+   On les relève ici À L'ÉCRAN seulement. L'impression (« Ma carte ») dimensionne
+   en `pt` et n'est pas concernée ; la relever y casserait la pagination.
+
+   Pour les NOUVELLES leçons la règle reste : `text-xs` est la plus petite
+   taille légitime, jamais `text-[10px]`.
+   ───────────────────────────────────────────────────────────────────────── */
+@media screen {
+  .text-\[9px\]  { font-size: 11px !important; }
+  .text-\[10px\] { font-size: 12px !important; }
+  .text-\[11px\] { font-size: 13px !important; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   LE CADRE DE PAGE PARTAGÉ — `.sa-page`
+   ─────────────────────────────────────────────────────────────────────────
+   Huit pages élève (Cours, sommaire et module de leçon, exercice, espace de
+   pratique, progression, espace, profil) partageaient jusqu'ici SEPT largeurs
+   différentes — max-w-7xl, 6xl, 5xl, 4xl, 2xl… L'élève changeait de cadre à
+   chaque pas de son parcours.
+
+   Une seule règle ici, et un seul endroit où la changer. La gouttière est
+   responsive : 60 px n'a de sens que là où il y a la place, et l'imposer à
+   360 px mangerait un tiers de l'écran.
+
+     mobile  (< 640px)  : 20px
+     tablette(≥ 640px)  : 40px
+     bureau  (≥ 1024px) : 60px
+
+   `width: 100%` et non `100vw` : la mesure se fait dans le PARENT. Sur le
+   bureau élève, <main> réserve déjà la barre latérale (`.sa-workspace-main`),
+   donc les 60 px se comptent à l'intérieur de la zone de contenu — jamais
+   depuis le bord de l'écran, ce qui doublerait l'espace contre la barre.
+
+   Pas de `max-width` : une page qui a besoin d'une colonne de lecture étroite
+   la borne SUR SON CONTENU, à l'intérieur de ce cadre.
+   ───────────────────────────────────────────────────────────────────────── */
+.sa-page {
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+@media (min-width: 640px) {
+  .sa-page {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sa-page {
+    padding-left: 60px;
+    padding-right: 60px;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   FOND UNI DU SYSTÈME D'EXERCICES — `.sa-surface-plain`
+   ─────────────────────────────────────────────────────────────────────────
+   `StudentLayout` monte `<BackgroundLayer />` : une grille de points et trois
+   halos animés (bleu, violet, cyan) qui transparaissent derrière TOUTES les
+   pages de l'espace élève, le <main> étant transparent.
+
+   Le système d'exercices doit s'en abstraire. Ce n'est pas une question de
+   goût : l'élève y lit un énoncé, un graphique, une saisie mathématique, et
+   des halos qui pulsent en boucle sous le texte concurrencent précisément ce
+   qu'on lui demande de regarder. Le sommaire de leçon et le module utilisent
+   déjà un aplat `bg-slate-50` — c'est cette même surface qu'on reprend ici,
+   pour que l'exercice appartienne visuellement à la leçon dont il vient.
+
+   Le fond est étiré au-delà du cadre (`margin` négative compensée par un
+   `padding` égal) : les gouttières de `.sa-page` sont DANS la page, l'aplat
+   doit donc couvrir toute la zone de contenu, bords compris, sinon la
+   couleur réapparaît en bandes latérales.
+   ───────────────────────────────────────────────────────────────────────── */
+.sa-surface-plain {
+  background-color: #f8fafc; /* slate-50 — l'aplat du sommaire de leçon */
+  position: relative;
+  z-index: 0;
+  /* `min-height: 100%` ne suffirait pas : le <main> parent n'a pas de hauteur
+     définie, la surface s'arrêterait donc où le contenu s'arrête et les halos
+     réapparaîtraient en bas de page — constaté sur une séance d'exercice, qui
+     est courte. On prend la hauteur de la fenêtre, dont on retranche l'en-tête
+     mobile ; au-delà de `lg` il n'y a aucun en-tête persistant (voir
+     lessonChrome.js), la hauteur est donc pleine. `dvh` suit la barre d'URL
+     mobile qui se rétracte, là où `vh` laisserait une bande en bas. */
+  min-height: calc(100dvh - 3.5rem); /* 3.5rem = h-14, l'en-tête élève mobile */
+}
+
+@media (min-width: 1024px) {
+  .sa-surface-plain {
+    min-height: 100dvh;
+  }
+}

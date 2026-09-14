@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Primary Title & Meta Tags -->
+  <title>Smarter Academy — Comprendre les mathématiques, pas les réciter</title>
+  <meta name="description"
+    content="Smarter Academy est une plateforme interactive pour manipuler, découvrir et maîtriser les mathématiques, du Collège au Lycée. Essaie sans compte, commence gratuitement." />
+  <meta name="keywords"
+    content="Smarter Academy, cours de mathématiques en ligne, mathématiques collège, mathématiques lycée, apprentissage interactif, programme officiel français, exercices de maths, 6e 5e 4e 3e, seconde première terminale" />
+  <meta name="author" content="Smarter Academy" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://smarter-academy.fr/" />
+
+  <!-- Open Graph / Facebook / WhatsApp Meta Tags -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://smarter-academy.fr/" />
+  <meta property="og:title" content="Smarter Academy — Comprendre les mathématiques, pas les réciter" />
+  <meta property="og:description"
+    content="Une plateforme interactive pour manipuler, découvrir et maîtriser les mathématiques, du Collège au Lycée. Essaie sans compte." />
+  <meta property="og:image" content="https://smarter-academy.fr/smarter-academy-logo.webp" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:site_name" content="Smarter Academy" />
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Smarter Academy — Comprendre les mathématiques, pas les réciter" />
+  <meta name="twitter:description"
+    content="Une plateforme interactive pour manipuler, découvrir et maîtriser les mathématiques, du Collège au Lycée." />
+  <meta name="twitter:image" content="https://smarter-academy.fr/smarter-academy-logo.webp" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Les polices ne BLOQUENT PLUS le premier rendu.
+       Mesuré avant ce changement : le JavaScript de l'application était prêt à
+       61 ms, mais la première peinture n'arrivait qu'à 1024 ms — le navigateur
+       attendait cette feuille de style externe (939 ms). La page restait donc
+       blanche près d'une seconde pour une raison purement typographique.
+
+       `media="print"` + `onload` : le navigateur télécharge la feuille sans la
+       considérer comme bloquante, puis on la rebascule sur `all` dès qu'elle
+       est là. `display=swap` (déjà présent dans l'URL) fait afficher le texte
+       immédiatement dans la police de repli, puis l'échange — l'identité
+       visuelle est conservée, elle arrive juste sans retenir la page.
+       <noscript> garde le comportement classique sans JavaScript. -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet" />
+  </noscript>
+
+
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "EducationalOrganization",
+      "@id": "https://smarter-academy.fr/#organization",
+      "name": "Smarter Academy",
+      "description": "Plateforme éducative interactive de mathématiques, du Collège au Lycée, conforme au programme officiel français.",
+      "url": "https://smarter-academy.fr/",
+      "email": "abdennour.bouhounali@gmail.com",
+      "areaServed": {
+        "@type": "Country",
+        "name": "France"
+      },
+      "knowsAbout": [
+        "Mathématiques collège",
+        "Mathématiques lycée",
+        "Programme officiel français",
+        "Apprentissage interactif"
+      ]
+    }
+    </script>
+</head>
+
+<body>
+  <div id="root">
+    <div style="display: flex; height: 100vh; width: 100vw; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; background-color: #f8fafc; flex-direction: column;">
+      <style>
+        @keyframes root-spin { to { transform: rotate(360deg); } }
+        .root-spinner { width: 40px; height: 40px; border: 4px solid #3b82f6; border-top-color: transparent; border-radius: 50%; animation: root-spin 1s linear infinite; margin-bottom: 20px; }
+      </style>
+      <div class="root-spinner"></div>
+      <p style="color: #64748b; font-weight: 500;">Chargement de Smarter Academy...</p>
+    </div>
+  </div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>
