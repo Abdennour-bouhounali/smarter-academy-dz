@@ -1,7 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { getAllGrades, courseLevels } from './coursesData';
+import { getAllGrades, courseLevels, allCourseLevels } from './coursesData';
 
-const allLessons = courseLevels.flatMap((level) =>
+// Data-shape invariants below (duration formatting, learning-point IDs, …)
+// are about the FULL inherited catalogue, independent of which grades are
+// currently active for Algeria — so they run against `allCourseLevels`, not
+// the active-filtered `courseLevels`. See activeGrades.js.
+const allLessons = allCourseLevels.flatMap((level) =>
   level.grades.flatMap((grade) =>
     grade.chapters.flatMap((chapter) =>
       chapter.lessons.map((lesson) => ({ levelId: level.id, gradeId: grade.id, chapterId: chapter.id, lesson }))
@@ -12,18 +16,16 @@ const allLessons = courseLevels.flatMap((level) =>
 describe('getAllGrades', () => {
   const grades = getAllGrades();
 
-  it('returns one entry per grade across every level', () => {
+  // `getAllGrades()` reads the active-filtered `courseLevels` — its actual
+  // contract for the Algerian product (see activeGrades.js: no Algerian
+  // grade exists yet, so this is genuinely empty until Phase 7 lands one).
+  it('returns one entry per active grade', () => {
     const expectedCount = courseLevels.reduce((sum, level) => sum + level.grades.length, 0);
     expect(grades).toHaveLength(expectedCount);
   });
 
-  it('includes the current collège grades with their level', () => {
-    expect(grades).toContainEqual({ id: '6e', name: '6ème', levelId: 'college', levelTitle: 'Collège' });
-    expect(grades).toContainEqual({ id: '3e', name: '3ème', levelId: 'college', levelTitle: 'Collège' });
-  });
-
-  it('includes lycée grades, forward-compatibly', () => {
-    expect(grades.some((g) => g.levelId === 'lycee')).toBe(true);
+  it('is empty until an Algerian grade is added to activeGrades.js (ACTIVE_GRADE_IDS)', () => {
+    expect(grades).toEqual([]);
   });
 
   it('has no duplicate grade ids', () => {

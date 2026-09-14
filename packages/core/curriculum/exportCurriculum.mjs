@@ -13,12 +13,18 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { courseLevels } from './coursesData.js';
+// Deliberately the UNFILTERED catalogue, not the active-grades-only
+// `courseLevels` export: the database is expected to mirror every grade
+// physically present in the repo (French content stays "physically present
+// but dormant" per ALGERIA_PLATFORM_MASTER_SPEC.md §3 — it is not deleted,
+// only hidden from student-facing discovery, which is enforced separately
+// by ContentAccess.php and this same filter applied in the frontend bundle).
+import { allCourseLevels } from './coursesData.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const outputPath = resolve(process.argv[2] || resolve(here, '.generated/curriculum-export.json'));
 
-const grades = courseLevels.flatMap((level) =>
+const grades = allCourseLevels.flatMap((level) =>
   level.grades.map((grade, gradeIndex) => ({
     code: grade.id,
     name: grade.name,

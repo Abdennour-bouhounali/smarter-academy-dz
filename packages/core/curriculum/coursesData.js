@@ -1,6 +1,7 @@
 // `with { type: 'json' }` so this module also loads under plain Node (the
 // curriculum export script) — Vite/vitest accept the attribute too.
 import officialProgram from './smarter_academy_programmes_maths_2026.json' with { type: 'json' };
+import { filterActiveCourseLevels } from './activeGrades.js';
 
 // --- Métadonnées Smarter Academy ---
 // Ces données enrichissent les objets officiels sans en modifier la liste.
@@ -2988,7 +2989,12 @@ function buildChaptersForGrade(gradeId, levelId) {
   });
 }
 
-export const courseLevels = [
+// Full inherited catalogue (every grade cloned from the French platform),
+// kept under a name that makes "this is unfiltered" impossible to miss at a
+// call site. Only dormant-content tooling (a future admin browser, audits)
+// should ever import this directly — every student-facing consumer must use
+// `courseLevels` below instead, per docs/ALGERIA_MIGRATION_AUDIT.md §15.
+export const allCourseLevels = [
   {
     id: 'college',
     title: 'Collège',
@@ -3022,6 +3028,14 @@ export const courseLevels = [
     ]
   }
 ];
+
+// The catalogue every student-facing consumer must use. Filtered to only
+// ACTIVE_GRADE_IDS (packages/core/curriculum/activeGrades.js) so that every
+// downstream reader — navigation, course browser, resume/next-lesson logic,
+// grade pickers — is starved of dormant French content at the source,
+// rather than each needing its own filter. See activeGrades.js for why this
+// is currently empty (no Algerian grade exists yet).
+export const courseLevels = filterActiveCourseLevels(allCourseLevels);
 
 /**
  * Flattens courseLevels into the list of every selectable grade — the single

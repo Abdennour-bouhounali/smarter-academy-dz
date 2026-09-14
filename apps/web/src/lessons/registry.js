@@ -6,11 +6,29 @@
 // A lesson present in the catalogue but absent here simply has no
 // implementation yet (status 'coming_soon'); progress utilities must skip it
 // rather than assume a module count.
+//
+// Dormant-grade isolation (docs/ALGERIA_MIGRATION_AUDIT.md §15): every
+// French lesson folder stays physically present on disk (master spec §3),
+// but only folders under an active grade (path shape
+// `./<college|lycee>/<gradeId>/...`) are indexed here. This is defense in
+// depth on top of the coursesData.js catalogue filter (activeGrades.js) —
+// even if some other code path bypassed the catalogue, an inactive grade's
+// lesson.config.js still could not be resolved through this registry.
+import { ACTIVE_GRADE_IDS } from '@smarter-academy/core';
 
 const configModules = import.meta.glob('./**/lesson.config.js', { eager: true });
 
+function gradeIdFromModulePath(path) {
+  // './college/6e/domaine/lecon/lesson.config.js' -> '6e'
+  const parts = path.split('/');
+  return parts.length >= 3 ? parts[2] : null;
+}
+
 const configByLessonId = new Map();
-for (const mod of Object.values(configModules)) {
+for (const [path, mod] of Object.entries(configModules)) {
+  const gradeId = gradeIdFromModulePath(path);
+  if (!ACTIVE_GRADE_IDS.includes(gradeId)) continue;
+
   const config = mod.LESSON_CONFIG;
   if (config?.id) {
     configByLessonId.set(config.id, config);
@@ -60,4 +78,18 @@ export function getModulePath(lessonId, moduleNumber) {
   const wanted = Number(moduleNumber);
   if (!Number.isFinite(wanted)) return null;
   return config.modules.find((m) => Number(m.number) === wanted)?.path ?? null;
+}
+
+/**
+ * The id of some lesson with 2+ modules currently in the active registry, or
+ * `null` if none is active. Test-only escape hatch: lets registry-behavior
+ * tests exercise a real, currently-active lesson without hardcoding one —
+ * which grade is active can change (see activeGrades.js) independently of
+ * what those tests are actually checking.
+ */
+export function getAnyRegisteredLessonId() {
+  for (const [id, config] of configByLessonId) {
+    if ((config.modules?.length ?? 0) >= 2) return id;
+  }
+  return null;
 }

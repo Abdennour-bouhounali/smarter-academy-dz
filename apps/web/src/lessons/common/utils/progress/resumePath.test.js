@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve, join } from 'node:path';
-import { getModulePath, getLessonConfig } from '../../../registry';
+import { getModulePath, getLessonConfig, getAnyRegisteredLessonId } from '../../../registry';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const srcRoot = resolve(here, '../../../..');
@@ -19,29 +19,40 @@ const srcRoot = resolve(here, '../../../..');
  *
  * Ces tests verrouillent les deux moitiés du correctif : le pont numéro →
  * chemin, et l'absence de tout retour à l'assemblage manuel.
+ *
+ * Le test tire sa leçon-fixture du registre ACTIF plutôt que de coder en dur
+ * 'fonction-affine-2nde' (une leçon de seconde, désormais dormante pour
+ * l'Algérie — voir activeGrades.js) : le pont numéro → chemin doit être
+ * vérifié sur une leçon réellement enregistrée, quelle que soit la classe
+ * active du moment. `describe.skipIf` couvre le cas transitoire où aucune
+ * classe n'est encore active (avant la Phase 7 du roadmap Algérie).
  */
-describe('getModulePath — le pont entre numéro et route', () => {
+const fixtureLessonId = getAnyRegisteredLessonId();
+
+describe.skipIf(!fixtureLessonId)('getModulePath — le pont entre numéro et route', () => {
+  const config = fixtureLessonId ? getLessonConfig(fixtureLessonId) : null;
+  const secondModule = config?.modules?.find((m) => Number(m.number) === config.modules[0]?.number + 1) ?? config?.modules?.[1];
+
   it('rend le chemin par SLUG du module, jamais son numéro', () => {
-    const path = getModulePath('fonction-affine-2nde', 2);
-    expect(path).toBe('/courses/lycee/seconde/fonctions/fonction-affine-2nde/le-taux-d-accroissement');
-    expect(path).not.toMatch(/\/2$/);
+    const path = getModulePath(fixtureLessonId, secondModule.number);
+    expect(path).toBe(secondModule.path);
+    expect(path).not.toMatch(new RegExp(`/${secondModule.number}$`));
   });
 
   it('accepte un numéro donné sous forme de chaîne', () => {
-    expect(getModulePath('fonction-affine-2nde', '2')).toBe(getModulePath('fonction-affine-2nde', 2));
+    expect(getModulePath(fixtureLessonId, String(secondModule.number))).toBe(getModulePath(fixtureLessonId, secondModule.number));
   });
 
   it('rend null — et non une URL fabriquée — pour un module ou une leçon inconnus', () => {
-    expect(getModulePath('fonction-affine-2nde', 999)).toBeNull();
+    expect(getModulePath(fixtureLessonId, 999999)).toBeNull();
     expect(getModulePath('lecon-qui-nexiste-pas', 1)).toBeNull();
-    expect(getModulePath('fonction-affine-2nde', undefined)).toBeNull();
+    expect(getModulePath(fixtureLessonId, undefined)).toBeNull();
     expect(getModulePath(undefined, 1)).toBeNull();
   });
 
   it('rend, pour CHAQUE module de la leçon, exactement le chemin que la route déclare', () => {
-    const config = getLessonConfig('fonction-affine-2nde');
     for (const m of config.modules) {
-      expect(getModulePath('fonction-affine-2nde', m.number)).toBe(m.path);
+      expect(getModulePath(fixtureLessonId, m.number)).toBe(m.path);
     }
   });
 });

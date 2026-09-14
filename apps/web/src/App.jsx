@@ -61,140 +61,8 @@ import { AuthProvider } from './context/AuthContext';
 import { WorkspaceLayoutProvider } from './context/WorkspaceLayoutContext';
 import { ContentAvailabilityProvider } from './context/ContentAvailabilityContext';
 import { useLessonProgressSync } from './hooks/useLessonProgressSync';
-import fractionsRoutes from './lessons/college/6e/nombres_calculs/fractions/routes';
-import quatreOperationsRoutes from './lessons/college/6e/nombres_calculs/quatre-operations/routes';
-import nombresEntiersRoutes from './lessons/college/6e/nombres_calculs/nombres-entiers/routes';
-import racinesCarrees4eRoutes from './lessons/college/4e/nombres_calculs/racines-carrees/routes';
-import operations5eRoutes from './lessons/college/5e/nombres_calculs/operations-5e/routes';
-import nombresRelatifs5eRoutes from './lessons/college/5e/nombres_calculs/nombres-relatifs-5e/routes';
-import nombresRationnels5eRoutes from './lessons/college/5e/nombres_calculs/nombres-rationnels-5e/routes';
-import puissances5eRoutes from './lessons/college/5e/nombres_calculs/puissances-5e/routes';
-import calculLitteral5eRoutes from './lessons/college/5e/nombres_calculs/calcul-litteral-5e/routes';
-import transformations5eRoutes from './lessons/college/5e/espace_geometrie/transformations-5e/routes';
-import angles5eRoutes from './lessons/college/5e/espace_geometrie/angles-5e/routes';
-import triangles5eRoutes from './lessons/college/5e/espace_geometrie/triangles-5e/routes';
-import parallelogrammes5eRoutes from './lessons/college/5e/espace_geometrie/parallelogrammes-5e/routes';
-import reperage5eRoutes from './lessons/college/5e/espace_geometrie/reperage-5e/routes';
-import representationsEspace5eRoutes from './lessons/college/5e/espace_geometrie/representations-espace-5e/routes';
-import proportionnalite5eRoutes from './lessons/college/5e/proportionnalite_fonctions/proportionnalite-5e/routes';
-import fonctions5eRoutes from './lessons/college/5e/proportionnalite_fonctions/fonctions-5e/routes';
-import statistiques5eRoutes from './lessons/college/5e/donnees_probabilites/statistiques-5e/routes';
-import probabilites5eRoutes from './lessons/college/5e/donnees_probabilites/probabilites-5e/routes';
-import algorithmiqueProgrammation5eRoutes from './lessons/college/5e/pensee_informatique/algorithmique-programmation-5e/routes';
-import algorithmique4eRoutes from './lessons/college/4e/pensee_informatique/algorithmique-programmation-4e/routes';
-import nombresRelatifs4eRoutes from './lessons/college/4e/nombres_calculs/nombres-relatifs-4e/routes';
-import nombresRationnels4eRoutes from './lessons/college/4e/nombres_calculs/nombres-rationnels-4e/routes';
-import puissances4eRoutes from './lessons/college/4e/nombres_calculs/puissances-4e/routes';
-import calculLitteral4eRoutes from './lessons/college/4e/nombres_calculs/calcul-litteral-4e/routes';
-import equations4eRoutes from './lessons/college/4e/nombres_calculs/equations-4e/routes';
-import raisonnementProblemes4eRoutes from './lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/routes';
-import proportionnalite4eRoutes from './lessons/college/4e/proportionnalite_fonctions/proportionnalite-4e/routes';
-import fonctions4eRoutes from './lessons/college/4e/proportionnalite_fonctions/fonctions-4e/routes';
-import grandeursComposees4eRoutes from './lessons/college/4e/proportionnalite_fonctions/grandeurs-composees-4e/routes';
-import probabilites4eRoutes from './lessons/college/4e/donnees_probabilites/probabilites-4e/routes';
-import pythagore4eRoutes from './lessons/college/4e/espace_geometrie/pythagore-4e/routes';
-import parallelogrammesTranslations4eRoutes from './lessons/college/4e/espace_geometrie/parallelogrammes-translations-4e/routes';
-import triangles4eRoutes from './lessons/college/4e/espace_geometrie/triangles-4e/routes';
-import transformations4eRoutes from './lessons/college/4e/espace_geometrie/transformations-4e/routes';
-import representationsEspace4eRoutes from './lessons/college/4e/espace_geometrie/representations-espace-4e/routes';
-import reperage4eRoutes from './lessons/college/4e/espace_geometrie/reperage-4e/routes';
-import statistiques4eRoutes from './lessons/college/4e/donnees_probabilites/statistiques-4e/routes';
-import racinesCarrees3eRoutes from './lessons/college/3e/nombres_calculs/racines-carrees/routes';
-import reperageDroitePlan3eRoutes from './lessons/college/3e/espace_geometrie/reperage-droite-plan-3e/routes';
-import triangles3eRoutes from './lessons/college/3e/espace_geometrie/triangles-3e/routes';
-import translationsVecteurs3eRoutes from './lessons/college/3e/espace_geometrie/translations-vecteurs-3e/routes';
-import trigo3eRoutes from './lessons/college/3e/espace_geometrie/trigonometrie-triangle-rectangle-3e/routes';
-import representationEspace3eRoutes from './lessons/college/3e/espace_geometrie/representation-espace-3e/routes';
-import thales3eRoutes from './lessons/college/3e/espace_geometrie/thales-3e/routes';
-import fonctions3eRoutes from './lessons/college/3e/donnees_probabilites/fonctions-3e/routes';
-import fonctionsLineaires3eRoutes from './lessons/college/3e/donnees_probabilites/fonctions-lineaires-3e/routes';
-import fonctionsAffines3eRoutes from './lessons/college/3e/donnees_probabilites/fonctions-affines-3e/routes';
-import representationGraphique3eRoutes from './lessons/college/3e/donnees_probabilites/representation-graphique-3e/routes';
-import lectureGraphique3eRoutes from './lessons/college/3e/donnees_probabilites/lecture-graphique-3e/routes';
-import statistiques3eRoutes from './lessons/college/3e/donnees_probabilites/statistiques-3e/routes';
-import probabilites3eRoutes from './lessons/college/3e/donnees_probabilites/probabilites-3e/routes';
-import proportionnalite3eRoutes from './lessons/college/3e/donnees_probabilites/proportionnalite-3e/routes';
-import modelisation3eRoutes from './lessons/college/3e/donnees_probabilites/modelisation-3e/routes';
-import pythagore3eRoutes from './lessons/college/3e/espace_geometrie/pythagore-3e/routes';
-import resolutionProblemesRoutes from './lessons/college/6e/nombres_calculs/resolution-problemes/routes';
-import equationsProduitRoutes from './lessons/college/3e/nombres_calculs/equations-produit/routes';
-import nombresRationnelsRoutes from './lessons/college/3e/nombres_calculs/nombres-rationnels/routes';
-import puissances3eRoutes from './lessons/college/3e/nombres_calculs/puissances-3e/routes';
-import multiplesDiviseursRoutes from './lessons/college/3e/nombres_calculs/multiples-diviseurs/routes';
-import calculLitteralAlgebriqueRoutes from './lessons/college/3e/nombres_calculs/calcul-litteral-algebrique/routes';
-import resolutionProblemes3eRoutes from './lessons/college/3e/nombres_calculs/resolution-problemes-3e/routes';
-import contenancesRoutes from './lessons/college/6e/grandeurs_mesures/contenances/routes';
-import longueursRoutes from './lessons/college/6e/grandeurs_mesures/longueurs/routes';
-import massesRoutes from './lessons/college/6e/grandeurs_mesures/masses/routes';
-import perimetresRoutes from './lessons/college/6e/grandeurs_mesures/perimetres/routes';
-import airesRoutes from './lessons/college/6e/grandeurs_mesures/aires/routes';
-import dureesRoutes from './lessons/college/6e/grandeurs_mesures/durees/routes';
-import anglesRoutes from './lessons/college/6e/grandeurs_mesures/angles/routes';
-import nombresDecimauxRoutes from './lessons/college/6e/nombres_calculs/nombres-decimaux/routes';
-import ordreGrandeurEstimationRoutes from './lessons/college/6e/nombres_calculs/ordre-grandeur-estimation/routes';
-import reperagePlanRoutes from './lessons/college/6e/espace_geometrie/reperage-plan/routes';
-import droitesSegmentsRoutes from './lessons/college/6e/espace_geometrie/droites-segments/routes';
-import parallelismePerpendiculariteRoutes from './lessons/college/6e/espace_geometrie/parallelisme-perpendicularite/routes';
-import figuresPlanesRoutes from './lessons/college/6e/espace_geometrie/figures-planes/routes';
-import symetrieRoutes from './lessons/college/6e/espace_geometrie/symetrie/routes';
-import solidesPatronsRoutes from './lessons/college/6e/espace_geometrie/solides-patrons/routes';
-import tableauxRoutes from './lessons/college/6e/donnees_proportionnalite/tableaux/routes';
-import graphiquesRoutes from './lessons/college/6e/donnees_proportionnalite/graphiques/routes';
-import proportionnaliteRoutes from './lessons/college/6e/donnees_proportionnalite/proportionnalite/routes';
-import constructionsGeometriquesRoutes from './lessons/college/6e/espace_geometrie/constructions-geometriques/routes';
-import algorithmiqueProgrammationRoutes from './lessons/college/6e/algorithmique/algorithmique-programmation/routes';
-import ensemblesIntervalles2ndeRoutes from './lessons/lycee/seconde/nombres_calculs/ensembles-et-intervalles-2nde/routes';
-import nombresReels2ndeRoutes from './lessons/lycee/seconde/nombres_calculs/nombres-reels-2nde/routes';
-import valeurAbsolue2ndeRoutes from './lessons/lycee/seconde/nombres_calculs/valeur-absolue-distance-2nde/routes';
-import equationsInequations2ndeRoutes from './lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/routes';
-import calculLitteral2ndeRoutes from './lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/routes';
-import arithmetique2ndeRoutes from './lessons/lycee/seconde/nombres_calculs/arithmetique-2nde/routes';
-import logique2ndeRoutes from './lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/routes';
-import vecteurs2ndeRoutes from './lessons/lycee/seconde/geometrie/vecteurs-2nde/routes';
-import trigonometrieCercle2ndeRoutes from './lessons/lycee/seconde/geometrie/trigonometrie-cercle-2nde/routes';
-import variablesEtInstructions2ndeRoutes from './lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/routes';
-import fonctionsEnPython2ndeRoutes from './lessons/lycee/seconde/algorithmique_programmation/fonctions-en-python-2nde/routes';
-import trigonometrieEquations2ndeRoutes from './lessons/lycee/seconde/geometrie/trigonometrie-equations-2nde/routes';
-import colinearite2ndeRoutes from './lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/routes';
-import equationsDroites2ndeRoutes from './lessons/lycee/seconde/geometrie/equations-de-droites-2nde/routes';
-import fonctionAffine2ndeRoutes from './lessons/lycee/seconde/fonctions/fonction-affine-2nde/routes';
-import fonctions2ndeRoutes from './lessons/lycee/seconde/fonctions/fonctions-2nde/routes';
-import fonctionsReference2ndeRoutes from './lessons/lycee/seconde/fonctions/fonctions-de-reference-2nde/routes';
-import signeFonctions2ndeRoutes from './lessons/lycee/seconde/fonctions/signe-fonctions-2nde/routes';
-import variations2ndeRoutes from './lessons/lycee/seconde/fonctions/variations-extremums-2nde/routes';
-import positionsRelatives2ndeRoutes from './lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/routes';
-import arbresProbabilites2ndeRoutes from './lessons/lycee/seconde/statistiques_probabilites/arbres-probabilites-2nde/routes';
-import boitesMoustaches2ndeRoutes from './lessons/lycee/seconde/statistiques_probabilites/boites-a-moustaches-2nde/routes';
-import evolutionsSuccessives2ndeRoutes from './lessons/lycee/seconde/statistiques_probabilites/evolutions-successives-reciproques-2nde/routes';
-import frequencesConditionnelles2ndeRoutes from './lessons/lycee/seconde/statistiques_probabilites/frequences-conditionnelles-2nde/routes';
-import loiGrandsNombres2ndeRoutes from './lessons/lycee/seconde/statistiques_probabilites/loi-grands-nombres-2nde/routes';
-import probabilitesConditionnelles2ndeRoutes from './lessons/lycee/seconde/statistiques_probabilites/probabilites-conditionnelles-2nde/routes';
-import proportionsPourcentages2ndeRoutes from './lessons/lycee/seconde/statistiques_probabilites/proportions-pourcentages-2nde/routes';
-import seriesRegroupees2ndeRoutes from './lessons/lycee/seconde/statistiques_probabilites/series-regroupees-classes-2nde/routes';
-import statistiquesUneVariable2ndeRoutes from './lessons/lycee/seconde/statistiques_probabilites/statistiques-une-variable-2nde/routes';
-import tableauxCroises2ndeRoutes from './lessons/lycee/seconde/statistiques_probabilites/tableaux-croises-2nde/routes';
-import testsDiagnostiques2ndeRoutes from './lessons/lycee/seconde/statistiques_probabilites/tests-diagnostiques-probabilites-2nde/routes';
 
 // ---- PREMIÈRE SPÉCIALITÉ ----
-import secondDegreResoudre1ereRoutes from './lessons/lycee/premiere_specialite/algebre/second-degre-resoudre-1ere/routes';
-import secondDegreSigneProblemes1ereRoutes from './lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/routes';
-import suitesDecouvrir1ereRoutes from './lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/routes';
-import suitesCalculerModeliser1ereRoutes from './lessons/lycee/premiere_specialite/algebre/suites-calculer-modeliser-1ere/routes';
-import derivationNombreDerive1ereRoutes from './lessons/lycee/premiere_specialite/analyse/derivation-nombre-derive-1ere/routes';
-import derivationCalculer1ereRoutes from './lessons/lycee/premiere_specialite/analyse/derivation-calculer-1ere/routes';
-import derivationVariationsOptimisation1ereRoutes from './lessons/lycee/premiere_specialite/analyse/derivation-variations-optimisation-1ere/routes';
-import trigonometrieCercleFonctions1ereRoutes from './lessons/lycee/premiere_specialite/analyse/trigonometrie-cercle-fonctions-1ere/routes';
-import trigonometrieEquationsModeles1ereRoutes from './lessons/lycee/premiere_specialite/analyse/trigonometrie-equations-modeles-1ere/routes';
-import exponentielleDecouvrir1ereRoutes from './lessons/lycee/premiere_specialite/analyse/exponentielle-decouvrir-1ere/routes';
-import exponentielleCalculerModeliser1ereRoutes from './lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/routes';
-import produitScalaireDefinir1ereRoutes from './lessons/lycee/premiere_specialite/geometrie/produit-scalaire-definir-1ere/routes';
-import produitScalaireMesurerDemontrer1ereRoutes from './lessons/lycee/premiere_specialite/geometrie/produit-scalaire-mesurer-demontrer-1ere/routes';
-import espaceVecteursCoordonnees1ereRoutes from './lessons/lycee/premiere_specialite/geometrie/espace-vecteurs-coordonnees-1ere/routes';
-import espaceDroitesPlans1ereRoutes from './lessons/lycee/premiere_specialite/geometrie/espace-droites-plans-1ere/routes';
-import variablesAleatoiresLoiEsperance1ereRoutes from './lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-loi-esperance-1ere/routes';
-import variablesAleatoiresDispersionBinomiale1ereRoutes from './lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/routes';
-import probabilitesConditionnellesArbres1ereRoutes from './lessons/lycee/premiere_specialite/probabilites/probabilites-conditionnelles-arbres-1ere/routes';
-import probabilitesIndependance1ereRoutes from './lessons/lycee/premiere_specialite/probabilites/probabilites-independance-1ere/routes';
 
 // Hydrates local lesson progress from the server on login and flushes the
 // offline queue — must live inside AuthProvider, hence this null component.
@@ -207,6 +75,9 @@ function LessonProgressSync() {
 // directory (lazy-loaded), imported here and spread into <Routes> — see
 // docs/architecture/LESSON_CONTRACT.md. An unmatched /courses/... URL falls
 // through to the catch-all below.
+//
+// None are currently imported: every inherited French grade is dormant for
+// Algeria (see the CourseLayout <Route> block below and activeGrades.js).
 
 export default function App() {
   return (
@@ -339,140 +210,14 @@ export default function App() {
                 est renvoyé vers /espace (voir HomeRedirect). */}
             <Route path="/"         element={<HomeRedirect />} />
             <Route path="/courses"  element={<Courses />} />
-            {fractionsRoutes()}
-            {quatreOperationsRoutes()}
-            {nombresEntiersRoutes()}
-            {racinesCarrees4eRoutes()}
-            {operations5eRoutes()}
-            {nombresRelatifs5eRoutes()}
-            {nombresRationnels5eRoutes()}
-            {puissances5eRoutes()}
-            {calculLitteral5eRoutes()}
-            {transformations5eRoutes()}
-            {angles5eRoutes()}
-            {triangles5eRoutes()}
-            {parallelogrammes5eRoutes()}
-            {reperage5eRoutes()}
-            {representationsEspace5eRoutes()}
-            {proportionnalite5eRoutes()}
-            {fonctions5eRoutes()}
-            {statistiques5eRoutes()}
-            {probabilites5eRoutes()}
-            {algorithmiqueProgrammation5eRoutes()}
-            {nombresRelatifs4eRoutes()}
-            {nombresRationnels4eRoutes()}
-            {puissances4eRoutes()}
-            {calculLitteral4eRoutes()}
-            {equations4eRoutes()}
-            {raisonnementProblemes4eRoutes()}
-            {proportionnalite4eRoutes()}
-            {fonctions4eRoutes()}
-            {grandeursComposees4eRoutes()}
-            {probabilites4eRoutes()}
-            {pythagore4eRoutes()}
-            {parallelogrammesTranslations4eRoutes()}
-            {triangles4eRoutes()}
-            {transformations4eRoutes()}
-            {representationsEspace4eRoutes()}
-            {reperage4eRoutes()}
-            {statistiques4eRoutes()}
-            {algorithmique4eRoutes()}
-            {racinesCarrees3eRoutes()}
-            {reperageDroitePlan3eRoutes()}
-            {triangles3eRoutes()}
-            {translationsVecteurs3eRoutes()}
-            {trigo3eRoutes()}
-            {representationEspace3eRoutes()}
-            {thales3eRoutes()}
-            {fonctions3eRoutes()}
-            {fonctionsLineaires3eRoutes()}
-            {fonctionsAffines3eRoutes()}
-            {representationGraphique3eRoutes()}
-            {lectureGraphique3eRoutes()}
-            {statistiques3eRoutes()}
-            {probabilites3eRoutes()}
-            {proportionnalite3eRoutes()}
-            {modelisation3eRoutes()}
-            {pythagore3eRoutes()}
-            {resolutionProblemesRoutes()}
-            {equationsProduitRoutes()}
-            {nombresRationnelsRoutes()}
-            {puissances3eRoutes()}
-            {multiplesDiviseursRoutes()}
-            {calculLitteralAlgebriqueRoutes()}
-            {resolutionProblemes3eRoutes()}
-            {contenancesRoutes()}
-            {longueursRoutes()}
-            {massesRoutes()}
-            {perimetresRoutes()}
-            {airesRoutes()}
-            {dureesRoutes()}
-            {anglesRoutes()}
-            {nombresDecimauxRoutes()}
-            {ordreGrandeurEstimationRoutes()}
-            {reperagePlanRoutes()}
-            {droitesSegmentsRoutes()}
-            {parallelismePerpendiculariteRoutes()}
-            {figuresPlanesRoutes()}
-            {symetrieRoutes()}
-            {solidesPatronsRoutes()}
-            {tableauxRoutes()}
-            {graphiquesRoutes()}
-            {proportionnaliteRoutes()}
-            {constructionsGeometriquesRoutes()}
-            {algorithmiqueProgrammationRoutes()}
-            {ensemblesIntervalles2ndeRoutes()}
-            {nombresReels2ndeRoutes()}
-            {valeurAbsolue2ndeRoutes()}
-            {equationsInequations2ndeRoutes()}
-            {calculLitteral2ndeRoutes()}
-            {arithmetique2ndeRoutes()}
-            {logique2ndeRoutes()}
-            {vecteurs2ndeRoutes()}
-            {trigonometrieCercle2ndeRoutes()}
-            {variablesEtInstructions2ndeRoutes()}
-            {fonctionsEnPython2ndeRoutes()}
-            {trigonometrieEquations2ndeRoutes()}
-            {colinearite2ndeRoutes()}
-            {equationsDroites2ndeRoutes()}
-            {fonctionAffine2ndeRoutes()}
-            {fonctions2ndeRoutes()}
-            {fonctionsReference2ndeRoutes()}
-            {signeFonctions2ndeRoutes()}
-            {variations2ndeRoutes()}
-            {positionsRelatives2ndeRoutes()}
-            {arbresProbabilites2ndeRoutes()}
-            {boitesMoustaches2ndeRoutes()}
-            {evolutionsSuccessives2ndeRoutes()}
-            {frequencesConditionnelles2ndeRoutes()}
-            {loiGrandsNombres2ndeRoutes()}
-            {probabilitesConditionnelles2ndeRoutes()}
-            {proportionsPourcentages2ndeRoutes()}
-            {seriesRegroupees2ndeRoutes()}
-            {statistiquesUneVariable2ndeRoutes()}
-            {tableauxCroises2ndeRoutes()}
-            {testsDiagnostiques2ndeRoutes()}
 
-            {/* ---- PREMIÈRE SPÉCIALITÉ ---- */}
-            {secondDegreResoudre1ereRoutes()}
-            {secondDegreSigneProblemes1ereRoutes()}
-            {suitesDecouvrir1ereRoutes()}
-            {suitesCalculerModeliser1ereRoutes()}
-            {derivationNombreDerive1ereRoutes()}
-            {derivationCalculer1ereRoutes()}
-            {derivationVariationsOptimisation1ereRoutes()}
-            {trigonometrieCercleFonctions1ereRoutes()}
-            {trigonometrieEquationsModeles1ereRoutes()}
-            {exponentielleDecouvrir1ereRoutes()}
-            {exponentielleCalculerModeliser1ereRoutes()}
-            {produitScalaireDefinir1ereRoutes()}
-            {produitScalaireMesurerDemontrer1ereRoutes()}
-            {espaceVecteursCoordonnees1ereRoutes()}
-            {espaceDroitesPlans1ereRoutes()}
-            {variablesAleatoiresLoiEsperance1ereRoutes()}
-            {variablesAleatoiresDispersionBinomiale1ereRoutes()}
-            {probabilitesConditionnellesArbres1ereRoutes()}
-            {probabilitesIndependance1ereRoutes()}
+            {/* No lesson routes are mounted: every inherited French grade
+                is dormant (packages/core/curriculum/activeGrades.js —
+                ACTIVE_GRADE_IDS is empty pending the Algerian curriculum,
+                see docs/ALGERIA_MIGRATION_AUDIT.md §15 and roadmap Phase 7).
+                Lesson folders/routes.jsx stay on disk unimported; add a
+                grade's imports back here once it is added to
+                ACTIVE_GRADE_IDS. */}
           </Route>
         </Routes>
         </Suspense>

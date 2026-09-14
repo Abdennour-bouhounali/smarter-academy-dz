@@ -13,7 +13,12 @@ import { join, dirname, resolve, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse } from '@babel/parser';
 import traverseModule from '@babel/traverse';
-import { courseLevels } from '../../packages/core/curriculum/coursesData.js';
+// Deliberately the UNFILTERED catalogue: this tooling validates the full
+// on-disk lesson tree against coursesData.js's structural declarations,
+// independent of which grades are runtime-active for Algeria (see
+// packages/core/curriculum/activeGrades.js). Every inherited French lesson
+// must still validate — dormant is not the same as invalid.
+import { allCourseLevels as courseLevels } from '../../packages/core/curriculum/coursesData.js';
 
 export const traverse = traverseModule.default || traverseModule;
 export const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..');

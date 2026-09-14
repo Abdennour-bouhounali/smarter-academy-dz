@@ -59,13 +59,14 @@ class ContentAccess
      */
     public static function assertLessonAvailable(string $lessonCode, ?User $user = null): void
     {
-        $lessons = Lesson::where('code', $lessonCode)->get();
+        $lessons = Lesson::with('chapter.grade')->where('code', $lessonCode)->get();
 
         // Inconnue du registre : on laisse passer (voir le docblock).
         if ($lessons->isEmpty()) {
             return;
         }
 
+        self::assertGradeActive($lessons);
         self::assertEntitled($lessons, $user);
 
         // Un code de leçon se répète d'une classe à l'autre. Si AU MOINS une
@@ -176,6 +177,47 @@ class ContentAccess
         }
 
         return app(EntitlementService::class)->satisfies($user, AccessTier::PREMIUM);
+    }
+
+    /**
+     * Isolement des classes dormantes (docs/ALGERIA_MIGRATION_AUDIT.md §15,
+     * ALGERIA_PLATFORM_MASTER_SPEC.md §3, §10).
+     *
+     * Le catalogue frontend (coursesData.js, filtré par activeGrades.js) et
+     * le registre de leçons (registry.js) empêchent déjà la navigation vers
+     * une classe française désactivée. Ce contrôle est le PENDANT côté
+     * serveur : un client qui appelle directement /api/v1/lessons/{code}/*
+     * avec un code de leçon français connu ne doit pas contourner
+     * l'isolement simplement parce qu'il n'utilise pas la navigation.
+     *
+     * Même règle de composition qu'ailleurs dans ce fichier : un code peut
+     * porter plusieurs leçons (une par classe). L'accès reste ouvert si
+     * AU MOINS une porte une classe active — désactiver la version de
+     * seconde ne doit pas fermer une future version 4AM du même code.
+     *
+     * config('curriculum.active_grades') est vide tant qu'aucune classe
+     * algérienne n'existe (Phase 7 de la feuille de route) : toute classe
+     * héritée du français est donc fermée par défaut, y compris si sa
+     * publication_status vaut 'published' — hérité de France, sans rapport
+     * avec l'activation pour l'Algérie.
+     *
+     * @param  Collection<int, Lesson>  $lessons
+     *
+     * @throws DomainException si AUCUNE classe portée par ce code n'est active.
+     */
+    private static function assertGradeActive($lessons): void
+    {
+        if (! config('curriculum.enforce_active_grades', true)) {
+            return;
+        }
+
+        $activeGrades = config('curriculum.active_grades', []);
+
+        if ($lessons->contains(fn (Lesson $l) => in_array($l->chapter?->grade?->code, $activeGrades, true))) {
+            return;
+        }
+
+        throw new DomainException('Cette leçon n\'est pas disponible pour le moment.');
     }
 
     /**

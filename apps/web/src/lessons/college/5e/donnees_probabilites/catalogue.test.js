@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { courseLevels } from '@smarter-academy/core';
+import { allCourseLevels } from '@smarter-academy/core';
 
 /**
  * PORTE DE VISIBILITÉ (memory « lesson_visibility_gate »).
@@ -7,6 +7,12 @@ import { courseLevels } from '@smarter-academy/core';
  * Codée + routée + validée ≠ visible : c'est `status: 'available'` dans le
  * catalogue qui ouvre la carte, et c'est `path` qui la rend cliquable. Ce
  * test verrouille les deux, pour les deux leçons.
+ *
+ * Tourne contre `allCourseLevels` (le catalogue COMPLET hérité), pas le
+ * `courseLevels` actif : cette leçon 5e est dormante pour l'Algérie
+ * (activeGrades.js — aucune classe française n'est active), mais son
+ * intégrité de données (catalogue bien formé, LPs déclarés) reste vérifiable
+ * indépendamment de son activation. Voir docs/ALGERIA_MIGRATION_AUDIT.md §15.
  */
 const trouver = (id) => {
   const out = [];
@@ -17,7 +23,7 @@ const trouver = (id) => {
       Object.values(n).forEach(walk);
     }
   };
-  walk(courseLevels);
+  walk(allCourseLevels);
   return out[0];
 };
 

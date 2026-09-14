@@ -36,6 +36,7 @@ export * from './api/errors.js';
 export * from './curriculum/coursesData.js';
 export * from './curriculum/lessonStages.js';
 export * from './curriculum/moduleRecommendations.js';
+export * from './curriculum/activeGrades.js';
 
 // Moteur d'exercices (pratique) — arithmétique exacte et évaluation des
 // réponses. Exporté sous un espace de noms : `Rational.parse` et
