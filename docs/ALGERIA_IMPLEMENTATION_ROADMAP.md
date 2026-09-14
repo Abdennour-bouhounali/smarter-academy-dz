@@ -43,6 +43,25 @@ Companion to `ALGERIA_MIGRATION_AUDIT.md`. This roadmap is grounded in that audi
 
 ## Phase 2 — Independent Infrastructure
 
+**Status: PARTIALLY COMPLETE — code-level independence done; real external provisioning deliberately deferred** (product decision, 2026-09-14: local development continues on the independent codebase while real hosting/OAuth/SMTP accounts are set up later, since Phases 3-5 (dormant-content isolation, RTL, and most of authentication's code) don't require production infra to exist).
+
+**Done now**:
+- Independent local MySQL database `smarter-academy-dz` (separate from French `smart-academy-db`), independent local `APP_KEY` (generated fresh, never derived from or equal to any French key).
+- `APP_NAME` set to "Smarter Academy DZ" in both `.env` and `.env.example` (was generic "Laravel").
+- Local dev DB credentials intentionally reused from the French local `.env` (same developer machine/MySQL instance) — explicit product decision, not a violation of the production-independence requirement, which applies to Phase 2's *production* provisioning below.
+
+**Deferred — concrete checklist for when real infra provisioning happens** (do not skip before any production deploy or before Phase 5/6 production cutover):
+- [ ] Independent hosting/deployment target chosen (does not need to be Hostinger like France).
+- [ ] Independent production MySQL database (separate instance/credentials/backup schedule from French production).
+- [ ] Independent storage (`FILESYSTEM_DISK` target + credentials, e.g. S3-compatible bucket).
+- [ ] Production `APP_KEY` generated fresh on the production environment (never reuse the local dev key above).
+- [ ] Independent admin bootstrap account (`ADMIN_EMAIL`/`ADMIN_PASSWORD`) — not the same email as any French admin.
+- [ ] Google Cloud OAuth client created fresh for Algeria (`GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET`/`GOOGLE_REDIRECT_URI` pointing at the Algeria domain) — needed before Phase 5 (Authentication) can be production-validated; local dev of the auth code itself can proceed without it (email/password auth doesn't need OAuth).
+- [ ] SMTP provider/credentials for `MAIL_*` (verification emails) — independent from French.
+- [ ] Independent analytics tool/config, if any is chosen.
+- [ ] Independent backup process for the production DB/storage.
+- [ ] `content/practice/` path resolution re-verified on the actual chosen deployment target (French docs flag this as fragile across deployments — `smarter:practice-doctor` artisan command exists specifically to catch it).
+
 **Objective**: every piece of runtime infrastructure (deployment, database, storage, secrets, credentials, analytics, backups) is Algeria-owned, with zero dependency on French infrastructure remaining available.
 
 **Prerequisites**: Phase 1 complete.
