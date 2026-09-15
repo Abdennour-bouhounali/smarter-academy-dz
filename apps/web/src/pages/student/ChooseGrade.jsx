@@ -1,11 +1,13 @@
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { GraduationCap, ArrowRight, Sparkles } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { GraduationCap, ArrowRight, ArrowLeft, Sparkles } from 'lucide-react';
 import { getAllGrades } from '@smarter-academy/core';
 import { AuthContext } from '../../context/AuthContext';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 import { isDiagnosticAvailableForGrade } from '../../services/diagnosticService';
+import { IS_RTL } from '../../locale.js';
 
 const GRADES_BY_LEVEL = getAllGrades().reduce((groups, grade) => {
   (groups[grade.levelTitle] ??= []).push(grade);
@@ -21,11 +23,13 @@ const GRADES_BY_LEVEL = getAllGrades().reduce((groups, grade) => {
  * this screen just picks the starting value.
  */
 export default function ChooseGrade() {
-  useDocumentMeta('Choisis ta classe', 'Sélectionne ta classe pour personnaliser ton parcours Smarter Academy.');
+  const { t } = useTranslation('common');
+  useDocumentMeta('اختر سنتك الدراسية', 'اختر سنتك الدراسية لتخصيص مسارك في Smarter Academy.');
   const { user, updateGrade } = useContext(AuthContext);
   const navigate = useNavigate();
   const [selecting, setSelecting] = useState(null);
   const [error, setError] = useState('');
+  const hasGrades = Object.keys(GRADES_BY_LEVEL).length > 0;
 
   const handleSelect = async (gradeId) => {
     setSelecting(gradeId);
@@ -43,6 +47,7 @@ export default function ChooseGrade() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Decorative, direction-neutral (see Login.jsx). */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-400/20 blur-3xl pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-teal-400/20 blur-3xl pointer-events-none" />
 
@@ -55,11 +60,13 @@ export default function ChooseGrade() {
           <GraduationCap size={26} />
         </div>
         <h1 className="font-space font-bold text-2xl sm:text-3xl text-slate-900">
-          Bienvenue{user?.email ? ` ${user.email.split('@')[0]}` : ''} 👋
+          {t('chooseGradeWelcome')}{user?.email ? ` ${user.email.split('@')[0]}` : ''} 👋
         </h1>
-        <p className="mt-2 font-inter text-sm text-slate-500">
-          Une dernière étape : choisis ta classe pour découvrir ton parcours. Tu pourras en changer à tout moment depuis ton profil.
-        </p>
+        {hasGrades && (
+          <p className="mt-2 font-inter text-sm text-slate-500">
+            {t('chooseGradeSubtitle')}
+          </p>
+        )}
       </motion.div>
 
       <motion.div
@@ -75,33 +82,62 @@ export default function ChooseGrade() {
             </div>
           )}
 
-          <div className="space-y-6">
-            {Object.entries(GRADES_BY_LEVEL).map(([levelTitle, grades]) => (
-              <div key={levelTitle}>
-                <p className="font-mono-jetbrains text-blue-500 text-xs font-semibold tracking-widest uppercase mb-3">
-                  {levelTitle}
-                </p>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                  {grades.map((g) => (
-                    <button
-                      key={g.id}
-                      type="button"
-                      onClick={() => handleSelect(g.id)}
-                      disabled={selecting !== null}
-                      className="group flex items-center justify-between gap-2 px-4 py-3 rounded-xl border border-slate-200 bg-white font-inter font-semibold text-sm text-slate-700 hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50/50 disabled:opacity-50 transition-all"
-                    >
-                      {g.name}
-                      {selecting === g.id ? (
-                        <Sparkles size={14} className="animate-pulse text-blue-500 flex-shrink-0" />
-                      ) : (
-                        <ArrowRight size={14} className="text-slate-300 group-hover:text-blue-500 group-hover:translate-x-0.5 transition-all flex-shrink-0" />
-                      )}
-                    </button>
-                  ))}
+          {hasGrades ? (
+            <div className="space-y-6">
+              {Object.entries(GRADES_BY_LEVEL).map(([levelTitle, grades]) => (
+                <div key={levelTitle}>
+                  <p className="font-mono-jetbrains text-blue-500 text-xs font-semibold tracking-widest uppercase mb-3">
+                    {levelTitle}
+                  </p>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                    {grades.map((g) => (
+                      <button
+                        key={g.id}
+                        type="button"
+                        onClick={() => handleSelect(g.id)}
+                        disabled={selecting !== null}
+                        className="group flex items-center justify-between gap-2 px-4 py-3 rounded-xl border border-slate-200 bg-white font-inter font-semibold text-sm text-slate-700 hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50/50 disabled:opacity-50 transition-all"
+                      >
+                        {g.name}
+                        {selecting === g.id ? (
+                          <Sparkles size={14} className="animate-pulse text-blue-500 flex-shrink-0" />
+                        ) : IS_RTL ? (
+                          <ArrowLeft size={14} className="text-slate-300 group-hover:text-blue-500 group-hover:-translate-x-0.5 transition-all flex-shrink-0" />
+                        ) : (
+                          <ArrowRight size={14} className="text-slate-300 group-hover:text-blue-500 group-hover:translate-x-0.5 transition-all flex-shrink-0" />
+                        )}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            // No Algerian grade exists yet (activeGrades.js — roadmap
+            // Phase 7). Rather than show an empty grid, say so plainly and
+            // let the student continue: StudentLayout's gate already stops
+            // redirecting here once there is nothing to choose (see its
+            // getAllGrades().length check), so this button is the one path
+            // back in for a student who lands here directly (e.g. a stale
+            // bookmark/tab) while grade is still null.
+            <div className="text-center py-4">
+              <p className="font-space font-bold text-lg text-slate-800 mb-2">
+                {t('chooseGradeComingSoonTitle')}
+              </p>
+              <p className="font-inter text-sm text-slate-500 mb-6 max-w-md mx-auto">
+                {t('chooseGradeComingSoonBody')}
+              </p>
+              <button
+                type="button"
+                onClick={() => navigate('/espace')}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-inter font-semibold text-sm text-white transition-all hover:-translate-y-0.5"
+                style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}
+              >
+                {t('chooseGradeContinue')}
+                {IS_RTL ? <ArrowLeft size={14} /> : <ArrowRight size={14} />}
+              </button>
+            </div>
+          )}
         </div>
       </motion.div>
     </div>

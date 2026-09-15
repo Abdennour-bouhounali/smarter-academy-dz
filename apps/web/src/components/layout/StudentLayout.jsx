@@ -5,6 +5,7 @@ import BackgroundLayer from '../common/BackgroundLayer';
 import ScrollToTop from '../common/ScrollToTop';
 import { AuthContext } from '../../context/AuthContext';
 import { useWorkspaceLayout } from '../../context/WorkspaceLayoutContext';
+import { getAllGrades } from '@smarter-academy/core';
 
 /**
  * The authenticated student area's shell — a workspace (sidebar + content),
@@ -16,7 +17,9 @@ import { useWorkspaceLayout } from '../../context/WorkspaceLayoutContext';
  * shell with `user.grade === null` — not just right after signing up (e.g.
  * they closed the tab mid-onboarding). Every route nested under here
  * requires a grade to make sense, so this is the one place that guard lives
- * rather than repeating it per page.
+ * rather than repeating it per page — except while no Algerian grade exists
+ * at all (see the getAllGrades() check below), since gating on a choice
+ * nobody can make would trap every student in a redirect loop.
  *
  * MODE COLONNE (« prior ») — la coquille RÉSERVE la place de la carte au lieu
  * de la laisser flotter par-dessus la leçon : la barre latérale se comprime
@@ -29,7 +32,13 @@ export default function StudentLayout() {
   const { user } = useContext(AuthContext);
   const { isPrior, contentGutter, sidebarWidth } = useWorkspaceLayout();
 
-  if (user && !user.grade) {
+  // No Algerian grade exists yet (packages/core/curriculum/activeGrades.js —
+  // ACTIVE_GRADE_IDS is empty pending Phase 7's official curriculum), so
+  // ChooseGrade.jsx has nothing to offer any student right now. Gating on a
+  // grade that cannot possibly be chosen would trap every student in a
+  // redirect loop — so the gate only applies once there is at least one
+  // grade to actually choose.
+  if (user && !user.grade && getAllGrades().length > 0) {
     return <Navigate to="/espace/bienvenue" replace />;
   }
 
