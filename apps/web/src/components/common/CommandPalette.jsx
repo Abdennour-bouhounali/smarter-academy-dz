@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, ArrowUp, ArrowDown, CornerDownLeft, X, Sparkles, LogIn, Compass, GraduationCap, Tag, HelpCircle, Mail, Users } from 'lucide-react';
+import { Search, ArrowUp, ArrowDown, CornerDownLeft, X, Sparkles, LogIn, Compass, GraduationCap, HelpCircle, Mail, Users } from 'lucide-react';
 
 const commands = [
   { id: 'register', label: 'Commencer gratuitement', path: '/register', icon: Sparkles, group: 'Actions principales' },
@@ -9,7 +9,6 @@ const commands = [
   { id: 'home', label: 'Accueil', path: '/', icon: Compass, group: 'Navigation' },
   { id: 'methode', label: 'Notre méthode', path: '/methode', icon: GraduationCap, group: 'Navigation' },
   { id: 'courses', label: 'Cours', path: '/courses', icon: GraduationCap, group: 'Navigation' },
-  { id: 'tarifs', label: 'Tarifs', path: '/tarifs', icon: Tag, group: 'Navigation' },
   { id: 'about', label: 'Notre mission / À propos', path: '/about', icon: Users, group: 'Navigation' },
   { id: 'faq', label: 'Foire Aux Questions (FAQ)', path: '/faq', icon: HelpCircle, group: 'Navigation' },
   { id: 'email', label: 'Envoyer un email', href: 'mailto:abdennour.bouhounali@gmail.com', external: true, icon: Mail, group: 'Contact' },

@@ -42,6 +42,26 @@ class ActivityLogger
     public const ENTITLEMENT_REVOKED = 'entitlement.revoked';
 
     /**
+     * Les codes d'activation — le modèle commercial algérien.
+     *
+     * Tous les gestes qui produisent ou retirent un ACCÈS sont tracés, au
+     * même titre que la dérogation : ce sont des gestes humains qui ouvrent
+     * ou ferment une porte payante, et ils doivent laisser le nom de qui les
+     * a faits. L'export l'est aussi — sortir une liste de codes de
+     * l'application est en soi un évènement à retrouver.
+     *
+     * Aucun de ces journaux ne porte de code en clair : voir
+     * ActivationCodeGenerator.
+     */
+    public const ACTIVATION_CODES_GENERATED = 'activation_codes.generated';
+
+    public const ACTIVATION_CODE_REVOKED = 'activation_code.revoked';
+
+    public const ACTIVATION_CODE_BATCH_REVOKED = 'activation_code_batch.revoked';
+
+    public const ACTIVATION_CODES_EXPORTED = 'activation_codes.exported';
+
+    /**
      * Le rejeu d'un évènement de fournisseur par un administrateur.
      *
      * Tracé parce qu'il peut ouvrir ou fermer un accès : tout geste humain qui
@@ -57,6 +77,11 @@ class ActivityLogger
     private const REDACTED_KEYS = [
         'password', 'password_confirmation', 'current_password', 'new_password',
         'token', 'plain_text_token', 'remember_token', 'secret', 'api_key',
+        // Un code d'activation est un secret porteur d'argent. Les appelants
+        // n'en passent aucun (ActivationCodeGenerator journalise les
+        // conditions du lot, pas ses codes) — cette ligne est là pour que
+        // l'oubli d'un futur appelant ne devienne pas une fuite.
+        'code', 'codes', 'code_hash', 'activation_code',
     ];
 
     public function log(

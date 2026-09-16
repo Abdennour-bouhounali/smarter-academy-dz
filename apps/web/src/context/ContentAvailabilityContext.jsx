@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { AuthContext } from './AuthContext';
 import { fetchClosedContent } from '../services/contentAvailabilityService';
 
@@ -23,6 +23,7 @@ export const ContentAvailabilityContext = createContext({
   isLessonPremium: () => false,
   access: null,
   loaded: false,
+  refresh: async () => {},
 });
 
 export function ContentAvailabilityProvider({ children }) {
@@ -30,6 +31,35 @@ export function ContentAvailabilityProvider({ children }) {
   const [closed, setClosed] = useState({ lessons: [], modules: {}, locked: [], premium: [] });
   const [access, setAccess] = useState(null);
   const [loaded, setLoaded] = useState(false);
+
+  /**
+   * Redemande au serveur ce qui est fermé.
+   *
+   * Existe pour UN geste : la saisie d'un code d'activation. Elle change les
+   * droits de l'élève au milieu de sa session, et sans cette relecture,
+   * chaque carte de leçon continuerait d'afficher son cadenas jusqu'au
+   * prochain rechargement complet — l'élève venant de payer croirait que
+   * son code n'a rien fait.
+   *
+   * Rend la réponse plutôt que de la garder pour elle : l'appelant
+   * (la page d'activation) veut afficher l'état d'accès tout de suite.
+   */
+  const load = useCallback(async () => {
+    if (!token) return null;
+
+    const result = await fetchClosedContent(token);
+
+    setClosed({
+      lessons: result.lessons ?? [],
+      modules: result.modules ?? {},
+      locked: result.locked ?? [],
+      premium: result.premium ?? [],
+    });
+    setAccess(result.access ?? null);
+    setLoaded(true);
+
+    return result;
+  }, [token]);
 
   useEffect(() => {
     let cancelled = false;
@@ -72,6 +102,7 @@ export function ContentAvailabilityProvider({ children }) {
     return {
       loaded,
       access,
+      refresh: load,
       isLessonClosed: (lessonCode) => lessonSet.has(lessonCode),
       /**
        * Publiée, mais hors du droit d'accès de cet élève.
@@ -99,7 +130,7 @@ export function ContentAvailabilityProvider({ children }) {
         return numbers.includes(Number(moduleNumber));
       },
     };
-  }, [closed, access, loaded]);
+  }, [closed, access, loaded, load]);
 
   return (
     <ContentAvailabilityContext.Provider value={value}>

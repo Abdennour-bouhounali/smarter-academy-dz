@@ -7,7 +7,6 @@ export const navLinks = [
   { labelKey: 'home', path: '/' },
   { labelKey: 'method', path: '/methode' },
   { labelKey: 'courses', path: '/courses' },
-  { labelKey: 'pricing', path: '/tarifs' },
   { labelKey: 'about', path: '/about' },
   { labelKey: 'faq', path: '/faq' },
 ];

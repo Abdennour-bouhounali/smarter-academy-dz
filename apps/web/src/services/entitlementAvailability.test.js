@@ -58,10 +58,15 @@ describe('la porte de palier côté élève', () => {
   it('le sommaire d’une leçon verrouillée ne révèle aucun contenu', () => {
     const source = read('src/lessons/common/components/LessonIndex.jsx');
     expect(source).toContain('isLessonLocked(config.id)');
-    // Le message français attendu, et un retour AVANT le rendu du sommaire :
-    // le bloc verrouillé sort de la fonction, il ne se superpose pas au
-    // contenu (qui resterait alors dans le DOM).
-    expect(source).toContain('Cette leçon nécessite un accès premium.');
+    // Le message ARABE attendu (l'interface élève est en arabe depuis la
+    // phase 4), et un retour AVANT le rendu du sommaire : le bloc verrouillé
+    // sort de la fonction, il ne se superpose pas au contenu (qui resterait
+    // alors dans le DOM).
+    expect(source).toContain('هذا الدرس يتطلّب وصولاً كاملاً.');
+    // … et il mène à la SAISIE D'UN CODE, jamais à une page de tarifs : le
+    // produit algérien se paie en espèces, hors de l'application (§17/§18).
+    expect(source).toContain('/espace/activation');
+    expect(source).not.toContain('/tarifs');
     const lockedAt = source.indexOf('isLessonLocked(config.id)');
     const roadmapAt = source.indexOf('isModuleClosed(config.id, module.number)');
     expect(lockedAt).toBeGreaterThan(-1);

@@ -207,13 +207,17 @@ export default function StudentHome() {
           )}
 
           {premiumCount > 0 && canSeeUpgrade && (
-            <Link to="/tarifs" className="group glass-card p-5 flex items-center gap-4 border-amber-200 hover:border-amber-300 transition-colors block bg-gradient-to-br from-amber-50/50 to-white">
+            <Link to="/espace/activation" className="group glass-card p-5 flex items-center gap-4 border-amber-200 hover:border-amber-300 transition-colors block bg-gradient-to-br from-amber-50/50 to-white">
               <div className="w-11 h-11 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center flex-shrink-0">
                 <Crown size={19} />
               </div>
               <div className="flex-1">
                 <p className="font-space font-bold text-slate-800 text-sm">{premiumCount} leçon{premiumCount > 1 ? 's' : ''} Premium {premiumCount > 1 ? 'disponibles' : 'disponible'}</p>
-                <p className="font-inter text-slate-500 text-xs mt-0.5">Débloque avec l'abonnement — 35€/an</p>
+                {/* Aucun prix affiché : le produit algérien se paie en
+                    espèces auprès d'un vendeur, hors de l'application. Un
+                    tarif en euros ici serait faux deux fois (monnaie et
+                    modèle). Voir master spec §17/§18. */}
+                <p className="font-inter text-slate-500 text-xs mt-0.5">أدخل رمز التفعيل لفتحها</p>
               </div>
               <ArrowForward size={16} className="text-slate-300 group-hover:text-amber-500 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-all flex-shrink-0" />
             </Link>

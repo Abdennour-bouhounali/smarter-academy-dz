@@ -12,15 +12,16 @@ import { LOCALE } from '../locale.js';
 import common from './locales/ar/common.json';
 import nav from './locales/ar/nav.json';
 import auth from './locales/ar/auth.json';
+import access from './locales/ar/access.json';
 
 i18n.use(initReactI18next).init({
   lng: LOCALE,
   fallbackLng: LOCALE,
   resources: {
-    [LOCALE]: { common, nav, auth },
+    [LOCALE]: { common, nav, auth, access },
   },
   defaultNS: 'common',
-  ns: ['common', 'nav', 'auth'],
+  ns: ['common', 'nav', 'auth', 'access'],
   interpolation: { escapeValue: false }, // React already escapes.
   returnEmptyString: false,
 });

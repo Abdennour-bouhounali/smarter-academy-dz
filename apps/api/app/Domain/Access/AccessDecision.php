@@ -26,6 +26,9 @@ final class AccessDecision
     /** L'accès vient d'un abonnement synchronisé. */
     public const VIA_SUBSCRIPTION = 'subscription_entitlement';
 
+    /** L'accès vient d'un code d'activation saisi par l'élève. */
+    public const VIA_ACTIVATION_CODE = 'activation_code';
+
     /** L'accès vient d'une dérogation d'administration. */
     public const VIA_ADMIN_OVERRIDE = 'admin_override';
 

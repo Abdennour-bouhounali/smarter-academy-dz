@@ -65,9 +65,11 @@ describe('signalement côté élève', () => {
 describe('navigation d’administration', () => {
   it('couvre toutes les sections de la spécification', () => {
     const labels = adminNavSections.map((s) => s.label);
+    // « Accès » a remplacé « Abonnements » : le produit algérien vend des
+    // codes d'activation, pas des abonnements Stripe (master spec §17/§18).
     expect(labels).toEqual([
       null, 'Statistiques', 'Contenu', 'Signalements',
-      'Élèves', 'Abonnements', 'Compte', 'Système',
+      'Élèves', 'Accès', 'Compte', 'Système',
     ]);
   });
 
@@ -157,6 +159,11 @@ describe('les états d’écran', () => {
       'src/pages/admin/students/StudentList.jsx',
       'src/pages/admin/students/StudentDetail.jsx',
       'src/pages/admin/subscriptions/Subscriptions.jsx',
+      // Les codes d'activation : l'écran par lequel l'accès payant est
+      // administré dans le produit algérien (master spec §17).
+      'src/pages/admin/activation/ActivationCodes.jsx',
+      'src/pages/admin/activation/ActivationBatches.jsx',
+      'src/pages/admin/activation/ActivationCodeDetail.jsx',
       'src/pages/admin/system/ActivityLog.jsx',
     ];
 

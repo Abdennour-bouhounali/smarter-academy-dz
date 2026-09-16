@@ -158,19 +158,21 @@ export default function Profil() {
             <p className="font-inter text-slate-500 text-xs mt-0.5">{plan.detail}</p>
           </div>
         </div>
-        {/* Un abonné ne se voit plus proposer ce qu'il possède déjà — on lui
-            propose de le GÉRER. La page d'abonnement, elle, est la seule
-            autorité sur ce qu'il peut y faire : ce lien ne fait qu'y mener. */}
-        {plan.premium ? (
-          <Link to="/abonnement" className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-space font-bold text-xs text-slate-700 border border-slate-300 transition-all hover:bg-slate-50">
-            Gérer mon abonnement
-          </Link>
-        ) : (
-          <Link to="/tarifs" className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-space font-bold text-xs text-white transition-all hover:-translate-y-0.5" style={{ background: 'linear-gradient(135deg, #F59E0B, #F97316)' }}>
-            <Crown size={14} />
-            Passer Premium
-          </Link>
-        )}
+        {/* Les deux publics mènent au MÊME endroit — la saisie d'un code :
+            il n'existe ni abonnement à gérer ni tarif à consulter dans le
+            produit algérien (master spec §17/§18). Un élève déjà servi peut
+            y empiler une seconde carte ; un élève sans accès y entre la
+            sienne. Seul le libellé change. */}
+        <Link
+          to="/espace/activation"
+          className={plan.premium
+            ? 'inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-space font-bold text-xs text-slate-700 border border-slate-300 transition-all hover:bg-slate-50'
+            : 'inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-space font-bold text-xs text-white transition-all hover:-translate-y-0.5'}
+          style={plan.premium ? undefined : { background: 'linear-gradient(135deg, #F59E0B, #F97316)' }}
+        >
+          {!plan.premium && <Crown size={14} />}
+          تفعيل الوصول
+        </Link>
       </motion.div>
 
       {/* Logout */}

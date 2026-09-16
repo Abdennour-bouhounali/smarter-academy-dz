@@ -27,6 +27,12 @@ const TONES = {
   // défaut, exactement la même pastille que « Gratuit » — deux états
   // opposés devenus indiscernables d'un coup d'œil.
   premium: 'bg-amber-100 text-amber-800 border-amber-300',
+  // Les codes d'activation. `revoked` manquait au vocabulaire : il
+  // retombait sur le gris du défaut, la même pastille que « Disponible » —
+  // deux états opposés devenus indiscernables d'un coup d'œil.
+  available: 'bg-blue-50 text-blue-700 border-blue-200',
+  activated: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+  revoked: 'bg-rose-50 text-rose-700 border-rose-200',
   inherited: 'bg-slate-50 text-slate-500 border-slate-200',
   duplicate: 'bg-violet-50 text-violet-700 border-violet-200',
   critical: 'bg-rose-100 text-rose-800 border-rose-300',
@@ -52,6 +58,9 @@ export const STATUS_LABELS = {
   premium: 'Premium',
   inherited: 'Hérité',
   expired: 'Expiré',
+  available: 'Disponible',
+  activated: 'Activé',
+  revoked: 'Révoqué',
   cancelled: 'Annulé',
   pending: 'En attente',
   critical: 'Critique',

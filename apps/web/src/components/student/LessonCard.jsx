@@ -57,7 +57,7 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
     return (
       <motion.div ref={ref} layout initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.2 }} className="h-full">
         <Link
-          to="/tarifs"
+          to="/espace/activation"
           className="sa-premium-card-locked group relative rounded-2xl border p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between h-full overflow-hidden"
         >
           <div>

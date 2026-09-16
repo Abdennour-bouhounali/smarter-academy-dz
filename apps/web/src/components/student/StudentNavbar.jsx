@@ -160,26 +160,13 @@ export default function StudentNavbar() {
               // jamais à une seconde souscription. Un accès accordé par
               // l'administration n'est pas un abonnement — il le voit dit
               // autrement, et n'a pas de portail à ouvrir.
+              // Le produit algérien n'a NI abonnement NI portail de
+              // paiement : les deux branches disent donc le même état, et
+              // aucune ne mène à un moyen de paiement en ligne. La distinction
+              // reste lue depuis le serveur pour le jour où elle existera.
               hasSubscription ? (
-                <Link
-                  to="/abonnement"
-                  title="Abonnement actif — gérer mon abonnement"
-                  aria-label="Abonnement actif — gérer mon abonnement"
-                  className={`flex items-center rounded-xl bg-violet-50 border border-violet-200 mb-3 hover:border-violet-300 transition-colors min-h-[44px] ${
-                    sidebarCollapsed ? 'justify-center px-0 py-3' : 'gap-2.5 px-3.5 py-3'
-                  }`}
-                >
-                  <ShieldCheck size={16} className="text-violet-600 flex-shrink-0" />
-                  {!sidebarCollapsed && (
-                    <div className="min-w-0">
-                      <p className="font-space font-bold text-slate-800 text-xs">Abonnement actif</p>
-                      <p className="font-inter text-slate-500 text-[11px] leading-tight">Gérer mon abonnement</p>
-                    </div>
-                  )}
-                </Link>
-              ) : (
                 <div
-                  title="Accès premium actif"
+                  title="وصول كامل"
                   className={`flex items-center rounded-xl bg-violet-50 border border-violet-200 mb-3 min-h-[44px] ${
                     sidebarCollapsed ? 'justify-center px-0 py-3' : 'gap-2.5 px-3.5 py-3'
                   }`}
@@ -187,8 +174,23 @@ export default function StudentNavbar() {
                   <ShieldCheck size={16} className="text-violet-600 flex-shrink-0" />
                   {!sidebarCollapsed && (
                     <div className="min-w-0">
-                      <p className="font-space font-bold text-slate-800 text-xs">Premium actif</p>
-                      <p className="font-inter text-slate-500 text-[11px] leading-tight">Tout le programme</p>
+                      <p className="font-space font-bold text-slate-800 text-xs">وصول كامل</p>
+                      <p className="font-inter text-slate-500 text-[11px] leading-tight">كل الدروس متاحة</p>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div
+                  title="وصول كامل"
+                  className={`flex items-center rounded-xl bg-violet-50 border border-violet-200 mb-3 min-h-[44px] ${
+                    sidebarCollapsed ? 'justify-center px-0 py-3' : 'gap-2.5 px-3.5 py-3'
+                  }`}
+                >
+                  <ShieldCheck size={16} className="text-violet-600 flex-shrink-0" />
+                  {!sidebarCollapsed && (
+                    <div className="min-w-0">
+                      <p className="font-space font-bold text-slate-800 text-xs">وصول كامل</p>
+                      <p className="font-inter text-slate-500 text-[11px] leading-tight">كل الدروس متاحة</p>
                     </div>
                   )}
                 </div>
@@ -196,10 +198,13 @@ export default function StudentNavbar() {
             ) : (
               // L'INVITATION — intacte pour qui n'a pas encore accès : lui
               // retirer l'offre lui retirerait le moyen de la découvrir.
+              // Elle mène à la SAISIE D'UN CODE, et non à un tarif : le
+              // produit algérien se paie en espèces, hors de l'application
+              // (master spec §17, §18).
               <Link
-                to="/tarifs"
-                title="Passer Premium — débloque tout le programme"
-                aria-label="Passer Premium"
+                to="/espace/activation"
+                title="تفعيل الوصول"
+                aria-label="تفعيل الوصول"
                 className={`flex items-center rounded-xl bg-gradient-to-br from-amber-50 to-white border border-amber-200 mb-3 hover:border-amber-300 transition-colors min-h-[44px] ${
                   sidebarCollapsed ? 'justify-center px-0 py-3' : 'gap-2.5 px-3.5 py-3'
                 }`}
@@ -207,8 +212,8 @@ export default function StudentNavbar() {
                 <Crown size={16} className="text-amber-500 flex-shrink-0" />
                 {!sidebarCollapsed && (
                   <div className="min-w-0">
-                    <p className="font-space font-bold text-slate-800 text-xs">Passer Premium</p>
-                    <p className="font-inter text-slate-500 text-[11px] leading-tight">Débloque tout le programme</p>
+                    <p className="font-space font-bold text-slate-800 text-xs">تفعيل الوصول</p>
+                    <p className="font-inter text-slate-500 text-[11px] leading-tight">أدخل رمز بطاقتك</p>
                   </div>
                 )}
               </Link>

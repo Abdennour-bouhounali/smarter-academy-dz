@@ -8,8 +8,11 @@ use App\Domain\Billing\SandboxPaymentProvider;
 use App\Domain\Billing\Stripe\StripeEventTranslator;
 use App\Domain\Billing\Stripe\StripePaymentProvider;
 use App\Models\User;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Http\Events\RequestHandled;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -93,5 +96,30 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::define('admin', fn (User $user) => $user->role === 'admin');
+
+        /**
+         * La saisie d'un code d'activation — DEUX compteurs, et c'est la
+         * raison d'être de cette limite nommée.
+         *
+         * Partout ailleurs dans routes/api.php, un `throttle:6,1` en ligne
+         * suffit. Ici il en faut deux, et deux `throttle:` successifs sur la
+         * même route partageraient la même clé de cache : le second
+         * n'ajouterait rien. Un limiteur nommé qui rend un TABLEAU applique
+         * bien les deux, chacun avec sa propre clé.
+         *
+         *   par compte, 5/min  → un élève qui se trompe retape aussitôt ;
+         *                        un script qui tâtonne s'arrête au sixième.
+         *   par IP, 30/heure   → ferme le contournement évident du premier :
+         *                        créer des comptes pour multiplier les essais.
+         *
+         * L'ordre de grandeur à battre : 2^60 codes possibles. Ces limites ne
+         * sont pas ce qui rend l'attaque impossible — l'entropie s'en charge —
+         * elles rendent inutile de même l'essayer, et gardent la table de
+         * codes à l'abri d'un flot de requêtes.
+         */
+        RateLimiter::for('activation-redeem', fn (Request $request) => [
+            Limit::perMinute(5)->by('activation-user:'.($request->user()?->id ?? $request->ip())),
+            Limit::perHour(30)->by('activation-ip:'.$request->ip()),
+        ]);
     }
 }

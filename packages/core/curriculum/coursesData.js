@@ -2,6 +2,7 @@
 // curriculum export script) — Vite/vitest accept the attribute too.
 import officialProgram from './smarter_academy_programmes_maths_2026.json' with { type: 'json' };
 import { filterActiveCourseLevels } from './activeGrades.js';
+import { resolveLessonTier } from './freeLessons.js';
 
 // --- Métadonnées Smarter Academy ---
 // Ces données enrichissent les objets officiels sans en modifier la liste.
@@ -2938,7 +2939,12 @@ function buildLesson({ gradeId, levelId, domainId, obj, meta, partIndex, partTot
     status: meta.status || 'coming_soon',
     icon: meta.icon || '📘',
     isNew: meta.isNew || false,
-    tier: meta.tier || 'free',
+    // Le PALIER COMMERCIAL. Pour une classe algérienne active, il vient de
+    // la liste nommée des leçons gratuites (freeLessons.js) : trois ouvertes,
+    // le reste vendu. Pour une classe française dormante, le palier hérité
+    // est laissé intact. Voir resolveLessonTier pour le pourquoi des deux
+    // régimes.
+    tier: resolveLessonTier(gradeId, lessonId, meta.tier),
     path: meta.path || `/courses/${levelId}/${gradeId}/${domainId}/${lessonId}`,
   };
 }

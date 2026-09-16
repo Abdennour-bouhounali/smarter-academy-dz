@@ -132,13 +132,13 @@ export default function LessonIndex({ config, basePath }) {
             <Lock size={28} className="mx-auto mb-4 text-violet-600" />
             <h1 className="font-space text-xl font-bold text-slate-800 mb-2">{config.title}</h1>
             <p className="font-inter text-sm leading-relaxed text-slate-600 mb-6">
-              Cette leçon nécessite un accès premium.
+              هذا الدرس يتطلّب وصولاً كاملاً.
             </p>
             <Link
-              to="/tarifs"
+              to="/espace/activation"
               className="inline-flex items-center gap-1 rounded-xl bg-violet-600 px-5 py-2.5 font-inter text-sm font-bold text-white transition-colors hover:bg-violet-700"
             >
-              Voir les tarifs →
+              تفعيل الوصول
             </Link>
           </div>
         </main>

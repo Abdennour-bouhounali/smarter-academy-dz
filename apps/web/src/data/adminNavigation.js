@@ -1,5 +1,5 @@
 import {
-  LayoutDashboard, BarChart3, BookOpen, Flag, Users, CreditCard,
+  LayoutDashboard, BarChart3, BookOpen, Flag, Users, KeyRound, Package,
   UserCog, ScrollText,
 } from 'lucide-react';
 
@@ -58,11 +58,14 @@ export const adminNavSections = [
     ],
   },
   {
-    label: 'Abonnements',
-    icon: CreditCard,
+    // L'ACCÈS PAYANT du produit algérien : des codes vendus en espèces, pas
+    // des abonnements (master spec §17). Les écrans Stripe restent sur le
+    // disque mais ne sont plus montés — voir App.jsx.
+    label: 'Accès',
+    icon: KeyRound,
     links: [
-      { label: 'Abonnements', path: '/admin/abonnements', icon: CreditCard, end: true },
-      { label: 'Paiements', path: '/admin/abonnements/paiements', icon: CreditCard },
+      { label: "Codes d'activation", path: '/admin/codes-activation', icon: KeyRound, end: true },
+      { label: 'Lots', path: '/admin/codes-activation/lots', icon: Package },
     ],
   },
   {

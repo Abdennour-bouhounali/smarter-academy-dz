@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AccessController;
+use App\Http\Controllers\ActivationCodeController;
 use App\Http\Controllers\Admin\AdminAccountController;
+use App\Http\Controllers\Admin\AdminActivationCodeController;
 use App\Http\Controllers\Admin\AdminActivityLogController;
 use App\Http\Controllers\Admin\AdminContentController;
 use App\Http\Controllers\Admin\AdminDashboardController;
@@ -169,8 +171,22 @@ Route::prefix('v1')->group(function () {
             Route::get('/lessons/{lessonCode}/exercises', [ContentAvailabilityController::class, 'exercises']);
 
             // « À quoi ai-je droit ? » — lecture seule. Aucun point d'entrée ne
-            // permet à un élève de modifier ses droits d'accès.
+            // permet à un élève de modifier ses droits d'accès… à une exception
+            // près, juste en dessous, et qui exige un titre acheté.
             Route::get('/me/access', [AccessController::class, 'show']);
+
+            // ── Le code d'activation (ALGERIA_PLATFORM_MASTER_SPEC.md §17) ──
+            // Le modèle commercial algérien : l'élève paie en espèces, reçoit
+            // une carte, saisit son code ici. C'est le SEUL geste par lequel
+            // un élève ouvre ses propres droits — et il n'ouvre rien qu'un
+            // administrateur n'ait préalablement produit.
+            //
+            // Limite de débit NOMMÉE, à la différence de tout le reste de ce
+            // fichier : il faut deux compteurs (par compte ET par IP), et deux
+            // `throttle:` successifs partageraient la même clé de cache, donc
+            // le second n'en serait pas un. Voir AppServiceProvider.
+            Route::post('/activation-codes/redeem', [ActivationCodeController::class, 'redeem'])
+                ->middleware('throttle:activation-redeem');
 
             // ── Entrée en paiement ───────────────────────────────────────────
             // N'accorde AUCUN accès : rend une URL vers la page de paiement du
@@ -263,6 +279,24 @@ Route::prefix('v1')->group(function () {
             // Réconcilier abonnements → droits. Ni encaissement, ni création
             // d'abonnement : sans abonnement, cette route ne produit rien.
             Route::post('/students/{id}/entitlements/sync', [AdminEntitlementController::class, 'syncSubscriptions'])->whereNumber('id');
+
+            // ── Les codes d'activation ───────────────────────────────────
+            // L'ordre des routes est LOAD-BEARING : `/batches` et `/export`
+            // sont déclarées AVANT `/{id}`, sinon le paramètre numérique les
+            // avalerait. `whereNumber` protège déjà, mais l'ordre dit
+            // l'intention sans dépendre de lui.
+            Route::get('/activation-codes', [AdminActivationCodeController::class, 'index']);
+            Route::get('/activation-codes/export', [AdminActivationCodeController::class, 'export']);
+            Route::get('/activation-codes/batches', [AdminActivationCodeController::class, 'batches']);
+            // Le SEUL point d'entrée qui rend des codes en clair, et
+            // seulement ceux qu'il vient de créer.
+            Route::post('/activation-codes/batches', [AdminActivationCodeController::class, 'generate']);
+            Route::post('/activation-codes/batches/{id}/revoke', [AdminActivationCodeController::class, 'revokeBatch'])
+                ->whereNumber('id');
+            Route::get('/activation-codes/{id}', [AdminActivationCodeController::class, 'show'])
+                ->whereNumber('id');
+            Route::post('/activation-codes/{id}/revoke', [AdminActivationCodeController::class, 'revoke'])
+                ->whereNumber('id');
 
             Route::get('/subscriptions', [AdminSubscriptionController::class, 'index']);
             Route::get('/payments', [AdminSubscriptionController::class, 'payments']);

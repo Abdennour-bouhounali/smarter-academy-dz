@@ -16,6 +16,7 @@
 //   node scripts/check-dormant-isolation.mjs
 import { courseLevels, allCourseLevels } from '../packages/core/curriculum/coursesData.js';
 import { ACTIVE_GRADE_IDS } from '../packages/core/curriculum/activeGrades.js';
+import { FREE_LESSON_IDS } from '../packages/core/curriculum/freeLessons.js';
 
 const problems = [];
 
@@ -40,6 +41,35 @@ for (const id of ACTIVE_GRADE_IDS) {
   }
 }
 
+// Les leçons GRATUITES (freeLessons.js, master spec §17 : « 3 leçons
+// gratuites ») doivent exister, et appartenir à une classe ACTIVE.
+//
+// Deux fautes distinctes, toutes deux silencieuses sans ce contrôle :
+//   — un identifiant mal orthographié n'ouvre rien : la leçon annoncée
+//     gratuite reste vendue, et personne ne le voit avant une réclamation ;
+//   — une leçon gratuite sous une classe dormante est une contradiction :
+//     elle serait « offerte » et pourtant inatteignable.
+const activeLessonIds = new Set(
+  allCourseLevels.flatMap((level) =>
+    level.grades
+      .filter((grade) => ACTIVE_GRADE_IDS.includes(grade.id))
+      .flatMap((grade) => grade.chapters.flatMap((chapter) => chapter.lessons.map((l) => l.id))),
+  ),
+);
+const allLessonIds = new Set(
+  allCourseLevels.flatMap((level) =>
+    level.grades.flatMap((grade) => grade.chapters.flatMap((chapter) => chapter.lessons.map((l) => l.id))),
+  ),
+);
+
+for (const id of FREE_LESSON_IDS) {
+  if (!allLessonIds.has(id)) {
+    problems.push(`FREE_LESSON_IDS contient '${id}', qui n'existe dans aucune leçon du catalogue — probablement une faute de frappe (cette leçon resterait payante).`);
+  } else if (!activeLessonIds.has(id)) {
+    problems.push(`FREE_LESSON_IDS contient '${id}', qui appartient à une classe DORMANTE — une leçon « gratuite » que personne ne peut atteindre.`);
+  }
+}
+
 if (problems.length) {
   console.error(`\n${problems.length} problème(s) d'isolement de contenu dormant :\n`);
   for (const p of problems) console.error(`  ✗ ${p}`);
@@ -48,3 +78,4 @@ if (problems.length) {
 }
 
 console.log(`✅ Isolement du contenu dormant : ${ACTIVE_GRADE_IDS.length} classe(s) active(s) (${ACTIVE_GRADE_IDS.join(', ') || 'aucune'}), aucune classe dormante détectée dans le catalogue actif.`);
+console.log(`✅ Leçons gratuites : ${FREE_LESSON_IDS.length} (${FREE_LESSON_IDS.join(', ') || 'aucune'}), toutes rattachées à une classe active.`);

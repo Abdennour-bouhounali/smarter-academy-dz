@@ -94,12 +94,15 @@ class EntitlementService
         // geste commercial pendant qu'un paiement se règle.
         $valid = $this->validEntitlements($user, $now);
 
-        // L'abonnement est examiné en PREMIER : quand les deux existent, le
-        // motif rendu doit être celui qui décrit vraiment la situation de
-        // l'élève. « Cet accès vient d'une dérogation » alors qu'il est
-        // abonné enverrait le support sur une fausse piste.
+        // L'ordre est celui de la RÉALITÉ COMMERCIALE, du plus « acheté » au
+        // plus offert : quand plusieurs droits coexistent, le motif rendu doit
+        // être celui qui décrit vraiment la situation de l'élève. « Cet accès
+        // vient d'une dérogation » alors qu'il a payé une carte enverrait le
+        // support sur une fausse piste — et lui ferait croire, à l'échéance,
+        // qu'on lui retire un cadeau plutôt qu'un dû.
         $byType = [
             Entitlement::TYPE_SUBSCRIPTION => AccessDecision::VIA_SUBSCRIPTION,
+            Entitlement::TYPE_ACTIVATION_CODE => AccessDecision::VIA_ACTIVATION_CODE,
             Entitlement::TYPE_ADMIN_OVERRIDE => AccessDecision::VIA_ADMIN_OVERRIDE,
         ];
 
@@ -170,7 +173,7 @@ class EntitlementService
      * connaître la référence externe d'un abonnement pour savoir qu'il est
      * actif (spec §25).
      *
-     * @return array{freeAccess: bool, subscriptionActive: bool, adminOverrideActive: bool, premiumAccess: bool, expiresAt: ?string}
+     * @return array{freeAccess: bool, subscriptionActive: bool, activationCodeActive: bool, adminOverrideActive: bool, premiumAccess: bool, expiresAt: ?string}
      */
     public function summarize(?User $user): array
     {
@@ -179,16 +182,38 @@ class EntitlementService
             ? $this->validEntitlements($user, Carbon::now())
             : collect();
 
-        $subscription = $valid->firstWhere('type', Entitlement::TYPE_SUBSCRIPTION);
-        $override = $valid->firstWhere('type', Entitlement::TYPE_ADMIN_OVERRIDE);
-
         return [
             'freeAccess' => $this->satisfies($user, AccessTier::FREE),
-            'subscriptionActive' => $subscription !== null,
-            'adminOverrideActive' => $override !== null,
+            'subscriptionActive' => $valid->contains('type', Entitlement::TYPE_SUBSCRIPTION),
+            'activationCodeActive' => $valid->contains('type', Entitlement::TYPE_ACTIVATION_CODE),
+            'adminOverrideActive' => $valid->contains('type', Entitlement::TYPE_ADMIN_OVERRIDE),
             'premiumAccess' => $decision->allowed,
-            // La fin du droit qui ouvre actuellement l'accès, s'il a un terme.
-            'expiresAt' => optional(($subscription ?? $override)?->expires_at)->toIso8601String(),
+            'expiresAt' => optional($this->accessEndsAt($valid))->toIso8601String(),
         ];
+    }
+
+    /**
+     * Quand l'accès premium se ferme-t-il, tous droits confondus ?
+     *
+     * La question que l'élève pose est « jusqu'à quand ai-je accès ? », pas
+     * « quand ce droit-ci finit-il ». Les droits étant CUMULATIFS (decide()
+     * en cherche un qui ouvre, pas le seul), la réponse est la fin du
+     * DERNIER : deux cartes d'activation empilées prolongent l'accès, et
+     * annoncer la fin de la première ferait craindre une coupure qui n'aura
+     * pas lieu.
+     *
+     * Un seul droit sans terme suffit à rendre la question sans objet : on
+     * renvoie null plutôt qu'une date qui serait fausse. C'est aussi ce qui
+     * était rendu avant l'introduction des codes, pour un abonnement sans fin.
+     *
+     * @param  Collection<int, Entitlement>  $valid
+     */
+    private function accessEndsAt($valid): ?Carbon
+    {
+        if ($valid->isEmpty() || $valid->contains(fn (Entitlement $e) => $e->expires_at === null)) {
+            return null;
+        }
+
+        return $valid->max(fn (Entitlement $e) => $e->expires_at);
     }
 }
