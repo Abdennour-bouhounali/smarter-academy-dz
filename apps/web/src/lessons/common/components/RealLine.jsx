@@ -214,7 +214,7 @@ export default function RealLine({
 
   return (
     <Wrap ref={wrapRef} className="block w-full">
-      <svg
+      <svg dir="ltr"
         ref={svgRef}
         viewBox={`0 0 ${W} ${H}`}
         width={W}

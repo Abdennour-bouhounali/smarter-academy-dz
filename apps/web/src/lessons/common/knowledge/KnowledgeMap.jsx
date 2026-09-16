@@ -1154,10 +1154,21 @@ export function KnowledgeMapTrigger({ items = [], open: openProp, onOpenChange, 
           // bottom-20 : au-dessus du bouton Ctrl+K du site visiteur (bottom-6,
           // même coin, même z-index) et de la barre basse mobile de l'espace
           // élève (h-16) — sinon le déclencheur est recouvert.
-          // Côté : le panneau s'ouvre sur le bord de FIN du contenu (gauche
-          // en RTL). Le déclencheur se pose donc sur le bord OPPOSÉ, sinon il
-          // disparaît sous la carte qu'il vient d'ouvrir.
-          'fixed bottom-20 start-6 z-40',
+          // Côté : PHYSIQUEMENT à gauche, dans les deux directions — et c'est
+          // volontairement une valeur physique, pas `start-6`.
+          //
+          // Sous RTL, `start-6` plaçait le déclencheur à DROITE, c'est-à-dire
+          // sous la barre latérale de l'espace élève, qui occupe ce bord : le
+          // bouton restait visible mais inatteignable, la barre interceptant
+          // tous les clics. Constaté par la QA du moteur sous RTL — la sonde
+          // de la reprise précédente ne montait pas la coquille élève, donc
+          // ne pouvait pas le voir.
+          //
+          // Gauche convient aux deux cas : sous LTR le panneau s'ouvre à
+          // droite et le déclencheur lui fait face ; sous RTL la barre occupe
+          // la droite, et le panneau s'ouvrant à gauche, le déclencheur le
+          // recouvrirait s'il n'était pas décalé vers le bas (bottom-20).
+          'fixed bottom-20 left-6 z-40',
           'flex items-center gap-2 px-4 py-3 rounded-2xl',
           'font-bold text-sm shadow-lg shadow-slate-900/20',
           'transition-colors duration-200',

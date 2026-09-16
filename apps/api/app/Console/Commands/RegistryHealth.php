@@ -12,13 +12,37 @@ use Illuminate\Console\Command;
  */
 class RegistryHealth extends Command
 {
-    protected $signature = 'smarter:registry-health {--json : Sortie brute}';
+    protected $signature = 'smarter:registry-health
+        {--json : Sortie brute}
+        {--gate : Échoue (code 1) si l\'activation ou le palier ont dérivé — pour l\'intégration continue}';
 
     protected $description = 'Vérifie la cohérence entre le contenu source et le registre en base';
 
     public function handle(RegistryHealthService $health): int
     {
         $report = $health->report();
+
+        // ── Le MODE PORTE (--gate) ──────────────────────────────────────
+        //
+        // Sans ce drapeau, la commande reste ce qu'elle a toujours été : un
+        // diagnostic qui sort 0 quoi qu'il arrive, parce que faire échouer un
+        // déploiement sur une leçon « à venir » apprendrait surtout à
+        // l'ignorer.
+        //
+        // Avec, elle ne juge QUE deux choses, les deux où un écart n'est pas
+        // une imperfection mais une contradiction entre deux autorités :
+        //
+        //   activation → le frontend cache une classe que l'API sert (ou
+        //                l'inverse) : la fuite de contenu dormant que la
+        //                phase 3 existe pour fermer.
+        //   palier     → le catalogue annonce « gratuit » et la base facture
+        //                (ou, bien pire, le catalogue vend et la base offre).
+        //
+        // Une source ABSENTE est un échec en mode porte, à la différence du
+        // mode diagnostic : une porte qui ne peut pas vérifier ne s'ouvre pas.
+        if ($this->option('gate')) {
+            return $this->gate($report);
+        }
 
         if ($this->option('json')) {
             $this->line(json_encode($report, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
@@ -87,7 +111,64 @@ class RegistryHealth extends Command
 
         // Sortie 0 dans tous les cas : c'est un DIAGNOSTIC, pas une porte.
         // Faire échouer un déploiement sur une leçon « à venir » apprendrait
-        // surtout à ignorer la commande.
+        // surtout à ignorer la commande. Voir --gate pour l'inverse.
         return self::SUCCESS;
+    }
+
+    /**
+     * La porte : activation et palier, rien d'autre.
+     *
+     * @param  array<string, mixed>  $report
+     */
+    private function gate(array $report): int
+    {
+        $activation = $report['activation'];
+        $tier = $report['tier'];
+        $failures = [];
+
+        if (! ($activation['sourceAvailable'] ?? false)) {
+            $failures[] = "L'export du catalogue est introuvable : la cohérence source ↔ base ne peut pas être vérifiée.\n"
+                .'    Lancez : node packages/core/curriculum/exportCurriculum.mjs';
+        }
+
+        foreach ($activation['drift'] ?? [] as $row) {
+            $source = $row['source'] === null ? 'ABSENTE de la source' : ($row['source'] ? 'active' : 'inactive');
+            $database = $row['database'] ? 'active' : 'inactive';
+            $failures[] = "Classe « {$row['code']} » : base = {$database}, source = {$source}.";
+        }
+
+        foreach ($tier['drift'] ?? [] as $row) {
+            $source = $row['source'] ?? 'ABSENTE de la source';
+            $failures[] = "Leçon « {$row['code']} » ({$row['grade']}) : palier base = {$row['database']}, source = {$source}.";
+        }
+
+        if ($this->option('json')) {
+            $this->line(json_encode([
+                'gate' => $failures === [] ? 'pass' : 'fail',
+                'failures' => $failures,
+                'activation' => $activation,
+                'tier' => $tier,
+            ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+            return $failures === [] ? self::SUCCESS : self::FAILURE;
+        }
+
+        if ($failures === []) {
+            $active = $activation['active'] === [] ? 'aucune' : implode(', ', $activation['active']);
+            $this->info("✅ Activation et paliers cohérents (classes actives : {$active} ; {$tier['checked']} leçon(s) vérifiée(s)).");
+
+            return self::SUCCESS;
+        }
+
+        $this->error(count($failures).' dérive(s) entre le catalogue et la base :');
+        foreach ($failures as $failure) {
+            $this->line("  ✗ {$failure}");
+        }
+        $this->newLine();
+        $this->line('Le catalogue (packages/core) et l\'API ne s\'accordent plus sur ce qui est ouvert ou vendu.');
+        $this->line('Réappliquez la poignée de main :');
+        $this->line('  node packages/core/curriculum/exportCurriculum.mjs && php artisan smarter:import-curriculum');
+
+        return self::FAILURE;
     }
 }

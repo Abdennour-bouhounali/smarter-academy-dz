@@ -39,6 +39,7 @@ class RegistryHealthService
             'learningPoints' => $this->learningPointHealth(),
             'reporting' => $this->reportingHealth(),
             'activation' => $this->activation(),
+            'tier' => $this->tier(),
         ];
     }
 
@@ -66,7 +67,11 @@ class RegistryHealthService
         }
 
         $sourceLessons = collect($source['lessons'] ?? [])->pluck('code')->unique();
-        $dbLessons = Lesson::pluck('code')->unique();
+        // `toBase()` : `pluck` sur un modèle rend une collection ELOQUENT, dont
+        // `diff()` compare des modèles par clé primaire et appelle getKey()
+        // sur chaque élément — ce qui lève sur des chaînes. La collection de
+        // base compare les valeurs, qui est ce qu'on veut ici.
+        $dbLessons = Lesson::pluck('code')->toBase()->unique();
 
         $sourceModules = collect($source['lessons'] ?? [])
             ->flatMap(fn ($lesson) => collect($lesson['modules'] ?? [])
@@ -78,6 +83,7 @@ class RegistryHealthService
             ->whereNull('lesson_modules.retired_at')
             ->get(['lessons.code as lesson_code', 'lesson_modules.code'])
             ->map(fn ($r) => $r->lesson_code.'/'.$r->code)
+            ->toBase()
             ->unique();
 
         $sourceExercises = collect($source['exercises'] ?? [])
@@ -89,6 +95,7 @@ class RegistryHealthService
             ->whereNull('practice_exercises.retired_at')
             ->get(['lessons.code as lesson_code', 'practice_exercises.exercise_code'])
             ->map(fn ($r) => $r->lesson_code.'/'.$r->exercise_code)
+            ->toBase()
             ->unique();
 
         return [
@@ -268,13 +275,10 @@ class RegistryHealthService
     {
         $db = Grade::query()->orderBy('order')->get(['code', 'is_active']);
 
-        $sourcePath = config('curriculum.export_output_path');
+        $export = $this->loadCurriculumExport();
         $source = null;
-        if (is_string($sourcePath) && is_file($sourcePath)) {
-            $decoded = json_decode((string) file_get_contents($sourcePath), true);
-            if (is_array($decoded) && isset($decoded['grades'])) {
-                $source = collect($decoded['grades'])->mapWithKeys(fn ($g) => [$g['code'] => (bool) ($g['active'] ?? false)]);
-            }
+        if ($export !== null) {
+            $source = collect($export)->mapWithKeys(fn ($g) => [$g['code'] => (bool) ($g['active'] ?? false)]);
         }
 
         $drift = [];
@@ -292,6 +296,97 @@ class RegistryHealthService
             'drift' => $drift,
             'sourceAvailable' => $source !== null,
         ];
+    }
+
+    /**
+     * Le PALIER COMMERCIAL : la base (`lessons.tier`) doit refléter ce que le
+     * catalogue déclare (freeLessons.js → coursesData.js → export).
+     *
+     * Même poignée de main que l'activation, et même conséquence si elle
+     * dérive — mais sur l'argent plutôt que sur la visibilité :
+     *
+     *   base « premium », source « free »  → une leçon annoncée gratuite est
+     *                                        refusée à l'élève qui l'ouvre.
+     *   base « free », source « premium »  → une leçon vendue est servie
+     *                                        gratuitement à tout le monde.
+     *
+     * La seconde est la fuite commerciale que la phase 6 existe pour fermer :
+     * un oubli d'import suffirait à offrir tout le programme.
+     *
+     * Limité aux classes ACTIVES : les 133 leçons françaises dormantes ne sont
+     * servies à personne, et les compter ici noierait la vraie dérive dans un
+     * bruit permanent.
+     *
+     * @return array{drift: array<int, array{code: string, grade: string, database: string, source: ?string}>, sourceAvailable: bool, checked: int}
+     */
+    private function tier(): array
+    {
+        $export = $this->loadCurriculumExport();
+
+        if ($export === null) {
+            return ['drift' => [], 'sourceAvailable' => false, 'checked' => 0];
+        }
+
+        // Source : code de leçon → palier, pour les classes actives seulement.
+        $sourceTiers = [];
+        foreach ($export as $grade) {
+            if (! ($grade['active'] ?? false)) {
+                continue;
+            }
+            foreach ($grade['chapters'] ?? [] as $chapter) {
+                foreach ($chapter['lessons'] ?? [] as $lesson) {
+                    $sourceTiers[$lesson['code']] = $lesson['tier'] ?? 'free';
+                }
+            }
+        }
+
+        $drift = [];
+        $checked = 0;
+
+        $rows = Lesson::query()
+            ->join('chapters', 'chapters.id', '=', 'lessons.chapter_id')
+            ->join('grades', 'grades.id', '=', 'chapters.grade_id')
+            ->where('grades.is_active', true)
+            ->get(['lessons.code', 'lessons.tier', 'grades.code as grade_code']);
+
+        foreach ($rows as $row) {
+            $checked++;
+            $expected = $sourceTiers[$row->code] ?? null;
+            $actual = $row->tier ?? 'free';
+
+            if ($expected === null || $expected !== $actual) {
+                $drift[] = [
+                    'code' => $row->code,
+                    'grade' => $row->grade_code,
+                    'database' => $actual,
+                    'source' => $expected,
+                ];
+            }
+        }
+
+        return ['drift' => $drift, 'sourceAvailable' => true, 'checked' => $checked];
+    }
+
+    /**
+     * L'export du catalogue, décodé — la même source que lit l'import, donc
+     * les deux ne peuvent pas être en désaccord sur ce qu'est « la source ».
+     *
+     * Null si le fichier manque : les contrôles qui en dépendent se déclarent
+     * indisponibles plutôt que de conclure à tort.
+     *
+     * @return array<int, array<string, mixed>>|null
+     */
+    private function loadCurriculumExport(): ?array
+    {
+        $path = config('curriculum.export_output_path');
+
+        if (! is_string($path) || ! is_file($path)) {
+            return null;
+        }
+
+        $decoded = json_decode((string) file_get_contents($path), true);
+
+        return is_array($decoded) && isset($decoded['grades']) ? $decoded['grades'] : null;
     }
 
     private function loadSource(): ?array

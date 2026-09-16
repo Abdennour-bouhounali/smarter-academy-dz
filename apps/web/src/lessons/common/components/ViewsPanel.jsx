@@ -33,7 +33,7 @@ function ViewSvg({ solid, view, label, highlight = false }) {
   return (
     <div className="space-y-1">
       <p className="text-xs font-semibold text-slate-600 text-center">{label}</p>
-      <svg viewBox={`0 0 ${SIZE} ${SIZE}`}
+      <svg dir="ltr" viewBox={`0 0 ${SIZE} ${SIZE}`}
         className={`w-full max-w-[130px] mx-auto bg-white rounded-lg border-2 ${
           highlight ? 'border-violet-400' : 'border-slate-200'
         }`}

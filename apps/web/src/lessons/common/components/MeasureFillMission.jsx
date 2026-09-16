@@ -75,7 +75,7 @@ function Tank({ tankMl, visualMl, targetMl, targetLabel, stream, ripple, success
       <div ref={rimRef} aria-hidden="true" className="absolute w-px h-px" style={{ left: `${(POUR_X / T.W) * 100}%`, top: `${((T.top - 30) / T.H) * 100}%` }} />
       <div ref={tapRef} aria-hidden="true" className="absolute w-px h-px" style={{ left: `${((TAP.x + 18) / T.W) * 100}%`, top: `${((TAP.y + 96) / T.H) * 100}%` }} />
 
-      <svg viewBox={`0 0 ${T.W} ${T.H}`} className="w-full h-auto overflow-visible" role="img" aria-label={ariaLabel}>
+      <svg dir="ltr" viewBox={`0 0 ${T.W} ${T.H}`} className="w-full h-auto overflow-visible" role="img" aria-label={ariaLabel}>
         <defs>
           <clipPath id={`${uid}-inner`}>
             <path d={`M${T.x0 + T.wall},${T.top - 4} L${T.x0 + T.wall},${T.bottom - 16} Q${T.x0 + T.wall},${T.bottom - 3} ${T.x0 + 16},${T.bottom - 3} L${T.x1 - 16},${T.bottom - 3} Q${T.x1 - T.wall},${T.bottom - 3} ${T.x1 - T.wall},${T.bottom - 16} L${T.x1 - T.wall},${T.top - 4} Z`} />

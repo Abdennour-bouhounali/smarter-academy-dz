@@ -153,7 +153,7 @@ export default function SolidTurner({
 
   return (
     <div className="space-y-3">
-      <svg
+      <svg dir="ltr"
         viewBox={(() => {
           // Le cadre englobe les sommets ET leurs étiquettes déplacées : sans
           // cela, une étiquette poussée vers l'extérieur pourrait sortir.
