@@ -1,0 +1,182 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frontend:
+    name: Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      # `npm ci` installs the whole workspace (apps/web + packages/core) from
+      # the single root package-lock.json.
+      - name: Install dependencies
+        run: npm ci
+
+      # Unit tests only. The `check:lessons` / `test:scripts` targets audit the
+      # curriculum content and are deliberately left out of the deployment
+      # gate: they guard editorial quality, not whether the site can be built.
+      - name: Test the shared core
+        run: npm run test --workspace=packages/core
+
+      - name: Test the web app
+        run: npm run test --workspace=apps/web
+
+      # Same command the deployment workflow runs, so a build that breaks
+      # production is caught on the pull request instead.
+      - name: Build
+        run: npm run build
+
+      - name: Verify build output
+        run: |
+          test -d apps/web/dist
+          test -f apps/web/dist/index.html
+          test -f apps/web/dist/.htaccess
+
+  backend:
+    name: Backend
+    runs-on: ubuntu-latest
+
+    # The suite runs on MySQL, not on the sqlite that phpunit.xml declares.
+    # Migration 2026_09_14_000001 makes a column nullable with raw
+    # `ALTER TABLE ... MODIFY` (the Blueprint route would need doctrine/dbal,
+    # which this project does not carry), and MODIFY is MySQL-only syntax.
+    # 43 of the 47 test files use RefreshDatabase and so run every migration.
+    # Running on the engine production actually serves also makes the suite
+    # mean more: a statement MySQL accepts and sqlite rejects, or the reverse,
+    # proves nothing. This mirrors the developer's own phpunit.local.xml,
+    # which is gitignored and therefore unavailable here.
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: smarter_academy_dz_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 8.3 is what le serveur algérien sert réellement
+      # (x-powered-by: PHP/8.3.33 sur smarter-academy.com — le serveur
+      # FRANÇAIS, lui, est en 8.4). composer.json n'exige que ^8.3 : la CI
+      # épingle la version de PRODUCTION plutôt que de dériver vers la plus
+      # récente, sinon un incompatibilité 8.3 ne se verrait qu'en ligne.
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, pdo_mysql, bcmath, intl, zip
+          coverage: none
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: apps/api/vendor
+          key: composer-${{ runner.os }}-php8.3-${{ hashFiles('apps/api/composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-php8.3-
+
+      # Dev dependencies are needed here: PHPUnit lives in require-dev. The
+      # deployment workflow installs separately with --no-dev.
+      - name: Install Composer dependencies
+        working-directory: apps/api
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      # A throwaway .env written from scratch. The repository's .env.example is
+      # gitignored (the root .gitignore ignores .env*), so it is NOT available
+      # in a fresh checkout and cannot be copied here. Nothing below is secret,
+      # and it points at the disposable MySQL service above - never at the
+      # production database.
+      - name: Prepare a disposable test environment
+        working-directory: apps/api
+        run: |
+          cat > .env <<'ENVFILE'
+          APP_NAME=SmarterAcademyDzCI
+          APP_ENV=testing
+          # Left empty on purpose: `key:generate` below rewrites this line, and
+          # it only rewrites a key that is already declared.
+          APP_KEY=
+          APP_DEBUG=true
+          APP_URL=http://localhost
+          FRONTEND_URL=http://localhost
+          DB_CONNECTION=mysql
+          DB_HOST=127.0.0.1
+          DB_PORT=3306
+          DB_DATABASE=smarter_academy_dz_test
+          DB_USERNAME=root
+          DB_PASSWORD=root
+          CACHE_STORE=array
+          SESSION_DRIVER=array
+          QUEUE_CONNECTION=sync
+          MAIL_MAILER=array
+          ENVFILE
+          php artisan key:generate
+
+      - name: Wait for MySQL
+        run: |
+          for i in $(seq 1 30); do
+            if mysqladmin ping -h 127.0.0.1 -P 3306 -uroot -proot --silent 2>/dev/null; then
+              echo "MySQL is up."; exit 0
+            fi
+            sleep 2
+          done
+          echo "::error::MySQL never became ready."; exit 1
+
+      - name: Verify Laravel boots
+        working-directory: apps/api
+        run: php artisan --version
+
+      # Catches a route file that references a missing controller or a
+      # malformed binding - the kind of error that would otherwise only
+      # surface as a 500 in production.
+      - name: Verify routes resolve
+        working-directory: apps/api
+        run: php artisan route:list --path=api/v1 > /dev/null
+
+      # phpunit.xml declares sqlite, but its <env> entries carry no
+      # force="true", and PHPUnit leaves an already-set variable alone. The
+      # DB_* values below therefore win, and the shipped phpunit.xml needs no
+      # change. Everything else it sets (array mail, array cache, sync queue)
+      # still applies.
+      - name: Run the Laravel test suite
+        working-directory: apps/api
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: smarter_academy_dz_test
+          DB_USERNAME: root
+          DB_PASSWORD: root
+        # No --configuration flag: `artisan test` already passes one through to
+        # PHPUnit, and a second copy makes it stop with
+        # "Option --configuration cannot be used more than once" - which exits
+        # non-zero even though every test passed. phpunit.xml is the default
+        # anyway, so naming it bought nothing.
+        run: php artisan test --testdox
