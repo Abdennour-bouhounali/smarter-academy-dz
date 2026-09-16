@@ -63,6 +63,9 @@ class CurriculumImporter
                 'name' => $gradeData['name'],
                 'level' => $gradeData['level'],
                 'order' => $gradeData['order'] ?? 0,
+                // Activation travels with the catalogue (activeGrades.js → export →
+                // here). Absent from an older export = closed, never open.
+                'is_active' => (bool) ($gradeData['active'] ?? false),
             ];
             $existingGrade = Grade::where('code', $gradeData['code'])->first();
             $this->recordDiff($summary['grades'], $gradeData['code'], $existingGrade?->only(array_keys($gradeSource)), $gradeSource);

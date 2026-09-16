@@ -20,6 +20,7 @@ import { fileURLToPath } from 'node:url';
 // only hidden from student-facing discovery, which is enforced separately
 // by ContentAccess.php and this same filter applied in the frontend bundle).
 import { allCourseLevels } from './coursesData.js';
+import { isGradeActive } from './activeGrades.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const outputPath = resolve(process.argv[2] || resolve(here, '.generated/curriculum-export.json'));
@@ -30,6 +31,9 @@ const grades = allCourseLevels.flatMap((level) =>
     name: grade.name,
     level: level.id,
     order: gradeIndex,
+    // The one place activation leaves the JS world: `smarter:import-curriculum`
+    // mirrors it into grades.is_active, which ContentAccess enforces.
+    active: isGradeActive(grade.id),
     chapters: grade.chapters.map((chapter, chapterIndex) => ({
       code: chapter.id,
       title: chapter.title,

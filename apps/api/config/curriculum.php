@@ -5,14 +5,14 @@
 // env-overridable for deployments whose directory layout differs from the
 // monorepo default (apps/api three levels below the repo root).
 return [
-    // The server-side half of dormant-grade isolation
-    // (docs/ALGERIA_MIGRATION_AUDIT.md §15). Must stay in lockstep with
-    // packages/core/curriculum/activeGrades.js's ACTIVE_GRADE_IDS — that is
-    // the frontend catalogue/registry gate, this is the API gate (a
-    // motivated client can call /api/v1/lessons/{lessonCode}/* directly
-    // with a known French lesson code, bypassing the frontend entirely).
-    // Empty for the same reason as the frontend list: no Algerian grade
-    // exists yet (blocked on the official curriculum, roadmap Phase 7).
+    // Dormant-grade isolation, server side (docs/ALGERIA_MIGRATION_AUDIT.md
+    // §15). The list of active grades is NOT configured here: the single
+    // authority is packages/core/curriculum/activeGrades.js, mirrored into
+    // `grades.is_active` by `smarter:import-curriculum` (see the migration
+    // adding that column). ContentAccess reads the column, so the API gate
+    // (a client calling /api/v1/lessons/{lessonCode}/* directly with a known
+    // French lesson code) and the frontend catalogue can only disagree when
+    // the import is stale — which `smarter:registry-health` reports.
     //
     // 'enforce_active_grades' defaults OFF in the `testing` environment
     // (see phpunit.xml): the inherited French Feature test suite creates
@@ -25,7 +25,6 @@ return [
     // check-routes.mjs) rather than being implicitly exercised by every
     // unrelated Feature test.
     'enforce_active_grades' => env('CURRICULUM_ENFORCE_ACTIVE_GRADES', true),
-    'active_grades' => array_filter(explode(',', env('CURRICULUM_ACTIVE_GRADES', ''))),
 
     'export_script_path' => env(
         'CURRICULUM_EXPORT_SCRIPT',

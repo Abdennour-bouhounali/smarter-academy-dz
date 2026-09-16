@@ -195,11 +195,12 @@ class ContentAccess
      * AU MOINS une porte une classe active — désactiver la version de
      * seconde ne doit pas fermer une future version 4AM du même code.
      *
-     * config('curriculum.active_grades') est vide tant qu'aucune classe
-     * algérienne n'existe (Phase 7 de la feuille de route) : toute classe
-     * héritée du français est donc fermée par défaut, y compris si sa
-     * publication_status vaut 'published' — hérité de France, sans rapport
-     * avec l'activation pour l'Algérie.
+     * L'autorité est `grades.is_active`, alimenté par l'import du catalogue
+     * depuis packages/core/curriculum/activeGrades.js (une seule liste pour
+     * le frontend ET l'API). Tant qu'aucune classe algérienne n'existe
+     * (Phase 7 de la feuille de route), toute classe héritée du français est
+     * fermée — y compris si sa publication_status vaut 'published', hérité
+     * de France et sans rapport avec l'activation pour l'Algérie.
      *
      * @param  Collection<int, Lesson>  $lessons
      *
@@ -211,9 +212,7 @@ class ContentAccess
             return;
         }
 
-        $activeGrades = config('curriculum.active_grades', []);
-
-        if ($lessons->contains(fn (Lesson $l) => in_array($l->chapter?->grade?->code, $activeGrades, true))) {
+        if ($lessons->contains(fn (Lesson $l) => (bool) $l->chapter?->grade?->is_active)) {
             return;
         }
 

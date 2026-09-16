@@ -3,6 +3,7 @@
 namespace App\Domain\Admin;
 
 use App\Models\LearningPoint;
+use App\Models\Grade;
 use App\Models\Lesson;
 use App\Models\LessonModule;
 use App\Models\PracticeExercise;
@@ -37,6 +38,7 @@ class RegistryHealthService
             'publication' => $this->publication(),
             'learningPoints' => $this->learningPointHealth(),
             'reporting' => $this->reportingHealth(),
+            'activation' => $this->activation(),
         ];
     }
 
@@ -251,6 +253,44 @@ class RegistryHealthService
             // mais leur lien est cassé.
             'orphanedContext' => StudentReport::whereNull('lesson_id')
                 ->whereNotNull('lesson_code')->count(),
+        ];
+    }
+
+    /**
+     * Activation des classes : la base (`grades.is_active`) doit refléter
+     * packages/core/curriculum/activeGrades.js tel qu'exporté par
+     * exportCurriculum.mjs. Une dérive signifie qu'un import est en retard —
+     * le frontend et l'API ne s'accorderaient plus sur ce qui est ouvert.
+     *
+     * @return array{active: string[], drift: array<int, array{code: string, database: bool, source: ?bool}>, sourceAvailable: bool}
+     */
+    private function activation(): array
+    {
+        $db = Grade::query()->orderBy('order')->get(['code', 'is_active']);
+
+        $sourcePath = config('curriculum.export_output_path');
+        $source = null;
+        if (is_string($sourcePath) && is_file($sourcePath)) {
+            $decoded = json_decode((string) file_get_contents($sourcePath), true);
+            if (is_array($decoded) && isset($decoded['grades'])) {
+                $source = collect($decoded['grades'])->mapWithKeys(fn ($g) => [$g['code'] => (bool) ($g['active'] ?? false)]);
+            }
+        }
+
+        $drift = [];
+        if ($source !== null) {
+            foreach ($db as $grade) {
+                $expected = $source->get($grade->code);
+                if ($expected === null || $expected !== (bool) $grade->is_active) {
+                    $drift[] = ['code' => $grade->code, 'database' => (bool) $grade->is_active, 'source' => $expected];
+                }
+            }
+        }
+
+        return [
+            'active' => $db->where('is_active', true)->pluck('code')->values()->all(),
+            'drift' => $drift,
+            'sourceAvailable' => $source !== null,
         ];
     }
 

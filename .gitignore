@@ -1,6 +1,9 @@
 node_modules/
 dist/
 .env*
+# Templates are the one exception: a fresh clone must be able to see which
+# variables exist without inheriting any real value.
+!.env.example
 .DS_Store
 database_export.sql
 *.sql

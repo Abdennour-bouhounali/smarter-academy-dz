@@ -12,7 +12,13 @@ class Grade extends Model
         'name',
         'level',
         'order',
+        'is_active',
     ];
+
+    protected function casts(): array
+    {
+        return ['is_active' => 'boolean'];
+    }
 
     public function chapters(): HasMany
     {

@@ -59,6 +59,15 @@ class ContentService
             $query->whereHas('chapter.grade', fn ($q) => $q->where('code', $grade));
         }
 
+        // Les classes dormantes (grades.is_active = false — activeGrades.js via
+        // l'import du catalogue) restent hors des vues d'administration par
+        // défaut (ALGERIA_PLATFORM_MASTER_SPEC.md §20). `scope=all` est un
+        // regard explicite et volontaire sur le contenu dormant, jamais le
+        // défaut. Même interrupteur que l'API élève (config enforce_active_grades).
+        if (($filters['scope'] ?? null) !== 'all' && config('curriculum.enforce_active_grades', true)) {
+            $query->whereHas('chapter.grade', fn ($q) => $q->where('is_active', true));
+        }
+
         if ($chapter = ($filters['chapter'] ?? null)) {
             $query->whereHas('chapter', fn ($q) => $q->where('code', $chapter));
         }
@@ -128,6 +137,11 @@ class ContentService
             $query->whereHas('lesson.chapter.grade', fn ($q) => $q->where('code', $grade));
         }
 
+        // Voir lessons() : les classes dormantes ne sont listées que sur `scope=all`.
+        if (($filters['scope'] ?? null) !== 'all' && config('curriculum.enforce_active_grades', true)) {
+            $query->whereHas('lesson.chapter.grade', fn ($q) => $q->where('is_active', true));
+        }
+
         if ($lesson = ($filters['lesson'] ?? null)) {
             $query->whereHas('lesson', fn ($q) => $q->where('code', $lesson));
         }
@@ -180,6 +194,11 @@ class ContentService
 
         if ($grade = ($filters['grade'] ?? null)) {
             $query->whereHas('lesson.chapter.grade', fn ($q) => $q->where('code', $grade));
+        }
+
+        // Voir lessons() : les classes dormantes ne sont listées que sur `scope=all`.
+        if (($filters['scope'] ?? null) !== 'all' && config('curriculum.enforce_active_grades', true)) {
+            $query->whereHas('lesson.chapter.grade', fn ($q) => $q->where('is_active', true));
         }
 
         if ($lesson = ($filters['lesson'] ?? null)) {

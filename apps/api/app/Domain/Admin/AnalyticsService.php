@@ -214,6 +214,11 @@ class AnalyticsService
             $lessons->whereHas('chapter.grade', fn ($q) => $q->where('code', $grade));
         }
 
+        // Classes dormantes hors des statistiques par défaut — voir ContentService::lessons().
+        if (($filters['scope'] ?? null) !== 'all' && config('curriculum.enforce_active_grades', true)) {
+            $lessons->whereHas('chapter.grade', fn ($q) => $q->where('is_active', true));
+        }
+
         $rows = $lessons->get()->map(function (Lesson $lesson) {
             $starts = (int) $lesson->starts_count;
             $completions = (int) $lesson->completions_count;
