@@ -224,7 +224,19 @@ Do not reuse the French client.
 
 ---
 
-## 12. Entitlement / Activation Code Status — NOT STARTED (correctly)
+## 12. Entitlement / Activation Code Status — COMPLETE (phase 6, 2026-09-16)
+
+> **MISE À JOUR.** La phase 6 a été exécutée : voir
+> `ALGERIA_PHASE6_IMPLEMENTATION_REPORT.md`. Le constat ci-dessous décrit
+> l'état d'AVANT, et il s'est vérifié juste : la couche d'accès était bien la
+> bonne fondation, et elle n'a pas été remplacée — un type de droit de plus a
+> suffi (`Entitlement::TYPE_ACTIVATION_CODE`). `ContentAccess` et `AccessTier`
+> sont inchangés. « 3 leçons gratuites » est resté un étiquetage de contenu,
+> désormais porté par une liste nommée (`freeLessons.js`).
+
+### L'état d'avant la phase 6
+
+
 
 `Entitlement` / `EntitlementService` / `ContentAccess` / `AccessTier` are
 inherited, server-authoritative, and suitable. `Entitlement::TYPES` is
@@ -255,6 +267,17 @@ content has been written or invented. This is the correct state.
 ---
 
 ## 15. 4AM Curriculum Working Specification — status of the supplied outline
+
+> **MISE À JOUR 2026-09-16.** Le propriétaire du projet a depuis fourni le
+> programme 4AM comme **spécification officielle** pour 2026/2027. Il est
+> transcrit au mot près dans `docs/ALGERIA_4AM_CURRICULUM.md` et en données
+> dans `packages/core/curriculum/dz/programme_4am_2026_2027.json`. La réserve
+> ci-dessous reste vraie sur un point : il n'a pas été confronté à un document
+> ministériel dans ce dépôt, et le document d'accompagnement n'a pas été
+> fourni. Les questions qu'il ne tranche pas portent toujours
+> `[À VÉRIFIER DANS LE PROGRAMME OFFICIEL]`.
+
+
 
 The outline supplied in the takeover brief (4 domains: أنساب الأعداد والحساب /
 الحساب الحرفي / الهندسة / تنظيم المعطيات) is recorded as a **candidate working
@@ -323,9 +346,9 @@ after use. Full lesson QA belongs to Phase 8.
 
 ## 18. Remaining Risks
 
-1. **Screenshot capture on the probe page was unreliable** (identical bytes across different DOM states). DOM/computed-style assertions were used instead. Visual review of a *real* lesson page is still owed — Phase 8. `UNKNOWN — REQUIRES VERIFICATION`.
+1. ~~**Screenshot capture on the probe page was unreliable.**~~ **FERMÉ (phase 6)** : une surface de QA isolée (`apps/web/src/qa/rtlLessonFixture/`, absente du lot de production) monte les vrais composants du moteur avec du texte arabe. Captures d'écran obtenues et lues. Trois défauts réels trouvés en regardant : `NumberLine` et quatre autres figures non épinglées LTR (« -5 » rendu « 5- »), et le déclencheur de la carte des connaissances inatteignable sous RTL. Voir le rapport de phase 6 §11.
 2. **MathLive is dead code.** Its RTL behaviour is unverifiable until something uses it; caret/selection under RTL is a known failure class.
-3. **Activation drift.** `grades.is_active` is a mirror; forgetting `smarter:import-curriculum` after changing `ACTIVE_GRADE_IDS` makes the API and catalogue disagree. Mitigated by the new `registry-health` drift report — **not** yet a CI gate.
+3. ~~**Activation drift.**~~ **FERMÉ (phase 6)** : `npm run check:activation-drift` est désormais dans `check:lessons`. Il vérifie que l'export reflète le catalogue, puis délègue la comparaison base ↔ export à `smarter:registry-health --gate`. Le **palier** est surveillé en plus de l'activation — la dérive commerciale (« le catalogue vend, la base offre ») ne l'était nulle part. Une source absente est un échec en mode porte.
 4. **Admin copy is French.** Acceptable for staff, must not leak into student surfaces.
 5. **Marketing/legal copy is French and mentions French grades and €35/an.** Phases 6 and 13.
 6. **`phpunit.xml` declares SQLite but migrations need MySQL.** Any CI must override it.
@@ -336,10 +359,10 @@ after use. Full lesson QA belongs to Phase 8.
 
 | # | Blocker | Exact action required |
 |---|---|---|
-| B1 | Official 4AM curriculum | Supply the official 2ᵉ génération programme for 2026/2027 (+ accompanying document). Blocks Phases 7–9. |
+| B1 | Official 4AM curriculum | **PARTIELLEMENT RÉSOLU (2026-09-16)** : le propriétaire a fourni le programme 4AM (4 domaines, 28 sujets), transcrit dans `docs/ALGERIA_4AM_CURRICULUM.md`. Restent non fournis : le document d'accompagnement, la répartition horaire et les attendus de fin de cycle — d'où le découpage en leçons, qui reste une décision à prendre. **Terminale-DZ reste entièrement bloquée** (aucun programme fourni). |
 | B2 | DZ Google Cloud project | Create a project independent of France; set `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`, authorised redirect URI `{APP_URL}/api/v1/auth/google/callback`. Blocks Google sign-in only — email/password is unaffected. |
 | B3 | Production infrastructure | Hosting, production DB, SMTP, domain, backups, analytics. Blocks deployment, not development. |
-| B4 | "3 free lessons" definition | Product decision: the first three *in curriculum order*, or three curated lessons? Blocks Phase 6 content tagging. |
+| ~~B4~~ | ~~« 3 free lessons » definition~~ | **RÉSOLU (phase 6)** : une liste NOMMÉE (`packages/core/curriculum/freeLessons.js`), jamais un rang — « les trois premières » aurait fait dépendre le modèle commercial d'un ordre de tri. Vide aujourd'hui : aucune leçon algérienne n'existe. À remplir en phase 7. |
 
 ---
 
@@ -351,7 +374,7 @@ works today) whereas Google is blocked on B2. This removes an external dependenc
 from the critical path.
 
 1. **Phase 5 — Authentication (email/password half).** Verify the full DZ flow end to end; translate remaining auth copy. Leave Google pending B2.
-2. **Phase 6 — Activation codes.** `activation_codes` table; `Entitlement::TYPES` + `activation_code`; `ActivationCodeRedemptionService` writing an entitlement transactionally; `POST /activation-codes/redeem` throttled like `/auth/login`; admin generate/list/revoke/export; resolve B4 and tag the three free lessons. Do **not** touch `EntitlementService`/`ContentAccess` — they are already correct.
+2. ~~**Phase 6 — Activation codes.**~~ **FAIT (2026-09-16).** `activation_codes` table; `Entitlement::TYPES` + `activation_code`; `ActivationCodeRedemptionService` writing an entitlement transactionally; `POST /activation-codes/redeem` throttled like `/auth/login`; admin generate/list/revoke/export; resolve B4 and tag the three free lessons. Do **not** touch `EntitlementService`/`ContentAccess` — they are already correct.
 3. **Phase 7 — Curriculum foundation.** Only once B1 is satisfied. Build the Algerian source of truth from the official document, add `4am` to `ACTIVE_GRADE_IDS`, re-run the export/import, confirm `registry-health` shows no drift.
 4. **Phase 8 — 4AM, lesson by lesson.** Per lesson: curriculum mapping → LP-by-LP classification against French (MATCHING / PARTIAL / MISSING / DIFFERENT / ALGERIAN-SPECIFIC / VERIFY) → architecture → content → interaction → Knowledge Map → exercises → BossFinal → QA. The first lesson doubles as the end-to-end validation of the lesson engine under RTL, which is the one thing this audit could not exercise.
 

@@ -237,6 +237,45 @@ Companion to `ALGERIA_MIGRATION_AUDIT.md`. This roadmap is grounded in that audi
 
 ## Phase 6 — Activation Code / Entitlement System
 
+**Status: COMPLETE** (executed 2026-09-16 — voir
+`ALGERIA_PHASE6_IMPLEMENTATION_REPORT.md` pour le détail, les tests et la QA
+navigateur).
+
+**Ce qui a été construit** : tables `activation_code_batches` et
+`activation_codes` ; `Entitlement::TYPE_ACTIVATION_CODE` ; génération,
+saisie, révocation (avec cascade sur le droit) et export ; page élève arabe
+`/espace/activation` ; trois écrans d'administration ; Stripe démonté du
+produit actif.
+
+**La couche d'accès n'a pas été remplacée.** `ContentAccess` et `AccessTier`
+sont inchangés : le code d'activation ajoute un TYPE de droit, ce que la
+conception prévoyait (`entitlements.type` est documentée comme additive).
+Vérifié par test : un code valide n'ouvre rien d'une classe dormante.
+
+**Décisions prises avec le propriétaire** :
+- le code n'est stocké que haché (HMAC-SHA256 depuis APP_KEY) ; les codes en
+  clair ne sont montrés qu'une fois, à la génération ;
+- un code DÉJÀ activé peut être révoqué, et ferme alors l'accès de l'élève ;
+- Stripe : l'interface est démontée, le backend reste dormant sur le disque.
+
+**Deux tâches de la reprise précédente fermées ici** : la dérive d'activation
+est devenue une porte d'intégration continue (`npm run check:activation-drift`,
+qui surveille aussi le PALIER — dérive commerciale jusque-là non surveillée),
+et le moteur de leçon a été rendu et regardé sous RTL via une surface de QA
+isolée (`apps/web/src/qa/rtlLessonFixture/`, absente du lot de production).
+
+**Défauts réels trouvés et corrigés en chemin** : `NumberLine` et quatre
+autres figures partagées n'étaient pas épinglées LTR (les étiquettes
+négatives s'affichaient « 5- ») ; le déclencheur de la carte des
+connaissances était inatteignable sous RTL (posé sous la barre latérale) ;
+`RegistryHealthService::structural()` levait sur une collection Eloquent ;
+`config/cors.php` autorisait en dur le domaine de production FRANÇAIS et
+aucun domaine algérien.
+
+**Reste ouvert** : la sélection des trois leçons gratuites (`freeLessons.js`
+existe et est vide — aucune leçon algérienne n'existe encore) ; la carte des
+connaissances et le corps des pages élève restent en français.
+
 **Objective**: implement server-authoritative premium access via cash-purchased activation codes, extending the existing `Entitlement`/`ContentAccess` architecture rather than rebuilding it.
 
 **Prerequisites**: Phase 5 (auth) complete — activation codes are redeemed by authenticated students. Phase 2 (independent infra) for production secrets/rate-limiting infra if applicable.
@@ -266,7 +305,23 @@ Companion to `ALGERIA_MIGRATION_AUDIT.md`. This roadmap is grounded in that audi
 
 **Objective**: build the Algerian curriculum source-of-truth structure from official sources — this phase cannot begin until official Algerian curriculum documents are supplied.
 
-**Prerequisites**: Phases 1-6 complete (clone stable, infra independent, dormant content isolated, RTL foundation in place, auth and entitlement working). **Also blocked on**: receipt of official Algerian curriculum/teaching documents for 4AM and Terminale (master spec §4, §23 — hard gate, not a scheduling preference).
+**Prerequisites**: Phases 1-6 complete (clone stable, infra independent, dormant content isolated, RTL foundation in place, auth and entitlement working).
+
+**MISE À JOUR 2026-09-16** : le programme officiel 4AM (4 domaines, 28 sujets)
+a été **fourni par le propriétaire du projet** et transcrit dans
+`docs/ALGERIA_4AM_CURRICULUM.md` + `packages/core/curriculum/dz/
+programme_4am_2026_2027.json`. Le blocage sur la réception du programme est
+donc levé pour la 4AM. Ce qui reste à décider avant de commencer : le
+découpage en leçons et en points d'apprentissage (décision pédagogique), le
+document d'accompagnement, la répartition horaire et les attendus de fin de
+cycle n'ayant pas été fournis. **Terminale-DZ reste entièrement bloquée** —
+aucun programme n'a été fourni pour cette classe.
+
+**Point technique à traiter en premier** : `scripts/check-routes.mjs` déduit
+la classe par l'expression `lessons/(?:college|lycee)/([^/]+)/`. Le niveau
+algérien est `moyen` ; l'expression doit l'accueillir AVANT le premier montage
+d'une leçon 4AM, sinon la leçon est vue comme sans classe et le contrôle
+échoue.
 
 **Files/subsystems affected**: a new Algeria-equivalent of `packages/core/curriculum/coursesData.js` (or an extension of it with new grade codes `4am`/`terminale_dz` or similar — naming to be decided when curriculum sources arrive), `grades`/`chapters` database tables (new rows, not new schema), curriculum sync scripts (`exportCurriculum.mjs` pattern, reusable).
 
