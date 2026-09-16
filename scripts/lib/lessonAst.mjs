@@ -13,12 +13,34 @@ import { join, dirname, resolve, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse } from '@babel/parser';
 import traverseModule from '@babel/traverse';
-// Deliberately the UNFILTERED catalogue: this tooling validates the full
-// on-disk lesson tree against coursesData.js's structural declarations,
-// independent of which grades are runtime-active for Algeria (see
-// packages/core/curriculum/activeGrades.js). Every inherited French lesson
-// must still validate — dormant is not the same as invalid.
-import { allCourseLevels as courseLevels } from '../../packages/core/curriculum/coursesData.js';
+// LES DEUX ARBRES, et c'est voulu.
+//
+// Cet outillage valide l'arbre de leçons SUR LE DISQUE contre les
+// déclarations structurelles du catalogue. Il doit donc voir tout dossier de
+// leçon qui existe, quelle que soit sa provenance :
+//
+//   referenceCourseLevels → les 132 dossiers FRANÇAIS, toujours sur le disque
+//                           (master spec §3). Sans eux, `validate-lessons`
+//                           les déclarerait « absents de coursesData.js » —
+//                           dormant deviendrait invalide, ce qu'il n'est pas.
+//   dzCourseLevels        → les leçons ALGÉRIENNES écrites sous
+//                           lessons/moyen/4am/. C'est la couverture que le
+//                           commentaire précédent annonçait pour « quand la
+//                           phase 7 en écrira » : elle est écrite.
+//
+// Les deux arbres ne peuvent pas entrer en collision : la clé d'index est
+// `<classe>:<leçon>`, et aucune classe n'appartient aux deux (les classes
+// françaises sont 6e…terminale, les algériennes 4am et terminale_dz).
+//
+// ATTENTION : indexer une leçon ne l'ACTIVE pas. Ce qu'un élève peut ouvrir
+// est décidé par ACTIVE_GRADE_IDS et le registre de l'application, que
+// check-dormant-isolation.mjs vérifie séparément.
+import {
+  referenceCourseLevels,
+  dzCourseLevels,
+} from '../../packages/core/curriculum/coursesData.js';
+
+const courseLevels = [...referenceCourseLevels, ...dzCourseLevels];
 
 export const traverse = traverseModule.default || traverseModule;
 export const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..');

@@ -5,6 +5,7 @@ import TrustRelevanceSection from '../components/home/TrustRelevanceSection';
 import FreePremiumTeaser from '../components/home/FreePremiumTeaser';
 import SmarterEverydaySection from '../components/home/SmarterEverydaySection';
 import CtaBanner from '../components/common/CtaBanner';
+import { useTranslation } from 'react-i18next';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
 // Five sections, five jobs — Attention/Curiosity/Experience (Hero),
@@ -14,10 +15,9 @@ import { useDocumentMeta } from '../hooks/useDocumentMeta';
 // methodology lives on /methode, the full pricing on /tarifs, the mission
 // on /about — Home experiences the idea, it doesn't re-explain it.
 export default function Home() {
-  useDocumentMeta(
-    'Comprendre les mathématiques, pas les réciter',
-    "Smarter Academy — une plateforme interactive pour manipuler, découvrir et maîtriser les mathématiques, du Collège au Lycée. Essaie sans compte."
-  );
+  const { t } = useTranslation('marketing');
+
+  useDocumentMeta(t('home.metaTitle'), t('home.metaDescription'));
 
   return (
     <>
@@ -28,10 +28,10 @@ export default function Home() {
       <FreePremiumTeaser />
       <SmarterEverydaySection />
       <CtaBanner
-        eyebrow="Prêt à essayer ?"
-        title="Commence à comprendre les maths dès aujourd'hui"
-        subtitle="Crée ton compte gratuit — sans carte bancaire — et commence tout de suite."
-        primaryLabel="Commencer gratuitement"
+        eyebrow={t('home.ctaEyebrow')}
+        title={t('home.ctaTitle')}
+        subtitle={t('home.ctaBody')}
+        primaryLabel={t('home.ctaButton')}
         primaryTo="/register"
       />
     </>

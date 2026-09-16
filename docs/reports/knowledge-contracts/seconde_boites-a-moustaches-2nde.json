@@ -7,7 +7,6 @@
     "effectif",
     "ordre-nombres",
     "mediane-stat",
-    "quartile",
     "etendue",
     "dispersion",
     "indicateur-stat",
@@ -15,12 +14,23 @@
   ],
   "conceptsIntroduced": [
     {
+      "id": "quartile-rang",
+      "type": "regles",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/boites-a-moustaches-2nde/modules/Module01CinqNombresSuffisent.jsx",
+        "line": 94,
+        "step": 1,
+        "variant": "rappel"
+      }
+    },
+    {
       "id": "resume-cinq-nombres",
       "type": "concepts",
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/boites-a-moustaches-2nde/modules/Module01CinqNombresSuffisent.jsx",
-        "line": 94,
+        "line": 100,
         "step": 1,
         "variant": "new"
       }
@@ -78,7 +88,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/boites-a-moustaches-2nde/modules/Module01CinqNombresSuffisent.jsx",
-        "line": 99,
+        "line": 105,
         "step": 1,
         "variant": "new"
       }
@@ -146,14 +156,14 @@
       "step": null,
       "component": "diag",
       "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/boites-a-moustaches-2nde/modules/Module00Diagnostic.jsx",
-      "line": 18,
+      "line": 23,
       "requires": [
-        "quartile",
+        "mediane-stat",
         "effectif",
         "ordre-nombres"
       ],
       "prerequisiteStatus": {
-        "quartile": "prior",
+        "mediane-stat": "prior",
         "effectif": "prior",
         "ordre-nombres": "prior"
       },
@@ -166,7 +176,7 @@
       "step": null,
       "component": "diag",
       "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/boites-a-moustaches-2nde/modules/Module00Diagnostic.jsx",
-      "line": 19,
+      "line": 24,
       "requires": [
         "mediane-stat",
         "serie-statistique",
@@ -186,7 +196,7 @@
       "step": null,
       "component": "diag",
       "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/boites-a-moustaches-2nde/modules/Module00Diagnostic.jsx",
-      "line": 20,
+      "line": 25,
       "requires": [
         "etendue",
         "dispersion",
@@ -206,14 +216,12 @@
       "step": null,
       "component": "diag",
       "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/boites-a-moustaches-2nde/modules/Module00Diagnostic.jsx",
-      "line": 21,
+      "line": 29,
       "requires": [
-        "quartile",
         "etendue",
         "dispersion"
       ],
       "prerequisiteStatus": {
-        "quartile": "prior",
         "etendue": "prior",
         "dispersion": "prior"
       },
@@ -226,7 +234,7 @@
       "step": null,
       "component": "diag",
       "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/boites-a-moustaches-2nde/modules/Module00Diagnostic.jsx",
-      "line": 22,
+      "line": 30,
       "requires": [
         "moyenne",
         "serie-statistique",
@@ -246,7 +254,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/boites-a-moustaches-2nde/modules/Module01CinqNombresSuffisent.jsx",
-      "line": 124,
+      "line": 130,
       "requires": [
         "resume-cinq-nombres",
         "construire-boite",
@@ -256,7 +264,7 @@
       "prerequisiteStatus": {
         "resume-cinq-nombres": "established@M1",
         "construire-boite": "established@M1",
-        "quartile": "prior",
+        "quartile": "established@M1",
         "effectif": "prior"
       },
       "lexiconHits": [],
@@ -276,7 +284,7 @@
       ],
       "prerequisiteStatus": {
         "zones-quart": "established@M2",
-        "quartile": "prior",
+        "quartile": "established@M1",
         "effectif": "prior"
       },
       "lexiconHits": [],
@@ -297,7 +305,7 @@
       ],
       "prerequisiteStatus": {
         "lire-dispersion": "established@M2",
-        "quartile": "prior",
+        "quartile": "established@M1",
         "etendue": "prior",
         "dispersion": "prior"
       },
@@ -343,7 +351,7 @@
       "prerequisiteStatus": {
         "axe-commun": "established@M3",
         "mediane-stat": "prior",
-        "quartile": "prior",
+        "quartile": "established@M1",
         "etendue": "prior",
         "dispersion": "prior"
       },
@@ -387,7 +395,7 @@
       ],
       "prerequisiteStatus": {
         "choisir-indicateur": "established@M4",
-        "quartile": "prior",
+        "quartile": "established@M1",
         "etendue": "prior",
         "dispersion": "prior"
       },
@@ -448,7 +456,7 @@
       ],
       "prerequisiteStatus": {
         "interpreter-contexte": "established@M5",
-        "quartile": "prior",
+        "quartile": "established@M1",
         "etendue": "prior"
       },
       "lexiconHits": [],
@@ -470,7 +478,7 @@
       "prerequisiteStatus": {
         "interpreter-contexte": "established@M5",
         "mediane-ne-dit-pas-tout": "established@M3",
-        "quartile": "prior",
+        "quartile": "established@M1",
         "dispersion": "prior"
       },
       "lexiconHits": [],
@@ -491,7 +499,7 @@
       "prerequisiteStatus": {
         "resume-cinq-nombres": "established@M1",
         "mediane-stat": "prior",
-        "quartile": "prior"
+        "quartile": "established@M1"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -509,7 +517,7 @@
       ],
       "prerequisiteStatus": {
         "construire-boite": "established@M1",
-        "quartile": "prior"
+        "quartile": "established@M1"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -566,7 +574,7 @@
       ],
       "prerequisiteStatus": {
         "lire-dispersion": "established@M2",
-        "quartile": "prior",
+        "quartile": "established@M1",
         "etendue": "prior"
       },
       "lexiconHits": [],

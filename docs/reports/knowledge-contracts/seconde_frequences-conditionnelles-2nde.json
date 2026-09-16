@@ -62,7 +62,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/frequences-conditionnelles-2nde/modules/Module04DesFrequencesAuxEffectifs.jsx",
-        "line": 52,
+        "line": 55,
         "step": 1,
         "variant": "new"
       }
@@ -87,7 +87,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/frequences-conditionnelles-2nde/modules/Module04DesFrequencesAuxEffectifs.jsx",
-        "line": 117,
+        "line": 123,
         "step": 4,
         "variant": "new"
       }
@@ -336,7 +336,7 @@
       "step": 1,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/frequences-conditionnelles-2nde/modules/Module04DesFrequencesAuxEffectifs.jsx",
-      "line": 57,
+      "line": 60,
       "requires": [
         "frequences-vers-effectifs",
         "pourcentage",
@@ -358,7 +358,7 @@
       "step": 2,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/frequences-conditionnelles-2nde/modules/Module04DesFrequencesAuxEffectifs.jsx",
-      "line": 75,
+      "line": 78,
       "requires": [
         "frequences-vers-effectifs",
         "population-reference",
@@ -380,7 +380,7 @@
       "step": 3,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/frequences-conditionnelles-2nde/modules/Module04DesFrequencesAuxEffectifs.jsx",
-      "line": 94,
+      "line": 97,
       "requires": [
         "frequences-vers-effectifs",
         "population-reference",
@@ -397,12 +397,12 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M04-S4-Q4",
+      "questionId": "M04-S5-Q4",
       "module": 4,
-      "step": 4,
+      "step": 5,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/frequences-conditionnelles-2nde/modules/Module04DesFrequencesAuxEffectifs.jsx",
-      "line": 123,
+      "line": 157,
       "requires": [
         "methode-completer-tableau",
         "frequences-vers-effectifs",

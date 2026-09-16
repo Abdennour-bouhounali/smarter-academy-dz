@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 // Learning-point derivation is a data-shape invariant of the full inherited
 // catalogue, independent of which grades are active for Algeria — see
 // activeGrades.js and coursesData.test.js.
-import { allCourseLevels } from './coursesData';
+import { referenceCourseLevels as allCourseLevels } from './coursesData';
 
 const allLessons = allCourseLevels.flatMap((level) =>
   level.grades.flatMap((grade) =>

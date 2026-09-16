@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { allCourseLevels } from '@smarter-academy/core';
+import { referenceCourseLevels as allCourseLevels } from '@smarter-academy/core';
 
 /**
  * PORTE DE VISIBILITÉ (memory « lesson_visibility_gate »).

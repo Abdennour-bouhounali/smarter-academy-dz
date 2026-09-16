@@ -6,6 +6,12 @@ import { fileURLToPath } from 'node:url';
 const SRC = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => readFileSync(join(SRC, p), 'utf8');
 
+// Les catalogues arabes : l'interface élève/visiteur est arabe, donc les
+// libellés que ces contrats exigent vivent ici et non dans le JSX.
+const readJson = (p) => JSON.parse(read(p));
+const marketingAr = readJson('i18n/locales/ar/marketing.json');
+const authAr = readJson('i18n/locales/ar/auth.json');
+
 /**
  * La source PRIVÉE DE SES COMMENTAIRES.
  *
@@ -49,8 +55,14 @@ describe('La case de consentement', () => {
   });
 
   it('porte les deux intitulés exigés', () => {
-    expect(source).toContain('Conditions Générales d’Utilisation');
-    expect(source).toContain('Politique de confidentialité');
+    // L'interface est ARABE : les deux intitulés ne sont plus écrits dans le
+    // JSX mais rendus depuis le catalogue de traduction. Le contrat tient
+    // toujours — la case doit nommer les deux documents — mais il se vérifie
+    // désormais en deux temps : la clé est posée ici, le texte existe là-bas.
+    expect(source).toContain("t('consent.terms')");
+    expect(source).toContain("t('consent.privacy')");
+    expect(marketingAr.consent.terms.trim()).not.toBe('');
+    expect(marketingAr.consent.privacy.trim()).not.toBe('');
   });
 
   it('relie la case à son libellé par id/htmlFor, sans imbrication interactive', () => {
@@ -319,8 +331,11 @@ describe('L’écran de vérification', () => {
 
   it('propose le renvoi et la déconnexion', () => {
     expect(source).toContain('resendVerificationEmail');
-    expect(source).toMatch(/Renvoyer l’e-mail/);
-    expect(source).toMatch(/Se déconnecter/);
+    // Mêmes deux gestes, libellés en arabe via le catalogue.
+    expect(source).toContain("t('resendEmail')");
+    expect(source).toContain("t('logout')");
+    expect(authAr.resendEmail.trim()).not.toBe('');
+    expect(authAr.logout.trim()).not.toBe('');
   });
 
   it('ne propose PAS un changement d’adresse que le serveur ne sait pas faire', () => {
@@ -359,8 +374,13 @@ describe('Le retour de Google', () => {
   });
 
   it('traduit chaque refus du serveur en message lisible', () => {
+    // Le code d'erreur reste un IDENTIFIANT technique venu du serveur ; c'est
+    // sa traduction arabe qui doit exister. La page les résout dynamiquement
+    // (`errors.${erreur}`), donc on interroge le catalogue, pas le JSX.
+    expect(source).toContain('errors.${erreur}');
     for (const raison of ['already_linked', 'email_not_verified', 'provider_failure', 'annule']) {
-      expect(source).toContain(raison);
+      expect(authAr.errors[raison]).toBeTruthy();
+      expect(authAr.errors[raison].trim()).not.toBe('');
     }
   });
 });

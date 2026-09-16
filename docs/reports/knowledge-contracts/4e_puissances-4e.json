@@ -1,0 +1,608 @@
+{
+  "lesson": "puissances-4e",
+  "grade": "4e",
+  "lexiconVersion": 1,
+  "prerequisites": [
+    "puissance",
+    "exposant",
+    "carre-cube",
+    "puissance-de-dix",
+    "priorite-puissance",
+    "decalage-virgule",
+    "quotient"
+  ],
+  "conceptsIntroduced": [
+    {
+      "id": "descente-des-exposants",
+      "type": "concepts",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module01DescendreLEchelle.jsx",
+        "line": 203,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "exposant-negatif",
+      "type": "regles",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module02LExposantNegatif.jsx",
+        "line": 31,
+        "step": 1,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "regles-puissances",
+      "type": "formules",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module03CompterLesFacteurs.jsx",
+        "line": 135,
+        "step": 3,
+        "variant": "new"
+      }
+    }
+  ],
+  "vocabularyIntroduced": [],
+  "proceduresIntroduced": [
+    {
+      "id": "notation-scientifique",
+      "type": "methodes",
+      "module": 4,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module04EcrireLImmense.jsx",
+        "line": 148,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "ordre-de-grandeur-4e",
+      "type": "methodes",
+      "module": 5,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module05OrdresDeGrandeur.jsx",
+        "line": 112,
+        "step": 2,
+        "variant": "new"
+      }
+    }
+  ],
+  "memorisation": [
+    {
+      "id": "mem-exposant-negatif",
+      "type": "memoriser",
+      "module": 2,
+      "brick": null
+    },
+    {
+      "id": "mem-entre-1-et-10",
+      "type": "memoriser",
+      "module": 4,
+      "brick": null
+    }
+  ],
+  "questions": [
+    {
+      "questionId": "pu4-d1-sens",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module00Diagnostic.jsx",
+      "line": 24,
+      "requires": [
+        "puissance",
+        "exposant"
+      ],
+      "prerequisiteStatus": {
+        "puissance": "prior",
+        "exposant": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "pu4-d2-exposant",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module00Diagnostic.jsx",
+      "line": 35,
+      "requires": [
+        "exposant"
+      ],
+      "prerequisiteStatus": {
+        "exposant": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "pu4-d3-carre",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module00Diagnostic.jsx",
+      "line": 46,
+      "requires": [
+        "carre-cube"
+      ],
+      "prerequisiteStatus": {
+        "carre-cube": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "pu4-d4-dix",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module00Diagnostic.jsx",
+      "line": 57,
+      "requires": [
+        "puissance-de-dix"
+      ],
+      "prerequisiteStatus": {
+        "puissance-de-dix": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "pu4-d5-virgule",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module00Diagnostic.jsx",
+      "line": 68,
+      "requires": [
+        "decalage-virgule"
+      ],
+      "prerequisiteStatus": {
+        "decalage-virgule": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "pu4-d6-quotient",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module00Diagnostic.jsx",
+      "line": 79,
+      "requires": [
+        "quotient"
+      ],
+      "prerequisiteStatus": {
+        "quotient": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "pu4-d7-priorite",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module00Diagnostic.jsx",
+      "line": 90,
+      "requires": [
+        "priorite-puissance"
+      ],
+      "prerequisiteStatus": {
+        "priorite-puissance": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S3-Q1",
+      "module": 1,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module01DescendreLEchelle.jsx",
+      "line": 208,
+      "requires": [
+        "descente-des-exposants"
+      ],
+      "prerequisiteStatus": {
+        "descente-des-exposants": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S1-Q1",
+      "module": 2,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module02LExposantNegatif.jsx",
+      "line": 36,
+      "requires": [
+        "exposant-negatif"
+      ],
+      "prerequisiteStatus": {
+        "exposant-negatif": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S2-Q2",
+      "module": 2,
+      "step": 2,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module02LExposantNegatif.jsx",
+      "line": 59,
+      "requires": [
+        "exposant-negatif"
+      ],
+      "prerequisiteStatus": {
+        "exposant-negatif": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S3-Q3",
+      "module": 2,
+      "step": 3,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module02LExposantNegatif.jsx",
+      "line": 129,
+      "requires": [
+        "exposant-negatif"
+      ],
+      "prerequisiteStatus": {
+        "exposant-negatif": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S3-Q1",
+      "module": 3,
+      "step": 3,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module03CompterLesFacteurs.jsx",
+      "line": 140,
+      "requires": [
+        "regles-puissances"
+      ],
+      "prerequisiteStatus": {
+        "regles-puissances": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S4-Q2",
+      "module": 3,
+      "step": 4,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module03CompterLesFacteurs.jsx",
+      "line": 167,
+      "requires": [
+        "regles-puissances",
+        "exposant-negatif"
+      ],
+      "prerequisiteStatus": {
+        "regles-puissances": "established@M3",
+        "exposant-negatif": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S5-Q3",
+      "module": 3,
+      "step": 5,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module03CompterLesFacteurs.jsx",
+      "line": 228,
+      "requires": [
+        "regles-puissances"
+      ],
+      "prerequisiteStatus": {
+        "regles-puissances": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S6-Q4",
+      "module": 3,
+      "step": 6,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module03CompterLesFacteurs.jsx",
+      "line": 250,
+      "requires": [
+        "regles-puissances"
+      ],
+      "prerequisiteStatus": {
+        "regles-puissances": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S2-Q1",
+      "module": 4,
+      "step": 2,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module04EcrireLImmense.jsx",
+      "line": 153,
+      "requires": [
+        "notation-scientifique"
+      ],
+      "prerequisiteStatus": {
+        "notation-scientifique": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S3-Q2",
+      "module": 4,
+      "step": 3,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module04EcrireLImmense.jsx",
+      "line": 175,
+      "requires": [
+        "notation-scientifique",
+        "exposant-negatif"
+      ],
+      "prerequisiteStatus": {
+        "notation-scientifique": "established@M4",
+        "exposant-negatif": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S4-Q3",
+      "module": 4,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module04EcrireLImmense.jsx",
+      "line": 205,
+      "requires": [
+        "notation-scientifique"
+      ],
+      "prerequisiteStatus": {
+        "notation-scientifique": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S2-Q1",
+      "module": 5,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module05OrdresDeGrandeur.jsx",
+      "line": 117,
+      "requires": [
+        "ordre-de-grandeur-4e"
+      ],
+      "prerequisiteStatus": {
+        "ordre-de-grandeur-4e": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S3-Q2",
+      "module": 5,
+      "step": 3,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module05OrdresDeGrandeur.jsx",
+      "line": 137,
+      "requires": [
+        "ordre-de-grandeur-4e",
+        "notation-scientifique"
+      ],
+      "prerequisiteStatus": {
+        "ordre-de-grandeur-4e": "established@M5",
+        "notation-scientifique": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "pu4-e1",
+      "module": 6,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module06MissionFinale.jsx",
+      "line": 50,
+      "requires": [
+        "exposant-negatif"
+      ],
+      "prerequisiteStatus": {
+        "exposant-negatif": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "pu4-e2",
+      "module": 6,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module06MissionFinale.jsx",
+      "line": 62,
+      "requires": [
+        "exposant-negatif"
+      ],
+      "prerequisiteStatus": {
+        "exposant-negatif": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "pu4-e3",
+      "module": 6,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module06MissionFinale.jsx",
+      "line": 74,
+      "requires": [
+        "regles-puissances"
+      ],
+      "prerequisiteStatus": {
+        "regles-puissances": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "pu4-e4",
+      "module": 6,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module06MissionFinale.jsx",
+      "line": 86,
+      "requires": [
+        "regles-puissances",
+        "exposant-negatif"
+      ],
+      "prerequisiteStatus": {
+        "regles-puissances": "established@M3",
+        "exposant-negatif": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "pu4-e5",
+      "module": 6,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module06MissionFinale.jsx",
+      "line": 98,
+      "requires": [
+        "regles-puissances"
+      ],
+      "prerequisiteStatus": {
+        "regles-puissances": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "pu4-e6",
+      "module": 6,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module06MissionFinale.jsx",
+      "line": 110,
+      "requires": [
+        "regles-puissances"
+      ],
+      "prerequisiteStatus": {
+        "regles-puissances": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "pu4-e7",
+      "module": 6,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module06MissionFinale.jsx",
+      "line": 127,
+      "requires": [
+        "notation-scientifique",
+        "exposant-negatif"
+      ],
+      "prerequisiteStatus": {
+        "notation-scientifique": "established@M4",
+        "exposant-negatif": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "pu4-e8",
+      "module": 6,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module06MissionFinale.jsx",
+      "line": 139,
+      "requires": [
+        "notation-scientifique"
+      ],
+      "prerequisiteStatus": {
+        "notation-scientifique": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "pu4-e9",
+      "module": 6,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module06MissionFinale.jsx",
+      "line": 156,
+      "requires": [
+        "notation-scientifique"
+      ],
+      "prerequisiteStatus": {
+        "notation-scientifique": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "pu4-e10",
+      "module": 6,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/modules/Module06MissionFinale.jsx",
+      "line": 168,
+      "requires": [
+        "ordre-de-grandeur-4e"
+      ],
+      "prerequisiteStatus": {
+        "ordre-de-grandeur-4e": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    }
+  ],
+  "findings": [
+    {
+      "code": "W_ITEM_WITHOUT_BRICK",
+      "severity": "info",
+      "message": "knowledge item 'mem-exposant-negatif' (module 2) is never established by a brick — it only appears in the end-of-module snapshot",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/knowledge.jsx",
+      "line": 119,
+      "module": 2,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_ITEM_WITHOUT_BRICK",
+      "severity": "info",
+      "message": "knowledge item 'mem-entre-1-et-10' (module 4) is never established by a brick — it only appears in the end-of-module snapshot",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/puissances-4e/knowledge.jsx",
+      "line": 209,
+      "module": 4,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    }
+  ]
+}

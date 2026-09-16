@@ -16,7 +16,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/valeur-absolue-distance-2nde/modules/Module01DeuxBateaux.jsx",
-        "line": 71,
+        "line": 70,
         "step": 1,
         "variant": "new"
       }
@@ -27,7 +27,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/valeur-absolue-distance-2nde/modules/Module01DeuxBateaux.jsx",
-        "line": 103,
+        "line": 102,
         "step": 2,
         "variant": "new"
       }
@@ -142,7 +142,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/valeur-absolue-distance-2nde/modules/Module01DeuxBateaux.jsx",
-        "line": 79,
+        "line": 78,
         "step": 1,
         "variant": "new"
       }
@@ -263,7 +263,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/valeur-absolue-distance-2nde/modules/Module01DeuxBateaux.jsx",
-      "line": 118,
+      "line": 117,
       "requires": [
         "valeur-absolue-distance-zero",
         "mem-valeur-absolue-positive",
@@ -487,7 +487,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/valeur-absolue-distance-2nde/modules/Module06MissionFinale.jsx",
-      "line": 31,
+      "line": 55,
       "requires": [
         "valeur-absolue-distance-zero",
         "regle-opposes-meme-distance",
@@ -507,7 +507,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/valeur-absolue-distance-2nde/modules/Module06MissionFinale.jsx",
-      "line": 32,
+      "line": 56,
       "requires": [
         "regle-calcul-valeur-absolue",
         "nombres-relatifs"
@@ -525,7 +525,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/valeur-absolue-distance-2nde/modules/Module06MissionFinale.jsx",
-      "line": 33,
+      "line": 57,
       "requires": [
         "methode-calculer-expression-absolue",
         "regle-calcul-valeur-absolue"
@@ -543,7 +543,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/valeur-absolue-distance-2nde/modules/Module06MissionFinale.jsx",
-      "line": 34,
+      "line": 58,
       "requires": [
         "distance-deux-nombres",
         "mem-distance"
@@ -561,7 +561,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/valeur-absolue-distance-2nde/modules/Module06MissionFinale.jsx",
-      "line": 35,
+      "line": 59,
       "requires": [
         "mem-distance",
         "distance-deux-nombres"
@@ -579,7 +579,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/valeur-absolue-distance-2nde/modules/Module06MissionFinale.jsx",
-      "line": 36,
+      "line": 60,
       "requires": [
         "faisceau-intervalle",
         "mem-faisceau",
@@ -599,7 +599,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/valeur-absolue-distance-2nde/modules/Module06MissionFinale.jsx",
-      "line": 37,
+      "line": 61,
       "requires": [
         "methode-centre-rayon",
         "mem-faisceau",
@@ -619,7 +619,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/valeur-absolue-distance-2nde/modules/Module06MissionFinale.jsx",
-      "line": 38,
+      "line": 62,
       "requires": [
         "methode-tolerance",
         "faisceau-intervalle"
@@ -637,7 +637,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/valeur-absolue-distance-2nde/modules/Module06MissionFinale.jsx",
-      "line": 39,
+      "line": 63,
       "requires": [
         "methode-tolerance",
         "methode-centre-rayon"
@@ -655,7 +655,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/valeur-absolue-distance-2nde/modules/Module06MissionFinale.jsx",
-      "line": 40,
+      "line": 64,
       "requires": [
         "regle-deux-positions",
         "equation-distance-egale"
@@ -663,6 +663,24 @@
       "prerequisiteStatus": {
         "regle-deux-positions": "established@M5",
         "equation-distance-egale": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "va-e11",
+      "module": 6,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/valeur-absolue-distance-2nde/modules/Module06MissionFinale.jsx",
+      "line": 65,
+      "requires": [
+        "methode-centre-rayon",
+        "faisceau-intervalle"
+      ],
+      "prerequisiteStatus": {
+        "methode-centre-rayon": "established@M4",
+        "faisceau-intervalle": "established@M4"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true

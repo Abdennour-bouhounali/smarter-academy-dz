@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { formatFr, parseFr } from '@smarter-academy/core';
 import { Feedback, ChoiceGrid, ValidateButton, NumberField, XPBurst } from '../components/LessonUI';
 import { useKit } from './kitContext';
@@ -39,6 +40,7 @@ export function TapQuestion({
   onAnswered,      // (isCorrect, index) => void — inconditionnel
 }) {
   const { react } = useKit();
+  const { t } = useTranslation('lesson');
   const [pick, setPick] = useState(null);
   const [revealed, setRevealed] = useState(false);
   const [burst, setBurst] = useState(0);
@@ -72,7 +74,7 @@ export function TapQuestion({
         <Feedback tone={isCorrect ? 'ok' : 'ko'}>
           {!isCorrect && (
             <>
-              Bonne réponse : <strong>{correctionLabel ?? options[correct]}</strong>. {' '}
+              {t('question.correctAnswer')} <strong>{correctionLabel ?? options[correct]}</strong>. {' '}
             </>
           )}
           {!isCorrect && explainWrong ? explainWrong : explain}
@@ -199,6 +201,7 @@ export function NumericQuestion({
   onAnswered,      // (isCorrect, n) => void — inconditionnel
 }) {
   const { react } = useKit();
+  const { t } = useTranslation('lesson');
   const [val, setVal] = useState('');
   const [revealed, setRevealed] = useState(false);
   const [wasCorrect, setWasCorrect] = useState(false);
@@ -228,20 +231,20 @@ export function NumericQuestion({
             value={val}
             onChange={setVal}
             onEnter={check}
-            ariaLabel={typeof prompt === 'string' ? prompt : 'Réponse'}
+            ariaLabel={typeof prompt === 'string' ? prompt : t('question.answer')}
             width={width}
             size={size}
           />
           {suffix && <span className="font-mono text-sm text-slate-500">{suffix}</span>}
           <ValidateButton onClick={check} disabled={!val}>
-            OK
+            {t('question.ok')}
           </ValidateButton>
         </div>
       ) : (
         <Feedback tone={revealed && !wasCorrect ? 'ko' : 'ok'}>
           {revealed && !wasCorrect && (
             <>
-              Ta réponse : <strong className="font-mono">{val || '—'}</strong>. Bonne réponse :{' '}
+              {t('question.yourAnswer')} <strong className="font-mono">{val || '—'}</strong>. {t('question.correctAnswer')}{' '}
             </>
           )}
           <strong className="font-mono">{correctDisplay}</strong>

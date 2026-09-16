@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { MailCheck, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 import { resendVerificationEmail } from '../services/authService';
@@ -31,6 +32,7 @@ import { useDocumentMeta } from '../hooks/useDocumentMeta';
  * une autre adresse, ou nous écrire.
  */
 export default function VerificationEmail() {
+  const { t } = useTranslation('auth');
   const { user, token, logout, refreshUser } = useContext(AuthContext);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -41,10 +43,7 @@ export default function VerificationEmail() {
 
   const statut = searchParams.get('statut');
 
-  useDocumentMeta(
-    'Vérifiez votre adresse e-mail — Smarter Academy',
-    'Confirmez votre adresse e-mail pour accéder à votre espace Smarter Academy.',
-  );
+  useDocumentMeta(t('verifyMetaTitle'), t('verifyMetaDescription'));
 
   // Retour depuis le lien du courriel : l'adresse vient d'être prouvée côté
   // serveur, mais la session chargée dans cet onglet l'ignore encore. On
@@ -71,8 +70,8 @@ export default function VerificationEmail() {
       const data = await resendVerificationEmail(token);
       setFeedback(
         data.alreadyVerified
-          ? 'Votre adresse est déjà vérifiée.'
-          : 'E-mail envoyé. Pensez à regarder dans vos indésirables.',
+          ? t('verifyAlreadyShort')
+          : t('verifyResent'),
       );
     } catch (err) {
       setErrorMsg(err.message);
@@ -109,45 +108,36 @@ export default function VerificationEmail() {
           </div>
 
           <h1 className="mt-5 text-center text-2xl font-bold tracking-tight text-slate-900 font-display">
-            Vérifiez votre adresse e-mail
+            {t('verifyTitle')}
           </h1>
 
           {statut === 'invalide' && (
             <div role="alert" className="mt-5 flex gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
               <AlertTriangle className="h-5 w-5 shrink-0" aria-hidden="true" />
-              <p>
-                Ce lien n’est plus valable — il a expiré, ou l’adresse du compte a changé depuis son
-                envoi. Demandez-en un nouveau ci-dessous.
-              </p>
+              <p>{t('verifyLinkExpired')}</p>
             </div>
           )}
 
           {statut === 'deja-verifie' && (
             <div className="mt-5 flex gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">
               <CheckCircle2 className="h-5 w-5 shrink-0" aria-hidden="true" />
-              <p>Cette adresse était déjà vérifiée. Vous pouvez vous connecter.</p>
+              <p>{t('verifyAlready')}</p>
             </div>
           )}
 
           {statut === 'succes' && (
             <div className="mt-5 flex gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">
               <CheckCircle2 className="h-5 w-5 shrink-0" aria-hidden="true" />
-              <p>Adresse vérifiée. Bienvenue !</p>
+              <p>{t('verifyDone')}</p>
             </div>
           )}
 
           <p className="mt-5 text-center text-sm leading-relaxed text-slate-600">
-            Nous avons envoyé un lien de confirmation
-            {user?.email ? (
-              <>
-                {' '}à <span className="font-medium text-slate-900">{user.email}</span>
-              </>
-            ) : null}
-            . Ouvrez-le pour activer votre espace.
+            {t('verifySent', { email: user?.email || '—' })}
           </p>
 
           <p className="mt-2 text-center text-xs text-slate-500">
-            Le lien est valable 24 heures. Rien reçu ? Regardez dans vos courriers indésirables.
+            {t('verifyValidity')}
           </p>
 
           {feedback && (
@@ -173,7 +163,7 @@ export default function VerificationEmail() {
                 disabled={sending}
                 className="flex w-full justify-center rounded-xl border border-transparent bg-blue-600 py-3 px-4 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-70"
               >
-                {sending ? 'Envoi en cours…' : 'Renvoyer l’e-mail'}
+                {sending ? t('sending') : t('resendEmail')}
               </button>
 
               <button
@@ -181,7 +171,7 @@ export default function VerificationEmail() {
                 onClick={handleLogout}
                 className="flex w-full justify-center rounded-xl border border-slate-300 bg-white py-3 px-4 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               >
-                Se déconnecter
+                {t('logout')}
               </button>
             </div>
           ) : (
@@ -190,15 +180,15 @@ export default function VerificationEmail() {
                 to="/login"
                 className="flex w-full justify-center rounded-xl border border-transparent bg-blue-600 py-3 px-4 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700"
               >
-                Se connecter
+                {t('login')}
               </Link>
             </div>
           )}
 
           <p className="mt-6 text-center text-xs text-slate-500">
-            Adresse erronée ? Écrivez-nous à{' '}
-            <a href="mailto:contact@smarter-academy.fr" className="font-medium text-blue-600 hover:text-blue-700">
-              contact@smarter-academy.fr
+            {t('wrongAddress')}{' '}
+            <a href="mailto:abdennour.bouhounali@gmail.com" className="font-medium text-blue-600 hover:text-blue-700">
+              abdennour.bouhounali@gmail.com
             </a>
             .
           </p>

@@ -15,10 +15,7 @@ import LessonCard from '../components/student/LessonCard';
 
 export default function CoursesPage() {
   const { t } = useTranslation('common');
-  useDocumentMeta(
-    'Cours',
-    "Explore le programme de mathématiques du Collège au Lycée — 6e, 5e, 4e, 3e, 2nde, 1ère, Terminale. La 6e est l'expérience la plus complète aujourd'hui."
-  );
+  useDocumentMeta(t('catalogueMetaTitle'), t('catalogueMetaDescription'));
 
   const [searchParams, setSearchParams] = useSearchParams();
   const { user, loading: authLoading } = useContext(AuthContext);
@@ -52,7 +49,13 @@ export default function CoursesPage() {
   }, []);
 
   // Helpers
-  const defaultLevelId = 'college';
+  //
+  // Le niveau de repli vient du CATALOGUE, jamais d'un identifiant écrit ici.
+  // « college » était un héritage français : sous un catalogue algérien
+  // (`moyen`, `thanawi`) il ne correspond à rien, `levelData` devenait
+  // undefined, et la page affichait « bientôt disponible » alors qu'un
+  // catalogue existait — une panne silencieuse qu'aucun test unitaire ne voit.
+  const defaultLevelId = courseLevels[0]?.id ?? null;
   const getValidLevelId = (id) => courseLevels.find(l => l.id === id) ? id : null;
   
   const effectiveLevelId = getValidLevelId(urlLevel) || getValidLevelId(profileLevel) || getValidLevelId(lsLevel) || defaultLevelId;
@@ -147,6 +150,18 @@ export default function CoursesPage() {
     );
   }, [gradeData, effectiveChapterId, searchQuery]);
 
+  // Les chapitres dont le PROGRAMME doit être montré : ceux qui portent des
+  // sujets sans porter encore de leçon. Un chapitre qui a des leçons les
+  // montre ; un chapitre qui n'a ni l'un ni l'autre n'a rien à dire.
+  const visibleTopicChapters = useMemo(() => {
+    if (!gradeData) return [];
+    const chapters = effectiveChapterId === 'all'
+      ? gradeData.chapters
+      : gradeData.chapters.filter((c) => c.id === effectiveChapterId);
+
+    return chapters.filter((c) => (c.topics?.length ?? 0) > 0 && (c.lessons?.length ?? 0) === 0);
+  }, [gradeData, effectiveChapterId]);
+
   // "Continuer" logic
   const continueCourse = useMemo(() => {
     return getResumeLesson(courseLevels);
@@ -188,23 +203,23 @@ export default function CoursesPage() {
           <div className="max-w-4xl mx-auto">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-mono-jetbrains font-semibold uppercase tracking-wider mb-4 shadow-2xs">
               <Sparkles size={14} className="text-blue-600 animate-pulse" />
-              Programme complet — 6e à Terminale
+              {t('catalogueBadge')}
             </div>
             <h1 className="font-space font-bold text-3xl sm:text-4xl text-slate-900 mb-2">
-              Cours de Mathématiques
+              {t('catalogueTitle')}
             </h1>
             <p className="font-inter text-slate-500 text-sm sm:text-base max-w-xl mx-auto mb-5">
-              2 leçons complètes offertes par niveau. La 6e est aujourd'hui la plus complète.
+              {t('catalogueSubtitle')}
             </p>
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
               <span className="flex items-center gap-1.5 text-xs font-inter font-medium text-slate-500">
-                <span className="w-2 h-2 rounded-full bg-emerald-500" /> Gratuit
+                <span className="w-2 h-2 rounded-full bg-emerald-500" /> {t('legendFree')}
               </span>
               <span className="flex items-center gap-1.5 text-xs font-inter font-medium text-slate-500">
-                <Crown size={12} className="text-violet-500" /> Premium
+                <Crown size={12} className="text-violet-500" /> {t('legendPremium')}
               </span>
               <span className="flex items-center gap-1.5 text-xs font-inter font-medium text-slate-500">
-                <Lock size={12} className="text-slate-400" /> Bientôt disponible
+                <Lock size={12} className="text-slate-400" /> {t('legendComingSoon')}
               </span>
             </div>
           </div>
@@ -213,10 +228,10 @@ export default function CoursesPage() {
         <div className="sa-page mb-6">
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
             <p className="font-mono-jetbrains text-blue-500 text-xs font-semibold tracking-widest uppercase mb-2">
-              Catalogue
+              {t('catalogueEyebrow')}
             </p>
             <h1 className="font-space font-bold text-2xl sm:text-3xl text-slate-900">
-              Explorer les cours
+              {t('catalogueExplore')}
             </h1>
           </motion.div>
         </div>
@@ -279,7 +294,7 @@ export default function CoursesPage() {
         {/* BREADCRUMB & SEARCH ROW */}
         <section className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-200 pb-4">
           <div className="flex items-center gap-2 font-space font-bold text-xl text-slate-900 flex-wrap">
-             <span className="text-slate-500 cursor-pointer hover:text-blue-600" onClick={() => handleChapterChange('all')}>Cours</span>
+             <span className="text-slate-500 cursor-pointer hover:text-blue-600" onClick={() => handleChapterChange('all')}>{t('breadcrumbCourses')}</span>
              <span className="text-slate-300 font-inter">/</span>
              <span className="text-slate-500 cursor-pointer hover:text-blue-600" onClick={() => handleChapterChange('all')}>{gradeData.name}</span>
              {effectiveChapterId !== 'all' && (
@@ -293,7 +308,7 @@ export default function CoursesPage() {
             <Search size={18} className="absolute start-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
-              placeholder={`Rechercher en ${gradeData.name}...`}
+              placeholder={t('searchInGrade', { grade: gradeData.name })}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-white border border-slate-200 rounded-xl ps-10 pe-4 py-2.5 text-sm font-inter focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow shadow-sm"
@@ -301,8 +316,25 @@ export default function CoursesPage() {
           </div>
         </section>
 
+        {/* CLASSE SANS PROGRAMME (invariant I2 de la phase 6F).
+            « Active » veut dire que la classe EXISTE, pas qu'il y a du
+            contenu. La terminale algérienne est dans ce cas : aucun programme
+            officiel n'a encore été fourni. Sans ce bloc, l'élève tomberait sur
+            une page vide qu'il prendrait pour une panne — d'où un message qui
+            DIT où en est sa classe, plutôt qu'un silence. */}
+        {gradeData.curriculumStatus === 'not_supplied' && (
+          <section className="bg-white border border-slate-200 rounded-xl p-6 text-center">
+            <h2 className="font-space font-bold text-lg text-slate-900 mb-2">
+              {t('gradeNotSuppliedTitle')}
+            </h2>
+            <p className="font-inter text-sm text-slate-500 max-w-md mx-auto">
+              {t('gradeNotSuppliedBody')}
+            </p>
+          </section>
+        )}
+
         {/* CHAPTERS SELECTOR (Only if no search active) */}
-        {!searchQuery && (
+        {!searchQuery && gradeData.chapters.length > 0 && (
           <section>
             <div className="flex overflow-x-auto gap-3 pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               <button
@@ -313,7 +345,7 @@ export default function CoursesPage() {
                     : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
                 }`}
               >
-                Tous les chapitres
+                {t('allChapters')}
               </button>
               {gradeData.chapters.map((chapter) => {
                 const isSelected = chapter.id === effectiveChapterId;
@@ -329,8 +361,13 @@ export default function CoursesPage() {
                     }`}
                   >
                     <span>{chapter.title}</span>
+                    {/* Un chapitre sans leçon annonce ses SUJETS : « 0 leçon
+                        • 0% » serait exact et pourtant trompeur — il donnerait
+                        un chapitre vide là où il y a un programme. */}
                     <span className={`text-[10px] mt-0.5 font-bold ${isSelected ? 'text-blue-200' : 'text-slate-400'}`}>
-                      {chapter.lessons.length} leçon{chapter.lessons.length > 1 ? 's' : ''} • {progress}%
+                      {chapter.lessons.length === 0 && (chapter.topics?.length ?? 0) > 0
+                        ? t('topicsCount', { count: chapter.topics.length })
+                        : `${t('lessonsCount', { count: chapter.lessons.length })} • ${progress}%`}
                     </span>
                   </button>
                 );
@@ -343,7 +380,7 @@ export default function CoursesPage() {
         {continueCourse && !searchQuery && (
           <section className="mb-8">
             <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4 flex items-center gap-2">
-              <Play size={14} /> Reprendre
+              <Play size={14} /> {t('resume')}
             </h3>
             <Link
               to={continueCourse.resumePath}
@@ -359,12 +396,12 @@ export default function CoursesPage() {
                       {continueCourse.course.title} — {continueCourse.grade.name}
                     </h4>
                     <span className="text-sm font-bold flex items-center gap-1 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-transform text-blue-600">
-                      Continuer <ArrowForward size={14} />
+                      {t('continue')} <ArrowForward size={14} />
                     </span>
                   </div>
                   
                   {continueCourse.progress > 0 ? (
-                    <p className="font-inter text-slate-500 text-sm mt-1">{continueCourse.chapter.title} · Module {continueCourse.resumeModule} sur {continueCourse.totalModules}</p>
+                    <p className="font-inter text-slate-500 text-sm mt-1">{continueCourse.chapter.title} · {t('moduleOf', { current: continueCourse.resumeModule, total: continueCourse.totalModules })}</p>
                   ) : (
                     <p className="font-inter text-slate-500 text-sm mt-1 line-clamp-1">{continueCourse.course.description}</p>
                   )}
@@ -384,26 +421,79 @@ export default function CoursesPage() {
           </section>
         )}
 
-        {/* COURSE GRID */}
-        <section>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            <AnimatePresence mode="popLayout">
-              {filteredCourses.length === 0 ? (
-                <motion.div 
-                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                  className="col-span-full py-12 text-center text-slate-500"
-                >
-                  <Search size={32} className="mx-auto mb-3 opacity-20" />
-                  <p>Aucun cours ne correspond à {searchQuery ? `"${searchQuery}"` : "cette sélection"}.</p>
-                </motion.div>
-              ) : (
-                filteredCourses.map((lesson) => (
-                  <LessonCard key={lesson.id} lesson={lesson} onClick={() => handleCourseClick(lesson.id)} />
-                ))
-              )}
-            </AnimatePresence>
-          </div>
-        </section>
+        {/* PROGRAMME — les SUJETS officiels, quand aucune leçon n'existe encore.
+            Une classe peut être ACTIVE sans porter de leçon : le programme 4AM
+            est arrêté, son découpage en leçons ne l'est pas (phase 7). Montrer
+            « aucun cours ne correspond » serait alors faux deux fois — il n'y a
+            pas d'erreur de sélection, et il y a bien un programme à lire. */}
+        {!searchQuery && visibleTopicChapters.length > 0 && (
+          <section className="space-y-5">
+            <div>
+              <h2 className="font-space font-bold text-lg text-slate-900">{t('chapterProgrammeTitle')}</h2>
+              <p className="font-inter text-sm text-slate-500 mt-1">{t('chapterProgrammeNote')}</p>
+            </div>
+            {visibleTopicChapters.map((chapter) => (
+              <div key={chapter.id} className="bg-white border border-slate-200 rounded-xl p-5">
+                <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-3">
+                  <h3 className="font-space font-bold text-base text-slate-900">{chapter.title}</h3>
+                  {chapter.subtitle && (
+                    <span className="font-inter text-xs text-slate-500">{chapter.subtitle}</span>
+                  )}
+                  <span className="font-mono-jetbrains text-[11px] font-semibold text-slate-400">
+                    {t('topicsCount', { count: chapter.topics.length })}
+                  </span>
+                </div>
+                <ol className="space-y-2">
+                  {chapter.topics.map((topic, index) => (
+                    <li key={topic.id} className="flex gap-3 font-inter text-sm text-slate-700">
+                      <span className="font-mono-jetbrains text-xs text-slate-400 pt-0.5 shrink-0">
+                        {index + 1}
+                      </span>
+                      <div>
+                        <span>{topic.title}</span>
+                        {(topic.namedMethods || topic.namedParts) && (
+                          <span className="block text-xs text-slate-500 mt-0.5">
+                            {(topic.namedMethods || topic.namedParts).join(' · ')}
+                          </span>
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+                <p className="font-inter text-xs text-slate-400 mt-4">{t('chapterLessonsPending')}</p>
+              </div>
+            ))}
+          </section>
+        )}
+
+        {/* COURSE GRID.
+            N'apparaît que s'il y a quelque chose à y montrer OU une
+            recherche active : sinon son repli « aucun cours ne correspond »
+            s'afficherait sous une classe qui n'a simplement AUCUNE leçon
+            encore (4AM : programme sans découpage — vu plus haut ; Terminale :
+            aucun chapitre du tout — invariant I2), ce qui n'est pas la même
+            chose qu'une recherche sans résultat. */}
+        {(filteredCourses.length > 0 || searchQuery || gradeData.chapters.some((c) => c.lessons.length > 0)) && (
+          <section>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              <AnimatePresence mode="popLayout">
+                {filteredCourses.length === 0 ? (
+                  <motion.div
+                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                    className="col-span-full py-12 text-center text-slate-500"
+                  >
+                    <Search size={32} className="mx-auto mb-3 opacity-20" />
+                    <p>{t('noCourseMatches', { query: searchQuery ? `"${searchQuery}"` : t('thisSelection') })}</p>
+                  </motion.div>
+                ) : (
+                  filteredCourses.map((lesson) => (
+                    <LessonCard key={lesson.id} lesson={lesson} onClick={() => handleCourseClick(lesson.id)} />
+                  ))
+                )}
+              </AnimatePresence>
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );

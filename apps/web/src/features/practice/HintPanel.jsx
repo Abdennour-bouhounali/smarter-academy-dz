@@ -1,4 +1,5 @@
 import { Lightbulb } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Feedback } from '../../lessons/common/components/LessonUI';
 import RichText from './RichText';
 
@@ -15,6 +16,7 @@ import RichText from './RichText';
  * progression.
  */
 export default function HintPanel({ hints, remaining, onRequest, busy, disabled }) {
+  const { t } = useTranslation('student');
   const hasMore = remaining > 0;
 
   return (
@@ -33,13 +35,13 @@ export default function HintPanel({ hints, remaining, onRequest, busy, disabled 
           className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 border-amber-300 bg-amber-50 text-amber-900 font-bold text-sm min-h-[48px] hover:border-amber-500 disabled:opacity-60"
         >
           <Lightbulb className="w-4 h-4" aria-hidden="true" />
-          {hints.length === 0 ? 'Un indice ?' : 'Encore un indice'}
+          {hints.length === 0 ? t('practice.askHint') : t('practice.anotherHint')}
           <span className="font-mono text-xs text-amber-700">({remaining} restant{remaining > 1 ? 's' : ''})</span>
         </button>
       )}
 
       {!hasMore && hints.length > 0 && (
-        <p className="text-xs text-slate-500 font-mono">Tous les indices ont été donnés.</p>
+        <p className="text-xs text-slate-500 font-mono">{t('practice.allHintsGiven')}</p>
       )}
     </div>
   );

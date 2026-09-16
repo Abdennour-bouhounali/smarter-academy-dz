@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Compass, CheckCircle2, XCircle } from 'lucide-react';
@@ -25,29 +26,33 @@ import { Feedback, ChoiceGrid, ValidateButton, MissionBrief } from '../component
  *                       review({ pick }) }  — ex. clic sur un chiffre d'un tableau.
  */
 
+// Le REPLI, quand une leçon ne fournit pas ses propres `levels`. En clés de
+// traduction : l'interface élève est arabe, et un repli français réintroduirait
+// du français sur l'écran d'une leçon qui n'aurait rien fait de mal. Une leçon
+// qui veut son propre ton passe `levels` (voir la leçon PGCD).
 const DEFAULT_LEVELS = {
   fragile: {
     emoji: '🌱',
-    title: 'Tes bases sont encore fragiles.',
-    body: "Ce n'est pas grave ! Quelques notions utiles sont encore à renforcer. Tu peux commencer la leçon, mais prends le temps de bien observer les premières manipulations.",
-    advice: 'Avance doucement dans le premier module et utilise les aides si tu en as besoin.',
-    cta: 'Commencer quand même',
+    titleKey: 'diagnostic.basesFragile',
+    bodyKey: 'diagnostic.basesFragileAdvice',
+    adviceKey: 'diagnostic.basesFragileAdvice',
+    ctaKey: 'diagnostic.startAnyway',
     tone: 'from-emerald-500 to-teal-500',
   },
   progres: {
     emoji: '👍',
-    title: 'Tes bases sont en bonne voie.',
-    body: 'Tu possèdes une partie des bases nécessaires. Quelques petites hésitations peuvent encore être corrigées pendant la leçon.',
-    advice: 'Sois attentif aux exemples et aux manipulations du début.',
-    cta: 'Commencer le Module 1',
+    titleKey: 'diagnostic.basesOnTrack',
+    bodyKey: 'diagnostic.basesOnTrackAdvice',
+    adviceKey: 'diagnostic.basesOnTrackAdvice',
+    ctaKey: 'diagnostic.startModule1',
     tone: 'from-teal-500 to-cyan-500',
   },
   pret: {
     emoji: '⭐',
-    title: 'Tu es prêt !',
-    body: 'Tes bases sont solides. Tu peux entrer directement dans la mission.',
-    advice: 'Essaie de résoudre les premières manipulations sans utiliser les aides.',
-    cta: 'Je suis prêt !',
+    titleKey: 'diagnostic.youAreReady',
+    bodyKey: 'diagnostic.basesSolid',
+    adviceKey: 'diagnostic.basesSolidAdvice',
+    ctaKey: 'diagnostic.imReady',
     tone: 'from-cyan-500 to-blue-500',
   },
 };
@@ -56,6 +61,12 @@ const isCorrectFor = (q, pick) =>
   pick == null ? false : q.type === 'custom' ? q.isCorrect(pick) : pick === q.correct;
 
 function DiagnosticResult({ score, maxScore, skills, skillScores, levels, onContinue, onRedo }) {
+  const { t } = useTranslation('lesson');
+  // Un palier fournit SOIT un texte déjà écrit (une leçon qui passe ses
+  // propres `levels`), SOIT une clé de traduction (le repli DEFAULT_LEVELS).
+  // Les deux sont acceptés : c'est ce qui permet au repli d'être traduit sans
+  // imposer i18n aux leçons qui écrivent leur ton elles-mêmes.
+  const text = (meta, field) => meta[field] ?? (meta[`${field}Key`] ? t(meta[`${field}Key`]) : '');
   const level = score < 5 ? 'fragile' : score <= 7 ? 'progres' : 'pret';
   const isPerfect = score === maxScore;
   const meta = levels[level];
@@ -74,11 +85,11 @@ function DiagnosticResult({ score, maxScore, skills, skillScores, levels, onCont
         className={`bg-gradient-to-br ${meta.tone} text-white rounded-3xl p-8 text-center space-y-3 relative overflow-hidden`}
       >
         <div className="text-5xl" aria-hidden="true">{meta.emoji}</div>
-        <div className="text-3xl font-space font-extrabold">{score} / {maxScore}</div>
-        <div className="text-lg font-space font-bold">{meta.title}</div>
+        <div dir="ltr" className="text-3xl font-space font-extrabold">{score} / {maxScore}</div>
+        <div className="text-lg font-space font-bold">{text(meta, 'title')}</div>
         {isPerfect && (
           <div className="inline-flex items-center gap-2 bg-amber-400 text-amber-950 font-bold text-sm px-4 py-2 rounded-full mt-1">
-            🏆 Prérequis maîtrisés !
+            {t('diagnostic.prerequisitesMastered')}
           </div>
         )}
       </motion.div>
@@ -94,7 +105,7 @@ function DiagnosticResult({ score, maxScore, skills, skillScores, levels, onCont
                   <span className="font-space font-bold text-slate-800 text-sm">
                     {skills[key].emoji} {skills[key].label}
                   </span>
-                  <span className="font-mono text-xs font-bold text-slate-500">{s.score} / {s.max}</span>
+                  <span dir="ltr" className="font-mono text-xs font-bold text-slate-500">{s.score} / {s.max}</span>
                 </div>
                 <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
                   <div
@@ -103,7 +114,7 @@ function DiagnosticResult({ score, maxScore, skills, skillScores, levels, onCont
                   />
                 </div>
                 <div className={`text-xs font-medium ${good ? 'text-emerald-600' : 'text-amber-600'}`}>
-                  {good ? '✓ Bonne compréhension' : '💡 À renforcer'}
+                  {good ? t('diagnostic.skillGood') : t('diagnostic.skillToReinforce')}
                 </div>
               </div>
             );
@@ -112,14 +123,14 @@ function DiagnosticResult({ score, maxScore, skills, skillScores, levels, onCont
       )}
 
       <Feedback tone="info">
-        <strong>Ton conseil</strong>
+        <strong>{t('diagnostic.yourAdvice')}</strong>
         <p className="mt-1">
-          {meta.body}{' '}
+          {text(meta, 'body')}{' '}
           {weakestIsMeaningful && (
-            <>Fais particulièrement attention à : <strong>{skills[weakestKey].label.toLowerCase()}</strong>.</>
+            <>{t('diagnostic.payAttentionTo')} <strong>{skills[weakestKey].label}</strong>.</>
           )}
         </p>
-        <p className="mt-2">💡 {meta.advice}</p>
+        <p className="mt-2">💡 {text(meta, 'advice')}</p>
       </Feedback>
 
       <div className="flex flex-col sm:flex-row gap-3">
@@ -128,14 +139,14 @@ function DiagnosticResult({ score, maxScore, skills, skillScores, levels, onCont
           onClick={onContinue}
           className="flex-1 py-4 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl min-h-[48px] text-base"
         >
-          🚀 {meta.cta}
+          🚀 {text(meta, 'cta')}
         </button>
         <button
           type="button"
           onClick={onRedo}
           className="py-3 px-5 bg-white border-2 border-slate-300 text-slate-700 hover:border-slate-500 font-bold rounded-xl min-h-[48px]"
         >
-          Refaire le diagnostic
+          {t('diagnostic.redoDiagnostic')}
         </button>
       </div>
     </div>
@@ -145,15 +156,16 @@ function DiagnosticResult({ score, maxScore, skills, skillScores, levels, onCont
 export default function PrerequisiteDiagnostic({
   ctx,
   navLinks,
-  moduleTitle = '🎯 Mission de départ',
-  moduleSubtitle = 'Un petit diagnostic pour savoir par où bien commencer.',
-  estimatedTime = '5 min',
+  moduleTitle,
+  moduleSubtitle,
+  estimatedTime,
   brief,         // { tag?, title?, tone?, body }
   skills,        // { key: { label, emoji } }
   questions,     // voir doc du fichier
   levels = DEFAULT_LEVELS,
   xpAmount = 20,
 }) {
+  const { t } = useTranslation('lesson');
   const navigate = useNavigate();
   const { xp, awardXP } = useProgress(ctx.lessonId);
   const { result: savedResult, save: saveResult, redo: redoResult } = usePrerequisiteDiagnostic(ctx.lessonId);
@@ -216,8 +228,8 @@ export default function PrerequisiteDiagnostic({
       {!submitted && (
         <motion.div key="quiz" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-6">
           <MissionBrief
-            tag={brief?.tag ?? '🎯 Mission de départ'}
-            title={brief?.title ?? 'Avant de partir...'}
+            tag={brief?.tag ?? t('diagnostic.defaultBriefTag')}
+            title={brief?.title ?? t('diagnostic.defaultBriefTitle')}
             tone={brief?.tone ?? 'indigo'}
           >
             {brief?.body}
@@ -249,10 +261,16 @@ export default function PrerequisiteDiagnostic({
 
           <div className="flex items-center justify-between text-xs font-mono text-slate-400 px-1">
             <span>
-              Question {Object.keys(answers).length < questions.length ? Object.keys(answers).length + 1 : questions.length}{' '}
-              / {questions.length}
+              {t('question.label')}{' '}
+              <span dir="ltr">
+                {Object.keys(answers).length < questions.length ? Object.keys(answers).length + 1 : questions.length}
+                {' / '}
+                {questions.length}
+              </span>
             </span>
-            <span>{score} / {maxScore} en cours</span>
+            <span>
+              <span dir="ltr">{score} / {maxScore}</span> {t('diagnostic.inProgress')}
+            </span>
           </div>
 
           {questions.map((q, i) => (
@@ -265,7 +283,8 @@ export default function PrerequisiteDiagnostic({
             >
               <div className="flex items-center justify-between gap-2 flex-wrap">
                 <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-teal-600 text-white">
-                  {skills[q.skill].emoji} {i + 1} / {questions.length}
+                  {skills[q.skill].emoji}{' '}
+                  <span dir="ltr">{i + 1} / {questions.length}</span>
                 </span>
                 {answers[q.id] != null && <CheckCircle2 className="w-4 h-4 text-teal-600" aria-hidden="true" />}
               </div>
@@ -288,7 +307,7 @@ export default function PrerequisiteDiagnostic({
           ))}
 
           <ValidateButton onClick={handleSubmit} disabled={!allAnswered} tone="teal">
-            Voir mon résultat
+            {t('diagnostic.seeMyResult')}
           </ValidateButton>
         </motion.div>
       )}
@@ -297,7 +316,7 @@ export default function PrerequisiteDiagnostic({
         <motion.div key="result" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-6">
           <div className="space-y-4">
             <h2 className="text-lg font-space font-bold text-slate-800 flex items-center gap-2">
-              <Compass className="w-4 h-4" aria-hidden="true" /> Ta correction
+              <Compass className="w-4 h-4" aria-hidden="true" /> {t('diagnostic.yourCorrection')}
             </h2>
             {questions.map((q, i) => {
               const ok = isCorrectFor(q, answers[q.id]);
@@ -313,7 +332,8 @@ export default function PrerequisiteDiagnostic({
                       ) : (
                         <XCircle className="w-4 h-4 text-rose-600 shrink-0" aria-hidden="true" />
                       )}
-                      {skills[q.skill].emoji} Question {i + 1}
+                      {skills[q.skill].emoji} {t('question.label')}{' '}
+                      <span dir="ltr">{i + 1}</span>
                     </h3>
                   </div>
                   <p className="text-sm text-slate-700 leading-relaxed">{q.prompt}</p>
@@ -322,11 +342,11 @@ export default function PrerequisiteDiagnostic({
                   ) : (
                     <div className="text-sm space-y-1">
                       <div className={ok ? 'text-emerald-700' : 'text-rose-700'}>
-                        <strong>Ta réponse :</strong> {q.options[answers[q.id]]}
+                        <strong>{t('question.yourAnswer')}</strong> {q.options[answers[q.id]]}
                       </div>
                       {!ok && (
                         <div className="text-emerald-700">
-                          <strong>Bonne réponse :</strong> {q.options[q.correct]}
+                          <strong>{t('question.correctAnswer')}</strong> {q.options[q.correct]}
                         </div>
                       )}
                     </div>

@@ -1,6 +1,7 @@
 import { forwardRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { Clock, Lock, Crown } from 'lucide-react';
 import { ArrowForward } from '../common/DirectionalIcons';
 import { isLessonUnlocked } from '@smarter-academy/core';
@@ -24,6 +25,7 @@ import { getTotalModules } from '../../lessons/registry';
  * a plain function component can't accept that ref.
  */
 const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
+  const { t } = useTranslation('common');
   // Le catalogue vient du bundle ; la PUBLICATION vient du serveur. Une leçon
   // retirée par l'administration retombe donc dans l'état « bientôt
   // disponible » déjà géré plus bas — l'élève voit un message qu'il connaît,
@@ -65,7 +67,7 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
               <span className="text-3xl opacity-80 group-hover:scale-110 transition-transform origin-bottom-left">{lesson.icon}</span>
               <span className="sa-premium-badge">
                 <Lock size={10} />
-                Premium
+                {t('premiumBadge')}
               </span>
             </div>
             <h4 className="font-space font-bold text-slate-800 text-lg mb-2">{lesson.title}</h4>
@@ -73,7 +75,7 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
           </div>
           <div className="pt-4 border-t border-violet-100 flex items-center justify-between mt-auto">
             <span className="flex items-center gap-1 text-xs font-mono-jetbrains text-slate-500"><Clock size={14} /> {lesson.duration}</span>
-            <span className="font-bold text-sm group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-transform flex items-center gap-1 text-violet-700">Voir les tarifs <ArrowForward size={14} /></span>
+            <span className="font-bold text-sm group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-transform flex items-center gap-1 text-violet-700">{t('lockedCta', { ns: 'access' })} <ArrowForward size={14} /></span>
           </div>
         </Link>
       </motion.div>
@@ -106,9 +108,9 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
                   l'abonnement s'arrête. La progression, quand elle existe,
                   prend la place — le badge passe alors sous le titre. */}
               {isPremiumLesson && progressPercent === 0 ? (
-                <span className="sa-premium-badge" title="Contenu premium — ton compte y a accès">
+                <span className="sa-premium-badge" title={t('premiumHasAccess')}>
                   <Crown size={10} />
-                  Premium
+                  {t('premiumBadge')}
                 </span>
               ) : progressPercent > 0 ? (
                 <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full font-mono-jetbrains text-[10px] font-bold ${progressPercent >= 100 ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'}`}>
@@ -124,7 +126,7 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
                 présenter comme officielle. */}
             <div className="flex items-start justify-between gap-3">
               {lesson.origin === 'extension' && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 mb-3 rounded-full bg-violet-50 border border-violet-200 text-violet-700 font-mono-jetbrains text-[10px] font-bold" title="Chapitre ajouté par Smarter Academy — il ne figure pas au programme officiel de ce niveau">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 mb-3 rounded-full bg-violet-50 border border-violet-200 text-violet-700 font-mono-jetbrains text-[10px] font-bold" title={t('bonusChapter')}>
                   HORS PROGRAMME
                 </span>
               )}
@@ -139,9 +141,9 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
                 isPremiumLesson ? 'group-hover:text-violet-700' : 'group-hover:text-blue-600'
               }`}>{lesson.title}</h4>
               {isPremiumLesson ? (
-                <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-violet-500" title="Premium" />
+                <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-violet-500" title={t('premiumBadge')} />
               ) : (
-                <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-emerald-500" title="Gratuit" />
+                <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-emerald-500" title={t('freeBadge', { ns: 'access' })} />
               )}
             </div>
             <p className="font-inter text-slate-500 text-sm leading-relaxed line-clamp-3 mb-4">{lesson.description}</p>
@@ -154,7 +156,7 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
             <span className={`font-bold text-sm group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-transform flex items-center gap-1 ${
               progressPercent >= 100 ? 'text-emerald-600' : progressPercent > 0 ? 'text-blue-600' : isPremiumLesson ? 'text-violet-700' : 'text-blue-600'
             }`}>
-              {progressPercent >= 100 ? 'Terminé' : progressPercent > 0 ? 'Continuer' : 'Commencer'} <ArrowForward size={14} />
+              {progressPercent >= 100 ? t('lessonDone') : progressPercent > 0 ? t('lessonContinue') : t('lessonStart')} <ArrowForward size={14} />
             </span>
           </div>
           {progressPercent > 0 && (
@@ -174,7 +176,7 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
           <span className="text-3xl grayscale opacity-50">{lesson.icon}</span>
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-200/50 text-slate-500 font-mono-jetbrains text-[10px] font-semibold">
             <Lock size={10} />
-            Bientôt
+            {t('lessonComingSoonBadge')}
           </span>
         </div>
         <h4 className="font-space font-bold text-slate-700 text-lg mb-2">{lesson.title}</h4>
@@ -182,7 +184,7 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
       </div>
       <div className="pt-4 border-t border-slate-200/50 flex items-center justify-between text-xs font-mono-jetbrains text-slate-400 mt-auto">
         <span className="flex items-center gap-1"><Clock size={14} /> {lesson.duration}</span>
-        <span className="font-medium">En préparation</span>
+        <span className="font-medium">{t('lessonComingSoonFooter')}</span>
       </div>
     </motion.div>
   );

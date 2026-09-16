@@ -1,3 +1,4 @@
+import { getAllGrades } from '@smarter-academy/core';
 import React, { useCallback, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Users } from 'lucide-react';
@@ -13,6 +14,11 @@ import { useDebounced } from '../../../hooks/useDebounced';
 
 const dateFormat = new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
 const formatDate = (value) => (value ? dateFormat.format(new Date(value)) : '—');
+
+// Les classes du CATALOGUE, jamais une liste écrite ici : le tableau
+// français hérité ('6e', '5e', …) survivait à la bascule algérienne et
+// aurait proposé de filtrer sur des classes qui n'existent plus en base.
+const GRADE_OPTIONS = getAllGrades().map((g) => ({ value: g.id, label: g.name }));
 
 export default function AdminStudentList() {
   useDocumentMeta('Élèves — Administration');
@@ -79,7 +85,7 @@ export default function AdminStudentList() {
           <SelectFilter
             label="Classe" allLabel="Toutes les classes" value={grade}
             onChange={(v) => { setGrade(v); setPage(1); }}
-            options={['6e', '5e', '4e', '3e', 'seconde'].map((g) => ({ value: g, label: g }))}
+            options={GRADE_OPTIONS}
           />
         </FilterBar>
 

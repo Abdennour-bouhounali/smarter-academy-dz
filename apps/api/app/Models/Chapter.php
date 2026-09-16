@@ -12,8 +12,20 @@ class Chapter extends Model
         'grade_id',
         'code',
         'title',
+        'topics',
         'order',
     ];
+
+    /**
+     * `topics` : les sujets du programme officiel portés par ce chapitre,
+     * quand aucune leçon ne les porte encore (4AM — voir la migration
+     * add_topics_to_chapters_table). Null pour un chapitre dont le curriculum
+     * est décrit par ses leçons.
+     */
+    protected function casts(): array
+    {
+        return ['topics' => 'array'];
+    }
 
     public function grade(): BelongsTo
     {

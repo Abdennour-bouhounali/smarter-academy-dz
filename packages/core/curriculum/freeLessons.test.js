@@ -1,7 +1,12 @@
 import { describe, it, expect } from 'vitest';
 import { FREE_LESSON_IDS, isLessonFree, resolveLessonTier } from './freeLessons.js';
 import { ACTIVE_GRADE_IDS } from './activeGrades.js';
-import { allCourseLevels } from './coursesData.js';
+// LES DEUX arbres : les leçons gratuites sont algériennes (dzCourseLevels),
+// mais la garde doit aussi reconnaître un identifiant français hérité. Un
+// identifiant absent des deux est une faute de frappe.
+import { referenceCourseLevels, dzCourseLevels } from './coursesData.js';
+
+const allCourseLevels = [...referenceCourseLevels, ...dzCourseLevels];
 
 describe('freeLessons — les trois leçons gratuites', () => {
   it('la liste est figée : on ne l’étend pas par accident à l’exécution', () => {

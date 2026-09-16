@@ -40,7 +40,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module02DesPointsSurLaDroite.jsx",
-        "line": 67,
+        "line": 68,
         "step": 1,
         "variant": "new"
       }
@@ -51,7 +51,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module02DesPointsSurLaDroite.jsx",
-        "line": 72,
+        "line": 73,
         "step": 1,
         "variant": "new"
       }
@@ -62,7 +62,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module02DesPointsSurLaDroite.jsx",
-        "line": 117,
+        "line": 118,
         "step": 4,
         "variant": "new"
       }
@@ -117,7 +117,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module04LaboratoireDesCoefficients.jsx",
-        "line": 79,
+        "line": 82,
         "step": 1,
         "variant": "new"
       }
@@ -128,7 +128,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module04LaboratoireDesCoefficients.jsx",
-        "line": 99,
+        "line": 102,
         "step": 2,
         "variant": "new"
       }
@@ -139,7 +139,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module04LaboratoireDesCoefficients.jsx",
-        "line": 120,
+        "line": 123,
         "step": 3,
         "variant": "new"
       }
@@ -176,7 +176,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module02DesPointsSurLaDroite.jsx",
-        "line": 98,
+        "line": 99,
         "step": 3,
         "variant": "new"
       }
@@ -198,7 +198,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module04LaboratoireDesCoefficients.jsx",
-        "line": 147,
+        "line": 160,
         "step": 5,
         "variant": "new"
       }
@@ -209,7 +209,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module04LaboratoireDesCoefficients.jsx",
-        "line": 133,
+        "line": 136,
         "step": 4,
         "variant": "new"
       }
@@ -242,7 +242,7 @@
       "module": 6,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module06ARetenir.jsx",
-        "line": 82,
+        "line": 68,
         "step": 3,
         "variant": "new"
       }
@@ -253,7 +253,7 @@
       "module": 6,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module06ARetenir.jsx",
-        "line": 87,
+        "line": 73,
         "step": 3,
         "variant": "new"
       }
@@ -264,7 +264,7 @@
       "module": 6,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module06ARetenir.jsx",
-        "line": 63,
+        "line": 49,
         "step": 2,
         "variant": "new"
       }
@@ -299,7 +299,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module02DesPointsSurLaDroite.jsx",
-        "line": 130,
+        "line": 131,
         "step": 4,
         "variant": "new"
       }
@@ -321,7 +321,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module04LaboratoireDesCoefficients.jsx",
-        "line": 161,
+        "line": 174,
         "step": 5,
         "variant": "new"
       }
@@ -343,7 +343,7 @@
       "module": 6,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module06ARetenir.jsx",
-        "line": 104,
+        "line": 90,
         "step": 3,
         "variant": "new"
       }
@@ -462,7 +462,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module02DesPointsSurLaDroite.jsx",
-      "line": 85,
+      "line": 86,
       "requires": [
         "droite-pente"
       ],
@@ -478,7 +478,7 @@
       "step": 3,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module02DesPointsSurLaDroite.jsx",
-      "line": 103,
+      "line": 104,
       "requires": [
         "droite-calculer-pente",
         "droite-pente"
@@ -496,7 +496,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module02DesPointsSurLaDroite.jsx",
-      "line": 122,
+      "line": 123,
       "requires": [
         "droite-pente-vers-directeur",
         "droite-vecteur-directeur"
@@ -565,12 +565,28 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M04-S5-Q1",
+      "questionId": "M04-S4-Q1",
+      "module": 4,
+      "step": 4,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module04LaboratoireDesCoefficients.jsx",
+      "line": 144,
+      "requires": [
+        "droite-tracer"
+      ],
+      "prerequisiteStatus": {
+        "droite-tracer": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S5-Q2",
       "module": 4,
       "step": 5,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module04LaboratoireDesCoefficients.jsx",
-      "line": 153,
+      "line": 166,
       "requires": [
         "droite-lire-equation",
         "droite-role-m-p",
@@ -626,7 +642,7 @@
       "step": 1,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module06ARetenir.jsx",
-      "line": 45,
+      "line": 31,
       "requires": [
         "droite-vecteur-directeur",
         "droite-ordonnee-origine",
@@ -650,7 +666,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module06ARetenir.jsx",
-      "line": 68,
+      "line": 54,
       "requires": [
         "droite-lire-cartesienne",
         "droite-equation-cartesienne",
@@ -670,7 +686,7 @@
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module06ARetenir.jsx",
-      "line": 93,
+      "line": 79,
       "requires": [
         "droite-methode-deux-points",
         "droite-methode-point-pente",
@@ -802,7 +818,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module08MissionFinale.jsx",
-      "line": 28,
+      "line": 29,
       "requires": [
         "droite-vecteur-directeur",
         "droite-point-direction"
@@ -820,7 +836,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module08MissionFinale.jsx",
-      "line": 39,
+      "line": 40,
       "requires": [
         "droite-equation-cartesienne",
         "droite-lire-cartesienne"
@@ -838,7 +854,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module08MissionFinale.jsx",
-      "line": 50,
+      "line": 51,
       "requires": [
         "droite-calculer-pente",
         "droite-pente"
@@ -856,7 +872,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module08MissionFinale.jsx",
-      "line": 61,
+      "line": 62,
       "requires": [
         "droite-methode-deux-points",
         "droite-equation-reduite"
@@ -874,7 +890,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module08MissionFinale.jsx",
-      "line": 72,
+      "line": 73,
       "requires": [
         "droite-methode-point-vecteur",
         "droite-equation-cartesienne"
@@ -892,7 +908,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module08MissionFinale.jsx",
-      "line": 83,
+      "line": 84,
       "requires": [
         "droite-methode-point-pente",
         "droite-equation-reduite"
@@ -910,7 +926,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module08MissionFinale.jsx",
-      "line": 94,
+      "line": 95,
       "requires": [
         "droite-lire-equation",
         "droite-ordonnee-origine",
@@ -930,7 +946,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module08MissionFinale.jsx",
-      "line": 110,
+      "line": 111,
       "requires": [
         "droite-verticale",
         "droite-equation-cartesienne"
@@ -948,7 +964,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module08MissionFinale.jsx",
-      "line": 126,
+      "line": 127,
       "requires": [
         "droite-tracer",
         "droite-appartenance"
@@ -961,12 +977,28 @@
       "pedagogicallyValid": true
     },
     {
+      "questionId": "eq-e11",
+      "module": 8,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module08MissionFinale.jsx",
+      "line": 141,
+      "requires": [
+        "droite-tracer"
+      ],
+      "prerequisiteStatus": {
+        "droite-tracer": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
       "questionId": "eq-e10",
       "module": 8,
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/equations-de-droites-2nde/modules/Module08MissionFinale.jsx",
-      "line": 137,
+      "line": 152,
       "requires": [
         "droite-alignement-equation",
         "droite-methode-tester-point"

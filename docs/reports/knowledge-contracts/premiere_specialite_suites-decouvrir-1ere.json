@@ -1,0 +1,899 @@
+{
+  "lesson": "suites-decouvrir-1ere",
+  "grade": "premiere_specialite",
+  "lexiconVersion": 1,
+  "prerequisites": [
+    "vocab-notation-fx",
+    "image-antecedent",
+    "tableau-valeurs",
+    "fonction-dependance",
+    "expression-litterale",
+    "developper",
+    "methode-reduire",
+    "vocab-terme-coefficient",
+    "coefficient-multiplicateur",
+    "mem-k-1-plus-t"
+  ],
+  "conceptsIntroduced": [
+    {
+      "id": "deux-facons-de-fabriquer",
+      "type": "concepts",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module01LaMachineADeuxBoutons.jsx",
+        "line": 182,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "definition-explicite",
+      "type": "concepts",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module02DeuxFaconsDeFabriquer.jsx",
+        "line": 107,
+        "step": 1,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "definition-recurrence",
+      "type": "concepts",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module02DeuxFaconsDeFabriquer.jsx",
+        "line": 165,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "cas-suite-constante",
+      "type": "regles",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module03ArithmetiqueOuGeometrique.jsx",
+        "line": 237,
+        "step": 4,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "preuve-vs-constat",
+      "type": "concepts",
+      "module": 4,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module04LeDemontrer.jsx",
+        "line": 110,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "sens-variation-suite",
+      "type": "regles",
+      "module": 5,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module05MonteOuDescend.jsx",
+        "line": 86,
+        "step": 1,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "regle-variation-geometrique",
+      "type": "regles",
+      "module": 5,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module05MonteOuDescend.jsx",
+        "line": 149,
+        "step": 2,
+        "variant": "new"
+      }
+    }
+  ],
+  "vocabularyIntroduced": [
+    {
+      "id": "suite-rang-terme",
+      "type": "vocabulaire",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module01LaMachineADeuxBoutons.jsx",
+        "line": 135,
+        "step": 1,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "suite-arithmetique",
+      "type": "vocabulaire",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module03ArithmetiqueOuGeometrique.jsx",
+        "line": 87,
+        "step": 1,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "suite-geometrique",
+      "type": "vocabulaire",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module03ArithmetiqueOuGeometrique.jsx",
+        "line": 142,
+        "step": 2,
+        "variant": "new"
+      }
+    }
+  ],
+  "proceduresIntroduced": [
+    {
+      "id": "methode-generer-termes",
+      "type": "methodes",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module02DeuxFaconsDeFabriquer.jsx",
+        "line": 170,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "methode-trouver-la-raison",
+      "type": "methodes",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module03ArithmetiqueOuGeometrique.jsx",
+        "line": 163,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "methode-demontrer-arithmetique",
+      "type": "methodes",
+      "module": 4,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module04LeDemontrer.jsx",
+        "line": 148,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "methode-demontrer-geometrique",
+      "type": "methodes",
+      "module": 4,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module04LeDemontrer.jsx",
+        "line": 202,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "modeliser-par-une-suite",
+      "type": "methodes",
+      "module": 6,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module06AtelierModeliser.jsx",
+        "line": 135,
+        "step": 2,
+        "variant": "new"
+      }
+    }
+  ],
+  "memorisation": [
+    {
+      "id": "mem-ecart-ou-rapport",
+      "type": "memoriser",
+      "module": 4,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module04LeDemontrer.jsx",
+        "line": 207,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "mem-sens-de-variation",
+      "type": "memoriser",
+      "module": 5,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module05MonteOuDescend.jsx",
+        "line": 154,
+        "step": 2,
+        "variant": "new"
+      }
+    }
+  ],
+  "questions": [
+    {
+      "questionId": "sd-d1",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module00Diagnostic.jsx",
+      "line": 37,
+      "requires": [
+        "vocab-notation-fx",
+        "image-antecedent"
+      ],
+      "prerequisiteStatus": {
+        "vocab-notation-fx": "prior",
+        "image-antecedent": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sd-d2",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module00Diagnostic.jsx",
+      "line": 48,
+      "requires": [
+        "tableau-valeurs",
+        "fonction-dependance"
+      ],
+      "prerequisiteStatus": {
+        "tableau-valeurs": "prior",
+        "fonction-dependance": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sd-d3",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module00Diagnostic.jsx",
+      "line": 65,
+      "requires": [
+        "expression-litterale"
+      ],
+      "prerequisiteStatus": {
+        "expression-litterale": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sd-d4",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module00Diagnostic.jsx",
+      "line": 77,
+      "requires": [
+        "methode-reduire",
+        "developper",
+        "vocab-terme-coefficient"
+      ],
+      "prerequisiteStatus": {
+        "methode-reduire": "prior",
+        "developper": "prior",
+        "vocab-terme-coefficient": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sd-d5",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module00Diagnostic.jsx",
+      "line": 89,
+      "requires": [
+        "coefficient-multiplicateur",
+        "mem-k-1-plus-t"
+      ],
+      "prerequisiteStatus": {
+        "coefficient-multiplicateur": "prior",
+        "mem-k-1-plus-t": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S1-Q1",
+      "module": 1,
+      "step": 1,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module01LaMachineADeuxBoutons.jsx",
+      "line": 105,
+      "requires": [
+        "vocab-notation-fx",
+        "tableau-valeurs"
+      ],
+      "prerequisiteStatus": {
+        "vocab-notation-fx": "prior",
+        "tableau-valeurs": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S3-Q2",
+      "module": 1,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module01LaMachineADeuxBoutons.jsx",
+      "line": 213,
+      "requires": [
+        "suite-rang-terme",
+        "deux-facons-de-fabriquer"
+      ],
+      "prerequisiteStatus": {
+        "suite-rang-terme": "established@M1",
+        "deux-facons-de-fabriquer": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S4-Q3",
+      "module": 1,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module01LaMachineADeuxBoutons.jsx",
+      "line": 245,
+      "requires": [
+        "suite-rang-terme",
+        "deux-facons-de-fabriquer"
+      ],
+      "prerequisiteStatus": {
+        "suite-rang-terme": "established@M1",
+        "deux-facons-de-fabriquer": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S1-Q1",
+      "module": 2,
+      "step": 1,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module02DeuxFaconsDeFabriquer.jsx",
+      "line": 79,
+      "requires": [
+        "vocab-notation-fx",
+        "image-antecedent"
+      ],
+      "prerequisiteStatus": {
+        "vocab-notation-fx": "prior",
+        "image-antecedent": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S2-Q2",
+      "module": 2,
+      "step": 2,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module02DeuxFaconsDeFabriquer.jsx",
+      "line": 141,
+      "requires": [
+        "suite-rang-terme",
+        "definition-explicite"
+      ],
+      "prerequisiteStatus": {
+        "suite-rang-terme": "established@M1",
+        "definition-explicite": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S3-Q3",
+      "module": 2,
+      "step": 3,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module02DeuxFaconsDeFabriquer.jsx",
+      "line": 192,
+      "requires": [
+        "definition-explicite",
+        "definition-recurrence"
+      ],
+      "prerequisiteStatus": {
+        "definition-explicite": "established@M2",
+        "definition-recurrence": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S4-Q4",
+      "module": 2,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module02DeuxFaconsDeFabriquer.jsx",
+      "line": 237,
+      "requires": [
+        "definition-recurrence",
+        "deux-facons-de-fabriquer"
+      ],
+      "prerequisiteStatus": {
+        "definition-recurrence": "established@M2",
+        "deux-facons-de-fabriquer": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S1-Q1",
+      "module": 3,
+      "step": 1,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module03ArithmetiqueOuGeometrique.jsx",
+      "line": 63,
+      "requires": [
+        "deux-facons-de-fabriquer",
+        "suite-rang-terme"
+      ],
+      "prerequisiteStatus": {
+        "deux-facons-de-fabriquer": "established@M1",
+        "suite-rang-terme": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S2-Q2",
+      "module": 3,
+      "step": 2,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module03ArithmetiqueOuGeometrique.jsx",
+      "line": 119,
+      "requires": [
+        "suite-arithmetique",
+        "deux-facons-de-fabriquer"
+      ],
+      "prerequisiteStatus": {
+        "suite-arithmetique": "established@M3",
+        "deux-facons-de-fabriquer": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S3-Q3",
+      "module": 3,
+      "step": 3,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module03ArithmetiqueOuGeometrique.jsx",
+      "line": 170,
+      "requires": [
+        "suite-arithmetique",
+        "suite-geometrique",
+        "methode-trouver-la-raison"
+      ],
+      "prerequisiteStatus": {
+        "suite-arithmetique": "established@M3",
+        "suite-geometrique": "established@M3",
+        "methode-trouver-la-raison": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S4-Q4",
+      "module": 3,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module03ArithmetiqueOuGeometrique.jsx",
+      "line": 220,
+      "requires": [
+        "suite-arithmetique",
+        "suite-geometrique",
+        "methode-trouver-la-raison"
+      ],
+      "prerequisiteStatus": {
+        "suite-arithmetique": "established@M3",
+        "suite-geometrique": "established@M3",
+        "methode-trouver-la-raison": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S1-Q1",
+      "module": 4,
+      "step": 1,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module04LeDemontrer.jsx",
+      "line": 74,
+      "requires": [
+        "suite-arithmetique",
+        "methode-trouver-la-raison"
+      ],
+      "prerequisiteStatus": {
+        "suite-arithmetique": "established@M3",
+        "methode-trouver-la-raison": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S2-Q2",
+      "module": 4,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module04LeDemontrer.jsx",
+      "line": 131,
+      "requires": [
+        "expression-litterale",
+        "methode-reduire",
+        "preuve-vs-constat"
+      ],
+      "prerequisiteStatus": {
+        "expression-litterale": "prior",
+        "methode-reduire": "prior",
+        "preuve-vs-constat": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S3-Q3",
+      "module": 4,
+      "step": 3,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module04LeDemontrer.jsx",
+      "line": 179,
+      "requires": [
+        "suite-geometrique",
+        "methode-demontrer-arithmetique"
+      ],
+      "prerequisiteStatus": {
+        "suite-geometrique": "established@M3",
+        "methode-demontrer-arithmetique": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S4-Q4",
+      "module": 4,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module04LeDemontrer.jsx",
+      "line": 229,
+      "requires": [
+        "mem-ecart-ou-rapport",
+        "methode-demontrer-arithmetique",
+        "methode-demontrer-geometrique"
+      ],
+      "prerequisiteStatus": {
+        "mem-ecart-ou-rapport": "established@M4",
+        "methode-demontrer-arithmetique": "established@M4",
+        "methode-demontrer-geometrique": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S1-Q1",
+      "module": 5,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module05MonteOuDescend.jsx",
+      "line": 64,
+      "requires": [
+        "suite-arithmetique",
+        "methode-trouver-la-raison"
+      ],
+      "prerequisiteStatus": {
+        "suite-arithmetique": "established@M3",
+        "methode-trouver-la-raison": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S2-Q2",
+      "module": 5,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module05MonteOuDescend.jsx",
+      "line": 126,
+      "requires": [
+        "suite-geometrique",
+        "sens-variation-suite"
+      ],
+      "prerequisiteStatus": {
+        "suite-geometrique": "established@M3",
+        "sens-variation-suite": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S3-Q3",
+      "module": 5,
+      "step": 3,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module05MonteOuDescend.jsx",
+      "line": 176,
+      "requires": [
+        "sens-variation-suite",
+        "regle-variation-geometrique",
+        "mem-sens-de-variation"
+      ],
+      "prerequisiteStatus": {
+        "sens-variation-suite": "established@M5",
+        "regle-variation-geometrique": "established@M5",
+        "mem-sens-de-variation": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S4-Q4",
+      "module": 5,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module05MonteOuDescend.jsx",
+      "line": 217,
+      "requires": [
+        "mem-sens-de-variation",
+        "sens-variation-suite"
+      ],
+      "prerequisiteStatus": {
+        "mem-sens-de-variation": "established@M5",
+        "sens-variation-suite": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S1-Q1",
+      "module": 6,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module06AtelierModeliser.jsx",
+      "line": 63,
+      "requires": [
+        "suite-arithmetique",
+        "methode-trouver-la-raison"
+      ],
+      "prerequisiteStatus": {
+        "suite-arithmetique": "established@M3",
+        "methode-trouver-la-raison": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S2-Q2",
+      "module": 6,
+      "step": 2,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module06AtelierModeliser.jsx",
+      "line": 109,
+      "requires": [
+        "coefficient-multiplicateur",
+        "mem-k-1-plus-t"
+      ],
+      "prerequisiteStatus": {
+        "coefficient-multiplicateur": "prior",
+        "mem-k-1-plus-t": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S3-Q3",
+      "module": 6,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module06AtelierModeliser.jsx",
+      "line": 155,
+      "requires": [
+        "modeliser-par-une-suite",
+        "coefficient-multiplicateur",
+        "suite-geometrique"
+      ],
+      "prerequisiteStatus": {
+        "modeliser-par-une-suite": "established@M6",
+        "coefficient-multiplicateur": "prior",
+        "suite-geometrique": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sd-e1",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module07MissionFinaleDeuxFamilles.jsx",
+      "line": 36,
+      "requires": [
+        "definition-explicite",
+        "methode-generer-termes"
+      ],
+      "prerequisiteStatus": {
+        "definition-explicite": "established@M2",
+        "methode-generer-termes": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sd-e2",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module07MissionFinaleDeuxFamilles.jsx",
+      "line": 48,
+      "requires": [
+        "definition-recurrence",
+        "methode-generer-termes"
+      ],
+      "prerequisiteStatus": {
+        "definition-recurrence": "established@M2",
+        "methode-generer-termes": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sd-e3",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module07MissionFinaleDeuxFamilles.jsx",
+      "line": 60,
+      "requires": [
+        "suite-arithmetique",
+        "methode-trouver-la-raison"
+      ],
+      "prerequisiteStatus": {
+        "suite-arithmetique": "established@M3",
+        "methode-trouver-la-raison": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sd-e4",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module07MissionFinaleDeuxFamilles.jsx",
+      "line": 72,
+      "requires": [
+        "suite-geometrique",
+        "methode-trouver-la-raison"
+      ],
+      "prerequisiteStatus": {
+        "suite-geometrique": "established@M3",
+        "methode-trouver-la-raison": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sd-e5",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module07MissionFinaleDeuxFamilles.jsx",
+      "line": 84,
+      "requires": [
+        "methode-demontrer-arithmetique",
+        "mem-ecart-ou-rapport",
+        "preuve-vs-constat"
+      ],
+      "prerequisiteStatus": {
+        "methode-demontrer-arithmetique": "established@M4",
+        "mem-ecart-ou-rapport": "established@M4",
+        "preuve-vs-constat": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sd-e6",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module07MissionFinaleDeuxFamilles.jsx",
+      "line": 101,
+      "requires": [
+        "methode-demontrer-geometrique",
+        "mem-ecart-ou-rapport"
+      ],
+      "prerequisiteStatus": {
+        "methode-demontrer-geometrique": "established@M4",
+        "mem-ecart-ou-rapport": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sd-e7",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module07MissionFinaleDeuxFamilles.jsx",
+      "line": 118,
+      "requires": [
+        "suite-arithmetique",
+        "sens-variation-suite"
+      ],
+      "prerequisiteStatus": {
+        "suite-arithmetique": "established@M3",
+        "sens-variation-suite": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sd-e8",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module07MissionFinaleDeuxFamilles.jsx",
+      "line": 135,
+      "requires": [
+        "regle-variation-geometrique",
+        "mem-sens-de-variation"
+      ],
+      "prerequisiteStatus": {
+        "regle-variation-geometrique": "established@M5",
+        "mem-sens-de-variation": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sd-e9",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module07MissionFinaleDeuxFamilles.jsx",
+      "line": 152,
+      "requires": [
+        "definition-explicite",
+        "definition-recurrence",
+        "methode-generer-termes"
+      ],
+      "prerequisiteStatus": {
+        "definition-explicite": "established@M2",
+        "definition-recurrence": "established@M2",
+        "methode-generer-termes": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sd-e10",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/suites-decouvrir-1ere/modules/Module07MissionFinaleDeuxFamilles.jsx",
+      "line": 169,
+      "requires": [
+        "modeliser-par-une-suite",
+        "coefficient-multiplicateur",
+        "suite-geometrique"
+      ],
+      "prerequisiteStatus": {
+        "modeliser-par-une-suite": "established@M6",
+        "coefficient-multiplicateur": "prior",
+        "suite-geometrique": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    }
+  ],
+  "findings": []
+}

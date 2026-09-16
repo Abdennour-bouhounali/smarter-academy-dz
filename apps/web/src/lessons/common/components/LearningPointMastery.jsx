@@ -1,5 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
+import i18n from '../../../i18n';
 
 /**
  * LearningPointMastery — student-facing rendering of a Learning Point's
@@ -11,14 +13,31 @@ import { motion } from 'framer-motion';
  * with no progress bar — only `gap`/`reinforce`/`mastered` rows (which
  * always carry a real `confidence` float from MasteryModel) show a bar.
  * Internal vocabulary (status/confidence/evidence_count/...) never reaches
- * the student — only the French state labels below.
+ * the student — only the translated state labels below.
+ *
+ * `label` is a GETTER, not a stored string : ces états sont un module
+ * constant lu par quatre écrans (progression, pratique, bilan, carte de
+ * compétence) qui affichent tous `.label`. Le rendre paresseux traduit les
+ * quatre d'un coup sans changer la forme exportée, et sans lire i18n au
+ * chargement du module — l'ordre d'import ne peut donc pas figer un libellé.
  */
 
+function masteryState(emoji, labelKey, tone) {
+  return {
+    emoji,
+    labelKey,
+    tone,
+    get label() {
+      return i18n.t(labelKey, { ns: 'student' });
+    },
+  };
+}
+
 export const MASTERY_STATES = {
-  unassessed: { emoji: '⚪', label: 'Pas encore évalué', tone: 'slate' },
-  gap: { emoji: '🔴', label: 'À renforcer', tone: 'rose' },
-  reinforce: { emoji: '🟡', label: 'En cours', tone: 'amber' },
-  mastered: { emoji: '🟢', label: 'Maîtrisé', tone: 'emerald' },
+  unassessed: masteryState('⚪', 'mastery.unassessed', 'slate'),
+  gap: masteryState('🔴', 'mastery.gap', 'rose'),
+  reinforce: masteryState('🟡', 'mastery.reinforce', 'amber'),
+  mastered: masteryState('🟢', 'mastery.mastered', 'emerald'),
 };
 
 const TONE_CLASSES = {
@@ -47,6 +66,7 @@ export function resolveMasteryState(row) {
  * @param {React.ReactNode} [props.action]
  */
 export function LearningPointCard({ title, state, confidence, message, action }) {
+  const { t } = useTranslation('student');
   const s = MASTERY_STATES[state] || MASTERY_STATES.unassessed;
   const c = TONE_CLASSES[s.tone];
   const pct = typeof confidence === 'number' ? Math.round(confidence * 100) : null;
@@ -59,7 +79,7 @@ export function LearningPointCard({ title, state, confidence, message, action })
     >
       <div className="flex items-start justify-between gap-3">
         <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-mono text-xs font-bold ${c.pill}`}>
-          <span aria-hidden="true">{s.emoji}</span> {s.label}
+          <span aria-hidden="true">{s.emoji}</span> {t(s.labelKey)}
         </span>
       </div>
 
@@ -72,7 +92,7 @@ export function LearningPointCard({ title, state, confidence, message, action })
           aria-valuenow={pct}
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-label={`Maîtrise estimée : ${pct}%`}
+          aria-label={t('mastery.estimatedAria', { percent: pct })}
         >
           <motion.div
             initial={{ width: 0 }}

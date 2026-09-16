@@ -1,5 +1,6 @@
 import { useContext, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { AnimatePresence } from 'framer-motion';
 import { Compass, BookOpen } from 'lucide-react';
 import { courseLevels, getAllGrades } from '@smarter-academy/core';
@@ -10,7 +11,9 @@ import LessonCard from '../../components/student/LessonCard';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 
 export default function MesCours() {
-  useDocumentMeta('Mes cours', 'Toutes les leçons de ta classe, organisées par chapitre.');
+  const { t } = useTranslation('student');
+  const { t: tc } = useTranslation('common');
+  useDocumentMeta(t('courses.metaTitle'), t('courses.metaDescription'));
   const { user } = useContext(AuthContext);
   const [activeChapter, setActiveChapter] = useState('all');
 
@@ -36,9 +39,9 @@ export default function MesCours() {
       <div className="sa-page py-10 text-center">
         <div className="glass-card p-10">
           <BookOpen size={32} className="mx-auto mb-4 text-slate-300" />
-          <h1 className="font-space font-bold text-xl text-slate-800 mb-2">Aucune classe sélectionnée</h1>
-          <p className="font-inter text-slate-500 text-sm mb-6">Choisis ta classe dans ton profil pour voir tes cours.</p>
-          <Link to="/espace/profil" className="btn-primary text-sm inline-flex">Aller à mon profil</Link>
+          <h1 className="font-space font-bold text-xl text-slate-800 mb-2">{t('courses.noGradeTitle')}</h1>
+          <p className="font-inter text-slate-500 text-sm mb-6">{t('courses.noGradeBody')}</p>
+          <Link to="/espace/profil" className="btn-primary text-sm inline-flex">{t('courses.goToProfile')}</Link>
         </div>
       </div>
     );
@@ -51,11 +54,11 @@ export default function MesCours() {
           <p className="font-mono-jetbrains text-blue-500 text-xs font-semibold tracking-widest uppercase mb-2">
             {level?.title}
           </p>
-          <h1 className="font-space font-bold text-2xl sm:text-3xl text-slate-900">Mes cours — {grade.name}</h1>
+          <h1 className="font-space font-bold text-2xl sm:text-3xl text-slate-900">{t('courses.title', { grade: grade.name })}</h1>
         </div>
         <Link to="/espace/explorer" className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">
           <Compass size={15} />
-          Explorer d'autres niveaux
+          {t('courses.exploreOtherGrades')}
         </Link>
       </div>
 
@@ -67,7 +70,7 @@ export default function MesCours() {
             activeChapter === 'all' ? 'bg-slate-900 text-white' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
           }`}
         >
-          Tous les chapitres
+          {t('courses.allChapters')}
         </button>
         {gradeData.chapters.map((chapter) => {
           const isSelected = chapter.id === activeChapter;
@@ -82,7 +85,7 @@ export default function MesCours() {
             >
               <span>{chapter.title}</span>
               <span className={`text-[10px] mt-0.5 font-bold ${isSelected ? 'text-blue-200' : 'text-slate-400'}`}>
-                {chapter.lessons.length} leçon{chapter.lessons.length > 1 ? 's' : ''} · {progress}%
+                {t('courses.chapterMeta', { lessons: tc('lessonsCount', { count: chapter.lessons.length }), progress })}
               </span>
             </button>
           );

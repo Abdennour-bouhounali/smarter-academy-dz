@@ -21,7 +21,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/college/5e/espace_geometrie/parallelogrammes-5e/modules/Module03CeQueLesCotesPromettent.jsx",
-        "line": 102,
+        "line": 104,
         "step": 2,
         "variant": "new"
       }
@@ -32,7 +32,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/college/5e/espace_geometrie/parallelogrammes-5e/modules/Module03CeQueLesCotesPromettent.jsx",
-        "line": 172,
+        "line": 174,
         "step": 4,
         "variant": "new"
       }
@@ -43,7 +43,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/college/5e/espace_geometrie/parallelogrammes-5e/modules/Module04LePointOuToutSeCroise.jsx",
-        "line": 113,
+        "line": 112,
         "step": 2,
         "variant": "new"
       }
@@ -54,7 +54,7 @@
       "module": 6,
       "brick": {
         "file": "apps/web/src/lessons/college/5e/espace_geometrie/parallelogrammes-5e/modules/Module06LaFamille.jsx",
-        "line": 112,
+        "line": 111,
         "step": 2,
         "variant": "new"
       }
@@ -65,7 +65,7 @@
       "module": 7,
       "brick": {
         "file": "apps/web/src/lessons/college/5e/espace_geometrie/parallelogrammes-5e/modules/Module07LAireEtLaHauteur.jsx",
-        "line": 107,
+        "line": 106,
         "step": 2,
         "variant": "new"
       }
@@ -115,7 +115,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/college/5e/espace_geometrie/parallelogrammes-5e/modules/Module04LePointOuToutSeCroise.jsx",
-        "line": 118,
+        "line": 117,
         "step": 2,
         "variant": "new"
       }
@@ -366,7 +366,7 @@
       "step": 2,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/college/5e/espace_geometrie/parallelogrammes-5e/modules/Module03CeQueLesCotesPromettent.jsx",
-      "line": 107,
+      "line": 109,
       "requires": [
         "cotes-opposes-egaux",
         "parallelogramme"
@@ -384,7 +384,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/college/5e/espace_geometrie/parallelogrammes-5e/modules/Module03CeQueLesCotesPromettent.jsx",
-      "line": 133,
+      "line": 135,
       "requires": [
         "cotes-opposes-egaux",
         "quadrilatere"
@@ -402,7 +402,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/college/5e/espace_geometrie/parallelogrammes-5e/modules/Module03CeQueLesCotesPromettent.jsx",
-      "line": 177,
+      "line": 179,
       "requires": [
         "angles-opposes-egaux",
         "parallelogramme"
@@ -420,7 +420,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/college/5e/espace_geometrie/parallelogrammes-5e/modules/Module04LePointOuToutSeCroise.jsx",
-      "line": 119,
+      "line": 118,
       "requires": [
         "diagonales-milieu",
         "milieu-segment"
@@ -438,7 +438,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/college/5e/espace_geometrie/parallelogrammes-5e/modules/Module04LePointOuToutSeCroise.jsx",
-      "line": 145,
+      "line": 144,
       "requires": [
         "diagonales-milieu",
         "parallelogramme",
@@ -458,7 +458,7 @@
       "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/college/5e/espace_geometrie/parallelogrammes-5e/modules/Module06LaFamille.jsx",
-      "line": 118,
+      "line": 117,
       "requires": [
         "parallelogrammes-particuliers",
         "parallelogramme",
@@ -478,7 +478,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/college/5e/espace_geometrie/parallelogrammes-5e/modules/Module06LaFamille.jsx",
-      "line": 179,
+      "line": 178,
       "requires": [
         "parallelogrammes-particuliers",
         "diagonales-milieu"
@@ -496,7 +496,7 @@
       "step": 2,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/college/5e/espace_geometrie/parallelogrammes-5e/modules/Module07LAireEtLaHauteur.jsx",
-      "line": 112,
+      "line": 111,
       "requires": [
         "aire-parallelogramme"
       ],
@@ -512,7 +512,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/college/5e/espace_geometrie/parallelogrammes-5e/modules/Module07LAireEtLaHauteur.jsx",
-      "line": 140,
+      "line": 139,
       "requires": [
         "aire-parallelogramme"
       ],

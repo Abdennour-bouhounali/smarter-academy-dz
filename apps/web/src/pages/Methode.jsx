@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import {
   Compass, MapPin, Hand, Eye, HelpCircle, Lightbulb, FunctionSquare, Repeat2, Shuffle, Trophy, Sparkles,
 } from 'lucide-react';
@@ -7,23 +8,24 @@ import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
 // Each step already carries its "why" — no separate pillar grid repeating
 // the same nine ideas from a second angle. One structure, not two.
+// Les libellés vivent dans le namespace `marketing` (method.steps.<id>) :
+// on ne stocke ici que les identifiants, résolus via t() au rendu.
 const STEPS = [
-  { icon: MapPin, title: 'Situation concrète', desc: "Tout part d'un problème réel — jamais d'une formule posée à froid." },
-  { icon: Hand, title: 'Manipuler', desc: 'Avant toute règle, un geste : glisser, construire, découper. Les mains comprennent avant que la tête ne formalise.' },
-  { icon: Eye, title: 'Observer', desc: "Une droite qui bouge, une fraction qui se partage — l'élève voit la notion avant de la nommer." },
-  { icon: HelpCircle, title: 'Questionner', desc: 'Pourquoi ça marche ? Est-ce que ça marche toujours ? Se tromper ici fait partie du chemin, jamais une sanction.' },
-  { icon: Lightbulb, title: 'Découvrir', desc: "La règle n'est jamais donnée en premier. Elle est trouvée — et ce qu'on trouve soi-même, on ne l'oublie pas." },
-  { icon: FunctionSquare, title: 'Comprendre', desc: "Une fois le sens acquis vient l'écriture rigoureuse — la formule devient un résumé, pas un point de départ mystérieux." },
-  { icon: Repeat2, title: 'Pratiquer', desc: 'Des exercices qui varient, jamais mécaniques — avec une correction immédiate, adaptée à l\'erreur précise commise.' },
-  { icon: Shuffle, title: 'Appliquer', desc: 'Savoir résoudre un exercice type ne suffit pas : il faut reconnaître la même idée ailleurs.' },
-  { icon: Trophy, title: 'Maîtriser', desc: "Résoudre seul, avec confiance, sans avoir besoin qu'on rappelle la méthode." },
+  { id: 'situation', icon: MapPin },
+  { id: 'manipulate', icon: Hand },
+  { id: 'observe', icon: Eye },
+  { id: 'question', icon: HelpCircle },
+  { id: 'discover', icon: Lightbulb },
+  { id: 'understand', icon: FunctionSquare },
+  { id: 'practice', icon: Repeat2 },
+  { id: 'apply', icon: Shuffle },
+  { id: 'master', icon: Trophy },
 ];
 
 export default function Methode() {
-  useDocumentMeta(
-    'Notre méthode',
-    "Apprendre les mathématiques en les faisant : la méthode Smarter Academy, de la manipulation à la maîtrise."
-  );
+  const { t } = useTranslation('marketing');
+
+  useDocumentMeta(t('method.metaTitle'), t('method.metaDescription'));
 
   return (
     <div className="pt-16">
@@ -33,13 +35,13 @@ export default function Methode() {
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-mono-jetbrains font-semibold uppercase tracking-wider mb-5">
               <Compass size={14} />
-              Notre méthode
+              {t('method.eyebrow')}
             </div>
             <h1 className="font-space font-bold text-4xl sm:text-5xl text-slate-900 mb-5 text-balance">
-              Apprendre les mathématiques en les faisant
+              {t('method.title')}
             </h1>
             <p className="font-inter text-slate-600 text-lg leading-relaxed">
-              Pas de cours magistral à écouter en silence. Une boucle active, répétée à chaque leçon.
+              {t('method.subtitle')}
             </p>
           </motion.div>
         </div>
@@ -50,7 +52,7 @@ export default function Methode() {
         <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {STEPS.map((step, i) => (
             <motion.div
-              key={step.title}
+              key={step.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-40px' }}
@@ -67,8 +69,8 @@ export default function Methode() {
               >
                 <step.icon size={20} />
               </div>
-              <h3 className="font-space font-bold text-slate-900 text-base mb-2 relative">{step.title}</h3>
-              <p className="font-inter text-slate-500 text-sm leading-relaxed relative">{step.desc}</p>
+              <h3 className="font-space font-bold text-slate-900 text-base mb-2 relative">{t(`method.steps.${step.id}.title`)}</h3>
+              <p className="font-inter text-slate-500 text-sm leading-relaxed relative">{t(`method.steps.${step.id}.desc`)}</p>
             </motion.div>
           ))}
         </div>
@@ -84,21 +86,21 @@ export default function Methode() {
         >
           <Sparkles className="mx-auto mb-5 text-blue-400" size={26} />
           <p className="font-space font-bold text-xl sm:text-2xl text-slate-900 leading-snug text-balance mb-2">
-            Nous ne voulons pas seulement que l'élève sache quoi faire.
+            {t('method.closingLead')}
           </p>
           <p className="font-space font-bold text-xl sm:text-2xl gradient-text-blue-purple leading-snug text-balance">
-            Nous voulons qu'il sache pourquoi.
+            {t('method.closingPunch')}
           </p>
         </motion.div>
       </section>
 
       <CtaBanner
-        eyebrow="À toi d'essayer"
-        title="Vis cette méthode plutôt que d'en lire la description"
-        subtitle="La meilleure façon de comprendre notre méthode, c'est de commencer une leçon."
-        primaryLabel="Explorer les cours"
+        eyebrow={t('method.ctaEyebrow')}
+        title={t('method.ctaTitle')}
+        subtitle={t('method.ctaBody')}
+        primaryLabel={t('method.ctaSecondary')}
         primaryTo="/courses"
-        secondaryLabel="Commencer gratuitement"
+        secondaryLabel={t('method.ctaPrimary')}
         secondaryTo="/register"
       />
     </div>

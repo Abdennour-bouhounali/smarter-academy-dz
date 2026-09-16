@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { ArrowLeft, ArrowRight, Home, CheckCircle, Lock, ListChecks } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useProgress } from '../hooks/useProgress';
-import { isModuleUnlocked, lockedReason } from '@smarter-academy/core';
+import { isModuleUnlocked, lockedReasonData } from '@smarter-academy/core';
 import ReportButton from '../../../features/reports/ReportButton';
 import { scrollToStep } from '../utils/scrollToStep';
 import { LessonChromeContext, useLessonChromeLayout } from '../hooks/useLessonChrome';
@@ -47,7 +48,12 @@ import { LessonChromeContext, useLessonChromeLayout } from '../hooks/useLessonCh
 export default function ModuleLayout({
   coursePath,
   courseTitle,
-  levelLabel = 'Cours',
+  // Pas de défaut FRANÇAIS ici : ce libellé part dans le fil d'Ariane ET
+  // dans le lien `?level=`. Un défaut « Cours » donnait à la fois un mot
+  // français au milieu de l'arabe et une requête `?level=cours` cassée, sans
+  // la moindre erreur. La leçon nomme sa classe (voir moduleContext.js) ;
+  // si elle oublie, on préfère un fil d'Ariane court à un mot faux.
+  levelLabel,
   gradeLabel,
   moduleNumber,
   totalModules,
@@ -79,6 +85,7 @@ export default function ModuleLayout({
   // compensation (le module la réserve), alors que StudentLayout consomme
   // déjà son en-tête mobile via `pt-14 lg:pt-0` (le module ne réserve rien).
   const chrome = useLessonChromeLayout();
+  const { t } = useTranslation('lesson');
 
   const progressPct = Math.round((moduleNumber / totalModules) * 100);
   const isLastModule = moduleNumber === (lastModuleNumber ?? totalModules);
@@ -110,9 +117,28 @@ export default function ModuleLayout({
     if (nextLink) navigate(nextLink);
   };
 
-  const breadcrumbLevel = `${levelLabel} ${gradeLabel || ''}`.trim();
-  const gradeId = gradeIdProp ?? (gradeLabel ? gradeLabel.replace('ème', 'e') : '3e');
-  const levelParam = levelId ?? levelLabel.toLowerCase();
+  const breadcrumbLevel = `${levelLabel || ''} ${gradeLabel || ''}`.trim();
+  // `gradeId`/`levelId` sont des IDENTIFIANTS d'URL, pas du texte : ils
+  // viennent de la leçon (`gradeId: '4am'`, `levelId: 'moyen'`). L'ancienne
+  // heuristique dérivait l'identifiant du LIBELLÉ français (`3ème` → `3e`,
+  // défaut `'3e'`) — sur un libellé arabe elle produisait une URL en arabe
+  // ou retombait sur une classe française. On ne devine plus : sans
+  // identifiant explicite, le lien est simplement omis.
+  const gradeId = gradeIdProp ?? null;
+  const levelParam = levelId ?? null;
+
+  // Le lien du fil d'Ariane, construit à partir des seuls identifiants
+  // RÉELLEMENT fournis : interpoler un `null` donnait `?level=null&grade=null`,
+  // une URL que le catalogue ne sait pas lire. Sans aucun identifiant, on
+  // pointe vers le catalogue nu.
+  const catalogueLink = (extra) => {
+    const params = new URLSearchParams();
+    if (levelParam) params.set('level', levelParam);
+    if (gradeId) params.set('grade', gradeId);
+    if (extra) params.set('chapter', extra);
+    const qs = params.toString();
+    return qs ? `/courses?${qs}` : '/courses';
+  };
 
   // Protection de route : un module verrouillé ne s'affiche jamais, même en
   // tapant son URL directement. Aucune navigation, aucune écriture de
@@ -127,14 +153,19 @@ export default function ModuleLayout({
               <Lock className="w-7 h-7" aria-hidden="true" />
             </div>
             <div>
-              <h1 className="text-xl font-space font-extrabold text-slate-900">Module verrouillé</h1>
-              <p className="text-sm text-slate-500 mt-2">{lockedReason(moduleNumber)}</p>
+              <h1 className="text-xl font-space font-extrabold text-slate-900">{t('nav.moduleLocked')}</h1>
+              <p className="text-sm text-slate-500 mt-2">
+                {t('nav.lockedReason', {
+                  module: lockedReasonData(moduleNumber).previousModule,
+                  threshold: lockedReasonData(moduleNumber).threshold,
+                })}
+              </p>
             </div>
             <Link
               to={coursePath}
               className="inline-flex items-center gap-2 px-5 py-2.5 min-h-[44px] rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-mono text-xs font-bold shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-blue-400 focus:outline-none"
             >
-              <ArrowLeft size={16} aria-hidden="true" /> Retour au parcours
+              <ArrowLeft size={16} aria-hidden="true" /> {t('nav.backToPath')}
             </Link>
 
             {/* Le signalement existe AUSSI ici : « ce module ne devrait pas
@@ -156,7 +187,7 @@ export default function ModuleLayout({
           </div>
         </main>
         <footer className="border-t border-slate-200 bg-white py-8 text-center text-xs text-slate-500 mt-12">
-          <p>© {new Date().getFullYear()} Abdennour BOUHOUNALI — Professeur de Mathématiques</p>
+          <p>© {new Date().getFullYear()} Abdennour BOUHOUNALI — {t('common:footerRole')}</p>
         </footer>
       </div>
       </LessonChromeContext.Provider>
@@ -172,17 +203,17 @@ export default function ModuleLayout({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
           <nav
             className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500"
-            aria-label="Fil d'Ariane"
+            aria-label={t('nav.breadcrumb')}
           >
             <Link to="/courses" className="hover:text-blue-600 flex items-center gap-1">
-              <Home size={12} aria-hidden="true" /> Accueil
+              <Home size={12} aria-hidden="true" /> {t('nav.home')}
             </Link>
             <span aria-hidden="true">/</span>
-            <Link to={`/courses?level=${levelParam}&grade=${gradeId}`} className="hover:text-blue-600">{breadcrumbLevel}</Link>
+            <Link to={catalogueLink()} className="hover:text-blue-600">{breadcrumbLevel}</Link>
             {chapter && chapterTitle && (
               <>
                 <span aria-hidden="true">/</span>
-                <Link to={`/courses?level=${levelParam}&grade=${gradeId}&chapter=${chapter}`} className="hover:text-blue-600">{chapterTitle}</Link>
+                <Link to={catalogueLink(chapter)} className="hover:text-blue-600">{chapterTitle}</Link>
               </>
             )}
             <span aria-hidden="true">/</span>
@@ -196,7 +227,8 @@ export default function ModuleLayout({
           <div className="flex items-center gap-4 self-end sm:self-auto">
             <div className="flex items-center gap-2">
               <span className="text-xs font-mono text-blue-600 font-bold">
-                Module {moduleNumber} / {totalModules}
+                {t('nav.module')}{' '}
+                <span dir="ltr">{moduleNumber} / {totalModules}</span>
               </span>
               <div
                 className="w-16 sm:w-24 h-2 bg-slate-200 rounded-full overflow-hidden"
@@ -216,7 +248,7 @@ export default function ModuleLayout({
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-mono text-xs font-bold shrink-0 shadow-sm">
               <span id="xpCount">{xp || 0}</span>
-              <span aria-label="points d'expérience">XP</span>
+              <span aria-label={t('nav.experiencePoints')}>XP</span>
             </div>
 
             {/* En haut à droite, avec les autres repères du module.
@@ -243,7 +275,7 @@ export default function ModuleLayout({
         <header className="space-y-2 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 font-mono text-xs font-semibold">
             <span aria-hidden="true">⏱️</span>
-            {estimatedTime || '5 min'} · Module {moduleNumber}
+            {estimatedTime || `5 ${t('nav.minutesShort')}`} · {t('nav.module')} {moduleNumber}
           </div>
           <h1 className="text-3xl font-space font-extrabold text-slate-900">{moduleTitle}</h1>
           <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto">
@@ -267,7 +299,7 @@ export default function ModuleLayout({
               to={prevLink}
               className="flex items-center gap-2 px-5 py-2.5 min-h-[44px] rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-mono text-xs font-bold transition-all shadow-sm focus-visible:ring-2 focus-visible:ring-blue-400 focus:outline-none"
             >
-              <ArrowLeft size={16} aria-hidden="true" /> Précédent
+              <ArrowRight size={16} aria-hidden="true" /> {t('nav.previous')}
             </Link>
           ) : <div />}
 
@@ -282,11 +314,11 @@ export default function ModuleLayout({
                 }}
                 className="flex items-center gap-2 px-6 py-2.5 min-h-[44px] rounded-xl font-mono text-xs font-bold shadow-md transition-all focus-visible:ring-2 focus-visible:ring-emerald-400 focus:outline-none bg-emerald-600 hover:bg-emerald-700 text-white"
               >
-                Terminer <CheckCircle size={16} aria-hidden="true" />
+                {t('nav.finish')} <CheckCircle size={16} aria-hidden="true" />
               </Link>
             ) : (
               <IncompleteStepsHint
-                label="Terminer"
+                label={t('nav.finish')}
                 icon={<CheckCircle size={16} aria-hidden="true" />}
                 incompleteSteps={incompleteSteps}
                 onStepClick={scrollToStep}
@@ -298,12 +330,12 @@ export default function ModuleLayout({
               onClick={handleNextClick}
               className="flex items-center gap-2 px-6 py-2.5 min-h-[44px] rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-mono text-xs font-bold shadow-md transition-all focus-visible:ring-2 focus-visible:ring-blue-400 focus:outline-none"
             >
-              Module suivant <ArrowRight size={16} aria-hidden="true" />
+              {t('nav.nextModule')} <ArrowLeft size={16} aria-hidden="true" />
             </button>
           ) : (
             <IncompleteStepsHint
-              label="Module suivant"
-              icon={<ArrowRight size={16} aria-hidden="true" />}
+              label={t('nav.nextModule')}
+              icon={<ArrowLeft size={16} aria-hidden="true" />}
               incompleteSteps={incompleteSteps}
               onStepClick={scrollToStep}
             />
@@ -313,7 +345,7 @@ export default function ModuleLayout({
       </main>
 
       <footer className="border-t border-slate-200 bg-white py-8 text-center text-xs text-slate-500 mt-12">
-        <p>© {new Date().getFullYear()} Abdennour BOUHOUNALI — Professeur de Mathématiques</p>
+        <p>© {new Date().getFullYear()} Abdennour BOUHOUNALI — {t('common:footerRole')}</p>
       </footer>
     </div>
     </LessonChromeContext.Provider>
@@ -328,6 +360,7 @@ export default function ModuleLayout({
  * pass `incompleteSteps` — never breaks a module that hasn't adopted it yet.
  */
 function IncompleteStepsHint({ label, icon, incompleteSteps, onStepClick }) {
+  const { t } = useTranslation('lesson');
   const [open, setOpen] = useState(false);
   const steps = incompleteSteps?.filter(Boolean) ?? [];
 
@@ -367,7 +400,7 @@ function IncompleteStepsHint({ label, icon, incompleteSteps, onStepClick }) {
           >
             <div className="flex items-center gap-2 text-amber-800 font-space font-bold text-sm mb-2">
               <ListChecks className="w-4 h-4 shrink-0" aria-hidden="true" />
-              À terminer avant de continuer
+              {t('nav.toFinishBeforeContinuing')}
             </div>
             <ul className="space-y-1.5">
               {steps.map((step) => (
@@ -380,7 +413,7 @@ function IncompleteStepsHint({ label, icon, incompleteSteps, onStepClick }) {
                     }}
                     className="w-full text-start px-3 py-2 rounded-lg bg-white border border-amber-200 text-xs font-semibold text-amber-900 hover:border-amber-400 hover:bg-amber-100 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
                   >
-                    Étape {step.num} — {step.title}
+                    {t('step.label')} {step.num} — {step.title}
                   </button>
                 </li>
               ))}

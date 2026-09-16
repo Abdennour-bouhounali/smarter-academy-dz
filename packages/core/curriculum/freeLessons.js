@@ -24,15 +24,23 @@
 // Le frontend n'en déduit RIEN : il affiche un cadenas, le serveur refuse.
 // La dérive entre les deux est surveillée par scripts/check-activation-drift.mjs.
 //
-// ── Pourquoi la liste est vide aujourd'hui ──────────────────────────────
-// Aucune leçon algérienne n'existe encore : le programme 4AM est arrêté
-// (docs/ALGERIA_4AM_CURRICULUM.md) mais aucune leçon n'est écrite — c'est la
-// phase 7/8. Une liste vide est le seul contenu honnête : elle n'ouvre rien
-// par erreur, et elle rend chaque classe active entièrement payante tant que
-// personne n'a décidé du contraire.
+// ── L'état de la liste ──────────────────────────────────────────────────
+// UNE leçon ouverte sur les trois que le cahier des charges prévoit.
+//
+// `pgcd` — قواسم عدد طبيعي والقاسم المشترك الأكبر — est la PREMIÈRE leçon
+// algérienne écrite (premier sujet du premier domaine du programme), et la
+// seule qui existe aujourd'hui sur le disque. L'ouvrir donne à un visiteur
+// une leçon complète à essayer : c'est précisément ce que le palier gratuit
+// doit démontrer.
+//
+// Les DEUX autres restent à choisir, et ne peuvent l'être qu'entre des
+// leçons ÉCRITES : inscrire ici l'identifiant d'une leçon `coming_soon`
+// annoncerait « gratuit » sur une carte que personne ne peut ouvrir.
+// `check-dormant-isolation.mjs` refuse de toute façon un identifiant qui ne
+// correspond à aucune leçon du catalogue.
 import { isGradeActive } from './activeGrades.js';
 
-export const FREE_LESSON_IDS = Object.freeze([]);
+export const FREE_LESSON_IDS = Object.freeze(['pgcd']);
 
 /**
  * Cette leçon est-elle explicitement gratuite ?

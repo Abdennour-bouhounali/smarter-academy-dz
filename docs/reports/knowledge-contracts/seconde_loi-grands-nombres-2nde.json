@@ -101,7 +101,7 @@
       "module": 5,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/loi-grands-nombres-2nde/modules/Module05SimulerEnPython.jsx",
-        "line": 39,
+        "line": 48,
         "step": 1,
         "variant": "rappel"
       }
@@ -385,7 +385,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/loi-grands-nombres-2nde/modules/Module05SimulerEnPython.jsx",
-      "line": 45,
+      "line": 54,
       "requires": [
         "lire-simulation",
         "boucle",
@@ -400,12 +400,12 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M05-S2-Q2",
+      "questionId": "M05-S3-Q2",
       "module": 5,
-      "step": 2,
+      "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/loi-grands-nombres-2nde/modules/Module05SimulerEnPython.jsx",
-      "line": 67,
+      "line": 122,
       "requires": [
         "lire-simulation",
         "loi-grands-nombres",
@@ -422,12 +422,12 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M05-S3-Q3",
+      "questionId": "M05-S4-Q3",
       "module": 5,
-      "step": 3,
+      "step": 4,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/loi-grands-nombres-2nde/modules/Module05SimulerEnPython.jsx",
-      "line": 91,
+      "line": 146,
       "requires": [
         "lire-simulation",
         "frequence-observee",

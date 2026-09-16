@@ -20,7 +20,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/nombres-reels-2nde/modules/Module01LeZoomInfini.jsx",
-        "line": 100,
+        "line": 99,
         "step": 1,
         "variant": "new"
       }
@@ -31,7 +31,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/nombres-reels-2nde/modules/Module01LeZoomInfini.jsx",
-        "line": 132,
+        "line": 131,
         "step": 2,
         "variant": "new"
       }
@@ -53,7 +53,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/nombres-reels-2nde/modules/Module03DecimalOuPas.jsx",
-        "line": 83,
+        "line": 82,
         "step": 1,
         "variant": "new"
       }
@@ -64,7 +64,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/nombres-reels-2nde/modules/Module03DecimalOuPas.jsx",
-        "line": 121,
+        "line": 120,
         "step": 2,
         "variant": "new"
       }
@@ -75,7 +75,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/nombres-reels-2nde/modules/Module03DecimalOuPas.jsx",
-        "line": 160,
+        "line": 159,
         "step": 4,
         "variant": "new"
       }
@@ -145,7 +145,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/nombres-reels-2nde/modules/Module01LeZoomInfini.jsx",
-        "line": 149,
+        "line": 148,
         "step": 3,
         "variant": "new"
       }
@@ -191,7 +191,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/nombres-reels-2nde/modules/Module03DecimalOuPas.jsx",
-        "line": 165,
+        "line": 164,
         "step": 4,
         "variant": "new"
       }
@@ -319,7 +319,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/nombres-reels-2nde/modules/Module01LeZoomInfini.jsx",
-      "line": 154,
+      "line": 153,
       "requires": [
         "droite-reelle",
         "methode-encadrer-decimales"
@@ -359,7 +359,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/nombres-reels-2nde/modules/Module03DecimalOuPas.jsx",
-      "line": 135,
+      "line": 134,
       "requires": [
         "regle-restes-division",
         "regle-fraction-finie-ou-periodique"
@@ -377,7 +377,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/nombres-reels-2nde/modules/Module03DecimalOuPas.jsx",
-      "line": 172,
+      "line": 171,
       "requires": [
         "exact-approche",
         "mem-exact-approche"
@@ -481,7 +481,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/nombres-reels-2nde/modules/Module06MissionFinale.jsx",
-      "line": 41,
+      "line": 42,
       "requires": [
         "familles-emboitees",
         "decimal",
@@ -501,7 +501,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/nombres-reels-2nde/modules/Module06MissionFinale.jsx",
-      "line": 50,
+      "line": 51,
       "requires": [
         "familles-emboitees",
         "irrationnel",
@@ -521,7 +521,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/nombres-reels-2nde/modules/Module06MissionFinale.jsx",
-      "line": 59,
+      "line": 60,
       "requires": [
         "droite-reelle",
         "methode-encadrer-decimales"
@@ -539,7 +539,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/nombres-reels-2nde/modules/Module06MissionFinale.jsx",
-      "line": 73,
+      "line": 74,
       "requires": [
         "regle-restes-division",
         "regle-fraction-finie-ou-periodique"
@@ -557,7 +557,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/nombres-reels-2nde/modules/Module06MissionFinale.jsx",
-      "line": 82,
+      "line": 83,
       "requires": [
         "regle-restes-division",
         "decimal"
@@ -575,7 +575,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/nombres-reels-2nde/modules/Module06MissionFinale.jsx",
-      "line": 92,
+      "line": 93,
       "requires": [
         "arrondi-troncature"
       ],
@@ -591,7 +591,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/nombres-reels-2nde/modules/Module06MissionFinale.jsx",
-      "line": 101,
+      "line": 102,
       "requires": [
         "mem-exact-puis-arrondir",
         "arrondi-troncature"
@@ -609,7 +609,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/nombres-reels-2nde/modules/Module06MissionFinale.jsx",
-      "line": 111,
+      "line": 112,
       "requires": [
         "methode-encadrer-racine"
       ],
@@ -625,7 +625,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/nombres-reels-2nde/modules/Module06MissionFinale.jsx",
-      "line": 120,
+      "line": 121,
       "requires": [
         "methode-comparer-reels"
       ],
@@ -641,7 +641,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/nombres-reels-2nde/modules/Module06MissionFinale.jsx",
-      "line": 129,
+      "line": 130,
       "requires": [
         "methode-encadrer-racine",
         "regle-sens-arrondi"

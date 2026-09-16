@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Feedback } from '../components/LessonUI';
 import { CATEGORIES, useLessonKnowledge } from '../knowledge';
 import ConceptVisual from '../knowledge/ConceptVisual';
@@ -47,6 +48,7 @@ export default function KnowledgeBrick({
   compact = false,
   children,
 }) {
+  const { t } = useTranslation('lesson');
   const { getItem, unlockItem } = useLessonKnowledge();
   const item = getItem(id);
 
@@ -86,8 +88,8 @@ export default function KnowledgeBrick({
 
       <div className={`p-5 space-y-3 ${style.accent ? 'ps-6' : ''}`}>
         <p className={`text-[11px] font-mono font-bold uppercase tracking-[0.14em] ${style.tag}`}>
-          <span aria-hidden="true">{style.emoji}</span> {style.label}
-          {category && <span> · {category.label}</span>}
+          <span aria-hidden="true">{style.emoji}</span> {t(style.labelKey)}
+          {category && <span> · {t(category.labelKey)}</span>}
         </p>
 
         {lead && <p className={`text-sm leading-relaxed ${style.lead}`}>{lead}</p>}
@@ -136,7 +138,7 @@ export default function KnowledgeBrick({
  */
 const VARIANTS = {
   new: {
-    emoji: '🔑', label: 'Nouveau',
+    emoji: '🔑', labelKey: 'brick.new',
     box: 'border border-slate-200 bg-white shadow-sm',
     tag: 'text-slate-400', lead: 'text-slate-500',
     title: 'text-slate-900',
@@ -145,7 +147,7 @@ const VARIANTS = {
     accent: true,
   },
   rappel: {
-    emoji: '↺', label: 'Rappel',
+    emoji: '↺', labelKey: 'brick.reminder',
     box: 'border border-slate-200 bg-slate-50/70',
     tag: 'text-slate-400', lead: 'text-slate-500',
     title: 'text-slate-800',
@@ -154,7 +156,7 @@ const VARIANTS = {
     accent: false,
   },
   enrichment: {
-    emoji: '✦', label: 'Pour aller plus loin',
+    emoji: '✦', labelKey: 'brick.goFurther',
     box: 'border border-dashed border-violet-200 bg-violet-50/40',
     tag: 'text-violet-400', lead: 'text-violet-700',
     title: 'text-slate-900',

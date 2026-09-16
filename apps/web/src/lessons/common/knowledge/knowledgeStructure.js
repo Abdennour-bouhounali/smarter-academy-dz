@@ -23,22 +23,22 @@ import { CATEGORIES } from './KnowledgeMap';
 export const STRATA = [
   {
     id: 'idees',
-    label: 'IDÉES',
-    caption: 'De quoi on parle',
+    labelKey: 'map.strata.ideas',
+    captionKey: 'map.strata.ideasCaption',
     cats: ['concepts', 'vocabulaire'],
     accent: 'blue',
   },
   {
     id: 'proprietes',
-    label: 'PROPRIÉTÉS',
-    caption: "Ce qui est toujours vrai",
+    labelKey: 'map.strata.properties',
+    captionKey: 'map.strata.propertiesCaption',
     cats: ['regles', 'formules'],
     accent: 'orange',
   },
   {
     id: 'faire',
-    label: 'MÉTHODES',
-    caption: "Comment s'en servir",
+    labelKey: 'map.strata.methods',
+    captionKey: 'map.strata.methodsCaption',
     cats: ['methodes'],
     accent: 'green',
   },

@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ChevronDown } from 'lucide-react';
 import { getAllGrades } from '@smarter-academy/core';
 import { AuthContext } from '../../context/AuthContext';
@@ -12,6 +13,7 @@ const ALL_GRADES = getAllGrades();
  * visitors.
  */
 export default function GradeSwitcher() {
+  const { t } = useTranslation('student');
   const { user, updateGrade } = useContext(AuthContext);
   const [saving, setSaving] = useState(false);
 
@@ -34,7 +36,7 @@ export default function GradeSwitcher() {
 
   return (
     <div className="relative inline-flex items-center">
-      <label htmlFor="grade-switcher" className="sr-only">Ma classe</label>
+      <label htmlFor="grade-switcher" className="sr-only">{t('profile.myGrade')}</label>
       <select
         id="grade-switcher"
         value={user.grade || ''}
@@ -42,10 +44,10 @@ export default function GradeSwitcher() {
         disabled={saving}
         className="appearance-none cursor-pointer rounded-lg border border-slate-200 bg-white ps-3 pe-8 py-1.5 font-inter text-xs sm:text-sm font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60 transition-colors"
       >
-        {!currentGrade && <option value="" disabled>Ma classe</option>}
+        {!currentGrade && <option value="" disabled>{t('profile.myGrade')}</option>}
         {ALL_GRADES.map((g) => (
           <option key={g.id} value={g.id}>
-            Ma classe : {g.name}
+            {t('profile.myGradeWithName', { grade: g.name })}
           </option>
         ))}
       </select>

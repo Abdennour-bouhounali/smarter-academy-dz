@@ -58,13 +58,20 @@ describe('check-activation-drift', () => {
     }
   });
 
+  // Réactivés en phase 7 : le catalogue algérien déclare désormais 28 leçons
+  // (une par sujet officiel), donc le contrôle du PALIER PAR LEÇON a enfin
+  // de quoi s'exercer. En phase 6F ces deux tests étaient `it.skip` faute de
+  // leçon à muter — voir l'historique.
   it('échoue quand le palier d’une leçon a dérivé', () => {
     regenerate();
     const exported = JSON.parse(readFileSync(exportPath, 'utf8'));
     const original = JSON.stringify(exported, null, 2);
 
     // La fuite commerciale : le catalogue vend, l'export offre.
-    const lesson = exported.grades[0].chapters[0].lessons[0];
+    const chapter = exported.grades
+      .flatMap((g) => g.chapters ?? [])
+      .find((c) => (c.lessons ?? []).length > 0);
+    const lesson = chapter.lessons[0];
     lesson.tier = lesson.tier === 'premium' ? 'free' : 'premium';
     writeFileSync(exportPath, JSON.stringify(exported, null, 2));
 
@@ -82,7 +89,10 @@ describe('check-activation-drift', () => {
     const exported = JSON.parse(readFileSync(exportPath, 'utf8'));
     const original = JSON.stringify(exported, null, 2);
 
-    const removed = exported.grades[0].chapters[0].lessons.shift();
+    const chapter = exported.grades
+      .flatMap((g) => g.chapters ?? [])
+      .find((c) => (c.lessons ?? []).length > 0);
+    const removed = chapter.lessons.shift();
     writeFileSync(exportPath, JSON.stringify(exported, null, 2));
 
     try {

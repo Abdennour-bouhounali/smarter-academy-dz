@@ -102,10 +102,30 @@ export function getModuleStatus({ isModuleCompleted, moduleNumber, currentModule
   return 'unlocked';
 }
 
-/** Message affiché sur un module verrouillé, pour que l'élève comprenne pourquoi. */
-export function lockedReason(moduleNumber) {
+/**
+ * Les DONNÉES du verrouillage : quel module précède, et à quel seuil.
+ *
+ * `packages/core` ne formate pas de phrase destinée à l'élève — il n'a pas à
+ * connaître la langue de l'interface. C'est la couche UI qui traduit
+ * (apps/web : i18n, namespace `lesson`), à partir de ces deux nombres. Sans
+ * cela, un écran arabe affichait « Termine le module 02 à 80 % ».
+ */
+export function lockedReasonData(moduleNumber) {
   const prev = Number(moduleNumber) - 1;
-  return `Termine le module ${String(prev).padStart(2, '0')} à ${MASTERY_UNLOCK_THRESHOLD} % pour débloquer ce module.`;
+  return {
+    previousModule: String(prev).padStart(2, '0'),
+    threshold: MASTERY_UNLOCK_THRESHOLD,
+  };
+}
+
+/**
+ * @deprecated Utiliser `lockedReasonData` + i18n côté UI. Conservé pour les
+ * appelants hors application (outillage, tests hérités) ; aucune surface
+ * élève ne doit l'afficher, sa phrase est en français.
+ */
+export function lockedReason(moduleNumber) {
+  const { previousModule, threshold } = lockedReasonData(moduleNumber);
+  return `Termine le module ${previousModule} à ${threshold} % pour débloquer ce module.`;
 }
 
 /**

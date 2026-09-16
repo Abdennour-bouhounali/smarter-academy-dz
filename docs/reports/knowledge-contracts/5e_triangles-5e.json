@@ -9,71 +9,590 @@
     "droites-perpendiculaires",
     "aire-triangle"
   ],
-  "conceptsIntroduced": [],
-  "vocabularyIntroduced": [],
-  "proceduresIntroduced": [],
-  "memorisation": [],
-  "questions": [],
-  "findings": [
+  "conceptsIntroduced": [
     {
-      "code": "W_PRIOR_NOT_DIAGNOSED",
-      "severity": "medium",
-      "message": "priorKnowledge declares 'mesure-angle' but no Module 0 question diagnoses it",
-      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/lesson.config.js",
-      "line": 0,
-      "module": null,
-      "step": null,
-      "term": null,
-      "questionId": null,
-      "position": -1
+      "id": "somme-angles-triangle",
+      "type": "regles",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module01LeNombreQuiNeBougePas.jsx",
+        "line": 135,
+        "step": 3,
+        "variant": "new"
+      }
     },
     {
-      "code": "W_PRIOR_NOT_DIAGNOSED",
-      "severity": "medium",
-      "message": "priorKnowledge declares 'angle-plat' but no Module 0 question diagnoses it",
-      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/lesson.config.js",
-      "line": 0,
-      "module": null,
-      "step": null,
-      "term": null,
-      "questionId": null,
-      "position": -1
+      "id": "preuve-somme-angles",
+      "type": "concepts",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module02PourquoiToujours180.jsx",
+        "line": 129,
+        "step": 3,
+        "variant": "new"
+      }
     },
     {
-      "code": "W_PRIOR_NOT_DIAGNOSED",
-      "severity": "medium",
-      "message": "priorKnowledge declares 'milieu-segment' but no Module 0 question diagnoses it",
-      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/lesson.config.js",
-      "line": 0,
-      "module": null,
-      "step": null,
-      "term": null,
-      "questionId": null,
-      "position": -1
+      "id": "inegalite-triangulaire",
+      "type": "regles",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module03TroisLongueursQuiRefusent.jsx",
+        "line": 121,
+        "step": 3,
+        "variant": "new"
+      }
     },
     {
-      "code": "W_PRIOR_NOT_DIAGNOSED",
-      "severity": "medium",
-      "message": "priorKnowledge declares 'droites-perpendiculaires' but no Module 0 question diagnoses it",
-      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/lesson.config.js",
-      "line": 0,
-      "module": null,
-      "step": null,
-      "term": null,
-      "questionId": null,
-      "position": -1
+      "id": "mediatrices-cercle-circonscrit",
+      "type": "concepts",
+      "module": 5,
+      "brick": {
+        "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module05LePointAEgaleDistance.jsx",
+        "line": 147,
+        "step": 3,
+        "variant": "new"
+      }
     },
     {
-      "code": "W_PRIOR_NOT_DIAGNOSED",
-      "severity": "medium",
-      "message": "priorKnowledge declares 'aire-triangle' but no Module 0 question diagnoses it",
-      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/lesson.config.js",
-      "line": 0,
-      "module": null,
-      "step": null,
-      "term": null,
-      "questionId": null,
-      "position": -1
+      "id": "mediane-deux-aires-egales",
+      "type": "regles",
+      "module": 6,
+      "brick": {
+        "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module06HauteurOuMediane.jsx",
+        "line": 137,
+        "step": 3,
+        "variant": "new"
+      }
     }
-  ]
+  ],
+  "vocabularyIntroduced": [
+    {
+      "id": "hauteur-et-mediane",
+      "type": "vocabulaire",
+      "module": 6,
+      "brick": {
+        "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module06HauteurOuMediane.jsx",
+        "line": 132,
+        "step": 3,
+        "variant": "new"
+      }
+    }
+  ],
+  "proceduresIntroduced": [
+    {
+      "id": "calculer-angle-manquant",
+      "type": "methodes",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module02PourquoiToujours180.jsx",
+        "line": 134,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "construire-triangle",
+      "type": "methodes",
+      "module": 4,
+      "brick": {
+        "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module04ConstruireAuCompas.jsx",
+        "line": 109,
+        "step": 3,
+        "variant": "new"
+      }
+    }
+  ],
+  "memorisation": [
+    {
+      "id": "mem-somme-angles",
+      "type": "memoriser",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module02PourquoiToujours180.jsx",
+        "line": 139,
+        "step": 3,
+        "variant": "new"
+      }
+    }
+  ],
+  "questions": [
+    {
+      "questionId": "tri5-d1-angles",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module00Diagnostic.jsx",
+      "line": 24,
+      "requires": [
+        "angle-plat"
+      ],
+      "prerequisiteStatus": {
+        "angle-plat": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "tri5-d2-angles",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module00Diagnostic.jsx",
+      "line": 35,
+      "requires": [
+        "mesure-angle"
+      ],
+      "prerequisiteStatus": {
+        "mesure-angle": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "tri5-d3-angles",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module00Diagnostic.jsx",
+      "line": 46,
+      "requires": [
+        "angle-plat",
+        "mesure-angle"
+      ],
+      "prerequisiteStatus": {
+        "angle-plat": "prior",
+        "mesure-angle": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "tri5-d4-segments",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module00Diagnostic.jsx",
+      "line": 57,
+      "requires": [
+        "milieu-segment"
+      ],
+      "prerequisiteStatus": {
+        "milieu-segment": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "tri5-d5-segments",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module00Diagnostic.jsx",
+      "line": 68,
+      "requires": [
+        "droites-perpendiculaires"
+      ],
+      "prerequisiteStatus": {
+        "droites-perpendiculaires": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "tri5-d6-aires",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module00Diagnostic.jsx",
+      "line": 79,
+      "requires": [
+        "aire-triangle"
+      ],
+      "prerequisiteStatus": {
+        "aire-triangle": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "tri5-d7-aires",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module00Diagnostic.jsx",
+      "line": 94,
+      "requires": [
+        "aire-triangle"
+      ],
+      "prerequisiteStatus": {
+        "aire-triangle": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S3-Q1",
+      "module": 1,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module01LeNombreQuiNeBougePas.jsx",
+      "line": 140,
+      "requires": [
+        "somme-angles-triangle"
+      ],
+      "prerequisiteStatus": {
+        "somme-angles-triangle": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S4-Q2",
+      "module": 1,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module01LeNombreQuiNeBougePas.jsx",
+      "line": 164,
+      "requires": [
+        "somme-angles-triangle"
+      ],
+      "prerequisiteStatus": {
+        "somme-angles-triangle": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S3-Q1",
+      "module": 2,
+      "step": 3,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module02PourquoiToujours180.jsx",
+      "line": 140,
+      "requires": [
+        "calculer-angle-manquant",
+        "somme-angles-triangle"
+      ],
+      "prerequisiteStatus": {
+        "calculer-angle-manquant": "established@M2",
+        "somme-angles-triangle": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S4-Q2",
+      "module": 2,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module02PourquoiToujours180.jsx",
+      "line": 163,
+      "requires": [
+        "calculer-angle-manquant",
+        "somme-angles-triangle"
+      ],
+      "prerequisiteStatus": {
+        "calculer-angle-manquant": "established@M2",
+        "somme-angles-triangle": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S3-Q1",
+      "module": 3,
+      "step": 3,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module03TroisLongueursQuiRefusent.jsx",
+      "line": 128,
+      "requires": [
+        "inegalite-triangulaire"
+      ],
+      "prerequisiteStatus": {
+        "inegalite-triangulaire": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S4-Q2",
+      "module": 3,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module03TroisLongueursQuiRefusent.jsx",
+      "line": 189,
+      "requires": [
+        "inegalite-triangulaire"
+      ],
+      "prerequisiteStatus": {
+        "inegalite-triangulaire": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S3-Q1",
+      "module": 4,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module04ConstruireAuCompas.jsx",
+      "line": 114,
+      "requires": [
+        "construire-triangle",
+        "inegalite-triangulaire"
+      ],
+      "prerequisiteStatus": {
+        "construire-triangle": "established@M4",
+        "inegalite-triangulaire": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S4-Q2",
+      "module": 4,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module04ConstruireAuCompas.jsx",
+      "line": 138,
+      "requires": [
+        "construire-triangle"
+      ],
+      "prerequisiteStatus": {
+        "construire-triangle": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S3-Q1",
+      "module": 5,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module05LePointAEgaleDistance.jsx",
+      "line": 152,
+      "requires": [
+        "mediatrices-cercle-circonscrit"
+      ],
+      "prerequisiteStatus": {
+        "mediatrices-cercle-circonscrit": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S4-Q2",
+      "module": 5,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module05LePointAEgaleDistance.jsx",
+      "line": 180,
+      "requires": [
+        "mediatrices-cercle-circonscrit"
+      ],
+      "prerequisiteStatus": {
+        "mediatrices-cercle-circonscrit": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S3-Q1",
+      "module": 6,
+      "step": 3,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module06HauteurOuMediane.jsx",
+      "line": 143,
+      "requires": [
+        "hauteur-et-mediane",
+        "mediane-deux-aires-egales"
+      ],
+      "prerequisiteStatus": {
+        "hauteur-et-mediane": "established@M6",
+        "mediane-deux-aires-egales": "established@M6"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S4-Q2",
+      "module": 6,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module06HauteurOuMediane.jsx",
+      "line": 202,
+      "requires": [
+        "mediane-deux-aires-egales"
+      ],
+      "prerequisiteStatus": {
+        "mediane-deux-aires-egales": "established@M6"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "tri5-e1",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module07MissionFinale.jsx",
+      "line": 56,
+      "requires": [
+        "somme-angles-triangle"
+      ],
+      "prerequisiteStatus": {
+        "somme-angles-triangle": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "tri5-e2",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module07MissionFinale.jsx",
+      "line": 67,
+      "requires": [
+        "calculer-angle-manquant",
+        "somme-angles-triangle"
+      ],
+      "prerequisiteStatus": {
+        "calculer-angle-manquant": "established@M2",
+        "somme-angles-triangle": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "tri5-e3",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module07MissionFinale.jsx",
+      "line": 78,
+      "requires": [
+        "calculer-angle-manquant"
+      ],
+      "prerequisiteStatus": {
+        "calculer-angle-manquant": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "tri5-e4",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module07MissionFinale.jsx",
+      "line": 89,
+      "requires": [
+        "inegalite-triangulaire"
+      ],
+      "prerequisiteStatus": {
+        "inegalite-triangulaire": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "tri5-e5",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module07MissionFinale.jsx",
+      "line": 105,
+      "requires": [
+        "inegalite-triangulaire"
+      ],
+      "prerequisiteStatus": {
+        "inegalite-triangulaire": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "tri5-e6",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module07MissionFinale.jsx",
+      "line": 121,
+      "requires": [
+        "construire-triangle"
+      ],
+      "prerequisiteStatus": {
+        "construire-triangle": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "tri5-e7",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module07MissionFinale.jsx",
+      "line": 137,
+      "requires": [
+        "mediatrices-cercle-circonscrit"
+      ],
+      "prerequisiteStatus": {
+        "mediatrices-cercle-circonscrit": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "tri5-e8",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module07MissionFinale.jsx",
+      "line": 153,
+      "requires": [
+        "mediatrices-cercle-circonscrit"
+      ],
+      "prerequisiteStatus": {
+        "mediatrices-cercle-circonscrit": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "tri5-e9",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module07MissionFinale.jsx",
+      "line": 169,
+      "requires": [
+        "hauteur-et-mediane"
+      ],
+      "prerequisiteStatus": {
+        "hauteur-et-mediane": "established@M6"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "tri5-e10",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/5e/espace_geometrie/triangles-5e/modules/Module07MissionFinale.jsx",
+      "line": 180,
+      "requires": [
+        "mediane-deux-aires-egales"
+      ],
+      "prerequisiteStatus": {
+        "mediane-deux-aires-egales": "established@M6"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    }
+  ],
+  "findings": []
 }

@@ -165,7 +165,9 @@ describe('la cible tactile de l’icône', () => {
     // Une icône seule au milieu du bandeau se lit comme un ornement. La
     // bordure et le fond la rangent avec les autres repères du module.
     expect(iconVariant).toContain('border');
-    expect(iconVariant).toContain('Signaler');
+    // Le mot est rendu par i18n (locales/ar/common.json → report.triggerShort),
+    // pas écrit en dur : c'est sa PRÉSENCE qu'on vérifie, pas sa langue.
+    expect(iconVariant).toContain("t('report.triggerShort')");
   });
 
   it('masque le mot sur téléphone, où la barre du haut n’a pas la place', () => {
@@ -296,7 +298,7 @@ describe('confirmation et non-interruption', () => {
   const dialog = read('src/features/reports/ReportDialog.jsx');
 
   it('confirme sans quitter la leçon', () => {
-    expect(dialog).toContain('Merci ! Ton signalement a bien été envoyé.');
+    expect(dialog).toContain("t('report.successTitle')");
     // Aucune navigation : l'élève reste exactement où il était.
     expect(dialog).not.toContain('useNavigate');
     expect(dialog).not.toContain('window.location');

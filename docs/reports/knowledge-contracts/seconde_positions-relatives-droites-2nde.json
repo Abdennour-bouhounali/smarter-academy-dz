@@ -20,7 +20,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module01LeLaboratoireDesDeuxDroites.jsx",
-        "line": 256,
+        "line": 255,
         "step": 3,
         "variant": "new"
       }
@@ -31,7 +31,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module01LeLaboratoireDesDeuxDroites.jsx",
-        "line": 219,
+        "line": 218,
         "step": 2,
         "variant": "new"
       }
@@ -42,7 +42,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module02LaDirection.jsx",
-        "line": 110,
+        "line": 109,
         "step": 1,
         "variant": "new"
       }
@@ -53,7 +53,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module02LaDirection.jsx",
-        "line": 144,
+        "line": 143,
         "step": 2,
         "variant": "new"
       }
@@ -64,7 +64,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module02LaDirection.jsx",
-        "line": 115,
+        "line": 114,
         "step": 1,
         "variant": "new"
       }
@@ -75,7 +75,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module03LesEquations.jsx",
-        "line": 66,
+        "line": 65,
         "step": 1,
         "variant": "new"
       }
@@ -86,7 +86,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module03LesEquations.jsx",
-        "line": 110,
+        "line": 109,
         "step": 3,
         "variant": "new"
       }
@@ -97,7 +97,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module04LePointDIntersection.jsx",
-        "line": 111,
+        "line": 110,
         "step": 2,
         "variant": "new"
       }
@@ -108,7 +108,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module04LePointDIntersection.jsx",
-        "line": 165,
+        "line": 164,
         "step": 3,
         "variant": "new"
       }
@@ -119,7 +119,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module04LePointDIntersection.jsx",
-        "line": 121,
+        "line": 120,
         "step": 2,
         "variant": "new"
       }
@@ -132,7 +132,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module01LeLaboratoireDesDeuxDroites.jsx",
-        "line": 186,
+        "line": 185,
         "step": 1,
         "variant": "new"
       }
@@ -145,7 +145,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module02LaDirection.jsx",
-        "line": 149,
+        "line": 148,
         "step": 2,
         "variant": "new"
       }
@@ -156,7 +156,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module03LesEquations.jsx",
-        "line": 115,
+        "line": 114,
         "step": 3,
         "variant": "new"
       }
@@ -167,7 +167,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module04LePointDIntersection.jsx",
-        "line": 116,
+        "line": 115,
         "step": 2,
         "variant": "new"
       }
@@ -178,7 +178,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module04LePointDIntersection.jsx",
-        "line": 83,
+        "line": 82,
         "step": 1,
         "variant": "new"
       }
@@ -224,7 +224,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module01LeLaboratoireDesDeuxDroites.jsx",
-        "line": 261,
+        "line": 260,
         "step": 3,
         "variant": "new"
       }
@@ -235,7 +235,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module03LesEquations.jsx",
-        "line": 92,
+        "line": 91,
         "step": 2,
         "variant": "new"
       }
@@ -246,7 +246,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module04LePointDIntersection.jsx",
-        "line": 195,
+        "line": 194,
         "step": 4,
         "variant": "new"
       }
@@ -349,7 +349,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module01LeLaboratoireDesDeuxDroites.jsx",
-      "line": 282,
+      "line": 281,
       "requires": [
         "positions-trois-cas",
         "vocab-secantes-paralleles-confondues",
@@ -369,7 +369,7 @@
       "step": 3,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module02LaDirection.jsx",
-      "line": 166,
+      "line": 165,
       "requires": [
         "critere-vecteurs-directeurs",
         "formule-det-directions"
@@ -387,7 +387,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module02LaDirection.jsx",
-      "line": 187,
+      "line": 186,
       "requires": [
         "critere-vecteurs-directeurs",
         "critere-pentes",
@@ -407,7 +407,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module03LesEquations.jsx",
-      "line": 120,
+      "line": 119,
       "requires": [
         "critere-equations-reduites",
         "critere-equations-cartesiennes",
@@ -427,7 +427,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module03LesEquations.jsx",
-      "line": 145,
+      "line": 144,
       "requires": [
         "critere-equations-reduites",
         "critere-equations-cartesiennes",
@@ -449,7 +449,7 @@
       "step": 2,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module04LePointDIntersection.jsx",
-      "line": 126,
+      "line": 125,
       "requires": [
         "point-intersection-systeme",
         "methode-resoudre-systeme",
@@ -469,7 +469,7 @@
       "step": 2,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module04LePointDIntersection.jsx",
-      "line": 142,
+      "line": 141,
       "requires": [
         "point-intersection-systeme",
         "methode-resoudre-systeme"
@@ -487,7 +487,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module04LePointDIntersection.jsx",
-      "line": 170,
+      "line": 169,
       "requires": [
         "point-intersection-systeme",
         "regle-nombre-solutions"
@@ -505,7 +505,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/positions-relatives-droites-2nde/modules/Module04LePointDIntersection.jsx",
-      "line": 201,
+      "line": 200,
       "requires": [
         "regle-nombre-solutions",
         "point-intersection-systeme",

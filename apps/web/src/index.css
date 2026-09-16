@@ -11,7 +11,7 @@
 
   html {
     scroll-behavior: smooth;
-    font-family: 'Inter', 'Tajawal', sans-serif;
+    font-family: 'Inter', 'Cairo', 'Tajawal', sans-serif;
     font-size: 16px;
   }
 
@@ -25,21 +25,28 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Grotesk', 'Tajawal', sans-serif;
+    font-family: 'Space Grotesk', 'Cairo', 'Tajawal', sans-serif;
     font-weight: 700;
     line-height: 1.2;
     color: #0F172A;
   }
 
-  /* Arabic typography (ar-DZ, RTL — src/locale.js).
-     Tajawal is NOT the primary family: it is the Arabic FALLBACK in every
-     stack (html, headings, and tailwind.config.js's font-inter/font-space).
-     Inter and Space Grotesk carry no Arabic glyphs, so the browser renders
-     Arabic runs in Tajawal per glyph while Latin runs (brand name, digits,
-     code) keep the identity fonts — one stack serves mixed Arabic/Latin
-     lines. Math is unaffected: KaTeX/MathLive ship their own fonts and are
-     isolated LTR (.sa-math-* below). Taller leading only under RTL: tight
-     leading reads as cramped in Arabic (master spec §14). */
+  /* Arabic typography (ar-DZ, RTL — src/locale.js). CAIRO IS THE CANONICAL
+     ARABIC FONT of the platform (master spec §14) — this is the single
+     source of truth; do not introduce another Arabic font anywhere else.
+     Cairo is not the primary family in these stacks: it is the Arabic
+     glyph provider in every stack (html, headings, and tailwind.config.js's
+     font-inter/font-space). Inter and Space Grotesk carry no Arabic glyphs,
+     so the browser renders Arabic runs in Cairo per glyph while Latin runs
+     (brand name, digits, code) keep the identity fonts — one stack serves
+     mixed Arabic/Latin lines. Tajawal stays as a second fallback only (in
+     case Cairo hasn't finished loading yet — see index.html's non-blocking
+     Google Fonts link). Math is unaffected: KaTeX/MathLive ship their own
+     fonts and are isolated LTR (.sa-math-* below). Digits and code stay
+     JetBrains Mono via font-mono/.font-mono-jetbrains, whose stacks also
+     carry Cairo so Arabic labels styled as mono don't drop to a system
+     monospace font. Taller leading only under RTL: tight leading reads as
+     cramped in Arabic (master spec §14). */
   [dir="rtl"] body {
     line-height: 1.85;
   }
@@ -142,7 +149,7 @@
 
   .tech-chip {
     @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-mono font-semibold;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'JetBrains Mono', 'Cairo', 'Tajawal', monospace;
   }
 
   .section-wrapper {
@@ -217,16 +224,29 @@
 
 @layer utilities {
   .font-space {
-    font-family: 'Space Grotesk', 'Tajawal', sans-serif;
+    font-family: 'Space Grotesk', 'Cairo', 'Tajawal', sans-serif;
   }
 
   .font-inter {
-    font-family: 'Inter', 'Tajawal', sans-serif;
+    font-family: 'Inter', 'Cairo', 'Tajawal', sans-serif;
   }
 
+  /* JetBrains Mono has no Arabic glyphs: Cairo follows it so a label styled
+     as mono still renders its Arabic in Cairo, while digits and code keep
+     JetBrains Mono (same stack as tailwind.config.js's `mono`). */
   .font-mono-jetbrains {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'JetBrains Mono', 'Cairo', 'Tajawal', monospace;
   }
+
+  /* Cairo is global (html, h1–h6, font-sans/inter/space/mono; master spec
+     §14) — the former module-scoped `sa-font-trial-cairo` pilot (PGCD
+     module 1) has been generalized into these shared rules and the class
+     removed from that module. KaTeX/MathLive are unaffected: KaTeX sets
+     `font: normal 1.21em KaTeX_Main,…` directly on `.katex` itself
+     (katex.min.css), so inherited font-family never crosses into its
+     internal spans — do NOT add `.katex * { font-family: revert }`, it
+     would override the families KaTeX sets on .mathnormal/.mathbf/etc. and
+     break symbol rendering. */
 
   .text-balance {
     text-wrap: balance;

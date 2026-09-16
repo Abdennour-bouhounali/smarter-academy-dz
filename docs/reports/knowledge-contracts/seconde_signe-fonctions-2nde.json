@@ -19,7 +19,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/signe-fonctions-2nde/modules/Module01AuDessusOuEnDessous.jsx",
-        "line": 72,
+        "line": 71,
         "step": 1,
         "variant": "new"
       }
@@ -30,7 +30,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/signe-fonctions-2nde/modules/Module01AuDessusOuEnDessous.jsx",
-        "line": 97,
+        "line": 96,
         "step": 2,
         "variant": "new"
       }
@@ -52,7 +52,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/signe-fonctions-2nde/modules/Module03LeSigneDUneFonctionAffine.jsx",
-        "line": 81,
+        "line": 80,
         "step": 2,
         "variant": "new"
       }
@@ -63,7 +63,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/signe-fonctions-2nde/modules/Module03LeSigneDUneFonctionAffine.jsx",
-        "line": 60,
+        "line": 59,
         "step": 1,
         "variant": "new"
       }
@@ -98,7 +98,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/signe-fonctions-2nde/modules/Module01AuDessusOuEnDessous.jsx",
-        "line": 92,
+        "line": 91,
         "step": 2,
         "variant": "new"
       }
@@ -190,7 +190,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/signe-fonctions-2nde/modules/Module01AuDessusOuEnDessous.jsx",
-        "line": 126,
+        "line": 125,
         "step": 4,
         "variant": "new"
       }
@@ -201,7 +201,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/signe-fonctions-2nde/modules/Module03LeSigneDUneFonctionAffine.jsx",
-        "line": 86,
+        "line": 85,
         "step": 2,
         "variant": "new"
       }
@@ -308,7 +308,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/fonctions/signe-fonctions-2nde/modules/Module01AuDessusOuEnDessous.jsx",
-      "line": 113,
+      "line": 112,
       "requires": [
         "signe-position-courbe",
         "zero-fonction",
@@ -328,7 +328,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/fonctions/signe-fonctions-2nde/modules/Module01AuDessusOuEnDessous.jsx",
-      "line": 131,
+      "line": 130,
       "requires": [
         "signe-position-courbe",
         "mem-au-dessus-en-dessous"
@@ -414,7 +414,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/fonctions/signe-fonctions-2nde/modules/Module03LeSigneDUneFonctionAffine.jsx",
-      "line": 102,
+      "line": 101,
       "requires": [
         "formule-zero-affine",
         "regle-signe-affine",
@@ -436,7 +436,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/fonctions/signe-fonctions-2nde/modules/Module03LeSigneDUneFonctionAffine.jsx",
-      "line": 114,
+      "line": 113,
       "requires": [
         "formule-zero-affine",
         "regle-signe-affine",

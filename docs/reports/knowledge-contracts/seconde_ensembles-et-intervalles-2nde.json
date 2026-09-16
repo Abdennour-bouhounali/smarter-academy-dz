@@ -15,7 +15,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/ensembles-et-intervalles-2nde/modules/Module01LeManege.jsx",
-        "line": 113,
+        "line": 112,
         "step": 1,
         "variant": "new"
       }
@@ -26,7 +26,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/ensembles-et-intervalles-2nde/modules/Module01LeManege.jsx",
-        "line": 130,
+        "line": 129,
         "step": 1,
         "variant": "new"
       }
@@ -241,7 +241,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/ensembles-et-intervalles-2nde/modules/Module01LeManege.jsx",
-        "line": 180,
+        "line": 179,
         "step": 3,
         "variant": "new"
       }
@@ -356,7 +356,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/ensembles-et-intervalles-2nde/modules/Module01LeManege.jsx",
-      "line": 118,
+      "line": 117,
       "requires": [
         "borne-incluse-exclue"
       ],
@@ -372,7 +372,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/ensembles-et-intervalles-2nde/modules/Module01LeManege.jsx",
-      "line": 186,
+      "line": 185,
       "requires": [
         "mem-borne",
         "intervalle-crochets"
@@ -612,7 +612,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/ensembles-et-intervalles-2nde/modules/Module07MissionFinale.jsx",
-      "line": 50,
+      "line": 52,
       "requires": [
         "vocab-appartenance",
         "vocab-inclusion"
@@ -630,7 +630,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/ensembles-et-intervalles-2nde/modules/Module07MissionFinale.jsx",
-      "line": 62,
+      "line": 64,
       "requires": [
         "vocab-intersection-reunion"
       ],
@@ -646,7 +646,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/ensembles-et-intervalles-2nde/modules/Module07MissionFinale.jsx",
-      "line": 74,
+      "line": 76,
       "requires": [
         "intervalle",
         "mem-borne"
@@ -664,7 +664,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/ensembles-et-intervalles-2nde/modules/Module07MissionFinale.jsx",
-      "line": 87,
+      "line": 89,
       "requires": [
         "methode-appartenance-intervalle"
       ],
@@ -680,7 +680,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/ensembles-et-intervalles-2nde/modules/Module07MissionFinale.jsx",
-      "line": 99,
+      "line": 101,
       "requires": [
         "regle-signe-crochet",
         "regle-sens-inegalite",
@@ -700,7 +700,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/ensembles-et-intervalles-2nde/modules/Module07MissionFinale.jsx",
-      "line": 111,
+      "line": 113,
       "requires": [
         "regle-signe-crochet",
         "methode-traduire"
@@ -718,7 +718,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/ensembles-et-intervalles-2nde/modules/Module07MissionFinale.jsx",
-      "line": 123,
+      "line": 125,
       "requires": [
         "methode-compter-entiers"
       ],
@@ -734,7 +734,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/ensembles-et-intervalles-2nde/modules/Module07MissionFinale.jsx",
-      "line": 135,
+      "line": 137,
       "requires": [
         "intersection-intervalles",
         "reunion-intervalles"
@@ -752,7 +752,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/ensembles-et-intervalles-2nde/modules/Module07MissionFinale.jsx",
-      "line": 148,
+      "line": 150,
       "requires": [
         "methode-phrase-intervalle"
       ],
@@ -768,7 +768,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/ensembles-et-intervalles-2nde/modules/Module07MissionFinale.jsx",
-      "line": 160,
+      "line": 162,
       "requires": [
         "intersection-intervalles",
         "methode-phrase-intervalle"

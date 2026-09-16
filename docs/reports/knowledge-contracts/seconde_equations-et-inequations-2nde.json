@@ -21,7 +21,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/modules/Module01ScannerDeSolutions.jsx",
-        "line": 62,
+        "line": 61,
         "step": 1,
         "variant": "new"
       }
@@ -32,7 +32,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/modules/Module01ScannerDeSolutions.jsx",
-        "line": 104,
+        "line": 103,
         "step": 3,
         "variant": "new"
       }
@@ -43,7 +43,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/modules/Module01ScannerDeSolutions.jsx",
-        "line": 82,
+        "line": 81,
         "step": 2,
         "variant": "new"
       }
@@ -76,7 +76,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/modules/Module03SigneQuiSeRetourne.jsx",
-        "line": 65,
+        "line": 68,
         "step": 1,
         "variant": "new"
       }
@@ -157,7 +157,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/modules/Module01ScannerDeSolutions.jsx",
-        "line": 124,
+        "line": 123,
         "step": 4,
         "variant": "new"
       }
@@ -179,7 +179,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/modules/Module03SigneQuiSeRetourne.jsx",
-        "line": 83,
+        "line": 86,
         "step": 2,
         "variant": "new"
       }
@@ -236,7 +236,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/modules/Module03SigneQuiSeRetourne.jsx",
-        "line": 88,
+        "line": 91,
         "step": 2,
         "variant": "new"
       }
@@ -372,7 +372,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/modules/Module01ScannerDeSolutions.jsx",
-      "line": 76,
+      "line": 75,
       "requires": [
         "equation-solution",
         "intervalle",
@@ -392,7 +392,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/modules/Module01ScannerDeSolutions.jsx",
-      "line": 97,
+      "line": 96,
       "requires": [
         "equation-solution"
       ],
@@ -408,7 +408,7 @@
       "step": 4,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/modules/Module01ScannerDeSolutions.jsx",
-      "line": 118,
+      "line": 117,
       "requires": [
         "equation-solution",
         "calcul-litteral"
@@ -444,7 +444,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/modules/Module03SigneQuiSeRetourne.jsx",
-      "line": 58,
+      "line": 61,
       "requires": [
         "nombres-relatifs",
         "ordre-nombres"
@@ -462,7 +462,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/modules/Module03SigneQuiSeRetourne.jsx",
-      "line": 102,
+      "line": 124,
       "requires": [
         "methode-resoudre-inequation",
         "inequation-infinite",
@@ -484,7 +484,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/modules/Module03SigneQuiSeRetourne.jsx",
-      "line": 114,
+      "line": 137,
       "requires": [
         "methode-resoudre-inequation",
         "regle-signe-retourne",
@@ -628,7 +628,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/modules/Module05QuotientEtValeurInterdite.jsx",
-      "line": 100,
+      "line": 99,
       "requires": [
         "methode-choisir-methode",
         "produit-nul",
@@ -772,7 +772,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/modules/Module07MissionFinale.jsx",
-      "line": 32,
+      "line": 64,
       "requires": [
         "equation-solution",
         "inequation-infinite",
@@ -792,7 +792,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/modules/Module07MissionFinale.jsx",
-      "line": 33,
+      "line": 65,
       "requires": [
         "equation-solution",
         "inequation-infinite",
@@ -812,7 +812,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/modules/Module07MissionFinale.jsx",
-      "line": 34,
+      "line": 66,
       "requires": [
         "methode-premier-degre",
         "regle-deux-membres"
@@ -830,7 +830,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/modules/Module07MissionFinale.jsx",
-      "line": 35,
+      "line": 67,
       "requires": [
         "methode-premier-degre",
         "regle-deux-membres"
@@ -848,7 +848,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/modules/Module07MissionFinale.jsx",
-      "line": 36,
+      "line": 68,
       "requires": [
         "methode-resoudre-inequation",
         "mem-signe-negatif"
@@ -866,7 +866,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/modules/Module07MissionFinale.jsx",
-      "line": 37,
+      "line": 69,
       "requires": [
         "methode-resoudre-inequation",
         "mem-signe-negatif"
@@ -884,7 +884,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/modules/Module07MissionFinale.jsx",
-      "line": 38,
+      "line": 70,
       "requires": [
         "produit-nul",
         "methode-equation-produit",
@@ -904,7 +904,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/modules/Module07MissionFinale.jsx",
-      "line": 39,
+      "line": 71,
       "requires": [
         "produit-nul",
         "methode-equation-produit",
@@ -924,7 +924,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/modules/Module07MissionFinale.jsx",
-      "line": 40,
+      "line": 72,
       "requires": [
         "quotient-nul",
         "valeur-interdite"
@@ -942,7 +942,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/equations-et-inequations-2nde/modules/Module07MissionFinale.jsx",
-      "line": 41,
+      "line": 73,
       "requires": [
         "methode-modeliser",
         "regle-interpreter-solution"

@@ -5,6 +5,11 @@ import { dirname, resolve } from 'node:path';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const src = readFileSync(resolve(here, 'Progression.jsx'), 'utf8');
+
+// Le catalogue arabe : c'est lui qui porte désormais les libellés.
+const studentAr = JSON.parse(
+  readFileSync(new URL('../../i18n/locales/ar/student.json', import.meta.url), 'utf8'),
+);
 const home = readFileSync(resolve(here, 'StudentHome.jsx'), 'utf8');
 
 /**
@@ -48,8 +53,15 @@ describe('Ma progression est cadrée sur la classe de l’élève', () => {
 
   it('l’interface annonce la classe affichée', () => {
     // Sans cela, un élève qui a travaillé ailleurs croirait ce travail perdu.
-    expect(src).toMatch(/Ta classe de/);
-    expect(src).toMatch(/Compétences maîtrisées \(\$\{gradeLabel\}\)/);
+    // L'interface étant ARABE, la classe n'est plus nommée par une phrase
+    // française dans le JSX : elle est INTERPOLÉE dans deux libellés traduits.
+    // Ce qui doit tenir, c'est que `gradeLabel` atteigne bien l'écran — le
+    // sous-titre ET la tuile des compétences.
+    expect(src).toMatch(/progression\.subtitleWithGrade/);
+    expect(src).toMatch(/values=\{\{ grade: gradeLabel \}\}/);
+    expect(src).toMatch(/progression\.statMasteredWithGrade', \{ grade: gradeLabel \}/);
+    expect(studentAr.progression.subtitleWithGrade).toContain('{{grade}}');
+    expect(studentAr.progression.statMasteredWithGrade).toContain('{{grade}}');
     expect(src).not.toMatch(/toutes leçons/);
   });
 });

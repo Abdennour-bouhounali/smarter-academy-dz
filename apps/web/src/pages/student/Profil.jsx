@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { UserCircle, Mail, GraduationCap, Sparkles, LogOut, Crown, ChevronDown } from 'lucide-react';
 import { getAllGrades } from '@smarter-academy/core';
@@ -7,19 +8,23 @@ import { AuthContext } from '../../context/AuthContext';
 import { useContentAvailability } from '../../context/ContentAvailabilityContext';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 import { getDisplayName, getInitials } from '../../utils/userDisplay';
+import { LOCALE } from '../../locale.js';
 
 /**
- * Une date d'échéance, en français et sans heure : l'élève a besoin du jour,
- * pas de la minute.
+ * Une date d'échéance, sans heure : l'élève a besoin du jour, pas de la
+ * minute. Le format suit LOCALE (ar-DZ) — une date d'accès affichée en
+ * français dans une interface arabe était le dernier reste du produit
+ * d'origine sur cette page.
  */
 function formatDate(iso) {
   const date = new Date(iso);
   if (Number.isNaN(date.getTime())) return '';
-  return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  return date.toLocaleDateString(LOCALE, { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
 export default function Profil() {
-  useDocumentMeta('Mon profil', 'Gère ta classe et ton compte Smarter Academy.');
+  const { t } = useTranslation('student');
+  useDocumentMeta(t('profile.metaTitle'), t('profile.metaDescription'));
   const { user, updateGrade, logout } = useContext(AuthContext);
   // L'état d'accès vient du SERVEUR (GET /content/availability), jamais d'un
   // état local : cette carte AFFICHE une décision déjà prise, elle ne la prend
@@ -67,10 +72,10 @@ export default function Profil() {
     if (access?.subscriptionActive) {
       return {
         premium: true,
-        title: 'Abonnement actif',
+        title: t('profile.planSubscriptionActive'),
         detail: access.expiresAt
-          ? `Accès à tout le programme jusqu'au ${formatDate(access.expiresAt)}`
-          : 'Accès à tout le programme',
+          ? t('profile.planFullAccessUntil', { date: formatDate(access.expiresAt) })
+          : t('profile.planFullAccess'),
         iconClass: 'bg-amber-100 text-amber-600',
       };
     }
@@ -78,18 +83,18 @@ export default function Profil() {
     if (access?.premiumAccess) {
       return {
         premium: true,
-        title: 'Accès offert',
+        title: t('profile.planGranted'),
         detail: access.expiresAt
-          ? `Accès à tout le programme jusqu'au ${formatDate(access.expiresAt)}`
-          : 'Accès à tout le programme',
+          ? t('profile.planFullAccessUntil', { date: formatDate(access.expiresAt) })
+          : t('profile.planFullAccess'),
         iconClass: 'bg-indigo-100 text-indigo-600',
       };
     }
 
     return {
       premium: false,
-      title: 'Compte gratuit',
-      detail: "Accès aux leçons gratuites du programme",
+      title: t('profile.planFree'),
+      detail: t('profile.planFreeDetail'),
       iconClass: 'bg-slate-100 text-slate-500',
     };
   })();
@@ -100,9 +105,9 @@ export default function Profil() {
     <div className="sa-page py-8 sm:py-10">
       <div className="mb-8">
         <p className="font-mono-jetbrains text-blue-500 text-xs font-semibold tracking-widest uppercase mb-2 flex items-center gap-1.5">
-          <UserCircle size={13} /> Profil
+          <UserCircle size={13} /> {t('profile.eyebrow')}
         </p>
-        <h1 className="font-space font-bold text-2xl sm:text-3xl text-slate-900">Mon compte</h1>
+        <h1 className="font-space font-bold text-2xl sm:text-3xl text-slate-900">{t('profile.title')}</h1>
       </div>
 
       {/* Identity card */}
@@ -120,7 +125,7 @@ export default function Profil() {
         </div>
 
         <label htmlFor="profile-grade" className="block font-inter text-sm font-semibold text-slate-700 mb-2 flex items-center gap-1.5">
-          <GraduationCap size={15} className="text-blue-500" /> Ma classe
+          <GraduationCap size={15} className="text-blue-500" /> {t('profile.myGrade')}
         </label>
         <div className="relative">
           <select
@@ -130,7 +135,7 @@ export default function Profil() {
             disabled={saving}
             className="w-full appearance-none px-4 py-3 rounded-xl border border-slate-200 bg-white font-inter text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400 disabled:opacity-60 transition-all"
           >
-            {!currentGrade && <option value="" disabled>Sélectionne ta classe</option>}
+            {!currentGrade && <option value="" disabled>{t('profile.selectGrade')}</option>}
             {allGrades.map((g) => (
               <option key={g.id} value={g.id}>{g.levelTitle} — {g.name}</option>
             ))}
@@ -139,11 +144,11 @@ export default function Profil() {
         </div>
         {saved && (
           <p className="mt-2 text-xs font-inter text-emerald-600 flex items-center gap-1">
-            <Sparkles size={12} /> Classe mise à jour — ton espace s'adapte automatiquement.
+            <Sparkles size={12} /> {t('profile.gradeUpdated')}
           </p>
         )}
         <p className="mt-2 font-inter text-slate-400 text-xs leading-relaxed">
-          Changer de classe met à jour ton contenu par défaut dans "Mes cours" — ta progression sur les autres niveaux reste intacte.
+          {t('profile.gradeChangeHint')}
         </p>
       </motion.div>
 
@@ -184,7 +189,7 @@ export default function Profil() {
         className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-inter text-sm font-semibold text-slate-500 border border-slate-200 hover:bg-slate-50 hover:text-slate-700 transition-colors"
       >
         <LogOut size={15} />
-        Se déconnecter
+        {t('profile.logout')}
       </motion.button>
     </div>
   );

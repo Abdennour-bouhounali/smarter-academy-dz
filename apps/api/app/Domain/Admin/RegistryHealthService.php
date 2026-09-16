@@ -2,6 +2,7 @@
 
 namespace App\Domain\Admin;
 
+use App\Models\Chapter;
 use App\Models\LearningPoint;
 use App\Models\Grade;
 use App\Models\Lesson;
@@ -282,10 +283,29 @@ class RegistryHealthService
         }
 
         $drift = [];
+        $unexpected = [];
         if ($source !== null) {
             foreach ($db as $grade) {
                 $expected = $source->get($grade->code);
-                if ($expected === null || $expected !== (bool) $grade->is_active) {
+
+                // ── PÉRIMÈTRE (phase 6F) ────────────────────────────────
+                // Une classe EN BASE que le catalogue ne déclare pas n'est
+                // pas une simple dérive d'activation : c'est du curriculum
+                // que le produit ne connaît pas et que personne ne peut
+                // atteindre par une surface légitime. C'est exactement ce
+                // que la base portait avant le nettoyage — 8 classes
+                // françaises invisibles du catalogue algérien.
+                //
+                // Signalé à part pour que le message le nomme pour ce qu'il
+                // est, et que la porte dise quoi faire (scope-curriculum),
+                // au lieu de conseiller un import qui ne l'effacerait pas.
+                if ($expected === null) {
+                    $unexpected[] = $grade->code;
+
+                    continue;
+                }
+
+                if ($expected !== (bool) $grade->is_active) {
                     $drift[] = ['code' => $grade->code, 'database' => (bool) $grade->is_active, 'source' => $expected];
                 }
             }
@@ -294,7 +314,36 @@ class RegistryHealthService
         return [
             'active' => $db->where('is_active', true)->pluck('code')->values()->all(),
             'drift' => $drift,
+            'unexpectedGrades' => $unexpected,
+            'orphans' => $this->curriculumOrphans(),
             'sourceAvailable' => $source !== null,
+        ];
+    }
+
+    /**
+     * Du curriculum rattaché à rien : un chapitre sans classe, une leçon sans
+     * chapitre, un point sans leçon.
+     *
+     * Les clés étrangères rendent cela impossible tant qu'elles sont en
+     * place — d'où l'intérêt de le vérifier : si un compte s'en trouve, c'est
+     * qu'une suppression a contourné le schéma (SQL manuel, contraintes
+     * désactivées, import d'un dump partiel), et la base ne dit plus la
+     * vérité sur ce qu'elle contient.
+     *
+     * @return array{chapters: int, lessons: int, learningPoints: int}
+     */
+    private function curriculumOrphans(): array
+    {
+        return [
+            'chapters' => Chapter::query()
+                ->leftJoin('grades', 'grades.id', '=', 'chapters.grade_id')
+                ->whereNull('grades.id')->count(),
+            'lessons' => Lesson::query()
+                ->leftJoin('chapters', 'chapters.id', '=', 'lessons.chapter_id')
+                ->whereNull('chapters.id')->count(),
+            'learningPoints' => LearningPoint::query()
+                ->leftJoin('lessons', 'lessons.id', '=', 'learning_points.lesson_id')
+                ->whereNull('lessons.id')->count(),
         ];
     }
 

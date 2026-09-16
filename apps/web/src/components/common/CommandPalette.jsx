@@ -1,30 +1,45 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { Search, ArrowUp, ArrowDown, CornerDownLeft, X, Sparkles, LogIn, Compass, GraduationCap, HelpCircle, Mail, Users } from 'lucide-react';
 
+// Les commandes portent des CLÉS, pas des libellés : la liste est un
+// constant de module, donc évaluée une fois au chargement — un `t()` écrit
+// ici aurait figé la traduction avant l'initialisation d'i18next. Les
+// libellés sont résolus au rendu, ce qui fait aussi que la RECHERCHE filtre
+// sur le texte arabe réellement affiché.
 const commands = [
-  { id: 'register', label: 'Commencer gratuitement', path: '/register', icon: Sparkles, group: 'Actions principales' },
-  { id: 'login', label: 'Se connecter', path: '/login', icon: LogIn, group: 'Actions principales' },
-  { id: 'home', label: 'Accueil', path: '/', icon: Compass, group: 'Navigation' },
-  { id: 'methode', label: 'Notre méthode', path: '/methode', icon: GraduationCap, group: 'Navigation' },
-  { id: 'courses', label: 'Cours', path: '/courses', icon: GraduationCap, group: 'Navigation' },
-  { id: 'about', label: 'Notre mission / À propos', path: '/about', icon: Users, group: 'Navigation' },
-  { id: 'faq', label: 'Foire Aux Questions (FAQ)', path: '/faq', icon: HelpCircle, group: 'Navigation' },
-  { id: 'email', label: 'Envoyer un email', href: 'mailto:abdennour.bouhounali@gmail.com', external: true, icon: Mail, group: 'Contact' },
+  { id: 'register', labelKey: 'palette.startFree', path: '/register', icon: Sparkles, groupKey: 'palette.groupMain' },
+  { id: 'login', labelKey: 'palette.login', path: '/login', icon: LogIn, groupKey: 'palette.groupMain' },
+  { id: 'home', labelKey: 'palette.home', path: '/', icon: Compass, groupKey: 'palette.groupNavigation' },
+  { id: 'methode', labelKey: 'palette.method', path: '/methode', icon: GraduationCap, groupKey: 'palette.groupNavigation' },
+  { id: 'courses', labelKey: 'palette.courses', path: '/courses', icon: GraduationCap, groupKey: 'palette.groupNavigation' },
+  { id: 'about', labelKey: 'palette.about', path: '/about', icon: Users, groupKey: 'palette.groupNavigation' },
+  { id: 'faq', labelKey: 'palette.faq', path: '/faq', icon: HelpCircle, groupKey: 'palette.groupNavigation' },
+  { id: 'email', labelKey: 'palette.sendEmail', href: 'mailto:abdennour.bouhounali@gmail.com', external: true, icon: Mail, groupKey: 'palette.groupContact' },
 ];
 
 export default function CommandPalette() {
+  const { t } = useTranslation('marketing');
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState(0);
   const inputRef = useRef(null);
   const navigate = useNavigate();
 
+  // Les commandes, libellés résolus — c'est cette liste que tout le reste
+  // (filtre, groupes, rendu) consomme.
+  const localized = commands.map((c) => ({
+    ...c,
+    label: t(c.labelKey),
+    group: t(c.groupKey),
+  }));
+
   // Filter commands by query
   const filtered = query.trim()
-    ? commands.filter((c) => c.label.toLowerCase().includes(query.toLowerCase()))
-    : commands;
+    ? localized.filter((c) => c.label.toLowerCase().includes(query.toLowerCase()))
+    : localized;
 
   // Keyboard shortcut to open
   useEffect(() => {
@@ -136,7 +151,7 @@ export default function CommandPalette() {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     onKeyDown={handleKeyNavigation}
-                    placeholder="Rechercher une section ou une action..."
+                    placeholder={t('palette.placeholder')}
                     className="flex-1 bg-transparent font-inter text-sm text-slate-800 placeholder-slate-400 outline-none"
                     id="command-palette-input"
                   />
@@ -152,7 +167,7 @@ export default function CommandPalette() {
                 <div className="max-h-80 overflow-y-auto py-2">
                   {filtered.length === 0 ? (
                     <div className="py-10 text-center text-slate-400 font-inter text-sm">
-                      Aucun résultat trouvé
+                      {t('palette.noResults')}
                     </div>
                   ) : (
                     Object.entries(groups).map(([group, cmds]) => (
@@ -201,15 +216,15 @@ export default function CommandPalette() {
                   <span className="flex items-center gap-1.5">
                     <ArrowUp size={11} />
                     <ArrowDown size={11} />
-                    Naviguer
+                    {t('palette.navigate')}
                   </span>
                   <span className="flex items-center gap-1.5">
                     <CornerDownLeft size={11} />
-                    Sélectionner
+                    {t('palette.select')}
                   </span>
                   <span className="flex items-center gap-1.5">
                     <span className="font-semibold">Esc</span>
-                    Fermer
+                    {t('palette.close')}
                   </span>
                 </div>
               </div>

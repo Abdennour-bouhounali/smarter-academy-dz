@@ -1,0 +1,815 @@
+{
+  "lesson": "exponentielle-calculer-modeliser-1ere",
+  "grade": "premiere_specialite",
+  "lexiconVersion": 1,
+  "prerequisites": [
+    "exponentielle-definition",
+    "exp-strictement-positive",
+    "exp-strictement-croissante",
+    "regles-puissances",
+    "methode-resoudre-inequation",
+    "exponentielle",
+    "fonction",
+    "notation-fx",
+    "puissance",
+    "exposant",
+    "quotient",
+    "inverse-nombre",
+    "variations",
+    "ensemble-reels",
+    "intervalle",
+    "intervalle-crochets",
+    "equation-premier-degre",
+    "modele",
+    "fonction-affine",
+    "pourcentage"
+  ],
+  "conceptsIntroduced": [
+    {
+      "id": "relation-fondamentale-exp",
+      "type": "regles",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module02LaRegleFondamentale.jsx",
+        "line": 74,
+        "step": 1,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "exp-oppose-inverse",
+      "type": "regles",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module03LOpposeEtLaDifference.jsx",
+        "line": 123,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "exp-difference-quotient",
+      "type": "regles",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module03LOpposeEtLaDifference.jsx",
+        "line": 172,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "exp-puissance",
+      "type": "regles",
+      "module": 4,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module04LaPuissance.jsx",
+        "line": 110,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "egalite-des-exposants",
+      "type": "regles",
+      "module": 5,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module05ResoudreUneEquation.jsx",
+        "line": 110,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "inegalite-sens-conserve",
+      "type": "regles",
+      "module": 6,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module06InegalitesEtModeles.jsx",
+        "line": 109,
+        "step": 1,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "modele-exponentiel",
+      "type": "concepts",
+      "module": 6,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module06InegalitesEtModeles.jsx",
+        "line": 192,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "facteur-constant",
+      "type": "regles",
+      "module": 6,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module06InegalitesEtModeles.jsx",
+        "line": 197,
+        "step": 3,
+        "variant": "new"
+      }
+    }
+  ],
+  "vocabularyIntroduced": [],
+  "proceduresIntroduced": [
+    {
+      "id": "methode-resoudre-equation-exp",
+      "type": "methodes",
+      "module": 5,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module05ResoudreUneEquation.jsx",
+        "line": 115,
+        "step": 2,
+        "variant": "new"
+      }
+    }
+  ],
+  "memorisation": [
+    {
+      "id": "mem-somme-devient-produit",
+      "type": "memoriser",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module02LaRegleFondamentale.jsx",
+        "line": 79,
+        "step": 1,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "mem-oppose-et-difference",
+      "type": "memoriser",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module03LOpposeEtLaDifference.jsx",
+        "line": 177,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "mem-puissance-multiplie",
+      "type": "memoriser",
+      "module": 4,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module04LaPuissance.jsx",
+        "line": 115,
+        "step": 2,
+        "variant": "new"
+      }
+    }
+  ],
+  "questions": [
+    {
+      "questionId": "ec-d1",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module00Diagnostic.jsx",
+      "line": 39,
+      "requires": [
+        "exponentielle-definition",
+        "exponentielle",
+        "fonction",
+        "notation-fx"
+      ],
+      "prerequisiteStatus": {
+        "exponentielle-definition": "prior",
+        "exponentielle": "prior",
+        "fonction": "prior",
+        "notation-fx": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "ec-d2",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module00Diagnostic.jsx",
+      "line": 50,
+      "requires": [
+        "exp-strictement-positive",
+        "quotient",
+        "inverse-nombre"
+      ],
+      "prerequisiteStatus": {
+        "exp-strictement-positive": "prior",
+        "quotient": "prior",
+        "inverse-nombre": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "ec-d3",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module00Diagnostic.jsx",
+      "line": 66,
+      "requires": [
+        "exp-strictement-croissante",
+        "variations"
+      ],
+      "prerequisiteStatus": {
+        "exp-strictement-croissante": "prior",
+        "variations": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "ec-d4",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module00Diagnostic.jsx",
+      "line": 82,
+      "requires": [
+        "regles-puissances",
+        "puissance",
+        "exposant"
+      ],
+      "prerequisiteStatus": {
+        "regles-puissances": "prior",
+        "puissance": "prior",
+        "exposant": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "ec-d5",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module00Diagnostic.jsx",
+      "line": 93,
+      "requires": [
+        "methode-resoudre-inequation",
+        "equation-premier-degre",
+        "ensemble-reels",
+        "intervalle",
+        "intervalle-crochets"
+      ],
+      "prerequisiteStatus": {
+        "methode-resoudre-inequation": "prior",
+        "equation-premier-degre": "prior",
+        "ensemble-reels": "prior",
+        "intervalle": "prior",
+        "intervalle-crochets": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "ec-d6",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module00Diagnostic.jsx",
+      "line": 104,
+      "requires": [
+        "modele",
+        "fonction-affine",
+        "pourcentage"
+      ],
+      "prerequisiteStatus": {
+        "modele": "prior",
+        "fonction-affine": "prior",
+        "pourcentage": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S4-Q1",
+      "module": 1,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module01LaSommeDevientUnProduit.jsx",
+      "line": 210,
+      "requires": [
+        "exponentielle",
+        "fonction",
+        "exposant"
+      ],
+      "prerequisiteStatus": {
+        "exponentielle": "prior",
+        "fonction": "prior",
+        "exposant": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S1-Q1",
+      "module": 2,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module02LaRegleFondamentale.jsx",
+      "line": 52,
+      "requires": [
+        "exponentielle",
+        "exposant",
+        "notation-fx"
+      ],
+      "prerequisiteStatus": {
+        "exponentielle": "prior",
+        "exposant": "prior",
+        "notation-fx": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S2-Q2",
+      "module": 2,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module02LaRegleFondamentale.jsx",
+      "line": 111,
+      "requires": [
+        "relation-fondamentale-exp",
+        "puissance",
+        "exposant",
+        "regles-puissances"
+      ],
+      "prerequisiteStatus": {
+        "relation-fondamentale-exp": "established@M2",
+        "puissance": "prior",
+        "exposant": "prior",
+        "regles-puissances": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S3-Q3",
+      "module": 2,
+      "step": 3,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module02LaRegleFondamentale.jsx",
+      "line": 153,
+      "requires": [
+        "relation-fondamentale-exp",
+        "mem-somme-devient-produit"
+      ],
+      "prerequisiteStatus": {
+        "relation-fondamentale-exp": "established@M2",
+        "mem-somme-devient-produit": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S2-Q1",
+      "module": 3,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module03LOpposeEtLaDifference.jsx",
+      "line": 101,
+      "requires": [
+        "relation-fondamentale-exp",
+        "inverse-nombre",
+        "exp-strictement-positive"
+      ],
+      "prerequisiteStatus": {
+        "relation-fondamentale-exp": "established@M2",
+        "inverse-nombre": "prior",
+        "exp-strictement-positive": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S3-Q2",
+      "module": 3,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module03LOpposeEtLaDifference.jsx",
+      "line": 149,
+      "requires": [
+        "exp-oppose-inverse",
+        "quotient",
+        "inverse-nombre"
+      ],
+      "prerequisiteStatus": {
+        "exp-oppose-inverse": "established@M3",
+        "quotient": "prior",
+        "inverse-nombre": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S4-Q3",
+      "module": 3,
+      "step": 4,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module03LOpposeEtLaDifference.jsx",
+      "line": 202,
+      "requires": [
+        "exp-difference-quotient",
+        "mem-oppose-et-difference"
+      ],
+      "prerequisiteStatus": {
+        "exp-difference-quotient": "established@M3",
+        "mem-oppose-et-difference": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S2-Q1",
+      "module": 4,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module04LaPuissance.jsx",
+      "line": 88,
+      "requires": [
+        "relation-fondamentale-exp",
+        "puissance",
+        "exposant"
+      ],
+      "prerequisiteStatus": {
+        "relation-fondamentale-exp": "established@M2",
+        "puissance": "prior",
+        "exposant": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S3-Q2",
+      "module": 4,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module04LaPuissance.jsx",
+      "line": 156,
+      "requires": [
+        "exp-puissance",
+        "exp-oppose-inverse",
+        "exp-strictement-positive"
+      ],
+      "prerequisiteStatus": {
+        "exp-puissance": "established@M4",
+        "exp-oppose-inverse": "established@M3",
+        "exp-strictement-positive": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S4-Q3",
+      "module": 4,
+      "step": 4,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module04LaPuissance.jsx",
+      "line": 187,
+      "requires": [
+        "exp-puissance",
+        "mem-puissance-multiplie"
+      ],
+      "prerequisiteStatus": {
+        "exp-puissance": "established@M4",
+        "mem-puissance-multiplie": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S2-Q1",
+      "module": 5,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module05ResoudreUneEquation.jsx",
+      "line": 89,
+      "requires": [
+        "exp-strictement-croissante",
+        "variations"
+      ],
+      "prerequisiteStatus": {
+        "exp-strictement-croissante": "prior",
+        "variations": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S3-Q2",
+      "module": 5,
+      "step": 3,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module05ResoudreUneEquation.jsx",
+      "line": 142,
+      "requires": [
+        "egalite-des-exposants",
+        "methode-resoudre-equation-exp",
+        "equation-premier-degre"
+      ],
+      "prerequisiteStatus": {
+        "egalite-des-exposants": "established@M5",
+        "methode-resoudre-equation-exp": "established@M5",
+        "equation-premier-degre": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S4-Q3",
+      "module": 5,
+      "step": 4,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module05ResoudreUneEquation.jsx",
+      "line": 190,
+      "requires": [
+        "relation-fondamentale-exp",
+        "egalite-des-exposants",
+        "methode-resoudre-equation-exp"
+      ],
+      "prerequisiteStatus": {
+        "relation-fondamentale-exp": "established@M2",
+        "egalite-des-exposants": "established@M5",
+        "methode-resoudre-equation-exp": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S1-Q1",
+      "module": 6,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module06InegalitesEtModeles.jsx",
+      "line": 87,
+      "requires": [
+        "exp-strictement-croissante",
+        "egalite-des-exposants",
+        "variations"
+      ],
+      "prerequisiteStatus": {
+        "exp-strictement-croissante": "prior",
+        "egalite-des-exposants": "established@M5",
+        "variations": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S2-Q2",
+      "module": 6,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module06InegalitesEtModeles.jsx",
+      "line": 145,
+      "requires": [
+        "inegalite-sens-conserve",
+        "methode-resoudre-inequation",
+        "intervalle-crochets"
+      ],
+      "prerequisiteStatus": {
+        "inegalite-sens-conserve": "established@M6",
+        "methode-resoudre-inequation": "prior",
+        "intervalle-crochets": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S4-Q3",
+      "module": 6,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module06InegalitesEtModeles.jsx",
+      "line": 221,
+      "requires": [
+        "modele-exponentiel",
+        "facteur-constant",
+        "exp-strictement-positive"
+      ],
+      "prerequisiteStatus": {
+        "modele-exponentiel": "established@M6",
+        "facteur-constant": "established@M6",
+        "exp-strictement-positive": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S5-Q4",
+      "module": 6,
+      "step": 5,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module06InegalitesEtModeles.jsx",
+      "line": 252,
+      "requires": [
+        "modele-exponentiel",
+        "exponentielle-definition"
+      ],
+      "prerequisiteStatus": {
+        "modele-exponentiel": "established@M6",
+        "exponentielle-definition": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "et-e1",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module07MissionFinaleLeTraducteur.jsx",
+      "line": 37,
+      "requires": [
+        "relation-fondamentale-exp",
+        "mem-somme-devient-produit"
+      ],
+      "prerequisiteStatus": {
+        "relation-fondamentale-exp": "established@M2",
+        "mem-somme-devient-produit": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "et-e2",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module07MissionFinaleLeTraducteur.jsx",
+      "line": 49,
+      "requires": [
+        "relation-fondamentale-exp",
+        "exp-difference-quotient"
+      ],
+      "prerequisiteStatus": {
+        "relation-fondamentale-exp": "established@M2",
+        "exp-difference-quotient": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "et-e3",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module07MissionFinaleLeTraducteur.jsx",
+      "line": 66,
+      "requires": [
+        "exp-oppose-inverse",
+        "mem-oppose-et-difference",
+        "exp-strictement-positive"
+      ],
+      "prerequisiteStatus": {
+        "exp-oppose-inverse": "established@M3",
+        "mem-oppose-et-difference": "established@M3",
+        "exp-strictement-positive": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "et-e4",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module07MissionFinaleLeTraducteur.jsx",
+      "line": 83,
+      "requires": [
+        "exp-difference-quotient",
+        "exp-puissance"
+      ],
+      "prerequisiteStatus": {
+        "exp-difference-quotient": "established@M3",
+        "exp-puissance": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "et-e5",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module07MissionFinaleLeTraducteur.jsx",
+      "line": 95,
+      "requires": [
+        "exp-puissance",
+        "mem-puissance-multiplie"
+      ],
+      "prerequisiteStatus": {
+        "exp-puissance": "established@M4",
+        "mem-puissance-multiplie": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "et-e6",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module07MissionFinaleLeTraducteur.jsx",
+      "line": 107,
+      "requires": [
+        "egalite-des-exposants",
+        "methode-resoudre-equation-exp",
+        "exp-strictement-croissante"
+      ],
+      "prerequisiteStatus": {
+        "egalite-des-exposants": "established@M5",
+        "methode-resoudre-equation-exp": "established@M5",
+        "exp-strictement-croissante": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "et-e7",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module07MissionFinaleLeTraducteur.jsx",
+      "line": 124,
+      "requires": [
+        "egalite-des-exposants",
+        "methode-resoudre-equation-exp",
+        "equation-premier-degre"
+      ],
+      "prerequisiteStatus": {
+        "egalite-des-exposants": "established@M5",
+        "methode-resoudre-equation-exp": "established@M5",
+        "equation-premier-degre": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "et-e8",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module07MissionFinaleLeTraducteur.jsx",
+      "line": 136,
+      "requires": [
+        "inegalite-sens-conserve",
+        "methode-resoudre-inequation",
+        "intervalle-crochets"
+      ],
+      "prerequisiteStatus": {
+        "inegalite-sens-conserve": "established@M6",
+        "methode-resoudre-inequation": "prior",
+        "intervalle-crochets": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "et-e9",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module07MissionFinaleLeTraducteur.jsx",
+      "line": 148,
+      "requires": [
+        "modele-exponentiel",
+        "exp-strictement-positive"
+      ],
+      "prerequisiteStatus": {
+        "modele-exponentiel": "established@M6",
+        "exp-strictement-positive": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "et-e10",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/analyse/exponentielle-calculer-modeliser-1ere/modules/Module07MissionFinaleLeTraducteur.jsx",
+      "line": 165,
+      "requires": [
+        "facteur-constant",
+        "modele-exponentiel",
+        "exp-difference-quotient"
+      ],
+      "prerequisiteStatus": {
+        "facteur-constant": "established@M6",
+        "modele-exponentiel": "established@M6",
+        "exp-difference-quotient": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    }
+  ],
+  "findings": []
+}

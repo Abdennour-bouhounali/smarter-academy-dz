@@ -20,7 +20,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module01LeRobotDuDepot.jsx",
-        "line": 246,
+        "line": 241,
         "step": 5,
         "variant": "new"
       }
@@ -31,7 +31,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module02LeMemeVecteur.jsx",
-        "line": 110,
+        "line": 108,
         "step": 1,
         "variant": "new"
       }
@@ -42,7 +42,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module02LeMemeVecteur.jsx",
-        "line": 162,
+        "line": 159,
         "step": 2,
         "variant": "new"
       }
@@ -53,7 +53,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module02LeMemeVecteur.jsx",
-        "line": 205,
+        "line": 201,
         "step": 3,
         "variant": "new"
       }
@@ -64,7 +64,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module03DeuxNombresSuffisent.jsx",
-        "line": 90,
+        "line": 89,
         "step": 1,
         "variant": "new"
       }
@@ -75,7 +75,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module03DeuxNombresSuffisent.jsx",
-        "line": 164,
+        "line": 162,
         "step": 2,
         "variant": "new"
       }
@@ -86,7 +86,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module03DeuxNombresSuffisent.jsx",
-        "line": 258,
+        "line": 256,
         "step": 4,
         "variant": "new"
       }
@@ -97,7 +97,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module03DeuxNombresSuffisent.jsx",
-        "line": 187,
+        "line": 185,
         "step": 2,
         "variant": "new"
       }
@@ -108,7 +108,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module04EnchainerLesDeplacements.jsx",
-        "line": 83,
+        "line": 81,
         "step": 1,
         "variant": "new"
       }
@@ -119,7 +119,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module04EnchainerLesDeplacements.jsx",
-        "line": 90,
+        "line": 88,
         "step": 1,
         "variant": "new"
       }
@@ -130,7 +130,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module04EnchainerLesDeplacements.jsx",
-        "line": 179,
+        "line": 176,
         "step": 3,
         "variant": "new"
       }
@@ -141,7 +141,7 @@
       "module": 5,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module05EtirerInverser.jsx",
-        "line": 87,
+        "line": 86,
         "step": 1,
         "variant": "new"
       }
@@ -152,7 +152,7 @@
       "module": 5,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module05EtirerInverser.jsx",
-        "line": 164,
+        "line": 162,
         "step": 3,
         "variant": "new"
       }
@@ -163,7 +163,7 @@
       "module": 6,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module06MesurerUnVecteur.jsx",
-        "line": 109,
+        "line": 112,
         "step": 1,
         "variant": "new"
       }
@@ -174,8 +174,8 @@
       "module": 6,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module06MesurerUnVecteur.jsx",
-        "line": 170,
-        "step": 3,
+        "line": 234,
+        "step": 4,
         "variant": "new"
       }
     }
@@ -187,7 +187,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module02LeMemeVecteur.jsx",
-        "line": 117,
+        "line": 115,
         "step": 1,
         "variant": "new"
       }
@@ -198,7 +198,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module03DeuxNombresSuffisent.jsx",
-        "line": 97,
+        "line": 96,
         "step": 1,
         "variant": "new"
       }
@@ -209,7 +209,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module04EnchainerLesDeplacements.jsx",
-        "line": 168,
+        "line": 165,
         "step": 3,
         "variant": "new"
       }
@@ -220,7 +220,7 @@
       "module": 6,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module06MesurerUnVecteur.jsx",
-        "line": 101,
+        "line": 104,
         "step": 1,
         "variant": "new"
       }
@@ -233,7 +233,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module03DeuxNombresSuffisent.jsx",
-        "line": 179,
+        "line": 177,
         "step": 2,
         "variant": "new"
       }
@@ -244,7 +244,7 @@
       "module": 6,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module06MesurerUnVecteur.jsx",
-        "line": 94,
+        "line": 97,
         "step": 1,
         "variant": "new"
       }
@@ -255,8 +255,8 @@
       "module": 6,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module06MesurerUnVecteur.jsx",
-        "line": 163,
-        "step": 3,
+        "line": 227,
+        "step": 4,
         "variant": "new"
       }
     },
@@ -266,7 +266,7 @@
       "module": 7,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module07ProblemesDeGeometrie.jsx",
-        "line": 113,
+        "line": 112,
         "step": 1,
         "variant": "new"
       }
@@ -277,7 +277,7 @@
       "module": 7,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module07ProblemesDeGeometrie.jsx",
-        "line": 154,
+        "line": 153,
         "step": 2,
         "variant": "new"
       }
@@ -288,7 +288,7 @@
       "module": 7,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module07ProblemesDeGeometrie.jsx",
-        "line": 212,
+        "line": 211,
         "step": 3,
         "variant": "new"
       }
@@ -301,7 +301,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module01LeRobotDuDepot.jsx",
-        "line": 251,
+        "line": 246,
         "step": 5,
         "variant": "new"
       }
@@ -312,7 +312,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module03DeuxNombresSuffisent.jsx",
-        "line": 171,
+        "line": 169,
         "step": 2,
         "variant": "new"
       }
@@ -323,7 +323,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module03DeuxNombresSuffisent.jsx",
-        "line": 195,
+        "line": 193,
         "step": 2,
         "variant": "new"
       }
@@ -334,7 +334,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module04EnchainerLesDeplacements.jsx",
-        "line": 173,
+        "line": 170,
         "step": 3,
         "variant": "new"
       }
@@ -445,7 +445,7 @@
       "step": 5,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module01LeRobotDuDepot.jsx",
-      "line": 257,
+      "line": 252,
       "requires": [
         "vecteur-deplacement"
       ],
@@ -461,7 +461,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module02LeMemeVecteur.jsx",
-      "line": 224,
+      "line": 220,
       "requires": [
         "egalite-vecteurs",
         "vocab-representant",
@@ -483,7 +483,7 @@
       "step": 3,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module03DeuxNombresSuffisent.jsx",
-      "line": 215,
+      "line": 213,
       "requires": [
         "regle-coordonnees",
         "mem-arrivee-moins-depart"
@@ -501,7 +501,7 @@
       "step": 3,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module03DeuxNombresSuffisent.jsx",
-      "line": 230,
+      "line": 228,
       "requires": [
         "regle-coordonnees",
         "mem-arrivee-moins-depart"
@@ -519,7 +519,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module03DeuxNombresSuffisent.jsx",
-      "line": 264,
+      "line": 262,
       "requires": [
         "regle-egalite-coordonnees",
         "regle-coordonnees"
@@ -537,7 +537,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module04EnchainerLesDeplacements.jsx",
-      "line": 185,
+      "line": 182,
       "requires": [
         "vocab-relation-chasles",
         "regle-somme"
@@ -555,7 +555,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module04EnchainerLesDeplacements.jsx",
-      "line": 209,
+      "line": 206,
       "requires": [
         "regle-somme",
         "vocab-relation-chasles"
@@ -573,7 +573,7 @@
       "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module05EtirerInverser.jsx",
-      "line": 105,
+      "line": 104,
       "requires": [
         "regle-produit-reel"
       ],
@@ -589,7 +589,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module05EtirerInverser.jsx",
-      "line": 181,
+      "line": 179,
       "requires": [
         "regle-colineaire",
         "regle-produit-reel"
@@ -602,12 +602,12 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M06-S2-Q1",
+      "questionId": "M06-S3-Q1",
       "module": 6,
-      "step": 2,
+      "step": 3,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module06MesurerUnVecteur.jsx",
-      "line": 128,
+      "line": 192,
       "requires": [
         "methode-calcul-norme",
         "vocab-norme",
@@ -622,12 +622,12 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M06-S4-Q2",
+      "questionId": "M06-S5-Q2",
       "module": 6,
-      "step": 4,
+      "step": 5,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module06MesurerUnVecteur.jsx",
-      "line": 188,
+      "line": 252,
       "requires": [
         "methode-milieu",
         "formule-milieu"
@@ -645,7 +645,7 @@
       "step": 2,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module07ProblemesDeGeometrie.jsx",
-      "line": 159,
+      "line": 158,
       "requires": [
         "regle-somme",
         "mem-arrivee-moins-depart",
@@ -665,7 +665,7 @@
       "step": 2,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module07ProblemesDeGeometrie.jsx",
-      "line": 174,
+      "line": 173,
       "requires": [
         "regle-somme",
         "mem-arrivee-moins-depart",
@@ -685,7 +685,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/modules/Module07ProblemesDeGeometrie.jsx",
-      "line": 217,
+      "line": 216,
       "requires": [
         "methode-alignement",
         "regle-colineaire"

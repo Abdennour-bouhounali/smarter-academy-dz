@@ -1,4 +1,5 @@
 import RichText from '../RichText';
+import { useTranslation } from 'react-i18next';
 
 /**
  * QCM : on TOUCHE la réponse, on ne la coche pas puis on valide.
@@ -6,6 +7,7 @@ import RichText from '../RichText';
  * tap → stepper → chip → slider → draw → drag).
  */
 export default function ChoiceInput({ question, value, onChange, disabled }) {
+  const { t } = useTranslation('student');
   const multi = question.answerType === 'multiChoice';
   const picked = multi ? (value?.choiceIds ?? []) : value?.choiceId ? [value.choiceId] : [];
 
@@ -19,7 +21,7 @@ export default function ChoiceInput({ question, value, onChange, disabled }) {
   return (
     <div className="space-y-2">
       {multi && (
-        <p className="text-xs font-mono text-slate-500">Plusieurs réponses peuvent être justes.</p>
+        <p className="text-xs font-mono text-slate-500">{t('practice.multipleAnswers')}</p>
       )}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         {question.choices.map((choice) => {

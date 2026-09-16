@@ -7,6 +7,7 @@ import { navLinks } from '../../data/navigation';
 
 export default function Footer() {
   const { t } = useTranslation('nav');
+  const { t: tm } = useTranslation('marketing');
   return (
     <footer className="relative z-10 bg-slate-900 text-white pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -26,7 +27,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="font-inter text-slate-400 text-sm leading-relaxed mb-4">
-              Plateforme de mathématiques interactive — du Collège au Lycée.
+              {tm('footer.tagline')}
             </p>
 
             <p className="flex items-start gap-2 text-xs font-inter text-slate-400">
@@ -42,7 +43,7 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
           >
-            <h4 className="font-space font-bold text-slate-300 text-sm mb-4 uppercase tracking-widest">Navigation</h4>
+            <h4 className="font-space font-bold text-slate-300 text-sm mb-4 uppercase tracking-widest">{tm('footer.navigation')}</h4>
             <ul className="space-y-2">
               {navLinks.map((link) => (
                 <li key={link.path}>
@@ -54,14 +55,6 @@ export default function Footer() {
                   </Link>
                 </li>
               ))}
-              <li>
-                <Link
-                  to="/contact"
-                  className="font-inter text-slate-400 hover:text-white text-sm transition-colors duration-200"
-                >
-                  Contact
-                </Link>
-              </li>
             </ul>
           </motion.div>
 
@@ -73,16 +66,16 @@ export default function Footer() {
             transition={{ delay: 0.2 }}
             className="max-w-xs"
           >
-            <h4 className="font-space font-bold text-slate-300 text-sm mb-4 uppercase tracking-widest">Rejoignez-nous</h4>
+            <h4 className="font-space font-bold text-slate-300 text-sm mb-4 uppercase tracking-widest">{tm('footer.joinUs')}</h4>
             <p className="font-inter text-slate-400 text-sm leading-relaxed mb-4">
-              Créez un compte gratuit et accédez tout de suite à l'expérience 6e.
+              {tm('footer.joinBody')}
             </p>
             <Link
               to="/register"
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5"
               style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}
             >
-              Commencer gratuitement
+              {tm('footer.startFree')}
               <ArrowForward size={14} />
             </Link>
           </motion.div>
@@ -93,12 +86,12 @@ export default function Footer() {
           {/* Les pages légales, dans le pied de page PARTAGÉ — donc présentes
               sur toutes les pages visiteur d'un coup, plutôt que recopiées
               page par page. C'est aussi là qu'on va les chercher. */}
-          <nav aria-label="Informations légales" className="mb-5">
+          <nav aria-label={tm('footer.legalAria')} className="mb-5">
             <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2 sm:justify-start">
               {[
-                { to: '/mentions-legales', label: 'Mentions légales' },
-                { to: '/confidentialite', label: 'Politique de confidentialité' },
-                { to: '/cgu', label: "Conditions Générales d'Utilisation" },
+                { to: '/mentions-legales', label: tm('footer.legalNotice') },
+                { to: '/confidentialite', label: tm('footer.privacy') },
+                { to: '/cgu', label: tm('footer.terms') },
               ].map((item) => (
                 <li key={item.to}>
                   <Link
@@ -114,10 +107,10 @@ export default function Footer() {
 
           <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
             <p className="font-inter text-slate-500 text-sm text-center">
-              © {new Date().getFullYear()} Smarter Academy — Tous droits réservés
+              {tm('footer.rights', { year: new Date().getFullYear() })}
             </p>
             <div className="flex items-center gap-2">
-              <span className="font-inter text-slate-500 text-xs">Manipule. Découvre. Comprends. Maîtrise.</span>
+              <span className="font-inter text-slate-500 text-xs">{tm('footer.motto')}</span>
             </div>
           </div>
         </div>

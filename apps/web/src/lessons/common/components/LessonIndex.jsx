@@ -1,8 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Lock, Compass } from 'lucide-react';
 import { useProgress } from '../hooks/useProgress';
-import { getModuleStatus, lockedReason } from '@smarter-academy/core';
+import { getModuleStatus, lockedReasonData } from '@smarter-academy/core';
 import { calculateCompletionPercentage } from '@smarter-academy/core';
 // Le moteur d'exercices n'est activé que pour les leçons listées dans
 // content/practice/active.json : pour toutes les autres, isPracticeActive
@@ -95,6 +96,7 @@ function getColor(color, variant) {
  * Il suffit de lui passer le bon LESSON_CONFIG et le LESSON_BASE_PATH.
  */
 export default function LessonIndex({ config, basePath }) {
+  const { t } = useTranslation('lesson');
   const { completedModules, isModuleCompleted, currentModule } = useProgress(config.id);
   const { isModuleClosed, isLessonLocked } = useContentAvailability();
 
@@ -123,7 +125,7 @@ export default function LessonIndex({ config, basePath }) {
       <div className="min-h-screen flex flex-col justify-between pt-16 bg-slate-50">
         <main className="sa-page py-8 flex-1">
           <nav className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500 mb-8">
-            <Link to="/courses" className="hover:text-blue-600">Accueil</Link>
+            <Link to="/courses" className="hover:text-blue-600">{t('index.home')}</Link>
             <span>/</span>
             <span className="text-slate-900 font-semibold">{config.title}</span>
           </nav>
@@ -164,9 +166,9 @@ export default function LessonIndex({ config, basePath }) {
               la ligne — sans lui, un fil long le renvoyait à gauche sur sa
               propre ligne. */}
           <nav className="flex flex-1 flex-wrap items-center gap-2 text-xs font-mono text-slate-500">
-            <Link to="/courses" className="hover:text-blue-600">Accueil</Link>
+            <Link to="/courses" className="hover:text-blue-600">{t('index.home')}</Link>
             <span>/</span>
-            <Link to={`/courses?level=${config.level}&grade=${config.grade}`} className="hover:text-blue-600">{config.level === 'lycee' ? 'Lycée' : 'Collège'} ({config.grade})</Link>
+            <Link to={`/courses?level=${config.level}&grade=${config.grade}`} className="hover:text-blue-600">{t(`index.level_${config.level}`)} ({config.grade})</Link>
             <span>/</span>
             <Link to={`/courses?level=${config.level}&grade=${config.grade}&chapter=${config.chapter}`} className="hover:text-blue-600">{config.chapterTitle || config.chapter}</Link>
             <span>/</span>
@@ -203,7 +205,7 @@ export default function LessonIndex({ config, basePath }) {
                   ))}
                   {config.skills.length > 3 && (
                     <li className="text-xs text-slate-400 ps-4">
-                      + {config.skills.length - 3} autres compétences
+                      {t('index.moreSkills', { count: config.skills.length - 3 })}
                     </li>
                   )}
                 </ul>
@@ -212,7 +214,7 @@ export default function LessonIndex({ config, basePath }) {
 
             {/* PROGRESS WIDGET */}
             <div className="w-full md:w-56 bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-3 text-center shrink-0">
-              <div className="text-xs font-mono text-slate-500 font-bold uppercase">Votre Progression</div>
+              <div className="text-xs font-mono text-slate-500 font-bold uppercase">{t('index.yourProgress')}</div>
 
               <div className={`text-3xl font-space font-extrabold ${isMastered ? 'text-emerald-600' : 'text-blue-600'}`}>
                 {pct}%
@@ -228,12 +230,13 @@ export default function LessonIndex({ config, basePath }) {
               </div>
 
               <span className="text-xs font-mono font-bold text-slate-500">
-                {completedCount}/{totalModules} modules
+                <span dir="ltr">{completedCount}/{totalModules}</span>{' '}
+                {t('index.modulesLabel', { count: totalModules })}
               </span>
 
               {isMastered && (
                 <div className="text-xs font-mono font-bold text-emerald-600 bg-emerald-50 rounded-lg py-1">
-                  🏆 Leçon maîtrisée !
+                  {t('index.lessonMastered')}
                 </div>
               )}
             </div>
@@ -244,7 +247,7 @@ export default function LessonIndex({ config, basePath }) {
 
         {/* MODULES ROADMAP */}
         <section className="space-y-4">
-          <h2 className="text-xl font-space font-bold text-slate-900">🗺️ Parcours des Modules</h2>
+          <h2 className="text-xl font-space font-bold text-slate-900">{t('index.modulesPath')}</h2>
 
           <div className="space-y-3">
             {config.modules.map((module) => {
@@ -285,10 +288,15 @@ export default function LessonIndex({ config, basePath }) {
                         <div className="flex items-center gap-2 flex-wrap">
                           <h3 className="font-space font-bold text-slate-500">{module.title}</h3>
                           <span className="text-[10px] font-mono text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
-                            Verrouillé
+                            {t('index.locked')}
                           </span>
                         </div>
-                        <p className="text-xs sm:text-sm text-slate-400 mt-0.5">{lockedReason(module.number)}</p>
+                        <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
+                          {t('nav.lockedReason', {
+                            module: lockedReasonData(module.number).previousModule,
+                            threshold: lockedReasonData(module.number).threshold,
+                          })}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -297,7 +305,7 @@ export default function LessonIndex({ config, basePath }) {
 
               const inProgressBadge = status === 'in_progress' && (
                 <span className="text-[10px] font-mono text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full font-bold">
-                  En cours
+                  {t('index.inProgress')}
                 </span>
               );
 
@@ -313,7 +321,7 @@ export default function LessonIndex({ config, basePath }) {
                   >
                     {isDone && (
                       <div className="absolute top-0 end-0 p-2 text-teal-700 text-[10px] font-bold bg-teal-100 rounded-es-xl font-mono">
-                        FAIT ✓
+                        {t('index.done')}
                       </div>
                     )}
                     <div className="flex items-center justify-between gap-4">
@@ -324,7 +332,7 @@ export default function LessonIndex({ config, basePath }) {
                         <div>
                           <div className="flex items-center gap-2 flex-wrap">
                             <span className="text-[10px] font-mono font-bold text-teal-700 bg-teal-100 px-2 py-0.5 rounded-full uppercase tracking-wide">
-                              Mission de départ
+                              {t('index.startingMission')}
                             </span>
                             <span className="text-[10px] font-mono text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
                               ~{module.estimatedMin} min
@@ -336,7 +344,7 @@ export default function LessonIndex({ config, basePath }) {
                         </div>
                       </div>
                       <span className="px-3 py-1 rounded-full bg-teal-100 text-teal-700 font-mono text-xs font-semibold hidden sm:inline-block shrink-0">
-                        {isDone ? 'Revoir ➔' : module.actionText}
+                        {isDone ? t('index.review') : module.actionText}
                       </span>
                     </div>
                   </Link>
@@ -356,7 +364,7 @@ export default function LessonIndex({ config, basePath }) {
                   >
                     {isDone && (
                       <div className="absolute top-0 end-0 p-2 text-emerald-600 text-[10px] font-bold bg-emerald-100 rounded-es-xl font-mono">
-                        TERMINÉ ✓
+                        {t('index.completed')}
                       </div>
                     )}
                     <div className="flex items-center justify-between gap-4">
@@ -381,7 +389,7 @@ export default function LessonIndex({ config, basePath }) {
                         </div>
                       </div>
                       <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-600 font-mono text-xs font-semibold hidden sm:inline-block shrink-0">
-                        {isDone ? 'Revoir ➔' : module.actionText}
+                        {isDone ? t('index.review') : module.actionText}
                       </span>
                     </div>
                   </Link>
@@ -412,7 +420,7 @@ export default function LessonIndex({ config, basePath }) {
                         <p className="text-xs text-slate-400 mt-0.5">{module.desc}</p>
                       </div>
                       <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full shrink-0 ${isDone ? 'bg-emerald-500/20 text-emerald-400' : 'text-slate-400 bg-slate-800'}`}>
-                        {isDone ? 'TERMINÉ ✓' : 'À FAIRE'}
+                        {isDone ? t('index.completed') : t('index.toDo')}
                       </span>
                     </div>
                   </Link>
@@ -449,7 +457,7 @@ export default function LessonIndex({ config, basePath }) {
                       </div>
                       <span className={`px-3 py-1 rounded-full font-mono text-xs font-bold shrink-0 hidden sm:inline-block
                         ${isDone ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'}`}>
-                        {isDone ? 'Résultats ➔' : module.actionText}
+                        {isDone ? t('index.results') : module.actionText}
                       </span>
                     </div>
                   </Link>
@@ -467,7 +475,7 @@ export default function LessonIndex({ config, basePath }) {
       </main>
 
       <footer className="border-t border-slate-200 bg-white py-8 text-center text-xs text-slate-500 mt-12">
-        <p>© {new Date().getFullYear()} Abdennour BOUHOUNALI — Professeur de Mathématiques</p>
+        <p>© {new Date().getFullYear()} Abdennour BOUHOUNALI — {t('common:footerRole')}</p>
       </footer>
     </div>
   );

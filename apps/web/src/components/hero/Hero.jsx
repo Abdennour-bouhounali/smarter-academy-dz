@@ -1,6 +1,7 @@
 import React, { useState, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { ArrowDown, Calculator, PenTool, BrainCircuit, Sparkles, Lightbulb } from 'lucide-react';
 import { ArrowForward } from '../common/DirectionalIcons';
 // Le graphe interactif de la page d'accueil tire `mafs` (~520 Ko, avec sa
@@ -18,6 +19,7 @@ const floatingIcons = [
 ];
 
 export default function Hero() {
+  const { t } = useTranslation('marketing');
   const [a, setA] = useState(1);
   const [b, setB] = useState(0);
   const [isGraphLoaded, setIsGraphLoaded] = useState(false);
@@ -57,7 +59,7 @@ export default function Hero() {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-sm font-medium mb-8 shadow-sm"
             >
               <Sparkles size={15} />
-              Essaie ci-dessous, sans compte
+              {t('hero.eyebrow')}
             </motion.div>
 
             <motion.h1
@@ -66,8 +68,8 @@ export default function Hero() {
               transition={{ delay: 0.1 }}
               className="font-space font-bold text-3xl sm:text-4xl lg:text-6xl text-slate-900 mb-6 leading-[1.15] tracking-tight max-w-4xl text-balance"
             >
-              Les mathématiques ne sont pas faites pour être récitées.<br className="hidden sm:block" />{' '}
-              Elles sont faites pour être <span className="gradient-text">comprises</span>.
+              {t('hero.titleLine1')}<br className="hidden sm:block" />{' '}
+              <span className="gradient-text">{t('hero.titleLine2')}</span>
             </motion.h1>
 
             <motion.p
@@ -76,10 +78,10 @@ export default function Hero() {
               transition={{ delay: 0.2 }}
               className="font-mono-jetbrains text-slate-500 text-sm sm:text-base font-semibold tracking-[0.15em] uppercase mb-10 flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1"
             >
-              <span>Manipule</span><span className="text-blue-300">→</span>
-              <span>Découvre</span><span className="text-blue-300">→</span>
-              <span>Comprends</span><span className="text-blue-300">→</span>
-              <span className="text-slate-800">Maîtrise</span>
+              <span>{t('hero.pillarManipulate')}</span><span className="text-blue-300">→</span>
+              <span>{t('hero.pillarDiscover')}</span><span className="text-blue-300">→</span>
+              <span>{t('hero.pillarUnderstand')}</span><span className="text-blue-300">→</span>
+              <span className="text-slate-800">{t('hero.pillarMaster')}</span>
             </motion.p>
 
             <motion.div
@@ -93,14 +95,14 @@ export default function Hero() {
                 className="px-8 py-4 rounded-xl text-base font-semibold text-white transition-all duration-300 hover:-translate-y-1 flex items-center gap-2 shadow-lg hover:shadow-blue-500/30"
                 style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}
               >
-                Commencer gratuitement
+                {t('hero.ctaPrimary')}
                 <ArrowForward size={18} />
               </Link>
               <Link
                 to="/methode"
                 className="px-6 py-4 rounded-xl text-base font-semibold text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-2"
               >
-                Découvrir la méthode
+                {t('hero.ctaSecondary')}
               </Link>
             </motion.div>
           </div>
@@ -119,14 +121,14 @@ export default function Hero() {
 
               {/* Badge */}
               <div className="absolute top-0 end-0 bg-emerald-100 text-emerald-700 text-[10px] font-bold px-3 py-1.5 rounded-es-2xl font-mono tracking-wider z-10">
-                SANS COMPTE
+                {t('hero.badgeNoAccount')}
               </div>
 
               {/* Loader Banner */}
               {!isGraphLoaded && (
                 <div className="bg-emerald-50/80 border-b border-emerald-100/50 px-5 sm:px-7 py-3 flex items-center justify-center gap-3">
                   <div className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
-                  <span className="text-sm font-semibold text-emerald-700 animate-pulse">Chargement du simulateur...</span>
+                  <span className="text-sm font-semibold text-emerald-700 animate-pulse">{t('hero.loadingSimulator')}</span>
                 </div>
               )}
 
@@ -136,11 +138,7 @@ export default function Hero() {
                 <div className="min-w-0 text-start">
                   <h3 className="font-space font-bold text-xl sm:text-2xl text-slate-900 leading-none">Touch Math</h3>
                   <p className="text-xs sm:text-sm text-slate-500 font-inter mt-1 leading-snug">
-                    Modifiez{' '}
-                    <span className="font-mono bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded font-bold">a</span>
-                    {' '}et{' '}
-                    <span className="font-mono bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded font-bold">b</span>
-                    {' '}et observez la droite en direct
+                    {t('hero.simulatorHint')}
                   </p>
                 </div>
               </div>
@@ -187,13 +185,13 @@ export default function Hero() {
                 {/* Pente a */}
                 <div className="bg-blue-50 border border-blue-100 rounded-2xl p-3 sm:p-4 flex flex-col items-center gap-2">
                   <div className="text-center leading-tight">
-                    <span className="block text-[11px] sm:text-xs font-bold text-blue-700 uppercase tracking-widest">Pente</span>
-                    <span className="font-mono text-blue-400 text-[10px]">coefficient a</span>
+                    <span className="block text-[11px] sm:text-xs font-bold text-blue-700 uppercase tracking-widest">{t('hero.slope')}</span>
+                    <span className="font-mono text-blue-400 text-[10px]">{t('hero.slopeCoefficient')}</span>
                   </div>
                   <div className="flex items-center gap-2 sm:gap-3">
                     <button
                       onClick={() => setA(Math.max(-5, a - 1))}
-                      aria-label="Diminuer a"
+                      aria-label={t('hero.decreaseA')}
                       className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-xl bg-white border border-blue-200 hover:bg-blue-500 hover:text-white hover:border-blue-500 font-mono text-blue-700 text-xl font-bold transition-all duration-150 shadow-sm active:scale-95 select-none"
                     >
                       −
@@ -201,25 +199,25 @@ export default function Hero() {
                     <span className="w-8 text-center font-mono font-black text-blue-700 text-2xl tabular-nums select-none">{a}</span>
                     <button
                       onClick={() => setA(Math.min(5, a + 1))}
-                      aria-label="Augmenter a"
+                      aria-label={t('hero.increaseA')}
                       className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-xl bg-white border border-blue-200 hover:bg-blue-500 hover:text-white hover:border-blue-500 font-mono text-blue-700 text-xl font-bold transition-all duration-150 shadow-sm active:scale-95 select-none"
                     >
                       +
                     </button>
                   </div>
-                  <span className="text-[10px] text-blue-300 font-mono select-none">de −5 à +5</span>
+                  <span className="text-[10px] text-blue-300 font-mono select-none">{t('hero.rangeMinus5To5')}</span>
                 </div>
 
                 {/* Ordonnée b */}
                 <div className="bg-amber-50 border border-amber-100 rounded-2xl p-3 sm:p-4 flex flex-col items-center gap-2">
                   <div className="text-center leading-tight">
-                    <span className="block text-[11px] sm:text-xs font-bold text-amber-700 uppercase tracking-widest">Ordonnée</span>
-                    <span className="font-mono text-amber-400 text-[10px]">constante b</span>
+                    <span className="block text-[11px] sm:text-xs font-bold text-amber-700 uppercase tracking-widest">{t('hero.intercept')}</span>
+                    <span className="font-mono text-amber-400 text-[10px]">{t('hero.interceptConstant')}</span>
                   </div>
                   <div className="flex items-center gap-2 sm:gap-3">
                     <button
                       onClick={() => setB(Math.max(-5, b - 1))}
-                      aria-label="Diminuer b"
+                      aria-label={t('hero.decreaseB')}
                       className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-xl bg-white border border-amber-200 hover:bg-amber-500 hover:text-white hover:border-amber-500 font-mono text-amber-700 text-xl font-bold transition-all duration-150 shadow-sm active:scale-95 select-none"
                     >
                       −
@@ -227,25 +225,25 @@ export default function Hero() {
                     <span className="w-8 text-center font-mono font-black text-amber-700 text-2xl tabular-nums select-none">{b}</span>
                     <button
                       onClick={() => setB(Math.min(5, b + 1))}
-                      aria-label="Augmenter b"
+                      aria-label={t('hero.increaseB')}
                       className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-xl bg-white border border-amber-200 hover:bg-amber-500 hover:text-white hover:border-amber-500 font-mono text-amber-700 text-xl font-bold transition-all duration-150 shadow-sm active:scale-95 select-none"
                     >
                       +
                     </button>
                   </div>
-                  <span className="text-[10px] text-amber-300 font-mono select-none">de −5 à +5</span>
+                  <span className="text-[10px] text-amber-300 font-mono select-none">{t('hero.rangeMinus5To5')}</span>
                 </div>
               </div>
 
               {/* CTA */}
               <div className="px-5 sm:px-7 pb-5 sm:pb-7">
                 <Link
-                  to="/courses/college/3e/donnees_probabilites/fonctions-3e"
+                  to="/courses"
                   className="flex items-center justify-center gap-2 w-full py-3.5 sm:py-4 rounded-xl text-white font-mono text-sm sm:text-base font-bold transition-all duration-300 hover:-translate-y-0.5 shadow-md hover:shadow-emerald-500/30"
                   style={{ background: 'linear-gradient(135deg, #10b981, #0ea5e9)' }}
                 >
                   <span>🚀</span>
-                  Lancer le simulateur complet ➔
+                  {t('hero.launchFullSimulator')}
                 </Link>
               </div>
 
@@ -263,7 +261,7 @@ export default function Hero() {
         onClick={scrollToNext}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-400 hover:text-slate-600 transition-colors"
       >
-        <span className="text-xs font-mono-jetbrains">découvrir la plateforme</span>
+        <span className="text-xs font-mono-jetbrains">{t('hero.discoverPlatform')}</span>
         <motion.div
           animate={{ y: [0, 5, 0] }}
           transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}

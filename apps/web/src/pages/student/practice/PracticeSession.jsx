@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState, useCallback, useMemo } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { ArrowBack } from '../../../components/common/DirectionalIcons';
 
 import { practice } from '@smarter-academy/core';
@@ -35,6 +36,7 @@ const { evaluateAnswer, feedbackFor } = practice;
  * progression non bloquante que tout le dépôt applique.
  */
 export default function PracticeSession() {
+  const { t } = useTranslation('student');
   const { lessonCode, sessionId } = useParams();
   const { token } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -203,7 +205,7 @@ export default function PracticeSession() {
       <div className="sa-surface-plain sa-page py-8 sm:py-10 space-y-6">
         <p className="text-rose-700 bg-rose-50 border-2 border-rose-200 rounded-xl p-4">{error}</p>
         <Link to={`/espace/pratique/${lessonCode}`} className="text-sm font-bold text-slate-600 hover:text-slate-900">
-          ← Retour à la pratique
+          ← {t('practice.backToPractice')}
         </Link>
       </div>
     );
@@ -223,12 +225,12 @@ export default function PracticeSession() {
           Le travail déjà validé est enregistré côté serveur à chaque réponse,
           donc quitter ne perd rien — et la séance reste ouverte, le Hub
           propose de la « Reprendre ». */}
-      <nav className="flex items-center" aria-label="Fil d'Ariane">
+      <nav className="flex items-center" aria-label={t('nav.breadcrumb', { ns: 'lesson' })}>
         <Link
           to={`/espace/pratique/${lessonCode}`}
           className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-500 hover:text-indigo-600 whitespace-nowrap"
         >
-          <ArrowBack className="w-3 h-3" aria-hidden="true" /> Retour aux niveaux
+          <ArrowBack className="w-3 h-3" aria-hidden="true" /> {t('practice.backToLevels')}
         </Link>
       </nav>
 
@@ -236,7 +238,7 @@ export default function PracticeSession() {
 
       <header className="space-y-1">
         <p className="text-xs font-mono font-bold text-indigo-600 uppercase">
-          Niveau {session.level} · {exercise.metadata.title}
+          {t('practice.levelLabel', { level: session.level })} · {exercise.metadata.title}
         </p>
       </header>
 
@@ -251,8 +253,8 @@ export default function PracticeSession() {
 
         <div className="space-y-4">
           {totalQuestions > 1 && (
-            <p className="text-xs font-mono font-bold text-slate-500">
-              Question {questionIndex + 1} / {totalQuestions}
+            <p className="text-xs font-mono font-bold text-slate-500" dir="ltr">
+              {t('practice.questionOf', { current: questionIndex + 1, total: totalQuestions })}
             </p>
           )}
 
@@ -271,7 +273,7 @@ export default function PracticeSession() {
           <div className="flex items-center gap-3 flex-wrap">
             {!answered && (
               <ValidateButton onClick={validate} disabled={answer == null || busy} tone="indigo">
-                Vérifier ma réponse
+                {t('practice.checkMyAnswer')}
               </ValidateButton>
             )}
             {!answered && <NotebookButton key={`note-${question.id}`} onSave={saveNote} compact />}
@@ -320,7 +322,7 @@ export default function PracticeSession() {
                     onClick={() => { setEvaluation(null); setAnswer(null); }}
                     className="px-5 py-3 rounded-xl border-2 border-slate-300 text-slate-700 font-bold min-h-[48px]"
                   >
-                    Réessayer
+                    {t('practice.retry')}
                   </button>
                 )}
                 <button
@@ -330,8 +332,8 @@ export default function PracticeSession() {
                   className="flex-1 px-5 py-3 rounded-xl bg-slate-900 text-white font-bold min-h-[48px] disabled:opacity-60"
                 >
                   {questionIndex < totalQuestions - 1
-                    ? 'Question suivante'
-                    : index < exerciseIds.length - 1 ? 'Exercice suivant' : 'Terminer la séance'}
+                    ? t('practice.nextQuestion')
+                    : index < exerciseIds.length - 1 ? t('practice.nextExercise') : t('practice.finishSession')}
                 </button>
               </div>
             </div>

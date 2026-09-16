@@ -1,6 +1,11 @@
 // `with { type: 'json' }` so this module also loads under plain Node (the
 // curriculum export script) — Vite/vitest accept the attribute too.
 import officialProgram from './smarter_academy_programmes_maths_2026.json' with { type: 'json' };
+// Le programme algérien officiel — la source unique des intitulés arabes.
+import programme4am from './dz/programme_4am_2026_2027.json' with { type: 'json' };
+// Le découpage en leçons de ce programme (phase 7) — dérivé du précédent,
+// jamais concurrent : chaque leçon y déclare le sujet officiel dont elle vient.
+import lessons4am from './dz/lessons_4am_2026_2027.json' with { type: 'json' };
 import { filterActiveCourseLevels } from './activeGrades.js';
 import { resolveLessonTier } from './freeLessons.js';
 
@@ -2995,12 +3000,24 @@ function buildChaptersForGrade(gradeId, levelId) {
   });
 }
 
-// Full inherited catalogue (every grade cloned from the French platform),
-// kept under a name that makes "this is unfiltered" impossible to miss at a
-// call site. Only dormant-content tooling (a future admin browser, audits)
-// should ever import this directly — every student-facing consumer must use
-// `courseLevels` below instead, per docs/ALGERIA_MIGRATION_AUDIT.md §15.
-export const allCourseLevels = [
+// ── L'ARBRE FRANÇAIS DE RÉFÉRENCE ────────────────────────────────────────
+//
+// Le catalogue hérité du clone français. Ce n'est PAS une surface produit :
+// il n'est jamais exporté vers la base, jamais rendu à un élève, jamais lu
+// par un composant de `apps/web/src` (hors test). Sa seule raison d'exister
+// est l'OUTILLAGE D'INTÉGRITÉ DES FICHIERS.
+//
+// Pourquoi il survit à la phase 6F. Les 132 dossiers de leçons françaises
+// restent physiquement sur le disque (phase 3, master spec §3), et
+// `buildLessonIndex()` (scripts/lib/lessonAst.mjs) indexe le catalogue par
+// `${gradeId}:${lessonId}` pour valider chacun d'eux. Sans cet arbre,
+// `validate-lessons` déclarerait les 132 dossiers « absents de
+// coursesData.js » : dormant deviendrait invalide, ce qu'il n'est pas.
+//
+// La règle, en une phrase : le FRANÇAIS décrit ce qui est sur le disque, le
+// DZ décrit ce qu'on vend. `scripts/check-dormant-isolation.mjs` fait échouer
+// la construction si un fichier produit importe ce nom.
+export const referenceCourseLevels = [
   {
     id: 'college',
     title: 'Collège',
@@ -3035,13 +3052,181 @@ export const allCourseLevels = [
   }
 ];
 
+// ── LE CATALOGUE ALGÉRIEN ────────────────────────────────────────────────
+//
+// Construit ENTIÈREMENT depuis dz/programme_4am_2026_2027.json, jamais
+// retapé. C'est l'invariant I1 de la phase 6F : le programme fourni par le
+// propriétaire est la seule source des intitulés arabes, et tout ce qui suit
+// en dérive —
+//
+//   programme_4am_2026_2027.json → buildDzCourseLevels() → coursesData.js
+//     → exportCurriculum.mjs → curriculum-export.json
+//     → smarter:import-curriculum → chapters.topics
+//
+// Si un intitulé arabe apparaît à deux endroits, l'un des deux est un
+// défaut. Un test qui a besoin du libellé LIT le JSON, il ne le recopie pas.
+//
+// CE QUI N'EST PAS DÉCIDÉ ICI, et qui n'est donc pas inventé : le découpage
+// en leçons. Les 28 sujets du programme sont portés par leur CHAPITRE
+// (`topics`), et `lessons` reste vide. Faire l'inverse — un sujet, une leçon
+// — trancherait une décision pédagogique que docs/ALGERIA_4AM_CURRICULUM.md
+// laisse ouverte (« À DÉCOMPOSER »), et la phase 7 hériterait d'un découpage
+// que personne n'a choisi.
+/**
+ * Une leçon 4AM, construite depuis le découpage fourni par le propriétaire.
+ *
+ * Volontairement SÉPARÉ de `buildLesson` (le constructeur français) : celui-ci
+ * fusionne un objet du référentiel français avec des métadonnées Smarter
+ * Academy, dérive des paliers via `resolveLessonTier`, et porte un vocabulaire
+ * (`origin`, `officialObject`, `extensionObject`) qui n'a pas de sens ici. La
+ * leçon algérienne a une autre provenance — un SUJET du programme — et la
+ * déclare telle quelle, plutôt que de se déguiser en leçon française.
+ */
+function buildDzLesson(lesson, { levelId, gradeId, topicTitle }) {
+  return {
+    id: lesson.code,
+    // Le TITRE de la leçon est l'intitulé du sujet officiel, au mot près.
+    // Un sujet = une leçon (règle de découpage), donc réécrire le titre
+    // n'ajouterait rien et ferait diverger l'élève du programme qu'il révise.
+    title: topicTitle,
+    description: lesson.description,
+    prerequisites: lesson.prerequisites,
+    pointsToLearn: lesson.pointsToLearn,
+    // Même convention d'identifiant que le catalogue français
+    // (`<classe>_<leçon>_P<n>`) : c'est elle que lisent l'import, les preuves
+    // d'apprentissage et la carte des connaissances. Déterministe et stable
+    // tant que l'ordre des points ne bouge pas — un réordonnancement change
+    // ce que désigne un identifiant existant, et smarter:validate-curriculum
+    // le signale après import.
+    learningPoints: lesson.pointsToLearn.map((title, i) => ({
+      id: `${gradeId}_${lesson.code}_P${i + 1}`,
+      title,
+      order: i + 1,
+    })),
+    durationMinutes: lesson.durationMinutes,
+    duration: lesson.durationMinutes != null ? `${lesson.durationMinutes} min` : '--',
+    difficulty: lesson.difficulty,
+    // « coming_soon » : la leçon est DÉCIDÉE, pas ÉCRITE. La carte l'affiche
+    // sans la rendre cliquable, ce qui est exactement l'état réel après la
+    // phase 7 — le contenu est la phase suivante.
+    status: lesson.status,
+    icon: lesson.icon,
+    // Le palier vient de `freeLessons.js`, PAS du JSON source.
+    //
+    // La gratuité est une décision commerciale, portée par une liste nommée
+    // (FREE_LESSON_IDS) que `resolveLessonTier` fait seule autorité sur une
+    // classe active — exactement comme pour le catalogue français. Recopier
+    // `lesson.tier` depuis le découpage faisait vivre la même décision à deux
+    // endroits : ajouter une leçon à la liste des gratuites ne changeait
+    // alors rien, et le cadenas restait posé sans que personne ne comprenne
+    // pourquoi. Le `tier` du JSON reste une intention d'auteur ; c'est la
+    // liste qui tranche.
+    tier: resolveLessonTier(gradeId, lesson.code, lesson.tier),
+    // La TRAÇABILITÉ, portée par la leçon elle-même plutôt que par un registre
+    // parallèle : le sujet officiel dont elle vient, et le fait que le
+    // découpage soit une décision de projet et non une prescription du
+    // programme.
+    sourceTopicId: lesson.sourceTopicId,
+    decompositionType: lesson.decompositionType,
+    decisionStatus: lesson.decisionStatus,
+    path: `/courses/${levelId}/${gradeId}/${lesson.chapterId}/${lesson.code}`,
+  };
+}
+
+function buildDzCourseLevels() {
+  const lessonsByChapter = new Map();
+  for (const lesson of lessons4am.lessons) {
+    if (!lessonsByChapter.has(lesson.chapterId)) lessonsByChapter.set(lesson.chapterId, []);
+    lessonsByChapter.get(lesson.chapterId).push(lesson);
+  }
+
+  const chapters = programme4am.domains.map((domain, index) => ({
+    id: domain.id,
+    title: domain.titleAr,
+    subtitle: domain.subtitleAr,
+    order: index,
+    // Les sujets OFFICIELS, au mot près. `namedMethodsAr`/`namedPartsAr` ne
+    // sont recopiés QUE là où le programme les porte (6 sujets sur 28) :
+    // fabriquer un tableau vide pour les 22 autres affirmerait que le
+    // programme ne nomme rien, ce qu'il ne dit pas — il se tait.
+    topics: domain.topics.map((topic) => ({
+      id: topic.id,
+      title: topic.titleAr,
+      ...(topic.namedMethodsAr ? { namedMethods: topic.namedMethodsAr } : {}),
+      ...(topic.namedPartsAr ? { namedParts: topic.namedPartsAr } : {}),
+    })),
+    // Les leçons issues du découpage (phase 7) : une par sujet officiel du
+    // chapitre, dans l'ordre du programme.
+    lessons: (lessonsByChapter.get(domain.id) ?? [])
+      .slice()
+      .sort((a, b) => a.order - b.order)
+      .map((lesson) => buildDzLesson(lesson, {
+        levelId: 'moyen',
+        gradeId: programme4am.grade,
+        topicTitle: domain.topics.find((t) => t.id === lesson.sourceTopicId)?.titleAr,
+      })),
+  }));
+
+  return [
+    {
+      id: 'moyen',
+      title: programme4am.levelLabelAr,
+      icon: '📘',
+      color: 'from-emerald-500 to-teal-500',
+      lightBg: 'bg-emerald-50/50 border-emerald-200',
+      accentColor: 'text-emerald-600',
+      badgeBg: 'bg-emerald-100 text-emerald-700',
+      grades: [
+        {
+          id: programme4am.grade,
+          name: programme4am.gradeLabelAr,
+          // Le programme ET son découpage en leçons sont arrêtés (phase 7) ;
+          // le CONTENU des leçons ne l'est pas. « Active » ne veut toujours
+          // pas dire « il y a un cours à ouvrir » — chaque leçon porte
+          // `status: 'coming_soon'`, et l'interface doit le dire. Voir I2.
+          curriculumStatus: 'lessons_planned',
+          chapters,
+        },
+      ],
+    },
+    {
+      id: 'thanawi',
+      title: 'التعليم الثانوي',
+      icon: '📗',
+      color: 'from-blue-500 to-cyan-500',
+      lightBg: 'bg-blue-50/50 border-blue-200',
+      accentColor: 'text-blue-600',
+      badgeBg: 'bg-blue-100 text-blue-700',
+      grades: [
+        {
+          // La SECONDE classe algérienne (master spec §3). Son identité
+          // existe — un élève peut s'y inscrire — mais aucun programme n'a
+          // été fourni pour elle (rapport de reprise §19, B1). Le marqueur
+          // ci-dessous est ce qui permet à l'interface de le DIRE, au lieu
+          // de servir un catalogue vide qui passerait pour une panne.
+          id: 'terminale_dz',
+          name: 'السنة الثالثة ثانوي',
+          curriculumStatus: 'not_supplied',
+          chapters: [],
+        },
+      ],
+    },
+  ];
+}
+
+// Le catalogue ALGÉRIEN complet : les deux classes du produit, actives ou
+// non. C'est lui qu'exporte exportCurriculum.mjs vers la base, et lui que
+// lisent les gardes. Il ne contient AUCUNE classe française — c'est la
+// différence avec `referenceCourseLevels`, et c'est tout l'objet de la
+// phase 6F.
+export const dzCourseLevels = buildDzCourseLevels();
+
 // The catalogue every student-facing consumer must use. Filtered to only
 // ACTIVE_GRADE_IDS (packages/core/curriculum/activeGrades.js) so that every
 // downstream reader — navigation, course browser, resume/next-lesson logic,
-// grade pickers — is starved of dormant French content at the source,
-// rather than each needing its own filter. See activeGrades.js for why this
-// is currently empty (no Algerian grade exists yet).
-export const courseLevels = filterActiveCourseLevels(allCourseLevels);
+// grade pickers — is starved of anything not explicitly activated, rather
+// than each needing its own filter.
+export const courseLevels = filterActiveCourseLevels(dzCourseLevels);
 
 /**
  * Flattens courseLevels into the list of every selectable grade — the single

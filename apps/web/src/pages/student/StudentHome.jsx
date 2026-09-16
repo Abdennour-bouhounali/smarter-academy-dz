@@ -1,5 +1,6 @@
 import { useContext, useMemo, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Play, Flame, CircleCheckBig, Zap, Compass, Crown, BookOpen } from 'lucide-react';
 import { ArrowForward } from '../../components/common/DirectionalIcons';
@@ -15,7 +16,8 @@ import { usePremiumStatus } from '../../hooks/usePremiumStatus';
 
 
 export default function StudentHome() {
-  useDocumentMeta('Mon espace', 'Ton tableau de bord Smarter Academy — reprends ta leçon, suis ta progression.');
+  const { t } = useTranslation('student');
+  useDocumentMeta(t('home.metaTitle'), t('home.metaDescription'));
   const { user } = useContext(AuthContext);
   const { isPremium, canSeeUpgrade } = usePremiumStatus();
 
@@ -46,13 +48,13 @@ export default function StudentHome() {
       {/* Greeting */}
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
         <p className="font-mono-jetbrains text-blue-500 text-xs font-semibold tracking-widest uppercase mb-2">
-          Apprendre → Pratiquer → Progresser → Maîtriser
+          {t('home.cycle')}
         </p>
         <h1 className="font-space font-bold text-2xl sm:text-3xl text-slate-900">
-          Bonjour {getDisplayName(user)} 👋
+          {t('home.greeting', { name: getDisplayName(user) })}
         </h1>
         <p className="font-inter text-slate-500 text-sm mt-1">
-          {grade ? `${level?.title} ${grade.name}` : 'Choisis ta classe dans ton profil pour commencer.'}
+          {grade ? `${level?.title} ${grade.name}` : t('home.noGradeYet')}
         </p>
       </motion.div>
 
@@ -67,7 +69,7 @@ export default function StudentHome() {
           >
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500" />
             <p className="font-mono-jetbrains text-blue-500 text-xs font-semibold uppercase tracking-widest mb-3 flex items-center gap-1.5">
-              <Play size={12} /> Continue ton apprentissage
+              <Play size={12} /> {t('home.continueLearning')}
             </p>
             <div className="flex items-start gap-4">
               <div className="text-4xl bg-blue-50 p-3 rounded-2xl group-hover:scale-105 transition-transform flex-shrink-0">
@@ -78,7 +80,7 @@ export default function StudentHome() {
                   {continueCourse.course.title}
                 </h2>
                 <p className="font-inter text-slate-500 text-sm mt-0.5">
-                  {continueCourse.chapter.title} · {continueCourse.grade.name} · Module {continueCourse.resumeModule} sur {continueCourse.totalModules}
+                  {continueCourse.chapter.title} · {continueCourse.grade.name} · {t('home.moduleOf', { current: continueCourse.resumeModule, total: continueCourse.totalModules })}
                 </p>
                 <div className="mt-4 flex items-center gap-3 max-w-sm">
                   <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
@@ -88,7 +90,7 @@ export default function StudentHome() {
                 </div>
               </div>
               <span className="hidden sm:flex items-center gap-1.5 font-bold text-sm text-blue-600 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-transform flex-shrink-0">
-                Continuer <ArrowForward size={15} />
+                {t('home.continue')} <ArrowForward size={15} />
               </span>
             </div>
           </Link>
@@ -99,7 +101,7 @@ export default function StudentHome() {
           >
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-500" />
             <p className="font-mono-jetbrains text-emerald-600 text-xs font-semibold uppercase tracking-widest mb-3">
-              Prêt à commencer
+              {t('home.readyToStart')}
             </p>
             <div className="flex items-start gap-4">
               <div className="text-4xl bg-emerald-50 p-3 rounded-2xl group-hover:scale-105 transition-transform flex-shrink-0">
@@ -112,14 +114,14 @@ export default function StudentHome() {
                 <p className="font-inter text-slate-500 text-sm mt-0.5 line-clamp-2">{firstLesson.lesson.description}</p>
               </div>
               <span className="hidden sm:flex items-center gap-1.5 font-bold text-sm text-emerald-600 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-transform flex-shrink-0">
-                Commencer <ArrowForward size={15} />
+                {t('home.start')} <ArrowForward size={15} />
               </span>
             </div>
           </Link>
         ) : (
           <div className="glass-card p-7 text-center">
             <p className="font-inter text-slate-500 text-sm">
-              Aucune leçon disponible pour ta classe pour l'instant. <Link to="/espace/explorer" className="text-blue-600 font-semibold hover:underline">Explore d'autres niveaux →</Link>
+              {t('home.noLessonsForGrade')} <Link to="/espace/explorer" className="text-blue-600 font-semibold hover:underline">{t('home.exploreOtherGrades')}</Link>
             </p>
           </div>
         )}
@@ -127,18 +129,18 @@ export default function StudentHome() {
 
       {/* Stats */}
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
-        <StatTile icon={BookOpen} value={gradeActivity.lessons.length} label="Leçons disponibles" accent="bg-blue-50 text-blue-600" />
-        <StatTile icon={CircleCheckBig} value={gradeActivity.completedCount} label="Leçons terminées" accent="bg-emerald-50 text-emerald-600" />
-        <StatTile icon={Flame} value={gradeActivity.inProgressCount} label="En cours" accent="bg-amber-50 text-amber-600" />
-        <StatTile icon={Zap} value={gradeActivity.totalXp} label="XP gagné" accent="bg-purple-50 text-purple-600" />
+        <StatTile icon={BookOpen} value={gradeActivity.lessons.length} label={t('home.statLessonsAvailable')} accent="bg-blue-50 text-blue-600" />
+        <StatTile icon={CircleCheckBig} value={gradeActivity.completedCount} label={t('home.statLessonsCompleted')} accent="bg-emerald-50 text-emerald-600" />
+        <StatTile icon={Flame} value={gradeActivity.inProgressCount} label={t('home.statInProgress')} accent="bg-amber-50 text-amber-600" />
+        <StatTile icon={Zap} value={gradeActivity.totalXp} label={t('home.statXpEarned')} accent="bg-purple-50 text-purple-600" />
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-8">
         {/* Recent activity */}
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="glass-card p-6">
-          <h3 className="font-space font-bold text-slate-800 text-sm mb-4">Repris récemment</h3>
+          <h3 className="font-space font-bold text-slate-800 text-sm mb-4">{t('home.recentlyResumed')}</h3>
           {gradeActivity.recentlyActive.length === 0 ? (
-            <p className="font-inter text-slate-400 text-sm">Rien à afficher pour l'instant — commence une leçon !</p>
+            <p className="font-inter text-slate-400 text-sm">{t('home.nothingYet')}</p>
           ) : (
             <div className="space-y-3">
               {gradeActivity.recentlyActive.slice(0, 4).map((item) => (
@@ -170,8 +172,8 @@ export default function StudentHome() {
               <BookOpen size={19} />
             </div>
             <div className="flex-1">
-              <p className="font-space font-bold text-slate-800 text-sm">Mes cours — {grade ? grade.name : 'ta classe'}</p>
-              <p className="font-inter text-slate-500 text-xs mt-0.5">Voir toutes les leçons de ton niveau</p>
+              <p className="font-space font-bold text-slate-800 text-sm">{t('home.myCoursesWithGrade', { grade: grade ? grade.name : t('home.yourGradeFallback') })}</p>
+              <p className="font-inter text-slate-500 text-xs mt-0.5">{t('home.seeAllLessons')}</p>
             </div>
             <ArrowForward size={16} className="text-slate-300 group-hover:text-blue-500 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-all flex-shrink-0" />
           </Link>
@@ -181,8 +183,8 @@ export default function StudentHome() {
               <Compass size={19} />
             </div>
             <div className="flex-1">
-              <p className="font-space font-bold text-slate-800 text-sm">Explorer d'autres niveaux</p>
-              <p className="font-inter text-slate-500 text-xs mt-0.5">De la 6e à la Terminale</p>
+              <p className="font-space font-bold text-slate-800 text-sm">{t('home.exploreOtherGradesTitle')}</p>
+              <p className="font-inter text-slate-500 text-xs mt-0.5">{t('home.exploreOtherGradesSubtitle')}</p>
             </div>
             <ArrowForward size={16} className="text-slate-300 group-hover:text-purple-500 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-all flex-shrink-0" />
           </Link>
@@ -199,8 +201,8 @@ export default function StudentHome() {
                 <Crown size={19} />
               </div>
               <div className="flex-1">
-                <p className="font-space font-bold text-slate-800 text-sm">{premiumCount} leçon{premiumCount > 1 ? 's' : ''} Premium {premiumCount > 1 ? 'ouvertes' : 'ouverte'}</p>
-                <p className="font-inter text-slate-500 text-xs mt-0.5">Incluses dans ton accès — à toi de jouer</p>
+                <p className="font-space font-bold text-slate-800 text-sm">{t('home.premiumOpen', { count: premiumCount })}</p>
+                <p className="font-inter text-slate-500 text-xs mt-0.5">{t('home.premiumOpenHint')}</p>
               </div>
               <ArrowForward size={16} className="text-slate-300 group-hover:text-violet-500 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-all flex-shrink-0" />
             </Link>
@@ -212,12 +214,12 @@ export default function StudentHome() {
                 <Crown size={19} />
               </div>
               <div className="flex-1">
-                <p className="font-space font-bold text-slate-800 text-sm">{premiumCount} leçon{premiumCount > 1 ? 's' : ''} Premium {premiumCount > 1 ? 'disponibles' : 'disponible'}</p>
+                <p className="font-space font-bold text-slate-800 text-sm">{t('home.premiumLocked', { count: premiumCount })}</p>
                 {/* Aucun prix affiché : le produit algérien se paie en
                     espèces auprès d'un vendeur, hors de l'application. Un
                     tarif en euros ici serait faux deux fois (monnaie et
                     modèle). Voir master spec §17/§18. */}
-                <p className="font-inter text-slate-500 text-xs mt-0.5">أدخل رمز التفعيل لفتحها</p>
+                <p className="font-inter text-slate-500 text-xs mt-0.5">{t('home.premiumLockedHint')}</p>
               </div>
               <ArrowForward size={16} className="text-slate-300 group-hover:text-amber-500 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-all flex-shrink-0" />
             </Link>

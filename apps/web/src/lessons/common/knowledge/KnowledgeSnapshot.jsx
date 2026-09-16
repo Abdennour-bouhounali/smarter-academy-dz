@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BookOpen } from 'lucide-react';
 import { CompleteView } from './KnowledgeMap';
 import { buildStructure, progressionByModule } from './knowledgeStructure';
@@ -47,6 +48,7 @@ import { useLessonKnowledge } from './KnowledgeProvider';
  * @param {React.ReactNode} [children] phrase de transition vers la suite
  */
 export default function KnowledgeSnapshot({ moduleNumber, unlock = true, complete = false, variant = 'compact', children }) {
+  const { t } = useTranslation('lesson');
   const { items, unlockModule, unlockAll, openMap } = useLessonKnowledge();
 
   useEffect(() => {
@@ -68,12 +70,12 @@ export default function KnowledgeSnapshot({ moduleNumber, unlock = true, complet
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h3 id="km-snapshot-title" className="font-space font-bold text-indigo-900 flex items-center gap-2">
-            <span aria-hidden="true">🔑</span> {isComplete ? 'Ma carte des connaissances — la leçon complète' : 'À retenir — l’essentiel pour l’évaluation'}
+            <span aria-hidden="true">🔑</span> {isComplete ? t('map.completeLessonTitle') : t('map.essentialTitle')}
           </h3>
           <p className="text-xs text-indigo-700 mt-1">
-            {items.length} {items.length > 1 ? 'connaissances' : 'connaissance'} sur ma carte
+            {t('map.knowledgeOnMyMap', { count: items.length })}
             {!isComplete && fromThisModule.length > 0 && (
-              <> · <strong>{fromThisModule.length} {fromThisModule.length > 1 ? 'nouvelles' : 'nouvelle'}</strong> dans ce module</>
+              <> · <strong>{fromThisModule.length} {t('map.newFem')}</strong> {t('map.inThisModule')}</>
             )}
           </p>
         </div>
@@ -82,12 +84,12 @@ export default function KnowledgeSnapshot({ moduleNumber, unlock = true, complet
           onClick={openMap}
           className="inline-flex items-center gap-2 px-4 min-h-[44px] rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
         >
-          <BookOpen className="w-3.5 h-3.5" aria-hidden="true" /> {isComplete ? 'Ouvrir et imprimer ma carte' : 'Ouvrir ma carte'}
+          <BookOpen className="w-3.5 h-3.5" aria-hidden="true" /> {isComplete ? t('map.openAndPrint') : t('map.openMap')}
         </button>
       </div>
 
       {items.length === 0 ? (
-        <p className="text-sm text-indigo-800">Ta carte est encore vide : elle se remplit à chaque module terminé.</p>
+        <p className="text-sm text-indigo-800">{t('map.emptyMapLong')}</p>
       ) : isComplete ? (
         <CompleteView items={items} printable={false} />
       ) : (
@@ -97,7 +99,7 @@ export default function KnowledgeSnapshot({ moduleNumber, unlock = true, complet
             <section className="rounded-xl border-2 border-rose-200 bg-rose-50/70 px-3 py-2.5" data-knowledge-highlight="true">
               <div className="flex items-baseline gap-2 mb-1.5">
                 <span aria-hidden="true">⚠️</span>
-                <span className="text-[11px] font-bold tracking-[0.14em] text-rose-700">PIÈGES À NE PAS OUBLIER</span>
+                <span className="text-[11px] font-bold tracking-[0.14em] text-rose-700">{t('map.traps')}</span>
                 <span className="ms-auto text-[11px] text-rose-400 font-mono">{highlight.length}</span>
               </div>
               <div className="flex flex-col divide-y divide-rose-100">
@@ -115,14 +117,14 @@ export default function KnowledgeSnapshot({ moduleNumber, unlock = true, complet
                 <section key={s.id} className="rounded-xl bg-white/70 border border-slate-200 p-3 break-inside-avoid" data-knowledge-stratum={s.id}>
                   <div className="flex items-baseline gap-2">
                     <span className={`w-1 h-3.5 rounded-full ${accent.rule}`} aria-hidden="true" />
-                    <span className={`text-[11px] font-bold tracking-[0.12em] ${accent.label}`}>{s.label}</span>
-                    <span className="text-[11px] text-slate-400">{s.caption}</span>
+                    <span className={`text-[11px] font-bold tracking-[0.12em] ${accent.label}`}>{t(s.labelKey)}</span>
+                    <span className="text-[11px] text-slate-400">{t(s.captionKey)}</span>
                     <span className="ms-auto text-[11px] font-mono text-slate-400">{s.count}</span>
                   </div>
                   {s.groups.map((g) => (
                     <div key={g.category.id} className="mt-2">
                       {s.groups.length > 1 && (
-                        <div className="text-[10px] font-mono font-bold tracking-wider text-slate-400 mb-0.5">{g.category.label}</div>
+                        <div className="text-[10px] font-mono font-bold tracking-wider text-slate-400 mb-0.5">{t(g.category.labelKey)}</div>
                       )}
                       <div className="flex flex-col divide-y divide-slate-100">
                         {g.items.map((item) => (
@@ -144,7 +146,7 @@ export default function KnowledgeSnapshot({ moduleNumber, unlock = true, complet
 
           {steps.length > 1 && (
             <p className="text-[11px] text-indigo-700/80 font-mono" data-knowledge-progression="true">
-              Ta carte : {steps.map((s) => `M${s.module} +${s.count}`).join(' → ')}
+              {t('map.yourMapColon')} {steps.map((s) => `M${s.module} +${s.count}`).join(' → ')}
             </p>
           )}
         </div>
@@ -166,6 +168,7 @@ export default function KnowledgeSnapshot({ moduleNumber, unlock = true, complet
  * comptent ses occurrences pour vérifier l'apport du module.
  */
 function SnapRow({ item, isNew, dot = 'bg-slate-300', showSummary = false }) {
+  const { t } = useTranslation('lesson');
   return (
     <div
       data-knowledge-item={item.id}
@@ -176,7 +179,7 @@ function SnapRow({ item, isNew, dot = 'bg-slate-300', showSummary = false }) {
       <span className="min-w-0 flex-1">
         <span className={`text-sm ${isNew ? 'font-bold text-slate-900' : 'font-medium text-slate-800'}`}>{item.title}</span>
         {isNew && (
-          <span className="ms-1.5 align-middle text-[10px] font-bold uppercase tracking-wide text-indigo-600 bg-indigo-100 px-1.5 py-0.5 rounded-full">nouveau</span>
+          <span className="ms-1.5 align-middle text-[10px] font-bold uppercase tracking-wide text-indigo-600 bg-indigo-100 px-1.5 py-0.5 rounded-full">{t('map.new')}</span>
         )}
         {showSummary && item.summary && (
           <span className="block text-xs text-slate-600 leading-snug mt-0.5">{item.summary}</span>

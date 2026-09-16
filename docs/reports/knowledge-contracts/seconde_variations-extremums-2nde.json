@@ -21,7 +21,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/variations-extremums-2nde/modules/Module01LeRandonneur.jsx",
-        "line": 69,
+        "line": 68,
         "step": 1,
         "variant": "new"
       }
@@ -32,7 +32,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/variations-extremums-2nde/modules/Module01LeRandonneur.jsx",
-        "line": 103,
+        "line": 102,
         "step": 2,
         "variant": "new"
       }
@@ -43,7 +43,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/variations-extremums-2nde/modules/Module02CroissanteDecroissante.jsx",
-        "line": 89,
+        "line": 88,
         "step": 2,
         "variant": "new"
       }
@@ -78,7 +78,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/variations-extremums-2nde/modules/Module02CroissanteDecroissante.jsx",
-        "line": 113,
+        "line": 112,
         "step": 3,
         "variant": "new"
       }
@@ -91,7 +91,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/variations-extremums-2nde/modules/Module01LeRandonneur.jsx",
-        "line": 96,
+        "line": 95,
         "step": 2,
         "variant": "new"
       }
@@ -170,7 +170,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/variations-extremums-2nde/modules/Module02CroissanteDecroissante.jsx",
-        "line": 118,
+        "line": 117,
         "step": 3,
         "variant": "new"
       }
@@ -330,7 +330,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/fonctions/variations-extremums-2nde/modules/Module01LeRandonneur.jsx",
-      "line": 115,
+      "line": 114,
       "requires": [
         "regle-plus-bas-au-bord",
         "methode-lire-variations-courbe",
@@ -352,7 +352,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/fonctions/variations-extremums-2nde/modules/Module01LeRandonneur.jsx",
-      "line": 127,
+      "line": 126,
       "requires": [
         "variations-sens",
         "methode-lire-variations-courbe",
@@ -372,7 +372,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/fonctions/variations-extremums-2nde/modules/Module02CroissanteDecroissante.jsx",
-      "line": 133,
+      "line": 132,
       "requires": [
         "definition-croissante-decroissante",
         "vocab-monotone-intervalle",

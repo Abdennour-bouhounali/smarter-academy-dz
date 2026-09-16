@@ -1,3 +1,4 @@
+import { getAllGrades } from '@smarter-academy/core';
 import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AdminPage from '../../../components/admin/AdminPage';
@@ -11,6 +12,11 @@ import { useDocumentMeta } from '../../../hooks/useDocumentMeta';
 import { useDebounced } from '../../../hooks/useDebounced';
 
 /** Par leçon : combien commencent, combien terminent, combien signalent. */
+// Les classes du CATALOGUE, jamais une liste écrite ici : le tableau
+// français hérité ('6e', '5e', …) survivait à la bascule algérienne et
+// aurait proposé de filtrer sur des classes qui n'existent plus en base.
+const GRADE_OPTIONS = getAllGrades().map((g) => ({ value: g.id, label: g.name }));
+
 export function ContentAnalytics() {
   useDocumentMeta('Statistiques contenu — Administration');
 
@@ -28,7 +34,7 @@ export function ContentAnalytics() {
         <FilterBar>
           <SelectFilter
             label="Classe" allLabel="Toutes les classes" value={grade} onChange={setGrade}
-            options={['6e', '5e', '4e', '3e', 'seconde'].map((g) => ({ value: g, label: g }))}
+            options={GRADE_OPTIONS}
           />
         </FilterBar>
 

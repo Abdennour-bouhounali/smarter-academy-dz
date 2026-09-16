@@ -30,7 +30,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/proportions-pourcentages-2nde/modules/Module02TroisEcrituresUneProportion.jsx",
-        "line": 87,
+        "line": 88,
         "step": 2,
         "variant": "new"
       }
@@ -109,7 +109,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/proportions-pourcentages-2nde/modules/Module02TroisEcrituresUneProportion.jsx",
-        "line": 65,
+        "line": 66,
         "step": 1,
         "variant": "new"
       }
@@ -122,7 +122,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/proportions-pourcentages-2nde/modules/Module02TroisEcrituresUneProportion.jsx",
-        "line": 58,
+        "line": 59,
         "step": 1,
         "variant": "new"
       }
@@ -332,7 +332,7 @@
       "step": 2,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/proportions-pourcentages-2nde/modules/Module02TroisEcrituresUneProportion.jsx",
-      "line": 92,
+      "line": 93,
       "requires": [
         "formule-proportion",
         "trois-ecritures",
@@ -356,7 +356,7 @@
       "step": 3,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/proportions-pourcentages-2nde/modules/Module02TroisEcrituresUneProportion.jsx",
-      "line": 118,
+      "line": 119,
       "requires": [
         "formule-proportion",
         "proportion-reference",
@@ -378,9 +378,51 @@
       "questionId": "M02-S4-Q3",
       "module": 2,
       "step": 4,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/proportions-pourcentages-2nde/modules/Module02TroisEcrituresUneProportion.jsx",
+      "line": 144,
+      "requires": [
+        "trois-ecritures",
+        "numerateur",
+        "denominateur",
+        "quotient"
+      ],
+      "prerequisiteStatus": {
+        "trois-ecritures": "established@M2",
+        "numerateur": "prior",
+        "denominateur": "prior",
+        "quotient": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S4-Q4",
+      "module": 2,
+      "step": 4,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/proportions-pourcentages-2nde/modules/Module02TroisEcrituresUneProportion.jsx",
+      "line": 159,
+      "requires": [
+        "trois-ecritures",
+        "numerateur",
+        "denominateur"
+      ],
+      "prerequisiteStatus": {
+        "trois-ecritures": "established@M2",
+        "numerateur": "prior",
+        "denominateur": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S5-Q5",
+      "module": 2,
+      "step": 5,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/proportions-pourcentages-2nde/modules/Module02TroisEcrituresUneProportion.jsx",
-      "line": 140,
+      "line": 189,
       "requires": [
         "trois-ecritures",
         "vocab-pourcentage",

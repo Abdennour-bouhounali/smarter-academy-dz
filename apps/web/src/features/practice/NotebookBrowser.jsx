@@ -2,22 +2,26 @@ import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import {
   NotebookPen, ChevronLeft, ChevronRight, Check, Pencil, Trash2, RotateCcw, X,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { getLessonById } from '@smarter-academy/core';
+import { LOCALE } from '../../locale';
 import { AuthContext } from '../../context/AuthContext';
 import { fetchNotes, updateNote, deleteNote } from '../../services/practiceService';
 
-const MISTAKE_LABELS = {
-  calcul: 'Erreur de calcul',
-  methode: 'Méthode',
-  lecture: "Lecture de l'énoncé",
-  signe: 'Signe',
-  etourderie: 'Étourderie',
+// Les types d'erreur du carnet : on ne garde ici que la CLÉ de traduction,
+// résolue au rendu — t() n'existe pas encore à l'évaluation du module.
+const MISTAKE_LABEL_KEYS = {
+  calcul: 'notebook.mistakes.calcul',
+  methode: 'notebook.mistakes.methode',
+  lecture: 'notebook.mistakes.lecture',
+  signe: 'notebook.mistakes.signe',
+  etourderie: 'notebook.mistakes.etourderie',
 };
 
-const dateFr = (iso) => {
+const formatDate = (iso) => {
   if (!iso) return null;
   try {
-    return new Date(iso).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+    return new Date(iso).toLocaleDateString(LOCALE, { day: 'numeric', month: 'long', year: 'numeric' });
   } catch {
     return null;
   }
@@ -40,6 +44,8 @@ const dateFr = (iso) => {
  * d'un élève se compte en dizaines de notes, pas en milliers.
  */
 export default function NotebookBrowser() {
+  const { t } = useTranslation('student');
+  const { t: tc } = useTranslation('common');
   const { token } = useContext(AuthContext);
 
   const [notes, setNotes] = useState(null);
@@ -75,7 +81,7 @@ export default function NotebookBrowser() {
           code: key,
           title: note.lessonCode
             ? getLessonById(note.lessonCode)?.title || note.lessonCode
-            : 'Notes hors leçon',
+            : t('notebook.notesOutsideLesson'),
           notes: [],
         });
       }
@@ -85,7 +91,7 @@ export default function NotebookBrowser() {
     return Array.from(map.values())
       .map((g) => ({ ...g, todo: g.notes.filter((n) => !n.isCompleted).length }))
       .sort((a, b) => b.todo - a.todo || b.notes.length - a.notes.length);
-  }, [notes]);
+  }, [notes, t]);
 
   const group = groups.find((g) => g.code === lessonCode) || null;
   const current = group?.notes[index] || null;
@@ -161,11 +167,13 @@ export default function NotebookBrowser() {
     <section className="space-y-4">
       <div className="flex items-baseline justify-between gap-3 flex-wrap">
         <h2 className="font-space font-bold text-slate-800 text-lg flex items-center gap-2">
-          <NotebookPen className="w-5 h-5 text-slate-400" aria-hidden="true" /> Mon carnet
+          <NotebookPen className="w-5 h-5 text-slate-400" aria-hidden="true" /> {t('notebook.title')}
         </h2>
         {total > 0 && (
           <p className="text-xs font-mono text-slate-500">
-            {todo > 0 ? `${todo} à revoir sur ${total}` : `${total} note${total > 1 ? 's' : ''} — tout est traité`}
+            {todo > 0
+              ? t('notebook.toReviewOf', { todo, total })
+              : t('notebook.allHandled', { count: total })}
           </p>
         )}
       </div>
@@ -177,7 +185,7 @@ export default function NotebookBrowser() {
       {total === 0 && !error && (
         <div className="rounded-2xl border-2 border-dashed border-slate-200 p-6 text-center">
           <p className="text-sm text-slate-500">
-            Ton carnet est vide. Pendant un exercice, « Noter » garde ici ce que tu veux retenir.
+            {t('notebook.empty')}
           </p>
         </div>
       )}
@@ -195,8 +203,8 @@ export default function NotebookBrowser() {
                 <span className="min-w-0">
                   <span className="block font-bold text-sm text-slate-800 truncate">{g.title}</span>
                   <span className="block text-xs text-slate-500">
-                    {g.notes.length} note{g.notes.length > 1 ? 's' : ''}
-                    {g.todo > 0 && ` · ${g.todo} à revoir`}
+                    {t('notebook.notesCount', { count: g.notes.length })}
+                    {g.todo > 0 && ` · ${t('notebook.todoSuffix', { count: g.todo })}`}
                   </span>
                 </span>
                 <ChevronRight className="w-4 h-4 text-slate-400 flex-shrink-0" aria-hidden="true" />
@@ -215,7 +223,7 @@ export default function NotebookBrowser() {
               onClick={() => { setLessonCode(null); setEditing(false); }}
               className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-500 hover:text-slate-900 min-h-[44px]"
             >
-              <ChevronLeft className="w-3 h-3" aria-hidden="true" /> Toutes mes leçons
+              <ChevronLeft className="w-3 h-3" aria-hidden="true" /> {t('notebook.allMyLessons')}
             </button>
             <p className="font-bold text-sm text-slate-800 truncate">{group.title}</p>
           </div>
@@ -225,18 +233,18 @@ export default function NotebookBrowser() {
               current.isCompleted ? 'border-emerald-200 bg-emerald-50/60' : 'border-slate-200 bg-white'
             }`}>
               <div className="flex items-center justify-between gap-3 flex-wrap">
-                <p className="text-xs font-mono font-bold text-slate-500">
-                  Note {index + 1} / {group.notes.length}
+                <p className="text-xs font-mono font-bold text-slate-500" dir="ltr">
+                  {t('notebook.noteOf', { current: index + 1, total: group.notes.length })}
                 </p>
                 <div className="flex items-center gap-2 flex-wrap">
-                  {current.mistakeType && MISTAKE_LABELS[current.mistakeType] && (
+                  {current.mistakeType && MISTAKE_LABEL_KEYS[current.mistakeType] && (
                     <span className="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">
-                      {MISTAKE_LABELS[current.mistakeType]}
+                      {t(MISTAKE_LABEL_KEYS[current.mistakeType])}
                     </span>
                   )}
                   {current.isCompleted && (
                     <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold">
-                      <Check className="w-3 h-3" aria-hidden="true" /> Traitée
+                      <Check className="w-3 h-3" aria-hidden="true" /> {t('notebook.handled')}
                     </span>
                   )}
                 </div>
@@ -248,7 +256,7 @@ export default function NotebookBrowser() {
                     value={draft}
                     onChange={(e) => setDraft(e.target.value)}
                     rows={4}
-                    aria-label="Modifier ma note"
+                    aria-label={t('notebook.editMyNote')}
                     className="w-full border-2 border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-800 focus:outline-none focus:border-blue-500"
                   />
                   <div className="flex gap-2 flex-wrap">
@@ -256,13 +264,13 @@ export default function NotebookBrowser() {
                       type="button" onClick={saveEdit} disabled={busy || !draft.trim()}
                       className="px-4 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-sm min-h-[44px] disabled:opacity-50"
                     >
-                      Enregistrer
+                      {tc('save')}
                     </button>
                     <button
                       type="button" onClick={() => setEditing(false)}
                       className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border-2 border-slate-300 text-slate-600 font-bold text-sm min-h-[44px]"
                     >
-                      <X className="w-4 h-4" aria-hidden="true" /> Annuler
+                      <X className="w-4 h-4" aria-hidden="true" /> {tc('cancel')}
                     </button>
                   </div>
                 </div>
@@ -271,8 +279,9 @@ export default function NotebookBrowser() {
               )}
 
               <p className="text-xs text-slate-400 font-mono">
-                Écrite le {dateFr(current.createdAt)}
-                {current.isCompleted && current.completedAt && ` · traitée le ${dateFr(current.completedAt)}`}
+                {t('notebook.writtenOn', { date: formatDate(current.createdAt) })}
+                {current.isCompleted && current.completedAt
+                  && ` · ${t('notebook.handledOn', { date: formatDate(current.completedAt) })}`}
               </p>
 
               {!editing && (
@@ -288,15 +297,15 @@ export default function NotebookBrowser() {
                     }`}
                   >
                     {current.isCompleted
-                      ? (<><RotateCcw className="w-4 h-4" aria-hidden="true" /> À revoir</>)
-                      : (<><Check className="w-4 h-4" aria-hidden="true" /> Marquer comme traitée</>)}
+                      ? (<><RotateCcw className="w-4 h-4" aria-hidden="true" /> {t('notebook.markToReview')}</>)
+                      : (<><Check className="w-4 h-4" aria-hidden="true" /> {t('notebook.markHandled')}</>)}
                   </button>
                   <button
                     type="button"
                     onClick={() => { setDraft(current.content); setEditing(true); }}
                     className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 border-slate-300 text-slate-700 font-bold text-sm min-h-[44px]"
                   >
-                    <Pencil className="w-4 h-4" aria-hidden="true" /> Modifier
+                    <Pencil className="w-4 h-4" aria-hidden="true" /> {tc('edit')}
                   </button>
                   <button
                     type="button"
@@ -304,13 +313,13 @@ export default function NotebookBrowser() {
                     disabled={busy}
                     className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 border-slate-200 text-slate-400 hover:text-rose-600 hover:border-rose-300 font-bold text-sm min-h-[44px] disabled:opacity-50"
                   >
-                    <Trash2 className="w-4 h-4" aria-hidden="true" /> Supprimer
+                    <Trash2 className="w-4 h-4" aria-hidden="true" /> {tc('delete')}
                   </button>
                 </div>
               )}
             </article>
           ) : (
-            <p className="text-sm text-slate-500">Plus aucune note dans cette leçon.</p>
+            <p className="text-sm text-slate-500">{t('notebook.noMoreNotes')}</p>
           )}
 
           {/* ── Navigation d'une note à l'autre ── */}
@@ -322,7 +331,7 @@ export default function NotebookBrowser() {
                 disabled={index === 0}
                 className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border-2 border-slate-300 text-slate-700 font-bold text-sm min-h-[44px] disabled:opacity-40"
               >
-                <ChevronLeft className="w-4 h-4" aria-hidden="true" /> Précédente
+                <ChevronLeft className="w-4 h-4" aria-hidden="true" /> {t('notebook.previousNote')}
               </button>
               <button
                 type="button"
@@ -330,7 +339,7 @@ export default function NotebookBrowser() {
                 disabled={index >= group.notes.length - 1}
                 className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border-2 border-slate-300 text-slate-700 font-bold text-sm min-h-[44px] disabled:opacity-40"
               >
-                Suivante <ChevronRight className="w-4 h-4" aria-hidden="true" />
+                {t('notebook.nextNote')} <ChevronRight className="w-4 h-4" aria-hidden="true" />
               </button>
             </div>
           )}

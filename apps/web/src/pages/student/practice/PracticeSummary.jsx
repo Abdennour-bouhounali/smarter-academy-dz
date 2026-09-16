@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Target } from 'lucide-react';
 import { ArrowForward } from '../../../components/common/DirectionalIcons';
 import { AuthContext } from '../../../context/AuthContext';
@@ -22,6 +23,7 @@ const TONE = {
  * canonique que celle du test final, pas depuis un compteur de pratique.
  */
 export default function PracticeSummary() {
+  const { t } = useTranslation('student');
   const { lessonCode, sessionId } = useParams();
   const { token } = useContext(AuthContext);
   const [data, setData] = useState(null);
@@ -51,7 +53,7 @@ export default function PracticeSummary() {
       <div className="sa-surface-plain sa-page py-8 sm:py-10 space-y-8">
         <p className="text-rose-700 bg-rose-50 border-2 border-rose-200 rounded-xl p-4">{error}</p>
         <Link to={`/espace/pratique/${lessonCode}`} className="text-sm font-bold text-slate-600 hover:text-slate-900">
-          ← Retour à la pratique
+          ← {t('practice.backToPractice')}
         </Link>
       </div>
     );
@@ -68,48 +70,48 @@ export default function PracticeSummary() {
     <div className="sa-surface-plain sa-page py-8 sm:py-10 space-y-8">
       <header className="space-y-2">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 font-mono text-xs font-semibold">
-          <Target className="w-3.5 h-3.5" aria-hidden="true" /> Séance terminée
+          <Target className="w-3.5 h-3.5" aria-hidden="true" /> {t('practice.sessionDone')}
         </div>
         <h1 className="text-2xl sm:text-3xl font-space font-extrabold text-slate-900">
-          Niveau {data.session.level} — {overview.lesson.title}
+          {t('practice.summaryTitle', { level: data.session.level, lesson: overview.lesson.title })}
         </h1>
       </header>
 
       <section className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { label: 'Exercices', value: s.exercisesAttempted ?? 0 },
-          { label: 'Questions', value: s.questionsAnswered ?? 0 },
-          { label: 'Justes', value: s.correctCount ?? 0 },
-          { label: 'Indices', value: s.hintsUsed ?? 0 },
+          { key: 'statExercises', value: s.exercisesAttempted ?? 0 },
+          { key: 'statQuestions', value: s.questionsAnswered ?? 0 },
+          { key: 'statCorrect', value: s.correctCount ?? 0 },
+          { key: 'statHints', value: s.hintsUsed ?? 0 },
         ].map((stat) => (
-          <div key={stat.label} className="rounded-2xl border-2 border-slate-200 bg-white p-4 text-center">
+          <div key={stat.key} className="rounded-2xl border-2 border-slate-200 bg-white p-4 text-center">
             <div className="text-2xl font-space font-extrabold text-slate-900 tabular-nums">{stat.value}</div>
-            <div className="text-[11px] font-mono uppercase text-slate-500">{stat.label}</div>
+            <div className="text-[11px] font-mono uppercase text-slate-500">{t(`practice.${stat.key}`)}</div>
           </div>
         ))}
       </section>
 
       {misconceptions.length > 0 && (
         <section className="space-y-3">
-          <h2 className="text-lg font-space font-bold text-slate-900">Ce qui a résisté</h2>
+          <h2 className="text-lg font-space font-bold text-slate-900">{t('practice.whatResisted')}</h2>
           <ul className="space-y-2">
             {misconceptions.map(([id, count]) => (
               <li key={id} className="rounded-xl border-2 border-amber-200 bg-amber-50 px-4 py-3">
                 <p className="text-sm font-bold text-amber-900">
                   {MISCONCEPTIONS[id]?.label ?? id}
-                  {count > 1 && <span className="font-mono font-normal"> · {count} fois</span>}
+                  {count > 1 && <span className="font-mono font-normal"> · {t('practice.timesCount', { count })}</span>}
                 </p>
               </li>
             ))}
           </ul>
           <p className="text-xs text-slate-500">
-            Revenir sur ces points est plus utile que d’enchaîner un niveau de plus.
+            {t('practice.resistedHint')}
           </p>
         </section>
       )}
 
       <section className="space-y-3">
-        <h2 className="text-lg font-space font-bold text-slate-900">Tes connaissances maintenant</h2>
+        <h2 className="text-lg font-space font-bold text-slate-900">{t('practice.yourKnowledgeNow')}</h2>
         <ul className="space-y-2">
           {overview.learningPoints.map((lp) => {
             const state = MASTERY_STATES[resolveMasteryState(lp)];
@@ -132,13 +134,13 @@ export default function PracticeSummary() {
           to={`/espace/pratique/${lessonCode}`}
           className="flex-1 px-5 py-3 rounded-xl bg-slate-900 text-white font-bold min-h-[48px] inline-flex items-center justify-center gap-2"
         >
-          Continuer à pratiquer <ArrowForward className="w-4 h-4" aria-hidden="true" />
+          {t('practice.keepPracticing')} <ArrowForward className="w-4 h-4" aria-hidden="true" />
         </Link>
         <Link
           to="/espace/cours"
           className="px-5 py-3 rounded-xl border-2 border-slate-300 text-slate-700 font-bold min-h-[48px] inline-flex items-center"
         >
-          Mes cours
+          {t('practice.myCourses')}
         </Link>
       </div>
     </div>

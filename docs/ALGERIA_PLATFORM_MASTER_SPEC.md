@@ -342,9 +342,96 @@ Do NOT blindly mirror mathematical interfaces.
 
 Mixed Arabic + mathematical notation must render correctly.
 
-Use appropriate Arabic typography.
+### Arabic-First User Interface (binding rule)
 
-Do not blindly reuse French font choices.
+**The DZ student-facing and visitor-facing application is Arabic-first. All
+user-facing human text must be Arabic unless it is legitimate mathematical
+notation, technical content, or another explicitly approved non-Arabic
+element.**
+
+This is not a translation pass that was done once; it is a standing
+constraint on every future change.
+
+- **Where the text lives.** User-facing strings go in
+  `apps/web/src/i18n/locales/ar/*.json`, never hardcoded in JSX. Namespaces:
+  `common` (shared chrome), `nav`, `auth`, `access` (activation/entitlement),
+  `lesson` (lesson-engine chrome), `student` (student space), `marketing`
+  (visitor pages). Adding a language later means adding a bundle, not
+  restructuring components.
+- **Scope.** Shared components, dynamic states (toasts, `setError`, API error
+  mapping, validation messages), empty states, loading states, error states,
+  placeholders, document titles/meta, and **accessibility text**
+  (`aria-label`, `alt`, screen-reader-only spans) are all in scope. A page
+  must still be Arabic *after* an error occurs.
+- **No French/English defaults.** A default prop, fallback string or
+  module-level constant that yields French is a defect even when every
+  current caller overrides it: the next lesson that forgets the prop ships
+  French silently. Defaults must be Arabic or absent.
+- **Never call `t()` at module scope.** i18next may not be initialized when a
+  module-level constant is evaluated. Constants hold translation *keys*;
+  components resolve them at render.
+- **Future lessons.** New lessons write their pedagogical content in Arabic
+  directly and inherit the engine chrome from the `lesson` namespace. They
+  must not reintroduce French labels through props.
+- **Future AI-generated pages must not introduce French/English UI text.**
+  Generating a page from a French-era template is the most likely way this
+  rule gets broken.
+- **What legitimately stays non-Arabic:** mathematical notation (`PGCD`,
+  `PPCM`, `x`, `f(x)`, KaTeX/MathLive content), technical identifiers
+  (component/variable/function names, route paths, lesson codes, CSS
+  classes, API fields), brand names (Smarter Academy), and developer-facing
+  strings never shown to a student (dev-only warnings, thrown `Error`
+  messages). French **code comments** remain French — that is this
+  repository's authoring convention, not user-facing text.
+- **Product facts, not just language.** Copy inherited from the French
+  product must not be translated as-is when it is factually wrong here: the
+  DZ product has no Stripe, no euro pricing and no subscription (access is
+  granted by cash-purchased activation codes, §17/§18), and it follows the
+  Algerian official curriculum, not the French `Éducation nationale`
+  ladder (6e…Terminale). Translating such copy literally produces fluent
+  Arabic that lies.
+
+### Arabic Typography Standard
+
+- **Arabic application font: Cairo.** Cairo is the platform's single,
+  global, permanent Arabic font — the source of truth is
+  `apps/web/tailwind.config.js` (`fontFamily`: `sans`, `space`, `inter`,
+  `mono`, `arabic`) and `apps/web/src/index.css` (`html`, `h1`–`h6`,
+  `.font-space`, `.font-inter`, `.font-mono-jetbrains`, `.tech-chip`).
+  Every stack places Cairo directly behind its Latin identity font, because
+  none of the Latin fonts (Inter, Space Grotesk, JetBrains Mono) contain
+  Arabic glyphs: Arabic runs resolve to Cairo per glyph, Latin/digits keep
+  the identity font. This includes `font-mono`: a label, badge or button
+  styled as mono still renders its Arabic in Cairo (only digits and code
+  are JetBrains Mono). Never put a system font (`system-ui`,
+  `ui-sans-serif`, `Segoe UI`, `Arial`, `Tahoma`…) *before* Cairo in a
+  stack — system fonts do have Arabic glyphs and would silently take over.
+- All Arabic student-facing content uses Cairo. This includes existing and
+  future lessons, modules, manipulations, exercises, Knowledge Map,
+  BossFinal, navigation, forms, authentication, admin, and every other
+  Arabic surface of the application.
+- New lessons and modules **must inherit** the global Arabic typography.
+  Do not attach a lesson-specific or module-specific Arabic font class.
+  Lesson-specific Arabic fonts are forbidden unless explicitly approved as
+  a future global design decision.
+- Do not import another Arabic font (Tajawal, Noto Sans Arabic, Amiri, IBM
+  Plex Arabic, or any other) anywhere at the lesson or component level.
+  Tajawal remains only as the platform's second fallback in the global
+  stack (covers the brief window before the Google Fonts sheet finishes
+  loading) — it is not to be reintroduced as a primary or standalone
+  choice.
+- Do not blindly reuse French font choices.
+- **Mathematical rendering keeps its own dedicated typography.** KaTeX and
+  MathLive set their own fonts directly on their own elements
+  (`.katex`, MathLive's `<math-field>`); never force Cairo, or any other
+  font, onto math rendering.
+- **Code keeps its own monospace typography** (JetBrains Mono /
+  `font-mono` / `.font-mono-jetbrains`) — numerals and code stay monospace
+  regardless of surrounding Arabic text.
+- Mixed Arabic/Latin content must preserve correct bidirectional
+  rendering.
+- **RTL and font selection are separate concerns.** Solving one does not
+  solve the other; both must be verified independently and together.
 
 Test:
 

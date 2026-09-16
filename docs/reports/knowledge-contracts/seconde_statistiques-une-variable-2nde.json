@@ -10,7 +10,6 @@
     "moyenne",
     "moyenne-ponderee",
     "mediane-stat",
-    "mode-stat",
     "etendue",
     "dispersion",
     "quotient",
@@ -58,7 +57,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/statistiques-une-variable-2nde/modules/Module03LesQuartiles.jsx",
-        "line": 41,
+        "line": 43,
         "step": 1,
         "variant": "new"
       }
@@ -69,7 +68,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/statistiques-une-variable-2nde/modules/Module03LesQuartiles.jsx",
-        "line": 113,
+        "line": 115,
         "step": 3,
         "variant": "new"
       }
@@ -91,7 +90,7 @@
       "module": 5,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/statistiques-une-variable-2nde/modules/Module05AjouterOuRetirerUneValeur.jsx",
-        "line": 102,
+        "line": 139,
         "step": 1,
         "variant": "new"
       }
@@ -102,8 +101,8 @@
       "module": 5,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/statistiques-une-variable-2nde/modules/Module05AjouterOuRetirerUneValeur.jsx",
-        "line": 150,
-        "step": 2,
+        "line": 230,
+        "step": 3,
         "variant": "new"
       }
     }
@@ -277,14 +276,12 @@
       "requires": [
         "indicateur-stat",
         "etendue",
-        "dispersion",
-        "mode-stat"
+        "dispersion"
       ],
       "prerequisiteStatus": {
         "indicateur-stat": "prior",
         "etendue": "prior",
-        "dispersion": "prior",
-        "mode-stat": "prior"
+        "dispersion": "prior"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -447,7 +444,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/statistiques-une-variable-2nde/modules/Module03LesQuartiles.jsx",
-      "line": 46,
+      "line": 48,
       "requires": [
         "quartiles",
         "mediane-stat",
@@ -467,7 +464,7 @@
       "step": 2,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/statistiques-une-variable-2nde/modules/Module03LesQuartiles.jsx",
-      "line": 71,
+      "line": 73,
       "requires": [
         "quartiles",
         "arrondi"
@@ -485,7 +482,7 @@
       "step": 3,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/statistiques-une-variable-2nde/modules/Module03LesQuartiles.jsx",
-      "line": 94,
+      "line": 96,
       "requires": [
         "quartiles"
       ],
@@ -499,9 +496,49 @@
       "questionId": "M03-S4-Q4",
       "module": 3,
       "step": 4,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/statistiques-une-variable-2nde/modules/Module03LesQuartiles.jsx",
+      "line": 136,
+      "requires": [
+        "quartiles",
+        "mediane-stat",
+        "effectif"
+      ],
+      "prerequisiteStatus": {
+        "quartiles": "established@M3",
+        "mediane-stat": "prior",
+        "effectif": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S4-Q5",
+      "module": 3,
+      "step": 4,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/statistiques-une-variable-2nde/modules/Module03LesQuartiles.jsx",
+      "line": 148,
+      "requires": [
+        "quartiles",
+        "mediane-stat",
+        "effectif"
+      ],
+      "prerequisiteStatus": {
+        "quartiles": "established@M3",
+        "mediane-stat": "prior",
+        "effectif": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S5-Q6",
+      "module": 3,
+      "step": 5,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/statistiques-une-variable-2nde/modules/Module03LesQuartiles.jsx",
-      "line": 128,
+      "line": 175,
       "requires": [
         "quartiles",
         "etendue-interquartile",
@@ -559,7 +596,7 @@
       "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/statistiques-une-variable-2nde/modules/Module05AjouterOuRetirerUneValeur.jsx",
-      "line": 122,
+      "line": 162,
       "requires": [
         "robustesse",
         "mediane-stat",
@@ -577,9 +614,27 @@
       "questionId": "M05-S3-Q2",
       "module": 5,
       "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/statistiques-une-variable-2nde/modules/Module05AjouterOuRetirerUneValeur.jsx",
+      "line": 206,
+      "requires": [
+        "robustesse",
+        "mediane-stat"
+      ],
+      "prerequisiteStatus": {
+        "robustesse": "established@M5",
+        "mediane-stat": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S4-Q3",
+      "module": 5,
+      "step": 4,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/statistiques-une-variable-2nde/modules/Module05AjouterOuRetirerUneValeur.jsx",
-      "line": 164,
+      "line": 245,
       "requires": [
         "robustesse",
         "quotient"
@@ -592,12 +647,12 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M05-S4-Q3",
+      "questionId": "M05-S5-Q4",
       "module": 5,
-      "step": 4,
+      "step": 5,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/statistiques_probabilites/statistiques-une-variable-2nde/modules/Module05AjouterOuRetirerUneValeur.jsx",
-      "line": 183,
+      "line": 264,
       "requires": [
         "robustesse",
         "mediane-stat",

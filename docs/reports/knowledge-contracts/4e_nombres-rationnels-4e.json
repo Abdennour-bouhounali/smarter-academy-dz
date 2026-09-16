@@ -1,0 +1,579 @@
+{
+  "lesson": "nombres-rationnels-4e",
+  "grade": "4e",
+  "lexiconVersion": 1,
+  "prerequisites": [
+    "fraction-nombre",
+    "fractions-egales",
+    "simplifier",
+    "comparer-fractions",
+    "additionner-fractions",
+    "nombre-relatif",
+    "regle-des-signes"
+  ],
+  "conceptsIntroduced": [
+    {
+      "id": "ecart-ne-decide-pas",
+      "type": "regles",
+      "module": 1,
+      "brick": null
+    },
+    {
+      "id": "nombre-rationnel",
+      "type": "concepts",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module02UnQuotientDEntiers.jsx",
+        "line": 32,
+        "step": 1,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "signe-de-la-fraction",
+      "type": "regles",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module02UnQuotientDEntiers.jsx",
+        "line": 66,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "produit-fractions",
+      "type": "regles",
+      "module": 4,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module04Multiplier.jsx",
+        "line": 118,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "inverse-nombre",
+      "type": "concepts",
+      "module": 5,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module05LInverseEtLaDivision.jsx",
+        "line": 117,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "diviser-par-inverse",
+      "type": "regles",
+      "module": 5,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module05LInverseEtLaDivision.jsx",
+        "line": 183,
+        "step": 3,
+        "variant": "new"
+      }
+    }
+  ],
+  "vocabularyIntroduced": [],
+  "proceduresIntroduced": [
+    {
+      "id": "produits-en-croix",
+      "type": "methodes",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module01LaCroixQuiTranche.jsx",
+        "line": 167,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "denominateur-commun",
+      "type": "methodes",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module03FabriquerLaGraduation.jsx",
+        "line": 92,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "choisir-l-operation",
+      "type": "methodes",
+      "module": 6,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module06LaRecetteEtLeChantier.jsx",
+        "line": 33,
+        "step": 1,
+        "variant": "new"
+      }
+    }
+  ],
+  "memorisation": [
+    {
+      "id": "mem-jamais-les-denominateurs",
+      "type": "memoriser",
+      "module": 3,
+      "brick": null
+    },
+    {
+      "id": "mem-inverser-le-second",
+      "type": "memoriser",
+      "module": 5,
+      "brick": null
+    }
+  ],
+  "questions": [
+    {
+      "questionId": "nra4-d1-sens",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module00Diagnostic.jsx",
+      "line": 25,
+      "requires": [
+        "fraction-nombre"
+      ],
+      "prerequisiteStatus": {
+        "fraction-nombre": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "nra4-d2-egales",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module00Diagnostic.jsx",
+      "line": 36,
+      "requires": [
+        "fractions-egales"
+      ],
+      "prerequisiteStatus": {
+        "fractions-egales": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "nra4-d3-simplifier",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module00Diagnostic.jsx",
+      "line": 47,
+      "requires": [
+        "simplifier"
+      ],
+      "prerequisiteStatus": {
+        "simplifier": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "nra4-d4-additionner",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module00Diagnostic.jsx",
+      "line": 58,
+      "requires": [
+        "additionner-fractions"
+      ],
+      "prerequisiteStatus": {
+        "additionner-fractions": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "nra4-d5-comparer",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module00Diagnostic.jsx",
+      "line": 69,
+      "requires": [
+        "comparer-fractions"
+      ],
+      "prerequisiteStatus": {
+        "comparer-fractions": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "nra4-d6-signes",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module00Diagnostic.jsx",
+      "line": 80,
+      "requires": [
+        "nombre-relatif",
+        "regle-des-signes"
+      ],
+      "prerequisiteStatus": {
+        "nombre-relatif": "prior",
+        "regle-des-signes": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S3-Q1",
+      "module": 1,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module01LaCroixQuiTranche.jsx",
+      "line": 172,
+      "requires": [
+        "produits-en-croix"
+      ],
+      "prerequisiteStatus": {
+        "produits-en-croix": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S1-Q1",
+      "module": 2,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module02UnQuotientDEntiers.jsx",
+      "line": 37,
+      "requires": [
+        "nombre-rationnel"
+      ],
+      "prerequisiteStatus": {
+        "nombre-rationnel": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S2-Q2",
+      "module": 2,
+      "step": 2,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module02UnQuotientDEntiers.jsx",
+      "line": 73,
+      "requires": [
+        "signe-de-la-fraction",
+        "regle-des-signes"
+      ],
+      "prerequisiteStatus": {
+        "signe-de-la-fraction": "established@M2",
+        "regle-des-signes": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S3-Q3",
+      "module": 2,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module02UnQuotientDEntiers.jsx",
+      "line": 141,
+      "requires": [
+        "produits-en-croix",
+        "nombre-rationnel"
+      ],
+      "prerequisiteStatus": {
+        "produits-en-croix": "established@M1",
+        "nombre-rationnel": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S3-Q1",
+      "module": 4,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module04Multiplier.jsx",
+      "line": 159,
+      "requires": [
+        "produit-fractions"
+      ],
+      "prerequisiteStatus": {
+        "produit-fractions": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S2-Q1",
+      "module": 5,
+      "step": 2,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module05LInverseEtLaDivision.jsx",
+      "line": 123,
+      "requires": [
+        "inverse-nombre"
+      ],
+      "prerequisiteStatus": {
+        "inverse-nombre": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S4-Q2",
+      "module": 5,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module05LInverseEtLaDivision.jsx",
+      "line": 224,
+      "requires": [
+        "diviser-par-inverse"
+      ],
+      "prerequisiteStatus": {
+        "diviser-par-inverse": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S1-Q1",
+      "module": 6,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module06LaRecetteEtLeChantier.jsx",
+      "line": 44,
+      "requires": [
+        "choisir-l-operation"
+      ],
+      "prerequisiteStatus": {
+        "choisir-l-operation": "established@M6"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S2-Q2",
+      "module": 6,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module06LaRecetteEtLeChantier.jsx",
+      "line": 89,
+      "requires": [
+        "choisir-l-operation",
+        "produit-fractions"
+      ],
+      "prerequisiteStatus": {
+        "choisir-l-operation": "established@M6",
+        "produit-fractions": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "nra4-e1",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module07MissionFinale.jsx",
+      "line": 54,
+      "requires": [
+        "produits-en-croix"
+      ],
+      "prerequisiteStatus": {
+        "produits-en-croix": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "nra4-e2",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module07MissionFinale.jsx",
+      "line": 71,
+      "requires": [
+        "produits-en-croix"
+      ],
+      "prerequisiteStatus": {
+        "produits-en-croix": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "nra4-e3",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module07MissionFinale.jsx",
+      "line": 83,
+      "requires": [
+        "nombre-rationnel"
+      ],
+      "prerequisiteStatus": {
+        "nombre-rationnel": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "nra4-e4",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module07MissionFinale.jsx",
+      "line": 100,
+      "requires": [
+        "signe-de-la-fraction"
+      ],
+      "prerequisiteStatus": {
+        "signe-de-la-fraction": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "nra4-e5",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module07MissionFinale.jsx",
+      "line": 117,
+      "requires": [
+        "denominateur-commun"
+      ],
+      "prerequisiteStatus": {
+        "denominateur-commun": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "nra4-e6",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module07MissionFinale.jsx",
+      "line": 129,
+      "requires": [
+        "denominateur-commun"
+      ],
+      "prerequisiteStatus": {
+        "denominateur-commun": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "nra4-e7",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module07MissionFinale.jsx",
+      "line": 141,
+      "requires": [
+        "produit-fractions"
+      ],
+      "prerequisiteStatus": {
+        "produit-fractions": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "nra4-e8",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module07MissionFinale.jsx",
+      "line": 153,
+      "requires": [
+        "inverse-nombre"
+      ],
+      "prerequisiteStatus": {
+        "inverse-nombre": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "nra4-e9",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module07MissionFinale.jsx",
+      "line": 165,
+      "requires": [
+        "diviser-par-inverse",
+        "produit-fractions"
+      ],
+      "prerequisiteStatus": {
+        "diviser-par-inverse": "established@M5",
+        "produit-fractions": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "nra4-e10",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/modules/Module07MissionFinale.jsx",
+      "line": 177,
+      "requires": [
+        "choisir-l-operation",
+        "diviser-par-inverse"
+      ],
+      "prerequisiteStatus": {
+        "choisir-l-operation": "established@M6",
+        "diviser-par-inverse": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    }
+  ],
+  "findings": [
+    {
+      "code": "W_ITEM_WITHOUT_BRICK",
+      "severity": "info",
+      "message": "knowledge item 'ecart-ne-decide-pas' (module 1) is never established by a brick — it only appears in the end-of-module snapshot",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/knowledge.jsx",
+      "line": 114,
+      "module": 1,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_ITEM_WITHOUT_BRICK",
+      "severity": "info",
+      "message": "knowledge item 'mem-jamais-les-denominateurs' (module 3) is never established by a brick — it only appears in the end-of-module snapshot",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/knowledge.jsx",
+      "line": 231,
+      "module": 3,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_ITEM_WITHOUT_BRICK",
+      "severity": "info",
+      "message": "knowledge item 'mem-inverser-le-second' (module 5) is never established by a brick — it only appears in the end-of-module snapshot",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/nombres-rationnels-4e/knowledge.jsx",
+      "line": 359,
+      "module": 5,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    }
+  ]
+}

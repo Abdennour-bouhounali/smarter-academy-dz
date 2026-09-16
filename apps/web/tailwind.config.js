@@ -42,22 +42,28 @@ export default {
         '9xl': ['8rem',     { lineHeight: '1' }],
       },
       fontFamily: {
-        // Tajawal is the Arabic FALLBACK in every stack (ar-DZ — src/locale.js,
-        // index.css): Inter / Space Grotesk have no Arabic glyphs, so Arabic
-        // runs fall through to Tajawal per glyph while Latin runs keep the
-        // identity fonts. `font-arabic` puts Tajawal first where a surface is
-        // Arabic-only by design.
-        'space': ['"Space Grotesk"', 'Tajawal', 'sans-serif'],
-        'inter': ['Inter', 'Tajawal', 'sans-serif'],
-        'mono': ['"JetBrains Mono"', 'monospace'],
-        'arabic': ['Tajawal', '"Space Grotesk"', 'sans-serif'],
-        // Arabic UI text (ar-DZ, RTL — see src/locale.js). `font-sans`'s
-        // default is redefined in index.css under [dir="rtl"] to Tajawal
-        // first, so most components need no per-component font change;
-        // `font-arabic` exists for spots that want it explicitly (e.g.
-        // alongside `dir="ltr"` math, where the surrounding text should
-        // stay Arabic even if a parent's default font were ever Latin).
-        'arabic': ['Tajawal', '"Space Grotesk"', 'sans-serif'],
+        // Cairo is the canonical Arabic font (ar-DZ — src/locale.js, index.css).
+        // None of the Latin identity fonts (Inter, Space Grotesk, JetBrains
+        // Mono) carry Arabic glyphs, so Cairo sits right behind each of them:
+        // Arabic runs fall through to Cairo per glyph while Latin runs, digits
+        // and code keep the identity fonts. Tajawal is only a last Arabic
+        // fallback (covers the gap before the non-blocking Google Fonts sheet
+        // finishes loading).
+        //
+        // `sans` is redefined on purpose: Tailwind's default (ui-sans-serif,
+        // system-ui…) DOES have Arabic glyphs, so a `font-sans` element would
+        // silently render Arabic in a system font instead of Cairo.
+        // `mono` carries Cairo for the same reason: labels, badges and buttons
+        // are styled `font-mono` all over the platform, and without an Arabic
+        // fallback their Arabic text rendered in the OS monospace font.
+        'sans': ['Inter', 'Cairo', 'Tajawal', 'sans-serif', '"Apple Color Emoji"', '"Segoe UI Emoji"', '"Segoe UI Symbol"', '"Noto Color Emoji"'],
+        'space': ['"Space Grotesk"', 'Cairo', 'Tajawal', 'sans-serif'],
+        'inter': ['Inter', 'Cairo', 'Tajawal', 'sans-serif'],
+        'mono': ['"JetBrains Mono"', 'Cairo', 'Tajawal', 'monospace'],
+        // `font-arabic` puts Cairo first where a surface is Arabic-only by
+        // design (e.g. alongside `dir="ltr"` math, where the surrounding text
+        // should stay Arabic even if a parent's default font were ever Latin).
+        'arabic': ['Cairo', 'Tajawal', '"Space Grotesk"', 'sans-serif'],
       },
       colors: {
         accent: {

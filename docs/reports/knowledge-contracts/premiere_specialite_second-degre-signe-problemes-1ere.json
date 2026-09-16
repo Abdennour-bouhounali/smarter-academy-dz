@@ -1,0 +1,962 @@
+{
+  "lesson": "second-degre-signe-problemes-1ere",
+  "grade": "premiere_specialite",
+  "lexiconVersion": 1,
+  "prerequisites": [
+    "discriminant",
+    "formule-racines",
+    "forme-factorisee-trinome",
+    "trinome",
+    "methode-resoudre-inequation",
+    "regle-signe-retourne",
+    "mem-signe-negatif",
+    "intervalle",
+    "borne-incluse-exclue",
+    "intervalle-crochets"
+  ],
+  "conceptsIntroduced": [
+    {
+      "id": "signe-change-aux-racines",
+      "type": "concepts",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module01LePontEtLaPeniche.jsx",
+        "line": 136,
+        "step": 1,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "bande-entre-les-racines",
+      "type": "concepts",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module01LePontEtLaPeniche.jsx",
+        "line": 188,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "signe-trinome-regle",
+      "type": "regles",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module02LeSigneDUnTrinome.jsx",
+        "line": 116,
+        "step": 1,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "signe-sans-racine",
+      "type": "regles",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module02LeSigneDUnTrinome.jsx",
+        "line": 216,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "tableau-signes-trinome",
+      "type": "concepts",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module03LeTableauDeSignes.jsx",
+        "line": 108,
+        "step": 1,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "bornes-incluses-inequation",
+      "type": "regles",
+      "module": 4,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module04ResoudreUneInequation.jsx",
+        "line": 183,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "traduire-au-moins-au-plus",
+      "type": "regles",
+      "module": 5,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module05DuProblemeAuModele.jsx",
+        "line": 156,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "solution-equation-vs-probleme",
+      "type": "concepts",
+      "module": 6,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module06LaReponseAuProbleme.jsx",
+        "line": 114,
+        "step": 1,
+        "variant": "new"
+      }
+    }
+  ],
+  "vocabularyIntroduced": [
+    {
+      "id": "inequation-second-degre",
+      "type": "vocabulaire",
+      "module": 4,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module04ResoudreUneInequation.jsx",
+        "line": 109,
+        "step": 1,
+        "variant": "new"
+      }
+    }
+  ],
+  "proceduresIntroduced": [
+    {
+      "id": "methode-dresser-tableau",
+      "type": "methodes",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module03LeTableauDeSignes.jsx",
+        "line": 175,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "methode-inequation-second-degre",
+      "type": "methodes",
+      "module": 4,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module04ResoudreUneInequation.jsx",
+        "line": 114,
+        "step": 1,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "modeliser-second-degre",
+      "type": "methodes",
+      "module": 5,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module05DuProblemeAuModele.jsx",
+        "line": 115,
+        "step": 1,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "methode-interpreter",
+      "type": "methodes",
+      "module": 6,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module06LaReponseAuProbleme.jsx",
+        "line": 224,
+        "step": 3,
+        "variant": "new"
+      }
+    }
+  ],
+  "memorisation": [
+    {
+      "id": "mem-signe-trinome",
+      "type": "memoriser",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module02LeSigneDUnTrinome.jsx",
+        "line": 221,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "mem-tableau-signes",
+      "type": "memoriser",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module03LeTableauDeSignes.jsx",
+        "line": 226,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "mem-ecarter-solutions",
+      "type": "memoriser",
+      "module": 6,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module06LaReponseAuProbleme.jsx",
+        "line": 229,
+        "step": 3,
+        "variant": "new"
+      }
+    }
+  ],
+  "questions": [
+    {
+      "questionId": "sp-d1",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module00Diagnostic.jsx",
+      "line": 39,
+      "requires": [
+        "discriminant",
+        "trinome"
+      ],
+      "prerequisiteStatus": {
+        "discriminant": "prior",
+        "trinome": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sp-d2",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module00Diagnostic.jsx",
+      "line": 50,
+      "requires": [
+        "formule-racines",
+        "forme-factorisee-trinome"
+      ],
+      "prerequisiteStatus": {
+        "formule-racines": "prior",
+        "forme-factorisee-trinome": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sp-d3",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module00Diagnostic.jsx",
+      "line": 66,
+      "requires": [
+        "methode-resoudre-inequation"
+      ],
+      "prerequisiteStatus": {
+        "methode-resoudre-inequation": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sp-d4",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module00Diagnostic.jsx",
+      "line": 77,
+      "requires": [
+        "regle-signe-retourne",
+        "mem-signe-negatif"
+      ],
+      "prerequisiteStatus": {
+        "regle-signe-retourne": "prior",
+        "mem-signe-negatif": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sp-d5",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module00Diagnostic.jsx",
+      "line": 93,
+      "requires": [
+        "intervalle",
+        "borne-incluse-exclue",
+        "intervalle-crochets"
+      ],
+      "prerequisiteStatus": {
+        "intervalle": "prior",
+        "borne-incluse-exclue": "prior",
+        "intervalle-crochets": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sp-d6",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module00Diagnostic.jsx",
+      "line": 104,
+      "requires": [
+        "intervalle",
+        "intervalle-crochets"
+      ],
+      "prerequisiteStatus": {
+        "intervalle": "prior",
+        "intervalle-crochets": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S2-Q1",
+      "module": 1,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module01LePontEtLaPeniche.jsx",
+      "line": 165,
+      "requires": [
+        "signe-change-aux-racines"
+      ],
+      "prerequisiteStatus": {
+        "signe-change-aux-racines": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S3-Q2",
+      "module": 1,
+      "step": 3,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module01LePontEtLaPeniche.jsx",
+      "line": 215,
+      "requires": [
+        "bande-entre-les-racines"
+      ],
+      "prerequisiteStatus": {
+        "bande-entre-les-racines": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S4-Q3",
+      "module": 1,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module01LePontEtLaPeniche.jsx",
+      "line": 261,
+      "requires": [
+        "signe-change-aux-racines",
+        "bande-entre-les-racines"
+      ],
+      "prerequisiteStatus": {
+        "signe-change-aux-racines": "established@M1",
+        "bande-entre-les-racines": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S1-Q1",
+      "module": 2,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module02LeSigneDUnTrinome.jsx",
+      "line": 71,
+      "requires": [
+        "bande-entre-les-racines",
+        "formule-racines"
+      ],
+      "prerequisiteStatus": {
+        "bande-entre-les-racines": "established@M1",
+        "formule-racines": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S1-Q2",
+      "module": 2,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module02LeSigneDUnTrinome.jsx",
+      "line": 93,
+      "requires": [
+        "bande-entre-les-racines"
+      ],
+      "prerequisiteStatus": {
+        "bande-entre-les-racines": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S2-Q3",
+      "module": 2,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module02LeSigneDUnTrinome.jsx",
+      "line": 134,
+      "requires": [
+        "signe-trinome-regle"
+      ],
+      "prerequisiteStatus": {
+        "signe-trinome-regle": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S3-Q4",
+      "module": 2,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module02LeSigneDUnTrinome.jsx",
+      "line": 177,
+      "requires": [
+        "signe-change-aux-racines",
+        "discriminant"
+      ],
+      "prerequisiteStatus": {
+        "signe-change-aux-racines": "established@M1",
+        "discriminant": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S3-Q5",
+      "module": 2,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module02LeSigneDUnTrinome.jsx",
+      "line": 193,
+      "requires": [
+        "signe-change-aux-racines"
+      ],
+      "prerequisiteStatus": {
+        "signe-change-aux-racines": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S1-Q1",
+      "module": 3,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module03LeTableauDeSignes.jsx",
+      "line": 70,
+      "requires": [
+        "signe-trinome-regle",
+        "intervalle"
+      ],
+      "prerequisiteStatus": {
+        "signe-trinome-regle": "established@M2",
+        "intervalle": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S1-Q2",
+      "module": 3,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module03LeTableauDeSignes.jsx",
+      "line": 86,
+      "requires": [
+        "intervalle-crochets",
+        "borne-incluse-exclue"
+      ],
+      "prerequisiteStatus": {
+        "intervalle-crochets": "prior",
+        "borne-incluse-exclue": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S3-Q3",
+      "module": 3,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module03LeTableauDeSignes.jsx",
+      "line": 203,
+      "requires": [
+        "methode-dresser-tableau",
+        "signe-trinome-regle"
+      ],
+      "prerequisiteStatus": {
+        "methode-dresser-tableau": "established@M3",
+        "signe-trinome-regle": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S1-Q1",
+      "module": 4,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module04ResoudreUneInequation.jsx",
+      "line": 69,
+      "requires": [
+        "tableau-signes-trinome"
+      ],
+      "prerequisiteStatus": {
+        "tableau-signes-trinome": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S1-Q2",
+      "module": 4,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module04ResoudreUneInequation.jsx",
+      "line": 85,
+      "requires": [
+        "intervalle-crochets",
+        "tableau-signes-trinome"
+      ],
+      "prerequisiteStatus": {
+        "intervalle-crochets": "prior",
+        "tableau-signes-trinome": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S2-Q3",
+      "module": 4,
+      "step": 2,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module04ResoudreUneInequation.jsx",
+      "line": 135,
+      "requires": [
+        "formule-racines"
+      ],
+      "prerequisiteStatus": {
+        "formule-racines": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S2-Q4",
+      "module": 4,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module04ResoudreUneInequation.jsx",
+      "line": 150,
+      "requires": [
+        "borne-incluse-exclue",
+        "tableau-signes-trinome"
+      ],
+      "prerequisiteStatus": {
+        "borne-incluse-exclue": "prior",
+        "tableau-signes-trinome": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S3-Q5",
+      "module": 4,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module04ResoudreUneInequation.jsx",
+      "line": 201,
+      "requires": [
+        "signe-trinome-regle",
+        "borne-incluse-exclue"
+      ],
+      "prerequisiteStatus": {
+        "signe-trinome-regle": "established@M2",
+        "borne-incluse-exclue": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S3-Q6",
+      "module": 4,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module04ResoudreUneInequation.jsx",
+      "line": 223,
+      "requires": [
+        "signe-sans-racine",
+        "methode-inequation-second-degre"
+      ],
+      "prerequisiteStatus": {
+        "signe-sans-racine": "established@M2",
+        "methode-inequation-second-degre": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S1-Q1",
+      "module": 5,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module05DuProblemeAuModele.jsx",
+      "line": 70,
+      "requires": [
+        "trinome"
+      ],
+      "prerequisiteStatus": {
+        "trinome": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S1-Q2",
+      "module": 5,
+      "step": 1,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module05DuProblemeAuModele.jsx",
+      "line": 86,
+      "requires": [
+        "discriminant"
+      ],
+      "prerequisiteStatus": {
+        "discriminant": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S2-Q3",
+      "module": 5,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module05DuProblemeAuModele.jsx",
+      "line": 138,
+      "requires": [
+        "modeliser-second-degre"
+      ],
+      "prerequisiteStatus": {
+        "modeliser-second-degre": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S2-Q4",
+      "module": 5,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module05DuProblemeAuModele.jsx",
+      "line": 164,
+      "requires": [
+        "methode-inequation-second-degre",
+        "signe-trinome-regle"
+      ],
+      "prerequisiteStatus": {
+        "methode-inequation-second-degre": "established@M4",
+        "signe-trinome-regle": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S3-Q5",
+      "module": 5,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module05DuProblemeAuModele.jsx",
+      "line": 203,
+      "requires": [
+        "modeliser-second-degre"
+      ],
+      "prerequisiteStatus": {
+        "modeliser-second-degre": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S3-Q6",
+      "module": 5,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module05DuProblemeAuModele.jsx",
+      "line": 219,
+      "requires": [
+        "traduire-au-moins-au-plus",
+        "inequation-second-degre"
+      ],
+      "prerequisiteStatus": {
+        "traduire-au-moins-au-plus": "established@M5",
+        "inequation-second-degre": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S1-Q1",
+      "module": 6,
+      "step": 1,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module06LaReponseAuProbleme.jsx",
+      "line": 68,
+      "requires": [
+        "formule-racines"
+      ],
+      "prerequisiteStatus": {
+        "formule-racines": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S1-Q2",
+      "module": 6,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module06LaReponseAuProbleme.jsx",
+      "line": 85,
+      "requires": [
+        "formule-racines",
+        "trinome"
+      ],
+      "prerequisiteStatus": {
+        "formule-racines": "prior",
+        "trinome": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S2-Q3",
+      "module": 6,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module06LaReponseAuProbleme.jsx",
+      "line": 131,
+      "requires": [
+        "solution-equation-vs-probleme"
+      ],
+      "prerequisiteStatus": {
+        "solution-equation-vs-probleme": "established@M6"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S3-Q4",
+      "module": 6,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module06LaReponseAuProbleme.jsx",
+      "line": 174,
+      "requires": [
+        "solution-equation-vs-probleme"
+      ],
+      "prerequisiteStatus": {
+        "solution-equation-vs-probleme": "established@M6"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S3-Q5",
+      "module": 6,
+      "step": 3,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module06LaReponseAuProbleme.jsx",
+      "line": 190,
+      "requires": [
+        "formule-racines"
+      ],
+      "prerequisiteStatus": {
+        "formule-racines": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sp-e1",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module07MissionFinaleLeSigne.jsx",
+      "line": 36,
+      "requires": [
+        "signe-trinome-regle",
+        "tableau-signes-trinome"
+      ],
+      "prerequisiteStatus": {
+        "signe-trinome-regle": "established@M2",
+        "tableau-signes-trinome": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sp-e2",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module07MissionFinaleLeSigne.jsx",
+      "line": 53,
+      "requires": [
+        "signe-sans-racine",
+        "discriminant"
+      ],
+      "prerequisiteStatus": {
+        "signe-sans-racine": "established@M2",
+        "discriminant": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sp-e3",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module07MissionFinaleLeSigne.jsx",
+      "line": 70,
+      "requires": [
+        "methode-inequation-second-degre",
+        "tableau-signes-trinome"
+      ],
+      "prerequisiteStatus": {
+        "methode-inequation-second-degre": "established@M4",
+        "tableau-signes-trinome": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sp-e4",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module07MissionFinaleLeSigne.jsx",
+      "line": 87,
+      "requires": [
+        "bornes-incluses-inequation",
+        "methode-inequation-second-degre"
+      ],
+      "prerequisiteStatus": {
+        "bornes-incluses-inequation": "established@M4",
+        "methode-inequation-second-degre": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sp-e5",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module07MissionFinaleLeSigne.jsx",
+      "line": 104,
+      "requires": [
+        "modeliser-second-degre"
+      ],
+      "prerequisiteStatus": {
+        "modeliser-second-degre": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sp-e6",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module07MissionFinaleLeSigne.jsx",
+      "line": 121,
+      "requires": [
+        "modeliser-second-degre",
+        "solution-equation-vs-probleme"
+      ],
+      "prerequisiteStatus": {
+        "modeliser-second-degre": "established@M5",
+        "solution-equation-vs-probleme": "established@M6"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sp-e7",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module07MissionFinaleLeSigne.jsx",
+      "line": 138,
+      "requires": [
+        "traduire-au-moins-au-plus"
+      ],
+      "prerequisiteStatus": {
+        "traduire-au-moins-au-plus": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sp-e8",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module07MissionFinaleLeSigne.jsx",
+      "line": 155,
+      "requires": [
+        "traduire-au-moins-au-plus",
+        "methode-inequation-second-degre"
+      ],
+      "prerequisiteStatus": {
+        "traduire-au-moins-au-plus": "established@M5",
+        "methode-inequation-second-degre": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sp-e9",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module07MissionFinaleLeSigne.jsx",
+      "line": 172,
+      "requires": [
+        "methode-interpreter",
+        "solution-equation-vs-probleme"
+      ],
+      "prerequisiteStatus": {
+        "methode-interpreter": "established@M6",
+        "solution-equation-vs-probleme": "established@M6"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "sp-e10",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/algebre/second-degre-signe-problemes-1ere/modules/Module07MissionFinaleLeSigne.jsx",
+      "line": 189,
+      "requires": [
+        "solution-equation-vs-probleme",
+        "signe-sans-racine"
+      ],
+      "prerequisiteStatus": {
+        "solution-equation-vs-probleme": "established@M6",
+        "signe-sans-racine": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    }
+  ],
+  "findings": []
+}

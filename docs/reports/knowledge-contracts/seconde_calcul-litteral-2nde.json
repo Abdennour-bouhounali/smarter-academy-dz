@@ -19,7 +19,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module01LeTourDeMagie.jsx",
-        "line": 87,
+        "line": 86,
         "step": 2,
         "variant": "new"
       }
@@ -30,7 +30,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module01LeTourDeMagie.jsx",
-        "line": 112,
+        "line": 111,
         "step": 3,
         "variant": "new"
       }
@@ -41,7 +41,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module01LeTourDeMagie.jsx",
-        "line": 68,
+        "line": 67,
         "step": 1,
         "variant": "new"
       }
@@ -52,7 +52,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module02Reduire.jsx",
-        "line": 94,
+        "line": 93,
         "step": 3,
         "variant": "new"
       }
@@ -63,7 +63,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module03Developper.jsx",
-        "line": 51,
+        "line": 50,
         "step": 1,
         "variant": "new"
       }
@@ -74,7 +74,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module03Developper.jsx",
-        "line": 103,
+        "line": 102,
         "step": 3,
         "variant": "new"
       }
@@ -131,7 +131,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module02Reduire.jsx",
-        "line": 58,
+        "line": 57,
         "step": 1,
         "variant": "new"
       }
@@ -144,7 +144,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module02Reduire.jsx",
-        "line": 65,
+        "line": 64,
         "step": 1,
         "variant": "new"
       }
@@ -212,7 +212,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module02Reduire.jsx",
-        "line": 109,
+        "line": 108,
         "step": 3,
         "variant": "new"
       }
@@ -223,7 +223,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module03Developper.jsx",
-        "line": 66,
+        "line": 65,
         "step": 1,
         "variant": "new"
       }
@@ -330,7 +330,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module01LeTourDeMagie.jsx",
-      "line": 58,
+      "line": 57,
       "requires": [
         "calcul-litteral",
         "distributivite"
@@ -348,7 +348,7 @@
       "step": 2,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module01LeTourDeMagie.jsx",
-      "line": 95,
+      "line": 94,
       "requires": [
         "expression-litterale",
         "calcul-litteral"
@@ -366,7 +366,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module01LeTourDeMagie.jsx",
-      "line": 118,
+      "line": 117,
       "requires": [
         "egalite-pour-tout-x",
         "expression-litterale",
@@ -386,7 +386,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module02Reduire.jsx",
-      "line": 102,
+      "line": 101,
       "requires": [
         "regle-exposants-pas-additionnes",
         "vocab-terme-coefficient",
@@ -406,7 +406,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module03Developper.jsx",
-      "line": 59,
+      "line": 58,
       "requires": [
         "developper",
         "calcul-litteral",
@@ -426,7 +426,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module03Developper.jsx",
-      "line": 81,
+      "line": 80,
       "requires": [
         "developper",
         "mem-carre-somme"
@@ -444,7 +444,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module03Developper.jsx",
-      "line": 94,
+      "line": 93,
       "requires": [
         "developper",
         "mem-carre-somme"
@@ -462,7 +462,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module03Developper.jsx",
-      "line": 115,
+      "line": 114,
       "requires": [
         "identites-remarquables",
         "developper",
@@ -618,7 +618,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module07MissionFinale.jsx",
-      "line": 35,
+      "line": 39,
       "requires": [
         "egalite-pour-tout-x",
         "regle-tester-ne-prouve-pas"
@@ -636,7 +636,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module07MissionFinale.jsx",
-      "line": 36,
+      "line": 40,
       "requires": [
         "expression-litterale"
       ],
@@ -652,7 +652,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module07MissionFinale.jsx",
-      "line": 37,
+      "line": 41,
       "requires": [
         "vocab-terme-coefficient",
         "methode-reduire",
@@ -672,7 +672,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module07MissionFinale.jsx",
-      "line": 38,
+      "line": 42,
       "requires": [
         "developper",
         "mem-carre-somme"
@@ -690,7 +690,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module07MissionFinale.jsx",
-      "line": 39,
+      "line": 43,
       "requires": [
         "developper",
         "identites-remarquables"
@@ -708,7 +708,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module07MissionFinale.jsx",
-      "line": 40,
+      "line": 44,
       "requires": [
         "factoriser",
         "methode-facteur-commun"
@@ -726,7 +726,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module07MissionFinale.jsx",
-      "line": 41,
+      "line": 45,
       "requires": [
         "factoriser",
         "methode-facteur-commun"
@@ -744,7 +744,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module07MissionFinale.jsx",
-      "line": 42,
+      "line": 46,
       "requires": [
         "regle-choisir-la-forme",
         "factoriser",
@@ -764,7 +764,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module07MissionFinale.jsx",
-      "line": 43,
+      "line": 47,
       "requires": [
         "methode-demontrer-litteral",
         "developper",
@@ -784,7 +784,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module07MissionFinale.jsx",
-      "line": 44,
+      "line": 48,
       "requires": [
         "regle-simplifier-facteurs",
         "factoriser"
@@ -803,7 +803,7 @@
       "severity": "info",
       "message": "'developper' is declared in priorKnowledge and re-established by a brick here (fine for a « rappel »)",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/calcul-litteral-2nde/modules/Module03Developper.jsx",
-      "line": 51,
+      "line": 50,
       "module": 3,
       "step": 1,
       "term": null,

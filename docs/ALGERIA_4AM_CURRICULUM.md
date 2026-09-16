@@ -11,10 +11,16 @@ et ce qui reste à décider.
 | Élément | Statut |
 |---|---|
 | Programme officiel (4 domaines, ci-dessous) | **FOURNI par le propriétaire du projet** (2026-09-16) |
-| Découpage en leçons | NOT STARTED |
-| Points d'apprentissage (LP) | NOT STARTED — `À DÉCOMPOSER` |
+| Découpage en leçons | **FAIT (phase 7)** — un sujet = une leçon, soit 28 leçons |
+| Points d'apprentissage (LP) | **FOURNIS par le propriétaire (phase 7)** — 185, en arabe |
 | Contenu des leçons | NOT STARTED |
 | Terminologie arabe officielle | PARTIELLE — celle du programme fourni est reprise telle quelle |
+
+**Note de lecture (phase 7).** Les mentions `À DÉCOMPOSER` et `NOT STARTED`
+des tableaux §2 à §5 ci-dessous datent d'avant le découpage. Elles sont
+conservées telles quelles comme trace de ce qui était ouvert à ce moment ;
+l'état courant est celui de `dz/lessons_4am_2026_2027.json` et du rapport
+`ALGERIA_PHASE7_CURRICULUM_DECOMPOSITION_REPORT.md`.
 
 **Source d'autorité.** Le programme des §2 à §5 est celui que le propriétaire
 du projet a fourni comme spécification officielle pour l'année 2026/2027. Il
@@ -246,17 +252,30 @@ L'élève ne doit jamais se demander quoi faire.
 
 ---
 
-## 10. Ce qu'il reste à faire (phase 7)
+## 10. Ce qu'il reste à faire
 
-1. Trancher les frontières de leçons, domaine par domaine.
-2. Décomposer chaque sujet en LP — remplacer tous les `À DÉCOMPOSER`.
-3. Produire le fichier source du catalogue 4AM et l'intégrer à `coursesData.js`.
-4. Classer chaque LP algérien contre le français, LP par LP.
-5. Étendre `check-routes.mjs` au niveau `moyen` (§8).
-6. Ajouter `4am` à `ACTIVE_GRADE_IDS`, relancer l'export et l'import, vérifier
-   l'absence de dérive (`npm run check:activation-drift`).
-7. Choisir les **trois leçons gratuites** et les inscrire dans
-   `packages/core/curriculum/freeLessons.js`.
+**Fait en phase 6F** (voir `ALGERIA_PHASE6F_DATA_SCOPE_IMPLEMENTATION_REPORT.md`) :
 
-Le point 7 ne peut être tranché qu'une fois le point 1 fait : on ne choisit pas
-trois leçons gratuites avant de savoir quelles leçons existent.
+- ~~Produire le fichier source du catalogue 4AM et l'intégrer à `coursesData.js`~~
+  — fait, via `buildDzCourseLevels()`, sous forme de chapitres portant les 28
+  sujets (`chapters.topics`), sans leçon.
+- ~~Étendre `check-routes.mjs` au niveau `moyen`~~ — fait (§8).
+- ~~Ajouter `4am` à `ACTIVE_GRADE_IDS`, relancer l'export et l'import, vérifier
+  l'absence de dérive~~ — fait ; `4am` et `terminale_dz` sont actifs, la base
+  ne contient plus que ces deux classes.
+
+**Fait en phase 7** (voir `ALGERIA_PHASE7_CURRICULUM_DECOMPOSITION_REPORT.md`) :
+
+- ~~Trancher les frontières de leçons~~ — fait : **un sujet = une leçon**,
+  règle arrêtée par le propriétaire. 28 sujets → 28 leçons.
+- ~~Décomposer chaque sujet en LP~~ — fait : **185 points d'apprentissage**,
+  intitulés arabes fournis par le propriétaire. Les `À DÉCOMPOSER` des §2 à §5
+  ci-dessus sont donc résolus, sauf mention contraire.
+
+**Reste à faire** :
+
+1. Classer chaque LP algérien contre le français, LP par LP (phase 8).
+2. Choisir les **trois leçons gratuites** et les inscrire dans
+   `packages/core/curriculum/freeLessons.js` — désormais possible, les leçons
+   existant.
+3. Faire relire le découpage par une autorité curriculaire externe.

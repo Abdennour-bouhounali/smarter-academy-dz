@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { ScrollText } from 'lucide-react';
 import { ArrowForward } from '../common/DirectionalIcons';
 import { courseLevels, getFlatAvailableLessons } from '@smarter-academy/core';
@@ -15,6 +16,7 @@ const ALL_GRADES = courseLevels.flatMap((level) =>
  * proof this is real" and "here's yours" read as one thought, not two.
  */
 export default function TrustRelevanceSection() {
+  const { t } = useTranslation('marketing');
   const lessonCount = getFlatAvailableLessons(courseLevels).length;
 
   return (
@@ -28,11 +30,11 @@ export default function TrustRelevanceSection() {
         >
           <p className="font-mono-jetbrains text-blue-500 text-xs font-semibold tracking-widest uppercase mb-3 flex items-center justify-center gap-1.5">
             <ScrollText size={13} />
-            Programme officiel de l'Éducation nationale
+            {t('trust.title')}
           </p>
-          <h2 className="section-title !mb-3">De la 6e à la Terminale</h2>
+          <h2 className="section-title !mb-3">{t('trust.subtitle')}</h2>
           <p className="font-inter text-slate-500 text-base">
-            {lessonCount} leçons interactives déjà disponibles — la 6e est aujourd'hui le niveau le plus complet.
+            {t('trust.lessonsAvailable', { lessonCount })}
           </p>
         </motion.div>
 
@@ -64,7 +66,7 @@ export default function TrustRelevanceSection() {
 
         <div className="text-center mt-8">
           <Link to="/courses" className="inline-flex items-center gap-2 font-inter text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">
-            Voir le programme complet
+            {t('trust.seeFullProgramme')}
             <ArrowForward size={15} />
           </Link>
         </div>

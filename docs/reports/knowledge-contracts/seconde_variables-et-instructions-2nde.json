@@ -1,0 +1,726 @@
+{
+  "lesson": "variables-et-instructions-2nde",
+  "grade": "seconde",
+  "lexiconVersion": 1,
+  "prerequisites": [
+    "calcul-litteral",
+    "ordre-nombres",
+    "arrondi"
+  ],
+  "conceptsIntroduced": [
+    {
+      "id": "variable-informatique",
+      "type": "concepts",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module01LaBoiteEtSonEtiquette.jsx",
+        "line": 71,
+        "step": 1,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "affectation",
+      "type": "concepts",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module02AffecterNEstPasEgaler.jsx",
+        "line": 54,
+        "step": 1,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "regle-ordre-affectation",
+      "type": "regles",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module02AffecterNEstPasEgaler.jsx",
+        "line": 72,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "sequence",
+      "type": "concepts",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module03LeProgrammeQuiChoisit.jsx",
+        "line": 79,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "conditionnelle",
+      "type": "concepts",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module03LeProgrammeQuiChoisit.jsx",
+        "line": 53,
+        "step": 1,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "regle-cas-limite",
+      "type": "regles",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module03LeProgrammeQuiChoisit.jsx",
+        "line": 58,
+        "step": 1,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "boucle-for",
+      "type": "concepts",
+      "module": 4,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module04RepeterSansRecopier.jsx",
+        "line": 52,
+        "step": 1,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "boucle-while",
+      "type": "concepts",
+      "module": 4,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module04RepeterSansRecopier.jsx",
+        "line": 89,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "regle-condition-arret",
+      "type": "regles",
+      "module": 4,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module04RepeterSansRecopier.jsx",
+        "line": 90,
+        "step": 2,
+        "variant": "new"
+      }
+    }
+  ],
+  "vocabularyIntroduced": [
+    {
+      "id": "types-python",
+      "type": "vocabulaire",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module01LaBoiteEtSonEtiquette.jsx",
+        "line": 105,
+        "step": 2,
+        "variant": "new"
+      }
+    }
+  ],
+  "proceduresIntroduced": [
+    {
+      "id": "methode-formule-variables",
+      "type": "methodes",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module02AffecterNEstPasEgaler.jsx",
+        "line": 116,
+        "step": 4,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "methode-tracer",
+      "type": "methodes",
+      "module": 5,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module05LireCompleterReparer.jsx",
+        "line": 51,
+        "step": 1,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "methode-verifier",
+      "type": "methodes",
+      "module": 5,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module05LireCompleterReparer.jsx",
+        "line": 87,
+        "step": 2,
+        "variant": "new"
+      }
+    }
+  ],
+  "memorisation": [
+    {
+      "id": "mem-nom-valeur-type",
+      "type": "memoriser",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module01LaBoiteEtSonEtiquette.jsx",
+        "line": 146,
+        "step": 4,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "mem-for-ou-while",
+      "type": "memoriser",
+      "module": 4,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module04RepeterSansRecopier.jsx",
+        "line": 120,
+        "step": 3,
+        "variant": "new"
+      }
+    }
+  ],
+  "questions": [
+    {
+      "questionId": "vi-d1-expression",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module00Diagnostic.jsx",
+      "line": 20,
+      "requires": [
+        "calcul-litteral"
+      ],
+      "prerequisiteStatus": {
+        "calcul-litteral": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "vi-d2-priorite",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module00Diagnostic.jsx",
+      "line": 31,
+      "requires": [
+        "calcul-litteral"
+      ],
+      "prerequisiteStatus": {
+        "calcul-litteral": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "vi-d3-comparer",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module00Diagnostic.jsx",
+      "line": 42,
+      "requires": [
+        "ordre-nombres"
+      ],
+      "prerequisiteStatus": {
+        "ordre-nombres": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "vi-d4-quotient",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module00Diagnostic.jsx",
+      "line": 53,
+      "requires": [
+        "ordre-nombres",
+        "arrondi"
+      ],
+      "prerequisiteStatus": {
+        "ordre-nombres": "prior",
+        "arrondi": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "vi-d5-ordre",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module00Diagnostic.jsx",
+      "line": 64,
+      "requires": [
+        "calcul-litteral"
+      ],
+      "prerequisiteStatus": {
+        "calcul-litteral": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "vi-d6-ordre-inverse",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module00Diagnostic.jsx",
+      "line": 75,
+      "requires": [
+        "calcul-litteral"
+      ],
+      "prerequisiteStatus": {
+        "calcul-litteral": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S3-Q1",
+      "module": 1,
+      "step": 3,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module01LaBoiteEtSonEtiquette.jsx",
+      "line": 121,
+      "requires": [
+        "types-python",
+        "variable-informatique"
+      ],
+      "prerequisiteStatus": {
+        "types-python": "established@M1",
+        "variable-informatique": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S4-Q2",
+      "module": 1,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module01LaBoiteEtSonEtiquette.jsx",
+      "line": 151,
+      "requires": [
+        "types-python",
+        "mem-nom-valeur-type"
+      ],
+      "prerequisiteStatus": {
+        "types-python": "established@M1",
+        "mem-nom-valeur-type": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S2-Q1",
+      "module": 2,
+      "step": 2,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module02AffecterNEstPasEgaler.jsx",
+      "line": 77,
+      "requires": [
+        "affectation",
+        "regle-ordre-affectation"
+      ],
+      "prerequisiteStatus": {
+        "affectation": "established@M2",
+        "regle-ordre-affectation": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S4-Q2",
+      "module": 2,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module02AffecterNEstPasEgaler.jsx",
+      "line": 121,
+      "requires": [
+        "methode-formule-variables",
+        "affectation"
+      ],
+      "prerequisiteStatus": {
+        "methode-formule-variables": "established@M2",
+        "affectation": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S2-Q1",
+      "module": 3,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module03LeProgrammeQuiChoisit.jsx",
+      "line": 84,
+      "requires": [
+        "sequence",
+        "affectation"
+      ],
+      "prerequisiteStatus": {
+        "sequence": "established@M3",
+        "affectation": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S3-Q2",
+      "module": 3,
+      "step": 3,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module03LeProgrammeQuiChoisit.jsx",
+      "line": 102,
+      "requires": [
+        "conditionnelle",
+        "regle-cas-limite"
+      ],
+      "prerequisiteStatus": {
+        "conditionnelle": "established@M3",
+        "regle-cas-limite": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S1-Q1",
+      "module": 4,
+      "step": 1,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module04RepeterSansRecopier.jsx",
+      "line": 57,
+      "requires": [
+        "boucle-for"
+      ],
+      "prerequisiteStatus": {
+        "boucle-for": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S3-Q2",
+      "module": 4,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module04RepeterSansRecopier.jsx",
+      "line": 106,
+      "requires": [
+        "boucle-while",
+        "regle-condition-arret"
+      ],
+      "prerequisiteStatus": {
+        "boucle-while": "established@M4",
+        "regle-condition-arret": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S4-Q3",
+      "module": 4,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module04RepeterSansRecopier.jsx",
+      "line": 133,
+      "requires": [
+        "mem-for-ou-while",
+        "boucle-for"
+      ],
+      "prerequisiteStatus": {
+        "mem-for-ou-while": "established@M4",
+        "boucle-for": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S1-Q1",
+      "module": 5,
+      "step": 1,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module05LireCompleterReparer.jsx",
+      "line": 56,
+      "requires": [
+        "methode-tracer",
+        "affectation",
+        "regle-ordre-affectation"
+      ],
+      "prerequisiteStatus": {
+        "methode-tracer": "established@M5",
+        "affectation": "established@M2",
+        "regle-ordre-affectation": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S2-Q2",
+      "module": 5,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module05LireCompleterReparer.jsx",
+      "line": 92,
+      "requires": [
+        "boucle-for",
+        "methode-verifier"
+      ],
+      "prerequisiteStatus": {
+        "boucle-for": "established@M4",
+        "methode-verifier": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S3-Q3",
+      "module": 5,
+      "step": 3,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module05LireCompleterReparer.jsx",
+      "line": 135,
+      "requires": [
+        "boucle-for",
+        "conditionnelle",
+        "methode-tracer"
+      ],
+      "prerequisiteStatus": {
+        "boucle-for": "established@M4",
+        "conditionnelle": "established@M3",
+        "methode-tracer": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "va-e1",
+      "module": 6,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module06MissionFinale.jsx",
+      "line": 38,
+      "requires": [
+        "variable-informatique"
+      ],
+      "prerequisiteStatus": {
+        "variable-informatique": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "va-e2",
+      "module": 6,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module06MissionFinale.jsx",
+      "line": 51,
+      "requires": [
+        "types-python",
+        "mem-nom-valeur-type"
+      ],
+      "prerequisiteStatus": {
+        "types-python": "established@M1",
+        "mem-nom-valeur-type": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "va-e3",
+      "module": 6,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module06MissionFinale.jsx",
+      "line": 59,
+      "requires": [
+        "types-python"
+      ],
+      "prerequisiteStatus": {
+        "types-python": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "va-e4",
+      "module": 6,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module06MissionFinale.jsx",
+      "line": 67,
+      "requires": [
+        "affectation",
+        "regle-ordre-affectation"
+      ],
+      "prerequisiteStatus": {
+        "affectation": "established@M2",
+        "regle-ordre-affectation": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "va-e5",
+      "module": 6,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module06MissionFinale.jsx",
+      "line": 76,
+      "requires": [
+        "sequence"
+      ],
+      "prerequisiteStatus": {
+        "sequence": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "va-e6",
+      "module": 6,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module06MissionFinale.jsx",
+      "line": 85,
+      "requires": [
+        "conditionnelle",
+        "regle-cas-limite"
+      ],
+      "prerequisiteStatus": {
+        "conditionnelle": "established@M3",
+        "regle-cas-limite": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "va-e7",
+      "module": 6,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module06MissionFinale.jsx",
+      "line": 93,
+      "requires": [
+        "boucle-for"
+      ],
+      "prerequisiteStatus": {
+        "boucle-for": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "va-e8",
+      "module": 6,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module06MissionFinale.jsx",
+      "line": 102,
+      "requires": [
+        "boucle-while",
+        "regle-condition-arret",
+        "mem-for-ou-while"
+      ],
+      "prerequisiteStatus": {
+        "boucle-while": "established@M4",
+        "regle-condition-arret": "established@M4",
+        "mem-for-ou-while": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "va-e9",
+      "module": 6,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module06MissionFinale.jsx",
+      "line": 115,
+      "requires": [
+        "methode-formule-variables"
+      ],
+      "prerequisiteStatus": {
+        "methode-formule-variables": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "va-e10",
+      "module": 6,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module06MissionFinale.jsx",
+      "line": 123,
+      "requires": [
+        "methode-tracer",
+        "affectation"
+      ],
+      "prerequisiteStatus": {
+        "methode-tracer": "established@M5",
+        "affectation": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "va-e11",
+      "module": 6,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module06MissionFinale.jsx",
+      "line": 132,
+      "requires": [
+        "methode-tracer",
+        "boucle-for"
+      ],
+      "prerequisiteStatus": {
+        "methode-tracer": "established@M5",
+        "boucle-for": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "va-e12",
+      "module": 6,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module06MissionFinale.jsx",
+      "line": 141,
+      "requires": [
+        "boucle-for",
+        "sequence"
+      ],
+      "prerequisiteStatus": {
+        "boucle-for": "established@M4",
+        "sequence": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "va-e13",
+      "module": 6,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/seconde/algorithmique_programmation/variables-et-instructions-2nde/modules/Module06MissionFinale.jsx",
+      "line": 150,
+      "requires": [
+        "methode-verifier"
+      ],
+      "prerequisiteStatus": {
+        "methode-verifier": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    }
+  ],
+  "findings": []
+}

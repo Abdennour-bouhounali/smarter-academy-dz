@@ -1,0 +1,711 @@
+{
+  "lesson": "raisonnement-problemes-4e",
+  "grade": "4e",
+  "lexiconVersion": 1,
+  "prerequisites": [
+    "programme-de-calcul",
+    "substituer",
+    "distributivite-simple",
+    "factoriser",
+    "tester-une-egalite",
+    "modeliser-par-une-equation",
+    "controler-le-sens"
+  ],
+  "conceptsIntroduced": [
+    {
+      "id": "essais-ne-prouvent-pas",
+      "type": "regles",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module01ProgrammeMystere.jsx",
+        "line": 146,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "sept-temps",
+      "type": "concepts",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module02Enonce.jsx",
+        "line": 120,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "plusieurs-strategies",
+      "type": "concepts",
+      "module": 4,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module04DeuxChemins.jsx",
+        "line": 161,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "contre-exemple",
+      "type": "regles",
+      "module": 5,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module05ContreExemple.jsx",
+        "line": 154,
+        "step": 3,
+        "variant": "new"
+      }
+    }
+  ],
+  "vocabularyIntroduced": [
+    {
+      "id": "conjecture",
+      "type": "vocabulaire",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module01ProgrammeMystere.jsx",
+        "line": 139,
+        "step": 2,
+        "variant": "new"
+      }
+    }
+  ],
+  "proceduresIntroduced": [
+    {
+      "id": "preuve-par-la-lettre",
+      "type": "methodes",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module01ProgrammeMystere.jsx",
+        "line": 208,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "donnees-utiles",
+      "type": "methodes",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module02Enonce.jsx",
+        "line": 101,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "representer",
+      "type": "methodes",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module03Schema.jsx",
+        "line": 154,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "estimer-avant",
+      "type": "methodes",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module03Schema.jsx",
+        "line": 189,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "verifier-dans-l-histoire",
+      "type": "methodes",
+      "module": 6,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module06EnqueteComplete.jsx",
+        "line": 169,
+        "step": 3,
+        "variant": "new"
+      }
+    }
+  ],
+  "memorisation": [
+    {
+      "id": "mem-prouver-refuter",
+      "type": "memoriser",
+      "module": 5,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module05ContreExemple.jsx",
+        "line": 236,
+        "step": 5,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "phrase-reponse",
+      "type": "memoriser",
+      "module": 6,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module06EnqueteComplete.jsx",
+        "line": 201,
+        "step": 4,
+        "variant": "new"
+      }
+    }
+  ],
+  "questions": [
+    {
+      "questionId": "rp4-d1-programme",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module00Diagnostic.jsx",
+      "line": 24,
+      "requires": [
+        "programme-de-calcul"
+      ],
+      "prerequisiteStatus": {
+        "programme-de-calcul": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "rp4-d2-substituer",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module00Diagnostic.jsx",
+      "line": 35,
+      "requires": [
+        "substituer"
+      ],
+      "prerequisiteStatus": {
+        "substituer": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "rp4-d3-distributivite",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module00Diagnostic.jsx",
+      "line": 46,
+      "requires": [
+        "distributivite-simple"
+      ],
+      "prerequisiteStatus": {
+        "distributivite-simple": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "rp4-d4-factoriser",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module00Diagnostic.jsx",
+      "line": 57,
+      "requires": [
+        "factoriser"
+      ],
+      "prerequisiteStatus": {
+        "factoriser": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "rp4-d5-egalite",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module00Diagnostic.jsx",
+      "line": 68,
+      "requires": [
+        "tester-une-egalite"
+      ],
+      "prerequisiteStatus": {
+        "tester-une-egalite": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "rp4-d6-modeliser",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module00Diagnostic.jsx",
+      "line": 79,
+      "requires": [
+        "modeliser-par-une-equation"
+      ],
+      "prerequisiteStatus": {
+        "modeliser-par-une-equation": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "rp4-d7-sens",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module00Diagnostic.jsx",
+      "line": 90,
+      "requires": [
+        "controler-le-sens"
+      ],
+      "prerequisiteStatus": {
+        "controler-le-sens": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S2-Q1",
+      "module": 1,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module01ProgrammeMystere.jsx",
+      "line": 123,
+      "requires": [
+        "programme-de-calcul"
+      ],
+      "prerequisiteStatus": {
+        "programme-de-calcul": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S3-Q2",
+      "module": 1,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module01ProgrammeMystere.jsx",
+      "line": 197,
+      "requires": [
+        "distributivite-simple",
+        "conjecture"
+      ],
+      "prerequisiteStatus": {
+        "distributivite-simple": "prior",
+        "conjecture": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S2-Q1",
+      "module": 2,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module02Enonce.jsx",
+      "line": 85,
+      "requires": [
+        "programme-de-calcul"
+      ],
+      "prerequisiteStatus": {
+        "programme-de-calcul": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S3-Q2",
+      "module": 2,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module02Enonce.jsx",
+      "line": 125,
+      "requires": [
+        "sept-temps"
+      ],
+      "prerequisiteStatus": {
+        "sept-temps": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S2-Q1",
+      "module": 3,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module03Schema.jsx",
+      "line": 138,
+      "requires": [
+        "modeliser-par-une-equation"
+      ],
+      "prerequisiteStatus": {
+        "modeliser-par-une-equation": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S3-Q2",
+      "module": 3,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module03Schema.jsx",
+      "line": 173,
+      "requires": [
+        "controler-le-sens",
+        "representer"
+      ],
+      "prerequisiteStatus": {
+        "controler-le-sens": "prior",
+        "representer": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S4-Q3",
+      "module": 3,
+      "step": 4,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module03Schema.jsx",
+      "line": 213,
+      "requires": [
+        "representer",
+        "estimer-avant"
+      ],
+      "prerequisiteStatus": {
+        "representer": "established@M3",
+        "estimer-avant": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S2-Q1",
+      "module": 4,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module04DeuxChemins.jsx",
+      "line": 145,
+      "requires": [
+        "modeliser-par-une-equation",
+        "representer"
+      ],
+      "prerequisiteStatus": {
+        "modeliser-par-une-equation": "prior",
+        "representer": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S3-Q2",
+      "module": 4,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module04DeuxChemins.jsx",
+      "line": 181,
+      "requires": [
+        "plusieurs-strategies"
+      ],
+      "prerequisiteStatus": {
+        "plusieurs-strategies": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S3-Q3",
+      "module": 4,
+      "step": 3,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module04DeuxChemins.jsx",
+      "line": 197,
+      "requires": [
+        "plusieurs-strategies",
+        "controler-le-sens"
+      ],
+      "prerequisiteStatus": {
+        "plusieurs-strategies": "established@M4",
+        "controler-le-sens": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S3-Q1",
+      "module": 5,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module05ContreExemple.jsx",
+      "line": 138,
+      "requires": [
+        "essais-ne-prouvent-pas"
+      ],
+      "prerequisiteStatus": {
+        "essais-ne-prouvent-pas": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S4-Q2",
+      "module": 5,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module05ContreExemple.jsx",
+      "line": 181,
+      "requires": [
+        "contre-exemple"
+      ],
+      "prerequisiteStatus": {
+        "contre-exemple": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S5-Q3",
+      "module": 5,
+      "step": 5,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module05ContreExemple.jsx",
+      "line": 221,
+      "requires": [
+        "factoriser",
+        "preuve-par-la-lettre",
+        "contre-exemple"
+      ],
+      "prerequisiteStatus": {
+        "factoriser": "prior",
+        "preuve-par-la-lettre": "established@M1",
+        "contre-exemple": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S1-Q1",
+      "module": 6,
+      "step": 1,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module06EnqueteComplete.jsx",
+      "line": 70,
+      "requires": [
+        "representer",
+        "estimer-avant"
+      ],
+      "prerequisiteStatus": {
+        "representer": "established@M3",
+        "estimer-avant": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S2-Q2",
+      "module": 6,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module06EnqueteComplete.jsx",
+      "line": 101,
+      "requires": [
+        "controler-le-sens",
+        "estimer-avant"
+      ],
+      "prerequisiteStatus": {
+        "controler-le-sens": "prior",
+        "estimer-avant": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S4-Q3",
+      "module": 6,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module06EnqueteComplete.jsx",
+      "line": 185,
+      "requires": [
+        "verifier-dans-l-histoire",
+        "donnees-utiles"
+      ],
+      "prerequisiteStatus": {
+        "verifier-dans-l-histoire": "established@M6",
+        "donnees-utiles": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "rp4-e1",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module07MissionFinale.jsx",
+      "line": 50,
+      "requires": [
+        "donnees-utiles"
+      ],
+      "prerequisiteStatus": {
+        "donnees-utiles": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "rp4-e2",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module07MissionFinale.jsx",
+      "line": 62,
+      "requires": [
+        "representer"
+      ],
+      "prerequisiteStatus": {
+        "representer": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "rp4-e3",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module07MissionFinale.jsx",
+      "line": 79,
+      "requires": [
+        "estimer-avant"
+      ],
+      "prerequisiteStatus": {
+        "estimer-avant": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "rp4-e4",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module07MissionFinale.jsx",
+      "line": 91,
+      "requires": [
+        "conjecture",
+        "essais-ne-prouvent-pas"
+      ],
+      "prerequisiteStatus": {
+        "conjecture": "established@M1",
+        "essais-ne-prouvent-pas": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "rp4-e5",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module07MissionFinale.jsx",
+      "line": 108,
+      "requires": [
+        "contre-exemple"
+      ],
+      "prerequisiteStatus": {
+        "contre-exemple": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "rp4-e6",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module07MissionFinale.jsx",
+      "line": 125,
+      "requires": [
+        "contre-exemple"
+      ],
+      "prerequisiteStatus": {
+        "contre-exemple": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "rp4-e7",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module07MissionFinale.jsx",
+      "line": 137,
+      "requires": [
+        "preuve-par-la-lettre",
+        "distributivite-simple"
+      ],
+      "prerequisiteStatus": {
+        "preuve-par-la-lettre": "established@M1",
+        "distributivite-simple": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "rp4-e8",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module07MissionFinale.jsx",
+      "line": 149,
+      "requires": [
+        "preuve-par-la-lettre"
+      ],
+      "prerequisiteStatus": {
+        "preuve-par-la-lettre": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "rp4-e9",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module07MissionFinale.jsx",
+      "line": 166,
+      "requires": [
+        "verifier-dans-l-histoire"
+      ],
+      "prerequisiteStatus": {
+        "verifier-dans-l-histoire": "established@M6"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "rp4-e10",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/nombres_calculs/raisonnement-problemes-4e/modules/Module07MissionFinale.jsx",
+      "line": 183,
+      "requires": [
+        "phrase-reponse",
+        "controler-le-sens"
+      ],
+      "prerequisiteStatus": {
+        "phrase-reponse": "established@M6",
+        "controler-le-sens": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    }
+  ],
+  "findings": []
+}

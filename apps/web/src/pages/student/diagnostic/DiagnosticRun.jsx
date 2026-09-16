@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react';
 import { ArrowForward } from '../../../components/common/DirectionalIcons';
 import { useDiagnosticSession } from '../../../hooks/useDiagnosticSession';
@@ -13,8 +14,9 @@ import ReportButton from '../../../features/reports/ReportButton';
 // Neutral, non-evaluative acknowledgements — no "Correct !"/"Faux !" banner,
 // no red/green here. The diagnostic isn't the moment for correction; that
 // happens later, inside the actual lesson (§12 of the brief).
-const CORRECT_ACKS = ['On continue.', 'Bien reçu !', "C'est noté."];
-const INCORRECT_ACKS = ['Pas de souci, on continue.', 'Essayons la suivante.', 'On avance.'];
+// On ne garde ici que les CLÉS : t() n'est pas disponible au niveau module.
+const CORRECT_ACK_KEYS = ['diagnostic.ackCorrect1', 'diagnostic.ackCorrect2', 'diagnostic.ackCorrect3'];
+const INCORRECT_ACK_KEYS = ['diagnostic.ackIncorrect1', 'diagnostic.ackIncorrect2', 'diagnostic.ackIncorrect3'];
 
 function pick(list) {
   return list[Math.floor(Math.random() * list.length)];
@@ -27,7 +29,8 @@ function pick(list) {
  * was already in flight, never silently skipping or duplicating it.
  */
 export default function DiagnosticRun() {
-  useDocumentMeta('Diagnostic 6e', 'Diagnostic en cours.');
+  const { t } = useTranslation('student');
+  useDocumentMeta(t('diagnostic.metaTitle'), t('diagnostic.runMetaDescription'));
   const navigate = useNavigate();
   const { session, question, loading, error, submitAnswer, advanceTo } = useDiagnosticSession('6e', { autoStart: true });
 
@@ -37,7 +40,7 @@ export default function DiagnosticRun() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [askedCount, setAskedCount] = useState(0);
-  const [ackMessage, setAckMessage] = useState('');
+  const [ackKey, setAckKey] = useState('');
 
   // Only redirect once the student has actually seen the feedback moment
   // for their final answer and chosen to continue — not the instant the
@@ -55,7 +58,7 @@ export default function DiagnosticRun() {
     try {
       const result = await submitAnswer(draft);
       setAskedCount((c) => c + 1);
-      setAckMessage(pick(result.isCorrect ? CORRECT_ACKS : INCORRECT_ACKS));
+      setAckKey(pick(result.isCorrect ? CORRECT_ACK_KEYS : INCORRECT_ACK_KEYS));
       setPending(result);
       setPhase('feedback');
     } catch (err) {
@@ -91,7 +94,7 @@ export default function DiagnosticRun() {
         <div className="glass-card p-8 text-center max-w-sm">
           <p className="text-sm text-rose-600 mb-4">{error}</p>
           <Link to="/espace" className="btn-secondary text-sm inline-flex">
-            Retour à mon espace
+            {t('diagnostic.backToSpace')}
           </Link>
         </div>
       </div>
@@ -108,7 +111,7 @@ export default function DiagnosticRun() {
         </Link>
         <Link
           to="/espace"
-          aria-label="Quitter le diagnostic — ta progression est enregistrée"
+          aria-label={t('diagnostic.exitAria')}
           className="w-9 h-9 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
         >
           <X size={18} />
@@ -141,11 +144,11 @@ export default function DiagnosticRun() {
                 <div className="mt-7 flex flex-col items-center gap-3">
                   {phase === 'answering' ? (
                     <ValidateButton onClick={handleValidate} disabled={draft === null || submitting}>
-                      {submitting ? 'Vérification...' : 'Valider'}
+                      {submitting ? t('diagnostic.checking') : t('diagnostic.validate')}
                     </ValidateButton>
                   ) : (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="w-full flex flex-col items-center gap-4">
-                      <p className="font-inter text-sm text-slate-500">{ackMessage}</p>
+                      <p className="font-inter text-sm text-slate-500">{ackKey ? t(ackKey) : ''}</p>
                       <button
                         type="button"
                         onClick={handleContinue}
@@ -153,7 +156,7 @@ export default function DiagnosticRun() {
                         className="flex items-center gap-2 px-6 py-3 rounded-xl font-space font-bold text-white shadow-md transition-all hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                         style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}
                       >
-                        {pending?.completed ? 'Voir mon profil' : 'Continuer'}
+                        {pending?.completed ? t('diagnostic.seeMyProfile') : t('diagnostic.continue')}
                         <ArrowForward size={16} />
                       </button>
                     </motion.div>

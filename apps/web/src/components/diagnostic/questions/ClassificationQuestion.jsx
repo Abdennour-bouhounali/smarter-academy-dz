@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 // The only classification archetype in the v1 6e bank is "useful vs not
 // useful information" (see problemes.resolution's prb-01) — bin labels are
 // hardcoded rather than sent by the backend. If a future grade needs a
 // different classification shape, the public question DTO gains bin
 // metadata then; not built speculatively now.
+// Clés de traduction seulement : t() est résolu au rendu, pas ici.
 const BINS = [
-  { id: 'useful', label: 'Utile' },
-  { id: 'not_useful', label: 'Pas utile' },
+  { id: 'useful', labelKey: 'diagnostic.questions.binUseful' },
+  { id: 'not_useful', labelKey: 'diagnostic.questions.binNotUseful' },
 ];
 
 /**
@@ -20,6 +22,7 @@ const BINS = [
  * reports the student's assignments.
  */
 export default function ClassificationQuestion({ question, onChange, disabled }) {
+  const { t } = useTranslation('student');
   const [assignments, setAssignments] = useState({});
   const [selected, setSelected] = useState(null);
 
@@ -48,7 +51,7 @@ export default function ClassificationQuestion({ question, onChange, disabled })
       {pool.length > 0 && (
         <div>
           <div className="text-[11px] font-mono-jetbrains font-bold text-slate-400 uppercase tracking-wider mb-2">
-            Touche une information, puis un bac
+            {t('diagnostic.questions.classificationHint')}
           </div>
           <div className="flex flex-wrap gap-2">
             {pool.map((it) => (
@@ -85,7 +88,7 @@ export default function ClassificationQuestion({ question, onChange, disabled })
               selected !== null ? 'border-blue-400 bg-blue-50/50 cursor-pointer' : 'border-slate-200 bg-slate-50'
             }`}
           >
-            <div className="text-[11px] font-mono-jetbrains font-bold text-slate-500 uppercase tracking-wider">{bin.label}</div>
+            <div className="text-[11px] font-mono-jetbrains font-bold text-slate-500 uppercase tracking-wider">{t(bin.labelKey)}</div>
             {inBin(bin.id).map((it) => (
               <motion.button
                 key={it.id}

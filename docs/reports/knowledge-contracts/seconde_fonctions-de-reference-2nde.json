@@ -19,7 +19,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonctions-de-reference-2nde/modules/Module01TroisMachines.jsx",
-        "line": 76,
+        "line": 88,
         "step": 1,
         "variant": "new"
       }
@@ -30,7 +30,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonctions-de-reference-2nde/modules/Module01TroisMachines.jsx",
-        "line": 99,
+        "line": 111,
         "step": 2,
         "variant": "new"
       }
@@ -41,7 +41,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonctions-de-reference-2nde/modules/Module01TroisMachines.jsx",
-        "line": 121,
+        "line": 133,
         "step": 3,
         "variant": "new"
       }
@@ -52,7 +52,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonctions-de-reference-2nde/modules/Module02LaParabole.jsx",
-        "line": 107,
+        "line": 106,
         "step": 3,
         "variant": "new"
       }
@@ -63,7 +63,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonctions-de-reference-2nde/modules/Module02LaParabole.jsx",
-        "line": 86,
+        "line": 85,
         "step": 2,
         "variant": "new"
       }
@@ -74,7 +74,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonctions-de-reference-2nde/modules/Module03LHyperbole.jsx",
-        "line": 109,
+        "line": 108,
         "step": 3,
         "variant": "new"
       }
@@ -85,7 +85,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonctions-de-reference-2nde/modules/Module03LHyperbole.jsx",
-        "line": 104,
+        "line": 103,
         "step": 3,
         "variant": "new"
       }
@@ -118,8 +118,8 @@
       "module": 5,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonctions-de-reference-2nde/modules/Module05LireSurLesCourbes.jsx",
-        "line": 120,
-        "step": 4,
+        "line": 167,
+        "step": 5,
         "variant": "new"
       }
     },
@@ -129,8 +129,8 @@
       "module": 5,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonctions-de-reference-2nde/modules/Module05LireSurLesCourbes.jsx",
-        "line": 125,
-        "step": 4,
+        "line": 172,
+        "step": 5,
         "variant": "new"
       }
     }
@@ -142,7 +142,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonctions-de-reference-2nde/modules/Module02LaParabole.jsx",
-        "line": 81,
+        "line": 80,
         "step": 2,
         "variant": "new"
       }
@@ -166,8 +166,19 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonctions-de-reference-2nde/modules/Module01TroisMachines.jsx",
-        "line": 126,
-        "step": 3,
+        "line": 169,
+        "step": 4,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "methode-image-reference",
+      "type": "methodes",
+      "module": 5,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonctions-de-reference-2nde/modules/Module05LireSurLesCourbes.jsx",
+        "line": 123,
+        "step": 4,
         "variant": "new"
       }
     },
@@ -177,7 +188,7 @@
       "module": 5,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonctions-de-reference-2nde/modules/Module05LireSurLesCourbes.jsx",
-        "line": 85,
+        "line": 90,
         "step": 3,
         "variant": "new"
       }
@@ -201,7 +212,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonctions-de-reference-2nde/modules/Module02LaParabole.jsx",
-        "line": 130,
+        "line": 129,
         "step": 4,
         "variant": "new"
       }
@@ -212,7 +223,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonctions-de-reference-2nde/modules/Module03LHyperbole.jsx",
-        "line": 135,
+        "line": 134,
         "step": 4,
         "variant": "new"
       }
@@ -319,12 +330,12 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "M01-S4-Q1",
+      "questionId": "M01-S5-Q1",
       "module": 1,
-      "step": 4,
+      "step": 5,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonctions-de-reference-2nde/modules/Module01TroisMachines.jsx",
-      "line": 141,
+      "line": 187,
       "requires": [
         "fonction",
         "image",
@@ -344,7 +355,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonctions-de-reference-2nde/modules/Module02LaParabole.jsx",
-      "line": 100,
+      "line": 99,
       "requires": [
         "vocab-monte-descend"
       ],
@@ -360,7 +371,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonctions-de-reference-2nde/modules/Module02LaParabole.jsx",
-      "line": 120,
+      "line": 119,
       "requires": [
         "fonction-carre",
         "vocab-monte-descend",
@@ -380,7 +391,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonctions-de-reference-2nde/modules/Module03LHyperbole.jsx",
-      "line": 125,
+      "line": 124,
       "requires": [
         "fonction-inverse",
         "regle-comparer-inverses",
@@ -440,9 +451,25 @@
       "questionId": "M05-S4-Q1",
       "module": 5,
       "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonctions-de-reference-2nde/modules/Module05LireSurLesCourbes.jsx",
+      "line": 128,
+      "requires": [
+        "methode-image-reference"
+      ],
+      "prerequisiteStatus": {
+        "methode-image-reference": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S5-Q2",
+      "module": 5,
+      "step": 5,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonctions-de-reference-2nde/modules/Module05LireSurLesCourbes.jsx",
-      "line": 104,
+      "line": 151,
       "requires": [
         "fonction-carre",
         "fonction-inverse",

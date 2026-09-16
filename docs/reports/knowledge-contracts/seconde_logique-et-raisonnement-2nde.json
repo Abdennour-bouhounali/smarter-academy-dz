@@ -17,7 +17,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module01LaFormuleQuiTombe.jsx",
-        "line": 65,
+        "line": 64,
         "step": 1,
         "variant": "new"
       }
@@ -28,7 +28,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module01LaFormuleQuiTombe.jsx",
-        "line": 72,
+        "line": 71,
         "step": 1,
         "variant": "new"
       }
@@ -39,7 +39,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module01LaFormuleQuiTombe.jsx",
-        "line": 100,
+        "line": 99,
         "step": 3,
         "variant": "new"
       }
@@ -72,7 +72,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module03Implication.jsx",
-        "line": 57,
+        "line": 56,
         "step": 1,
         "variant": "new"
       }
@@ -83,7 +83,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module03Implication.jsx",
-        "line": 63,
+        "line": 62,
         "step": 1,
         "variant": "new"
       }
@@ -94,7 +94,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module03Implication.jsx",
-        "line": 102,
+        "line": 101,
         "step": 3,
         "variant": "new"
       }
@@ -105,7 +105,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module04Equivalence.jsx",
-        "line": 79,
+        "line": 78,
         "step": 2,
         "variant": "new"
       }
@@ -116,7 +116,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module04Equivalence.jsx",
-        "line": 60,
+        "line": 59,
         "step": 1,
         "variant": "new"
       }
@@ -153,7 +153,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module04Equivalence.jsx",
-        "line": 101,
+        "line": 100,
         "step": 3,
         "variant": "new"
       }
@@ -188,7 +188,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module01LaFormuleQuiTombe.jsx",
-        "line": 114,
+        "line": 113,
         "step": 3,
         "variant": "new"
       }
@@ -210,7 +210,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module03Implication.jsx",
-        "line": 119,
+        "line": 118,
         "step": 3,
         "variant": "new"
       }
@@ -307,7 +307,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module01LaFormuleQuiTombe.jsx",
-      "line": 54,
+      "line": 53,
       "requires": [
         "nombre-premier"
       ],
@@ -323,7 +323,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module01LaFormuleQuiTombe.jsx",
-      "line": 86,
+      "line": 85,
       "requires": [
         "proposition",
         "nombre-premier"
@@ -341,7 +341,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module01LaFormuleQuiTombe.jsx",
-      "line": 105,
+      "line": 104,
       "requires": [
         "regle-refuter-prouver",
         "contre-exemple",
@@ -411,7 +411,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module03Implication.jsx",
-      "line": 72,
+      "line": 71,
       "requires": [
         "implication",
         "reciproque"
@@ -429,7 +429,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module03Implication.jsx",
-      "line": 87,
+      "line": 86,
       "requires": [
         "implication",
         "reciproque",
@@ -449,7 +449,7 @@
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module03Implication.jsx",
-      "line": 107,
+      "line": 106,
       "requires": [
         "implication",
         "reciproque",
@@ -469,7 +469,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module04Equivalence.jsx",
-      "line": 51,
+      "line": 50,
       "requires": [
         "implication",
         "reciproque",
@@ -489,7 +489,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module04Equivalence.jsx",
-      "line": 86,
+      "line": 85,
       "requires": [
         "equivalence",
         "regle-equivalence-carre"
@@ -507,7 +507,7 @@
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module04Equivalence.jsx",
-      "line": 106,
+      "line": 105,
       "requires": [
         "methode-choisir-symbole",
         "equivalence",
@@ -563,7 +563,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module06MissionFinale.jsx",
-      "line": 33,
+      "line": 38,
       "requires": [
         "proposition"
       ],
@@ -579,7 +579,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module06MissionFinale.jsx",
-      "line": 34,
+      "line": 39,
       "requires": [
         "proposition",
         "contre-exemple",
@@ -601,7 +601,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module06MissionFinale.jsx",
-      "line": 35,
+      "line": 40,
       "requires": [
         "connecteurs",
         "regle-ou-inclusif"
@@ -619,7 +619,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module06MissionFinale.jsx",
-      "line": 36,
+      "line": 41,
       "requires": [
         "connecteurs",
         "methode-negation"
@@ -637,7 +637,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module06MissionFinale.jsx",
-      "line": 37,
+      "line": 42,
       "requires": [
         "implication",
         "reciproque"
@@ -655,7 +655,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module06MissionFinale.jsx",
-      "line": 38,
+      "line": 43,
       "requires": [
         "implication",
         "reciproque",
@@ -677,7 +677,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module06MissionFinale.jsx",
-      "line": 39,
+      "line": 44,
       "requires": [
         "equivalence",
         "regle-equivalence-carre"
@@ -695,7 +695,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module06MissionFinale.jsx",
-      "line": 40,
+      "line": 45,
       "requires": [
         "equivalence",
         "methode-choisir-symbole"
@@ -713,7 +713,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module06MissionFinale.jsx",
-      "line": 41,
+      "line": 46,
       "requires": [
         "contre-exemple",
         "mem-contre-exemple",
@@ -733,7 +733,7 @@
       "step": null,
       "component": "boss",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/logique-et-raisonnement-2nde/modules/Module06MissionFinale.jsx",
-      "line": 42,
+      "line": 47,
       "requires": [
         "raisonnement-absurde",
         "vocab-quatre-outils"

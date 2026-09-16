@@ -1,0 +1,1022 @@
+{
+  "lesson": "variables-aleatoires-dispersion-binomiale-1ere",
+  "grade": "premiere_specialite",
+  "lexiconVersion": 1,
+  "prerequisites": [
+    "variable-aleatoire",
+    "loi-de-probabilite",
+    "tableau-de-loi",
+    "esperance",
+    "arbre-structure",
+    "produit-chemin",
+    "somme-chemins",
+    "frequence-probabilite"
+  ],
+  "conceptsIntroduced": [
+    {
+      "id": "meme-moyenne-pas-meme-jeu",
+      "type": "concepts",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module01DeuxJeuxUneSeuleMoyenne.jsx",
+        "line": 178,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "dispersion-autour-de-la-moyenne",
+      "type": "concepts",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module01DeuxJeuxUneSeuleMoyenne.jsx",
+        "line": 257,
+        "step": 4,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "ecart-a-l-esperance",
+      "type": "concepts",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module02MesurerLEcartALaMoyenne.jsx",
+        "line": 117,
+        "step": 1,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "variance-en-unite-carree",
+      "type": "concepts",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module03RevenirDansLUniteDesGains.jsx",
+        "line": 133,
+        "step": 1,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "compter-les-succes",
+      "type": "concepts",
+      "module": 4,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module04UneEpreuveDeuxIssues.jsx",
+        "line": 178,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "loi-binomiale",
+      "type": "formules",
+      "module": 5,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module05CompterLesChemins.jsx",
+        "line": 155,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "esperance-variance-binomiale",
+      "type": "formules",
+      "module": 6,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module06TraduireUneSituation.jsx",
+        "line": 174,
+        "step": 2,
+        "variant": "new"
+      }
+    }
+  ],
+  "vocabularyIntroduced": [
+    {
+      "id": "variance",
+      "type": "vocabulaire",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module02MesurerLEcartALaMoyenne.jsx",
+        "line": 196,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "ecart-type",
+      "type": "vocabulaire",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module03RevenirDansLUniteDesGains.jsx",
+        "line": 181,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "schema-bernoulli",
+      "type": "vocabulaire",
+      "module": 4,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module04UneEpreuveDeuxIssues.jsx",
+        "line": 103,
+        "step": 1,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "coefficient-binomial",
+      "type": "vocabulaire",
+      "module": 5,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module05CompterLesChemins.jsx",
+        "line": 118,
+        "step": 2,
+        "variant": "new"
+      }
+    }
+  ],
+  "proceduresIntroduced": [
+    {
+      "id": "methode-calculer-variance",
+      "type": "methodes",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module02MesurerLEcartALaMoyenne.jsx",
+        "line": 201,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "passer-au-complementaire",
+      "type": "methodes",
+      "module": 5,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module05CompterLesChemins.jsx",
+        "line": 218,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "modeliser-par-une-variable",
+      "type": "methodes",
+      "module": 6,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module06TraduireUneSituation.jsx",
+        "line": 119,
+        "step": 1,
+        "variant": "new"
+      }
+    }
+  ],
+  "memorisation": [
+    {
+      "id": "mem-variance-ecart-type",
+      "type": "memoriser",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module03RevenirDansLUniteDesGains.jsx",
+        "line": 186,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "mem-loi-binomiale",
+      "type": "memoriser",
+      "module": 5,
+      "brick": {
+        "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module05CompterLesChemins.jsx",
+        "line": 160,
+        "step": 2,
+        "variant": "new"
+      }
+    }
+  ],
+  "questions": [
+    {
+      "questionId": "vd-d1",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module00Diagnostic.jsx",
+      "line": 37,
+      "requires": [
+        "variable-aleatoire"
+      ],
+      "prerequisiteStatus": {
+        "variable-aleatoire": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "vd-d2",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module00Diagnostic.jsx",
+      "line": 48,
+      "requires": [
+        "loi-de-probabilite"
+      ],
+      "prerequisiteStatus": {
+        "loi-de-probabilite": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "vd-d3",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module00Diagnostic.jsx",
+      "line": 59,
+      "requires": [
+        "tableau-de-loi"
+      ],
+      "prerequisiteStatus": {
+        "tableau-de-loi": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "vd-d4",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module00Diagnostic.jsx",
+      "line": 70,
+      "requires": [
+        "esperance"
+      ],
+      "prerequisiteStatus": {
+        "esperance": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "vd-d5",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module00Diagnostic.jsx",
+      "line": 81,
+      "requires": [
+        "arbre-structure",
+        "produit-chemin"
+      ],
+      "prerequisiteStatus": {
+        "arbre-structure": "prior",
+        "produit-chemin": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "vd-d6",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module00Diagnostic.jsx",
+      "line": 92,
+      "requires": [
+        "somme-chemins"
+      ],
+      "prerequisiteStatus": {
+        "somme-chemins": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "vd-d7",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module00Diagnostic.jsx",
+      "line": 103,
+      "requires": [
+        "frequence-probabilite"
+      ],
+      "prerequisiteStatus": {
+        "frequence-probabilite": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S1-Q1",
+      "module": 1,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module01DeuxJeuxUneSeuleMoyenne.jsx",
+      "line": 114,
+      "requires": [
+        "esperance",
+        "tableau-de-loi",
+        "loi-de-probabilite"
+      ],
+      "prerequisiteStatus": {
+        "esperance": "prior",
+        "tableau-de-loi": "prior",
+        "loi-de-probabilite": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S3-Q2",
+      "module": 1,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module01DeuxJeuxUneSeuleMoyenne.jsx",
+      "line": 204,
+      "requires": [
+        "meme-moyenne-pas-meme-jeu",
+        "esperance"
+      ],
+      "prerequisiteStatus": {
+        "meme-moyenne-pas-meme-jeu": "established@M1",
+        "esperance": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S4-Q3",
+      "module": 1,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module01DeuxJeuxUneSeuleMoyenne.jsx",
+      "line": 262,
+      "requires": [
+        "meme-moyenne-pas-meme-jeu",
+        "dispersion-autour-de-la-moyenne",
+        "esperance"
+      ],
+      "prerequisiteStatus": {
+        "meme-moyenne-pas-meme-jeu": "established@M1",
+        "dispersion-autour-de-la-moyenne": "established@M1",
+        "esperance": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S1-Q1",
+      "module": 2,
+      "step": 1,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module02MesurerLEcartALaMoyenne.jsx",
+      "line": 71,
+      "requires": [
+        "esperance",
+        "tableau-de-loi"
+      ],
+      "prerequisiteStatus": {
+        "esperance": "prior",
+        "tableau-de-loi": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S1-Q2",
+      "module": 2,
+      "step": 1,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module02MesurerLEcartALaMoyenne.jsx",
+      "line": 82,
+      "requires": [
+        "esperance",
+        "tableau-de-loi"
+      ],
+      "prerequisiteStatus": {
+        "esperance": "prior",
+        "tableau-de-loi": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S1-Q3",
+      "module": 2,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module02MesurerLEcartALaMoyenne.jsx",
+      "line": 100,
+      "requires": [
+        "esperance",
+        "dispersion-autour-de-la-moyenne"
+      ],
+      "prerequisiteStatus": {
+        "esperance": "prior",
+        "dispersion-autour-de-la-moyenne": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S2-Q4",
+      "module": 2,
+      "step": 2,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module02MesurerLEcartALaMoyenne.jsx",
+      "line": 142,
+      "requires": [
+        "ecart-a-l-esperance"
+      ],
+      "prerequisiteStatus": {
+        "ecart-a-l-esperance": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S2-Q5",
+      "module": 2,
+      "step": 2,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module02MesurerLEcartALaMoyenne.jsx",
+      "line": 153,
+      "requires": [
+        "ecart-a-l-esperance"
+      ],
+      "prerequisiteStatus": {
+        "ecart-a-l-esperance": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S2-Q6",
+      "module": 2,
+      "step": 2,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module02MesurerLEcartALaMoyenne.jsx",
+      "line": 172,
+      "requires": [
+        "ecart-a-l-esperance",
+        "dispersion-autour-de-la-moyenne"
+      ],
+      "prerequisiteStatus": {
+        "ecart-a-l-esperance": "established@M2",
+        "dispersion-autour-de-la-moyenne": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S3-Q7",
+      "module": 2,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module02MesurerLEcartALaMoyenne.jsx",
+      "line": 229,
+      "requires": [
+        "variance",
+        "methode-calculer-variance",
+        "meme-moyenne-pas-meme-jeu"
+      ],
+      "prerequisiteStatus": {
+        "variance": "established@M2",
+        "methode-calculer-variance": "established@M2",
+        "meme-moyenne-pas-meme-jeu": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S1-Q1",
+      "module": 3,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module03RevenirDansLUniteDesGains.jsx",
+      "line": 116,
+      "requires": [
+        "variance",
+        "methode-calculer-variance"
+      ],
+      "prerequisiteStatus": {
+        "variance": "established@M2",
+        "methode-calculer-variance": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S2-Q2",
+      "module": 3,
+      "step": 2,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module03RevenirDansLUniteDesGains.jsx",
+      "line": 150,
+      "requires": [
+        "variance",
+        "variance-en-unite-carree"
+      ],
+      "prerequisiteStatus": {
+        "variance": "established@M2",
+        "variance-en-unite-carree": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S2-Q3",
+      "module": 3,
+      "step": 2,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module03RevenirDansLUniteDesGains.jsx",
+      "line": 161,
+      "requires": [
+        "variance",
+        "variance-en-unite-carree"
+      ],
+      "prerequisiteStatus": {
+        "variance": "established@M2",
+        "variance-en-unite-carree": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S3-Q4",
+      "module": 3,
+      "step": 3,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module03RevenirDansLUniteDesGains.jsx",
+      "line": 237,
+      "requires": [
+        "ecart-type",
+        "variance",
+        "mem-variance-ecart-type",
+        "dispersion-autour-de-la-moyenne"
+      ],
+      "prerequisiteStatus": {
+        "ecart-type": "established@M3",
+        "variance": "established@M2",
+        "mem-variance-ecart-type": "established@M3",
+        "dispersion-autour-de-la-moyenne": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S1-Q1",
+      "module": 4,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module04UneEpreuveDeuxIssues.jsx",
+      "line": 80,
+      "requires": [
+        "variable-aleatoire",
+        "loi-de-probabilite"
+      ],
+      "prerequisiteStatus": {
+        "variable-aleatoire": "prior",
+        "loi-de-probabilite": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S2-Q2",
+      "module": 4,
+      "step": 2,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module04UneEpreuveDeuxIssues.jsx",
+      "line": 158,
+      "requires": [
+        "schema-bernoulli"
+      ],
+      "prerequisiteStatus": {
+        "schema-bernoulli": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S3-Q3",
+      "module": 4,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module04UneEpreuveDeuxIssues.jsx",
+      "line": 207,
+      "requires": [
+        "schema-bernoulli",
+        "produit-chemin",
+        "arbre-structure"
+      ],
+      "prerequisiteStatus": {
+        "schema-bernoulli": "established@M4",
+        "produit-chemin": "prior",
+        "arbre-structure": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S1-Q1",
+      "module": 5,
+      "step": 1,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module05CompterLesChemins.jsx",
+      "line": 69,
+      "requires": [
+        "schema-bernoulli",
+        "compter-les-succes",
+        "arbre-structure"
+      ],
+      "prerequisiteStatus": {
+        "schema-bernoulli": "established@M4",
+        "compter-les-succes": "established@M4",
+        "arbre-structure": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S2-Q2",
+      "module": 5,
+      "step": 2,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module05CompterLesChemins.jsx",
+      "line": 106,
+      "requires": [
+        "compter-les-succes",
+        "schema-bernoulli"
+      ],
+      "prerequisiteStatus": {
+        "compter-les-succes": "established@M4",
+        "schema-bernoulli": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S2-Q3",
+      "module": 5,
+      "step": 2,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module05CompterLesChemins.jsx",
+      "line": 124,
+      "requires": [
+        "produit-chemin",
+        "schema-bernoulli"
+      ],
+      "prerequisiteStatus": {
+        "produit-chemin": "prior",
+        "schema-bernoulli": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S2-Q4",
+      "module": 5,
+      "step": 2,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module05CompterLesChemins.jsx",
+      "line": 135,
+      "requires": [
+        "produit-chemin",
+        "schema-bernoulli"
+      ],
+      "prerequisiteStatus": {
+        "produit-chemin": "prior",
+        "schema-bernoulli": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S3-Q5",
+      "module": 5,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module05CompterLesChemins.jsx",
+      "line": 195,
+      "requires": [
+        "loi-binomiale",
+        "somme-chemins"
+      ],
+      "prerequisiteStatus": {
+        "loi-binomiale": "established@M5",
+        "somme-chemins": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S1-Q1",
+      "module": 6,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module06TraduireUneSituation.jsx",
+      "line": 65,
+      "requires": [
+        "variable-aleatoire",
+        "compter-les-succes"
+      ],
+      "prerequisiteStatus": {
+        "variable-aleatoire": "prior",
+        "compter-les-succes": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S1-Q2",
+      "module": 6,
+      "step": 1,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module06TraduireUneSituation.jsx",
+      "line": 83,
+      "requires": [
+        "schema-bernoulli"
+      ],
+      "prerequisiteStatus": {
+        "schema-bernoulli": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S1-Q3",
+      "module": 6,
+      "step": 1,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module06TraduireUneSituation.jsx",
+      "line": 93,
+      "requires": [
+        "schema-bernoulli",
+        "frequence-probabilite"
+      ],
+      "prerequisiteStatus": {
+        "schema-bernoulli": "established@M4",
+        "frequence-probabilite": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S2-Q4",
+      "module": 6,
+      "step": 2,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module06TraduireUneSituation.jsx",
+      "line": 136,
+      "requires": [
+        "loi-binomiale",
+        "mem-loi-binomiale",
+        "produit-chemin"
+      ],
+      "prerequisiteStatus": {
+        "loi-binomiale": "established@M5",
+        "mem-loi-binomiale": "established@M5",
+        "produit-chemin": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S2-Q5",
+      "module": 6,
+      "step": 2,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module06TraduireUneSituation.jsx",
+      "line": 156,
+      "requires": [
+        "esperance",
+        "loi-binomiale"
+      ],
+      "prerequisiteStatus": {
+        "esperance": "prior",
+        "loi-binomiale": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S3-Q6",
+      "module": 6,
+      "step": 3,
+      "component": "BatchChoiceQuestion",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module06TraduireUneSituation.jsx",
+      "line": 190,
+      "requires": [
+        "modeliser-par-une-variable",
+        "schema-bernoulli",
+        "esperance-variance-binomiale"
+      ],
+      "prerequisiteStatus": {
+        "modeliser-par-une-variable": "established@M6",
+        "schema-bernoulli": "established@M4",
+        "esperance-variance-binomiale": "established@M6"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "vd-e1",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module07MissionFinaleLesDeuxJeux.jsx",
+      "line": 39,
+      "requires": [
+        "variance",
+        "methode-calculer-variance",
+        "ecart-a-l-esperance"
+      ],
+      "prerequisiteStatus": {
+        "variance": "established@M2",
+        "methode-calculer-variance": "established@M2",
+        "ecart-a-l-esperance": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "vd-e2",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module07MissionFinaleLesDeuxJeux.jsx",
+      "line": 51,
+      "requires": [
+        "ecart-type",
+        "mem-variance-ecart-type",
+        "variance-en-unite-carree"
+      ],
+      "prerequisiteStatus": {
+        "ecart-type": "established@M3",
+        "mem-variance-ecart-type": "established@M3",
+        "variance-en-unite-carree": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "vd-e3",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module07MissionFinaleLesDeuxJeux.jsx",
+      "line": 63,
+      "requires": [
+        "variance",
+        "ecart-type",
+        "meme-moyenne-pas-meme-jeu"
+      ],
+      "prerequisiteStatus": {
+        "variance": "established@M2",
+        "ecart-type": "established@M3",
+        "meme-moyenne-pas-meme-jeu": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "vd-e4",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module07MissionFinaleLesDeuxJeux.jsx",
+      "line": 80,
+      "requires": [
+        "variance-en-unite-carree",
+        "ecart-type"
+      ],
+      "prerequisiteStatus": {
+        "variance-en-unite-carree": "established@M3",
+        "ecart-type": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "vd-e5",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module07MissionFinaleLesDeuxJeux.jsx",
+      "line": 97,
+      "requires": [
+        "schema-bernoulli"
+      ],
+      "prerequisiteStatus": {
+        "schema-bernoulli": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "vd-e6",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module07MissionFinaleLesDeuxJeux.jsx",
+      "line": 114,
+      "requires": [
+        "schema-bernoulli",
+        "compter-les-succes",
+        "loi-binomiale"
+      ],
+      "prerequisiteStatus": {
+        "schema-bernoulli": "established@M4",
+        "compter-les-succes": "established@M4",
+        "loi-binomiale": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "vd-e7",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module07MissionFinaleLesDeuxJeux.jsx",
+      "line": 131,
+      "requires": [
+        "loi-binomiale",
+        "mem-loi-binomiale",
+        "coefficient-binomial"
+      ],
+      "prerequisiteStatus": {
+        "loi-binomiale": "established@M5",
+        "mem-loi-binomiale": "established@M5",
+        "coefficient-binomial": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "vd-e8",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module07MissionFinaleLesDeuxJeux.jsx",
+      "line": 143,
+      "requires": [
+        "passer-au-complementaire",
+        "loi-binomiale"
+      ],
+      "prerequisiteStatus": {
+        "passer-au-complementaire": "established@M5",
+        "loi-binomiale": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "vd-e9",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module07MissionFinaleLesDeuxJeux.jsx",
+      "line": 155,
+      "requires": [
+        "esperance-variance-binomiale",
+        "loi-binomiale",
+        "mem-variance-ecart-type"
+      ],
+      "prerequisiteStatus": {
+        "esperance-variance-binomiale": "established@M6",
+        "loi-binomiale": "established@M5",
+        "mem-variance-ecart-type": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "vd-e10",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/lycee/premiere_specialite/probabilites/variables-aleatoires-dispersion-binomiale-1ere/modules/Module07MissionFinaleLesDeuxJeux.jsx",
+      "line": 172,
+      "requires": [
+        "modeliser-par-une-variable",
+        "schema-bernoulli",
+        "esperance-variance-binomiale"
+      ],
+      "prerequisiteStatus": {
+        "modeliser-par-une-variable": "established@M6",
+        "schema-bernoulli": "established@M4",
+        "esperance-variance-binomiale": "established@M6"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    }
+  ],
+  "findings": []
+}

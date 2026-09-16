@@ -49,16 +49,19 @@
        immédiatement dans la police de repli, puis l'échange — l'identité
        visuelle est conservée, elle arrive juste sans retenir la page.
        <noscript> garde le comportement classique sans JavaScript. -->
-  <!-- Tajawal added for Arabic UI text (see tailwind.config.js's `font-arabic`
-       and index.css's [dir="rtl"] body default) — chosen for Arabic
-       legibility; the existing Latin fonts stay for math/code and any
-       remaining Latin UI surfaces. -->
+  <!-- Cairo is the platform's global, canonical Arabic font (master spec
+       §14; tailwind.config.js `fontFamily`, index.css `html`/`h1`-`h6`/
+       `.font-space`/`.font-inter`) — chosen for Arabic legibility; the
+       existing Latin fonts stay for math/code and any remaining Latin UI
+       surfaces. Tajawal is still fetched here as the platform's second
+       Arabic fallback (covers the brief window before this non-blocking
+       sheet finishes loading), never as a primary choice. -->
   <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Tajawal:wght@300;400;500;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Tajawal:wght@300;400;500;700;800&family=Cairo:wght@400;500;600;700;900&display=swap"
     rel="stylesheet" media="print" onload="this.media='all'" />
   <noscript>
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Tajawal:wght@300;400;500;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Tajawal:wght@300;400;500;700;800&family=Cairo:wght@400;500;600;700;900&display=swap"
       rel="stylesheet" />
   </noscript>
 
@@ -96,7 +99,7 @@
         .root-spinner { width: 40px; height: 40px; border: 4px solid #3b82f6; border-top-color: transparent; border-radius: 50%; animation: root-spin 1s linear infinite; margin-bottom: 20px; }
       </style>
       <div class="root-spinner"></div>
-      <p style="color: #64748b; font-weight: 500; font-family: 'Tajawal', sans-serif;">جارٍ تحميل Smarter Academy...</p>
+      <p style="color: #64748b; font-weight: 500; font-family: 'Cairo', 'Tajawal', sans-serif;">جارٍ تحميل Smarter Academy...</p>
     </div>
   </div>
   <script type="module" src="/src/main.jsx"></script>

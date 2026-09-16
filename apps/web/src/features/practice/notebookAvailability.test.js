@@ -33,10 +33,14 @@ describe('le carnet est atteignable à tout moment', () => {
 
   it('le libellé de saisie ne présume pas d’une erreur', () => {
     const button = read('features/practice/NotebookButton.jsx');
-    // « Ce que je dois retenir de cette question » cadrait la note comme un
-    // constat d'échec.
-    expect(button).not.toMatch(/Ce que je dois retenir/);
-    expect(button).toMatch(/Ce que je veux retenir/);
+    const notebookAr = JSON.parse(read('i18n/locales/ar/student.json')).notebook;
+    // « Ce que je DOIS retenir » cadrait la note comme un constat d'échec ;
+    // « ce que je VEUX retenir » en fait un choix de l'élève. La nuance doit
+    // survivre à la traduction : l'arabe dit « ما أريد أن أتذكّره » — أريد
+    // (je veux), et surtout PAS يجب (je dois).
+    expect(button).toMatch(/notebook\.notePlaceholder/);
+    expect(notebookAr.notePlaceholder).toContain('أريد');
+    expect(notebookAr.notePlaceholder).not.toContain('يجب');
   });
 
   it('le type d’erreur reste facultatif', () => {
@@ -54,6 +58,12 @@ describe('le carnet se parcourt par leçon dans Ma progression', () => {
   });
 
   const browser = read('features/practice/NotebookBrowser.jsx');
+  // L'interface est ARABE : les libellés ne sont plus dans le JSX mais dans le
+  // catalogue de traduction. Les contrats ci-dessous vérifient donc les DEUX
+  // bouts — la clé est bien posée dans le composant, et elle correspond bien
+  // à un texte non vide côté arabe.
+  const studentAr = JSON.parse(read('i18n/locales/ar/student.json'));
+  const commonAr = JSON.parse(read('i18n/locales/ar/common.json'));
 
   it('les notes sont groupées par leçon et titrées depuis le catalogue', () => {
     expect(browser).toMatch(/getLessonById/);
@@ -61,20 +71,29 @@ describe('le carnet se parcourt par leçon dans Ma progression', () => {
   });
 
   it('elles se présentent UNE PAR UNE, avec navigation', () => {
-    expect(browser).toMatch(/Note \{index \+ 1\} \/ \{group\.notes\.length\}/);
-    expect(browser).toMatch(/Précédente/);
-    expect(browser).toMatch(/Suivante/);
+    expect(browser).toMatch(/notebook\.noteOf', \{ current: index \+ 1, total: group\.notes\.length \}/);
+    expect(studentAr.notebook.noteOf).toContain('{{current}}');
+    expect(studentAr.notebook.noteOf).toContain('{{total}}');
+    expect(browser).toMatch(/notebook\.previousNote/);
+    expect(browser).toMatch(/notebook\.nextNote/);
+    expect(studentAr.notebook.previousNote.trim()).not.toBe('');
+    expect(studentAr.notebook.nextNote.trim()).not.toBe('');
   });
 
   it('chacune se modifie et se marque traitée — dans les deux sens', () => {
-    expect(browser).toMatch(/Marquer comme traitée/);
-    expect(browser).toMatch(/À revoir/);
+    expect(browser).toMatch(/notebook\.markHandled/);
+    expect(browser).toMatch(/notebook\.markToReview/);
+    expect(studentAr.notebook.markHandled.trim()).not.toBe('');
+    expect(studentAr.notebook.markToReview.trim()).not.toBe('');
+    // La BASCULE elle-même — c'est elle qui fait les « deux sens ».
     expect(browser).toMatch(/completed: !note\.isCompleted/);
-    expect(browser).toMatch(/Modifier/);
+    expect(browser).toMatch(/tc\('edit'\)/);
+    expect(commonAr.edit.trim()).not.toBe('');
   });
 
   it('une note sans leçon n’est pas perdue', () => {
     // Elle est rangée dans un groupe explicite plutôt que filtrée.
-    expect(browser).toMatch(/Notes hors leçon/);
+    expect(browser).toMatch(/notebook\.notesOutsideLesson/);
+    expect(studentAr.notebook.notesOutsideLesson.trim()).not.toBe('');
   });
 });

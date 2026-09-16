@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 /**
@@ -17,10 +18,11 @@ import { Link } from 'react-router-dom';
  * de navigation et le pied de page : il ne doit en ajouter aucun.
  */
 
+// Des CLÉS : constant de module, donc résolu au rendu (voir CommandPalette).
 const LEGAL_LINKS = [
-  { to: '/mentions-legales', label: 'Mentions légales' },
-  { to: '/confidentialite', label: 'Confidentialité' },
-  { to: '/cgu', label: 'CGU' },
+  { to: '/mentions-legales', labelKey: 'legal.legalNoticeShort' },
+  { to: '/confidentialite', labelKey: 'legal.privacyShort' },
+  { to: '/cgu', labelKey: 'legal.termsShort' },
 ];
 
 /**
@@ -161,6 +163,7 @@ const SHELL = 'sa-page mx-auto w-full max-w-[1200px]';
 const MEASURE = 'max-w-[1050px] mx-auto';
 
 export default function LegalPage({ eyebrow, title, intro, updatedAt, children }) {
+  const { t } = useTranslation('marketing');
   return (
     <div className="pt-16">
       <section className={`py-12 sm:py-16 ${SHELL}`}>
@@ -183,7 +186,7 @@ export default function LegalPage({ eyebrow, title, intro, updatedAt, children }
             )}
             {updatedAt && (
               <p className="font-mono-jetbrains text-slate-400 text-xs uppercase tracking-wider mt-5">
-                Dernière mise à jour : {updatedAt}
+                {t('legal.lastUpdated', { date: updatedAt })}
               </p>
             )}
           </motion.div>
@@ -196,7 +199,7 @@ export default function LegalPage({ eyebrow, title, intro, updatedAt, children }
 
       <div className={`pb-20 ${SHELL}`}>
         <nav
-          aria-label="Documents légaux"
+          aria-label={t('legal.documentsAria')}
           className={`${MEASURE} border-t border-slate-200 pt-8 flex flex-wrap gap-x-6 gap-y-3`}
         >
           {LEGAL_LINKS.map((l) => (
@@ -205,15 +208,9 @@ export default function LegalPage({ eyebrow, title, intro, updatedAt, children }
               to={l.to}
               className="font-inter text-base text-slate-500 hover:text-blue-600 transition-colors"
             >
-              {l.label}
+              {t(l.labelKey)}
             </Link>
           ))}
-          <Link
-            to="/contact"
-            className="font-inter text-base text-slate-500 hover:text-blue-600 transition-colors"
-          >
-            Nous contacter
-          </Link>
         </nav>
       </div>
     </div>

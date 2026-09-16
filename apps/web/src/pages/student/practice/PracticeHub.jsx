@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState, useCallback } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { BookOpen, Dumbbell } from 'lucide-react';
 import { ArrowBack } from '../../../components/common/DirectionalIcons';
 import { AuthContext } from '../../../context/AuthContext';
@@ -27,6 +28,7 @@ const TONE = {
  * « à renforcer » à « maîtrisé ».
  */
 export default function PracticeHub() {
+  const { t } = useTranslation('student');
   const { lessonCode } = useParams();
   const { token } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -64,7 +66,7 @@ export default function PracticeHub() {
       <div className="sa-surface-plain sa-page py-8 sm:py-10 space-y-8">
         <p className="text-rose-700 bg-rose-50 border-2 border-rose-200 rounded-xl p-4">{error}</p>
         <Link to="/espace/cours" className="text-sm font-bold text-slate-600 hover:text-slate-900">
-          ← Retour à mes cours
+          ← {t('practice.backToMyCourses')}
         </Link>
       </div>
     );
@@ -81,9 +83,9 @@ export default function PracticeHub() {
 
   return (
     <div className="sa-surface-plain sa-page py-8 sm:py-10 space-y-8">
-      <nav className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-mono text-slate-500" aria-label="Fil d'Ariane">
+      <nav className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-mono text-slate-500" aria-label={t('nav.breadcrumb', { ns: 'lesson' })}>
         <Link to="/espace/cours" className="hover:text-blue-600 inline-flex items-center gap-1 whitespace-nowrap">
-          <ArrowBack className="w-3 h-3" aria-hidden="true" /> Mes cours
+          <ArrowBack className="w-3 h-3" aria-hidden="true" /> {t('practice.breadcrumbMyCourses')}
         </Link>
         {lessonPath && (
           <>
@@ -97,11 +99,11 @@ export default function PracticeHub() {
 
       <header className="space-y-2">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 font-mono text-xs font-semibold">
-          <Dumbbell className="w-3.5 h-3.5" aria-hidden="true" /> Pratique
+          <Dumbbell className="w-3.5 h-3.5" aria-hidden="true" /> {t('practice.eyebrow')}
         </div>
         <h1 className="text-2xl sm:text-3xl font-space font-extrabold text-slate-900">{lesson.title}</h1>
         <p className="text-sm text-slate-600">
-          Choisis un niveau. Tu peux revenir sur un niveau déjà terminé autant de fois que tu veux.
+          {t('practice.hubSubtitle')}
         </p>
         {/* Le retour au cours. La pratique n'est pas une impasse : l'élève qui
             butte sur un niveau doit pouvoir relire la leçon en un geste, sans
@@ -114,7 +116,7 @@ export default function PracticeHub() {
             className="inline-flex items-center gap-2 px-4 py-2.5 min-h-[44px] rounded-xl border-2 border-slate-300 bg-white text-slate-700 font-bold text-sm hover:bg-slate-50 hover:border-slate-400 transition-colors focus-visible:ring-2 focus-visible:ring-indigo-400 focus:outline-none"
           >
             <BookOpen className="w-4 h-4" aria-hidden="true" />
-            Revoir la leçon
+            {t('practice.reviewLesson')}
           </Link>
         )}
       </header>
@@ -124,27 +126,27 @@ export default function PracticeHub() {
       {openSession && (
         <div className="rounded-2xl border-2 border-indigo-200 bg-indigo-50 p-4 flex items-center justify-between gap-3 flex-wrap">
           <p className="text-sm text-indigo-900">
-            Tu as une séance en cours au <strong>niveau {openSession.level}</strong>.
+            {t('practice.openSession', { level: openSession.level })}
           </p>
           <Link
             to={`/espace/pratique/${lessonCode}/session/${openSession.sessionId}`}
             className="px-4 py-2.5 rounded-xl bg-indigo-600 text-white font-bold text-sm min-h-[44px] inline-flex items-center"
           >
-            Reprendre
+            {t('practice.resume')}
           </Link>
         </div>
       )}
 
       <section className="space-y-4">
-        <h2 className="text-lg font-space font-bold text-slate-900">Les niveaux</h2>
+        <h2 className="text-lg font-space font-bold text-slate-900">{t('practice.levelsTitle')}</h2>
         <LevelSelector levels={levels} recommendedLevel={recommendedLevel} onSelect={start} busyLevel={busyLevel} />
       </section>
 
       {learningPoints.length > 0 && (
         <section className="space-y-3">
-          <h2 className="text-lg font-space font-bold text-slate-900">Ce que tu as déjà montré</h2>
+          <h2 className="text-lg font-space font-bold text-slate-900">{t('practice.whatYouShowed')}</h2>
           <p className="text-sm text-slate-500">
-            Ces états viennent de ton test final et de ta pratique — c’est la même évaluation.
+            {t('practice.whatYouShowedHint')}
           </p>
           <ul className="space-y-2">
             {learningPoints.map((lp) => {

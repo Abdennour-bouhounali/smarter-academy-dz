@@ -7,7 +7,8 @@
     "ordonnee",
     "coordonnees",
     "composante",
-    "vecteur"
+    "vecteur",
+    "colineaire"
   ],
   "conceptsIntroduced": [
     {
@@ -16,9 +17,9 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module01LeRail.jsx",
-        "line": 145,
+        "line": 144,
         "step": 4,
-        "variant": "new"
+        "variant": "rappel"
       }
     },
     {
@@ -27,7 +28,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module01LeRail.jsx",
-        "line": 157,
+        "line": 156,
         "step": 4,
         "variant": "new"
       }
@@ -38,7 +39,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module02TroisPoints.jsx",
-        "line": 105,
+        "line": 104,
         "step": 1,
         "variant": "new"
       }
@@ -49,7 +50,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module02TroisPoints.jsx",
-        "line": 137,
+        "line": 136,
         "step": 2,
         "variant": "new"
       }
@@ -62,7 +63,7 @@
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module03Proportionnelles.jsx",
         "line": 94,
         "step": 1,
-        "variant": "new"
+        "variant": "rappel"
       }
     },
     {
@@ -82,7 +83,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module04Detecteur.jsx",
-        "line": 123,
+        "line": 122,
         "step": 1,
         "variant": "new"
       }
@@ -93,7 +94,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module04Detecteur.jsx",
-        "line": 129,
+        "line": 128,
         "step": 1,
         "variant": "new"
       }
@@ -104,7 +105,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module04Detecteur.jsx",
-        "line": 167,
+        "line": 166,
         "step": 3,
         "variant": "new"
       }
@@ -115,7 +116,7 @@
       "module": 5,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module05AlignementParallelisme.jsx",
-        "line": 190,
+        "line": 191,
         "step": 4,
         "variant": "new"
       }
@@ -126,7 +127,7 @@
       "module": 5,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module05AlignementParallelisme.jsx",
-        "line": 116,
+        "line": 117,
         "step": 1,
         "variant": "new"
       }
@@ -139,7 +140,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module01LeRail.jsx",
-        "line": 151,
+        "line": 150,
         "step": 4,
         "variant": "new"
       }
@@ -150,7 +151,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module02TroisPoints.jsx",
-        "line": 111,
+        "line": 110,
         "step": 1,
         "variant": "new"
       }
@@ -161,7 +162,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module04Detecteur.jsx",
-        "line": 150,
+        "line": 149,
         "step": 2,
         "variant": "new"
       }
@@ -172,7 +173,7 @@
       "module": 5,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module05AlignementParallelisme.jsx",
-        "line": 122,
+        "line": 123,
         "step": 1,
         "variant": "new"
       }
@@ -207,7 +208,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module04Detecteur.jsx",
-        "line": 180,
+        "line": 179,
         "step": 3,
         "variant": "new"
       }
@@ -218,7 +219,7 @@
       "module": 5,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module05AlignementParallelisme.jsx",
-        "line": 196,
+        "line": 197,
         "step": 4,
         "variant": "new"
       }
@@ -229,7 +230,7 @@
       "module": 5,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module05AlignementParallelisme.jsx",
-        "line": 221,
+        "line": 222,
         "step": 5,
         "variant": "new"
       }
@@ -242,7 +243,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module01LeRail.jsx",
-        "line": 171,
+        "line": 170,
         "step": 4,
         "variant": "new"
       }
@@ -264,7 +265,7 @@
       "module": 4,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module04Detecteur.jsx",
-        "line": 201,
+        "line": 200,
         "step": 4,
         "variant": "new"
       }
@@ -275,7 +276,7 @@
       "module": 5,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module05AlignementParallelisme.jsx",
-        "line": 227,
+        "line": 228,
         "step": 5,
         "variant": "new"
       }
@@ -343,12 +344,32 @@
       "pedagogicallyValid": true
     },
     {
-      "questionId": "col-d4-oppose",
+      "questionId": "col-d6-colineaire",
       "module": 0,
       "step": null,
       "component": "diag",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module00Diagnostic.jsx",
       "line": 53,
+      "requires": [
+        "vecteur",
+        "composante",
+        "colineaire"
+      ],
+      "prerequisiteStatus": {
+        "vecteur": "prior",
+        "composante": "prior",
+        "colineaire": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "col-d4-oppose",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module00Diagnostic.jsx",
+      "line": 68,
       "requires": [
         "vecteur",
         "composante"
@@ -366,7 +387,7 @@
       "step": null,
       "component": "diag",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module00Diagnostic.jsx",
-      "line": 64,
+      "line": 79,
       "requires": [
         "vecteur",
         "composante"
@@ -384,7 +405,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module01LeRail.jsx",
-      "line": 163,
+      "line": 162,
       "requires": [
         "colin-direction",
         "colin-vocabulaire-direction-sens",
@@ -404,7 +425,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module02TroisPoints.jsx",
-      "line": 128,
+      "line": 127,
       "requires": [
         "colin-alignement",
         "colin-vocabulaire-aligne"
@@ -422,7 +443,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module02TroisPoints.jsx",
-      "line": 150,
+      "line": 149,
       "requires": [
         "colin-alignement",
         "colin-oeil-hesite"
@@ -476,7 +497,7 @@
       "step": 3,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module04Detecteur.jsx",
-      "line": 172,
+      "line": 171,
       "requires": [
         "colin-determinant",
         "colin-formule-det"
@@ -494,7 +515,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module04Detecteur.jsx",
-      "line": 193,
+      "line": 192,
       "requires": [
         "colin-critere-det",
         "colin-calculer-det"
@@ -512,7 +533,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module05AlignementParallelisme.jsx",
-      "line": 146,
+      "line": 147,
       "requires": [
         "colin-oeil-hesite"
       ],
@@ -528,7 +549,7 @@
       "step": 3,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module05AlignementParallelisme.jsx",
-      "line": 160,
+      "line": 161,
       "requires": [
         "abscisse",
         "vecteur",
@@ -548,7 +569,7 @@
       "step": 3,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module05AlignementParallelisme.jsx",
-      "line": 166,
+      "line": 167,
       "requires": [
         "ordonnee",
         "vecteur",
@@ -568,7 +589,7 @@
       "step": 4,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module05AlignementParallelisme.jsx",
-      "line": 179,
+      "line": 180,
       "requires": [
         "colin-oeil-hesite",
         "colin-critere-det"
@@ -586,11 +607,47 @@
       "step": 5,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module05AlignementParallelisme.jsx",
-      "line": 210,
+      "line": 211,
       "requires": [
         "colin-methode-conclure"
       ],
       "prerequisiteStatus": {
+        "colin-methode-conclure": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S6-Q6",
+      "module": 5,
+      "step": 6,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module05AlignementParallelisme.jsx",
+      "line": 252,
+      "requires": [
+        "colin-parallelisme-det",
+        "colin-methode-conclure"
+      ],
+      "prerequisiteStatus": {
+        "colin-parallelisme-det": "established@M5",
+        "colin-methode-conclure": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S6-Q7",
+      "module": 5,
+      "step": 6,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/lycee/seconde/geometrie/colinearite-alignement-2nde/modules/Module05AlignementParallelisme.jsx",
+      "line": 264,
+      "requires": [
+        "colin-parallelisme-det",
+        "colin-methode-conclure"
+      ],
+      "prerequisiteStatus": {
+        "colin-parallelisme-det": "established@M5",
         "colin-methode-conclure": "established@M5"
       },
       "lexiconHits": [],

@@ -1,4 +1,5 @@
 import { useContext, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Star, Compass } from 'lucide-react';
 import { courseLevels, getAllGrades } from '@smarter-academy/core';
@@ -9,7 +10,9 @@ import LessonCard from '../../components/student/LessonCard';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 
 export default function Explorer() {
-  useDocumentMeta('Explorer', 'Explore tous les niveaux du programme, de la 6e à la Terminale.');
+  const { t } = useTranslation('student');
+  const { t: tc } = useTranslation('common');
+  useDocumentMeta(t('explorer.metaTitle'), t('explorer.metaDescription'));
   const { user } = useContext(AuthContext);
 
   const allGrades = useMemo(() => getAllGrades(), []);
@@ -45,16 +48,16 @@ export default function Explorer() {
     <div className="sa-page py-8 sm:py-10">
       <div className="mb-8">
         <p className="font-mono-jetbrains text-blue-500 text-xs font-semibold tracking-widest uppercase mb-2 flex items-center gap-1.5">
-          <Compass size={13} /> Explorer
+          <Compass size={13} /> {t('explorer.eyebrow')}
         </p>
-        <h1 className="font-space font-bold text-2xl sm:text-3xl text-slate-900">Tout le programme, du Collège au Lycée</h1>
-        <p className="font-inter text-slate-500 text-sm mt-1">Ton niveau reste ton point de départ — mais rien ne t'empêche de regarder plus loin.</p>
+        <h1 className="font-space font-bold text-2xl sm:text-3xl text-slate-900">{t('explorer.title')}</h1>
+        <p className="font-inter text-slate-500 text-sm mt-1">{t('explorer.subtitle')}</p>
       </div>
 
       {/* Mon niveau */}
       {myGrade && (
         <div className="mb-6">
-          <h2 className="font-space font-bold text-slate-400 text-xs uppercase tracking-widest mb-3">Mon niveau</h2>
+          <h2 className="font-space font-bold text-slate-400 text-xs uppercase tracking-widest mb-3">{t('explorer.myGrade')}</h2>
           <button
             onClick={() => handleSelectGrade(myGrade.id)}
             className={`inline-flex items-center gap-2 px-5 py-3 rounded-2xl font-space font-bold text-sm transition-all ${
@@ -72,7 +75,7 @@ export default function Explorer() {
 
       {/* Autres niveaux */}
       <div className="mb-8">
-        <h2 className="font-space font-bold text-slate-400 text-xs uppercase tracking-widest mb-3">Autres niveaux</h2>
+        <h2 className="font-space font-bold text-slate-400 text-xs uppercase tracking-widest mb-3">{t('explorer.otherGrades')}</h2>
         <div className="flex flex-wrap gap-2">
           {otherGrades.map((g) => (
             <button
@@ -100,7 +103,7 @@ export default function Explorer() {
                 activeChapter === 'all' ? 'bg-slate-800 text-white' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
               }`}
             >
-              Tous les chapitres
+              {t('courses.allChapters')}
             </button>
             {gradeData.chapters.map((chapter) => {
               const isSelected = chapter.id === activeChapter;
@@ -115,7 +118,7 @@ export default function Explorer() {
                 >
                   <span>{chapter.title}</span>
                   <span className={`text-[10px] mt-0.5 font-bold ${isSelected ? 'text-blue-200' : 'text-slate-400'}`}>
-                    {chapter.lessons.length} leçon{chapter.lessons.length > 1 ? 's' : ''} · {progress}%
+                    {t('courses.chapterMeta', { lessons: tc('lessonsCount', { count: chapter.lessons.length }), progress })}
                   </span>
                 </button>
               );
@@ -125,7 +128,7 @@ export default function Explorer() {
           <motion.div key={selectedGradeId + activeChapter} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <AnimatePresence mode="popLayout">
               {lessons.length === 0 ? (
-                <p className="col-span-full text-center py-10 text-slate-400 font-inter text-sm">Aucune leçon dans ce chapitre pour l'instant.</p>
+                <p className="col-span-full text-center py-10 text-slate-400 font-inter text-sm">{t('explorer.emptyChapter')}</p>
               ) : (
                 lessons.map((lesson) => <LessonCard key={lesson.id} lesson={lesson} />)
               )}

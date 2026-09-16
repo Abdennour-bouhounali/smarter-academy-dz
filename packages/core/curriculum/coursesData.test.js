@@ -1,11 +1,13 @@
 import { describe, it, expect } from 'vitest';
-import { getAllGrades, courseLevels, allCourseLevels } from './coursesData';
+import { getAllGrades, courseLevels, dzCourseLevels, referenceCourseLevels } from './coursesData';
+import programme4am from './dz/programme_4am_2026_2027.json';
 
-// Data-shape invariants below (duration formatting, learning-point IDs, …)
-// are about the FULL inherited catalogue, independent of which grades are
-// currently active for Algeria — so they run against `allCourseLevels`, not
-// the active-filtered `courseLevels`. See activeGrades.js.
-const allLessons = allCourseLevels.flatMap((level) =>
+// Les invariants de FORME ci-dessous (durée, identifiants de points
+// d'apprentissage, chemins, origine) portent sur l'arbre FRANÇAIS DE
+// RÉFÉRENCE : c'est lui qui décrit les 132 dossiers de leçons restés sur le
+// disque. Le catalogue algérien ne déclare encore aucune leçon — ses
+// invariants à lui sont testés plus bas, et portent sur les SUJETS.
+const allLessons = referenceCourseLevels.flatMap((level) =>
   level.grades.flatMap((grade) =>
     grade.chapters.flatMap((chapter) =>
       chapter.lessons.map((lesson) => ({ levelId: level.id, gradeId: grade.id, chapterId: chapter.id, lesson }))
@@ -24,8 +26,8 @@ describe('getAllGrades', () => {
     expect(grades).toHaveLength(expectedCount);
   });
 
-  it('is empty until an Algerian grade is added to activeGrades.js (ACTIVE_GRADE_IDS)', () => {
-    expect(grades).toEqual([]);
+  it('expose exactement les deux classes algériennes', () => {
+    expect(grades.map((g) => g.id).sort()).toEqual(['4am', 'terminale_dz']);
   });
 
   it('has no duplicate grade ids', () => {
@@ -109,5 +111,87 @@ describe('lesson catalogue invariants', () => {
         expect(lesson.extensionObject, where).toBeTruthy();
       }
     }
+  });
+});
+
+// ── Le catalogue ALGÉRIEN ────────────────────────────────────────────────
+//
+// Ces tests LISENT le programme officiel et comparent. Ils ne recopient
+// aucun intitulé arabe : un test qui retaperait le libellé passerait au vert
+// pendant que le catalogue s'éloignerait du programme, ce qui est exactement
+// la dérive qu'il est censé attraper (invariant I1 de la phase 6F).
+describe('catalogue algérien (dzCourseLevels)', () => {
+  const dzGrades = dzCourseLevels.flatMap((level) =>
+    level.grades.map((grade) => ({ levelId: level.id, grade }))
+  );
+  const grade4am = dzGrades.find(({ grade }) => grade.id === '4am')?.grade;
+
+  const sourceTopics = programme4am.domains.flatMap((d) => d.topics);
+
+  it('ne contient QUE les deux classes algériennes', () => {
+    expect(dzGrades.map(({ grade }) => grade.id).sort()).toEqual(['4am', 'terminale_dz']);
+  });
+
+  it('place chaque classe sous son niveau algérien', () => {
+    expect(dzGrades.find(({ grade }) => grade.id === '4am').levelId).toBe('moyen');
+    expect(dzGrades.find(({ grade }) => grade.id === 'terminale_dz').levelId).toBe('thanawi');
+  });
+
+  it("ne contient AUCUNE classe française, même dormante", () => {
+    const frenchIds = new Set(
+      referenceCourseLevels.flatMap((l) => l.grades.map((g) => g.id))
+    );
+    for (const { grade } of dzGrades) {
+      expect(frenchIds.has(grade.id), grade.id).toBe(false);
+    }
+  });
+
+  it('porte les 4 domaines du programme, dans son ordre', () => {
+    expect(grade4am.chapters.map((c) => c.id)).toEqual(programme4am.domains.map((d) => d.id));
+    expect(grade4am.chapters.map((c) => c.title)).toEqual(programme4am.domains.map((d) => d.titleAr));
+  });
+
+  it('porte les 28 sujets du programme, au mot près', () => {
+    const catalogueTopics = grade4am.chapters.flatMap((c) => c.topics);
+    expect(catalogueTopics).toHaveLength(28);
+    expect(catalogueTopics).toHaveLength(sourceTopics.length);
+
+    const source = new Map(sourceTopics.map((t) => [t.id, t.titleAr]));
+    for (const topic of catalogueTopics) {
+      expect(source.has(topic.id), topic.id).toBe(true);
+      expect(topic.title, topic.id).toBe(source.get(topic.id));
+    }
+  });
+
+  it("ne fabrique pas de méthodes nommées là où le programme se tait", () => {
+    // Six sujets seulement nomment leurs méthodes ou leurs parties. Inventer
+    // un tableau vide pour les 22 autres affirmerait que le programme ne
+    // nomme rien, alors qu'il ne dit simplement rien.
+    for (const topic of grade4am.chapters.flatMap((c) => c.topics)) {
+      const source = sourceTopics.find((t) => t.id === topic.id);
+      expect('namedMethods' in topic, topic.id).toBe('namedMethodsAr' in source);
+      expect('namedParts' in topic, topic.id).toBe('namedPartsAr' in source);
+    }
+  });
+
+  it("déclare une leçon par sujet officiel (découpage arrêté en phase 7)", () => {
+    // La phase 6F laissait `lessons` vide faute de découpage arrêté. Il l'est
+    // depuis la phase 7, par décision du propriétaire : un sujet = une leçon.
+    // La traçabilité sujet ↔ leçon a sa propre couverture dans
+    // dz/decomposition.test.js ; ici on vérifie seulement que le catalogue
+    // porte bien des leçons, et que la terminale n'en a toujours aucune.
+    const lessons4am = grade4am.chapters.flatMap((c) => c.lessons);
+    expect(lessons4am).toHaveLength(28);
+
+    const terminale = dzGrades.find(({ grade }) => grade.id === 'terminale_dz').grade;
+    expect(terminale.chapters).toEqual([]);
+  });
+
+  it("dit où en est le curriculum de chaque classe, sans le laisser deviner", () => {
+    // « Active » ne veut pas dire « du contenu existe » — invariant I2.
+    expect(grade4am.curriculumStatus).toBe('lessons_planned');
+    const terminale = dzGrades.find(({ grade }) => grade.id === 'terminale_dz').grade;
+    expect(terminale.curriculumStatus).toBe('not_supplied');
+    expect(terminale.chapters).toEqual([]);
   });
 });

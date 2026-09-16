@@ -117,7 +117,7 @@ export default function StudentNavbar() {
           {!sidebarCollapsed && (
             <div className="flex flex-col leading-none">
               <span className="font-space font-bold text-slate-900 text-sm">Smarter Academy</span>
-              <span className="font-mono-jetbrains text-[10px] text-blue-500 font-semibold tracking-wider uppercase mt-0.5">Espace élève</span>
+              <span className="font-mono-jetbrains text-[10px] text-blue-500 font-semibold tracking-wider uppercase mt-0.5">{t('studentSpace')}</span>
             </div>
           )}
         </div>
@@ -239,8 +239,8 @@ export default function StudentNavbar() {
           )}
           <button
             onClick={handleLogout}
-            aria-label="Déconnexion"
-            title="Déconnexion"
+            aria-label={t('logout')}
+            title={t('logout')}
             className="w-9 h-9 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors flex-shrink-0"
           >
             <LogOut size={15} />
@@ -253,7 +253,7 @@ export default function StudentNavbar() {
         {/* Même règle que la barre latérale : marque, pas lien. */}
         <div className="flex items-center gap-2 min-w-0">
           <img src="/smarter-academy-logo.webp" alt="Smarter Academy" className="h-8 w-auto rounded-md object-contain flex-shrink-0" />
-          <span className="font-mono-jetbrains text-[10px] text-blue-500 font-semibold tracking-wider uppercase whitespace-nowrap">Espace élève</span>
+          <span className="font-mono-jetbrains text-[10px] text-blue-500 font-semibold tracking-wider uppercase whitespace-nowrap">{t('studentSpace')}</span>
         </div>
         <div className="flex items-center gap-2">
           {grade && (
@@ -261,7 +261,7 @@ export default function StudentNavbar() {
           )}
           <button
             onClick={handleLogout}
-            aria-label="Déconnexion"
+            aria-label={t('logout')}
             className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 transition-colors"
           >
             <LogOut size={15} />

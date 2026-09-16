@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Trophy, Target, BookMarked, ArrowRight, CheckCircle2, XCircle } from 'lucide-react';
@@ -26,6 +27,7 @@ import {
  */
 
 function Epreuve({ epreuve, index, total, pick, onPick }) {
+  const { t } = useTranslation('lesson');
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
@@ -33,8 +35,10 @@ function Epreuve({ epreuve, index, total, pick, onPick }) {
       className="border-2 border-slate-200 bg-white rounded-2xl p-5 space-y-4"
     >
       <div className="flex items-center justify-between gap-2 flex-wrap">
-        <h3 className="font-space font-bold text-slate-800">{epreuve.title ?? `Épreuve ${index + 1}`}</h3>
-        <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-slate-800 text-white">
+        <h3 className="font-space font-bold text-slate-800">
+          {epreuve.title ?? `${t('boss.trial')} ${index + 1}`}
+        </h3>
+        <span dir="ltr" className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-slate-800 text-white">
           {index + 1} / {total}
         </span>
       </div>
@@ -69,6 +73,7 @@ function Epreuve({ epreuve, index, total, pick, onPick }) {
 const correctIndexOf = (ep) => (typeof ep.correct === 'number' ? ep.correct : 0);
 
 function BossReview({ epreuves, answers, onContinue, onRedo }) {
+  const { t } = useTranslation('lesson');
   const correctCount = epreuves.filter((ep) => answers[ep.id] === correctIndexOf(ep)).length;
 
   const optionLabel = (ep, i) => (ep.optionLabel ? ep.optionLabel(i) : ep.options[i]);
@@ -76,8 +81,11 @@ function BossReview({ epreuves, answers, onContinue, onRedo }) {
   return (
     <div className="space-y-6">
       <div className="bg-gradient-to-br from-slate-800 to-slate-900 text-white rounded-2xl p-6 text-center space-y-2">
-        <div className="text-[11px] font-mono uppercase tracking-widest text-slate-400">Résultat du défi</div>
-        <div className="text-3xl font-space font-extrabold">
+        <div className="text-[11px] font-mono uppercase tracking-widest text-slate-400">{t('boss.challengeResult')}</div>
+        {/* `dir="ltr"` : un score est une écriture NUMÉRIQUE. Sans lui, le
+            bidi arabe inverse les deux nombres et « 10 / 11 » se lit
+            « 11 / 10 » — le score et son maximum échangés. */}
+        <div dir="ltr" className="text-3xl font-space font-extrabold">
           {correctCount} / {epreuves.length}
         </div>
       </div>
@@ -99,9 +107,9 @@ function BossReview({ epreuves, answers, onContinue, onRedo }) {
                   ) : (
                     <XCircle className="w-4 h-4 text-rose-600 shrink-0" aria-hidden="true" />
                   )}
-                  {ep.title ?? `Épreuve ${i + 1}`}
+                  {ep.title ?? `${t('boss.trial')} ${i + 1}`}
                 </h3>
-                <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-slate-800 text-white">
+                <span dir="ltr" className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-slate-800 text-white">
                   {i + 1} / {epreuves.length}
                 </span>
               </div>
@@ -110,11 +118,11 @@ function BossReview({ epreuves, answers, onContinue, onRedo }) {
 
               <div className="text-sm space-y-1">
                 <div className={isCorrect ? 'text-emerald-700' : 'text-rose-700'}>
-                  <strong>Ta réponse :</strong> {pick == null ? '(sans réponse)' : optionLabel(ep, pick)}
+                  <strong>{t('question.yourAnswer')}</strong> {pick == null ? t('boss.noAnswer') : optionLabel(ep, pick)}
                 </div>
                 {!isCorrect && (
                   <div className="text-emerald-700">
-                    <strong>Bonne réponse :</strong> {optionLabel(ep, correctIndexOf(ep))}
+                    <strong>{t('question.correctAnswer')}</strong> {optionLabel(ep, correctIndexOf(ep))}
                   </div>
                 )}
               </div>
@@ -131,14 +139,14 @@ function BossReview({ epreuves, answers, onContinue, onRedo }) {
           onClick={onContinue}
           className="flex-1 py-3 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl min-h-[48px]"
         >
-          Voir mon profil de maîtrise <ArrowRight className="inline w-4 h-4" aria-hidden="true" />
+          {t('boss.seeMasteryProfile')} <ArrowRight className="inline w-4 h-4" aria-hidden="true" />
         </button>
         <button
           type="button"
           onClick={onRedo}
           className="py-3 px-5 bg-white border-2 border-slate-300 text-slate-700 hover:border-slate-500 font-bold rounded-xl min-h-[48px]"
         >
-          Refaire le test
+          {t('boss.retakeTest')}
         </button>
       </div>
     </div>
@@ -146,12 +154,13 @@ function BossReview({ epreuves, answers, onContinue, onRedo }) {
 }
 
 function ProfilMaitrise({ skills, scores, lessonConfig }) {
+  const { t } = useTranslation('lesson');
   const levelOf = (misses) => (misses === 0 ? 'ok' : misses === 1 ? 'mid' : 'low');
 
   const META = {
-    ok: { dot: '🟢', label: 'Très bien maîtrisé', tone: 'border-emerald-200 bg-emerald-50' },
-    mid: { dot: '🟡', label: 'Encore quelques erreurs', tone: 'border-amber-200 bg-amber-50' },
-    low: { dot: '🔴', label: 'À retravailler', tone: 'border-rose-200 bg-rose-50' },
+    ok: { dot: '🟢', label: t('boss.masteredWell'), tone: 'border-emerald-200 bg-emerald-50' },
+    mid: { dot: '🟡', label: t('boss.someErrors'), tone: 'border-amber-200 bg-amber-50' },
+    low: { dot: '🔴', label: t('boss.needsWork'), tone: 'border-rose-200 bg-rose-50' },
   };
 
   return (
@@ -176,7 +185,7 @@ function ProfilMaitrise({ skills, scores, lessonConfig }) {
                 to={target.path}
                 className="text-xs font-mono font-bold px-3 py-2 rounded-lg bg-white border-2 border-slate-300 text-slate-700 hover:border-slate-500 transition-colors"
               >
-                Revoir le module {skill.module} <ArrowRight className="inline w-3 h-3" aria-hidden="true" />
+                {t('boss.reviewModule', { number: skill.module })} <ArrowRight className="inline w-3 h-3" aria-hidden="true" />
               </Link>
             )}
           </div>
@@ -187,9 +196,9 @@ function ProfilMaitrise({ skills, scores, lessonConfig }) {
 }
 
 const PHASES = [
-  { key: 'boss', label: 'Boss final', Icon: Trophy },
-  { key: 'profil', label: 'Mon profil', Icon: Target },
-  { key: 'synthese', label: 'Synthèse', Icon: BookMarked },
+  { key: 'boss', labelKey: 'boss.phaseBoss', Icon: Trophy },
+  { key: 'profil', labelKey: 'boss.phaseProfile', Icon: Target },
+  { key: 'synthese', labelKey: 'boss.phaseSynthesis', Icon: BookMarked },
 ];
 
 export default function BossFinal({
@@ -211,6 +220,7 @@ export default function BossFinal({
   completion,     // { masterTitle, title, message, verbs: [..4], masterBadgeLabel }
   xpPerCorrect = 20,
 }) {
+  const { t } = useTranslation('lesson');
   const { xp, awardXP } = useProgress(ctx.lessonId);
   const { submitEvidence } = useEvidenceSubmission(ctx.lessonId);
   const { attempt: savedAttempt, save: saveAttempt, redo: redoAttempt } = useFinalTestAttempt(ctx.lessonId);
@@ -318,7 +328,7 @@ export default function BossFinal({
     >
       <div className="sa-page py-8 flex-1 space-y-8">
         <div className="grid grid-cols-3 gap-2">
-          {PHASES.map(({ key, label, Icon }) => {
+          {PHASES.map(({ key, labelKey, Icon }) => {
             const unlocked = phaseUnlocked(key);
             return (
               <button
@@ -335,7 +345,7 @@ export default function BossFinal({
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" aria-hidden="true" />
-                {label}
+                {t(labelKey)}
               </button>
             );
           })}
@@ -400,7 +410,7 @@ export default function BossFinal({
               ))}
 
               <ValidateButton onClick={submitBoss} disabled={!allAnswered} tone="amber">
-                Valider mes {epreuves.length} réponses
+                {t('boss.submitAnswers', { count: epreuves.length })}
               </ValidateButton>
             </motion.div>
           )}
@@ -414,9 +424,9 @@ export default function BossFinal({
           {phase === 'profil' && (
             <motion.div key="profil" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-5">
               <div className="text-center space-y-1">
-                <h2 className="text-xl font-space font-extrabold text-slate-900">Ton profil de maîtrise</h2>
+                <h2 className="text-xl font-space font-extrabold text-slate-900">{t('boss.yourMasteryProfile')}</h2>
                 <p className="text-sm text-slate-500">
-                  Pas seulement un score : ce que tu maîtrises, et ce qui mérite encore un passage.
+                  {t('boss.profileSubtitle')}
                 </p>
               </div>
 
@@ -424,7 +434,7 @@ export default function BossFinal({
 
               {badgesGagnes.length > 0 && (
                 <div className="space-y-3">
-                  <h3 className="font-space font-bold text-slate-800 text-sm">Badges débloqués</h3>
+                  <h3 className="font-space font-bold text-slate-800 text-sm">{t('boss.badgesUnlocked')}</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {badgesGagnes.map((b) => (
                       <motion.div
@@ -449,7 +459,7 @@ export default function BossFinal({
                 onClick={() => setPhase('synthese')}
                 className="w-full py-3 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl min-h-[48px]"
               >
-                Passer à la synthèse →
+                {t('boss.goToSynthesis')}
               </button>
             </motion.div>
           )}

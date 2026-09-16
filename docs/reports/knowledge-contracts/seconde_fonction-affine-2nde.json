@@ -19,7 +19,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonction-affine-2nde/modules/Module01LeReservoir.jsx",
-        "line": 69,
+        "line": 68,
         "step": 1,
         "variant": "new"
       }
@@ -30,7 +30,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonction-affine-2nde/modules/Module02LeTauxDAccroissement.jsx",
-        "line": 61,
+        "line": 60,
         "step": 1,
         "variant": "new"
       }
@@ -41,7 +41,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonction-affine-2nde/modules/Module02LeTauxDAccroissement.jsx",
-        "line": 118,
+        "line": 117,
         "step": 4,
         "variant": "new"
       }
@@ -63,7 +63,7 @@
       "module": 5,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonction-affine-2nde/modules/Module05SigneEquationsInequations.jsx",
-        "line": 51,
+        "line": 52,
         "step": 2,
         "variant": "new"
       }
@@ -76,7 +76,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonction-affine-2nde/modules/Module01LeReservoir.jsx",
-        "line": 98,
+        "line": 97,
         "step": 3,
         "variant": "new"
       }
@@ -89,7 +89,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonction-affine-2nde/modules/Module02LeTauxDAccroissement.jsx",
-        "line": 77,
+        "line": 76,
         "step": 2,
         "variant": "new"
       }
@@ -122,7 +122,7 @@
       "module": 5,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonction-affine-2nde/modules/Module05SigneEquationsInequations.jsx",
-        "line": 38,
+        "line": 39,
         "step": 1,
         "variant": "new"
       }
@@ -133,8 +133,8 @@
       "module": 5,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonction-affine-2nde/modules/Module05SigneEquationsInequations.jsx",
-        "line": 79,
-        "step": 4,
+        "line": 110,
+        "step": 5,
         "variant": "new"
       }
     },
@@ -157,7 +157,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonction-affine-2nde/modules/Module01LeReservoir.jsx",
-        "line": 110,
+        "line": 109,
         "step": 4,
         "variant": "new"
       }
@@ -271,7 +271,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonction-affine-2nde/modules/Module01LeReservoir.jsx",
-      "line": 111,
+      "line": 110,
       "requires": [
         "fonction-affine-ab",
         "vocab-coefficient-ordonnee",
@@ -291,7 +291,7 @@
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonction-affine-2nde/modules/Module02LeTauxDAccroissement.jsx",
-      "line": 90,
+      "line": 89,
       "requires": [
         "taux-accroissement",
         "methode-reconnaitre-affine-table"
@@ -309,7 +309,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonction-affine-2nde/modules/Module02LeTauxDAccroissement.jsx",
-      "line": 119,
+      "line": 118,
       "requires": [
         "taux-accroissement",
         "formule-taux"
@@ -435,7 +435,7 @@
       "step": 1,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonction-affine-2nde/modules/Module05SigneEquationsInequations.jsx",
-      "line": 39,
+      "line": 40,
       "requires": [
         "fonction-affine-ab",
         "methode-equation-affine"
@@ -453,7 +453,7 @@
       "step": 2,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonction-affine-2nde/modules/Module05SigneEquationsInequations.jsx",
-      "line": 52,
+      "line": 53,
       "requires": [
         "regle-signe-affine-zero"
       ],
@@ -469,7 +469,7 @@
       "step": 3,
       "component": "NumericQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonction-affine-2nde/modules/Module05SigneEquationsInequations.jsx",
-      "line": 68,
+      "line": 69,
       "requires": [
         "methode-equation-affine"
       ],
@@ -483,9 +483,25 @@
       "questionId": "M05-S4-Q4",
       "module": 5,
       "step": 4,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonction-affine-2nde/modules/Module05SigneEquationsInequations.jsx",
+      "line": 87,
+      "requires": [
+        "fonction-affine-ab"
+      ],
+      "prerequisiteStatus": {
+        "fonction-affine-ab": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S5-Q5",
+      "module": 5,
+      "step": 5,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/fonctions/fonction-affine-2nde/modules/Module05SigneEquationsInequations.jsx",
-      "line": 80,
+      "line": 111,
       "requires": [
         "methode-inequation-affine",
         "methode-equation-affine"

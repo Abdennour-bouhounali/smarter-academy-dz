@@ -13,7 +13,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/arithmetique-2nde/modules/Module01PaquetsEtRestes.jsx",
-        "line": 108,
+        "line": 107,
         "step": 3,
         "variant": "new"
       }
@@ -24,7 +24,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/arithmetique-2nde/modules/Module01PaquetsEtRestes.jsx",
-        "line": 113,
+        "line": 112,
         "step": 3,
         "variant": "new"
       }
@@ -35,7 +35,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/arithmetique-2nde/modules/Module01PaquetsEtRestes.jsx",
-        "line": 75,
+        "line": 74,
         "step": 1,
         "variant": "new"
       }
@@ -79,7 +79,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/arithmetique-2nde/modules/Module03CriteresDemontres.jsx",
-        "line": 77,
+        "line": 76,
         "step": 2,
         "variant": "new"
       }
@@ -90,7 +90,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/arithmetique-2nde/modules/Module03CriteresDemontres.jsx",
-        "line": 55,
+        "line": 54,
         "step": 1,
         "variant": "new"
       }
@@ -172,7 +172,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/arithmetique-2nde/modules/Module01PaquetsEtRestes.jsx",
-        "line": 126,
+        "line": 125,
         "step": 3,
         "variant": "new"
       }
@@ -276,7 +276,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/arithmetique-2nde/modules/Module01PaquetsEtRestes.jsx",
-      "line": 66,
+      "line": 65,
       "requires": [],
       "prerequisiteStatus": {},
       "lexiconHits": [],
@@ -288,7 +288,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/arithmetique-2nde/modules/Module01PaquetsEtRestes.jsx",
-      "line": 92,
+      "line": 91,
       "requires": [
         "regle-reste-decide"
       ],
@@ -304,7 +304,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/arithmetique-2nde/modules/Module01PaquetsEtRestes.jsx",
-      "line": 118,
+      "line": 117,
       "requires": [
         "division-euclidienne",
         "multiple-diviseur"
@@ -400,7 +400,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/arithmetique-2nde/modules/Module03CriteresDemontres.jsx",
-      "line": 46,
+      "line": 45,
       "requires": [],
       "prerequisiteStatus": {},
       "lexiconHits": [],
@@ -412,7 +412,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/arithmetique-2nde/modules/Module03CriteresDemontres.jsx",
-      "line": 69,
+      "line": 68,
       "requires": [
         "critere-est-decoupage"
       ],
@@ -428,7 +428,7 @@
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/lycee/seconde/nombres_calculs/arithmetique-2nde/modules/Module03CriteresDemontres.jsx",
-      "line": 89,
+      "line": 88,
       "requires": [
         "criteres-divisibilite"
       ],

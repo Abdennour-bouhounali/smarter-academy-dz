@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Feedback, NumberField, ChoiceGrid, ValidateButton } from './LessonUI';
 import { parseFr } from '@smarter-academy/core';
 
@@ -25,6 +26,7 @@ export default function AnswerBuilder({
   solved,
   hint,
 }) {
+  const { t } = useTranslation('lesson');
   const [val, setVal] = useState('');
   const [valChecked, setValChecked] = useState(false);
   const [unit, setUnit] = useState(null);
@@ -106,7 +108,7 @@ export default function AnswerBuilder({
                 }}
                 disabled={sentencePick === null}
               >
-                Valider ma réponse
+                {t('question.validateMyAnswer')}
               </ValidateButton>
             </div>
           )}

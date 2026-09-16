@@ -29,7 +29,7 @@
 // of mistake (an unexpected mount) as on the original one (a missing mount).
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
-import { allCourseLevels } from '../packages/core/curriculum/coursesData.js';
+import { referenceCourseLevels } from '../packages/core/curriculum/coursesData.js';
 import { ACTIVE_GRADE_IDS } from '../packages/core/curriculum/activeGrades.js';
 
 const ROOT = new URL('../', import.meta.url).pathname;
@@ -48,7 +48,16 @@ const walk = (dir, out = []) => {
 const app = readFileSync(APP, 'utf8');
 const problems = [];
 
-const gradeIdFromPath = (rel) => rel.match(/lessons\/(?:college|lycee)\/([^/]+)\//)?.[1] ?? null;
+// Les niveaux ALGÉRIENS (`moyen`, `thanawi`) autant que les français hérités.
+// Sans eux, une leçon de 4AM (apps/web/src/lessons/moyen/4am/...) serait vue
+// comme SANS CLASSE : `gradeIdFromPath` rendrait null, la leçon passerait pour
+// dormante, et la brancher dans App.jsx ferait échouer ce contrôle en
+// annonçant une « fuite de contenu dormant ». Le piège est documenté dans
+// docs/ALGERIA_4AM_CURRICULUM.md §8 : l'expression doit accueillir `moyen`
+// AVANT que la première leçon algérienne soit montée.
+const LESSON_PATH_RE = /lessons\/(?:college|lycee|moyen|thanawi)\/([^/]+)\//;
+
+const gradeIdFromPath = (rel) => rel.match(LESSON_PATH_RE)?.[1] ?? null;
 
 for (const file of walk(LESSONS)) {
   const src = readFileSync(file, 'utf8');
@@ -74,10 +83,13 @@ for (const file of walk(LESSONS)) {
 }
 
 // ── Contrôle 2 : le chemin déclaré est-il celui du lien de la carte ? ──────
-// Contre le catalogue COMPLET (pas seulement actif) : une leçon dormante
-// garde une intégrité de données vérifiable même non montée.
+// Contre l'ARBRE DE RÉFÉRENCE français : les 132 dossiers de leçons sont
+// français, et c'est lui qui les décrit. Le catalogue DZ ne déclare aucune
+// leçon (phase 6F : les 28 sujets de 4AM sont portés par leurs chapitres),
+// donc il n'a rien à dire sur un chemin de fichier. Quand la phase 7 écrira
+// les premières leçons algériennes, ce contrôle devra lire LES DEUX arbres.
 const catalogue = new Map();
-for (const niveau of allCourseLevels) {
+for (const niveau of referenceCourseLevels) {
   for (const grade of niveau.grades) {
     for (const chapitre of grade.chapters) {
       for (const lecon of chapitre.lessons) catalogue.set(`${grade.id}:${lecon.id}`, lecon.path);
@@ -99,7 +111,7 @@ for (const file of walkConfigs(LESSONS)) {
   const rel = relative(ROOT, file);
   const base = src.match(/LESSON_BASE_PATH\s*=\s*'([^']+)'/)?.[1];
   const id = src.match(/^\s*id:\s*'([^']+)'/m)?.[1];
-  const grade = file.match(/lessons\/(?:college|lycee)\/([^/]+)\//)?.[1];
+  const grade = file.match(LESSON_PATH_RE)?.[1];
   if (!base || !id || !grade) continue;   // validate-lessons.mjs juge la forme
 
   const attendu = catalogue.get(`${grade}:${id}`);

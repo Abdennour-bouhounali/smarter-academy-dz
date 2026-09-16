@@ -1,0 +1,746 @@
+{
+  "lesson": "statistiques-4e",
+  "grade": "4e",
+  "lexiconVersion": 1,
+  "prerequisites": [
+    "serie-donnees",
+    "effectif",
+    "tableau-effectifs",
+    "frequence",
+    "moyenne",
+    "diagramme-barres",
+    "diagramme-circulaire",
+    "interpreter"
+  ],
+  "conceptsIntroduced": [
+    {
+      "id": "indicateur-stat",
+      "type": "concepts",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module01LObservatoire.jsx",
+        "line": 191,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "moyenne-ponderee",
+      "type": "formules",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module02TousLesDevoirs.jsx",
+        "line": 158,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "mediane-stat",
+      "type": "concepts",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module03CouperLeGroupe.jsx",
+        "line": 171,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "etendue",
+      "type": "formules",
+      "module": 4,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module04DuPlusPetitAuPlusGrand.jsx",
+        "line": 173,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "axe-tronque",
+      "type": "regles",
+      "module": 7,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module07LeGraphiqueQuiMent.jsx",
+        "line": 117,
+        "step": 2,
+        "variant": "new"
+      }
+    }
+  ],
+  "vocabularyIntroduced": [],
+  "proceduresIntroduced": [
+    {
+      "id": "mediane-partage",
+      "type": "methodes",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module03CouperLeGroupe.jsx",
+        "line": 254,
+        "step": 5,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "comparer-series",
+      "type": "methodes",
+      "module": 5,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module05DeuxGroupes.jsx",
+        "line": 140,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "choisir-indicateur",
+      "type": "methodes",
+      "module": 6,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module06DeuxVilles.jsx",
+        "line": 143,
+        "step": 2,
+        "variant": "new"
+      }
+    }
+  ],
+  "memorisation": [
+    {
+      "id": "mem-trois-indicateurs",
+      "type": "memoriser",
+      "module": 6,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module06DeuxVilles.jsx",
+        "line": 174,
+        "step": 3,
+        "variant": "new"
+      }
+    }
+  ],
+  "questions": [
+    {
+      "questionId": "st4-d1-serie",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module00Diagnostic.jsx",
+      "line": 27,
+      "requires": [
+        "serie-donnees"
+      ],
+      "prerequisiteStatus": {
+        "serie-donnees": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "st4-d2-effectif",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module00Diagnostic.jsx",
+      "line": 38,
+      "requires": [
+        "effectif"
+      ],
+      "prerequisiteStatus": {
+        "effectif": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "st4-d3-tableau",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module00Diagnostic.jsx",
+      "line": 49,
+      "requires": [
+        "tableau-effectifs"
+      ],
+      "prerequisiteStatus": {
+        "tableau-effectifs": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "st4-d4-frequence",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module00Diagnostic.jsx",
+      "line": 60,
+      "requires": [
+        "frequence"
+      ],
+      "prerequisiteStatus": {
+        "frequence": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "st4-d5-moyenne",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module00Diagnostic.jsx",
+      "line": 71,
+      "requires": [
+        "moyenne"
+      ],
+      "prerequisiteStatus": {
+        "moyenne": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "st4-d6-barres",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module00Diagnostic.jsx",
+      "line": 82,
+      "requires": [
+        "diagramme-barres"
+      ],
+      "prerequisiteStatus": {
+        "diagramme-barres": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "st4-d7-circulaire",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module00Diagnostic.jsx",
+      "line": 97,
+      "requires": [
+        "diagramme-circulaire"
+      ],
+      "prerequisiteStatus": {
+        "diagramme-circulaire": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "st4-d8-interpreter",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module00Diagnostic.jsx",
+      "line": 112,
+      "requires": [
+        "interpreter"
+      ],
+      "prerequisiteStatus": {
+        "interpreter": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S3-Q1",
+      "module": 1,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module01LObservatoire.jsx",
+      "line": 175,
+      "requires": [
+        "moyenne",
+        "serie-donnees"
+      ],
+      "prerequisiteStatus": {
+        "moyenne": "prior",
+        "serie-donnees": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S4-Q2",
+      "module": 1,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module01LObservatoire.jsx",
+      "line": 212,
+      "requires": [
+        "moyenne",
+        "indicateur-stat"
+      ],
+      "prerequisiteStatus": {
+        "moyenne": "prior",
+        "indicateur-stat": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S3-Q1",
+      "module": 2,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module02TousLesDevoirs.jsx",
+      "line": 142,
+      "requires": [
+        "moyenne",
+        "indicateur-stat"
+      ],
+      "prerequisiteStatus": {
+        "moyenne": "prior",
+        "indicateur-stat": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S4-Q2",
+      "module": 2,
+      "step": 4,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module02TousLesDevoirs.jsx",
+      "line": 199,
+      "requires": [
+        "tableau-effectifs",
+        "effectif"
+      ],
+      "prerequisiteStatus": {
+        "tableau-effectifs": "prior",
+        "effectif": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S5-Q3",
+      "module": 2,
+      "step": 5,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module02TousLesDevoirs.jsx",
+      "line": 220,
+      "requires": [
+        "moyenne-ponderee",
+        "tableau-effectifs"
+      ],
+      "prerequisiteStatus": {
+        "moyenne-ponderee": "established@M2",
+        "tableau-effectifs": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S2-Q1",
+      "module": 3,
+      "step": 2,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module03CouperLeGroupe.jsx",
+      "line": 151,
+      "requires": [
+        "moyenne",
+        "indicateur-stat"
+      ],
+      "prerequisiteStatus": {
+        "moyenne": "prior",
+        "indicateur-stat": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S4-Q2",
+      "module": 3,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module03CouperLeGroupe.jsx",
+      "line": 214,
+      "requires": [
+        "mediane-stat"
+      ],
+      "prerequisiteStatus": {
+        "mediane-stat": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S5-Q3",
+      "module": 3,
+      "step": 5,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module03CouperLeGroupe.jsx",
+      "line": 238,
+      "requires": [
+        "mediane-stat",
+        "interpreter"
+      ],
+      "prerequisiteStatus": {
+        "mediane-stat": "established@M3",
+        "interpreter": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S3-Q1",
+      "module": 4,
+      "step": 3,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module04DuPlusPetitAuPlusGrand.jsx",
+      "line": 157,
+      "requires": [
+        "indicateur-stat",
+        "serie-donnees"
+      ],
+      "prerequisiteStatus": {
+        "indicateur-stat": "established@M1",
+        "serie-donnees": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S4-Q2",
+      "module": 4,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module04DuPlusPetitAuPlusGrand.jsx",
+      "line": 188,
+      "requires": [
+        "etendue",
+        "indicateur-stat"
+      ],
+      "prerequisiteStatus": {
+        "etendue": "established@M4",
+        "indicateur-stat": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S5-Q3",
+      "module": 4,
+      "step": 5,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module04DuPlusPetitAuPlusGrand.jsx",
+      "line": 219,
+      "requires": [
+        "etendue"
+      ],
+      "prerequisiteStatus": {
+        "etendue": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S2-Q1",
+      "module": 5,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module05DeuxGroupes.jsx",
+      "line": 100,
+      "requires": [
+        "moyenne",
+        "indicateur-stat"
+      ],
+      "prerequisiteStatus": {
+        "moyenne": "prior",
+        "indicateur-stat": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S3-Q2",
+      "module": 5,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module05DeuxGroupes.jsx",
+      "line": 124,
+      "requires": [
+        "mediane-stat",
+        "etendue",
+        "indicateur-stat"
+      ],
+      "prerequisiteStatus": {
+        "mediane-stat": "established@M3",
+        "etendue": "established@M4",
+        "indicateur-stat": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S2-Q1",
+      "module": 6,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module06DeuxVilles.jsx",
+      "line": 127,
+      "requires": [
+        "comparer-series",
+        "mediane-stat",
+        "etendue"
+      ],
+      "prerequisiteStatus": {
+        "comparer-series": "established@M5",
+        "mediane-stat": "established@M3",
+        "etendue": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S3-Q2",
+      "module": 6,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module06DeuxVilles.jsx",
+      "line": 158,
+      "requires": [
+        "choisir-indicateur",
+        "etendue"
+      ],
+      "prerequisiteStatus": {
+        "choisir-indicateur": "established@M6",
+        "etendue": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M07-S2-Q1",
+      "module": 7,
+      "step": 2,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module07LeGraphiqueQuiMent.jsx",
+      "line": 102,
+      "requires": [
+        "indicateur-stat",
+        "diagramme-barres"
+      ],
+      "prerequisiteStatus": {
+        "indicateur-stat": "established@M1",
+        "diagramme-barres": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M07-S3-Q2",
+      "module": 7,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module07LeGraphiqueQuiMent.jsx",
+      "line": 132,
+      "requires": [
+        "axe-tronque",
+        "diagramme-barres"
+      ],
+      "prerequisiteStatus": {
+        "axe-tronque": "established@M7",
+        "diagramme-barres": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M07-S4-Q3",
+      "module": 7,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module07LeGraphiqueQuiMent.jsx",
+      "line": 168,
+      "requires": [
+        "choisir-indicateur",
+        "mediane-partage"
+      ],
+      "prerequisiteStatus": {
+        "choisir-indicateur": "established@M6",
+        "mediane-partage": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "st4-e1",
+      "module": 8,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module08MissionFinale.jsx",
+      "line": 54,
+      "requires": [
+        "moyenne-ponderee"
+      ],
+      "prerequisiteStatus": {
+        "moyenne-ponderee": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "st4-e2",
+      "module": 8,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module08MissionFinale.jsx",
+      "line": 66,
+      "requires": [
+        "moyenne-ponderee",
+        "tableau-effectifs"
+      ],
+      "prerequisiteStatus": {
+        "moyenne-ponderee": "established@M2",
+        "tableau-effectifs": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "st4-e3",
+      "module": 8,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module08MissionFinale.jsx",
+      "line": 78,
+      "requires": [
+        "mediane-stat"
+      ],
+      "prerequisiteStatus": {
+        "mediane-stat": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "st4-e4",
+      "module": 8,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module08MissionFinale.jsx",
+      "line": 90,
+      "requires": [
+        "mediane-stat"
+      ],
+      "prerequisiteStatus": {
+        "mediane-stat": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "st4-e5",
+      "module": 8,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module08MissionFinale.jsx",
+      "line": 102,
+      "requires": [
+        "mediane-partage"
+      ],
+      "prerequisiteStatus": {
+        "mediane-partage": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "st4-e6",
+      "module": 8,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module08MissionFinale.jsx",
+      "line": 119,
+      "requires": [
+        "etendue"
+      ],
+      "prerequisiteStatus": {
+        "etendue": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "st4-e7",
+      "module": 8,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module08MissionFinale.jsx",
+      "line": 131,
+      "requires": [
+        "etendue"
+      ],
+      "prerequisiteStatus": {
+        "etendue": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "st4-e8",
+      "module": 8,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module08MissionFinale.jsx",
+      "line": 148,
+      "requires": [
+        "choisir-indicateur",
+        "mediane-partage"
+      ],
+      "prerequisiteStatus": {
+        "choisir-indicateur": "established@M6",
+        "mediane-partage": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "st4-e9",
+      "module": 8,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module08MissionFinale.jsx",
+      "line": 165,
+      "requires": [
+        "comparer-series",
+        "etendue",
+        "choisir-indicateur"
+      ],
+      "prerequisiteStatus": {
+        "comparer-series": "established@M5",
+        "etendue": "established@M4",
+        "choisir-indicateur": "established@M6"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "st4-e10",
+      "module": 8,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/donnees_probabilites/statistiques-4e/modules/Module08MissionFinale.jsx",
+      "line": 182,
+      "requires": [
+        "axe-tronque",
+        "diagramme-barres"
+      ],
+      "prerequisiteStatus": {
+        "axe-tronque": "established@M7",
+        "diagramme-barres": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    }
+  ],
+  "findings": []
+}

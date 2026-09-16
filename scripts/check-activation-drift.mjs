@@ -41,7 +41,7 @@ import { spawnSync } from 'node:child_process';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { allCourseLevels } from '../packages/core/curriculum/coursesData.js';
+import { dzCourseLevels } from '../packages/core/curriculum/coursesData.js';
 import { isGradeActive } from '../packages/core/curriculum/activeGrades.js';
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -59,7 +59,7 @@ const problems = [];
  */
 function projectFromSource() {
   const grades = {};
-  for (const level of allCourseLevels) {
+  for (const level of dzCourseLevels) {
     for (const grade of level.grades) {
       const lessons = {};
       for (const chapter of grade.chapters) {

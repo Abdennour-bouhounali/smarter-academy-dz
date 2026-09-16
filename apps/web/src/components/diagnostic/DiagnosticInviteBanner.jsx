@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { Brain } from 'lucide-react';
 import { ArrowForward } from '../common/DirectionalIcons';
 import { AuthContext } from '../../context/AuthContext';
@@ -14,6 +15,7 @@ import { isDiagnosticAvailableForGrade } from '../../services/diagnosticService'
  * nothing at all for a grade with no diagnostic yet (§2 of the brief).
  */
 export default function DiagnosticInviteBanner() {
+  const { t } = useTranslation('student');
   const { user } = useContext(AuthContext);
   const eligible = isDiagnosticAvailableForGrade(user?.grade);
   const { session, loading } = useDiagnosticSession(eligible ? user.grade : null, { autoStart: false });
@@ -37,12 +39,12 @@ export default function DiagnosticInviteBanner() {
           </div>
           <div className="min-w-0">
             <p className="font-space font-bold text-slate-900 text-sm">
-              {isResuming ? 'Reprends ton diagnostic 6e' : 'Découvre ton profil mathématique'}
+              {isResuming ? t('diagnostic.banner.resumeTitle') : t('diagnostic.banner.startTitle')}
             </p>
             <p className="font-inter text-slate-500 text-xs mt-0.5 truncate">
               {isResuming
-                ? 'Encore quelques questions pour connaître ton point de départ.'
-                : '10 à 15 min, sans note — pour savoir par où commencer.'}
+                ? t('diagnostic.banner.resumeBody')
+                : t('diagnostic.banner.startBody')}
             </p>
           </div>
         </div>

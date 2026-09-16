@@ -10,6 +10,7 @@ import GoogleButton from '../components/auth/GoogleButton';
 
 export default function Register() {
   const { t } = useTranslation('auth');
+  const { t: tm } = useTranslation('marketing');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -51,7 +52,7 @@ export default function Register() {
     // consentement — c'est lui qui fait foi (voir AuthController::register).
     if (!acceptLegal) {
       setConsentError(
-        'Vous devez accepter les Conditions Générales d’Utilisation et la Politique de confidentialité.',
+        tm('consent.required'),
       );
       return;
     }

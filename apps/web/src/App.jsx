@@ -110,8 +110,10 @@ function LessonProgressSync() {
 // docs/architecture/LESSON_CONTRACT.md. An unmatched /courses/... URL falls
 // through to the catch-all below.
 //
-// None are currently imported: every inherited French grade is dormant for
-// Algeria (see the CourseLayout <Route> block below and activeGrades.js).
+// Les 132 leçons FRANÇAISES héritées restent non importées : leurs classes
+// sont hors du produit algérien (activeGrades.js). Seules les leçons 4AM
+// écrites sous lessons/moyen/4am/ sont montées ici.
+import pgcdRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/pgcd/routes';
 
 export default function App() {
   return (
@@ -241,13 +243,12 @@ export default function App() {
             <Route path="/"         element={<HomeRedirect />} />
             <Route path="/courses"  element={<Courses />} />
 
-            {/* No lesson routes are mounted: every inherited French grade
-                is dormant (packages/core/curriculum/activeGrades.js —
-                ACTIVE_GRADE_IDS is empty pending the Algerian curriculum,
-                see docs/ALGERIA_MIGRATION_AUDIT.md §15 and roadmap Phase 7).
-                Lesson folders/routes.jsx stay on disk unimported; add a
-                grade's imports back here once it is added to
-                ACTIVE_GRADE_IDS. */}
+            {/* Les leçons 4AM montées. Les dossiers de leçons FRANÇAISES
+                restent sur le disque sans être importés : leurs classes ne
+                sont pas dans ACTIVE_GRADE_IDS
+                (packages/core/curriculum/activeGrades.js), et
+                check-dormant-isolation.mjs le vérifie à chaque build. */}
+            {pgcdRoutes()}
 
             {/* ── SURFACE DE QA — jamais en production ────────────────
                 Le moteur de leçon n'a jamais été rendu sous RTL, faute de

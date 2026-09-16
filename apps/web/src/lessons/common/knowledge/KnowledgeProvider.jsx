@@ -22,7 +22,7 @@ const KnowledgeMapTrigger = lazy(() =>
  * 2026-09-06). Une leçon la monte depuis son routes.jsx :
  *
  *   <LessonKnowledgeProvider lessonId={LESSON_CONFIG.id} knowledge={LESSON_KNOWLEDGE}
- *                            printTitle="…" printSubject="Mathématiques · 2nde">
+ *                            printTitle="…" printSubject="الرياضيات · السنة الرابعة متوسط">
  *
  *   modules validés (useProgress.completedModules)
  *   ∪ modules dont l'« À retenir » vient de s'afficher sur cette page
@@ -46,7 +46,12 @@ const KnowledgeMapTrigger = lazy(() =>
  */
 const KnowledgeContext = createContext(null);
 
-export function LessonKnowledgeProvider({ lessonId, knowledge, printTitle, printSubject = 'Mathématiques · 2nde', children }) {
+// `printSubject` sans défaut : l'ancien défaut « Mathématiques · 2nde »
+// nommait une classe FRANÇAISE qui n'existe pas dans le système algérien, et
+// il partait à l'impression de la carte de connaissances. La leçon fournit sa
+// matière et sa classe (voir routes.jsx) ; sans elles, KnowledgeMap retombe
+// sur un libellé arabe neutre.
+export function LessonKnowledgeProvider({ lessonId, knowledge, printTitle, printSubject, children }) {
   const { completedModules } = useProgress(lessonId);
   const [liveUnlocked, setLiveUnlocked] = useState([]);
   const [liveItems, setLiveItems] = useState([]);

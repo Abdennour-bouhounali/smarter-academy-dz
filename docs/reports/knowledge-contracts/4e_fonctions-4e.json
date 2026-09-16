@@ -1,0 +1,731 @@
+{
+  "lesson": "fonctions-4e",
+  "grade": "4e",
+  "lexiconVersion": 1,
+  "prerequisites": [
+    "dependance",
+    "meme-entree-meme-sortie",
+    "en-fonction-de",
+    "tableau-de-valeurs",
+    "programme-de-calcul",
+    "couple-point",
+    "lire-graphique",
+    "calcul-numerique"
+  ],
+  "conceptsIntroduced": [
+    {
+      "id": "chaine-orientee",
+      "type": "concepts",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module01LaChaine.jsx",
+        "line": 192,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "meme-chaine-toutes-entrees",
+      "type": "regles",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module02PlusieursEntrees.jsx",
+        "line": 142,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "formule-qui-resume",
+      "type": "formules",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module03DireLaMachine.jsx",
+        "line": 118,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "deux-chaines-une-formule",
+      "type": "concepts",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module03DireLaMachine.jsx",
+        "line": 189,
+        "step": 4,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "dependance-qui-diminue",
+      "type": "concepts",
+      "module": 6,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module06LEnclosEtLaCiterne.jsx",
+        "line": 134,
+        "step": 2,
+        "variant": "new"
+      }
+    }
+  ],
+  "vocabularyIntroduced": [],
+  "proceduresIntroduced": [
+    {
+      "id": "remonter-la-chaine",
+      "type": "methodes",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module01LaChaine.jsx",
+        "line": 199,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "du-tableau-a-la-formule",
+      "type": "methodes",
+      "module": 4,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module04LeTableauMuet.jsx",
+        "line": 200,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "formule-en-dessin",
+      "type": "methodes",
+      "module": 5,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module05LaFormuleDevientUnDessin.jsx",
+        "line": 186,
+        "step": 3,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "modeliser-une-situation",
+      "type": "methodes",
+      "module": 6,
+      "brick": {
+        "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module06LEnclosEtLaCiterne.jsx",
+        "line": 253,
+        "step": 6,
+        "variant": "new"
+      }
+    }
+  ],
+  "memorisation": [],
+  "questions": [
+    {
+      "questionId": "f4-d1-dependance",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module00Diagnostic.jsx",
+      "line": 24,
+      "requires": [
+        "dependance",
+        "en-fonction-de"
+      ],
+      "prerequisiteStatus": {
+        "dependance": "prior",
+        "en-fonction-de": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "f4-d2-meme-entree",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module00Diagnostic.jsx",
+      "line": 35,
+      "requires": [
+        "meme-entree-meme-sortie"
+      ],
+      "prerequisiteStatus": {
+        "meme-entree-meme-sortie": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "f4-d3-executer",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module00Diagnostic.jsx",
+      "line": 46,
+      "requires": [
+        "programme-de-calcul",
+        "calcul-numerique"
+      ],
+      "prerequisiteStatus": {
+        "programme-de-calcul": "prior",
+        "calcul-numerique": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "f4-d4-ordre",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module00Diagnostic.jsx",
+      "line": 57,
+      "requires": [
+        "programme-de-calcul"
+      ],
+      "prerequisiteStatus": {
+        "programme-de-calcul": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "f4-d5-tableau",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module00Diagnostic.jsx",
+      "line": 72,
+      "requires": [
+        "tableau-de-valeurs"
+      ],
+      "prerequisiteStatus": {
+        "tableau-de-valeurs": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "f4-d6-couple",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module00Diagnostic.jsx",
+      "line": 83,
+      "requires": [
+        "couple-point",
+        "lire-graphique"
+      ],
+      "prerequisiteStatus": {
+        "couple-point": "prior",
+        "lire-graphique": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S3-Q1",
+      "module": 1,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module01LaChaine.jsx",
+      "line": 176,
+      "requires": [
+        "programme-de-calcul"
+      ],
+      "prerequisiteStatus": {
+        "programme-de-calcul": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S4-Q2",
+      "module": 1,
+      "step": 4,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module01LaChaine.jsx",
+      "line": 219,
+      "requires": [
+        "programme-de-calcul"
+      ],
+      "prerequisiteStatus": {
+        "programme-de-calcul": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S5-Q3",
+      "module": 1,
+      "step": 5,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module01LaChaine.jsx",
+      "line": 256,
+      "requires": [
+        "remonter-la-chaine"
+      ],
+      "prerequisiteStatus": {
+        "remonter-la-chaine": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S3-Q1",
+      "module": 2,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module02PlusieursEntrees.jsx",
+      "line": 126,
+      "requires": [
+        "meme-entree-meme-sortie",
+        "programme-de-calcul"
+      ],
+      "prerequisiteStatus": {
+        "meme-entree-meme-sortie": "prior",
+        "programme-de-calcul": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S4-Q2",
+      "module": 2,
+      "step": 4,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module02PlusieursEntrees.jsx",
+      "line": 161,
+      "requires": [
+        "meme-chaine-toutes-entrees"
+      ],
+      "prerequisiteStatus": {
+        "meme-chaine-toutes-entrees": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S5-Q3",
+      "module": 2,
+      "step": 5,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module02PlusieursEntrees.jsx",
+      "line": 183,
+      "requires": [
+        "meme-chaine-toutes-entrees",
+        "en-fonction-de"
+      ],
+      "prerequisiteStatus": {
+        "meme-chaine-toutes-entrees": "established@M2",
+        "en-fonction-de": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S2-Q1",
+      "module": 3,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module03DireLaMachine.jsx",
+      "line": 102,
+      "requires": [
+        "meme-chaine-toutes-entrees"
+      ],
+      "prerequisiteStatus": {
+        "meme-chaine-toutes-entrees": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S3-Q2",
+      "module": 3,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module03DireLaMachine.jsx",
+      "line": 138,
+      "requires": [
+        "formule-qui-resume"
+      ],
+      "prerequisiteStatus": {
+        "formule-qui-resume": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S4-Q3",
+      "module": 3,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module03DireLaMachine.jsx",
+      "line": 173,
+      "requires": [
+        "formule-qui-resume"
+      ],
+      "prerequisiteStatus": {
+        "formule-qui-resume": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S5-Q4",
+      "module": 3,
+      "step": 5,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module03DireLaMachine.jsx",
+      "line": 215,
+      "requires": [
+        "formule-qui-resume"
+      ],
+      "prerequisiteStatus": {
+        "formule-qui-resume": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S3-Q1",
+      "module": 4,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module04LeTableauMuet.jsx",
+      "line": 184,
+      "requires": [
+        "formule-qui-resume"
+      ],
+      "prerequisiteStatus": {
+        "formule-qui-resume": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S4-Q2",
+      "module": 4,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module04LeTableauMuet.jsx",
+      "line": 215,
+      "requires": [
+        "du-tableau-a-la-formule"
+      ],
+      "prerequisiteStatus": {
+        "du-tableau-a-la-formule": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M04-S5-Q3",
+      "module": 4,
+      "step": 5,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module04LeTableauMuet.jsx",
+      "line": 272,
+      "requires": [
+        "du-tableau-a-la-formule"
+      ],
+      "prerequisiteStatus": {
+        "du-tableau-a-la-formule": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S3-Q1",
+      "module": 5,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module05LaFormuleDevientUnDessin.jsx",
+      "line": 170,
+      "requires": [
+        "formule-qui-resume",
+        "couple-point"
+      ],
+      "prerequisiteStatus": {
+        "formule-qui-resume": "established@M3",
+        "couple-point": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S4-Q2",
+      "module": 5,
+      "step": 4,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module05LaFormuleDevientUnDessin.jsx",
+      "line": 209,
+      "requires": [
+        "formule-en-dessin"
+      ],
+      "prerequisiteStatus": {
+        "formule-en-dessin": "established@M5"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M05-S5-Q3",
+      "module": 5,
+      "step": 5,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module05LaFormuleDevientUnDessin.jsx",
+      "line": 239,
+      "requires": [
+        "formule-en-dessin",
+        "formule-qui-resume"
+      ],
+      "prerequisiteStatus": {
+        "formule-en-dessin": "established@M5",
+        "formule-qui-resume": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S1-Q1",
+      "module": 6,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module06LEnclosEtLaCiterne.jsx",
+      "line": 94,
+      "requires": [
+        "dependance",
+        "en-fonction-de"
+      ],
+      "prerequisiteStatus": {
+        "dependance": "prior",
+        "en-fonction-de": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S2-Q2",
+      "module": 6,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module06LEnclosEtLaCiterne.jsx",
+      "line": 118,
+      "requires": [
+        "formule-qui-resume",
+        "dependance"
+      ],
+      "prerequisiteStatus": {
+        "formule-qui-resume": "established@M3",
+        "dependance": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S4-Q3",
+      "module": 6,
+      "step": 4,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module06LEnclosEtLaCiterne.jsx",
+      "line": 183,
+      "requires": [
+        "remonter-la-chaine",
+        "dependance-qui-diminue"
+      ],
+      "prerequisiteStatus": {
+        "remonter-la-chaine": "established@M1",
+        "dependance-qui-diminue": "established@M6"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M06-S5-Q4",
+      "module": 6,
+      "step": 5,
+      "component": "NumericQuestion",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module06LEnclosEtLaCiterne.jsx",
+      "line": 211,
+      "requires": [
+        "formule-qui-resume",
+        "dependance-qui-diminue"
+      ],
+      "prerequisiteStatus": {
+        "formule-qui-resume": "established@M3",
+        "dependance-qui-diminue": "established@M6"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "f4-e1",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module07MissionFinale.jsx",
+      "line": 54,
+      "requires": [
+        "remonter-la-chaine",
+        "chaine-orientee"
+      ],
+      "prerequisiteStatus": {
+        "remonter-la-chaine": "established@M1",
+        "chaine-orientee": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "f4-e2",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module07MissionFinale.jsx",
+      "line": 71,
+      "requires": [
+        "meme-chaine-toutes-entrees",
+        "chaine-orientee"
+      ],
+      "prerequisiteStatus": {
+        "meme-chaine-toutes-entrees": "established@M2",
+        "chaine-orientee": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "f4-e3",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module07MissionFinale.jsx",
+      "line": 83,
+      "requires": [
+        "meme-chaine-toutes-entrees"
+      ],
+      "prerequisiteStatus": {
+        "meme-chaine-toutes-entrees": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "f4-e4",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module07MissionFinale.jsx",
+      "line": 95,
+      "requires": [
+        "formule-qui-resume"
+      ],
+      "prerequisiteStatus": {
+        "formule-qui-resume": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "f4-e5",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module07MissionFinale.jsx",
+      "line": 107,
+      "requires": [
+        "formule-qui-resume"
+      ],
+      "prerequisiteStatus": {
+        "formule-qui-resume": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "f4-e6",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module07MissionFinale.jsx",
+      "line": 119,
+      "requires": [
+        "du-tableau-a-la-formule"
+      ],
+      "prerequisiteStatus": {
+        "du-tableau-a-la-formule": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "f4-e7",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module07MissionFinale.jsx",
+      "line": 131,
+      "requires": [
+        "du-tableau-a-la-formule"
+      ],
+      "prerequisiteStatus": {
+        "du-tableau-a-la-formule": "established@M4"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "f4-e8",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module07MissionFinale.jsx",
+      "line": 148,
+      "requires": [
+        "formule-en-dessin",
+        "dependance-qui-diminue"
+      ],
+      "prerequisiteStatus": {
+        "formule-en-dessin": "established@M5",
+        "dependance-qui-diminue": "established@M6"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "f4-e9",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module07MissionFinale.jsx",
+      "line": 165,
+      "requires": [
+        "modeliser-une-situation",
+        "formule-qui-resume"
+      ],
+      "prerequisiteStatus": {
+        "modeliser-une-situation": "established@M6",
+        "formule-qui-resume": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "f4-e10",
+      "module": 7,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/college/4e/proportionnalite_fonctions/fonctions-4e/modules/Module07MissionFinale.jsx",
+      "line": 177,
+      "requires": [
+        "remonter-la-chaine",
+        "modeliser-une-situation"
+      ],
+      "prerequisiteStatus": {
+        "remonter-la-chaine": "established@M1",
+        "modeliser-une-situation": "established@M6"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    }
+  ],
+  "findings": []
+}

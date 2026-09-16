@@ -1,6 +1,7 @@
 import { useContext, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation, Trans } from 'react-i18next';
 import { TrendingUp, CircleCheckBig, Flame, Zap, Target, ChevronDown, Trophy } from 'lucide-react';
 import { courseLevels, getAllGrades } from '@smarter-academy/core';
 import { getStudentActivity } from '../../lessons/common/utils/progress/getStudentActivity';
@@ -36,11 +37,13 @@ function resolveLessonMeta(gradeId, lessonId) {
   return null;
 }
 
-const MASTERY_MESSAGE = {
-  unassessed: "Passe le bilan de la leçon pour évaluer cette compétence.",
-  gap: 'Une vraie difficulté à travailler.',
-  reinforce: 'Des bases, mais pas encore solide.',
-  mastered: 'Compétence solidement acquise.',
+// Des CLÉS, pas des phrases : constant de module, donc évalué avant
+// l'initialisation d'i18next si on y appelait t().
+const MASTERY_MESSAGE_KEY = {
+  unassessed: 'mastery.msgUnassessed',
+  gap: 'mastery.msgGap',
+  reinforce: 'mastery.msgReinforce',
+  mastered: 'mastery.msgMastered',
 };
 
 /** Ordre d'affichage : ce qui bloque d'abord, ce qui est acquis ensuite. */
@@ -82,6 +85,7 @@ function masteryCounts(points) {
 
 /** Pastilles de synthèse — jamais la couleur seule, toujours un nombre. */
 function MasteryChips({ counts, total }) {
+  const { t } = useTranslation('student');
   const order = ['mastered', 'reinforce', 'gap', 'unassessed'];
   return (
     <div className="flex items-center gap-1.5 flex-wrap">
@@ -97,7 +101,7 @@ function MasteryChips({ counts, total }) {
             {counts[state]}
           </span>
         ))}
-      <span className="font-mono text-[10px] text-slate-400">/ {total} compétences</span>
+      <span className="font-mono text-[10px] text-slate-400">{t('progression.skillsTotal', { count: total })}</span>
     </div>
   );
 }
@@ -108,6 +112,7 @@ function MasteryChips({ counts, total }) {
  * lien vers la leçon reste distinct pour ne pas piéger la navigation.
  */
 function LessonRow({ item, currentMastery, profileReady }) {
+  const { t } = useTranslation('student');
   const [open, setOpen] = useState(false);
   const gradeId = item.grade.id;
 
@@ -163,7 +168,7 @@ function LessonRow({ item, currentMastery, profileReady }) {
             aria-controls={panelId}
             className="flex-shrink-0 min-h-[44px] px-3 rounded-xl border-2 border-slate-200 bg-white hover:border-blue-400 text-xs font-mono font-bold text-slate-600 flex items-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
           >
-            {open ? 'Masquer' : 'Mes acquis'}
+            {open ? t('progression.hide') : t('progression.myAcquis')}
             <ChevronDown
               size={14}
               className={`transition-transform ${open ? 'rotate-180' : ''}`}
@@ -189,8 +194,8 @@ function LessonRow({ item, currentMastery, profileReady }) {
                 <div className="rounded-xl border-2 border-amber-200 bg-amber-50 px-4 py-3 flex items-start gap-2.5">
                   <Trophy size={16} className="text-amber-600 flex-shrink-0 mt-0.5" aria-hidden="true" />
                   <p className="text-xs text-amber-900 leading-relaxed">
-                    Aucune compétence encore évaluée pour cette leçon.{' '}
-                    <strong>Termine le bilan final</strong> pour que tes résultats apparaissent ici.
+                    {t('progression.noSkillAssessed')}{' '}
+                    <strong>{t('progression.finishBossToSee')}</strong> {t('progression.finishBossToSeeRest')}
                   </p>
                 </div>
               )}
@@ -202,7 +207,7 @@ function LessonRow({ item, currentMastery, profileReady }) {
                     title={p.title}
                     state={p.state}
                     confidence={p.confidence}
-                    message={MASTERY_MESSAGE[p.state]}
+                    message={t(MASTERY_MESSAGE_KEY[p.state])}
                     action={
                       p.state === 'gap' || p.state === 'reinforce' ? (
                         <Link
@@ -232,7 +237,8 @@ function LessonRow({ item, currentMastery, profileReady }) {
 
 
 export default function Progression() {
-  useDocumentMeta('Ma progression', 'Suis ta progression et tes acquis, leçon par leçon.');
+  const { t } = useTranslation('student');
+  useDocumentMeta(t('progression.metaTitle'), t('progression.metaDescription'));
 
   const { user } = useContext(AuthContext);
   const gradeId = user?.grade || null;
@@ -311,45 +317,47 @@ export default function Progression() {
     <div className="sa-page py-8 sm:py-10">
       <div className="mb-8">
         <p className="font-mono-jetbrains text-blue-500 text-xs font-semibold tracking-widest uppercase mb-2 flex items-center gap-1.5">
-          <TrendingUp size={13} /> Ma progression
+          <TrendingUp size={13} /> {t('progression.eyebrow')}
         </p>
-        <h1 className="font-space font-bold text-2xl sm:text-3xl text-slate-900">Ce que tu as accompli</h1>
+        <h1 className="font-space font-bold text-2xl sm:text-3xl text-slate-900">{t('progression.title')}</h1>
         <p className="font-inter text-slate-500 text-sm mt-1 max-w-xl">
           {/* Le cadre est annoncé : sans cela, un élève qui a travaillé dans
               une autre classe croirait ce travail perdu. */}
-          {gradeLabel ? <>Ta classe de <strong>{gradeLabel}</strong> — tes leçons et, pour chacune, les compétences que tu maîtrises vraiment.</> : <>Tes leçons et, pour chacune, les compétences que tu maîtrises vraiment.</>}
-          {' '}Clique sur <strong>« Mes acquis »</strong> sous une leçon pour voir le détail, compétence par compétence.
+          {gradeLabel
+            ? <Trans i18nKey="progression.subtitleWithGrade" ns="student" values={{ grade: gradeLabel }} components={[<strong key="g" />]} />
+            : t('progression.subtitleLead')}
+          {' '}{t('progression.subtitleHint')}
         </p>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-10">
-        <StatTile icon={CircleCheckBig} value={activity.completedCount} label="Leçons terminées" accent="bg-emerald-50 text-emerald-600" />
-        <StatTile icon={Flame} value={activity.inProgressCount} label="Leçons en cours" accent="bg-amber-50 text-amber-600" />
+        <StatTile icon={CircleCheckBig} value={activity.completedCount} label={t('progression.statLessonsCompleted')} accent="bg-emerald-50 text-emerald-600" />
+        <StatTile icon={Flame} value={activity.inProgressCount} label={t('progression.statLessonsInProgress')} accent="bg-amber-50 text-amber-600" />
         {/* Total sur les leçons de la classe affichée — le détail par leçon
             vit dans le panneau « Mes acquis » ci-dessous. */}
         <StatTile
           icon={Target}
           value={profileReady ? `${masteredTotal} / ${assessedTotal}` : '—'}
-          label={gradeLabel ? `Compétences maîtrisées (${gradeLabel})` : 'Compétences maîtrisées'}
+          label={gradeLabel ? t('progression.statMasteredWithGrade', { grade: gradeLabel }) : t('progression.statMastered')}
           accent="bg-blue-50 text-blue-600"
         />
-        <StatTile icon={Zap} value={activity.totalXp} label="XP total" accent="bg-purple-50 text-purple-600" />
+        <StatTile icon={Zap} value={activity.totalXp} label={t('progression.statXpTotal')} accent="bg-purple-50 text-purple-600" />
       </div>
 
       {status === 'loading' && (
-        <p className="text-xs font-mono text-slate-400 mb-4">Chargement de tes acquis…</p>
+        <p className="text-xs font-mono text-slate-400 mb-4">{t('progression.loadingAcquis')}</p>
       )}
       {status === 'error' && (
         <div className="glass-card p-4 mb-6 flex items-center justify-between gap-3 flex-wrap">
           <p className="font-inter text-slate-500 text-sm">
-            Impossible de charger tes acquis pour le moment. Ta progression de parcours reste affichée.
+            {t('progression.errorAcquis')}
           </p>
           <button
             type="button"
             onClick={reload}
             className="min-h-[44px] px-4 rounded-xl border-2 border-slate-200 bg-white text-xs font-mono font-bold text-slate-600 hover:border-blue-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
           >
-            🔄 Réessayer
+            🔄 {t('retry', { ns: 'common' })}
           </button>
         </div>
       )}
@@ -358,10 +366,10 @@ export default function Progression() {
         <div className="glass-card p-10 text-center">
           <p className="font-inter text-slate-500 text-sm mb-5">
             {gradeLabel
-              ? `Tu n'as pas encore commencé de leçon en ${gradeLabel}.`
-              : "Tu n'as pas encore commencé de leçon."}
+              ? t('progression.noLessonsStartedGrade', { grade: gradeLabel })
+              : t('progression.noLessonsStarted')}
           </p>
-          <Link to="/espace/cours" className="btn-primary text-sm inline-flex">Commencer une leçon</Link>
+          <Link to="/espace/cours" className="btn-primary text-sm inline-flex">{t('progression.startALesson')}</Link>
         </div>
       ) : (
         <div className="space-y-8">
@@ -393,8 +401,7 @@ export default function Progression() {
       </div>
 
       <p className="mt-8 text-xs text-slate-400 font-inter max-w-xl">
-        Chaque compétence est évaluée à partir de tes vraies réponses aux bilans de fin de leçon — jamais d'une
-        moyenne générale. Une compétence « Pas encore évaluée » attend simplement que tu passes le bilan.
+        {t('progression.footnote')}
       </p>
     </div>
   );

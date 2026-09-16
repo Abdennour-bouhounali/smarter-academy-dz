@@ -24,7 +24,8 @@ const GRADES_BY_LEVEL = getAllGrades().reduce((groups, grade) => {
  */
 export default function ChooseGrade() {
   const { t } = useTranslation('common');
-  useDocumentMeta('اختر سنتك الدراسية', 'اختر سنتك الدراسية لتخصيص مسارك في Smarter Academy.');
+  const { t: ts } = useTranslation('student');
+  useDocumentMeta(ts('chooseGrade.metaTitle'), ts('chooseGrade.metaDescription'));
   const { user, updateGrade } = useContext(AuthContext);
   const navigate = useNavigate();
   const [selecting, setSelecting] = useState(null);

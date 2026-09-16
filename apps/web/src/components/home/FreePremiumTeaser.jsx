@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { ArrowForward } from '../common/DirectionalIcons';
 
 
@@ -9,6 +10,8 @@ import { ArrowForward } from '../common/DirectionalIcons';
  * free, here's what unlocks more.
  */
 export default function FreePremiumTeaser() {
+  const { t } = useTranslation('marketing');
+
   return (
     <section className="px-4 py-14">
       <motion.div
@@ -26,16 +29,16 @@ export default function FreePremiumTeaser() {
           ))}
         </div>
         <p className="font-space font-bold text-xl sm:text-2xl text-slate-900 leading-snug text-balance mb-2">
-          ثلاثة دروس كاملة، مجانًا.
+          {t('freePremium.title')}
         </p>
         <p className="font-inter text-slate-500 text-base mb-6">
-          بقية البرنامج يُفتح برمز تفعيل، تحصل عليه من بطاقة تشتريها.
+          {t('freePremium.body')}
         </p>
         {/* Mène à l'INSCRIPTION, et non à un tarif : il n'y a pas de page de
             prix dans le produit algérien, et la saisie d'un code exige un
             compte. Un visiteur anonyme doit donc d'abord en créer un. */}
         <Link to="/register" className="inline-flex items-center gap-1.5 font-inter text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">
-          ابدأ مجانًا
+          {t('freePremium.cta')}
           <ArrowForward size={15} />
         </Link>
       </motion.div>

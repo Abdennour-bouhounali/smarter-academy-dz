@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { Target } from 'lucide-react';
 import { ArrowForward } from '../common/DirectionalIcons';
 
@@ -16,6 +17,7 @@ import { ArrowForward } from '../common/DirectionalIcons';
  * the student sees the whole mission roadmap, not just one bare module.
  */
 export default function RecommendationCard({ recommendation }) {
+  const { t } = useTranslation('student');
   const { reason, startingPoint } = recommendation;
 
   return (
@@ -27,17 +29,17 @@ export default function RecommendationCard({ recommendation }) {
       style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}
     >
       <p className="font-mono-jetbrains text-blue-100 text-xs font-semibold uppercase tracking-widest mb-2 flex items-center gap-1.5">
-        <Target size={13} /> Ta priorité
+        <Target size={13} /> {t('diagnostic.yourPriority')}
       </p>
       <p className="font-inter text-sm text-blue-50 mb-1.5 leading-relaxed">{reason}</p>
       {startingPoint.moduleTitle && (
-        <p className="font-inter text-xs text-blue-100/80 mb-6">Au programme, notamment : « {startingPoint.moduleTitle} »</p>
+        <p className="font-inter text-xs text-blue-100/80 mb-6">{t('diagnostic.moduleHighlight', { module: startingPoint.moduleTitle })}</p>
       )}
       <Link
         to={startingPoint.lessonPath}
         className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-white text-blue-700 font-space font-bold text-sm shadow-lg hover:-translate-y-0.5 transition-all"
       >
-        🎯 Commencer ma première mission
+        {t('diagnostic.startFirstMission')}
         <ArrowForward size={16} />
       </Link>
     </motion.div>

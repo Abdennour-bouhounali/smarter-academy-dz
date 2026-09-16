@@ -301,11 +301,97 @@ connaissances et le corps des pages élève restent en français.
 
 ---
 
+## Phase 6F — DZ Catalogue and Database Scope Cleanup
+
+**Status: COMPLETE** (executed 2026-09-16 — see
+`ALGERIA_PHASE6F_DATA_SCOPE_IMPLEMENTATION_REPORT.md` for full detail, counts
+and tests).
+
+**Objectif** : la phase 3 gardait le curriculum français physiquement en
+base, seulement dormant. Avant que la phase 7 ne commence à écrire des
+leçons algériennes, le catalogue ET la base ne devaient plus porter le
+français comme périmètre actif — plus seulement le cacher.
+
+**Ce qui a changé** : `coursesData.js` distingue désormais `dzCourseLevels`
+(le catalogue produit, deux classes : `4am` sous `moyen`, `terminale_dz` sous
+`thanawi`) de `referenceCourseLevels` (l'arbre français hérité, réservé à
+l'outillage de validation des 132 dossiers de leçons restés sur le disque —
+`scripts/check-dormant-isolation.mjs` fait échouer la construction si un
+fichier produit importe ce second nom). `ACTIVE_GRADE_IDS` porte les deux
+classes DZ. Le programme officiel 4AM (4 domaines, 28 sujets,
+`packages/core/curriculum/dz/programme_4am_2026_2027.json`) alimente le
+catalogue par une fonction dédiée (`buildDzCourseLevels()`) — aucun intitulé
+arabe n'est retapé ailleurs. **Aucune leçon 4AM n'a été créée** : les 28
+sujets sont portés par leur chapitre (`chapters.topics`, nouvelle colonne),
+et le découpage en leçons reste une décision de la phase 7.
+
+Une nouvelle commande Laravel, `smarter:scope-curriculum`, complète l'import
+(qui ne supprime jamais rien) : elle retire de la base tout curriculum hors
+du périmètre déclaré par l'export, lit le graphe de clés étrangères depuis
+le schéma plutôt que de le supposer, refuse toute perte de données élève
+sans double confirmation explicite, et refuse inconditionnellement de
+s'exécuter en production. `smarter:registry-health --gate` détecte désormais
+une classe hors périmètre comme une catégorie d'échec à part, distincte de
+la dérive d'activation.
+
+**Résultat mesuré** : la base de développement locale est passée de 8
+classes / 36 chapitres / 133 leçons / 1067 points d'apprentissage (toutes
+françaises, toutes dormantes) à exactement 2 classes / 4 chapitres / 0 leçon
+/ 0 point / 28 sujets. Comptes/droits/codes d'activation inchangés (aucune
+colonne de curriculum ne les relie). Un ré-import après nettoyage laisse la
+base à 2 classes — testé comme régression permanente.
+
+**Second identifiant confirmé, pas deviné** : `ALGERIA_PLATFORM_MASTER_SPEC.md`
+§3 nomme explicitement Terminale / السنة الثالثة ثانوي comme seconde classe
+du périmètre initial ; son identifiant technique (`terminale_dz`/`thanawi`)
+a été fixé avec le propriétaire, aucun programme n'existant encore pour elle.
+
+**Défauts réels trouvés et corrigés en chemin** : `Courses.jsx` retombait sur
+un identifiant de niveau français (`college`) codé en dur comme repli, ce qui
+aurait laissé la page afficher « bientôt disponible » sous un catalogue
+purement algérien ; les formes plurielles arabes du compteur de sujets ne
+couvraient que 2 des 6 catégories que distingue réellement l'arabe
+(`Intl.PluralRules`), affichant la clé brute à l'écran ; la grille de cours
+affichait un message « aucun cours ne correspond » sous une classe qui n'a
+simplement aucune leçon — trouvés par vérification navigateur, pas par les
+tests unitaires seuls.
+
+---
+
 ## Phase 7 — Algerian Curriculum Foundation
+
+**Status: COMPLETE** (executed 2026-09-16 — voir
+`ALGERIA_PHASE7_CURRICULUM_DECOMPOSITION_REPORT.md`).
+
+**Ce qui a été fait** : le programme 4AM (4 domaines, 28 sujets) a été découpé
+en **28 leçons — une par sujet officiel**, portant **185 points
+d'apprentissage**. La règle de découpage (« un sujet = une leçon ») et tous les
+intitulés arabes — descriptions, prérequis, points d'apprentissage, durées,
+difficultés — ont été **fournis par le propriétaire du projet**, pas produits
+par l'outil : le programme ne fixe ni répartition horaire, ni progression
+annuelle, ni attendus de fin de cycle, donc scinder un sujet aurait voulu dire
+inventer une frontière que la source ne donne pas.
+
+Le découpage vit dans `packages/core/curriculum/dz/lessons_4am_2026_2027.json`,
+dérivé du programme et jamais concurrent de lui : chaque leçon déclare son
+`sourceTopicId`, et `dz/decomposition.test.js` (18 tests) vérifie la
+traçabilité dans les deux sens — tout sujet a une leçon, toute leçon a un
+sujet, aucun sujet inventé. La chaîne catalogue → export → base est inchangée :
+la base porte désormais 2 classes, 4 chapitres, 28 leçons, 185 points.
+
+**Ce qui n'a PAS été fait, délibérément** : aucun contenu de leçon (modules,
+exercices, évaluations, figures), aucune route montée, et le choix des trois
+leçons gratuites reste ouvert. Les prérequis restent textuels plutôt que
+transformés en graphe inter-leçons, une partie d'entre eux relevant des années
+1AM–3AM dont le programme n'a pas été fourni.
+
+**Reste ouvert** : la relecture du découpage par une autorité curriculaire
+externe, que la section « Validation steps » ci-dessous exige et qui n'a pas
+encore eu lieu.
 
 **Objective**: build the Algerian curriculum source-of-truth structure from official sources — this phase cannot begin until official Algerian curriculum documents are supplied.
 
-**Prerequisites**: Phases 1-6 complete (clone stable, infra independent, dormant content isolated, RTL foundation in place, auth and entitlement working).
+**Prerequisites**: Phases 1-6F complete (clone stable, infra independent, dormant content isolated, RTL foundation in place, auth and entitlement working, **DZ catalogue/database scope cleaned — Phase 6F**). Phase 7 must not begin against a database that still carries the French curriculum as active scope.
 
 **MISE À JOUR 2026-09-16** : le programme officiel 4AM (4 domaines, 28 sujets)
 a été **fourni par le propriétaire du projet** et transcrit dans

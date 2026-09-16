@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2, XCircle, Lightbulb, Info, Timer as TimerIcon, Volume2, VolumeX, Flame } from 'lucide-react';
 import { useLessonChrome } from '../hooks/useLessonChrome';
@@ -30,22 +31,22 @@ const FEEDBACK_TONES = {
   ok: {
     wrap: 'bg-emerald-50 border-emerald-200 text-emerald-800',
     Icon: CheckCircle2,
-    prefix: 'Correct',
+    prefixKey: 'feedback.correct',
   },
   ko: {
     wrap: 'bg-rose-50 border-rose-200 text-rose-800',
     Icon: XCircle,
-    prefix: 'À revoir',
+    prefixKey: 'feedback.toReview',
   },
   hint: {
     wrap: 'bg-amber-50 border-amber-200 text-amber-900',
     Icon: Lightbulb,
-    prefix: 'Indice',
+    prefixKey: 'feedback.hint',
   },
   info: {
     wrap: 'bg-slate-50 border-slate-200 text-slate-700',
     Icon: Info,
-    prefix: 'Info',
+    prefixKey: 'feedback.info',
   },
 };
 
@@ -53,18 +54,19 @@ const FEEDBACK_TONES = {
  * Le retour ne repose jamais sur la seule couleur : icône + mot-clé explicite.
  */
 export function Feedback({ tone = 'info', children, className = '' }) {
-  const t = FEEDBACK_TONES[tone] || FEEDBACK_TONES.info;
-  const { Icon } = t;
+  const { t } = useTranslation('lesson');
+  const toneSpec = FEEDBACK_TONES[tone] || FEEDBACK_TONES.info;
+  const { Icon } = toneSpec;
   return (
     <motion.div
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       role="status"
-      className={`flex items-start gap-2.5 rounded-xl border px-4 py-3 text-sm leading-relaxed ${t.wrap} ${className}`}
+      className={`flex items-start gap-2.5 rounded-xl border px-4 py-3 text-sm leading-relaxed ${toneSpec.wrap} ${className}`}
     >
       <Icon className="w-4 h-4 mt-0.5 shrink-0" aria-hidden="true" />
       <div>
-        <span className="sr-only">{t.prefix} : </span>
+        <span className="sr-only">{t(toneSpec.prefixKey)} : </span>
         {children}
       </div>
     </motion.div>
@@ -123,7 +125,8 @@ export function ChoiceGrid({
 }
 
 /* ── Bouton de validation ─────────────────────────────────────────── */
-export function ValidateButton({ onClick, disabled, children = 'Valider', tone = 'blue' }) {
+export function ValidateButton({ onClick, disabled, children, tone = 'blue' }) {
+  const { t } = useTranslation('lesson');
   const tones = {
     blue: 'bg-blue-600 hover:bg-blue-700',
     indigo: 'bg-indigo-600 hover:bg-indigo-700',
@@ -142,13 +145,14 @@ export function ValidateButton({ onClick, disabled, children = 'Valider', tone =
         disabled ? 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none' : tones[tone]
       }`}
     >
-      {children}
+      {children ?? t('question.validate')}
     </button>
   );
 }
 
 /* ── Étape d'un module ────────────────────────────────────────────── */
 export function StepCard({ num, title, subtitle, done, locked, children, tone = 'slate' }) {
+  const { t } = useTranslation('lesson');
   const badgeTone = done
     ? 'bg-emerald-500 text-white'
     : locked
@@ -168,7 +172,7 @@ export function StepCard({ num, title, subtitle, done, locked, children, tone = 
           {num}
         </span>
         <div className="text-sm text-slate-400">
-          {title} — <span className="font-mono text-xs">termine l'étape précédente</span>
+          {title} — <span className="font-mono text-xs">{t('step.finishPreviousStep')}</span>
         </div>
       </div>
     );
@@ -272,12 +276,13 @@ export function QuantityCard({ emoji, label, value, unit, selected, onClick, dis
  * du test, qui se déroule à l'identique dans les deux cas.
  */
 export function TimerToggle({ enabled, onChange, durationLabel, disabled = false }) {
+  const { t } = useTranslation('lesson');
   return (
     <div className="flex items-center justify-between gap-3 rounded-xl border-2 border-slate-200 bg-slate-50 px-4 py-3">
       <div className="flex items-center gap-2.5 text-sm text-slate-700">
         <TimerIcon className="w-4 h-4 shrink-0" aria-hidden="true" />
         <span>
-          Chronomètre ({durationLabel}) <span className="text-slate-400">— facultatif</span>
+          {t('timer.label')} ({durationLabel}) <span className="text-slate-400">{t('timer.optional')}</span>
         </span>
       </div>
       <button
@@ -373,7 +378,7 @@ export function StepProgressBar({ doneCount, total }) {
             transition={{ duration: 0.4 }}
           />
         </div>
-        <span className="text-[10px] font-mono font-bold text-slate-400 tabular-nums shrink-0">
+        <span dir="ltr" className="text-[10px] font-mono font-bold text-slate-400 tabular-nums shrink-0">
           {doneCount} / {total}
         </span>
       </div>
@@ -383,6 +388,7 @@ export function StepProgressBar({ doneCount, total }) {
 
 /* ── Chip de série de bonnes réponses (session, non persistée) ───── */
 export function StreakChip({ count }) {
+  const { t } = useTranslation('lesson');
   if (count < 2) return null;
   return (
     <motion.div
@@ -392,23 +398,24 @@ export function StreakChip({ count }) {
       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-50 border border-orange-200 text-orange-700 font-mono text-xs font-bold"
     >
       <Flame className="w-3.5 h-3.5" aria-hidden="true" />
-      {count} d’affilée
+      {count} {t('streak')}
     </motion.div>
   );
 }
 
 /* ── Interrupteur son + vibrations (préférence appareil) ──────────── */
 export function EffectsToggle({ enabled, onToggle }) {
+  const { t } = useTranslation('lesson');
   return (
     <button
       type="button"
       onClick={onToggle}
       aria-pressed={enabled}
-      aria-label={enabled ? 'Désactiver les effets sonores' : 'Activer les effets sonores'}
+      aria-label={enabled ? t('effects.disable') : t('effects.enable')}
       className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border-2 border-slate-200 bg-white text-slate-500 hover:border-slate-400 transition-colors text-xs font-mono font-bold min-h-[40px] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
     >
       {enabled ? <Volume2 className="w-3.5 h-3.5" aria-hidden="true" /> : <VolumeX className="w-3.5 h-3.5" aria-hidden="true" />}
-      <span className="hidden sm:inline">{enabled ? 'Sons activés' : 'Sons coupés'}</span>
+      <span className="hidden sm:inline">{enabled ? t('effects.on') : t('effects.off')}</span>
     </button>
   );
 }
@@ -419,7 +426,8 @@ export function EffectsToggle({ enabled, onToggle }) {
  * doit naviguer immédiatement ; le composant appelle `onGo()` seul une fois
  * les `seconds` écoulées, sauf annulation.
  */
-export function AutoAdvance({ seconds = 5, label = 'Module suivant', onGo }) {
+export function AutoAdvance({ seconds = 5, label, onGo }) {
+  const { t } = useTranslation('lesson');
   const [remaining, setRemaining] = useState(seconds);
   const [cancelled, setCancelled] = useState(false);
 
@@ -439,14 +447,14 @@ export function AutoAdvance({ seconds = 5, label = 'Module suivant', onGo }) {
   return (
     <div className="flex items-center justify-center gap-3 text-xs font-mono text-slate-400">
       <span>
-        {label} dans {remaining}s…
+        {label ?? t('nav.nextModule')} {t('autoAdvance.in')} {remaining}s…
       </span>
       <button
         type="button"
         onClick={() => setCancelled(true)}
         className="underline font-semibold text-slate-500 hover:text-slate-700"
       >
-        Rester ici
+        {t('autoAdvance.stayHere')}
       </button>
     </div>
   );

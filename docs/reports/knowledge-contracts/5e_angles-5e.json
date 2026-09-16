@@ -50,7 +50,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/college/5e/espace_geometrie/angles-5e/modules/Module02LaSecanteEtSesHuitAngles.jsx",
-        "line": 139,
+        "line": 177,
         "step": 2,
         "variant": "new"
       }
@@ -61,7 +61,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/college/5e/espace_geometrie/angles-5e/modules/Module02LaSecanteEtSesHuitAngles.jsx",
-        "line": 133,
+        "line": 171,
         "step": 2,
         "variant": "new"
       }
@@ -241,7 +241,7 @@
       "step": 4,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/college/5e/espace_geometrie/angles-5e/modules/Module02LaSecanteEtSesHuitAngles.jsx",
-      "line": 191,
+      "line": 240,
       "requires": [
         "angles-alternes-internes"
       ],

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getModuleMastery, isModuleUnlocked, isMasteryGateSatisfied, getModuleStatus, lockedReason, MASTERY_UNLOCK_THRESHOLD } from './lessonAccess';
+import { getModuleMastery, isModuleUnlocked, isMasteryGateSatisfied, getModuleStatus, lockedReason, lockedReasonData, MASTERY_UNLOCK_THRESHOLD } from './lessonAccess';
 
 describe('getModuleMastery', () => {
   it('returns 100 when the module is completed', () => {
@@ -88,6 +88,22 @@ describe('isMasteryGateSatisfied', () => {
       masteryStatusById: { '6e_x_P1': 'gap' },
     });
     expect(status).toBe('locked');
+  });
+});
+
+describe('lockedReasonData', () => {
+  it('rend les DONNÉES du verrouillage, sans phrase — la langue appartient à l’UI', () => {
+    expect(lockedReasonData(3)).toEqual({ previousModule: '02', threshold: MASTERY_UNLOCK_THRESHOLD });
+    expect(lockedReasonData(1)).toEqual({ previousModule: '00', threshold: MASTERY_UNLOCK_THRESHOLD });
+    expect(lockedReasonData(10)).toEqual({ previousModule: '09', threshold: MASTERY_UNLOCK_THRESHOLD });
+  });
+
+  it('ne contient aucun texte destiné à l’élève', () => {
+    // La garde de la régression : une phrase française réapparue ici
+    // ressortirait telle quelle sur un écran arabe.
+    for (const v of Object.values(lockedReasonData(4))) {
+      expect(typeof v === 'string' ? /^[0-9]+$/.test(v) : typeof v === 'number').toBe(true);
+    }
   });
 });
 

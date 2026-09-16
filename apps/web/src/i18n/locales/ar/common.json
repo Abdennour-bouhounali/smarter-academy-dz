@@ -27,5 +27,97 @@
   "chooseGradeSubtitle": "خطوة أخيرة: اختر سنتك الدراسية لاكتشاف مسارك. يمكنك تغييرها لاحقًا من ملفك الشخصي.",
   "chooseGradeComingSoonTitle": "اختيار السنة الدراسية قادم قريبًا",
   "chooseGradeComingSoonBody": "نحضّر حاليًا برنامج السنة الرابعة متوسط والسنة الثالثة ثانوي. يمكنك الدخول إلى فضائك الآن، وستتمكن من اختيار سنتك الدراسية بمجرد توفرها.",
-  "chooseGradeContinue": "الدخول إلى فضائي"
+  "chooseGradeContinue": "الدخول إلى فضائي",
+  "chapterProgrammeTitle": "برنامج هذا الميدان",
+  "chapterProgrammeNote": "المواضيع الرسمية لهذا الميدان. الدروس قيد الإعداد.",
+  "chapterLessonsPending": "الدروس قيد الإعداد",
+  "gradeProgrammeOnlyTitle": "البرنامج متوفّر، الدروس قيد الإعداد",
+  "gradeProgrammeOnlyBody": "يمكنك الاطّلاع على مواضيع البرنامج الرسمي لكل ميدان. الدروس التفاعلية قيد الإعداد.",
+  "gradeNotSuppliedTitle": "البرنامج غير متوفّر بعد",
+  "gradeNotSuppliedBody": "لم يُعتمد بعد البرنامج الرسمي لهذه السنة. سيظهر هنا فور توفّره.",
+  "topicsCount_zero": "لا مواضيع",
+  "topicsCount_one": "موضوع واحد",
+  "topicsCount_two": "موضوعان",
+  "topicsCount_few": "{{count}} مواضيع",
+  "topicsCount_many": "{{count}} موضوعًا",
+  "topicsCount_other": "{{count}} موضوع",
+  "lessonComingSoonBadge": "قريبًا",
+  "lessonComingSoonFooter": "قيد الإعداد",
+  "lessonsCount_zero": "لا دروس",
+  "lessonsCount_one": "درس واحد",
+  "lessonsCount_two": "درسان",
+  "lessonsCount_few": "{{count}} دروس",
+  "lessonsCount_many": "{{count}} درسًا",
+  "lessonsCount_other": "{{count}} درس",
+  "footerRole": "أستاذ الرياضيات",
+  "report": {
+    "trigger": "الإبلاغ عن مشكل",
+    "triggerShort": "إبلاغ",
+    "title": "الإبلاغ عن مشكل",
+    "subtitle": "لا داعي لتحديد المكان: نحن نعرف مسبقًا ما الذي تعمل عليه.",
+    "legend": "ما هو المشكل؟",
+    "noteLabelOther": "صف المشكل",
+    "noteLabel": "هل تريد التوضيح أكثر؟",
+    "noteOptional": "(اختياري)",
+    "notePlaceholder": "صف المشكل لمساعدتنا على تصحيحه…",
+    "send": "إرسال",
+    "sending": "جارٍ الإرسال…",
+    "successTitle": "شكرًا لك! تمّ إرسال إبلاغك بنجاح.",
+    "successBody": "سنطّلع على الأمر. يمكنك متابعة درسك.",
+    "errorOpen": "تعذّر فتح الإبلاغ.",
+    "errorSend": "تعذّر إرسال الإبلاغ في الوقت الحالي.",
+    "categories": {
+      "math_error": {
+        "label": "خطأ رياضي",
+        "hint": "حساب أو صيغة أو تمثيل بياني أو استدلال يبدو خاطئًا."
+      },
+      "manipulation_not_working": {
+        "label": "النشاط لا يعمل",
+        "hint": "عنصر يُحرَّك أو يُنقر أو يُضبط لا يستجيب كما ينبغي."
+      },
+      "unclear_question": {
+        "label": "سؤال غير واضح",
+        "hint": "نصّ السؤال أو التعليمة صعب الفهم."
+      },
+      "answer_correction_problem": {
+        "label": "مشكل في الإجابة أو التصحيح",
+        "hint": "الإجابة المنتظرة أو التصحيح أو الشرح يبدو غير صحيح."
+      },
+      "display_problem": {
+        "label": "مشكل في العرض",
+        "hint": "شيء في غير موضعه أو غير مقروء أو متداخل أو ناقص."
+      },
+      "typo": {
+        "label": "خطأ في الكتابة",
+        "hint": "إملاء أو رمز أو صياغة."
+      },
+      "other": {
+        "label": "أخرى",
+        "hint": "شيء آخر — أخبرنا به أدناه."
+      }
+    }
+  },
+  "catalogueMetaTitle": "الدروس",
+  "catalogueMetaDescription": "استكشف برنامج الرياضيات الرسمي الجزائري — التعليم المتوسط والتعليم الثانوي.",
+  "catalogueBadge": "البرنامج الرسمي الجزائري",
+  "catalogueTitle": "دروس الرياضيات",
+  "catalogueSubtitle": "درس كامل مجانًا. بقية البرنامج تُفتح برمز تفعيل.",
+  "legendFree": "مجاني",
+  "legendPremium": "مدفوع",
+  "legendComingSoon": "قريبًا",
+  "catalogueEyebrow": "الفهرس",
+  "catalogueExplore": "استكشف الدروس",
+  "breadcrumbCourses": "الدروس",
+  "searchInGrade": "ابحث في {{grade}}...",
+  "allChapters": "كل الميادين",
+  "resume": "واصل",
+  "moduleOf": "الوحدة {{current}} من {{total}}",
+  "noCourseMatches": "لا يوجد درس يطابق {{query}}.",
+  "thisSelection": "هذا الاختيار",
+  "lessonStart": "ابدأ",
+  "lessonContinue": "متابعة",
+  "lessonDone": "تمّ",
+  "premiumBadge": "مدفوع",
+  "premiumHasAccess": "محتوى مدفوع — حسابك له حقّ الوصول إليه",
+  "bonusChapter": "ميدان أضافته Smarter Academy — لا يرد في البرنامج الرسمي لهذه السنة"
 }

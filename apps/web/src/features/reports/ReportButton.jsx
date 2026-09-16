@@ -1,4 +1,5 @@
 import React, { useContext, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Flag } from 'lucide-react';
 import { AuthContext } from '../../context/AuthContext';
 import { initiateReport, completeReport, isRetryableFailure } from '../../services/reportService';
@@ -26,6 +27,7 @@ import ReportDialog from './ReportDialog';
  * @param {'chip'|'link'|'icon'} [variant]
  */
 export default function ReportButton({ source, context = {}, variant = 'chip', className = '' }) {
+  const { t } = useTranslation('common');
   const { token } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [reportId, setReportId] = useState(null);
@@ -46,7 +48,7 @@ export default function ReportButton({ source, context = {}, variant = 'chip', c
   // formulaire qui échouera à l'envoi serait pire que ne rien proposer.
   if (!token) return null;
 
-  const label = 'Signaler un problème';
+  const label = t('report.trigger');
 
   const openDialog = async () => {
     if (opening.current) return;
@@ -95,7 +97,7 @@ export default function ReportButton({ source, context = {}, variant = 'chip', c
         // POST avait en réalité abouti — réponse perdue en route — cette
         // seconde tentative retrouve la MÊME ligne.
         if (!signalPending) {
-          throw new Error('Impossible d’envoyer le signalement pour le moment.');
+          throw new Error(t('report.errorSend'));
         }
 
         id = (await initiateReport(token, { source, ...context })).id;
@@ -141,7 +143,7 @@ export default function ReportButton({ source, context = {}, variant = 'chip', c
           l'étiquette accessible porte alors seule le sens. */}
       <span className="flex h-9 items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 font-mono text-xs font-bold text-slate-500 shadow-sm transition-colors group-hover:border-slate-300 group-hover:bg-slate-50 group-hover:text-slate-800 group-focus-visible:ring-2 group-focus-visible:ring-blue-400 sm:px-3">
         <Flag size={14} aria-hidden="true" />
-        <span className="hidden sm:inline">Signaler</span>
+        <span className="hidden sm:inline">{t('report.triggerShort')}</span>
       </span>
     </button>
   ) : variant === 'link' ? (

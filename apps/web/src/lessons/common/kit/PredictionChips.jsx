@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * PredictionChips — recueillir une prédiction SANS verdict (INTERACTION_PEDAGOGY
@@ -9,9 +10,10 @@ import React from 'react';
  * @param {(id:string)=>void} onChange
  * @param {boolean} [disabled]
  */
-export default function PredictionChips({ options, value, onChange, disabled = false, ariaLabel = 'Ta prédiction', prompt = null }) {
+export default function PredictionChips({ options, value, onChange, disabled = false, ariaLabel, prompt = null }) {
+  const { t } = useTranslation('lesson');
   const chips = (
-    <div className="flex flex-wrap gap-2" role="group" aria-label={ariaLabel}>
+    <div className="flex flex-wrap gap-2" role="group" aria-label={ariaLabel ?? t('prediction.aria')}>
       {options.map((o) => {
         const on = value === o.id;
         return (
@@ -36,7 +38,7 @@ export default function PredictionChips({ options, value, onChange, disabled = f
   // le laboratoire est visible dès la première seconde.
   return (
     <div className="rounded-xl border border-indigo-200 bg-indigo-50/60 p-3 space-y-2">
-      <p className="text-xs font-semibold text-indigo-900">🔮 Avant d’essayer, ta prédiction (sans verdict) : {prompt}</p>
+      <p className="text-xs font-semibold text-indigo-900">🔮 {t('prediction.lead')} {prompt}</p>
       {chips}
     </div>
   );

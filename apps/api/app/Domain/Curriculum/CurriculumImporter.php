@@ -75,6 +75,16 @@ class CurriculumImporter
             foreach ($gradeData['chapters'] as $chapterData) {
                 $chapterSource = [
                     'title' => $chapterData['title'],
+                    // Les SUJETS du programme officiel. Ils voyagent avec le
+                    // chapitre parce qu'aucune leçon ne les porte encore : le
+                    // découpage en leçons de 4AM est une décision de phase 7
+                    // (docs/ALGERIA_4AM_CURRICULUM.md), et la base ne doit pas
+                    // la préempter en inventant 28 leçons.
+                    //
+                    // Un chapitre sans sujets (les chapitres français hérités)
+                    // reçoit null, pas un tableau vide : l'absence de sujets
+                    // n'est pas une liste vide de sujets.
+                    'topics' => ($chapterData['topics'] ?? []) === [] ? null : $chapterData['topics'],
                     'order' => $chapterData['order'],
                 ];
                 $existingChapter = Chapter::where('grade_id', $grade->id)->where('code', $chapterData['code'])->first();

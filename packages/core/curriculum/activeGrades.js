@@ -1,24 +1,32 @@
 // The single allowlist of grade `id`s active in the Algerian product.
 //
-// smarter-academy-dz was cloned from the French platform (see
-// docs/ALGERIA_MIGRATION_AUDIT.md §15) and physically carries every French
-// grade's content. Per ALGERIA_PLATFORM_MASTER_SPEC.md §3, that content must
-// stay on disk but become undiscoverable through every active surface —
-// navigation, catalogue, search, progression, admin, API, SEO — until each
-// grade is explicitly reactivated.
+// Les DEUX classes du produit algérien, et elles seules
+// (ALGERIA_PLATFORM_MASTER_SPEC.md §3 : « The initial active curriculum
+// contains ONLY: 4AM — السنة الرابعة متوسط · Terminale — السنة الثالثة ثانوي »).
 //
-// This list starts EMPTY on purpose: no Algerian grade (4AM, Terminale-DZ)
-// exists in the curriculum yet — that is blocked on the official Algerian
-// curriculum sources (master spec §4, §23; roadmap Phase 7). An empty
-// allowlist is the only value that is honest about that: it makes every
-// inherited French grade dormant and activates nothing else, rather than
-// guessing at which grade should be visible in the meantime.
+// ── Ce qu'« active » veut dire, et ce qu'il ne veut PAS dire ────────────
+// Active = la classe EXISTE : un élève peut s'y inscrire, elle apparaît dans
+// les sélecteurs, l'API la sert. Ce n'est PAS « du contenu est disponible » :
 //
-// When Phase 7 lands the first Algerian grade code(s) into courseLevels
-// (coursesData.js), add them here. This file — not a filter duplicated
-// per-component — is what every downstream consumer (frontend catalogue,
-// lesson registry, admin default views) must read from.
-export const ACTIVE_GRADE_IDS = Object.freeze([]);
+//   4am          → programme arrêté (4 domaines, 28 sujets), AUCUNE leçon
+//                  écrite. Le catalogue montre le programme, pas des cours.
+//   terminale_dz → identité seule. Aucun programme n'a été fourni
+//                  (rapport de reprise §19, B1).
+//
+// Confondre les deux est le défaut que l'invariant I2 de la phase 6F existe
+// pour empêcher : chaque classe porte un `curriculumStatus` que l'interface
+// DOIT lire pour dire à l'élève où en est sa classe, au lieu de lui servir
+// un catalogue vide qu'il prendra pour une panne.
+//
+// ── L'héritage français ─────────────────────────────────────────────────
+// Jusqu'à la phase 6F, cette liste était vide et les 8 classes françaises
+// étaient DORMANTES : présentes dans le catalogue, cachées par ce filtre.
+// Ce n'est plus le cas. Le catalogue algérien (coursesData.js,
+// `dzCourseLevels`) ne les contient plus du tout, et la base non plus. Elles
+// ne survivent que comme ARBRE DE RÉFÉRENCE, hors produit, pour que
+// l'outillage puisse continuer à valider les 132 dossiers de leçons restés
+// sur le disque.
+export const ACTIVE_GRADE_IDS = Object.freeze(['4am', 'terminale_dz']);
 
 export function isGradeActive(gradeId) {
   return ACTIVE_GRADE_IDS.includes(gradeId);

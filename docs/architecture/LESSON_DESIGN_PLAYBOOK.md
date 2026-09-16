@@ -501,6 +501,70 @@ purposes: transformation, causality, movement, comparison, construction, progres
 contour or hop arc; a stamped diameter ribbon). Decorative animation is removed. Keep meaningful
 animations ≤ ~600 ms, reduced-motion aware; the kit's XP burst is the only celebration effect.
 
+### 13bis. Arabic typography (ar-DZ lessons) — Cairo, global, non-negotiable
+
+All student-facing Arabic content uses the application's global Cairo Arabic typography
+(`apps/web/tailwind.config.js`, `apps/web/src/index.css`; master spec §14). This is a platform-wide
+rule, not a per-lesson decision:
+
+- **Never** import another Arabic font at the lesson or module level (no Tajawal, Noto Sans
+  Arabic, Amiri, IBM Plex Arabic, etc. as a primary choice — Tajawal only exists as the platform's
+  own second fallback, already wired in globally).
+- **Never** define a lesson-specific Arabic font class, inline `font-family`, or override the
+  global Arabic typography. Rely on inheritance — `font-sans`, `font-space`, `font-inter`,
+  `font-mono`, plain text nodes, headings — all already resolve to Cairo for Arabic glyphs
+  (`font-mono` keeps JetBrains Mono for digits/code and Cairo for the Arabic letters of a
+  mono-styled label). Never place a system font (`system-ui`, `ui-sans-serif`, `Arial`…) before
+  Cairo: system fonts have Arabic glyphs and would silently replace it.
+- **Preserve the mathematical font system.** KaTeX and MathLive set their own fonts on their own
+  elements; do not touch or wrap them with a font override.
+- **Preserve code/monospace typography** (`font-mono` / `.font-mono-jetbrains` — JetBrains Mono).
+  Numerals and code stay monospace regardless of the surrounding Arabic text.
+- A lesson generator's job is content and structure, not typography. If a generated lesson needs
+  to render Arabic text, it inherits Cairo automatically and must not attempt to set up its own
+  font stack.
+
+### 13ter. Arabic is the student's language (ar-DZ lessons) — everything they read
+
+Every student-facing sentence and pedagogical word in an ar-DZ lesson is in Arabic. The only
+Latin text a student may see is **legitimate mathematical notation** or **a technical identifier
+that is never rendered**. This is an acceptance criterion, not a preference: "most of the lesson
+is Arabic" is a failure.
+
+**Must be Arabic** — titles, descriptions, briefs, step titles and subtitles, questions, options,
+distractors, explanations, hints, every feedback string (success, error, retry, empty, completion),
+manipulation labels and legends, knowledge-map entries, badges, and every `aria-label`, `title`
+and `placeholder` (a screen reader reads these aloud to the same student).
+
+**Must NOT be translated** — `PGCD`, `PPCM`, variables (`a`, `b`, `x`), operators, `√`, equations,
+numerals, and standard abbreviations; and all technical identifiers: ids (`id: '4am_pgcd'`),
+component/function/file names, routes, registry keys, CSS classes, database fields. Prefer the
+Arabic wording *with* the standard notation — `القاسم المشترك الأكبر (PGCD)` — and never invent an
+awkward translation of an established symbol. `احسب PGCD(84;36)` is correct; `Calcule PGCD(84;36)`
+is not.
+
+**Where the untranslated text actually hides.** A lesson can be flawless on its own files and still
+show French to a student, because the *chrome* comes from shared components:
+
+- **Scan every module, not the first screen** — and every interactive state: initial, selected,
+  correct, incorrect, each hint level, validation, error, completion, reset, and both navigation
+  directions. Text that only appears after an interaction is the most common miss.
+- **Follow imports to the real rendered surface** — module → manipulation → shared kit → feedback →
+  button. Build the actual import graph; a lesson's own 18 files can pull in 70+.
+- **Fix shared chrome at the shared level, through i18n** — never by hardcoding Arabic into a
+  component other lessons render. Add the key to `apps/web/src/i18n/locales/ar/` and call `t()`.
+  Check the key *resolves*: a missing key renders the raw key or a stale default.
+- **Arabic plurals need all six forms** (`_zero`, `_one`, `_two`, `_few`, `_many`, `_other`), and
+  the count belongs *inside* the key — never concatenate a number with a translated noun.
+- **Isolate numeric pairs with `dir="ltr"`.** In an RTL page, `{score} / {max}` renders reversed:
+  10/11 reads as "11 / 10". Every score, counter and ratio (`N / M`) needs the wrapper, exactly as
+  `MathText` already does for expressions.
+
+**Always run a second full scan after generating or editing a lesson**, searching independently for
+French and English prose, mixed-language sentences, untranslated buttons/feedback/hints, and
+accidental developer or placeholder text. Classify each hit — notation and identifiers stay,
+prose gets translated — and finish in the browser, since some strings only appear dynamically.
+
 ---
 
 ## 14. Reference lessons: reference ≠ template

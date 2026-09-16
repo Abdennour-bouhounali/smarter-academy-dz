@@ -1,5 +1,6 @@
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { Sparkles, Clock, Brain } from 'lucide-react';
 import { ArrowForward } from '../../../components/common/DirectionalIcons';
 import { useDiagnosticSession } from '../../../hooks/useDiagnosticSession';
@@ -13,7 +14,8 @@ import { useDocumentMeta } from '../../../hooks/useDocumentMeta';
  * mutates anything and is always safe to land on or revisit.
  */
 export default function DiagnosticIntro() {
-  useDocumentMeta('Diagnostic 6e', 'Découvre ce que tu sais déjà en mathématiques 6e — sans note, à ton rythme.');
+  const { t } = useTranslation('student');
+  useDocumentMeta(t('diagnostic.metaTitle'), t('diagnostic.metaDescription'));
   const navigate = useNavigate();
   const { session, loading } = useDiagnosticSession('6e', { autoStart: false });
 
@@ -35,25 +37,25 @@ export default function DiagnosticIntro() {
           </div>
 
           <h1 className="font-space font-bold text-2xl sm:text-3xl text-slate-900 mb-3">
-            {isCompleted ? 'Ton profil mathématique 6e' : 'On va découvrir ce que tu sais déjà'}
+            {isCompleted ? t('diagnostic.introTitleCompleted') : t('diagnostic.introTitle')}
           </h1>
 
           {isCompleted ? (
             <p className="font-inter text-slate-500 text-sm leading-relaxed mb-7">
-              Tu as déjà réalisé ton diagnostic 6e. Retrouve ton profil et ta mission recommandée — tu pourras le refaire plus tard si tu penses avoir progressé.
+              {t('diagnostic.introBodyCompleted')}
             </p>
           ) : (
             <p className="font-inter text-slate-500 text-sm leading-relaxed mb-7">
-              Pas de note, pas de piège : quelques questions variées pour comprendre ce que tu maîtrises déjà, ce qui est encore fragile, et par où commencer. Se tromper est utile — ça nous aide à mieux te connaître.
+              {t('diagnostic.introBody')}
             </p>
           )}
 
           <div className="flex items-center justify-center gap-6 mb-8 text-slate-400">
             <span className="flex items-center gap-1.5 text-xs font-mono-jetbrains font-semibold">
-              <Clock size={14} /> 10 à 15 min
+              <Clock size={14} /> {t('diagnostic.duration')}
             </span>
             <span className="flex items-center gap-1.5 text-xs font-mono-jetbrains font-semibold">
-              <Sparkles size={14} /> Sans note
+              <Sparkles size={14} /> {t('diagnostic.noGrade')}
             </span>
           </div>
 
@@ -65,17 +67,17 @@ export default function DiagnosticIntro() {
             style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}
           >
             {loading
-              ? 'Un instant...'
+              ? t('diagnostic.loadingCta')
               : isCompleted
-              ? 'Voir mon profil'
+              ? t('diagnostic.seeMyProfile')
               : isResuming
-              ? 'Reprendre le diagnostic'
-              : 'Commencer le diagnostic'}
+              ? t('diagnostic.resumeDiagnostic')
+              : t('diagnostic.startDiagnostic')}
             <ArrowForward size={17} />
           </button>
 
           <Link to="/espace" className="block mt-4 text-xs font-inter text-slate-400 hover:text-slate-600 transition-colors">
-            Plus tard, retourner à mon espace
+            {t('diagnostic.laterBackToSpace')}
           </Link>
         </div>
       </motion.div>

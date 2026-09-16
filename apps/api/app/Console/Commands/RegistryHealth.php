@@ -131,6 +131,22 @@ class RegistryHealth extends Command
                 .'    Lancez : node packages/core/curriculum/exportCurriculum.mjs';
         }
 
+        // ── PÉRIMÈTRE : une classe en base que le catalogue ignore ───────
+        // Distinct de la dérive d'activation, et plus grave : ce n'est pas un
+        // désaccord sur l'état d'une classe, c'est du curriculum que le
+        // produit ne connaît pas. Un import ne l'effacera pas (il n'efface
+        // jamais rien) — d'où le conseil différent.
+        foreach ($activation['unexpectedGrades'] ?? [] as $code) {
+            $failures[] = "Classe « {$code} » présente en base mais ABSENTE du catalogue : du curriculum hors périmètre.\n"
+                .'    Lancez : php artisan smarter:scope-curriculum --dry-run';
+        }
+
+        foreach ($activation['orphans'] ?? [] as $entity => $count) {
+            if ($count > 0) {
+                $failures[] = "{$count} ligne(s) de curriculum orpheline(s) ({$entity}) : rattachées à une classe, un chapitre ou une leçon qui n'existe plus.";
+            }
+        }
+
         foreach ($activation['drift'] ?? [] as $row) {
             $source = $row['source'] === null ? 'ABSENTE de la source' : ($row['source'] ? 'active' : 'inactive');
             $database = $row['database'] ? 'active' : 'inactive';
