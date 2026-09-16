@@ -40,7 +40,7 @@ export default function GradeSwitcher() {
         value={user.grade || ''}
         onChange={handleChange}
         disabled={saving}
-        className="appearance-none cursor-pointer rounded-lg border border-slate-200 bg-white pl-3 pr-8 rtl:pr-3 rtl:pl-8 py-1.5 font-inter text-xs sm:text-sm font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60 transition-colors"
+        className="appearance-none cursor-pointer rounded-lg border border-slate-200 bg-white ps-3 pe-8 py-1.5 font-inter text-xs sm:text-sm font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60 transition-colors"
       >
         {!currentGrade && <option value="" disabled>Ma classe</option>}
         {ALL_GRADES.map((g) => (
@@ -49,7 +49,7 @@ export default function GradeSwitcher() {
           </option>
         ))}
       </select>
-      <ChevronDown size={14} className="pointer-events-none absolute right-2.5 rtl:right-auto rtl:left-2.5 text-slate-400" />
+      <ChevronDown size={14} className="pointer-events-none absolute end-2.5 text-slate-400" />
     </div>
   );
 }

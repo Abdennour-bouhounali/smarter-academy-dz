@@ -1,6 +1,7 @@
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Sparkles, Clock, Brain, ArrowRight } from 'lucide-react';
+import { Sparkles, Clock, Brain } from 'lucide-react';
+import { ArrowForward } from '../../../components/common/DirectionalIcons';
 import { useDiagnosticSession } from '../../../hooks/useDiagnosticSession';
 import { useDocumentMeta } from '../../../hooks/useDocumentMeta';
 
@@ -70,7 +71,7 @@ export default function DiagnosticIntro() {
               : isResuming
               ? 'Reprendre le diagnostic'
               : 'Commencer le diagnostic'}
-            <ArrowRight size={17} />
+            <ArrowForward size={17} />
           </button>
 
           <Link to="/espace" className="block mt-4 text-xs font-inter text-slate-400 hover:text-slate-600 transition-colors">

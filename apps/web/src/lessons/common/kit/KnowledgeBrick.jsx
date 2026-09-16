@@ -82,9 +82,9 @@ export default function KnowledgeBrick({
       className={`relative overflow-hidden rounded-2xl ${style.box}`}
     >
       {/* Le liseré de catégorie : la seule couleur de la carte. */}
-      {style.accent && <span aria-hidden="true" className={`absolute inset-y-0 left-0 rtl:left-auto rtl:right-0 w-[3px] ${accent}`} />}
+      {style.accent && <span aria-hidden="true" className={`absolute inset-y-0 start-0 w-[3px] ${accent}`} />}
 
-      <div className={`p-5 space-y-3 ${style.accent ? 'pl-6 rtl:pl-5 rtl:pr-6' : ''}`}>
+      <div className={`p-5 space-y-3 ${style.accent ? 'ps-6' : ''}`}>
         <p className={`text-[11px] font-mono font-bold uppercase tracking-[0.14em] ${style.tag}`}>
           <span aria-hidden="true">{style.emoji}</span> {style.label}
           {category && <span> · {category.label}</span>}

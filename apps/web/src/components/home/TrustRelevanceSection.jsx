@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, ScrollText } from 'lucide-react';
+import { ScrollText } from 'lucide-react';
+import { ArrowForward } from '../common/DirectionalIcons';
 import { courseLevels, getFlatAvailableLessons } from '@smarter-academy/core';
 
 const ALL_GRADES = courseLevels.flatMap((level) =>
@@ -64,7 +65,7 @@ export default function TrustRelevanceSection() {
         <div className="text-center mt-8">
           <Link to="/courses" className="inline-flex items-center gap-2 font-inter text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">
             Voir le programme complet
-            <ArrowRight size={15} />
+            <ArrowForward size={15} />
           </Link>
         </div>
       </div>

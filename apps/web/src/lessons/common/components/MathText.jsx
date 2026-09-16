@@ -24,17 +24,13 @@ import { InlineMath, BlockMath } from 'react-katex';
  * Usage — with className:
  *   <MathText className="font-mono text-blue-700">$f(x)=2x$</MathText>
  */
-// Math LTR isolation (ALGERIA_PLATFORM_MASTER_SPEC.md §14): the platform's
-// UI direction is RTL (ar-DZ — see src/locale.js), but mathematical notation
-// is read left-to-right regardless of surrounding text direction — this is
-// not a stylistic choice, it's how `2x + 3 = 7` or a fraction bar is
-// mathematically structured. `dir="ltr"` fixes ordering AND the direction
-// KaTeX's own internal layout assumes; `unicodeBidi: isolate` keeps the
-// expression's bidi run from being reordered by surrounding Arabic text
-// (critical for something like "احسب $x+5=12$", where an Arabic sentence
-// wraps an LTR expression). This is the single chokepoint — 364+ call sites
-// across the app get this for free without individual changes.
-const MATH_LTR_STYLE = { direction: 'ltr', unicodeBidi: 'isolate' };
+// Math LTR isolation (ALGERIA_PLATFORM_MASTER_SPEC.md §14): the UI is RTL
+// (ar-DZ — src/locale.js) but notation reads left-to-right regardless of the
+// surrounding text direction. Every expression is wrapped in a `dir="ltr"`
+// container carrying .sa-math-inline / .sa-math-block (index.css). Block math
+// gets a <div>: react-katex's BlockMath renders a <div>, which is invalid
+// inside a <span> and triggers a React DOM-nesting warning. Single chokepoint
+// — 360+ call sites inherit this without individual changes.
 
 export default function MathText({ children, className }) {
   if (typeof children !== 'string') {
@@ -53,14 +49,14 @@ export default function MathText({ children, className }) {
   const rendered = parts.map((part, index) => {
     if (part.startsWith('$$') && part.endsWith('$$') && part.length > 4) {
       return (
-        <span key={index} dir="ltr" style={MATH_LTR_STYLE}>
+        <div key={index} dir="ltr" className="sa-math-block">
           <BlockMath math={part.slice(2, -2)} />
-        </span>
+        </div>
       );
     }
     if (part.startsWith('$') && part.endsWith('$') && part.length > 2) {
       return (
-        <span key={index} dir="ltr" style={MATH_LTR_STYLE}>
+        <span key={index} dir="ltr" className="sa-math-inline">
           <InlineMath math={`\\displaystyle ${part.slice(1, -1)}`} />
         </span>
       );

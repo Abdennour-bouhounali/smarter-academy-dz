@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
+import { ArrowForward } from './DirectionalIcons';
 
 /**
  * The recurring "Commencer gratuitement" close — reused across Home,
@@ -42,7 +43,7 @@ export default function CtaBanner({
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-space font-bold text-slate-900 bg-white hover:bg-slate-100 shadow-xl transition-all duration-300 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600"
               >
                 {primaryLabel}
-                <ArrowRight size={16} className="text-blue-600" />
+                <ArrowForward size={16} className="text-blue-600" />
               </Link>
               {secondaryLabel && secondaryTo && (
                 <Link

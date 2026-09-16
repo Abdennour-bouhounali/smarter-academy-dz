@@ -129,7 +129,7 @@ export default function Register() {
                   autoFocus
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full appearance-none rounded-xl border border-slate-300 px-4 py-3 placeholder-slate-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm bg-white/50 backdrop-blur-sm text-left rtl:text-right"
+                  className="block w-full appearance-none rounded-xl border border-slate-300 px-4 py-3 placeholder-slate-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm bg-white/50 backdrop-blur-sm text-start"
                 />
               </div>
             </div>
@@ -149,15 +149,15 @@ export default function Register() {
                   autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full appearance-none rounded-xl border border-slate-300 px-4 py-3 pr-12 rtl:pr-4 rtl:pl-12 placeholder-slate-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm bg-white/50 backdrop-blur-sm text-left rtl:text-right"
+                  className="block w-full appearance-none rounded-xl border border-slate-300 px-4 py-3 pr-12 placeholder-slate-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm bg-white/50 backdrop-blur-sm text-start"
                 />
-                {/* Reveal-password toggle follows the field's own (LTR) end
-                    — see Login.jsx for the same pattern/rationale. */}
+                {/* Toggle at the FIELD's own (LTR) end — physical right in both
+                    page directions; see Login.jsx. */}
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   aria-label={showPassword ? t('hidePassword') : t('showPassword')}
-                  className="absolute inset-y-0 right-0 rtl:right-auto rtl:left-0 flex items-center pr-3 rtl:pr-0 rtl:pl-3 text-slate-400 hover:text-slate-600 focus:outline-none"
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 focus:outline-none"
                 >
                   {showPassword ? (
                     <EyeOff className="h-5 w-5" aria-hidden="true" />

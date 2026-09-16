@@ -3,23 +3,20 @@ import ReactDOM from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Printer, ArrowLeft, Compass, FileText, Expand, ChevronUp, ChevronDown, Columns2 } from 'lucide-react';
 import { useLessonViewport } from './useLessonViewport';
+import { IS_RTL } from '../../../locale.js';
 import { useWorkspaceLayout } from '../../../context/WorkspaceLayoutContext';
 import { buildStructure, progressionByModule, HIGHLIGHT_CAT } from './knowledgeStructure';
 import ConceptVisual from './ConceptVisual';
 
 /*
- * RTL (ar-DZ — src/locale.js) : ce panneau reste ANCRÉ À DROITE dans les deux
- * directions, par exception documentée (voir index.css, section « ESPACE DE
- * TRAVAIL »). Sa géométrie d'ouverture (`initial={{ x: '100%' }}` plus bas) et
- * son calcul de position en mode colonne (`priorGeom.left = vpOuter -
- * maCarteWidth`) sont câblés sur le bord droit PHYSIQUE de la fenêtre, pas
- * dérivés de la mesure direction-aware de `useLessonViewport`. Miroiter
- * correctement ce composant demanderait de retoucher son animation et son
- * calcul de position — sur un composant que l'audit documente comme ayant
- * un historique de rupture silencieuse malgré des tests verts
- * (KNOWLEDGE_MAP_MIGRATION_2NDE.md) — ce qui dépasse le périmètre de
- * fondation de Phase 4. `UNKNOWN — REQUIRES VERIFICATION` : dépôt d'un
- * miroir complet (bord gauche sous RTL) pour une phase ultérieure dédiée.
+ * RTL (ar-DZ — src/locale.js) : le panneau vit sur le bord de FIN de la zone
+ * de contenu — la droite en LTR, la GAUCHE sous RTL (la barre latérale occupe
+ * alors la droite). Tout ce qui dépend du bord est dérivé en UN endroit par
+ * cas : les trois géométries (tiroir / colonne / plein), le sens d'entrée
+ * (`x`), le calcul de la poignée, et des utilitaires logiques pour les bords
+ * (`border-s`, `rounded-es-*`, `start-6`). `useLessonViewport` mesure la
+ * boîte de padding de <main>, elle-même miroitée en CSS (index.css) : la
+ * mesure ne suppose jamais un côté.
  */
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -100,11 +97,11 @@ const PRINT_CSS = `
     background-color: transparent !important;
     border: none !important;
     padding: 0 0 4px 0 !important;
-    text-align: left !important;
+    text-align: start !important;
     box-shadow: none !important;
   }
   .sa-print-hero-body div[class*="text-center"] {
-    text-align: left !important;
+    text-align: start !important;
   }
   .sa-print-body p, .sa-print-body div, .sa-print-body span {
     font-size: 9pt !important;
@@ -168,7 +165,7 @@ function KnowledgeRow({ item, onSelect, dotClass }) {
       onClick={() => onSelect(item)}
       data-km-item={item.id}
       data-km-new={item.isNew ? 'true' : undefined}
-      className="group w-full text-left rtl:text-right flex items-baseline gap-2.5 py-1.5 px-2 -mx-2 rounded-lg hover:bg-slate-50 transition-colors"
+      className="group w-full text-start flex items-baseline gap-2.5 py-1.5 px-2 -mx-2 rounded-lg hover:bg-slate-50 transition-colors"
     >
       <span className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${dotClass}`} aria-hidden="true" />
       <span className="min-w-0 flex-1">
@@ -236,10 +233,10 @@ function StructuredView({ items, onSelect, columns = 1 }) {
                 <span className={`h-3 w-1 rounded-full ${accent.rule}`} aria-hidden="true" />
                 <h3 className={`text-[11px] font-bold tracking-[0.14em] ${accent.label}`}>{stratum.label}</h3>
                 <span className="text-[10px] text-slate-400">{stratum.caption}</span>
-                <span className="ml-auto rtl:ml-0 rtl:mr-auto text-[10px] font-mono text-slate-300">{stratum.count}</span>
+                <span className="ms-auto text-[10px] font-mono text-slate-300">{stratum.count}</span>
               </div>
 
-              <div className="pl-3 rtl:pl-0 rtl:pr-3 border-l rtl:border-l-0 rtl:border-r border-slate-100 space-y-3">
+              <div className="ps-3 border-s border-slate-100 space-y-3">
                 {stratum.groups.map((g) => (
                   <div key={g.category.id} data-km-group={g.category.id}>
                     {/* Sous-titre de catégorie — seulement si la strate en compte plusieurs */}
@@ -269,7 +266,7 @@ function StructuredView({ items, onSelect, columns = 1 }) {
       {/* Fil cumulatif — la carte s'enrichit module après module */}
       {steps.length > 0 && (
         <div className="pt-3 border-t border-slate-100 flex items-center gap-1.5 flex-wrap" data-km-progression="true">
-          <span className="text-[10px] text-slate-400 mr-1 rtl:mr-0 rtl:ml-1">Ta carte&nbsp;:</span>
+          <span className="text-[10px] text-slate-400 me-1">Ta carte&nbsp;:</span>
           {steps.map((s, i) => (
             <React.Fragment key={s.module}>
               {i > 0 && <span className="text-slate-200 text-[10px]" aria-hidden="true">→</span>}
@@ -371,7 +368,7 @@ function CategoryDetailView({ category, items, onBack }) {
       <div className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold ${theme.hdr} border`}>
         <span aria-hidden="true">{category.emoji}</span>
         <span className="font-mono tracking-wider">{category.label}</span>
-        <span className={`ml-auto rtl:ml-0 rtl:mr-auto text-xs px-2 py-0.5 rounded-full ${theme.badge}`}>{items.length}</span>
+        <span className={`ms-auto text-xs px-2 py-0.5 rounded-full ${theme.badge}`}>{items.length}</span>
       </div>
 
       {/* CompleteCards for this category */}
@@ -504,7 +501,7 @@ function PrintView({ items, printTitle = 'MA CARTE', printSubject = 'Mathématiq
             Ma carte de connaissances
           </div>
         </div>
-        <div className="text-right rtl:text-left">
+        <div className="text-end">
           <div className="text-[9pt] font-bold text-[#172033]">SMARTER ACADEMY</div>
           <div className="text-[8pt] text-[#667085]">{printSubject}</div>
         </div>
@@ -519,7 +516,7 @@ function PrintView({ items, printTitle = 'MA CARTE', printSubject = 'Mathématiq
           <div key={stratum.id} className="print-section mb-6 break-inside-avoid">
             <div className={`text-[11pt] font-bold uppercase tracking-widest mb-1 pb-1 border-b-2 ${PRINT_STRATUM[stratum.accent] ?? PRINT_STRATUM.blue}`}>
               {stratum.label}
-              <span className="ml-2 rtl:ml-0 rtl:mr-2 text-[7.5pt] font-normal normal-case tracking-normal text-[#667085]">
+              <span className="ms-2 text-[7.5pt] font-normal normal-case tracking-normal text-[#667085]">
                 {stratum.caption}
               </span>
             </div>
@@ -600,9 +597,9 @@ export function CompleteView({ items, printable = true, columns = 1 }) {
           <div className="flex items-baseline gap-2">
             <span className="h-3 w-1 rounded-full bg-rose-400" aria-hidden="true" />
             <h3 className="text-[11px] font-bold tracking-[0.14em] text-rose-700">À RETENIR</h3>
-            <span className="ml-auto rtl:ml-0 rtl:mr-auto text-[10px] font-mono text-slate-300">{highlight.length}</span>
+            <span className="ms-auto text-[10px] font-mono text-slate-300">{highlight.length}</span>
           </div>
-          <div className="pl-3 rtl:pl-0 rtl:pr-3 border-l rtl:border-l-0 rtl:border-r border-rose-100 space-y-2">
+          <div className="ps-3 border-s border-rose-100 space-y-2">
             {highlight.map(item => (
               <CompleteCard key={item.id} item={item} catColor="red" />
             ))}
@@ -623,10 +620,10 @@ export function CompleteView({ items, printable = true, columns = 1 }) {
                 <span className={`h-3 w-1 rounded-full ${accent.rule}`} aria-hidden="true" />
                 <h3 className={`text-[11px] font-bold tracking-[0.14em] ${accent.label}`}>{stratum.label}</h3>
                 <span className="text-[10px] text-slate-400">{stratum.caption}</span>
-                <span className="ml-auto rtl:ml-0 rtl:mr-auto text-[10px] font-mono text-slate-300">{stratum.count}</span>
+                <span className="ms-auto text-[10px] font-mono text-slate-300">{stratum.count}</span>
               </div>
 
-              <div className="pl-3 rtl:pl-0 rtl:pr-3 border-l rtl:border-l-0 rtl:border-r border-slate-100 space-y-3">
+              <div className="ps-3 border-s border-slate-100 space-y-3">
                 {stratum.groups.map(g => (
                   <div key={g.category.id} data-km-group={g.category.id} className="space-y-2">
                     {stratum.groups.length > 1 && (
@@ -706,7 +703,8 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
   const drawerW = Math.min(width, vpWidth || width);
   const drawerGeom = {
     top: vpTop,
-    left: Math.max(vpLeft, (vpOuter || 0) - vpRight - drawerW),
+    // Bord de FIN du viewport de la leçon : à droite en LTR, à gauche en RTL.
+    left: IS_RTL ? vpLeft : Math.max(vpLeft, (vpOuter || 0) - vpRight - drawerW),
     width: drawerW,
     height: minimized ? 56 : vpHeight,
   };
@@ -716,7 +714,7 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
   // même valeur sert à réserver et à occuper.
   const priorGeom = {
     top: vpTop,
-    left: Math.max(0, (vpOuter || 0) - maCarteWidth),
+    left: IS_RTL ? 0 : Math.max(0, (vpOuter || 0) - maCarteWidth),
     width: maCarteWidth,
     height: vpHeight,
   };
@@ -729,8 +727,9 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
   // justes dès la première image.
   const expandedGeom = {
     top: vpTop,
-    left: vpLeft,
-    width: Math.max(0, (vpOuter || 0) - vpLeft),
+    // Du bord de la barre latérale au bord opposé de la fenêtre.
+    left: IS_RTL ? 0 : vpLeft,
+    width: IS_RTL ? Math.max(0, (vpOuter || 0) - vpRight) : Math.max(0, (vpOuter || 0) - vpLeft),
     height: vpHeight,
   };
 
@@ -812,15 +811,16 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
     // qu'il reste toujours MIN_CONTENT_WIDTH à la leçon, donc que le contenu
     // ne peut jamais finir caché derrière la carte.
     if (isPrior) {
-      const next = window.innerWidth - e.clientX;
+      const next = IS_RTL ? e.clientX : window.innerWidth - e.clientX;
       setPriorWidth(Math.min(Math.max(next, priorWidthBounds.min), priorWidthBounds.max));
       return;
     }
 
     // Le bord droit du tiroir est celui du viewport de la leçon : la largeur
     // est la distance du pointeur à CE bord, pas au bord de la fenêtre.
-    const rightEdge = window.innerWidth - vpRight;
-    let newWidth = rightEdge - e.clientX;
+    // Distance du pointeur au bord de FIN du viewport (droite en LTR,
+    // gauche en RTL) : c'est la largeur du tiroir.
+    let newWidth = IS_RTL ? e.clientX - vpLeft : (window.innerWidth - vpRight) - e.clientX;
 
     // Sur écran étroit, on ne préserve pas une largeur de bureau qui rendrait
     // la leçon inutilisable : la borne haute suit la place réellement offerte.
@@ -859,9 +859,9 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
             //   ouverture tiroir : glissé depuis le bord droit
             //   ouverture plein  : fondu + très léger zoom (il ne vient d'aucun bord)
             //   tiroir ⇄ plein   : les quatre bords se déplacent de façon continue
-            // OUVERTURE / FERMETURE — la carte ENTRE PAR LA DROITE : elle
-            // glisse de droite à gauche jusqu'à sa colonne, et ressort par la
-            // droite en partant. Pendant ce temps la coquille rétrécit le
+            // OUVERTURE / FERMETURE — la carte ENTRE PAR SON BORD DE FIN (la
+            // droite en LTR, la gauche en RTL — d'où le signe sur `x`) : elle
+            // glisse jusqu'à sa colonne, et ressort par le même bord. Pendant ce temps la coquille rétrécit le
             // contenu (gouttière de `--sa-gutter-w`, même durée) : les deux
             // mouvements se répondent, la leçon fait de la place pendant que
             // la carte arrive.
@@ -873,9 +873,9 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
             // carte traversait tout l'écran depuis le bord GAUCHE. Ici elle
             // part de `x: 100%`, c'est-à-dire d'exactement une largeur de
             // panneau à DROITE de sa place — hors écran, quel que soit le mode.
-            initial={{ x: '100%', opacity: 0 }}
+            initial={{ x: IS_RTL ? '-100%' : '100%', opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
-            exit={{ x: '100%', opacity: 0 }}
+            exit={{ x: IS_RTL ? '-100%' : '100%', opacity: 0 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             style={{
               position: 'fixed',
@@ -902,20 +902,24 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
                 // ombre portée ni coin arrondi, qui la feraient à nouveau
                 // flotter au-dessus du contenu.
                 : isPrior
-                  ? 'border-l bg-slate-50/60'
-                  : 'border-l border-b shadow-2xl shadow-slate-900/15 rounded-bl-2xl',
+                  ? 'border-s bg-slate-50/60'
+                  : 'border-s border-b shadow-2xl shadow-slate-900/15 rounded-es-2xl',
             ].join(' ')}
             role="dialog"
             aria-label="Ma carte des connaissances"
             aria-modal="false" // It's a companion, not a blocking modal
           >
-            {/* ── Resize Handle (Left Edge) ── */}
+            {/* ── Resize Handle — sur le bord du panneau FACE AU CONTENU ──
+                Le panneau occupe le bord de FIN ; l'arête tournée vers la leçon
+                est donc sa gauche en LTR et sa droite en RTL. Exprimé
+                physiquement parce que l'auto-centrage (`translate-x`, moitié de
+                largeur) est physique lui aussi et doit basculer avec. */}
             {!expanded && <div
               onPointerDown={handlePointerDown}
               onPointerMove={handlePointerMove}
               onPointerUp={handlePointerUp}
               onPointerCancel={handlePointerUp}
-              className="absolute left-0 top-0 bottom-0 w-6 -translate-x-1/2 cursor-col-resize z-50 flex items-center justify-center group touch-none"
+              className="absolute left-0 rtl:left-auto rtl:right-0 top-0 bottom-0 w-6 -translate-x-1/2 rtl:translate-x-1/2 cursor-col-resize z-50 flex items-center justify-center group touch-none"
               aria-hidden="true"
               data-km-noprint="true"
             >
@@ -925,7 +929,7 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
 
             {/* ── Header ── */}
             <div
-              className="flex items-center justify-between px-4 py-3 border-b border-slate-100 shrink-0 bg-white rounded-tl-2xl"
+              className="flex items-center justify-between px-4 py-3 border-b border-slate-100 shrink-0 bg-white rounded-ss-2xl"
               data-km-noprint="true"
             >
               <div className="flex items-center gap-2 min-w-0">
@@ -1150,7 +1154,10 @@ export function KnowledgeMapTrigger({ items = [], open: openProp, onOpenChange, 
           // bottom-20 : au-dessus du bouton Ctrl+K du site visiteur (bottom-6,
           // même coin, même z-index) et de la barre basse mobile de l'espace
           // élève (h-16) — sinon le déclencheur est recouvert.
-          'fixed bottom-20 right-6 z-40',
+          // Côté : le panneau s'ouvre sur le bord de FIN du contenu (gauche
+          // en RTL). Le déclencheur se pose donc sur le bord OPPOSÉ, sinon il
+          // disparaît sous la carte qu'il vient d'ouvrir.
+          'fixed bottom-20 start-6 z-40',
           'flex items-center gap-2 px-4 py-3 rounded-2xl',
           'font-bold text-sm shadow-lg shadow-slate-900/20',
           'transition-colors duration-200',

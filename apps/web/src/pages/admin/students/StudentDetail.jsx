@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, CircleCheckBig, Dumbbell, Target, Percent } from 'lucide-react';
+import { CircleCheckBig, Dumbbell, Target, Percent } from 'lucide-react';
+import { ArrowBack } from '../../../components/common/DirectionalIcons';
 import AdminPage from '../../../components/admin/AdminPage';
 import StatTile from '../../../components/common/StatTile';
 import StatusBadge from '../../../components/admin/ui/StatusBadge';
@@ -53,7 +54,7 @@ export default function AdminStudentDetail() {
           to="/admin/eleves"
           className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-2 font-inter text-xs font-semibold text-slate-700 hover:bg-slate-50"
         >
-          <ArrowLeft size={14} /> Tous les élèves
+          <ArrowBack size={14} /> Tous les élèves
         </Link>
       )}
     >

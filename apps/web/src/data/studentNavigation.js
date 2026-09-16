@@ -4,10 +4,11 @@ import { House, BookOpen, Compass, TrendingUp, UserCircle } from 'lucide-react';
 // from data/navigation.js (the visitor IA). A student's workspace is a
 // different kind of surface (LEARN → PRACTICE → PROGRESS → MASTER) with a
 // different shape, not a filtered view of the marketing nav.
+// `labelKey` → i18n `nav` namespace (src/i18n/locales/ar/nav.json).
 export const studentNavLinks = [
-  { label: 'Accueil', path: '/espace', icon: House, end: true },
-  { label: 'Mes cours', path: '/espace/cours', icon: BookOpen },
-  { label: 'Explorer', path: '/espace/explorer', icon: Compass },
-  { label: 'Ma progression', path: '/espace/progression', icon: TrendingUp },
-  { label: 'Profil', path: '/espace/profil', icon: UserCircle },
+  { labelKey: 'home', path: '/espace', icon: House, end: true },
+  { labelKey: 'myCourses', path: '/espace/cours', icon: BookOpen },
+  { labelKey: 'explore', path: '/espace/explorer', icon: Compass },
+  { labelKey: 'progression', path: '/espace/progression', icon: TrendingUp },
+  { labelKey: 'profile', path: '/espace/profil', icon: UserCircle },
 ];

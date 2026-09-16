@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ArrowRight } from 'lucide-react';
+import { X } from 'lucide-react';
+import { ArrowForward } from '../../../components/common/DirectionalIcons';
 import { useDiagnosticSession } from '../../../hooks/useDiagnosticSession';
 import { useDocumentMeta } from '../../../hooks/useDocumentMeta';
 import QuestionRenderer from '../../../components/diagnostic/QuestionRenderer';
@@ -153,7 +154,7 @@ export default function DiagnosticRun() {
                         style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}
                       >
                         {pending?.completed ? 'Voir mon profil' : 'Continuer'}
-                        <ArrowRight size={16} />
+                        <ArrowForward size={16} />
                       </button>
                     </motion.div>
                   )}

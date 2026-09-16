@@ -190,7 +190,7 @@ export default function NotebookBrowser() {
               <button
                 type="button"
                 onClick={() => openLesson(g.code)}
-                className="w-full text-left rtl:text-right rounded-xl border-2 border-slate-200 bg-white px-4 py-3 hover:border-slate-400 transition-colors flex items-center justify-between gap-3 min-h-[56px]"
+                className="w-full text-start rounded-xl border-2 border-slate-200 bg-white px-4 py-3 hover:border-slate-400 transition-colors flex items-center justify-between gap-3 min-h-[56px]"
               >
                 <span className="min-w-0">
                   <span className="block font-bold text-sm text-slate-800 truncate">{g.title}</span>

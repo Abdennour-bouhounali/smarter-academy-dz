@@ -11,7 +11,7 @@
 
   html {
     scroll-behavior: smooth;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Tajawal', sans-serif;
     font-size: 16px;
   }
 
@@ -25,24 +25,21 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Space Grotesk', 'Tajawal', sans-serif;
     font-weight: 700;
     line-height: 1.2;
     color: #0F172A;
   }
 
-  /* Arabic UI default (ar-DZ, RTL — src/locale.js). Tajawal replaces Inter/
-     Space Grotesk for body text and headings alike: this is the ONLY locale
-     the platform serves today, so the base font is Arabic-first rather than
-     a per-component override. Math stays on its own fonts regardless — see
-     MathText.jsx/MathInput.jsx, which isolate `dir="ltr"` and are never
-     affected by this rule since KaTeX/MathLive render their own glyphs.
-     Slightly taller line-height than the Latin default: tight leading reads
-     as cramped in Arabic, per ALGERIA_PLATFORM_MASTER_SPEC.md §14. */
-  [dir="rtl"] html {
-    font-family: 'Tajawal', 'Space Grotesk', sans-serif;
-  }
-
+  /* Arabic typography (ar-DZ, RTL — src/locale.js).
+     Tajawal is NOT the primary family: it is the Arabic FALLBACK in every
+     stack (html, headings, and tailwind.config.js's font-inter/font-space).
+     Inter and Space Grotesk carry no Arabic glyphs, so the browser renders
+     Arabic runs in Tajawal per glyph while Latin runs (brand name, digits,
+     code) keep the identity fonts — one stack serves mixed Arabic/Latin
+     lines. Math is unaffected: KaTeX/MathLive ship their own fonts and are
+     isolated LTR (.sa-math-* below). Taller leading only under RTL: tight
+     leading reads as cramped in Arabic (master spec §14). */
   [dir="rtl"] body {
     line-height: 1.85;
   }
@@ -53,8 +50,22 @@
   [dir="rtl"] h4,
   [dir="rtl"] h5,
   [dir="rtl"] h6 {
-    font-family: 'Tajawal', 'Space Grotesk', sans-serif;
     line-height: 1.4;
+  }
+
+  /* Mathematical notation stays LTR inside the RTL shell (master spec §14).
+     `unicode-bidi: isolate` keeps the expression out of the surrounding
+     Arabic bidi run; `direction: ltr` fixes its own layout. Applied by
+     MathText.jsx, the single KaTeX chokepoint. */
+  .sa-math-inline {
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  .sa-math-block {
+    direction: ltr;
+    unicode-bidi: isolate;
+    display: block;
   }
 
   ::selection {
@@ -206,11 +217,11 @@
 
 @layer utilities {
   .font-space {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Space Grotesk', 'Tajawal', sans-serif;
   }
 
   .font-inter {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Tajawal', sans-serif;
   }
 
   .font-mono-jetbrains {
@@ -361,19 +372,18 @@ svg [role="slider"]:focus-visible {
    `transition: padding` — la coquille « fait de la place » ; c'est le même
    mouvement, et la même durée, que la compression de la barre latérale.
    ───────────────────────────────────────────────────────────────────────── */
-/* RTL (ar-DZ, le défaut de la plateforme — src/locale.js) : la barre latérale
-   (StudentNavbar/AdminSidebar) s'ancre au bord DROIT sous RTL, donc c'est la
-   gouttière de GAUCHE que <main> doit réserver pour elle.
-   « Ma carte » (KnowledgeMap.jsx), elle, reste délibérément ancrée à DROITE
-   dans les deux directions — voir le commentaire dans KnowledgeMap.jsx :
-   sa géométrie d'ouverture/glissement (`x: '100%'`, `left = vpOuter -
-   maCarteWidth`) est câblée sur le bord droit physique de la fenêtre, pas
-   dérivée de la mesure `useLessonViewport`. La retourner correctement
-   demanderait de retoucher cette animation et ce calcul de position —
-   un composant que l'audit documente comme ayant un historique de rupture
-   silencieuse (KNOWLEDGE_MAP_MIGRATION_2NDE.md) — ce qui dépasse le
-   périmètre de fondation de cette phase. Exception documentée, pas un
-   oubli : `--sa-gutter-w` reste donc réservé à DROITE même sous RTL. */
+/* RTL (ar-DZ, le défaut — src/locale.js) : le schéma est MIROITÉ en bloc.
+   La barre latérale s'ancre au bord de DÉBUT (`start-0` dans StudentNavbar /
+   AdminSidebar), donc à droite ; « Ma carte » (KnowledgeMap.jsx) au bord de
+   FIN, donc à gauche. <main> réserve chacune du bon côté :
+
+     LTR   ┌────┬────────────────────────────┬────────────┐
+           │ S  │        CONTENU             │  MA CARTE  │
+     RTL   ┌────────────┬────────────────────────────┬────┐
+           │  MA CARTE  │        CONTENU             │ S  │
+
+   `useLessonViewport` lit la boîte de padding de <main> : la mesure suit ces
+   règles sans jamais coder un côté en dur. */
 .sa-workspace-main {
   padding-right: var(--sa-gutter-w, 0px);
   /* Même durée et même courbe que l'entrée du panneau (KnowledgeMap.jsx) :
@@ -382,13 +392,18 @@ svg [role="slider"]:focus-visible {
   transition: padding 300ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+[dir="rtl"] .sa-workspace-main {
+  padding-right: 0px;
+  padding-left: var(--sa-gutter-w, 0px);
+}
+
 @media (min-width: 1024px) {
   .sa-workspace-main {
     padding-left: var(--sa-sidebar-w, 0px);
   }
 
   [dir="rtl"] .sa-workspace-main {
-    padding-left: 0px;
+    padding-left: var(--sa-gutter-w, 0px);
     padding-right: var(--sa-sidebar-w, 0px);
   }
 }

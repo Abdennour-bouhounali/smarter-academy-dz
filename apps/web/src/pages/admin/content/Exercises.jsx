@@ -1,3 +1,4 @@
+import { getAllGrades } from '@smarter-academy/core';
 import React, { useCallback, useContext, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Dumbbell } from 'lucide-react';
@@ -17,7 +18,10 @@ import { fetchExercises } from '../../../services/admin/contentService';
 import { useDocumentMeta } from '../../../hooks/useDocumentMeta';
 import { useDebounced } from '../../../hooks/useDebounced';
 
-const GRADES = ['6e', '5e', '4e', '3e', 'seconde'];
+// Le filtre ne propose que les classes du catalogue ACTIF (activeGrades.js) :
+// les classes françaises dormantes ne sont ni listées ni filtrables ici, et
+// l'API les exclut de toute façon (ContentService, grades.is_active).
+const GRADES = getAllGrades().map((g) => g.id);
 
 export default function AdminExercises() {
   useDocumentMeta('Exercices — Administration');

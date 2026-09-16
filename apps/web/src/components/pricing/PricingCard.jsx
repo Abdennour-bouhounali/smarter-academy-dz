@@ -97,7 +97,7 @@ export default function PricingCard({
       {/* « 1 mois offert » est une accroche de lancement : la montrer à qui a
           déjà souscrit annonce un cadeau qui ne le concerne plus. */}
       {data.badge && !owned && (
-        <span className="absolute -top-3 right-6 rtl:right-auto rtl:left-6 text-[11px] font-bold font-mono-jetbrains tracking-wider text-white px-3 py-1.5 rounded-full shadow-lg" style={{ background: 'linear-gradient(135deg, #F59E0B, #F97316)' }}>
+        <span className="absolute -top-3 end-6 text-[11px] font-bold font-mono-jetbrains tracking-wider text-white px-3 py-1.5 rounded-full shadow-lg" style={{ background: 'linear-gradient(135deg, #F59E0B, #F97316)' }}>
           {data.badge}
         </span>
       )}

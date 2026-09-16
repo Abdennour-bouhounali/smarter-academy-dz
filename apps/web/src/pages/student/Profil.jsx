@@ -135,7 +135,7 @@ export default function Profil() {
               <option key={g.id} value={g.id}>{g.levelTitle} — {g.name}</option>
             ))}
           </select>
-          <ChevronDown size={16} className="pointer-events-none absolute right-4 rtl:right-auto rtl:left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+          <ChevronDown size={16} className="pointer-events-none absolute end-4 top-1/2 -translate-y-1/2 text-slate-400" />
         </div>
         {saved && (
           <p className="mt-2 text-xs font-inter text-emerald-600 flex items-center gap-1">

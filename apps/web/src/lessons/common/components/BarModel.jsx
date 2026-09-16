@@ -37,7 +37,7 @@ export default function BarModel({ bars, maxValue, unit = '' }) {
                 {total !== null && !bar.hideTotal ? `${total}${unit}` : ''}
               </span>
             </div>
-            <div className="flex h-10 sm:h-11 rounded-lg overflow-hidden border-2 border-slate-300 bg-slate-50" role="img" aria-label={`${bar.label} : ${total}${unit}`}>
+            <div dir="ltr" className="flex h-10 sm:h-11 rounded-lg overflow-hidden border-2 border-slate-300 bg-slate-50" role="img" aria-label={`${bar.label} : ${total}${unit}`}>
               {bar.segments.map((seg, si) => {
                 const widthPct = Math.max((seg.value / scale) * 100, 4);
                 if (seg.unknown) {

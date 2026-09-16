@@ -1,9 +1,7 @@
 import { useContext, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  TrendingUp, CircleCheckBig, Flame, Zap, ArrowRight, Target, ChevronDown, Trophy,
-} from 'lucide-react';
+import { TrendingUp, CircleCheckBig, Flame, Zap, Target, ChevronDown, Trophy } from 'lucide-react';
 import { courseLevels, getAllGrades } from '@smarter-academy/core';
 import { getStudentActivity } from '../../lessons/common/utils/progress/getStudentActivity';
 import { AuthContext } from '../../context/AuthContext';

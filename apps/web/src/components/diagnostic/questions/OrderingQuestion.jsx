@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { RotateCcw, ArrowRight } from 'lucide-react';
+import { RotateCcw } from 'lucide-react';
+import { ArrowForward } from '../../common/DirectionalIcons';
 
 /**
  * Tap-to-place sequencing — the same touch-first interaction as the
@@ -73,7 +74,7 @@ export default function OrderingQuestion({ question, onChange, disabled }) {
             )}
             {placed.map((id, i) => (
               <span key={id} className="flex items-center gap-1.5">
-                {i > 0 && <ArrowRight size={12} className="text-slate-300" aria-hidden="true" />}
+                {i > 0 && <ArrowForward size={12} className="text-slate-300" aria-hidden="true" />}
                 <motion.button
                   layout
                   type="button"
@@ -94,7 +95,7 @@ export default function OrderingQuestion({ question, onChange, disabled }) {
             onClick={reset}
             className="px-4 py-2.5 rounded-xl bg-white border-2 border-slate-200 text-slate-500 hover:border-slate-400 font-mono-jetbrains text-xs font-bold min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
           >
-            <RotateCcw className="inline w-3.5 h-3.5 mr-1 rtl:mr-0 rtl:ml-1" aria-hidden="true" /> Recommencer
+            <RotateCcw className="inline w-3.5 h-3.5 me-1" aria-hidden="true" /> Recommencer
           </button>
         )}
       </div>

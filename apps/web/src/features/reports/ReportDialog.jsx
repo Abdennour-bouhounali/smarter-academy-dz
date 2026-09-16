@@ -139,7 +139,7 @@ export default function ReportDialog({ open, onClose, onSubmit, busy, error, sub
                 type="button"
                 onClick={onClose}
                 aria-label="Fermer"
-                className="-mr-1 rtl:mr-0 rtl:-ml-1 rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                className="-me-1 rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
               >
                 <X size={18} aria-hidden="true" />
               </button>

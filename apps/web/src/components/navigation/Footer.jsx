@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Mail, ArrowRight } from 'lucide-react';
+import { Mail } from 'lucide-react';
+import { ArrowForward } from '../common/DirectionalIcons';
+import { useTranslation } from 'react-i18next';
 import { navLinks } from '../../data/navigation';
 
 export default function Footer() {
+  const { t } = useTranslation('nav');
   return (
     <footer className="relative z-10 bg-slate-900 text-white pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -47,7 +50,7 @@ export default function Footer() {
                     to={link.path}
                     className="font-inter text-slate-400 hover:text-white text-sm transition-colors duration-200"
                   >
-                    {link.label}
+                    {t(link.labelKey)}
                   </Link>
                 </li>
               ))}
@@ -80,7 +83,7 @@ export default function Footer() {
               style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}
             >
               Commencer gratuitement
-              <ArrowRight size={14} />
+              <ArrowForward size={14} />
             </Link>
           </motion.div>
         </div>

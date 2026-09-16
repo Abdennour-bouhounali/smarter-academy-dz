@@ -363,7 +363,7 @@ function IncompleteStepsHint({ label, icon, incompleteSteps, onStepClick }) {
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 6 }}
-            className="absolute bottom-full right-0 rtl:right-auto rtl:left-0 mb-2 w-72 max-w-[90vw] rounded-2xl border-2 border-amber-200 bg-amber-50 p-4 shadow-lg text-left rtl:text-right z-10"
+            className="absolute bottom-full end-0 mb-2 w-72 max-w-[90vw] rounded-2xl border-2 border-amber-200 bg-amber-50 p-4 shadow-lg text-start z-10"
           >
             <div className="flex items-center gap-2 text-amber-800 font-space font-bold text-sm mb-2">
               <ListChecks className="w-4 h-4 shrink-0" aria-hidden="true" />
@@ -378,7 +378,7 @@ function IncompleteStepsHint({ label, icon, incompleteSteps, onStepClick }) {
                       setOpen(false);
                       onStepClick(step.num);
                     }}
-                    className="w-full text-left rtl:text-right px-3 py-2 rounded-lg bg-white border border-amber-200 text-xs font-semibold text-amber-900 hover:border-amber-400 hover:bg-amber-100 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+                    className="w-full text-start px-3 py-2 rounded-lg bg-white border border-amber-200 text-xs font-semibold text-amber-900 hover:border-amber-400 hover:bg-amber-100 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
                   >
                     Étape {step.num} — {step.title}
                   </button>

@@ -65,7 +65,7 @@ export function LegalParagraph({ children }) {
 /** Une liste à puces. */
 export function LegalList({ children }) {
   return (
-    <ul className="font-inter text-slate-600 text-base leading-relaxed space-y-2 pl-5 rtl:pl-0 rtl:pr-5 list-disc marker:text-blue-400">
+    <ul className="font-inter text-slate-600 text-base leading-relaxed space-y-2 ps-5 list-disc marker:text-blue-400">
       {children}
     </ul>
   );
@@ -104,14 +104,14 @@ export function LegalCallout({ tone = 'blue', title, children }) {
 export function LegalTable({ headers, rows }) {
   return (
     <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
-      <table className="w-full min-w-[34rem] border-collapse text-left rtl:text-right">
+      <table className="w-full min-w-[34rem] border-collapse text-start">
         <thead>
           <tr className="border-b-2 border-slate-200">
             {headers.map((h) => (
               <th
                 key={h}
                 scope="col"
-                className="font-space font-semibold text-slate-900 text-sm py-3 pr-4 rtl:pr-0 rtl:pl-4 align-bottom"
+                className="font-space font-semibold text-slate-900 text-sm py-3 pe-4 align-bottom"
               >
                 {h}
               </th>
@@ -124,7 +124,7 @@ export function LegalTable({ headers, rows }) {
               {row.map((cell, j) => (
                 <td
                   key={j}
-                  className={`py-3 pr-4 rtl:pr-0 rtl:pl-4 font-inter text-base leading-relaxed ${
+                  className={`py-3 pe-4 font-inter text-base leading-relaxed ${
                     j === 0 ? 'text-slate-800 font-medium' : 'text-slate-600'
                   }`}
                 >

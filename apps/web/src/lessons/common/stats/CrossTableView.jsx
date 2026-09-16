@@ -59,10 +59,10 @@ export default function CrossTableView({
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full border-collapse text-sm" aria-label={caption ?? 'Tableau croisé'}>
-        {caption && <caption className="text-xs text-slate-500 mb-2 text-left">{caption}</caption>}
+        {caption && <caption className="text-xs text-slate-500 mb-2 text-start">{caption}</caption>}
         <thead>
           <tr>
-            <th scope="col" className="border border-slate-300 bg-slate-100 px-3 py-2 text-left text-xs font-bold text-slate-600">
+            <th scope="col" className="border border-slate-300 bg-slate-100 px-3 py-2 text-start text-xs font-bold text-slate-600">
               {rowsTitle}{rowsTitle && colsTitle ? ' \\ ' : ''}{colsTitle}
             </th>
             {colOrder.map((c) => (
@@ -80,7 +80,7 @@ export default function CrossTableView({
           {rowOrder.map((r) => (
             <tr key={r}>
               <th scope="row"
-                className={`border border-slate-300 px-3 py-2 text-left text-xs font-bold ${isRowLit(r) ? 'bg-violet-200 text-violet-900' : 'bg-slate-100 text-slate-700'}`}>
+                className={`border border-slate-300 px-3 py-2 text-start text-xs font-bold ${isRowLit(r) ? 'bg-violet-200 text-violet-900' : 'bg-slate-100 text-slate-700'}`}>
                 {labels.rows[r] ?? r}
               </th>
               {colOrder.map((c) => (
@@ -102,7 +102,7 @@ export default function CrossTableView({
             </tr>
           ))}
           <tr>
-            <th scope="row" className="border border-slate-300 bg-slate-200 px-3 py-2 text-left text-xs font-bold text-slate-700">
+            <th scope="row" className="border border-slate-300 bg-slate-200 px-3 py-2 text-start text-xs font-bold text-slate-700">
               Total
             </th>
             {colOrder.map((c) => (

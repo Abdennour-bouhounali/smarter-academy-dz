@@ -90,7 +90,7 @@ export default function InfoSorter({ items, onSolved, solved, formative = false,
                 type="button"
                 {...dd.sourceProps(it.id)}
                 style={{ touchAction: 'none', cursor: 'grab' }}
-                className={`px-3 py-2.5 rounded-xl border-2 text-sm font-medium text-left max-w-[260px] transition-all min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+                className={`px-3 py-2.5 rounded-xl border-2 text-sm font-medium text-start max-w-[260px] transition-all min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                   selected === it.id ? 'bg-blue-50 border-blue-500 ring-2 ring-blue-300 text-blue-900' : 'bg-white border-slate-200 text-slate-700 hover:border-slate-400'
                 }`}
               >
@@ -128,7 +128,7 @@ export default function InfoSorter({ items, onSolved, solved, formative = false,
               onClick={(e) => { e.stopPropagation(); unassign(it.id); }}
               className={`w-full text-left px-3 py-2 rounded-lg border-2 text-sm transition-colors ${cardTone(it)} ${solved ? '' : 'hover:opacity-80'}`}
             >
-              {checked && (it.useful ? <CheckCircle2 className="inline w-3.5 h-3.5 mr-1.5" aria-hidden="true" /> : <XCircle className="inline w-3.5 h-3.5 mr-1.5" aria-hidden="true" />)}
+              {checked && (it.useful ? <CheckCircle2 className="inline w-3.5 h-3.5 me-1.5" aria-hidden="true" /> : <XCircle className="inline w-3.5 h-3.5 me-1.5" aria-hidden="true" />)}
               {it.text}
             </motion.button>
           ))}
@@ -159,7 +159,7 @@ export default function InfoSorter({ items, onSolved, solved, formative = false,
               onClick={(e) => { e.stopPropagation(); unassign(it.id); }}
               className={`w-full text-left px-3 py-2 rounded-lg border-2 text-sm transition-colors ${cardTone(it)} ${solved ? '' : 'hover:opacity-80'}`}
             >
-              {checked && (!it.useful ? <CheckCircle2 className="inline w-3.5 h-3.5 mr-1.5" aria-hidden="true" /> : <XCircle className="inline w-3.5 h-3.5 mr-1.5" aria-hidden="true" />)}
+              {checked && (!it.useful ? <CheckCircle2 className="inline w-3.5 h-3.5 me-1.5" aria-hidden="true" /> : <XCircle className="inline w-3.5 h-3.5 me-1.5" aria-hidden="true" />)}
               {it.text}
             </motion.button>
           ))}

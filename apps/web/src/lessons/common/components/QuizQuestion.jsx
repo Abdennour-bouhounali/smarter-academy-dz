@@ -71,7 +71,7 @@ export default function QuizQuestion({
           const isSelected = selectedIndex === i;
           const isCorrect = choice.correct;
 
-          let btnClass = 'p-3 rounded-xl border font-mono font-bold text-sm text-left transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ';
+          let btnClass = 'p-3 rounded-xl border font-mono font-bold text-sm text-start transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ';
 
           if (status === null) {
             btnClass += 'border-slate-200 hover:border-blue-300 hover:bg-slate-50 text-slate-800';

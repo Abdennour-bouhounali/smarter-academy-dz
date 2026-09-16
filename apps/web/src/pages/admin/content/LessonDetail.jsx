@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, Layers, Dumbbell, Target } from 'lucide-react';
+import { Layers, Dumbbell, Target } from 'lucide-react';
+import { ArrowBack } from '../../../components/common/DirectionalIcons';
 import AdminPage from '../../../components/admin/AdminPage';
 import DataTable from '../../../components/admin/ui/DataTable';
 import StatusBadge from '../../../components/admin/ui/StatusBadge';
@@ -45,7 +46,7 @@ export default function AdminLessonDetail() {
           to="/admin/contenu/lecons"
           className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-2 font-inter text-xs font-semibold text-slate-700 hover:bg-slate-50"
         >
-          <ArrowLeft size={14} /> Toutes les leçons
+          <ArrowBack size={14} /> Toutes les leçons
         </Link>
       )}
     >

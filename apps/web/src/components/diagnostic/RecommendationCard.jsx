@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Target, ArrowRight } from 'lucide-react';
+import { Target } from 'lucide-react';
+import { ArrowForward } from '../common/DirectionalIcons';
 
 /**
  * The most important conversion in the whole feature: diagnostic completed
@@ -37,7 +38,7 @@ export default function RecommendationCard({ recommendation }) {
         className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-white text-blue-700 font-space font-bold text-sm shadow-lg hover:-translate-y-0.5 transition-all"
       >
         🎯 Commencer ma première mission
-        <ArrowRight size={16} />
+        <ArrowForward size={16} />
       </Link>
     </motion.div>
   );

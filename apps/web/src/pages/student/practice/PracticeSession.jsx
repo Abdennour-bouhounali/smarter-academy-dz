@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState, useCallback, useMemo } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowBack } from '../../../components/common/DirectionalIcons';
+
 import { practice } from '@smarter-academy/core';
 import { AuthContext } from '../../../context/AuthContext';
 import {
@@ -227,7 +228,7 @@ export default function PracticeSession() {
           to={`/espace/pratique/${lessonCode}`}
           className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-500 hover:text-indigo-600 whitespace-nowrap"
         >
-          <ArrowLeft className="w-3 h-3" aria-hidden="true" /> Retour aux niveaux
+          <ArrowBack className="w-3 h-3" aria-hidden="true" /> Retour aux niveaux
         </Link>
       </nav>
 

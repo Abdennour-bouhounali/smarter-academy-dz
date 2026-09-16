@@ -42,9 +42,15 @@ export default {
         '9xl': ['8rem',     { lineHeight: '1' }],
       },
       fontFamily: {
-        'space': ['"Space Grotesk"', 'sans-serif'],
-        'inter': ['Inter', 'sans-serif'],
+        // Tajawal is the Arabic FALLBACK in every stack (ar-DZ — src/locale.js,
+        // index.css): Inter / Space Grotesk have no Arabic glyphs, so Arabic
+        // runs fall through to Tajawal per glyph while Latin runs keep the
+        // identity fonts. `font-arabic` puts Tajawal first where a surface is
+        // Arabic-only by design.
+        'space': ['"Space Grotesk"', 'Tajawal', 'sans-serif'],
+        'inter': ['Inter', 'Tajawal', 'sans-serif'],
         'mono': ['"JetBrains Mono"', 'monospace'],
+        'arabic': ['Tajawal', '"Space Grotesk"', 'sans-serif'],
         // Arabic UI text (ar-DZ, RTL — see src/locale.js). `font-sans`'s
         // default is redefined in index.css under [dir="rtl"] to Tajawal
         // first, so most components need no per-component font change;

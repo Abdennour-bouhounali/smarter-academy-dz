@@ -1,7 +1,8 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Brain, ArrowRight } from 'lucide-react';
+import { Brain } from 'lucide-react';
+import { ArrowForward } from '../common/DirectionalIcons';
 import { AuthContext } from '../../context/AuthContext';
 import { useDiagnosticSession } from '../../hooks/useDiagnosticSession';
 import { isDiagnosticAvailableForGrade } from '../../services/diagnosticService';
@@ -45,7 +46,7 @@ export default function DiagnosticInviteBanner() {
             </p>
           </div>
         </div>
-        <ArrowRight size={16} className="text-blue-500 group-hover:translate-x-1 transition-transform flex-shrink-0" />
+        <ArrowForward size={16} className="text-blue-500 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-transform flex-shrink-0" />
       </Link>
     </motion.div>
   );

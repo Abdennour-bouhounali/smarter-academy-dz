@@ -86,7 +86,7 @@ export default function DataTable({
                 <th
                   key={column.key}
                   scope="col"
-                  className={`px-3 py-2.5 text-left rtl:text-right font-inter text-xs font-semibold uppercase tracking-wide text-slate-500 ${column.className ?? ''}`}
+                  className={`px-3 py-2.5 text-start font-inter text-xs font-semibold uppercase tracking-wide text-slate-500 ${column.className ?? ''}`}
                   aria-sort={active ? (sort?.direction === 'asc' ? 'ascending' : 'descending') : undefined}
                 >
                   {sortable ? (

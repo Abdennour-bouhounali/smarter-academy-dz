@@ -49,7 +49,7 @@ export default function TutorGuide({ tone = 'instruct', children, className = ''
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       role="status"
-      className={`relative flex items-start gap-3 pl-1 ${className}`}
+      className={`relative flex items-start gap-3 ps-1 ${className}`}
     >
       <span
         className={`shrink-0 w-9 h-9 rounded-full flex items-center justify-center shadow-sm ${t.avatar}`}
@@ -57,7 +57,7 @@ export default function TutorGuide({ tone = 'instruct', children, className = ''
       >
         <Icon className="w-[18px] h-[18px]" />
       </span>
-      <div className={`relative flex-1 rounded-2xl rounded-tl-sm border px-4 py-3 text-sm leading-relaxed ${t.bubble}`}>
+      <div className={`relative flex-1 rounded-2xl rounded-ss-sm border px-4 py-3 text-sm leading-relaxed ${t.bubble}`}>
         <span className="sr-only">{t.prefix} : </span>
         {children}
       </div>

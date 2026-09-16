@@ -1,11 +1,13 @@
 // Single source of truth for the visitor-facing primary navigation —
 // consumed by Navbar, Footer, and CommandPalette so the IA can't drift
 // between the three.
+// `labelKey` resolves through i18n's `nav` namespace at render time
+// (src/i18n/locales/ar/nav.json) — data files carry keys, never copy.
 export const navLinks = [
-  { label: 'Accueil', path: '/' },
-  { label: 'Notre méthode', path: '/methode' },
-  { label: 'Cours', path: '/courses' },
-  { label: 'Tarifs', path: '/tarifs' },
-  { label: 'À propos', path: '/about' },
-  { label: 'FAQ', path: '/faq' },
+  { labelKey: 'home', path: '/' },
+  { labelKey: 'method', path: '/methode' },
+  { labelKey: 'courses', path: '/courses' },
+  { labelKey: 'pricing', path: '/tarifs' },
+  { labelKey: 'about', path: '/about' },
+  { labelKey: 'faq', path: '/faq' },
 ];

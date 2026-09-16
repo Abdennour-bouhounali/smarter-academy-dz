@@ -2,12 +2,12 @@ import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { GraduationCap, ArrowRight, ArrowLeft, Sparkles } from 'lucide-react';
+import { GraduationCap, Sparkles } from 'lucide-react';
+import { ArrowForward } from '../../components/common/DirectionalIcons';
 import { getAllGrades } from '@smarter-academy/core';
 import { AuthContext } from '../../context/AuthContext';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 import { isDiagnosticAvailableForGrade } from '../../services/diagnosticService';
-import { IS_RTL } from '../../locale.js';
 
 const GRADES_BY_LEVEL = getAllGrades().reduce((groups, grade) => {
   (groups[grade.levelTitle] ??= []).push(grade);
@@ -101,10 +101,8 @@ export default function ChooseGrade() {
                         {g.name}
                         {selecting === g.id ? (
                           <Sparkles size={14} className="animate-pulse text-blue-500 flex-shrink-0" />
-                        ) : IS_RTL ? (
-                          <ArrowLeft size={14} className="text-slate-300 group-hover:text-blue-500 group-hover:-translate-x-0.5 transition-all flex-shrink-0" />
                         ) : (
-                          <ArrowRight size={14} className="text-slate-300 group-hover:text-blue-500 group-hover:translate-x-0.5 transition-all flex-shrink-0" />
+                          <ArrowForward size={14} className="text-slate-300 group-hover:text-blue-500 group-hover:translate-x-0.5 group-hover:rtl:-translate-x-0.5 transition-all flex-shrink-0" />
                         )}
                       </button>
                     ))}
@@ -134,7 +132,7 @@ export default function ChooseGrade() {
                 style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}
               >
                 {t('chooseGradeContinue')}
-                {IS_RTL ? <ArrowLeft size={14} /> : <ArrowRight size={14} />}
+                <ArrowForward size={14} />
               </button>
             </div>
           )}

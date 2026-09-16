@@ -98,7 +98,7 @@ export default function CommandPalette() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 2 }}
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 rtl:right-auto rtl:left-6 z-40 flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900/90 backdrop-blur-md text-white text-xs font-mono-jetbrains shadow-xl border border-slate-700 hover:border-slate-500 transition-all"
+        className="fixed bottom-6 end-6 z-40 flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900/90 backdrop-blur-md text-white text-xs font-mono-jetbrains shadow-xl border border-slate-700 hover:border-slate-500 transition-all"
         id="command-palette-trigger"
       >
         <Search size={13} />
@@ -167,7 +167,7 @@ export default function CommandPalette() {
                             <button
                               key={cmd.id}
                               onClick={() => executeCommand(cmd)}
-                              className={`w-full flex items-center gap-3 px-4 py-2.5 text-left rtl:text-right transition-all duration-100 ${
+                              className={`w-full flex items-center gap-3 px-4 py-2.5 text-start transition-all duration-100 ${
                                 selected === idx
                                   ? 'bg-blue-50 text-blue-700'
                                   : 'text-slate-700 hover:bg-slate-50'
@@ -185,7 +185,7 @@ export default function CommandPalette() {
                                 // mr-auto. CornerDownLeft is the ⏎ Enter-key
                                 // glyph itself (a fixed keyboard symbol), not a
                                 // navigation arrow — never mirrored.
-                                <span className="ml-auto rtl:ml-0 rtl:mr-auto">
+                                <span className="ms-auto">
                                   <CornerDownLeft size={13} className="text-blue-400" />
                                 </span>
                               )}

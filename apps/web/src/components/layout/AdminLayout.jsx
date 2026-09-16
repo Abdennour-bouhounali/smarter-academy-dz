@@ -27,7 +27,7 @@ export default function AdminLayout() {
         // anchors to the right edge (see AdminSidebar.jsx), so <main> must
         // reserve its width on the right instead of the left.
         className={`min-h-screen pt-14 transition-[padding] duration-300 lg:pt-0 ${
-          collapsed ? 'lg:pl-20 lg:rtl:pl-0 lg:rtl:pr-20' : 'lg:pl-64 lg:rtl:pl-0 lg:rtl:pr-64'
+          collapsed ? 'lg:ps-20' : 'lg:ps-64'
         }`}
       >
         <Outlet />

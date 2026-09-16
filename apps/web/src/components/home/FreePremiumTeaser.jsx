@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowForward } from '../common/DirectionalIcons';
+
 
 /**
  * The entire free/premium concept, in one glance — not a 3-column plan
@@ -31,7 +32,7 @@ export default function FreePremiumTeaser() {
         </p>
         <Link to="/tarifs" className="inline-flex items-center gap-1.5 font-inter text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">
           Voir les tarifs
-          <ArrowRight size={15} />
+          <ArrowForward size={15} />
         </Link>
       </motion.div>
     </section>

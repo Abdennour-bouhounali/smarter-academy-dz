@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Dumbbell, ArrowRight } from 'lucide-react';
+import { Dumbbell } from 'lucide-react';
+import { ArrowForward } from '../../components/common/DirectionalIcons';
 import { AuthContext } from '../../context/AuthContext';
 import { practiceHubPath } from './practiceCapability';
 import { levelCounts } from './practiceContent';
@@ -48,7 +49,7 @@ export default function PracticeEntryCard({ lessonId }) {
             to={practiceHubPath(lessonId)}
             className="shrink-0 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold min-h-[52px] transition-colors"
           >
-            Commencer à pratiquer <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            Commencer à pratiquer <ArrowForward className="w-4 h-4" aria-hidden="true" />
           </Link>
         ) : (
           <div className="shrink-0 space-y-2 text-center">

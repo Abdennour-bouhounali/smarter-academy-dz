@@ -1,6 +1,8 @@
 import { useContext } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { LogOut, Crown, ChevronLeft, ChevronRight, ShieldCheck } from 'lucide-react';
+import { LogOut, Crown, ShieldCheck } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { ChevronBack, ChevronForward } from '../common/DirectionalIcons';
 import { AuthContext } from '../../context/AuthContext';
 import { studentNavLinks } from '../../data/studentNavigation';
 import { getAllGrades } from '@smarter-academy/core';
@@ -38,6 +40,7 @@ import { usePremiumStatus } from '../../hooks/usePremiumStatus';
  * au lieu de proposer une action sans effet.
  */
 export default function StudentNavbar() {
+  const { t } = useTranslation('nav');
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const { sidebarCollapsed, sidebarToggleLocked, toggleSidebar } = useWorkspaceLayout();
@@ -54,15 +57,12 @@ export default function StudentNavbar() {
 
   return (
     <>
-      {/* Desktop sidebar.
-          RTL (ar-DZ, the platform default — see src/locale.js): the sidebar
-          anchors to the visual RIGHT edge instead of the left, matching where
-          a start-aligned rail belongs in an RTL shell. `rtl:`/`ltr:` are
-          Tailwind's built-in `[dir="rtl"]`/`[dir="ltr"]` variants (no plugin
-          needed) — kept explicit per-utility rather than a blanket logical-
-          property rewrite, so each flip is a reviewable, individual decision. */}
+      {/* Desktop sidebar — anchored to the START edge (`start-0`, `border-e`):
+          the visual left in LTR, the visual right under the platform's RTL
+          default (src/locale.js). Logical utilities, so no per-direction
+          override is needed. */}
       <aside
-        className={`sa-workspace-sidebar hidden lg:flex lg:flex-col fixed top-0 left-0 rtl:left-auto rtl:right-0 bottom-0 bg-white border-r rtl:border-r-0 rtl:border-l border-slate-200 z-40 ${sidebarCollapsed ? 'w-20' : 'w-64'}`}
+        className={`sa-workspace-sidebar hidden lg:flex lg:flex-col fixed top-0 start-0 bottom-0 bg-white border-e border-slate-200 z-40 ${sidebarCollapsed ? 'w-20' : 'w-64'}`}
         data-sidebar-collapsed={sidebarCollapsed ? 'true' : undefined}
       >
         {/* ── Bascule ouvrir / réduire ───────────────────────────────────────
@@ -78,15 +78,15 @@ export default function StudentNavbar() {
           onClick={toggleSidebar}
           disabled={sidebarToggleLocked}
           aria-label={sidebarToggleLocked
-            ? 'Barre latérale réduite par « Ma carte »'
-            : sidebarCollapsed ? 'Ouvrir la barre latérale' : 'Réduire la barre latérale'}
+            ? t('sidebarLockedByMap')
+            : sidebarCollapsed ? t('sidebarExpand') : t('sidebarCollapse')}
           aria-expanded={!sidebarCollapsed}
           title={sidebarToggleLocked
-            ? '« Ma carte » utilise cette place — ferme la carte pour rouvrir la barre'
-            : sidebarCollapsed ? 'Ouvrir la barre latérale' : 'Réduire la barre latérale'}
+            ? t('sidebarLockedByMapHint')
+            : sidebarCollapsed ? t('sidebarExpand') : t('sidebarCollapse')}
           data-sidebar-toggle="true"
           className={[
-            'absolute top-20 -right-3 rtl:right-auto rtl:-left-3 z-50 w-6 h-6 rounded-full',
+            'absolute top-20 -end-3 z-50 w-6 h-6 rounded-full',
             'flex items-center justify-center',
             'bg-white border border-slate-200 text-slate-400 shadow-sm',
             'transition-colors duration-150',
@@ -96,15 +96,13 @@ export default function StudentNavbar() {
               : 'hover:text-slate-700 hover:border-slate-300 cursor-pointer',
           ].join(' ')}
         >
-          {/* Chevron points toward the edge the sidebar collapses INTO — that
-              edge is now the RIGHT under RTL (the sidebar's own anchor
-              above), so the two icons swap meaning, not just position. */}
+          {/* The rail is anchored to the inline-START edge: collapsing moves it
+              toward START, expanding away from it. The chevron names the
+              ACTION's direction, and DirectionalIcons maps that to the right
+              glyph for the platform direction. */}
           {sidebarCollapsed
-            ? <ChevronRight className="w-3.5 h-3.5 rtl:hidden" aria-hidden="true" />
-            : <ChevronLeft className="w-3.5 h-3.5 rtl:hidden" aria-hidden="true" />}
-          {sidebarCollapsed
-            ? <ChevronLeft className="hidden w-3.5 h-3.5 rtl:block" aria-hidden="true" />
-            : <ChevronRight className="hidden w-3.5 h-3.5 rtl:block" aria-hidden="true" />}
+            ? <ChevronForward className="w-3.5 h-3.5" aria-hidden="true" />
+            : <ChevronBack className="w-3.5 h-3.5" aria-hidden="true" />}
         </button>
 
         {/* L'EN-TÊTE EST UNE MARQUE, PAS UNE PORTE.
@@ -130,8 +128,8 @@ export default function StudentNavbar() {
               key={link.path}
               to={link.path}
               end={link.end}
-              title={link.label}
-              aria-label={link.label}
+              title={t(link.labelKey)}
+              aria-label={t(link.labelKey)}
               className={({ isActive }) =>
                 // Comprimée, la pastille reste un carré de 44px : la zone de
                 // clic ne rétrécit pas avec le libellé (min-h-[44px] + w-full).
@@ -146,7 +144,7 @@ export default function StudentNavbar() {
               style={({ isActive }) => (isActive ? { background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' } : {})}
             >
               <link.icon size={18} className="flex-shrink-0" />
-              {!sidebarCollapsed && link.label}
+              {!sidebarCollapsed && t(link.labelKey)}
             </NavLink>
           ))}
         </nav>
@@ -280,7 +278,7 @@ export default function StudentNavbar() {
             }
           >
             <link.icon size={19} />
-            {link.label}
+            {t(link.labelKey)}
           </NavLink>
         ))}
       </nav>

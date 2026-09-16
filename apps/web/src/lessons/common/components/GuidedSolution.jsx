@@ -25,7 +25,7 @@ export default function GuidedSolution({ steps, onRetry }) {
         <span>📘</span> Solution guidée
       </h3>
       
-      <ol className="space-y-3 mb-6 pl-2 rtl:pl-0 rtl:pr-2">
+      <ol className="space-y-3 mb-6 ps-2">
         {steps.map((step, index) => (
           <li key={index} className="flex items-start gap-3 text-slate-700">
             <span className="shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-blue-200 text-blue-800 font-bold text-xs mt-0.5">

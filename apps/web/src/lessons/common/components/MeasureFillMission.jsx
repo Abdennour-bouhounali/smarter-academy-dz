@@ -450,7 +450,7 @@ export default function MeasureFillMission({ challenges, mode = 'free', onChalle
       <div className="flex items-center justify-between gap-3 flex-wrap mb-4">
         <div className="text-[11px] font-mono font-bold uppercase tracking-widest text-slate-400">
           {mode === 'repeat' ? 'Station de mesure' : `Défi ${idx + 1} / ${challenges.length}`}
-          {done > idx && <span className="ml-2 text-emerald-600">✓</span>}
+          {done > idx && <span className="ms-2 text-emerald-600">✓</span>}
         </div>
         <div className="inline-flex items-center gap-2 rounded-full bg-amber-50 border-2 border-amber-300 px-3.5 py-1.5">
           <span aria-hidden="true">🎯</span>

@@ -202,7 +202,7 @@ export default function LessonIndex({ config, basePath }) {
                     </li>
                   ))}
                   {config.skills.length > 3 && (
-                    <li className="text-xs text-slate-400 pl-4 rtl:pl-0 rtl:pr-4">
+                    <li className="text-xs text-slate-400 ps-4">
                       + {config.skills.length - 3} autres compétences
                     </li>
                   )}
@@ -312,7 +312,7 @@ export default function LessonIndex({ config, basePath }) {
                         : 'border-teal-300 bg-teal-50/60 hover:border-teal-400 hover:shadow-md'}`}
                   >
                     {isDone && (
-                      <div className="absolute top-0 right-0 rtl:right-auto rtl:left-0 p-2 text-teal-700 text-[10px] font-bold bg-teal-100 rounded-bl-xl rtl:rounded-bl-none rtl:rounded-br-xl font-mono">
+                      <div className="absolute top-0 end-0 p-2 text-teal-700 text-[10px] font-bold bg-teal-100 rounded-es-xl font-mono">
                         FAIT ✓
                       </div>
                     )}
@@ -355,7 +355,7 @@ export default function LessonIndex({ config, basePath }) {
                       }`}
                   >
                     {isDone && (
-                      <div className="absolute top-0 right-0 rtl:right-auto rtl:left-0 p-2 text-emerald-600 text-[10px] font-bold bg-emerald-100 rounded-bl-xl rtl:rounded-bl-none rtl:rounded-br-xl font-mono">
+                      <div className="absolute top-0 end-0 p-2 text-emerald-600 text-[10px] font-bold bg-emerald-100 rounded-es-xl font-mono">
                         TERMINÉ ✓
                       </div>
                     )}
@@ -396,8 +396,8 @@ export default function LessonIndex({ config, basePath }) {
                     className={`block p-5 bg-slate-900 border rounded-2xl hover:shadow-lg transition-all group relative overflow-hidden
                       ${isDone ? 'border-emerald-500' : 'border-slate-800 hover:border-amber-400'}`}
                   >
-                    <div className={`absolute top-0 left-0 rtl:left-auto rtl:right-0 w-1 h-full ${isDone ? 'bg-emerald-500' : 'bg-slate-700 group-hover:bg-amber-400'} transition-colors`} />
-                    <div className="pl-4 rtl:pl-0 rtl:pr-4 flex items-center justify-between gap-4">
+                    <div className={`absolute top-0 start-0 w-1 h-full ${isDone ? 'bg-emerald-500' : 'bg-slate-700 group-hover:bg-amber-400'} transition-colors`} />
+                    <div className="ps-4 flex items-center justify-between gap-4">
                       <div>
                         <div className="flex items-center gap-2 mb-1 flex-wrap">
                           <span className={`text-xs font-mono ${isDone ? 'text-emerald-400' : 'text-amber-400'} font-bold`}>

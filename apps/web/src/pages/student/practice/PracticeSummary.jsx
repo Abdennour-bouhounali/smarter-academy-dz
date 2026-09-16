@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Target, ArrowRight } from 'lucide-react';
+import { Target } from 'lucide-react';
+import { ArrowForward } from '../../../components/common/DirectionalIcons';
 import { AuthContext } from '../../../context/AuthContext';
 import { fetchPracticeSession, fetchPracticeOverview } from '../../../services/practiceService';
 import { MASTERY_STATES, resolveMasteryState } from '../../../lessons/common/components/LearningPointMastery';
@@ -131,7 +132,7 @@ export default function PracticeSummary() {
           to={`/espace/pratique/${lessonCode}`}
           className="flex-1 px-5 py-3 rounded-xl bg-slate-900 text-white font-bold min-h-[48px] inline-flex items-center justify-center gap-2"
         >
-          Continuer à pratiquer <ArrowRight className="w-4 h-4" aria-hidden="true" />
+          Continuer à pratiquer <ArrowForward className="w-4 h-4" aria-hidden="true" />
         </Link>
         <Link
           to="/espace/cours"

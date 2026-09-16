@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { ShieldCheck, LogOut, PanelLeftClose, PanelLeftOpen, ExternalLink } from 'lucide-react';
+import { ShieldCheck, LogOut, ExternalLink } from 'lucide-react';
+import { PanelStartClose, PanelStartOpen } from '../common/DirectionalIcons';
 import { AuthContext } from '../../context/AuthContext';
 import { adminNavSections } from '../../data/adminNavigation';
 
@@ -27,10 +28,9 @@ export default function AdminSidebar({ collapsed, onToggle }) {
   };
 
   return (
-    // RTL (ar-DZ, the platform default — src/locale.js): anchored to the
-    // right edge, same rule and same rationale as StudentNavbar.jsx.
+    // Anchored to the START edge (logical `start-0`) — same rule as StudentNavbar.
     <aside
-      className={`hidden lg:flex lg:flex-col fixed top-0 left-0 rtl:left-auto rtl:right-0 bottom-0 z-40 bg-slate-900 text-slate-300 transition-[width] duration-300 ${
+      className={`hidden lg:flex lg:flex-col fixed top-0 start-0 bottom-0 z-40 bg-slate-900 text-slate-300 transition-[width] duration-300 ${
         collapsed ? 'w-20' : 'w-64'
       }`}
     >
@@ -47,17 +47,11 @@ export default function AdminSidebar({ collapsed, onToggle }) {
         type="button"
         onClick={onToggle}
         aria-label={collapsed ? 'Déplier le menu' : 'Replier le menu'}
-        className="absolute top-20 -right-3 rtl:right-auto rtl:-left-3 flex h-6 w-6 items-center justify-center rounded-full border border-slate-700 bg-slate-900 text-slate-400 hover:text-white"
+        className="absolute top-20 -end-3 flex h-6 w-6 items-center justify-center rounded-full border border-slate-700 bg-slate-900 text-slate-400 hover:text-white"
       >
-        {/* PanelLeftOpen/Close's icon meaning ("panel is on the left") is
-            literally direction-dependent — swap to the mirrored icons under
-            RTL, where the panel is on the right. */}
-        <span className="rtl:hidden">
-          {collapsed ? <PanelLeftOpen size={13} /> : <PanelLeftClose size={13} />}
-        </span>
-        <span className="hidden rtl:inline">
-          {collapsed ? <PanelLeftClose size={13} className="-scale-x-100" /> : <PanelLeftOpen size={13} className="-scale-x-100" />}
-        </span>
+        {/* The rail sits on the inline-START edge; these glyphs name that
+            edge, so they mirror with the platform direction. */}
+        {collapsed ? <PanelStartOpen size={13} /> : <PanelStartClose size={13} />}
       </button>
 
       <nav className="flex-1 overflow-y-auto px-3 py-4">

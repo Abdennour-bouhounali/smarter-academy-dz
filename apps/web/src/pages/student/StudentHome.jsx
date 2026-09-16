@@ -1,7 +1,8 @@
 import { useContext, useMemo, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Play, ArrowRight, Flame, CircleCheckBig, Zap, Compass, Crown, BookOpen } from 'lucide-react';
+import { Play, Flame, CircleCheckBig, Zap, Compass, Crown, BookOpen } from 'lucide-react';
+import { ArrowForward } from '../../components/common/DirectionalIcons';
 import { courseLevels, getAllGrades } from '@smarter-academy/core';
 import { AuthContext } from '../../context/AuthContext';
 import { getResumeLesson } from '../../lessons/common/utils/progress/getResumeLesson';
@@ -86,8 +87,8 @@ export default function StudentHome() {
                   <span className="text-xs font-mono-jetbrains font-bold text-slate-600 tabular-nums">{continueCourse.progress}%</span>
                 </div>
               </div>
-              <span className="hidden sm:flex items-center gap-1.5 font-bold text-sm text-blue-600 group-hover:translate-x-1 transition-transform flex-shrink-0">
-                Continuer <ArrowRight size={15} />
+              <span className="hidden sm:flex items-center gap-1.5 font-bold text-sm text-blue-600 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-transform flex-shrink-0">
+                Continuer <ArrowForward size={15} />
               </span>
             </div>
           </Link>
@@ -110,8 +111,8 @@ export default function StudentHome() {
                 </h2>
                 <p className="font-inter text-slate-500 text-sm mt-0.5 line-clamp-2">{firstLesson.lesson.description}</p>
               </div>
-              <span className="hidden sm:flex items-center gap-1.5 font-bold text-sm text-emerald-600 group-hover:translate-x-1 transition-transform flex-shrink-0">
-                Commencer <ArrowRight size={15} />
+              <span className="hidden sm:flex items-center gap-1.5 font-bold text-sm text-emerald-600 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-transform flex-shrink-0">
+                Commencer <ArrowForward size={15} />
               </span>
             </div>
           </Link>
@@ -172,7 +173,7 @@ export default function StudentHome() {
               <p className="font-space font-bold text-slate-800 text-sm">Mes cours — {grade ? grade.name : 'ta classe'}</p>
               <p className="font-inter text-slate-500 text-xs mt-0.5">Voir toutes les leçons de ton niveau</p>
             </div>
-            <ArrowRight size={16} className="text-slate-300 group-hover:text-blue-500 group-hover:translate-x-1 transition-all flex-shrink-0" />
+            <ArrowForward size={16} className="text-slate-300 group-hover:text-blue-500 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-all flex-shrink-0" />
           </Link>
 
           <Link to="/espace/explorer" className="group glass-card p-5 flex items-center gap-4 hover:border-purple-300 transition-colors block">
@@ -183,7 +184,7 @@ export default function StudentHome() {
               <p className="font-space font-bold text-slate-800 text-sm">Explorer d'autres niveaux</p>
               <p className="font-inter text-slate-500 text-xs mt-0.5">De la 6e à la Terminale</p>
             </div>
-            <ArrowRight size={16} className="text-slate-300 group-hover:text-purple-500 group-hover:translate-x-1 transition-all flex-shrink-0" />
+            <ArrowForward size={16} className="text-slate-300 group-hover:text-purple-500 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-all flex-shrink-0" />
           </Link>
 
           {/* MÊME COMPTE, DEUX LECTURES.
@@ -201,7 +202,7 @@ export default function StudentHome() {
                 <p className="font-space font-bold text-slate-800 text-sm">{premiumCount} leçon{premiumCount > 1 ? 's' : ''} Premium {premiumCount > 1 ? 'ouvertes' : 'ouverte'}</p>
                 <p className="font-inter text-slate-500 text-xs mt-0.5">Incluses dans ton accès — à toi de jouer</p>
               </div>
-              <ArrowRight size={16} className="text-slate-300 group-hover:text-violet-500 group-hover:translate-x-1 transition-all flex-shrink-0" />
+              <ArrowForward size={16} className="text-slate-300 group-hover:text-violet-500 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-all flex-shrink-0" />
             </Link>
           )}
 
@@ -214,7 +215,7 @@ export default function StudentHome() {
                 <p className="font-space font-bold text-slate-800 text-sm">{premiumCount} leçon{premiumCount > 1 ? 's' : ''} Premium {premiumCount > 1 ? 'disponibles' : 'disponible'}</p>
                 <p className="font-inter text-slate-500 text-xs mt-0.5">Débloque avec l'abonnement — 35€/an</p>
               </div>
-              <ArrowRight size={16} className="text-slate-300 group-hover:text-amber-500 group-hover:translate-x-1 transition-all flex-shrink-0" />
+              <ArrowForward size={16} className="text-slate-300 group-hover:text-amber-500 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-all flex-shrink-0" />
             </Link>
           )}
         </motion.div>

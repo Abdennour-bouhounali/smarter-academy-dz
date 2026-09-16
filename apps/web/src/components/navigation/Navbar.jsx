@@ -1,12 +1,15 @@
 import { useState, useEffect, useContext } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ArrowRight, ArrowLeft, LogOut, ShieldCheck, LayoutDashboard } from 'lucide-react';
+import { Menu, X, LogOut, ShieldCheck, LayoutDashboard } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { ArrowForward } from '../common/DirectionalIcons';
 import { AuthContext } from '../../context/AuthContext';
 import { navLinks } from '../../data/navigation';
 import { IS_RTL } from '../../locale.js';
 
 function AuthCluster({ compact = false, onNavigate }) {
+  const { t } = useTranslation('nav');
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -27,7 +30,7 @@ function AuthCluster({ compact = false, onNavigate }) {
             : 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-inter text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 whitespace-nowrap transition-colors'}
         >
           <ShieldCheck size={15} />
-          Espace admin
+          {t('adminSpace')}
         </Link>
         <button
           onClick={handleLogout}
@@ -36,7 +39,7 @@ function AuthCluster({ compact = false, onNavigate }) {
             : 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-inter text-xs font-medium text-slate-400 hover:text-slate-700 whitespace-nowrap transition-colors'}
         >
           <LogOut size={13} />
-          Déconnexion
+          {t('logout')}
         </button>
       </div>
     );
@@ -54,7 +57,7 @@ function AuthCluster({ compact = false, onNavigate }) {
           style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)', boxShadow: '0 4px 14px rgba(59,130,246,0.3)' }}
         >
           <LayoutDashboard size={14} />
-          Mon espace
+          {t('mySpace')}
         </Link>
         <button
           onClick={handleLogout}
@@ -63,7 +66,7 @@ function AuthCluster({ compact = false, onNavigate }) {
             : 'inline-flex items-center gap-1.5 px-2 py-1.5 rounded-lg font-inter text-xs font-medium text-slate-400 hover:text-slate-700 whitespace-nowrap transition-colors'}
         >
           <LogOut size={13} />
-          {compact ? 'Déconnexion' : ''}
+          {compact ? t('logout') : ''}
         </button>
       </div>
     );
@@ -78,7 +81,7 @@ function AuthCluster({ compact = false, onNavigate }) {
           ? 'flex items-center justify-center px-4 py-3 rounded-xl font-inter text-sm font-semibold text-slate-700 border border-slate-200 hover:bg-slate-50'
           : 'hidden sm:inline-flex px-3 py-1.5 rounded-lg font-inter text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 whitespace-nowrap transition-colors'}
       >
-        Se connecter
+        {t('login')}
       </Link>
       <Link
         to="/register"
@@ -88,19 +91,15 @@ function AuthCluster({ compact = false, onNavigate }) {
           : 'inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-white whitespace-nowrap transition-all duration-300 hover:-translate-y-0.5'}
         style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)', boxShadow: '0 4px 14px rgba(59,130,246,0.3)' }}
       >
-        Commencer gratuitement
-        {/* ArrowRight points "forward" in LTR reading order; under RTL,
-            forward visually points left — IS_RTL (src/locale.js) picks the
-            mirrored icon rather than CSS-transforming an arrow (a
-            transformed icon can look subtly off vs. the icon set's own
-            mirrored glyph). */}
-        {IS_RTL ? <ArrowLeft size={14} /> : <ArrowRight size={14} />}
+        {t('startFree')}
+        <ArrowForward size={14} />
       </Link>
     </div>
   );
 }
 
 export default function Navbar() {
+  const { t } = useTranslation('nav');
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
@@ -179,7 +178,7 @@ export default function Navbar() {
                     }`
                   }
                 >
-                  {link.label}
+                  {t(link.labelKey)}
                 </NavLink>
               ))}
             </div>
@@ -193,7 +192,7 @@ export default function Navbar() {
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
                 className="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg text-slate-600 hover:bg-slate-100 transition-colors"
-                aria-label="Ouvrir le menu"
+                aria-label={mobileOpen ? t('closeMenu') : t('openMenu')}
                 aria-expanded={mobileOpen}
                 id="mobile-menu-toggle"
               >
@@ -218,10 +217,8 @@ export default function Navbar() {
               {navLinks.map((link, i) => (
                 <motion.div
                   key={link.path}
-                  // Slide-in direction follows reading start, not a fixed
-                  // physical side: under RTL (IS_RTL, src/locale.js) items
-                  // enter from the right (+20), matching where the eye
-                  // starts reading each row, mirroring the LTR -20 default.
+                  // Enters from the reading-start side; `x` is physical, so the sign
+                  // follows the platform direction (src/locale.js).
                   initial={{ opacity: 0, x: IS_RTL ? 20 : -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.05 }}
@@ -230,14 +227,14 @@ export default function Navbar() {
                     to={link.path}
                     end={link.path === '/'}
                     className={({ isActive }) =>
-                      `block w-full text-left rtl:text-right px-4 py-3 rounded-xl font-inter text-sm font-medium transition-all duration-200 ${
+                      `block w-full text-start px-4 py-3 rounded-xl font-inter text-sm font-medium transition-all duration-200 ${
                         isActive
                           ? 'text-blue-600 bg-blue-50 font-semibold'
                           : 'text-slate-700 hover:bg-slate-50'
                       }`
                     }
                   >
-                    {link.label}
+                    {t(link.labelKey)}
                   </NavLink>
                 </motion.div>
               ))}

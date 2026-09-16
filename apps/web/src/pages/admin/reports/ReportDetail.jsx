@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, Lock, Users } from 'lucide-react';
+import { Lock, Users } from 'lucide-react';
+import { ArrowBack } from '../../../components/common/DirectionalIcons';
 import AdminPage from '../../../components/admin/AdminPage';
 import StatusBadge from '../../../components/admin/ui/StatusBadge';
 import { LoadingState, ErrorState } from '../../../components/admin/ui/states';
@@ -63,7 +64,7 @@ export default function AdminReportDetail() {
           to="/admin/signalements"
           className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-2 font-inter text-xs font-semibold text-slate-700 hover:bg-slate-50"
         >
-          <ArrowLeft size={14} /> Tous les signalements
+          <ArrowBack size={14} /> Tous les signalements
         </Link>
       )}
     >

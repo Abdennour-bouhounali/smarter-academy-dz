@@ -2,6 +2,7 @@ import { forwardRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Clock, Lock, Crown } from 'lucide-react';
+import { ArrowForward } from '../common/DirectionalIcons';
 import { isLessonUnlocked } from '@smarter-academy/core';
 import { useContentAvailability } from '../../context/ContentAvailabilityContext';
 import { getLessonProgress } from '../../lessons/common/utils/progress/getLessonProgress';
@@ -72,7 +73,7 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
           </div>
           <div className="pt-4 border-t border-violet-100 flex items-center justify-between mt-auto">
             <span className="flex items-center gap-1 text-xs font-mono-jetbrains text-slate-500"><Clock size={14} /> {lesson.duration}</span>
-            <span className="font-bold text-sm group-hover:translate-x-1 transition-transform flex items-center gap-1 text-violet-700">Voir les tarifs →</span>
+            <span className="font-bold text-sm group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-transform flex items-center gap-1 text-violet-700">Voir les tarifs <ArrowForward size={14} /></span>
           </div>
         </Link>
       </motion.div>
@@ -150,10 +151,10 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
             {/* La PROGRESSION prime sur le palier : « terminé » et « en cours »
                 sont ce que l'élève vient chercher, le palier n'est qu'une
                 étiquette. L'accent premium ne colore donc que le départ. */}
-            <span className={`font-bold text-sm group-hover:translate-x-1 transition-transform flex items-center gap-1 ${
+            <span className={`font-bold text-sm group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-transform flex items-center gap-1 ${
               progressPercent >= 100 ? 'text-emerald-600' : progressPercent > 0 ? 'text-blue-600' : isPremiumLesson ? 'text-violet-700' : 'text-blue-600'
             }`}>
-              {progressPercent >= 100 ? 'Terminé' : progressPercent > 0 ? 'Continuer' : 'Commencer'} →
+              {progressPercent >= 100 ? 'Terminé' : progressPercent > 0 ? 'Continuer' : 'Commencer'} <ArrowForward size={14} />
             </span>
           </div>
           {progressPercent > 0 && (

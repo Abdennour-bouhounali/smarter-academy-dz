@@ -12,5 +12,14 @@
   "progression": "التقدّم",
   "myCourses": "دروسي",
   "explore": "استكشاف",
-  "admin": "الإدارة"
+  "admin": "الإدارة",
+  "adminSpace": "لوحة الإدارة",
+  "mySpace": "فضائي",
+  "startFree": "ابدأ مجانًا",
+  "openMenu": "فتح القائمة",
+  "closeMenu": "إغلاق القائمة",
+  "sidebarExpand": "فتح الشريط الجانبي",
+  "sidebarCollapse": "طيّ الشريط الجانبي",
+  "sidebarLockedByMap": "الشريط الجانبي مطوي بسبب «خريطتي»",
+  "sidebarLockedByMapHint": "«خريطتي» تشغل هذه المساحة — أغلق الخريطة لإعادة فتح الشريط"
 }

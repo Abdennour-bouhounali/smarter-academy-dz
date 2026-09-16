@@ -98,7 +98,7 @@ export default function KnowledgeSnapshot({ moduleNumber, unlock = true, complet
               <div className="flex items-baseline gap-2 mb-1.5">
                 <span aria-hidden="true">⚠️</span>
                 <span className="text-[11px] font-bold tracking-[0.14em] text-rose-700">PIÈGES À NE PAS OUBLIER</span>
-                <span className="ml-auto text-[11px] text-rose-400 font-mono">{highlight.length}</span>
+                <span className="ms-auto text-[11px] text-rose-400 font-mono">{highlight.length}</span>
               </div>
               <div className="flex flex-col divide-y divide-rose-100">
                 {highlight.map((item) => (
@@ -117,7 +117,7 @@ export default function KnowledgeSnapshot({ moduleNumber, unlock = true, complet
                     <span className={`w-1 h-3.5 rounded-full ${accent.rule}`} aria-hidden="true" />
                     <span className={`text-[11px] font-bold tracking-[0.12em] ${accent.label}`}>{s.label}</span>
                     <span className="text-[11px] text-slate-400">{s.caption}</span>
-                    <span className="ml-auto text-[11px] font-mono text-slate-400">{s.count}</span>
+                    <span className="ms-auto text-[11px] font-mono text-slate-400">{s.count}</span>
                   </div>
                   {s.groups.map((g) => (
                     <div key={g.category.id} className="mt-2">
@@ -176,7 +176,7 @@ function SnapRow({ item, isNew, dot = 'bg-slate-300', showSummary = false }) {
       <span className="min-w-0 flex-1">
         <span className={`text-sm ${isNew ? 'font-bold text-slate-900' : 'font-medium text-slate-800'}`}>{item.title}</span>
         {isNew && (
-          <span className="ml-1.5 align-middle text-[10px] font-bold uppercase tracking-wide text-indigo-600 bg-indigo-100 px-1.5 py-0.5 rounded-full">nouveau</span>
+          <span className="ms-1.5 align-middle text-[10px] font-bold uppercase tracking-wide text-indigo-600 bg-indigo-100 px-1.5 py-0.5 rounded-full">nouveau</span>
         )}
         {showSummary && item.summary && (
           <span className="block text-xs text-slate-600 leading-snug mt-0.5">{item.summary}</span>

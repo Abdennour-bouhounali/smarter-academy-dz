@@ -91,8 +91,8 @@ export default function ValueTable({
       </div>
 
       <div className="overflow-x-auto rounded-2xl border-2 border-slate-200 bg-white">
-        <table className="w-full text-sm font-mono tabular-nums">
-          {caption && <caption className="text-xs text-slate-500 py-1.5">{caption}</caption>}
+        <table dir="ltr" className="w-full text-sm font-mono tabular-nums">
+          {caption && <caption dir="auto" className="text-xs text-slate-500 py-1.5">{caption}</caption>}
           <thead>
             <tr className="bg-slate-50 text-slate-600">
               <th scope="col" className="px-3 py-2 text-left font-bold">{variable}</th>
@@ -104,7 +104,7 @@ export default function ValueTable({
           <tbody>
             {rows.length === 0 && (
               <tr>
-                <td colSpan={columns.length + 1} className="px-3 py-3 text-center text-xs text-slate-400 italic">
+                <td colSpan={columns.length + 1} dir="auto" className="px-3 py-3 text-center text-xs text-slate-400 italic">
                   Touche une valeur de {variable} pour remplir une ligne.
                 </td>
               </tr>

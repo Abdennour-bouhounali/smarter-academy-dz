@@ -140,7 +140,7 @@ export default function BulkActionBar({
         type="button"
         onClick={onClear}
         disabled={busy}
-        className="ml-auto rtl:ml-0 rtl:mr-auto inline-flex items-center gap-1 rounded-lg px-2 py-1 font-inter text-xs font-semibold text-slate-600 hover:bg-white disabled:opacity-50"
+        className="ms-auto inline-flex items-center gap-1 rounded-lg px-2 py-1 font-inter text-xs font-semibold text-slate-600 hover:bg-white disabled:opacity-50"
       >
         <X size={13} /> Effacer la sélection
       </button>

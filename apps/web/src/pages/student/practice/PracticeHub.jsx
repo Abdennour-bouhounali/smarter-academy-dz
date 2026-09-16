@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState, useCallback } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, BookOpen, Dumbbell } from 'lucide-react';
+import { BookOpen, Dumbbell } from 'lucide-react';
+import { ArrowBack } from '../../../components/common/DirectionalIcons';
 import { AuthContext } from '../../../context/AuthContext';
 import { fetchPracticeOverview, startPracticeSession } from '../../../services/practiceService';
 import LevelSelector from '../../../features/practice/LevelSelector';
@@ -82,7 +83,7 @@ export default function PracticeHub() {
     <div className="sa-surface-plain sa-page py-8 sm:py-10 space-y-8">
       <nav className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-mono text-slate-500" aria-label="Fil d'Ariane">
         <Link to="/espace/cours" className="hover:text-blue-600 inline-flex items-center gap-1 whitespace-nowrap">
-          <ArrowLeft className="w-3 h-3" aria-hidden="true" /> Mes cours
+          <ArrowBack className="w-3 h-3" aria-hidden="true" /> Mes cours
         </Link>
         {lessonPath && (
           <>

@@ -2,7 +2,8 @@ import React, { useState, useContext, useEffect, useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Sparkles, Lock, Crown, Play, Search, ArrowRight } from 'lucide-react';
+import { Sparkles, Lock, Crown, Play, Search } from 'lucide-react';
+import { ArrowForward } from '../components/common/DirectionalIcons';
 import { courseLevels } from '@smarter-academy/core';
 import { getResumeLesson } from '../lessons/common/utils/progress/getResumeLesson';
 import { getLessonProgress } from '../lessons/common/utils/progress/getLessonProgress';
@@ -289,13 +290,13 @@ export default function CoursesPage() {
              )}
           </div>
           <div className="relative w-full md:w-72">
-            <Search size={18} className="absolute left-3 rtl:left-auto rtl:right-3 top-1/2 -translate-y-1/2 text-slate-400" />
+            <Search size={18} className="absolute start-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
               placeholder={`Rechercher en ${gradeData.name}...`}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 rtl:pl-4 rtl:pr-10 py-2.5 text-sm font-inter focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow shadow-sm"
+              className="w-full bg-white border border-slate-200 rounded-xl ps-10 pe-4 py-2.5 text-sm font-inter focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow shadow-sm"
             />
           </div>
         </section>
@@ -357,8 +358,8 @@ export default function CoursesPage() {
                     <h4 className="font-space font-bold text-slate-900 text-lg group-hover:text-blue-600 transition-colors">
                       {continueCourse.course.title} — {continueCourse.grade.name}
                     </h4>
-                    <span className="text-sm font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform text-blue-600">
-                      Continuer <ArrowRight size={14} />
+                    <span className="text-sm font-bold flex items-center gap-1 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-transform text-blue-600">
+                      Continuer <ArrowForward size={14} />
                     </span>
                   </div>
                   

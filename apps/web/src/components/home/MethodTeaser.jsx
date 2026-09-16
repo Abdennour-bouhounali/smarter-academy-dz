@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowForward } from '../common/DirectionalIcons';
+
 
 const LOOP = [
   { title: 'Situation concrète', desc: "Tout part d'un problème réel — jamais d'une formule posée à froid." },
@@ -89,7 +90,7 @@ export default function MethodTeaser() {
 
         <Link to="/methode" className="inline-flex items-center gap-1.5 font-inter text-sm font-semibold text-slate-500 hover:text-blue-600 transition-colors">
           Découvrir notre méthode
-          <ArrowRight size={14} />
+          <ArrowForward size={14} />
         </Link>
       </div>
     </section>
