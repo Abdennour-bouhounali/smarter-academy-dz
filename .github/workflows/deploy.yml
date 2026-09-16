@@ -91,17 +91,19 @@ jobs:
           test -d apps/web/dist/assets
 
       # ─────────────────────────── Build the backend ─────────────────────────
-      # 8.3 is what the ALGERIAN production serves
-      # (x-powered-by: PHP/8.3.33 on smarter-academy.com; the French server
-      # runs 8.4 — the two products have separate infrastructure, master spec
-      # §2). vendor/ is
+      # 8.4, the version the Algerian server serves.
+      #
+      # composer.json says « php ^8.3 », but composer.lock pins symfony/* 8.1.x
+      # which requires « php >=8.4.1 » — so 8.3 cannot install this backend at
+      # all. smarter-academy.com was moved to 8.4 in hPanel accordingly.
+      # vendor/ is
       # built here rather than on the server: Hostinger shared hosting has no
       # dependable Composer, and docs/deployment/HOSTINGER_FILE_MANAGER_DEPLOYMENT.md
       # §7.2 already established building it against composer.lock for PHP 8.4.
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: '8.4'
           extensions: mbstring, bcmath, intl, zip
           coverage: none
 
@@ -109,6 +111,31 @@ jobs:
       # Shipping a vendor/ that contains them is harmless; shipping a
       # bootstrap/cache that REFERENCES them is what breaks the site (see the
       # exclusion list below).
+      # Le serveur doit tourner sur la MÊME version majeure que ce build.
+      # Un vendor/ construit en 8.4 et déposé sur un hôte en 8.3 ne produit
+      # aucune erreur au déploiement : le site répond 500 après coup. Le
+      # premier déploiement algérien a buté exactement là (lockfile symfony
+      # 8.1 → php >=8.4.1 contre un serveur en 8.3.33).
+      - name: Verify the production server runs a compatible PHP
+        if: ${{ vars.PRODUCTION_URL != '' }}
+        run: |
+          set -euo pipefail
+          served="$(curl -sI --max-time 30 "${{ vars.PRODUCTION_URL }}/" \
+            | tr -d '\r' | awk -F'PHP/' '/[Xx]-[Pp]owered-[Bb]y/ {print $2}')"
+          if [ -z "$served" ]; then
+            echo "::warning::The server does not advertise its PHP version; skipping the check."
+            exit 0
+          fi
+          echo "Server advertises PHP $served."
+          major_minor="$(cut -d. -f1,2 <<<"$served")"
+          case "$major_minor" in
+            8.4|8.5)
+              echo "Compatible with the locked dependencies." ;;
+            *)
+              echo "::error::The server runs PHP $served, but composer.lock pins symfony/* which requires >=8.4.1. Raise the PHP version in hPanel (MultiPHP / PHP Configuration) before deploying."
+              exit 1 ;;
+          esac
+
       - name: Install PHP dependencies for production
         working-directory: apps/api
         run: |

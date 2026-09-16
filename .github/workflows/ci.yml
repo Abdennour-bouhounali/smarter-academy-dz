@@ -84,15 +84,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 8.3 is what le serveur algérien sert réellement
-      # (x-powered-by: PHP/8.3.33 sur smarter-academy.com — le serveur
-      # FRANÇAIS, lui, est en 8.4). composer.json n'exige que ^8.3 : la CI
-      # épingle la version de PRODUCTION plutôt que de dériver vers la plus
-      # récente, sinon un incompatibilité 8.3 ne se verrait qu'en ligne.
+      # 8.4, la version que le serveur algérien sert en production.
+      #
+      # Ce n'est PAS un choix libre. composer.json annonce « php ^8.3 », mais
+      # composer.lock épingle symfony/* 8.1.x, qui exige « php >=8.4.1 ».
+      # Une CI en 8.3 échoue donc dès `composer install` (constaté :
+      # 17 conflits), et le serveur l'aurait refusé de la même façon.
+      # smarter-academy.com a été passé en 8.4 dans hPanel pour cette raison.
+      # Baisser ce numéro sans re-résoudre le lockfile recasse tout.
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: '8.4'
           extensions: mbstring, pdo_mysql, bcmath, intl, zip
           coverage: none
 
@@ -100,8 +103,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: apps/api/vendor
-          key: composer-${{ runner.os }}-php8.3-${{ hashFiles('apps/api/composer.lock') }}
-          restore-keys: composer-${{ runner.os }}-php8.3-
+          key: composer-${{ runner.os }}-php8.4-${{ hashFiles('apps/api/composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-php8.4-
 
       # Dev dependencies are needed here: PHPUnit lives in require-dev. The
       # deployment workflow installs separately with --no-dev.
