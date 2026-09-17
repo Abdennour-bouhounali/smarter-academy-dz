@@ -1,4 +1,5 @@
 import { apiRequest, ApiError, classifyStatus } from './apiClient';
+import { apiMessage } from './apiMessage';
 
 /**
  * L'adresse de l'API, telle que le navigateur doit l'employer pour QUITTER
@@ -31,7 +32,7 @@ export async function register({ email, password, acceptLegal }) {
 
   if (!ok) {
     throw new ApiError(
-      data?.errors?.accept_legal?.[0] || data?.message || 'Erreur lors de l’inscription',
+      apiMessage('register', data, status),
       classifyStatus(status),
       status,
     );
@@ -53,7 +54,7 @@ export async function login(email, password) {
   });
 
   if (!ok) {
-    throw new ApiError(data?.message || 'Erreur de connexion', classifyStatus(status), status);
+    throw new ApiError(apiMessage('login', data, status), classifyStatus(status), status);
   }
 
   return data;
@@ -70,7 +71,7 @@ export async function fetchCurrentUser(token) {
   });
 
   if (!ok || !data?.success) {
-    throw new ApiError(data?.message || 'Session invalide.', classifyStatus(status), status);
+    throw new ApiError(apiMessage('session', data, status), classifyStatus(status), status);
   }
 
   return data.user;
@@ -89,7 +90,7 @@ export async function logout(token) {
   });
 
   if (!ok) {
-    throw new ApiError(data?.message || 'Erreur de déconnexion', classifyStatus(status), status);
+    throw new ApiError(apiMessage('logout', data, status), classifyStatus(status), status);
   }
 }
 
@@ -107,7 +108,7 @@ export async function updateGrade(token, grade) {
   });
 
   if (!ok) {
-    throw new ApiError(data?.message || 'Erreur lors du changement de classe.', classifyStatus(status), status);
+    throw new ApiError(apiMessage('gradeUpdate', data, status), classifyStatus(status), status);
   }
 
   return data.user;
@@ -130,10 +131,10 @@ export async function resendVerificationEmail(token) {
   });
 
   if (!ok) {
+    // apiMessage() traite lui-même le 429 (voir apiMessage.js) : la branche
+    // explicite n'avait plus de raison d'être, et elle était française.
     throw new ApiError(
-      status === 429
-        ? 'Trop de demandes. Patientez quelques minutes avant de réessayer.'
-        : data?.message || 'Impossible d’envoyer l’e-mail.',
+      apiMessage('sendEmail', data, status),
       classifyStatus(status),
       status,
     );
@@ -150,7 +151,7 @@ export async function fetchLegalVersions() {
   const { ok, status, data } = await apiRequest('/legal/versions');
 
   if (!ok) {
-    throw new ApiError(data?.message || 'Versions indisponibles.', classifyStatus(status), status);
+    throw new ApiError(apiMessage('legalVersions', data, status), classifyStatus(status), status);
   }
 
   return data.versions;
@@ -183,7 +184,7 @@ export async function completeGoogleSignup({ handoff, acceptLegal }) {
 
   if (!ok) {
     throw new ApiError(
-      data?.errors?.accept_legal?.[0] || data?.message || 'La connexion avec Google n’a pas abouti.',
+      apiMessage('google', data, status),
       classifyStatus(status),
       status,
     );

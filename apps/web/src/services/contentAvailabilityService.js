@@ -1,4 +1,5 @@
 import { apiRequest, ApiError, classifyStatus } from './apiClient';
+import { apiMessage } from './apiMessage';
 
 /**
  * L'autorité de publication, telle que le serveur la voit.
@@ -18,7 +19,7 @@ export async function fetchClosedContent(token) {
   });
 
   if (!ok) {
-    throw new ApiError(data?.message || 'Impossible de vérifier la disponibilité.', classifyStatus(status), status);
+    throw new ApiError(apiMessage('availability', data, status), classifyStatus(status), status);
   }
 
   // `closed` ET `access` : le premier dit ce qui est retiré, le second à quoi
@@ -40,7 +41,7 @@ export async function fetchLessonExercises(token, lessonCode) {
   );
 
   if (!ok) {
-    throw new ApiError(data?.message || 'Impossible de charger les exercices.', classifyStatus(status), status);
+    throw new ApiError(apiMessage('exercisesLoad', data, status), classifyStatus(status), status);
   }
 
   return data;

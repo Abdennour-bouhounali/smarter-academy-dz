@@ -1,4 +1,5 @@
 import { apiRequest, ApiError, classifyStatus } from './apiClient';
+import { apiMessage } from './apiMessage';
 
 /**
  * « Signaler un problème », côté élève.
@@ -40,7 +41,7 @@ export async function initiateReport(token, context) {
   });
 
   if (!ok) {
-    throw new ApiError(data?.message || 'Impossible d’ouvrir le signalement.', classifyStatus(status), status);
+    throw new ApiError(apiMessage('reportOpen', data, status), classifyStatus(status), status);
   }
 
   return data.report;
@@ -85,7 +86,7 @@ export async function completeReport(token, reportId, { category, note }) {
   });
 
   if (!ok) {
-    throw new ApiError(data?.message || 'Impossible d’envoyer le signalement.', classifyStatus(status), status);
+    throw new ApiError(apiMessage('reportSend', data, status), classifyStatus(status), status);
   }
 
   return data;

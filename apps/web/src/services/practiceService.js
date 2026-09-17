@@ -1,4 +1,5 @@
 import { apiRequest, ApiError, classifyStatus } from './apiClient';
+import { apiMessage } from './apiMessage';
 
 /**
  * Transport pour le moteur d'exercices — même forme que diagnosticService.js.
@@ -13,7 +14,7 @@ import { apiRequest, ApiError, classifyStatus } from './apiClient';
 async function call(path, options, fallbackMessage) {
   const { ok, status, data } = await apiRequest(path, options);
   if (!ok) {
-    throw new ApiError(data?.message || fallbackMessage, classifyStatus(status), status);
+    throw new ApiError(apiMessage('practice', data, status), classifyStatus(status), status);
   }
 
   return data;

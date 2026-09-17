@@ -1,4 +1,5 @@
 import { apiRequest, ApiError, classifyStatus } from './apiClient';
+import { apiMessage } from './apiMessage';
 
 /**
  * Thin transport for learning-evidence submission and the learning profile —
@@ -23,7 +24,7 @@ export async function submitLearningEvidence(token, lessonCode, evidence) {
   });
 
   if (!ok) {
-    throw new ApiError(data?.message || 'Impossible d’enregistrer la preuve d’apprentissage.', classifyStatus(status), status);
+    throw new ApiError(apiMessage('evidenceSave', data, status), classifyStatus(status), status);
   }
 
   return data;
@@ -41,7 +42,7 @@ export async function fetchLearningProfile(token) {
   });
 
   if (!ok) {
-    throw new ApiError(data?.message || 'Impossible de récupérer le profil d’apprentissage.', classifyStatus(status), status);
+    throw new ApiError(apiMessage('profileLoad', data, status), classifyStatus(status), status);
   }
 
   return data.profile;
