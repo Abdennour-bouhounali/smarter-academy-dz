@@ -383,6 +383,16 @@ constraint on every future change.
   strings never shown to a student (dev-only warnings, thrown `Error`
   messages). French **code comments** remain French — that is this
   repository's authoring convention, not user-facing text.
+- **The API speaks codes, the client speaks Arabic.** Laravel's responses
+  are NOT a localization surface: its own validation messages are English
+  (there is no `apps/api/lang/`), and the strings written in controllers are
+  French — that same layer also serves the francophone admin panel and
+  machine-to-machine webhooks. A server `message` must therefore never be
+  rendered to a student. Services resolve their text from the Arabic
+  catalogue through `apps/web/src/services/apiMessage.js`; what crosses the
+  boundary is a `reason`/`code` or an HTTP status, never a sentence. The
+  activation flow is the reference implementation.
+
 - **Product facts, not just language.** Copy inherited from the French
   product must not be translated as-is when it is factually wrong here: the
   DZ product has no Stripe, no euro pricing and no subscription (access is
