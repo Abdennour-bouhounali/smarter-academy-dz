@@ -70,6 +70,24 @@ for (const dir of findLessonDirs(lessonsRoot)) {
     // racines-carrees). Voir docs : LESSON_BASE_PATH = l'id, pas le dossier.
     code: config.id,
     grade: config.grade ?? null,
+    // Phase 8 : les RESSOURCES déclarées (manipulations, méthodes,
+    // situations). `undefined` (clé absente) quand la leçon n'en déclare
+    // pas : l'importateur ne touche alors pas à la table.
+    ...(Array.isArray(config.resources)
+      ? {
+          resources: config.resources.map((r) => ({
+            code: r.code,
+            kind: r.kind,
+            type: r.type ?? null,
+            title: r.title ?? '',
+            description: r.description ?? null,
+            module: Number.isFinite(r.module) ? r.module : null,
+            learningPointIds: Array.isArray(r.learningPointIds) ? r.learningPointIds : null,
+            sourceElementIds: Array.isArray(r.sourceElementIds) ? r.sourceElementIds : null,
+            config: r.config ?? null,
+          })),
+        }
+      : {}),
     modules: config.modules.map((m, index) => ({
       code: String(m.id ?? m.number ?? index),
       number: Number.isFinite(m.number) ? m.number : index,

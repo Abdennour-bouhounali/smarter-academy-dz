@@ -1,84 +1,241 @@
 {
   "_comment": "Registre partagé des erreurs de raisonnement (cible §25 : des entités réutilisables, pas du texte libre dupliqué). Un identifiant partagé permet de COMPTER : « cet élève retombe trois fois sur MISC-AFF-A-B-ECHANGES » est une information que du texte libre ne donnera jamais. Précédent : App\\Domain\\Diagnostic\\Grades\\SixiemeDiagnosticProvider::QUESTIONS mappe déjà distracteur → id de misconception côté serveur. `relatedLearningPoints` cite des codes de LP canoniques, vérifiés par scripts/validate-exercises.mjs.",
-
   "MISC-AFF-FORME-VS-COMPORTEMENT": {
     "label": "Reconnaît une fonction affine à sa forme, pas à son comportement",
     "explanation": "« Il y a un $x$ et un nombre » ne suffit pas. Une fonction est affine quand elle gagne (ou perd) **toujours la même quantité** à chaque pas : $3/x + 2$ contient bien un $x$ et un nombre, mais son gain change à chaque pas. C'est le comportement qui décide, pas l'allure de l'écriture.",
-    "relatedLearningPoints": ["seconde_fonction-affine-2nde_P1"]
+    "relatedLearningPoints": [
+      "seconde_fonction-affine-2nde_P1"
+    ]
   },
   "MISC-AFF-A-B-ECHANGES": {
     "label": "Échange le coefficient directeur et l'ordonnée à l'origine",
     "explanation": "$a$ est ce qu'on gagne **par unité** (par minute, par heure, par euro) ; $b$ est ce qu'on a **au départ**, à $x = 0$. Un déblocage à 4 € puis 0,30 € par minute donne $a = 0{,}30$ et $b = 4$, pas l'inverse : au bout de zéro minute on a payé le déblocage, pas 30 centimes.",
-    "relatedLearningPoints": ["seconde_fonction-affine-2nde_P2", "seconde_fonction-affine-2nde_P3"]
+    "relatedLearningPoints": [
+      "seconde_fonction-affine-2nde_P2",
+      "seconde_fonction-affine-2nde_P3"
+    ]
   },
   "MISC-AFF-B-LU-AU-BORD": {
     "label": "Lit b au bord du graphique au lieu de x = 0",
     "explanation": "L'ordonnée à l'origine, c'est la valeur en $x = 0$ — pas la valeur du point le plus à gauche qui a été dessiné. Quand le cadre commence à $x = 2$, il faut prolonger la droite jusqu'à l'axe vertical.",
-    "relatedLearningPoints": ["seconde_fonction-affine-2nde_P8"]
+    "relatedLearningPoints": [
+      "seconde_fonction-affine-2nde_P8"
+    ]
   },
   "MISC-AFF-DIFF-SEULE": {
     "label": "Donne la différence des images au lieu du quotient",
     "explanation": "Le taux d'accroissement est un **quotient** : $\\dfrac{f(x_2) - f(x_1)}{x_2 - x_1}$. La différence des images seule répond à « de combien ça a changé », pas à « de combien ça change par unité ». Il reste à diviser par l'écart des abscisses.",
-    "relatedLearningPoints": ["seconde_fonction-affine-2nde_P4"]
+    "relatedLearningPoints": [
+      "seconde_fonction-affine-2nde_P4"
+    ]
   },
   "MISC-AFF-TAUX-INVERSE": {
     "label": "Divise l'écart des abscisses par l'écart des images",
     "explanation": "Le quotient se lit « variation de $y$ **pour** une variation de $x$ » : les images sont en haut, les abscisses en bas. Inversé, on obtient l'inverse du coefficient directeur.",
-    "relatedLearningPoints": ["seconde_fonction-affine-2nde_P4"]
+    "relatedLearningPoints": [
+      "seconde_fonction-affine-2nde_P4"
+    ]
   },
   "MISC-AFF-B-DECIDE-VARIATION": {
     "label": "Croit que le signe de b décide du sens de variation",
     "explanation": "Seul le signe de $a$ décide. $b$ ne fait que placer la droite plus haut ou plus bas — il ne l'incline jamais. Une fonction peut partir de 1200 et décroître : $M(t) = 1200 - 45t$ perd 45 à chaque pas, donc elle décroît, quel que soit son point de départ.",
-    "relatedLearningPoints": ["seconde_fonction-affine-2nde_P5"]
+    "relatedLearningPoints": [
+      "seconde_fonction-affine-2nde_P5"
+    ]
   },
   "MISC-AFF-PENTE-VISUELLE": {
     "label": "Lit la pente à l'œil sans tenir compte des échelles",
     "explanation": "L'inclinaison **apparente** dépend des unités choisies sur les deux axes. Pour lire $a$, il faut compter : on avance de 1 sur l'axe des abscisses, on lit de combien on monte **en graduations de l'axe vertical**.",
-    "relatedLearningPoints": ["seconde_fonction-affine-2nde_P7"]
+    "relatedLearningPoints": [
+      "seconde_fonction-affine-2nde_P7"
+    ]
   },
   "MISC-AFF-B-EST-F1": {
     "label": "Prend b = f(première valeur donnée) au lieu de f(0)",
     "explanation": "$b$, c'est $f(0)$ — la valeur en zéro, pas la première valeur de l'énoncé. Une fois $a$ trouvé, il faut **remonter** à $x = 0$ : de $f(1) = 4$ avec $a = 3$, on obtient $b = 4 - 3 \\times 1 = 1$.",
-    "relatedLearningPoints": ["seconde_fonction-affine-2nde_P6", "seconde_fonction-affine-2nde_P3"]
+    "relatedLearningPoints": [
+      "seconde_fonction-affine-2nde_P6",
+      "seconde_fonction-affine-2nde_P3"
+    ]
   },
   "MISC-AFF-B-DEVINE": {
     "label": "Devine b à l'œil entre deux graduations",
     "explanation": "Quand la droite ne coupe pas l'axe sur une graduation, $b$ ne se lit pas : il se **calcule**. On prend deux points exacts du quadrillage, on en tire $a$, puis on remonte à $x = 0$.",
-    "relatedLearningPoints": ["seconde_fonction-affine-2nde_P6", "seconde_fonction-affine-2nde_P8"]
+    "relatedLearningPoints": [
+      "seconde_fonction-affine-2nde_P6",
+      "seconde_fonction-affine-2nde_P8"
+    ]
   },
   "MISC-AFF-SIGNE-COTE-INVERSE": {
     "label": "Place le signe de a du mauvais côté du zéro",
     "explanation": "Après son zéro, une fonction affine prend le signe de $a$ ; avant, le signe contraire. Avec $a < 0$, la fonction est donc **positive avant** le zéro et négative après — c'est l'inverse du réflexe pris avec les fonctions croissantes.",
-    "relatedLearningPoints": ["seconde_fonction-affine-2nde_P9"]
+    "relatedLearningPoints": [
+      "seconde_fonction-affine-2nde_P9"
+    ]
   },
   "MISC-AFF-ZERO-EST-B": {
     "label": "Confond le zéro de la fonction avec l'ordonnée à l'origine",
     "explanation": "$b$ est la valeur **en** $x = 0$ ; le zéro est l'abscisse **où** la fonction vaut 0. Ce sont deux points différents : $(0\\,;\\,b)$ sur l'axe vertical, et $(-b/a\\,;\\,0)$ sur l'axe horizontal.",
-    "relatedLearningPoints": ["seconde_fonction-affine-2nde_P9", "seconde_fonction-affine-2nde_P8"]
+    "relatedLearningPoints": [
+      "seconde_fonction-affine-2nde_P9",
+      "seconde_fonction-affine-2nde_P8"
+    ]
   },
   "MISC-AFF-EQ-OUBLI-K": {
     "label": "Résout f(x) = 0 au lieu de f(x) = k",
     "explanation": "La question ne demande pas quand la quantité s'annule, mais quand elle atteint une valeur précise $k$. L'équation à résoudre est $ax + b = k$, pas $ax + b = 0$.",
-    "relatedLearningPoints": ["seconde_fonction-affine-2nde_P10"]
+    "relatedLearningPoints": [
+      "seconde_fonction-affine-2nde_P10"
+    ]
   },
   "MISC-AFF-INEQ-SENS-NON-INVERSE": {
     "label": "N'inverse pas le sens en divisant par un nombre négatif",
     "explanation": "Multiplier ou diviser les deux membres d'une inégalité par un nombre **négatif** renverse le sens. De $-2x > -6$ on tire $x < 3$, et non $x > 3$. Vérification en une ligne : $x = 0$ donne $6 > 0$, vrai — donc 0 est bien dans les solutions.",
-    "relatedLearningPoints": ["seconde_fonction-affine-2nde_P11"]
+    "relatedLearningPoints": [
+      "seconde_fonction-affine-2nde_P11"
+    ]
   },
   "MISC-AFF-BORNE-UNIQUE": {
     "label": "Donne un intervalle d'un seul côté alors que deux conditions s'appliquent",
     "explanation": "Quand deux exigences pèsent en même temps (être moins cher **et** rester sous le budget), l'ensemble des solutions est l'**intersection** des deux : il est borné des deux côtés.",
-    "relatedLearningPoints": ["seconde_fonction-affine-2nde_P11", "seconde_fonction-affine-2nde_P9"]
+    "relatedLearningPoints": [
+      "seconde_fonction-affine-2nde_P11",
+      "seconde_fonction-affine-2nde_P9"
+    ]
   },
   "MISC-AFF-MODELE-SIGNE": {
     "label": "Modélise une diminution avec un coefficient directeur positif",
     "explanation": "Une quantité qui **diminue** a un coefficient directeur négatif. Un réservoir qui se vide de 4 L par minute se modélise par $V(t) = -4t + b$ : le signe porte l'information « ça descend ».",
-    "relatedLearningPoints": ["seconde_fonction-affine-2nde_P6", "seconde_fonction-affine-2nde_P5"]
+    "relatedLearningPoints": [
+      "seconde_fonction-affine-2nde_P6",
+      "seconde_fonction-affine-2nde_P5"
+    ]
   },
   "MISC-AFF-CONFIANCE-GRAPHIQUE": {
     "label": "Croit le point dessiné plutôt que le calcul",
     "explanation": "Un point mal placé sur un graphique reste un point mal placé. Quand une table et un graphique se contredisent, c'est le calcul du taux d'accroissement qui tranche : trois points alignés sur quatre désignent l'intrus.",
-    "relatedLearningPoints": ["seconde_fonction-affine-2nde_P1", "seconde_fonction-affine-2nde_P7"]
+    "relatedLearningPoints": [
+      "seconde_fonction-affine-2nde_P1",
+      "seconde_fonction-affine-2nde_P7"
+    ]
+  },
+  "MISC-QISMA-BAQI-KABIR": {
+    "label": "باقي القسمة الإقليدية أكبر من المقسوم عليه أو يساويه",
+    "explanation": "في القسمة الإقليدية $a = b \\times q + r$ يكون الباقي $r$ أصغر تمامًا من $b$. كتابة $137 = 5 \\times 25 + 12$ صحيحة حسابيًا لكنها ليست قسمة إقليدية: يمكن إدخال 5 في 12 مرتين أخريين.",
+    "relatedLearningPoints": [
+      "4am_qasim-adad-tabii_P1"
+    ]
+  },
+  "MISC-QISMA-HASIL-BAQI": {
+    "label": "الخلط بين حاصل القسمة والباقي",
+    "explanation": "في $a = b \\times q + r$ العدد الذي نضرب به هو حاصل القسمة $q$، وما يبقى هو الباقي $r$. في $72 = 24 \\times 3 + 0$ الحاصل 3 والباقي 0.",
+    "relatedLearningPoints": [
+      "4am_qasim-adad-tabii_P1",
+      "4am_qasim-adad-tabii_P2"
+    ]
+  },
+  "MISC-QISMA-6-ZAWJI-FAQAT": {
+    "label": "الاعتقاد أن كل عدد زوجي يقبل القسمة على 6",
+    "explanation": "القسمة على 6 تتطلب القسمة على 2 وعلى 3 معًا. 80 زوجي لكن مجموع أرقامه 8 لا يقبل القسمة على 3.",
+    "relatedLearningPoints": [
+      "4am_qasim-adad-tabii_P1",
+      "4am_qawasim-adad-tabii_P4"
+    ]
+  },
+  "MISC-QASIM-MUDAAF-ITTIJAH": {
+    "label": "عكس اتجاه «يقسم» و«مضاعف»",
+    "explanation": "«b يقسم a» و«b قاسم لـ a» تعنيان أن a هو المقسوم؛ و«a مضاعف لـ b» تعني أن a هو الأكبر. 8 لا يقسم 4، بل 4 يقسم 8.",
+    "relatedLearningPoints": [
+      "4am_qasim-adad-tabii_P3"
+    ]
+  },
+  "MISC-QAWASIM-NASY-1-WA-N": {
+    "label": "نسيان القاسمين 1 والعدد نفسه",
+    "explanation": "1 قاسم لكل عدد طبيعي ($a = 1 \\times a$) وكل عدد غير معدوم قاسم لنفسه ($a = a \\times 1$): الكتابة $60 = 1 \\times 60$ هي السطر الأول من الجدول.",
+    "relatedLearningPoints": [
+      "4am_qawasim-adad-tabii_P2",
+      "4am_qasim-adad-tabii_P4"
+    ]
+  },
+  "MISC-QAWASIM-A-BADAL-A-ZAID-7": {
+    "label": "إعطاء قواسم 24 بدل قيم a",
+    "explanation": "الشرط هو أن $a + 7$ قاسم للعدد 24، لا $a$ نفسه: من القاسم 8 نستنتج $a = 1$، ومن 12 نستنتج $a = 5$، ومن 24 نستنتج $a = 17$.",
+    "relatedLearningPoints": [
+      "4am_qawasim-adad-tabii_P2"
+    ]
+  },
+  "MISC-QAWAID-HALA-WAHIDA": {
+    "label": "الاكتفاء بحالة واحدة عندما يطلب «كل الحالات»",
+    "explanation": "قابلية القسمة على 9 تتطلب أن يكون مجموع الأرقام مضاعفًا لـ 9 (لا مساويًا لـ 9): $21 + d + u$ يمكن أن يساوي 27 أو 36، فنجد حالتين.",
+    "relatedLearningPoints": [
+      "4am_qawasim-adad-tabii_P4"
+    ]
+  },
+  "MISC-BURHAN-ITTIJAH-JIDAA": {
+    "label": "كتابة الجداء في الاتجاه المعكوس عند البرهان",
+    "explanation": "لإثبات أن $d$ يقسم $m$ نبحث عن $k$ حيث $m = d \\times k$ — المقسوم هو الذي يُكتب جداءً، لا القاسم.",
+    "relatedLearningPoints": [
+      "4am_khawass-qawasim_P4"
+    ]
+  },
+  "MISC-PGCD-HASIL-BADAL-QASIM": {
+    "label": "الخلط بين القاسم المشترك الأكبر وحاصل القسمة عليه",
+    "explanation": "في وضعية الباقات أو المآزر، عدد الباقات (أو المدارس) هو القاسم المشترك الأكبر؛ أما ما تحويه كل باقة فهو حاصل قسمة العدد على PGCD. $936 \\div 13 = 72$ هو حصة المدرسة، و 13 هو عدد المدارس.",
+    "relatedLearningPoints": [
+      "4am_qasim-mushtarak-akbar_P3",
+      "4am_bahth-pgcd_P5"
+    ]
+  },
+  "MISC-PGCD-LAYSA-AKBAR": {
+    "label": "أخذ قاسم مشترك ليس الأكبر",
+    "explanation": "3 قاسم مشترك لـ 42 و 60، لكن 6 أكبر منه ويقسمهما أيضًا. القاسم المشترك الأكبر هو أكبر القواسم المشتركة، لا أيّ منها.",
+    "relatedLearningPoints": [
+      "4am_tayin-pgcd_P1",
+      "4am_qasim-mushtarak-akbar_P2"
+    ]
+  },
+  "MISC-PGCD-SIFR": {
+    "label": "الاعتقاد أن PGCD(a ; 0) = 0",
+    "explanation": "كل عدد طبيعي غير معدوم يقسم 0 ($0 = a \\times 0$)، فالقواسم المشتركة لـ a و 0 هي قواسم a، وأكبرها a: PGCD(7 ; 0) = 7.",
+    "relatedLearningPoints": [
+      "4am_tayin-pgcd_P2"
+    ]
+  },
+  "MISC-PGCD-MUDAAF-15": {
+    "label": "اختيار مضاعف للعدد 15 عندما يُطلب PGCD(a ; 15) = 5",
+    "explanation": "إذا كان a مضاعفًا لـ 15 فإن 15 قاسم له و PGCD(a ; 15) = 15 لا 5. المطلوب مضاعف لـ 5 ليس مضاعفًا لـ 15.",
+    "relatedLearningPoints": [
+      "4am_tayin-pgcd_P3"
+    ]
+  },
+  "MISC-FURUQ-AKHIR-SIFR": {
+    "label": "أخذ الفرق المعدوم الأخير بدل آخر فرق غير معدوم",
+    "explanation": "في خوارزمية الفروق المتتابعة نتوقف عندما يصير الفرق 0، لكن القاسم المشترك الأكبر هو آخر فرق غير معدوم (28 في حالة 252 و 140)، لا الصفر.",
+    "relatedLearningPoints": [
+      "4am_bahth-pgcd_P2"
+    ]
+  },
+  "MISC-AWWALIYAN-ADAD-AWWALI": {
+    "label": "الخلط بين «أوليان فيما بينهما» و«عددان أوليان»",
+    "explanation": "«أوليان فيما بينهما» صفة للزوج: PGCD(a ; b) = 1. لا يلزم أن يكون أي منهما عددًا أوليًا: 15 = 3 × 5 و 22 = 2 × 11 أوليان فيما بينهما.",
+    "relatedLearningPoints": [
+      "4am_awwaliyan-fima-baynahuma_P1"
+    ]
+  },
+  "MISC-QAWAID-LA-TAKFI": {
+    "label": "الاعتقاد أن قواعد قابلية القسمة الست تكفي للحكم على الأولية فيما بينهما",
+    "explanation": "قاسم مشترك يمكن أن يكون 7 أو 11 أو 13… لا تكشفه قواعد 2 ، 3 ، 4 ، 5 ، 9 ، 10. الحكم اليقيني يمرّ بحساب PGCD: PGCD(253 ; 407) = 11.",
+    "relatedLearningPoints": [
+      "4am_awwaliyan-fima-baynahuma_P3",
+      "4am_awwaliyan-fima-baynahuma_P2"
+    ]
+  },
+  "MISC-IKHTIZAL-NAQIS": {
+    "label": "اختزال ناقص: قيمة صحيحة لكن الكسر ما زال قابلًا للاختزال",
+    "explanation": "القسمة على قاسم مشترك ليس الأكبر تعطي كسرًا مساويًا لكنه ليس على الشكل غير القابل للاختزال. القسمة على PGCD تُنهي الاختزال في خطوة واحدة؛ وللتحقّق: هل البسط والمقام أوليان فيما بينهما؟",
+    "relatedLearningPoints": [
+      "4am_ikhtizal-kasr_P3",
+      "4am_ikhtizal-kasr_P2"
+    ]
   }
 }

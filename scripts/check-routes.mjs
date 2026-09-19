@@ -29,7 +29,7 @@
 // of mistake (an unexpected mount) as on the original one (a missing mount).
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
-import { referenceCourseLevels } from '../packages/core/curriculum/coursesData.js';
+import { referenceCourseLevels, dzCourseLevels } from '../packages/core/curriculum/coursesData.js';
 import { ACTIVE_GRADE_IDS } from '../packages/core/curriculum/activeGrades.js';
 
 const ROOT = new URL('../', import.meta.url).pathname;
@@ -83,13 +83,12 @@ for (const file of walk(LESSONS)) {
 }
 
 // ── Contrôle 2 : le chemin déclaré est-il celui du lien de la carte ? ──────
-// Contre l'ARBRE DE RÉFÉRENCE français : les 132 dossiers de leçons sont
-// français, et c'est lui qui les décrit. Le catalogue DZ ne déclare aucune
-// leçon (phase 6F : les 28 sujets de 4AM sont portés par leurs chapitres),
-// donc il n'a rien à dire sur un chemin de fichier. Quand la phase 7 écrira
-// les premières leçons algériennes, ce contrôle devra lire LES DEUX arbres.
+// Contre LES DEUX arbres : l'arbre de référence français décrit les 132
+// dossiers hérités ; le catalogue DZ décrit les leçons algériennes écrites
+// sous lessons/moyen/4am/ (phase 8). Les clés `<classe>:<leçon>` ne peuvent
+// pas entrer en collision (aucune classe n'appartient aux deux arbres).
 const catalogue = new Map();
-for (const niveau of referenceCourseLevels) {
+for (const niveau of [...referenceCourseLevels, ...dzCourseLevels]) {
   for (const grade of niveau.grades) {
     for (const chapitre of grade.chapters) {
       for (const lecon of chapitre.lessons) catalogue.set(`${grade.id}:${lecon.id}`, lecon.path);
@@ -122,6 +121,16 @@ for (const file of walkConfigs(LESSONS)) {
       why: `LESSON_BASE_PATH vaut '${base}' alors que la carte des cours pointe sur '${attendu}' — le clic retombera sur l'accueil`,
     });
   }
+}
+
+// ── Contrôle 3 : la page d'UNITÉ (الوحدة) est-elle montée ? ────────────────
+// Le catalogue DZ construit un chemin `/courses/<niveau>/<classe>/<chapitre>/units/<unité>`
+// pour chaque unité du manuel (coursesData.js, buildDzUnitPath). App.jsx doit
+// monter une route qui l'attrape, sinon la carte d'unité mène à l'accueil —
+// exactement le silence que ce script existe pour rompre.
+const hasUnits = dzCourseLevels.some((l) => l.grades.some((g) => g.chapters.some((c) => (c.units ?? []).length > 0)));
+if (hasUnits && !/path=\{?["'`]\/courses\/:levelId\/:gradeId\/:chapterId\/units\/:unitId["'`]\}?/.test(app)) {
+  problems.push({ rel: 'apps/web/src/App.jsx', why: "le catalogue déclare des unités du manuel mais aucune route `/courses/:levelId/:gradeId/:chapterId/units/:unitId` n'est montée — la page d'unité retombera sur l'accueil" });
 }
 
 const total = walk(LESSONS).length;

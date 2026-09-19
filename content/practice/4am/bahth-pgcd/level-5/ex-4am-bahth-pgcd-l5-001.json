@@ -1,0 +1,58 @@
+{
+  "metadata": {
+    "title": "تمرين 21 — PGCD(21 957 ; 43 351)",
+    "estimatedMinutes": 4,
+    "tags": [
+      "خوارزمية إقليدس"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-21",
+      "page": 14,
+      "section": "أوظّف تعلّماتي",
+      "number": 21
+    }
+  },
+  "statement": {
+    "content": "احسب PGCD(21 957 ; 43 351)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "PGCD(21957 ; 43351) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_bahth-pgcd_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "563",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "43351 = 21957 × 1 + 21394."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "21957 = 21394 × 1 + r: احسب هذا الباقي r."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اقسم 21394 على r: إذا كان الباقي 0 فإن r هو القاسم المشترك الأكبر."
+        }
+      ],
+      "feedback": {
+        "correct": "43351 = 21957 + 21394 ، 21957 = 21394 + 563 ، 21394 = 563 × 38 + 0.",
+        "incorrect": "خوارزمية إقليدس."
+      }
+    }
+  ],
+  "id": "ex-4am-bahth-pgcd-l5-001",
+  "lessonCode": "bahth-pgcd",
+  "level": 5
+}

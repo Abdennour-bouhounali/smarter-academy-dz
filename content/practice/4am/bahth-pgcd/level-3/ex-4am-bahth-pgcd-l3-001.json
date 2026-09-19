@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "title": "نشاط 6 ب — 765 و 135",
+    "estimatedMinutes": 5,
+    "tags": [
+      "خوارزمية إقليدس"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-6b",
+      "page": 9,
+      "section": "أنشطة",
+      "number": 6
+    }
+  },
+  "statement": {
+    "content": "لتعيين القاسم المشترك الأكبر للعددين 765 و 135 بطريقة القسمة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "باقي القسمة الإقليدية للعدد 765 على العدد 135 هو …",
+      "learningPoints": [
+        {
+          "code": "4am_bahth-pgcd_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "90",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كم مرة يدخل 135 في 765؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "135 × 5 = 675."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "765 − 675 = 90."
+        }
+      ],
+      "feedback": {
+        "correct": "765 = 135 × 5 + 90.",
+        "incorrect": "135 × 5 = 675."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "PGCD(765 ; 135) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_bahth-pgcd_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "45",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "PGCD(765 ; 135) = PGCD(135 ; 90)."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "135 = 90 + 45 → PGCD(90 ; 45)."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "90 = 45 × 2 + 0: آخر باقٍ غير معدوم 45."
+        }
+      ],
+      "feedback": {
+        "correct": "135 = 90 × 1 + 45 ، 90 = 45 × 2 + 0.",
+        "incorrect": "واصل القسمات حتى الباقي 0."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "كم قسمة لزمت؟ (بالفروق المتتابعة تلزم ثمان خطوات)",
+      "learningPoints": [
+        {
+          "code": "4am_bahth-pgcd_P5",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "765 = 135 × 5 + 90."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "135 = 90 × 1 + 45."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "90 = 45 × 2 + 0."
+        }
+      ],
+      "feedback": {
+        "correct": "ثلاث قسمات بدل ثماني طرحات.",
+        "incorrect": "عدّ سطور القسمة."
+      }
+    }
+  ],
+  "id": "ex-4am-bahth-pgcd-l3-001",
+  "lessonCode": "bahth-pgcd",
+  "level": 3
+}

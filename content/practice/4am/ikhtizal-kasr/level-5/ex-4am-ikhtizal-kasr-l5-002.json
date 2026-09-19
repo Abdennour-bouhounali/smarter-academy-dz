@@ -1,0 +1,96 @@
+{
+  "metadata": {
+    "title": "تمرين 40 — 19 251 و 22 816",
+    "estimatedMinutes": 4,
+    "tags": [
+      "PGCD",
+      "اختزال"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-40",
+      "page": 15,
+      "section": "أوظّف تعلّماتي",
+      "number": 40
+    }
+  },
+  "statement": {
+    "content": "احسب PGCD(19 251 ; 22 816) ثم اكتب الكسر $\\dfrac{22816}{19251}$ على شكل كسر غير قابل للاختزال."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "PGCD(19251 ; 22816) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "713",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "22816 − 19251 = 3565."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "19251 = 3565 × 5 + 1426 ، ثم 3565 = 1426 × 2 + … "
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "واصل حتى الباقي 0: آخر باقٍ غير معدوم هو الجواب."
+        }
+      ],
+      "feedback": {
+        "correct": "22816 = 19251 + 3565 ، 19251 = 3565 × 5 + 1426 ، 3565 = 1426 × 2 + 713 ، 1426 = 713 × 2 + 0.",
+        "incorrect": "خوارزمية إقليدس."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$\\dfrac{22816}{19251}$ = …",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "32/27",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "22816 ÷ 713."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "19251 ÷ 713."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم البسط والمقام على القاسم المشترك الأكبر الذي وجدته."
+        }
+      ],
+      "feedback": {
+        "correct": "22816 ÷ 713 = 32 و 19251 ÷ 713 = 27.",
+        "incorrect": "اقسم على 713."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      }
+    }
+  ],
+  "id": "ex-4am-ikhtizal-kasr-l5-002",
+  "lessonCode": "ikhtizal-kasr",
+  "level": 5
+}

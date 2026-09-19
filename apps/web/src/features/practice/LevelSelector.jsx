@@ -1,4 +1,5 @@
 import { Lock } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Les cinq niveaux, et pourquoi les fermés le sont.
@@ -6,13 +7,16 @@ import { Lock } from 'lucide-react';
  * Un verrou muet est une impasse : chaque niveau fermé DIT ce qu'il attend.
  * Et un niveau déjà ouvert le reste — on peut toujours redescendre
  * s'entraîner plus bas.
+ *
+ * TOUT LE TEXTE VIENT DE L'ARABE (`student.practice.*`). Ce composant était
+ * écrit en français en dur (« Niveau 1 », « Reprendre les bases »,
+ * « conseillé », « exercices ») : sur une plateforme arabophone, l'élève
+ * lisait donc une langue qu'il n'a pas choisie, au milieu d'une page arabe.
+ * Le motif du verrou (`level.reason`) reste ce que le serveur renvoie ; il
+ * est doublé d'une phrase arabe quand le serveur n'en fournit pas.
  */
-const LABELS = {
-  1: { name: 'Reprendre les bases', tone: 'emerald' },
-  2: { name: 'Appliquer', tone: 'sky' },
-  3: { name: "S'entraîner", tone: 'indigo' },
-  4: { name: 'Approfondir', tone: 'violet' },
-  5: { name: 'Défi', tone: 'amber' },
+const TONES = {
+  1: 'emerald', 2: 'sky', 3: 'indigo', 4: 'violet', 5: 'amber',
 };
 
 const RING = {
@@ -24,25 +28,26 @@ const RING = {
 };
 
 export default function LevelSelector({ levels, recommendedLevel, onSelect, busyLevel }) {
+  const { t } = useTranslation('student');
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
       {levels.map((level) => {
-        const meta = LABELS[level.level] ?? { name: `Niveau ${level.level}`, tone: 'indigo' };
+        const tone = TONES[level.level] ?? 'indigo';
+        const name = t(`practice.levelNames.${level.level}`, { defaultValue: '' });
+        const label = t('practice.levelLabel', { level: level.level });
         const done = level.exerciseCount > 0 && level.completedCount >= level.exerciseCount;
         const recommended = level.level === recommendedLevel && level.unlocked;
 
         if (!level.unlocked) {
           return (
-            <div
-              key={level.level}
-              className="rounded-2xl border-2 border-slate-200 bg-slate-50 p-5 space-y-2"
-            >
+            <div key={level.level} className="space-y-2 rounded-2xl border-2 border-slate-200 bg-slate-50 p-5" data-practice-level={level.level} data-locked="true">
               <div className="flex items-center justify-between gap-2">
-                <span className="font-space font-bold text-slate-400">Niveau {level.level}</span>
-                <Lock className="w-4 h-4 text-slate-400" aria-hidden="true" />
+                <span className="font-space font-bold text-slate-400">{label}</span>
+                <Lock className="h-4 w-4 text-slate-400" aria-hidden="true" />
               </div>
-              <p className="text-sm text-slate-500">{meta.name}</p>
-              <p className="text-xs text-slate-500">{level.reason}</p>
+              {name && <p className="text-sm text-slate-500">{name}</p>}
+              <p className="text-xs text-slate-500">{level.reason || t('practice.levelLockedHint')}</p>
             </div>
           );
         }
@@ -53,25 +58,22 @@ export default function LevelSelector({ levels, recommendedLevel, onSelect, busy
             type="button"
             onClick={() => onSelect(level.level)}
             disabled={busyLevel != null}
-            className={`text-start rounded-2xl border-2 bg-white p-5 space-y-2 min-h-[128px] transition-colors disabled:opacity-70 ${RING[meta.tone]}`}
+            data-practice-level={level.level}
+            className={`min-h-[128px] space-y-2 rounded-2xl border-2 bg-white p-5 text-start transition-colors disabled:opacity-70 ${RING[tone]}`}
           >
-            <div className="flex items-center justify-between gap-2 flex-wrap">
-              <span className="font-space font-bold text-slate-900">Niveau {level.level}</span>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="font-space font-bold text-slate-900">{label}</span>
               {recommended && (
-                <span className="text-[11px] font-mono font-bold px-2 py-1 rounded-full bg-indigo-600 text-white">
-                  conseillé
-                </span>
+                <span className="rounded-full bg-indigo-600 px-2 py-1 font-mono text-[11px] font-bold text-white">{t('practice.levelRecommended')}</span>
               )}
               {done && !recommended && (
-                <span className="text-[11px] font-mono font-bold px-2 py-1 rounded-full bg-emerald-100 text-emerald-800">
-                  terminé
-                </span>
+                <span className="rounded-full bg-emerald-100 px-2 py-1 font-mono text-[11px] font-bold text-emerald-800">{t('practice.levelDone')}</span>
               )}
             </div>
-            <p className="text-sm text-slate-600">{meta.name}</p>
-            <p className="text-xs font-mono text-slate-500">
-              {level.completedCount} / {level.exerciseCount} exercice{level.exerciseCount > 1 ? 's' : ''}
-              {busyLevel === level.level ? ' · ouverture…' : ''}
+            {name && <p className="text-sm text-slate-600">{name}</p>}
+            <p className="font-mono text-xs text-slate-500" dir="auto">
+              <span dir="ltr">{t('practice.levelProgress', { done: level.completedCount, total: level.exerciseCount })}</span>
+              {busyLevel === level.level ? ` · ${t('practice.levelOpening')}` : ''}
             </p>
           </button>
         );

@@ -1,0 +1,89 @@
+{
+  "metadata": {
+    "title": "نشاط 2 — قواسم العدد 60",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نشاط",
+      "جداء عاملين"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-2",
+      "page": 8,
+      "section": "أنشطة",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "نريد تعيين كل قواسم العدد 60 بكتابته على شكل جداء عاملين بكلّ الأشكال الممكنة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "اكتب كل قواسم العدد 60.",
+      "learningPoints": [
+        {
+          "code": "4am_qawasim-adad-tabii_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        10,
+        12,
+        15,
+        20,
+        30,
+        60
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ بـ 60 = 1 × 60."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم 60 = 2 × …، 60 = 3 × …"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "توقّف عند 7: 7² = 49 ≤ 60 < 64، وكل قاسم أكبر ظهر في جداء."
+        }
+      ],
+      "feedback": {
+        "correct": "60 = 1 × 60 = 2 × 30 = 3 × 20 = 4 × 15 = 5 × 12 = 6 × 10.",
+        "incorrect": "كل كتابة على شكل جداء عاملين تعطي قاسمين."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            10,
+            12,
+            15,
+            20,
+            30
+          ],
+          "id": "MISC-QAWASIM-NASY-1-WA-N"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-qawasim-adad-tabii-l1-001",
+  "lessonCode": "qawasim-adad-tabii",
+  "level": 1
+}

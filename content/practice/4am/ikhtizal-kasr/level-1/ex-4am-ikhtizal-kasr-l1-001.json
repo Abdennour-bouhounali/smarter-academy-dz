@@ -1,0 +1,107 @@
+{
+  "metadata": {
+    "title": "نشاط 8 — طريقة سمير",
+    "estimatedMinutes": 3,
+    "tags": [
+      "اختزال"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-8",
+      "page": 9,
+      "section": "أنشطة",
+      "number": 8
+    }
+  },
+  "statement": {
+    "content": "لاحظ كيف اختزل سمير الكسر $\\dfrac{84}{48}$: $\\dfrac{84}{48} = \\dfrac{84 \\div 4}{48 \\div 4} = \\dfrac{21}{12} = \\dfrac{21 \\div 3}{12 \\div 3} = \\dfrac{7}{4}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بعد القسمة على 4 نحصل على الكسر …",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "21/12",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "84 ÷ 4 = ?"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "48 ÷ 4 = ?"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب الكسر الجديد على الشكل a/b بالبسط والمقام الجديدين."
+        }
+      ],
+      "feedback": {
+        "correct": "84 ÷ 4 = 21 و 48 ÷ 4 = 12.",
+        "incorrect": "اقسم البسط والمقام على 4."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "لماذا لا يمكن مواصلة اختزال $\\dfrac{7}{4}$؟",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لأن 7 و 4 أوليان فيما بينهما",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لأن 7 عدد أولي",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "لأن 4 أصغر من 7",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قواسم 7: 1 ، 7."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قواسم 4: 1 ، 2 ، 4."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المشترك الوحيد 1."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(7 ; 4) = 1: الكسر غير قابل للاختزال.",
+        "incorrect": "هل لـ 7 و 4 قاسم مشترك يختلف عن 1؟"
+      }
+    }
+  ],
+  "id": "ex-4am-ikhtizal-kasr-l1-001",
+  "lessonCode": "ikhtizal-kasr",
+  "level": 1
+}

@@ -1,0 +1,68 @@
+{
+  "metadata": {
+    "title": "تمرين 16 — n + 2 و n + 32",
+    "estimatedMinutes": 4,
+    "tags": [
+      "خاصية 1",
+      "حرف"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-16",
+      "page": 14,
+      "section": "أوظّف تعلّماتي",
+      "number": 16
+    }
+  },
+  "statement": {
+    "content": "$n$ عدد طبيعي كيفي. عيّن كل الأعداد الطبيعية التي يمكن أن تكون قواسم مشتركة للعددين $n + 2$ و $n + 32$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الأعداد الممكنة:",
+      "learningPoints": [
+        {
+          "code": "4am_khawass-qawasim_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        1,
+        2,
+        3,
+        5,
+        6,
+        10,
+        15,
+        30
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "(n + 32) − (n + 2) = ?"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "القاسم المشترك يقسم الفرق."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قواسم 30."
+        }
+      ],
+      "feedback": {
+        "correct": "الفرق 30؛ كل قاسم مشترك يقسم 30.",
+        "incorrect": "احسب الفرق أولًا."
+      }
+    }
+  ],
+  "id": "ex-4am-khawass-qawasim-l5-002",
+  "lessonCode": "khawass-qawasim",
+  "level": 5
+}

@@ -1,0 +1,122 @@
+{
+  "metadata": {
+    "title": "نشاط 4 — 90 زهرة و 54 زهرة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "باقات"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-4",
+      "page": 8,
+      "section": "أنشطة",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "اقتنى بائع الزهور 90 زهرة حمراء و 54 زهرة بيضاء بغرض استعمالها كلّها في تشكيل باقات متماثلة في النوع والعدد."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل يمكنه تشكيل 9 باقات؟",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-mushtarak-akbar_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم: في كل باقة 10 زهرات حمراء و 6 بيضاء",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا: 9 لا يقسم 54",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "لا: 9 لا يقسم 90",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "90 ÷ 9 = ?"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "54 ÷ 9 = ?"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "9 قاسم مشترك لـ 90 و 54."
+        }
+      ],
+      "feedback": {
+        "correct": "90 = 9 × 10 و 54 = 9 × 6: 9 قاسم مشترك للعددين.",
+        "incorrect": "هل 9 يقسم 90 و 54 معًا؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو أكبر عدد ممكن من الباقات المتماثلة؟",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-mushtarak-akbar_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_qasim-mushtarak-akbar_P2",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "18",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب قواسم 90 ثم قواسم 54."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما هي القواسم المشتركة؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أكبرها هو PGCD(90 ; 54)."
+        }
+      ],
+      "feedback": {
+        "correct": "القواسم المشتركة لـ 90 و 54: 1 ، 2 ، 3 ، 6 ، 9 ، 18؛ أكبرها 18.",
+        "incorrect": "عدد الباقات قاسم مشترك للعددين؛ ابحث عن أكبرها."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "5",
+          "id": "MISC-PGCD-HASIL-BADAL-QASIM"
+        },
+        {
+          "value": "3",
+          "id": "MISC-PGCD-HASIL-BADAL-QASIM"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-qasim-mushtarak-akbar-l2-001",
+  "lessonCode": "qasim-mushtarak-akbar",
+  "level": 2
+}

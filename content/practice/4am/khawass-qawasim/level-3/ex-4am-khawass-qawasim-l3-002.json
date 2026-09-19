@@ -1,0 +1,74 @@
+{
+  "metadata": {
+    "title": "تمرين 14 — 7 و 217",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خاصية 1",
+      "مضاعفات"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-14",
+      "page": 14,
+      "section": "أوظّف تعلّماتي",
+      "number": 14
+    }
+  },
+  "statement": {
+    "content": "بيّن أنّ 7 من قواسم 217. استنتج أن 7 من قواسم 21 700 000."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لماذا 7 من قواسم 21 700 000؟",
+      "learningPoints": [
+        {
+          "code": "4am_khawass-qawasim_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لأن 21 700 000 = 217 × 100 000 و 7 يقسم 217، فهو يقسم كل مضاعف له",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لأن 21 700 000 ينتهي بأصفار",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "لأن 7 يقسم 21",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "217 = 7 × 31."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "21 700 000 = 217 × 100 000."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قاسم عدد يقسم كل مضاعف له (خاصية 1)."
+        }
+      ],
+      "feedback": {
+        "correct": "إذا كان n يقسم a فإنه يقسم k × a.",
+        "incorrect": "اكتب 21 700 000 على شكل 217 × k."
+      }
+    }
+  ],
+  "id": "ex-4am-khawass-qawasim-l3-002",
+  "lessonCode": "khawass-qawasim",
+  "level": 3
+}

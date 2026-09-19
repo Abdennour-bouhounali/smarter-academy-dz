@@ -1,0 +1,148 @@
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { TapQuestion, NumericQuestion, BatchChoiceQuestion } from '../kit';
+import { Feedback } from '../components/LessonUI';
+import MathText from '../components/MathText';
+import SourceTag from './SourceTag';
+import IntegerSetQuestion from './IntegerSetQuestion';
+import FractionQuestion from './FractionQuestion';
+
+/**
+ * Rend UN exercice du manuel à partir de sa donnée (content/exercises.js) :
+ * l'énoncé au mot près, l'étiquette de source, puis l'interaction que la
+ * donnée déclare —
+ *   choice       QCM (TapQuestion) — { options, correct }
+ *   trueFalse    plusieurs affirmations (BatchChoiceQuestion) — { rows }
+ *   numeric      un nombre (NumericQuestion) — { expected, display? }
+ *   integerSet   un ensemble d'entiers (IntegerSetQuestion) — { expected }
+ *   fraction     un kasr (FractionQuestion, forme irréductible exigée) — { expected: 'a/b' }
+ *   batch        plusieurs lignes, un choix par ligne (BatchChoiceQuestion) — { rows: [{ label, options, correct, correction }] }
+ *   reasoning    برهان / تعليل : l'élève rédige puis compare à la solution — { solution }
+ * Le texte des options et des explications vient de la donnée ; ce fichier ne
+ * contient AUCUN énoncé mathématique.
+ *
+ * Toutes les formes sont NON BLOQUANTES (kit) ; `onAnswered` est appelé dès la
+ * réponse, juste ou fausse.
+ */
+export default function TextbookExercise({ exercise, solved = false, onAnswered, requires }) {
+  const { t } = useTranslation('lesson');
+  const ex = exercise;
+  const header = (
+    <div className="space-y-1">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="inline-block rounded-md bg-sky-600 px-2 py-0.5 text-xs font-bold text-white">
+          {ex.source?.number != null ? t('textbook.exerciseN', { n: ex.source.number }) : t('textbook.exercise')}
+        </span>
+        <SourceTag source={ex.source} />
+        {ex.difficulty && <span className="text-[11px] text-slate-500">{t(`textbook.difficulty.${ex.difficulty}`)}</span>}
+      </div>
+      {ex.statement && <p className="text-sm sm:text-base leading-relaxed text-slate-800"><MathText>{ex.statement}</MathText></p>}
+      {ex.items && (
+        <ul className="ms-3 space-y-0.5 text-sm text-slate-700">
+          {ex.items.map((it, i) => <li key={i}><MathText>{it}</MathText></li>)}
+        </ul>
+      )}
+    </div>
+  );
+
+  const q = ex.question ?? {};
+  const explain = q.explain ? <MathText>{q.explain}</MathText> : undefined;
+
+  let body = null;
+  switch (ex.interaction) {
+    case 'choice':
+      body = (
+        <TapQuestion prompt={q.prompt ? <MathText>{q.prompt}</MathText> : undefined} options={q.options.map((o) => <MathText key={o}>{o}</MathText>)}
+          correct={q.correct} cols={q.cols ?? 2} explain={explain} requires={requires} solved={solved} onAnswered={(ok) => onAnswered?.(ok)} />
+      );
+      break;
+    case 'trueFalse':
+      body = (
+        <BatchChoiceQuestion
+          rows={q.rows.map((r, i) => ({ id: `r${i}`, label: <MathText>{r.text}</MathText>, options: [t('textbook.true'), t('textbook.false')], correct: r.answer ? 0 : 1, correction: r.why }))}
+          requires={requires} solved={solved}
+          feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? t('textbook.allRight') : t('textbook.seeCorrections')}{explain && <> — {explain}</>}</Feedback>}
+          onAnswered={(ok) => onAnswered?.(ok)} />
+      );
+      break;
+    case 'numeric':
+      body = (
+        <NumericQuestion prompt={q.prompt ? <MathText>{q.prompt}</MathText> : undefined} expected={q.expected} display={q.display ?? String(q.expected)}
+          parse={(s) => Number(String(s).replace(/[٠-٩]/g, (ch) => String(ch.charCodeAt(0) - 0x0660)).replace(/\s/g, ''))}
+          explain={explain} explainFor={q.explainFor ? (n) => <MathText>{q.explainFor(n)}</MathText> : undefined}
+          requires={requires} solved={solved} onAnswered={(ok) => onAnswered?.(ok)} />
+      );
+      break;
+    case 'integerSet':
+      body = (
+        <IntegerSetQuestion prompt={q.prompt ? <MathText>{q.prompt}</MathText> : undefined} expected={q.expected} explain={q.explain}
+          requires={requires} solved={solved} onAnswered={(ok) => onAnswered?.(ok)} />
+      );
+      break;
+    case 'fraction':
+      body = (
+        <FractionQuestion prompt={q.prompt ? <MathText>{q.prompt}</MathText> : undefined} expected={q.expected} explain={q.explain}
+          requireIrreducible={q.requireIrreducible !== false} requires={requires} solved={solved} onAnswered={(ok) => onAnswered?.(ok)} />
+      );
+      break;
+    case 'batch':
+      body = (
+        <BatchChoiceQuestion
+          intro={q.prompt ? <p className="text-sm font-semibold text-slate-700"><MathText>{q.prompt}</MathText></p> : undefined}
+          rows={q.rows.map((r, i) => ({ id: `b${i}`, label: <MathText>{r.label}</MathText>, options: r.options, correct: r.correct, correction: r.correction }))}
+          requires={requires} solved={solved}
+          feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? t('textbook.allRight') : t('textbook.seeCorrections')}{explain && <> — {explain}</>}</Feedback>}
+          onAnswered={(ok) => onAnswered?.(ok)} />
+      );
+      break;
+    case 'reasoning':
+      body = <Reasoning solution={q.solution} solved={solved} onAnswered={onAnswered} />;
+      break;
+    default:
+      body = null;
+  }
+
+  return (
+    <div className="rounded-2xl border-2 border-sky-200 bg-white p-4 space-y-3" data-textbook-exercise={ex.id}>
+      {header}
+      {body}
+      {ex.commonError && (
+        <p className="text-xs text-slate-500"><strong>{t('textbook.commonError')} :</strong> <MathText>{ex.commonError}</MathText></p>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Un exercice de RAISONNEMENT (برهن، علّل، اشرح) : l'élève écrit sa réponse
+ * pour lui-même, puis compare à la solution du manuel. Aucune évaluation
+ * automatique — on ne fait pas semblant de corriger un brهان par mots-clés.
+ * Type « discovery » : jamais de preuve d'apprentissage.
+ */
+function Reasoning({ solution, solved, onAnswered }) {
+  const { t } = useTranslation('lesson');
+  const [text, setText] = useState('');
+  const [revealed, setRevealed] = useState(solved);
+  return (
+    <div className="space-y-2">
+      {!revealed && (
+        <textarea value={text} onChange={(e) => setText(e.target.value)} rows={3}
+          aria-label={t('textbook.yourReasoning')} placeholder={t('textbook.yourReasoning')}
+          className="w-full rounded-xl border-2 border-slate-300 bg-white p-3 text-sm focus:border-blue-500 focus:outline-none" />
+      )}
+      {!revealed ? (
+        <button type="button" onClick={() => { setRevealed(true); onAnswered?.(true); }}
+          className="rounded-xl border-2 border-blue-600 bg-blue-600 px-4 py-2 text-sm font-bold text-white hover:bg-blue-700">
+          {t('textbook.compareWithSolution')}
+        </button>
+      ) : (
+        <div className="rounded-xl border-2 border-slate-300 bg-slate-50 p-3 space-y-1">
+          <span className="inline-block rounded-md bg-slate-700 px-2 py-0.5 text-xs font-bold text-white">{t('textbook.solution')}</span>
+          {(Array.isArray(solution) ? solution : [solution]).map((line, i) => (
+            <p key={i} className="text-sm leading-relaxed text-slate-800"><MathText>{line}</MathText></p>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

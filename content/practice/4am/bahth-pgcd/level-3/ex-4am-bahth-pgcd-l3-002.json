@@ -1,0 +1,91 @@
+{
+  "metadata": {
+    "title": "طريقة — 836 و 1938",
+    "estimatedMinutes": 4,
+    "tags": [
+      "خوارزمية إقليدس"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-euclid",
+      "page": 13,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 13): احسب القاسم المشترك الأكبر للعددين 836 و 1938."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "1938 = 836 × 2 + …",
+      "learningPoints": [
+        {
+          "code": "4am_bahth-pgcd_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "266",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "836 × 2 = ?"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "1938 − 1672."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الباقي هو 1938 ناقص هذا الجداء."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(1938 ; 836) = PGCD(836 ; 266).",
+        "incorrect": "836 × 2 = 1672."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "PGCD(1938 ; 836) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_bahth-pgcd_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "38",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "836 = 266 × 3 + 38."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "266 = 38 × 7 + 0."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "38."
+        }
+      ],
+      "feedback": {
+        "correct": "836 = 266 × 3 + 38 و 266 = 38 × 7 + 0.",
+        "incorrect": "آخر باقٍ غير معدوم."
+      }
+    }
+  ],
+  "id": "ex-4am-bahth-pgcd-l3-002",
+  "lessonCode": "bahth-pgcd",
+  "level": 3
+}

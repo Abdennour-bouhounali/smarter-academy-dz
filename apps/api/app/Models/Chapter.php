@@ -36,4 +36,10 @@ class Chapter extends Model
     {
         return $this->hasMany(Lesson::class);
     }
+
+    /** Les unités du manuel du chapitre (phase 8) — vide pour un chapitre encore « un sujet = une leçon ». */
+    public function units(): HasMany
+    {
+        return $this->hasMany(Unit::class)->orderBy('order');
+    }
 }

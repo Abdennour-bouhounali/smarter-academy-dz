@@ -1,0 +1,74 @@
+{
+  "metadata": {
+    "title": "نشاط 3 — الحالة الأولى",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نشاط",
+      "خواص"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-3",
+      "page": 8,
+      "section": "أنشطة",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "$a = 18$ ، $b = 12$ ، $n = 3$. تحقّق من أن $n$ يقسم كلا من $a$ و $b$، ثم من أنه يقسم $a + b$ و $a - b$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "3 يقسم 18 و 12. إذن 3 يقسم أيضًا:",
+      "learningPoints": [
+        {
+          "code": "4am_khawass-qawasim_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "30 و 6",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "30 فقط",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "لا شيء آخر بالضرورة",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "18 + 12 = 30."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "18 − 12 = 6."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خاصية 1: القاسم المشترك يقسم المجموع والفرق."
+        }
+      ],
+      "feedback": {
+        "correct": "18 + 12 = 30 = 3 × 10 و 18 − 12 = 6 = 3 × 2.",
+        "incorrect": "احسب المجموع والفرق واقسمهما على 3."
+      }
+    }
+  ],
+  "id": "ex-4am-khawass-qawasim-l1-001",
+  "lessonCode": "khawass-qawasim",
+  "level": 1
+}

@@ -1,0 +1,102 @@
+{
+  "metadata": {
+    "title": "تمرين 34 — 1005 و 315",
+    "estimatedMinutes": 4,
+    "tags": [
+      "PGCD",
+      "اختزال"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-34",
+      "page": 15,
+      "section": "أوظّف تعلّماتي",
+      "number": 34
+    }
+  },
+  "statement": {
+    "content": "هل العددان 1005 و 315 أوليان فيما بينهما؟ إذا كانت الإجابة «لا»، احسب القاسم المشترك الأكبر لهما، ثم اكتب الكسر $\\dfrac{1005}{315}$ على شكل كسر غير قابل للاختزال."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "PGCD(1005 ; 315) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "1005 = 315 × 3 + 60."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "315 = 60 × 5 + 15."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "60 = 15 × 4 + 0."
+        }
+      ],
+      "feedback": {
+        "correct": "1005 = 315 × 3 + 60 ، 315 = 60 × 5 + 15 ، 60 = 15 × 4 + 0.",
+        "incorrect": "كلاهما يقبل القسمة على 5: ليسا أوليين فيما بينهما."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$\\dfrac{1005}{315}$ = …",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "67/21",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "1005 ÷ 15."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "315 ÷ 15."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم البسط والمقام على 15 معًا."
+        }
+      ],
+      "feedback": {
+        "correct": "1005 ÷ 15 = 67 و 315 ÷ 15 = 21.",
+        "incorrect": "اقسم على 15."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "201/63",
+          "id": "MISC-IKHTIZAL-NAQIS"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-ikhtizal-kasr-l4-001",
+  "lessonCode": "ikhtizal-kasr",
+  "level": 4
+}

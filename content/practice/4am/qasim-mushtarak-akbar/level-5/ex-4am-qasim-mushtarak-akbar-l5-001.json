@@ -1,0 +1,122 @@
+{
+  "metadata": {
+    "title": "ملاحظة الكتاب — قواسم PGCD",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ملاحظة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-4-def",
+      "page": 12,
+      "section": "معارف",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 12): مجموعة القواسم المشتركة لعددين هي مجموعة قواسم قاسمهما المشترك الأكبر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "PGCD(a ; b) = 14. القواسم المشتركة للعددين a و b هي …",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-mushtarak-akbar_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "1 ، 2 ، 7 ، 14",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "14 فقط",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "1 و 14 فقط",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما هي قواسم 14؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "14 = 1 × 14 = 2 × 7."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ملاحظة الكتاب ص 12."
+        }
+      ],
+      "feedback": {
+        "correct": "قواسم 14.",
+        "incorrect": "القواسم المشتركة = قواسم PGCD."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "القواسم المشتركة للعددين 15 و 28 هي …",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-mushtarak-akbar_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "1",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "1 ؛ 15 ؛ 28",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "1 ؛ 2 ؛ 3 ؛ 5 ؛ 7",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب قواسم 15."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب قواسم 28."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المشترك الوحيد 1."
+        }
+      ],
+      "feedback": {
+        "correct": "قواسم 15: 1 ، 3 ، 5 ، 15؛ قواسم 28: 1 ، 2 ، 4 ، 7 ، 14 ، 28.",
+        "incorrect": "قارن القائمتين."
+      }
+    }
+  ],
+  "id": "ex-4am-qasim-mushtarak-akbar-l5-001",
+  "lessonCode": "qasim-mushtarak-akbar",
+  "level": 5
+}

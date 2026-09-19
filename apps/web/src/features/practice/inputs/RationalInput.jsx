@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import AnswerField from './AnswerField';
 
 /**
@@ -6,14 +7,15 @@ import AnswerField from './AnswerField';
  * typographique et l'espace fine des milliers.
  */
 export default function RationalInput({ question, value, onChange, disabled }) {
+  const { t } = useTranslation('student');
   return (
     <div className="flex items-center gap-3 flex-wrap">
       <AnswerField
         value={value?.value ?? ''}
         onChange={(v) => onChange({ value: v })}
-        ariaLabel={question.answerFormat || 'Ta réponse'}
+        ariaLabel={question.answerFormat || t('practice.field.answer')}
         placeholder={question.answerFormat}
-        width="w-40"
+        width="min-w-[10rem]"
         disabled={disabled}
       />
       {question.answerFormat && (

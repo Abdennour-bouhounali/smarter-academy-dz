@@ -1,0 +1,74 @@
+{
+  "metadata": {
+    "title": "تمرين 7 — خزان الماء",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية",
+      "جداء"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-7",
+      "page": 14,
+      "section": "أوظّف تعلّماتي",
+      "number": 7
+    }
+  },
+  "statement": {
+    "content": "خزان ماء شكله متوازي مستطيلات ارتفاعه 1m وحجمه $30\\,m^3$. جد كل الحالات الممكنة لبُعدي قاعدة هذا الخزان مع العلم أنهما عددان طبيعيان."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الحالات الممكنة لبُعدي القاعدة:",
+      "learningPoints": [
+        {
+          "code": "4am_qawasim-adad-tabii_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "1 و 30 ؛ 2 و 15 ؛ 3 و 10 ؛ 5 و 6",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "1 و 30 ؛ 2 و 15 ؛ 3 و 10",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "5 و 6 فقط",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مساحة القاعدة = 30 ÷ 1 = 30."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ابحث عن كل الجداءات d × e = 30."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نختبر حتى 5 (5² = 25 ≤ 30 < 36)."
+        }
+      ],
+      "feedback": {
+        "correct": "مساحة القاعدة 30 = جداء البُعدين: كل الكتابات على شكل جداء عاملين.",
+        "incorrect": "الحجم = مساحة القاعدة × الارتفاع."
+      }
+    }
+  ],
+  "id": "ex-4am-qawasim-adad-tabii-l4-002",
+  "lessonCode": "qawasim-adad-tabii",
+  "level": 4
+}

@@ -1,6 +1,10 @@
-// Les TROIS LEÇONS GRATUITES du produit algérien
-// (ALGERIA_PLATFORM_MASTER_SPEC.md §17 : « 3 leçons gratuites, le reste
-// premium »).
+// Les LEÇONS GRATUITES du produit algérien.
+//
+// Le cahier des charges (ALGERIA_PLATFORM_MASTER_SPEC.md §17) prévoit « 3
+// leçons gratuites, le reste premium ». À la demande du propriétaire
+// (2026-09-18), TOUTES les leçons écrites sont ouvertes pour l'instant ; la
+// liste ci-dessous est l'unique endroit où cela se décide, et y revenir à
+// trois identifiants restaure le modèle du cahier des charges.
 //
 // ── La règle, explicitement ─────────────────────────────────────────────
 // La gratuité est une liste NOMMÉE, pas un rang. « Les trois premières »
@@ -25,22 +29,36 @@
 // La dérive entre les deux est surveillée par scripts/check-activation-drift.mjs.
 //
 // ── L'état de la liste ──────────────────────────────────────────────────
-// UNE leçon ouverte sur les trois que le cahier des charges prévoit.
-//
-// `pgcd` — قواسم عدد طبيعي والقاسم المشترك الأكبر — est la PREMIÈRE leçon
-// algérienne écrite (premier sujet du premier domaine du programme), et la
-// seule qui existe aujourd'hui sur le disque. L'ouvrir donne à un visiteur
-// une leçon complète à essayer : c'est précisément ce que le palier gratuit
-// doit démontrer.
-//
-// Les DEUX autres restent à choisir, et ne peuvent l'être qu'entre des
-// leçons ÉCRITES : inscrire ici l'identifiant d'une leçon `coming_soon`
-// annoncerait « gratuit » sur une carte que personne ne peut ouvrir.
-// `check-dormant-isolation.mjs` refuse de toute façon un identifiant qui ne
-// correspond à aucune leçon du catalogue.
+// Les NEUF leçons écrites de l'unité 1 sont ouvertes (état provisoire, voir
+// plus bas). Seules des leçons ÉCRITES peuvent y figurer : inscrire ici
+// l'identifiant d'une leçon `coming_soon` annoncerait « gratuit » sur une
+// carte que personne ne peut ouvrir. `check-dormant-isolation.mjs` refuse de
+// toute façon un identifiant qui ne correspond à aucune leçon du catalogue.
 import { isGradeActive } from './activeGrades.js';
 
-export const FREE_LESSON_IDS = Object.freeze(['pgcd']);
+// TOUTES les leçons écrites sont gratuites POUR L'INSTANT — demande du
+// propriétaire (2026-09-18) : « make all lesson free for now ». Le « for
+// now » est important : c'est un état provisoire, pas un changement de
+// modèle commercial. Le mécanisme, lui, ne bouge pas — la gratuité reste une
+// liste NOMMÉE (voir l'en-tête), et revenir aux trois leçons du cahier des
+// charges (§17) se fait en retirant des identifiants de cette liste, sans
+// toucher à une seule ligne de code.
+//
+// Les neuf leçons de l'unité 1 du manuel, dans l'ordre du manuel, synthèse
+// comprise. Aucune leçon `coming_soon` n'est listée : annoncer « gratuit »
+// sur une carte que personne ne peut ouvrir n'aurait aucun sens, et
+// `check-dormant-isolation.mjs` le refuserait.
+export const FREE_LESSON_IDS = Object.freeze([
+  'qasim-adad-tabii',
+  'qawasim-adad-tabii',
+  'khawass-qawasim',
+  'qasim-mushtarak-akbar',
+  'tayin-pgcd',
+  'bahth-pgcd',
+  'awwaliyan-fima-baynahuma',
+  'ikhtizal-kasr',
+  'wadiya-idmajiya-aadad',
+]);
 
 /**
  * Cette leçon est-elle explicitement gratuite ?

@@ -38,6 +38,10 @@ export * from './curriculum/lessonStages.js';
 export * from './curriculum/moduleRecommendations.js';
 export * from './curriculum/activeGrades.js';
 export * from './curriculum/freeLessons.js';
+export * from './curriculum/manipulationTypes.js';
+// Divisibilité, PGCD, réduction de fractions — le noyau de l'unité 1 de 4AM,
+// partagé par les leçons, les manipulations et les tests de contenu.
+export * as divisibility from './arithmetic/divisibility.js';
 
 // Moteur d'exercices (pratique) — arithmétique exacte et évaluation des
 // réponses. Exporté sous un espace de noms : `Rational.parse` et

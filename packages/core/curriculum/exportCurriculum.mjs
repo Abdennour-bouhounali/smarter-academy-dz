@@ -54,6 +54,18 @@ const grades = dzCourseLevels.flatMap((level) =>
       // chaîne I1 : ces intitulés viennent de programme_4am_2026_2027.json et
       // n'ont été retapés nulle part.
       topics: chapter.topics ?? [],
+      // Les UNITÉS du manuel (phase 8) — absentes (tableau vide) pour un
+      // chapitre encore découpé « un sujet = une leçon ».
+      units: (chapter.units ?? []).map((unit) => ({
+        code: unit.id,
+        title: unit.title,
+        subtitle: unit.subtitle ?? null,
+        number: unit.number ?? null,
+        objectives: unit.objectives ?? [],
+        sourceTopicCodes: unit.sourceTopicIds ?? [],
+        textbook: unit.textbook ?? null,
+        order: unit.order,
+      })),
       lessons: chapter.lessons.map((lesson, lessonIndex) => ({
         code: lesson.id,
         officialObjectCode: lesson.officialObject ?? null,
@@ -63,10 +75,18 @@ const grades = dzCourseLevels.flatMap((level) =>
         durationMinutes: lesson.durationMinutes ?? null,
         tier: lesson.tier,
         order: lessonIndex,
+        // Phase 8 : rattachement à l'unité, nature (leçon / synthèse),
+        // référence au manuel et prérequis pédagogiques inter-leçons.
+        unitCode: lesson.unitId ?? null,
+        kind: lesson.kind ?? 'lesson',
+        titleSource: lesson.titleSource ?? 'official_topic',
+        textbookRef: lesson.textbookRef ?? null,
+        prerequisiteLessonCodes: lesson.prerequisiteLessonCodes ?? [],
         learningPoints: lesson.learningPoints.map((lp) => ({
           code: lp.id,
           title: lp.title,
           order: lp.order,
+          prerequisites: (lp.prerequisites ?? []).map((p) => ({ code: p.id, requiredMastery: p.requiredMastery })),
         })),
       })),
     })),

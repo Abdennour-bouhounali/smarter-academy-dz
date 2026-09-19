@@ -1,0 +1,107 @@
+{
+  "metadata": {
+    "title": "تمرين 39 — ليلى",
+    "estimatedMinutes": 4,
+    "tags": [
+      "استدلال"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-39",
+      "page": 15,
+      "section": "أوظّف تعلّماتي",
+      "number": 39
+    }
+  },
+  "statement": {
+    "content": "اختبرت ليلى قواعد قابلية القسمة على 2 ، 3 ، 4 ، 5 ، 9 و 10 فلاحظت أن كلا من العددين 253 و 407 لا يقبلان القسمة على هذه الأعداد. عندئذ، استنتجت أن العددين 253 و 407 أوليان فيما بينهما. هل توافقها؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل توافق ليلى؟",
+      "learningPoints": [
+        {
+          "code": "4am_awwaliyan-fima-baynahuma_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_awwaliyan-fima-baynahuma_P2",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا: يجب حساب PGCD؛ وهو 11",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-QAWAID-LA-TAKFI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "407 − 253 = 154."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "253 = 154 + 99 ، 154 = 99 + 55 ، 99 = 55 + 44 ، 55 = 44 + 11."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "44 = 11 × 4 + 0."
+        }
+      ],
+      "feedback": {
+        "correct": "253 = 11 × 23 و 407 = 11 × 37.",
+        "incorrect": "القواسم المشتركة ليست بالضرورة من بين 2 ، 3 ، 4 ، 5 ، 9 ، 10."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "PGCD(253 ; 407) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_awwaliyan-fima-baynahuma_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "11",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "407 = 253 + 154."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "253 = 154 + 99 ، 154 = 99 + 55 ، 99 = 55 + 44 ، 55 = 44 + 11."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "44 = 11 × 4."
+        }
+      ],
+      "feedback": {
+        "correct": "خوارزمية إقليدس تعطي 11.",
+        "incorrect": "آخر باقٍ غير معدوم."
+      }
+    }
+  ],
+  "id": "ex-4am-awwaliyan-fima-baynahuma-l5-001",
+  "lessonCode": "awwaliyan-fima-baynahuma",
+  "level": 5
+}

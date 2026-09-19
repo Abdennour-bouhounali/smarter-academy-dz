@@ -1,4 +1,4 @@
-import { House, BookOpen, Compass, TrendingUp, UserCircle, KeyRound } from 'lucide-react';
+import { House, BookOpen, Compass, TrendingUp, NotebookPen } from 'lucide-react';
 
 // The authenticated student area's own navigation — deliberately separate
 // from data/navigation.js (the visitor IA). A student's workspace is a
@@ -10,9 +10,13 @@ export const studentNavLinks = [
   { labelKey: 'myCourses', path: '/espace/cours', icon: BookOpen },
   { labelKey: 'explore', path: '/espace/explorer', icon: Compass },
   { labelKey: 'progression', path: '/espace/progression', icon: TrendingUp },
-  // La saisie d'un code d'activation : le chemin d'achat du produit algérien
-  // (master spec §17). Placée avant le profil parce qu'un élève venant
-  // d'acheter une carte la cherche, alors que le profil se visite rarement.
-  { labelKey: 'activation', path: '/espace/activation', icon: KeyRound },
-  { labelKey: 'profile', path: '/espace/profil', icon: UserCircle },
+  // Le cahier de l'élève : ses notes, ses erreurs, ses questions, sa
+  // révision. Après la progression (« où en suis-je ? ») vient « qu'ai-je
+  // écrit pour y arriver ? ».
+  { labelKey: 'notebook', path: '/espace/cahier', icon: NotebookPen },
+  // NI « activation » NI « profil » ici : le profil est le bloc d'identité
+  // au bas de la barre (avatar + nom + classe, dans StudentNavbar), et la
+  // saisie d'un code n'a qu'une seule porte, l'encart ambré juste au-dessus,
+  // qui n'apparaît qu'à qui n'a pas encore accès. Deux entrées pour la même
+  // destination, c'était une de trop.
 ];

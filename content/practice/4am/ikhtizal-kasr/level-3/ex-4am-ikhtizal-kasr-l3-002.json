@@ -1,0 +1,172 @@
+{
+  "metadata": {
+    "title": "تمرين 28 — أربعة كسور",
+    "estimatedMinutes": 5,
+    "tags": [
+      "اختزال"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-28",
+      "page": 15,
+      "section": "أوظّف تعلّماتي",
+      "number": 28
+    }
+  },
+  "statement": {
+    "content": "اكتب كل كسر من الكسور التالية على شكل كسر غير قابل للاختزال."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\dfrac{529}{69}$",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "23/3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "69 = 3 × 23."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل 23 يقسم 529؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "529 = 23²."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(529 ; 69) = 23.",
+        "incorrect": "529 = 23 × 23 و 69 = 3 × 23."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$\\dfrac{91}{28}$",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "13/4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "28 = 7 × 4."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "91 ÷ 7 = 13."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم البسط والمقام على 7 معًا."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(91 ; 28) = 7.",
+        "incorrect": "91 = 7 × 13 و 28 = 7 × 4."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "$\\dfrac{707}{909}$",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "7/9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "909 − 707 = 202."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "707 = 202 × 3 + 101 ، 202 = 101 × 2."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "101."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(707 ; 909) = 101.",
+        "incorrect": "707 = 7 × 101 و 909 = 9 × 101."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      }
+    },
+    {
+      "id": "q4",
+      "statement": "$\\dfrac{1111}{1919}$",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "11/19",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "1919 − 1111 = 808."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "1111 = 808 + 303 ، 808 = 303 × 2 + 202 ، 303 = 202 + 101."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "202 = 101 × 2."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(1111 ; 1919) = 101.",
+        "incorrect": "1111 = 11 × 101 و 1919 = 19 × 101."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      }
+    }
+  ],
+  "id": "ex-4am-ikhtizal-kasr-l3-002",
+  "lessonCode": "ikhtizal-kasr",
+  "level": 3
+}

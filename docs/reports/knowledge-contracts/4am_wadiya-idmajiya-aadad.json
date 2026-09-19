@@ -1,0 +1,174 @@
+{
+  "lesson": "wadiya-idmajiya-aadad",
+  "grade": "4am",
+  "lexiconVersion": 1,
+  "prerequisites": [
+    "qawaid-qisma",
+    "khassiya-1",
+    "qawasim-mushtaraka"
+  ],
+  "conceptsIntroduced": [
+    {
+      "id": "qabiliyat-10",
+      "type": "regles",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/modules/Module01AlWadiya.jsx",
+        "line": 27,
+        "step": 2,
+        "variant": "rappel"
+      }
+    }
+  ],
+  "vocabularyIntroduced": [],
+  "proceduresIntroduced": [
+    {
+      "id": "tarmiz-bi-huruf",
+      "type": "methodes",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/modules/Module01AlWadiya.jsx",
+        "line": 31,
+        "step": 3,
+        "variant": "rappel"
+      }
+    }
+  ],
+  "memorisation": [],
+  "questions": [
+    {
+      "questionId": "M01-S3-Q1",
+      "module": 1,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/modules/Module01AlWadiya.jsx",
+      "line": 32,
+      "requires": [
+        "tarmiz-bi-huruf",
+        "qabiliyat-10"
+      ],
+      "prerequisiteStatus": {
+        "tarmiz-bi-huruf": "established@M1",
+        "qabiliyat-10": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "E1",
+      "module": 3,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/modules/Module03Ahill.jsx",
+      "line": 22,
+      "requires": [
+        "qabiliyat-10"
+      ],
+      "prerequisiteStatus": {
+        "qabiliyat-10": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "E2",
+      "module": 3,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/modules/Module03Ahill.jsx",
+      "line": 25,
+      "requires": [
+        "qabiliyat-10",
+        "tarmiz-bi-huruf"
+      ],
+      "prerequisiteStatus": {
+        "qabiliyat-10": "established@M1",
+        "tarmiz-bi-huruf": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "E3",
+      "module": 3,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/modules/Module03Ahill.jsx",
+      "line": 28,
+      "requires": [
+        "tarmiz-bi-huruf"
+      ],
+      "prerequisiteStatus": {
+        "tarmiz-bi-huruf": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "E4",
+      "module": 3,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/modules/Module03Ahill.jsx",
+      "line": 31,
+      "requires": [
+        "qabiliyat-10"
+      ],
+      "prerequisiteStatus": {
+        "qabiliyat-10": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    }
+  ],
+  "findings": [
+    {
+      "code": "W_UNPARSEABLE_STEPS",
+      "severity": "medium",
+      "message": "module 2: could not resolve 'steps' to a literal array — its content is invisible to the audit",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/modules/Module02Uakkid.jsx",
+      "line": 0,
+      "module": 2,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_PRIOR_NOT_DIAGNOSED",
+      "severity": "medium",
+      "message": "priorKnowledge declares 'qawaid-qisma' but no Module 0 question diagnoses it",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/lesson.config.js",
+      "line": 0,
+      "module": null,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_PRIOR_NOT_DIAGNOSED",
+      "severity": "medium",
+      "message": "priorKnowledge declares 'khassiya-1' but no Module 0 question diagnoses it",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/lesson.config.js",
+      "line": 0,
+      "module": null,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_PRIOR_NOT_DIAGNOSED",
+      "severity": "medium",
+      "message": "priorKnowledge declares 'qawasim-mushtaraka' but no Module 0 question diagnoses it",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/lesson.config.js",
+      "line": 0,
+      "module": null,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    }
+  ]
+}

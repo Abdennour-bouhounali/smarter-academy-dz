@@ -1,0 +1,91 @@
+{
+  "metadata": {
+    "title": "طريقة — 117 و 91",
+    "estimatedMinutes": 4,
+    "tags": [
+      "الفروق المتتابعة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-differences",
+      "page": 13,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 13): احسب القاسم المشترك الأكبر للعددين 117 و 91 بخوارزمية الفروق المتتابعة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "117 − 91 = ?",
+      "learningPoints": [
+        {
+          "code": "4am_bahth-pgcd_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "26",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "117 − 91."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "26."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "PGCD(117 ; 91) = PGCD(91 ; 26)."
+        }
+      ],
+      "feedback": {
+        "correct": "إذن PGCD(117 ; 91) = PGCD(91 ; 26).",
+        "incorrect": "اطرح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "PGCD(117 ; 91) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_bahth-pgcd_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "13",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "91 − 26 = 65 ، 65 − 26 = 39."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "39 − 26 = 13 ، 26 − 13 = 13."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "13 − 13 = 0."
+        }
+      ],
+      "feedback": {
+        "correct": "الفروق: 26 ، 65 ، 39 ، 13 ، 13 ، 0 → 13.",
+        "incorrect": "آخر فرق غير معدوم."
+      }
+    }
+  ],
+  "id": "ex-4am-bahth-pgcd-l2-002",
+  "lessonCode": "bahth-pgcd",
+  "level": 2
+}

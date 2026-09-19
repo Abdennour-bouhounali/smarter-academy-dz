@@ -7,7 +7,7 @@ import { practice } from '@smarter-academy/core';
 import { AuthContext } from '../../../context/AuthContext';
 import {
   fetchPracticeSession, openQuestion, requestHint, submitAnswer,
-  completeExercise, completeSession, createNote,
+  completeExercise, completeSession, createNote, updateNote,
 } from '../../../services/practiceService';
 import { exerciseIdsFor, loadExercise } from '../../../features/practice/practiceContent';
 import ExerciseStatement from '../../../features/practice/ExerciseStatement';
@@ -104,6 +104,24 @@ export default function PracticeSession() {
 
   const question = exercise?.questions?.[questionIndex] ?? null;
 
+  // Le titre de l'exercice, AUGMENTÉ du numéro de question :
+  //   « تمرين 2 — القسمة على 6 »  →  « تمرين 2 — السؤال 1 : القسمة على 6 »
+  //   « 420 كتابًا في رفوف »      →  « 420 كتابًا في رفوف — السؤال 1 »
+  // Les titres du manuel ont la forme « تمرين n — <sujet> » : on glisse donc
+  // le numéro après le tiret, devant le sujet. Sans tiret, il s'ajoute à la
+  // fin — les deux lectures restent naturelles en arabe.
+  const exerciseHeading = (() => {
+    // Le numéro s'affiche MÊME pour un exercice à une seule question : c'est
+    // un repère de position, pas un compteur — l'élève doit lire la même
+    // forme partout, sans avoir à se demander pourquoi elle disparaît ici.
+    const title = exercise?.metadata?.title ?? '';
+    if (!title) return title;
+    const label = t('practice.questionNumber', { n: questionIndex + 1 });
+    const dash = title.indexOf('—');
+    if (dash === -1) return `${title} — ${label}`;
+    return `${title.slice(0, dash + 1)} ${label} : ${title.slice(dash + 1).trim()}`;
+  })();
+
   // Ouvre la question côté serveur : c'est cette tentative qui portera les
   // indices, demandés avant la réponse.
   useEffect(() => {
@@ -199,6 +217,16 @@ export default function PracticeSession() {
     }),
     [token, lessonCode, exercise, question],
   );
+  const patchNote = useCallback((id, patch) => updateNote(token, id, patch), [token]);
+
+  // Ce que le cahier sait de la question au moment où il s'ouvre : l'énoncé,
+  // la question, et — seulement si l'élève a validé — sa réponse et le
+  // verdict. Le cahier n'invente pas d'erreur : sans validation, pas de bloc
+  // « خطئي ».
+  const feedbackMessage = evaluation && question ? feedbackFor(question, evaluation, MISCONCEPTIONS) : '';
+  const notebookContext = {
+    lessonCode, exercise, question, answer, evaluation, feedbackMessage,
+  };
 
   if (error) {
     return (
@@ -234,11 +262,24 @@ export default function PracticeSession() {
         </Link>
       </nav>
 
-      <SessionProgress index={index} total={exerciseIds.length} correctCount={correctCount} />
+      <SessionProgress
+        index={index}
+        total={exerciseIds.length}
+        correctCount={correctCount}
+        questionIndex={questionIndex}
+        questionTotal={totalQuestions}
+      />
 
       <header className="space-y-1">
+        {/* « المستوى 2 · تمرين 2 — السؤال 1 : القسمة على 6 ».
+            Le NUMÉRO DE QUESTION s'insère dans le titre de l'exercice, juste
+            après « تمرين n — », là où l'élève lit déjà où il se trouve. Les
+            titres du manuel ont tous la forme « تمرين n — <sujet> » : on coupe
+            donc sur le tiret cadratin pour glisser le numéro entre les deux.
+            Un titre sans tiret (ou un exercice à une seule question) reste
+            affiché tel quel, sans numéro postiche. */}
         <p className="text-xs font-mono font-bold text-indigo-600 uppercase">
-          {t('practice.levelLabel', { level: session.level })} · {exercise.metadata.title}
+          {t('practice.levelLabel', { level: session.level })} · {exerciseHeading}
         </p>
       </header>
 
@@ -252,12 +293,6 @@ export default function PracticeSession() {
         <hr className="border-slate-100" />
 
         <div className="space-y-4">
-          {totalQuestions > 1 && (
-            <p className="text-xs font-mono font-bold text-slate-500" dir="ltr">
-              {t('practice.questionOf', { current: questionIndex + 1, total: totalQuestions })}
-            </p>
-          )}
-
           <p className="text-[15px] sm:text-base text-slate-900 font-medium">
             <RichText>{question.statement}</RichText>
           </p>
@@ -276,7 +311,7 @@ export default function PracticeSession() {
                 {t('practice.checkMyAnswer')}
               </ValidateButton>
             )}
-            {!answered && <NotebookButton key={`note-${question.id}`} onSave={saveNote} compact />}
+            {!answered && <NotebookButton key={`note-${question.id}`} context={notebookContext} onSave={saveNote} onUpdate={patchNote} compact />}
             {/* Même barre d'outils que le carnet : ce sont les deux gestes
                 « à propos de cette question ». `key` par question pour que le
                 panneau se referme en changeant de question — et attemptUuid
@@ -308,10 +343,10 @@ export default function PracticeSession() {
             <div className="space-y-4">
               <FeedbackPanel
                 evaluation={evaluation}
-                message={feedbackFor(question, evaluation, MISCONCEPTIONS)}
+                message={feedbackMessage}
               />
 
-              <NotebookButton key={`note-answered-${question.id}`} onSave={saveNote} />
+              <NotebookButton key={`note-answered-${question.id}`} context={notebookContext} onSave={saveNote} onUpdate={patchNote} />
 
               <div className="flex gap-3 flex-wrap">
                 {/* Réessayer est PROPOSÉ, jamais imposé : une réponse fausse

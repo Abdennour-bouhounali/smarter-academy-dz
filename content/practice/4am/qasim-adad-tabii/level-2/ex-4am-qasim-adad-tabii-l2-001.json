@@ -1,0 +1,71 @@
+{
+  "metadata": {
+    "title": "تمرين 2 — القسمة على 6",
+    "estimatedMinutes": 3,
+    "tags": [
+      "قابلية القسمة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-2",
+      "page": 14,
+      "section": "أوظّف تعلّماتي",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "إليك الأعداد الطبيعية الآتية: 80 ، 120 ، 295 ، 132."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من بين هذه الأعداد، ما هي الأعداد التي تقبل القسمة على 6؟",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-adad-tabii_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        120,
+        132
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب باقي قسمة كل عدد على 6."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عدد يقبل القسمة على 6 إذا قبِل القسمة على 2 وعلى 3 معًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "80 زوجي لكن مجموع أرقامه 8 لا يقبل القسمة على 3."
+        }
+      ],
+      "feedback": {
+        "correct": "120 = 6 × 20 و 132 = 6 × 22.",
+        "incorrect": "اختبر باقي قسمة كل عدد على 6."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": [
+            80,
+            120,
+            132
+          ],
+          "id": "MISC-QISMA-6-ZAWJI-FAQAT"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-qasim-adad-tabii-l2-001",
+  "lessonCode": "qasim-adad-tabii",
+  "level": 2
+}

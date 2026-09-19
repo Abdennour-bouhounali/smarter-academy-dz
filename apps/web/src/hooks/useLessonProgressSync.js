@@ -13,6 +13,14 @@ import { mergeServerRowIntoStorage, flushProgressQueue } from '../lessons/common
  * Fetch failures are silent: the local cache is the fallback, never a broken
  * dashboard.
  */
+/**
+ * Émis sur `window` une fois les lignes du serveur fondues dans le stockage
+ * local. Un tableau de bord qui a déjà lu le stockage à son montage (la
+ * progression, calculée en mémo) peut ainsi se recalculer au lieu d'afficher
+ * « jamais ouverte » une leçon que seul le serveur connaissait encore.
+ */
+export const LESSON_PROGRESS_SYNCED_EVENT = 'smarter:lesson-progress-synced';
+
 export function useLessonProgressSync() {
   const { token, user } = useContext(AuthContext);
 
@@ -32,6 +40,7 @@ export function useLessonProgressSync() {
         for (const [lessonCode, row] of Object.entries(progress)) {
           mergeServerRowIntoStorage(lessonCode, row);
         }
+        window.dispatchEvent(new CustomEvent(LESSON_PROGRESS_SYNCED_EVENT));
       } catch {
         // Offline or server hiccup — the local cache stands.
       }

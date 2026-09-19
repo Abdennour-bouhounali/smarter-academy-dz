@@ -8,6 +8,8 @@ import { AuthContext } from '../../context/AuthContext';
 import { getLessonProgress } from '../../lessons/common/utils/progress/getLessonProgress';
 import { getTotalModules } from '../../lessons/registry';
 import LessonCard from '../../components/student/LessonCard';
+import UnitGroup from '../../components/student/UnitGroup';
+import { groupLessonsByUnit } from '../../components/student/unitGrouping';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 
 export default function MesCours() {
@@ -33,6 +35,15 @@ export default function MesCours() {
     if (activeChapter === 'all') return gradeData.chapters.flatMap((c) => c.lessons);
     return gradeData.chapters.find((c) => c.id === activeChapter)?.lessons || [];
   }, [gradeData, activeChapter]);
+
+  // Le niveau الوحدة — même règle que /courses : sous un ميدان du manuel,
+  // d'abord les cartes d'unité (vers la page d'unité), puis les leçons hors
+  // unité. `null` quand le ميدان n'a pas d'unité : cartes de leçon seules.
+  const unitGroups = useMemo(() => {
+    if (!gradeData) return null;
+    const chapters = activeChapter === 'all' ? gradeData.chapters : gradeData.chapters.filter((c) => c.id === activeChapter);
+    return groupLessonsByUnit(chapters, lessons);
+  }, [gradeData, activeChapter, lessons]);
 
   if (!grade || !gradeData) {
     return (
@@ -94,9 +105,20 @@ export default function MesCours() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <AnimatePresence mode="popLayout">
-          {lessons.map((lesson) => (
-            <LessonCard key={lesson.id} lesson={lesson} />
-          ))}
+          {unitGroups ? (
+            <>
+              <h3 className="col-span-full text-sm font-bold text-slate-700">{t('unit.unitCard.unitsTitle')}</h3>
+              {unitGroups.units.map((unit) => <UnitGroup key={unit.id} unit={unit} />)}
+              {unitGroups.rest.length > 0 && (
+                <>
+                  <h3 className="col-span-full mt-2 text-sm font-bold text-slate-600">{t('unit.unitCard.otherTopics')}</h3>
+                  {unitGroups.rest.map((lesson) => <LessonCard key={lesson.id} lesson={lesson} />)}
+                </>
+              )}
+            </>
+          ) : (
+            lessons.map((lesson) => <LessonCard key={lesson.id} lesson={lesson} />)
+          )}
         </AnimatePresence>
       </div>
     </div>

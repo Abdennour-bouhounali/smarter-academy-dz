@@ -111,7 +111,7 @@
   "searchInGrade": "ابحث في {{grade}}...",
   "allChapters": "كل الميادين",
   "resume": "واصل",
-  "moduleOf": "الوحدة {{current}} من {{total}}",
+  "moduleOf": "المحور {{current}} من {{total}}",
   "noCourseMatches": "لا يوجد درس يطابق {{query}}.",
   "thisSelection": "هذا الاختيار",
   "lessonStart": "ابدأ",

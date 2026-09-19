@@ -1,0 +1,73 @@
+{
+  "metadata": {
+    "title": "معارف — PGCD(21 ; 14)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خاصية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-4-props",
+      "page": 12,
+      "section": "معارف",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 12): PGCD(21 ; 14) = PGCD(14 ; 7) = PGCD(7 ; 7) = 7."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لماذا PGCD(21 ; 14) = PGCD(14 ; 7)؟",
+      "learningPoints": [
+        {
+          "code": "4am_bahth-pgcd_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لأن 21 − 14 = 7 و PGCD(a ; b) = PGCD(b ; a − b)",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لأن 7 قاسم للعدد 14",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "لأن 14 + 7 = 21 فقط",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "21 − 14 = ?"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "PGCD(a ; b) = PGCD(b ; a − b) مع a ≥ b."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "كل قاسم مشترك لـ 21 و 14 يقسم فرقهما."
+        }
+      ],
+      "feedback": {
+        "correct": "الخاصية الأولى: الطرح لا يغيّر القاسم المشترك الأكبر.",
+        "incorrect": "احسب 21 − 14."
+      }
+    }
+  ],
+  "id": "ex-4am-bahth-pgcd-l1-001",
+  "lessonCode": "bahth-pgcd",
+  "level": 1
+}

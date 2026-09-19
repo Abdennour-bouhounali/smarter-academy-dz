@@ -1,0 +1,58 @@
+{
+  "metadata": {
+    "title": "تمرين 20 — 5858 و 6767",
+    "estimatedMinutes": 4,
+    "tags": [
+      "خوارزمية إقليدس"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-20",
+      "page": 14,
+      "section": "أوظّف تعلّماتي",
+      "number": 20
+    }
+  },
+  "statement": {
+    "content": "احسب القاسم المشترك الأكبر للعددين الطبيعيين 5858 و 6767."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "PGCD(5858 ; 6767) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_bahth-pgcd_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "101",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "6767 = 5858 × 1 + 909."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "5858 = 909 × 6 + 404 ، ثم 909 = 404 × 2 + r: احسب r."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "909 = 404 × 2 + r ثم 404 = r × 4 + 0: آخر باقٍ غير معدوم هو الجواب."
+        }
+      ],
+      "feedback": {
+        "correct": "6767 = 5858 + 909 ، 5858 = 909 × 6 + 404 ، 909 = 404 × 2 + 101 ، 404 = 101 × 4 + 0.",
+        "incorrect": "خوارزمية إقليدس."
+      }
+    }
+  ],
+  "id": "ex-4am-bahth-pgcd-l4-002",
+  "lessonCode": "bahth-pgcd",
+  "level": 4
+}

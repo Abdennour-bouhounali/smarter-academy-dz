@@ -1,0 +1,94 @@
+{
+  "metadata": {
+    "title": "طريقة — 595/560",
+    "estimatedMinutes": 4,
+    "tags": [
+      "طريقة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-reduce",
+      "page": 13,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 13): اكتب الكسر $\\dfrac{595}{560}$ على شكل غير قابل للاختزال."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "PGCD(595 ; 560) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "35",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "595 − 560 = 35."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "560 = 35 × 16."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "35."
+        }
+      ],
+      "feedback": {
+        "correct": "595 = 560 × 1 + 35 ؛ 560 = 35 × 16 + 0.",
+        "incorrect": "خوارزمية إقليدس."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$\\dfrac{595}{560}$ على الشكل غير القابل للاختزال:",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "17/16",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "595 ÷ 35."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "560 ÷ 35."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بسط الكسر الناتج ومقامه أوليان فيما بينهما."
+        }
+      ],
+      "feedback": {
+        "correct": "595 ÷ 35 = 17 و 560 ÷ 35 = 16.",
+        "incorrect": "اقسم على 35."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      }
+    }
+  ],
+  "id": "ex-4am-ikhtizal-kasr-l3-001",
+  "lessonCode": "ikhtizal-kasr",
+  "level": 3
+}

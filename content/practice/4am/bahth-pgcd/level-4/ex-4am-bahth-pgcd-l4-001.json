@@ -1,0 +1,130 @@
+{
+  "metadata": {
+    "title": "تمرين 19 — بالفوارق المتتالية",
+    "estimatedMinutes": 6,
+    "tags": [
+      "الفروق المتتابعة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-19",
+      "page": 14,
+      "section": "أوظّف تعلّماتي",
+      "number": 19
+    }
+  },
+  "statement": {
+    "content": "باستعمال الفوارق المتتالية، جد في كل حالة القاسم المشترك الأكبر للعددين."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أ) a = 437 و b = 1035",
+      "learningPoints": [
+        {
+          "code": "4am_bahth-pgcd_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "23",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "1035 − 437 = 598 ، 598 − 437 = 161."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "437 − 161 = 276 ، 276 − 161 = 115 ، 161 − 115 = 46."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "115 − 46 = 69 ، 69 − 46 = 23 ، 46 − 23 = 23 ، 23 − 23 = 0."
+        }
+      ],
+      "feedback": {
+        "correct": "437 = 19 × 23 و 1035 = 45 × 23.",
+        "incorrect": "الفروق تنتهي بـ 23."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "جـ) a = 943 و b = 861",
+      "learningPoints": [
+        {
+          "code": "4am_bahth-pgcd_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "41",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "943 − 861 = 82."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "861 − 82 × 10 = 41 (عشر طرحات)."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "82 − 41 = 41 ، 41 − 41 = 0."
+        }
+      ],
+      "feedback": {
+        "correct": "943 = 23 × 41 و 861 = 21 × 41.",
+        "incorrect": "943 − 861 = 82."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "د) a = 1111 و b = 111111",
+      "learningPoints": [
+        {
+          "code": "4am_bahth-pgcd_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_bahth-pgcd_P5",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "11",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "111111 − 1111 × 100 = 11."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "PGCD(1111 ; 111111) = PGCD(1111 ; 11)."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "1111 = 11 × 101 + 0."
+        }
+      ],
+      "feedback": {
+        "correct": "111111 = 1111 × 100 + 11 و 1111 = 11 × 101.",
+        "incorrect": "الطرحات كثيرة هنا؛ الخاصية PGCD(a ; b) = PGCD(b ; r) تختصرها."
+      }
+    }
+  ],
+  "id": "ex-4am-bahth-pgcd-l4-001",
+  "lessonCode": "bahth-pgcd",
+  "level": 4
+}

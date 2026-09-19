@@ -1,0 +1,92 @@
+{
+  "metadata": {
+    "title": "معارف — 9 يقسم 90 و 900",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خاصية 1"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-2",
+      "page": 10,
+      "section": "معارف",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 10): 9 يقسم 90 و يقسم 900."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "إذن 9 يقسم $900 - 90$ أي يقسم …",
+      "learningPoints": [
+        {
+          "code": "4am_khawass-qawasim_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "810",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "900 − 90 = ?"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "القاسم المشترك يقسم الفرق."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الفرق عدد من ثلاثة أرقام ينتهي بـ 0."
+        }
+      ],
+      "feedback": {
+        "correct": "900 − 90 = 810 = 9 × 90.",
+        "incorrect": "احسب الفرق."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "و 9 يقسم $900 + 90$ أي يقسم …",
+      "learningPoints": [
+        {
+          "code": "4am_khawass-qawasim_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "990",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "900 + 90 = ?"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "القاسم المشترك يقسم المجموع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المجموع عدد من ثلاثة أرقام ينتهي بـ 0."
+        }
+      ],
+      "feedback": {
+        "correct": "900 + 90 = 990 = 9 × 110.",
+        "incorrect": "احسب المجموع."
+      }
+    }
+  ],
+  "id": "ex-4am-khawass-qawasim-l2-001",
+  "lessonCode": "khawass-qawasim",
+  "level": 2
+}

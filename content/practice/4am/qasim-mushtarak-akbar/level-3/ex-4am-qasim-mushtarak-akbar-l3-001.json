@@ -1,0 +1,98 @@
+{
+  "metadata": {
+    "title": "معارف — 28 و 42",
+    "estimatedMinutes": 4,
+    "tags": [
+      "PGCD",
+      "رمز"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-4-def",
+      "page": 12,
+      "section": "معارف",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 12): قواسم 28 هي 1 ، 2 ، 4 ، 7 ، 14 و 28 وقواسم 42 هي 1 ، 2 ، 3 ، 6 ، 7 ، 14 ، 21 و 42."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "القواسم المشتركة لـ 28 و 42:",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-mushtarak-akbar_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        1,
+        2,
+        7,
+        14
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أي أعداد في القائمتين معًا؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "1 و 2 و 7 و…"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أربعة أعداد."
+        }
+      ],
+      "feedback": {
+        "correct": "1 ، 2 ، 7 ، 14.",
+        "incorrect": "قارن القائمتين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "PGCD(28 ; 42) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-mushtarak-akbar_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "14",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "القواسم المشتركة: 1 ، 2 ، 7 ، 14."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أكبرها؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نكتب PGCD(28 ; 42) = 14."
+        }
+      ],
+      "feedback": {
+        "correct": "القاسم المشترك الأكبر هو أكبر القواسم المشتركة.",
+        "incorrect": "خذ أكبر القواسم المشتركة."
+      }
+    }
+  ],
+  "id": "ex-4am-qasim-mushtarak-akbar-l3-001",
+  "lessonCode": "qasim-mushtarak-akbar",
+  "level": 3
+}

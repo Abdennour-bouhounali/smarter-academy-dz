@@ -18,6 +18,7 @@ use App\Http\Controllers\BillingCheckoutController;
 use App\Http\Controllers\BillingSubscriptionController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContentAvailabilityController;
+use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\DiagnosticController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\GoogleAuthController;
@@ -31,7 +32,11 @@ use App\Http\Controllers\PracticeNotebookController;
 use App\Http\Controllers\PracticeSessionController;
 use App\Http\Controllers\ProviderWebhookController;
 use App\Http\Controllers\StudentReportController;
+use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
+use Laravel\Sanctum\Http\Middleware\AuthenticateSession;
 
 Route::prefix('v1')->group(function () {
     // Public routes
@@ -51,10 +56,10 @@ Route::prefix('v1')->group(function () {
     // signature chacun.
     Route::post('/webhooks/{provider}', [ProviderWebhookController::class, 'handle'])
         ->withoutMiddleware([
-            \Laravel\Sanctum\Http\Middleware\AuthenticateSession::class,
-            \Illuminate\Cookie\Middleware\EncryptCookies::class,
-            \Illuminate\Session\Middleware\StartSession::class,
-            \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
+            AuthenticateSession::class,
+            EncryptCookies::class,
+            StartSession::class,
+            ValidateCsrfToken::class,
         ])
         ->middleware('throttle:120,1')
         ->where('provider', '[a-z_]+');
@@ -151,7 +156,12 @@ Route::prefix('v1')->group(function () {
             Route::post('/practice/question-attempts/{attemptUuid}/hints', [PracticeAnswerController::class, 'storeHint']);
             Route::get('/practice/notes', [PracticeNotebookController::class, 'index']);
             Route::post('/practice/notes', [PracticeNotebookController::class, 'store']);
+            // « Mon cahier » : actions groupées AVANT `{id}` pour que « bulk »
+            // ne soit pas lu comme un identifiant.
+            Route::post('/practice/notes/bulk', [PracticeNotebookController::class, 'bulk']);
+            Route::get('/practice/notes/{id}', [PracticeNotebookController::class, 'show']);
             Route::patch('/practice/notes/{id}', [PracticeNotebookController::class, 'update']);
+            Route::post('/practice/notes/{id}/review', [PracticeNotebookController::class, 'review']);
             Route::delete('/practice/notes/{id}', [PracticeNotebookController::class, 'destroy']);
 
             // « Signaler un problème ». Limité en débit : un signalement est un
@@ -169,6 +179,12 @@ Route::prefix('v1')->group(function () {
             // d'afficher une leçon masquée jusqu'à buter dessus.
             Route::get('/content/availability', [ContentAvailabilityController::class, 'index']);
             Route::get('/lessons/{lessonCode}/exercises', [ContentAvailabilityController::class, 'exercises']);
+
+            // Le curriculum en lecture (phase 8) : classe → ميادين → وحدات →
+            // دروس → نقاط التعلّم, prérequis et ressources déclarées. Codes et
+            // structure ; le client garde son catalogue arabe.
+            Route::get('/curriculum/grades/{gradeCode}', [CurriculumController::class, 'grade']);
+            Route::get('/lessons/{lessonCode}/structure', [CurriculumController::class, 'lesson']);
 
             // « À quoi ai-je droit ? » — lecture seule. Aucun point d'entrée ne
             // permet à un élève de modifier ses droits d'accès… à une exception

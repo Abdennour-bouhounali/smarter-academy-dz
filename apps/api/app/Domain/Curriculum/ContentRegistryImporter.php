@@ -4,6 +4,7 @@ namespace App\Domain\Curriculum;
 
 use App\Models\Lesson;
 use App\Models\LessonModule;
+use App\Models\LessonResource;
 use App\Models\PracticeExercise;
 use Illuminate\Support\Facades\DB;
 
@@ -52,12 +53,14 @@ class ContentRegistryImporter
         $summary = [
             'modules' => ['created' => [], 'updated' => [], 'retired' => [], 'unchanged' => []],
             'exercises' => ['created' => [], 'updated' => [], 'retired' => [], 'unchanged' => []],
+            'resources' => ['created' => [], 'updated' => [], 'retired' => [], 'unchanged' => []],
             'unknownLessons' => [],
         ];
 
         try {
             DB::transaction(function () use ($export, $dryRun, &$summary) {
                 $this->importModules($export['lessons'] ?? [], $summary);
+                $this->importResources($export['lessons'] ?? [], $summary);
                 $this->importExercises($export['exercises'] ?? [], $summary);
 
                 // Même mécanique que CurriculumImporter : le diff est calculé
@@ -150,6 +153,71 @@ class ContentRegistryImporter
             foreach ($retired as $module) {
                 $module->update(['retired_at' => now()]);
                 $summary['modules']['retired'][] = "{$lesson->code}/{$module->code}";
+            }
+        }
+    }
+
+    /**
+     * Les RESSOURCES déclarées par lesson.config.js (`resources[]`) :
+     * manipulations, méthodes, situations, exemples — identité seulement,
+     * retrait par `retired_at`, jamais de suppression. Une leçon qui ne
+     * déclare pas de tableau `resources` (les 132 leçons héritées) n'est pas
+     * touchée : « aucune ressource déclarée » n'est pas « toutes retirées ».
+     *
+     * @param  array<int, array>  $lessons
+     */
+    private function importResources(array $lessons, array &$summary): void
+    {
+        foreach ($lessons as $lessonExport) {
+            if (! array_key_exists('resources', $lessonExport) || ! is_array($lessonExport['resources'])) {
+                continue;
+            }
+            $lesson = $this->resolveLesson($lessonExport['code'] ?? null, $lessonExport['grade'] ?? null);
+            if (! $lesson) {
+                continue; // déjà signalé par importModules
+            }
+
+            $seen = [];
+            foreach ($lessonExport['resources'] as $index => $r) {
+                $code = (string) ($r['code'] ?? '');
+                if ($code === '') {
+                    continue;
+                }
+                $seen[] = $code;
+                $label = "{$lesson->code}/{$code}";
+                $identity = [
+                    'kind' => $r['kind'] ?? 'example',
+                    'type' => $r['type'] ?? null,
+                    'title' => $r['title'] ?? '',
+                    'description' => $r['description'] ?? null,
+                    'module_number' => $r['module'] ?? null,
+                    'learning_point_codes' => $r['learningPointIds'] ?? null,
+                    'source_element_ids' => $r['sourceElementIds'] ?? null,
+                    'config' => $r['config'] ?? null,
+                    'order' => $index,
+                ];
+                $existing = LessonResource::where('lesson_id', $lesson->id)->where('code', $code)->first();
+                if (! $existing) {
+                    LessonResource::create($identity + ['lesson_id' => $lesson->id, 'code' => $code]);
+                    $summary['resources']['created'][] = $label;
+
+                    continue;
+                }
+                $revived = $existing->retired_at !== null;
+                if ($this->differs($existing, $identity) || $revived) {
+                    $existing->fill($identity);
+                    $existing->retired_at = null;
+                    $existing->save();
+                    $summary['resources']['updated'][] = $label;
+                } else {
+                    $summary['resources']['unchanged'][] = $label;
+                }
+            }
+
+            $retired = LessonResource::where('lesson_id', $lesson->id)->whereNotIn('code', $seen)->whereNull('retired_at')->get();
+            foreach ($retired as $resource) {
+                $resource->update(['retired_at' => now()]);
+                $summary['resources']['retired'][] = "{$lesson->code}/{$resource->code}";
             }
         }
     }

@@ -8,6 +8,7 @@ use App\Models\Chapter;
 use App\Models\Grade;
 use App\Models\LearningPoint;
 use App\Models\Lesson;
+use App\Models\Unit;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -54,9 +55,19 @@ class CurriculumImporter
         $summary = [
             'grades' => ['created' => [], 'updated' => [], 'retired' => [], 'unchanged' => []],
             'chapters' => ['created' => [], 'updated' => [], 'retired' => [], 'unchanged' => []],
+            'units' => ['created' => [], 'updated' => [], 'retired' => [], 'unchanged' => []],
             'lessons' => ['created' => [], 'updated' => [], 'retired' => [], 'unchanged' => []],
             'learningPoints' => ['created' => [], 'updated' => [], 'retired' => [], 'unchanged' => []],
+            'lessonPrerequisites' => ['created' => [], 'updated' => [], 'retired' => [], 'unchanged' => []],
+            'learningPointPrerequisites' => ['created' => [], 'updated' => [], 'retired' => [], 'unchanged' => []],
         ];
+
+        // Les arêtes de prérequis sont posées en SECONDE PASSE, une fois toutes
+        // les leçons et tous les points de tous les chapitres écrits : une
+        // leçon peut dépendre d'une leçon importée après elle.
+        $lessonEdges = [];        // [lessonCode => [prereqCode, …]] (codes globalement uniques)
+        $pointEdges = [];         // [lpCode => [[code, requiredMastery], …]]
+        $lessonIdByCode = [];
 
         foreach ($export['grades'] as $gradeData) {
             $gradeSource = [
@@ -100,8 +111,30 @@ class CurriculumImporter
                     $chapterSource
                 );
 
+                // Les UNITÉS du manuel (phase 8) — miroir de dz/units_*.json.
+                $unitIdByCode = [];
+                foreach ($chapterData['units'] ?? [] as $unitData) {
+                    $unitSource = [
+                        'title' => $unitData['title'],
+                        'subtitle' => $unitData['subtitle'] ?? null,
+                        'number' => $unitData['number'] ?? null,
+                        'objectives' => $unitData['objectives'] ?? null,
+                        'source_topic_codes' => $unitData['sourceTopicCodes'] ?? null,
+                        'textbook' => $unitData['textbook'] ?? null,
+                        'order' => $unitData['order'] ?? 0,
+                    ];
+                    $existingUnit = Unit::where('chapter_id', $chapter->id)->where('code', $unitData['code'])->first();
+                    $this->recordDiff($summary['units'], "{$gradeData['code']}/{$chapterData['code']}/{$unitData['code']}", $existingUnit?->only(array_keys($unitSource)), $unitSource);
+                    $unit = Unit::updateOrCreate(['chapter_id' => $chapter->id, 'code' => $unitData['code']], $unitSource);
+                    $unitIdByCode[$unitData['code']] = $unit->id;
+                }
+
                 foreach ($chapterData['lessons'] as $lessonData) {
                     $lessonSource = [
+                        'unit_id' => isset($lessonData['unitCode']) && $lessonData['unitCode'] !== null ? ($unitIdByCode[$lessonData['unitCode']] ?? null) : null,
+                        'kind' => $lessonData['kind'] ?? 'lesson',
+                        'title_source' => $lessonData['titleSource'] ?? 'official_topic',
+                        'textbook_ref' => $lessonData['textbookRef'] ?? null,
                         'official_object_code' => $lessonData['officialObjectCode'],
                         'title' => $lessonData['title'],
                         'description' => $lessonData['description'],
@@ -129,11 +162,105 @@ class CurriculumImporter
                     );
 
                     $this->importLearningPoints($lesson, $lessonData['learningPoints'], $summary['learningPoints']);
+
+                    $lessonIdByCode[$lessonData['code']] = $lesson->id;
+                    $lessonEdges[$lessonData['code']] = $lessonData['prerequisiteLessonCodes'] ?? [];
+                    foreach ($lessonData['learningPoints'] as $point) {
+                        $pointEdges[$point['code']] = array_map(
+                            fn ($p) => [$p['code'], (float) ($p['requiredMastery'] ?? 0.7)],
+                            $point['prerequisites'] ?? []
+                        );
+                    }
                 }
             }
         }
 
+        $this->syncLessonPrerequisites($lessonEdges, $lessonIdByCode, $summary['lessonPrerequisites']);
+        $this->syncLearningPointPrerequisites($pointEdges, $summary['learningPointPrerequisites']);
+
         return $summary;
+    }
+
+    /**
+     * Les prérequis PÉDAGOGIQUES entre leçons : la table n'a aucune donnée
+     * élève, on la ramène exactement à ce que la source déclare (ajouts et
+     * retraits), pour les seules leçons présentes dans l'export.
+     *
+     * @param  array<string, string[]>  $edges
+     * @param  array<string, int>  $idByCode
+     */
+    private function syncLessonPrerequisites(array $edges, array $idByCode, array &$bucket): void
+    {
+        foreach ($edges as $code => $prereqCodes) {
+            $lesson = Lesson::find($idByCode[$code] ?? null);
+            if (! $lesson) {
+                continue;
+            }
+            $wanted = [];
+            foreach ($prereqCodes as $pre) {
+                if (isset($idByCode[$pre])) {
+                    $wanted[] = $idByCode[$pre];
+                } else {
+                    // Un prérequis vers une leçon inconnue de l'export n'est pas
+                    // silencieusement ignoré : il apparaît comme « retired » (non posé).
+                    $bucket['retired'][] = "{$code} → {$pre} (leçon inconnue)";
+                }
+            }
+            $current = $lesson->prerequisites()->pluck('lessons.id')->all();
+            sort($wanted);
+            sort($current);
+            if ($wanted === $current) {
+                if ($wanted !== []) {
+                    $bucket['unchanged'][] = $code;
+                }
+
+                continue;
+            }
+            $lesson->prerequisites()->sync($wanted);
+            $bucket[$current === [] ? 'created' : 'updated'][] = $code;
+        }
+    }
+
+    /**
+     * @param  array<string, array<int, array{0: string, 1: float}>>  $edges
+     */
+    private function syncLearningPointPrerequisites(array $edges, array &$bucket): void
+    {
+        $codes = array_unique(array_merge(array_keys($edges), ...array_map(fn ($list) => array_column($list, 0), array_values($edges) ?: [[]])));
+        $idByCode = LearningPoint::whereIn('code', $codes)->pluck('id', 'code')->all();
+
+        foreach ($edges as $code => $list) {
+            $pointId = $idByCode[$code] ?? null;
+            if (! $pointId) {
+                continue;
+            }
+            $wanted = [];
+            foreach ($list as [$preCode, $mastery]) {
+                if (isset($idByCode[$preCode])) {
+                    $wanted[$idByCode[$preCode]] = ['required_mastery' => $mastery];
+                } else {
+                    $bucket['retired'][] = "{$code} → {$preCode} (point inconnu)";
+                }
+            }
+            $point = LearningPoint::find($pointId);
+            $current = $point->prerequisites()->pluck('learning_points.id')->all();
+            $wantedIds = array_keys($wanted);
+            sort($current);
+            sort($wantedIds);
+            if ($current === $wantedIds) {
+                if ($wantedIds !== []) {
+                    $bucket['unchanged'][] = $code;
+                }
+                // Le seuil peut avoir changé sans que l'arête bouge : on le réécrit.
+                foreach ($wanted as $preId => $pivot) {
+                    $point->prerequisites()->updateExistingPivot($preId, $pivot);
+                }
+
+                continue;
+            }
+            $point->prerequisites()->sync($wanted);
+            $bucket[$current === [] ? 'created' : 'updated'][] = $code;
+        }
     }
 
     /**

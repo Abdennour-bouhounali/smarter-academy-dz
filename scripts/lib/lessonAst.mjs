@@ -149,6 +149,10 @@ export function buildLessonIndex() {
             chapterTitle: chapter.title,
             path: lesson.path,
             prerequisites: lesson.prerequisites ?? [],
+            // Phase 8
+            kind: lesson.kind ?? 'lesson',
+            unitId: lesson.unitId ?? null,
+            prerequisiteLessonCodes: lesson.prerequisiteLessonCodes ?? [],
           });
         }
       }
@@ -208,6 +212,28 @@ export function parseLessonConfig(lessonDir) {
         .filter((e) => typeof e.term === 'string')
     : [];
 
+  // Phase 8 : la NATURE de la leçon ('lesson' | 'synthesis') et ses RESSOURCES
+  // déclarées (manipulations, méthodes, situation) — des littéraux, comme tout
+  // le reste, pour que validate-lessons.mjs et l'export du registre les lisent.
+  const kindValue = literalValue(propOf(configNode, 'kind'));
+  const kind = typeof kindValue === 'string' ? kindValue : 'lesson';
+  const unit = literalValue(propOf(configNode, 'unit'));
+  const resourcesNode = propOf(configNode, 'resources');
+  const resources = resourcesNode === undefined
+    ? undefined
+    : resourcesNode.type === 'ArrayExpression'
+      ? resourcesNode.elements.filter((el) => el?.type === 'ObjectExpression').map((el) => ({
+          line: el.loc?.start.line,
+          kind: literalValue(propOf(el, 'kind')),
+          code: literalValue(propOf(el, 'code')),
+          type: literalValue(propOf(el, 'type')),
+          title: literalValue(propOf(el, 'title')),
+          module: literalValue(propOf(el, 'module')),
+          learningPointIds: literalValue(propOf(el, 'learningPointIds')),
+          sourceElementIds: literalValue(propOf(el, 'sourceElementIds')),
+        }))
+      : 'INVALID';
+
   const modulesNode = propOf(configNode, 'modules');
   const modules = modulesNode?.type === 'ArrayExpression'
     ? modulesNode.elements
@@ -231,6 +257,9 @@ export function parseLessonConfig(lessonDir) {
     estimatedDurationMin: typeof estimatedDurationMin === 'number' ? estimatedDurationMin : null,
     modules,
     knowledgeMap,
+    kind,
+    unit: typeof unit === 'string' ? unit : null,
+    resources,
     grade: gradeOf(lessonDir),
     priorKnowledge,
     teachingScopeInclude,

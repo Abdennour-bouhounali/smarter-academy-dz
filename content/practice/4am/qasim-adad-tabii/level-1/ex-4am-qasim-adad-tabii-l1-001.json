@@ -1,0 +1,114 @@
+{
+  "metadata": {
+    "title": "أستعدّ — القسمة الإقليدية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "أستعدّ",
+      "قسمة إقليدية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "prep",
+      "page": 7,
+      "section": "أستعدّ"
+    }
+  },
+  "statement": {
+    "content": "من «أستعدّ» (الكتاب ص 7): أصحيح أم خاطئ؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المساواة $137 = 5 \\times 25 + 12$ تعبّر عن القسمة الإقليدية للعدد 137 على 5.",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-adad-tabii_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "صحيح",
+          "isCorrect": false,
+          "misconceptionId": "MISC-QISMA-BAQI-KABIR"
+        },
+        {
+          "id": "B",
+          "content": "خطأ",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى الباقي 12 والمقسوم عليه 5."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في القسمة الإقليدية الباقي أصغر تمامًا من المقسوم عليه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أكمل القسمة: كم مرة يدخل 5 في 137؟"
+        }
+      ],
+      "feedback": {
+        "correct": "الباقي يجب أن يكون أصغر من المقسوم عليه: 137 = 5 × 27 + 2.",
+        "incorrect": "قارن الباقي 12 بالمقسوم عليه 5."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "المساواة $72 = 24 \\times 3$ تعبّر عن القسمة الإقليدية للعدد 72 على 24 إذن باقي هذه القسمة هو 3.",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-adad-tabii_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "صحيح",
+          "isCorrect": false,
+          "misconceptionId": "MISC-QISMA-HASIL-BAQI"
+        },
+        {
+          "id": "B",
+          "content": "خطأ",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب 72 = 24 × 3 + 0."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في a = b × q + r، أي عدد هو q وأي عدد هو r؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الباقي هو ما يبقى بعد الضرب، لا العدد الذي ضربنا به."
+        }
+      ],
+      "feedback": {
+        "correct": "الباقي معدوم؛ 3 هو حاصل القسمة.",
+        "incorrect": "أعد كتابة المساواة على الشكل a = b × q + r."
+      }
+    }
+  ],
+  "id": "ex-4am-qasim-adad-tabii-l1-001",
+  "lessonCode": "qasim-adad-tabii",
+  "level": 1
+}

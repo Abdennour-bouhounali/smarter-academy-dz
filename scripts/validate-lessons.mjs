@@ -29,6 +29,13 @@ import {
   REQUIRED_STAGES,
   MAX_LESSON_MINUTES,
 } from '../packages/core/curriculum/lessonStages.js';
+import {
+  isManipulationType,
+  MANIPULATION_TYPE_IDS,
+  RESOURCE_KINDS,
+  LESSON_KINDS,
+  REQUIRED_STAGES_BY_KIND,
+} from '../packages/core/curriculum/manipulationTypes.js';
 // Shared AST plumbing (also used by scripts/audit-knowledge-dependencies.mjs).
 import {
   traverse,
@@ -92,7 +99,7 @@ const warnings = [];
 const migratedCoverage = new Map(); // lesson code -> Set of covered LP ids
 
 for (const lessonDir of findLessonDirs(lessonsRoot)) {
-  const { id: code, modules, knowledgeMap, priorKnowledge } = parseLessonConfig(lessonDir);
+  const { id: code, modules, knowledgeMap, priorKnowledge, kind, unit, resources } = parseLessonConfig(lessonDir);
   const rel = relative(repoRoot, lessonDir);
   if (!code) {
     errors.push(`${rel}: lesson.config.js has no parseable literal LESSON_CONFIG.id`);
@@ -115,6 +122,57 @@ for (const lessonDir of findLessonDirs(lessonsRoot)) {
   const configPath = `${rel}/lesson.config.js`;
   if (priorKnowledge === 'INVALID') {
     errors.push(`${configPath}: priorKnowledge must be a literal array of concept id strings`);
+  }
+
+  // ── Nature de la leçon et rattachement à l'unité (phase 8) ─────────────────
+  if (!LESSON_KINDS.includes(kind)) {
+    errors.push(`${configPath}: kind must be one of ${LESSON_KINDS.join('/')} (got ${JSON.stringify(kind)})`);
+  }
+  if (catalogEntry.kind !== kind) {
+    errors.push(`${configPath}: kind '${kind}' but the catalogue declares '${catalogEntry.kind}' for '${code}'`);
+  }
+  if ((catalogEntry.unitId ?? null) !== (unit ?? null)) {
+    errors.push(`${configPath}: unit ${JSON.stringify(unit ?? null)} but the catalogue places '${code}' in unit ${JSON.stringify(catalogEntry.unitId ?? null)}`);
+  }
+
+  // ── Ressources déclarées : manipulations, méthodes, situation ─────────────
+  // Une manipulation est une DONNÉE (type d'un registre fermé + points
+  // d'apprentissage qu'elle rend visibles), pas un composant nommé au hasard.
+  if (resources === 'INVALID') {
+    errors.push(`${configPath}: resources must be a literal array of resource objects`);
+  } else if (Array.isArray(resources)) {
+    const seenCodes = new Set();
+    for (const r of resources) {
+      const where = `${configPath}:${r.line}`;
+      if (!RESOURCE_KINDS.includes(r.kind)) errors.push(`${where}: resource kind must be one of ${RESOURCE_KINDS.join('/')} (got ${JSON.stringify(r.kind)})`);
+      if (typeof r.code !== 'string' || r.code === '') errors.push(`${where}: resource code must be a literal string`);
+      else if (seenCodes.has(r.code)) errors.push(`${where}: duplicate resource code '${r.code}'`);
+      else seenCodes.add(r.code);
+      if (typeof r.title !== 'string' || r.title === '') errors.push(`${where}: resource title must be a literal string`);
+      if (r.kind === 'manipulation' && !isManipulationType(r.type)) {
+        errors.push(`${where}: manipulation type must be one of ${MANIPULATION_TYPE_IDS.join('/')} (got ${JSON.stringify(r.type)})`);
+      }
+      if (typeof r.module === 'number' && !modules?.some((m) => m.number === r.module)) {
+        errors.push(`${where}: resource points at module ${r.module}, which does not exist in this lesson`);
+      }
+      if (!Array.isArray(r.learningPointIds) || r.learningPointIds.length === 0) {
+        errors.push(`${where}: resource must list the learningPointIds it makes visible (literal array)`);
+      } else {
+        for (const lpId of r.learningPointIds) {
+          if (!catalogEntry.learningPointIds.has(lpId)) errors.push(`${where}: resource references '${lpId}', which does not belong to lesson '${code}'`);
+        }
+      }
+      if (r.sourceElementIds !== undefined && (!Array.isArray(r.sourceElementIds) || r.sourceElementIds.some((x) => typeof x !== 'string'))) {
+        errors.push(`${where}: sourceElementIds must be a literal array of extraction element ids`);
+      }
+    }
+    // Un module de manipulation doit déclarer AU MOINS une manipulation : le
+    // stage sans la donnée est une étiquette vide.
+    for (const m of modules ?? []) {
+      if (m.stage === 'manipulation' && !resources.some((r) => r.kind === 'manipulation' && r.module === m.number)) {
+        warnings.push(`${configPath}:${m.line}: module ${m.number} is a 'manipulation' stage but no manipulation resource points at it`);
+      }
+    }
   }
 
   // ── Stage contract ────────────────────────────────────────────────────────
@@ -203,7 +261,7 @@ for (const lessonDir of findLessonDirs(lessonsRoot)) {
       warnings.push(`${configPath}: modules total ${totalMin} min but the catalogue declares ${catalogEntry.durationMinutes} min — realign coursesData.js`);
     }
     if (strict || catalogEntry.status === 'available') {
-      for (const required of REQUIRED_STAGES) {
+      for (const required of (REQUIRED_STAGES_BY_KIND[kind] ?? REQUIRED_STAGES)) {
         // A lesson driven by the Knowledge Map formalises continuously: no
         // « À retenir » module is expected (see LESSON_CONTRACT.md).
         if (required === 'formalization' && knowledgeMap) continue;

@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { existsSync } from 'node:fs';
 import programme from './programme_4am_2026_2027.json';
 import decomposition from './lessons_4am_2026_2027.json';
+import units from './units_4am_2026_2027.json';
 import { dzCourseLevels, referenceCourseLevels } from '../coursesData.js';
 
 /**
@@ -57,29 +58,89 @@ describe('découpage 4AM — traçabilité sujet ↔ leçon', () => {
     }
   });
 
-  it('applique la règle arrêtée : un sujet = une leçon', () => {
-    expect(decomposition.decompositionRule).toBe('one_lesson_per_official_topic');
-    expect(catalogueLessons).toHaveLength(officialTopics.length);
+  it('applique la règle arrêtée : un sujet = une leçon, SAUF dans une unité du manuel', () => {
+    expect(decomposition.decompositionRule).toBe('one_lesson_per_official_topic_unless_textbook_unit');
+    const topicsInUnits = new Set(units.units.flatMap((u) => u.sourceTopicIds));
     const perTopic = new Map();
-    for (const lesson of catalogueLessons) {
+    for (const lesson of catalogueLessons.filter((l) => !l.unitId)) {
       perTopic.set(lesson.sourceTopicId, (perTopic.get(lesson.sourceTopicId) ?? 0) + 1);
     }
     for (const [topicId, count] of perTopic) {
       expect(count, topicId).toBe(1);
     }
+    // Un sujet couvert par une unité peut avoir plusieurs leçons ; un sujet
+    // hors unité en a exactement une.
+    for (const topic of officialTopics) {
+      const n = catalogueLessons.filter((l) => l.sourceTopicId === topic.id).length;
+      if (topicsInUnits.has(topic.id)) expect(n, topic.id).toBeGreaterThanOrEqual(1);
+      else expect(n, topic.id).toBe(1);
+    }
   });
 
-  it('porte le titre officiel du sujet, au mot près', () => {
+  it('porte le titre officiel du sujet, au mot près, quand la leçon EST le sujet', () => {
     const titleOf = new Map(officialTopics.map((t) => [t.id, t.titleAr]));
     for (const lesson of catalogueLessons) {
-      expect(lesson.title, lesson.id).toBe(titleOf.get(lesson.sourceTopicId));
+      expect(lesson.officialTopicTitle, lesson.id).toBe(titleOf.get(lesson.sourceTopicId));
+      if (lesson.titleSource === 'official_topic') {
+        expect(lesson.title, lesson.id).toBe(titleOf.get(lesson.sourceTopicId));
+      }
+    }
+  });
+
+  it('rattache chaque leçon du manuel à une unité qui couvre son sujet officiel', () => {
+    const unitById = new Map(units.units.map((u) => [u.code, u]));
+    for (const lesson of catalogueLessons.filter((l) => l.unitId)) {
+      const unit = unitById.get(lesson.unitId);
+      expect(unit, `${lesson.id} → ${lesson.unitId}`).toBeTruthy();
+      expect(unit.chapterId, lesson.id).toBe(lesson.chapterId);
+      expect(unit.sourceTopicIds, `${lesson.id} : sujet ${lesson.sourceTopicId} hors de l'unité`).toContain(lesson.sourceTopicId);
+      expect(lesson.titleSource, lesson.id).toBe('textbook');
+    }
+    // Une unité a au plus UNE synthèse, et elle est déclarée par l'unité.
+    for (const unit of units.units) {
+      const syntheses = catalogueLessons.filter((l) => l.unitId === unit.code && l.kind === 'synthesis');
+      expect(syntheses.length, unit.code).toBeLessThanOrEqual(1);
+      if (syntheses.length) expect(syntheses[0].id).toBe(unit.synthesisLessonCode);
     }
   });
 
   it('déclare la provenance de chaque leçon de façon lisible par machine', () => {
     for (const lesson of catalogueLessons) {
-      expect(lesson.decompositionType, lesson.id).toBe('single_topic');
-      expect(lesson.decisionStatus, lesson.id).toBe('owner_supplied');
+      if (lesson.unitId) {
+        expect(['textbook_lesson', 'textbook_synthesis'], lesson.id).toContain(lesson.decompositionType);
+        expect(lesson.decisionStatus, lesson.id).toBe('textbook_derived');
+        expect(lesson.kind, lesson.id).toBe(lesson.decompositionType === 'textbook_synthesis' ? 'synthesis' : 'lesson');
+      } else {
+        expect(lesson.decompositionType, lesson.id).toBe('single_topic');
+        expect(lesson.decisionStatus, lesson.id).toBe('owner_supplied');
+      }
+    }
+  });
+
+  it('ne déclare que des prérequis pédagogiques qui existent, et jamais circulaires', () => {
+    const codes = new Set(catalogueLessons.map((l) => l.id));
+    const lpIds = new Set(catalogueLessons.flatMap((l) => l.learningPoints.map((lp) => lp.id)));
+    const byId = new Map(catalogueLessons.map((l) => [l.id, l]));
+    const visiting = new Set();
+    const visit = (id, trail) => {
+      expect(visiting.has(id), `cycle : ${[...trail, id].join(' → ')}`).toBe(false);
+      visiting.add(id);
+      for (const pre of byId.get(id).prerequisiteLessonCodes) {
+        expect(codes.has(pre), `${id} → ${pre}`).toBe(true);
+        visit(pre, [...trail, id]);
+      }
+      visiting.delete(id);
+    };
+    for (const lesson of catalogueLessons) {
+      visit(lesson.id, []);
+      for (const lp of lesson.learningPoints) {
+        for (const pre of lp.prerequisites) {
+          expect(lpIds.has(pre.id), `${lp.id} → ${pre.id}`).toBe(true);
+          expect(pre.id, lp.id).not.toBe(lp.id);
+          expect(pre.requiredMastery).toBeGreaterThan(0);
+          expect(pre.requiredMastery).toBeLessThanOrEqual(1);
+        }
+      }
     }
   });
 });
@@ -122,8 +183,11 @@ describe('découpage 4AM — intégrité des leçons', () => {
     );
 
     for (const lesson of catalogueLessons) {
+      // Une leçon d'unité vit sous le dossier de son unité.
       const configPath = new URL(
-        `${lesson.chapterId}/${lesson.id}/lesson.config.js`,
+        lesson.unitId
+          ? `${lesson.chapterId}/${lesson.unitId}/${lesson.id}/lesson.config.js`
+          : `${lesson.chapterId}/${lesson.id}/lesson.config.js`,
         lessonsDir
       );
       const built = existsSync(configPath);

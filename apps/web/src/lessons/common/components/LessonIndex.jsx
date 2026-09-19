@@ -3,7 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Lock, Compass } from 'lucide-react';
 import { useProgress } from '../hooks/useProgress';
-import { getModuleStatus, lockedReasonData } from '@smarter-academy/core';
+import { getModuleStatus, lockedReasonData, getLessonById, getUnitById } from '@smarter-academy/core';
+import { useLearningProfile } from '../hooks/useLearningProfile';
+import { useLessonChromeLayout } from '../hooks/useLessonChrome';
+import { resolveMasteryState } from './LearningPointMastery';
 import { calculateCompletionPercentage } from '@smarter-academy/core';
 // Le moteur d'exercices n'est activé que pour les leçons listées dans
 // content/practice/active.json : pour toutes les autres, isPracticeActive
@@ -18,6 +21,8 @@ import { useContentAvailability } from '../../../context/ContentAvailabilityCont
  * Tailwind cannot purge dynamically interpolated class names at build time.
  * All variants here are kept as full strings so Tailwind can detect them.
  */
+const MASTERY_DOT = { unassessed: 'bg-slate-300', gap: 'bg-rose-500', reinforce: 'bg-amber-400', mastered: 'bg-emerald-500' };
+
 const COLOR_MAP = {
   emerald: {
     bg: 'bg-emerald-100',
@@ -96,6 +101,19 @@ function getColor(color, variant) {
  * Il suffit de lui passer le bon LESSON_CONFIG et le LESSON_BASE_PATH.
  */
 export default function LessonIndex({ config, basePath }) {
+  const { t: ts } = useTranslation('student');
+  const catalogueLesson = getLessonById(config.id);
+  const unit = config.unit ? getUnitById(config.unit) : null;
+  const prereqLessons = (catalogueLesson?.prerequisiteLessonCodes ?? []).map((code) => getLessonById(code)).filter(Boolean);
+  const { profile } = useLearningProfile();
+  // Le décalage haut suit la coquille réelle (Navbar visiteur / rien sur le
+  // bureau élève) — même contrat que ModuleLayout, jamais un pt-16 écrit à la main.
+  const chrome = useLessonChromeLayout();
+  // Le profil est imbriqué par classe puis par leçon (cf. LearningPointMastery.findLessonMasteryRows).
+  const masteryRows = new Map(
+    (profile?.currentMastery ?? []).flatMap((g) => (g.lessons ?? []).flatMap((l) => l.learningPoints ?? []))
+      .map((row) => [row.code ?? row.learningPointCode ?? row.learning_point_code, row]),
+  );
   const { t } = useTranslation('lesson');
   const { completedModules, isModuleCompleted, currentModule } = useProgress(config.id);
   const { isModuleClosed, isLessonLocked } = useContentAvailability();
@@ -107,6 +125,11 @@ export default function LessonIndex({ config, basePath }) {
   // lorsque TOUS les modules sont validés (pas seulement masteryThreshold
   // d'entre eux) — voir lessonAccess.js. Les leçons qui n'activent pas
   // sequentialUnlock gardent leur seuil existant, inchangé.
+  // Le PREMIER module de CETTE leçon : 0 quand elle ouvre par un diagnostic
+  // (« أستعدّ »), 1 sinon. Sans cela, un module 0 était traité comme
+  // « pas le premier » et exigeait un module -1 inexistant.
+  const firstModuleNumber = Math.min(...config.modules.map((m) => Number(m.number)).filter(Number.isFinite));
+
   const isMastered = config.sequentialUnlock
     ? totalModules > 0 && completedCount === totalModules
     : pct >= Math.round(config.masteryThreshold * 100);
@@ -122,7 +145,7 @@ export default function LessonIndex({ config, basePath }) {
   // Aucun détail du contenu n'est rendu : ni titre de module, ni progression.
   if (isLessonLocked(config.id)) {
     return (
-      <div className="min-h-screen flex flex-col justify-between pt-16 bg-slate-50">
+      <div className={`min-h-screen flex flex-col justify-between ${chrome.contentOffsetClass} bg-slate-50`}>
         <main className="sa-page py-8 flex-1">
           <nav className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500 mb-8">
             <Link to="/courses" className="hover:text-blue-600">{t('index.home')}</Link>
@@ -149,7 +172,7 @@ export default function LessonIndex({ config, basePath }) {
   }
 
   return (
-    <div className="min-h-screen flex flex-col justify-between pt-16 bg-slate-50">
+    <div className={`min-h-screen flex flex-col justify-between ${chrome.contentOffsetClass} bg-slate-50`}>
       <main className="sa-page py-8 flex-1 space-y-8">
 
         {/* BREADCRUMB */}
@@ -172,6 +195,7 @@ export default function LessonIndex({ config, basePath }) {
             <span>/</span>
             <Link to={`/courses?level=${config.level}&grade=${config.grade}&chapter=${config.chapter}`} className="hover:text-blue-600">{config.chapterTitle || config.chapter}</Link>
             <span>/</span>
+            {unit && (<><Link to={unit.path} className="hover:text-blue-600">{unit.title}</Link><span>/</span></>)}
             <span className="text-slate-900 font-semibold">{config.title}</span>
           </nav>
 
@@ -243,6 +267,56 @@ export default function LessonIndex({ config, basePath }) {
           </div>
         </section>
 
+        {/* ── Ce que le درس enseigne (phase 8) : points d'apprentissage et leur
+            maîtrise (profil serveur), prérequis PÉDAGOGIQUES (jamais bloquants),
+            manipulations et méthodes déclarées dans lesson.config.js ── */}
+        {catalogueLesson && (
+          <section className="grid gap-4 md:grid-cols-2" data-lesson-structure>
+            <div className="rounded-2xl border border-slate-200 bg-white p-5">
+              <h2 className="mb-2 text-sm font-bold text-slate-800">{ts('unit.learningPoints')}</h2>
+              <ul className="space-y-1.5">
+                {catalogueLesson.learningPoints.map((lp) => {
+                  const state = resolveMasteryState(masteryRows.get(lp.id));
+                  return (
+                    <li key={lp.id} className="flex items-start gap-2 text-sm text-slate-700">
+                      <span className={`mt-1.5 inline-block h-2.5 w-2.5 shrink-0 rounded-full ${MASTERY_DOT[state]}`} aria-label={ts(`unit.mastery.${state}`)} />
+                      <span>{lp.title}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+            <div className="space-y-4">
+              {(prereqLessons.length > 0 || (catalogueLesson.prerequisites ?? []).length > 0) && (
+                <div className="rounded-2xl border border-slate-200 bg-white p-5">
+                  <h2 className="mb-2 text-sm font-bold text-slate-800">{ts('unit.prerequisites')}</h2>
+                  <ul className="flex flex-wrap gap-1.5">
+                    {prereqLessons.map((p) => <li key={p.id}><Link to={p.path} className="rounded-full border border-indigo-200 bg-indigo-50 px-2.5 py-0.5 text-xs text-indigo-800 hover:border-indigo-400">{p.title}</Link></li>)}
+                    {(catalogueLesson.prerequisites ?? []).map((txt) => <li key={txt} className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-0.5 text-xs text-slate-600">{txt}</li>)}
+                  </ul>
+                  <p className="mt-1 text-[11px] text-slate-500">{ts('unit.prerequisitesNote')}</p>
+                </div>
+              )}
+              {(config.resources ?? []).length > 0 && (
+                <div className="rounded-2xl border border-slate-200 bg-white p-5">
+                  <h2 className="mb-2 text-sm font-bold text-slate-800">{ts('unit.manipulationsAndMethods')}</h2>
+                  <ul className="space-y-1">
+                    {config.resources.map((r) => {
+                      const target = config.modules.find((m) => m.number === r.module);
+                      const label = `${r.kind === 'manipulation' ? '🧪' : r.kind === 'method' ? '📐' : '🏛️'} ${r.title}`;
+                      return (
+                        <li key={r.code} className="text-sm text-slate-700">
+                          {target ? <Link to={`${basePath}/${target.slug}`} className="hover:text-blue-700">{label}</Link> : label}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
         {isPracticeActive(config.id) && <PracticeEntryCard lessonId={config.id} />}
 
         {/* MODULES ROADMAP */}
@@ -266,7 +340,7 @@ export default function LessonIndex({ config, basePath }) {
                   // Passing `module` makes evaluation-stage modules always
                   // accessible (the "Je pense déjà maîtriser" path) and applies
                   // any requiresLearningPointIds mastery gate.
-                  ? getModuleStatus({ isModuleCompleted, moduleNumber: module.number, currentModule, module })
+                  ? getModuleStatus({ isModuleCompleted, moduleNumber: module.number, currentModule, module, firstModuleNumber, previousStage: config.modules.find((m) => Number(m.number) === Number(module.number) - 1)?.stage })
                   : isDone ? 'mastered' : 'unlocked';
 
               // Un module verrouillé reste VISIBLE (l'élève voit tout le

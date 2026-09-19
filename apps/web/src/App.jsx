@@ -51,6 +51,7 @@ import StudentHome from './pages/student/StudentHome';
 import MesCours from './pages/student/MesCours';
 import Explorer from './pages/student/Explorer';
 import Progression from './pages/student/Progression';
+import Notebook, { NotebookNotePage, NotebookReviewPage } from './pages/student/Notebook';
 import Profil from './pages/student/Profil';
 import ChooseGrade from './pages/student/ChooseGrade';
 const Activation = lazy(() => import('./pages/student/Activation'));
@@ -93,6 +94,7 @@ const RtlLessonFixture = QA_FIXTURES_ENABLED
   : null;
 import { AuthProvider } from './context/AuthContext';
 import { WorkspaceLayoutProvider } from './context/WorkspaceLayoutContext';
+import { NotebookProvider } from './features/practice/notebook/NotebookProvider';
 import { ContentAvailabilityProvider } from './context/ContentAvailabilityContext';
 import { useLessonProgressSync } from './hooks/useLessonProgressSync';
 
@@ -113,7 +115,18 @@ function LessonProgressSync() {
 // Les 132 leçons FRANÇAISES héritées restent non importées : leurs classes
 // sont hors du produit algérien (activeGrades.js). Seules les leçons 4AM
 // écrites sous lessons/moyen/4am/ sont montées ici.
-import pgcdRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/pgcd/routes';
+// Les neuf leçons de l'unité 1 du manuel (phase 8), dans l'ordre du manuel.
+// Chaque fabrique est importée ET appelée ici : c'est ce que scripts/check-routes.mjs relit.
+import UnitPage from './pages/UnitPage';
+import qasimAdadTabiiRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/routes';
+import qawasimAdadTabiiRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qawasim-adad-tabii/routes';
+import khawassQawasimRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/khawass-qawasim/routes';
+import qasimMushtarakAkbarRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-mushtarak-akbar/routes';
+import tayinPgcdRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/tayin-pgcd/routes';
+import bahthPgcdRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/routes';
+import awwaliyanFimaBaynahumaRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/awwaliyan-fima-baynahuma/routes';
+import ikhtizalKasrRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/ikhtizal-kasr/routes';
+import wadiyaIdmajiyaAadadRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/routes';
 
 export default function App() {
   return (
@@ -121,6 +134,10 @@ export default function App() {
       <LessonProgressSync />
       <ContentAvailabilityProvider>
       <WorkspaceLayoutProvider>
+      {/* LE cahier de l'élève : une seule fenêtre pour toute l'application,
+          au-dessus du routeur pour survivre au changement de module. Les
+          pages de leçon lui publient leur position (LessonNotebookAnchor). */}
+      <NotebookProvider>
       <Router>
         {/* Frontière d'attente UNIQUE pour les routes découpées (admin,
             moteur d'exercices, pages légales, diagnostic). Elle est posée
@@ -187,6 +204,12 @@ export default function App() {
               <Route path="cours" element={<MesCours />} />
               <Route path="explorer" element={<Explorer />} />
               <Route path="progression" element={<Progression />} />
+              {/* « Mon cahier » : l'espace de TOUTES les notes de l'élève —
+                  retrouver, ranger, imprimer, réviser. La progression, elle,
+                  ne parle plus que de progression. */}
+              <Route path="cahier" element={<Notebook />} />
+              <Route path="cahier/revision" element={<NotebookReviewPage />} />
+              <Route path="cahier/:noteId" element={<NotebookNotePage />} />
               <Route path="profil" element={<Profil />} />
               {/* La saisie d'un code d'activation — le seul geste par lequel
                   un élève ouvre ses propres droits (master spec §17). */}
@@ -242,13 +265,23 @@ export default function App() {
                 est renvoyé vers /espace (voir HomeRedirect). */}
             <Route path="/"         element={<HomeRedirect />} />
             <Route path="/courses"  element={<Courses />} />
+            {/* La page d'une UNITÉ du manuel (الوحدة) : le niveau entre le ميدان et le درس (phase 8). */}
+            <Route path="/courses/:levelId/:gradeId/:chapterId/units/:unitId" element={<UnitPage />} />
 
             {/* Les leçons 4AM montées. Les dossiers de leçons FRANÇAISES
                 restent sur le disque sans être importés : leurs classes ne
                 sont pas dans ACTIVE_GRADE_IDS
                 (packages/core/curriculum/activeGrades.js), et
                 check-dormant-isolation.mjs le vérifie à chaque build. */}
-            {pgcdRoutes()}
+            {qasimAdadTabiiRoutes()}
+            {qawasimAdadTabiiRoutes()}
+            {khawassQawasimRoutes()}
+            {qasimMushtarakAkbarRoutes()}
+            {tayinPgcdRoutes()}
+            {bahthPgcdRoutes()}
+            {awwaliyanFimaBaynahumaRoutes()}
+            {ikhtizalKasrRoutes()}
+            {wadiyaIdmajiyaAadadRoutes()}
 
             {/* ── SURFACE DE QA — jamais en production ────────────────
                 Le moteur de leçon n'a jamais été rendu sous RTL, faute de
@@ -272,6 +305,7 @@ export default function App() {
         </Routes>
         </Suspense>
       </Router>
+      </NotebookProvider>
       </WorkspaceLayoutProvider>
       </ContentAvailabilityProvider>
     </AuthProvider>

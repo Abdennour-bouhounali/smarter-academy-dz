@@ -1451,3 +1451,8 @@ Run before declaring a lesson complete. Every answer must be **yes**.
 > **One mathematical state. Multiple synchronized representations.**
 
 > **Concrete → Visual → Numerical → Symbolic → Automatic.**
+
+
+## Manipulation system (phase 8, 2026-09-18)
+
+Implemented once in `apps/web/src/lessons/common/manipulations/`: a closed registry of TYPES (each named by the mathematical idea it makes visible), a shared shell and state hook, and shared primitives. A lesson declares its manipulations as DATA (`lesson.config.js` → `resources[]`) and renders `<Manipulation type="…" />` in the module's `intro` slot (§6bis). Modules run in « وضع التلميذ » (the student acts at each step); class mode exists in `TeacherControls` for a future teacher surface.

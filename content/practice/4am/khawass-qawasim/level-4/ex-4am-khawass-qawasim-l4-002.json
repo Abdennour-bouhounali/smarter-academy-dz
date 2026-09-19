@@ -1,0 +1,100 @@
+{
+  "metadata": {
+    "title": "تمرين 15 — n + 19 و n + 1",
+    "estimatedMinutes": 5,
+    "tags": [
+      "خاصية 1",
+      "حرف"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-15",
+      "page": 14,
+      "section": "أوظّف تعلّماتي",
+      "number": 15
+    }
+  },
+  "statement": {
+    "content": "$n$ عدد طبيعي كيفي و $d$ قاسم مشترك للعددين $a = n + 19$ و $b = n + 1$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $a - b$.",
+      "learningPoints": [
+        {
+          "code": "4am_khawass-qawasim_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "18",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اطرح: n + 19 − n − 1."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "n يختفي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "18."
+        }
+      ],
+      "feedback": {
+        "correct": "(n + 19) − (n + 1) = 18.",
+        "incorrect": "الفرق لا يتعلق بـ n."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "عيّن كل الأعداد الطبيعية التي يمكن أن تكون قواسم مشتركة للعددين $a$ و $b$.",
+      "learningPoints": [
+        {
+          "code": "4am_khawass-qawasim_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        1,
+        2,
+        3,
+        6,
+        9,
+        18
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "d يقسم a و b فهو يقسم a − b."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "a − b = 18."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قواسم 18: 1 ، 2 ، 3 ، 6 ، 9 ، 18."
+        }
+      ],
+      "feedback": {
+        "correct": "d يقسم الفرق 18، فهو من قواسم 18.",
+        "incorrect": "القاسم المشترك يقسم الفرق (خاصية 1)."
+      }
+    }
+  ],
+  "id": "ex-4am-khawass-qawasim-l4-002",
+  "lessonCode": "khawass-qawasim",
+  "level": 4
+}

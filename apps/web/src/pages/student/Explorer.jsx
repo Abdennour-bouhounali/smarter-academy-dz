@@ -7,6 +7,8 @@ import { AuthContext } from '../../context/AuthContext';
 import { getLessonProgress } from '../../lessons/common/utils/progress/getLessonProgress';
 import { getTotalModules } from '../../lessons/registry';
 import LessonCard from '../../components/student/LessonCard';
+import UnitGroup from '../../components/student/UnitGroup';
+import { groupLessonsByUnit } from '../../components/student/unitGrouping';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 
 export default function Explorer() {
@@ -43,6 +45,13 @@ export default function Explorer() {
     if (activeChapter === 'all') return gradeData.chapters.flatMap((c) => c.lessons);
     return gradeData.chapters.find((c) => c.id === activeChapter)?.lessons || [];
   }, [gradeData, activeChapter]);
+
+  // Le niveau الوحدة — même règle que /courses et « دروسي » (voir unitGrouping.js).
+  const unitGroups = useMemo(() => {
+    if (!gradeData) return null;
+    const chapters = activeChapter === 'all' ? gradeData.chapters : gradeData.chapters.filter((c) => c.id === activeChapter);
+    return groupLessonsByUnit(chapters, lessons);
+  }, [gradeData, activeChapter, lessons]);
 
   return (
     <div className="sa-page py-8 sm:py-10">
@@ -129,6 +138,17 @@ export default function Explorer() {
             <AnimatePresence mode="popLayout">
               {lessons.length === 0 ? (
                 <p className="col-span-full text-center py-10 text-slate-400 font-inter text-sm">{t('explorer.emptyChapter')}</p>
+              ) : unitGroups ? (
+                <>
+                  <h3 className="col-span-full text-sm font-bold text-slate-700">{t('unit.unitCard.unitsTitle')}</h3>
+                  {unitGroups.units.map((unit) => <UnitGroup key={unit.id} unit={unit} />)}
+                  {unitGroups.rest.length > 0 && (
+                    <>
+                      <h3 className="col-span-full mt-2 text-sm font-bold text-slate-600">{t('unit.unitCard.otherTopics')}</h3>
+                      {unitGroups.rest.map((lesson) => <LessonCard key={lesson.id} lesson={lesson} />)}
+                    </>
+                  )}
+                </>
               ) : (
                 lessons.map((lesson) => <LessonCard key={lesson.id} lesson={lesson} />)
               )}

@@ -8,7 +8,7 @@ import { referenceCourseLevels, dzCourseLevels } from './coursesData.js';
 
 const allCourseLevels = [...referenceCourseLevels, ...dzCourseLevels];
 
-describe('freeLessons — les trois leçons gratuites', () => {
+describe('freeLessons — les leçons gratuites', () => {
   it('la liste est figée : on ne l’étend pas par accident à l’exécution', () => {
     expect(Object.isFrozen(FREE_LESSON_IDS)).toBe(true);
   });
@@ -65,10 +65,23 @@ describe('freeLessons — les trois leçons gratuites', () => {
     }
   });
 
-  it('le produit algérien vend au plus trois leçons gratuites', () => {
-    // La spec dit trois (§17). Plus serait un changement de modèle
-    // commercial, pas un ajustement de contenu — et il doit passer par une
-    // décision, pas par une ligne ajoutée sans bruit.
-    expect(FREE_LESSON_IDS.length).toBeLessThanOrEqual(3);
+  it('la gratuité reste une DÉCISION, jamais une ligne ajoutée sans bruit', () => {
+    // La spec dit trois (§17) ; le propriétaire a ouvert TOUTES les leçons
+    // écrites le 2026-09-18 (« make all lesson free for now »), à titre
+    // provisoire. Ce test ne vérifie donc plus un nombre — il vérifie que la
+    // liste correspond EXACTEMENT à la décision en vigueur. Élargir la
+    // gratuité reste ainsi un geste explicite : ajouter un identifiant sans
+    // toucher à cette liste attendue fait échouer le test, comme avant.
+    expect([...FREE_LESSON_IDS].sort()).toEqual([
+      'awwaliyan-fima-baynahuma',
+      'bahth-pgcd',
+      'ikhtizal-kasr',
+      'khawass-qawasim',
+      'qasim-adad-tabii',
+      'qasim-mushtarak-akbar',
+      'qawasim-adad-tabii',
+      'tayin-pgcd',
+      'wadiya-idmajiya-aadad',
+    ]);
   });
 });

@@ -1,0 +1,41 @@
+{
+  "_comment": [
+    "Politique de couverture par leçon, lue par scripts/validate-exercises.mjs (invariant 12).",
+    "Le défaut est 3 exercices × 5 niveaux. Une leçon dont les exercices viennent du MANUEL scolaire ne peut pas l'atteindre sans inventer des énoncés (interdit) : elle déclare ici un minimum plus bas ET sa source. L'exception est nominative et visible."
+  ],
+  "defaultMinPerLevel": 3,
+  "lessons": {
+    "qasim-adad-tabii": {
+      "minPerLevel": 1,
+      "source": "كتاب الرياضيات 4AM (الجيل الثاني)، الوحدة 1، ص 7–16 — docs/sources/4am/unit1/extraction.json"
+    },
+    "qawasim-adad-tabii": {
+      "minPerLevel": 1,
+      "source": "كتاب الرياضيات 4AM (الجيل الثاني)، الوحدة 1، ص 7–16 — docs/sources/4am/unit1/extraction.json"
+    },
+    "khawass-qawasim": {
+      "minPerLevel": 1,
+      "source": "كتاب الرياضيات 4AM (الجيل الثاني)، الوحدة 1، ص 7–16 — docs/sources/4am/unit1/extraction.json"
+    },
+    "qasim-mushtarak-akbar": {
+      "minPerLevel": 1,
+      "source": "كتاب الرياضيات 4AM (الجيل الثاني)، الوحدة 1، ص 7–16 — docs/sources/4am/unit1/extraction.json"
+    },
+    "tayin-pgcd": {
+      "minPerLevel": 1,
+      "source": "كتاب الرياضيات 4AM (الجيل الثاني)، الوحدة 1، ص 7–16 — docs/sources/4am/unit1/extraction.json"
+    },
+    "bahth-pgcd": {
+      "minPerLevel": 1,
+      "source": "كتاب الرياضيات 4AM (الجيل الثاني)، الوحدة 1، ص 7–16 — docs/sources/4am/unit1/extraction.json"
+    },
+    "awwaliyan-fima-baynahuma": {
+      "minPerLevel": 1,
+      "source": "كتاب الرياضيات 4AM (الجيل الثاني)، الوحدة 1، ص 7–16 — docs/sources/4am/unit1/extraction.json"
+    },
+    "ikhtizal-kasr": {
+      "minPerLevel": 1,
+      "source": "كتاب الرياضيات 4AM (الجيل الثاني)، الوحدة 1، ص 7–16 — docs/sources/4am/unit1/extraction.json"
+    }
+  }
+}

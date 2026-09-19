@@ -255,3 +255,34 @@ Student mode uses `pt-0` because `StudentLayout`'s `<main>` already consumes its
 ### Module types observed (not enforced, described)
 
 `style: 'featured'` (the default — explanation + manipulation + practice), `'boss'` (multi-phase capstone, e.g. `Module11BossFinal.jsx`'s épreuves/profil/synthèse/flash structure), `'assessment'` (used by `Module10BilanEvaluation.jsx`-style modules). The contract supports all three without requiring they behave identically — per the phase brief's explicit instruction not to force different module types into one artificial shape.
+
+
+## Phase 8 additions — unit, kind, resources (2026-09-18)
+
+- **`unit`** (literal string, optional) — the textbook unit (الوحدة) code this lesson belongs to; must match the catalogue (`lesson.unitId`). Lesson folders of a unit live under `lessons/<level>/<grade>/<chapter>/<unit>/<lesson>/`.
+- **`kind`** (`'lesson'` default | `'synthesis'`) — `synthesis` is the unit's « أدمج تعلّماتي »; never counted as a درس; required stages `trigger, practice_lab, evaluation` (`REQUIRED_STAGES_BY_KIND`, `packages/core/curriculum/manipulationTypes.js`). The catalogue must declare the same `kind`.
+- **`resources`** (literal array, optional) — `{ kind: 'manipulation'|'method'|'situation'|'example', code, type?, title, module, learningPointIds, sourceElementIds? }`. A `manipulation` names a **type from the closed registry** (`MANIPULATION_TYPES`); the component comes from `apps/web/src/lessons/common/manipulations/manipulationRegistry.js`, never from content. `validate-lessons.mjs` checks kinds, types, module numbers and learning-point ownership. `exportContentRegistry.mjs` → `smarter:import-content-registry` mirrors resources into `lesson_resources` (identity only).
+- **Textbook source** — every pedagogical datum of a textbook-derived lesson carries `source: { type: 'textbook', elementId, page, section, number }` resolving to `docs/sources/<grade>/<unit>/extraction.json`; platform additions carry `type: 'platform_addition'` and render as « مثال تفاعلي إضافي ». `npm run check:textbook` enforces one destination per extracted element.
+- **Prerequisites are pedagogical** — `prerequisiteLessonCodes` and `pointPrerequisites` are displayed with mastery state; they never lock anything.
+- **Module file numbers** — `Module<NN>…jsx` must use exactly two digits: `Module0117Wa18.jsx` is read as module 117 and its route is silently not mounted (found and fixed in phase 8).
+
+## Déverrouillage séquentiel — les trois règles qui ne se négocient pas
+
+`sequentialUnlock` guide vers la suite ; il n'enferme jamais l'élève dehors.
+Trois invariants, tous dans `packages/core/lessonAccess.js` et couverts par
+`lessonAccess.test.js` :
+
+1. **Le premier module est celui de la leçon**, pas le numéro 1. 137 leçons
+   ouvrent sur un module 0 (« أستعدّ ») ; le traiter comme « pas le premier »
+   exigeait un module −1 inexistant et scellait la leçon entière.
+2. **Un module terminé ne se referme jamais.** La maîtrise passe avant le
+   verrou : revenir sur un module fini dont le prédécesseur ne l'est pas
+   affichait « أتمِم المحور 00 » sur son propre travail.
+3. **Un diagnostic ne barre pas la route.** Un module `prerequisite_check`
+   est « client-side only, never persisted as evidence » : le sauter est un
+   droit, donc il ne verrouille pas le module suivant.
+
+Rappel opérationnel : un module `draft` en base est rendu VERROUILLÉ quel que
+soit ce qui précède (`isModuleClosed`). Après un import, publier
+`lesson_modules` fait partie de la mise en ligne, au même titre que
+`practice_exercises`.

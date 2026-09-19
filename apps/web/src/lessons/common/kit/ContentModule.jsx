@@ -60,6 +60,7 @@ export default function ContentModule({
         moduleTitle={moduleTitle}
         moduleSubtitle={moduleSubtitle}
         moduleNumber={moduleNumber}
+        previousStage={ctx.stageByNumber?.[Number(moduleNumber) - 1]}
         estimatedTime={estimatedTime}
         xp={xp}
         prevLink={navLinks.prevLink}

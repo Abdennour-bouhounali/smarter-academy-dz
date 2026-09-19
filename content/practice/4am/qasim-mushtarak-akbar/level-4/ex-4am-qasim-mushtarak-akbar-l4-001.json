@@ -1,0 +1,137 @@
+{
+  "metadata": {
+    "title": "تمرين 10 — 155 و 141",
+    "estimatedMinutes": 4,
+    "tags": [
+      "قواسم",
+      "PGCD"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-10",
+      "page": 14,
+      "section": "أوظّف تعلّماتي",
+      "number": 10
+    }
+  },
+  "statement": {
+    "content": "عيّن قائمة قواسم كل من العددين 155 و 141. ما هو أكبر قاسم مشترك لهما؟ ما هو أصغر قاسم لهما؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قواسم العدد 155:",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-mushtarak-akbar_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        1,
+        5,
+        31,
+        155
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "155 يقبل القسمة على 5."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "155 = 5 × 31."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أربعة قواسم."
+        }
+      ],
+      "feedback": {
+        "correct": "155 = 5 × 31.",
+        "incorrect": "155 ينتهي بـ 5."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "قواسم العدد 141:",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-mushtarak-akbar_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        1,
+        3,
+        47,
+        141
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "141 يقبل القسمة على 3."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "141 = 3 × 47."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أربعة قواسم."
+        }
+      ],
+      "feedback": {
+        "correct": "141 = 3 × 47.",
+        "incorrect": "مجموع أرقام 141 هو 6."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "أكبر قاسم مشترك لهما هو …",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-mushtarak-akbar_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن القائمتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "لا مشترك إلا 1."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "PGCD(155 ; 141) = 1."
+        }
+      ],
+      "feedback": {
+        "correct": "القاسم المشترك الوحيد هو 1؛ وهو أيضًا أصغر قاسم لكل منهما.",
+        "incorrect": "1 قاسم مشترك دائمًا."
+      }
+    }
+  ],
+  "id": "ex-4am-qasim-mushtarak-akbar-l4-001",
+  "lessonCode": "qasim-mushtarak-akbar",
+  "level": 4
+}

@@ -3,6 +3,7 @@ import RationalInput from './inputs/RationalInput';
 import AffineInput from './inputs/AffineInput';
 import IntervalInput from './inputs/IntervalInput';
 import PointInput from './inputs/PointInput';
+import IntegerSetInput from './inputs/IntegerSetInput';
 
 /**
  * Une entrée par `answerType` que le contenu peut déclarer.
@@ -22,6 +23,7 @@ const REGISTRY = {
   affine: AffineInput,
   interval: IntervalInput,
   point: PointInput,
+  integerSet: IntegerSetInput,
 };
 
 export default function QuestionRenderer({ question, value, onChange, disabled }) {

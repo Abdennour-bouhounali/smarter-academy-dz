@@ -1,0 +1,122 @@
+{
+  "metadata": {
+    "title": "أتعلّم البرهنة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "برهان"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-proof",
+      "page": 11,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 11): $n$ ، $a$ و $b$ أعداد طبيعية حيث $n \\neq 0$. برهن أنه إذا كان $n$ يقسم كلا من $a$ و $b$ فإنّ $n$ يقسم $a + b$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لإثبات أن $n$ يقسم $a + b$ يكفي …",
+      "learningPoints": [
+        {
+          "code": "4am_khawass-qawasim_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "إيجاد عدد طبيعي k حيث a + b = n × k",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "التحقّق من أن a + b أكبر من n",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "إيجاد عدد طبيعي k حيث n = (a + b) × k",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BURHAN-ITTIJAH-JIDAA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما تعريف «n يقسم m»؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "m = n × k مع k عدد طبيعي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هنا m = a + b."
+        }
+      ],
+      "feedback": {
+        "correct": "هذه جملة الطريقة في الكتاب.",
+        "incorrect": "لإثبات أن d يقسم m يكفي إيجاد k حيث m = d × k."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "من $a = n \\times q$ و $b = n \\times q'$ نستنتج $a + b = $ …",
+      "learningPoints": [
+        {
+          "code": "4am_khawass-qawasim_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "n(q + q')",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "n × q × q'",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "(n + n)(q + q')",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع الكتابتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "n × q + n × q' = n × (…)"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "k = q + q'."
+        }
+      ],
+      "feedback": {
+        "correct": "a + b = n × q + n × q' = n(q + q').",
+        "incorrect": "أخرج n عاملًا مشتركًا."
+      }
+    }
+  ],
+  "id": "ex-4am-khawass-qawasim-l5-001",
+  "lessonCode": "khawass-qawasim",
+  "level": 5
+}

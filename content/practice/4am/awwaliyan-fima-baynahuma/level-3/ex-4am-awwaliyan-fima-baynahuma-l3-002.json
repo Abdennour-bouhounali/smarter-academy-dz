@@ -1,0 +1,73 @@
+{
+  "metadata": {
+    "title": "نشاط 7 جـ — مريم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نفي"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-7",
+      "page": 9,
+      "section": "أنشطة",
+      "number": 7
+    }
+  },
+  "statement": {
+    "content": "تقول مريم: «العددان 27 و 36 أوليان فيما بينهما». هل هي على صواب؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل مريم على صواب؟",
+      "learningPoints": [
+        {
+          "code": "4am_awwaliyan-fima-baynahuma_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا: 9 قاسم مشترك لـ 27 و 36",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نعم",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "لا: لأن 27 يقسم 36",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "27 = 9 × 3."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "36 = 9 × 4."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قاسم مشترك ≠ 1 يكفي للنفي."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(27 ; 36) = 9 ≠ 1.",
+        "incorrect": "ابحث عن قاسم مشترك يختلف عن 1."
+      }
+    }
+  ],
+  "id": "ex-4am-awwaliyan-fima-baynahuma-l3-002",
+  "lessonCode": "awwaliyan-fima-baynahuma",
+  "level": 3
+}

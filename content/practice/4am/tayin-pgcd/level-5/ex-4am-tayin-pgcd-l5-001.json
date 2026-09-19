@@ -1,0 +1,64 @@
+{
+  "metadata": {
+    "title": "تمرين 22 — PGCD(a ; 15) = 5",
+    "estimatedMinutes": 4,
+    "tags": [
+      "استدلال"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-22",
+      "page": 15,
+      "section": "أوظّف تعلّماتي",
+      "number": 22
+    }
+  },
+  "statement": {
+    "content": "عيّن العدد الطبيعي a المحصور بين 40 و 55 والذي يحقّق PGCD(a ; 15) = 5."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "a = ?",
+      "learningPoints": [
+        {
+          "code": "4am_tayin-pgcd_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "50",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "PGCD(a ; 15) = 5 يعني أن 5 يقسم a."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مضاعفات 5 بين 40 و 55: 45 و 50."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "45 مضاعف لـ 15 فـ PGCD(45 ; 15) = 15."
+        }
+      ],
+      "feedback": {
+        "correct": "5 قاسم لـ a و 15 ليس قاسمًا له؛ بين 40 و 55 يبقى 50.",
+        "incorrect": "ابحث عن مضاعف لـ 5 ليس مضاعفًا لـ 15."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "45",
+          "id": "MISC-PGCD-MUDAAF-15"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-tayin-pgcd-l5-001",
+  "lessonCode": "tayin-pgcd",
+  "level": 5
+}

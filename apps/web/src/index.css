@@ -518,6 +518,18 @@ html[data-sa-resizing] .sa-workspace-main {
     padding-left: 60px;
     padding-right: 60px;
   }
+
+  /* Dans l'espace élève, le bureau n'a PAS d'en-tête : la barre latérale
+     tient lieu de navigation, et le contenu commence en haut de l'écran.
+     Les 40 px de `py-10` que chaque page se donne (pensés pour arriver sous
+     une barre) ne sont plus qu'un vide au-dessus du titre. On les ramène
+     ici, pour toutes les pages à la fois, à la hauteur du bloc-logo de la
+     barre (16 px) : le titre de la page s'aligne sur lui. Deux classes,
+     donc plus spécifique que `sm:py-10` — pas besoin de retoucher les
+     pages. Le mobile garde son décalage : là, une barre fixe existe. */
+  .sa-workspace-main .sa-page {
+    padding-top: 16px;
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -557,4 +569,23 @@ html[data-sa-resizing] .sa-workspace-main {
   .sa-surface-plain {
     min-height: 100dvh;
   }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   MANIPULATIONS — le geste avant l'animation.
+   Un objet saisissable ne s'anime qu'en `transform` (une propriété composée,
+   fluide sur un téléphone d'entrée de gamme) et JAMAIS par une animation de
+   disposition : le glisser repose sur `setPointerCapture`, qu'un remontage
+   du nœud casserait. La secousse de refus dit « non » sans rougir l'écran. */
+@keyframes sa-manip-reject {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  45% { transform: translateX(5px); }
+  70% { transform: translateX(-3px); }
+}
+.sa-manip-reject { animation: sa-manip-reject 380ms ease-in-out; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sa-manip-object { transition: none; }
+  .sa-manip-reject { animation: none; }
 }

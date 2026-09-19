@@ -1,231 +1,197 @@
-import { useContext, useMemo, useState, useEffect } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { motion } from 'framer-motion';
-import { Play, Flame, CircleCheckBig, Zap, Compass, Crown, BookOpen } from 'lucide-react';
-import { ArrowForward } from '../../components/common/DirectionalIcons';
+import { motion, MotionConfig } from 'framer-motion';
+import { Compass } from 'lucide-react';
 import { courseLevels, getAllGrades } from '@smarter-academy/core';
+import { ArrowForward } from '../../components/common/DirectionalIcons';
 import { AuthContext } from '../../context/AuthContext';
 import { getResumeLesson } from '../../lessons/common/utils/progress/getResumeLesson';
 import { getStudentActivity } from '../../lessons/common/utils/progress/getStudentActivity';
+import { getModulePath } from '../../lessons/registry';
+import { LESSON_PROGRESS_SYNCED_EVENT } from '../../hooks/useLessonProgressSync';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
+import { usePremiumStatus } from '../../hooks/usePremiumStatus';
+import { useLearningProfile } from '../../lessons/common/hooks/useLearningProfile';
 import { getDisplayName } from '../../utils/userDisplay';
 import DiagnosticInviteBanner from '../../components/diagnostic/DiagnosticInviteBanner';
-import StatTile from '../../components/common/StatTile';
-import { usePremiumStatus } from '../../hooks/usePremiumStatus';
+import { buildProgressionTree } from '../../features/progression/buildProgressionTree';
+import { pickWorkNow } from '../../features/progression/pickWorkNow';
+import { pickHomeNextStep } from '../../features/home/pickHomeNextStep';
+import { pickCurriculumContext, indexTreeByLesson, indexCurriculum } from '../../features/home/curriculumContext';
+import HomeGreeting from '../../features/home/components/HomeGreeting';
+import NextStepHero from '../../features/home/components/NextStepHero';
+import JourneyStats from '../../features/home/components/JourneyStats';
+import CurriculumPreview from '../../features/home/components/CurriculumPreview';
+import RecentLearning from '../../features/home/components/RecentLearning';
+import LearningSpaceNav from '../../features/home/components/LearningSpaceNav';
+import PremiumCard from '../../features/home/components/PremiumCard';
 
-
+/**
+ * « 🏠 فضائي » — l'ACCUEIL de l'espace élève, qui répond à une seule
+ * question : « que dois-je faire maintenant ? ». Dans l'ordre de lecture :
+ *
+ *   qui je suis, où je suis     → salutation + classe
+ *   ce qu'on me propose         → bilan diagnostique (quand il y en a un)
+ *   ████ ce que je fais LÀ ████ → le héros « خطوتك التالية »
+ *   comment j'avance            → quatre repères
+ *   où j'en suis du programme   → الميدان ← الوحدة ← الدرس, une tranche
+ *   ce que je viens de toucher  → trois leçons récentes
+ *   mes autres espaces          → دروسي · تقدّمي · كرّاسي
+ *   le reste                    → premium, autres classes
+ *
+ * La page N'INVENTE rien et ne DUPLIQUE rien : la reprise vient de
+ * getResumeLesson (toutes classes, ARCHITECTURE.md §10 — le cadre courant
+ * est annoncé en tête et sur la carte quand il diffère), l'activité de
+ * getStudentActivity cadrée sur la classe (même cadrage que « تقدّمي »,
+ * verrouillé par progressionGradeScope.test.js), la maîtrise du profil
+ * serveur (useLearningProfile), l'arbre et « للعمل الآن » des mêmes modules
+ * que la page de progression. Aucune requête nouvelle : le profil est la
+ * seule donnée asynchrone, et tant qu'il n'est pas là la page le dit
+ * (« — », squelette) au lieu d'afficher un zéro.
+ */
 export default function StudentHome() {
   const { t } = useTranslation('student');
+  const { t: tc } = useTranslation('common');
   useDocumentMeta(t('home.metaTitle'), t('home.metaDescription'));
   const { user } = useContext(AuthContext);
   const { isPremium, canSeeUpgrade } = usePremiumStatus();
 
-  const [lastFocus, setLastFocus] = useState(Date.now());
+  // L'activité est lue dans le stockage local au montage. Deux moments la
+  // rendent obsolète sans changer de classe : la fusion des lignes du
+  // serveur (useLessonProgressSync, juste après le montage) et le retour sur
+  // l'onglet après avoir travaillé une leçon. `tick` force le recalcul —
+  // même réflexe que « تقدّمي ».
+  const [tick, setTick] = useState(0);
   useEffect(() => {
-    const onFocus = () => setLastFocus(Date.now());
-    window.addEventListener('focus', onFocus);
-    return () => window.removeEventListener('focus', onFocus);
+    const bump = () => setTick((n) => n + 1);
+    window.addEventListener(LESSON_PROGRESS_SYNCED_EVENT, bump);
+    window.addEventListener('focus', bump);
+    return () => {
+      window.removeEventListener(LESSON_PROGRESS_SYNCED_EVENT, bump);
+      window.removeEventListener('focus', bump);
+    };
   }, []);
 
-  const grade = useMemo(() => getAllGrades().find((g) => g.id === user?.grade), [user?.grade]);
-  const level = grade ? courseLevels.find((l) => l.id === grade.levelId) : null;
+  const gradeId = user?.grade || null;
+  const grade = useMemo(() => getAllGrades().find((g) => g.id === gradeId), [gradeId]);
 
   // Deliberately searches across all grades, matching getResumeLesson's
   // documented, considered behavior (ARCHITECTURE.md §10) — not re-scoped
   // to the student's current grade.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const continueCourse = useMemo(() => getResumeLesson(courseLevels), [lastFocus]);
+  const continueCourse = useMemo(() => getResumeLesson(courseLevels), [tick]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const gradeActivity = useMemo(() => getStudentActivity(courseLevels, { gradeId: user?.grade }), [user?.grade, lastFocus]);
+  const gradeActivity = useMemo(() => getStudentActivity(courseLevels, { gradeId: user?.grade }), [user?.grade, tick]);
 
+  // La maîtrise vient de l'API groupée par classe : on ne garde que la
+  // sienne, sinon la tuile « كفاءات » compterait des acquis invisibles ici.
+  const { profile, status, reload } = useLearningProfile();
+  const currentMastery = useMemo(() => {
+    const all = profile?.currentMastery || [];
+    return gradeId ? all.filter((g) => g.grade === gradeId) : all;
+  }, [profile, gradeId]);
+
+  // Le MÊME arbre que « تقدّمي » (structure + progression + maîtrise). La
+  // maîtrise n'y entre que quand le profil est prêt ; les pourcentages de
+  // parcours, eux, ne dépendent pas de lui.
+  const tree = useMemo(
+    () => buildProgressionTree(courseLevels, gradeActivity, currentMastery, { gradeId, getModulePath }),
+    [gradeActivity, currentMastery, gradeId],
+  );
+  const workItems = useMemo(
+    () => (status === 'ready' ? pickWorkNow(tree, { limit: 1 }).items : []),
+    [tree, status],
+  );
+  const nextStep = useMemo(
+    () => pickHomeNextStep({ resume: continueCourse, workItems, profileStatus: status, lessons: gradeActivity.lessons }),
+    [continueCourse, workItems, status, gradeActivity],
+  );
+
+  const curriculumIndex = useMemo(() => indexCurriculum(courseLevels), []);
+  const treeIndex = useMemo(() => indexTreeByLesson(tree), [tree]);
+  const focusLessonId =
+    nextStep.kind === 'continue' || nextStep.kind === 'next' ? nextStep.resume.course.id
+      : nextStep.kind === 'start' ? nextStep.entry.lesson.id
+        : nextStep.kind === 'mastery' ? nextStep.item.lesson.id
+          : null;
+  const whereContext = useMemo(() => pickCurriculumContext(tree, focusLessonId), [tree, focusLessonId]);
+
+  const recent = gradeActivity.recentlyActive.slice(0, 3);
   const premiumCount = gradeActivity.lessons.filter((l) => l.lesson.tier === 'premium').length;
-  const firstLesson = gradeActivity.lessons[0];
+
+  const enter = (delay = 0) => ({
+    initial: { opacity: 0, y: 12 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.32, ease: [0.22, 1, 0.36, 1], delay },
+  });
 
   return (
-    <div className="sa-page py-8 sm:py-10">
-      {/* Greeting */}
-      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-        <p className="font-mono-jetbrains text-blue-500 text-xs font-semibold tracking-widest uppercase mb-2">
-          {t('home.cycle')}
-        </p>
-        <h1 className="font-space font-bold text-2xl sm:text-3xl text-slate-900">
-          {t('home.greeting', { name: getDisplayName(user) })}
-        </h1>
-        <p className="font-inter text-slate-500 text-sm mt-1">
-          {grade ? `${level?.title} ${grade.name}` : t('home.noGradeYet')}
-        </p>
-      </motion.div>
+    <MotionConfig reducedMotion="user">
+      {/* Même cadre que « تقدّمي » : `.sa-page`, sans colonne bornée. */}
+      <div className="sa-page py-8 sm:py-10" aria-busy={status === 'loading'} data-student-home>
+        <div>
+          <motion.div {...enter(0)} className="mb-7 sm:mb-8">
+            <HomeGreeting name={getDisplayName(user)} gradeName={grade?.name || null} />
+          </motion.div>
 
-      <DiagnosticInviteBanner />
+          <DiagnosticInviteBanner />
 
-      {/* Continue / Start */}
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="mb-8">
-        {continueCourse ? (
-          <Link
-            to={continueCourse.resumePath}
-            className="group block glass-card p-6 sm:p-7 relative overflow-hidden hover:border-blue-300 transition-all"
-          >
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500" />
-            <p className="font-mono-jetbrains text-blue-500 text-xs font-semibold uppercase tracking-widest mb-3 flex items-center gap-1.5">
-              <Play size={12} /> {t('home.continueLearning')}
-            </p>
-            <div className="flex items-start gap-4">
-              <div className="text-4xl bg-blue-50 p-3 rounded-2xl group-hover:scale-105 transition-transform flex-shrink-0">
-                {continueCourse.course.icon}
-              </div>
-              <div className="flex-1 min-w-0">
-                <h2 className="font-space font-bold text-slate-900 text-lg sm:text-xl group-hover:text-blue-600 transition-colors">
-                  {continueCourse.course.title}
-                </h2>
-                <p className="font-inter text-slate-500 text-sm mt-0.5">
-                  {continueCourse.chapter.title} · {continueCourse.grade.name} · {t('home.moduleOf', { current: continueCourse.resumeModule, total: continueCourse.totalModules })}
-                </p>
-                <div className="mt-4 flex items-center gap-3 max-w-sm">
-                  <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
-                    <div className="h-full rounded-full bg-blue-500 transition-all duration-500" style={{ width: `${continueCourse.progress}%` }} />
-                  </div>
-                  <span className="text-xs font-mono-jetbrains font-bold text-slate-600 tabular-nums">{continueCourse.progress}%</span>
-                </div>
-              </div>
-              <span className="hidden sm:flex items-center gap-1.5 font-bold text-sm text-blue-600 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-transform flex-shrink-0">
-                {t('home.continue')} <ArrowForward size={15} />
-              </span>
-            </div>
-          </Link>
-        ) : firstLesson ? (
-          <Link
-            to={firstLesson.lesson.path}
-            className="group block glass-card p-6 sm:p-7 relative overflow-hidden hover:border-blue-300 transition-all"
-          >
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-500" />
-            <p className="font-mono-jetbrains text-emerald-600 text-xs font-semibold uppercase tracking-widest mb-3">
-              {t('home.readyToStart')}
-            </p>
-            <div className="flex items-start gap-4">
-              <div className="text-4xl bg-emerald-50 p-3 rounded-2xl group-hover:scale-105 transition-transform flex-shrink-0">
-                {firstLesson.lesson.icon}
-              </div>
-              <div className="flex-1">
-                <h2 className="font-space font-bold text-slate-900 text-lg sm:text-xl group-hover:text-emerald-600 transition-colors">
-                  {firstLesson.lesson.title}
-                </h2>
-                <p className="font-inter text-slate-500 text-sm mt-0.5 line-clamp-2">{firstLesson.lesson.description}</p>
-              </div>
-              <span className="hidden sm:flex items-center gap-1.5 font-bold text-sm text-emerald-600 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-transform flex-shrink-0">
-                {t('home.start')} <ArrowForward size={15} />
-              </span>
-            </div>
-          </Link>
-        ) : (
-          <div className="glass-card p-7 text-center">
-            <p className="font-inter text-slate-500 text-sm">
-              {t('home.noLessonsForGrade')} <Link to="/espace/explorer" className="text-blue-600 font-semibold hover:underline">{t('home.exploreOtherGrades')}</Link>
-            </p>
-          </div>
-        )}
-      </motion.div>
+          {/* ── Le héros ─────────────────────────────────────────────── */}
+          <motion.div {...enter(0.05)}>
+            <NextStepHero step={nextStep} gradeId={gradeId} curriculumIndex={curriculumIndex} />
+          </motion.div>
 
-      {/* Stats */}
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
-        <StatTile icon={BookOpen} value={gradeActivity.lessons.length} label={t('home.statLessonsAvailable')} accent="bg-blue-50 text-blue-600" />
-        <StatTile icon={CircleCheckBig} value={gradeActivity.completedCount} label={t('home.statLessonsCompleted')} accent="bg-emerald-50 text-emerald-600" />
-        <StatTile icon={Flame} value={gradeActivity.inProgressCount} label={t('home.statInProgress')} accent="bg-amber-50 text-amber-600" />
-        <StatTile icon={Zap} value={gradeActivity.totalXp} label={t('home.statXpEarned')} accent="bg-purple-50 text-purple-600" />
-      </motion.div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-8">
-        {/* Recent activity */}
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="glass-card p-6">
-          <h3 className="font-space font-bold text-slate-800 text-sm mb-4">{t('home.recentlyResumed')}</h3>
-          {gradeActivity.recentlyActive.length === 0 ? (
-            <p className="font-inter text-slate-400 text-sm">{t('home.nothingYet')}</p>
-          ) : (
-            <div className="space-y-3">
-              {gradeActivity.recentlyActive.slice(0, 4).map((item) => (
-                <Link
-                  key={item.lesson.id}
-                  to={item.lesson.path}
-                  className="flex items-center gap-3 p-2.5 -mx-2.5 rounded-xl hover:bg-slate-50 transition-colors group"
-                >
-                  <span className="text-xl flex-shrink-0">{item.lesson.icon}</span>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-inter font-medium text-slate-700 text-sm truncate group-hover:text-blue-600">{item.lesson.title}</p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden max-w-[100px]">
-                        <div className={`h-full ${item.progressPercent >= 100 ? 'bg-emerald-500' : 'bg-blue-500'}`} style={{ width: `${item.progressPercent}%` }} />
-                      </div>
-                      <span className="text-[11px] font-mono-jetbrains text-slate-400 tabular-nums">{item.progressPercent}%</span>
-                    </div>
-                  </div>
-                </Link>
-              ))}
+          {/* ── Le profil n'a pas pu être chargé : on le dit, on ne met pas
+                 zéro. La progression locale reste affichée. ─────────── */}
+          {status === 'error' && (
+            <div role="alert" className="mt-5 rounded-2xl border border-rose-200 bg-rose-50 p-4 flex items-center justify-between gap-3 flex-wrap" data-home-error>
+              <div className="min-w-0">
+                <p className="font-space font-bold text-rose-900 text-sm">{t('home.masteryErrorTitle')}</p>
+                <p className="font-inter text-rose-900/80 text-xs mt-0.5 max-w-xl">{t('home.masteryErrorBody')}</p>
+              </div>
+              <button
+                type="button"
+                onClick={reload}
+                className="min-h-[44px] px-4 rounded-xl border-2 border-rose-200 bg-white text-xs font-mono-jetbrains font-bold text-rose-800 hover:border-rose-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+              >
+                🔄 {tc('retry')}
+              </button>
             </div>
           )}
-        </motion.div>
 
-        {/* Quick access */}
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-4">
-          <Link to="/espace/cours" className="group glass-card p-5 flex items-center gap-4 hover:border-blue-300 transition-colors block">
-            <div className="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
-              <BookOpen size={19} />
-            </div>
-            <div className="flex-1">
-              <p className="font-space font-bold text-slate-800 text-sm">{t('home.myCoursesWithGrade', { grade: grade ? grade.name : t('home.yourGradeFallback') })}</p>
-              <p className="font-inter text-slate-500 text-xs mt-0.5">{t('home.seeAllLessons')}</p>
-            </div>
-            <ArrowForward size={16} className="text-slate-300 group-hover:text-blue-500 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-all flex-shrink-0" />
-          </Link>
+          {/* ── Les repères ──────────────────────────────────────────── */}
+          <motion.div {...enter(0.1)} className="mt-8 sm:mt-10">
+            <JourneyStats activity={gradeActivity} agg={tree.agg} profileStatus={status} />
+          </motion.div>
 
-          <Link to="/espace/explorer" className="group glass-card p-5 flex items-center gap-4 hover:border-purple-300 transition-colors block">
-            <div className="w-11 h-11 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center flex-shrink-0">
-              <Compass size={19} />
-            </div>
-            <div className="flex-1">
-              <p className="font-space font-bold text-slate-800 text-sm">{t('home.exploreOtherGradesTitle')}</p>
-              <p className="font-inter text-slate-500 text-xs mt-0.5">{t('home.exploreOtherGradesSubtitle')}</p>
-            </div>
-            <ArrowForward size={16} className="text-slate-300 group-hover:text-purple-500 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-all flex-shrink-0" />
-          </Link>
+          {/* ── Où j'en suis · ce que je viens de toucher ────────────── */}
+          <motion.div {...enter(0.15)} className="mt-8 sm:mt-10 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
+            <CurriculumPreview context={whereContext} />
+            <RecentLearning items={recent} treeIndex={treeIndex} />
+          </motion.div>
 
-          {/* MÊME COMPTE, DEUX LECTURES.
-              « 3 leçons Premium » est une bonne nouvelle pour l'abonné (du
-              contenu qui l'attend) et une invitation pour qui ne l'est pas.
-              La carte disait « Débloque avec l'abonnement — 35€/an » aux
-              deux : elle redemandait 35€ à quelqu'un qui les avait payés. Le
-              chiffre reste, la destination et la phrase changent. */}
-          {premiumCount > 0 && isPremium && (
-            <Link to="/espace/cours" className="group glass-card p-5 flex items-center gap-4 border-violet-200 hover:border-violet-300 transition-colors block">
-              <div className="w-11 h-11 rounded-xl bg-violet-100 text-violet-600 flex items-center justify-center flex-shrink-0">
-                <Crown size={19} />
-              </div>
-              <div className="flex-1">
-                <p className="font-space font-bold text-slate-800 text-sm">{t('home.premiumOpen', { count: premiumCount })}</p>
-                <p className="font-inter text-slate-500 text-xs mt-0.5">{t('home.premiumOpenHint')}</p>
-              </div>
-              <ArrowForward size={16} className="text-slate-300 group-hover:text-violet-500 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-all flex-shrink-0" />
-            </Link>
-          )}
+          {/* ── Mes espaces ──────────────────────────────────────────── */}
+          <motion.div {...enter(0.2)} className="mt-10 sm:mt-12">
+            <LearningSpaceNav />
+          </motion.div>
 
-          {premiumCount > 0 && canSeeUpgrade && (
-            <Link to="/espace/activation" className="group glass-card p-5 flex items-center gap-4 border-amber-200 hover:border-amber-300 transition-colors block bg-gradient-to-br from-amber-50/50 to-white">
-              <div className="w-11 h-11 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center flex-shrink-0">
-                <Crown size={19} />
-              </div>
-              <div className="flex-1">
-                <p className="font-space font-bold text-slate-800 text-sm">{t('home.premiumLocked', { count: premiumCount })}</p>
-                {/* Aucun prix affiché : le produit algérien se paie en
-                    espèces auprès d'un vendeur, hors de l'application. Un
-                    tarif en euros ici serait faux deux fois (monnaie et
-                    modèle). Voir master spec §17/§18. */}
-                <p className="font-inter text-slate-500 text-xs mt-0.5">{t('home.premiumLockedHint')}</p>
-              </div>
-              <ArrowForward size={16} className="text-slate-300 group-hover:text-amber-500 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-all flex-shrink-0" />
-            </Link>
-          )}
-        </motion.div>
+          {/* ── Secondaire : premium, autres classes ─────────────────── */}
+          <motion.div {...enter(0.25)} className="mt-8 sm:mt-10 space-y-6">
+            <PremiumCard premiumCount={premiumCount} isPremium={isPremium} canSeeUpgrade={canSeeUpgrade} />
+            <div className="text-center pt-2" data-home-explore>
+              <Link
+                to="/espace/explorer"
+                className="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-xl text-sm font-semibold text-slate-600 hover:text-blue-700 hover:bg-white/80 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+              >
+                <Compass size={15} aria-hidden="true" /> {t('home.exploreOtherGrades')} <ArrowForward size={14} aria-hidden="true" />
+              </Link>
+              <p className="font-inter text-xs text-slate-400 mt-1">{t('home.exploreOtherGradesHint')}</p>
+            </div>
+          </motion.div>
+        </div>
       </div>
-    </div>
+    </MotionConfig>
   );
 }

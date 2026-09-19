@@ -8,6 +8,8 @@ import { courseLevels } from '@smarter-academy/core';
 import { getResumeLesson } from '../lessons/common/utils/progress/getResumeLesson';
 import { getLessonProgress } from '../lessons/common/utils/progress/getLessonProgress';
 import { getTotalModules } from '../lessons/registry';
+import UnitGroup from '../components/student/UnitGroup';
+import { groupLessonsByUnit } from '../components/student/unitGrouping';
 import { storage, scopedStorage } from '../utils/storage';
 import { AuthContext } from '../context/AuthContext';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
@@ -15,6 +17,7 @@ import LessonCard from '../components/student/LessonCard';
 
 export default function CoursesPage() {
   const { t } = useTranslation('common');
+  const { t: ts } = useTranslation('student');
   useDocumentMeta(t('catalogueMetaTitle'), t('catalogueMetaDescription'));
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -168,6 +171,13 @@ export default function CoursesPage() {
   }, [lastFocus]);
 
   // Chapter Stats
+  // Les unités du manuel présentes dans la sélection courante (hors recherche).
+  const unitGroups = (() => {
+    if (searchQuery) return null;
+    const chapters = effectiveChapterId === 'all' ? gradeData.chapters : gradeData.chapters.filter((c) => c.id === effectiveChapterId);
+    return groupLessonsByUnit(chapters, filteredCourses);
+  })();
+
   const getChapterProgress = (chapter) => {
     if (!chapter.lessons || chapter.lessons.length === 0) return 0;
     const availableLessons = chapter.lessons.filter(l => l.status === 'available');
@@ -485,6 +495,23 @@ export default function CoursesPage() {
                     <Search size={32} className="mx-auto mb-3 opacity-20" />
                     <p>{t('noCourseMatches', { query: searchQuery ? `"${searchQuery}"` : t('thisSelection') })}</p>
                   </motion.div>
+                ) : unitGroups ? (
+                  // Le niveau الوحدة (phase 8) : dans un ميدان, l'élève choisit
+                  // d'abord une UNITÉ du manuel ; ses leçons vivent sur la page
+                  // d'unité (/courses/…/units/<unité>). Les leçons hors unité
+                  // restent des cartes ici. `col-span-full` pour les titres.
+                  <>
+                    <h3 className="col-span-full text-sm font-bold text-slate-700">{ts('unit.unitCard.unitsTitle')}</h3>
+                    {unitGroups.units.map((unit) => <UnitGroup key={unit.id} unit={unit} />)}
+                    {unitGroups.rest.length > 0 && (
+                      <>
+                        <h3 className="col-span-full mt-2 text-sm font-bold text-slate-600">{ts('unit.unitCard.otherTopics')}</h3>
+                        {unitGroups.rest.map((lesson) => (
+                          <LessonCard key={lesson.id} lesson={lesson} onClick={() => handleCourseClick(lesson.id)} />
+                        ))}
+                      </>
+                    )}
+                  </>
                 ) : (
                   filteredCourses.map((lesson) => (
                     <LessonCard key={lesson.id} lesson={lesson} onClick={() => handleCourseClick(lesson.id)} />

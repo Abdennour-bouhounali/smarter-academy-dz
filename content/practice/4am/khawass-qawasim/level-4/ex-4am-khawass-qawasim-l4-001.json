@@ -1,0 +1,73 @@
+{
+  "metadata": {
+    "title": "تمرين 13 — 11 و 14 300",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خاصية 1"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-13",
+      "page": 14,
+      "section": "أوظّف تعلّماتي",
+      "number": 13
+    }
+  },
+  "statement": {
+    "content": "بيّن أنّ 11 من قواسم 14 300. استنتج أن 11 من قواسم 14 322."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لماذا 11 من قواسم 14 322؟",
+      "learningPoints": [
+        {
+          "code": "4am_khawass-qawasim_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لأن 14 322 = 14 300 + 22 و 11 يقسم كلا من 14 300 و 22",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لأن 14 322 عدد زوجي",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "لأن 14 322 ينتهي بـ 22",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "14 300 = 11 × 1300."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "14 322 − 14 300 = 22 = 11 × 2."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قاسم مشترك لـ 14 300 و 22 يقسم مجموعهما."
+        }
+      ],
+      "feedback": {
+        "correct": "القاسم المشترك يقسم المجموع (خاصية 1).",
+        "incorrect": "اكتب 14 322 مجموعًا لعددين يقسمهما 11."
+      }
+    }
+  ],
+  "id": "ex-4am-khawass-qawasim-l4-001",
+  "lessonCode": "khawass-qawasim",
+  "level": 4
+}

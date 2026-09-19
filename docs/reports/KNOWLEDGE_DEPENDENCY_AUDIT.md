@@ -100,7 +100,7 @@
 
 Ce niveau n'est pas encore traité. Les constats sont enregistrés ici pour mémoire.
 
-55 leçon(s) · critiques 0 · hautes 0 · moyennes 0 · basses 0
+63 leçon(s) · critiques 4 · hautes 0 · moyennes 61 · basses 0
 
 | Leçon | Carte | Bricks | requires | Contrat | C | H | M | L |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -158,4 +158,12 @@ Ce niveau n'est pas encore traité. Les constats sont enregistrés ici pour mém
 | `premiere_specialite:probabilites-independance-1ere` | ✅ | 14 | 38/38 | 0 | 0 | 0 | 0 | 0 |
 | `premiere_specialite:variables-aleatoires-dispersion-binomiale-1ere` | ✅ | 16 | 45/45 | 0 | 0 | 0 | 0 | 0 |
 | `premiere_specialite:variables-aleatoires-loi-esperance-1ere` | ✅ | 15 | 37/37 | 0 | 0 | 0 | 0 | 0 |
-| `4am:pgcd` | ✅ | 9 | 28/28 | 0 | 0 | 0 | 0 | 0 |
+| `4am:awwaliyan-fima-baynahuma` | ✅ | 8 | 7/7 | 4 | 4 | 0 | 9 | 0 |
+| `4am:bahth-pgcd` | ✅ | 14 | 10/10 | 0 | 0 | 0 | 13 | 0 |
+| `4am:ikhtizal-kasr` | ✅ | 15 | 9/9 | 0 | 0 | 0 | 15 | 0 |
+| `4am:khawass-qawasim` | ✅ | 5 | 10/11 | 0 | 0 | 0 | 2 | 0 |
+| `4am:qasim-adad-tabii` | ✅ | 5 | 9/10 | 0 | 0 | 0 | 4 | 0 |
+| `4am:qasim-mushtarak-akbar` | ✅ | 6 | 9/9 | 0 | 0 | 0 | 4 | 0 |
+| `4am:qawasim-adad-tabii` | ✅ | 4 | 9/9 | 0 | 0 | 0 | 3 | 0 |
+| `4am:tayin-pgcd` | ✅ | 7 | 6/6 | 0 | 0 | 0 | 7 | 0 |
+| `4am:wadiya-idmajiya-aadad` | ✅ | 2 | 5/5 | 0 | 0 | 0 | 4 | 0 |

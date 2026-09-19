@@ -1,0 +1,100 @@
+{
+  "metadata": {
+    "title": "تمرين 29 — A = (n + 7)/(n + 1)",
+    "estimatedMinutes": 5,
+    "tags": [
+      "حرف"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-29",
+      "page": 15,
+      "section": "أوظّف تعلّماتي",
+      "number": 29
+    }
+  },
+  "statement": {
+    "content": "نضع $A = \\dfrac{n + 7}{n + 1}$ حيث n عدد طبيعي كيفي."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من أجل n = 13، الكسر غير القابل للاختزال الذي يساوي A هو …",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "10/7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "n + 7 = 20 و n + 1 = 14."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "PGCD(20 ; 14) = 2."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم البسط والمقام على 2 معًا."
+        }
+      ],
+      "feedback": {
+        "correct": "20/14 = 10/7.",
+        "incorrect": "n = 13 يعطي 20/14."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "استنتج قيم n التي يكون من أجلها A عددا طبيعيا (A = 1 + 6/(n + 1)).",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        0,
+        1,
+        2,
+        5
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "A = 1 + 6/(n + 1)."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "n + 1 قاسم للعدد 6."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قواسم 6: 1 ، 2 ، 3 ، 6."
+        }
+      ],
+      "feedback": {
+        "correct": "n + 1 يقسم 6: n + 1 ∈ {1 ، 2 ، 3 ، 6}.",
+        "incorrect": "A طبيعي عندما يكون 6/(n + 1) طبيعيًا."
+      }
+    }
+  ],
+  "id": "ex-4am-ikhtizal-kasr-l5-001",
+  "lessonCode": "ikhtizal-kasr",
+  "level": 5
+}

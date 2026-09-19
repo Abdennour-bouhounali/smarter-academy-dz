@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "title": "تمرين 18 — 112 ، 120 ، 88",
+    "estimatedMinutes": 5,
+    "tags": [
+      "حصر"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-18",
+      "page": 14,
+      "section": "أوظّف تعلّماتي",
+      "number": 18
+    }
+  },
+  "statement": {
+    "content": "عيّن القاسم المشترك الأكبر للعددين 112 و 120 ثم للعددين 120 و 88. نسمي d القاسم المشترك الأكبر للعددين 112 و 120. احسب القاسم المشترك الأكبر للعددين d و 88."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "PGCD(112 ; 120) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_tayin-pgcd_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قواسم 112 و قواسم 120."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المشترك: 1 ، 2 ، 4 ، 8."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أكبرها 8."
+        }
+      ],
+      "feedback": {
+        "correct": "القواسم المشتركة: 1 ، 2 ، 4 ، 8.",
+        "incorrect": "112 = 8 × 14 و 120 = 8 × 15."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "PGCD(120 ; 88) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_tayin-pgcd_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قواسم 88: 1 ، 2 ، 4 ، 8 ، 11 ، 22 ، 44 ، 88."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المشترك مع 120: 1 ، 2 ، 4 ، 8."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "8."
+        }
+      ],
+      "feedback": {
+        "correct": "88 = 8 × 11 و 120 = 8 × 15.",
+        "incorrect": "ابحث عن القواسم المشتركة."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "PGCD(d ; 88) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_tayin-pgcd_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "d = 8."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "88 = 8 × 11."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان b قاسمًا لـ a فإن PGCD(a ; b) = b."
+        }
+      ],
+      "feedback": {
+        "correct": "d = 8 قاسم للعدد 88، إذن PGCD(8 ; 88) = 8.",
+        "incorrect": "d = 8؛ هل 8 قاسم لـ 88؟"
+      }
+    }
+  ],
+  "id": "ex-4am-tayin-pgcd-l4-001",
+  "lessonCode": "tayin-pgcd",
+  "level": 4
+}

@@ -1,0 +1,66 @@
+{
+  "metadata": {
+    "title": "تمرين 8 — 18 ÷ a عدد طبيعي",
+    "estimatedMinutes": 3,
+    "tags": [
+      "قواسم",
+      "كسر"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-8",
+      "page": 14,
+      "section": "أوظّف تعلّماتي",
+      "number": 8
+    }
+  },
+  "statement": {
+    "content": "ما هي قيم العدد الطبيعي $a$ التي من أجلها يكون $\\dfrac{18}{a}$ عددا طبيعيا؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيم $a$:",
+      "learningPoints": [
+        {
+          "code": "4am_qawasim-adad-tabii_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        1,
+        2,
+        3,
+        6,
+        9,
+        18
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "متى يكون 18 ÷ a عددًا طبيعيًا؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عندما يكون a قاسمًا للعدد 18."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "18 = 1 × 18 = 2 × 9 = 3 × 6."
+        }
+      ],
+      "feedback": {
+        "correct": "18 ÷ a عدد طبيعي يعني أن a قاسم للعدد 18.",
+        "incorrect": "ترجم الشرط إلى «a قاسم لـ 18»."
+      }
+    }
+  ],
+  "id": "ex-4am-qawasim-adad-tabii-l2-002",
+  "lessonCode": "qawasim-adad-tabii",
+  "level": 2
+}

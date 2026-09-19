@@ -1,0 +1,88 @@
+{
+  "metadata": {
+    "title": "تمرين 3 — قواسم العدد 84",
+    "estimatedMinutes": 3,
+    "tags": [
+      "قواسم"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-3",
+      "page": 14,
+      "section": "أوظّف تعلّماتي",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "عيّن كل قواسم العدد 84."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قواسم العدد 84:",
+      "learningPoints": [
+        {
+          "code": "4am_qawasim-adad-tabii_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        1,
+        2,
+        3,
+        4,
+        6,
+        7,
+        12,
+        14,
+        21,
+        28,
+        42,
+        84
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "9² = 81 ≤ 84 < 100: نختبر حتى 9."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل باقٍ معدوم يعطي قاسمين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تنسَ 1 والعدد نفسه."
+        }
+      ],
+      "feedback": {
+        "correct": "84 = 1 × 84 = 2 × 42 = 3 × 28 = 4 × 21 = 6 × 14 = 7 × 12.",
+        "incorrect": "اختبر الأعداد من 1 إلى 9."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": [
+            2,
+            3,
+            4,
+            6,
+            7,
+            12,
+            14,
+            21,
+            28,
+            42
+          ],
+          "id": "MISC-QAWASIM-NASY-1-WA-N"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-qawasim-adad-tabii-l1-002",
+  "lessonCode": "qawasim-adad-tabii",
+  "level": 1
+}

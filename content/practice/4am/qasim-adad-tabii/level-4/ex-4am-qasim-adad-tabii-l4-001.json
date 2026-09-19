@@ -1,0 +1,158 @@
+{
+  "metadata": {
+    "title": "تمرين 5 — صحيح أو خطأ",
+    "estimatedMinutes": 4,
+    "tags": [
+      "صحيح أو خطأ",
+      "اتجاه"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-5",
+      "page": 14,
+      "section": "أوظّف تعلّماتي",
+      "number": 5
+    }
+  },
+  "statement": {
+    "content": "أجب بصحيح أو خطأ (الكتاب ص 14، تمرين 5)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "8 يقسم 4",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-adad-tabii_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "صحيح",
+          "isCorrect": false,
+          "misconceptionId": "MISC-QASIM-MUDAAF-ITTIJAH"
+        },
+        {
+          "id": "B",
+          "content": "خطأ",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقسم 4 على 8."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الباقي 4 ليس معدومًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن مع «4 يقسم 8»."
+        }
+      ],
+      "feedback": {
+        "correct": "باقي قسمة 4 على 8 هو 4؛ العكس صحيح: 4 يقسم 8.",
+        "incorrect": "من يقسم من؟ «b يقسم a» تعني أن a هو المقسوم."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "360 يقبل القسمة على 180",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-adad-tabii_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "صحيح",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "خطأ",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "180 × 2 = ?"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الباقي معدوم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "راجع التعريف بالجداء."
+        }
+      ],
+      "feedback": {
+        "correct": "360 = 180 × 2.",
+        "incorrect": "هل يوجد عدد طبيعي q حيث 360 = 180 × q؟"
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "9 يقسم $2 \\times 3^{10} \\times 5 \\times 7$",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-adad-tabii_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "صحيح",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "خطأ",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب 9 على شكل جداء."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$3^{10} = 3^2 \\times 3^8$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عدد مكتوب على شكل 9 × k يقبل القسمة على 9."
+        }
+      ],
+      "feedback": {
+        "correct": "$3^{10} = 9 \\times 3^8$، فالجداء مضاعف للعدد 9.",
+        "incorrect": "9 = 3 × 3؛ ابحث عن 3 × 3 داخل الجداء."
+      }
+    }
+  ],
+  "id": "ex-4am-qasim-adad-tabii-l4-001",
+  "lessonCode": "qasim-adad-tabii",
+  "level": 4
+}

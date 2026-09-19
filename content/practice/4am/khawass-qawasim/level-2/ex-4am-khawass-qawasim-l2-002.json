@@ -1,0 +1,74 @@
+{
+  "metadata": {
+    "title": "تمرين 12 — 471 و 192",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خاصية 1",
+      "قابلية القسمة على 3"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-12",
+      "page": 14,
+      "section": "أوظّف تعلّماتي",
+      "number": 12
+    }
+  },
+  "statement": {
+    "content": "$a = 471$ و $b = 192$. تحقّق من أنّ كلا من $a$ و $b$ يقبل القسمة على 3. ماذا تستنتج بالنسبة إلى قسمة كل من $a - b$ و $a + b$ على 3؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ماذا نستنتج؟",
+      "learningPoints": [
+        {
+          "code": "4am_khawass-qawasim_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "a − b و a + b يقبلان القسمة على 3",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "a − b فقط يقبل القسمة على 3",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "لا يمكن الاستنتاج دون حساب",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "4 + 7 + 1 = 12 و 1 + 9 + 2 = 12."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "3 قاسم مشترك لـ 471 و 192."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "القاسم المشترك يقسم المجموع والفرق."
+        }
+      ],
+      "feedback": {
+        "correct": "خاصية 1، دون حساب: 279 و 663 مضاعفان لـ 3.",
+        "incorrect": "مجموع أرقام 471 هو 12 ومجموع أرقام 192 هو 12."
+      }
+    }
+  ],
+  "id": "ex-4am-khawass-qawasim-l2-002",
+  "lessonCode": "khawass-qawasim",
+  "level": 2
+}

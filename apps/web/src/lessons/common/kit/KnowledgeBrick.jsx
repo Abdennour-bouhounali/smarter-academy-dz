@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Feedback } from '../components/LessonUI';
 import { CATEGORIES, useLessonKnowledge } from '../knowledge';
 import ConceptVisual from '../knowledge/ConceptVisual';
+import AddToNotebookButton from '../../../features/practice/notebook/AddToNotebookButton';
 
 /**
  * KnowledgeBrick — pose UNE connaissance à l'instant où l'élève en a besoin.
@@ -49,7 +50,7 @@ export default function KnowledgeBrick({
   children,
 }) {
   const { t } = useTranslation('lesson');
-  const { getItem, unlockItem } = useLessonKnowledge();
+  const { getItem, unlockItem, lessonId } = useLessonKnowledge();
   const item = getItem(id);
 
   useEffect(() => {
@@ -87,10 +88,16 @@ export default function KnowledgeBrick({
       {style.accent && <span aria-hidden="true" className={`absolute inset-y-0 start-0 w-[3px] ${accent}`} />}
 
       <div className={`p-5 space-y-3 ${style.accent ? 'ps-6' : ''}`}>
-        <p className={`text-[11px] font-mono font-bold uppercase tracking-[0.14em] ${style.tag}`}>
-          <span aria-hidden="true">{style.emoji}</span> {t(style.labelKey)}
-          {category && <span> · {t(category.labelKey)}</span>}
-        </p>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <p className={`text-[11px] font-mono font-bold uppercase tracking-[0.14em] ${style.tag}`}>
+            <span aria-hidden="true">{style.emoji}</span> {t(style.labelKey)}
+            {category && <span> · {t(category.labelKey)}</span>}
+          </p>
+          {/* Le pont EXPLICITE vers le cahier : la connaissance n'y entre que
+              si l'élève le demande, comme point de départ de SA note. La
+              carte, elle, ne bouge pas. */}
+          <AddToNotebookButton item={item} lessonCode={lessonId} categoryLabel={category ? t(category.labelKey) : null} />
+        </div>
 
         {lead && <p className={`text-sm leading-relaxed ${style.lead}`}>{lead}</p>}
 

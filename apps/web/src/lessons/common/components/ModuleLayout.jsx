@@ -57,6 +57,8 @@ export default function ModuleLayout({
   gradeLabel,
   moduleNumber,
   totalModules,
+  firstModuleNumber,
+  previousStage,
   lastModuleNumber,
   moduleTitle,
   moduleSubtitle,
@@ -94,7 +96,21 @@ export default function ModuleLayout({
 
   // `stage` keeps evaluation modules reachable from the start — the final
   // challenge is an alternative path, not just the last module.
-  const unlocked = !sequentialUnlock || isModuleUnlocked(isModuleCompleted, moduleNumber, { stage });
+  // Le premier module de la leçon. Quand la leçon ne le déclare pas (la
+  // plupart des 137 leçons héritées), on retombe sur 0 dès qu'un module 0
+  // existe dans le parcours — `moduleNumber === 0` est lui-même la preuve
+  // que la numérotation commence à zéro.
+  const firstModule = Number.isFinite(Number(firstModuleNumber))
+    ? Number(firstModuleNumber)
+    : (Number(moduleNumber) === 0 ? 0 : 1);
+  // CE QUI EST FAIT RESTE OUVERT (même règle que getModuleStatus) : un module
+  // déjà terminé ne se referme jamais, même si son prédécesseur ne l'est pas.
+  // Sans cela, revenir sur un module fini affichait « أتمِم المحور 00 » et
+  // renvoyait l'élève hors de son propre travail.
+  const alreadyDone = isModuleCompleted(String(moduleNumber));
+  const unlocked = alreadyDone
+    || !sequentialUnlock
+    || isModuleUnlocked(isModuleCompleted, moduleNumber, { stage, firstModuleNumber: firstModule, previousStage });
 
   useEffect(() => {
     if (lessonId && moduleNumber && unlocked) {

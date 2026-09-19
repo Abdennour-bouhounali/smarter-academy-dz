@@ -1,0 +1,95 @@
+{
+  "metadata": {
+    "title": "نشاط 8 ب — 84/48 بـ PGCD",
+    "estimatedMinutes": 3,
+    "tags": [
+      "PGCD"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-8",
+      "page": 9,
+      "section": "أنشطة",
+      "number": 8
+    }
+  },
+  "statement": {
+    "content": "احسب القاسم المشترك الأكبر للعددين 84 و 48، ثمّ استعمله لاختزال الكسر $\\dfrac{84}{48}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "PGCD(84 ; 48) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "12",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "84 = 48 × 1 + 36."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "48 = 36 × 1 + 12."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "36 = 12 × 3 + 0."
+        }
+      ],
+      "feedback": {
+        "correct": "84 = 48 + 36 ، 48 = 36 + 12 ، 36 = 12 × 3 + 0.",
+        "incorrect": "خوارزمية إقليدس."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "إذن $\\dfrac{84}{48}$ = …",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "7/4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "84 ÷ 12."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "48 ÷ 12."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الكسر الناتج غير قابل للاختزال في خطوة واحدة."
+        }
+      ],
+      "feedback": {
+        "correct": "84 ÷ 12 = 7 و 48 ÷ 12 = 4.",
+        "incorrect": "اقسم على 12."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      }
+    }
+  ],
+  "id": "ex-4am-ikhtizal-kasr-l2-002",
+  "lessonCode": "ikhtizal-kasr",
+  "level": 2
+}

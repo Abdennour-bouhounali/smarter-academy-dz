@@ -71,7 +71,7 @@
             }
           }
         },
-        "answerType": { "enum": ["choice", "multiChoice", "rational", "affine", "interval", "point"] },
+        "answerType": { "enum": ["choice", "multiChoice", "rational", "affine", "interval", "point", "integerSet"] },
         "answerFormat": {
           "description": "Visible par l'élève : COMMENT saisir. Ne doit jamais révéler la réponse (invariant 8).",
           "type": "string"
@@ -136,7 +136,8 @@
           "properties": {
             "correct": { "type": "string", "minLength": 3 },
             "incorrect": { "type": "string", "minLength": 3 },
-            "partial": { "type": "string" }
+            "partial": { "type": "string" },
+            "notIrreducible": { "type": "string" }
           }
         },
         "visual": { "$ref": "#/$defs/visual" },

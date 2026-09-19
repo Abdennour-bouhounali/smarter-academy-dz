@@ -1,0 +1,116 @@
+{
+  "metadata": {
+    "title": "طريقة — قواسم العدد 105",
+    "estimatedMinutes": 4,
+    "tags": [
+      "طريقة",
+      "جذر"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-divisors",
+      "page": 11,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 11): عيّن كل قواسم العدد 105."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "إلى أي عدد يكفي أن نختبر قابلية قسمة 105؟",
+      "learningPoints": [
+        {
+          "code": "4am_qawasim-adad-tabii_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "إلى 10، لأن 10² ≤ 105 < 11²",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "إلى 52",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "إلى 105",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "10² = 100 و 11² = 121."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذا كان 105 = d × e مع d ≤ e فإن d² ≤ 105."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هذه طريقة الكتاب."
+        }
+      ],
+      "feedback": {
+        "correct": "كل قاسم أكبر من 10 هو الناتج في جداء وجدناه.",
+        "incorrect": "ابحث عن العدد الذي مربعه أصغر من 105 أو يساويه."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "قواسم العدد 105:",
+      "learningPoints": [
+        {
+          "code": "4am_qawasim-adad-tabii_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        1,
+        3,
+        5,
+        7,
+        15,
+        21,
+        35,
+        105
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "105 يقبل القسمة على 1 و 3 و 5 و 7."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل قسمة باقيها معدوم تعطي قاسمين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تنسَ الشركاء: 15 و 21 و 35 و 105."
+        }
+      ],
+      "feedback": {
+        "correct": "105 = 1 × 105 = 3 × 35 = 5 × 21 = 7 × 15.",
+        "incorrect": "ثمانية قواسم."
+      }
+    }
+  ],
+  "id": "ex-4am-qawasim-adad-tabii-l3-001",
+  "lessonCode": "qawasim-adad-tabii",
+  "level": 3
+}

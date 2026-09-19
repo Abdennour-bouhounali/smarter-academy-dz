@@ -27,7 +27,7 @@ import { buildLessonIndex, repoRoot } from './lib/lessonAst.mjs';
 import { Rational } from '../packages/core/practice/rational.js';
 import { parseAffineAnswer } from '../packages/core/practice/affineCanonical.js';
 import { parseInterval } from '../packages/core/practice/intervalCompare.js';
-import { SUPPORTED_ANSWER_TYPES } from '../packages/core/practice/answerEvaluator.js';
+import { SUPPORTED_ANSWER_TYPES, parseIntegerSet } from '../packages/core/practice/answerEvaluator.js';
 
 const argv = process.argv.slice(2);
 const STRICT = argv.includes('--strict');
@@ -37,6 +37,24 @@ const CONTENT_ROOT = join(repoRoot, 'content/practice');
 const INDEX_PATH = join(CONTENT_ROOT, 'index.generated.json');
 const LEVELS = [1, 2, 3, 4, 5];
 const MIN_PER_LEVEL = 3;
+
+/**
+ * Politique de couverture par leçon (content/practice/policy.json).
+ *
+ * L'invariant 12 (3 exercices × 5 niveaux) est le défaut. Une leçon dont les
+ * exercices viennent d'un MANUEL scolaire ne peut pas l'atteindre sans
+ * inventer des énoncés — ce que le projet interdit (docs/sources/…). Elle
+ * déclare alors ici un minimum plus bas, avec sa source : l'exception est
+ * VISIBLE et nominative, jamais un abaissement général du contrat.
+ */
+function readPolicy() {
+  const read = readJson(join(CONTENT_ROOT, 'policy.json'));
+  if (!read.ok) return { defaultMinPerLevel: MIN_PER_LEVEL, lessons: {} };
+  return {
+    defaultMinPerLevel: Number.isInteger(read.data.defaultMinPerLevel) ? read.data.defaultMinPerLevel : MIN_PER_LEVEL,
+    lessons: read.data.lessons ?? {},
+  };
+}
 
 /**
  * Props réellement acceptées par CoordPlane
@@ -142,6 +160,8 @@ function expectedAnswerParses(question) {
       return parseInterval(ea) !== null;
     case 'point':
       return !!(ea && Rational.parse(ea.x) && Rational.parse(ea.y));
+    case 'integerSet':
+      return parseIntegerSet(ea) !== null;
     default:
       return false;
   }
@@ -155,6 +175,7 @@ function signatureParses(answerType, value) {
     case 'affine': return parseAffineAnswer(value) !== null;
     case 'interval': return parseInterval(value) !== null;
     case 'point': return !!(value && Rational.parse(value.x) && Rational.parse(value.y));
+    case 'integerSet': return parseIntegerSet(value) !== null;
     default: return false;
   }
 }
@@ -406,12 +427,19 @@ function main() {
 
   /* Minimum de contenu et couverture — mode strict seulement, pour que le tout
      premier exercice écrit ne fasse pas rougir la CI. */
+  const policy = readPolicy();
+  for (const [lessonCode, rule] of Object.entries(policy.lessons)) {
+    if (!active.includes(lessonCode)) warn('policy.json', `« ${lessonCode} » a une politique mais n'est pas activée`);
+    if (!Number.isInteger(rule.minPerLevel) || rule.minPerLevel < 1) err('policy.json', `« ${lessonCode} » : minPerLevel doit être un entier ≥ 1`);
+    if (typeof rule.source !== 'string' || !rule.source) err('policy.json', `« ${lessonCode} » : une politique dérogatoire nomme sa source (manuel, pages)`);
+  }
   for (const lessonCode of active) {
     const levels = byLessonLevel.get(lessonCode) ?? new Map();
+    const minPerLevel = policy.lessons[lessonCode]?.minPerLevel ?? policy.defaultMinPerLevel;
     for (const level of LEVELS) {
       const n = (levels.get(level) ?? []).length;
-      if (n < MIN_PER_LEVEL) {
-        const msg = `leçon « ${lessonCode} » : niveau ${level} n'a que ${n} exercice(s), il en faut ${MIN_PER_LEVEL} (invariant 12)`;
+      if (n < minPerLevel) {
+        const msg = `leçon « ${lessonCode} » : niveau ${level} n'a que ${n} exercice(s), il en faut ${minPerLevel} (invariant 12${policy.lessons[lessonCode] ? ', politique dérogatoire' : ''})`;
         STRICT ? err('couverture', msg) : warn('couverture', msg);
       }
     }

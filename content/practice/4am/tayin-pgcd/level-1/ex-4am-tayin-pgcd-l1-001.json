@@ -1,0 +1,104 @@
+{
+  "metadata": {
+    "title": "نشاط 5 — 42 و 60",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نشاط",
+      "حصر"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-5",
+      "page": 8,
+      "section": "أنشطة",
+      "number": 5
+    }
+  },
+  "statement": {
+    "content": "أوجد قواسم كلٍّ من العددين 42 و 60، ثم القواسم المشتركة لهذين العددين، ثم أكبرها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "القواسم المشتركة للعددين 42 و 60:",
+      "learningPoints": [
+        {
+          "code": "4am_tayin-pgcd_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        1,
+        2,
+        3,
+        6
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قواسم 42 أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم قواسم 60."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الأعداد المشتركة."
+        }
+      ],
+      "feedback": {
+        "correct": "قواسم 42: 1 ، 2 ، 3 ، 6 ، 7 ، 14 ، 21 ، 42؛ قواسم 60: 1 ، 2 ، 3 ، 4 ، 5 ، 6 ، 10 ، 12 ، 15 ، 20 ، 30 ، 60.",
+        "incorrect": "اكتب القائمتين ثم قارن."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "PGCD(42 ; 60) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_tayin-pgcd_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "القواسم المشتركة: 1 ، 2 ، 3 ، 6."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أكبرها؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نكتب 6 = PGCD(42 ; 60)."
+        }
+      ],
+      "feedback": {
+        "correct": "أكبر القواسم المشتركة 1 ، 2 ، 3 ، 6.",
+        "incorrect": "خذ أكبر القواسم المشتركة."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "3",
+          "id": "MISC-PGCD-LAYSA-AKBAR"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-tayin-pgcd-l1-001",
+  "lessonCode": "tayin-pgcd",
+  "level": 1
+}

@@ -1,0 +1,106 @@
+{
+  "metadata": {
+    "title": "نشاط 2 ب — 48 و 17",
+    "estimatedMinutes": 3,
+    "tags": [
+      "قواسم"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-2",
+      "page": 8,
+      "section": "أنشطة",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "عيّن كل قواسم العدد 48، كذلك بالنّسبة إلى العدد 17."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قواسم العدد 48:",
+      "learningPoints": [
+        {
+          "code": "4am_qawasim-adad-tabii_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        1,
+        2,
+        3,
+        4,
+        6,
+        8,
+        12,
+        16,
+        24,
+        48
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "6² = 36 ≤ 48 < 49."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما هي الجداءات d × e = 48؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عشرة قواسم."
+        }
+      ],
+      "feedback": {
+        "correct": "48 = 1 × 48 = 2 × 24 = 3 × 16 = 4 × 12 = 6 × 8.",
+        "incorrect": "نختبر من 1 إلى 6."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "قواسم العدد 17:",
+      "learningPoints": [
+        {
+          "code": "4am_qawasim-adad-tabii_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        1,
+        17
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "4² = 16 ≤ 17 < 25."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل 17 يقبل القسمة على 2؟ على 3؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "1 والعدد نفسه قاسمان دائمًا."
+        }
+      ],
+      "feedback": {
+        "correct": "لا يقسم 17 أيّ عدد من 2 إلى 4.",
+        "incorrect": "اختبر 2 و 3 و 4 فقط."
+      }
+    }
+  ],
+  "id": "ex-4am-qawasim-adad-tabii-l2-001",
+  "lessonCode": "qawasim-adad-tabii",
+  "level": 2
+}

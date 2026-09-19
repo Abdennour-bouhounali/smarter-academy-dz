@@ -20,6 +20,49 @@ describe('isModuleUnlocked', () => {
   it('module 2 is unlocked once module 1 is completed', () => {
     expect(isModuleUnlocked((key) => key === '1', 2)).toBe(true);
   });
+
+  // RÉGRESSION (2026-09-18) — 137 leçons commencent par un module 0
+  // (« أستعدّ »). Traité comme « pas le premier », il exigeait la maîtrise
+  // d'un module -1 inexistant : la leçon entière restait verrouillée et
+  // l'élève lisait « أتمِم المحور -1 ».
+  it('module 0 is unlocked when the lesson starts at 0', () => {
+    expect(isModuleUnlocked(() => false, 0, { firstModuleNumber: 0 })).toBe(true);
+    expect(isModuleUnlocked(() => false, 0)).toBe(true);
+  });
+  it('keeps the sequence inside a lesson that starts at 0', () => {
+    expect(isModuleUnlocked(() => false, 1, { firstModuleNumber: 0 })).toBe(false);
+    expect(isModuleUnlocked((key) => key === '0', 1, { firstModuleNumber: 0 })).toBe(true);
+  });
+  it('never asks for a negative module', () => {
+    expect(Number(lockedReasonData(0).previousModule)).toBeGreaterThanOrEqual(0);
+  });
+});
+
+// RÉGRESSION (2026-09-19) — un module TERMINÉ s'affichait « مقفل » quand son
+// prédécesseur ne l'était pas : l'élève lisait « أتمِم المحور 00 » sur un
+// module qu'il venait de finir, et ne pouvait plus y revenir.
+// RÉGRESSION (2026-09-19) — un diagnostic (`prerequisite_check`) barrait la
+// leçon : le premier vrai module affichait « أتمِم المحور 00 » alors qu'un
+// diagnostic est « client-side only, never persisted as evidence ».
+describe('un diagnostic ne barre pas le module suivant', () => {
+  it('ouvre le module qui suit un prerequisite_check non fait', () => {
+    expect(isModuleUnlocked(() => false, 1, { firstModuleNumber: 0, previousStage: 'prerequisite_check' })).toBe(true);
+  });
+  it('garde le verrou quand le module précédent enseigne vraiment', () => {
+    expect(isModuleUnlocked(() => false, 2, { firstModuleNumber: 0, previousStage: 'trigger' })).toBe(false);
+  });
+});
+
+describe('un module terminé ne se referme jamais', () => {
+  it('reste « mastered » même si le module précédent est incomplet', () => {
+    const status = getModuleStatus({ isModuleCompleted: (k) => k === '1', moduleNumber: 1, firstModuleNumber: 0 });
+    expect(status).toBe('mastered');
+  });
+  it('laisse le module suivant ouvert et le précédent inachevé verrouillé', () => {
+    const done = (k) => k === '1';
+    expect(getModuleStatus({ isModuleCompleted: done, moduleNumber: 2, firstModuleNumber: 0 })).not.toBe('locked');
+    expect(getModuleStatus({ isModuleCompleted: done, moduleNumber: 3, firstModuleNumber: 0 })).toBe('locked');
+  });
 });
 
 describe('getModuleStatus', () => {

@@ -13,7 +13,7 @@ et ce qui reste à décider.
 | Programme officiel (4 domaines, ci-dessous) | **FOURNI par le propriétaire du projet** (2026-09-16) |
 | Découpage en leçons | **FAIT (phase 7)** — un sujet = une leçon, soit 28 leçons |
 | Points d'apprentissage (LP) | **FOURNIS par le propriétaire (phase 7)** — 185, en arabe |
-| Contenu des leçons | NOT STARTED |
+| Contenu des leçons | **EN COURS (phase 8)** — unité 1 du manuel (8 leçons + synthèse) écrite ; voir `ALGERIA_PHASE8_UNIT1_TEXTBOOK_REPORT.md` |
 | Terminologie arabe officielle | PARTIELLE — celle du programme fourni est reprise telle quelle |
 
 **Note de lecture (phase 7).** Les mentions `À DÉCOMPOSER` et `NOT STARTED`
@@ -59,8 +59,8 @@ n'entre pas dans la 4AM, même s'il en est mathématiquement proche.
 
 | # | الموضوع (sujet) | Décomposition en LP | Dépendances | Statut |
 |---|---|---|---|---|
-| 2.1 | قواسم عدد طبيعي والقاسم المشترك الأكبر (PGCD) باستخدام خوارزمية أقليدس أو الفروق المتتالية | Le sujet énumère lui-même **deux méthodes** : خوارزمية أقليدس et الفروق المتتالية. Le reste (notion de قاسم, recherche des قواسم, définition du PGCD) `À DÉCOMPOSER` | aucune intra-programme | NOT STARTED |
-| 2.2 | الأعداد الأولية وكيفية كتابة كسر غير قابل للاختزال | Le sujet énumère **deux objets** : الأعداد الأولية, et الكسر غير القابل للاختزال. Leur articulation `À DÉCOMPOSER` | 2.1 (le PGCD sert à réduire) | NOT STARTED |
+| 2.1 | قواسم عدد طبيعي والقاسم المشترك الأكبر (PGCD) باستخدام خوارزمية أقليدس أو الفروق المتتالية | **FAIT (phase 8)** — couvert par les leçons 1–6 de l'unité 1 du manuel (`aadad-tabiiya-natiqa`) | aucune intra-programme | DONE |
+| 2.2 | الأعداد الأولية وكيفية كتابة كسر غير قابل للاختزال | **PARTIEL (phase 8)** — « كسر غير قابل للاختزال » couvert par les leçons 7–8 de l'unité 1 ; « الأعداد الأولية » attend son unité du manuel (`aadad-awwaliya`, `coming_soon`) | 2.1 (le PGCD sert à réduire) | PARTIAL |
 | 2.3 | الحساب على الجذور التربيعية : الجمع · الضرب · القسمة · تبسيط عبارة | **Quatre LP au moins, nommés par le programme lui-même** : الجمع, الضرب, القسمة, تبسيط عبارة. L'introduction de la notion de جذر تربيعي elle-même `À DÉCOMPOSER` | aucune intra-programme | NOT STARTED |
 | 2.4 | ناطقة مقام نسبة وجذر تربيعي لعدد موجب | `À DÉCOMPOSER` | 2.3 | NOT STARTED |
 
@@ -203,8 +203,10 @@ aucun équivalent au collège français et seront construits de zéro.
 ## 8. Architecture de contenu retenue
 
 ```
-apps/web/src/lessons/moyen/4am/<domaine>/<lecon>/
-    lesson.config.js        ← id, modules, stages, LP enseignés
+apps/web/src/lessons/moyen/4am/<domaine>/<unite>/<lecon>/      ← phase 8 : l'UNITÉ du manuel entre le domaine et la leçon
+    lesson.config.js        ← id, kind (lesson|synthesis), unit, modules, stages, LP enseignés, resources[]
+    content/textbook.js     ← le MANUEL au mot près, chaque bloc avec sa `source` (docs/sources/<classe>/<unité>/extraction.json)
+    content/exercises.js    ← les exercices du manuel rattachés à la leçon
     index.jsx               ← LessonIndex
     routes.jsx              ← montage + fournisseur de carte
     moduleContext.js
@@ -253,6 +255,8 @@ L'élève ne doit jamais se demander quoi faire.
 ---
 
 ## 10. Ce qu'il reste à faire
+
+**Fait en phase 8 (2026-09-18)** : l'unité 1 du manuel (8 leçons + synthèse), le système de manipulation réutilisable, la hiérarchie الوحدة en catalogue/base/API, la traçabilité manuel → plateforme. **Ouvert** : fournir les unités suivantes du manuel ; arbitrer le recouvrement `aadad-awwaliya` ↔ leçons 7–8 ; choisir la surface enseignant qui activera le mode classe des manipulations.
 
 **Fait en phase 6F** (voir `ALGERIA_PHASE6F_DATA_SCOPE_IMPLEMENTATION_REPORT.md`) :
 

@@ -104,19 +104,50 @@ export function createNote(token, note) {
 }
 
 /**
- * Les notes du carnet, éventuellement filtrées sur une leçon.
+ * Les notes du carnet.
  *
- * Le serveur remonte les notes « à revoir » d'abord — c'est la lecture par
- * défaut du carnet, qui sert à traiter ce qui reste en suspens.
+ * Deux lectures du même point d'entrée :
+ *  - `fetchNotes(token, 'lesson-code')` ou `fetchNotes(token)` : toutes les
+ *    notes (hors archives), à revoir d'abord — la lecture historique ;
+ *  - `fetchNotes(token, { view, q, sort, page, perPage, lessonCode, … })` :
+ *    une PAGE de « Mon cahier », avec `meta` (total, hasMore), `counts` (les
+ *    compteurs de l'en-tête) et `facets.lessons` (les leçons représentées).
  */
-export function fetchNotes(token, lessonCode = null) {
-  const query = lessonCode ? `?lessonCode=${encodeURIComponent(lessonCode)}` : '';
+export function fetchNotes(token, params = null) {
+  const search = new URLSearchParams();
+  if (typeof params === 'string') {
+    search.set('lessonCode', params);
+  } else if (params && typeof params === 'object') {
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== null && value !== undefined && value !== '' && value !== false) search.set(key, String(value));
+    });
+  }
+  const query = search.toString();
 
   return call(
-    `/practice/notes${query}`,
+    `/practice/notes${query ? `?${query}` : ''}`,
     { headers: { Authorization: `Bearer ${token}` } },
     'Impossible de charger ton carnet.',
   );
+}
+
+/** Une note seule, la mienne — 404 sinon. */
+export function fetchNote(token, id) {
+  return call(
+    `/practice/notes/${encodeURIComponent(id)}`,
+    { headers: { Authorization: `Bearer ${token}` } },
+    'Impossible de charger cette note.',
+  );
+}
+
+/** Une révision active : `known` (je la sais) ou `again` (à revoir plus tard). */
+export function reviewNote(token, id, outcome) {
+  return call(`/practice/notes/${encodeURIComponent(id)}/review`, auth(token, { outcome }), 'Impossible d’enregistrer la révision.');
+}
+
+/** Archiver, désarchiver, remettre à revoir ou supprimer plusieurs notes d'un coup. */
+export function bulkNotes(token, ids, action) {
+  return call('/practice/notes/bulk', auth(token, { ids, action }), 'Impossible d’appliquer l’action.');
 }
 
 /**

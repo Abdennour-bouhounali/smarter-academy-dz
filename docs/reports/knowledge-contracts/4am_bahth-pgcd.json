@@ -1,0 +1,394 @@
+{
+  "lesson": "bahth-pgcd",
+  "grade": "4am",
+  "lexiconVersion": 1,
+  "prerequisites": [
+    "khassiya-1",
+    "khassiya-2",
+    "pgcd-taarif"
+  ],
+  "conceptsIntroduced": [
+    {
+      "id": "pgcd-farq",
+      "type": "regles",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module01AlFuruq.jsx",
+        "line": 26,
+        "step": 1,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "pgcd-baqi",
+      "type": "regles",
+      "module": 2,
+      "brick": {
+        "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module02Khassiyatan.jsx",
+        "line": 34,
+        "step": 3,
+        "variant": "new"
+      }
+    }
+  ],
+  "vocabularyIntroduced": [],
+  "proceduresIntroduced": [
+    {
+      "id": "khwarizmiyat-al-furuq",
+      "type": "methodes",
+      "module": 1,
+      "brick": {
+        "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module01AlFuruq.jsx",
+        "line": 34,
+        "step": 2,
+        "variant": "new"
+      }
+    },
+    {
+      "id": "khwarizmiyat-iqlidus",
+      "type": "methodes",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module03KhwarizmiyatIqlidus.jsx",
+        "line": 25,
+        "step": 1,
+        "variant": "new"
+      }
+    }
+  ],
+  "memorisation": [
+    {
+      "id": "ikhtiyar-al-tariqa",
+      "type": "memoriser",
+      "module": 3,
+      "brick": {
+        "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module03KhwarizmiyatIqlidus.jsx",
+        "line": 34,
+        "step": 3,
+        "variant": "new"
+      }
+    }
+  ],
+  "questions": [
+    {
+      "questionId": "M01-S1-Q1",
+      "module": 1,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module01AlFuruq.jsx",
+      "line": 27,
+      "requires": [
+        "pgcd-farq"
+      ],
+      "prerequisiteStatus": {
+        "pgcd-farq": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S1-Q1",
+      "module": 2,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module02Khassiyatan.jsx",
+      "line": 24,
+      "requires": [
+        "pgcd-farq"
+      ],
+      "prerequisiteStatus": {
+        "pgcd-farq": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M02-S3-Q2",
+      "module": 2,
+      "step": 3,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module02Khassiyatan.jsx",
+      "line": 36,
+      "requires": [
+        "pgcd-baqi"
+      ],
+      "prerequisiteStatus": {
+        "pgcd-baqi": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M03-S1-Q1",
+      "module": 3,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module03KhwarizmiyatIqlidus.jsx",
+      "line": 26,
+      "requires": [
+        "pgcd-baqi",
+        "khwarizmiyat-iqlidus"
+      ],
+      "prerequisiteStatus": {
+        "pgcd-baqi": "established@M2",
+        "khwarizmiyat-iqlidus": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "E1",
+      "module": 5,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module05Itqan.jsx",
+      "line": 17,
+      "requires": [
+        "pgcd-farq"
+      ],
+      "prerequisiteStatus": {
+        "pgcd-farq": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "E2",
+      "module": 5,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module05Itqan.jsx",
+      "line": 19,
+      "requires": [
+        "khwarizmiyat-al-furuq"
+      ],
+      "prerequisiteStatus": {
+        "khwarizmiyat-al-furuq": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "E3",
+      "module": 5,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module05Itqan.jsx",
+      "line": 21,
+      "requires": [
+        "pgcd-baqi"
+      ],
+      "prerequisiteStatus": {
+        "pgcd-baqi": "established@M2"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "E4",
+      "module": 5,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module05Itqan.jsx",
+      "line": 23,
+      "requires": [
+        "khwarizmiyat-iqlidus"
+      ],
+      "prerequisiteStatus": {
+        "khwarizmiyat-iqlidus": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "E5",
+      "module": 5,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module05Itqan.jsx",
+      "line": 25,
+      "requires": [
+        "khwarizmiyat-iqlidus"
+      ],
+      "prerequisiteStatus": {
+        "khwarizmiyat-iqlidus": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "E6",
+      "module": 5,
+      "step": null,
+      "component": "boss",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module05Itqan.jsx",
+      "line": 27,
+      "requires": [
+        "ikhtiyar-al-tariqa"
+      ],
+      "prerequisiteStatus": {
+        "ikhtiyar-al-tariqa": "established@M3"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    }
+  ],
+  "findings": [
+    {
+      "code": "W_PRIOR_NOT_DIAGNOSED",
+      "severity": "medium",
+      "message": "priorKnowledge declares 'khassiya-1' but no Module 0 question diagnoses it",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/lesson.config.js",
+      "line": 0,
+      "module": null,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_PRIOR_NOT_DIAGNOSED",
+      "severity": "medium",
+      "message": "priorKnowledge declares 'khassiya-2' but no Module 0 question diagnoses it",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/lesson.config.js",
+      "line": 0,
+      "module": null,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "W_PRIOR_NOT_DIAGNOSED",
+      "severity": "medium",
+      "message": "priorKnowledge declares 'pgcd-taarif' but no Module 0 question diagnoses it",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/lesson.config.js",
+      "line": 0,
+      "module": null,
+      "step": null,
+      "term": null,
+      "questionId": null,
+      "position": -1
+    },
+    {
+      "code": "M_NAMED_IN_LOCKED_TITLE",
+      "severity": "medium",
+      "message": "« PGCD » est nommé dans le titre de l'étape 1 (module 1), lisible avant que l'étape ne s'ouvre",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module01AlFuruq.jsx",
+      "line": 23,
+      "module": 1,
+      "step": 1,
+      "term": "pgcd",
+      "questionId": null,
+      "position": 0
+    },
+    {
+      "code": "W_BRICK_MODULE_MISMATCH",
+      "severity": "medium",
+      "message": "brick 'khwarizmiyat-al-furuq' renders in module 2 but knowledge.jsx declares it under module 1 — the map attributes it to 1",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module02Khassiyatan.jsx",
+      "line": 30,
+      "module": 2,
+      "step": 2,
+      "term": null,
+      "questionId": null,
+      "position": 21
+    },
+    {
+      "code": "W_BRICK_MODULE_MISMATCH",
+      "severity": "medium",
+      "message": "brick 'khwarizmiyat-iqlidus' renders in module 4 but knowledge.jsx declares it under module 3 — the map attributes it to 3",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module04Awazzif.jsx",
+      "line": 15,
+      "module": 4,
+      "step": 1,
+      "term": null,
+      "questionId": null,
+      "position": 44
+    },
+    {
+      "code": "W_BRICK_MODULE_MISMATCH",
+      "severity": "medium",
+      "message": "brick 'khwarizmiyat-iqlidus' renders in module 4 but knowledge.jsx declares it under module 3 — the map attributes it to 3",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module04Awazzif.jsx",
+      "line": 15,
+      "module": 4,
+      "step": 2,
+      "term": null,
+      "questionId": null,
+      "position": 45
+    },
+    {
+      "code": "W_BRICK_MODULE_MISMATCH",
+      "severity": "medium",
+      "message": "brick 'khwarizmiyat-iqlidus' renders in module 4 but knowledge.jsx declares it under module 3 — the map attributes it to 3",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module04Awazzif.jsx",
+      "line": 15,
+      "module": 4,
+      "step": 3,
+      "term": null,
+      "questionId": null,
+      "position": 46
+    },
+    {
+      "code": "W_BRICK_MODULE_MISMATCH",
+      "severity": "medium",
+      "message": "brick 'khwarizmiyat-iqlidus' renders in module 4 but knowledge.jsx declares it under module 3 — the map attributes it to 3",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module04Awazzif.jsx",
+      "line": 15,
+      "module": 4,
+      "step": 4,
+      "term": null,
+      "questionId": null,
+      "position": 47
+    },
+    {
+      "code": "W_BRICK_MODULE_MISMATCH",
+      "severity": "medium",
+      "message": "brick 'khwarizmiyat-iqlidus' renders in module 4 but knowledge.jsx declares it under module 3 — the map attributes it to 3",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module04Awazzif.jsx",
+      "line": 15,
+      "module": 4,
+      "step": 5,
+      "term": null,
+      "questionId": null,
+      "position": 48
+    },
+    {
+      "code": "W_BRICK_MODULE_MISMATCH",
+      "severity": "medium",
+      "message": "brick 'khwarizmiyat-iqlidus' renders in module 4 but knowledge.jsx declares it under module 3 — the map attributes it to 3",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module04Awazzif.jsx",
+      "line": 15,
+      "module": 4,
+      "step": 6,
+      "term": null,
+      "questionId": null,
+      "position": 49
+    },
+    {
+      "code": "W_BRICK_MODULE_MISMATCH",
+      "severity": "medium",
+      "message": "brick 'khwarizmiyat-iqlidus' renders in module 4 but knowledge.jsx declares it under module 3 — the map attributes it to 3",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module04Awazzif.jsx",
+      "line": 15,
+      "module": 4,
+      "step": 7,
+      "term": null,
+      "questionId": null,
+      "position": 50
+    },
+    {
+      "code": "W_BRICK_MODULE_MISMATCH",
+      "severity": "medium",
+      "message": "brick 'khwarizmiyat-iqlidus' renders in module 4 but knowledge.jsx declares it under module 3 — the map attributes it to 3",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/bahth-pgcd/modules/Module04Awazzif.jsx",
+      "line": 15,
+      "module": 4,
+      "step": 8,
+      "term": null,
+      "questionId": null,
+      "position": 51
+    }
+  ]
+}

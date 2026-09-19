@@ -1,0 +1,58 @@
+{
+  "metadata": {
+    "title": "تمرين 25 — 56 و 65",
+    "estimatedMinutes": 3,
+    "tags": [
+      "إثبات"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-25",
+      "page": 15,
+      "section": "أوظّف تعلّماتي",
+      "number": 25
+    }
+  },
+  "statement": {
+    "content": "بيّن أن العددين الطبيعيين 56 و 65 أوليان فيما بينهما."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "PGCD(56 ; 65) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_awwaliyan-fima-baynahuma_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "65 = 56 × 1 + 9."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "56 = 9 × 6 + 2 ، 9 = 2 × 4 + 1."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "آخر باقٍ غير معدوم 1."
+        }
+      ],
+      "feedback": {
+        "correct": "65 = 56 + 9 ، 56 = 9 × 6 + 2 ، 9 = 2 × 4 + 1 ، 2 = 1 × 2 + 0.",
+        "incorrect": "خوارزمية إقليدس حتى الباقي 0."
+      }
+    }
+  ],
+  "id": "ex-4am-awwaliyan-fima-baynahuma-l3-001",
+  "lessonCode": "awwaliyan-fima-baynahuma",
+  "level": 3
+}

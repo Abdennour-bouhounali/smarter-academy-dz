@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Process;
 
@@ -58,7 +59,11 @@ class ScopeCurriculum extends Command
      */
     private const DEPENDENT_TABLES = [
         'chapters' => 'cascade',
+        'units' => 'cascade',
         'lessons' => 'cascade',
+        'lesson_prerequisites' => 'cascade',
+        'learning_point_prerequisites' => 'cascade',
+        'lesson_resources' => 'cascade',
         'learning_points' => 'cascade',
         'lesson_modules' => 'cascade',
         'practice_exercises' => 'cascade',
@@ -297,7 +302,7 @@ class ScopeCurriculum extends Command
     }
 
     /**
-     * @param  \Illuminate\Support\Collection<int, int>  $removedGradeIds
+     * @param  Collection<int, int>  $removedGradeIds
      * @return array<string, mixed>
      */
     private function countCurriculum($removedGradeIds): array
@@ -318,8 +323,8 @@ class ScopeCurriculum extends Command
     }
 
     /**
-     * @param  \Illuminate\Support\Collection<int, int>  $lessonIds
-     * @param  \Illuminate\Support\Collection<int, int>  $learningPointIds
+     * @param  Collection<int, int>  $lessonIds
+     * @param  Collection<int, int>  $learningPointIds
      * @return array<string, int>
      */
     private function countDependents($lessonIds, $learningPointIds): array
@@ -400,7 +405,7 @@ class ScopeCurriculum extends Command
      * l'ordre est écrit dans le dépôt au lieu d'être une propriété du schéma
      * que personne ne relit.
      *
-     * @param  \Illuminate\Support\Collection<int, int>  $removedGradeIds
+     * @param  Collection<int, int>  $removedGradeIds
      * @param  array<string, mixed>  $counts
      * @param  string[]  $retained
      */

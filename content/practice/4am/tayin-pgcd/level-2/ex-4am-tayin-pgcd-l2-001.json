@@ -1,0 +1,136 @@
+{
+  "metadata": {
+    "title": "نتائج مباشرة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نتائج مباشرة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-4-results",
+      "page": 12,
+      "section": "معارف",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 12): PGCD(a ; a) = a ، PGCD(a ; 0) = a ، PGCD(a ; b) = PGCD(b ; a)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "PGCD(28 ; 28) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_tayin-pgcd_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "28",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أكبر قاسم مشترك لـ 28 و 28."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "28 يقسم نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "PGCD(a ; a) = a."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(a ; a) = a.",
+        "incorrect": "عددان متساويان."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "PGCD(7 ; 0) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_tayin-pgcd_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كل عدد طبيعي غير معدوم يقسم 0."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قواسم 7: 1 و 7."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "PGCD(a ; 0) = a."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(a ; 0) = a.",
+        "incorrect": "كل عدد يقسم 0."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "0",
+          "id": "MISC-PGCD-SIFR"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "PGCD(8 ; 40) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_tayin-pgcd_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_tayin-pgcd_P2",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "40 = 8 × 5."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذا كان b قاسمًا لـ a فإن PGCD(a ; b) = b."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الترتيب لا يهم."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(8 ; 40) = PGCD(40 ; 8) = 8 لأن 8 قاسم للعدد 40.",
+        "incorrect": "هل 8 قاسم للعدد 40؟"
+      }
+    }
+  ],
+  "id": "ex-4am-tayin-pgcd-l2-001",
+  "lessonCode": "tayin-pgcd",
+  "level": 2
+}

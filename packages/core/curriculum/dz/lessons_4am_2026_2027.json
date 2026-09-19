@@ -21,49 +21,494 @@
     "",
     "`sourceTopicId` rattache chaque leçon à son sujet officiel : c'est la",
     "traçabilité que vérifie packages/core/curriculum/dz/decomposition.test.js",
-    "(tout sujet a une leçon, toute leçon a un sujet, aucun sujet inventé)."
+    "(tout sujet a une leçon, toute leçon a un sujet, aucun sujet inventé).",
+    "",
+    "RÈGLE ÉTENDUE (2026-09-18) : quand le manuel scolaire officiel est fourni pour une unité, ce sont SES",
+    "leçons (les rubriques numérotées de ses « أنشطة ») qui deviennent les leçons du catalogue, regroupées",
+    "sous une entrée de dz/units_4am_2026_2027.json (`unitId`). Chaque leçon garde `sourceTopicId` — la",
+    "traçabilité programme ↔ manuel est vérifiée par decomposition.test.js : tout sujet officiel reste",
+    "couvert par au moins une leçon, toute leçon vient d'un sujet officiel. Les leçons hors unité gardent",
+    "la règle « un sujet = une leçon ». `kind: synthesis` désigne « أدمج تعلّماتي », qui n'est pas un درس.",
+    "`pointPrerequisites` : les points d'apprentissage (codes complets) que chaque point suppose — un",
+    "prérequis PÉDAGOGIQUE (affiché, jamais bloquant), voir docs/architecture/LESSON_CONTRACT.md."
   ],
   "grade": "4am",
   "schoolYear": "2026/2027",
   "source": "Découpage et points d'apprentissage fournis par le propriétaire du projet (2026-09-16), sur la base du programme officiel transcrit dans programme_4am_2026_2027.json.",
-  "decompositionRule": "one_lesson_per_official_topic",
+  "decompositionRule": "one_lesson_per_official_topic_unless_textbook_unit",
   "verified": false,
   "verificationNote": "Le découpage 1 sujet = 1 leçon est une décision de projet, pas une prescription du programme officiel (qui ne fixe pas de frontières de leçons). Les intitulés arabes sont ceux du propriétaire.",
   "lessons": [
     {
-      "code": "pgcd",
+      "code": "qasim-adad-tabii",
       "sourceTopicId": "pgcd",
       "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "aadad-tabiiya-natiqa",
       "order": 0,
-      "decompositionType": "single_topic",
-      "decisionStatus": "owner_supplied",
-      "titleSource": "official_topic",
-      "description": "فهم قواسم عدد طبيعي والقاسم المشترك الأكبر لعددين، ثم التمكن من حسابه باستعمال خوارزمية أقليدس أو طريقة الفروق المتتالية.",
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "التعرّف على قاسم لعدد طبيعي",
+      "description": "التعرّف على قاسم لعدد طبيعي من خلال القسمة الإقليدية والمساواة a = b × q، واستعمال الصيغ المتكافئة: قاسم لـ، يقسم، يقبل القسمة على، مضاعف لـ.",
       "prerequisites": [
-        "الأعداد الطبيعية",
         "القسمة الإقليدية",
-        "قواسم عدد طبيعي"
+        "قواعد قابلية القسمة على 2 و3 و5 و9"
       ],
+      "prerequisiteLessonCodes": [],
       "pointsToLearn": [
-        "تعيين قواسم عدد طبيعي",
-        "تعيين القواسم المشتركة لعددين",
-        "فهم معنى القاسم المشترك الأكبر لعددين",
-        "حساب القاسم المشترك الأكبر باستعمال الفروق المتتالية",
-        "حساب القاسم المشترك الأكبر باستعمال خوارزمية أقليدس",
-        "التحقق من صحة حساب القاسم المشترك الأكبر",
-        "توظيف القاسم المشترك الأكبر في حل وضعية مشكلة"
+        "التعرّف على قاسم لعدد طبيعي من خلال الباقي المعدوم للقسمة الإقليدية",
+        "التعبير عن «b قاسم لـ a» بالمساواة a = b × q",
+        "استعمال الصيغ المتكافئة: قاسم لـ، يقسم، يقبل القسمة على، مضاعف لـ",
+        "معرفة أن 1 قاسم لكل عدد طبيعي وأن كل عدد طبيعي غير معدوم قاسم لنفسه"
       ],
-      "durationMinutes": 90,
-      "difficulty": "متوسط",
+      "pointPrerequisites": {},
+      "textbookRef": {
+        "unit": 1,
+        "activity": 1,
+        "pages": {
+          "activity": 8,
+          "knowledge": 10,
+          "exercises": 14
+        }
+      },
+      "durationMinutes": 45,
+      "difficulty": "سهل",
       "status": "available",
       "icon": "🔢",
+      "tier": "premium"
+    },
+    {
+      "code": "qawasim-adad-tabii",
+      "sourceTopicId": "pgcd",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "aadad-tabiiya-natiqa",
+      "order": 1,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "قواسم عدد طبيعي",
+      "description": "تعيين كل قواسم عدد طبيعي بكتابته على شكل جداء عاملين بكل الأشكال الممكنة، وبطريقة اختبار الأعداد التي مربعها أصغر من العدد أو يساويه.",
+      "prerequisites": [
+        "القسمة الإقليدية",
+        "قواعد قابلية القسمة على 2 و3 و4 و5 و9"
+      ],
+      "prerequisiteLessonCodes": [
+        "qasim-adad-tabii"
+      ],
+      "pointsToLearn": [
+        "كتابة عدد طبيعي على شكل جداء عاملين بكل الأشكال الممكنة",
+        "استنتاج كل قواسم عدد طبيعي من كتاباته على شكل جداء عاملين",
+        "تعيين قواسم عدد طبيعي باختبار الأعداد التي مربعها أصغر من العدد أو يساويه",
+        "توظيف قواعد قابلية القسمة على 2 و3 و4 و5 و9 في البحث عن القواسم"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_qasim-adad-tabii_P2"
+        ],
+        "P2": [
+          "4am_qawasim-adad-tabii_P1"
+        ],
+        "P3": [
+          "4am_qasim-adad-tabii_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 1,
+        "activity": 2,
+        "pages": {
+          "activity": 8,
+          "knowledge": 10,
+          "method": 11,
+          "exercises": 14
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "سهل",
+      "status": "available",
+      "icon": "🧮",
+      "tier": "premium"
+    },
+    {
+      "code": "khawass-qawasim",
+      "sourceTopicId": "pgcd",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "aadad-tabiiya-natiqa",
+      "order": 2,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "خواص قواسم عدد طبيعي",
+      "description": "خواص قواسم عدد طبيعي: القاسم المشترك لعددين يقسم مجموعهما وفرقهما وباقي القسمة الإقليدية لأحدهما على الآخر، وتعلّم البرهنة على خاصية من الشكل «إذا … فإنّ …».",
+      "prerequisites": [
+        "القسمة الإقليدية",
+        "الحساب على الأعداد الطبيعية"
+      ],
+      "prerequisiteLessonCodes": [
+        "qasim-adad-tabii",
+        "qawasim-adad-tabii"
+      ],
+      "pointsToLearn": [
+        "معرفة أن القاسم المشترك لعددين يقسم مجموعهما وفرقهما",
+        "معرفة أن قاسم عدد يقسم كل مضاعف له",
+        "معرفة أن القاسم المشترك لعددين يقسم باقي القسمة الإقليدية لأحدهما على الآخر",
+        "البرهان على خاصية من الشكل «إذا … فإنّ …» بإيجاد عدد طبيعي k حيث m = d × k"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_qasim-adad-tabii_P2"
+        ],
+        "P2": [
+          "4am_qasim-adad-tabii_P2"
+        ],
+        "P3": [
+          "4am_qasim-adad-tabii_P1"
+        ],
+        "P4": [
+          "4am_khawass-qawasim_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 1,
+        "activity": 3,
+        "pages": {
+          "activity": 8,
+          "knowledge": 10,
+          "method": 11,
+          "exercises": 14
+        }
+      },
+      "durationMinutes": 55,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "🧩",
+      "tier": "premium"
+    },
+    {
+      "code": "qasim-mushtarak-akbar",
+      "sourceTopicId": "pgcd",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "aadad-tabiiya-natiqa",
+      "order": 3,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "القاسم المشترك الأكبر لعددين طبيعيين",
+      "description": "القواسم المشتركة لعددين طبيعيين والقاسم المشترك الأكبر لهما، من وضعية تشكيل باقات متماثلة إلى التعريف والترميز PGCD (a ; b).",
+      "prerequisites": [
+        "قواسم عدد طبيعي"
+      ],
+      "prerequisiteLessonCodes": [
+        "qawasim-adad-tabii"
+      ],
+      "pointsToLearn": [
+        "تعيين القواسم المشتركة لعددين طبيعيين",
+        "التعرّف على القاسم المشترك الأكبر لعددين والترميز له بـ PGCD (a ; b)",
+        "تفسير وضعية توزيع في باقات متماثلة بلغة القواسم المشتركة والقاسم المشترك الأكبر",
+        "معرفة أن القواسم المشتركة لعددين هي قواسم قاسمهما المشترك الأكبر"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_qawasim-adad-tabii_P2"
+        ],
+        "P2": [
+          "4am_qasim-mushtarak-akbar_P1"
+        ],
+        "P3": [
+          "4am_qasim-mushtarak-akbar_P1"
+        ],
+        "P4": [
+          "4am_qasim-mushtarak-akbar_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 1,
+        "activity": 4,
+        "pages": {
+          "activity": 8,
+          "knowledge": [
+            10,
+            12
+          ],
+          "exercises": 14
+        }
+      },
+      "durationMinutes": 45,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "💐",
+      "tier": "premium"
+    },
+    {
+      "code": "tayin-pgcd",
+      "sourceTopicId": "pgcd",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "aadad-tabiiya-natiqa",
+      "order": 4,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "تعيين القاسم المشترك الأكبر لعددين طبيعيين",
+      "description": "تعيين القاسم المشترك الأكبر لعددين بحصر قواسم كل عدد ثم القواسم المشتركة ثم أكبرها، والنتائج المباشرة: PGCD(a ; a) = a، PGCD(a ; 0) = a، PGCD(a ; b) = PGCD(b ; a).",
+      "prerequisites": [
+        "قواسم عدد طبيعي"
+      ],
+      "prerequisiteLessonCodes": [
+        "qasim-mushtarak-akbar"
+      ],
+      "pointsToLearn": [
+        "تعيين PGCD (a ; b) بحصر قواسم كل عدد ثم القواسم المشتركة ثم أكبرها",
+        "استعمال النتائج المباشرة: PGCD(a ; a) = a، PGCD(a ; 0) = a، PGCD(a ; b) = PGCD(b ; a)",
+        "معرفة أن PGCD (a ; b) = b عندما يكون b قاسما للعدد a"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_qasim-mushtarak-akbar_P2",
+          "4am_qawasim-adad-tabii_P2"
+        ],
+        "P2": [
+          "4am_qasim-mushtarak-akbar_P2"
+        ],
+        "P3": [
+          "4am_qasim-mushtarak-akbar_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 1,
+        "activity": 5,
+        "pages": {
+          "activity": 8,
+          "knowledge": 12,
+          "exercises": [
+            14,
+            15
+          ]
+        }
+      },
+      "durationMinutes": 40,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "🎯",
+      "tier": "premium"
+    },
+    {
+      "code": "bahth-pgcd",
+      "sourceTopicId": "pgcd",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "aadad-tabiiya-natiqa",
+      "order": 5,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "البحث عن القاسم المشترك الأكبر لعددين طبيعيين",
+      "description": "البحث عن القاسم المشترك الأكبر لعددين بخوارزمية الفروق المتتابعة ثم بخوارزمية عمليات القسمات المتتابعة (خوارزمية إقليدس)، مع تبرير كل خطوة بالخاصيتين PGCD(a ; b) = PGCD(b ; a − b) و PGCD(a ; b) = PGCD(b ; r).",
+      "prerequisites": [
+        "القسمة الإقليدية"
+      ],
+      "prerequisiteLessonCodes": [
+        "khawass-qawasim",
+        "tayin-pgcd"
+      ],
+      "pointsToLearn": [
+        "تبرير المساواة PGCD(a ; b) = PGCD(b ; a − b) واستعمالها",
+        "حساب القاسم المشترك الأكبر بخوارزمية الفروق المتتابعة (آخر فرق غير معدوم)",
+        "تبرير المساواة PGCD(a ; b) = PGCD(b ; r) واستعمالها",
+        "حساب القاسم المشترك الأكبر بخوارزمية إقليدس (آخر باقٍ غير معدوم)",
+        "مقارنة الخوارزميتين من حيث عدد الخطوات واختيار الأنسب"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_khawass-qawasim_P1",
+          "4am_qasim-mushtarak-akbar_P2"
+        ],
+        "P2": [
+          "4am_bahth-pgcd_P1"
+        ],
+        "P3": [
+          "4am_khawass-qawasim_P3"
+        ],
+        "P4": [
+          "4am_bahth-pgcd_P3"
+        ],
+        "P5": [
+          "4am_bahth-pgcd_P2",
+          "4am_bahth-pgcd_P4"
+        ]
+      },
+      "textbookRef": {
+        "unit": 1,
+        "activity": 6,
+        "pages": {
+          "activity": 9,
+          "knowledge": 12,
+          "method": 13,
+          "exercises": 14
+        }
+      },
+      "durationMinutes": 65,
+      "difficulty": "صعب",
+      "status": "available",
+      "icon": "🔁",
+      "tier": "premium"
+    },
+    {
+      "code": "awwaliyan-fima-baynahuma",
+      "sourceTopicId": "aadad_awwaliya",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "aadad-tabiiya-natiqa",
+      "order": 6,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "العددان الأوّليّان فيما بينهما",
+      "description": "العددان الأوليان فيما بينهما: قاسمهما المشترك الأكبر يساوي 1؛ إثبات ذلك بحساب PGCD، ونفيه بإظهار قاسم مشترك يختلف عن 1.",
+      "prerequisites": [
+        "قواعد قابلية القسمة على 2 و3 و5 و9"
+      ],
+      "prerequisiteLessonCodes": [
+        "qasim-mushtarak-akbar",
+        "tayin-pgcd"
+      ],
+      "pointsToLearn": [
+        "التعرّف على عددين أوليين فيما بينهما (PGCD (a ; b) = 1)",
+        "إثبات أن عددين أوليان فيما بينهما بحساب قاسمهما المشترك الأكبر",
+        "إثبات أن عددين ليسا أوليين فيما بينهما بإظهار قاسم مشترك يختلف عن 1"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_qasim-mushtarak-akbar_P2"
+        ],
+        "P2": [
+          "4am_tayin-pgcd_P1"
+        ],
+        "P3": [
+          "4am_qawasim-adad-tabii_P4",
+          "4am_qasim-mushtarak-akbar_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 1,
+        "activity": 7,
+        "pages": {
+          "activity": 9,
+          "knowledge": 12,
+          "exercises": 15
+        }
+      },
+      "durationMinutes": 40,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "1️⃣",
+      "tier": "premium"
+    },
+    {
+      "code": "ikhtizal-kasr",
+      "sourceTopicId": "aadad_awwaliya",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "aadad-tabiiya-natiqa",
+      "order": 7,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "اختزال كسر",
+      "description": "اختزال كسر بالقسمة المتتابعة على قواسم مشتركة، التعرّف على الكسر غير القابل للاختزال، وكتابة كسر على الشكل غير القابل للاختزال بالقسمة على القاسم المشترك الأكبر.",
+      "prerequisites": [
+        "الأعداد الناطقة: الكسور، المقلوب، الجمع والضرب والقسمة"
+      ],
+      "prerequisiteLessonCodes": [
+        "bahth-pgcd",
+        "awwaliyan-fima-baynahuma"
+      ],
+      "pointsToLearn": [
+        "اختزال كسر بالقسمة المتتابعة على قواسم مشتركة",
+        "التعرّف على الكسر غير القابل للاختزال (بسطه ومقامه أوليان فيما بينهما)",
+        "كتابة كسر على الشكل غير القابل للاختزال بالقسمة على القاسم المشترك الأكبر",
+        "إعطاء نتيجة حساب على الأعداد الناطقة على شكل كسر غير قابل للاختزال"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_qasim-mushtarak-akbar_P1"
+        ],
+        "P2": [
+          "4am_awwaliyan-fima-baynahuma_P1"
+        ],
+        "P3": [
+          "4am_bahth-pgcd_P4",
+          "4am_ikhtizal-kasr_P2"
+        ],
+        "P4": [
+          "4am_ikhtizal-kasr_P3"
+        ]
+      },
+      "textbookRef": {
+        "unit": 1,
+        "activity": 8,
+        "pages": {
+          "activity": 9,
+          "knowledge": 12,
+          "method": 13,
+          "exercises": 15
+        }
+      },
+      "durationMinutes": 65,
+      "difficulty": "صعب",
+      "status": "available",
+      "icon": "➗",
+      "tier": "premium"
+    },
+    {
+      "code": "wadiya-idmajiya-aadad",
+      "sourceTopicId": "pgcd",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "aadad-tabiiya-natiqa",
+      "order": 8,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — الأعداد الطبيعيّة والأعداد النّاطقة",
+      "description": "وضعية إدماجية (ترميم واجهة معلم تاريخي) تُعبّئ قابلية القسمة وخواص القواسم، يسبقها اختبار «أؤكّد تعلّماتي» الذي يعيد كل سؤال إلى درسه.",
+      "prerequisites": [],
+      "prerequisiteLessonCodes": [
+        "qasim-adad-tabii",
+        "qawasim-adad-tabii",
+        "khawass-qawasim"
+      ],
+      "pointsToLearn": [
+        "حل وضعية إدماجية بتعبئة قابلية القسمة والقواسم والقاسم المشترك الأكبر"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_qawasim-adad-tabii_P4",
+          "4am_khawass-qawasim_P1",
+          "4am_qasim-mushtarak-akbar_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 1,
+        "pages": {
+          "qcm": 16,
+          "situation": 16
+        }
+      },
+      "durationMinutes": 40,
+      "difficulty": "صعب",
+      "status": "available",
+      "icon": "🏛️",
       "tier": "premium"
     },
     {
       "code": "aadad-awwaliya",
       "sourceTopicId": "aadad_awwaliya",
       "chapterId": "ansab_al_aadad_wal_hisab",
-      "order": 1,
+      "order": 9,
       "decompositionType": "single_topic",
       "decisionStatus": "owner_supplied",
       "titleSource": "official_topic",
@@ -92,7 +537,7 @@
       "code": "hisab-judhur",
       "sourceTopicId": "hisab_judhur",
       "chapterId": "ansab_al_aadad_wal_hisab",
-      "order": 2,
+      "order": 10,
       "decompositionType": "single_topic",
       "decisionStatus": "owner_supplied",
       "titleSource": "official_topic",
@@ -121,7 +566,7 @@
       "code": "nataqat-maqam",
       "sourceTopicId": "nataqat_maqam",
       "chapterId": "ansab_al_aadad_wal_hisab",
-      "order": 3,
+      "order": 11,
       "decompositionType": "single_topic",
       "decisionStatus": "owner_supplied",
       "titleSource": "official_topic",

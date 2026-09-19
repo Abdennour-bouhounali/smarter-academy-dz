@@ -1,4 +1,160 @@
 {
+  "awwaliyan-fima-baynahuma": {
+    "1": [
+      "ex-4am-awwaliyan-fima-baynahuma-l1-001"
+    ],
+    "2": [
+      "ex-4am-awwaliyan-fima-baynahuma-l2-001"
+    ],
+    "3": [
+      "ex-4am-awwaliyan-fima-baynahuma-l3-001",
+      "ex-4am-awwaliyan-fima-baynahuma-l3-002"
+    ],
+    "4": [
+      "ex-4am-awwaliyan-fima-baynahuma-l4-001"
+    ],
+    "5": [
+      "ex-4am-awwaliyan-fima-baynahuma-l5-001"
+    ]
+  },
+  "bahth-pgcd": {
+    "1": [
+      "ex-4am-bahth-pgcd-l1-001"
+    ],
+    "2": [
+      "ex-4am-bahth-pgcd-l2-001",
+      "ex-4am-bahth-pgcd-l2-002"
+    ],
+    "3": [
+      "ex-4am-bahth-pgcd-l3-001",
+      "ex-4am-bahth-pgcd-l3-002"
+    ],
+    "4": [
+      "ex-4am-bahth-pgcd-l4-001",
+      "ex-4am-bahth-pgcd-l4-002"
+    ],
+    "5": [
+      "ex-4am-bahth-pgcd-l5-001",
+      "ex-4am-bahth-pgcd-l5-002"
+    ]
+  },
+  "ikhtizal-kasr": {
+    "1": [
+      "ex-4am-ikhtizal-kasr-l1-001"
+    ],
+    "2": [
+      "ex-4am-ikhtizal-kasr-l2-001",
+      "ex-4am-ikhtizal-kasr-l2-002"
+    ],
+    "3": [
+      "ex-4am-ikhtizal-kasr-l3-001",
+      "ex-4am-ikhtizal-kasr-l3-002"
+    ],
+    "4": [
+      "ex-4am-ikhtizal-kasr-l4-001",
+      "ex-4am-ikhtizal-kasr-l4-002"
+    ],
+    "5": [
+      "ex-4am-ikhtizal-kasr-l5-001",
+      "ex-4am-ikhtizal-kasr-l5-002"
+    ]
+  },
+  "khawass-qawasim": {
+    "1": [
+      "ex-4am-khawass-qawasim-l1-001"
+    ],
+    "2": [
+      "ex-4am-khawass-qawasim-l2-001",
+      "ex-4am-khawass-qawasim-l2-002"
+    ],
+    "3": [
+      "ex-4am-khawass-qawasim-l3-001",
+      "ex-4am-khawass-qawasim-l3-002"
+    ],
+    "4": [
+      "ex-4am-khawass-qawasim-l4-001",
+      "ex-4am-khawass-qawasim-l4-002"
+    ],
+    "5": [
+      "ex-4am-khawass-qawasim-l5-001",
+      "ex-4am-khawass-qawasim-l5-002"
+    ]
+  },
+  "qasim-adad-tabii": {
+    "1": [
+      "ex-4am-qasim-adad-tabii-l1-001",
+      "ex-4am-qasim-adad-tabii-l1-002"
+    ],
+    "2": [
+      "ex-4am-qasim-adad-tabii-l2-001",
+      "ex-4am-qasim-adad-tabii-l2-002"
+    ],
+    "3": [
+      "ex-4am-qasim-adad-tabii-l3-001"
+    ],
+    "4": [
+      "ex-4am-qasim-adad-tabii-l4-001"
+    ],
+    "5": [
+      "ex-4am-qasim-adad-tabii-l5-001"
+    ]
+  },
+  "qasim-mushtarak-akbar": {
+    "1": [
+      "ex-4am-qasim-mushtarak-akbar-l1-001"
+    ],
+    "2": [
+      "ex-4am-qasim-mushtarak-akbar-l2-001"
+    ],
+    "3": [
+      "ex-4am-qasim-mushtarak-akbar-l3-001"
+    ],
+    "4": [
+      "ex-4am-qasim-mushtarak-akbar-l4-001"
+    ],
+    "5": [
+      "ex-4am-qasim-mushtarak-akbar-l5-001"
+    ]
+  },
+  "qawasim-adad-tabii": {
+    "1": [
+      "ex-4am-qawasim-adad-tabii-l1-001",
+      "ex-4am-qawasim-adad-tabii-l1-002"
+    ],
+    "2": [
+      "ex-4am-qawasim-adad-tabii-l2-001",
+      "ex-4am-qawasim-adad-tabii-l2-002"
+    ],
+    "3": [
+      "ex-4am-qawasim-adad-tabii-l3-001",
+      "ex-4am-qawasim-adad-tabii-l3-002"
+    ],
+    "4": [
+      "ex-4am-qawasim-adad-tabii-l4-001",
+      "ex-4am-qawasim-adad-tabii-l4-002"
+    ],
+    "5": [
+      "ex-4am-qawasim-adad-tabii-l5-001",
+      "ex-4am-qawasim-adad-tabii-l5-002"
+    ]
+  },
+  "tayin-pgcd": {
+    "1": [
+      "ex-4am-tayin-pgcd-l1-001"
+    ],
+    "2": [
+      "ex-4am-tayin-pgcd-l2-001"
+    ],
+    "3": [
+      "ex-4am-tayin-pgcd-l3-001"
+    ],
+    "4": [
+      "ex-4am-tayin-pgcd-l4-001"
+    ],
+    "5": [
+      "ex-4am-tayin-pgcd-l5-001"
+    ]
+  },
   "fonction-affine-2nde": {
     "1": [
       "ex-2de-fonction-affine-l1-001",

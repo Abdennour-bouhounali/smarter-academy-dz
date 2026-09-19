@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "title": "تمرين 17 — ثلاث حالات",
+    "estimatedMinutes": 5,
+    "tags": [
+      "حصر"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-17",
+      "page": 14,
+      "section": "أوظّف تعلّماتي",
+      "number": 17
+    }
+  },
+  "statement": {
+    "content": "جد في كل حالة القواسم المشتركة للعددين a و b ثم استنتج القاسم المشترك الأكبر لهما."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أ) a = 18 و b = 36 : PGCD(18 ; 36) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_tayin-pgcd_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "18",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قواسم 18: 1 ، 2 ، 3 ، 6 ، 9 ، 18."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كلها تقسم 36."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عندما يكون b قاسمًا لـ a: PGCD = b."
+        }
+      ],
+      "feedback": {
+        "correct": "كل قاسم لـ 18 يقسم 36؛ أكبرها 18.",
+        "incorrect": "18 قاسم لـ 36."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ب) a = 27 و b = 30 : PGCD(27 ; 30) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_tayin-pgcd_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قواسم 27؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قواسم 30؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المشترك: 1 ، 3."
+        }
+      ],
+      "feedback": {
+        "correct": "القواسم المشتركة: 1 و 3.",
+        "incorrect": "قواسم 27: 1 ، 3 ، 9 ، 27."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "جـ) a = 57 و b = 95 : PGCD(57 ; 95) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_tayin-pgcd_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "19",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قواسم 57: 1 ، 3 ، 19 ، 57."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قواسم 95: 1 ، 5 ، 19 ، 95."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المشترك: 1 ، 19."
+        }
+      ],
+      "feedback": {
+        "correct": "57 = 3 × 19 و 95 = 5 × 19.",
+        "incorrect": "ابحث عن قاسم مشترك أكبر من 1."
+      }
+    }
+  ],
+  "id": "ex-4am-tayin-pgcd-l3-001",
+  "lessonCode": "tayin-pgcd",
+  "level": 3
+}

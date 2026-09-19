@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { getAllGrades, courseLevels, dzCourseLevels, referenceCourseLevels } from './coursesData';
 import programme4am from './dz/programme_4am_2026_2027.json';
+import units4am from './dz/units_4am_2026_2027.json';
+import decomposition4am from './dz/lessons_4am_2026_2027.json';
 
 // Les invariants de FORME ci-dessous (durée, identifiants de points
 // d'apprentissage, chemins, origine) portent sur l'arbre FRANÇAIS DE
@@ -174,17 +176,40 @@ describe('catalogue algérien (dzCourseLevels)', () => {
     }
   });
 
-  it("déclare une leçon par sujet officiel (découpage arrêté en phase 7)", () => {
-    // La phase 6F laissait `lessons` vide faute de découpage arrêté. Il l'est
-    // depuis la phase 7, par décision du propriétaire : un sujet = une leçon.
-    // La traçabilité sujet ↔ leçon a sa propre couverture dans
-    // dz/decomposition.test.js ; ici on vérifie seulement que le catalogue
-    // porte bien des leçons, et que la terminale n'en a toujours aucune.
+  it("porte autant de leçons que le découpage en déclare — un compte DÉRIVÉ, jamais retapé", () => {
+    // Phase 7 : un sujet = une leçon (28). Phase 8 : les sujets couverts par
+    // une unité du manuel sont remplacés par les leçons de cette unité (plus
+    // sa synthèse). Le nombre attendu se CALCULE depuis les deux sources ;
+    // un littéral ici mentirait dès la prochaine unité.
+    // Un sujet couvert par une unité peut GARDER sa leçon « un sujet = une
+    // leçon » pour la part que l'unité ne traite pas (ex. الأعداد الأولية) :
+    // le compte part donc des sujets, pas d'un littéral.
+    const topicsInUnits = new Set(units4am.units.flatMap((u) => u.sourceTopicIds));
+    const singleTopicLessons = decomposition4am.lessons.filter((l) => !l.unitId);
+    for (const topic of sourceTopics.filter((t) => !topicsInUnits.has(t.id))) {
+      expect(singleTopicLessons.filter((l) => l.sourceTopicId === topic.id), topic.id).toHaveLength(1);
+    }
+    const unitLessons = decomposition4am.lessons.filter((l) => l.unitId).length;
     const lessons4am = grade4am.chapters.flatMap((c) => c.lessons);
-    expect(lessons4am).toHaveLength(28);
+    expect(lessons4am).toHaveLength(singleTopicLessons.length + unitLessons);
+    expect(lessons4am).toHaveLength(decomposition4am.lessons.length);
 
     const terminale = dzGrades.find(({ grade }) => grade.id === 'terminale_dz').grade;
     expect(terminale.chapters).toEqual([]);
+  });
+
+  it("greffe les unités du manuel sur leur chapitre sans déplacer les leçons", () => {
+    const chapter = grade4am.chapters.find((c) => c.id === units4am.units[0].chapterId);
+    expect(chapter.units.map((u) => u.id)).toEqual(units4am.units.filter((u) => u.chapterId === chapter.id).map((u) => u.code));
+    for (const unit of chapter.units) {
+      // Mêmes objets : l'unité RÉFÉRENCE les leçons du chapitre.
+      for (const lesson of unit.lessons) expect(chapter.lessons).toContain(lesson);
+      expect(unit.lessons.every((l) => l.kind === 'lesson')).toBe(true);
+      if (unit.synthesis) expect(unit.synthesis.kind).toBe('synthesis');
+      expect(unit.path).toBe(`/courses/moyen/4am/${chapter.id}/units/${unit.id}`);
+      // Le segment `units` est réservé au chemin des unités.
+      for (const lesson of chapter.lessons) expect(lesson.id).not.toBe('units');
+    }
   });
 
   it("dit où en est le curriculum de chaque classe, sans le laisser deviner", () => {

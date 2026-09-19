@@ -56,7 +56,7 @@ class ImportContentRegistry extends Command
             ])->all()
         );
 
-        foreach (['modules', 'exercises'] as $kind) {
+        foreach (['modules', 'exercises', 'resources'] as $kind) {
             foreach (['created', 'updated', 'retired'] as $change) {
                 foreach ($summary[$kind][$change] as $label) {
                     $this->line("  {$kind} {$change}: {$label}");

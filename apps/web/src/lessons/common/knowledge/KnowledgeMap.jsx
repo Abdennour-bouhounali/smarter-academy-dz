@@ -8,6 +8,8 @@ import { IS_RTL } from '../../../locale.js';
 import { useWorkspaceLayout } from '../../../context/WorkspaceLayoutContext';
 import { buildStructure, progressionByModule, HIGHLIGHT_CAT } from './knowledgeStructure';
 import ConceptVisual from './ConceptVisual';
+import AddToNotebookButton from '../../../features/practice/notebook/AddToNotebookButton';
+import { useLessonKnowledge } from './KnowledgeProvider';
 
 /*
  * RTL (ar-DZ — src/locale.js) : le panneau vit sur le bord de FIN de la zone
@@ -293,7 +295,9 @@ function StructuredView({ items, onSelect, columns = 1 }) {
 
 function ItemDetailView({ item, onBack, catColor }) {
   const { t } = useTranslation('lesson');
+  const { lessonId } = useLessonKnowledge();
   const theme = CAT_THEME[catColor];
+  const category = CATEGORIES.find((c) => c.id === item.type);
   return (
     <motion.div
       key="detail"
@@ -333,6 +337,12 @@ function ItemDetailView({ item, onBack, catColor }) {
 
       {/* Body */}
       {item.body}
+
+      {/* Vers le cahier — un geste explicite de l'élève, jamais une copie
+          automatique. La carte reste en lecture seule. */}
+      <div data-km-noprint="true">
+        <AddToNotebookButton item={item} lessonCode={lessonId} categoryLabel={category ? t(category.labelKey) : null} />
+      </div>
 
       {/* Manipulation reference — future-ready */}
       {item.manipulationRef && (

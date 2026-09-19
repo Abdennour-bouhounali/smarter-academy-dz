@@ -1,0 +1,64 @@
+{
+  "_comment": [
+    "Les UNITÉS (الوحدات) du manuel scolaire officiel de 4AM — le niveau entre le ميدان (chapitre du",
+    "catalogue) et le درس (leçon). Une unité regroupe les leçons que le manuel enseigne ensemble, dans",
+    "son ordre, et porte ce que le manuel place en tête et en queue d'unité : les objectifs",
+    "(« سأتعلّم في هذا الباب »), le défi d'ouverture (« تحدّ ») et la synthèse (« أدمج تعلّماتي »).",
+    "",
+    "SOURCE : le manuel officiel, transcrit dans docs/sources/4am/unit1/extraction.json (source de vérité",
+    "pédagogique). Rien ici n'est reformulé ; chaque champ arabe cite un élément de l'extraction.",
+    "",
+    "`sourceTopicIds` : les sujets du programme officiel que l'unité couvre (traçabilité programme ↔ manuel).",
+    "`synthesisLessonCode` : l'entité « أدمج تعلّماتي » — une leçon de `kind: synthesis`, jamais comptée",
+    "parmi les دروس de l'unité."
+  ],
+  "grade": "4am",
+  "schoolYear": "2026/2027",
+  "units": [
+    {
+      "code": "aadad-tabiiya-natiqa",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "order": 0,
+      "number": 1,
+      "titleAr": "الأعداد الطبيعيّة والأعداد النّاطقة",
+      "subtitleAr": "قواسم عدد طبيعي، القاسم المشترك الأكبر، العددان الأوليان فيما بينهما، اختزال كسر",
+      "sourceTopicIds": [
+        "pgcd",
+        "aadad_awwaliya"
+      ],
+      "textbook": {
+        "title": "كتاب الرياضيات — السنة الرابعة من التعليم المتوسط",
+        "generation": "الجيل الثاني",
+        "unit": 1,
+        "pages": "7–16",
+        "extraction": "docs/sources/4am/unit1/extraction.json"
+      },
+      "objectivesAr": [
+        "التعرّف على قاسم لعدد طبيعي.",
+        "تعيين مجموعة قواسم عدد طبيعي.",
+        "تعيين القاسم المشترك الأكبر لعددين طبيعيين.",
+        "التعرّف على عددين أوليين فيما بينهما.",
+        "كتابة كسر على الشكل غير القابل للاختزال."
+      ],
+      "challenge": {
+        "sourceElementId": "challenge",
+        "page": 7,
+        "titleAr": "تحدّ",
+        "textAr": "بمناسبة الدخول المدرسي الجديد قرّر رئيس البلدية توزيع حصص من المآزر للإناث وللذكور على المدارس الابتدائية الواقعة في إقليم البلدية. لتحقيق هذه العملية اقتنت مصالح البلدية 936 مئزرا ورديا للإناث و845 مئزرا أزرقًا للذكور. اقترح طريقة لتوزيع هذه المآزر بالتساوي على أكبر عدد ممكن من المدارس بحيث تتحصل كل مدرسة على العدد نفسه من المآزر من كل لون."
+      },
+      "aside": {
+        "sourceElementId": "history-euclid",
+        "page": 7,
+        "titleAr": "إقليدس",
+        "textAr": "إقليدس هو رياضياتي إغريقي، عاش في القرن الثالث قبل الميلاد. اشتهر بإصداراته في الرياضيات وخاصة السلسلة المتكوّنة من 13 جزءًا والتي تسمى (كتاب العناصر)؛ نجد في الجزء السابع من هذه السلسلة المبرهنة المتعلقة بالقاسم المشترك الأكبر وآلية حسابه، والتي تعرف اليوم بخوارزمية إقليدس.",
+        "captionAr": "إقليدس (325 - 265 ق.م)"
+      },
+      "synthesisLessonCode": "wadiya-idmajiya-aadad",
+      "prerequisitesAr": [
+        "القسمة الإقليدية",
+        "قواعد قابلية القسمة على 2 و3 و4 و5 و9",
+        "الأعداد الناطقة: الكسور، المقلوب، العمليات"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "metadata": {
+    "title": "معارف — 22 و 15",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تعريف"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-5",
+      "page": 12,
+      "section": "معارف",
+      "number": 5
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 12): قواسم 22 هي 1 ؛ 2 ؛ 11 ؛ 22 وقواسم 15 هي 1 ؛ 3 ؛ 5 ؛ 15."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "PGCD(15 ; 22) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_awwaliyan-fima-baynahuma_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أي أعداد مشتركة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "1 فقط."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "PGCD = 1."
+        }
+      ],
+      "feedback": {
+        "correct": "العددان 15 و 22 أوليان فيما بينهما.",
+        "incorrect": "قارن القائمتين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل يلزم أن يكون 15 عددًا أوليًا لكي يكون 15 و 22 أوليين فيما بينهما؟",
+      "learningPoints": [
+        {
+          "code": "4am_awwaliyan-fima-baynahuma_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا: «أوليان فيما بينهما» صفة للزوج، و 15 = 3 × 5",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-AWWALIYAN-ADAD-AWWALI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "15 = 3 × 5."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "22 = 2 × 11."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ولا قاسم مشترك إلا 1."
+        }
+      ],
+      "feedback": {
+        "correct": "الشرط الوحيد PGCD(15 ; 22) = 1.",
+        "incorrect": "15 = 3 × 5 ليس أوليًا، ومع ذلك…"
+      }
+    }
+  ],
+  "id": "ex-4am-awwaliyan-fima-baynahuma-l2-001",
+  "lessonCode": "awwaliyan-fima-baynahuma",
+  "level": 2
+}

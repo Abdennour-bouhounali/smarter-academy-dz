@@ -36,7 +36,7 @@ export default function HintPanel({ hints, remaining, onRequest, busy, disabled 
         >
           <Lightbulb className="w-4 h-4" aria-hidden="true" />
           {hints.length === 0 ? t('practice.askHint') : t('practice.anotherHint')}
-          <span className="font-mono text-xs text-amber-700">({remaining} restant{remaining > 1 ? 's' : ''})</span>
+          <span className="font-mono text-xs text-amber-700" dir="auto">({t('practice.hintsRemaining', { count: remaining })})</span>
         </button>
       )}
 

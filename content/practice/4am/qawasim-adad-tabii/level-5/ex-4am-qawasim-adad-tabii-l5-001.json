@@ -1,0 +1,65 @@
+{
+  "metadata": {
+    "title": "تمرين 11 — أعداد من ثلاثة أرقام",
+    "estimatedMinutes": 5,
+    "tags": [
+      "قواعد قابلية القسمة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-11",
+      "page": 14,
+      "section": "أوظّف تعلّماتي",
+      "number": 11
+    }
+  },
+  "statement": {
+    "content": "عيّن كل الأعداد الطبيعية التي تتكون من ثلاثة أرقام وتقبل القسمة على 3 وعلى 5 في آن واحد علما أن رقم العشرات فيها يساوي 7."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هذه الأعداد هي:",
+      "learningPoints": [
+        {
+          "code": "4am_qawasim-adad-tabii_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        270,
+        375,
+        570,
+        675,
+        870,
+        975
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "القسمة على 5: رقم الوحدات 0 أو 5."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "القسمة على 3: مجموع الأرقام مضاعف لـ 3."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مع 0: c + 7 مضاعف لـ 3؛ مع 5: c + 12 مضاعف لـ 3."
+        }
+      ],
+      "feedback": {
+        "correct": "الوحدات 0 أو 5، ومجموع الأرقام مضاعف لـ 3.",
+        "incorrect": "ابدأ بشرط القسمة على 5."
+      }
+    }
+  ],
+  "id": "ex-4am-qawasim-adad-tabii-l5-001",
+  "lessonCode": "qawasim-adad-tabii",
+  "level": 5
+}

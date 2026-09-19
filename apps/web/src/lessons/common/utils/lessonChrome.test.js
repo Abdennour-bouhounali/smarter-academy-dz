@@ -76,4 +76,16 @@ describe('source unique de vérité', () => {
     // Et il diffuse le contrat à ses enfants plutôt que de les laisser deviner.
     expect(layout).toContain('LessonChromeContext.Provider');
   });
+
+  it.each([
+    'lessons/common/components/LessonIndex.jsx',
+    'pages/UnitPage.jsx',
+  ])('%s dérive aussi son décalage haut du contrat', (rel) => {
+    // Le sommaire de leçon et la page d'unité vivent sous la même coquille
+    // que les modules : un `pt-16` fixe y laissait 64 px de vide chez l'élève
+    // connecté, dont le bureau n'a pas d'en-tête.
+    const src = read(rel);
+    expect(src).toContain('chrome.contentOffsetClass');
+    expect(src).not.toMatch(/min-h-screen[^"`]*pt-16/);
+  });
 });

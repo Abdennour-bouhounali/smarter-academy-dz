@@ -11,6 +11,9 @@ const studentAr = JSON.parse(
   readFileSync(new URL('../../i18n/locales/ar/student.json', import.meta.url), 'utf8'),
 );
 const home = readFileSync(resolve(here, 'StudentHome.jsx'), 'utf8');
+// La tuile des compétences vit dans son propre composant depuis la refonte
+// de la page en arbre (ميدان → وحدة → درس → نقاط التعلّم).
+const stats = readFileSync(resolve(here, '../../features/progression/components/ProgressionStats.jsx'), 'utf8');
 
 /**
  * « Ma progression » ne montre que la classe courante de l'élève.
@@ -59,7 +62,8 @@ describe('Ma progression est cadrée sur la classe de l’élève', () => {
     // sous-titre ET la tuile des compétences.
     expect(src).toMatch(/progression\.subtitleWithGrade/);
     expect(src).toMatch(/values=\{\{ grade: gradeLabel \}\}/);
-    expect(src).toMatch(/progression\.statMasteredWithGrade', \{ grade: gradeLabel \}/);
+    expect(src).toMatch(/<ProgressionStats [^>]*gradeLabel=\{gradeLabel\}/);
+    expect(stats).toMatch(/progression\.statMasteredWithGrade', \{ grade: gradeLabel \}/);
     expect(studentAr.progression.subtitleWithGrade).toContain('{{grade}}');
     expect(studentAr.progression.statMasteredWithGrade).toContain('{{grade}}');
     expect(src).not.toMatch(/toutes leçons/);

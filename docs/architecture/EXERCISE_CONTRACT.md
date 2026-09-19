@@ -106,3 +106,11 @@ An attempt should eventually capture:
 | `competency` | backend, once competencies exist | No |
 
 **Decision for this phase:** do not add an `attempts` table or start persisting attempt-level data. The reason isn't that it's unimportant — it's the single biggest gap for the eventual mastery/analytics system — but adding persistence for it means designing the backend attempt model *and* wiring a sync boundary, which is explicitly future-phase work (dashboards, mastery engine, analytics — §23 of the brief). What this phase does instead: make sure the frontend already computes every field above in a form that's trivial to send once that boundary exists (the Exercise Result shape carries `isCorrect`; `useAdaptiveExercise`'s `attempts`/`hintLevel` are already there, just unexposed). No architecture decision made now would need to be undone to add this later.
+
+
+## Phase 8 additions (2026-09-18)
+
+- **`answerType: 'integerSet'`** — a set of natural numbers (« عيّن كل قواسم العدد 84 »). Free separators, Arabic-Indic digits accepted; order and duplicates ignored; a strict subset is `partially_correct`. Evaluator `packages/core/practice/answerEvaluator.js` (`parseIntegerSet`), widget `features/practice/inputs/IntegerSetInput.jsx`.
+- **`evaluationPolicy.requiredForm: 'irreducible'`** is now **enforced** for `rational`: a value-equal but non-reduced fraction yields `partially_correct` with `feedbackKey: 'notIrreducible'` (`feedback.notIrreducible`).
+- **`content/practice/policy.json`** — per-lesson coverage minimum with a named source, read by `validate-exercises.mjs` (invariant 12). The default 3 × 5 is unchanged for every other lesson.
+- **`metadata.source`** — textbook provenance of an exercise file, read by `scripts/check-textbook-coverage.mjs`.

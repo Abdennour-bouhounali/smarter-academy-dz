@@ -200,3 +200,10 @@ Le workflow reste volontairement prudent :
   `config.php` qui prendrait le pas sur `.env`) ;
 - il refuse de partir si un domaine `smarter-academy.fr` apparaît dans ses
   variables (master spec §2).
+
+
+## Unité 1 du manuel (phase 8) — à appliquer sur Hostinger
+
+1. **Schéma** : `docs/deployment/HOSTINGER_UNIT1_MIGRATION.sql` (cinq migrations additives + lignes `migrations`). Sauvegarder, relire, exécuter dans phpMyAdmin.
+2. **Données** : `docs/deployment/HOSTINGER_UNIT1_CURRICULUM_DATA.sql`, généré par `php artisan smarter:curriculum-sql --grade=4am --retire-lesson=pgcd` — upserts PAR CODE, rejouables, sans DELETE, sans toucher `publication_status`. Les nouveaux modules/ressources/exercices naissent `draft`.
+3. **Pratique** : synchroniser `content/practice/` (dossier `4am/`, `policy.json`, `misconceptions.json`, `index.generated.json`) à côté de l'API.

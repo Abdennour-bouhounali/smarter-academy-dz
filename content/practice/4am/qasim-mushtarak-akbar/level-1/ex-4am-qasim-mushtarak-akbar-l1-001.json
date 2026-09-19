@@ -1,0 +1,63 @@
+{
+  "metadata": {
+    "title": "معارف — 12 و 18",
+    "estimatedMinutes": 3,
+    "tags": [
+      "قواسم مشتركة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-3",
+      "page": 10,
+      "section": "معارف",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 10): قواسم 12 هي 1 ، 2 ، 3 ، 4 ، 6 و 12؛ قواسم 18 هي 1 ، 2 ، 3 ، 6 ، 9 و 18."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "اكتب القواسم المشتركة للعددين 12 و 18.",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-mushtarak-akbar_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        1,
+        2,
+        3,
+        6
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن الأعداد التي تظهر في القائمتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "1 و 2 موجودان في القائمتين… وماذا بعد؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "القواسم المشتركة تقسم 12 و 18 في آن واحد."
+        }
+      ],
+      "feedback": {
+        "correct": "هي الأعداد الموجودة في القائمتين معًا.",
+        "incorrect": "قارن القائمتين عددًا عددًا."
+      }
+    }
+  ],
+  "id": "ex-4am-qasim-mushtarak-akbar-l1-001",
+  "lessonCode": "qasim-mushtarak-akbar",
+  "level": 1
+}

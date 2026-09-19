@@ -6,6 +6,7 @@ import programme4am from './dz/programme_4am_2026_2027.json' with { type: 'json'
 // Le découpage en leçons de ce programme (phase 7) — dérivé du précédent,
 // jamais concurrent : chaque leçon y déclare le sujet officiel dont elle vient.
 import lessons4am from './dz/lessons_4am_2026_2027.json' with { type: 'json' };
+import units4am from './dz/units_4am_2026_2027.json' with { type: 'json' };
 import { filterActiveCourseLevels } from './activeGrades.js';
 import { resolveLessonTier } from './freeLessons.js';
 
@@ -3083,14 +3084,27 @@ export const referenceCourseLevels = [
  * déclare telle quelle, plutôt que de se déguiser en leçon française.
  */
 function buildDzLesson(lesson, { levelId, gradeId, topicTitle }) {
+  const pointPrerequisites = lesson.pointPrerequisites ?? {};
   return {
     id: lesson.code,
-    // Le TITRE de la leçon est l'intitulé du sujet officiel, au mot près.
-    // Un sujet = une leçon (règle de découpage), donc réécrire le titre
-    // n'ajouterait rien et ferait diverger l'élève du programme qu'il révise.
-    title: topicTitle,
+    // Le TITRE de la leçon : l'intitulé du sujet officiel, au mot près, quand
+    // la leçon EST un sujet (règle phase 7) ; la rubrique du MANUEL, au mot
+    // près, quand la leçon vient d'une unité du manuel (titleSource
+    // 'textbook'). Dans les deux cas rien n'est réécrit par le projet.
+    title: lesson.titleSource === 'textbook' ? lesson.title : topicTitle,
+    officialTopicTitle: topicTitle,
+    titleSource: lesson.titleSource ?? 'official_topic',
+    // 'lesson' (un درس) ou 'synthesis' (« أدمج تعلّماتي » : la synthèse
+    // d'unité, jamais comptée parmi les leçons de l'unité).
+    kind: lesson.kind ?? 'lesson',
+    unitId: lesson.unitId ?? null,
+    textbookRef: lesson.textbookRef ?? null,
     description: lesson.description,
     prerequisites: lesson.prerequisites,
+    // Les leçons du catalogue dont celle-ci suppose les acquis — un prérequis
+    // PÉDAGOGIQUE (affiché à l'élève avec son état de maîtrise), jamais un
+    // verrou d'accès : la progression reste non bloquante (LESSON_CONTRACT).
+    prerequisiteLessonCodes: lesson.prerequisiteLessonCodes ?? [],
     pointsToLearn: lesson.pointsToLearn,
     // Même convention d'identifiant que le catalogue français
     // (`<classe>_<leçon>_P<n>`) : c'est elle que lisent l'import, les preuves
@@ -3102,6 +3116,9 @@ function buildDzLesson(lesson, { levelId, gradeId, topicTitle }) {
       id: `${gradeId}_${lesson.code}_P${i + 1}`,
       title,
       order: i + 1,
+      // Les points (codes complets) que ce point suppose acquis, avec le seuil
+      // de maîtrise du modèle serveur (MasteryModel::MASTERED_THRESHOLD).
+      prerequisites: (pointPrerequisites[`P${i + 1}`] ?? []).map((id) => ({ id, requiredMastery: 0.7 })),
     })),
     durationMinutes: lesson.durationMinutes,
     duration: lesson.durationMinutes != null ? `${lesson.durationMinutes} min` : '--',
@@ -3133,6 +3150,38 @@ function buildDzLesson(lesson, { levelId, gradeId, topicTitle }) {
   };
 }
 
+/** Le chemin de la page d'une unité du manuel. Le segment `units` est réservé : aucune leçon ne peut porter ce code. */
+export const DZ_UNIT_PATH_SEGMENT = 'units';
+export function buildDzUnitPath({ levelId, gradeId, chapterId, unitCode }) {
+  return `/courses/${levelId}/${gradeId}/${chapterId}/${DZ_UNIT_PATH_SEGMENT}/${unitCode}`;
+}
+
+/**
+ * Une unité (وحدة) du manuel : le niveau entre le ميدان et le درس. Elle porte
+ * ses leçons DANS L'ORDRE DU MANUEL et, à part, sa synthèse (« أدمج
+ * تعلّماتي »). Les intitulés viennent de dz/units_4am_2026_2027.json, qui
+ * cite lui-même l'extraction du manuel.
+ */
+function buildDzUnit(unit, lessonsOfUnit, { levelId, gradeId }) {
+  const built = lessonsOfUnit.slice().sort((a, b) => a.order - b.order);
+  return {
+    id: unit.code,
+    number: unit.number,
+    title: unit.titleAr,
+    subtitle: unit.subtitleAr ?? null,
+    objectives: unit.objectivesAr ?? [],
+    sourceTopicIds: unit.sourceTopicIds ?? [],
+    textbook: unit.textbook ?? null,
+    challenge: unit.challenge ?? null,
+    aside: unit.aside ?? null,
+    order: unit.order,
+    chapterId: unit.chapterId,
+    path: buildDzUnitPath({ levelId, gradeId, chapterId: unit.chapterId, unitCode: unit.code }),
+    lessons: built.filter((l) => l.kind !== 'synthesis'),
+    synthesis: built.find((l) => l.kind === 'synthesis') ?? null,
+  };
+}
+
 function buildDzCourseLevels() {
   const lessonsByChapter = new Map();
   for (const lesson of lessons4am.lessons) {
@@ -3155,8 +3204,11 @@ function buildDzCourseLevels() {
       ...(topic.namedMethodsAr ? { namedMethods: topic.namedMethodsAr } : {}),
       ...(topic.namedPartsAr ? { namedParts: topic.namedPartsAr } : {}),
     })),
-    // Les leçons issues du découpage (phase 7) : une par sujet officiel du
-    // chapitre, dans l'ordre du programme.
+    // Les leçons du chapitre, À PLAT, dans l'ordre du catalogue : celles des
+    // unités du manuel d'abord (phase 8), puis celles restées « un sujet =
+    // une leçon » (phase 7). C'est cette liste que lisent la carte des cours,
+    // la progression et l'export ; `units` ci-dessous la regroupe sans la
+    // remplacer.
     lessons: (lessonsByChapter.get(domain.id) ?? [])
       .slice()
       .sort((a, b) => a.order - b.order)
@@ -3166,6 +3218,19 @@ function buildDzCourseLevels() {
         topicTitle: domain.topics.find((t) => t.id === lesson.sourceTopicId)?.titleAr,
       })),
   }));
+
+  // Les UNITÉS du manuel, greffées sur leur chapitre. Une unité ne possède
+  // pas ses leçons : elle les référence (mêmes objets que `chapter.lessons`).
+  for (const chapter of chapters) {
+    chapter.units = units4am.units
+      .filter((u) => u.chapterId === chapter.id)
+      .slice()
+      .sort((a, b) => a.order - b.order)
+      .map((u) => buildDzUnit(u, chapter.lessons.filter((l) => l.unitId === u.code), {
+        levelId: 'moyen',
+        gradeId: programme4am.grade,
+      }));
+  }
 
   return [
     {
@@ -3301,4 +3366,39 @@ export function getLessonById(lessonId) {
  */
 export function getLessonPath(lessonId) {
   return getLessonById(lessonId)?.path || null;
+}
+
+/** Index des unités par code — même construction que LESSONS_BY_ID. */
+const UNITS_BY_ID = (() => {
+  const index = new Map();
+  for (const level of courseLevels) {
+    for (const grade of level.grades) {
+      for (const chapter of grade.chapters || []) {
+        for (const unit of chapter.units || []) {
+          if (!index.has(unit.id)) {
+            index.set(unit.id, {
+              ...unit,
+              gradeId: grade.id,
+              gradeName: grade.name,
+              levelId: level.id,
+              chapterTitle: chapter.title,
+            });
+          }
+        }
+      }
+    }
+  }
+  return index;
+})();
+
+/** L'unité du manuel portant ce code, chapitre et classe compris — ou `null`. */
+export function getUnitById(unitId) {
+  if (!unitId) return null;
+  return UNITS_BY_ID.get(unitId) || null;
+}
+
+/** L'unité qui porte une leçon, ou `null` pour une leçon hors unité. */
+export function getUnitOfLesson(lessonId) {
+  const lesson = getLessonById(lessonId);
+  return lesson?.unitId ? getUnitById(lesson.unitId) : null;
 }

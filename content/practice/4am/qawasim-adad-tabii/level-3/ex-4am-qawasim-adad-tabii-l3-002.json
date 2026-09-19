@@ -1,0 +1,115 @@
+{
+  "metadata": {
+    "title": "تمرين 4 — 910 ، 1000 ، 5 × 11",
+    "estimatedMinutes": 5,
+    "tags": [
+      "قواسم",
+      "قواعد"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-4",
+      "page": 14,
+      "section": "أوظّف تعلّماتي",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "عيّن جميع قواسم كل من الأعداد التالية: 910 ، 1000 و $5 \\times 11$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قواسم العدد $5 \\times 11$:",
+      "learningPoints": [
+        {
+          "code": "4am_qawasim-adad-tabii_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        1,
+        5,
+        11,
+        55
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب 5 × 11."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "5 و 11 قاسمان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ومعهما دائمًا 1 والعدد نفسه."
+        }
+      ],
+      "feedback": {
+        "correct": "55 = 5 × 11 يعطي مباشرة 5 و 11، ومعهما 1 و 55.",
+        "incorrect": "الكتابة على شكل جداء تعطي قاسمين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "قواسم العدد 1000:",
+      "learningPoints": [
+        {
+          "code": "4am_qawasim-adad-tabii_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        1,
+        2,
+        4,
+        5,
+        8,
+        10,
+        20,
+        25,
+        40,
+        50,
+        100,
+        125,
+        200,
+        250,
+        500,
+        1000
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "31² = 961 ≤ 1000 < 1024."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "1000 يقبل القسمة على 2 و 4 و 5 و 8 و 10 و 20 و 25."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لكل قاسم شريكه: 1000 ÷ d."
+        }
+      ],
+      "feedback": {
+        "correct": "نختبر حتى 31؛ قواعد القسمة على 2 و 4 و 5 تُسرّع.",
+        "incorrect": "1000 = 10 × 100 = 8 × 125 = 4 × 250 = …"
+      }
+    }
+  ],
+  "id": "ex-4am-qawasim-adad-tabii-l3-002",
+  "lessonCode": "qawasim-adad-tabii",
+  "level": 3
+}

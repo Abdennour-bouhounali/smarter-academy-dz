@@ -221,22 +221,36 @@ export default function StudentNavbar() {
           </div>
         )}
 
-        <div className={`py-4 border-t border-slate-100 flex flex-shrink-0 ${
-          sidebarCollapsed ? 'px-0 flex-col items-center gap-2' : 'px-4 items-center gap-3'
+        {/* LE BLOC D'IDENTITÉ EST LA PORTE DU PROFIL. Avatar, nom et classe
+            forment un seul lien vers /espace/profil ; l'entrée « Profil » de
+            la liste de navigation a disparu, elle disait deux fois la même
+            chose. La déconnexion reste un bouton séparé, hors du lien. */}
+        <div className={`py-3 border-t border-slate-100 flex flex-shrink-0 ${
+          sidebarCollapsed ? 'px-0 flex-col items-center gap-2' : 'px-3 items-center gap-1'
         }`}>
-          <div
-            className="w-9 h-9 rounded-full flex items-center justify-center text-white font-space font-bold text-xs flex-shrink-0"
-            style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}
-            title={sidebarCollapsed ? `${getDisplayName(user)} — ${grade ? grade.name : 'Classe non définie'}` : undefined}
+          <NavLink
+            to="/espace/profil"
+            title={sidebarCollapsed ? `${getDisplayName(user)} — ${grade ? grade.name : 'Classe non définie'}` : t('profile')}
+            aria-label={t('profile')}
+            className={({ isActive }) =>
+              `flex items-center rounded-xl transition-colors min-h-[44px] ${
+                sidebarCollapsed ? 'justify-center w-11' : 'flex-1 min-w-0 gap-3 px-2 py-1.5'
+              } ${isActive ? 'bg-slate-100' : 'hover:bg-slate-50'}`
+            }
           >
-            {initials}
-          </div>
-          {!sidebarCollapsed && (
-            <div className="min-w-0 flex-1">
-              <p className="font-space font-semibold text-slate-800 text-xs truncate">{getDisplayName(user)}</p>
-              <p className="font-inter text-slate-400 text-[11px]">{grade ? grade.name : 'Classe non définie'}</p>
+            <div
+              className="w-9 h-9 rounded-full flex items-center justify-center text-white font-space font-bold text-xs flex-shrink-0"
+              style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}
+            >
+              {initials}
             </div>
-          )}
+            {!sidebarCollapsed && (
+              <div className="min-w-0 flex-1 text-start">
+                <p className="font-space font-semibold text-slate-800 text-xs truncate">{getDisplayName(user)}</p>
+                <p className="font-inter text-slate-400 text-[11px]">{grade ? grade.name : 'Classe non définie'}</p>
+              </div>
+            )}
+          </NavLink>
           <button
             onClick={handleLogout}
             aria-label={t('logout')}
@@ -256,9 +270,25 @@ export default function StudentNavbar() {
           <span className="font-mono-jetbrains text-[10px] text-blue-500 font-semibold tracking-wider uppercase whitespace-nowrap">{t('studentSpace')}</span>
         </div>
         <div className="flex items-center gap-2">
-          {grade && (
-            <span className="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 font-space font-bold text-[11px]">{grade.name}</span>
-          )}
+          {/* Sur mobile le profil n'a plus d'onglet en bas : c'est l'avatar
+              (avec la classe) qui y mène, comme le bloc d'identité du bas de
+              la barre latérale sur grand écran. */}
+          <Link
+            to="/espace/profil"
+            aria-label={t('profile')}
+            title={t('profile')}
+            className="flex items-center gap-1.5 ps-1 pe-2.5 py-0.5 rounded-full bg-blue-50 hover:bg-blue-100 transition-colors"
+          >
+            <span
+              className="w-6 h-6 rounded-full flex items-center justify-center text-white font-space font-bold text-[10px] flex-shrink-0"
+              style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}
+            >
+              {initials}
+            </span>
+            {grade && (
+              <span className="text-blue-700 font-space font-bold text-[11px]">{grade.name}</span>
+            )}
+          </Link>
           <button
             onClick={handleLogout}
             aria-label={t('logout')}

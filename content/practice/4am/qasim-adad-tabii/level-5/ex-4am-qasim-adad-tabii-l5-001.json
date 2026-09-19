@@ -1,0 +1,172 @@
+{
+  "metadata": {
+    "title": "أؤكّد تعلّماتي — القسمة الإقليدية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "أؤكّد"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 16,
+      "section": "أؤكّد تعلّماتي"
+    }
+  },
+  "statement": {
+    "content": "في كل حالة اختر الإجابة الصحيحة (الكتاب ص 16)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "في القسمة الإقليدية للعدد 72 على 5 ...",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-adad-tabii_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "حاصل القسمة يساوي 14 والباقي 2",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "حاصل القسمة هو 2 والباقي 14",
+          "isCorrect": false,
+          "misconceptionId": "MISC-QISMA-HASIL-BAQI"
+        },
+        {
+          "id": "C",
+          "content": "حاصل القسمة هو 72 والباقي 5",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "5 × 14 = 70."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "72 − 70 = ?"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الباقي يجب أن يكون أصغر من 5."
+        }
+      ],
+      "feedback": {
+        "correct": "72 = 5 × 14 + 2.",
+        "incorrect": "الباقي أصغر من المقسوم عليه دائمًا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "في القسمة الإقليدية للعدد 84 على 12 ...",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-adad-tabii_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "حاصل القسمة هو 7 والباقي 12",
+          "isCorrect": false,
+          "misconceptionId": "MISC-QISMA-BAQI-KABIR"
+        },
+        {
+          "id": "B",
+          "content": "حاصل القسمة هو 7 والباقي 0",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "حاصل القسمة هو 7 والباقي 10",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "12 × 7 = 84."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ماذا يبقى؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "باقٍ يساوي المقسوم عليه غير ممكن."
+        }
+      ],
+      "feedback": {
+        "correct": "84 = 12 × 7 + 0: الباقي معدوم، إذن 12 قاسم للعدد 84.",
+        "incorrect": "12 × 7 = ?"
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "ما هي قواسم العدد 17؟",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-adad-tabii_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "1 و 17",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "17 فقط",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "1 فقط",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "a = 1 × a."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "a = a × 1."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل يقسم 17 عدد آخر بين 2 و 16؟"
+        }
+      ],
+      "feedback": {
+        "correct": "1 قاسم لكل عدد طبيعي، وكل عدد غير معدوم قاسم لنفسه.",
+        "incorrect": "لا تنسَ 1 ولا العدد نفسه."
+      }
+    }
+  ],
+  "id": "ex-4am-qasim-adad-tabii-l5-001",
+  "lessonCode": "qasim-adad-tabii",
+  "level": 5
+}

@@ -58,15 +58,18 @@ describe.skipIf(!fixtureLessonId)('getModulePath — le pont entre numéro et ro
 });
 
 describe('les appelants n’assemblent plus l’URL à la main', () => {
+  // L'accueil de l'espace délègue le rendu du héros à NextStepHero, qui
+  // reçoit la forme de getResumeLesson telle quelle (`step.resume`) : c'est
+  // là que « Continuer » lit son chemin.
   const CALLERS = [
-    'pages/Courses.jsx',
-    'pages/student/StudentHome.jsx',
-    'components/student/StudentHomeBanner.jsx',
+    ['pages/Courses.jsx', /continueCourse\.resumePath/],
+    ['features/home/components/NextStepHero.jsx', /resume\.resumePath/],
+    ['components/student/StudentHomeBanner.jsx', /continueCourse\.resumePath/],
   ];
 
-  it.each(CALLERS)('%s utilise resumePath', (file) => {
+  it.each(CALLERS)('%s utilise resumePath', (file, pattern) => {
     const src = readFileSync(resolve(srcRoot, file), 'utf8');
-    expect(src).toMatch(/continueCourse\.resumePath/);
+    expect(src).toMatch(pattern);
   });
 
   it('aucun fichier ne recolle un chemin de leçon à un numéro de module', () => {
