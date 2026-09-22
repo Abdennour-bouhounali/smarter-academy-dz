@@ -1041,6 +1041,99 @@ Even if only `super_admin` is implemented initially, keep authorization extensib
 
 # 33. UX requirements
 
+## 33.0 The panel is the same product as the student space
+
+> **Authoritative since 2026-09-22.** The Student Space is the single source
+> of truth for the visual identity of the DZ platform. The admin panel is
+> another **mode of the same application**, not a second application — only
+> the role and the available functionality change.
+
+This is a contract, not a preference, and `apps/web/src/pages/adminContract.test.js`
+enforces it on the source. Four commitments:
+
+**1 · Arabic.** Every user-facing string in the panel is Arabic, read from the
+`admin` i18n namespace (`apps/web/src/i18n/locales/ar/admin.json`). This
+covers page titles, `useDocumentMeta` titles, table column headers, filter and
+search labels, buttons, dialog titles and messages, empty/loading/error states,
+status badges, pagination and every `aria-label`. There is no "internal tool"
+exemption — see `ARABIC_RTL_CONTRACT.md` §1.
+
+Technical and mathematical identifiers are **not** translated (PGCD, PPCM, API,
+CSV, HTML, activity-log action codes, the brand name *Smarter Academy*), but
+the Arabic sentence around them is. `إدارة درس PGCD`, never `إدارة PGCD Lesson`.
+
+**2 · One design system.** The panel imports the product's tokens; it defines
+none of its own.
+
+| Concern | Source |
+|---|---|
+| Page gutter | `.sa-page` (20 / 40 / 60 px) — `index.css` |
+| Workspace shell | `.sa-workspace-main`, `.sa-workspace-sidebar` |
+| Type scale, fonts | `tailwind.config.js` (+25 % body scale; Cairo behind every stack) |
+| Background | `#FAFAFA` — identical to `StudentLayout` / `TeacherLayout` |
+| Cards | white surface, `border-slate-200`, `rounded-xl`; KPI tiles reuse `components/common/StatTile` — the same component as « تقدّمي » |
+| Semantic colour | emerald = success, rose = error, amber = warning, violet = premium/accent, slate = muted |
+
+The **only** role-level difference is the accent gradient, which names the
+space rather than rebuilding it:
+
+| Space | Accent |
+|---|---|
+| Student | `#3B82F6 → #8B5CF6` (blue → violet) |
+| Teacher | `#0F766E → #3B82F6` (teal → blue) |
+| Admin | `#8B5CF6 → #3B82F6` (violet → blue) — `ADMIN_GRADIENT` |
+
+The sidebar used to be `bg-slate-900`. It is now the student sidebar: white,
+`border-e border-slate-200`, gradient active pill, identity block in the
+footer. A dark admin theme is a regression the contract test rejects.
+
+**3 · RTL by construction.** `<html lang="ar" dir="rtl">` is global. Admin code
+uses **logical** properties only — `ms-`/`me-`, `ps-`/`pe-`, `start-`/`end-`,
+`text-start`/`text-end`, `border-e` — never `ml-`/`mr-`/`left-`/`right-`/
+`text-left`/`text-right`. Directional icons ("previous", "next", the sidebar
+rail) come from `components/common/DirectionalIcons`; semantic icons (search,
+trash, user, warning, vertical sort chevrons) are imported straight from lucide
+and are **never** mirrored.
+
+Numbers, ratios (`3 / 10`), emails, activation codes, join codes, IDs and URLs
+stay LTR inside the RTL shell — wrap them in `<Num>` or `dir="ltr"`, the same
+isolation `.sa-math-inline` gives mathematics.
+
+**4 · Shared chrome, not per-page invention.** `apps/web/src/pages/admin/adminUi.jsx`
+is the panel's only chrome module — the twin of `pages/teacher/teacherUi.jsx`:
+
+- `AdminPage`, `AdminSection`, `AdminCard` — page header and containers
+- `Loading`, `ErrorBox` — states
+- `useAdminLabels()` — the Arabic labels handed to `DataTable`, `Pagination`,
+  `ConfirmDialog` and `FilterBar`
+- `btnPrimary` / `btnSecondary` / `btnDanger` / `btnGhost`, `input`, `label`
+- `formatDate` (`ar-DZ`), `Num`, `ADMIN_GRADIENT`
+
+A new admin screen composes these. It does not restyle a button, redeclare a
+font, or write a date formatter.
+
+The shared kit (`components/admin/ui/*`) now defaults to Arabic and keeps every
+label overridable, so the teacher space can keep passing its own.
+
+**5 · The API sends codes, the panel writes the sentence.** A server response
+is not a localization surface (`ARABIC_RTL_CONTRACT.md` §2), and that applies
+to anything the panel *displays*, not just to error messages. Dashboard alerts
+therefore carry a `kind` and structured `params`:
+
+```php
+// DashboardService::alerts()
+['kind' => 'low_success_exercise',
+ 'params' => ['exercise' => $id, 'rate' => $rate, 'total' => $total],
+ 'label' => "Exercice … : …% de réussite…"]   // filet, pas l'affichage
+```
+
+The client resolves `dashboard.alerts.<kind>` with those params and falls back
+to `label` only for a `kind` it does not know. The same rule covers enum-ish
+values (`status`, module `stage`, analytics metric keys), each translated
+through a catalogue sub-map with a raw-key fallback.
+
+---
+
 The Admin Panel must be:
 
 - fast
@@ -1296,13 +1389,32 @@ compose.
 
 ```text
 free             règle, pas une ligne : tout compte actif le satisfait
-subscription     écrit plus tard par une synchronisation de paiement
+subscription     écrit par SubscriptionEntitlementSynchronizer à partir d'un abonnement
+                 activé À LA MAIN (activation directe par un administrateur, ou code
+                 d'activation lié à une offre) — jamais d'un paiement en ligne
 admin_override   dérogation accordée par un administrateur
 ```
 
-Le vocabulaire est clos à ces trois valeurs. `book_access`, `school_access`,
-`partner_access` ne sont pas implémentés — la colonne `type` est une chaîne
-libre pour qu'ils restent additifs, mais rien ne les connaît aujourd'hui.
+Le vocabulaire de la colonne `type` est clos à ces trois valeurs. `book_access`,
+`school_access`, `partner_access` ne sont pas implémentés — la colonne est une
+chaîne libre pour qu'ils restent additifs, mais rien ne les connaît aujourd'hui.
+
+**Une quatrième raison d'accès, sans ligne (2026-09-22) :** `teacher_subscription`.
+Un élève membre actif d'une classe (قسم) dont l'enseignant a un abonnement en
+cours portant le droit `students.covered` est premium *par son enseignant*.
+C'est évalué à chaque requête (`Domain\Plans\TeacherCoverage`, mémo vidé avec
+les autres), après `activation_code` dans l'ordre des raisons, et rien n'est
+écrit dans `entitlements` : suspendre l'abonnement de l'enseignant ferme la
+couverture à la requête suivante. Contrat complet dans
+[`TEACHER_CLASSROOM_ARCHITECTURE.md`](./TEACHER_CLASSROOM_ARCHITECTURE.md) §6.
+
+**Et une cinquième, par le rôle :** `teacher_role`. Un compte ENSEIGNANT actif
+lit tout le contenu publié, gratuit ou payant — il prépare ses cours, il ne les
+achète pas (l'unité de vente de son offre est l'élève). Aucune ligne : c'est
+`EntitlementService::decide` qui l'accorde, après le statut de compte et avant
+toute lecture de droits. La publication reste souveraine et la visibilité par
+classe ne le concerne pas (§8b du même contrat). Un enseignant n'ÉCRIT jamais
+de progression : middleware `learner`.
 
 ### L'invariant central : droit ≠ publication
 
@@ -1415,7 +1527,9 @@ traduit un état d'abonnement faisant autorité en lignes `entitlements` de type
 `subscription`.
 
 ```text
-fournisseur de paiement      ← PAS ENCORE (phase suivante)
+activation MANUELLE           SubscriptionActivationService : activation directe par un
+                              administrateur, ou code d'activation lié à une offre
+                              (jamais un fournisseur de paiement — produit DZ, Annexe A7)
       ↓
 subscriptions                 l'état qui FAIT AUTORITÉ
       ↓
@@ -1441,6 +1555,8 @@ Le vocabulaire vient de `Subscription::STATUSES`, tel qu'il existait déjà :
 | statut | droit | pourquoi |
 | --- | --- | --- |
 | `active` | ACTIF, de `started_at` à `ends_at` | — |
+| `trialing` | ACTIF, de `started_at` à `ends_at` | ajouté le 2026-09-22 (essai accordé à la main) |
+| `suspended` | RÉVOQUÉ | ajouté le 2026-09-22 : suspendre ferme l'accès, `resume` le rouvre, rien n'est supprimé |
 | `cancelled` | ACTIF jusqu'à `ends_at` | résilier n'est pas se faire rembourser : la période déjà payée reste due |
 | `cancelled` sans `ends_at` | aucun | rien à honorer |
 | `expired` | RÉVOQUÉ | — |
@@ -1546,4 +1662,65 @@ aux tests.
 ### Ce qui reste hors périmètre
 
 Stripe, encaissement, tunnel d'achat, webhooks de fournisseur, facturation,
-remboursements, page de tarifs marchande, accès livre, accès établissement.
+remboursements, page de tarifs marchande, accès livre, accès établissement
+comme objet propre (une école est servie par un lot de codes lié à une offre).
+Les offres configurables, les abonnements manuels, les enseignants et leurs
+classes sont l'Annexe A7.
+
+## A7. Enseignants, classes et offres configurables (2026-09-22)
+
+**Implémenté.** Le contrat vit dans
+[`TEACHER_CLASSROOM_ARCHITECTURE.md`](./TEACHER_CLASSROOM_ARCHITECTURE.md),
+qui fait autorité ; cette annexe ne dit que ce que le panneau en montre.
+
+### La règle commerciale du produit algérien
+
+```text
+aucun paiement en ligne, pour personne     ni tunnel, ni carte, ni fournisseur, ni webhook, ni « payer »
+gratuit                                     automatique : l'offre PAR DÉFAUT du type (plans.is_default), sans ligne
+vente individuelle                          l'argent est reçu HORS plateforme, puis l'administrateur
+                                            · active l'offre directement sur le compte, OU
+                                            · envoie UN code d'activation unique lié à l'offre
+vente en nombre (école, classe)             un lot de X codes lié à une version d'offre (et à une capacité) = X activations
+demande d'offre                             facultative, ne donne JAMAIS l'accès ; pending → fulfilled | rejected | cancelled
+unité de vente enseignant (2026-09-22)      le SIÈGE ÉLÈVE : l'enseignant choisit combien d'élèves distincts il encadre,
+                                            la grille de la version (plan_pricing_tiers) donne le prix par élève, total = N × prix ;
+                                            les classes sont illimitées et n'entrent dans aucun prix
+```
+
+Les prix sont informatifs : un montant fixe (`plan_prices`) pour une offre
+sans grille, un calcul serveur (`TeacherPricingService`) pour l'offre
+enseignant par sièges — le client affiche un aperçu et n'est jamais cru. La
+grille se modifie sur une version en BROUILLON et se publie ; un abonné garde
+sa version, ses sièges achetés et son prix figé (`student_seat_limit`,
+`seat_unit_price_cents`, `seat_total_cents`). `PlanCatalog` (dormant,
+`config/billing.php`) reste « config d'abord, base ensuite » : les offres
+commerciales enseignant/élève ne vivent qu'en base et aucun écran DZ ne lit
+`/billing/*`.
+
+### Ce que le panneau ajoute
+
+| Navigation | Page | Sert à |
+|---|---|---|
+| Enseignants | `/admin/enseignants`, `/admin/enseignants/{id}` | compte, **capacité élèves** (encadrés / capacité, restants, classes illimitées, sièges achetés, palier et prix à l'activation), offre courante, **Activer une offre** (avec le nombre d'élèves), **Envoyer un code d'activation** (avec sa capacité), demande (sièges, palier, total calculé), abonnement + historique, droits (valeur · utilisation · source, dérogations), classes, activité |
+| Élèves | `/admin/eleves/{id}` | le même bloc commercial (`CommercialPanel`, rôle-agnostique) sous la fiche apprentissage |
+| Classes | `/admin/classes`, `/admin/classes/{id}` | lecture seule : enseignant, effectif, leçons masquées, dernière activité |
+| Offres | `/admin/offres`, `/admin/offres/{id}` | éditeur : informations · demandes autorisées · versions (nouvelle, publier, gel) · capacité élèves · **grille de prix par élève** (paliers min/max/prix/devise/actif/ordre, erreurs listées avant l'enregistrement, aperçu « pour N élèves » local + vérification serveur) · durée activée · fonctionnalités · contenu · limites techniques · abonnés (sièges) |
+| Offres › Demandes | `/admin/offres/demandes` | la file `subscription_requests` avec sièges demandés et total calculé par le serveur ; « Activer » ouvre la fiche du compte, « Refuser » exige un motif |
+| Offres › Abonnements | `/admin/offres/abonnements` | offre, version, source (`acquisition_source`), accordé par ; Suspendre / Reprendre / Annuler / Prolonger / Changer d'offre |
+| Accès › Codes | `/admin/codes-activation` | le formulaire de lot gagne « Offre » (obligatoire pour une offre enseignant, facultatif pour un lot élève) et « Élèves par code » pour une offre par sièges ; les listes montrent l'offre et la capacité |
+
+Le tableau de bord compte enseignants, classes et demandes en attente ; une
+demande en attente est une alerte vers `/admin/offres/demandes`. Tout est
+journalisé dans la même transaction (`plan.*`, `plan_version.*`,
+`plan_override.*`, `subscription_request.*`, `subscription.*`,
+`activation_code.issued`, `teacher.status_changed`, `classroom*.*`).
+
+### Deux invariants que le panneau ne peut pas contourner
+
+- **Statut de compte ≠ statut d'abonnement.** Suspendre un compte ne touche
+  pas son abonnement ; suspendre un abonnement ne ferme pas le compte.
+- **Une rétrogradation ne détruit rien.** Expiration, suspension, annulation
+  ou offre plus petite : le résolveur retombe sur l'offre par défaut et
+  `overLimit` bloque la création (classe, adhésion, invitation). Classes,
+  membres, visibilités et progression restent lisibles.

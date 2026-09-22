@@ -514,6 +514,41 @@ Initial Algeria product:
 
 Premium access must be server-authoritative.
 
+### Extension (2026-09-22) — teachers, classes and configurable plans
+
+The model above is unchanged for an independent student and is extended, not
+replaced. Authoritative contract:
+[`architecture/TEACHER_CLASSROOM_ARCHITECTURE.md`](./architecture/TEACHER_CLASSROOM_ARCHITECTURE.md).
+
+- **No online payment for any user** — student, teacher or any future type.
+  Money is received outside the platform (cash, transfer, school payment).
+- **Free is automatic**: a verified account is on the default plan of its type
+  (`plans.is_default`), with no subscription row and no approval.
+- **Individual paid access is activated by an administrator**, either directly
+  on the account or by sending the user **one unique activation code** bound
+  to the plan.
+- **Bulk / school / class sales** are activation-code batches bound to a plan
+  version: X codes = X activations, one seat each, every code unique.
+- **A request for a plan is optional and never activates anything**; it is a
+  queue for the administration (`pending → fulfilled | rejected | cancelled`).
+- Plans, versions, prices (DZD, informational), entitlements and per-user
+  overrides are **database-driven** and changed by the admin without a deploy.
+  A plan version used by a subscription is immutable.
+- **Teacher plans are seat-based (2026-09-22).** The teacher buys a number of
+  student seats; classes are unlimited and never a pricing unit. The free
+  teacher plan grants a configurable seat allowance (initially 5). Pricing is
+  a database-configurable, versioned grid of tiers (seats range → price per
+  student); the server alone calculates `N × price`, and every subscription
+  and every activation code keeps the exact seats and price it was granted.
+  Unique students are counted (a student in two classes of one teacher is one
+  seat); invitations cannot bypass capacity; a downgrade blocks additions and
+  deletes nothing.
+- A teacher plan may **cover** the students of the teacher's classes (Model B);
+  the student's own code (Model A) still works; institution licences are
+  planned (Model C).
+- Account status and subscription status are separate; a downgrade never
+  deletes data.
+
 ### Activation code states
 
 The system should support states such as:
@@ -568,7 +603,12 @@ Do not display:
 
 Do not invent an Algerian payment API.
 
-Future online payment may be implemented later using a real authorized Algerian payment integration.
+This applies to every account type, teachers included: the teacher plans
+(2026-09-22) are activated by hand by an administrator, and their DZD prices
+are informational. Future online payment may be implemented later using a
+real authorized Algerian payment integration; it would be a new
+`acquisition_source` written through the manual activation service, never a
+new access path.
 
 ---
 
@@ -596,8 +636,11 @@ The Algerian admin should eventually provide country-specific management for:
 - exercises
 - learning points
 - visibility/free/premium status
-- activation codes
+- activation codes (and batches bound to a plan version)
 - students
+- teachers and their classes (الأقسام)
+- plans, versions, prices (informational), entitlements, per-user overrides
+- subscription requests (queue), manual subscriptions (activate / suspend / resume / cancel / extend / change plan)
 - access status
 - reports
 - analytics

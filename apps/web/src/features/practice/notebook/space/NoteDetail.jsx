@@ -10,6 +10,7 @@ import { fetchNote, updateNote, deleteNote } from '../../../../services/practice
 import NotebookEditor from '../NotebookEditor';
 import NotebookToolbar from '../NotebookToolbar';
 import NotebookContent from '../NotebookContent';
+import { useWorkspaceBase } from '../../../learning/learningViewer';
 import { MISTAKE_TYPES } from '../NotebookWindow';
 import {
   isRichContent, plainTextToHtml, sanitizeHtml, isEmptyContent, MAX_CONTENT_LENGTH,
@@ -17,7 +18,7 @@ import {
 import ConfirmDialog from './ConfirmDialog';
 import { PrintDialog } from './PrintSheet';
 import {
-  NOTE_TYPES, typeOf, contextTrail, sourceLinkFor, formatDate,
+  NOTE_TYPES, typeOf, contextTrail, sourceLinkFor, formatDate, notebookPaths,
 } from './noteMeta';
 import '../notebook.css';
 import './notebookSpace.css';
@@ -41,6 +42,8 @@ export default function NoteDetail() {
   const { noteId } = useParams();
   const navigate = useNavigate();
   const { token } = useContext(AuthContext);
+  const base = useWorkspaceBase();
+  const paths = notebookPaths(base);
 
   const [note, setNote] = useState(null);
   const [missing, setMissing] = useState(false);
@@ -125,7 +128,7 @@ export default function NoteDetail() {
     setConfirmDelete(false);
     try {
       await deleteNote(token, note.id);
-      navigate('/espace/cahier', { replace: true });
+      navigate(paths.root, { replace: true });
     } catch (e) {
       setError(e.message);
     }
@@ -145,7 +148,7 @@ export default function NoteDetail() {
 
   const type = typeOf({ ...note, noteType });
   const trail = contextTrail(note, t);
-  const source = sourceLinkFor(note);
+  const source = sourceLinkFor(note, base);
   const STATUS = {
     dirty: { Icon: Circle, label: t('notebook.window.statusDirty') },
     saving: { Icon: LoaderCircle, label: t('notebook.window.statusSaving') },
@@ -282,9 +285,10 @@ export default function NoteDetail() {
 
 function BackLink() {
   const { t } = useTranslation('student');
+  const paths = notebookPaths(useWorkspaceBase());
 
   return (
-    <Link to="/espace/cahier" className="inline-flex items-center gap-1.5 text-sm font-bold text-slate-500 hover:text-violet-800 min-h-[44px]" data-nb-back>
+    <Link to={paths.root} className="inline-flex items-center gap-1.5 text-sm font-bold text-slate-500 hover:text-violet-800 min-h-[44px]" data-nb-back>
       <ArrowRight size={16} aria-hidden="true" /> {t('notebook.space.detail.back')}
     </Link>
   );

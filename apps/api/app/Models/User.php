@@ -12,10 +12,9 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
- * `role` is a free-text string, not an enum: today it's only 'admin' or
- * 'student' ("Élève"), but it's deliberately not constrained at the schema
- * level so future account types ("famille", "enseignant") are additive —
- * a new allowed value, not a migration. Neither of those is implemented yet;
+ * `role` is a free-text string, not an enum: 'admin', 'student' ("Élève") and
+ * 'teacher' ("Enseignant", added without any migration — exactly the additive
+ * path this note used to promise). "Famille" remains a future account type;
  * this is a note on the existing column, not a speculative table.
  */
 #[Hidden(['password', 'remember_token'])]
@@ -79,6 +78,16 @@ class User extends Authenticatable
     public const ROLE_STUDENT = 'student';
 
     /**
+     * Le compte ENSEIGNANT (« الأستاذ »). Un rôle de plus dans la même
+     * colonne libre — aucune migration, comme la note ci-dessus l'annonçait.
+     * Il possède des classes (Classroom), jamais du contenu.
+     */
+    public const ROLE_TEACHER = 'teacher';
+
+    /** Les rôles qu'une inscription publique peut choisir. Jamais admin. */
+    public const SELF_REGISTERABLE_ROLES = [self::ROLE_STUDENT, self::ROLE_TEACHER];
+
+    /**
      * Statut de COMPTE — distinct du statut d'abonnement, qui vit dans
      * subscriptions. « Compte actif, abonnement expiré » est valide.
      *
@@ -103,6 +112,16 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->role === self::ROLE_ADMIN;
+    }
+
+    public function isTeacher(): bool
+    {
+        return $this->role === self::ROLE_TEACHER;
+    }
+
+    public function isStudent(): bool
+    {
+        return $this->role === self::ROLE_STUDENT;
     }
 
     /**
@@ -202,6 +221,49 @@ class User extends Authenticatable
             ->orderByDesc('started_at')
             ->orderByDesc('id')
             ->first();
+    }
+
+    /**
+     * L'abonnement qui COURT — celui dont découlent les limites d'offre.
+     *
+     * Distinct de currentSubscription() (le plus récent, quel que soit son
+     * état) : ici on ne retient qu'un abonnement qui ouvre encore quelque
+     * chose, rattaché à une version d'offre. Sans lui, l'utilisateur est sur
+     * l'offre par défaut de son type — le gratuit, sans aucune ligne.
+     */
+    public function runningSubscription(): ?Subscription
+    {
+        $now = now();
+
+        return $this->subscriptions()
+            ->whereNotNull('plan_version_id')
+            ->orderByRaw('started_at IS NULL')
+            ->orderByDesc('started_at')
+            ->orderByDesc('id')
+            ->get()
+            ->first(fn (Subscription $s) => $s->isRunning($now));
+    }
+
+    /** Les classes que ce compte POSSÈDE (enseignant). */
+    public function classrooms(): HasMany
+    {
+        return $this->hasMany(Classroom::class, 'teacher_id');
+    }
+
+    /** Les classes que ce compte a REJOINTES (élève). */
+    public function classroomMemberships(): HasMany
+    {
+        return $this->hasMany(ClassroomMembership::class, 'student_id');
+    }
+
+    public function planEntitlementOverrides(): HasMany
+    {
+        return $this->hasMany(PlanEntitlementOverride::class);
+    }
+
+    public function subscriptionRequests(): HasMany
+    {
+        return $this->hasMany(SubscriptionRequest::class);
     }
 
     public function reports(): HasMany

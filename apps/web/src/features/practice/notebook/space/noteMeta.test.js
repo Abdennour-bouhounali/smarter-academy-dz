@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
-  typeOf, questionNumber, exerciseLabel, sourceLinkFor, curriculumTree, timeAgo,
+  typeOf, questionNumber, exerciseLabel, sourceLinkFor, curriculumTree, timeAgo, notebookPaths,
 } from './noteMeta';
 
 const t = (key, opts) => {
@@ -29,6 +29,8 @@ describe('ce qu’une carte dit d’une note', () => {
 
   it('la source : le hub de pratique pour un exercice, la leçon (ou rien) sinon', () => {
     expect(sourceLinkFor({ lessonCode: 'qasim-mushtarak-akbar', exerciseId: 'ex-1' })).toEqual({ to: '/espace/pratique/qasim-mushtarak-akbar', kind: 'exercise' });
+    // Hors de l'espace élève (l'enseignant), la pratique n'existe pas : la note d'exercice renvoie à la leçon.
+    expect(sourceLinkFor({ lessonCode: 'qasim-mushtarak-akbar', exerciseId: 'ex-1' }, '/enseignant')?.kind).toBe('lesson');
     const lesson = sourceLinkFor({ lessonCode: 'qasim-mushtarak-akbar', moduleSlug: 'baqat', moduleNumber: 1 });
     expect(lesson.kind).toBe('lesson');
     expect(lesson.to.endsWith('/qasim-mushtarak-akbar/baqat')).toBe(true);
@@ -53,5 +55,13 @@ describe('ce qu’une carte dit d’une note', () => {
     expect(timeAgo(null)).toBe('');
     expect(timeAgo('pas une date')).toBe('');
     expect(timeAgo(new Date(Date.now() - 2 * 86400 * 1000).toISOString())).toMatch(/يوم|أمس|قبل/);
+  });
+});
+
+describe('notebookPaths — le cahier dans l’espace du lecteur', () => {
+  it('suit la racine de l’espace, /espace par défaut', () => {
+    expect(notebookPaths()).toMatchObject({ root: '/espace/cahier', review: '/espace/cahier/revision', courses: '/espace/cours' });
+    expect(notebookPaths('/enseignant')).toMatchObject({ root: '/enseignant/cahier', review: '/enseignant/cahier/revision', reviewView: '/enseignant/cahier?view=review', courses: '/enseignant/cours' });
+    expect(notebookPaths('/enseignant').note(12)).toBe('/enseignant/cahier/12');
   });
 });

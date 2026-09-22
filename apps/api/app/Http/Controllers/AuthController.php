@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Notifications\VerifyEmailAddress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
@@ -25,6 +26,10 @@ class AuthController extends Controller
             // n'existe volontairement aucun chemin de code lisant une version
             // depuis la requête.
             'accept_legal' => 'required|accepted',
+            // Le TYPE de compte, dans une liste blanche : élève (défaut) ou
+            // enseignant. Jamais admin — cette valeur n'est pas dans la liste,
+            // donc un client qui l'enverrait est refusé en 422, pas ignoré.
+            'accountType' => ['nullable', 'string', Rule::in(User::SELF_REGISTERABLE_ROLES)],
         ], [
             'email.unique' => 'Un compte existe déjà avec cet email.',
             'email.email' => 'Format email invalide.',
@@ -35,19 +40,23 @@ class AuthController extends Controller
             'accept_legal.accepted' => "Vous devez accepter les Conditions Générales d'Utilisation et la Politique de confidentialité.",
         ]);
 
-        // role is never taken from client input: every self-registration is a student
-        // (the only account type this phase implements — see User model note on future
-        // 'famille'/'enseignant' values). The only way to provision an admin is the
-        // CreateAdmin CLI command. first_name/last_name/grade are intentionally not
-        // collected here — the account is created from email+password alone, and
-        // grade is set afterwards via PATCH /auth/grade during onboarding.
+        // Le rôle vient d'une LISTE BLANCHE (student par défaut, teacher sur
+        // demande explicite) — jamais d'une valeur libre du client. Le seul
+        // moyen de créer un administrateur reste la commande CreateAdmin.
+        // first_name/last_name/grade ne sont pas collectés ici : le compte
+        // naît de l'email et du mot de passe, le reste vient après.
+        //
+        // Un enseignant n'a pas de classe scolaire (grade) : il possède des
+        // classes (Classroom), chacune avec la sienne. Il est immédiatement
+        // sur l'offre enseignant PAR DÉFAUT (gratuite) — aucune ligne, aucune
+        // approbation (voir PlanEntitlementResolver).
         //
         // Le consentement naît avec le compte, dans le même INSERT : il
         // n'existe pas d'instant où un compte existe sans lui.
         $user = User::create([
             'email' => $validated['email'],
             'password' => $validated['password'],
-            'role' => 'student',
+            'role' => $validated['accountType'] ?? User::ROLE_STUDENT,
             ...LegalConsent::current()->attributes(),
         ]);
 

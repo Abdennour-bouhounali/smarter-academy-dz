@@ -27,15 +27,24 @@ import marketing from './locales/ar/marketing.json';
 // Le مختبر الرياضيات (Math Lab) : le chrome des instruments et de leur
 // accueil. Les outils eux-mêmes n'ont pas de contenu pédagogique à traduire.
 import mathlab from './locales/ar/mathlab.json';
+// L'espace ENSEIGNANT (« فضاء الأستاذ ») : ses classes, ses élèves, son
+// offre. Le chrome seulement — l'enseignant lit les leçons dans la coquille
+// visiteur, il n'a pas de contenu à lui.
+import teacher from './locales/ar/teacher.json';
+// LA LOUVE DE L'ADMINISTRATION (« لوحة الإدارة ») : le chrome du panneau —
+// navigation, titres, colonnes, états, pastilles, dialogues. Le panneau parle
+// la MÊME langue que l'espace élève : le produit algérien est arabe pour tous
+// ses rôles, l'administration comprise (master spec §14, ARABIC_RTL_CONTRACT).
+import admin from './locales/ar/admin.json';
 
 i18n.use(initReactI18next).init({
   lng: LOCALE,
   fallbackLng: LOCALE,
   resources: {
-    [LOCALE]: { common, nav, auth, access, lesson, student, marketing, mathlab },
+    [LOCALE]: { common, nav, auth, access, lesson, student, marketing, mathlab, teacher, admin },
   },
   defaultNS: 'common',
-  ns: ['common', 'nav', 'auth', 'access', 'lesson', 'student', 'marketing', 'mathlab'],
+  ns: ['common', 'nav', 'auth', 'access', 'lesson', 'student', 'marketing', 'mathlab', 'teacher', 'admin'],
   interpolation: { escapeValue: false }, // React already escapes.
   returnEmptyString: false,
 });

@@ -3,6 +3,7 @@
 namespace App\Domain\Access\ActivationCodes;
 
 use App\Domain\Access\EntitlementService;
+use App\Domain\Plans\SubscriptionActivationService;
 use App\Models\ActivationCode;
 use App\Models\Entitlement;
 use App\Models\User;
@@ -48,7 +49,10 @@ use Illuminate\Support\Facades\Log;
  */
 class ActivationCodeRedemptionService
 {
-    public function __construct(private EntitlementService $entitlements) {}
+    public function __construct(
+        private EntitlementService $entitlements,
+        private SubscriptionActivationService $activation,
+    ) {}
 
     /**
      * Saisit un code au nom d'un élève.
@@ -72,7 +76,7 @@ class ActivationCodeRedemptionService
         $hash = ActivationCodeFormat::hash($normalized);
         $now = Carbon::now();
 
-        $code = DB::transaction(function () use ($student, $hash, $now, $normalized) {
+        $code = DB::transaction(function () use ($student, $hash, $now) {
             $code = ActivationCode::where('code_hash', $hash)
                 ->lockForUpdate()
                 ->first();
@@ -81,6 +85,18 @@ class ActivationCodeRedemptionService
                 $this->logRejection($student, ActivationCodeException::INVALID, null);
 
                 throw ActivationCodeException::invalid();
+            }
+
+            // Un code lié à une OFFRE ne s'active que pour le bon type de
+            // compte — et cela se vérifie AVANT la transition, pour ne pas
+            // consommer un code qui n'ouvrira rien.
+            $batch = $code->batch;
+            if ($batch !== null && $batch->activatesPlan()) {
+                $planType = $batch->planVersion?->plan?->type;
+                $userType = $student->isTeacher() ? 'teacher' : 'student';
+                if ($planType !== $userType) {
+                    throw $this->reject($student, ActivationCodeException::planMismatch(), $code);
+                }
             }
 
             // L'ordre des trois refus n'est pas indifférent : il va du plus
@@ -117,7 +133,33 @@ class ActivationCodeRedemptionService
                 throw $this->reject($student, ActivationCodeException::alreadyActivated(), $code);
             }
 
-            $batch = $code->batch;
+            // ── Un code lié à une OFFRE fait naître un ABONNEMENT ────────
+            // (vente en nombre, ou code individuel envoyé par l'administration).
+            // La synchronisation existante en tire le droit ; le code pointe
+            // sur ce droit-là, exactement comme sur le chemin classique, pour
+            // que la révocation sache quoi fermer.
+            if ($batch !== null && $batch->activatesPlan()) {
+                try {
+                    $subscription = $this->activation->activateFromCode($code, $student, $now);
+                } catch (QueryException $e) {
+                    $this->logRejection($student, ActivationCodeException::ALREADY_ACTIVATED, $code->code_hint);
+
+                    throw ActivationCodeException::alreadyActivated();
+                }
+
+                $entitlement = Entitlement::where('type', Entitlement::TYPE_SUBSCRIPTION)
+                    ->where('reference', 'subscription:'.$subscription->id)
+                    ->first();
+
+                $code->forceFill([
+                    'status' => ActivationCode::STATUS_ACTIVATED,
+                    'activated_at' => $now,
+                    'activated_by' => $student->id,
+                    'entitlement_id' => $entitlement?->id,
+                ])->save();
+
+                return $code;
+            }
 
             try {
                 $entitlement = Entitlement::create([

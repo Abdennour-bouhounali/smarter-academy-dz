@@ -1,23 +1,21 @@
 import React, { useCallback, useContext, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { AlertTriangle } from 'lucide-react';
-import AdminPage from '../../../components/admin/AdminPage';
+import { useTranslation } from 'react-i18next';
+import { AdminPage, AdminCard, Loading, ErrorBox, useAdminLabels, formatDate, Num, btnDanger, input } from '../adminUi';
 import StatusBadge from '../../../components/admin/ui/StatusBadge';
 import { ConfirmDialog } from '../../../components/admin/ui/Modal';
-import { LoadingState, ErrorState } from '../../../components/admin/ui/states';
 import { useAdminResource } from '../../../hooks/useAdminResource';
 import { useDocumentMeta } from '../../../hooks/useDocumentMeta';
 import { AuthContext } from '../../../context/AuthContext';
 import { fetchActivationCode, revokeActivationCode } from '../../../services/admin/activationCodeService';
 
-const DATE_TIME = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'short', timeStyle: 'short' });
-const formatDateTime = (iso) => (iso ? DATE_TIME.format(new Date(iso)) : '—');
-
-const ACTION_LABELS = {
-  'activation_codes.generated': 'Lot généré',
-  'activation_code.revoked': 'Code révoqué',
-  'activation_code_batch.revoked': 'Lot révoqué',
-  'activation_codes.exported': 'Codes exportés',
+/** Les actions du journal — la clé du catalogue, jamais le libellé. */
+const ACTION_KEYS = {
+  'activation_codes.generated': 'activation.actionBatchGenerated',
+  'activation_code.revoked': 'activation.actionCodeRevoked',
+  'activation_code_batch.revoked': 'activation.actionBatchRevoked',
+  'activation_codes.exported': 'activation.actionCodesExported',
 };
 
 /**
@@ -29,9 +27,11 @@ const ACTION_LABELS = {
  * « que s'est-il passé avec cette carte ? ».
  */
 export default function AdminActivationCodeDetail() {
+  const { t } = useTranslation('admin');
+  const L = useAdminLabels();
   const { id } = useParams();
   const { token } = useContext(AuthContext);
-  useDocumentMeta('Code d’activation — Administration');
+  useDocumentMeta(t('activation.detailMetaTitle'));
 
   const loader = useCallback((authToken) => fetchActivationCode(authToken, id), [id]);
   const { data, loading, error, reload } = useAdminResource(loader, [loader]);
@@ -46,9 +46,11 @@ export default function AdminActivationCodeDetail() {
   const entitlement = data?.entitlement;
   const history = data?.history ?? [];
 
+  const formatMoment = (iso) => formatDate(iso, { withTime: true });
+
   const confirmRevoke = async () => {
     if (!reason.trim()) {
-      setRevokeError('Indiquez le motif de la révocation.');
+      setRevokeError(t('activation.reasonRequired'));
       return;
     }
 
@@ -60,14 +62,14 @@ export default function AdminActivationCodeDetail() {
       setReason('');
       reload();
     } catch (caught) {
-      setRevokeError(caught.message || 'Impossible de révoquer ce code.');
+      setRevokeError(caught.message || t('activation.revokeCodeFailed'));
     } finally {
       setBusy(false);
     }
   };
 
-  if (loading) return <AdminPage eyebrow="Accès" title="Code d’activation"><LoadingState rows={5} /></AdminPage>;
-  if (error) return <AdminPage eyebrow="Accès" title="Code d’activation"><ErrorState message={error} onRetry={reload} /></AdminPage>;
+  if (loading) return <AdminPage eyebrow={t('activation.eyebrow')} title={t('activation.detailTitle')}><Loading rows={5} /></AdminPage>;
+  if (error) return <AdminPage eyebrow={t('activation.eyebrow')} title={t('activation.detailTitle')}><ErrorBox message={error} onRetry={reload} /></AdminPage>;
   if (!code) return null;
 
   const isActivated = code.status === 'activated';
@@ -75,117 +77,116 @@ export default function AdminActivationCodeDetail() {
 
   return (
     <AdminPage
-      eyebrow={<Link to="/admin/codes-activation" className="hover:underline">Codes d’activation</Link>}
-      title={`Code ••••-••••-${code.hint}`}
-      subtitle={batch?.label ? `Lot « ${batch.label} »` : undefined}
+      eyebrow={<Link to="/admin/codes-activation" className="hover:underline">{t('activation.title')}</Link>}
+      title={<>{t('activation.detailTitle')} <Num className="font-mono-jetbrains">••••-••••-{code.hint}</Num></>}
+      subtitle={batch?.label ? t('activation.batchNamed', { label: batch.label }) : undefined}
       actions={canRevoke ? (
         <button
           type="button"
           onClick={() => { setConfirming(true); setReason(''); setRevokeError(null); }}
-          className="rounded-lg border border-rose-300 bg-white px-3 py-2 font-inter text-xs font-semibold text-rose-700 hover:bg-rose-50"
+          className={btnDanger}
         >
-          Révoquer
+          {t('activation.revoke')}
         </button>
       ) : null}
     >
       <div className="space-y-3">
-        <section className="rounded-xl border border-slate-200 bg-white p-4">
-          <h2 className="mb-3 font-space text-sm font-bold text-slate-800">Le code</h2>
+        <AdminCard title={t('activation.theCode')}>
           <dl className="grid gap-3 sm:grid-cols-2">
-            <Row label="Statut"><StatusBadge status={code.status} /></Row>
-            <Row label="Indice">
-              <span className="font-mono-jetbrains text-xs" dir="ltr">••••-••••-{code.hint}</span>
+            <Row label={t('activation.columnStatus')}><StatusBadge status={code.status} /></Row>
+            <Row label={t('activation.columnHint')}>
+              <Num className="font-mono-jetbrains text-xs">••••-••••-{code.hint}</Num>
             </Row>
-            <Row label="Créé le">{formatDateTime(code.createdAt)}</Row>
-            <Row label="Utilisable jusqu’au">{formatDateTime(code.expiresAt)}</Row>
-            <Row label="Activé le">{formatDateTime(code.activatedAt)}</Row>
-            <Row label="Activé par">
+            <Row label={t('activation.columnCreated')}>{formatMoment(code.createdAt)}</Row>
+            <Row label={t('activation.redeemBy')}>{formatMoment(code.expiresAt)}</Row>
+            <Row label={t('activation.columnActivatedAt')}>{formatMoment(code.activatedAt)}</Row>
+            <Row label={t('activation.columnActivatedBy')}>
               {code.activatedBy
-                ? <Link to={`/admin/eleves/${code.activatedBy.id}`} className="text-blue-700 hover:underline">{code.activatedBy.email}</Link>
-                : '—'}
+                ? <Link to={`/admin/eleves/${code.activatedBy.id}`} className="text-violet-700 hover:underline"><Num>{code.activatedBy.email}</Num></Link>
+                : t('common.dash')}
             </Row>
             {code.revokedAt && (
               <>
-                <Row label="Révoqué le">{formatDateTime(code.revokedAt)}</Row>
-                <Row label="Révoqué par">{code.revokedBy ?? '—'}</Row>
-                <Row label="Motif">{code.revokeReason ?? '—'}</Row>
+                <Row label={t('activation.revokedAt')}>{formatMoment(code.revokedAt)}</Row>
+                <Row label={t('activation.revokedBy')}>{code.revokedBy ?? t('common.dash')}</Row>
+                <Row label={t('common.reason')}>{code.revokeReason ?? t('common.dash')}</Row>
               </>
             )}
           </dl>
 
           <p className="mt-3 font-inter text-[11px] text-slate-500">
-            Le code lui-même n’est pas conservé : seule son empreinte l’est. Il ne peut donc être
-            ni réaffiché, ni retrouvé — c’est ce qui fait qu’une fuite de la base ne donne aucun
-            code utilisable.
+            {t('activation.fingerprintOnly')}
           </p>
-        </section>
+        </AdminCard>
 
         {batch && (
-          <section className="rounded-xl border border-slate-200 bg-white p-4">
-            <h2 className="mb-3 font-space text-sm font-bold text-slate-800">Le lot</h2>
+          <AdminCard title={t('activation.theBatch')}>
             <dl className="grid gap-3 sm:grid-cols-2">
-              <Row label="Nom">{batch.label}</Row>
-              <Row label="Codes produits">{batch.quantity}</Row>
-              <Row label="Accès ouvert">
+              <Row label={t('common.name')}>{batch.label}</Row>
+              <Row label={t('activation.columnQuantity')}><Num>{batch.quantity}</Num></Row>
+              <Row label={t('activation.columnAccess')}>
                 {batch.accessEndsAt
-                  ? `jusqu’au ${formatDateTime(batch.accessEndsAt)}`
+                  ? t('activation.accessUntil', { date: formatMoment(batch.accessEndsAt) })
                   : batch.accessDays
-                    ? `${batch.accessDays} jour(s) à compter de la saisie`
-                    : 'sans fin'}
+                    ? t('activation.accessDaysFromRedemption', { count: batch.accessDays })
+                    : t('activation.accessEndless')}
               </Row>
-              <Row label="Créé par">{batch.createdBy ?? '—'}</Row>
-              {batch.notes && <Row label="Notes">{batch.notes}</Row>}
+              <Row label={t('activation.createdBy')}>{batch.createdBy ?? t('common.dash')}</Row>
+              {batch.notes && <Row label={t('common.note')}>{batch.notes}</Row>}
             </dl>
-          </section>
+          </AdminCard>
         )}
 
-        <section className="rounded-xl border border-slate-200 bg-white p-4">
-          <h2 className="mb-3 font-space text-sm font-bold text-slate-800">Le droit d’accès</h2>
+        <AdminCard title={t('activation.theEntitlement')}>
           {entitlement ? (
             <dl className="grid gap-3 sm:grid-cols-2">
-              <Row label="État">
+              <Row label={t('common.status')}>
                 <StatusBadge status={entitlement.status === 'active' ? 'active' : 'revoked'} />
-                {entitlement.valid ? ' · ouvre l’accès' : ' · n’ouvre plus l’accès'}
+                {entitlement.valid ? ` · ${t('activation.entitlementOpens')}` : ` · ${t('activation.entitlementClosed')}`}
               </Row>
-              <Row label="Depuis">{formatDateTime(entitlement.startsAt)}</Row>
-              <Row label="Jusqu’au">{entitlement.expiresAt ? formatDateTime(entitlement.expiresAt) : 'sans fin'}</Row>
-              {entitlement.revokedAt && <Row label="Révoqué le">{formatDateTime(entitlement.revokedAt)}</Row>}
+              <Row label={t('activation.entitlementFrom')}>{formatMoment(entitlement.startsAt)}</Row>
+              <Row label={t('activation.entitlementUntil')}>
+                {entitlement.expiresAt ? formatMoment(entitlement.expiresAt) : t('activation.accessEndless')}
+              </Row>
+              {entitlement.revokedAt && <Row label={t('activation.revokedAt')}>{formatMoment(entitlement.revokedAt)}</Row>}
             </dl>
           ) : (
             <p className="font-inter text-xs text-slate-500">
-              Aucun droit : ce code n’a pas encore été saisi.
+              {t('activation.noEntitlementYet')}
             </p>
           )}
-        </section>
+        </AdminCard>
 
-        <section className="rounded-xl border border-slate-200 bg-white p-4">
-          <h2 className="mb-3 font-space text-sm font-bold text-slate-800">Journal</h2>
+        <AdminCard title={t('activation.history')}>
           {history.length === 0 ? (
-            <p className="font-inter text-xs text-slate-500">Aucune action d’administration sur ce code.</p>
+            <p className="font-inter text-xs text-slate-500">{t('activation.noHistory')}</p>
           ) : (
             <ul className="divide-y divide-slate-100">
               {history.map((entry) => (
                 <li key={entry.id} className="flex flex-wrap items-baseline justify-between gap-2 py-2">
                   <span className="font-inter text-xs font-semibold text-slate-800">
-                    {ACTION_LABELS[entry.action] ?? entry.action}
+                    {ACTION_KEYS[entry.action] ? t(ACTION_KEYS[entry.action]) : entry.action}
                   </span>
                   <span className="font-inter text-xs text-slate-500">
-                    {entry.admin ?? '—'} · {formatDateTime(entry.createdAt)}
+                    {entry.admin ?? t('common.dash')} · {formatMoment(entry.createdAt)}
                   </span>
                 </li>
               ))}
             </ul>
           )}
-        </section>
+        </AdminCard>
       </div>
 
       <ConfirmDialog
         open={confirming}
         onClose={() => setConfirming(false)}
         onConfirm={confirmRevoke}
-        title="Révoquer ce code ?"
+        title={t('activation.revokeTitle')}
         tone="danger"
-        confirmLabel="Révoquer"
+        confirmLabel={t('activation.revoke')}
+        cancelLabel={L.dialog.cancelLabel}
+        busyLabel={L.dialog.busyLabel}
+        closeLabel={L.dialog.closeLabel}
         busy={busy}
         message={(
           <div className="space-y-3">
@@ -193,22 +194,26 @@ export default function AdminActivationCodeDetail() {
               <div className="flex items-start gap-2 rounded-lg border border-amber-300 bg-amber-50 p-2">
                 <AlertTriangle size={15} className="mt-0.5 shrink-0 text-amber-600" />
                 <p className="font-inter text-xs text-amber-900">
-                  Ce code a déjà été activé. Le révoquer FERMERA l’accès de
-                  {code.activatedBy ? ` ${code.activatedBy.email}` : ' l’élève concerné'}.
+                  {/* Le courriel sort de la phrase arabe : inséré dans le
+                      gabarit, l'algorithme bidi le recollerait au mauvais
+                      bout. Isolé par <Num>, il se lit tel qu'il est saisi. */}
+                  {code.activatedBy
+                    ? <>{t('activation.revokeActivatedWarningPrefix')} <Num>{code.activatedBy.email}</Num>{t('activation.revokeActivatedWarningSuffix')}</>
+                    : t('activation.revokeActivatedWarning')}
                 </p>
               </div>
             )}
             <p className="font-inter text-xs text-slate-600">
-              La ligne n’est jamais supprimée : l’historique reste lisible.
+              {t('activation.revokeKeepsHistory')}
             </p>
             <label className="block">
-              <span className="mb-1 block font-inter text-xs font-semibold text-slate-700">Motif (obligatoire)</span>
+              <span className="mb-1 block font-inter text-xs font-semibold text-slate-700">{t('activation.reasonLabel')}</span>
               <input
                 value={reason}
                 onChange={(event) => setReason(event.target.value)}
                 maxLength={255}
-                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 font-inter text-xs text-slate-800 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                placeholder="Carte revendue deux fois"
+                className={input}
+                placeholder={t('activation.reasonCodePlaceholder')}
               />
             </label>
             {revokeError && <p role="alert" className="font-inter text-xs text-rose-700">{revokeError}</p>}

@@ -3,8 +3,10 @@
 namespace App\Domain\Access\ActivationCodes;
 
 use App\Domain\Admin\ActivityLogger;
+use App\Domain\Plans\TeacherPricingService;
 use App\Models\ActivationCode;
 use App\Models\ActivationCodeBatch;
+use App\Models\PlanVersion;
 use App\Models\User;
 use DomainException;
 use Illuminate\Support\Carbon;
@@ -22,7 +24,7 @@ use Illuminate\Support\Facades\DB;
  */
 class ActivationCodeGenerator
 {
-    public function __construct(private ActivityLogger $log) {}
+    public function __construct(private ActivityLogger $log, private TeacherPricingService $pricing) {}
 
     /**
      * Combien de codes au maximum en un seul lot.
@@ -37,7 +39,14 @@ class ActivationCodeGenerator
     /**
      * Produit un lot et ses codes.
      *
-     * @param  array{label: string, quantity: int, accessDays?: ?int, accessEndsAt?: ?Carbon, redeemBy?: ?Carbon, notes?: ?string}  $attrs
+     * `planVersionId` lie le lot à une OFFRE : chaque code activera alors un
+     * abonnement sur cette version (vente en nombre à une école, une classe).
+     * `recipientUserId` marque un code individuel envoyé depuis une fiche.
+     * `studentSeatLimit` est la CAPACITÉ que chaque code ouvre sur une offre
+     * par sièges (« 10 codes × 30 élèves ») — figée sur le lot, jamais
+     * recalculée de la grille du jour de la saisie.
+     *
+     * @param  array{label: string, quantity: int, accessDays?: ?int, accessEndsAt?: ?Carbon, redeemBy?: ?Carbon, notes?: ?string, planVersionId?: ?int, recipientUserId?: ?int, studentSeatLimit?: ?int}  $attrs
      * @return array{batch: ActivationCodeBatch, codes: array<int, array{id: int, code: string, hint: string}>}
      *
      * @throws DomainException si les conditions du lot sont contradictoires
@@ -77,7 +86,10 @@ class ActivationCodeGenerator
             throw new DomainException('La date limite d\'utilisation doit être dans le futur.');
         }
 
-        return DB::transaction(function () use ($admin, $attrs, $quantity, $accessDays, $accessEndsAt, $redeemBy) {
+        $version = $this->resolvePlanVersion($attrs['planVersionId'] ?? null);
+        $seats = $this->resolveSeats($version, $attrs['studentSeatLimit'] ?? null);
+
+        return DB::transaction(function () use ($admin, $attrs, $quantity, $accessDays, $accessEndsAt, $redeemBy, $version, $seats) {
             $batch = ActivationCodeBatch::create([
                 'label' => $attrs['label'],
                 'quantity' => $quantity,
@@ -85,6 +97,9 @@ class ActivationCodeGenerator
                 'access_ends_at' => $accessEndsAt,
                 'redeem_by' => $redeemBy,
                 'notes' => $attrs['notes'] ?? null,
+                'plan_version_id' => $version?->id,
+                'student_seat_limit' => $seats,
+                'recipient_user_id' => $attrs['recipientUserId'] ?? null,
                 'created_by' => $admin->id,
             ]);
 
@@ -133,11 +148,72 @@ class ActivationCodeGenerator
                     'access_days' => $accessDays,
                     'access_ends_at' => optional($accessEndsAt)->toIso8601String(),
                     'redeem_by' => optional($redeemBy)->toIso8601String(),
+                    'plan' => $version?->plan?->slug,
+                    'plan_version' => $version?->version,
+                    'student_seat_limit' => $seats,
+                    'recipient_user_id' => $attrs['recipientUserId'] ?? null,
                 ],
             );
 
             return ['batch' => $batch, 'codes' => $codes];
         });
+    }
+
+    /**
+     * L'offre d'un lot : publiée (courante ou remplacée, jamais brouillon),
+     * et son offre encore activable. Un lot imprimé sur une offre archivée
+     * serait une promesse que personne ne tiendra.
+     *
+     * @throws DomainException
+     */
+    private function resolvePlanVersion(?int $planVersionId): ?PlanVersion
+    {
+        if ($planVersionId === null) {
+            return null;
+        }
+
+        $version = PlanVersion::with('plan')->find($planVersionId);
+        if ($version === null || $version->status === PlanVersion::STATUS_DRAFT) {
+            throw new DomainException('Cette version d\'offre ne peut pas être liée à un lot.');
+        }
+        if (! $version->plan->isActivatable() || $version->plan->is_default) {
+            throw new DomainException('Cette offre ne peut pas être liée à un lot.');
+        }
+
+        return $version;
+    }
+
+    /**
+     * La capacité d'un lot : obligatoire et tarifable pour une offre par
+     * sièges, facultative pour une offre classique, sans objet sans offre.
+     *
+     * @throws DomainException
+     */
+    private function resolveSeats(?PlanVersion $version, ?int $seats): ?int
+    {
+        if ($version === null) {
+            if ($seats !== null) {
+                throw new DomainException('Un nombre d\'élèves n\'a de sens que pour un lot lié à une offre.');
+            }
+
+            return null;
+        }
+
+        if ($version->isSeatBased()) {
+            if ($seats === null) {
+                throw new DomainException('Cette offre se vend par sièges : indiquez le nombre d\'élèves que chaque code ouvre.');
+            }
+            // Le devis vérifie qu'un palier couvre ce nombre.
+            $this->pricing->quote($version, $seats);
+
+            return $seats;
+        }
+
+        if ($seats !== null && $seats < 1) {
+            throw new DomainException('Le nombre d\'élèves doit être d\'au moins 1.');
+        }
+
+        return $seats;
     }
 
     /**

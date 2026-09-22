@@ -48,8 +48,9 @@ Module completion → authoritative progress (useProgress) → knowledge contrib
 ```
 
 The layout state lives in `src/context/WorkspaceLayoutContext.jsx`, mounted above the router in
-`App.jsx` — **above both shells**, since `CourseLayout` picks `StudentLayout` or `MainLayout` by
-authentication and the column must work under either. `mode` is `closed | normal | prior`; only
+`App.jsx` — **above every shell**, since `CourseLayout` picks `StudentLayout`, `TeacherLayout` (a
+teacher reads the same lesson in their own space — `TEACHER_CLASSROOM_ARCHITECTURE.md` §8b) or
+`MainLayout` by the reader, and the column must work under any of them. `mode` is `closed | normal | prior`; only
 `prior` changes the shell, so the drawer and expanded geometry (locked by `km-layout.mjs` and the
 ten `*-carte.mjs` suites) are untouched.
 

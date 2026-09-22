@@ -32,6 +32,20 @@ final class AccessDecision
     /** L'accès vient d'une dérogation d'administration. */
     public const VIA_ADMIN_OVERRIDE = 'admin_override';
 
+    /**
+     * L'accès vient de l'OFFRE DE L'ENSEIGNANT (modèle B) : l'élève est
+     * membre actif d'une classe dont l'enseignant couvre ses élèves.
+     * Évalué dynamiquement, jamais une ligne — voir TeacherCoverage.
+     */
+    public const VIA_TEACHER_SUBSCRIPTION = 'teacher_subscription';
+
+    /**
+     * Un compte ENSEIGNANT lit tout le contenu publié : il prépare ses cours
+     * avant de les donner, et l'unité de vente de son offre est l'élève, pas
+     * le contenu. Aucune ligne `entitlements` — c'est le rôle qui ouvre.
+     */
+    public const VIA_TEACHER_ROLE = 'teacher_role';
+
     /** Refus : contenu payant, aucun droit valide. */
     public const PREMIUM_REQUIRED = 'premium_required';
 

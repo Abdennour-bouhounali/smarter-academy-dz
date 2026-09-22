@@ -207,3 +207,38 @@ Le workflow reste volontairement prudent :
 1. **Schéma** : `docs/deployment/HOSTINGER_UNIT1_MIGRATION.sql` (cinq migrations additives + lignes `migrations`). Sauvegarder, relire, exécuter dans phpMyAdmin.
 2. **Données** : `docs/deployment/HOSTINGER_UNIT1_CURRICULUM_DATA.sql`, généré par `php artisan smarter:curriculum-sql --grade=4am --retire-lesson=pgcd` — upserts PAR CODE, rejouables, sans DELETE, sans toucher `publication_status`. Les nouveaux modules/ressources/exercices naissent `draft`.
 3. **Pratique** : synchroniser `content/practice/` (dossier `4am/`, `policy.json`, `misconceptions.json`, `index.generated.json`) à côté de l'API.
+
+## Enseignants, classes et offres configurables — à appliquer sur Hostinger
+
+1. **Schéma + offres initiales** : `docs/deployment/HOSTINGER_TEACHER_PLANS_MIGRATION.sql`
+   (douze migrations additives `2026_09_26_*` puis quatre `2026_09_27_*`
+   — tarification par sièges —, lignes `migrations`, puis le miroir de
+   `PlanSeeder` en upserts rejouables). Sauvegarder, relire, exécuter dans
+   phpMyAdmin. Le bloc « VÉRIFICATION » doit rendre 11 tables, 10 + 3 + 4
+   colonnes, 16 lignes de migration, 3 offres (dont la grille de 6 paliers de
+   `teacher-seats`) et **exactement une** offre enseignant par défaut. Si `artisan` est disponible, l'équivalent est
+   `php artisan migrate --force && php artisan db:seed --class=PlanSeeder --force`.
+2. **`.env`** : `FRONTEND_URL` doit être l'URL publique du SPA — les liens
+   d'invitation (`/rejoindre/{token}`) en dérivent. Facultatif :
+   `CLASSROOM_INVITATION_TTL_DAYS` (14), `CLASSROOM_INVITATION_URL`,
+   `CLASSROOM_ACTIVE_WINDOW_DAYS` (7). Aucune limite commerciale n'est dans
+   `.env` : elles sont dans les offres, modifiables depuis le panneau.
+3. **Courriel** : les invitations de classe et les codes d'activation
+   individuels partent par le pipeline mail existant (`MAIL_*`). Sans mail
+   fonctionnel, un enseignant peut toujours donner son رمز الانضمام à l'oral,
+   et l'administrateur voit le code individuel une fois à l'écran.
+4. **Rien à faire pour les élèves existants** : sans classe, ils sont
+   « indépendants » et `/content/availability` ne change pas ; leurs codes et
+   droits actuels restent valides (colonnes ajoutées nullable).
+5. **Après** : ouvrir `/admin/offres` et relire `teacher-free` (5 sièges,
+   classes illimitées), la grille de `teacher-seats` (1–5 gratuit, 6–20 →
+   1 000 DA, 21–30 → 800 DA, 31–50 → 700 DA, 51–100 → 600 DA, 101+ → 500 DA
+   par élève) et `student-premium` — ce sont des valeurs de départ, pas des
+   règles : elles se changent en publiant une nouvelle version. Une base
+   Les noms et descriptions d'offre sont en ARABE (c'est ce que l'enseignant
+   lit) ; une base semée avant cette règle garde ses anciens noms français et
+   doit être corrigée depuis `/admin/offres`, offres archivées comprises.
+   Une base semée AVANT le modèle par sièges garde son ancien `teacher-free` : publier
+   une nouvelle version de cette offre (capacité 5, limites techniques vides)
+   et archiver `teacher-basic` / `teacher-pro`. Contrat :
+   `docs/architecture/TEACHER_CLASSROOM_ARCHITECTURE.md`.

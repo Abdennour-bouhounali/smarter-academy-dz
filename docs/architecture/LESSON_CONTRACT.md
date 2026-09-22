@@ -251,8 +251,9 @@ The chrome a lesson actually renders (`CourseLayout` picks the shell from auth s
 | Visitor | `MainLayout` | `Navbar` — `fixed top-0 h-16` | `top-16` | `pt-16` |
 | Student, `< lg` | `StudentLayout` | mobile header — `fixed top-0 h-14` | `top-14` | `pt-0` |
 | Student, `≥ lg` | `StudentLayout` | sidebar only — **none at top** | `lg:top-0` | `pt-0` |
+| Teacher | `TeacherLayout` | same as the student rows (same header and sidebar geometry) | same | same |
 
-Student mode uses `pt-0` because `StudentLayout`'s `<main>` already consumes its mobile header with `pt-14 lg:pt-0`; the module must not reserve that space a second time.
+Student and teacher modes use `pt-0` because their `<main>` already consumes the mobile header with `pt-14 lg:pt-0`; the module must not reserve that space a second time. The predicate is `usesWorkspaceShell(user)` (`CourseLayout.jsx`), derived from `features/learning/learningViewer.js`.
 
 **Rules**
 

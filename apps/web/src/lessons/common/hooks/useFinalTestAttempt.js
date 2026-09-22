@@ -1,6 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
 import { fetchFinalTestAttempt, putFinalTestAttempt, deleteFinalTestAttempt } from '../../../services/finalTestAttemptService';
+import { useLearningViewer } from '../../../features/learning/learningViewer';
 import { scopedStorage } from '../../../utils/storage';
 
 /**
@@ -18,7 +19,11 @@ import { scopedStorage } from '../../../utils/storage';
  * @param {string} lessonId
  */
 export function useFinalTestAttempt(lessonId) {
-  const { token } = useContext(AuthContext);
+  const { token: authToken } = useContext(AuthContext);
+  // Le test final d'un enseignant ne se sauvegarde nulle part : il est traité
+  // comme un visiteur (local seulement) — voir learningViewer.
+  const { tracksProgress } = useLearningViewer();
+  const token = tracksProgress ? authToken : null;
   const storageKey = `smarter_final_test_${lessonId}`;
 
   const readLocal = () => {

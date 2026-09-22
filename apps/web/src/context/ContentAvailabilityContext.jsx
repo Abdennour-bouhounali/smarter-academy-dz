@@ -21,6 +21,8 @@ export const ContentAvailabilityContext = createContext({
   isModuleClosed: () => false,
   isLessonLocked: () => false,
   isLessonPremium: () => false,
+  isLessonHiddenByClass: () => false,
+  hiddenByClassCount: 0,
   access: null,
   loaded: false,
   refresh: async () => {},
@@ -28,7 +30,7 @@ export const ContentAvailabilityContext = createContext({
 
 export function ContentAvailabilityProvider({ children }) {
   const { token } = useContext(AuthContext);
-  const [closed, setClosed] = useState({ lessons: [], modules: {}, locked: [], premium: [] });
+  const [closed, setClosed] = useState({ lessons: [], modules: {}, locked: [], premium: [], hiddenByClass: [] });
   const [access, setAccess] = useState(null);
   const [loaded, setLoaded] = useState(false);
 
@@ -54,6 +56,7 @@ export function ContentAvailabilityProvider({ children }) {
       modules: result.modules ?? {},
       locked: result.locked ?? [],
       premium: result.premium ?? [],
+      hiddenByClass: result.hiddenByClass ?? [],
     });
     setAccess(result.access ?? null);
     setLoaded(true);
@@ -68,7 +71,7 @@ export function ContentAvailabilityProvider({ children }) {
       // Visiteur anonyme : rien à masquer côté client. Le serveur refuse
       // déjà toute écriture, et le contenu non publié n'est de toute façon
       // pas atteignable en écriture sans compte.
-      setClosed({ lessons: [], modules: {}, locked: [], premium: [] });
+      setClosed({ lessons: [], modules: {}, locked: [], premium: [], hiddenByClass: [] });
       setAccess(null);
       setLoaded(false);
       return () => { cancelled = true; };
@@ -82,6 +85,7 @@ export function ContentAvailabilityProvider({ children }) {
           modules: result.modules ?? {},
           locked: result.locked ?? [],
           premium: result.premium ?? [],
+          hiddenByClass: result.hiddenByClass ?? [],
         });
         setAccess(result.access ?? null);
         setLoaded(true);
@@ -98,12 +102,21 @@ export function ContentAvailabilityProvider({ children }) {
     const lessonSet = new Set(closed.lessons);
     const lockedSet = new Set(closed.locked ?? []);
     const premiumSet = new Set(closed.premium ?? []);
+    const hiddenByClassSet = new Set(closed.hiddenByClass ?? []);
 
     return {
       loaded,
       access,
       refresh: load,
       isLessonClosed: (lessonCode) => lessonSet.has(lessonCode),
+      /**
+       * Le TROISIÈME axe : masquée par l'enseignant de l'élève, pour sa
+       * classe. Publiée et dans son droit, mais pas maintenant — c'est un
+       * choix pédagogique, pas un verrou commercial ni une fermeture
+       * éditoriale, et la carte le dit avec ses propres mots.
+       */
+      isLessonHiddenByClass: (lessonCode) => hiddenByClassSet.has(lessonCode),
+      hiddenByClassCount: hiddenByClassSet.size,
       /**
        * Publiée, mais hors du droit d'accès de cet élève.
        *

@@ -47,6 +47,29 @@ const AdminActivationCodeDetail = lazy(() => import('./pages/admin/activation/Ac
 const AdminActivityLog = lazy(() => import('./pages/admin/system/ActivityLog'));
 const AdminRegistryHealth = lazy(() => import('./pages/admin/system/RegistryHealth'));
 const AdminContactMessages = lazy(() => import('./pages/admin/system/ContactMessages'));
+// Les ENSEIGNANTS, leurs CLASSES et les OFFRES — le modèle commercial
+// configuré depuis le panneau, sans déploiement ni paiement en ligne.
+const AdminTeacherList = lazy(() => import('./pages/admin/teachers/TeacherList'));
+const AdminTeacherDetail = lazy(() => import('./pages/admin/teachers/TeacherDetail'));
+const AdminClassroomList = lazy(() => import('./pages/admin/classrooms/ClassroomList'));
+const AdminClassroomDetail = lazy(() => import('./pages/admin/classrooms/ClassroomDetail'));
+const AdminPlanList = lazy(() => import('./pages/admin/plans/PlanList'));
+const AdminPlanEditor = lazy(() => import('./pages/admin/plans/PlanEditor'));
+const AdminSubscriptionRequests = lazy(() => import('./pages/admin/requests/SubscriptionRequests'));
+const AdminSubscriptions = lazy(() => import('./pages/admin/subscriptions/Subscriptions').then((m) => ({ default: m.AdminSubscriptions })));
+// L'ESPACE ENSEIGNANT (« فضاء الأستاذ ») : arabe, RTL, sa propre coquille.
+const TeacherLayout = lazy(() => import('./components/layout/TeacherLayout'));
+const TeacherHome = lazy(() => import('./pages/teacher/TeacherHome'));
+const TeacherClassGroupList = lazy(() => import('./pages/teacher/ClassGroupList'));
+const TeacherClassGroupCreate = lazy(() => import('./pages/teacher/ClassGroupCreate'));
+const TeacherClassGroupDetail = lazy(() => import('./pages/teacher/ClassGroupDetail'));
+const TeacherStudentProgress = lazy(() => import('./pages/teacher/StudentProgressPage'));
+const TeacherProgressOverview = lazy(() => import('./pages/teacher/ProgressOverview'));
+const TeacherSubscription = lazy(() => import('./pages/teacher/SubscriptionPage'));
+const TeacherProfile = lazy(() => import('./pages/teacher/TeacherProfile'));
+// L'élève et sa classe (« قسمي »), et le lien public d'une invitation.
+const Qism = lazy(() => import('./pages/student/Qism'));
+const JoinInvitation = lazy(() => import('./pages/JoinInvitation'));
 import StudentHome from './pages/student/StudentHome';
 import MesCours from './pages/student/MesCours';
 import Explorer from './pages/student/Explorer';
@@ -101,6 +124,7 @@ import { AuthProvider } from './context/AuthContext';
 import { WorkspaceLayoutProvider } from './context/WorkspaceLayoutContext';
 import { NotebookProvider } from './features/practice/notebook/NotebookProvider';
 import { ContentAvailabilityProvider } from './context/ContentAvailabilityContext';
+import { StudyContextProvider } from './context/StudyContextContext';
 import { useLessonProgressSync } from './hooks/useLessonProgressSync';
 
 // ---- PREMIÈRE SPÉCIALITÉ ----
@@ -138,6 +162,7 @@ export default function App() {
     <AuthProvider>
       <LessonProgressSync />
       <ContentAvailabilityProvider>
+      <StudyContextProvider>
       <WorkspaceLayoutProvider>
       {/* LE cahier de l'élève : une seule fenêtre pour toute l'application,
           au-dessus du routeur pour survivre au changement de module. Les
@@ -184,6 +209,18 @@ export default function App() {
               <Route path="codes-activation" element={<AdminActivationCodes />} />
               <Route path="codes-activation/lots" element={<AdminActivationBatches />} />
               <Route path="codes-activation/:id" element={<AdminActivationCodeDetail />} />
+
+              {/* Les enseignants, leurs classes, les offres et les demandes :
+                  la surface de contrôle du modèle commercial — activation
+                  MANUELLE, jamais un paiement en ligne. */}
+              <Route path="enseignants" element={<AdminTeacherList />} />
+              <Route path="enseignants/:id" element={<AdminTeacherDetail />} />
+              <Route path="classes" element={<AdminClassroomList />} />
+              <Route path="classes/:id" element={<AdminClassroomDetail />} />
+              <Route path="offres" element={<AdminPlanList />} />
+              <Route path="offres/demandes" element={<AdminSubscriptionRequests />} />
+              <Route path="offres/abonnements" element={<AdminSubscriptions />} />
+              <Route path="offres/:id" element={<AdminPlanEditor />} />
 
               <Route path="compte" element={<AdminProfile />} />
               <Route path="compte/securite" element={<AdminSecurity />} />
@@ -234,6 +271,42 @@ export default function App() {
               <Route path="atelier" element={<MathLabHome />} />
               <Route path="atelier/:toolSlug" element={<MathLabToolPage />} />
               <Route path="atelier/:toolSlug/:documentId" element={<MathLabToolPage />} />
+              {/* « قسمي » : la classe de l'enseignant que l'élève a rejointe, ou
+                  peut rejoindre par code / invitation. Un contexte, pas un
+                  contenu : le serveur reste l'autorité sur ce qui est visible. */}
+              <Route path="qism" element={<Qism />} />
+            </Route>
+          </Route>
+
+          {/* L'ESPACE ENSEIGNANT. Rôle vérifié ici par ProtectedRoute ; la vraie
+              porte reste le serveur : chaque /api/v1/teacher/* est derrière
+              can:teacher (TeacherAuthorizationTest), et la propriété d'une
+              classe derrière ClassroomPolicy. */}
+          <Route path="/enseignant" element={<ProtectedRoute allowedRoles={['teacher']} />}>
+            <Route element={<TeacherLayout />}>
+              <Route index element={<TeacherHome />} />
+              <Route path="classes" element={<TeacherClassGroupList />} />
+              <Route path="classes/nouveau" element={<TeacherClassGroupCreate />} />
+              <Route path="classes/:id" element={<TeacherClassGroupDetail />} />
+              <Route path="classes/:id/eleves/:studentId" element={<TeacherStudentProgress />} />
+              <Route path="progression" element={<TeacherProgressOverview />} />
+              <Route path="offre" element={<TeacherSubscription />} />
+              <Route path="profil" element={<TeacherProfile />} />
+              {/* L'ENSEIGNANT APPREND COMME UN ÉLÈVE — mêmes pages, même
+                  moteur, dans SON espace : le catalogue (Explorer), le
+                  مختبر et son cahier (à lui : le serveur ne sert que les
+                  notes et documents du compte). Les leçons elles-mêmes
+                  restent sur /courses/… et CourseLayout rend TeacherLayout
+                  pour lui ; ce qui change n'est pas la page mais le LECTEUR
+                  (features/learning/learningViewer) : tous les modules
+                  ouverts, aucune progression écrite. */}
+              <Route path="cours" element={<Explorer />} />
+              <Route path="atelier" element={<MathLabHome />} />
+              <Route path="atelier/:toolSlug" element={<MathLabToolPage />} />
+              <Route path="atelier/:toolSlug/:documentId" element={<MathLabToolPage />} />
+              <Route path="cahier" element={<Notebook />} />
+              <Route path="cahier/revision" element={<NotebookReviewPage />} />
+              <Route path="cahier/:noteId" element={<NotebookNotePage />} />
             </Route>
           </Route>
 
@@ -260,6 +333,10 @@ export default function App() {
             {/* Le retour de Google. Publique par nature : personne n'est
                 encore authentifié quand la connexion commence. */}
             <Route path="/auth/google" element={<AuthGoogle />} />
+
+            {/* Le lien d'une invitation à une classe, ouvert depuis un courriel,
+                souvent sans compte. Publique ; n'accepte rien elle-même. */}
+            <Route path="/rejoindre/:token" element={<JoinInvitation />} />
 
             {/* ── Les pages légales ───────────────────────────────────
                 Publiques et accessibles SANS compte : on doit pouvoir lire
@@ -319,6 +396,7 @@ export default function App() {
       </Router>
       </NotebookProvider>
       </WorkspaceLayoutProvider>
+      </StudyContextProvider>
       </ContentAvailabilityProvider>
     </AuthProvider>
   );

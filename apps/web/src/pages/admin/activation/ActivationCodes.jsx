@@ -1,7 +1,8 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Download, Plus, AlertTriangle } from 'lucide-react';
-import AdminPage from '../../../components/admin/AdminPage';
+import { useTranslation } from 'react-i18next';
+import { AdminPage, useAdminLabels, formatDate, Num, btnPrimary, btnSecondary, input } from '../adminUi';
 import DataTable from '../../../components/admin/ui/DataTable';
 import StatusBadge from '../../../components/admin/ui/StatusBadge';
 import Modal from '../../../components/admin/ui/Modal';
@@ -11,6 +12,8 @@ import { useAdminResource } from '../../../hooks/useAdminResource';
 import { useDebounced } from '../../../hooks/useDebounced';
 import { useDocumentMeta } from '../../../hooks/useDocumentMeta';
 import { AuthContext } from '../../../context/AuthContext';
+import { fetchPlans } from '../../../services/admin/planService';
+import { quoteSeats, formatDzd } from '../../../features/teacher/subscription/seatPricing';
 import {
   fetchActivationCodes,
   fetchActivationBatches,
@@ -19,15 +22,8 @@ import {
   downloadGeneratedCodesCsv,
 } from '../../../services/admin/activationCodeService';
 
-const DATE = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'short' });
-const formatDate = (iso) => (iso ? DATE.format(new Date(iso)) : '—');
-
-const STATUS_OPTIONS = [
-  { value: 'available', label: 'Disponible' },
-  { value: 'activated', label: 'Activé' },
-  { value: 'expired', label: 'Expiré' },
-  { value: 'revoked', label: 'Révoqué' },
-];
+/** Les états d'un code — les valeurs restent celles du serveur. */
+const STATUS_VALUES = ['available', 'activated', 'expired', 'revoked'];
 
 /**
  * La liste des codes d'activation.
@@ -39,7 +35,9 @@ const STATUS_OPTIONS = [
  * ci-dessous, et seulement pour le lot qu'on vient de produire.
  */
 export default function AdminActivationCodes() {
-  useDocumentMeta('Codes d’activation — Administration');
+  const { t } = useTranslation('admin');
+  const L = useAdminLabels();
+  useDocumentMeta(t('activation.metaTitle'));
 
   const { token } = useContext(AuthContext);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -55,6 +53,16 @@ export default function AdminActivationCodes() {
   const [formOpen, setFormOpen] = useState(false);
   const [formError, setFormError] = useState(null);
   const [exporting, setExporting] = useState(false);
+  // Les offres liables à un lot : actives ou masquées, jamais l'offre par
+  // défaut (déjà effective) ni une archivée.
+  const [plans, setPlans] = useState([]);
+  const [selectedVersionId, setSelectedVersionId] = useState('');
+  const [batchSeats, setBatchSeats] = useState('');
+  useEffect(() => {
+    fetchPlans(token, { perPage: 100 })
+      .then((d) => setPlans((d.plans?.data ?? []).filter((p) => ['active', 'hidden'].includes(p.status) && !p.isDefault)))
+      .catch(() => setPlans([]));
+  }, [token]);
 
   const filters = { search: debouncedSearch, status, batch, page };
 
@@ -98,11 +106,20 @@ export default function AdminActivationCodes() {
     const accessEndsAt = form.get('accessEndsAt');
     const redeemBy = form.get('redeemBy');
     const notes = form.get('notes');
+    const planVersionId = form.get('planVersionId');
+    const studentSeats = form.get('studentSeats');
 
     if (accessDays) payload.accessDays = Number(accessDays);
     if (accessEndsAt) payload.accessEndsAt = accessEndsAt;
     if (redeemBy) payload.redeemBy = redeemBy;
     if (notes) payload.notes = notes;
+    // L'OFFRE que chaque code active : la vente en nombre à une école ou une
+    // classe. Facultatif — sans elle, le lot ouvre le droit premium élève
+    // classique, comme avant.
+    if (planVersionId) payload.planVersionId = Number(planVersionId);
+    // La CAPACITÉ que chaque code ouvre (offre par sièges) : « 10 codes ×
+    // 30 élèves ». Un nombre, jamais un prix — le serveur le calcule.
+    if (studentSeats) payload.studentSeats = Number(studentSeats);
 
     setGenerating(true);
     setFormError(null);
@@ -112,7 +129,7 @@ export default function AdminActivationCodes() {
       setFormOpen(false);
       reload();
     } catch (caught) {
-      setFormError(caught.message || 'Impossible de générer le lot.');
+      setFormError(caught.message || t('activation.generateFailed'));
     } finally {
       setGenerating(false);
     }
@@ -134,50 +151,45 @@ export default function AdminActivationCodes() {
   const columns = [
     {
       key: 'hint',
-      header: 'Indice',
+      label: t('activation.columnHint'),
       render: (row) => (
-        <Link to={`/admin/codes-activation/${row.id}`} className="font-mono-jetbrains text-xs text-blue-700 hover:underline">
-          ••••-••••-{row.hint}
+        <Link to={`/admin/codes-activation/${row.id}`} className="font-mono-jetbrains text-xs text-violet-700 hover:underline">
+          <Num>••••-••••-{row.hint}</Num>
         </Link>
       ),
     },
-    { key: 'batchLabel', header: 'Lot', render: (row) => row.batchLabel ?? '—' },
-    { key: 'status', header: 'Statut', render: (row) => <StatusBadge status={row.status} /> },
+    { key: 'batchLabel', label: t('activation.columnBatch'), render: (row) => row.batchLabel ?? t('common.dash') },
+    { key: 'status', label: t('activation.columnStatus'), render: (row) => <StatusBadge status={row.status} /> },
     {
       key: 'activatedBy',
-      header: 'Élève',
+      label: t('activation.columnActivatedBy'),
       render: (row) => (row.activatedBy
-        ? <Link to={`/admin/eleves/${row.activatedBy.id}`} className="text-blue-700 hover:underline">{row.activatedBy.email}</Link>
-        : '—'),
+        ? <Link to={`/admin/eleves/${row.activatedBy.id}`} className="text-violet-700 hover:underline"><Num>{row.activatedBy.email}</Num></Link>
+        : t('common.dash')),
     },
-    { key: 'activatedAt', header: 'Activé le', render: (row) => formatDate(row.activatedAt) },
-    { key: 'expiresAt', header: 'Expire le', render: (row) => formatDate(row.expiresAt) },
-    { key: 'createdAt', header: 'Créé le', render: (row) => formatDate(row.createdAt) },
+    { key: 'activatedAt', label: t('activation.columnActivatedAt'), render: (row) => formatDate(row.activatedAt) },
+    { key: 'expiresAt', label: t('activation.columnExpiresAt'), render: (row) => formatDate(row.expiresAt) },
+    { key: 'createdAt', label: t('activation.columnCreated'), render: (row) => formatDate(row.createdAt) },
   ];
 
   return (
     <AdminPage
-      eyebrow="Accès"
-      title="Codes d’activation"
-      subtitle="Les cartes vendues en espèces. Un code ouvre un droit d’accès ; il ne s’active qu’une fois."
+      eyebrow={t('activation.eyebrow')}
+      title={t('activation.title')}
+      subtitle={t('activation.subtitle')}
       actions={(
         <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={handleExport}
-            disabled={exporting}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-2 font-inter text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-60"
-          >
+          <button type="button" onClick={handleExport} disabled={exporting} className={btnSecondary}>
             <Download size={14} />
-            {exporting ? 'Export…' : 'Exporter (CSV)'}
+            {exporting ? t('activation.exporting') : t('activation.exportCsv')}
           </button>
           <button
             type="button"
             onClick={() => { setFormOpen(true); setFormError(null); }}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-3 py-2 font-inter text-xs font-semibold text-white hover:bg-blue-700"
+            className={btnPrimary}
           >
             <Plus size={14} />
-            Générer un lot
+            {t('activation.generate')}
           </button>
         </div>
       )}
@@ -192,72 +204,135 @@ export default function AdminActivationCodes() {
           />
         )}
 
-        <div className="flex flex-wrap items-center gap-2 font-inter text-xs text-slate-600">
-          <span className="font-semibold text-slate-800">{counts.total ?? 0} code(s)</span>
-          <span>· {counts.available ?? 0} disponible(s)</span>
-          <span>· {counts.activated ?? 0} activé(s)</span>
-          <span>· {counts.expired ?? 0} expiré(s)</span>
-          <span>· {counts.revoked ?? 0} révoqué(s)</span>
+        {/* LE SÉPARATEUR N'EST PAS DU TEXTE. Écrit « · » en tête de chaque
+            segment, il se retrouvait détaché du segment qu'il sépare dès que
+            celui-ci commence par un chiffre : « 0 · » au lieu de « · 0 ».
+            Porté par la mise en page (`divide-x-reverse`), il se place du bon
+            côté quelle que soit la direction, et disparaît du texte lu à voix
+            haute par un lecteur d'écran. */}
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 font-inter text-xs text-slate-600">
+          {[
+            ['total', t('activation.countTotal', { count: counts.total ?? 0 })],
+            ['available', t('activation.countAvailable', { count: counts.available ?? 0 })],
+            ['activated', t('activation.countActivated', { count: counts.activated ?? 0 })],
+            ['expired', t('activation.countExpired', { count: counts.expired ?? 0 })],
+            ['revoked', t('activation.countRevoked', { count: counts.revoked ?? 0 })],
+          ].map(([key, text], i) => (
+            <span key={key} className="flex items-center gap-2">
+              {i > 0 && <span aria-hidden="true" className="text-slate-300">·</span>}
+              <span className={key === 'total' ? 'font-semibold text-slate-800' : undefined}>{text}</span>
+            </span>
+          ))}
         </div>
 
         <FilterBar>
           <SearchInput
             value={search}
             onChange={(value) => { setSearch(value); setPage(1); }}
-            placeholder="Indice (4 symboles), élève, lot…"
+            placeholder={t('activation.searchPlaceholder')}
+            label={L.filters.searchLabel}
           />
-          <SelectFilter value={status} onChange={applyStatus} options={STATUS_OPTIONS} label="Statut" />
+          <SelectFilter
+            value={status}
+            onChange={applyStatus}
+            options={STATUS_VALUES.map((value) => ({ value, label: t(`status.${value}`) }))}
+            label={t('activation.columnStatus')}
+            allLabel={t('activation.allStatuses')}
+          />
           <SelectFilter
             value={batch}
             onChange={(value) => { setBatch(value); setPage(1); }}
             options={batchOptions}
-            label="Lot"
-            allLabel="Tous les lots"
+            label={t('activation.columnBatch')}
+            allLabel={t('activation.allBatches')}
           />
         </FilterBar>
 
         <DataTable
+          labels={L.table}
           columns={columns}
           rows={data?.codes?.data ?? []}
           loading={loading}
           error={error}
           onRetry={reload}
-          empty={<EmptyState title="Aucun code" hint="Générez un lot pour commencer à distribuer des cartes." />}
+          empty={<EmptyState title={t('activation.emptyTitle')} hint={t('activation.emptyHint')} />}
         />
 
-        <Pagination meta={data?.codes} onPage={setPage} />
+        <Pagination meta={data?.codes} onPage={setPage} labels={L.pagination} />
       </div>
 
-      <Modal open={formOpen} onClose={() => setFormOpen(false)} title="Générer un lot de codes">
+      <Modal
+        open={formOpen}
+        onClose={() => setFormOpen(false)}
+        title={t('activation.generateTitle')}
+        closeLabel={L.dialog.closeLabel}
+      >
         <form onSubmit={handleGenerate} className="space-y-4">
-          <Field label="Nom du lot" hint="Sert à le retrouver plus tard : « cartes Alger janvier ».">
-            <input name="label" required maxLength={120} className={INPUT} />
+          <Field label={t('activation.batchName')} hint={t('activation.batchNameHint')}>
+            <input name="label" required maxLength={120} className={input} />
           </Field>
 
-          <Field label="Nombre de codes" hint="Entre 1 et 500.">
-            <input name="quantity" type="number" min={1} max={500} defaultValue={50} required className={INPUT} />
+          <Field label={t('activation.quantity')} hint={t('activation.quantityHint')}>
+            <input name="quantity" type="number" min={1} max={500} defaultValue={50} required dir="ltr" className={input} />
           </Field>
 
           <fieldset className="rounded-lg border border-slate-200 p-3">
-            <legend className="px-1 font-inter text-xs font-semibold text-slate-700">Durée d’accès</legend>
+            <legend className="px-1 font-inter text-xs font-semibold text-slate-700">{t('activation.accessDuration')}</legend>
             <p className="mb-2 font-inter text-xs text-slate-500">
-              Choisissez UNE des deux formes. Laissez les deux vides pour un accès sans fin.
+              {t('activation.accessDurationHint')}
             </p>
-            <Field label="Durée en jours" hint="À compter de la saisie par l’élève.">
-              <input name="accessDays" type="number" min={1} max={3650} className={INPUT} />
+            <Field label={t('activation.accessDays')} hint={t('activation.accessDaysHint')}>
+              <input name="accessDays" type="number" min={1} max={3650} dir="ltr" className={input} />
             </Field>
-            <Field label="ou date de fin d’accès" hint="Fixe, quelle que soit la date de saisie.">
-              <input name="accessEndsAt" type="date" className={INPUT} />
+            <Field label={t('activation.accessEndsAt')} hint={t('activation.accessEndsAtHint')}>
+              <input name="accessEndsAt" type="date" dir="ltr" className={input} />
             </Field>
           </fieldset>
 
-          <Field label="Utilisable jusqu’au" hint="Date limite de SAISIE. Vide = sans limite.">
-            <input name="redeemBy" type="date" className={INPUT} />
+          <Field label={t('activation.redeemBy')} hint={t('activation.redeemByHint')}>
+            <input name="redeemBy" type="date" dir="ltr" className={input} />
           </Field>
 
-          <Field label="Notes">
-            <textarea name="notes" rows={2} maxLength={2000} className={INPUT} />
+          <Field label={t('common.note')}>
+            <textarea name="notes" rows={2} maxLength={2000} className={input} />
           </Field>
+
+          {/* L'OFFRE que chaque code active — la vente en nombre à une école
+              ou une classe (X codes = X activations). Facultatif : sans
+              offre, le lot ouvre le droit premium élève classique. */}
+          <Field label={t('activation.planLabel')} hint={t('activation.planHint')}>
+            <select name="planVersionId" className={input} value={selectedVersionId} onChange={(e) => setSelectedVersionId(e.target.value)}>
+              <option value="">{t('activation.planNone')}</option>
+              {plans.map((p) => (
+                <option key={p.id} value={p.currentVersionId ?? ''} disabled={!p.currentVersionId}>
+                  {p.type === 'teacher' ? t('status.teacher') : t('status.student')} · {p.name}
+                  {p.currentVersion ? ` (v${p.currentVersion})` : ` — ${t('activation.planNoPublishedVersion')}`}
+                </option>
+              ))}
+            </select>
+          </Field>
+
+          {(() => {
+            const plan = plans.find((p) => String(p.currentVersionId) === String(selectedVersionId));
+            if (!plan?.seatBased) return null;
+            const quote = quoteSeats(plan.pricingTiers ?? [], Number(batchSeats));
+            return (
+              <Field label={t('activation.seatsPerCode')} hint={t('activation.seatsPerCodeHint')}>
+                <input name="studentSeats" type="number" min={1} required dir="ltr" value={batchSeats} onChange={(e) => setBatchSeats(e.target.value)} className={input} />
+                {batchSeats && (
+                  <p className="mt-1 font-inter text-[11px] text-slate-500" data-batch-quote>
+                    {quote
+                      ? t('activation.seatsQuote', {
+                        tier: quote.tier.label,
+                        unit: formatDzd(quote.unitPriceCents),
+                        total: formatDzd(quote.totalCents),
+                      })
+                      : t('activation.seatsNoTier')}
+                  </p>
+                )}
+              </Field>
+            );
+          })()}
 
           {formError && (
             <p role="alert" className="rounded-lg border border-rose-200 bg-rose-50 p-2 font-inter text-xs text-rose-800">
@@ -266,11 +341,11 @@ export default function AdminActivationCodes() {
           )}
 
           <div className="flex items-center justify-end gap-2">
-            <button type="button" onClick={() => setFormOpen(false)} className="rounded-lg border border-slate-300 px-3 py-2 font-inter text-xs font-semibold text-slate-700 hover:bg-slate-50">
-              Annuler
+            <button type="button" onClick={() => setFormOpen(false)} className={btnSecondary}>
+              {L.dialog.cancelLabel}
             </button>
-            <button type="submit" disabled={generating} className="rounded-lg bg-blue-600 px-3 py-2 font-inter text-xs font-semibold text-white hover:bg-blue-700 disabled:opacity-60">
-              {generating ? 'Génération…' : 'Générer'}
+            <button type="submit" disabled={generating} className={btnPrimary}>
+              {generating ? t('activation.generating') : t('common.create')}
             </button>
           </div>
         </form>
@@ -278,8 +353,6 @@ export default function AdminActivationCodes() {
     </AdminPage>
   );
 }
-
-const INPUT = 'w-full rounded-lg border border-slate-300 bg-white px-3 py-2 font-inter text-xs text-slate-800 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500';
 
 function Field({ label, hint, children }) {
   return (
@@ -300,21 +373,22 @@ function Field({ label, hint, children }) {
  * ferme ce panneau sans enregistrer le fichier.
  */
 function GeneratedCodesPanel({ batch, codes, onClose }) {
+  const { t } = useTranslation('admin');
+
   return (
     <section className="rounded-xl border border-amber-300 bg-amber-50 p-4">
       <div className="mb-3 flex items-start gap-3">
         <AlertTriangle size={18} className="mt-0.5 shrink-0 text-amber-600" />
         <div className="min-w-0 flex-1">
           <h2 className="font-space text-sm font-bold text-amber-900">
-            {codes.length} code(s) générés — « {batch?.label} »
+            {t('activation.generatedHeading', { count: codes.length, label: batch?.label ?? '' })}
           </h2>
           <p className="mt-0.5 font-inter text-xs text-amber-800">
-            Ces codes ne seront plus jamais affichés : seule leur empreinte est conservée.
-            Téléchargez le fichier maintenant, avant de fermer ce panneau.
+            {t('activation.generatedWarning')}
           </p>
         </div>
         <button type="button" onClick={onClose} className="shrink-0 font-inter text-xs font-semibold text-amber-900 hover:underline">
-          Fermer
+          {t('common.close')}
         </button>
       </div>
 
@@ -322,10 +396,10 @@ function GeneratedCodesPanel({ batch, codes, onClose }) {
         <button
           type="button"
           onClick={() => downloadGeneratedCodesCsv(batch, codes)}
-          className="inline-flex items-center gap-1.5 rounded-lg bg-amber-600 px-3 py-2 font-inter text-xs font-semibold text-white hover:bg-amber-700"
+          className="inline-flex items-center gap-1.5 rounded-xl bg-amber-600 px-3 py-2 font-inter text-xs font-semibold text-white hover:bg-amber-700"
         >
           <Download size={14} />
-          Télécharger le CSV
+          {t('activation.downloadCsv')}
         </button>
       </div>
 

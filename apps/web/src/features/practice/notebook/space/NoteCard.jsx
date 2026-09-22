@@ -5,8 +5,9 @@ import {
   Star, RotateCcw, Archive, ArchiveRestore, Trash2, Printer, EllipsisVertical, ExternalLink, ArrowUpRight, BookOpen, MapPin, PencilLine, CircleHelp,
 } from 'lucide-react';
 import NotebookContent from '../NotebookContent';
+import { useWorkspaceBase } from '../../../learning/learningViewer';
 import {
-  typeOf, contextTrail, sourceLinkFor, timeAgo,
+  typeOf, contextTrail, sourceLinkFor, timeAgo, notebookPaths,
 } from './noteMeta';
 
 const TRAIL_ICON = { lesson: BookOpen, place: MapPin, exercise: PencilLine, question: CircleHelp };
@@ -27,7 +28,9 @@ export default function NoteCard({ note, selected = false, onToggleSelect, onAct
   const c = (key, opts) => t(`notebook.space.card.${key}`, opts);
   const type = typeOf(note);
   const trail = contextTrail(note, t);
-  const source = sourceLinkFor(note);
+  const base = useWorkspaceBase();
+  const paths = notebookPaths(base);
+  const source = sourceLinkFor(note, base);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -83,9 +86,9 @@ export default function NoteCard({ note, selected = false, onToggleSelect, onAct
 
       {/* 1. Mon texte — le titre s'il y en a un, puis l'aperçu de la note. */}
       <h3 id={titleId} className="sa-ns-card-title">
-        <Link to={`/espace/cahier/${note.id}`}>{note.title || textStart(note.excerpt) || c('untitled')}</Link>
+        <Link to={paths.note(note.id)}>{note.title || textStart(note.excerpt) || c('untitled')}</Link>
       </h3>
-      <Link to={`/espace/cahier/${note.id}`} className="sa-ns-preview" aria-hidden="true" tabIndex={-1}>
+      <Link to={paths.note(note.id)} className="sa-ns-preview" aria-hidden="true" tabIndex={-1}>
         <NotebookContent content={note.content} />
       </Link>
 
@@ -122,7 +125,7 @@ export default function NoteCard({ note, selected = false, onToggleSelect, onAct
               <ExternalLink size={16} aria-hidden="true" />
             </Link>
           )}
-          <Link to={`/espace/cahier/${note.id}`} className="sa-ns-btn sa-ns-btn--link" data-note-open={note.id}>
+          <Link to={paths.note(note.id)} className="sa-ns-btn sa-ns-btn--link" data-note-open={note.id}>
             {c('open')} <ArrowUpRight size={14} aria-hidden="true" />
           </Link>
           <div ref={menuRef} className="relative">

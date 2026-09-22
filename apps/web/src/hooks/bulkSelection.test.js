@@ -3,7 +3,8 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { pruneToVisible, toggleAllVisible, toggleId } from './bulkSelectionCore';
-import { CONTENT_NOUNS, agree, countNoun } from '../components/admin/contentNouns';
+import i18n from '../i18n';
+import { CONTENT_NOUNS } from '../components/admin/contentNouns';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const webRoot = resolve(here, '../..');
@@ -218,50 +219,58 @@ describe('le branchement des actions groupées', () => {
 });
 
 /**
- * L'accord en français.
+ * LE NOMBRE, EN ARABE.
  *
- * Écrit après l'avoir vu à l'écran : l'interface annonçait « 24 leçons
- * sélectionnés » et « 1 leçon sélectionné ». « leçon » est féminin, et le
- * participe se recopiait dans cinq gabarits — donc la faute aussi.
+ * L'ancienne version de ce bloc verifiait l'accord FRANCAIS : « 24 lecons
+ * selectionnees » contre « 24 lecons selectionnes ». L'interface est arabe
+ * desormais, et l'arabe ne se decline pas en deux formes mais en SIX
+ * categories (`zero`, `one`, `two`, `few`, `many`, `other`) — c'est
+ * `Intl.PluralRules('ar-DZ')` qui choisit, jamais une concatenation. Ces
+ * tests verifient donc que le catalogue porte bien les six formes, et que le
+ * nom vient toujours du TYPE.
  */
-describe('l’accord du nom du contenu', () => {
-  it('accorde en genre ET en nombre', () => {
-    expect(agree('sélectionné', 1, true)).toBe('sélectionnée');
-    expect(agree('sélectionné', 24, true)).toBe('sélectionnées');
-    expect(agree('sélectionné', 1, false)).toBe('sélectionné');
-    expect(agree('sélectionné', 2, false)).toBe('sélectionnés');
+describe('le nom compte du contenu', () => {
+  const noun = (key, count) => i18n.t(`bulk.noun.${key}`, { ns: 'admin', count });
+
+  it('decline chaque type dans les categories de pluriel arabes', () => {
+    for (const key of ['lesson', 'module', 'exercise', 'item']) {
+      // Une forme par categorie, toutes non vides : une cle manquante revient
+      // telle quelle et se verrait a l'ecran.
+      for (const count of [1, 2, 3, 11, 100]) {
+        const rendered = noun(key, count);
+        expect(rendered, `${key}/${count}`).not.toContain('bulk.noun');
+        expect(rendered, `${key}/${count}`).not.toBe('');
+      }
+    }
   });
 
-  it('connaît le genre des trois types de contenu', () => {
-    // « leçon » est le seul féminin : c'est LUI qui produisait la faute.
-    expect(CONTENT_NOUNS.lesson.feminine).toBe(true);
-    expect(CONTENT_NOUNS.module.feminine).toBe(false);
-    expect(CONTENT_NOUNS.exercise.feminine).toBe(false);
+  it('distingue le singulier, le duel et le pluriel', () => {
+    // Le duel est ce qu'aucune regle francaise ne sait produire : « درسان »
+    // ne s'obtient pas en ajoutant « s » a « درس ».
+    expect(noun('lesson', 1)).not.toBe(noun('lesson', 2));
+    expect(noun('lesson', 2)).not.toBe(noun('lesson', 3));
+    expect(noun('lesson', 3)).not.toBe(noun('lesson', 11));
   });
 
-  it('compte au singulier comme au pluriel', () => {
-    expect(countNoun(1, CONTENT_NOUNS.lesson)).toBe('1 leçon');
-    expect(countNoun(24, CONTENT_NOUNS.lesson)).toBe('24 leçons');
-    expect(countNoun(1, CONTENT_NOUNS.exercise)).toBe('1 exercice');
+  it('connait les trois types de contenu, par leur cle', () => {
+    expect(CONTENT_NOUNS.lesson.key).toBe('lesson');
+    expect(CONTENT_NOUNS.module.key).toBe('module');
+    expect(CONTENT_NOUNS.exercise.key).toBe('exercise');
   });
 
-  it('produit les phrases exactes que l’administrateur lit', () => {
-    const l = CONTENT_NOUNS.lesson;
-    expect(`${countNoun(1, l)} ${agree('sélectionné', 1, l.feminine)}`)
-      .toBe('1 leçon sélectionnée');
-    expect(`${countNoun(24, l)} ${agree('sélectionné', 24, l.feminine)}`)
-      .toBe('24 leçons sélectionnées');
+  it('n\'expose plus d\'accord grammatical francais', async () => {
+    const mod = await import('../components/admin/contentNouns');
 
-    const m = CONTENT_NOUNS.module;
-    expect(`${countNoun(2, m)} ${agree('sélectionné', 2, m.feminine)}`)
-      .toBe('2 modules sélectionnés');
+    expect(mod.agree).toBeUndefined();
+    expect(mod.countNoun).toBeUndefined();
   });
 
   /**
-   * Le nom vient du TYPE, jamais de l'appelant : c'est ce qui empêche une
-   * quatrième page de réintroduire la faute en recopiant deux chaînes.
+   * Le nom vient du TYPE, jamais de l'appelant : c'est ce qui empeche une
+   * quatrieme page de reintroduire un nombre mal accorde en recopiant deux
+   * chaines.
    */
-  it('les pages ne recopient plus le nom à la main', () => {
+  it('les pages ne recopient plus le nom a la main', () => {
     for (const page of [
       'src/pages/admin/content/Lessons.jsx',
       'src/pages/admin/content/Modules.jsx',

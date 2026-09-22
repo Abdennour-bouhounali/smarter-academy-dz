@@ -9,7 +9,8 @@ import { useModuleEffects } from '../hooks/useModuleEffects';
 import {
   MissionBrief, StepCard, StepProgressBar, StreakChip, EffectsToggle,
 } from '../components/LessonUI';
-import { isStepLocked } from '../utils/stepUnlock';
+import { isStepLocked, canAdvance } from '../utils/stepUnlock';
+import { useLearningViewer } from '../../../features/learning/learningViewer';
 import { useClassroomMode, useClassroomStage, ClassroomFrame } from '../classroom';
 import { moduleUnits, clampUnit, resolveModuleNavigation } from '../classroom/classroomUnits';
 
@@ -21,6 +22,13 @@ import { moduleUnits, clampUnit, resolveModuleNavigation } from '../classroom/cl
  * (StreakChip/EffectsToggle via useModuleEffects), verrouillage séquentiel
  * des StepCard avec libre navigation après complétion (isStepLocked), et
  * incompleteSteps pour le bouton « Module suivant ».
+ *
+ * LE LECTEUR décide du verrou, jamais un rôle écrit ici : `isStepLocked` et
+ * `canAdvance` (utils/stepUnlock) reçoivent `freeNavigation`, de sorte qu'un
+ * enseignant ouvre n'importe quelle PARTIE dans n'importe quel ordre et
+ * avance vers le module suivant sans rien « terminer ». Voir
+ * features/learning/learningViewer.js et utils/moduleGate.js (même règle un
+ * cran plus haut).
  *
  * Le module appelant ne garde que : son état propre (les flags done de ses
  * étapes + l'état de ses manipulations), et le CONTENU de chaque étape.
@@ -61,10 +69,16 @@ export default function ContentModule({
   footer,         // contenu de fin, rendu quand allDone
 }) {
   const { xp, isModuleCompleted } = useProgress(ctx.lessonId);
+  // QUI lit ce module : l'enseignant navigue librement entre les parties.
+  const viewer = useLearningViewer();
   const alreadyCompleted = isModuleCompleted(String(moduleNumber));
   const { effectsEnabled, toggleEffects, streak, react } = useModuleEffects();
 
+  // `allDone` reste la VÉRITÉ PÉDAGOGIQUE du module (barre de progression,
+  // khulasa, complétion écrite par ModuleLayout). Avancer, lui, est
+  // structurel pour un lecteur libre — les deux ne se confondent pas.
   const allDone = alreadyCompleted || steps.every((s) => s.done);
+  const mayAdvance = canAdvance(allDone, viewer);
   const doneCount = steps.filter((s) => s.done).length;
   const incompleteSteps = steps.filter((s) => !s.done).map(({ num, title }) => ({ num, title }));
 
@@ -75,7 +89,10 @@ export default function ContentModule({
   const classroom = useClassroomMode();
   const presenting = classroom.isClassroomMode;
   const stepKey = steps.map((s) => s.num).join('|');
-  const hasFooter = allDone && Boolean(footer);
+  // La khulasa est une UNITÉ en mode classe : sa présence doit être celle
+  // que le rendu montre réellement (sinon le compteur « n / N » dérive).
+  const showFooter = allDone || viewer.freeNavigation;
+  const hasFooter = showFooter && Boolean(footer);
   const units = useMemo(
     () => moduleUnits({ brief: Boolean(brief), intro: Boolean(intro), steps, footer: hasFooter }),
     // `steps` est recréé à chaque rendu par le module : on suit ses numéros.
@@ -132,8 +149,8 @@ export default function ContentModule({
         estimatedTime={estimatedTime}
         xp={xp}
         prevLink={navLinks.prevLink}
-        nextLink={allDone ? navLinks.nextLink : undefined}
-        isCompleted={allDone}
+        nextLink={mayAdvance ? navLinks.nextLink : undefined}
+        isCompleted={mayAdvance}
         incompleteSteps={incompleteSteps}
         presentationFrame={false}
       >
@@ -183,7 +200,7 @@ export default function ContentModule({
                   title={s.title}
                   subtitle={s.subtitle}
                   done={s.done}
-                  locked={isStepLocked(alreadyCompleted, i === 0 ? false : !steps[i - 1].done)}
+                  locked={isStepLocked(alreadyCompleted, i === 0 ? false : !steps[i - 1].done, { freeNavigation: viewer.freeNavigation, presenting })}
                 >
                   {renderSlot(s.content)}
                 </StepCard>
@@ -192,7 +209,7 @@ export default function ContentModule({
           ))}
 
           <div {...unitProps('footer')}>
-            {allDone && <ClassroomFrame>{renderSlot(footer)}</ClassroomFrame>}
+            {showFooter && <ClassroomFrame>{renderSlot(footer)}</ClassroomFrame>}
           </div>
         </div>
       </ModuleLayout>

@@ -47,6 +47,8 @@ export function usePremiumStatus() {
       hasSubscription: access?.subscriptionActive === true,
       /** Accès accordé par l'administration : ce n'est PAS un abonnement. */
       hasAdminOverride: access?.adminOverrideActive === true,
+      /** Couvert par l'offre de son ENSEIGNANT (modèle B) — dynamique, jamais une ligne. */
+      viaTeacher: access?.teacherCoverageActive === true,
       /** Fin du droit en cours, s'il a un terme (ISO 8601), sinon null. */
       expiresAt: access?.expiresAt ?? null,
       /** La réponse du serveur est-elle arrivée ? */

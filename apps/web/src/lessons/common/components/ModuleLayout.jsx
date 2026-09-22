@@ -4,7 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { ArrowLeft, ArrowRight, Home, CheckCircle, Lock, ListChecks } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useProgress } from '../hooks/useProgress';
-import { isModuleUnlocked, lockedReasonData, isValidModuleNumber } from '@smarter-academy/core';
+import { lockedReasonData, isValidModuleNumber } from '@smarter-academy/core';
+import { resolveModuleUnlock } from '../utils/moduleGate';
+import { useLearningViewer } from '../../../features/learning/learningViewer';
 import ReportButton from '../../../features/reports/ReportButton';
 import { scrollToStep } from '../utils/scrollToStep';
 import { LessonChromeContext, useLessonChromeLayout } from '../hooks/useLessonChrome';
@@ -94,6 +96,9 @@ export default function ModuleLayout({
   // questions et des manipulations survit à l'entrée comme à la sortie.
   const classroom = useClassroomMode();
   const presenting = classroom.isClassroomMode;
+  // QUI lit : un enseignant navigue librement (tous les modules ouverts) et
+  // n'écrit rien — useProgress est déjà muet pour lui.
+  const viewer = useLearningViewer();
 
   // Le décalage haut réservé par la coquille du module dépend du bandeau
   // réellement rendu au-dessus : la Navbar visiteur est `fixed` sans
@@ -126,10 +131,17 @@ export default function ModuleLayout({
   // séquentiel est un guide de progression de l'ÉLÈVE ; en présentation il
   // ne s'applique pas — et, symétriquement, rien n'est écrit dans la
   // progression (ni visite ni complétion) tant qu'on présente.
-  const unlocked = presenting
-    || alreadyDone
-    || !sequentialUnlock
-    || isModuleUnlocked(isModuleCompleted, moduleNumber, { stage, firstModuleNumber: firstModule, previousStage });
+  const unlocked = resolveModuleUnlock({
+    presenting,
+    freeNavigation: viewer.freeNavigation,
+    alreadyDone,
+    sequentialUnlock,
+    isModuleCompleted,
+    moduleNumber,
+    stage,
+    firstModuleNumber: firstModule,
+    previousStage,
+  });
 
   // `isValidModuleNumber` et non `moduleNumber` : le module 0 (« أستعدّ »)
   // est un numéro valide, et `if (moduleNumber)` le rejetait — sa visite et

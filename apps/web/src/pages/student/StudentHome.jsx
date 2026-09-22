@@ -26,6 +26,7 @@ import CurriculumPreview from '../../features/home/components/CurriculumPreview'
 import RecentLearning from '../../features/home/components/RecentLearning';
 import LearningSpaceNav from '../../features/home/components/LearningSpaceNav';
 import PremiumCard from '../../features/home/components/PremiumCard';
+import ClassContextBanner from '../../features/home/components/ClassContextBanner';
 
 /**
  * « 🏠 فضائي » — l'ACCUEIL de l'espace élève, qui répond à une seule
@@ -135,6 +136,10 @@ export default function StudentHome() {
           <motion.div {...enter(0)} className="mb-7 sm:mb-8">
             <HomeGreeting name={getDisplayName(user)} gradeName={grade?.name || null} />
           </motion.div>
+
+          {/* Le contexte d'étude : « tu es dans le قسم X avec l'enseignant Y ».
+              Rien si l'élève étudie seul. */}
+          <ClassContextBanner />
 
           <DiagnosticInviteBanner />
 

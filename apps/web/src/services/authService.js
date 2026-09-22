@@ -23,11 +23,13 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
  * @throws {ApiError} On network failure or a non-2xx response (e.g. a
  *   duplicate email or a weak password come back as 422).
  */
-export async function register({ email, password, acceptLegal }) {
+export async function register({ email, password, acceptLegal, accountType = 'student' }) {
+  // `accountType` : 'student' (défaut) ou 'teacher'. Le serveur tient la
+  // liste blanche ; le client ne fait que transmettre le choix.
   const { ok, status, data } = await apiRequest('/auth/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password, accept_legal: acceptLegal }),
+    body: JSON.stringify({ email, password, accept_legal: acceptLegal, accountType }),
   });
 
   if (!ok) {
@@ -165,8 +167,12 @@ export async function fetchLegalVersions() {
  * de second plan. Le frontend ne connaît ni l'identifiant client, ni le
  * secret — il ne connaît que cette adresse.
  */
-export function googleRedirectUrl() {
-  return `${API_URL}/auth/google/redirect`;
+export function googleRedirectUrl(accountType = 'student') {
+  // Le type de compte (élève par défaut, ou enseignant) part avec la
+  // navigation ; le serveur le tient dans une liste blanche et ne s'en sert
+  // que pour un compte NEUF.
+  const suffix = accountType === 'teacher' ? '?accountType=teacher' : '';
+  return `${API_URL}/auth/google/redirect${suffix}`;
 }
 
 /**
@@ -175,11 +181,11 @@ export function googleRedirectUrl() {
  * `handoff` est le jeton d'attente opaque rendu par le serveur au retour de
  * Google. Il est chiffré : ni lisible ni falsifiable ici.
  */
-export async function completeGoogleSignup({ handoff, acceptLegal }) {
+export async function completeGoogleSignup({ handoff, acceptLegal, accountType = 'student' }) {
   const { ok, status, data } = await apiRequest('/auth/google/complete', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ handoff, accept_legal: acceptLegal }),
+    body: JSON.stringify({ handoff, accept_legal: acceptLegal, accountType }),
   });
 
   if (!ok) {

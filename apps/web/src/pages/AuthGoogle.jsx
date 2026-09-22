@@ -29,6 +29,16 @@ import { useDocumentMeta } from '../hooks/useDocumentMeta';
  * ne conserve rien. Tant que la case n'est pas cochée, il n'y a pas de compte
  * — et si l'élève referme l'onglet, il n'en restera aucun (§22).
  */
+/**
+ * Où atterrit un compte Google authentifié : chaque rôle chez lui. L'élève
+ * sans classe scolaire passe par l'accueil qui la lui fait choisir.
+ */
+function landingFor(user) {
+  if (user?.role === 'teacher') return '/enseignant';
+  if (user?.role === 'admin') return '/admin';
+  return user?.grade ? '/espace' : '/espace/bienvenue';
+}
+
 export default function AuthGoogle() {
   const { t } = useTranslation('auth');
   const { t: tm } = useTranslation('marketing');
@@ -40,6 +50,10 @@ export default function AuthGoogle() {
   const handoff = searchParams.get('handoff');
   const email = searchParams.get('email');
   const erreur = searchParams.get('erreur');
+  // Le type de compte choisi AVANT le départ chez Google, revenu avec le
+  // jeton d'attente ; confirmable ici, dans la même liste blanche (élève ou
+  // enseignant) que l'inscription classique. Jamais admin.
+  const [accountType, setAccountType] = useState(searchParams.get('type') === 'teacher' ? 'teacher' : 'student');
 
   const [acceptLegal, setAcceptLegal] = useState(false);
   const [consentError, setConsentError] = useState('');
@@ -64,7 +78,7 @@ export default function AuthGoogle() {
       try {
         const currentUser = await fetchCurrentUser(token);
         login(currentUser, token);
-        navigate(currentUser.grade ? '/espace' : '/espace/bienvenue', { replace: true });
+        navigate(landingFor(currentUser), { replace: true });
       } catch {
         setErrorMsg(t('googleRetry'));
       }
@@ -85,10 +99,10 @@ export default function AuthGoogle() {
 
     setLoading(true);
     try {
-      const data = await completeGoogleSignup({ handoff, acceptLegal });
+      const data = await completeGoogleSignup({ handoff, acceptLegal, accountType });
       login(data.user, data.token);
       // L'adresse est déjà prouvée par Google : pas d'écran de vérification.
-      navigate('/espace/bienvenue', { replace: true });
+      navigate(landingFor(data.user), { replace: true });
     } catch (err) {
       setErrorMsg(err.message);
     } finally {
@@ -144,6 +158,31 @@ export default function AuthGoogle() {
               </p>
 
               <form className="mt-6 space-y-6" onSubmit={handleComplete}>
+                {/* Le type de compte, à confirmer : un professeur venu par la
+                    porte élève ne doit pas se retrouver élève. */}
+                <div role="group" aria-label={t('accountTypeLabel')} className="flex justify-center">
+                  <div className="inline-flex rounded-xl border border-slate-200 bg-white p-1">
+                    <button
+                      type="button"
+                      onClick={() => setAccountType('student')}
+                      aria-pressed={accountType === 'student'}
+                      disabled={loading}
+                      className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors ${accountType === 'student' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}
+                    >
+                      {t('accountTypeStudent')}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAccountType('teacher')}
+                      aria-pressed={accountType === 'teacher'}
+                      disabled={loading}
+                      className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors ${accountType === 'teacher' ? 'bg-teal-700 text-white' : 'text-slate-600 hover:bg-slate-50'}`}
+                    >
+                      {t('accountTypeTeacher')}
+                    </button>
+                  </div>
+                </div>
+
                 <LegalConsentCheckbox
                   id="accept-legal-google"
                   checked={acceptLegal}

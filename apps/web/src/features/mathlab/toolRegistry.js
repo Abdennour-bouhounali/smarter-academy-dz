@@ -1,8 +1,10 @@
-import { Compass, MoveUpRight, Ruler, Circle, Sigma, Scale } from 'lucide-react';
+import { Compass, Ruler, Circle, Scale } from 'lucide-react';
 import { whiteboardTool } from './tools/whiteboard/index.js';
 import { functionGrapherTool } from './tools/functionGrapher/index.js';
 import { geometry3dTool } from './tools/geometry3d/index.js';
 import { probabilityStatsTool } from './tools/probabilityStats/index.js';
+import { algebraTool } from './tools/algebra/index.js';
+import { vectorsTool } from './tools/vectors/index.js';
 
 /**
  * Le REGISTRE des instruments du مختبر الرياضيات (Math Lab).
@@ -22,6 +24,8 @@ export const MATH_LAB_TOOLS = Object.freeze([
   functionGrapherTool,
   geometry3dTool,
   probabilityStatsTool,
+  algebraTool,
+  vectorsTool,
 ]);
 
 /**
@@ -32,10 +36,8 @@ export const MATH_LAB_TOOLS = Object.freeze([
  */
 export const PLANNED_MATH_LAB_TOOLS = Object.freeze([
   { id: 'geometry', labelKey: 'tools.geometry.name', icon: Compass },
-  { id: 'vectors', labelKey: 'tools.vectors.name', icon: MoveUpRight },
   { id: 'numberLine', labelKey: 'tools.numberLine.name', icon: Ruler },
   { id: 'trigonometry', labelKey: 'tools.trigonometry.name', icon: Circle },
-  { id: 'algebra', labelKey: 'tools.algebra.name', icon: Sigma },
   { id: 'measurement', labelKey: 'tools.measurement.name', icon: Scale },
 ]);
 

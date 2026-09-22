@@ -27,17 +27,25 @@ RTL, permanently. Anything needing the locale or direction **as data** imports
 from `locale.js` rather than writing `'ar'` or `'rtl'` inline.
 
 i18next is initialised in `apps/web/src/i18n/index.js` with a single locale
-(`ar-DZ` as both `lng` and `fallbackLng`) and seven namespaces:
+(`ar-DZ` as both `lng` and `fallbackLng`) and ten namespaces:
 
 | Namespace | Covers |
 |---|---|
 | `common` | shared chrome: buttons, errors, loading and empty states |
-| `nav` | navigation |
+| `nav` | navigation (all three spaces) |
 | `auth` | authentication |
 | `access` | activation codes and entitlement |
 | `lesson` | the **lesson engine chrome** — module navigation, kit question labels, final test, diagnostic, Classroom Mode |
 | `student` | the student space |
 | `marketing` | visitor pages |
+| `mathlab` | the مختبر الرياضيات instruments and their home |
+| `teacher` | the teacher space — classes, members, plan |
+| `admin` | the admin panel — navigation, page titles, table columns, states, status badges, dialogs |
+
+**Every role's space is Arabic, the admin panel included.** There is no
+"internal tool gets to stay French" exemption: an administrator is a user of
+this product, reading the same language on the same design system. See §9 of
+`ADMIN_PANEL_ARCHITECTURE.md` for how the panel satisfies this.
 
 **The `lesson` namespace is chrome, never content.** A lesson's own
 pedagogical text is written in Arabic directly in its files
@@ -87,19 +95,57 @@ components resolve them at render.
 ### The API speaks codes, the client speaks Arabic
 
 Laravel responses are **not** a localization surface: its validation messages
-are English, and controller strings are French — the same layer serves the
-francophone admin panel and machine-to-machine webhooks. A server `message` is
-therefore never rendered to a student. Services resolve Arabic text from the
-catalogue through `apps/web/src/services/apiMessage.js`; what crosses the
-boundary is a `reason`/`code` or an HTTP status, never a sentence.
+are English and its controller strings French, and that layer also serves
+machine-to-machine callers. A server `message` is therefore never rendered to a
+user — **in any space, the admin panel included**, since the panel became
+Arabic (§1). Services resolve Arabic text from the catalogue through
+`apps/web/src/services/apiMessage.js`; what crosses the boundary is a
+`reason`/`code` or an HTTP status, never a sentence.
+
+**Enum-ish server values follow the same rule, through a catalogue sub-map.**
+A module `stage`, an analytics metric key or a status code is a *code*: it is
+translated by a nested map plus a small resolver that falls back to the raw key
+when the server serves a value the catalogue does not know.
+
+```jsx
+// admin.json: { "modules": { "stage": { "discovery": "الاستكشاف", … } } }
+const stageLabel = (key) => {
+  const label = t(`modules.stage.${key}`);
+  return label === `modules.stage.${key}` ? key : label;   // unknown → raw code
+};
+```
+
+Never keep a per-page label object: two screens rendering the same enum drift
+apart the moment one of them is edited. `StatusBadge` applies this rule for
+statuses, `admin.modules.stage.*` for pipeline stages and
+`admin.analytics.metric.*` for metrics.
+
+### Data the user reads is Arabic too
+
+Not only the interface: anything **stored** that a student or a teacher will
+read is written in Arabic. A plan's `name` and `description` (`plans`) are
+rendered as they are in « عرضي » and on the student's plan list, so they are
+Arabic in the seeder, in the deployment SQL and in the database — including
+archived plans, which stay visible in the admin history. The `slug` stays a
+latin identifier (`teacher-seats`), because it is vocabulary for the code,
+never text for a reader. Locked by `PlanSeederLanguageTest`. The same rule
+covers any future seeded label a learner sees.
+
+Admin-only strings (activity-log reasons, batch labels, activation notes,
+the French admin panel) are exempt: no student or teacher ever reads them.
 
 ### Product facts, not just language
 
 Copy inherited from the French product must not be translated as-is when it is
-factually wrong here. The DZ product has no Stripe, no euro pricing and no
-subscription (access comes from cash-purchased activation codes), and it
-follows the Algerian curriculum, not the French `6e…Terminale` ladder.
-Translating such copy literally produces fluent Arabic that lies.
+factually wrong here. The DZ product has no Stripe, no euro pricing and **no
+online payment of any kind**: access comes from cash-purchased activation
+codes and from plans an administrator activates by hand
+(`TEACHER_CLASSROOM_ARCHITECTURE.md` §5). A subscription (الاشتراك) exists as
+a fact on the account, but nobody pays for it on the platform, so no copy may
+say « ادفع الآن », show a card form or describe a checkout; prices in دج are
+information, never a call to pay. The product follows the Algerian
+curriculum, not the French `6e…Terminale` ladder. Translating such copy
+literally produces fluent Arabic that lies.
 
 ---
 
@@ -209,6 +255,49 @@ Exports: `ArrowForward`/`ArrowBack`, `ChevronForward`/`ChevronBack`,
 **Icons with a fixed meaning must not go through it**: an Enter key `⏎`, a
 play button, a mathematical arrow on an axis. They never mirror.
 
+### Arrow *glyphs* inside Arabic prose
+
+A literal `→` typed into a string is not an icon and does not go through
+`DirectionalIcons` — but it still points the wrong way. When an arrow means
+"…becomes…" or "…then…" inside an Arabic sentence, it must follow the reading
+direction and be written `←`:
+
+```jsx
+// The override REPLACES the plan value: the arrow introduces the result,
+// so in RTL prose it points leftward, the direction the eye travels.
+<b>{label}</b> ← {value}
+```
+
+The same applies to a precedence chain written as prose
+(`الافتراضي ← الاشتراك ← الاستثناءات`). A `→` inside Arabic text points back at
+the term it just left, which reads as the opposite claim.
+
+**Mathematical arrows are exempt** — an implication `⇒`, a function arrow
+`f : A → B` or a limit is notation, lives inside `MathText`'s LTR isolation,
+and never mirrors.
+
+While in Arabic prose, prefer the Arabic comma `،` to `,` as a list separator.
+
+### Charts read left to right
+
+Recharts draws its axes in the **document** direction, so an RTL chart body
+puts the earliest date on the right and the curve reads backwards. Wrap the
+chart body — and only the body — in `dir="ltr"`:
+
+```jsx
+<h3>{t('analytics.seriesRegistrations')}</h3>   {/* Arabic, RTL */}
+<div dir="ltr">                                 {/* the plot only */}
+  <ResponsiveContainer>…</ResponsiveContainer>
+</div>
+```
+
+The title, tooltip contents, series names and legend stay Arabic; only the
+plotting surface is isolated. This is the charting counterpart of the
+`.sa-math-inline` rule: a quantitative axis is notation, not prose.
+
+Number formatting inside a chart (and anywhere else) uses `ar-DZ`, never
+`fr-FR`.
+
 ### RTL and font selection are separate concerns
 
 Solving one does not solve the other. Verify both independently, then together.
@@ -220,6 +309,61 @@ Solving one does not solve the other. Verify both independently, then together.
 Arabic needs all six forms: `_zero`, `_one`, `_two`, `_few`, `_many`,
 `_other`. The count belongs **inside** the key — never concatenate a number
 with a translated noun.
+
+i18next picks the category from `Intl.PluralRules('ar-DZ')`. No helper decides
+it, and no ported French agreement helper (`agree('passé', n, feminine)`,
+`countNoun`) may come back: French declines in two forms, Arabic in six, and a
+string built by concatenation is wrong for at least one of them.
+
+### The sentence around the noun agrees too
+
+Pluralising only the noun produces «‌درس واحد انتقلت‌» — a singular noun under a
+plural verb. Whatever agrees with the counted noun — the **verb**, the
+**adjective**, the **pronoun suffix** — is part of the same sentence and
+therefore part of the same six-form key:
+
+```json
+"successStatus_one":  "{{counted}} انتقل إلى «{{status}}».",
+"successStatus_two":  "{{counted}} انتقلا إلى «{{status}}».",
+"successStatus_few":  "{{counted}} انتقلت إلى «{{status}}».",
+"successStatus_many": "{{counted}} انتقلت إلى «{{status}}».",
+```
+
+So a sentence that embeds a counted noun takes **both** `count` and `counted`:
+`t('bulk.successStatus', { count: n, counted, status })`.
+
+### The dual has two cases
+
+«‌درسان‌» is nominative and «‌درسين‌» is oblique. `أرشفة درسان` is wrong —
+after a verbal noun the dual must be `أرشفة درسين`. One `{{counted}}` slot
+cannot be right in both positions, so a counted noun reused as subject **and**
+as object needs two families of keys. The admin panel's pattern, which new
+surfaces reuse rather than re-invent:
+
+| Key family | Case | Reads |
+|---|---|---|
+| `bulk.noun.<type>` | subject | «‌درسان محدَّدان‌» |
+| `bulk.nounOf.<type>` | object / oblique | «‌أرشفة درسين‌» |
+
+Only `_two` differs between the two families; the other five categories are
+identical. That single difference is what justifies the second family.
+
+The noun's **key** comes from the content type, never from the call site —
+`CONTENT_NOUNS` (`apps/web/src/components/admin/contentNouns.js`) maps
+`lesson` / `module` / `exercise` to a key and carries nothing else. Copying a
+noun string into a page is how a fourth page reintroduces a wrong form.
+
+Reference implementation: `admin.bulk` in
+`apps/web/src/i18n/locales/ar/admin.json`, consumed by `BulkActionBar.jsx` and
+`bulkContentActions.jsx`. Tested in `apps/web/src/hooks/bulkSelection.test.js`.
+
+### Translating outside a component
+
+`bulkContentActions.jsx` is a factory called from `useMemo`, not a component,
+so it has no `useTranslation`. It imports the i18next instance and translates
+against it (`i18n.t(key, { ns: 'admin' })`), which keeps the exported factory
+signature unchanged for its callers. This is the exception, not the pattern:
+inside a component, always use the hook.
 
 ---
 
@@ -239,8 +383,23 @@ The engine's own vocabulary, settled by the owner:
 | **الميدان** | a curriculum domain (chapter) | — |
 | **نقاط التعلّم** | learning points | — |
 
-Changing any of these silently is forbidden: four navigation surfaces and the
-Classroom Mode toolbar render them.
+The teacher and commercial register, settled by the owner (2026-09-22):
+
+| Arabic | Means | Never means |
+|---|---|---|
+| **الأستاذ** | a teacher account | an admin |
+| **القسم / الأقسام** (« قسمي », « أقسامي ») | a teacher's class — a roster of students | the presentation mode; never الصف, never الفصل |
+| **وضع القسم** | Classroom Mode, the projector shell | a class roster |
+| **رمز الانضمام** | the join code of a class | an activation code |
+| **الدعوة** | an e-mail invitation to a class | — |
+| **العرض / العروض** (« عرضي ») | a plan (offer) | a Classroom Mode « عرض » (presentation) |
+| **الاشتراك** | a subscription running on an account | the account status |
+| **رمز التفعيل** | an activation code (paid access) | a join code |
+| **دج** | the dinar, informational price | an amount to pay online |
+
+Changing any of these silently is forbidden: four navigation surfaces, the
+Classroom Mode toolbar, the teacher space and the student's « قسمي » page
+render them.
 
 When official terminology is uncertain, mark it
 `[À VÉRIFIER DANS LE PROGRAMME OFFICIEL]` rather than inventing one.
@@ -287,6 +446,9 @@ text. Classify each hit: notation and identifiers stay, prose gets translated.
 [ ] Every numeric block in a manipulation declares dir="ltr"
 [ ] Directional icons come from DirectionalIcons; fixed-meaning icons do not
 [ ] Arabic plurals declare all six forms, count inside the key
+[ ] The verb/adjective around a counted noun is pluralised too (count AND counted passed)
+[ ] A counted noun used as both subject and object has nominative and oblique dual keys
+[ ] No French agreement helper (agree / countNoun) survives anywhere
 [ ] Terminology matches the register (الوحدة ≠ المحور)
 [ ] Verified in the browser at 320 px with no horizontal scroll
 ```

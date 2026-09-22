@@ -374,4 +374,57 @@ class GoogleSignInTest extends TestCase
 
         $this->assertDatabaseCount('users', 0);
     }
+
+    // ── L'ENSEIGNANT PAR GOOGLE ──────────────────────────────────────────
+
+    public function test_une_inscription_google_peut_creer_un_enseignant(): void
+    {
+        // Le type demandé avant le départ voyage dans le jeton d'attente.
+        $handoff = \App\Domain\Identity\PendingGoogleSignup::issue($this->identity(['email' => 'prof@gmail.com']), User::ROLE_TEACHER);
+        $this->assertSame(User::ROLE_TEACHER, \App\Domain\Identity\PendingGoogleSignup::roleOf($handoff));
+
+        $response = $this->postJson('/api/v1/auth/google/complete', ['handoff' => $handoff, 'accept_legal' => true])
+            ->assertCreated()
+            ->assertJsonPath('user.role', User::ROLE_TEACHER);
+
+        $user = User::where('email', 'prof@gmail.com')->firstOrFail();
+        $this->assertNotNull($user->email_verified_at);
+        $this->assertNull($user->password);
+
+        // Le jeton ouvre l'espace enseignant, pas l'espace élève.
+        $this->withToken($response->json('token'))->getJson('/api/v1/teacher/dashboard')->assertOk();
+    }
+
+    public function test_l_ecran_de_consentement_peut_confirmer_le_type_dans_la_liste_blanche(): void
+    {
+        $handoff = \App\Domain\Identity\PendingGoogleSignup::issue($this->identity(['email' => 'a@gmail.com']));
+
+        // Venu par la porte élève, il se dit enseignant : accepté.
+        $this->postJson('/api/v1/auth/google/complete', ['handoff' => $handoff, 'accept_legal' => true, 'accountType' => 'teacher'])
+            ->assertCreated()->assertJsonPath('user.role', User::ROLE_TEACHER);
+
+        // Jamais admin — refusé avant toute création.
+        $other = \App\Domain\Identity\PendingGoogleSignup::issue($this->identity(['sub' => '2', 'email' => 'b@gmail.com']));
+        $this->postJson('/api/v1/auth/google/complete', ['handoff' => $other, 'accept_legal' => true, 'accountType' => 'admin'])
+            ->assertStatus(422);
+        $this->assertDatabaseMissing('users', ['email' => 'b@gmail.com']);
+    }
+
+    public function test_un_enseignant_existant_se_connecte_par_google_et_garde_son_role(): void
+    {
+        $teacher = User::factory()->create(['role' => User::ROLE_TEACHER, 'email' => 'prof@gmail.com']);
+
+        $outcome = $this->linker()->resolve($this->identity(['email' => 'prof@gmail.com']));
+
+        $this->assertSame(GoogleLinkOutcome::LINKED, $outcome->kind);
+        $this->assertSame($teacher->id, $outcome->user->id);
+        $this->assertSame(User::ROLE_TEACHER, $outcome->user->fresh()->role);
+    }
+
+    public function test_le_state_de_google_porte_le_type_de_compte(): void
+    {
+        $this->assertSame('teacher', \App\Http\Controllers\GoogleAuthController::roleFromState('type:teacher'));
+        $this->assertNull(\App\Http\Controllers\GoogleAuthController::roleFromState('quelconque'));
+        $this->assertNull(\App\Http\Controllers\GoogleAuthController::roleFromState(''));
+    }
 }

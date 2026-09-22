@@ -384,8 +384,9 @@ step-locking rules, or tap-target minimums — it supplies content only.
   `brief` (mission card), optional `intro`/`footer`, and `steps[]` each with `num`, `title`,
   `done` (module-owned boolean), `content` — a ReactNode **or** `(kit) => ReactNode` where
   `kit = { react, alreadyCompleted, effectsEnabled }`. It wires `useProgress`, step locking
-  (`isStepLocked(alreadyCompleted, …)` — sequential on first pass, all-open on revisit),
-  `incompleteSteps` (the "what's left" popover on the disabled next button), the
+  (`isStepLocked(alreadyCompleted, sequentialLocked, viewer)` — sequential on first pass,
+  all-open on revisit, on presentation, and for a teacher's free navigation),
+  `incompleteSteps` (the "what's left" popover, shown when `canAdvance` is false), the
   micro-celebration toolkit (`useModuleEffects`, `EffectsToggle`, `StreakChip`, `XPBurst`,
   `StepProgressBar`), and completion. **No auto-scroll, no auto-advance** — ever.
 - **Question components**: `TapQuestion` (single MCQ; `above` accepts a node or

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react';
 
 /**
@@ -9,7 +10,7 @@ import { X } from 'lucide-react';
  * conséquente (désactiver un compte, archiver une leçon) doit se confirmer
  * dans quelque chose qui piège le focus, pas dans un `window.confirm`.
  */
-export default function Modal({ open, onClose, title, children, footer, size = 'md' }) {
+export default function Modal({ open, onClose, title, children, footer, size = 'md', closeLabel }) {
   const panelRef = useRef(null);
   const previouslyFocused = useRef(null);
 
@@ -61,7 +62,7 @@ export default function Modal({ open, onClose, title, children, footer, size = '
           <button
             type="button"
             onClick={onClose}
-            aria-label="Fermer"
+            aria-label={closeLabel}
             className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
           >
             <X size={18} />
@@ -80,31 +81,34 @@ export default function Modal({ open, onClose, title, children, footer, size = '
  * Confirmation d'une action conséquente. `tone="danger"` pour ce qui ferme un
  * accès ou retire du contenu aux élèves.
  */
-export function ConfirmDialog({ open, onClose, onConfirm, title, message, confirmLabel = 'Confirmer', tone = 'default', busy = false }) {
+export function ConfirmDialog({ open, onClose, onConfirm, title, message, confirmLabel, tone = 'default', busy = false, cancelLabel, busyLabel, closeLabel }) {
+  const { t } = useTranslation('admin');
+
   return (
     <Modal
       open={open}
       onClose={onClose}
       title={title}
       size="sm"
+      closeLabel={closeLabel}
       footer={(
         <>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg border border-slate-300 px-4 py-2 font-inter text-sm font-semibold text-slate-700 hover:bg-slate-50"
+            className="rounded-xl border border-slate-300 bg-white px-4 py-2 font-inter text-sm font-semibold text-slate-700 hover:bg-slate-50"
           >
-            Annuler
+            {cancelLabel ?? t('common.cancel')}
           </button>
           <button
             type="button"
             onClick={onConfirm}
             disabled={busy}
-            className={`rounded-lg px-4 py-2 font-inter text-sm font-semibold text-white disabled:opacity-60 ${
-              tone === 'danger' ? 'bg-rose-600 hover:bg-rose-700' : 'bg-blue-600 hover:bg-blue-700'
+            className={`rounded-xl px-4 py-2 font-inter text-sm font-semibold text-white disabled:opacity-60 ${
+              tone === 'danger' ? 'bg-rose-600 hover:bg-rose-700' : 'bg-violet-600 hover:bg-violet-700'
             }`}
           >
-            {busy ? 'En cours…' : confirmLabel}
+            {busy ? (busyLabel ?? t('common.busy')) : (confirmLabel ?? t('common.confirm'))}
           </button>
         </>
       )}

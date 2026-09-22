@@ -19,12 +19,24 @@ without any of the lesson engine: no modules, no progression, no mastery.
 
 | Built today | Announced, not built |
 |---|---|
-| **السبّورة** (whiteboard) — `whiteboard` · **راسم الدوال** (function grapher, with the optional « المماس » tangent/derivative mode) — `functionGrapher` · **الهندسة ثلاثية الأبعاد** (3D geometry explorer) — `geometry3d` · **الاحتمالات والإحصاء** (probability & statistics lab) — `probabilityStats` | geometry, vectors, numberLine, trigonometry, algebra, measurement |
+| **السبّورة** (whiteboard) — `whiteboard` · **راسم الدوال** (function grapher, with the optional « المماس » tangent/derivative mode) — `functionGrapher` · **الهندسة ثلاثية الأبعاد** (3D geometry explorer) — `geometry3d` · **الاحتمالات والإحصاء** (probability & statistics lab) — `probabilityStats` · **مختبر الجبر** (algebra & equation lab, equations *and* inequalities) — `algebra` · **مختبر الأشعة** (vectors & coordinate geometry lab) — `vectors` | geometry, numberLine, trigonometry, measurement |
 
 The two announced chips « الإحصاء » and « الاحتمالات » were retired together
 when `probabilityStats` shipped: one instrument delivers both, because the
 law of large numbers is the bridge between them and splitting it in two
 tools would have cut that bridge.
+
+The announced chip « الأشعة » left the list when `vectors` shipped: the
+instrument delivers exactly what the chip promised — and it kept the chip's
+own name and icon (`MoveUpRight`), because the curriculum's word is الشعاع
+(§5f.1).
+
+The announced `numberLine` chip **stays announced** although `algebra` now
+draws an interactive number line: there it is the *reading of an
+inequality's solution set*, bound to the equation being manipulated. A
+standalone « مستقيم الأعداد » instrument — placing, comparing and ordering
+arbitrary numbers, fractions and decimals — remains a different tool, and
+`NumberLine.jsx` is where it would start.
 
 The announced instruments exist only as a name and an icon in
 `PLANNED_MATH_LAB_TOOLS`, rendered as disabled « قريبًا » chips on the home
@@ -38,13 +50,21 @@ allowedRoles={['student']}`), French route slugs like the rest of `/espace`:
 | Route | Page | Role |
 |---|---|---|
 | `/espace/atelier` | `MathLabHome` | the instruments, the announced ones, « أعمالي » (saved work) |
-| `/espace/atelier/:toolSlug` | `MathLabToolPage` | a **new** document in that instrument (`tableau`, `grapheur`, `geometrie-3d`, `probabilites-statistiques`) |
+| `/espace/atelier/:toolSlug` | `MathLabToolPage` | a **new** document in that instrument (`tableau`, `grapheur`, `geometrie-3d`, `probabilites-statistiques`, `algebre`, `vecteurs`) |
 | `/espace/atelier/:toolSlug/:documentId` | `MathLabToolPage` | a saved document |
 
 `toolSlug` is resolved against the registry (`getMathLabToolBySlug`); an
-unknown slug redirects to `/espace/atelier`. A document that is not the
-student's (or does not exist) renders « هذا العمل غير موجود أو ليس لك » — the
-API answers 404 either way, never 403.
+unknown slug redirects to the Lab home of the current workspace. A document
+that is not the student's (or does not exist) renders « هذا العمل غير موجود أو
+ليس لك » — the API answers 404 either way, never 403.
+
+**The teacher has the same Lab** under `/enseignant/atelier[/:toolSlug[/:documentId]]`
+(same pages, same registry, own documents — the API resolves everything from
+the authenticated account). Links are built from the reader's workspace:
+`mathLabBasePath(workspaceBase)` and `mathLabToolPath(tool, id, root)`
+(`features/mathlab/mathLabDocument.js`), with `useWorkspaceBase()` from
+`features/learning/learningViewer.js`; `MATH_LAB_BASE_PATH` (`/espace/atelier`)
+remains the default. Entry « المختبر » in `data/teacherNavigation.js`.
 
 Navigation: one entry « المختبر » in `data/studentNavigation.js` (desktop
 sidebar and mobile bottom tab bar), after « استكشاف ». Access follows the
@@ -75,6 +95,10 @@ features/mathlab/
     └── geometry3d/        index.js (definition) · Geometry3DTool.jsx · geometryState.js · geometryCalculations.js ·
                            solidScene.js (three.js, no React) · SolidViewer.jsx · GeometryPanel.jsx · ShapeSelector.jsx ·
                            DimensionControls.jsx · GeometryInfo.jsx · geometry3d.css
+    └── vectors/        index.js (definition) · VectorsTool.jsx · vectorMath.js · vectorScene.js · vectorState.js ·
+                           analysis.js · vectorFormat.js · experiments.js · VectorPlane.jsx (the grapher's plane modules) ·
+                           VectorSceneLayer.jsx · VectorArrow.jsx · VectorHandle.jsx · VectorConstructions.jsx ·
+                           VectorInspector.jsx · VectorControls.jsx · vectors.css
     └── probabilityStats/  index.js (definition) · ProbabilityStatsTool.jsx · probabilityState.js · experiments.js ·
                            simulationEngine.js · datasetStatistics.js · ExperimentControls.jsx · DatasetEditor.jsx ·
                            StatisticsSummary.jsx · TheoreticalComparison.jsx · FrequencyBars.jsx · ConvergenceChart.jsx ·
@@ -147,7 +171,7 @@ One table for every instrument — `math_lab_documents`:
 | `title` | ≤ 160 chars, whitespace-normalised, `بدون عنوان` if empty |
 | `schema_version` | the tool's format version, stored, never interpreted |
 | `data` (json) | the tool's serialised state — **opaque to the server** |
-| `data_bytes` | measured on every write; refused above `MathLabTools::maxBytes` (whiteboard: 2 MB, function grapher: 100 KB, 3D geometry: 20 KB, probability & statistics: 60 KB) |
+| `data_bytes` | measured on every write; refused above `MathLabTools::maxBytes` (whiteboard: 2 MB, function grapher: 100 KB, 3D geometry: 20 KB, probability & statistics: 60 KB, algebra: 20 KB, vectors: 120 KB — `MAX_HISTORY × scene`, §5f.5) |
 
 API (`routes/api.php`, inside the `auth:sanctum` + `account.active` +
 `email.verified` group), controller `MathLabDocumentController`, domain
@@ -180,6 +204,14 @@ Refusals carry a `code`; the client shows Arabic from
   unmount attempts a last flush.
 - Save states shown in the shell: `draft` (لم يُحفظ بعد) · `dirty` · `saving`
   · `saved` · `error`.
+- **Hooks in `MathLabToolPage`.** The lab's home path depends on the
+  workspace (student or teacher) and is read with `useWorkspaceBase()` — in
+  the **body** of `ToolPage`, into `labHome`, never inside the JSX of the
+  error branch. A hook called from a conditionally-rendered branch changes
+  the *number* of hooks between renders, and React then throws « Rendered
+  more hooks than during the previous render » the moment a document fails
+  to load, taking the whole instrument down with it (caught by the grapher
+  e2e, fixed 2026-09-22).
 
 Deployment: the migration `2026_09_24_000001_create_math_lab_documents_table`
 must run in production (`php artisan migrate`).
@@ -862,6 +894,326 @@ dice, no rolling off the table); the random-integer experiment has no
 object; the exported document does not carry the pose (only the face); no
 sound; the coin's word is a canvas texture, so it is not selectable text.
 
+## 5e. مختبر الجبر — Algebra & Equation Lab V1
+
+> *Touch the equation and feel it stay true.* A student meets `2x + 3 = 11`
+> — **not** its answer — chooses an operation, applies it to **both sides at
+> once**, and watches the equation simplify under their hands until `x = 4`.
+> The balance never lies: whatever is done to one pan is done to the other.
+> It is a manipulation instrument, not a solver: the answer is a secondary
+> command (« إظهار الحل »), never the opening screen.
+
+### 5e.1 Engine choices
+
+| Layer | Choice | Why |
+|---|---|---|
+| Expression parsing | **reuses the grapher's `expressionParser.js`** | One grammar for the whole platform, never two (§27 of the brief). It already reads MathLive LaTeX *and* hand-typed ASCII, already returns error **codes** rather than exceptions, and already has 104 tests. The Algebra Lab adds a *relation* layer above it (`splitRelation`), not a second parser. |
+| Arithmetic | **exact rationals** — `rational.js` (`{n, d}`, reduced, sign on the numerator) | A school equation resolves exactly or not at all: `x/3 = 5` gives 15 and `3x = 1` gives ⅓, which a student must read as « 1/3 », never « 0,3333333333 ». Floating point is used only to *verify* a substitution and to place a point on the number line. No BigInt: coefficients stay tiny, and a guard (`LIMIT = 1e12`) **refuses** an operation rather than returning a silently wrong result. |
+| Algebra | **linear normal form** — `linearForm.js` (`a·x + b`) | Everything this lab manipulates is first-degree; reducing the AST to a coefficient pair makes simplification, classification and solving trivial and total. It is *not* a CAS: `x²`, `x·x`, `3/x` and `sin(x)` are **refused** with `nonLinear`, which is a curriculum boundary, not a missing feature (§41). |
+| Rendering | **KaTeX via `MathText`** | The platform-wide renderer, already wrapping every expression in `dir="ltr"` + bidi isolation. No renderer was added. MathLive is *not* used here: the equation field takes one short line of text and a virtual keyboard would cost 800 kB for `2x + 3 = 11` (extension point, §5e.8). |
+| Balance & number line | **our own inline SVG** | The repo rule for anything a student reads: drawn in code, parameterised by props, Arabic as DOM text (`CLAUDE.md`). **No dependency was added**; the tool is a ~22 kB chunk. |
+
+### 5e.2 The pipeline
+
+```
+saisie (LaTeX ou ASCII) ─▶ splitRelation ─▶ « gauche RELATION droite »
+                                              │
+       expressionParser.parseExpression ◀──────┘  (une seule grammaire)
+                     │
+                     ▼  AST {num, var, bin, neg, call}
+              toLinearForm ─▶ { a, b }  rationnels exacts      (refus si non linéaire)
+                     │
+                     ▼
+        equation { left, right, relation }
+                     │
+        applyOperation (LES DEUX membres) ─▶ equation′ + flipped
+                     │
+              classify ─▶ solved | unique | none | infinite
+                     │
+                     ▼
+        balance SVG · droite graduée · historique · vérification
+```
+
+### 5e.3 The relation is the whole point (`equation.js`)
+
+An equation here is `{ left: {a,b}, right: {a,b}, relation }` with
+`relation ∈ '=' '<' '>' '<=' '>='`. **Inequalities are not a separate
+mode**: same object, same operations, one single rule apart —
+multiplying or dividing by a negative **reverses the sense**.
+
+```
+−2x > 6   ÷(−2)   →   x < −3
+```
+
+`applyOperation` holds that rule in **one place** for all four operations
+and returns `flipped: true`, which the history marks on the step that
+caused it (« انعكس اتجاه المتراجحة ») — the classic mistake of the chapter
+deserves a word. No component has to remember it.
+
+Written forms accepted for a relation: `=`, `<`, `>`, `<=`, `>=`, `≤`, `≥`,
+`\leq`, `\geq`, `\le`, `\ge`, `\leqslant`, `\geqslant`. Splitting ignores
+what is inside LaTeX braces (`\frac{1}{2}` carries no relation) and refuses
+a double relation (`1 < x < 5` is not V1).
+
+`classify` says what the **current** state means without transforming it:
+
+| kind | Meaning | Example |
+|---|---|---|
+| `solved` | the unknown is isolated | `x = 4`, `x < −3` |
+| `unique` | a solution exists, not yet isolated | `2x = 8` |
+| `none` | no solution — the unknown vanished on a false relation | `2x + 3 = 2x + 5` → `0 = 2` |
+| `infinite` | always true | `2x + 3 = 2x + 3` |
+
+`none` and `infinite` display their Arabic sentence (« لا يوجد حل », « عدد
+لا نهائي من الحلول ») and **never a fake number** (§26).
+
+### 5e.4 What the student can do
+
+| Area | Interaction |
+|---|---|
+| Equation | a text field (LTR, JetBrains Mono so digits stay **Latin**, not ١١) + « استكشاف ». Accepts `2x+3=11`, `5 - 2x = 11`, `x/3 = 5`, `(1/2)x = 4`, `-2x + 5 = 11`, `2x ≤ 10` and MathLive-style LaTeX. An invalid entry is **refused with a reason** (`role="alert"`) and the previous equation stays on screen. |
+| Generator | a level `<select>` (1: `x + a = b`, 2: `ax = b`, 3: `ax + b = c`, 4: `ax + b = cx + d`) + « معادلة جديدة ». Equations are built **from their solution**, so they always fall out exactly — never rejection sampling, never a surprise fraction. Guards: integer solution in [−10, 10], no zero coefficient, no coefficient 1 at levels 2–3 (nothing to divide), `a ≠ c` at level 4 (the unknown must survive), `x = 0` only ~1 in 10. |
+| Operations | four buttons (الجمع، الطرح، الضرب، القسمة) + a value field, applied to **both sides** — the UI offers no way to touch one side. Up to three **suggestions** (`− 3`, `÷ 2`) propose what advances *this* equation, in the order a teacher would write them; the student keeps the initiative. Multiplying by 0 and dividing by 0 are refused with a reason. |
+| Balance | two pans, a beam. An **equality keeps the beam level whatever the pans hold** — that is the promise being taught; an inequality tips to the heavy side, and reversing the sense visibly flips it. `x` is a violet token, a constant a blue one, a negative red; beyond 8 tokens the drawing stops counting and writes the value (seventeen squares no longer read). Tokens shrink to fit rather than spill out of the pan. |
+| Number line | for inequalities only: an **open** circle for an excluded bound (`<`, `>`), **filled** for an included one (`≤`, `≥`) — the confusion of the chapter, visible at a glance — plus the solution ray and arrow. Drag to pan, wheel/±/⌖ to zoom and recentre, arrows/+/−/0 at the keyboard. It shows the graduation but **not the bound** until the unknown is isolated or « إظهار الحل » is pressed (§5e.6). |
+| Solution | **nothing at opening** (§8 of the brief). « إظهار الحل » reveals it; once isolated it shows by itself. « التحقق » substitutes the value into the **original** equation and displays `2 × 4 + 3 = 11` then `11 = 11` with a verdict — a solution is the value that makes the relation true, not the output of a recipe. |
+| History | one step per operation, each showing the operation (`− 3` « على الطرفين ») then its result. Clicking a step **returns to it**; steps ahead grey out. It is the undo control as much as its trace. |
+| تراجع / إعادة | a cursor into that step list. A new operation after going back **cuts the abandoned branch**. An operation with no effect (`+ 0`, `× 1`) is not pushed — the history must tell a story. |
+| Parameters | an optional `a·x + b = c` panel: three sliders, the equation and the solution following live, and `x = (c − b)/a` shown **below** the experiment, never as the way in (§25). `a = 0` is skipped — without an unknown there is nothing to explore. |
+| Document | title, autosave (§4.1), « أعمالي », delete; « مسح الكل » (tool wording) restores a fresh equation. No PNG export in V1. A new document opens on `2x + 3 = 11` and **creates nothing** until the first change. |
+
+### 5e.5 State format (`algebraState.js`, `ALGEBRA_SCHEMA_VERSION = 1`)
+
+```js
+data = {
+  source:       '2x + 3 = 11',                        // la saisie, telle qu'écrite
+  steps:        [ { equation, operation | null, flipped } , … ],
+  cursor:       number,                               // le pas AFFICHÉ — d'où viennent تراجع / إعادة
+  showSolution: boolean,
+  parameters:   { a, b, c } | null,                   // le panneau ax + b = c, s'il est ouvert
+  numberLine:   { center, span },
+}
+```
+
+The document stores **not a current state but a path**: `steps[0]` is the
+starting equation (`operation: null`), each operation pushes a step, and the
+history of §21 and the undo of §22 are therefore the *same object*. A
+rational is stored `{n, d}` — plain JSON, rereadable without code.
+`MAX_STEPS = 60` keeps a document under the server's 20 KB cap (a 70-step
+run serialises under 20 kB, tested). `normalizeAlgebraData` makes any stored
+or seeded value safe and **truncates a history at the first unreadable
+step** rather than leaving a hole that would no longer tell a story.
+
+### 5e.6 Pedagogy the code enforces
+
+Three rules are structural, not stylistic, and a future change should know
+it is changing them:
+
+1. **The answer is never the opening screen** (§8). `showSolution` starts
+   false, `createAlgebraData` never seeds it true, and the number line
+   withholds the bound until the unknown is isolated — otherwise the
+   inequality would hand over its answer while the equation withheld it.
+2. **An operation cannot touch one side.** `applyOperation` takes an
+   equation and returns an equation; there is no code path that modifies a
+   single member.
+3. **No fake number.** `none` and `infinite` have their own sentence;
+   `solve` returns no `solution` for them; an overflow **refuses** the
+   operation and leaves the document intact.
+
+### 5e.7 Layout, responsiveness, RTL, accessibility, performance
+
+- ≥ 768 px: the panel (20 rem, 23 rem from 1280 px) on the **start** edge
+  (right in Arabic), the stage takes the rest; its content is centred
+  vertically (`margin-block: auto` on the first and last children) so the
+  balance does not float in a tall void. Below 768 px: the stage on top,
+  the panel below (≤ 46 %, scrollable). Verified at 1440, 834 and 390 px:
+  no horizontal overflow, touch targets ≥ 32 px.
+- **SVG and direction.** As for the 3D stage and the probability charts,
+  the HTML `dir` does not reach SVG: `.sa-ml-alg__balance` and
+  `.sa-ml-alg__numberline-svg` set `direction: ltr` explicitly, and the
+  e2e checks the **computed** direction. Notation (`.sa-ml-alg__current`)
+  is LTR through `MathText`; Arabic labels stay RTL.
+- **Latin digits.** Cairo renders Latin digits as Arabic-Indic when it is
+  reached as a fallback, so `11` displayed as `١١` in the equation field and
+  on the balance tokens. Every numeric surface therefore leads with
+  **JetBrains Mono** (the platform's digit/code font, §index.css) — not
+  `monospace`, which resolves to an Arabic-capable system font.
+- A long equation scrolls **inside its own zone**; the page never overflows
+  (§31). KaTeX drops from 1.6em to 1.3em under 480 px.
+- Every control is labelled; the operation kinds are `aria-pressed`; the
+  invalid field is `aria-invalid` + `role="alert"` linked by
+  `aria-describedby`; each operation announces the new equation through a
+  `role="status"` live region, and a visually-hidden line always carries the
+  **textual** mathematical state (« المعادلة الحالية: 2x + 3 = 11 — الخطوة 2
+  من 3 ») so nothing depends on seeing the balance (§34). Animations respect
+  `prefers-reduced-motion`.
+- All mathematics is pure and memoised (`classify`, `suggestOperations`);
+  serialisation waits 300 ms after the last change, autosave 2.5 s later.
+
+### 5e.8 Extension points and limits
+
+Prepared, not built: MathLive input (the parser already reads its LaTeX —
+only the field would change); several unknowns (`toLinearForm` takes the
+variable as a parameter); an inequality generator (`generateEquation` takes
+`relation`); PNG export. **Not in V1, by decision** (§41 of the brief):
+quadratics, systems, matrices, complex numbers, symbolic differentiation or
+integration, CAS-level simplification, an AI tutor. `x²` and `3/x` are
+refused with a clear Arabic sentence rather than silently mishandled.
+
+## 5f. مختبر الأشعة — Vectors & Coordinate Geometry Lab V1
+
+> The instrument of the 4AM programme's **« المعلم في المستوي »** (LP 4.4) and
+> **« الانسحاب والشعاع »** (LP 4.5). A شعاع is not an arrow to look at: it is a
+> **displacement you pull**. The student drags a point and the components,
+> the length and the direction follow the finger.
+
+### 5f.1 Terminology — الشعاع, not المتجه
+
+The instrument is **مختبر الأشعة**, its object is a **شعاع**, its coordinates
+are **المركبتان**, and a translation is an **انسحاب**. This is the register of
+the Algerian textbook, recorded in `ALGERIA_4AM_CURRICULUM.md` (§terminology:
+« الشعاع | vecteur ») and already announced by the Lab home page before the
+tool shipped. `المتجه` — correct in other Arabic-speaking curricula — is **not**
+used here: the student's own book says شعاع, and the Lab speaks the book's
+language (`ARABIC_RTL_CONTRACT.md`).
+
+### 5f.2 One coordinate plane, not a second one
+
+`VectorPlane.jsx` **imports the grapher's plane modules unchanged**:
+
+| Concern | Module — owned by `tools/functionGrapher/` |
+|---|---|
+| The camera (`{xMin, xMax, yMin, yMax}`, zoom, pan, fit) | `viewport.js` |
+| The readable grid step at any zoom | `gridStep.js` |
+| Axis labels, decimal comma, true minus, Latin digits | `grapherFormat.js` |
+| Drag, pinch, wheel, keyboard | `useViewportGestures.js` |
+
+There is **one** coordinate system on the platform, and this is it. What
+justifies a separate *component* is only what sits on top: draggable objects
+instead of sampled curves. The mafs light theme (`--mafs-bg`, `--mafs-fg`, …)
+is redeclared in `vectors.css` with the grapher's exact values — mafs ships a
+**dark** default (`node_modules/mafs/core.css`), so omitting it renders a
+black plane with white-on-white labels.
+
+### 5f.3 Layers (the §38 separation)
+
+```
+vectorMath.js     pure mathematics on {x, y} — no React, no pixels, no rounding
+vectorScene.js    objects, stable ids, DEPENDENCY RESOLUTION, delete cascade
+analysis.js       relations between objects (parallel, perpendicular, collinear)
+vectorState.js    the document: scene + history + viewport + settings
+vectorFormat.js   the ONLY place a number is rounded for display
+VectorPlane       the repère (grapher modules) + gestures
+VectorSceneLayer  draws a RESOLVED scene — computes nothing
+VectorArrow · VectorHandle · VectorConstructions   the SVG vocabulary
+VectorInspector · VectorControls                   the panel
+VectorsTool       state owner; calls the pure modules, no maths in JSX
+```
+
+### 5f.4 Dependencies: nothing is ever "updated"
+
+The brief (§38) asks that moving A update everything derived from it. The
+instrument satisfies this by **never storing a derived value**:
+
+| Object | `kind` | Definition stored |
+|---|---|---|
+| point | `free` | `{x, y}` — the only draggable kind |
+| | `midpoint` | `{of: [idA, idB]}` |
+| | `image` | `{of: idA, by: idVector}` — the انسحاب |
+| شعاع | `free` | `{origin: {x, y}, x, y}` — movable, components unchanged (§6) |
+| | `points` | `{from: idA, to: idB}` — ⃗AB, anchored at A |
+| | `sum` / `difference` | `{of: [idU, idV], method}` |
+| | `scaled` | `{of: idU, k}` |
+| polygon | — | `{vertices: [id…]}` |
+
+`resolveScene(scene)` walks these once per render, memoised, detecting cycles
+without an infinite stack; a dead reference or a cycle yields
+`resolved: false` for **that object only** and the rest of the plane keeps
+working. A midpoint or an image is therefore **not draggable** — you move it
+by moving what it depends on, which is the lesson itself. `dependentsOf` /
+`removeObjects` compute the transitive closure before a delete, so no object
+is ever left pointing at nothing.
+
+### 5f.5 Two regimes of change — why « تراجع » undoes a *gesture*
+
+| Regime | Function | Used by |
+|---|---|---|
+| Continuous | `replaceScene` — overwrites the current step | dragging, the k slider, the a/b sliders |
+| Act | `pushScene` — pushes a step, cuts the abandoned branch | create, combine, translate, delete, open an experiment |
+
+Without this split, crossing the plane with a point would pile up two hundred
+history entries and « تراجع » would rewind by one pixel. The end of a drag
+pushes a fresh step so the next gesture does not overwrite it. `MAX_HISTORY`
+is **20**: each step keeps a full copy of the scene, so the document's size is
+`history × scene`, and this constant is what sets the server's byte ceiling.
+
+### 5f.6 What is drawn, and why
+
+| Construction | Answers | Note |
+|---|---|---|
+| Arrowhead in **pixels**, not plan units | §5 | a marker would double in size at each zoom |
+| The **zero شعاع** as a disc | §14 | "nothing is drawn" and "the شعاع is null" must not look alike |
+| Tip-to-tail, the copy **dashed** | §11 | the dash says *this is a copy* |
+| Parallelogram, faint fill | §12 | the surface is what makes the rule discoverable |
+| The opposite `−v` | §13 | `u − v` is shown as `u + (−v)` |
+| The carrier line of `k·u` | §14–15 | every `k·u` lives on one line: collinearity, seen before it is said |
+| Component legs | §8 | (4 ; 2) means *four right, two up* |
+| Right-angle marker | §24 | the textbook's small square |
+| Direction arc | §10 | the angle, not just a number in a panel |
+
+### 5f.7 Exact values, rounded only to display
+
+`exactNorm` returns ‖u‖ in its readable exact form — `5`, or `2√5` for √20 —
+for **integer** components, and the decimal otherwise; `formatNorm` prints
+`√5` *and* `≈ 2,24`, because either alone teaches less. `formatFactor` writes
+`v = 1/2 u`, not `0,5` (§21). A **vertical** line returns
+`{vertical: true, value: null}` and the panel says « غير معرّف — المستقيم
+عمودي »: never a number (§20). The null شعاع has **no** direction — `NaN`,
+displayed « — », never 0°.
+
+Parallelism and perpendicularity use a **relative** tolerance (|det| or |dot|
+against the product of the norms, i.e. bounding |sin θ| / |cos θ|). An absolute
+test lies twice: it calls huge collinear أشعة non-parallel, and tiny
+non-collinear ones parallel.
+
+### 5f.8 Touch (§34)
+
+A handle is a **visible** disc of 5–7 px inside an **invisible** hit circle of
+22 px radius — a 44 px target, the recommended minimum, measured in the e2e
+run. The drawing does not grow; the target does. Handles and the arrow's pick
+band use **native** `pointerdown` listeners with a real DOM `stopPropagation`:
+the plane's own gestures (`useViewportGestures`) are native listeners on the
+host element, and React's synthetic `stopPropagation` would not stop them —
+the plane would read a tap and deselect what was just chosen. `touch-action:
+none` keeps the page from scrolling under the finger.
+
+### 5f.9 Experiments (§27) and free exploration (§28)
+
+`experiments.js` holds ten rigged scenes — addition, parallelogram,
+subtraction, scalar, translation, shape translation, midpoint, parallelism,
+collinearity, perpendicularity. They carry **no question and no answer**: an
+experiment is a plane already set up, nothing more, and everything in it stays
+draggable. The default document is **not** an experiment: two points and the
+شعاع they carry, so the student sees at once what a شعاع is (§28).
+`experiments.test.js` asserts every experiment opens fully resolved, survives a
+storage round-trip, and leaves something to pull.
+
+### 5f.10 Curriculum scope
+
+The **dot product is not in the 4AM programme** — it belongs to the lycée. It is
+computed and available, but only behind an explicit « تحليل إضافي » choice,
+never on opening and never as the headline feature (§23 of the brief).
+
+### 5f.11 Verification
+
+`vectorMath.test.js` (54), `vectorScene.test.js` (23), `vectorState.test.js`
+(23), `vectorFormat.test.js` (17), `experiments.test.js` (33) — **150 tests**,
+covering every case the brief lists (§39) plus the vertical line, the null
+شعاع, the cycle, the dead reference, the relative tolerance, the history depth
+the document's byte budget, and the **lesson seed contract** exactly as
+`LESSON_DEVELOPMENT_GUIDE.md` publishes it. Browser QA:
+`apps/web/e2e/mathlab-vectors.mjs`.
+
 ## 6. From a lesson — integration point only (`openMathLab.js`)
 
 `Planned` flow: *lesson → « استكشف في المختبر » → the instrument opens with
@@ -919,17 +1271,30 @@ another instrument. Each tool documents its own seed shape:
 | Probability lab maths: every experiment's law (Ω non-empty, Σp = 1, p > 0), coin 1/2, die 1/6 per face, two dice counted on 36 pairs (Σ = 1, P(7) = 6/36, P(2) = P(12) = 1/36, symmetry about 7), random integers (uniform, bounds, redress, span cap); the engine (counts only, seed reproducibility, batches chain into one series, bounded trajectory, LLN property over ten seeds, empty state without NaN, comparison rows, stored ↔ restored round trip and every rejection) | `tools/probabilityStats/probabilityCalculations.test.js` |
 | Physical experiment: die faces (1–6 once each, opposites sum to 7, Western layout), `dieOrientation` → `dieTopFace` for every value × 12 yaws (normal exactly up), reading any orientation, coin both sides × 8 yaws; `planThrow` from every face to every face × seeded motion: starts on `from`, ends on `to` within 1e-9, correct face from the landing phase on, really turns (> 2 full turns, continuous path), trajectory phases (dip, apex, landing, two decaying bounces, rest, leaves from its own place and swings), coin flips × 24, spec variation ranges; engine `last`/`parts` for every experiment, stepwise = batch, stored ↔ restored `last` | `tools/probabilityStats/dieOrientation.test.js`, `probabilityCalculations.test.js` |
 | Dataset: value parsing (decimal comma, true minus, refusals incl. inner spaces and too-large), separators and the comma ambiguity rule, invalid tokens named not swallowed, 500-value cap, `[10,20,30]` → 20/20/20, `[10,20,30,40]` → 25/25, unsorted input, empty → null never NaN, bars vs classes threshold, every value counted once (max included), constant series, text round trip; document state (defaults, redress, faulty text kept, simulation relaid or rejected, counts-only storage, seeds never carry a simulation) | `tools/probabilityStats/datasetStatistics.test.js` |
-| API: ownership, 404 for others, unknown tool, size, every tool id (incl. `probabilityStats` and its 60 KB limit), immutability of `tool`, visitor | `apps/api/tests/Feature/MathLabDocumentFlowTest.php` |
+| Algebra lab maths: exact rationals (reduction, sign on the numerator, decimal read as the fraction it writes, `−\frac{1}{3}` written the textbook way, division by zero refused); parsing (both members and the relation, MathLive LaTeX *and* ASCII, the five relations in every written form, a LaTeX brace not mistaken for a relation, the faulty member named, refusal of `x²`, `x·x`, `3/x`, `sin(x)`, of a missing/double relation and of an empty member); the curriculum cases — `x+3=10` → 7, `x−5=8` → 13, `3x=15` → 5, `x/4=5` → 20, `2x+3=11` → 4, `−2x+4=10` → −3, `5−2x=11` → −3, `4x+1=2x+9` → 4, and the **exact** `3x=1` → ⅓; no solution and infinite solutions (equality *and* inequality, no fake number); operations applied to both members, fractional values, multiply/divide by zero refused, the original equation left untouched; **inequalities** — `2x>6` → `x>3` without flip, `−2x>6 ÷(−2)` → `x<−3` **with** flip, multiplying by a negative flips, add/subtract never flip even a negative; writing (never `1x`, never `+ −3`) | `tools/algebra/equation.test.js` (34 tests) |
+| Algebra lab document and helpers: opening on an equation and never its solution, lesson seed accepted and an unreadable one falling back, JSON round trip, survival of any `data`, a history truncated at the first unreadable step, `MAX_STEPS` cap and serialised size under the server limit, an overflowing operation refused **without damaging the document**; history — one step per operation, تراجع/إعادة, steps kept on undo, a new operation cutting the abandoned branch, no-op operations not pushed, reset replacing the history, the flip recorded on its step; generator — every level solvable with an integer solution in [−10, 10] over 200 seeded draws, never degenerate (unknown survives, coefficient ≠ 1 at levels 2–3), inequality generation; verification — substitution shown, a wrong value refused, negatives parenthesised, an exact fractional solution, inequalities | `tools/algebra/algebraState.test.js` (29 tests) |
+| Vectors lab maths: components `⃗AB = B − A` (A(2,3) B(6,5) → (4,2)), norm (‖(3,4)‖ = 5), addition ((3,2)+(1,4) = (4,6)) and its commutativity, subtraction ((3,2)−(1,4) = (2,−2)) shown as `u + (−v)`, scalar ((2,3)×−2 = (−4,−6)), k = 0 giving the null شعاع, |k| > 1 / < 1 / k < 0 on length and direction, midpoint (A(0,0) B(4,6) → (2,3)), distance (A(0,0) B(3,4) → 5), translation (A(2,3) by (4,−1) → A′(6,2)) preserving lengths, dot product ((2,3)·(4,1) = 11), perpendicularity ((1,0)⟂(0,1), the quarter-turn, the null شعاع perpendicular to nothing), **vertical slope returning `{vertical: true, value: null}` and never a number**, horizontal slope 0 ≠ undefined, parallelism with its factor (v = ½u, v = −2u) and the **relative** tolerance in both directions (huge collinear أشعة stay parallel, tiny non-collinear ones do not become so), collinearity of three points including on a vertical and the degenerate case, direction normalised in [0,360[ with `NaN` for the null شعاع, exact norms (5, √5, 2√5, non-exact decimals), and null-safety everywhere | `tools/vectors/vectorMath.test.js` (54 tests) |
+| Vectors lab dependencies (§38): ⃗AB anchored at A and following it, a derived point not draggable, the free شعاع whose **origin** moves without changing components and whose **tip** changes them, sum/difference/scaled resolved from their operands, a sum built on ⃗AB following a drag of A through the whole chain, midpoint and image following, an image of an image, a translated triangle preserving side lengths and following a vertex, the delete cascade (A → ⃗AB → the sum; a vertex → the polygon), a dead reference and a **cycle** breaking only the object concerned, naming, colours and snapping | `tools/vectors/vectorScene.test.js` (23 tests) |
+| Vectors lab document and lesson seed: a new document opening on two points and the شعاع they carry with nothing to undo, JSON round trip, survival of any `data`, dead references pruned in cascade, object and k bounds, an invalid viewport falling back, a stale selection dropped; history — undo/redo, the abandoned branch cut, **a drag replacing the current step so undo undoes a gesture and not a pixel**, the depth cap, survival of a save; the worst-case document staying under the server's 120 KB; and the **seed contract** published by `LESSON_DEVELOPMENT_GUIDE.md` (a seeded ⃗AB resolving by id, the viewport kept, a dangling seed falling back to the default plane) | `tools/vectors/vectorState.test.js` (23 tests) |
+| Vectors lab display and experiments: `(3 ; −2)` with a true minus, a decimal comma and **no** Arabic-Indic digits, `√5 ≈ 2,24`, `2√5`, `1/2` rather than `0,5`, the three distinct slope readings, the null شعاع's « — » direction; and every one of the ten experiments opening fully resolved, surviving a storage round trip and leaving something to pull | `tools/vectors/vectorFormat.test.js` (17), `tools/vectors/experiments.test.js` (33) |
+| API: ownership, 404 for others, unknown tool, size, every tool id (incl. `probabilityStats` and its 60 KB limit, `algebra` and its 20 KB limit, `vectors` and its 120 KB limit), immutability of `tool`, visitor | `apps/api/tests/Feature/MathLabDocumentFlowTest.php` |
 | Browser, whiteboard: navigation, refresh, back/forward, every tool, undo/redo, zoom, pan, grid, export, clear, autosave (and that an untouched board creates nothing), library import (valid, image, broken JSON, scene, re-import, persistence), library ⋮ menu inside the viewport, reopen, delete, RTL, ten viewports | `apps/web/e2e/mathlab.mjs` (`node apps/web/e2e/mathlab.mjs [shots-dir]`, dev servers on 5173/8000, QA student) |
 | Browser, grapher: home card, first run, typing in MathLive, invalid expressions, `1/x`, `√x`, `tan`, add/example/colour/hide/delete/limit, point (tap, type x, drag), tangent mode (toggle, cue, typed x, drag with mid-gesture values, studied function switch, f′ curve and B, slider, reload, off = unchanged grapher, touch drag on mobile), zoom/pan/wheel/keyboard/reset, grid step, readout, grid, export, title, reload, « أعمالي », RTL, clear, visitor, tablet and mobile | `apps/web/e2e/mathlab-grapher.mjs` (same invocation) |
 | Browser, 3D geometry: home card, first run (cube 2, V = 8, A = 24, three labels, no document), orbit by drag, wheel, buttons, keyboard, reset (view restored, solid untouched), camera persisted, face click and release, typed and slider dimensions in sync, invalid values (−4, 50) refused then clamped, decimal comma, every solid with the reference values, carry-over, options (labels and axes hidden, shell grid ↔ panel grid), PNG export, title, reload, « أعمالي », RTL (panel right, Cairo, KaTeX LTR), whiteboard and grapher still open, visitor, tablet and mobile with **real touch events** (one-finger orbit, pinch, no page scroll, collapse) — 69 checks | `apps/web/e2e/mathlab-geometry3d.mjs` (same invocation) |
 | Browser, probability lab: home card and no more « قريبًا » chips for statistics/probability, first run (coin, 100 ready, nothing drawn, no document), coin 10 → « أوقف » during the animation, counts sum, theoretical line, document born on first run, a second run **accumulates** (1 010), convergence chart and question, 100 000 more draws in batches under 15 s and within 1 % of 50 %, stop, reset; die (six bars, 1/6 and 16,67 % in the table), compare off/on; two dice (reset on experiment change, eleven sums, 7 ≫ 2 and 12, 6/36 and 1/36); random integers (bounds shown, 1–6, « abc » refused then reverted, min > max redressed, bounds change resets); custom draws (0 refused, 250); dataset (example n = 7 / Me = 14 / range 8, `[10,20,30]` → 20/20/20 with no button, mean and median lines, bars, `[10,20,30,40]` → 25/25, « abc » named and the other three still counted, `12,5 ; 14,2 ; 9`, empty → dashes, mean checkbox hides its line, 80 dispersed values → classes); persistence (reload restores mode, text, experiment, bounds and 250 draws; the server holds counts, not draws; mode switch saved; « أعمالي »; « مسح الكل » with the tool's wording); RTL (panel right, Cairo, chart **computed** LTR, total legend inside the frame), no horizontal overflow, visitor; tablet and mobile (no overflow, 1 000 draws by tap, chart fits its column, 36 px chips / 44 px button, collapse grows the chart, dataset field wide); **the table** (die posed, contextual button, rolling until all six faces appeared with, for every roll, face read on the object = displayed result = count +1 and 0,7–1,8 s per roll; a roll stopped in the air not counted; a 1 000 batch tumbling then posed on the last draw in < 6 s; « شاهد كل رمية » off → 10 in a batch; coin until both sides with the word matching the side; two dice × 4 with real faces = displayed faces, sum, count of the sum +1; reduced motion → result in < 400 ms, counted, die posed; tablet and mobile: 3D table visible and inside the screen, a roll by tap consistent; the integer generator has no table) — 98 checks | `apps/web/e2e/mathlab-probability.mjs` (same invocation; `QA_BASE` overrides the web origin when 5173 is taken) |
+| Browser, algebra lab: home card and no more « قريبًا » chip for algebra; first run (`2x + 3 = 11`, the balance drawn, **no solution shown**, and an untouched document creating nothing); a suggestion applying an operation, no `2x + 3 − 3` left on screen, `−3` then `÷2` reaching `x = 4`, three history steps; تراجع/إعادة; clicking a step returns to it (active step and two steps greyed ahead); a new operation cutting the abandoned branch; « إظهار الحل » then « التحقق » showing the substitution; no solution and infinite solutions with their Arabic sentence; **inequalities** — the number line appears, `−2x > 6 ÷(−2)` gives `x < −3`, the flip is signalled, the bound is an **open** circle when excluded, stays **hidden** before the unknown is isolated (§8) and is **filled** when included; `x/3 = 5` → 15, `−2x + 4 = 10` → −3; `x^2 = 4` refused with a reason while the previous equation stays; the generator at all four levels; the `a·x + b = c` panel and its three sliders; persistence (document born on first change, history and cursor restored on reload); RTL (panel on the start edge, balance **computed** LTR, notation LTR, Cairo in the stack) and the textual state for screen readers; tablet and mobile (no horizontal overflow before or after an operation, balance visible, touch targets, an operation applied by tap); visitor redirected — 53 checks | `apps/web/e2e/mathlab-algebra.mjs` (same invocation) |
+| Browser, vectors lab: home card and no more « قريبًا » chip for الأشعة; first run (A, B, ⃗AB drawn, components (4 ; 3), norm 5, direction 36,87°, no document); dragging B changing the components and the norm live; the free شعاع (**origin** moved leaves the components, **tip** moved changes them); tip-to-tail, parallelogram and the opposite `−v`; the k slider through longer / shorter / reversed / **null شعاع drawn as a disc**; انسحاب of a point and of a triangle (two polygons, the image dashed); distance in exact form, midpoint, slope; parallelism announced **with its factor**, collinearity verdict, perpendicularity; تراجع/إعادة; zoom; RTL (plane **computed** LTR, readings LTR, page RTL, Latin digits); persistence (born on first change, reopened with its scene); « مسح الكل » back to the opening plane; accessibility (focusable handles, named, live region); tablet and mobile (no horizontal overflow, the plane keeping the larger share, **44 px touch targets**, a real **finger drag** moving the point **without scrolling the page**); visitor redirected | `apps/web/e2e/mathlab-vectors.mjs` (same invocation) |
 
 ## 9. Limitations (V1)
 
 - No sharing, no collaboration, no folders — « أعمالي » is a flat,
   newest-first list; no undo/redo in the grapher (mistakes are cheap to
-  redo; « مسح الكل » is confirmed).
+  redo; « مسح الكل » is confirmed). The algebra lab **does** have undo/redo,
+  because there its step list *is* the lesson (§5e.5), and so does the
+  vectors lab, where a construction is built up gesture by gesture
+  (§5f.5). Each keeps its **own** history inside its own document state:
+  they are not a shared service. Two instruments now implement the same
+  cursor-over-a-list pattern — a third is the moment to extract it.
 - Whiteboard: no equation objects (§5.6); no PNG/SVG export beyond the
   shell's PNG and Excalidraw's own « save as image ».
 - Grapher: one inspection point; no parameters/sliders, intersections,
@@ -946,6 +1311,22 @@ another instrument. Each tool documents its own seed shape:
   editor); no PNG export of the charts; the seed is internal (§5d.8); the
   physical table has no rigid-body physics and no object for the integer
   generator (§5d.9).
+- Algebra lab: **first degree in one unknown only** — `x²`, `x·x`, `3/x`,
+  `sin(x)`, π and e, a second letter and a double relation (`1 < x < 5`) are
+  refused with a reason, never mishandled; no MathLive field (typed text
+  only), no PNG export, no step-by-step hinting beyond the three
+  suggestions, and the solution of an inequality is shown as a ray, not as
+  an interval notation (§5e.8).
+- Vectors lab: **plane geometry in one repère** — 26 points, 12 أشعة, 4
+  polygons, 20 history steps. No 3D vectors, matrices, linear systems,
+  eigenvalues, vector fields, parametric curves, conics or automatic proof
+  (§41 of the brief). No PNG export; no free-hand renaming or recolouring
+  from the panel (names and colours are assigned); a polygon is built from
+  three selected points, not drawn; the dot product is computed but stays
+  behind an explicit analysis choice because it is **not** in the 4AM
+  programme (§5f.10); `k` is bounded to [−10, 10] and the slider to [−3, 3];
+  coordinates are bounded to ±10⁴ and snapped to the half-square unless
+  Shift is held.
 - Excalidraw's fonts carry no Arabic glyphs: Arabic text elements render in
   the browser's fallback font on the canvas (legible, not Cairo).
 - A document is one whiteboard; there are no pages/frames in the model.

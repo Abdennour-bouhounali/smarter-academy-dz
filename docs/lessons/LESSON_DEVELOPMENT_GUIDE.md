@@ -220,8 +220,9 @@ a module supplies only content and its own `done` booleans.
 
 `ContentModule` wires `useProgress`, the step progress bar, the streak and
 effects toolkit, sequential step locking (`isStepLocked` — sequential on the
-first pass, all open on a revisit), the "what's left" popover on the disabled
-next button, completion, **and** the Classroom Mode unit sequence. There is no
+first pass, all open on a revisit *and* for a free-navigation reader), the
+"what's left" popover on the next button (disabled for a student only —
+`canAdvance`), completion, **and** the Classroom Mode unit sequence. There is no
 auto-scroll and no auto-advance, ever.
 
 The recurring module roles in the 4AM unit, by their Arabic names:
@@ -476,6 +477,37 @@ See [`CLASSROOM_MODE.md`](../architecture/CLASSROOM_MODE.md) §11.
 
 ---
 
+### A teacher may hide your lesson from a class — you do nothing
+
+A teacher (الأستاذ) can hide a published lesson from one of their classes
+(الأقسام). That is a per-class row in `classroom_lessons`, composed by
+`ContentAccess` on the server as a third axis beside publication and tier; the
+student UI shows the lesson as « أخفاه الأستاذ » through
+`ContentAvailabilityContext`. **A lesson never checks visibility, never knows
+about classes, and never branches on the reader's role.** Do not add
+teacher-specific behaviour, props or copy inside `lessons/`. Contract:
+`docs/architecture/TEACHER_CLASSROOM_ARCHITECTURE.md` §3.
+
+### A teacher reads your lesson with every module open — you do nothing
+
+The same teacher opens your lesson in their own space, jumps to any module —
+and to any **step inside it**, in any order — and nothing they do is recorded
+as progress. That is the *reader*
+(`features/learning/learningViewer.js`: `freeNavigation`, `tracksProgress`),
+applied once in `ModuleLayout`, `LessonIndex` and the progress hooks through
+`lessons/common/utils/moduleGate.js`, and once more for the steps through
+`lessons/common/utils/stepUnlock.js`. A module must therefore never assume it
+is reached in order, nor that its steps are played in order, and must never
+call the progress API itself: use `useProgress`, `useEvidenceSubmission` and
+`useFinalTestAttempt`, which are already silent for a non-learner.
+
+**Never pass `locked` to a `StepCard` yourself.** Declare your steps with
+their `done` flag and let `ContentModule` own the gate — it is the single
+place where the reader is consulted, and a hand-rolled lock would re-close
+for a teacher what the policy just opened. `pages/teacherContract.test.js`
+fails the build if a lesson under `lessons/moyen/` does it.
+Contract: `TEACHER_CLASSROOM_ARCHITECTURE.md` §8b.
+
 ## 9. Reference lessons — what each one demonstrates
 
 All under
@@ -717,7 +749,7 @@ flow is `Planned`. When it is implemented, the only API to use is
 `buildMathLabLaunch({ tool, seed, title, origin })` from
 `features/mathlab/openMathLab.js`, which returns `{ to, state }` for
 `<Link>`/`navigate`; the instrument builds its initial state from `seed`.
-Four instruments exist: the whiteboard (`whiteboard`, seed = Excalidraw
+Six instruments exist: the whiteboard (`whiteboard`, seed = Excalidraw
 skeleton elements), the function grapher (`functionGrapher`, seed =
 `{ functions: [{ expression: '2x+3' }], viewport?, points?, tangent?: { enabled: true, functionIndex: 0, x: 1 } }`
 — expressions in the documented subset, ASCII or LaTeX; `tangent` opens the
@@ -727,5 +759,12 @@ seed = `{ shape: 'cone', dimensions?: { radius: 3, height: 4 }, showAxes?, showG
 `[0.5, 10]`) and the probability & statistics lab (`probabilityStats`, seed =
 `{ experiment: 'twoDice', draws: 1000 }` or
 `{ mode: 'dataset', values: [12, 15, 14, 18, 10] }` — a simulation is never
-seeded: the student runs it). Contract, seed shapes and rules:
-[`../architecture/MATH_LAB.md`](../architecture/MATH_LAB.md) §5b.3, §5b.6, §5c.5, §5d.6, §6.
+seeded: the student runs it), the algebra lab (`algebra`, seed =
+`{ source: '2x + 3 = 11' }` — first degree in one unknown, equalities and
+inequalities) and the vectors lab (`vectors`, seed =
+`{ scene: { points: [...], vectors: [...], polygons: [...] }, viewport?, settings? }`
+— objects carry stable `id`s and reference each other by id, so a seeded
+⃗AB is `{ kind: 'points', from: '<idA>', to: '<idB>' }`; an unreadable or
+dangling seed falls back to the default plane rather than opening a broken
+scene). Contract, seed shapes and rules:
+[`../architecture/MATH_LAB.md`](../architecture/MATH_LAB.md) §5b.3, §5b.6, §5c.5, §5d.6, §5f.4, §6.

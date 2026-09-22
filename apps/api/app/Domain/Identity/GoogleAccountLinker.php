@@ -123,13 +123,19 @@ final class GoogleAccountLinker
      * sans identité serait un compte auquel son propriétaire ne pourrait plus
      * se connecter (il n'a pas de mot de passe).
      */
-    public function createFromIdentity(GoogleIdentity $identity, LegalConsent $consent): User
+    public function createFromIdentity(GoogleIdentity $identity, LegalConsent $consent, string $role = User::ROLE_STUDENT): User
     {
         if (! $identity->emailVerified) {
             throw GoogleIdentityRejected::unverifiedEmail();
         }
 
-        return DB::transaction(function () use ($identity, $consent) {
+        // Le rôle vient d'une LISTE BLANCHE (élève ou enseignant) — jamais
+        // admin, quoi que porte la requête.
+        if (! in_array($role, User::SELF_REGISTERABLE_ROLES, true)) {
+            $role = User::ROLE_STUDENT;
+        }
+
+        return DB::transaction(function () use ($identity, $consent, $role) {
             // Course possible : deux onglets, deux créations. L'unicité de
             // users.email tranche ; on relit plutôt que de supposer.
             $existing = User::query()->where('email', $identity->email)->first();
@@ -147,7 +153,7 @@ final class GoogleAccountLinker
                 // PAS de mot de passe. Ni vide, ni aléatoire : NULL.
                 // Voir la migration 2026_09_18_000003.
                 'password' => null,
-                'role' => User::ROLE_STUDENT,
+                'role' => $role,
                 ...$consent->attributes(),
             ]);
 
@@ -166,7 +172,7 @@ final class GoogleAccountLinker
      * Lie une identité Google à un compte local existant.
      *
      * @throws GoogleIdentityRejected si ce compte est déjà lié à une AUTRE
-     *         identité Google — voir plus bas.
+     *                                identité Google — voir plus bas.
      */
     private function linkExisting(User $user, GoogleIdentity $identity): User
     {

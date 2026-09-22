@@ -12,6 +12,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Laravel\Socialite\Facades\Socialite;
 use Throwable;
 
@@ -56,7 +57,7 @@ class GoogleAuthController extends Controller
      * Départ vers Google. Ne demande que l'identité — aucun accès Gmail,
      * Drive ou contacts : on veut savoir QUI, pas obtenir des pouvoirs.
      */
-    public function redirect(): RedirectResponse|JsonResponse
+    public function redirect(Request $request): RedirectResponse|JsonResponse
     {
         if (! $this->isConfigured()) {
             return response()->json([
@@ -65,9 +66,16 @@ class GoogleAuthController extends Controller
             ], 503);
         }
 
+        // Le TYPE de compte choisi avant de partir (élève par défaut, ou
+        // enseignant) voyage dans `state`, que Google renvoie tel quel. Il
+        // n'est lu qu'à travers une liste blanche, et ne sert qu'à un compte
+        // NEUF : un compte existant garde son rôle, quel que soit `state`.
+        $role = $this->requestedRole($request->query('accountType'));
+
         return Socialite::driver('google')
             ->stateless()
             ->scopes(['openid', 'profile', 'email'])
+            ->with(['state' => 'type:'.$role])
             ->redirect();
     }
 
@@ -103,13 +111,17 @@ class GoogleAuthController extends Controller
             return $this->back(['erreur' => $e->reason]);
         }
 
-        // Compte neuf : RIEN n'a été créé. On renvoie l'élève vers l'écran de
-        // consentement, muni d'un jeton d'attente (§22).
+        // Compte neuf : RIEN n'a été créé. On renvoie la personne vers l'écran
+        // de consentement, munie d'un jeton d'attente (§22) qui porte aussi le
+        // type de compte demandé au départ.
         if ($outcome->kind === GoogleLinkOutcome::NEEDS_CONSENT) {
+            $role = $this->requestedRole(self::roleFromState((string) $request->query('state', '')));
+
             return $this->back([
                 'etape' => 'consentement',
-                'handoff' => PendingGoogleSignup::issue($identity),
+                'handoff' => PendingGoogleSignup::issue($identity, $role),
                 'email' => $identity->email,
+                'type' => $role,
             ]);
         }
 
@@ -127,6 +139,9 @@ class GoogleAuthController extends Controller
             // Un BOOLÉEN, et rien d'autre. Aucune version n'est acceptée du
             // client : le serveur écrit celles qui ont cours (§7).
             'accept_legal' => 'required|accepted',
+            // Le type de compte, confirmé (ou changé) sur l'écran de
+            // consentement — même liste blanche que l'inscription classique.
+            'accountType' => ['nullable', 'string', Rule::in(User::SELF_REGISTERABLE_ROLES)],
         ], [
             'accept_legal.required' => "Vous devez accepter les Conditions Générales d'Utilisation et la Politique de confidentialité.",
             'accept_legal.accepted' => "Vous devez accepter les Conditions Générales d'Utilisation et la Politique de confidentialité.",
@@ -141,8 +156,10 @@ class GoogleAuthController extends Controller
             ], 422);
         }
 
+        $role = $validated['accountType'] ?? PendingGoogleSignup::roleOf($validated['handoff']);
+
         try {
-            $user = $this->linker->createFromIdentity($identity, LegalConsent::current());
+            $user = $this->linker->createFromIdentity($identity, LegalConsent::current(), $role);
         } catch (GoogleIdentityRejected $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 422);
         }
@@ -212,6 +229,18 @@ class GoogleAuthController extends Controller
             'etape' => 'connecte',
             'token' => $user->createToken($user->role.'-token')->plainTextToken,
         ]);
+    }
+
+    /** La liste blanche des types de compte à l'inscription : élève, ou enseignant. */
+    private function requestedRole(?string $raw): string
+    {
+        return in_array($raw, User::SELF_REGISTERABLE_ROLES, true) ? $raw : User::ROLE_STUDENT;
+    }
+
+    /** `state` = `type:teacher` → `teacher`. Tout le reste → null (donc élève). */
+    public static function roleFromState(string $state): ?string
+    {
+        return str_starts_with($state, 'type:') ? substr($state, 5) : null;
     }
 
     private function isConfigured(): bool

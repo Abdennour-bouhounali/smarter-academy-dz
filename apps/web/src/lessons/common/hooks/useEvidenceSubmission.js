@@ -2,6 +2,7 @@ import { useCallback, useContext, useEffect } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
 import { submitLearningEvidence } from '../../../services/learningEvidenceService';
 import { enqueueEvidence, flushEvidenceQueue } from '../evidenceQueue';
+import { useLearningViewer } from '../../../features/learning/learningViewer';
 
 /**
  * The smallest possible bridge between a lesson question and the backend's
@@ -20,7 +21,12 @@ import { enqueueEvidence, flushEvidenceQueue } from '../evidenceQueue';
  * tracking is an account-level concept.
  */
 export function useEvidenceSubmission(lessonCode) {
-  const { token, user } = useContext(AuthContext);
+  const { token: authToken, user } = useContext(AuthContext);
+  // Une preuve d'apprentissage est celle d'un ÉLÈVE : pour un enseignant qui
+  // répond à une question en préparant son cours, le jeton est traité comme
+  // absent — rien ne part, rien n'est mis en file (learningViewer).
+  const { tracksProgress } = useLearningViewer();
+  const token = tracksProgress ? authToken : null;
 
   // Flush anything a previous offline session left behind — on mount (which
   // includes login, since the lesson tree remounts with a token) and whenever

@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { Save, Trash2, Download, Paperclip, Grid3x3, Loader2, Check, CloudOff, CircleAlert, X } from 'lucide-react';
 import { ArrowBack } from '../../components/common/DirectionalIcons';
 import ConfirmDialog from '../practice/notebook/space/ConfirmDialog';
-import { MATH_LAB_BASE_PATH } from './mathLabDocument';
+import { mathLabBasePath } from './mathLabDocument';
+import { useWorkspaceBase } from '../learning/learningViewer';
 import AttachmentsPanel from './attachments/AttachmentsPanel';
 import './mathlab.css';
 
@@ -32,6 +33,7 @@ export default function MathLabShell({
   const [exportError, setExportError] = useState(false);
   const Icon = tool.icon;
   const toolName = t(tool.labelKey);
+  const labHome = mathLabBasePath(useWorkspaceBase());
 
   useEffect(() => {
     setGridOn(Boolean(toolApi?.isGridEnabled?.()));
@@ -90,7 +92,7 @@ export default function MathLabShell({
     <div ref={rootRef} className="sa-ml-tool" data-ml-tool={tool.id}>
       <header ref={barRef} className="sa-ml-bar">
         <Link
-          to={MATH_LAB_BASE_PATH}
+          to={labHome}
           className="sa-ml-btn sa-ml-btn--icon"
           aria-label={t('shell.back')}
           title={t('shell.back')}

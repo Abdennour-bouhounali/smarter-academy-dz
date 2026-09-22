@@ -66,12 +66,29 @@ export function exerciseLabel(note, t) {
  * dans une séance, qui n'a pas d'adresse stable). `null` si rien n'est routé.
  * @returns {{ to: string, kind: 'lesson'|'exercise' } | null}
  */
-export function sourceLinkFor(note) {
+export function sourceLinkFor(note, workspaceBase = '/espace') {
   if (!note?.lessonCode) return null;
-  if (note.exerciseId) return { to: `/espace/pratique/${encodeURIComponent(note.lessonCode)}`, kind: 'exercise' };
+  // La pratique est une surface d'ÉLÈVE : hors de son espace, une note
+  // d'exercice renvoie au sommaire de la leçon (le module, s'il est connu).
+  if (note.exerciseId && workspaceBase === '/espace') {
+    return { to: `/espace/pratique/${encodeURIComponent(note.lessonCode)}`, kind: 'exercise' };
+  }
   const to = lessonLocationPath(contextOfNote(note, getLessonById(note.lessonCode)));
 
   return to ? { to, kind: 'lesson' } : null;
+}
+
+/** Les adresses du cahier dans l'espace du lecteur (`/espace` ou `/enseignant`). */
+export function notebookPaths(workspaceBase = '/espace') {
+  const root = `${workspaceBase}/cahier`;
+
+  return {
+    root,
+    review: `${root}/revision`,
+    reviewView: `${root}?view=review`,
+    note: (id) => `${root}/${encodeURIComponent(id)}`,
+    courses: workspaceBase === '/espace' ? '/espace/cours' : `${workspaceBase}/cours`,
+  };
 }
 
 /** « il y a 2 jours », en arabe, sans bibliothèque. */

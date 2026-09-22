@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
-  MATH_LAB_BASE_PATH, mathLabToolPath, newMathLabDocument, fromApiDocument, isPersisted, parseDocumentId, cleanTitle,
+  MATH_LAB_BASE_PATH, mathLabBasePath, mathLabToolPath, newMathLabDocument, fromApiDocument, isPersisted, parseDocumentId, cleanTitle,
 } from './mathLabDocument.js';
 
 const tool = { id: 'whiteboard', slug: 'tableau', schemaVersion: 3, createInitialData: (seed) => ({ seed: seed ?? null }) };
@@ -10,6 +10,15 @@ describe('document du مختبر', () => {
     expect(MATH_LAB_BASE_PATH).toBe('/espace/atelier');
     expect(mathLabToolPath(tool)).toBe('/espace/atelier/tableau');
     expect(mathLabToolPath(tool, 42)).toBe('/espace/atelier/tableau/42');
+    // L'enseignant a le même مختبر dans son espace.
+    expect(mathLabToolPath(tool, null, '/enseignant/atelier')).toBe('/enseignant/atelier/tableau');
+    expect(mathLabToolPath(tool, 7, '/enseignant/atelier')).toBe('/enseignant/atelier/tableau/7');
+  });
+
+  it('la racine suit l’espace de travail, `/espace` par défaut', () => {
+    expect(mathLabBasePath('/enseignant')).toBe('/enseignant/atelier');
+    expect(mathLabBasePath('/espace')).toBe(MATH_LAB_BASE_PATH);
+    expect(mathLabBasePath(null)).toBe(MATH_LAB_BASE_PATH);
   });
 
   it('un document neuf n’a pas d’identifiant et tient l’état initial de son instrument', () => {

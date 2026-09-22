@@ -85,7 +85,12 @@ describe('le cadre de page partagé n’a pas régressé', () => {
   });
 
   it('l’administration partage le même cadre', () => {
-    expect(read('src/components/admin/AdminPage.jsx')).toContain('sa-page');
+    // Le chrome du panneau a DÉMÉNAGÉ dans `pages/admin/adminUi.jsx`, avec le
+    // reste de ses en-têtes, états et libellés arabes — le jumeau de
+    // `pages/teacher/teacherUi.jsx`. C'est là que la gouttière partagée se
+    // vérifie maintenant ; `components/admin/AdminPage.jsx` n'en est plus
+    // qu'un réexport.
+    expect(read('src/pages/admin/adminUi.jsx')).toContain('sa-page');
   });
 });
 
@@ -94,5 +99,12 @@ describe('la redirection après connexion', () => {
     const source = read('src/pages/Login.jsx');
     expect(source).toMatch(/role === 'admin'.*'\/admin'/s);
     expect(source).toMatch(/role === 'student'.*'\/espace'/s);
+  });
+
+  it('le troisième axe — masquée par l’enseignant — arrive du serveur et se lit partout', () => {
+    const ctx = read('src/context/ContentAvailabilityContext.jsx');
+    expect(ctx).toContain('isLessonHiddenByClass');
+    expect(read('src/pages/UnitPage.jsx')).toContain('isLessonHiddenByClass(lesson.id)');
+    expect(read('src/lessons/common/components/LessonIndex.jsx')).toContain('isLessonHiddenByClass(config.id)');
   });
 });

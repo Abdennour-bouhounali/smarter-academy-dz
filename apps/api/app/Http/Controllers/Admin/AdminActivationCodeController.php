@@ -85,6 +85,13 @@ class AdminActivationCodeController extends Controller
             'accessEndsAt' => 'nullable|date',
             'redeemBy' => 'nullable|date',
             'notes' => 'nullable|string|max:2000',
+            // L'OFFRE que chaque code active — vente en nombre à une école ou
+            // une classe. Facultatif : sans elle, le lot ouvre le droit
+            // premium élève classique, comme avant.
+            'planVersionId' => 'nullable|integer|min:1',
+            // La capacité que chaque code ouvre — obligatoire pour une offre
+            // par sièges (« 10 codes × 30 élèves »), figée sur le lot.
+            'studentSeats' => 'nullable|integer|min:1|max:100000',
         ], [
             'label.required' => 'Donnez un nom à ce lot (il sert à le retrouver).',
             'quantity.max' => 'Un lot ne peut pas dépasser '.ActivationCodeGenerator::MAX_QUANTITY.' codes.',
@@ -98,6 +105,8 @@ class AdminActivationCodeController extends Controller
                 'accessEndsAt' => isset($validated['accessEndsAt']) ? Carbon::parse($validated['accessEndsAt']) : null,
                 'redeemBy' => isset($validated['redeemBy']) ? Carbon::parse($validated['redeemBy']) : null,
                 'notes' => $validated['notes'] ?? null,
+                'planVersionId' => isset($validated['planVersionId']) ? (int) $validated['planVersionId'] : null,
+                'studentSeatLimit' => isset($validated['studentSeats']) ? (int) $validated['studentSeats'] : null,
             ]);
         } catch (DomainException $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 422);

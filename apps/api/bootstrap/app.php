@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Middleware\EnsureAccountIsActive;
+use App\Http\Middleware\EnsureEmailIsVerified;
+use App\Http\Middleware\EnsureLearnerRole;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -26,11 +29,13 @@ return Application::configure(basePath: dirname(__DIR__))
         // Le statut de compte se fait respecter par le serveur, sur chaque
         // route authentifiée (voir le groupe auth:sanctum dans routes/api.php).
         $middleware->alias([
-            'account.active' => \App\Http\Middleware\EnsureAccountIsActive::class,
+            'account.active' => EnsureAccountIsActive::class,
             // La vérification d'adresse, elle aussi faite respecter par le
             // serveur : un écran « vérifiez votre e-mail » se contourne en
             // tapant une URL, pas ce middleware.
-            'email.verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
+            'email.verified' => EnsureEmailIsVerified::class,
+            // Les écritures du trajet d'apprentissage : élève seulement.
+            'learner' => EnsureLearnerRole::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

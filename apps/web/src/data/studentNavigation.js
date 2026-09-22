@@ -1,4 +1,4 @@
-import { House, BookOpen, Compass, TrendingUp, NotebookPen, PencilRuler } from 'lucide-react';
+import { House, BookOpen, Compass, TrendingUp, NotebookPen, PencilRuler, Users } from 'lucide-react';
 
 // The authenticated student area's own navigation — deliberately separate
 // from data/navigation.js (the visitor IA). A student's workspace is a
@@ -18,6 +18,10 @@ export const studentNavLinks = [
   // révision. Après la progression (« où en suis-je ? ») vient « qu'ai-je
   // écrit pour y arriver ? ».
   { labelKey: 'notebook', path: '/espace/cahier', icon: NotebookPen },
+  // « قسمي » : la classe de l'enseignant que l'élève a rejointe (ou peut
+  // rejoindre par code). Un CONTEXTE d'étude, pas un contenu : le programme
+  // reste le même, l'enseignant règle seulement ce qui est visible.
+  { labelKey: 'myClass', path: '/espace/qism', icon: Users },
   // NI « activation » NI « profil » ici : le profil est le bloc d'identité
   // au bas de la barre (avatar + nom + classe, dans StudentNavbar), et la
   // saisie d'un code n'a qu'une seule porte, l'encart ambré juste au-dessus,

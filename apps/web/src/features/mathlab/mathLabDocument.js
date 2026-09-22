@@ -13,6 +13,18 @@
 
 export const MATH_LAB_BASE_PATH = '/espace/atelier';
 
+/** Le segment du مختبر dans un espace de travail : `/espace/atelier`, `/enseignant/atelier`. */
+export const MATH_LAB_SEGMENT = 'atelier';
+
+/**
+ * La racine du مختبر dans l'espace du lecteur — l'élève ET l'enseignant ont
+ * le leur, mêmes instruments, mêmes documents (à chacun les siens).
+ * @param {string|null|undefined} workspaceBase  `/espace` ou `/enseignant`
+ */
+export function mathLabBasePath(workspaceBase) {
+  return workspaceBase ? `${workspaceBase}/${MATH_LAB_SEGMENT}` : MATH_LAB_BASE_PATH;
+}
+
 /** Le délai entre le dernier changement et la sauvegarde automatique. */
 export const MATH_LAB_AUTOSAVE_MS = 2500;
 
@@ -22,8 +34,8 @@ export const MATH_LAB_AUTOSAVE_MS = 2500;
  * @param {{slug: string}} tool
  * @param {number | string | null} [documentId]
  */
-export function mathLabToolPath(tool, documentId = null) {
-  const base = `${MATH_LAB_BASE_PATH}/${tool.slug}`;
+export function mathLabToolPath(tool, documentId = null, root = MATH_LAB_BASE_PATH) {
+  const base = `${root}/${tool.slug}`;
 
   return documentId == null ? base : `${base}/${documentId}`;
 }

@@ -25,5 +25,11 @@
   "sidebarLockedByMap": "الشريط الجانبي مطوي بسبب «خريطتي»",
   "sidebarLockedByMapHint": "«خريطتي» تشغل هذه المساحة — أغلق الخريطة لإعادة فتح الشريط",
   "studentSpace": "فضاء التلميذ",
-  "mathLab": "المختبر"
+  "mathLab": "المختبر",
+  "teacherSpace": "فضاء الأستاذ",
+  "teacherHome": "الرئيسية",
+  "myClasses": "أقسامي",
+  "classesProgress": "التقدّم",
+  "myPlan": "عرضي",
+  "myClass": "قسمي"
 }

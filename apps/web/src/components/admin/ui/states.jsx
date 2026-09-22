@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Loader2, AlertTriangle, Inbox, BarChart3 } from 'lucide-react';
 
 /**
@@ -7,9 +8,19 @@ import { Loader2, AlertTriangle, Inbox, BarChart3 } from 'lucide-react';
  *
  * Regroupés ici pour qu'aucune page n'ait à réinventer un état vide — et
  * surtout pour qu'aucune n'échoue en silence.
+ *
+ * LES DÉFAUTS SONT ARABES, lus dans le catalogue `admin` plutôt qu'écrits en
+ * dur : ces états sont le dernier endroit où une chaîne française pouvait
+ * encore atteindre l'écran, précisément parce qu'ils s'affichent quand la
+ * page n'a rien d'autre à dire. Un appelant garde la main (`label`, `message`,
+ * `retryLabel`) — l'espace enseignant s'en sert déjà.
  */
 
-export function LoadingState({ label = 'Chargement…', rows = 0 }) {
+export function LoadingState({ label, rows = 0 }) {
+  const { t } = useTranslation('admin');
+  // `label` peut arriver `undefined` d'un appelant qui ne le connaît pas :
+  // on garde alors le défaut plutôt qu'un attribut vide.
+  label = label ?? t('common.loading');
   // Des squelettes quand on sait combien de lignes arrivent : la page ne
   // saute pas au moment où les données remplacent le vide.
   if (rows > 0) {
@@ -30,18 +41,25 @@ export function LoadingState({ label = 'Chargement…', rows = 0 }) {
   );
 }
 
-export function ErrorState({ message, onRetry }) {
+export function ErrorState({ message, onRetry, retryLabel }) {
+  const { t } = useTranslation('admin');
+  const retry = retryLabel ?? t('common.retry');
+
   return (
-    <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-center" role="alert">
-      <AlertTriangle size={22} className="mx-auto mb-2 text-red-600" />
-      <p className="font-inter text-sm text-red-800">{message || 'Une erreur est survenue.'}</p>
+    // `rose` et non `red` : c'est le jeton d'erreur du système (celui de
+    // `btnDanger`, des pastilles `revoked`/`expired` et de l'espace
+    // enseignant). `red-*` était la seule teinte d'erreur divergente du
+    // panneau.
+    <div className="rounded-xl border border-rose-200 bg-rose-50 p-6 text-center" role="alert">
+      <AlertTriangle size={22} className="mx-auto mb-2 text-rose-600" />
+      <p className="font-inter text-sm text-rose-800">{message || t('common.error')}</p>
       {onRetry && (
         <button
           type="button"
           onClick={onRetry}
-          className="mt-4 rounded-lg border border-red-300 bg-white px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-100"
+          className="mt-4 rounded-lg border border-rose-300 bg-white px-4 py-2 font-inter text-sm font-semibold text-rose-700 hover:bg-rose-100"
         >
-          Réessayer
+          {retry}
         </button>
       )}
     </div>
@@ -67,14 +85,15 @@ export function EmptyState({ title, hint, icon: Icon = Inbox, action }) {
  * croire à une plateforme déserte ; cet état dit la vérité.
  */
 export function MetricUnavailable({ label, reason = 'no_tracking', compact = false }) {
+  const { t } = useTranslation('admin');
   const text = reason === 'no_data'
-    ? 'Pas encore de données'
-    : 'Mesure non disponible';
+    ? t('common.noDataYet')
+    : t('common.notMeasured');
 
   if (compact) {
     return (
-      <span className="font-inter text-xs text-slate-400 italic" title="Cette mesure n’est pas encore collectée.">
-        —
+      <span className="font-inter text-xs text-slate-400 italic" title={t('common.notMeasuredHint')}>
+        {t('common.dash')}
       </span>
     );
   }
@@ -88,7 +107,7 @@ export function MetricUnavailable({ label, reason = 'no_tracking', compact = fal
       </p>
       {reason === 'no_tracking' && (
         <p className="mt-1 font-inter text-xs text-slate-400">
-          Aucun suivi d’événements n’alimente encore cette mesure.
+          {t('common.notTracked')}
         </p>
       )}
     </div>

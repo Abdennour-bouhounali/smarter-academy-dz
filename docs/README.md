@@ -23,6 +23,9 @@ indexed by the registry, not mounted, not reachable.
 | Work on exercises or the practice engine | [`architecture/EXERCISE_CONTRACT.md`](./architecture/EXERCISE_CONTRACT.md) |
 | Write Arabic UI or lesson text | [`architecture/ARABIC_RTL_CONTRACT.md`](./architecture/ARABIC_RTL_CONTRACT.md) |
 | Work on the Math Lab (مختبر الرياضيات) or add an instrument to it | [`architecture/MATH_LAB.md`](./architecture/MATH_LAB.md) |
+| Work on teachers — how a teacher reads lessons (free navigation, no progress), classes (الأقسام), seat-based plans and pricing tiers, subscriptions, requests or plan-bound activation codes | [`architecture/TEACHER_CLASSROOM_ARCHITECTURE.md`](./architecture/TEACHER_CLASSROOM_ARCHITECTURE.md) |
+| Build or change an admin screen (Arabic, RTL, shared design system) | [`architecture/ADMIN_PANEL_ARCHITECTURE.md`](./architecture/ADMIN_PANEL_ARCHITECTURE.md) §33.0 |
+| Regenerate or extend the recette/demo dataset (`DemoDataSeeder`) | [`architecture/DEMO_DATASET.md`](./architecture/DEMO_DATASET.md) |
 
 ## Authoritative documents (one owner per contract)
 
@@ -45,8 +48,9 @@ may describe it, but they defer to this one.
 | Completion vs mastery, progress storage and sync | [`architecture/PROGRESS_MODEL.md`](./architecture/PROGRESS_MODEL.md) |
 | Curriculum sync, evidence flow, mastery model | [`architecture/LEARNING_ARCHITECTURE.md`](./architecture/LEARNING_ARCHITECTURE.md) |
 | The student notebook (كرّاسي) | [`architecture/NOTEBOOK.md`](./architecture/NOTEBOOK.md) |
-| The Math Lab (مختبر الرياضيات): tool contract & registry, document model & API, whiteboard V1, function grapher V1 (expression subset, sampling, viewport, tangent/derivative mode), 3D geometry explorer V1 (solids, dimensions, volume/area, three.js scene), probability & statistics lab V1 (experiments, simulation engine, law of large numbers, dataset summary, SVG charts, the physical dice/coin table on three.js and its result → orientation contract), lesson-integration point | [`architecture/MATH_LAB.md`](./architecture/MATH_LAB.md) |
+| The Math Lab (مختبر الرياضيات): tool contract & registry, document model & API, whiteboard V1, function grapher V1 (expression subset, sampling, viewport, tangent/derivative mode), 3D geometry explorer V1 (solids, dimensions, volume/area, three.js scene), probability & statistics lab V1 (experiments, simulation engine, law of large numbers, dataset summary, SVG charts, the physical dice/coin table on three.js and its result → orientation contract), algebra & equation lab V1 (exact rationals, linear normal form, equations *and* inequalities with the sign flip, balance, number line, step history with undo/redo), vectors & coordinate geometry lab V1 (الأشعة: the grapher's repère reused, dependency-resolved scene, tip-to-tail and parallelogram, scalar slider, انسحاب of a point and of a shape, exact norms, relative-tolerance relations), lesson-integration point | [`architecture/MATH_LAB.md`](./architecture/MATH_LAB.md) |
 | Admin panel | [`architecture/ADMIN_PANEL_ARCHITECTURE.md`](./architecture/ADMIN_PANEL_ARCHITECTURE.md) (the Annexe wins where it conflicts with the body) |
+| Teacher role, classes (الأقسام), membership & invitations, per-class lesson visibility, study context, the DZ commercial model (no online payment; teacher plans sold by student seats, classes unlimited), plans / versions / pricing tiers / entitlements, subscription requests, manual activation, plan-bound activation codes with seat capacity, admin commercial controls | [`architecture/TEACHER_CLASSROOM_ARCHITECTURE.md`](./architecture/TEACHER_CLASSROOM_ARCHITECTURE.md) |
 | Product scope, access model, Algerian terminology policy | [`ALGERIA_PLATFORM_MASTER_SPEC.md`](./ALGERIA_PLATFORM_MASTER_SPEC.md) |
 | 4AM curriculum inventory and terminology register | [`ALGERIA_4AM_CURRICULUM.md`](./ALGERIA_4AM_CURRICULUM.md) |
 
@@ -80,5 +84,5 @@ contract.
 
 Documents and code comments are written in English and French; this is the
 repository's authoring convention. It has no bearing on the **product**, whose
-student-facing surface is Arabic — see
+every user-facing surface — student, teacher and admin alike — is Arabic. See
 [`architecture/ARABIC_RTL_CONTRACT.md`](./architecture/ARABIC_RTL_CONTRACT.md).

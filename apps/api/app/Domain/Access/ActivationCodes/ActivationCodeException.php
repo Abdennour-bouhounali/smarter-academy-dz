@@ -35,11 +35,15 @@ class ActivationCodeException extends DomainException
     /** Retiré par l'administration. */
     public const REVOKED = 'revoked';
 
+    /** Le code active une offre d'un autre type de compte (enseignant ↔ élève). */
+    public const PLAN_MISMATCH = 'plan_mismatch';
+
     public const REASONS = [
         self::INVALID,
         self::ALREADY_ACTIVATED,
         self::EXPIRED,
         self::REVOKED,
+        self::PLAN_MISMATCH,
     ];
 
     private function __construct(public readonly string $reason, string $message)
@@ -76,6 +80,14 @@ class ActivationCodeException extends DomainException
         return new self(
             self::REVOKED,
             'Ce code n\'est plus valide.'
+        );
+    }
+
+    public static function planMismatch(): self
+    {
+        return new self(
+            self::PLAN_MISMATCH,
+            'Ce code ne correspond pas à votre type de compte.'
         );
     }
 }

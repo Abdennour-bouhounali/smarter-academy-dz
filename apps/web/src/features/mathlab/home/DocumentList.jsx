@@ -7,7 +7,8 @@ import { LOCALE } from '../../../locale';
 import { deleteMathLabDocument, fetchMathLabDocuments } from '../../../services/mathLabService';
 import ConfirmDialog from '../../practice/notebook/space/ConfirmDialog';
 import { getMathLabTool } from '../toolRegistry';
-import { mathLabToolPath, fromApiDocument } from '../mathLabDocument';
+import { mathLabToolPath, mathLabBasePath, fromApiDocument } from '../mathLabDocument';
+import { useWorkspaceBase } from '../../learning/learningViewer';
 
 const dateFormat = new Intl.DateTimeFormat(LOCALE, { dateStyle: 'medium', timeStyle: 'short' });
 
@@ -24,6 +25,7 @@ const dateFormat = new Intl.DateTimeFormat(LOCALE, { dateStyle: 'medium', timeSt
 export default function DocumentList() {
   const { t } = useTranslation('mathlab');
   const { token } = useContext(AuthContext);
+  const labRoot = mathLabBasePath(useWorkspaceBase());
   const [state, setState] = useState({ status: 'loading', documents: [] });
   const [pendingDelete, setPendingDelete] = useState(null);
   const [deleteError, setDeleteError] = useState(false);
@@ -97,7 +99,7 @@ export default function DocumentList() {
               <div className="min-w-0 flex-1">
                 {tool ? (
                   <Link
-                    to={mathLabToolPath(tool, doc.id)}
+                    to={mathLabToolPath(tool, doc.id, labRoot)}
                     className="block truncate font-space font-bold text-slate-900 hover:text-blue-700 focus:outline-none focus-visible:underline"
                     aria-label={t('openDocument', { title })}
                     data-ml-doc-open

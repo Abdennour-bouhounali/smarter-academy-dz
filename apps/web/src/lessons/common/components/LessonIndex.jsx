@@ -3,7 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Lock, Compass } from 'lucide-react';
 import { useProgress } from '../hooks/useProgress';
-import { getModuleStatus, lockedReasonData, getLessonById, getUnitById } from '@smarter-academy/core';
+import { lockedReasonData, getLessonById, getUnitById } from '@smarter-academy/core';
+import { resolveModuleStatus } from '../utils/moduleGate';
+import { useLearningViewer } from '../../../features/learning/learningViewer';
 import { useLearningProfile } from '../hooks/useLearningProfile';
 import { useLessonChromeLayout } from '../hooks/useLessonChrome';
 import { resolveMasteryState } from './LearningPointMastery';
@@ -117,7 +119,10 @@ export default function LessonIndex({ config, basePath }) {
   );
   const { t } = useTranslation('lesson');
   const { completedModules, isModuleCompleted, currentModule } = useProgress(config.id);
-  const { isModuleClosed, isLessonLocked } = useContentAvailability();
+  const { isModuleClosed, isLessonLocked, isLessonHiddenByClass } = useContentAvailability();
+  // QUI lit : l'enseignant voit chaque module ouvert (le verrou séquentiel
+  // est un guide pour l'élève) ; un module retiré reste fermé pour tous.
+  const viewer = useLearningViewer();
 
   // MODE CLASSE (وضع القسم) — 🎓 depuis le sommaire : la leçon entière, du
   // mdkhal (cette page, en mise en page de projection) au dernier module,
@@ -200,6 +205,32 @@ export default function LessonIndex({ config, basePath }) {
             </section>
           </div>
         </ClassroomFrame>
+      </div>
+    );
+  }
+
+  // Masquée par l'ENSEIGNANT pour la classe de l'élève : le serveur refuse
+  // déjà toute écriture ; cet écran l'explique avec les bons mots (ni
+  // « premium », ni « indisponible »).
+  if (isLessonHiddenByClass(config.id)) {
+    return (
+      <div className={`min-h-screen flex flex-col justify-between ${chrome.contentOffsetClass} bg-slate-50`}>
+        <main className="sa-page py-8 flex-1">
+          <nav className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500 mb-8">
+            <Link to="/courses" className="hover:text-blue-600">{t('index.home')}</Link>
+            <span>/</span>
+            <span className="text-slate-900 font-semibold">{config.title}</span>
+          </nav>
+          <div className="mx-auto max-w-lg rounded-2xl border border-teal-200 bg-teal-50/50 p-8 text-center shadow-xs" data-hidden-by-teacher>
+            <h1 className="font-space text-xl font-bold text-slate-800 mb-2">{config.title}</h1>
+            <p className="font-inter text-sm leading-relaxed text-slate-600 mb-6">
+              {t('hiddenByTeacherHint', { ns: 'access' })}
+            </p>
+            <Link to="/espace/qism" className="inline-flex items-center gap-1 rounded-xl bg-teal-700 px-5 py-2.5 font-inter text-sm font-bold text-white transition-colors hover:bg-teal-800">
+              {t('myClass', { ns: 'nav' })}
+            </Link>
+          </div>
+        </main>
       </div>
     );
   }
@@ -399,14 +430,22 @@ export default function LessonIndex({ config, basePath }) {
               // yeux) mais devient non cliquable. Le serveur refuse de toute
               // façon d'enregistrer sa progression — ceci ne fait qu'aligner
               // l'affichage sur ce refus, au lieu d'y mener l'élève.
-              const status = isModuleClosed(config.id, module.number)
-                ? 'locked'
-                : config.sequentialUnlock
-                  // Passing `module` makes evaluation-stage modules always
-                  // accessible (the "Je pense déjà maîtriser" path) and applies
-                  // any requiresLearningPointIds mastery gate.
-                  ? getModuleStatus({ isModuleCompleted, moduleNumber: module.number, currentModule, module, firstModuleNumber, previousStage: config.modules.find((m) => Number(m.number) === Number(module.number) - 1)?.stage })
-                  : isDone ? 'mastered' : 'unlocked';
+              // Passing `module` makes evaluation-stage modules always
+              // accessible (the "Je pense déjà maîtriser" path) and applies
+              // any requiresLearningPointIds mastery gate. The gate itself
+              // lives in moduleGate.js, shared with ModuleLayout.
+              const status = resolveModuleStatus({
+                closed: isModuleClosed(config.id, module.number),
+                freeNavigation: viewer.freeNavigation,
+                sequentialUnlock: config.sequentialUnlock,
+                isDone,
+                isModuleCompleted,
+                moduleNumber: module.number,
+                currentModule,
+                module,
+                firstModuleNumber,
+                previousStage: config.modules.find((m) => Number(m.number) === Number(module.number) - 1)?.stage,
+              });
 
               // Un module verrouillé reste VISIBLE (l'élève voit tout le
               // parcours) mais n'est ni cliquable ni navigable : même rendu

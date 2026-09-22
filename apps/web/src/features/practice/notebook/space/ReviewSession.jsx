@@ -6,7 +6,8 @@ import { AuthContext } from '../../../../context/AuthContext';
 import { useDocumentMeta } from '../../../../hooks/useDocumentMeta';
 import { fetchNotes, reviewNote } from '../../../../services/practiceService';
 import NotebookContent from '../NotebookContent';
-import { typeOf, contextTrail } from './noteMeta';
+import { typeOf, contextTrail, notebookPaths } from './noteMeta';
+import { useWorkspaceBase } from '../../../learning/learningViewer';
 import '../notebook.css';
 import './notebookSpace.css';
 
@@ -28,6 +29,7 @@ export default function ReviewSession() {
   const r = (key, opts) => t(`notebook.space.review.${key}`, opts);
   useDocumentMeta(r('title'), t('notebook.space.metaDescription'));
   const { token } = useContext(AuthContext);
+  const paths = notebookPaths(useWorkspaceBase());
   const [queue, setQueue] = useState(null);
   const [error, setError] = useState(null);
   const [index, setIndex] = useState(0);
@@ -65,7 +67,7 @@ export default function ReviewSession() {
   };
 
   const back = (
-    <Link to="/espace/cahier?view=review" className="inline-flex items-center gap-1.5 text-sm font-bold text-slate-500 hover:text-violet-800 min-h-[44px]">
+    <Link to={paths.reviewView} className="inline-flex items-center gap-1.5 text-sm font-bold text-slate-500 hover:text-violet-800 min-h-[44px]">
       <ArrowRight size={16} aria-hidden="true" /> {r('back')}
     </Link>
   );
@@ -95,7 +97,7 @@ export default function ReviewSession() {
           <span className="text-4xl" aria-hidden="true">🎉</span>
           <p className="font-bold text-slate-800 text-lg">{r('doneTitle')}</p>
           <p className="text-sm text-slate-500 max-w-md">{r('doneBody', { count: done.known + done.again })}</p>
-          <Link to="/espace/cahier" className="sa-ns-btn sa-ns-btn--primary">{r('back')}</Link>
+          <Link to={paths.root} className="sa-ns-btn sa-ns-btn--primary">{r('back')}</Link>
         </div>
       </div>
     );

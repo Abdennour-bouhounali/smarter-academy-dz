@@ -24,6 +24,9 @@ class ActivationCodeBatch extends Model
         'access_ends_at',
         'redeem_by',
         'notes',
+        'plan_version_id',
+        'student_seat_limit',
+        'recipient_user_id',
         'created_by',
     ];
 
@@ -31,6 +34,7 @@ class ActivationCodeBatch extends Model
     {
         return [
             'quantity' => 'integer',
+            'student_seat_limit' => 'integer',
             'access_days' => 'integer',
             'access_ends_at' => 'datetime',
             'redeem_by' => 'datetime',
@@ -45,6 +49,24 @@ class ActivationCodeBatch extends Model
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    /** L'offre que chaque code de ce lot active — nul pour un lot élève classique. */
+    public function planVersion(): BelongsTo
+    {
+        return $this->belongsTo(PlanVersion::class);
+    }
+
+    /** Le destinataire d'un code individuel envoyé depuis une fiche de compte. */
+    public function recipient(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'recipient_user_id');
+    }
+
+    /** Un lot lié à une offre active un ABONNEMENT à la saisie ; sinon, un droit premium classique. */
+    public function activatesPlan(): bool
+    {
+        return $this->plan_version_id !== null;
     }
 
     /**

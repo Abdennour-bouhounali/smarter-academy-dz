@@ -102,7 +102,9 @@ describe('La page d’inscription', () => {
   });
 
   it('transmet le consentement au serveur', () => {
-    expect(source).toContain('registerRequest({ email, password, acceptLegal })');
+    // `accountType` (élève ou enseignant) part avec le consentement ; la liste
+    // blanche est tenue par le serveur.
+    expect(source).toContain('registerRequest({ email, password, acceptLegal, accountType })');
   });
 
   it('conduit vers la vérification, et non vers l’espace élève', () => {
@@ -139,7 +141,9 @@ describe('Le bouton Google', () => {
   });
 
   it('part par une navigation vers notre propre API', () => {
-    expect(source).toContain('googleRedirectUrl()');
+    // Le type de compte choisi part avec la navigation vers NOTRE API — jamais
+    // vers Google directement, et sans aucun secret côté navigateur.
+    expect(source).toContain('googleRedirectUrl(accountType)');
   });
 });
 

@@ -67,18 +67,29 @@ shells and tests all ask that one function. Changing who may present is editing 
 `LessonClassroomShell` does not expose it. The permission gates Classroom Mode only — it grants no
 other teacher or admin capability, and it never changes what is written to a student's progress.
 
-> **Temporary test configuration.** `CLASSROOM_PRESENTER_ROLES` currently contains
-> `['admin', 'student']`. `student` is there at the owner's request, to exercise Classroom Mode
-> from a student account; it is a **development/test setting, not a product decision**, and nothing
-> in the architecture depends on it. The tests assert the *mechanism* (every listed role passes, an
-> unlisted role fails, the array is frozen) and deliberately never assert the array's contents, so
-> removing `student` needs no test change. Do not build student-specific presenter behaviour.
+> **Who presents today.** `CLASSROOM_PRESENTER_ROLES` contains `['admin', 'teacher', 'student']`.
+> `teacher` is the product role this mode was built for (the teacher account exists since
+> 2026-09-22 — see [`TEACHER_CLASSROOM_ARCHITECTURE.md`](./TEACHER_CLASSROOM_ARCHITECTURE.md)).
+> `student` is there at the owner's request, to exercise Classroom Mode from a student account; it
+> is a **development/test setting, not a product decision**, and nothing in the architecture depends
+> on it. The tests assert the *mechanism* (every listed role passes, an unlisted role fails, the
+> array is frozen) and deliberately never assert the array's contents, so removing `student` needs
+> no test change. Do not build student-specific presenter behaviour.
+>
+> **Two words that both contain « قسم ».** « وضع القسم » is *this* mode, the projector shell, and
+> keeps its name. « قسمي » / « أقسامي » is the teacher's *class* — a roster of students with a join
+> code, per-class lesson visibility and progress views. That object lives in `App\Domain\Classroom`
+> on the server and under `features/teacher/` (identifier `classGroup`) on the client; nothing in
+> `lessons/common/classroom/` knows it exists. Presenting a lesson never reads or writes a class.
 
-Admins read lessons in the **visitor shell** (`CourseLayout` → `MainLayout`): `usesStudentShell(user)`
-is `user?.role === 'student'`. `StudentLayout` is the student workspace, and a user it renders
-without a grade is redirected to `/espace/bienvenue`; `/espace` is itself guarded for students only,
-so a non-student is sent to `/login`. The lesson chrome offset follows the same predicate
-(`useLessonChrome.js`).
+`CourseLayout` picks the shell from the reader (`features/learning/learningViewer.js`): a student
+reads in `StudentLayout` (the student workspace; without a grade they are redirected to
+`/espace/bienvenue`), a **teacher reads in `TeacherLayout`** — the same lesson engine, every module
+open, nothing written to any progression (see `TEACHER_CLASSROOM_ARCHITECTURE.md` §8b) — and admins
+and visitors read in the **visitor shell** (`MainLayout`). `usesStudentShell(user)` stays
+`user?.role === 'student'`; the lesson chrome offset follows `usesWorkspaceShell(user)` (student or
+teacher: same mobile header, same sidebar — `useLessonChrome.js`). `/espace` is guarded for
+students only, so a non-student is sent to `/login`.
 
 ## 4. One session, never nested
 

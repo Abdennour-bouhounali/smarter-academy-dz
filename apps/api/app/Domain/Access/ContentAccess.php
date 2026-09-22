@@ -2,6 +2,7 @@
 
 namespace App\Domain\Access;
 
+use App\Domain\Classroom\StudyContextService;
 use App\Models\Lesson;
 use App\Models\LessonModule;
 use App\Models\PracticeExercise;
@@ -72,11 +73,34 @@ class ContentAccess
         // Un code de leçon se répète d'une classe à l'autre. Si AU MOINS une
         // des leçons portant ce code est publiée, l'accès reste ouvert :
         // masquer la version de 6e ne doit pas fermer celle de 3e.
-        if ($lessons->contains(fn (Lesson $lesson) => $lesson->isVisibleToStudents())) {
+        if (! $lessons->contains(fn (Lesson $lesson) => $lesson->isVisibleToStudents())) {
+            throw new DomainException('Cette leçon n\'est pas disponible pour le moment.');
+        }
+
+        // ── Le TROISIÈME axe : la classe de l'enseignant ─────────────────
+        // Après la publication et le palier, jamais à leur place : masquer
+        // pour une classe n'ouvre rien de non publié, et une leçon publiée
+        // reste fermée à l'élève dont l'enseignant l'a masquée. La règle
+        // « une porte ouverte = ouvert » vaut ici aussi (voir
+        // StudyContextService::hiddenLessonCodes).
+        self::assertNotHiddenByClass($lessonCode, $user);
+    }
+
+    /** Motif rendu au client quand l'enseignant a masqué la leçon. */
+    public const HIDDEN_BY_TEACHER = 'hidden_by_teacher';
+
+    /**
+     * @throws DomainException si l'enseignant de l'élève a masqué la leçon.
+     */
+    private static function assertNotHiddenByClass(string $lessonCode, ?User $user): void
+    {
+        if ($user === null || ! $user->isStudent()) {
             return;
         }
 
-        throw new DomainException('Cette leçon n\'est pas disponible pour le moment.');
+        if (in_array($lessonCode, app(StudyContextService::class)->hiddenLessonCodesFor($user), true)) {
+            throw new DomainException('Cette leçon n\'est pas disponible dans votre classe.');
+        }
     }
 
     /**
@@ -307,6 +331,11 @@ class ContentAccess
             // rien ne doit lui être verrouillé.
             'premium' => $premium,
             'locked' => self::lockedLessonCodes($user, $premium),
+            // Le troisième axe : ce que l'ENSEIGNANT a masqué pour cet
+            // élève. Vide pour un élève indépendant — et pour un visiteur.
+            'hiddenByClass' => $user !== null && $user->isStudent()
+                ? app(StudyContextService::class)->hiddenLessonCodesFor($user)
+                : [],
         ];
     }
 

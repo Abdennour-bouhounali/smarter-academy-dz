@@ -39,8 +39,10 @@ function masteryIndex(profile) {
 }
 
 function LessonBlock({ lesson, index, mastery, t }) {
-  const { isLessonClosed } = useContentAvailability();
-  const available = lesson.status === 'available' && !isLessonClosed(lesson.id);
+  const { isLessonClosed, isLessonHiddenByClass } = useContentAvailability();
+  // Masquée par l'enseignant : traitée comme indisponible pour l'élève de
+  // cette classe, sans toucher à la publication.
+  const available = lesson.status === 'available' && !isLessonClosed(lesson.id) && !isLessonHiddenByClass(lesson.id);
   const total = getTotalModules(lesson.id);
   const { progressPercent } = available ? getLessonProgress(lesson.id, total) : { progressPercent: 0 };
   const config = getLessonConfig(lesson.id);

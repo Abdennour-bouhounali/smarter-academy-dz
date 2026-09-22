@@ -2,15 +2,11 @@
 
 namespace App\Domain\Admin;
 
-use App\Models\ExerciseAttempt;
-use App\Models\LearningEvidence;
-use App\Models\QuestionAttempt;
-use App\Models\StudentLearningPointProgress;
+use App\Domain\Progress\StudentDossier;
 use App\Models\StudentLessonProgress;
 use App\Models\User;
 use DomainException;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Les élèves vus par l'administration.
@@ -82,143 +78,29 @@ class StudentService
     }
 
     /**
-     * Le dossier d'apprentissage complet d'un élève.
+     * Le dossier d'apprentissage complet d'un élève — calculé par
+     * App\Domain\Progress\StudentDossier, partagé avec l'enseignant.
      *
      * @return array<string, mixed>
      */
     public function profile(User $student): array
     {
-        $progress = StudentLessonProgress::with('lesson:id,code,title')
-            ->where('user_id', $student->id)
-            ->orderByDesc('last_activity_at')
-            ->get();
-
-        $mastery = StudentLearningPointProgress::with('learningPoint:id,code,title,lesson_id')
-            ->where('user_id', $student->id)
-            ->get();
-
-        $questionStats = QuestionAttempt::where('user_id', $student->id)
-            ->selectRaw('COUNT(*) as total')
-            ->selectRaw('SUM(CASE WHEN outcome = ? THEN 1 ELSE 0 END) as correct', ['correct'])
-            ->selectRaw('SUM(hints_used) as hints')
-            ->first();
-
-        $answered = (int) ($questionStats->total ?? 0);
-        $correct = (int) ($questionStats->correct ?? 0);
-
-        return [
-            'progress' => $progress,
-            'lessonsStarted' => $progress->count(),
-            'lessonsCompleted' => $progress->where('status', StudentLessonProgress::STATUS_COMPLETED)->count(),
-            'modulesCompleted' => $progress->sum(fn ($row) => count($row->completed_modules ?? [])),
-            'exerciseAttempts' => ExerciseAttempt::whereHas(
-                'practiceSession',
-                fn ($q) => $q->where('user_id', $student->id)
-            )->count(),
-            'questionsAnswered' => $answered,
-            'correctAnswers' => $correct,
-            // null, et non 0, quand rien n'a été répondu : « aucune donnée »
-            // et « 0 % de réussite » ne disent pas la même chose.
-            'successRate' => $answered > 0 ? round($correct / $answered * 100, 1) : null,
-            'hintsUsed' => (int) ($questionStats->hints ?? 0),
-            'mastery' => $mastery,
-            'masteryCounts' => $mastery->groupBy('status')->map->count(),
-            'evidenceCount' => LearningEvidence::where('user_id', $student->id)->count(),
-        ];
+        return StudentDossier::profile($student);
     }
 
-    /**
-     * Les événements d'apprentissage, dans l'ordre. Assemblé à partir de ce
-     * qui est déjà enregistré — pas d'une table d'événements dédiée, qui
-     * n'existe pas.
-     *
-     * @return array<int, array<string, mixed>>
-     */
+    /** @return array<int, array<string, mixed>> */
     public function timeline(User $student, int $limit = 50): array
     {
-        $events = [];
-
-        foreach (StudentLessonProgress::with('lesson:id,code,title')->where('user_id', $student->id)->get() as $row) {
-            $events[] = [
-                'type' => $row->status === StudentLessonProgress::STATUS_COMPLETED ? 'lesson_completed' : 'lesson_progress',
-                'at' => $row->completed_at ?? $row->last_activity_at,
-                'lesson' => $row->lesson?->title,
-                'lessonCode' => $row->lesson?->code,
-                'detail' => count($row->completed_modules ?? []).' module(s) terminé(s)',
-            ];
-        }
-
-        foreach (DB::table('practice_sessions')
-            ->join('lessons', 'lessons.id', '=', 'practice_sessions.lesson_id')
-            ->where('practice_sessions.user_id', $student->id)
-            ->select('practice_sessions.*', 'lessons.title as lesson_title', 'lessons.code as lesson_code')
-            ->get() as $session) {
-            $events[] = [
-                'type' => 'practice_session',
-                'at' => $session->completed_at ?? $session->started_at,
-                'lesson' => $session->lesson_title,
-                'lessonCode' => $session->lesson_code,
-                'detail' => "Niveau {$session->level} — {$session->correct_count}/{$session->questions_answered} réussies",
-            ];
-        }
-
-        foreach (DB::table('lesson_final_test_attempts')
-            ->join('lessons', 'lessons.id', '=', 'lesson_final_test_attempts.lesson_id')
-            ->where('lesson_final_test_attempts.user_id', $student->id)
-            ->select('lesson_final_test_attempts.*', 'lessons.title as lesson_title')
-            ->get() as $attempt) {
-            $events[] = [
-                'type' => 'final_test',
-                'at' => $attempt->submitted_at,
-                'lesson' => $attempt->lesson_title,
-                'detail' => "Test final — {$attempt->score}/{$attempt->total_questions}",
-            ];
-        }
-
-        usort($events, fn ($a, $b) => strcmp((string) $b['at'], (string) $a['at']));
-
-        return array_slice($events, 0, $limit);
+        return StudentDossier::timeline($student, $limit);
     }
 
     /**
-     * Change le statut d'un compte.
-     *
-     * Ne touche JAMAIS aux données d'apprentissage : suspendre ou désactiver
-     * est une décision de cycle de vie du compte, la conservation de
-     * l'historique en est une autre (spec §2.4).
+     * Change le statut d'un compte élève — par AccountStatusService, partagé
+     * avec les enseignants : une seule règle « désactiver révoque les jetons,
+     * suspendre les garde, rien ne touche l'apprentissage ».
      */
     public function changeStatus(User $admin, int $studentId, string $status): User
     {
-        if (! in_array($status, User::ACCOUNT_STATUSES, true)) {
-            throw new DomainException('Statut de compte inconnu.');
-        }
-
-        $student = $this->find($studentId);
-        $before = $student->account_status;
-
-        // Changement, révocation et trace dans une seule transaction.
-        DB::transaction(function () use ($admin, $student, $status, $before) {
-            $student->account_status = $status;
-            $student->suspended_at = $status === User::STATUS_ACTIVE ? null : now();
-            $student->save();
-
-            // Un compte fermé ne garde pas de jeton valide en poche. Le compte
-            // suspendu les garde : la suspension est temporaire, et la lever ne
-            // doit pas obliger l'élève à se reconnecter partout.
-            if ($status === User::STATUS_DISABLED) {
-                $student->tokens()->delete();
-            }
-
-            $this->log->log(
-                $admin,
-                ActivityLogger::STUDENT_STATUS,
-                'student',
-                $student->id,
-                ['account_status' => $before],
-                ['account_status' => $status],
-            );
-        });
-
-        return $student;
+        return app(AccountStatusService::class)->change($admin, $this->find($studentId), $status, ActivityLogger::STUDENT_STATUS, 'student');
     }
 }

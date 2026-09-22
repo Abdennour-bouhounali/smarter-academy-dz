@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Clock, Lock, Crown } from 'lucide-react';
+import { Clock, Lock, Crown, EyeOff } from 'lucide-react';
 import { ArrowForward } from '../common/DirectionalIcons';
 import { isLessonUnlocked } from '@smarter-academy/core';
 import { useContentAvailability } from '../../context/ContentAvailabilityContext';
@@ -30,8 +30,12 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
   // retirée par l'administration retombe donc dans l'état « bientôt
   // disponible » déjà géré plus bas — l'élève voit un message qu'il connaît,
   // pas une carte cliquable qui le mènera à un refus.
-  const { isLessonClosed, isLessonLocked, isLessonPremium, access } = useContentAvailability();
+  const { isLessonClosed, isLessonLocked, isLessonPremium, isLessonHiddenByClass, access } = useContentAvailability();
   const isAvailable = lesson.status === 'available' && !isLessonClosed(lesson.id);
+  // Le TROISIÈME axe : masquée par l'enseignant pour la classe de l'élève.
+  // Publiée, dans son droit, mais « pas maintenant » — la carte le dit avec
+  // ses mots, sans cadenas commercial ni « bientôt ».
+  const hiddenByTeacher = isAvailable && isLessonHiddenByClass(lesson.id);
   // Le droit d'accès vient du SERVEUR, jamais d'un état local : la carte ne
   // fait qu'afficher une décision déjà prise (GET /content/availability).
   //
@@ -54,6 +58,27 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
   const { progressPercent } = isAvailable
     ? getLessonProgress(lesson.id, getTotalModules(lesson.id))
     : { progressPercent: 0 };
+
+  if (hiddenByTeacher) {
+    return (
+      <motion.div ref={ref} layout initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.2 }} className="bg-teal-50/40 rounded-2xl border border-teal-200/60 p-5 flex flex-col justify-between h-full" data-hidden-by-teacher={lesson.id}>
+        <div>
+          <div className="flex items-start justify-between gap-3 mb-4">
+            <span className="text-3xl grayscale opacity-60">{lesson.icon}</span>
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-teal-100 text-teal-800 font-mono-jetbrains text-[10px] font-semibold">
+              <EyeOff size={10} />
+              {t('hiddenByTeacherBadge', { ns: 'access' })}
+            </span>
+          </div>
+          <h4 className="font-space font-bold text-slate-700 text-lg mb-2">{lesson.title}</h4>
+          <p className="font-inter text-slate-500 text-sm leading-relaxed line-clamp-2 mb-4">{t('hiddenByTeacherHint', { ns: 'access' })}</p>
+        </div>
+        <div className="pt-4 border-t border-teal-100 flex items-center justify-between text-xs font-mono-jetbrains text-slate-400 mt-auto">
+          <span className="flex items-center gap-1"><Clock size={14} /> {lesson.duration}</span>
+        </div>
+      </motion.div>
+    );
+  }
 
   if (isAvailable && !isUnlocked) {
     return (

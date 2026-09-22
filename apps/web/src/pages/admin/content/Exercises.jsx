@@ -1,8 +1,9 @@
 import { getAllGrades } from '@smarter-academy/core';
 import React, { useCallback, useContext, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Dumbbell } from 'lucide-react';
-import AdminPage from '../../../components/admin/AdminPage';
+import { AdminPage, useAdminLabels, Num } from '../adminUi';
 import DataTable from '../../../components/admin/ui/DataTable';
 import { FilterBar, SearchInput, SelectFilter, Pagination } from '../../../components/admin/ui/FilterBar';
 import { EmptyState } from '../../../components/admin/ui/states';
@@ -24,7 +25,9 @@ import { useDebounced } from '../../../hooks/useDebounced';
 const GRADES = getAllGrades().map((g) => g.id);
 
 export default function AdminExercises() {
-  useDocumentMeta('Exercices — Administration');
+  const { t } = useTranslation('admin');
+  const L = useAdminLabels();
+  useDocumentMeta(t('exercises.metaTitle'));
 
   const { token } = useContext(AuthContext);
 
@@ -79,35 +82,36 @@ export default function AdminExercises() {
 
   return (
     <AdminPage
-      eyebrow="Contenu"
-      title="Exercices"
-      subtitle="Retirer un exercice le fait disparaître de la liste de l’élève — sans effacer aucune tentative déjà enregistrée."
+      eyebrow={t('exercises.eyebrow')}
+      title={t('exercises.title')}
+      subtitle={t('exercises.subtitleLong')}
     >
       <div className="space-y-3">
         <FilterBar>
           <SearchInput
             value={search}
             onChange={resetPage(setSearch)}
-            placeholder="Identifiant, titre, ou leçon…"
+            placeholder={t('exercises.searchPlaceholder')}
+            label={L.filters.searchLabel}
           />
           <SelectFilter
-            label="Classe" allLabel="Toutes les classes" value={grade}
+            label={t('common.grade')} allLabel={t('exercises.allGrades')} value={grade}
             onChange={resetPage(setGrade)}
             options={GRADES.map((g) => ({ value: g, label: g }))}
           />
           <SelectFilter
-            label="Niveau" allLabel="Tous les niveaux" value={level}
+            label={t('exercises.columnLevel')} allLabel={t('exercises.allLevels')} value={level}
             onChange={resetPage(setLevel)}
-            options={[1, 2, 3, 4, 5].map((n) => ({ value: String(n), label: `Niveau ${n}` }))}
+            options={[1, 2, 3, 4, 5].map((n) => ({ value: String(n), label: t('exercises.levelN', { level: n }) }))}
           />
           <SelectFilter
-            label="Publication" allLabel="Tous les états" value={status}
+            label={t('exercises.columnPublication')} allLabel={t('exercises.allStates')} value={status}
             onChange={resetPage(setStatus)}
             options={[
-              { value: 'published', label: 'Publié' },
-              { value: 'hidden', label: 'Masqué' },
-              { value: 'draft', label: 'Brouillon' },
-              { value: 'archived', label: 'Archivé' },
+              { value: 'published', label: t('status.published') },
+              { value: 'hidden', label: t('status.hidden') },
+              { value: 'draft', label: t('status.draft') },
+              { value: 'archived', label: t('status.archived') },
             ]}
           />
         </FilterBar>
@@ -126,22 +130,24 @@ export default function AdminExercises() {
 
         <DataTable
           selection={selection}
-          selectionLabel={(row) => `Sélectionner l’exercice ${row.title ?? row.exerciseCode}`}
+          selectionLabel={(row) => L.selectRow(row.title ?? row.exerciseCode)}
+          labels={L.table}
           columns={[
             {
               key: 'exerciseCode',
-              label: 'Exercice',
+              label: t('exercises.columnExercise'),
               cellClassName: 'min-w-[240px]',
               render: (row) => (
                 <div>
                   <span className="font-semibold text-slate-900">{row.title ?? row.exerciseCode}</span>
-                  <span className="block font-mono-jetbrains text-xs text-slate-400">{row.exerciseCode}</span>
+                  {/* L'identifiant d'exercice est technique : latin, et LTR. */}
+                  <span dir="ltr" className="block font-mono-jetbrains text-xs text-slate-400 text-start">{row.exerciseCode}</span>
                 </div>
               ),
             },
             {
               key: 'lesson',
-              label: 'Leçon',
+              label: t('exercises.columnLesson'),
               cellClassName: 'min-w-[180px]',
               render: (row) => (
                 <Link
@@ -152,12 +158,18 @@ export default function AdminExercises() {
                 </Link>
               ),
             },
-            { key: 'grade', label: 'Classe', render: (row) => row.grade ?? '—' },
-            { key: 'level', label: 'Niveau', render: (row) => row.level },
-            { key: 'questionCount', label: 'Questions', render: (row) => row.questionCount ?? '—' },
+            { key: 'grade', label: t('common.grade'), render: (row) => row.grade ?? t('common.dash') },
+            { key: 'level', label: t('exercises.columnLevel'), render: (row) => <Num>{row.level}</Num> },
+            {
+              key: 'questionCount',
+              label: t('exercises.columnQuestions'),
+              render: (row) => (row.questionCount != null
+                ? <Num>{row.questionCount}</Num>
+                : t('common.dash')),
+            },
             {
               key: 'tier',
-              label: 'Accès',
+              label: t('exercises.columnTier'),
               cellClassName: 'min-w-[210px]',
               render: (row) => (
                 <TierControl
@@ -172,7 +184,7 @@ export default function AdminExercises() {
             },
             {
               key: 'publicationStatus',
-              label: 'Publication',
+              label: t('exercises.columnPublication'),
               render: (row) => (
                 <PublicationControl
                   type="exercise"
@@ -191,13 +203,13 @@ export default function AdminExercises() {
           empty={(
             <EmptyState
               icon={Dumbbell}
-              title="Aucun exercice"
-              hint="Le moteur d’exercices s’active leçon par leçon (content/practice/active.json) : peu de leçons en ont aujourd’hui, ce n’est pas une erreur."
+              title={t('exercises.emptyTitle')}
+              hint={t('exercises.emptyEngineHint')}
             />
           )}
         />
 
-        <Pagination meta={data} onPage={setPage} />
+        <Pagination meta={data} onPage={setPage} labels={L.pagination} />
       </div>
     </AdminPage>
   );

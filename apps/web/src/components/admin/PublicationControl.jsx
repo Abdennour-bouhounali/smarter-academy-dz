@@ -1,14 +1,16 @@
 import React, { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../../context/AuthContext';
 import { changeContentStatus } from '../../services/admin/contentService';
 import StatusBadge from './ui/StatusBadge';
 import { ConfirmDialog } from './ui/Modal';
 
+/** Les quatre états, et la CLÉ de leur geste — le libellé se traduit au rendu. */
 const STATUSES = [
-  { value: 'published', label: 'Publier' },
-  { value: 'hidden', label: 'Masquer' },
-  { value: 'draft', label: 'Repasser en brouillon' },
-  { value: 'archived', label: 'Archiver' },
+  { value: 'published', labelKey: 'bulk.publish' },
+  { value: 'hidden', labelKey: 'bulk.hide' },
+  { value: 'draft', labelKey: 'bulk.draft' },
+  { value: 'archived', labelKey: 'bulk.archive' },
 ];
 
 /**
@@ -24,6 +26,7 @@ const STATUSES = [
  * contraire.
  */
 export default function PublicationControl({ type, id, status, onChanged, compact = false }) {
+  const { t } = useTranslation('admin');
   const { token } = useContext(AuthContext);
   const [pending, setPending] = useState(null);
   const [busy, setBusy] = useState(false);
@@ -55,15 +58,15 @@ export default function PublicationControl({ type, id, status, onChanged, compac
       <StatusBadge status={status} />
 
       <select
-        aria-label="Changer l’état de publication"
+        aria-label={t('bulk.changePublicationLabel')}
         value=""
         disabled={busy}
         onChange={(event) => request(event.target.value)}
         className="rounded-lg border border-slate-300 bg-white px-2 py-1 font-inter text-xs text-slate-700 disabled:opacity-50"
       >
-        <option value="">Changer…</option>
+        <option value="">{t('bulk.changePlaceholder')}</option>
         {STATUSES.filter((option) => option.value !== status).map((option) => (
-          <option key={option.value} value={option.value}>{option.label}</option>
+          <option key={option.value} value={option.value}>{t(option.labelKey)}</option>
         ))}
       </select>
 
@@ -75,14 +78,16 @@ export default function PublicationControl({ type, id, status, onChanged, compac
         onConfirm={() => apply(pending)}
         busy={busy}
         tone="danger"
-        title={pending === 'archived' ? 'Archiver ce contenu ?' : 'Retirer ce contenu aux élèves ?'}
-        confirmLabel={pending === 'archived' ? 'Archiver' : 'Retirer'}
+        cancelLabel={t('common.cancel')}
+        busyLabel={t('common.busy')}
+        closeLabel={t('common.close')}
+        title={pending === 'archived' ? t('bulk.confirmArchiveOneTitle') : t('bulk.confirmWithdrawOneTitle')}
+        confirmLabel={pending === 'archived' ? t('bulk.archive') : t('bulk.withdraw')}
         message={
           <>
             <p>
-              Les élèves n’y auront plus accès. <strong>Aucune donnée d’apprentissage n’est supprimée</strong> :
-              les progressions et les tentatives déjà enregistrées sont conservées, et réapparaîtront si vous
-              republiez.
+              {t('bulk.withdrawOneMessage')} <strong>{t('bulk.noLearningDataLost')}</strong>
+              {t('bulk.noLearningDataLostHide')}
             </p>
           </>
         }

@@ -2,6 +2,7 @@ import { useState, useCallback, useContext } from 'react';
 import { scopedStorage as storage } from '../../../utils/storage';
 import { AuthContext } from '../../../context/AuthContext';
 import { scheduleProgressSync } from '../progressQueue';
+import { useLearningViewer } from '../../../features/learning/learningViewer';
 
 /**
  * useProgress — Smarter Academy progression system.
@@ -23,11 +24,19 @@ import { scheduleProgressSync } from '../progressQueue';
  * Reads/writes go through `storage` (utils/storage.js), not `localStorage`
  * directly — see that file for why.
  *
+ * QUI apprend écrit ; qui ne fait que lire n'écrit pas. Un enseignant (ou un
+ * administrateur) parcourt la leçon avec les mêmes composants, mais
+ * `learningViewer.tracksProgress` est faux pour lui : visite, complétion et
+ * XP deviennent des gestes vides — ni en local, ni vers le serveur (qui les
+ * refuserait de toute façon, middleware `learner`). Un seul point de garde,
+ * ici, plutôt qu'une condition par composant.
+ *
  * @param {string} lessonId - The unique lesson ID (e.g. 'MOD-3E-FONC-V2')
  */
 export function useProgress(lessonId) {
   const storageKey = `smarter_lesson_${lessonId}`;
   const { token } = useContext(AuthContext);
+  const { tracksProgress } = useLearningViewer();
 
   // ── Read initial state from storage ──────────────────────────────────────
   const readLessonData = () => {
@@ -67,6 +76,7 @@ export function useProgress(lessonId) {
 
   // ── markModuleCompleted ───────────────────────────────────────────────────
   const markModuleCompleted = useCallback((moduleId) => {
+    if (!tracksProgress) return;
     const saved = readLessonData();
     if (saved.completedModules.includes(moduleId)) {
       setLessonData(saved);
@@ -79,11 +89,11 @@ export function useProgress(lessonId) {
     persistLessonData(next);
     setLessonData(next);
     scheduleProgressSync(token, lessonId);
-  }, [storageKey, token]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [storageKey, token, tracksProgress]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── markModuleVisited ─────────────────────────────────────────────────────
   const markModuleVisited = useCallback((moduleNumber) => {
-    if (!lessonId) return;
+    if (!lessonId || !tracksProgress) return;
 
     // Set global last course
     storage.setItem('smarter_last_course', lessonId);
@@ -100,7 +110,7 @@ export function useProgress(lessonId) {
     persistLessonData(next);
     setLessonData(next);
     scheduleProgressSync(token, lessonId);
-  }, [lessonId, storageKey, token]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [lessonId, storageKey, token, tracksProgress]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── awardXP (idempotent) ──────────────────────────────────────────────────
   /**
@@ -110,6 +120,7 @@ export function useProgress(lessonId) {
    * @param {{ moduleId: string, exerciseId: string, amount: number }} opts
    */
   const awardXP = useCallback(({ moduleId, exerciseId, amount }) => {
+    if (!tracksProgress) return;
     const key = `${lessonId}:${moduleId}:${exerciseId}`;
     // Dedup contre le stockage (source de vérité synchrone), PAS dans un
     // updater React : un updater doit rester pur, et StrictMode l'exécute
@@ -128,7 +139,7 @@ export function useProgress(lessonId) {
     const nextXp = readGlobalXP() + amount;
     persistXP(nextXp);
     setXp(nextXp);
-  }, [lessonId, storageKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [lessonId, storageKey, tracksProgress]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Derived values ────────────────────────────────────────────────────────
   const isModuleCompleted = useCallback(

@@ -6,13 +6,11 @@
   "codeHint": "اثنا عشر رمزًا، كما هي مكتوبة على البطاقة. لا يهمّ استعمال الحروف الكبيرة أو الشرطات.",
   "submit": "تفعيل",
   "submitLoading": "جاري التفعيل…",
-
   "successTitle": "تمّ تفعيل وصولك",
   "successBody": "أصبحت كل الدروس متاحة لك الآن.",
   "successUntil": "وصولك سارٍ إلى غاية {{date}}.",
   "successUnlimited": "وصولك سارٍ دون تاريخ انتهاء.",
   "goToCourses": "الذهاب إلى دروسي",
-
   "errorInvalid": "هذا الرمز غير صالح. تحقّق من إدخالك.",
   "errorAlreadyActivated": "سبق استعمال هذا الرمز.",
   "errorExpired": "انتهت صلاحية هذا الرمز.",
@@ -20,7 +18,6 @@
   "errorRateLimited": "عدد المحاولات كبير. انتظر قليلاً ثم أعد المحاولة.",
   "errorRequired": "أدخل رمز التفعيل.",
   "errorGeneric": "تعذّر تفعيل الرمز. أعد المحاولة.",
-
   "statusTitle": "وصولك",
   "statusFree": "حساب مجاني",
   "statusFreeBody": "لديك وصول إلى الدروس المجانية.",
@@ -30,12 +27,18 @@
   "statusUnlimited": "دون تاريخ انتهاء",
   "statusViaActivationCode": "عن طريق رمز تفعيل",
   "statusViaAdmin": "وصول ممنوح من الإدارة",
-
   "lockedBadge": "مدفوع",
   "freeBadge": "مجاني",
   "lockedCta": "تفعيل الوصول",
   "lockedHint": "هذا الدرس يتطلّب وصولاً كاملاً.",
   "howToBuyTitle": "ليس لديك رمز؟",
   "howToBuyBody": "تُباع بطاقات التفعيل لدى الباعة المعتمدين. بعد الشراء، أدخل الرمز هنا لفتح كل الدروس.",
-  "anotherCode": "لديك رمز آخر؟ يمكنك إدخاله لتمديد وصولك."
+  "anotherCode": "لديك رمز آخر؟ يمكنك إدخاله لتمديد وصولك.",
+  "statusViaTeacher": "عن طريق عرض أستاذك",
+  "hiddenByTeacherBadge": "غير متاح في قسمك",
+  "hiddenByTeacherHint": "أخفى أستاذك هذا الدرس مؤقتًا. سيظهر من جديد عندما يُتيحه.",
+  "errorPlanMismatch": "هذا الرمز مخصّص لنوع حساب آخر.",
+  "planFreeBadge": "مجاني",
+  "planInformationalPrice": "دج",
+  "planPriceHint": "سعر إرشادي — يُدفع خارج المنصّة."
 }

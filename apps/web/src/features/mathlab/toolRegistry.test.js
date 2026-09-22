@@ -35,6 +35,10 @@ describe('registre des instruments', () => {
     expect(getMathLabToolBySlug('geometrie-3d')?.id).toBe('geometry3d');
     expect(getMathLabTool('probabilityStats')?.slug).toBe('probabilites-statistiques');
     expect(getMathLabToolBySlug('probabilites-statistiques')?.id).toBe('probabilityStats');
+    expect(getMathLabTool('algebra')?.slug).toBe('algebre');
+    expect(getMathLabToolBySlug('algebre')?.id).toBe('algebra');
+    expect(getMathLabTool('vectors')?.slug).toBe('vecteurs');
+    expect(getMathLabToolBySlug('vecteurs')?.id).toBe('vectors');
     expect(getMathLabToolBySlug('inconnu')).toBeNull();
     expect(getMathLabTool('graph')).toBeNull();
   });
@@ -48,6 +52,9 @@ describe('registre des instruments', () => {
     expect(plannedIds).not.toContain('statistics');
     expect(plannedIds).not.toContain('probability');
     expect(plannedIds).not.toContain('probabilityStats');
+    expect(plannedIds).not.toContain('algebra');
+    // Le مختبر الأشعة est livré : « الأشعة » a quitté les instruments annoncés.
+    expect(plannedIds).not.toContain('vectors');
   });
 
   it('les instruments annoncés ne sont pas des instruments : ni composant, ni route', () => {

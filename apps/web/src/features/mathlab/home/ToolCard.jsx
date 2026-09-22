@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowForward } from '../../../components/common/DirectionalIcons';
-import { mathLabToolPath } from '../mathLabDocument';
+import { mathLabToolPath, mathLabBasePath } from '../mathLabDocument';
+import { useWorkspaceBase } from '../../learning/learningViewer';
 
 /**
  * La carte d'un instrument DISPONIBLE : nom, ce qu'on y fait, et UN geste —
@@ -11,10 +12,11 @@ import { mathLabToolPath } from '../mathLabDocument';
 export default function ToolCard({ tool }) {
   const { t } = useTranslation('mathlab');
   const Icon = tool.icon;
+  const root = mathLabBasePath(useWorkspaceBase());
 
   return (
     <Link
-      to={mathLabToolPath(tool)}
+      to={mathLabToolPath(tool, null, root)}
       className="group flex flex-col gap-3 rounded-2xl border-2 border-slate-200 bg-white p-5 transition-colors hover:border-blue-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
       data-ml-tool-card={tool.id}
     >

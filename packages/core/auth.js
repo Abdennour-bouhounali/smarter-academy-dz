@@ -20,11 +20,14 @@ export function hasRequiredRole(user, allowedRoles) {
  * d'essai, se fait donc ICI, en une valeur — jamais par un second système de
  * rôles ni par une condition écrite dans l'interface.
  *
+ * `teacher` : le compte enseignant existe désormais (role = 'teacher' côté
+ * API) — il présente en classe, c'est précisément son métier.
+ *
  * `student` y figure à la demande du propriétaire, pour éprouver le mode
  * classe depuis un compte élève ; c'est un réglage temporaire, et rien dans
  * l'architecture n'en dépend.
  */
-export const CLASSROOM_PRESENTER_ROLES = Object.freeze(['admin','student']);
+export const CLASSROOM_PRESENTER_ROLES = Object.freeze(['admin', 'teacher', 'student']);
 
 /**
  * L'utilisateur peut-il ouvrir le mode classe ?

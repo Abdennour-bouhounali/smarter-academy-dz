@@ -75,6 +75,9 @@ class ScopeCurriculum extends Command
         'practice_sessions' => 'cascade',
         'notebook_notes' => 'set_null',
         'student_reports' => 'set_null',
+        // La visibilité d'une leçon pour une classe d'enseignant : un réglage,
+        // pas une donnée élève. Il meurt avec la leçon qu'il règle.
+        'classroom_lessons' => 'cascade',
     ];
 
     /**

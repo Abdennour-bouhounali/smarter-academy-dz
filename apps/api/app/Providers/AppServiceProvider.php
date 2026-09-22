@@ -7,7 +7,11 @@ use App\Domain\Billing\PaymentProviderRegistry;
 use App\Domain\Billing\SandboxPaymentProvider;
 use App\Domain\Billing\Stripe\StripeEventTranslator;
 use App\Domain\Billing\Stripe\StripePaymentProvider;
+use App\Domain\Classroom\StudyContextService;
+use App\Domain\Plans\PlanEntitlementResolver;
+use App\Models\Classroom;
 use App\Models\User;
+use App\Policies\ClassroomPolicy;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Http\Events\RequestHandled;
 use Illuminate\Http\Request;
@@ -37,6 +41,17 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(EntitlementService::class);
 
         /**
+         * Deux autres mémoires PAR REQUÊTE, pour les mêmes raisons :
+         *   — PlanEntitlementResolver : les limites d'offre d'un compte,
+         *     relues une fois par requête, pas une fois par contrôle ;
+         *   — StudyContextService : « dans quelle classe étudie cet élève ? »,
+         *     posé par chaque carte de leçon et par ContentAccess.
+         * Vidés à la frontière de requête ci-dessous.
+         */
+        $this->app->singleton(PlanEntitlementResolver::class);
+        $this->app->singleton(StudyContextService::class);
+
+        /**
          * … mais RECOMMENCÉ à chaque requête.
          *
          * En production, chaque requête HTTP construit un conteneur neuf, donc
@@ -54,7 +69,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->booted(function () {
             $this->app['events']->listen(
                 RequestHandled::class,
-                fn () => $this->app->make(EntitlementService::class)->forget(),
+                function () {
+                    $this->app->make(EntitlementService::class)->forget();
+                    $this->app->make(PlanEntitlementResolver::class)->forget();
+                    $this->app->make(StudyContextService::class)->forget();
+                },
             );
         });
 
@@ -96,6 +115,22 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::define('admin', fn (User $user) => $user->role === 'admin');
+
+        // Le rôle ENSEIGNANT — première couche d'autorisation des routes
+        // /teacher. La propriété d'une classe est la deuxième (ClassroomPolicy),
+        // l'offre la troisième (PlanEntitlementResolver, dans les services).
+        Gate::define('teacher', fn (User $user) => $user->role === User::ROLE_TEACHER);
+        Gate::policy(Classroom::class, ClassroomPolicy::class);
+
+        /**
+         * Rejoindre une classe : deux compteurs, comme la saisie d'un code
+         * d'activation — un code de classe est court (six symboles) et se
+         * tâtonne plus vite qu'un code d'activation.
+         */
+        RateLimiter::for('classroom-join', fn (Request $request) => [
+            Limit::perMinute(10)->by('classroom-join-user:'.($request->user()?->id ?? $request->ip())),
+            Limit::perHour(60)->by('classroom-join-ip:'.$request->ip()),
+        ]);
 
         /**
          * La saisie d'un code d'activation — DEUX compteurs, et c'est la

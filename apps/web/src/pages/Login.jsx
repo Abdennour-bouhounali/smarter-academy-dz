@@ -21,6 +21,10 @@ function postLoginPath(user) {
   if (user.role === 'student') {
     return user.emailVerified === false ? '/verification-email' : '/espace';
   }
+  // L'enseignant vérifie son adresse comme l'élève, puis entre dans SON espace.
+  if (user.role === 'teacher') {
+    return user.emailVerified === false ? '/verification-email' : '/enseignant';
+  }
   return '/';
 }
 

@@ -7,7 +7,8 @@ import { AuthContext } from '../../context/AuthContext';
 import { fetchMathLabFileBlob } from '../../services/mathLabService';
 import { useMathLabAttachments } from './attachments/useMathLabAttachments';
 import { getMathLabToolBySlug } from './toolRegistry';
-import { MATH_LAB_BASE_PATH, parseDocumentId } from './mathLabDocument';
+import { mathLabBasePath, parseDocumentId } from './mathLabDocument';
+import { useWorkspaceBase } from '../learning/learningViewer';
 import { readMathLabLaunch } from './openMathLab';
 import { useMathLabDocument } from './useMathLabDocument';
 import MathLabShell from './MathLabShell';
@@ -32,8 +33,9 @@ function lazyToolComponent(tool) {
 export default function MathLabToolPage() {
   const { toolSlug, documentId: rawId } = useParams();
   const tool = getMathLabToolBySlug(toolSlug);
+  const labHome = mathLabBasePath(useWorkspaceBase());
 
-  if (!tool) return <Navigate to={MATH_LAB_BASE_PATH} replace />;
+  if (!tool) return <Navigate to={labHome} replace />;
 
   return <ToolPage key={tool.id} tool={tool} documentId={parseDocumentId(rawId)} />;
 }
@@ -42,6 +44,11 @@ function ToolPage({ tool, documentId }) {
   const { t } = useTranslation('mathlab');
   const location = useLocation();
   const toolName = t(tool.labelKey);
+  // L'accueil du مختبر dépend de l'espace (élève ou enseignant) : il se lit
+  // ICI, au corps du composant. Appeler le hook dans le JSX d'une branche
+  // d'erreur changerait le NOMBRE de hooks d'un rendu à l'autre — React
+  // lève alors « Rendered more hooks than during the previous render ».
+  const labHome = mathLabBasePath(useWorkspaceBase());
   useDocumentMeta(`${toolName} — ${t('title')}`);
 
   const launch = useMemo(() => readMathLabLaunch(location.state, tool.id), [location.state, tool.id]);
@@ -93,7 +100,7 @@ function ToolPage({ tool, documentId }) {
           <p className="font-space font-bold text-slate-900">
             {model.error?.status === 404 ? t('shell.notFound') : t('shell.loadError')}
           </p>
-          <Link to={MATH_LAB_BASE_PATH} className="sa-ml-btn sa-ml-btn--primary mt-2">{t('shell.backToLab')}</Link>
+          <Link to={labHome} className="sa-ml-btn sa-ml-btn--primary mt-2">{t('shell.backToLab')}</Link>
         </div>
       )}
       {model.status === 'ready' && (

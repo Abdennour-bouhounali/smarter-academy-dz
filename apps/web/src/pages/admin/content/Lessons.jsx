@@ -1,8 +1,9 @@
 import { getAllGrades } from '@smarter-academy/core';
 import React, { useCallback, useContext, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { BookOpen } from 'lucide-react';
-import AdminPage from '../../../components/admin/AdminPage';
+import { AdminPage, useAdminLabels, Num } from '../adminUi';
 import DataTable from '../../../components/admin/ui/DataTable';
 import { FilterBar, SearchInput, SelectFilter, Pagination } from '../../../components/admin/ui/FilterBar';
 import { EmptyState } from '../../../components/admin/ui/states';
@@ -24,7 +25,9 @@ import { useDebounced } from '../../../hooks/useDebounced';
 const GRADES = getAllGrades().map((g) => g.id);
 
 export default function AdminLessons() {
-  useDocumentMeta('Leçons — Administration');
+  const { t } = useTranslation('admin');
+  const L = useAdminLabels();
+  useDocumentMeta(t('lessons.metaTitle'));
 
   const { token } = useContext(AuthContext);
 
@@ -89,7 +92,7 @@ export default function AdminLessons() {
   const columns = [
     {
       key: 'title',
-      label: 'Leçon',
+      label: t('lessons.columnLesson'),
       sortKey: 'title',
       // `min-w` sur la cellule : sans elle, une colonne étroite empile un
       // titre long sur trois lignes et fait tripler la hauteur de la rangée.
@@ -102,40 +105,43 @@ export default function AdminLessons() {
               qu'il occupait (la plus large du tableau) poussait les deux
               menus d'action hors de l'écran. Un contrôle qu'il faut deviner
               en faisant défiler n'existe pas vraiment. */}
-          <span className="block truncate font-mono-jetbrains text-xs text-slate-400">{row.code}</span>
-          <span className="block truncate font-inter text-xs text-slate-400">{row.chapterTitle ?? '—'}</span>
+          {/* Le code de la leçon est un identifiant technique : il reste latin et LTR. */}
+          <span dir="ltr" className="block truncate font-mono-jetbrains text-xs text-slate-400 text-start">{row.code}</span>
+          <span className="block truncate font-inter text-xs text-slate-400">{row.chapterTitle ?? t('common.dash')}</span>
         </Link>
       ),
     },
-    { key: 'grade', label: 'Classe', sortKey: 'code', render: (row) => row.grade ?? '—' },
+    { key: 'grade', label: t('common.grade'), sortKey: 'code', render: (row) => row.grade ?? t('common.dash') },
     // Modules / exercices / élèves : trois compteurs étroits, regroupés en
     // une colonne. Séparés, ils coûtaient trois en-têtes larges pour trois
     // chiffres à un caractère.
     {
       key: 'counts',
-      label: 'Mod · Ex · Él',
+      label: t('lessons.columnCounts'),
       // `whitespace-nowrap` ET une largeur minimale : sans elles, l'en-tête
       // se casse sur trois lignes, la colonne se réduit à la largeur d'un
       // caractère et chaque rangée triple de hauteur.
       className: 'whitespace-nowrap',
       cellClassName: 'whitespace-nowrap min-w-[110px]',
       render: (row) => (
-        <span className="font-mono-jetbrains text-xs text-slate-500" title="Modules · Exercices · Élèves">
-          {row.modulesCount} · {row.exercisesCount} · {row.studentsCount}
-        </span>
+        <Num className="font-mono-jetbrains text-xs text-slate-500">
+          <span title={t('lessons.countsHint')}>
+            {row.modulesCount} · {row.exercisesCount} · {row.studentsCount}
+          </span>
+        </Num>
       ),
     },
     {
       key: 'openReportsCount',
-      label: 'Signalements',
+      label: t('lessons.columnReports'),
       sortKey: 'open_reports_count',
       render: (row) => (row.openReportsCount > 0
-        ? <span className="font-semibold text-amber-700">{row.openReportsCount}</span>
-        : <span className="text-slate-400">0</span>),
+        ? <Num className="font-semibold text-amber-700">{row.openReportsCount}</Num>
+        : <Num className="text-slate-400">0</Num>),
     },
     {
       key: 'tier',
-      label: 'Accès',
+      label: t('lessons.columnTier'),
       cellClassName: 'min-w-[190px]',
       render: (row) => (
         <TierControl
@@ -149,7 +155,7 @@ export default function AdminLessons() {
     },
     {
       key: 'publicationStatus',
-      label: 'Publication',
+      label: t('lessons.columnPublication'),
       sortKey: 'publication_status',
       render: (row) => (
         <PublicationControl
@@ -165,32 +171,40 @@ export default function AdminLessons() {
 
   return (
     <AdminPage
-      eyebrow="Contenu"
-      title="Leçons"
-      subtitle="Publier, masquer ou archiver une leçon. Masquer ne supprime jamais la progression des élèves."
+      eyebrow={t('lessons.eyebrow')}
+      title={t('lessons.title')}
+      subtitle={t('lessons.subtitleLong')}
     >
       <div className="space-y-3">
         <FilterBar>
-          <SearchInput value={search} onChange={(value) => { setSearch(value); setPage(1); }} placeholder="Titre ou code de leçon…" />
+          <SearchInput
+            value={search}
+            onChange={(value) => { setSearch(value); setPage(1); }}
+            placeholder={t('lessons.searchPlaceholder')}
+            label={L.filters.searchLabel}
+          />
           <SelectFilter
-            label="Classe" allLabel="Toutes les classes" value={grade}
+            label={t('common.grade')} allLabel={t('lessons.allGrades')} value={grade}
             onChange={(value) => { setGrade(value); setPage(1); }}
             options={GRADES.map((g) => ({ value: g, label: g }))}
           />
           <SelectFilter
-            label="Publication" allLabel="Tous les états" value={status}
+            label={t('lessons.columnPublication')} allLabel={t('lessons.allStates')} value={status}
             onChange={(value) => { setStatus(value); setPage(1); }}
             options={[
-              { value: 'published', label: 'Publié' },
-              { value: 'hidden', label: 'Masqué' },
-              { value: 'draft', label: 'Brouillon' },
-              { value: 'archived', label: 'Archivé' },
+              { value: 'published', label: t('status.published') },
+              { value: 'hidden', label: t('status.hidden') },
+              { value: 'draft', label: t('status.draft') },
+              { value: 'archived', label: t('status.archived') },
             ]}
           />
           <SelectFilter
-            label="Accès" allLabel="Tous les accès" value={tier}
+            label={t('lessons.columnTier')} allLabel={t('lessons.allTiers')} value={tier}
             onChange={(value) => { setTier(value); setPage(1); }}
-            options={[{ value: 'free', label: 'Gratuit' }, { value: 'premium', label: 'Premium' }]}
+            options={[
+              { value: 'free', label: t('status.free') },
+              { value: 'premium', label: t('status.premium') },
+            ]}
           />
         </FilterBar>
 
@@ -210,16 +224,17 @@ export default function AdminLessons() {
           columns={columns}
           rows={rows}
           selection={selection}
-          selectionLabel={(row) => `Sélectionner la leçon ${row.title}`}
+          selectionLabel={(row) => L.selectRow(row.title ?? row.code)}
+          labels={L.table}
           loading={loading}
           error={error}
           onRetry={reload}
           sort={sort}
           onSortChange={setSort}
-          empty={<EmptyState icon={BookOpen} title="Aucune leçon" hint="Aucune leçon ne correspond à ces filtres." />}
+          empty={<EmptyState icon={BookOpen} title={t('lessons.emptyTitle')} hint={t('lessons.emptyHint')} />}
         />
 
-        <Pagination meta={data} onPage={setPage} />
+        <Pagination meta={data} onPage={setPage} labels={L.pagination} />
       </div>
     </AdminPage>
   );

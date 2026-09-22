@@ -37,6 +37,19 @@ final class MathLabTools
         // série saisie bornée à cinq cents valeurs. 60 Ko couvrent tout cela
         // très largement et laissent de la marge aux versions futures.
         'probabilityStats' => ['maxBytes' => 60_000],
+        // Le laboratoire d'algèbre : une équation et le CHEMIN qui y mène —
+        // soixante pas au plus, chacun quatre rationnels `{n, d}` et une
+        // opération. Quelques kilo-octets ; 20 Ko laissent de la marge aux
+        // versions futures (plusieurs inconnues, second degré).
+        'algebra' => ['maxBytes' => 20_000],
+        // Le laboratoire des أشعة : une SCÈNE (points, أشعة, polygones) et le
+        // chemin qui y mène — vingt pas au plus, chacun gardant une copie de
+        // la scène entière. Le pire cas mesuré (26 points, 12 أشعة, vingt
+        // pas) pèse ~65 Ko ; 120 Ko laissent de la marge aux versions
+        // futures (repères, coniques) sans jamais accepter un document que
+        // l'instrument ne saurait rouvrir. La borne est tenue côté client par
+        // MAX_HISTORY (vectorState.js) et vérifiée par vectorState.test.js.
+        'vectors' => ['maxBytes' => 120_000],
     ];
 
     public static function exists(string $tool): bool

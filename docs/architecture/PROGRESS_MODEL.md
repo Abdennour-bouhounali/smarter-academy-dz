@@ -129,3 +129,35 @@ completion percentage (the old `totalModules || 7` fallbacks are gone, as is
 **Decision for this phase:** do not build a mastery algorithm (explicitly future work, §23 of the phase brief). What this phase does: name the gap precisely, so nobody building the future mastery engine mistakes the existing `isMastered`/`getModuleMastery` naming for a real mastery signal that just needs tuning — it's a completion proxy that needs to be *replaced*, not extended, once real attempt data exists.
 
 **A student can be 100% complete on a lesson without having mastered its competency.** The architecture must keep these separable when the real mastery model arrives: `Progress` (→ `calculateCompletionPercentage`, module/lesson/chapter) stays a pure function of "what was clicked through," while `Mastery` (→ eventually a function of attempt history, correctness rate, retention over time) becomes its own, separately-computed value once `Attempt` records exist. They should never again be collapsed into one number the way `getModuleMastery` currently does.
+
+## Who reads progress (2026-09-22)
+
+Three readers, **one set of tables**: the student (their own space), the
+administrator (`Admin\StudentService`) and, since the teacher phase, the
+teacher of a class (قسم) through `Domain\Classroom\ClassroomProgressService`
+and `Domain\Progress\StudentDossier` (extracted from the admin service and
+used by both). They read `student_lesson_progress`,
+`student_learning_point_progress`, the practice attempts and
+`users.last_activity_at`, scoped to the class's grade and to the lessons the
+class makes *effective* (a lesson the teacher hid is not counted). **No
+teacher-side progress table exists and none may be added**: a class view is a
+query over the student's data, never a copy of it. Leaving or being removed
+from a class changes a membership row only — every progress, attempt and
+mastery row stays. The notebook is never read (`NOTEBOOK.md`). Contract:
+[`TEACHER_CLASSROOM_ARCHITECTURE.md`](./TEACHER_CLASSROOM_ARCHITECTURE.md) §4.
+
+## Who writes progress
+
+Only a **student** does. A teacher (or an admin) opens the same lessons,
+modules and **parts** with `freeNavigation` (no sequential lock, at either
+level: `utils/moduleGate.js` for modules, `utils/stepUnlock.js` for the steps
+inside one and for the « التالي » gesture) and `tracksProgress = false`
+(`features/learning/learningViewer.js`): `useProgress`, the progress sync, the
+evidence queue and the final-test hook are silent for them. Opening a part out
+of order therefore records nothing — a teacher reading part 7 never marks
+parts 1–6 as done, for themselves or for any student. Server side the
+`learner` middleware refuses `PUT /lessons/{code}/progress`,
+`POST …/evidence` and `PUT|DELETE …/final-test-attempt` for any non-student
+(403 `not_a_learner`), so a teacher can never create a `student_lesson_progress`
+or `learning_evidence` row — for themselves or for anyone. Locked by
+`TeacherLearningAccessTest`. See `TEACHER_CLASSROOM_ARCHITECTURE.md` §8b.

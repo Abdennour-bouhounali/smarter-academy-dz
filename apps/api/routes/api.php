@@ -5,14 +5,18 @@ use App\Http\Controllers\ActivationCodeController;
 use App\Http\Controllers\Admin\AdminAccountController;
 use App\Http\Controllers\Admin\AdminActivationCodeController;
 use App\Http\Controllers\Admin\AdminActivityLogController;
+use App\Http\Controllers\Admin\AdminClassroomController;
 use App\Http\Controllers\Admin\AdminContentController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminEntitlementController;
 use App\Http\Controllers\Admin\AdminHealthController;
+use App\Http\Controllers\Admin\AdminManualSubscriptionController;
+use App\Http\Controllers\Admin\AdminPlanController;
 use App\Http\Controllers\Admin\AdminProviderEventController;
 use App\Http\Controllers\Admin\AdminReportController;
 use App\Http\Controllers\Admin\AdminStudentController;
 use App\Http\Controllers\Admin\AdminSubscriptionController;
+use App\Http\Controllers\Admin\AdminTeacherController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BillingCheckoutController;
 use App\Http\Controllers\BillingSubscriptionController;
@@ -22,6 +26,7 @@ use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\DiagnosticController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\InvitationPreviewController;
 use App\Http\Controllers\LearningEvidenceController;
 use App\Http\Controllers\LearningProfileController;
 use App\Http\Controllers\LegalController;
@@ -29,11 +34,19 @@ use App\Http\Controllers\LessonFinalTestAttemptController;
 use App\Http\Controllers\LessonProgressController;
 use App\Http\Controllers\MathLabDocumentController;
 use App\Http\Controllers\MathLabFileController;
+use App\Http\Controllers\MeSubscriptionController;
 use App\Http\Controllers\PracticeAnswerController;
 use App\Http\Controllers\PracticeNotebookController;
 use App\Http\Controllers\PracticeSessionController;
 use App\Http\Controllers\ProviderWebhookController;
+use App\Http\Controllers\StudentClassroomController;
 use App\Http\Controllers\StudentReportController;
+use App\Http\Controllers\Teacher\TeacherClassroomController;
+use App\Http\Controllers\Teacher\TeacherClassroomInvitationController;
+use App\Http\Controllers\Teacher\TeacherClassroomLessonController;
+use App\Http\Controllers\Teacher\TeacherClassroomProgressController;
+use App\Http\Controllers\Teacher\TeacherClassroomStudentController;
+use App\Http\Controllers\Teacher\TeacherDashboardController;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Session\Middleware\StartSession;
@@ -70,6 +83,12 @@ Route::prefix('v1')->group(function () {
     // les affiche avant toute authentification. Lecture seule — le serveur
     // fait autorité sur les versions, le client ne fait que les montrer.
     Route::get('/legal/versions', [LegalController::class, 'versions']);
+
+    // Ce qu'un lien d'invitation révèle AVANT tout compte (nom de la classe,
+    // enseignant) : publique, limitée en débit, sans aucun secret en retour.
+    Route::get('/invitations/{token}', [InvitationPreviewController::class, 'show'])
+        ->middleware('throttle:30,1')
+        ->where('token', '[A-Za-z0-9]{1,64}');
 
     Route::middleware('throttle:6,1')->group(function () {
         Route::post('/auth/register', [AuthController::class, 'register']);
@@ -139,11 +158,16 @@ Route::prefix('v1')->group(function () {
             Route::get('/diagnostic/sessions/current', [DiagnosticController::class, 'current']);
             Route::post('/diagnostic/sessions/{sessionId}/responses', [DiagnosticController::class, 'respond']);
 
-            Route::post('/lessons/{lessonCode}/evidence', [LearningEvidenceController::class, 'store']);
-            Route::put('/lessons/{lessonCode}/progress', [LessonProgressController::class, 'upsert']);
+            // Le TRAJET D'APPRENTISSAGE — progression, preuves, test final —
+            // est celui d'un ÉLÈVE (`learner`). Un enseignant lit la même
+            // leçon, tous les modules ouverts, sans jamais y écrire une ligne.
+            Route::middleware('learner')->group(function () {
+                Route::post('/lessons/{lessonCode}/evidence', [LearningEvidenceController::class, 'store']);
+                Route::put('/lessons/{lessonCode}/progress', [LessonProgressController::class, 'upsert']);
+                Route::put('/lessons/{lessonCode}/final-test-attempt', [LessonFinalTestAttemptController::class, 'store']);
+                Route::delete('/lessons/{lessonCode}/final-test-attempt', [LessonFinalTestAttemptController::class, 'destroy']);
+            });
             Route::get('/lessons/{lessonCode}/final-test-attempt', [LessonFinalTestAttemptController::class, 'show']);
-            Route::put('/lessons/{lessonCode}/final-test-attempt', [LessonFinalTestAttemptController::class, 'store']);
-            Route::delete('/lessons/{lessonCode}/final-test-attempt', [LessonFinalTestAttemptController::class, 'destroy']);
             // Moteur d'exercices. Activé leçon par leçon
             // (content/practice/active.json) : PracticeCapability refuse en 422
             // une leçon sans contenu, sur les deux seuls points d'entrée qui
@@ -263,8 +287,86 @@ Route::prefix('v1')->group(function () {
 
             Route::get('/students/me/learning-profile', [LearningProfileController::class, 'show']);
             Route::get('/students/me/lesson-progress', [LessonProgressController::class, 'index']);
+
+            // ── L'élève et sa CLASSE (« قسمي ») ─────────────────────────
+            // « Où j'étudie », rejoindre par code ou par invitation, quitter.
+            // L'élève est toujours l'utilisateur authentifié ; rejoindre ne
+            // prend qu'un code ou un jeton, jamais un identifiant de classe.
+            // Limite NOMMÉE à deux compteurs, comme la saisie d'un code
+            // d'activation : un code de classe est court.
+            Route::get('/student/study-context', [StudentClassroomController::class, 'context']);
+            Route::post('/student/classrooms/join', [StudentClassroomController::class, 'join'])
+                ->middleware('throttle:classroom-join');
+            Route::post('/student/classrooms/{id}/leave', [StudentClassroomController::class, 'leave'])->whereNumber('id');
+
+            // ── « Mon offre » — élève comme enseignant ───────────────────
+            // AUCUN paiement en ligne : ces routes montrent les offres (prix
+            // informatif), enregistrent une DEMANDE et rendent l'état. Elles
+            // n'activent rien ; l'activation vient de l'administration.
+            Route::get('/me/plans', [MeSubscriptionController::class, 'plans']);
+            Route::get('/me/plans/{planId}/quote', [MeSubscriptionController::class, 'quote'])->whereNumber('planId');
+            Route::get('/me/subscription', [MeSubscriptionController::class, 'show']);
+            Route::get('/me/subscription-requests', [MeSubscriptionController::class, 'requests']);
+            Route::post('/me/subscription-requests', [MeSubscriptionController::class, 'storeRequest'])
+                ->middleware('throttle:10,1');
+            Route::post('/me/subscription-requests/{requestId}/cancel', [MeSubscriptionController::class, 'cancelRequest'])
+                ->whereNumber('requestId');
         });
     });
+
+    // ── L'ESPACE ENSEIGNANT ──────────────────────────────────────────────
+    //
+    //     authentifié  ET  compte actif  ET  adresse vérifiée  ET  rôle enseignant
+    //
+    // La première couche d'autorisation (le rôle) est ici, sur le groupe.
+    // La deuxième (la propriété d'une classe) est ClassroomPolicy, appelée
+    // par chaque contrôleur. La troisième (l'offre) vit dans les services.
+    // Un administrateur n'y entre pas : il a ses propres routes de consultation.
+    Route::middleware(['auth:sanctum', 'account.active', 'email.verified', 'can:teacher'])
+        ->prefix('teacher')
+        ->group(function () {
+            Route::get('/dashboard', [TeacherDashboardController::class, 'index']);
+            Route::get('/entitlements', [TeacherDashboardController::class, 'entitlements']);
+
+            // « Mon offre », vue de l'enseignant : mêmes points d'entrée que /me.
+            Route::get('/plans', [MeSubscriptionController::class, 'plans']);
+            Route::get('/plans/{planId}/quote', [MeSubscriptionController::class, 'quote'])->whereNumber('planId');
+            Route::get('/capacity', [TeacherDashboardController::class, 'capacity']);
+            Route::get('/subscription', [MeSubscriptionController::class, 'show']);
+            Route::get('/subscription-requests', [MeSubscriptionController::class, 'requests']);
+            Route::post('/subscription-requests', [MeSubscriptionController::class, 'storeRequest'])
+                ->middleware('throttle:10,1');
+            Route::post('/subscription-requests/{requestId}/cancel', [MeSubscriptionController::class, 'cancelRequest'])
+                ->whereNumber('requestId');
+
+            Route::get('/classrooms', [TeacherClassroomController::class, 'index']);
+            Route::post('/classrooms', [TeacherClassroomController::class, 'store']);
+            Route::get('/classrooms/{id}', [TeacherClassroomController::class, 'show'])->whereNumber('id');
+            Route::patch('/classrooms/{id}', [TeacherClassroomController::class, 'update'])->whereNumber('id');
+            Route::post('/classrooms/{id}/archive', [TeacherClassroomController::class, 'archive'])->whereNumber('id');
+            Route::post('/classrooms/{id}/restore', [TeacherClassroomController::class, 'restore'])->whereNumber('id');
+            Route::post('/classrooms/{id}/join-code/rotate', [TeacherClassroomController::class, 'rotateJoinCode'])->whereNumber('id');
+
+            Route::get('/classrooms/{id}/students', [TeacherClassroomStudentController::class, 'index'])->whereNumber('id');
+            Route::get('/classrooms/{id}/students/{studentId}/progress', [TeacherClassroomStudentController::class, 'progress'])
+                ->whereNumber('id')->whereNumber('studentId');
+            Route::delete('/classrooms/{id}/students/{studentId}', [TeacherClassroomStudentController::class, 'destroy'])
+                ->whereNumber('id')->whereNumber('studentId');
+
+            Route::get('/classrooms/{id}/invitations', [TeacherClassroomInvitationController::class, 'index'])->whereNumber('id');
+            Route::post('/classrooms/{id}/invitations', [TeacherClassroomInvitationController::class, 'store'])
+                ->whereNumber('id')->middleware('throttle:30,1');
+            Route::delete('/classrooms/{id}/invitations/{invitationId}', [TeacherClassroomInvitationController::class, 'destroy'])
+                ->whereNumber('id')->whereNumber('invitationId');
+
+            // Le lot AVANT `{lessonId}`, pour que « bulk » ne soit pas lu comme un identifiant.
+            Route::get('/classrooms/{id}/lessons', [TeacherClassroomLessonController::class, 'index'])->whereNumber('id');
+            Route::post('/classrooms/{id}/lessons/bulk', [TeacherClassroomLessonController::class, 'bulk'])->whereNumber('id');
+            Route::patch('/classrooms/{id}/lessons/{lessonId}', [TeacherClassroomLessonController::class, 'update'])
+                ->whereNumber('id')->whereNumber('lessonId');
+
+            Route::get('/classrooms/{id}/progress', [TeacherClassroomProgressController::class, 'show'])->whereNumber('id');
+        });
 
     // Protected routes — admin only
     Route::middleware(['auth:sanctum', 'account.active', 'can:admin'])->group(function () {
@@ -352,6 +454,57 @@ Route::prefix('v1')->group(function () {
             Route::get('/provider-events', [AdminProviderEventController::class, 'index']);
             Route::get('/provider-events/{id}', [AdminProviderEventController::class, 'show'])->whereNumber('id');
             Route::post('/provider-events/{id}/replay', [AdminProviderEventController::class, 'replay'])->whereNumber('id');
+
+            // ── Les ENSEIGNANTS et leurs CLASSES ─────────────────────────
+            Route::get('/teachers', [AdminTeacherController::class, 'index']);
+            Route::get('/teachers/{id}', [AdminTeacherController::class, 'show'])->whereNumber('id');
+            Route::patch('/teachers/{id}/status', [AdminTeacherController::class, 'changeStatus'])->whereNumber('id');
+            Route::get('/teachers/{id}/entitlements', [AdminTeacherController::class, 'entitlements'])->whereNumber('id');
+            Route::post('/teachers/{id}/entitlements/overrides', [AdminTeacherController::class, 'grantOverride'])->whereNumber('id');
+            Route::delete('/teachers/{id}/entitlements/overrides/{overrideId}', [AdminTeacherController::class, 'revokeOverride'])
+                ->whereNumber('id')->whereNumber('overrideId');
+
+            Route::get('/classrooms', [AdminClassroomController::class, 'index']);
+            Route::get('/classrooms/{id}', [AdminClassroomController::class, 'show'])->whereNumber('id');
+
+            // ── L'ACTIVATION MANUELLE — élèves et enseignants ────────────
+            // Aucun paiement en ligne : l'argent est reçu hors plateforme,
+            // puis l'administrateur active l'offre sur le compte, ou lui
+            // envoie UN code unique lié à l'offre. Les demandes ne sont
+            // qu'une file d'attente ; elles n'activent jamais rien.
+            Route::get('/{role}/{id}/subscription', [AdminManualSubscriptionController::class, 'show'])
+                ->whereIn('role', ['teachers', 'students'])->whereNumber('id');
+            Route::post('/{role}/{id}/subscriptions', [AdminManualSubscriptionController::class, 'activate'])
+                ->whereIn('role', ['teachers', 'students'])->whereNumber('id');
+            Route::post('/{role}/{id}/activation-codes', [AdminManualSubscriptionController::class, 'issueCode'])
+                ->whereIn('role', ['teachers', 'students'])->whereNumber('id');
+
+            Route::get('/subscription-requests', [AdminManualSubscriptionController::class, 'requests']);
+            Route::post('/subscription-requests/{requestId}/reject', [AdminManualSubscriptionController::class, 'rejectRequest'])
+                ->whereNumber('requestId');
+            Route::post('/subscriptions/{subscriptionId}/suspend', [AdminManualSubscriptionController::class, 'suspend'])->whereNumber('subscriptionId');
+            Route::post('/subscriptions/{subscriptionId}/resume', [AdminManualSubscriptionController::class, 'resume'])->whereNumber('subscriptionId');
+            Route::post('/subscriptions/{subscriptionId}/cancel', [AdminManualSubscriptionController::class, 'cancel'])->whereNumber('subscriptionId');
+            Route::post('/subscriptions/{subscriptionId}/extend', [AdminManualSubscriptionController::class, 'extend'])->whereNumber('subscriptionId');
+            Route::post('/subscriptions/{subscriptionId}/change-plan', [AdminManualSubscriptionController::class, 'changePlan'])->whereNumber('subscriptionId');
+
+            // ── Les OFFRES : le modèle commercial, sans déploiement ──────
+            // `/keys` et `/plan-versions` AVANT `/plans/{id}`, par clarté.
+            Route::get('/entitlements/keys', [AdminPlanController::class, 'keys']);
+            Route::get('/plans', [AdminPlanController::class, 'index']);
+            Route::post('/plans', [AdminPlanController::class, 'store']);
+            Route::get('/plans/{id}', [AdminPlanController::class, 'show'])->whereNumber('id');
+            Route::patch('/plans/{id}', [AdminPlanController::class, 'update'])->whereNumber('id');
+            Route::patch('/plans/{id}/status', [AdminPlanController::class, 'changeStatus'])->whereNumber('id');
+            Route::post('/plans/{id}/duplicate', [AdminPlanController::class, 'duplicate'])->whereNumber('id');
+            Route::post('/plans/{id}/versions', [AdminPlanController::class, 'storeVersion'])->whereNumber('id');
+            Route::get('/plans/{id}/subscriptions', [AdminPlanController::class, 'subscriptions'])->whereNumber('id');
+            Route::patch('/plan-versions/{id}', [AdminPlanController::class, 'updateVersion'])->whereNumber('id');
+            Route::post('/plan-versions/{id}/publish', [AdminPlanController::class, 'publishVersion'])->whereNumber('id');
+            // La grille de prix par élève (sièges) : lecture, remplacement (brouillon), aperçu.
+            Route::get('/plan-versions/{id}/pricing', [AdminPlanController::class, 'pricing'])->whereNumber('id');
+            Route::put('/plan-versions/{id}/pricing', [AdminPlanController::class, 'replacePricing'])->whereNumber('id');
+            Route::get('/plan-versions/{id}/pricing/quote', [AdminPlanController::class, 'quote'])->whereNumber('id');
 
             Route::get('/account', [AdminAccountController::class, 'show']);
             Route::patch('/account/profile', [AdminAccountController::class, 'updateProfile']);

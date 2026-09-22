@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 import { LoadingState, ErrorState, EmptyState } from './states';
 import SelectionCheckbox from './SelectionCheckbox';
@@ -36,12 +37,33 @@ export default function DataTable({
   onSortChange,
   onRowClick,
   selection,
-  selectionLabel = (row) => `Sélectionner ${row.title ?? row.id}`,
+  selectionLabel,
+  /**
+   * Les libellés du tableau lui-même — ARABES par défaut, lus dans le
+   * catalogue `admin`, parce que TOUS les espaces qui montent ce tableau
+   * (administration comprise, depuis l'alignement) sont arabes. Un appelant
+   * garde la main sur chacun : `useAdminLabels()` et `useTableLabels()` les
+   * passent explicitement.
+   */
+  labels = {},
 }) {
-  if (loading) return <LoadingState rows={6} />;
-  if (error) return <ErrorState message={error} onRetry={onRetry} />;
+  const { t } = useTranslation('admin');
+
+  const text = {
+    emptyTitle: t('common.emptyTitle'),
+    emptyHint: t('common.emptyHint'),
+    unselectAll: t('common.unselectAllPage'),
+    selectAll: (count) => t('common.selectAllPage', { count }),
+    retry: undefined,
+    loading: undefined,
+    ...labels,
+  };
+  const rowLabel = selectionLabel ?? ((row) => t('common.selectRow', { title: row.title ?? row.id }));
+
+  if (loading) return <LoadingState rows={6} label={text.loading} />;
+  if (error) return <ErrorState message={error} onRetry={onRetry} retryLabel={text.retry} />;
   if (!rows?.length) {
-    return empty ?? <EmptyState title="Aucun résultat" hint="Aucune ligne ne correspond à ces filtres." />;
+    return empty ?? <EmptyState title={text.emptyTitle} hint={text.emptyHint} />;
   }
 
   const toggle = (key) => {
@@ -68,8 +90,8 @@ export default function DataTable({
                   onChange={selection.toggleAll}
                   label={
                     selection.allSelected
-                      ? 'Tout désélectionner sur cette page'
-                      : `Tout sélectionner sur cette page (${selection.visibleCount})`
+                      ? text.unselectAll
+                      : text.selectAll(selection.visibleCount)
                   }
                 />
               </th>
@@ -125,7 +147,7 @@ export default function DataTable({
                   <SelectionCheckbox
                     checked={selected}
                     onChange={() => selection.toggle(row.id)}
-                    label={selectionLabel(row)}
+                    label={rowLabel(row)}
                   />
                 </td>
               )}

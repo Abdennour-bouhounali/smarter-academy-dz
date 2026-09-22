@@ -5,6 +5,7 @@ import { dirname, resolve } from 'node:path';
 import { query } from './adminClient';
 import { REPORT_CATEGORIES } from '../reportService';
 import { adminNavSections, adminNavLinks } from '../../data/adminNavigation';
+import adminCatalogue from '../../i18n/locales/ar/admin.json';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const webRoot = resolve(here, '../../..');
@@ -64,13 +65,31 @@ describe('signalement côté élève', () => {
 
 describe('navigation d’administration', () => {
   it('couvre toutes les sections de la spécification', () => {
-    const labels = adminNavSections.map((s) => s.label);
-    // « Accès » a remplacé « Abonnements » : le produit algérien vend des
-    // codes d'activation, pas des abonnements Stripe (master spec §17/§18).
-    expect(labels).toEqual([
-      null, 'Statistiques', 'Contenu', 'Signalements',
-      'Élèves', 'Accès', 'Compte', 'Système',
+    // La navigation ne porte plus de TEXTE : depuis que le panneau est arabe,
+    // chaque entrée porte une CLÉ du catalogue `admin` (admin.json). Le test
+    // vérifie donc les clés — il ne casse plus quand on reformule un libellé,
+    // et il interdit qu'une entrée reparte avec du français en dur.
+    const keys = adminNavSections.map((s) => s.labelKey);
+    // « Enseignants » et « Offres » : le modèle commercial configuré depuis
+    // le panneau — activation MANUELLE, jamais un paiement en ligne.
+    // « Accès » reste : les codes d'activation, liés ou non à une offre
+    // (master spec §17/§18).
+    expect(keys).toEqual([
+      null, 'nav.analytics', 'nav.content', 'nav.reports',
+      'nav.students', 'nav.teachers', 'nav.plans', 'nav.access',
+      'nav.account', 'nav.system',
     ]);
+  });
+
+  it('chaque entrée de navigation a une clé, et cette clé existe dans le catalogue', () => {
+    for (const link of adminNavLinks) {
+      expect(link.labelKey, `${link.path} n’a pas de clé`).toBeTruthy();
+      // La clé doit RÉSOUDRE : une entrée pointant sur une clé absente
+      // afficherait « nav.foo » dans la barre latérale.
+      const path = link.labelKey.split('.');
+      const value = path.reduce((node, part) => (node ?? {})[part], adminCatalogue);
+      expect(typeof value, `${link.labelKey} manque dans admin.json`).toBe('string');
+    }
   });
 
   it('ne pointe que vers des routes /admin', () => {
@@ -169,9 +188,14 @@ describe('les états d’écran', () => {
 
     for (const screen of SCREENS) {
       const source = read(screen);
-      const handles = source.includes('LoadingState') || source.includes('loading={');
+      // `Loading` / `ErrorBox` sont les équivalents arabes de `adminUi` :
+      // même rôle que `LoadingState` / `ErrorState`, mais traduits par le
+      // catalogue. Un écran converti reste tenu de rendre les deux états.
+      const handles = source.includes('LoadingState') || source.includes('<Loading')
+        || source.includes('loading={');
       expect(handles, `${screen} doit gérer le chargement`).toBe(true);
-      const errors = source.includes('ErrorState') || source.includes('error={');
+      const errors = source.includes('ErrorState') || source.includes('<ErrorBox')
+        || source.includes('error={');
       expect(errors, `${screen} doit gérer l’erreur`).toBe(true);
     }
   });

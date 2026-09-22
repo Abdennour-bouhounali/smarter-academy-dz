@@ -11,6 +11,20 @@ connaissances, ni une copie de la leçon.
 | 📈 Maîtrise (`LearningPointMastery`, `/practice/overview`) | l'état démontré de l'apprentissage | le moteur d'exercices |
 | 📓 Cahier (`features/practice/notebook`) | les notes personnelles, rattachées à l'endroit où elles ont été prises | **l'élève** |
 
+**Personne d'autre que l'élève ne lit le cahier.** Ni la fiche élève de
+l'administration (`StudentDossier`), ni l'enseignant d'un قسم (progression de
+classe ou d'élève, `TEACHER_CLASSROOM_ARCHITECTURE.md` §4) n'y accèdent :
+quitter ou être retiré d'une classe ne touche pas une note.
+
+**L'enseignant a SON cahier.** Les mêmes pages (`NotebookSpace`, `NoteDetail`,
+`ReviewSession`) et la même fenêtre flottante servent l'enseignant sous
+`/enseignant/cahier[/revision|/:noteId]` ; les liens se construisent depuis
+`useWorkspaceBase()` (`notebookPaths(base)` dans `noteMeta.js`), jamais en dur.
+Le serveur ne sert que les notes du compte authentifié : un enseignant ne
+voit ni la note d'un élève ni celle d'un autre enseignant (404). Une note
+d'exercice ouverte depuis le cahier de l'enseignant renvoie à la leçon, la
+pratique étant une surface d'élève (`TEACHER_CLASSROOM_ARCHITECTURE.md` §8b).
+
 Rien ne passe de la carte au cahier tout seul : « أضف إلى كرّاسي »
 (`AddToNotebookButton`) dépose le titre et le résumé d'une connaissance comme
 *point de départ*, que l'élève réécrit. La carte n'est jamais modifiée depuis

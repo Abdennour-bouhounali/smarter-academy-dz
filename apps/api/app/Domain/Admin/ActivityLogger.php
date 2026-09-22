@@ -70,6 +70,84 @@ class ActivityLogger
     public const PROVIDER_EVENT_REPLAYED = 'provider_event.replayed';
 
     /**
+     * Les CLASSES d'enseignants. L'acteur est ici l'enseignant (ou l'élève
+     * qui rejoint / quitte) : le journal retrace les gestes qui changent ce
+     * qu'un élève voit, quel que soit celui qui les fait.
+     */
+    public const CLASSROOM_CREATED = 'classroom.created';
+
+    public const CLASSROOM_UPDATED = 'classroom.updated';
+
+    public const CLASSROOM_ARCHIVED = 'classroom.archived';
+
+    public const CLASSROOM_RESTORED = 'classroom.restored';
+
+    public const CLASSROOM_JOIN_CODE_ROTATED = 'classroom.join_code_rotated';
+
+    public const CLASSROOM_MEMBER_JOINED = 'classroom_member.joined';
+
+    public const CLASSROOM_MEMBER_LEFT = 'classroom_member.left';
+
+    public const CLASSROOM_MEMBER_REMOVED = 'classroom_member.removed';
+
+    public const CLASSROOM_INVITATION_CREATED = 'classroom_invitation.created';
+
+    public const CLASSROOM_INVITATION_REVOKED = 'classroom_invitation.revoked';
+
+    public const CLASSROOM_INVITATION_ACCEPTED = 'classroom_invitation.accepted';
+
+    public const CLASSROOM_LESSON_STATUS_CHANGED = 'classroom_lesson.status_changed';
+
+    /** Les OFFRES et leur configuration — le modèle commercial, sans déploiement. */
+    public const PLAN_CREATED = 'plan.created';
+
+    public const PLAN_UPDATED = 'plan.updated';
+
+    public const PLAN_STATUS_CHANGED = 'plan.status_changed';
+
+    public const PLAN_DUPLICATED = 'plan.duplicated';
+
+    public const PLAN_VERSION_CREATED = 'plan_version.created';
+
+    public const PLAN_VERSION_UPDATED = 'plan_version.updated';
+
+    public const PLAN_VERSION_PUBLISHED = 'plan_version.published';
+
+    /** La grille de prix par élève d'une version (brouillon) a changé. */
+    public const PLAN_PRICING_TIERS_UPDATED = 'plan_pricing.updated';
+
+    public const PLAN_OVERRIDE_GRANTED = 'plan_override.granted';
+
+    public const PLAN_OVERRIDE_REVOKED = 'plan_override.revoked';
+
+    /** Les DEMANDES d'offre et les ABONNEMENTS activés à la main — aucun paiement en ligne. */
+    public const SUBSCRIPTION_REQUEST_CREATED = 'subscription_request.created';
+
+    public const SUBSCRIPTION_REQUEST_CANCELLED = 'subscription_request.cancelled';
+
+    public const SUBSCRIPTION_REQUEST_REJECTED = 'subscription_request.rejected';
+
+    public const SUBSCRIPTION_REQUEST_FULFILLED = 'subscription_request.fulfilled';
+
+    public const SUBSCRIPTION_ACTIVATED = 'subscription.activated';
+
+    public const SUBSCRIPTION_SUSPENDED = 'subscription.suspended';
+
+    public const SUBSCRIPTION_RESUMED = 'subscription.resumed';
+
+    public const SUBSCRIPTION_CANCELLED = 'subscription.cancelled';
+
+    public const SUBSCRIPTION_EXTENDED = 'subscription.extended';
+
+    public const SUBSCRIPTION_PLAN_CHANGED = 'subscription.plan_changed';
+
+    public const SUBSCRIPTION_CREATED_FROM_CODE = 'subscription.created_from_code';
+
+    public const ACTIVATION_CODE_ISSUED = 'activation_code.issued';
+
+    public const TEACHER_STATUS = 'teacher.status_changed';
+
+    /**
      * Clés dont la valeur n'est jamais journalisée, quelle que soit la façon
      * dont l'appelant les nomme. Défense en profondeur : l'appelant est déjà
      * censé ne pas les passer.
@@ -84,8 +162,12 @@ class ActivityLogger
         'code', 'codes', 'code_hash', 'activation_code',
     ];
 
+    /**
+     * `$actor` : l'administrateur, ou — pour les gestes de classe — l'enseignant
+     * ou l'élève qui agit. La colonne s'appelle toujours user_id.
+     */
     public function log(
-        User $admin,
+        User $actor,
         string $action,
         ?string $entityType = null,
         int|string|null $entityId = null,
@@ -93,7 +175,7 @@ class ActivityLogger
         ?array $after = null,
     ): AdminActivityLog {
         return AdminActivityLog::create([
-            'user_id' => $admin->id,
+            'user_id' => $actor->id,
             'action' => $action,
             'entity_type' => $entityType,
             'entity_id' => $entityId === null ? null : (string) $entityId,

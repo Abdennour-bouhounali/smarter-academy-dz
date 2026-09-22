@@ -1,88 +1,117 @@
 import {
   LayoutDashboard, BarChart3, BookOpen, Flag, Users, KeyRound, Package,
-  UserCog, ScrollText,
+  UserCog, ScrollText, GraduationCap, School, BadgeCheck, Inbox, CreditCard,
 } from 'lucide-react';
 
 /**
  * L'arborescence du panneau d'administration (spec §4).
  *
- * Des DONNÉES, pas du balisage — même choix que data/studentNavigation.js :
- * la barre latérale, le fil d'Ariane et les titres de page se dérivent tous
- * d'ici, donc renommer une section se fait à un seul endroit.
+ * Des DONNÉES, pas du balisage — même choix que data/studentNavigation.js et
+ * data/teacherNavigation.js : la barre latérale, le fil d'Ariane et les titres
+ * de page se dérivent tous d'ici, donc renommer une section se fait à un seul
+ * endroit.
+ *
+ * `labelKey` → catalogue arabe `admin` (src/i18n/locales/ar/admin.json), et
+ * non un libellé français en dur : le panneau parle la langue du produit,
+ * comme l'espace élève et l'espace enseignant. Une entrée de navigation ne
+ * porte donc plus de texte — seulement la clé qui le désigne.
  *
  * `end: true` sur un chemin qui est le préfixe d'un autre, sinon NavLink
  * l'allume en même temps que ses enfants.
  */
 export const adminNavSections = [
   {
-    label: null,
-    links: [{ label: 'Tableau de bord', path: '/admin', icon: LayoutDashboard, end: true }],
+    labelKey: null,
+    links: [{ labelKey: 'nav.dashboard', path: '/admin', icon: LayoutDashboard, end: true }],
   },
   {
-    label: 'Statistiques',
+    labelKey: 'nav.analytics',
     icon: BarChart3,
     links: [
-      { label: 'Plateforme', path: '/admin/analytics/plateforme', icon: BarChart3 },
-      { label: 'Apprentissage', path: '/admin/analytics/apprentissage', icon: BarChart3 },
-      { label: 'Contenu', path: '/admin/analytics/contenu', icon: BarChart3 },
-      { label: 'Points d’apprentissage', path: '/admin/analytics/points', icon: BarChart3 },
+      { labelKey: 'nav.analyticsPlatform', path: '/admin/analytics/plateforme', icon: BarChart3 },
+      { labelKey: 'nav.analyticsLearning', path: '/admin/analytics/apprentissage', icon: BarChart3 },
+      { labelKey: 'nav.analyticsContent', path: '/admin/analytics/contenu', icon: BarChart3 },
+      { labelKey: 'nav.analyticsPoints', path: '/admin/analytics/points', icon: BarChart3 },
     ],
   },
   {
-    label: 'Contenu',
+    labelKey: 'nav.content',
     icon: BookOpen,
     links: [
-      { label: 'Leçons', path: '/admin/contenu/lecons', icon: BookOpen },
-      { label: 'Modules', path: '/admin/contenu/modules', icon: BookOpen },
-      { label: 'Exercices', path: '/admin/contenu/exercices', icon: BookOpen },
+      { labelKey: 'nav.lessons', path: '/admin/contenu/lecons', icon: BookOpen },
+      { labelKey: 'nav.modules', path: '/admin/contenu/modules', icon: BookOpen },
+      { labelKey: 'nav.exercises', path: '/admin/contenu/exercices', icon: BookOpen },
     ],
   },
   {
-    label: 'Signalements',
+    labelKey: 'nav.reports',
     icon: Flag,
     links: [
-      { label: 'Tous', path: '/admin/signalements', icon: Flag, end: true },
-      { label: 'Nouveaux', path: '/admin/signalements?status=new', icon: Flag, matchQuery: 'status=new' },
-      { label: 'En cours', path: '/admin/signalements?status=in_review', icon: Flag, matchQuery: 'status=in_review' },
-      { label: 'Résolus', path: '/admin/signalements?status=resolved', icon: Flag, matchQuery: 'status=resolved' },
+      { labelKey: 'nav.reportsAll', path: '/admin/signalements', icon: Flag, end: true },
+      { labelKey: 'nav.reportsNew', path: '/admin/signalements?status=new', icon: Flag, matchQuery: 'status=new' },
+      { labelKey: 'nav.reportsInReview', path: '/admin/signalements?status=in_review', icon: Flag, matchQuery: 'status=in_review' },
+      { labelKey: 'nav.reportsResolved', path: '/admin/signalements?status=resolved', icon: Flag, matchQuery: 'status=resolved' },
     ],
   },
   {
-    label: 'Élèves',
+    labelKey: 'nav.students',
     icon: Users,
     links: [
-      { label: 'Tous', path: '/admin/eleves', icon: Users, end: true },
-      { label: 'Actifs', path: '/admin/eleves?status=active', icon: Users, matchQuery: 'status=active' },
-      { label: 'Suspendus', path: '/admin/eleves?status=suspended', icon: Users, matchQuery: 'status=suspended' },
-      { label: 'Désactivés', path: '/admin/eleves?status=disabled', icon: Users, matchQuery: 'status=disabled' },
+      { labelKey: 'nav.studentsAll', path: '/admin/eleves', icon: Users, end: true },
+      { labelKey: 'nav.studentsActive', path: '/admin/eleves?status=active', icon: Users, matchQuery: 'status=active' },
+      { labelKey: 'nav.studentsSuspended', path: '/admin/eleves?status=suspended', icon: Users, matchQuery: 'status=suspended' },
+      { labelKey: 'nav.studentsDisabled', path: '/admin/eleves?status=disabled', icon: Users, matchQuery: 'status=disabled' },
     ],
   },
   {
-    // L'ACCÈS PAYANT du produit algérien : des codes vendus en espèces, pas
-    // des abonnements (master spec §17). Les écrans Stripe restent sur le
-    // disque mais ne sont plus montés — voir App.jsx.
-    label: 'Accès',
+    // Les ENSEIGNANTS et leurs CLASSES. La fiche d'un enseignant est la
+    // surface de contrôle commerciale : offre, activation, demandes,
+    // abonnements, dérogations.
+    labelKey: 'nav.teachers',
+    icon: GraduationCap,
+    links: [
+      { labelKey: 'nav.teachersAll', path: '/admin/enseignants', icon: GraduationCap, end: true },
+      { labelKey: 'nav.teachersPendingRequests', path: '/admin/enseignants?requests=pending', icon: GraduationCap, matchQuery: 'requests=pending' },
+      { labelKey: 'nav.classrooms', path: '/admin/classes', icon: School },
+    ],
+  },
+  {
+    // Le MODÈLE COMMERCIAL, configuré ici sans déploiement : offres,
+    // versions, limites, fonctionnalités, prix informatifs. AUCUN paiement
+    // en ligne — l'activation est manuelle (fiche du compte) ou par code.
+    labelKey: 'nav.plans',
+    icon: BadgeCheck,
+    links: [
+      { labelKey: 'nav.plansAll', path: '/admin/offres', icon: BadgeCheck, end: true },
+      { labelKey: 'nav.plansRequests', path: '/admin/offres/demandes', icon: Inbox },
+      { labelKey: 'nav.plansSubscriptions', path: '/admin/offres/abonnements', icon: CreditCard },
+    ],
+  },
+  {
+    // L'ACCÈS PAYANT du produit algérien : des codes vendus en espèces —
+    // liés ou non à une offre (master spec §17). Aucun paiement en ligne.
+    labelKey: 'nav.access',
     icon: KeyRound,
     links: [
-      { label: "Codes d'activation", path: '/admin/codes-activation', icon: KeyRound, end: true },
-      { label: 'Lots', path: '/admin/codes-activation/lots', icon: Package },
+      { labelKey: 'nav.activationCodes', path: '/admin/codes-activation', icon: KeyRound, end: true },
+      { labelKey: 'nav.activationBatches', path: '/admin/codes-activation/lots', icon: Package },
     ],
   },
   {
-    label: 'Compte',
+    labelKey: 'nav.account',
     icon: UserCog,
     links: [
-      { label: 'Profil', path: '/admin/compte', icon: UserCog, end: true },
-      { label: 'Sécurité', path: '/admin/compte/securite', icon: UserCog },
+      { labelKey: 'nav.accountProfile', path: '/admin/compte', icon: UserCog, end: true },
+      { labelKey: 'nav.accountSecurity', path: '/admin/compte/securite', icon: UserCog },
     ],
   },
   {
-    label: 'Système',
+    labelKey: 'nav.system',
     icon: ScrollText,
     links: [
-      { label: 'Journal d’activité', path: '/admin/systeme/journal', icon: ScrollText },
-      { label: 'Cohérence du registre', path: '/admin/systeme/coherence', icon: ScrollText },
-      { label: 'Messages de contact', path: '/admin/systeme/messages', icon: ScrollText },
+      { labelKey: 'nav.activityLog', path: '/admin/systeme/journal', icon: ScrollText },
+      { labelKey: 'nav.registryHealth', path: '/admin/systeme/coherence', icon: ScrollText },
+      { labelKey: 'nav.contactMessages', path: '/admin/systeme/messages', icon: ScrollText },
     ],
   },
 ];

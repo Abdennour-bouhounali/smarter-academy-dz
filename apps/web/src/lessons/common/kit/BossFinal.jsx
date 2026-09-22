@@ -8,6 +8,7 @@ import { useProgress } from '../hooks/useProgress';
 import { useEvidenceSubmission } from '../hooks/useEvidenceSubmission';
 import { useCountdownTimer } from '../hooks/useCountdownTimer';
 import { useFinalTestAttempt } from '../hooks/useFinalTestAttempt';
+import { useLearningViewer } from '../../../features/learning/learningViewer';
 import {
   Feedback, ChoiceGrid, ValidateButton, MissionBrief, TimerToggle, TimerDisplay,
 } from '../components/LessonUI';
@@ -249,6 +250,8 @@ export default function BossFinal({
 }) {
   const { t } = useTranslation('lesson');
   const { xp, awardXP } = useProgress(ctx.lessonId);
+  // QUI lit ce test : l'enseignant le PRÉPARE (toutes les phases ouvertes).
+  const viewer = useLearningViewer();
   const { submitEvidence } = useEvidenceSubmission(ctx.lessonId);
   const { attempt: savedAttempt, save: saveAttempt, redo: redoAttempt } = useFinalTestAttempt(ctx.lessonId);
   const timer = useCountdownTimer(timerSeconds, {
@@ -356,7 +359,11 @@ export default function BossFinal({
   const badgesGagnes = badges.filter((b) => b.test(misses));
   const masterBadge = bossDone && badgesGagnes.length === badges.length;
 
-  const phaseUnlocked = (key) => key === 'boss' || bossDone;
+  // Les phases مراجعة / النتائج s'ouvrent à l'élève une fois le test soumis :
+  // on ne lit pas la correction avant d'avoir répondu. En NAVIGATION LIBRE
+  // (enseignant, administration — learningViewer) elles sont ouvertes dès
+  // l'arrivée : préparer un test, c'est en lire la correction sans le passer.
+  const phaseUnlocked = (key) => key === 'boss' || bossDone || viewer.freeNavigation;
 
   return (
     <ModuleLayout

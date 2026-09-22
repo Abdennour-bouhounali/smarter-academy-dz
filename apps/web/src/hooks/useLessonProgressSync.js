@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { fetchAllLessonProgress } from '../services/lessonProgressService';
 import { mergeServerRowIntoStorage, flushProgressQueue } from '../lessons/common/progressQueue';
+import { useLearningViewer } from '../features/learning/learningViewer';
 
 /**
  * Mounted once inside the authenticated shell (see App.jsx). On login/app
@@ -23,6 +24,7 @@ export const LESSON_PROGRESS_SYNCED_EVENT = 'smarter:lesson-progress-synced';
 
 export function useLessonProgressSync() {
   const { token, user } = useContext(AuthContext);
+  const { tracksProgress } = useLearningViewer();
 
   useEffect(() => {
     // Wait for `user` to resolve too, not just `token` — storage.js's
@@ -30,7 +32,9 @@ export function useLessonProgressSync() {
     // (authUserId.js), which AuthContext only sets once fetchUser()/login()
     // resolves. Firing on `token` alone would read/write under the wrong
     // (anon) scope for the instant before that resolves.
-    if (!token || !user) return undefined;
+    // Un lecteur qui n'apprend pas (enseignant, administrateur) n'a ni lignes
+    // à rapatrier ni file à vider.
+    if (!token || !user || !tracksProgress) return undefined;
 
     let cancelled = false;
     (async () => {
@@ -54,5 +58,5 @@ export function useLessonProgressSync() {
       cancelled = true;
       window.removeEventListener('online', onOnline);
     };
-  }, [token, user]);
+  }, [token, user, tracksProgress]);
 }

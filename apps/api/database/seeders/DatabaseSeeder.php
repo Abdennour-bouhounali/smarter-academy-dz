@@ -23,5 +23,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(AdminUserSeeder::class);
+        // Les offres initiales : des valeurs de départ que l'administration
+        // modifie ensuite depuis le panneau. Idempotent, jamais destructif.
+        $this->call(PlanSeeder::class);
     }
 }

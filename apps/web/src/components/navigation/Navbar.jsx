@@ -45,6 +45,33 @@ function AuthCluster({ compact = false, onNavigate }) {
     );
   }
 
+  if (user?.role === 'teacher') {
+    return (
+      <div className={compact ? 'flex flex-col gap-2 w-full' : 'flex items-center gap-3'}>
+        <Link
+          to="/enseignant"
+          onClick={onNavigate}
+          className={compact
+            ? 'flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold text-white'
+            : 'inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-white whitespace-nowrap transition-all duration-300 hover:-translate-y-0.5'}
+          style={{ background: 'linear-gradient(135deg, #0F766E, #3B82F6)', boxShadow: '0 4px 14px rgba(15,118,110,0.3)' }}
+        >
+          <LayoutDashboard size={14} />
+          {t('teacherSpace')}
+        </Link>
+        <button
+          onClick={handleLogout}
+          className={compact
+            ? 'flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-inter text-sm font-medium text-slate-500 hover:bg-slate-50'
+            : 'inline-flex items-center gap-1.5 px-2 py-1.5 rounded-lg font-inter text-xs font-medium text-slate-400 hover:text-slate-700 whitespace-nowrap transition-colors'}
+        >
+          <LogOut size={13} />
+          {compact ? t('logout') : ''}
+        </button>
+      </div>
+    );
+  }
+
   if (user?.role === 'student') {
     return (
       <div className={compact ? 'flex flex-col gap-2 w-full' : 'flex items-center gap-3'}>

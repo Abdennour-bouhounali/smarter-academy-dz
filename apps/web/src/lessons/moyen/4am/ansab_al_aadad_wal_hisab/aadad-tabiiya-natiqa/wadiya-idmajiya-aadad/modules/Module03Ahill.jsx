@@ -27,7 +27,7 @@ export default function Module03Ahill() {
           explain: <span>مساعدة الكتاب: كل عدد مضاعف للعدد 10 رقم آحاده 0. والمعطى الثاني يربط الأرقام الثلاثة الأخرى.</span>, assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_wadiya-idmajiya-aadad_P1'] } },
         { id: 'E3', skill: 'tanfidh', requires: ['tarmiz-bi-huruf'], prompt: <Q>المرحلة 3 — مع b = c = 2a و d = 0 والعدد لا يفوق 2443، الأعداد المرشّحة هي ...</Q>,
           options: ['1220 و 2440', '1110 و 2220', '1220 فقط', '2440 و 3660'], correct: 0, cols: 2,
-          explain: <span>a = 1 يعطي 1220، a = 2 يعطي 2440، و a = 3 يعطي 3660 > 2443.</span>, assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_wadiya-idmajiya-aadad_P1'] } },
+          explain: <span>a = 1 يعطي 1220، a = 2 يعطي 2440، و a = 3 يعطي <span dir="ltr">{'3660 > 2443'}</span>.</span>, assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_wadiya-idmajiya-aadad_P1'] } },
         { id: 'E4', skill: 'tanfidh', requires: ['qabiliyat-10'], prompt: <Q>المرحلة 4 — بين 1220 و 2440، أيّهما يقبل القسمة على 4 و 8 و 10 معًا؟</Q>,
           options: ['2440 فقط: 1220 = 8 × 152 + 4 لا يقبل القسمة على 8', 'كلاهما', '1220 فقط', 'لا أحد منهما'], correct: 0, cols: 1,
           explain: <span>2440 = 8 × 305 = 4 × 610 = 10 × 244. عدد القطع الخزفية هو <strong>2440</strong>.</span>, assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_wadiya-idmajiya-aadad_P1'] } },

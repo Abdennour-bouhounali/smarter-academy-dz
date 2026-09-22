@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../context/AuthContext';
 import { motion } from 'framer-motion';
@@ -21,6 +21,18 @@ export default function Register() {
 
   const { login, user } = useContext(AuthContext);
   const navigate = useNavigate();
+  // Le TYPE de compte se choisit ici : élève (défaut) ou enseignant
+  // (`?type=enseignant`). Un seul formulaire, une seule vérification
+  // d'adresse ; le serveur tient la liste blanche.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const isTeacher = searchParams.get('type') === 'enseignant';
+  const accountType = isTeacher ? 'teacher' : 'student';
+  const switchType = (next) => {
+    const params = new URLSearchParams(searchParams);
+    if (next === 'teacher') params.set('type', 'enseignant');
+    else params.delete('type');
+    setSearchParams(params, { replace: true });
+  };
 
   // Déjà connecté : on ne montre pas un formulaire d'inscription à quelqu'un
   // qui a un compte.
@@ -37,6 +49,8 @@ export default function Register() {
       navigate('/admin');
     } else if (user.role === 'student') {
       navigate(user.emailVerified === false ? '/verification-email' : '/espace');
+    } else if (user.role === 'teacher') {
+      navigate(user.emailVerified === false ? '/verification-email' : '/enseignant');
     } else {
       navigate('/');
     }
@@ -59,7 +73,7 @@ export default function Register() {
 
     setLoading(true);
     try {
-      const data = await registerRequest({ email, password, acceptLegal });
+      const data = await registerRequest({ email, password, acceptLegal, accountType });
       login(data.user, data.token);
       // Le compte existe, mais l'adresse n'est pas encore prouvée : l'espace
       // élève reste fermé côté serveur. On envoie donc l'élève vers l'écran
@@ -85,11 +99,32 @@ export default function Register() {
         className="sm:mx-auto sm:w-full sm:max-w-md z-10"
       >
         <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-slate-900 font-display">
-          {t('registerTitle')}
+          {isTeacher ? t('registerTeacherTitle') : t('registerTitle')}
         </h2>
         <p className="mt-2 text-center text-sm text-slate-600">
-          {t('registerSubtitle')}
+          {isTeacher ? t('registerTeacherSubtitle') : t('registerSubtitle')}
         </p>
+        {/* Deux portes, un formulaire : la bascule dit QUI s'inscrit. */}
+        <div className="mt-4 flex justify-center" role="group" aria-label={t('accountTypeLabel')}>
+          <div className="inline-flex rounded-xl border border-slate-200 bg-white p-1">
+            <button
+              type="button"
+              onClick={() => switchType('student')}
+              aria-pressed={!isTeacher}
+              className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors ${!isTeacher ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}
+            >
+              {t('accountTypeStudent')}
+            </button>
+            <button
+              type="button"
+              onClick={() => switchType('teacher')}
+              aria-pressed={isTeacher}
+              className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors ${isTeacher ? 'bg-teal-700 text-white' : 'text-slate-600 hover:bg-slate-50'}`}
+            >
+              {t('accountTypeTeacher')}
+            </button>
+          </div>
+        </div>
       </motion.div>
 
       <motion.div
@@ -99,7 +134,10 @@ export default function Register() {
         className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10"
       >
         <div className="bg-white/70 backdrop-blur-xl py-8 px-4 shadow-xl shadow-slate-200/50 sm:rounded-2xl sm:px-10 border border-white/50">
-          <GoogleButton label={t('continueWithGoogleRegister')} />
+          {/* Google, pour l'élève COMME pour l'enseignant : le type de compte
+              choisi ici part avec la navigation et revient sur l'écran de
+              consentement, où il peut encore être confirmé. */}
+          <GoogleButton label={t('continueWithGoogleRegister')} accountType={accountType} />
 
           <div className="my-6 flex items-center gap-4">
             <span className="h-px flex-1 bg-slate-200" />

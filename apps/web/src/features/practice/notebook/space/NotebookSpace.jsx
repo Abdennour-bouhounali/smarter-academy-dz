@@ -14,7 +14,8 @@ import NoteCard from './NoteCard';
 import FilterPanel, { DEFAULT_FILTERS, activeFilterCount } from './FilterPanel';
 import ConfirmDialog from './ConfirmDialog';
 import { PrintDialog } from './PrintSheet';
-import { VIEWS, SORTS } from './noteMeta';
+import { VIEWS, SORTS, notebookPaths } from './noteMeta';
+import { useWorkspaceBase } from '../../../learning/learningViewer';
 import '../notebook.css';
 import './notebookSpace.css';
 
@@ -42,6 +43,7 @@ export default function NotebookSpace() {
   useDocumentMeta(s('metaTitle'), s('metaDescription'));
   const { token } = useContext(AuthContext);
   const { openNotebook } = useNotebook();
+  const paths = notebookPaths(useWorkspaceBase());
   const [params, setParams] = useSearchParams();
 
   const view = VIEWS.includes(params.get('view')) ? params.get('view') : 'all';
@@ -212,7 +214,7 @@ export default function NotebookSpace() {
       <div className="flex flex-wrap items-center gap-2 mb-5">
         <p className="text-sm text-slate-500 me-auto" data-nb-results>{loading ? s('loading') : s('results', { count: meta.total })}</p>
         {view === 'review' && counts?.review > 0 && (
-          <Link to="/espace/cahier/revision" className="sa-ns-btn sa-ns-btn--primary" data-nb-review-start>
+          <Link to={paths.review} className="sa-ns-btn sa-ns-btn--primary" data-nb-review-start>
             <Brain size={18} aria-hidden="true" /> {s('review.start')}
           </Link>
         )}
@@ -326,6 +328,7 @@ export default function NotebookSpace() {
 function EmptyState({ view, q, filtered, onReset }) {
   const { t } = useTranslation('student');
   const e = (key, opts) => t(`notebook.space.empty.${key}`, opts);
+  const paths = notebookPaths(useWorkspaceBase());
   if (q.trim()) {
     return (
       <div className="sa-ns-empty" data-nb-empty="search">
@@ -355,7 +358,7 @@ function EmptyState({ view, q, filtered, onReset }) {
       <p className="font-bold text-slate-800 text-lg">{e(title)}</p>
       <p className="text-sm text-slate-500 max-w-md">{e(body)}</p>
       {view === 'all' && (
-        <Link to="/espace/cours" className="sa-ns-btn sa-ns-btn--primary"><BookOpen size={16} aria-hidden="true" /> {e('allCta')}</Link>
+        <Link to={paths.courses} className="sa-ns-btn sa-ns-btn--primary"><BookOpen size={16} aria-hidden="true" /> {e('allCta')}</Link>
       )}
     </div>
   );

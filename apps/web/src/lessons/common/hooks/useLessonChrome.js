@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
-import { usesStudentShell } from '../../../components/layout/CourseLayout';
+import { usesWorkspaceShell } from '../../../components/layout/CourseLayout';
 import { getLessonChromeLayout } from '../utils/lessonChrome';
 
 /**
@@ -16,11 +16,12 @@ export const LessonChromeContext = createContext(null);
 
 export function useLessonChromeLayout() {
   const auth = useContext(AuthContext);
-  // « authenticated » au sens du bandeau = « rendu dans StudentLayout » : la
+  // « authenticated » au sens du bandeau = « rendu dans un espace de travail »
+  // (StudentLayout ou TeacherLayout, même en-tête mobile, même barre) : la
   // même décision que CourseLayout, prise au même endroit. Un administrateur
   // connecté lit la leçon sous la Navbar visiteur, et le module réserve donc
   // sa hauteur comme pour un visiteur.
-  const authenticated = usesStudentShell(auth?.user);
+  const authenticated = usesWorkspaceShell(auth?.user);
   return useMemo(() => getLessonChromeLayout({ authenticated }), [authenticated]);
 }
 

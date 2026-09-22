@@ -1,8 +1,9 @@
 import { getAllGrades } from '@smarter-academy/core';
 import React, { useCallback, useContext, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Layers } from 'lucide-react';
-import AdminPage from '../../../components/admin/AdminPage';
+import { AdminPage, useAdminLabels, Num } from '../adminUi';
 import DataTable from '../../../components/admin/ui/DataTable';
 import { FilterBar, SearchInput, SelectFilter, Pagination } from '../../../components/admin/ui/FilterBar';
 import { EmptyState } from '../../../components/admin/ui/states';
@@ -26,19 +27,24 @@ const GRADES = getAllGrades().map((g) => g.id);
  * Les étapes du parcours, dans leur ordre pédagogique — pas alphabétique :
  * c'est la séquence d'une leçon, et la lire dans le désordre n'aiderait
  * personne.
+ *
+ * La liste ne porte plus que les CLÉS : le libellé arabe vit dans le
+ * catalogue (`admin.modules.stage.*`), comme toute autre chaîne visible.
  */
-export const STAGE_LABELS = {
-  prerequisite_check: 'Vérification des acquis',
-  trigger: 'Déclencheur',
-  discovery: 'Découverte',
-  manipulation: 'Manipulation',
-  formalization: 'Formalisation',
-  practice_lab: 'Entraînement',
-  evaluation: 'Évaluation',
-};
+export const STAGE_KEYS = [
+  'prerequisite_check',
+  'trigger',
+  'discovery',
+  'manipulation',
+  'formalization',
+  'practice_lab',
+  'evaluation',
+];
 
 export default function AdminModules() {
-  useDocumentMeta('Modules — Administration');
+  const { t } = useTranslation('admin');
+  const L = useAdminLabels();
+  useDocumentMeta(t('modules.metaTitle'));
 
   const { token } = useContext(AuthContext);
 
@@ -48,6 +54,13 @@ export default function AdminModules() {
   const [status, setStatus] = useState();
   const [page, setPage] = useState(1);
   const debouncedSearch = useDebounced(search, 300);
+
+  /** Le libellé arabe d'une étape, ou la clé brute si l'API en invente une. */
+  const stageLabel = (key) => {
+    if (!key) return t('common.dash');
+    const translated = t(`modules.stage.${key}`);
+    return translated === `modules.stage.${key}` ? key : translated;
+  };
 
   const loader = useCallback(
     (token) => fetchModules(token, { search: debouncedSearch, grade, stage, status, page }),
@@ -92,35 +105,36 @@ export default function AdminModules() {
 
   return (
     <AdminPage
-      eyebrow="Contenu"
-      title="Modules"
-      subtitle="Tous les modules, toutes leçons confondues. Retirer un module ne ferme pas sa leçon — et ne supprime aucune progression."
+      eyebrow={t('modules.eyebrow')}
+      title={t('modules.title')}
+      subtitle={t('modules.subtitleLong')}
     >
       <div className="space-y-3">
         <FilterBar>
           <SearchInput
             value={search}
             onChange={resetPage(setSearch)}
-            placeholder="Titre de module, ou leçon…"
+            placeholder={t('modules.searchPlaceholder')}
+            label={L.filters.searchLabel}
           />
           <SelectFilter
-            label="Classe" allLabel="Toutes les classes" value={grade}
+            label={t('common.grade')} allLabel={t('modules.allGrades')} value={grade}
             onChange={resetPage(setGrade)}
             options={GRADES.map((g) => ({ value: g, label: g }))}
           />
           <SelectFilter
-            label="Étape" allLabel="Toutes les étapes" value={stage}
+            label={t('modules.columnStage')} allLabel={t('modules.allStages')} value={stage}
             onChange={resetPage(setStage)}
-            options={Object.entries(STAGE_LABELS).map(([value, label]) => ({ value, label }))}
+            options={STAGE_KEYS.map((value) => ({ value, label: stageLabel(value) }))}
           />
           <SelectFilter
-            label="Publication" allLabel="Tous les états" value={status}
+            label={t('modules.columnPublication')} allLabel={t('modules.allStates')} value={status}
             onChange={resetPage(setStatus)}
             options={[
-              { value: 'published', label: 'Publié' },
-              { value: 'hidden', label: 'Masqué' },
-              { value: 'draft', label: 'Brouillon' },
-              { value: 'archived', label: 'Archivé' },
+              { value: 'published', label: t('status.published') },
+              { value: 'hidden', label: t('status.hidden') },
+              { value: 'draft', label: t('status.draft') },
+              { value: 'archived', label: t('status.archived') },
             ]}
           />
         </FilterBar>
@@ -139,24 +153,26 @@ export default function AdminModules() {
 
         <DataTable
           selection={selection}
-          selectionLabel={(row) => `Sélectionner le module ${row.title} de ${row.lessonTitle ?? row.lessonCode}`}
+          selectionLabel={(row) => L.selectRow(`${row.title} — ${row.lessonTitle ?? row.lessonCode}`)}
+          labels={L.table}
           columns={[
             {
               key: 'title',
-              label: 'Module',
+              label: t('modules.columnModule'),
               cellClassName: 'min-w-[220px]',
               render: (row) => (
                 <div>
                   <span className="font-semibold text-slate-900">{row.title}</span>
-                  <span className="block font-mono-jetbrains text-xs text-slate-400">
-                    module {String(row.number).padStart(2, '0')}
+                  <span className="block font-inter text-xs text-slate-400">
+                    {t('modules.moduleNumber')}{' '}
+                    <Num className="font-mono-jetbrains">{String(row.number).padStart(2, '0')}</Num>
                   </span>
                 </div>
               ),
             },
             {
               key: 'lesson',
-              label: 'Leçon',
+              label: t('modules.columnLesson'),
               cellClassName: 'min-w-[180px]',
               render: (row) => (
                 <Link
@@ -167,25 +183,27 @@ export default function AdminModules() {
                 </Link>
               ),
             },
-            { key: 'grade', label: 'Classe', render: (row) => row.grade ?? '—' },
-            { key: 'stage', label: 'Étape', render: (row) => STAGE_LABELS[row.stage] ?? row.stage ?? '—' },
+            { key: 'grade', label: t('common.grade'), render: (row) => row.grade ?? t('common.dash') },
+            { key: 'stage', label: t('modules.columnStage'), render: (row) => stageLabel(row.stage) },
             {
               key: 'estimatedMin',
-              label: 'Durée',
-              render: (row) => (row.estimatedMin ? `${row.estimatedMin} min` : '—'),
+              label: t('modules.columnDuration'),
+              render: (row) => (row.estimatedMin
+                ? <Num>{t('modules.minutes', { count: row.estimatedMin })}</Num>
+                : t('common.dash')),
             },
             {
               key: 'learningPointCount',
-              label: 'Points',
+              label: t('modules.columnPoints'),
               render: (row) => (row.learningPointCount > 0
-                ? row.learningPointCount
+                ? <Num>{row.learningPointCount}</Num>
                 // Une étape qui n'enseigne pas n'a pas à en déclarer : le dire
                 // évite de lire un tiret comme une donnée manquante.
-                : <span className="text-slate-400" title="Cette étape n’enseigne pas de point">—</span>),
+                : <span className="text-slate-400" title={t('modules.noPointHint')}>{t('common.dash')}</span>),
             },
             {
               key: 'publicationStatus',
-              label: 'Publication',
+              label: t('modules.columnPublication'),
               render: (row) => (
                 <PublicationControl
                   type="module"
@@ -204,13 +222,13 @@ export default function AdminModules() {
           empty={(
             <EmptyState
               icon={Layers}
-              title="Aucun module"
-              hint="Aucun module ne correspond à ces filtres."
+              title={t('modules.emptyTitle')}
+              hint={t('modules.emptyHint')}
             />
           )}
         />
 
-        <Pagination meta={data} onPage={setPage} />
+        <Pagination meta={data} onPage={setPage} labels={L.pagination} />
       </div>
     </AdminPage>
   );

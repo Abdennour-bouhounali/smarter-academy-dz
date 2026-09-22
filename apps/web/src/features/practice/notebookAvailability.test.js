@@ -134,7 +134,7 @@ describe('« Mon cahier » est l’espace des notes ; la progression ne parle qu
     const card = read('features/practice/notebook/space/NoteCard.jsx');
     expect(card).toMatch(/<NotebookContent content=\{note\.content\}/);
     expect(card).toMatch(/contextTrail\(note, t\)/);
-    expect(card).toMatch(/sourceLinkFor\(note\)/);
+    expect(card).toMatch(/sourceLinkFor\(note(, base)?\)/);
   });
 
   it('les états vides guident au lieu de dire « aucune note »', () => {

@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 import { Layers, Dumbbell, Target } from 'lucide-react';
 import { ArrowBack } from '../../../components/common/DirectionalIcons';
-import AdminPage from '../../../components/admin/AdminPage';
+import { AdminPage, AdminSection, useAdminLabels, Num, btnSecondary } from '../adminUi';
 import DataTable from '../../../components/admin/ui/DataTable';
-import StatusBadge from '../../../components/admin/ui/StatusBadge';
 import { LoadingState, ErrorState, EmptyState } from '../../../components/admin/ui/states';
 import PublicationControl from '../../../components/admin/PublicationControl';
 import TierControl from '../../../components/admin/TierControl';
@@ -12,22 +12,21 @@ import { useAdminResource } from '../../../hooks/useAdminResource';
 import { fetchLesson } from '../../../services/admin/contentService';
 import { useDocumentMeta } from '../../../hooks/useDocumentMeta';
 
-const STAGE_LABELS = {
-  prerequisite_check: 'Vérification des acquis',
-  trigger: 'Déclencheur',
-  discovery: 'Découverte',
-  manipulation: 'Manipulation',
-  formalization: 'Formalisation',
-  practice_lab: 'Entraînement',
-  evaluation: 'Évaluation',
-};
-
 export default function AdminLessonDetail() {
+  const { t } = useTranslation('admin');
+  const L = useAdminLabels();
   const { code } = useParams();
-  useDocumentMeta(`Leçon ${code} — Administration`);
+  useDocumentMeta(t('lessons.detailMetaTitle', { code }));
 
   const loader = useCallback((token) => fetchLesson(token, code), [code]);
   const { data: lesson, loading, error, reload, setData } = useAdminResource(loader, [loader]);
+
+  /** Le libellé arabe d'une étape, ou la clé brute si l'API en invente une. */
+  const stageLabel = (key) => {
+    if (!key) return t('common.dash');
+    const translated = t(`modules.stage.${key}`);
+    return translated === `modules.stage.${key}` ? key : translated;
+  };
 
   const patch = (collection, id, changes) => {
     setData((current) => current && ({
@@ -38,19 +37,18 @@ export default function AdminLessonDetail() {
 
   return (
     <AdminPage
-      eyebrow="Contenu"
+      eyebrow={t('lessons.detailEyebrow')}
       title={lesson?.title ?? code}
       subtitle={lesson ? `${lesson.gradeName ?? lesson.grade ?? ''} · ${lesson.chapterTitle ?? ''}` : undefined}
       actions={(
-        <Link
-          to="/admin/contenu/lecons"
-          className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-2 font-inter text-xs font-semibold text-slate-700 hover:bg-slate-50"
-        >
-          <ArrowBack size={14} /> Toutes les leçons
+        <Link to="/admin/contenu/lecons" className={btnSecondary}>
+          {/* Flèche DIRECTIONNELLE : elle pointe vers l'arrière, donc elle
+              se retourne en RTL. Voir DirectionalIcons. */}
+          <ArrowBack size={14} /> {t('lessons.backToAll')}
         </Link>
       )}
     >
-      {loading && <LoadingState label="Chargement de la leçon…" />}
+      {loading && <LoadingState label={t('lessons.loadingLesson')} />}
       {error && <ErrorState message={error} onRetry={reload} />}
 
       {lesson && (
@@ -58,11 +56,13 @@ export default function AdminLessonDetail() {
           <section className="rounded-xl border border-slate-200 bg-white p-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="space-y-1">
-                <p className="font-mono-jetbrains text-xs text-slate-400">{lesson.code}</p>
+                {/* Le code de la leçon est un identifiant technique : latin, LTR. */}
+                <p dir="ltr" className="font-mono-jetbrains text-xs text-slate-400 text-start">{lesson.code}</p>
                 <p className="font-inter text-sm text-slate-600">{lesson.description}</p>
                 <p className="font-inter text-xs text-slate-500">
-                  {lesson.modulesCount ?? lesson.modules?.length} module(s) ·{' '}
-                  {lesson.exercisesCount ?? lesson.exercises?.length} exercice(s)
+                  {t('lessons.moduleCount', { count: lesson.modulesCount ?? lesson.modules?.length ?? 0 })}
+                  {' · '}
+                  {t('lessons.exerciseCount', { count: lesson.exercisesCount ?? lesson.exercises?.length ?? 0 })}
                 </p>
               </div>
               {/* Les deux dimensions côte à côte, et étiquetées : sans
@@ -70,7 +70,9 @@ export default function AdminLessonDetail() {
                   lequel vend et lequel publie. */}
               <div className="flex flex-wrap items-center gap-4">
                 <div className="space-y-1">
-                  <p className="font-inter text-[11px] font-semibold uppercase tracking-wide text-slate-400">Accès</p>
+                  <p className="font-inter text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+                    {t('lessons.tierLabel')}
+                  </p>
                   <TierControl
                     type="lesson"
                     id={lesson.id}
@@ -79,7 +81,9 @@ export default function AdminLessonDetail() {
                   />
                 </div>
                 <div className="space-y-1">
-                  <p className="font-inter text-[11px] font-semibold uppercase tracking-wide text-slate-400">Publication</p>
+                  <p className="font-inter text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+                    {t('lessons.publicationLabel')}
+                  </p>
                   <PublicationControl
                     type="lesson"
                     id={lesson.id}
@@ -91,28 +95,48 @@ export default function AdminLessonDetail() {
             </div>
           </section>
 
-          <section>
-            <h2 className="mb-3 flex items-center gap-2 font-space text-lg font-bold text-slate-900">
-              <Layers size={17} /> Modules
-            </h2>
+          <AdminSection
+            title={(
+              <span className="inline-flex items-center gap-2">
+                <Layers size={17} /> {t('modules.title')}
+              </span>
+            )}
+          >
             <DataTable
               rows={lesson.modules ?? []}
-              empty={<EmptyState icon={Layers} title="Aucun module enregistré" hint="Lancez « php artisan smarter:import-content-registry » pour synchroniser le registre." />}
+              labels={L.table}
+              empty={(
+                <EmptyState
+                  icon={Layers}
+                  title={t('lessons.noModulesTitle')}
+                  hint={t('lessons.noModulesHint')}
+                />
+              )}
               columns={[
-                { key: 'number', label: 'N°', render: (m) => <span className="font-mono-jetbrains">{String(m.number).padStart(2, '0')}</span> },
-                { key: 'title', label: 'Titre', render: (m) => <span className="font-semibold text-slate-800">{m.title}</span> },
-                { key: 'stage', label: 'Étape', render: (m) => STAGE_LABELS[m.stage] ?? m.stage ?? '—' },
-                { key: 'estimatedMin', label: 'Durée', render: (m) => (m.estimatedMin ? `${m.estimatedMin} min` : '—') },
+                {
+                  key: 'number',
+                  label: t('lessons.columnNumber'),
+                  render: (m) => <Num className="font-mono-jetbrains">{String(m.number).padStart(2, '0')}</Num>,
+                },
+                { key: 'title', label: t('lessons.columnTitle'), render: (m) => <span className="font-semibold text-slate-800">{m.title}</span> },
+                { key: 'stage', label: t('modules.columnStage'), render: (m) => stageLabel(m.stage) },
+                {
+                  key: 'estimatedMin',
+                  label: t('modules.columnDuration'),
+                  render: (m) => (m.estimatedMin
+                    ? <Num>{t('modules.minutes', { count: m.estimatedMin })}</Num>
+                    : t('common.dash')),
+                },
                 {
                   key: 'learningPoints',
-                  label: 'Points enseignés',
+                  label: t('lessons.columnTaughtPoints'),
                   render: (m) => (m.teachesLearningPointCodes?.length
-                    ? <span className="font-mono-jetbrains text-xs text-slate-500">{m.teachesLearningPointCodes.length}</span>
-                    : <span className="text-slate-400">—</span>),
+                    ? <Num className="font-mono-jetbrains text-xs text-slate-500">{m.teachesLearningPointCodes.length}</Num>
+                    : <span className="text-slate-400">{t('common.dash')}</span>),
                 },
                 {
                   key: 'publicationStatus',
-                  label: 'Publication',
+                  label: t('lessons.columnPublication'),
                   render: (m) => (
                     <PublicationControl
                       type="module" id={m.id} status={m.publicationStatus}
@@ -122,29 +146,41 @@ export default function AdminLessonDetail() {
                 },
               ]}
             />
-          </section>
+          </AdminSection>
 
-          <section>
-            <h2 className="mb-3 flex items-center gap-2 font-space text-lg font-bold text-slate-900">
-              <Dumbbell size={17} /> Exercices
-            </h2>
+          <AdminSection
+            title={(
+              <span className="inline-flex items-center gap-2">
+                <Dumbbell size={17} /> {t('exercises.title')}
+              </span>
+            )}
+          >
             <DataTable
               rows={lesson.exercises ?? []}
+              labels={L.table}
               empty={(
                 <EmptyState
                   icon={Dumbbell}
-                  title="Aucun exercice pour cette leçon"
-                  hint="Le moteur d’exercices s’active leçon par leçon (content/practice/active.json). Ce n’est pas une erreur."
+                  title={t('lessons.noExercisesTitle')}
+                  hint={t('exercises.emptyEngineHint')}
                 />
               )}
               columns={[
-                { key: 'exerciseCode', label: 'Identifiant', render: (e) => <span className="font-mono-jetbrains text-xs">{e.exerciseCode}</span> },
-                { key: 'level', label: 'Niveau', render: (e) => e.level },
-                { key: 'title', label: 'Titre', render: (e) => e.title ?? '—' },
-                { key: 'questionCount', label: 'Questions', render: (e) => e.questionCount },
+                {
+                  key: 'exerciseCode',
+                  label: t('lessons.columnCode'),
+                  render: (e) => <span dir="ltr" className="inline-block font-mono-jetbrains text-xs">{e.exerciseCode}</span>,
+                },
+                { key: 'level', label: t('exercises.columnLevel'), render: (e) => <Num>{e.level}</Num> },
+                { key: 'title', label: t('lessons.columnTitle'), render: (e) => e.title ?? t('common.dash') },
+                {
+                  key: 'questionCount',
+                  label: t('exercises.columnQuestions'),
+                  render: (e) => (e.questionCount != null ? <Num>{e.questionCount}</Num> : t('common.dash')),
+                },
                 {
                   key: 'tier',
-                  label: 'Accès',
+                  label: t('lessons.columnTier'),
                   cellClassName: 'min-w-[210px]',
                   render: (e) => (
                     <TierControl
@@ -159,7 +195,7 @@ export default function AdminLessonDetail() {
                 },
                 {
                   key: 'publicationStatus',
-                  label: 'Publication',
+                  label: t('lessons.columnPublication'),
                   render: (e) => (
                     <PublicationControl
                       type="exercise" id={e.id} status={e.publicationStatus}
@@ -169,22 +205,30 @@ export default function AdminLessonDetail() {
                 },
               ]}
             />
-          </section>
+          </AdminSection>
 
-          <section>
-            <h2 className="mb-3 flex items-center gap-2 font-space text-lg font-bold text-slate-900">
-              <Target size={17} /> Points d’apprentissage
-            </h2>
+          <AdminSection
+            title={(
+              <span className="inline-flex items-center gap-2">
+                <Target size={17} /> {t('lessons.learningPointsTitle')}
+              </span>
+            )}
+          >
             <DataTable
               rows={lesson.learningPoints ?? []}
-              empty={<EmptyState icon={Target} title="Aucun point d’apprentissage" />}
+              labels={L.table}
+              empty={<EmptyState icon={Target} title={t('lessons.noLearningPointsTitle')} />}
               columns={[
-                { key: 'order', label: 'N°', render: (lp) => lp.order },
-                { key: 'code', label: 'Code', render: (lp) => <span className="font-mono-jetbrains text-xs">{lp.code}</span> },
-                { key: 'title', label: 'Intitulé', render: (lp) => lp.title },
+                { key: 'order', label: t('lessons.columnNumber'), render: (lp) => <Num>{lp.order}</Num> },
+                {
+                  key: 'code',
+                  label: t('lessons.columnCode'),
+                  render: (lp) => <span dir="ltr" className="inline-block font-mono-jetbrains text-xs">{lp.code}</span>,
+                },
+                { key: 'title', label: t('lessons.columnHeading'), render: (lp) => lp.title },
               ]}
             />
-          </section>
+          </AdminSection>
         </div>
       )}
     </AdminPage>

@@ -1,0 +1,729 @@
+# Teachers, classes (الأقسام) and configurable plans
+
+> The authoritative document for: the `teacher` role, teacher-created classes
+> and their membership, per-class lesson visibility, class and student
+> progress views, the DZ commercial model (no online payment, **teacher plans
+> sold by student seats, classes unlimited**), DB-driven plans / versions /
+> pricing tiers / entitlements, subscription requests, manual subscription
+> activation, activation-code batches bound to a plan and a seat capacity,
+> and the admin control surface for all of it.
+> Scope: `apps/api/app/Domain/{Classroom,Plans,Progress}`, `app/Policies`,
+> `app/Http/Controllers/{Teacher,Admin}`, `apps/web/src/{pages,features,
+> services}/teacher`, `pages/student/Qism.jsx`, `pages/admin/{teachers,
+> classrooms,plans,requests}`.
+> Where this document and an older one disagree, this one wins; the others
+> link here.
+
+## 0. Vocabulary
+
+| Arabic (UI) | Means | Code / DB | Never means |
+|---|---|---|---|
+| **الأستاذ** | a teacher account (`role = teacher`) | `User::ROLE_TEACHER` | an admin |
+| **القسم / الأقسام** (« قسمي », « أقسامي ») | a teacher's class: a roster of students of one grade | `classrooms`, `Classroom`, frontend identifier `classGroup` | the presentation mode |
+| **وضع القسم** | Classroom Mode, the projector presentation shell | `lessons/common/classroom/` — see `CLASSROOM_MODE.md` | a class roster |
+| **رمز الانضمام** | the join code a teacher gives orally / on the board | `classrooms.join_code` | an activation code |
+| **الدعوة** | an e-mail invitation to a class | `classroom_invitations` | — |
+| **العرض / العروض** | a plan (offer) | `plans` | a "presentation" (« عرض » in Classroom Mode is a different word in a different place) |
+| **الاشتراك** | a subscription: the fact that a paid plan is running on an account | `subscriptions` | account status |
+| **رمز التفعيل** | an activation code (paid access, cash-sold) | `activation_codes` | a join code |
+
+`القسم` is the teacher's class. It is never `الصف`, never `الفصل`, and never
+« classroom » transliterated. Server-side the model is `Classroom` because
+`App\Domain\Classroom` has no collision with the presentation layer, which is
+frontend-only.
+
+## 1. Who exists
+
+```text
+role        registers via                       lands on         gate
+admin       seeded / promoted only              /admin           can:admin
+teacher     /register?type=enseignant, Google   /enseignant      can:teacher
+student     /register, Google                   /espace          (default)
+```
+
+- `users.role` stays a free string. `User::SELF_REGISTERABLE_ROLES` is
+  `['student', 'teacher']`; `POST /auth/register` accepts an optional
+  `accountType` from that list and **ignores any `role` field**. Nothing else
+  self-registers.
+- **Google** works for both self-registerable roles. The account type travels
+  in the OAuth `state` (`type:teacher`), survives the callback into the
+  pending-signup handoff (`PendingGoogleSignup::issue($identity, $role)`), and
+  `POST /auth/google/complete` accepts `accountType` for the consent step. The
+  role is whitelisted at each hop; a tampered value falls back to `student`.
+- Teachers verify their e-mail exactly like students (`email.verified`
+  middleware on every teacher route).
+- **Account status ≠ subscription status.** `users.account_status`
+  (`active|suspended|disabled`, `account.active` middleware) says whether the
+  person may log in. A subscription says which plan runs. Suspending an
+  account never touches its subscription and vice versa. `pending`/`rejected`
+  account approval is **Planned**, not built: today a verified teacher is
+  active immediately.
+- Three authorization layers, in this order, on every teacher request:
+
+```text
+role         Gate 'teacher'                  route group can:teacher → 403 for admin and student
+ownership    ClassroomPolicy (view/update)   teacher_id === user.id → 403 (never 404-leak of another's class)
+entitlement  PlanEntitlementResolver         limits and features of the effective plan → 422 reason
+```
+
+Members, invitations, lessons and progress are always resolved **through the
+owner** (`$classroom->memberships()`), never from an id in the request body.
+`TeacherAuthorizationTest` sweeps every `/api/v1/teacher` route as guest,
+student and admin.
+
+## 2. Classes (الأقسام)
+
+### Tables
+
+| Table | Key columns | Rules |
+|---|---|---|
+| `classrooms` | `teacher_id`, `name`, `grade` (same code as `users.grade`, e.g. `4am`), `academic_year`, `status` `active\|archived\|suspended`, `join_code` (unique), `join_code_enabled`, `archived_at` | grade must be allowed by `content.allowed_grades` and exist in `grades`; **classes are not a commercial unit** — a teacher creates as many as they want unless the technical limit `classrooms.max` is configured (null = unlimited) |
+| `classroom_memberships` | `classroom_id`, `student_id`, `status` `active\|left\|removed`, `joined_via` `join_code\|invitation`, `invitation_id`, `removed_by` | **unique `(classroom_id, student_id)`**: rejoining reactivates the row; only `role = student`; class must be `active` |
+| `classroom_invitations` | `email`, `token_hash` (HMAC of the plain token, unique), `token_hint` (last 4), `status` `pending\|accepted\|revoked`, `expires_at` | `expired` is derived (`effectiveStatus()`), like `ActivationCode`; TTL from `config/classroom.php` (`CLASSROOM_INVITATION_TTL_DAYS`, 14) |
+| `classroom_lessons` | `classroom_id`, `lesson_id`, `status` `visible\|hidden`, `created_by`, `updated_by` | **absence of a row = visible**; unique `(classroom_id, lesson_id)` |
+
+### Services (`app/Domain/Classroom/`)
+
+| Service | Responsibility |
+|---|---|
+| `ClassroomService` | create (limit + allowed grade), update, archive, restore (re-checks the limit), suspend, rotate join code, list, show |
+| `JoinCode` | 6 characters, same unambiguous alphabet as activation codes, unique in the table |
+| `ClassroomMembershipService` | `joinByCode`, `acceptInvitation`, `remove`, `leave`; capacity checked **at join, under `DB::transaction` with `lockForUpdate` on the class AND on the teacher row** (so two joins into two different classes of one teacher serialise): the technical per-class limit, then the seat capacity through `TeacherCapacityService` |
+| `TeacherCapacityService` | the **seat capacity**: `seatLimit` (`students_total.max` resolved from the plan / purchased seats / override), `currentStudentCount` (**distinct** active students across the teacher's non-archived classes — a student in two classes is one seat), `remainingSeats`, `isSeated`, `canAddStudent` (an already-seated student never consumes a second seat), `assertCanSeat` → `seats_exhausted`, `summary` |
+| `ClassroomInvitationService` | create (limit `invitations.active.max`), revoke, preview (public), accept; `ClassroomInvitationNotification` (Arabic mail with the link `/rejoindre/{token}`) |
+| `InvitationToken` | plain token issued once, only the hash is stored |
+| `ClassroomLessonService` | the class's curriculum tree (ميادين → وحدات → دروس) with `publicationStatus`, `tier`, `classStatus`, `effectiveForStudents`; `setStatus`; `bulkSetStatus` (a unit = its lessons repeated) → `{applied, unchanged, failed}` in the `ContentService::bulk()` shape |
+| `ClassroomProgressService` | class summary + per-student rows, from existing progress data only |
+| `StudyContextService` | singleton, per-request memo: `{mode, classrooms[], primary, hiddenLessonCodes}` for a student |
+| `ClassroomException` | closed reasons: `limit_reached`, `grade_not_allowed`, `feature_unavailable`, `class_inactive`, `class_full`, `seats_exhausted`, `already_member`, `not_a_student`, `invalid`, `expired`, `revoked`, `not_member`, `lesson_out_of_scope` → 422 `{reason}`; the client renders Arabic from the reason, never the French message |
+
+Rate limiter `classroom-join` (per user and per IP, registered beside
+`activation-redeem`) guards `POST /student/classrooms/join`.
+
+### Capacity is counted in students, never in classes
+
+```text
+commercial dimension      how many DISTINCT students may this teacher cover?     students_total.max (seats)
+organisational dimension  how many classes did the teacher create?               unlimited (classrooms.max is technical, null)
+educational dimension     which lessons are visible, who is in which class, what progress
+access dimension          which subscription / entitlement opens paid content
+```
+
+Invitations go through the same door: sending one is never limited by seats,
+**accepting** one is (`TeacherCapacityTest`). A downgrade puts the teacher in
+an over-limit state that blocks new seats only.
+
+### Leaving and removal never delete anything
+
+A student who leaves or is removed keeps every progress row, attempt, mastery
+value and note. Only the membership row changes status. Archiving a class
+keeps its memberships and visibility rows. `ClassroomProgressTest` locks this.
+
+## 3. Per-class lesson visibility — the third access axis
+
+`ContentAccess` is still the **only** place that composes access. It now
+composes three independent axes:
+
+```text
+publication   lessons.publication_status      published opens, anything else closes   (admin)
+tier          lessons.tier + entitlements      free / premium                          (admin + commercial)
+class         classroom_lessons                visible / hidden for THIS student       (teacher)
+```
+
+Rules, locked by `ClassroomLessonVisibilityTest`:
+
+- A hidden lesson is refused on **every** entry point that already checks
+  publication — lesson access, module access, practice overview, progress
+  upsert — with the same 422 `{success: false, message}` shape those entry
+  points already use for unpublished content. The *why* reaches the client
+  through `GET /content/availability`: `closed.hiddenByClass` lists the
+  hidden lesson codes, and the UI reads it before rendering a card.
+  `ContentAccess::HIDDEN_BY_TEACHER` (`hidden_by_teacher`) names the reason
+  for any future entry point that returns reason codes. The frontend never
+  decides.
+- Visibility applies to the class's grade. Lessons of other grades keep the
+  normal rules.
+- A student in several active classes of that grade sees a lesson if **any**
+  of them shows it (hidden = hidden in all).
+- A teacher can only hide what is published: showing a lesson never opens
+  unpublished content, and hiding never changes `lessons.publication_status`.
+  Publication (global) and visibility (per class) are two columns in two
+  tables written by two roles.
+- `GET /content/availability` gains `closed.hiddenByClass` beside `premium`
+  and `locked`; the student UI renders « أخفاه الأستاذ » through
+  `ContentAvailabilityContext.isLessonHiddenByClass(code)`, exactly where it
+  renders a closed lesson.
+
+## 4. Progress views — derived, never duplicated
+
+`ClassroomProgressService` and `Domain\Progress\StudentDossier` (extracted
+from `Admin\StudentService`, used by the admin *and* the teacher) read:
+
+```text
+student_lesson_progress             completion per lesson
+student_learning_point_progress     mastery per learning point
+question_attempts ⋈ exercise_attempts ⋈ practice_sessions   practice evidence
+users.last_activity_at              « actif ces N derniers jours » (CLASSROOM_ACTIVE_WINDOW_DAYS, 7)
+```
+
+scoped to the class's grade and to the lessons **effective** for that class.
+There is no teacher-side progress table. A teacher reads the same numbers the
+student and the admin read (`PROGRESS_MODEL.md`, `LEARNING_ARCHITECTURE.md`).
+
+**The notebook (كرّاسي) is never read.** Not by the teacher, not in the class
+summary, not in the student dossier. `NOTEBOOK.md` states the same rule from
+the notebook's side.
+
+Feature keys `progress.class` and `progress.student` gate the two views;
+`analytics.advanced` and `reports.export` are declared in the registry, used
+by the plan editor and the teacher summary, and have **no consumer screen yet**
+(`Planned`).
+
+## 5. The DZ commercial model — no online payment, for anyone
+
+```text
+FREE                register → verify e-mail → the type's DEFAULT plan is effective at once
+                    (plans.is_default, no subscription row, no approval)
+                    teacher: N student seats (students_total.max of the default plan, initially 5), unlimited classes
+
+INDIVIDUAL PAID     teacher picks HOW MANY STUDENTS to cover → the pricing tier of the current version gives
+                    the price per student → total = N × price (server-side, informational) →
+                    (optional request, stores seats + calculated total) → money received OUTSIDE the platform →
+                    the admin EITHER activates the plan on the account WITH that seat count
+                      (subscription: student_seat_limit + unit price + total frozen, acquisition_source manual_admin_activation)
+                    OR sends the user ONE unique activation code bound to the plan AND a seat count
+                      (single-seat batch with student_seat_limit, e-mailed, shown once → redeem → subscription: activation_code)
+
+BULK / SCHOOL       institution pays outside → admin picks plan + version + SEATS PER CODE + quantity X →
+                    X unique codes → each user redeems one → one subscription each, with that capacity
+
+NEVER               checkout, card, Stripe, provider, webhook, "pay now", price-to-pay wording
+```
+
+> **Teacher plans are seat-based.** The unit of sale is the distinct student
+> the teacher covers, never the class. `Teacher Basic = 1 class` / `Pro = 5
+> classes` no longer exist: one paid plan (`teacher-seats`) with a
+> configurable, versioned grid of price-per-student tiers replaces them.
+
+- Prices are **informational**: what the admin tells the customer to pay by
+  cash or transfer. For a seat-based plan the price is **computed** by
+  `TeacherPricingService` from the version's `plan_pricing_tiers`; `plan_prices`
+  keeps only the activation length (`duration_days`) and a fixed amount for
+  plans without a grid. The platform collects nothing. The inherited provider
+  code (`Domain\Billing`, `/billing/*`) stays
+  in the repository, dormant and reached by no DZ screen;
+  `PaymentProviderBoundaryTest` and `pages/teacherContract.test.js` (no
+  billing/checkout import under `features/teacher`, `pages/teacher`,
+  `pages/student`, `pages/admin/{plans,requests,teachers}`) keep it that way.
+- **Requests never activate anything.** `subscription_requests` (`pending →
+  fulfilled | rejected | cancelled`) is a queue for the admin. One pending
+  request per user; only public, active, non-default plans of the user's type
+  with `plans.allows_requests = true`. A request becomes `fulfilled`
+  automatically when a subscription for that plan appears on the account
+  (direct activation or code). There is no `requires_approval` flag.
+  For a seat-based plan the request carries `requested_student_seats` and the
+  **server-calculated** `unit_price_cents` / `calculated_total_cents` /
+  `currency`; any price sent by the client is ignored. Reasoned refusals
+  (`SubscriptionRequestException`, 422 `{reason}`): `seats_required`,
+  `seats_not_covered` (no tier covers the number), `covered_by_default` (the
+  free allowance already covers it), `seats_below_usage` (fewer seats than
+  students currently covered — nothing is deleted, so nothing fits),
+  `already_pending`, `not_requestable`.
+- The default plan cannot be requested, activated, or bound to a batch: it is
+  already effective.
+
+### Plans, versions, prices, entitlements
+
+```text
+plans                    slug, type student|teacher, status draft|active|hidden|archived,
+                         is_public, is_default (one per type), allows_requests, display_order
+plan_versions            plan_id, version n, status draft|current|superseded, published_at
+plan_prices              per version: DZD amount_cents (fixed price, plans without a grid), billing_interval,
+                         duration_days (length granted on activation), trial_days
+plan_pricing_tiers       per version: min_students … max_students (NULL = open-ended), price_per_student_cents,
+                         currency, sort_order, is_active         ← the SEAT GRID of a teacher plan
+plan_entitlements        per version: key → json value           (unique version+key)
+plan_entitlement_overrides   per USER: key → json value, reason, starts_at/ends_at, revoked_at
+```
+
+### The seat grid (`plan_pricing_tiers`) and its engine
+
+`Domain\Plans\TeacherPricingService` is the **only** authority on a teacher
+price:
+
+```text
+quote(version, N)         → the ACTIVE tier that covers N → unitPriceCents, totalCents = N × unit, currency, free (unit = 0)
+applicableTier(version,N) → the tier or null (a number no tier covers is refused, 422)
+validateTiers(rows)       → normalises camelCase rows and REFUSES: min < 1, max < min, negative price,
+                            overlapping active tiers, gaps between active tiers, an open-ended tier followed by another
+tiersFor(version)         → ordered by sort_order, then min_students
+```
+
+Initial grid (seed values, **not rules** — the admin edits them from the
+panel): 1–5 → 0 DA, 6–20 → 1 000 DA, 21–30 → 800 DA, 31–50 → 700 DA,
+51–100 → 600 DA, 101+ → 500 DA per student. 20 students → 20 × 1 000 =
+20 000 DA; 25 students → 25 × 800 = 20 000 DA. Inactive tiers are kept but
+ignored for coverage and continuity. The frontend mirrors the calculation for
+the instant preview (`features/teacher/subscription/seatPricing.js`,
+`features/admin/plans/pricingTiers.js`) and is **never trusted**: the request
+and the activation recompute on the server from the version they reference.
+
+A version is `seatBased` when it holds at least one active tier. Editing the
+grid is only possible on a **draft** version (`PUT /admin/plan-versions/{id}/pricing`
+or the `pricingTiers` field of `PATCH /admin/plan-versions/{id}`); publishing
+makes it current. Existing subscriptions keep their version, their purchased
+seats and their frozen price (`SeatPricingTest::test_les_prix_sont_versionnes…`).
+
+- **A version referenced by ≥ 1 subscription is frozen** (`PlanVersion::isFrozen()`).
+  Editing means `createVersion` (copies the current one) → edit the draft →
+  `publishVersion` (draft → current, old current → superseded). Existing
+  subscriptions keep their version; nobody's limits change behind their back.
+- `EntitlementKeys` (`app/Domain/Plans/`) is the **closed registry**:
+
+| Key | Type | Category | Meaning |
+|---|---|---|---|
+| `students_total.max` | limit | **capacity** | the commercial unit: distinct active students across the teacher's non-archived classes. Default 0 (a forgotten capacity closes). On a seat-based subscription the purchased `student_seat_limit` **replaces** the version's value |
+| `classrooms.max` | limit | technical | non-archived classes; default **null = unlimited**. Never a pricing unit |
+| `students_per_classroom.max` | limit | technical | active members per class; default null |
+| `invitations.active.max` | limit | technical | pending, unexpired invitations; default null |
+| `lessons.visibility` | feature | may hide / show lessons per class |
+| `lessons.bulk_actions` | feature | bulk hide / show (unit-level) |
+| `progress.class` | feature | class progress view |
+| `progress.student` | feature | per-student progress view |
+| `analytics.advanced` | feature | declared; no consumer yet (`Planned`) |
+| `reports.export` | feature | declared; no consumer yet (`Planned`) |
+| `students.covered` | feature | **Model B**: members of this teacher's classes get premium through the teacher |
+| `content.allowed_grades` | list | grade codes a class may be created for |
+
+  A limit is an integer, `null` = unlimited. An unknown key is refused (422)
+  by the admin API; a key missing from a version falls back to the registry
+  default: **most restrictive for the commercial capacity (0), unlimited for
+  the technical limits**. Values live only in the DB and change without a
+  deploy.
+
+### Resolution precedence (`PlanEntitlementResolver`, singleton, per-request memo)
+
+```text
+1. the user's RUNNING subscription   status ∈ {active, trialing}, or cancelled with ends_at in the future,
+                                     plan_version_id set, latest started_at            → that version
+   + its PURCHASED SEATS              subscriptions.student_seat_limit, when set          → students_total.max
+2. otherwise the type's DEFAULT plan  plans.is_default, its current version           → that version
+3. then active OVERRIDES              plan_entitlement_overrides by user_id, within [starts_at, ends_at], not revoked
+                                     (they apply on the default plan too)
+```
+
+`defaultValue(type, key)` reads the default plan alone (the free allowance),
+whatever the account's subscription — used to refuse a request the free plan
+already covers.
+
+`summaryFor($user)` feeds the teacher's « عرضي » page and the admin's
+*Droits* section: `{plan{…, seatBased, studentSeatLimit, seatUnitPriceCents,
+seatTotalCents, seatCurrency}, request, classes{current,maximum,remaining,
+canCreate,overLimit}, students{current,maximum,remaining,canAdd,overLimit},
+invitations, features, allowedGrades}`. `explain($user)` says, per key,
+whether the value comes from the plan, the subscription (purchased seats) or
+which override. `GET /teacher/capacity` returns the seat summary alone.
+
+### Subscriptions — one manual lifecycle for every role
+
+`Plans\SubscriptionActivationService` is the **only write path** for DZ
+subscriptions (`Subscription::PROVIDER_MANUAL`, `PROVIDER_ACTIVATION_CODE`):
+
+| Action | Effect |
+|---|---|
+| `activate(admin, user, plan, ?version, ?endsAt, ?note, ?studentSeats)` | plan must be `active`, of the user's type, not default; a running manual subscription of the user is cancelled at `now` first; row created with `acquisition_source = manual_admin_activation`, `granted_by`; `ends_at` from `duration_days` unless given; fulfils a matching pending request. **Seat terms**: a seat-based version *requires* `studentSeats`, quotes it (`TeacherPricingService`) and freezes `student_seat_limit`, `seat_unit_price_cents`, `seat_total_cents`, `seat_currency` on the row; a capacity below the students currently covered is refused (nothing is deleted, so nothing fits) |
+| `activateFromCode(code, user)` | called inside the redemption transaction; `provider = activation_code`, `external_reference = activation_code:{id}`; capacity from the batch's `student_seat_limit`, price from the batch's **frozen** version — never from today's grid; a paid code is always accepted, even if it leaves the teacher over-limit |
+| `suspend / resume / cancel / extend / changePlan(…, ?studentSeats)` | `suspended` and `cancelled` fall back to the default plan; `extend` sets a new `ends_at`; `changePlan` cancels the current row at `now` and creates a new one on the new version with the new seat count (this is how an upgrade 20 → 30 seats is done) |
+| every mutation | `SubscriptionEntitlementSynchronizer::sync` (student tier entitlement opened / revoked; `trialing` grants), activity log, resolver + `EntitlementService` memo `forget()` |
+
+It **refuses provider-managed rows** (the dormant Stripe path). Statuses:
+`free|active|trialing|expired|cancelled|suspended|pending`; `isRunning()` is
+the access question. Every subscription records how it was obtained
+(`acquisition_source`: `manual_admin_activation | activation_code | provider
+| promotion | partnership | other`, `granted_by`, `activation_note`) and, for
+a teacher, **what was bought** (`student_seat_limit`, `seat_unit_price_cents`,
+`seat_total_cents`, `seat_currency`, exposed with the tier label used at
+activation). Metadata, never payment logic.
+
+### Downgrade never destroys data
+
+Expiry, suspension, cancellation or a smaller plan → the resolver falls back
+(e.g. 30 purchased seats → the free 5) and `overLimit` becomes true. **Nothing
+is deleted or archived.** What over-limit blocks: seating a **new** student
+(join code or invitation acceptance). A student already seated may still join
+another class; classes may still be created. Existing classes, members,
+visibility rows and progress stay readable. A downgrade *request* below the
+current usage is refused up front (`seats_below_usage`); the admin cannot
+activate a capacity below usage either. `SubscriptionLifecycleTest` and
+`TeacherCapacityTest` lock this.
+
+### Activation codes bound to a plan
+
+- `activation_code_batches.plan_version_id` (nullable) and
+  `student_seat_limit` (nullable). A batch **with** a plan version: each
+  redemption creates one subscription on that frozen version, then syncs. A
+  batch on a **seat-based** version *requires* `studentSeats` (« 10 codes ×
+  30 élèves »), checked against the grid at creation, and every redeemed code
+  opens exactly that capacity at that version's price — never recomputed
+  from today's grid. A student batch **without** a plan keeps the legacy path
+  (tier entitlement directly) unchanged and refuses a seat count.
+- Every code is unique (`activation_codes.code_hash` unique, redraw on
+  collision), redeemable once (conditional update on `activated_by`), never
+  reissued; the plan type must match the redeeming role (`plan_mismatch`).
+- Revoking a plan-bound code cancels its subscription and re-syncs, so
+  revocation still closes access.
+- **Individual code**: `POST /admin/{teachers|students}/{id}/activation-codes`
+  = a single-seat batch with `recipient_user_id`, label « Code individuel —
+  {email} », `ActivationCodeIssuedNotification` (Arabic mail), the plain code
+  returned once to the admin. Redemption by another account is still allowed
+  (the code is the secret) and the admin sees who redeemed it.
+
+## 6. The two student access models
+
+```text
+A  the student's own access          activation code / manual student subscription → entitlements   (unchanged)
+B  covered by the teacher            active membership in a class of a teacher whose RUNNING subscription
+                                     has students.covered = true → premium, reason teacher_subscription
+C  school / institution licence      Planned — not built
+```
+
+Model B is evaluated **dynamically** in `EntitlementService` through
+`Domain\Plans\TeacherCoverage` (fourth per-request memo, flushed with the
+others). No per-student row is written: suspending or expiring the teacher's
+subscription closes the coverage on the next request. The allow reason is
+`AccessDecision::VIA_TEACHER_SUBSCRIPTION` (`teacher_subscription`), ordered after
+`activation_code`; `EntitlementService::summarize()` exposes `teacherCoverageActive`
+and `usePremiumStatus().viaTeacher` renders it. Annexe A6
+of `ADMIN_PANEL_ARCHITECTURE.md` now lists four allow reasons while
+`entitlements.type` stays three values. `PaymentProviderBoundaryTest` still
+forbids any `Domain\Billing` import in `Domain\Access`: the resolver lives in
+`Domain\Plans`.
+
+## 7. Study context (the student side)
+
+`GET /student/study-context` → `{mode: independent|classroom, classrooms:[{id,
+name, grade, teacherName, joinedAt}], primary, hiddenLessonCodes}`; the
+frontend holds it in `StudyContextContext` (one fetch, `refresh()`).
+
+| Surface | What it does |
+|---|---|
+| `StudentHome` banner (`ClassContextBanner`) | « أنت تدرس ضمن القسم X مع الأستاذ Y » |
+| `/espace/qism` (« قسمي ») | join by code (LTR input), current classes, leave (confirm: history preserved) |
+| `/rejoindre/:token` (public) | invitation preview → login / register → accept |
+| `LessonCard`, `UnitPage`, `LessonIndex` | hidden-by-teacher state, same visual as closed |
+
+A student who is in no class is « independent » and sees exactly what they saw
+before this phase. `StudyContextTest` and `contentAvailability.test.js` lock
+both branches.
+
+## 8. The teacher space (Arabic, RTL)
+
+Routes under `/enseignant` (`ProtectedRoute allowedRoles={['teacher']}`,
+`TeacherLayout` + `TeacherNavbar`, pattern of the student shell, no grade
+gate; `data/teacherNavigation.js`):
+
+```text
+/enseignant                      TeacherHome          usage tiles (UsageMeter, N / M in dir="ltr"), classes, next steps
+/enseignant/classes              ClassGroupList       « قسم جديد » opens ClassGroupForm in a centred Modal, on the page
+/enseignant/classes/nouveau      ClassGroupCreate     same form full-page (direct links, bookmarks); grade from getAllGrades() ∩ allowedGrades
+/enseignant/classes/:id          ClassGroupDetail     tabs التلاميذ / الدروس / التقدّم / الإعدادات
+/enseignant/classes/:id/eleves/:studentId   StudentProgressPage
+/enseignant/progression          ProgressOverview
+/enseignant/offre                SubscriptionPage     « عرضي »
+/enseignant/profil               TeacherProfile
+```
+
+Creating a قسم never leaves « أقسامي ». The « قسم جديد » button opens
+`features/teacher/members/ClassGroupForm.jsx` inside the shared
+`components/admin/ui/Modal` — centred, dimmed backdrop, focus trapped, an X
+labelled « إغلاق », closed by Escape, by the backdrop, by that X or by
+« إلغاء », with the list still behind it. On success the modal closes and the
+teacher lands on the new قسم. `ClassGroupCreate` renders the *same* component
+full-page so `/enseignant/classes/nouveau` keeps working for direct links and
+for the « قسم جديد » button of `TeacherHome`; the form owns the fields, the
+validation and the call, and the caller only decides what follows through
+`onCreated(classroom)`. **Reusable pattern**: a teacher form that belongs to a
+list lives in `features/teacher/`, takes `onCreated`/`onCancel`, and is
+mounted both in a `Modal` and on its route — never duplicated. `Modal` takes
+`closeLabel` so its X is Arabic on teacher screens and French in the admin
+panel (default « Fermer »).
+
+« عرضي » shows the effective plan with the purchased seats and the seat
+meter (« سعة التلاميذ N / M », classes shown as unlimited), then **the seat
+selector** of the seat-based plan: « كم عدد التلاميذ الذين تريد تأطيرهم؟ », a
+LTR number input (floor = free allowance + 1 and never below the students
+currently covered, ceiling = the grid's last bound), and the live quote —
+tier, « … دج للتلميذ », « عدد التلاميذ », « المبلغ الإجمالي » — recomputed at
+every keystroke from `plan.pricingTiers` (`seatPricing.js`, unit-tested), so
+20 → 21 visibly changes tier. It states « الأقسام غير محدودة… », « المبلغ
+المستحق », « الدفع يتم خارج المنصّة… », and offers « اطلب هذه السعة » when
+`allowsRequests`; the request sends **only the number** (`studentSeats`) and
+renders the server's reason codes in Arabic. Below: the pending (with seats
+and total) / rejected state, the plans without a grid, and **the
+activation-code entry, always**. No card form, no payment button.
+`subscriptionState.js` derives the rendering state and is unit-tested. The
+home page shows the seat meter first, with a « bلغت سعة التلاميذ » hint
+linking to « عرضي » when full; the members tab of a class shows the same
+hint.
+
+Frontend code uses `classGroup` as the identifier; i18n namespace `teacher`
+(with the six Arabic plural forms for counts); services under
+`services/teacher/` (token-first, `apiMessage` reasons). The admin UI kit
+(`DataTable`, `states`, `FilterBar.Pagination`, `Modal.ConfirmDialog`) takes
+label props so no French default reaches a teacher screen;
+`pages/teacherContract.test.js` scans `pages/teacher/**` for French defaults
+and for any billing import.
+
+Teachers may present in Classroom Mode: `'teacher'` is in
+`CLASSROOM_PRESENTER_ROLES` (`packages/core/auth.js`).
+
+### 8b. The teacher learns like a student — same engine, no progression
+
+A teacher uses the platform exactly as a student would while preparing a
+lesson, minus the pedagogical constraints. There is **one lesson engine**;
+what changes is the **reader**, described once by
+`features/learning/learningViewer.js`:
+
+```text
+                     student        visitor        teacher        admin
+freeNavigation       no             no             YES            YES      the sequential lock is a student guide
+tracksProgress       yes (server)   yes (local)    NO             NO       nothing is written, anywhere
+workspaceBase        /espace        —              /enseignant    —        cahier, مختبر, cours links
+usesWorkspaceShell   StudentLayout  MainLayout     TeacherLayout  MainLayout
+```
+
+- **Routes.** Lessons stay on their `/courses/…` paths; `CourseLayout` renders
+  `TeacherLayout` for a teacher (the lesson chrome offsets follow
+  `usesWorkspaceShell`). The teacher space adds `/enseignant/cours`
+  (the `Explorer` catalogue), `/enseignant/atelier[/:toolSlug[/:documentId]]`
+  (the same Math Lab pages) and `/enseignant/cahier[/revision|/:noteId]` (the
+  same notebook pages), mounted under `ProtectedRoute allowedRoles={['teacher']}`.
+  `data/teacherNavigation.js` lists الدروس · المختبر · كرّاسي before أقسامي.
+- **Modules.** `lessons/common/utils/moduleGate.js` is the single gate used
+  by `ModuleLayout` (the page) and `LessonIndex` (the summary):
+  `freeNavigation` opens every module in any order, exactly like presenting
+  does; a module *unpublished* by the admin stays closed for everyone.
+  `packages/core/lessonAccess.js` is untouched — the student rule is not
+  bypassed case by case, the reader is different.
+- **Parts (étapes).** The same rule one level down, in
+  `lessons/common/utils/stepUnlock.js` — the *only* other gate:
+  `isStepLocked(alreadyCompleted, sequentialLocked, { freeNavigation, presenting })`
+  returns `false` for a free-navigation reader, so every `StepCard` of a
+  module is open, in any order, and the khulasa (the module's closing
+  synthesis) is readable without "finishing". `canAdvance(allDone, viewer)`
+  does the same for the « المحور التالي » gesture: for a student it stays
+  conditioned on `allDone` (the grey button and its "what's left" popover are
+  their compass), for a teacher it is always open — moving on is
+  **structural**, not earned. Both are applied once, in
+  `lessons/common/kit/ContentModule.jsx`; no lesson passes `locked` itself
+  (asserted by `pages/teacherContract.test.js`), so the whole active corpus
+  follows from that single call. `BossFinal` reads the same reader to open
+  its مراجعة / النتائج phases: preparing a test means reading its correction
+  without sitting it.
+
+  The pedagogical truth is kept separate from the navigation right:
+  `allDone` still means "this module is complete" (it drives the progress
+  bar and the completion `ModuleLayout` writes), while `mayAdvance` only
+  answers "may this reader move on". Conflating them would have let a
+  teacher's visit look like a finished module.
+- **No progress, ever.** `useProgress` (visit, completion, XP),
+  `useLessonProgressSync` (login hydration and queue flush),
+  `useEvidenceSubmission` (learning evidence) and `useFinalTestAttempt`
+  (server copy of the final test) all read `tracksProgress`; for a teacher
+  they are silent, locally and remotely. The server is the authority: the
+  `learner` middleware (`EnsureLearnerRole`) answers 403 `not_a_learner` on
+  `PUT /lessons/{code}/progress`, `POST …/evidence`, `PUT|DELETE
+  …/final-test-attempt` for any non-student, so no client can create a
+  student progress row for a teacher. Reads (`GET /students/me/lesson-progress`,
+  `GET …/final-test-attempt`) stay open and return nothing.
+- **Content.** `EntitlementService::decide` allows a teacher with an active
+  account on every tier with the reason `teacher_role` (`AccessDecision::VIA_TEACHER_ROLE`):
+  the teacher prepares content, the paying unit is the student seat. Publication
+  is still checked first by `ContentAccess` (unpublished stays closed), and the
+  per-class visibility axis never applies to non-students — a lesson the
+  teacher hid for قسم 1 stays open to the teacher (`TeacherLearningAccessTest`).
+- **Fullscreen.** Classroom Mode (وضع القسم) is the platform's fullscreen
+  presentation; the teacher is a presenter role, so the « عرض » entries are
+  there in the teacher shell. Students keep whatever `CLASSROOM_PRESENTER_ROLES`
+  says (see `CLASSROOM_MODE.md` §3).
+- **Knowledge map, notebook, Math Lab.** « بطاقتي » and « كرّاسي » are the
+  same floating column inside the lesson; the notebook pages and the Math Lab
+  pages are reused under `/enseignant` with links built from
+  `useWorkspaceBase()` (`notebookPaths(base)`, `mathLabBasePath(base)`,
+  `mathLabToolPath(tool, id, root)`). Notes and lab documents belong to the
+  authenticated account only (`PracticeNotebookController`,
+  `MathLabDocumentController` resolve everything from `$request->user()`);
+  a teacher never sees a student's or another teacher's note. An exercise
+  note opened from the teacher's notebook links to the lesson, since practice
+  is a student surface (`sourceLinkFor(note, base)`).
+- **Practice sessions** (`/espace/pratique`) remain a student surface: not
+  mounted for teachers, and their rows would be the teacher's own anyway.
+
+## 9. The admin control surface (French)
+
+Navigation: **Enseignants** (Tous / Demandes), **Classes**, **Offres** (Offres /
+Demandes / Abonnements). Pages under `pages/admin/{teachers,classrooms,plans,
+requests}` and the revived `Subscriptions.jsx` (plan, version, source,
+`grantedBy`, lifecycle actions; no provider notice).
+
+**The account page is the commercial control surface**, shared by teachers and
+students through `components/admin/commercial/CommercialPanel.jsx`:
+
+| Section | What the admin does |
+|---|---|
+| Compte | name, e-mail, verified, status; Activer / Suspendre / Désactiver / Réactiver (`AccountStatusService`, role-agnostic) |
+| Offre actuelle | plan, version, source, status, dates (resolver) |
+| Capacité élèves (teachers) | `current / limit`, remaining, over-limit badge, classes count (unlimited), purchased seats, tier and price per student **at activation** |
+| **Activer une offre** | plan + version, end, note, and for a seat-based plan the **number of students** with the local quote → `POST /admin/{role}/{id}/subscriptions {studentSeats}`; the server recomputes and freezes the price |
+| **Envoyer un code d'activation** | plan + version, validity, seats for a seat-based plan → `POST /admin/{role}/{id}/activation-codes`; the code is shown once, the mail is confirmed, issued codes are listed with their state and capacity |
+| Demande | plan, **seats, tier, server-calculated total**, date, note; « Activer » pre-fills plan and seats above, « Refuser » with a mandatory reason |
+| Abonnement + historique | seats and unit price per row; Suspendre / Reprendre / Annuler / Prolonger / Changer d'offre (with a new seat count) |
+| Droits (teachers) | per key: value · usage · source (`Sièges 25 / 30 — abonnement`, `+5 — Dérogation`); override form (`POST/DELETE …/entitlements/overrides`) |
+| Classes, Activité | read-only |
+
+Plan editor sections: Informations · Demandes (`allows_requests`) · Versions
+(Nouvelle version, Publier, immutability notice) · per version: **Capacité
+élèves** (the free allowance on the default plan) · **Tarification par élève
+— paliers** (teacher plans: an editable grid min / max / prix par élève /
+devise / actif / ordre with add, remove, move; overlaps, gaps and inverted
+bounds are listed *before* saving and block the save; an **Aperçu** « pour
+N élèves » shows the local quote and a « Vérifier côté serveur » button that
+calls `GET /admin/plan-versions/{id}/pricing/quote?seats=N`) · Durée activée et
+prix fixe (hors grille) · Fonctionnalités · Contenu · **Limites techniques**
+(vide = illimité, never the unit of sale) · Abonnés (with seats). The
+activation batch form has an « Offre » selector (required for teacher
+batches, optional for student batches, « X codes = X activations ») and, for a
+seat-based plan, « Élèves par code » with the quote; batch lists show the
+plan and the seats per code; the requests queue shows seats and the
+calculated total; the subscriptions list shows seats.
+
+The dashboard counts teachers, classes and pending requests; a pending request
+is an alert linking to `/admin/offres/demandes`.
+
+Everything above is logged by `ActivityLogger` in the same transaction
+(`classroom.*`, `classroom_member.*`, `classroom_invitation.*`,
+`classroom_lesson.status_changed`, `plan.*`, `plan_version.*`,
+`plan_override.*`, `plan_pricing.updated` (before / after grid),
+`subscription_request.*` (seats and total), `subscription.*` (seats and
+price), `activation_code.issued`, `teacher.status_changed`).
+
+## 10. API
+
+All ids `whereNumber`; JSON camelCase; `{success: true, <noun>: …}`; domain
+refusals → 422 `{success: false, reason, message}`.
+
+```text
+# any verified user (plan type = role)
+GET  /me/plans                 → plans[{…, seatBased, pricingTiers[], currentVersionId}], freeSeats
+GET  /me/plans/{planId}/quote?seats=N   → the server quote (tier, unitPriceCents, totalCents)
+GET  /me/subscription
+GET  /me/subscription-requests POST /me/subscription-requests {planId, studentSeats?, note?}   POST /me/subscription-requests/{requestId}/cancel
+POST /activation-codes/redeem  (existing)
+
+# student
+GET  /student/study-context    POST /student/classrooms/join {code}|{token}   POST /student/classrooms/{id}/leave
+GET  /invitations/{token}      (public, throttled preview)
+
+# teacher  (auth:sanctum + account.active + email.verified + can:teacher)
+GET  /teacher/dashboard        GET /teacher/entitlements (+capacity)   GET /teacher/capacity
+GET  /teacher/plans            GET /teacher/plans/{planId}/quote?seats=N   GET /teacher/subscription
+GET|POST /teacher/subscription-requests            POST /teacher/subscription-requests/{requestId}/cancel
+GET|POST /teacher/classrooms   GET|PATCH /teacher/classrooms/{id}
+POST /teacher/classrooms/{id}/archive | restore | join-code/rotate
+GET  /teacher/classrooms/{id}/students             DELETE /teacher/classrooms/{id}/students/{studentId}
+GET  /teacher/classrooms/{id}/students/{studentId}/progress
+GET|POST /teacher/classrooms/{id}/invitations      DELETE /teacher/classrooms/{id}/invitations/{invitationId}
+GET  /teacher/classrooms/{id}/lessons              POST /teacher/classrooms/{id}/lessons/bulk
+PATCH /teacher/classrooms/{id}/lessons/{lessonId}  GET  /teacher/classrooms/{id}/progress
+
+# admin  (can:admin)
+GET  /admin/teachers  GET /admin/teachers/{id}  PATCH /admin/teachers/{id}/status
+GET  /admin/teachers/{id}/entitlements   POST …/entitlements/overrides   DELETE …/entitlements/overrides/{overrideId}
+GET  /admin/{teachers|students}/{id}/subscription            (+ capacity for a teacher)
+POST /admin/{teachers|students}/{id}/subscriptions {planId, studentSeats?, …}   (activate directly)
+POST /admin/{teachers|students}/{id}/activation-codes {planId, studentSeats?, …} (send one unique code)
+GET  /admin/subscription-requests?status=&type=   POST /admin/subscription-requests/{requestId}/reject
+POST /admin/subscriptions/{subscriptionId}/suspend | resume | cancel | extend | change-plan {planId, studentSeats?}
+GET  /admin/classrooms  GET /admin/classrooms/{id}
+GET|POST /admin/plans   GET|PATCH /admin/plans/{id}   PATCH /admin/plans/{id}/status
+POST /admin/plans/{id}/duplicate   POST /admin/plans/{id}/versions   GET /admin/plans/{id}/subscriptions
+PATCH /admin/plan-versions/{id} (draft only; + pricingTiers[])   POST /admin/plan-versions/{id}/publish
+GET  /admin/plan-versions/{id}/pricing   PUT /admin/plan-versions/{id}/pricing {pricingTiers[]} (draft only)
+GET  /admin/plan-versions/{id}/pricing/quote?seats=N   (preview, any version)
+GET  /admin/entitlements/keys
+POST /admin/activation-codes/batches   (+ planVersionId, + studentSeats for a seat-based plan)
+```
+
+`POST /auth/register` accepts `accountType`; `GET /auth/google/redirect?accountType=teacher`
+(carried as OAuth `state` = `type:teacher`) and `POST /auth/google/complete {accountType}`
+carry the same choice.
+
+## 11. Configuration and seeds
+
+- `config/classroom.php`: `invitation_ttl_days`, `invitation_url`
+  (`FRONTEND_URL/rejoindre/{token}`), `active_window_days`. **No commercial
+  limit lives in config**: limits are plan data.
+- `PlanSeeder` (wired in `DatabaseSeeder`): `teacher-free` (« الأستاذ —
+  مجاني », default: 5 seats, unlimited classes), `teacher-seats` (« الأستاذ —
+  حسب عدد التلاميذ », the seat-priced plan with the initial six-tier grid,
+  covers students), `student-premium` (« التلميذ — وصول كامل »). **Plan names
+  and descriptions are Arabic**: the teacher and the student read them as they
+  are (`PlanSeederLanguageTest`, `ARABIC_RTL_CONTRACT.md` §2); only the slug
+  is latin. Idempotent by
+  slug, never overwrites a plan the admin has edited — so a database seeded
+  before the seat model keeps its old `teacher-free` values until the admin
+  publishes a new version of it (the dev database was updated this way; the
+  former `teacher-basic` / `teacher-pro` rows are archived there). Production
+  applies `docs/deployment/HOSTINGER_TEACHER_PLANS_MIGRATION.sql` (sixteen
+  additive migrations + the same seed rows as replayable upserts).
+- `smarter:scope-curriculum` cascades `classroom_lessons`;
+  `smarter:purge-students` deletes `role = student` only (teachers and their
+  classes survive).
+
+## 12. Tests that own this document
+
+Backend (`apps/api/tests/Feature`, MySQL, `php artisan test -c phpunit.local.xml`):
+`TeacherAuthorizationTest`, `TeacherRegistrationTest`, `GoogleSignInTest`
+(teacher cases), `SubscriptionRequestTest`, `SubscriptionActivationTest`,
+`SubscriptionLifecycleTest`, `ActivationCodeBulkPlanTest`,
+`IndividualActivationCodeTest`, `PlanEntitlementResolverTest`, `PlanAdminTest`,
+`ClassroomLimitTest`, `ClassroomJoinCodeTest`, `ClassroomMembershipCapacityTest`,
+`ClassroomInvitationTest`, `ClassroomLessonVisibilityTest`, `StudyContextTest`,
+`ClassroomProgressTest`, `TeacherCoverageAccessTest`, `AdminTeacherClassroomTest`,
+**`TeacherLearningAccessTest`** (published and premium content open by role, hidden-for-class does not block the teacher, unpublished stays closed, progress / evidence / final-test writes refused and no row created, own notebook and Math Lab only),
+**`SeatPricingTest`** (tier boundaries 5/6/20/21/30, N × price, grid
+validation, versioning, the client's price is ignored, admin and teacher
+quotes), **`TeacherCapacityTest`** (free seats + unlimited classes, distinct
+students, join and invitation refused at capacity, over-limit after expiry
+without deletion, a teacher cannot grant themselves seats, technical class
+limit still honoured when configured), **`SeatSubscriptionFlowTest`** (request
+with seats pending and priceless, reasoned refusals, manual activation with
+frozen seat terms and upgrade, activation below usage refused, codes carry
+their capacity whatever today's grid, legacy student batches unchanged),
+plus the extended `AdminAuthorizationTest`, `PurgeStudentAccountsTest`,
+`CurriculumScopeTest`. Shared fixtures: `Tests\Support\CommercialFixtures`
+(its `withToken` flushes the Sanctum guard so one test can act as several
+users).
+
+Frontend (vitest): `features/learning/learningViewer.test.js` (the reader
+table above), `lessons/common/utils/moduleGate.test.js` (student locked,
+teacher open, unpublished closed for all), `features/practice/notebook/space/noteMeta.test.js`
+(`notebookPaths`, exercise note → lesson outside the student space),
+`features/mathlab/mathLabDocument.test.js` (paths per workspace),
+`features/teacher/**/*.test.js` (entitlement summary,
+subscription state, **seat pricing preview**, lesson selection),
+`features/admin/plans/pricingTiers.test.js` (grid editor validation),
+`services/teacher/teacherServices.test.js`,
+`pages/teacherContract.test.js`, `context/contentAvailability.test.js`,
+`adminServices.test.js` (navigation snapshot), `legalConsentContract.test.js`.
+
+Any change to a rule in this document changes one of those tests first.
+
+## 13. Not built (Planned)
+
+- Account approval states (`pending` / `rejected` teacher accounts).
+- Model C: school / institution licences as a first-class object (today a
+  school is served by a plan-bound batch).
+- Consumers for `analytics.advanced` and `reports.export`.
+- Online payment of any kind. If it ever comes, it is a new acquisition source
+  writing through `SubscriptionActivationService`, not a new access path.
