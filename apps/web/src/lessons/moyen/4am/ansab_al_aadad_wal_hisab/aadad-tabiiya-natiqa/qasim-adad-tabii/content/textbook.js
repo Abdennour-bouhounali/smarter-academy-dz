@@ -40,5 +40,19 @@ export const PREP_ITEMS = [
   { n: 6, skill: 'qawaid', text: 'العدد 70902 يقبل القسمة على 9 لأن مجموع أرقامه يقبل القسمة على 9.', answer: true, why: '$7 + 0 + 9 + 0 + 2 = 18$ و 18 يقبل القسمة على 9.' },
 ].map((it) => ({ ...it, source: src('prep', 7, 'أستعدّ', it.n) }));
 
+/**
+ * LE CONTEXTE « ÉQUIPES » — une expérience de la plateforme, jamais du manuel.
+ *
+ * La MATHÉMATIQUE vient de l'activité 1 (répartir en parts égales, reste nul
+ * ⇔ قاسم) ; seule la SITUATION change, parce qu'un élève de 4AM se projette
+ * dans une équipe plus vite que dans une réserve de librairie. La structure
+ * est identique : même opération, même égalité, même découverte. On le
+ * DÉCLARE — rien n'est ajouté sans le dire (règle du propriétaire).
+ */
+export const TEAM_EXPERIENCE = {
+  source: addition('interaction_generation'),
+  numbers: { beginner: { total: 15, groups: 3 }, contrast: { total: 16, groups: 3 } },
+};
+
 /** Un ajout de la plateforme pour la manipulation : d'autres candidats que 26 et 28, déclaré comme tel. */
 export const EXTRA_CANDIDATES = { source: addition('interaction_generation'), values: [10, 12, 14, 15, 16, 18, 20, 21, 25, 26, 28, 30, 32, 35, 40, 42, 60] };

@@ -35,8 +35,19 @@ export default function Module02Maarif() {
         body: <p>في النشاط رأينا أن 28 قاسم للعدد 420 لأن الباقي معدوم. الكتاب يعطي لهذه الفكرة تعريفين، ثم أربع جمل تقول الشيء نفسه.</p>,
       }}
       intro={
-        <Manipulation type="divisor-explorer" a={143} b={11} candidates={[11, 13, 12]}
-          title="مثال الكتاب: 143 و 11" lead="الكتاب يكتب: «11 قاسم للعدد 143. 143 يقبل القسمة على 11». اكشف الحاصل ثم الباقي." />
+        // L'exemple du manuel (143 et 11) dans le MÊME laboratoire illustré
+        // que le module 1 : de vrais livres, de vrais rayons. Les deux modules
+        // de la leçon parlent donc de la même bibliothèque, à deux échelles —
+        // 420 livres pour découvrir, 143 pour lire la définition. L'élève
+        // reconnaît l'instrument au lieu d'en apprendre un second.
+        <Manipulation
+          type="divisor-explorer-books"
+          total={143}
+          candidates={[11, 12, 13]}
+          initialCapacity={11}
+          title="مثال الكتاب: 143 كتابًا في رفوف من 11"
+          lead="الكتاب يكتب: «11 قاسم للعدد 143». جرّب 11، ثم 12: متى لا يبقى أي كتاب خارج الرفوف؟"
+        />
       }
       steps={[
         {

@@ -38,9 +38,30 @@ export default function useDragInteraction({ onDrop, accepts, onReject, magnetRa
   const start = useRef(null);
   const moved = useRef(false);
   const justPointered = useRef(false);
+  // L'objet dont le geste de pointeur vient de se terminer. Voir `bubbledFrom`.
+  const lastGestureNode = useRef(null);
   const rejectTimer = useRef(null);
 
   useEffect(() => () => { if (rejectTimer.current) clearTimeout(rejectTimer.current); }, []);
+
+  /**
+   * Ce `click` de zone n'est-il que la PROPAGATION du geste qu'on vient de
+   * terminer sur un objet situé à l'intérieur d'elle ?
+   *
+   * Un tap sur un objet posé DANS une zone produit : pointerup (l'objet est
+   * pris) → click sur l'objet → click sur la zone, par propagation. Sans ce
+   * garde-fou, la zone reposerait aussitôt l'objet qu'on vient de prendre.
+   *
+   * On ne peut pas trancher par un DÉLAI : deux taps rapides (prendre ici,
+   * poser là) sont parfaitement légitimes. On regarde donc si la zone
+   * CONTIENT l'objet dont le geste vient de finir — auquel cas c'est le même
+   * geste, et il ne se repose pas sur place.
+   */
+  const bubbledFrom = (zoneEl) => {
+    const node = lastGestureNode.current;
+    lastGestureNode.current = null;
+    return !!node && !!zoneEl && zoneEl.contains(node);
+  };
 
   /** La zone sous le pointeur, sinon la plus proche dans le rayon de l'aimant. */
   const zoneAt = useCallback((x, y) => {
@@ -104,6 +125,7 @@ export default function useDragInteraction({ onDrop, accepts, onReject, magnetRa
       if (!start.current || start.current.id !== id) return;
       e.currentTarget.releasePointerCapture?.(e.pointerId);
       justPointered.current = true;
+      lastGestureNode.current = e.currentTarget;
       if (moved.current) {
         const zone = zoneAt(e.clientX, e.clientY);
         endGesture();
@@ -134,7 +156,12 @@ export default function useDragInteraction({ onDrop, accepts, onReject, magnetRa
     'data-drop-zone': id,
     'data-drop-active': hoverZone === id ? 'true' : undefined,
     'data-drop-ready': held && !dragging && !disabled ? 'true' : undefined,
-    onClick: () => { if (!disabled && held) { if (tryDrop(held, id)) setHeld(null); } },
+    onClick: (e) => {
+      // Le click qui remonte du geste terminé sur un objet DE CETTE ZONE est
+      // le même geste : il ne repose pas ce qu'on vient de prendre.
+      if (bubbledFrom(e.currentTarget)) return;
+      if (!disabled && held) { if (tryDrop(held, id)) setHeld(null); }
+    },
     onKeyDown: (e) => {
       if (disabled || !held) return;
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (tryDrop(held, id)) setHeld(null); }

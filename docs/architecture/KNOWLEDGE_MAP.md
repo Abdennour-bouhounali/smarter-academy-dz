@@ -622,12 +622,20 @@ whole mounting story.
 ### The trigger button
 
 ```text
-fixed bottom-20 right-6 z-40   ·   data-km-trigger="true"   ·   data-km-noprint="true"
+fixed bottom-[5.5rem] left-6 z-40   ·   data-km-trigger="true"   ·   data-km-noprint="true"
 ```
 
-`bottom-20`, not `bottom-6`: the visitor site's command-palette button (`#command-palette-trigger`)
-sits at `fixed bottom-6 right-6 z-40` in the same corner, and the student space has a `h-16` mobile
-bottom nav. At `bottom-6` the trigger is unclickable in both shells.
+`left-6`, a **physical** edge and never `start-6`: under RTL `start` resolves to the right, where
+the student sidebar sits and swallows every click (found in RTL QA).
+
+`bottom-[5.5rem]`, not `bottom-6`: the trigger is one storey of the lesson's **floating column**,
+and the storey below belongs to the classroom-mode button « ⛶ عرض », which must sit *under* the
+map. The student space also has a `h-16` mobile bottom nav. The full stack — « عرض » at `1.5rem`,
+this trigger at `5.5rem`, « كرّاسي » at `9.5rem` — is documented in
+`docs/architecture/CLASSROOM_MODE.md`; the three heights move together.
+
+The value is written as an arbitrary one because Tailwind 3's default scale has no `bottom-22`, and
+a class that does not exist silently applies no rule at all.
 
 ### Layout model — the lesson viewport
 
@@ -983,7 +991,7 @@ lesson viewport the map is measured against, and the column count.
 | Overlay | none — companion panel, page stays interactive | none | none; the panel covers the page at small widths but does not block it |
 | Resize | pointer drag on the left edge | same | same handle, `touch-none`; full width is reachable |
 | Switcher labels | « Tiroir » / « Plein écran » | same | icons only (labels hidden below `sm`) |
-| Trigger | `bottom-20 right-6`, clear of the command palette | same | same, clear of the `h-16` student bottom nav |
+| Trigger | `bottom-[5.5rem] left-6`, one storey above « ⛶ عرض » | same | same, clear of the `h-16` student bottom nav |
 
 A desktop width is **never** preserved at the cost of making the lesson unusable: the clamp is
 always relative to the width actually available.
@@ -1184,7 +1192,7 @@ LAYOUT
   height             grows/shrinks from the BOTTOM; content area scrolls; no vertical resize
   width memory       knowledgeMapWidth survives a trip through expanded mode
   panel              portalled to document.body (print isolation depends on it)
-  trigger            bottom-20 right-6 (bottom-6 collides with the command palette / bottom nav)
+  trigger            bottom-[5.5rem] left-6 (the storey below belongs to « ⛶ عرض »)
 
 HIERARCHY
   strata             derived by knowledgeStructure.js from item.type — lessons declare nothing more
@@ -1240,7 +1248,9 @@ PRINT
 - **Mixing print CSS into screen layout**, or deleting the `data-km-noprint` attributes.
 - **Adding a PDF library / server-side export** when `window.print()` already produces the A4
   document.
-- **Placing the trigger at `bottom-6 right-6`**, where the command-palette button covers it.
+- **Placing the trigger at `bottom-6`**, the ground floor of the floating column — that storey
+  belongs to « ⛶ عرض », which must stay *under* the map. Or placing it with `start-6`/`right-6`,
+  which under RTL puts it beneath the student sidebar, visible but unclickable.
 - **Bulk-editing KaTeX strings with regex**, producing single backslashes and silently broken math.
 - **Forgetting `knowledgeMap: true`** after removing a formalization module — the lesson validator
   then reports a missing required stage.

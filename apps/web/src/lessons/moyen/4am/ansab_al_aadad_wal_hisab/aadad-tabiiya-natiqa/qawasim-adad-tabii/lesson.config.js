@@ -36,7 +36,25 @@ export const LESSON_CONFIG = {
   // Acquis du درس 1 (rappelés par une brique « rappel ») et des années antérieures.
   priorKnowledge: ['qasim-jidaa', 'qawaid-qabiliyat-al-qisma'],
   resources: [
-    { kind: 'manipulation', code: 'factor-pairs-60', type: 'factor-pairs', module: 1, title: 'قواسم العدد 60 بجداءات عاملين',
+    // Workspace à deux niveaux (module 1). Le contexte du manuel — le
+    // rectangle de points — est GARDÉ aux deux niveaux : il est déjà
+    // manipulable et le dessin EST l'argument (n = d × e ⇔ rectangle
+    // parfait). Forcer un thème ici rendrait la mathématique moins claire
+    // (brief §11). Ce qui change est la DEMANDE : 24 se lit d'un regard,
+    // 60 exige la règle d'arrêt.
+    { kind: 'manipulation', code: 'factor-pairs-24', type: 'factor-pairs', module: 1,
+      level: 'beginner',
+      title: 'قواسم العدد 24 بجداءات عاملين',
+      objective: 'قواسم عدد تأتي أزواجًا d × (a ÷ d) ولا حاجة للاختبار بعد الجذر',
+      autonomy: '',
+      experience: { type: 'platform_adaptation', reason: 'smaller_numbers_for_first_contact', theme: 'abstract' },
+      learningPointIds: ['4am_qawasim-adad-tabii_P1'], sourceElementIds: ['act-2'] },
+    { kind: 'manipulation', code: 'factor-pairs-60', type: 'factor-pairs', module: 1,
+      level: 'advanced',
+      title: 'قواسم العدد 60 بجداءات عاملين',
+      objective: 'قواسم عدد تأتي أزواجًا d × (a ÷ d) ولا حاجة للاختبار بعد الجذر',
+      autonomy: 'أعداد أكبر ومجال اختبار أطول: التلميذ يقرّر بنفسه متى يتوقّف',
+      experience: { type: 'textbook', reason: '', theme: 'abstract' },
       learningPointIds: ['4am_qawasim-adad-tabii_P1', '4am_qawasim-adad-tabii_P2'], sourceElementIds: ['act-2'] },
     { kind: 'method', code: 'method-divisors-105', module: 2, title: 'طريقة: للبحث عن قواسم عدد طبيعي a',
       learningPointIds: ['4am_qawasim-adad-tabii_P3', '4am_qawasim-adad-tabii_P4'], sourceElementIds: ['method-divisors'] },

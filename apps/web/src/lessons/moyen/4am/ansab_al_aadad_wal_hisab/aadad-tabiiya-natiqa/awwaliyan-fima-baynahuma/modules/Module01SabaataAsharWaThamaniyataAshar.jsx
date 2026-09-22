@@ -2,20 +2,51 @@ import React, { useState } from 'react';
 import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
-import { Manipulation } from '../../../../../../common/manipulations';
+import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import { SchoolBagScene } from '../../../../../../common/manipulations/primitives/ContextScenes';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY } from '../content/textbook';
 
-/** Module 1 — نشاط 7 (p. 9) : 17/18, 22/35, et مريم (27/36). LP : P1, P3. */
+/**
+ * Module 1 — نشاط 7 (p. 9) : 17/18, 22/35, et مريم (27/36). LP : P1, P3.
+ *
+ * Laboratoire d'ouverture À DEUX NIVEAUX (MANIPULATION_CONTRACT §7bis-levels) :
+ *   مبتدئ  — 17 stylos et 18 cahiers à ranger en trousses identiques (thème
+ *            `school`, contexte de la plateforme) : l'élève essaie 2, 3, 4…
+ *            trousses et RIEN ne marche sauf 1. Puis les listes confirment :
+ *            le seul diviseur commun est 1. C'est la définition, vécue.
+ *   متقدم  — 22 et 35 (question ب), directement sur les listes, sans aucun
+ *            guidage : l'élève bâtit la preuve lui-même.
+ */
 export default function Module01SabaataAsharWaThamaniyataAshar() {
   const [c1, setC1] = useState(false);
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   return (
     <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} moduleTitle="نشاط 7 — العددان الأوّليّان فيما بينهما" moduleSubtitle="ماذا لو كان القاسم المشترك الوحيد هو 1؟" estimatedTime="12 دقيقة"
-      brief={{ tag: 'أنشطة — الكتاب ص 9', title: ACTIVITY.title, tone: 'indigo', body: <div className="space-y-1"><p>{ACTIVITY.questions[0]}</p><SourceTag source={ACTIVITY.source} /></div> }}
-      intro={<Manipulation type="coprime-explorer" a={17} b={18} title="17 و 18" lead="توقّع أولًا، ثم انظر إلى القائمتين: أين القواسم المشتركة؟" onFinished={() => setC1(true)} />}
+      brief={{ tag: 'أنشطة — الكتاب ص 9', title: ACTIVITY.title, tone: 'indigo',
+        headline: 'هيا نوزّع الأدوات!', emoji: '✏️', visual: <SchoolBagScene />,
+        body: <div className="space-y-1"><p>{ACTIVITY.questions[0]}</p><SourceTag source={ACTIVITY.source} /></div> }}
+      intro={(
+        <ManipulationWorkspace
+          title="الأنشطة التفاعلية"
+          lead="المستوى المبتدئ: 17 قلمًا و 18 كراسًا في حقائب متماثلة — كم حقيبة يمكن تجهيزها؟ المستوى المتقدّم: 22 و 35 دون أي توجيه."
+          levels={{
+            beginner: () => (
+              <Manipulation type="coprime-explorer" a={17} b={18} startWith="groups" theme="school"
+                title="17 قلمًا و 18 كراسًا: كم حقيبة متماثلة؟"
+                lead="جرّب عدد الحقائب: 2، 3، 4… هل ينجح أيّ عدد غير 1؟ ثم تأكّد بالقائمتين."
+                onFinished={() => setC1(true)} />
+            ),
+            advanced: () => (
+              <Manipulation type="coprime-explorer" a={22} b={35}
+                title="ب) 22 و 35: أثبت بنفسك"
+                lead="لا أحد يخبرك بالجواب: اكشف القائمتين، ضع كل قاسم مشترك في الوسط، ثم احكم." />
+            ),
+          }}
+        />
+      )}
       steps={[
         { num: 1, title: 'أ) لماذا PGCD(17 ; 18) = 1؟', subtitle: 'اكشف المناولة أولًا', done: q1,
           content: (
@@ -30,7 +61,8 @@ export default function Module01SabaataAsharWaThamaniyataAshar() {
         { num: 2, title: 'ب) 22 و 35 — جـ) مريم: «27 و 36 أوليان فيما بينهما»', done: q2,
           content: (
             <div className="space-y-3">
-              <Manipulation type="coprime-explorer" a={22} b={35} title="ب) أثبت أنّ 22 و 35 أوليان فيما بينهما" />
+              {/* 22 et 35 vivent au niveau متقدم du workspace ci-dessus ; ici
+                  reste le SEUL cas où la réponse est « non », celui de مريم. */}
               <Manipulation type="coprime-explorer" a={27} b={36} title="جـ) 27 و 36: هل مريم على صواب؟" />
               <KnowledgeBrick id="nafy-awwaliyan" compact />
               <TapQuestion prompt={<span>هل مريم على صواب؟</span>}

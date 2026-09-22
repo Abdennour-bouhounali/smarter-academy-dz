@@ -1,0 +1,224 @@
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
+import { createMathLabDocument, fetchMathLabDocument, updateMathLabDocument } from '../../services/mathLabService';
+import {
+  MATH_LAB_AUTOSAVE_MS, cleanTitle, fromApiDocument, isPersisted, mathLabToolPath, newMathLabDocument,
+} from './mathLabDocument';
+
+/**
+ * Le document d'un instrument, ouvert dans la coquille : chargement,
+ * titre, état, et sauvegarde AUTOMATIQUE.
+ *
+ * ── Ce que la coquille possède, ce que l'outil possède ───────────────────
+ * L'outil (Excalidraw pour la سبّورة) possède son état vivant et son
+ * historique ; il n'en remet ici qu'un instantané sérialisé par `updateData`.
+ * Ce crochet ne garde donc JAMAIS l'état du dessin dans un état React — il
+ * vit dans une référence, et seuls le titre et l'état de sauvegarde
+ * (« محفوظ », « جارٍ الحفظ… ») provoquent un rendu.
+ *
+ * ── Naissance et sauvegarde ──────────────────────────────────────────────
+ * Un document neuf n'existe pas sur le serveur tant que rien n'a changé :
+ * ouvrir la سبّورة et repartir ne crée rien. Au premier changement, POST ;
+ * l'URL est réécrite avec l'identifiant (sans rechargement, sans démontage
+ * de l'outil) ; ensuite, PATCH. Chaque changement attend MATH_LAB_AUTOSAVE_MS
+ * de calme avant de partir ; un seul envoi à la fois, et ce qui change
+ * pendant l'envoi repart après. « حفظ » force l'envoi tout de suite.
+ *
+ * @param {import('./toolContract.js').MathLabTool} tool
+ * @param {number | null} documentId      l'identifiant de l'URL, ou null pour un document neuf
+ * @param {{launch: object | null, defaultTitle: string}} options
+ */
+export function useMathLabDocument(tool, documentId, { launch, defaultTitle }) {
+  const { token } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const [load, setLoad] = useState({ status: 'loading', document: null, files: [], quota: null, loadKey: null, error: null });
+  const [title, setTitleState] = useState('');
+  const [saveState, setSaveState] = useState('clean'); // clean | dirty | saving | saved | error
+  const [lastSavedAt, setLastSavedAt] = useState(null);
+
+  const docRef = useRef(null);
+  const pendingRef = useRef({ title: false, data: false });
+  const inFlightRef = useRef(false);
+  const timerRef = useRef(null);
+  const loadSeqRef = useRef(0);
+  const unmountedRef = useRef(false);
+  const flushRef = useRef(null);
+
+  const schedule = useCallback(() => {
+    clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => flushRef.current?.(), MATH_LAB_AUTOSAVE_MS);
+  }, []);
+
+  const flush = useCallback(async () => {
+    clearTimeout(timerRef.current);
+    const doc = docRef.current;
+    if (!doc || !token || inFlightRef.current) return;
+    const pending = pendingRef.current;
+    if (!pending.title && !pending.data) return;
+
+    inFlightRef.current = true;
+    pendingRef.current = { title: false, data: false };
+    if (!unmountedRef.current) setSaveState('saving');
+
+    try {
+      if (!isPersisted(doc)) {
+        const { document } = await createMathLabDocument(token, {
+          tool: doc.tool,
+          title: cleanTitle(doc.title, defaultTitle),
+          schemaVersion: doc.schemaVersion,
+          data: doc.data,
+        });
+        const saved = fromApiDocument(document);
+        docRef.current = { ...docRef.current, id: saved.id, createdAt: saved.createdAt, updatedAt: saved.updatedAt };
+        if (!unmountedRef.current) {
+          setLoad((s) => ({ ...s, document: docRef.current }));
+          // L'adresse dit maintenant QUEL document — sans recharger, sans
+          // démonter l'outil (l'effet de chargement reconnaît l'identifiant).
+          navigate(mathLabToolPath(tool, saved.id), { replace: true });
+        }
+      } else {
+        const patch = {};
+        if (pending.title) patch.title = cleanTitle(doc.title, defaultTitle);
+        if (pending.data) {
+          patch.data = doc.data;
+          patch.schemaVersion = doc.schemaVersion;
+        }
+        const { document } = await updateMathLabDocument(token, doc.id, patch);
+        docRef.current = { ...docRef.current, updatedAt: document?.updatedAt ?? docRef.current.updatedAt };
+      }
+      if (!unmountedRef.current) {
+        setLastSavedAt(new Date());
+        setSaveState(pendingRef.current.title || pendingRef.current.data ? 'dirty' : 'saved');
+      }
+    } catch {
+      // Ce qui n'est pas parti reste à envoyer : rien n'est perdu, on réessaiera.
+      pendingRef.current = {
+        title: pending.title || pendingRef.current.title,
+        data: pending.data || pendingRef.current.data,
+      };
+      if (!unmountedRef.current) setSaveState('error');
+    } finally {
+      inFlightRef.current = false;
+      if (!unmountedRef.current && (pendingRef.current.title || pendingRef.current.data)) schedule();
+    }
+  }, [token, tool, defaultTitle, navigate, schedule]);
+  flushRef.current = flush;
+
+  // ── Chargement ──────────────────────────────────────────────────────────
+  useEffect(() => {
+    // L'identifiant qu'on vient de créer nous-mêmes : rien à recharger.
+    if (documentId != null && docRef.current?.id === documentId) return undefined;
+
+    const seq = ++loadSeqRef.current;
+    clearTimeout(timerRef.current);
+    pendingRef.current = { title: false, data: false };
+    setSaveState('clean');
+    setLastSavedAt(null);
+
+    if (documentId == null) {
+      const seedTitle = launch?.title ? cleanTitle(launch.title, defaultTitle) : defaultTitle;
+      const doc = newMathLabDocument(tool, { title: seedTitle, seed: launch?.seed });
+      docRef.current = doc;
+      setTitleState(doc.title);
+      setLoad({ status: 'ready', document: doc, files: [], quota: null, loadKey: `new-${seq}`, error: null });
+
+      return undefined;
+    }
+
+    docRef.current = null;
+    setLoad({ status: 'loading', document: null, files: [], quota: null, loadKey: null, error: null });
+    fetchMathLabDocument(token, documentId)
+      .then(({ document, files, quota }) => {
+        if (seq !== loadSeqRef.current) return;
+        const doc = fromApiDocument(document);
+        docRef.current = doc;
+        setTitleState(doc.title);
+        // Les fichiers et les quotas viennent avec le document : un seul appel.
+        setLoad({ status: 'ready', document: doc, files: files ?? [], quota: quota ?? null, loadKey: `doc-${documentId}-${seq}`, error: null });
+      })
+      .catch((error) => {
+        if (seq !== loadSeqRef.current) return;
+        setLoad({ status: 'error', document: null, files: [], quota: null, loadKey: null, error });
+      });
+
+    return undefined;
+    // `launch` et `defaultTitle` ne rouvrent pas le document : ils ne comptent qu'à l'ouverture.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tool, documentId, token]);
+
+  // ── Départ ──────────────────────────────────────────────────────────────
+  useEffect(() => {
+    // Remis à zéro à CHAQUE montage : en développement, StrictMode joue un
+    // démontage-remontage fictif, et sans cette ligne le crochet se croirait
+    // démonté pour de bon — plus aucun état de sauvegarde, plus d'URL réécrite.
+    unmountedRef.current = false;
+    const warn = (event) => {
+      if (pendingRef.current.title || pendingRef.current.data || inFlightRef.current) {
+        event.preventDefault();
+        event.returnValue = '';
+      }
+    };
+    window.addEventListener('beforeunload', warn);
+
+    return () => {
+      window.removeEventListener('beforeunload', warn);
+      unmountedRef.current = true;
+      clearTimeout(timerRef.current);
+      // Un dernier envoi, sans attendre : la page suivante n'a pas à savoir.
+      flushRef.current?.();
+    };
+  }, []);
+
+  /**
+   * Le document existe sur le serveur — ou y naît maintenant. Un fichier ne
+   * peut se rattacher qu'à un document enregistré : le premier fichier d'une
+   * سبّورة neuve commence par la faire naître. Rend l'identifiant, ou null
+   * si l'envoi a échoué.
+   */
+  const ensurePersisted = useCallback(async () => {
+    if (docRef.current?.id != null) return docRef.current.id;
+    pendingRef.current.data = true;
+    for (let i = 0; i < 100 && inFlightRef.current; i += 1) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+    await flushRef.current?.();
+
+    return docRef.current?.id ?? null;
+  }, []);
+
+  const updateData = useCallback((data) => {
+    if (!docRef.current) return;
+    docRef.current = { ...docRef.current, data };
+    pendingRef.current.data = true;
+    setSaveState('dirty');
+    schedule();
+  }, [schedule]);
+
+  const updateTitle = useCallback((next) => {
+    if (!docRef.current) return;
+    setTitleState(next);
+    docRef.current = { ...docRef.current, title: next };
+    pendingRef.current.title = true;
+    setSaveState('dirty');
+    schedule();
+  }, [schedule]);
+
+  return {
+    status: load.status,
+    document: load.document,
+    files: load.files,
+    quota: load.quota,
+    loadKey: load.loadKey,
+    ensurePersisted,
+    error: load.error,
+    title,
+    updateTitle,
+    updateData,
+    saveNow: flush,
+    saveState,
+    lastSavedAt,
+    isPersisted: isPersisted(load.document),
+  };
+}

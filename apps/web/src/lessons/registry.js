@@ -53,6 +53,24 @@ export function getTotalModules(lessonId) {
 }
 
 /**
+ * Le NUMÉRO du premier module d'une leçon — pas toujours 1.
+ *
+ * Une leçon qui ouvre sur « أستعدّ » (stage `prerequisite_check`) commence à
+ * 0. Sans cette information, « continuer » balayait 1..N et proposait le
+ * module 1 à un élève qui n'avait pas encore fait le module 0.
+ *
+ * @param {string} lessonId
+ * @returns {number|null} le plus petit `number` déclaré, ou null quand la
+ *          leçon n'est pas construite — jamais un défaut fabriqué.
+ */
+export function getFirstModuleNumber(lessonId) {
+  const modules = configByLessonId.get(lessonId)?.modules;
+  if (!Array.isArray(modules) || modules.length === 0) return null;
+  const numbers = modules.map((m) => Number(m.number)).filter(Number.isFinite);
+  return numbers.length > 0 ? Math.min(...numbers) : null;
+}
+
+/**
  * Le CHEMIN du module `number` d'une leçon — jamais son numéro.
  *
  * Les routes d'un module sont déclarées avec `m.path`, construit sur son

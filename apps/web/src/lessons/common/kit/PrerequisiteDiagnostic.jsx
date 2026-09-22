@@ -7,6 +7,8 @@ import ModuleLayout from '../components/ModuleLayout';
 import { useProgress } from '../hooks/useProgress';
 import { usePrerequisiteDiagnostic } from '../hooks/usePrerequisiteDiagnostic';
 import { Feedback, ChoiceGrid, ValidateButton, MissionBrief } from '../components/LessonUI';
+import TestPresentation, { useTestPresentation } from './TestPresentation';
+import { revealAll, revealOne } from './testPresentation';
 
 /**
  * Lesson kit — moteur du module 0 « Mission de départ » (diagnostic des
@@ -24,6 +26,13 @@ import { Feedback, ChoiceGrid, ValidateButton, MissionBrief } from '../component
  *  - 'custom'       : { id, skill, points, prompt, explainOk, explainKo,
  *                       render({ pick, onPick, revealed }), isCorrect(pick),
  *                       review({ pick }) }  — ex. clic sur un chiffre d'un tableau.
+ *
+ * MODE CLASSE (وضع القسم). Présenté, le diagnostic devient une QUESTION À LA
+ * FOIS (TestPresentation) : السابق / التالي, « تحقّق من الإجابة » sur la
+ * question courante, « كشف النتائج » à la fin, puis la revue une à une. Les
+ * questions, les paliers, les conseils et le caractère non bloquant sont
+ * inchangés ; « كشف النتائج » appelle le même handleSubmit() que la page.
+ * Voir docs/architecture/CLASSROOM_MODE.md §5 « Test ».
  */
 
 // Le REPLI, quand une leçon ne fournit pas ses propres `levels`. En clés de
@@ -59,6 +68,55 @@ const DEFAULT_LEVELS = {
 
 const isCorrectFor = (q, pick) =>
   pick == null ? false : q.type === 'custom' ? q.isCorrect(pick) : pick === q.correct;
+
+/**
+ * LE CORPS D'UNE QUESTION — écrit UNE fois, rendu par la page comme par la
+ * présentation de classe. Les deux surfaces posent la même question : si
+ * elles la dessinaient chacune de leur côté, elles divergeraient au premier
+ * type de question ajouté.
+ *
+ * `revealed` n'est vrai qu'après une révélation (« تحقّق » sur cette
+ * question, ou « كشف النتائج ») : une question répondue reste muette.
+ */
+function DiagnosticQuestionBody({ q, pick, onPick, revealed }) {
+  if (q.type === 'custom') return q.render({ pick: pick ?? null, onPick, revealed });
+  return (
+    <ChoiceGrid
+      options={q.options}
+      selected={pick ?? null}
+      onSelect={onPick}
+      revealed={revealed}
+      correctIndex={q.correct}
+      cols={q.cols || 2}
+    />
+  );
+}
+
+/** La correction d'une question — elle aussi écrite une seule fois. */
+function DiagnosticQuestionReview({ q, pick, ok }) {
+  const { t } = useTranslation('lesson');
+  return (
+    <div className="space-y-3">
+      {q.type === 'custom' ? (
+        q.review({ pick })
+      ) : (
+        <div className="text-sm space-y-1">
+          <div className={ok ? 'text-emerald-700' : 'text-rose-700'}>
+            <strong>{t('question.yourAnswer')}</strong> {pick == null ? '—' : q.options[pick]}
+          </div>
+          {!ok && (
+            <div className="text-emerald-700">
+              <strong>{t('question.correctAnswer')}</strong> {q.options[q.correct]}
+            </div>
+          )}
+        </div>
+      )}
+      <Feedback tone={ok ? 'ok' : 'ko'}>
+        {q.type === 'custom' ? (ok ? q.explainOk : q.explainKo) : q.explain}
+      </Feedback>
+    </div>
+  );
+}
 
 function DiagnosticResult({ score, maxScore, skills, skillScores, levels, onContinue, onRedo }) {
   const { t } = useTranslation('lesson');
@@ -172,6 +230,11 @@ export default function PrerequisiteDiagnostic({
 
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
+  // CE QUI EST RÉVÉLÉ, question par question. Uniquement en présentation :
+  // sur la page, le diagnostic garde son unique « عرض نتيجتي », et `submitted`
+  // vaut alors révélation de tout.
+  const [revealed, setRevealed] = useState({});
+  const { presenting } = useTestPresentation();
 
   const maxScore = questions.reduce((sum, q) => sum + q.points, 0);
 
@@ -208,7 +271,10 @@ export default function PrerequisiteDiagnostic({
     hydratedFromSaved.current = true;
     setAnswers({});
     setSubmitted(false);
+    setRevealed({});
   }
+
+  const pickAnswer = (id, v) => setAnswers((a) => ({ ...a, [id]: v }));
 
   return (
     <ModuleLayout
@@ -222,7 +288,49 @@ export default function PrerequisiteDiagnostic({
       nextLink={navLinks.nextLink}
       isCompleted={submitted}
       stage="prerequisite_check"
+      // La présentation cadre CHAQUE question elle-même ; le layout ne pose
+      // pas un second cadre par-dessus (même contrat que ContentModule).
+      presentationFrame={!presenting}
     >
+      {presenting ? (
+        <TestPresentation
+          title={moduleTitle}
+          questions={questions}
+          answers={answers}
+          // Une fois le diagnostic soumis, TOUT est révélé : la correction
+          // rechargée d'un appareil à l'autre s'affiche comme la nôtre.
+          revealed={submitted ? true : revealed}
+          isCorrect={isCorrectFor}
+          onRevealOne={(id) => setRevealed((r) => revealOne(r, id))}
+          onRevealAll={() => { setRevealed(revealAll(questions)); handleSubmit(); }}
+          renderQuestion={({ question, revealed: isRevealed }) => (
+            <div className="space-y-4">
+              {/* L'ÉNONCÉ d'abord — c'est la question qu'on projette. */}
+              <div className="text-base leading-relaxed text-slate-700">{question.prompt}</div>
+              <DiagnosticQuestionBody
+                q={question}
+                pick={answers[question.id]}
+                onPick={(v) => pickAnswer(question.id, v)}
+                revealed={isRevealed}
+              />
+            </div>
+          )}
+          renderReview={({ question, correct }) => (
+            <DiagnosticQuestionReview q={question} pick={answers[question.id]} ok={correct} />
+          )}
+          summary={(
+            <DiagnosticResult
+              score={score}
+              maxScore={maxScore}
+              skills={skills}
+              skillScores={skillScores}
+              levels={levels}
+              onContinue={() => navigate(navLinks.nextLink)}
+              onRedo={handleRedo}
+            />
+          )}
+        />
+      ) : (
       <div className="sa-page py-8 flex-1 space-y-8">
         <AnimatePresence mode="wait">
       {!submitted && (
@@ -372,6 +480,7 @@ export default function PrerequisiteDiagnostic({
       )}
     </AnimatePresence>
       </div >
+      )}
     </ModuleLayout >
   );
 }

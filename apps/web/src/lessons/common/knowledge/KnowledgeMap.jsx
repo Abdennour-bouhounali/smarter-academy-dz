@@ -1179,8 +1179,7 @@ export function KnowledgeMapTrigger({ items = [], open: openProp, onOpenChange, 
       <motion.button
         onClick={() => setOpen(o => !o)}
         className={[
-          // bottom-20 : au-dessus du bouton Ctrl+K du site visiteur (bottom-6,
-          // même coin, même z-index) et de la barre basse mobile de l'espace
+          // La hauteur tient compte de la barre basse mobile de l'espace
           // élève (h-16) — sinon le déclencheur est recouvert.
           // Côté : PHYSIQUEMENT à gauche, dans les deux directions — et c'est
           // volontairement une valeur physique, pas `start-6`.
@@ -1195,8 +1194,15 @@ export function KnowledgeMapTrigger({ items = [], open: openProp, onOpenChange, 
           // Gauche convient aux deux cas : sous LTR le panneau s'ouvre à
           // droite et le déclencheur lui fait face ; sous RTL la barre occupe
           // la droite, et le panneau s'ouvrant à gauche, le déclencheur le
-          // recouvrirait s'il n'était pas décalé vers le bas (bottom-20).
-          'fixed bottom-20 left-6 z-40',
+          // recouvrirait s'il n'était pas décalé vers le bas.
+          //
+          // HAUTEUR : 5.5rem, en valeur ARBITRAIRE — l'échelle Tailwind par
+          // défaut n'a pas de `bottom-22`, et une classe inexistante ne pose
+          // silencieusement aucune règle. L'étage du dessous appartient au
+          // déclencheur « ⛶ عرض » du mode classe, posé au ras du coin
+          // (1.5rem), qui doit se trouver SOUS la carte. La pile complète
+          // est documentée dans classroom.css.
+          'fixed bottom-[5.5rem] left-6 z-40',
           'flex items-center gap-2 px-4 py-3 rounded-2xl',
           'font-bold text-sm shadow-lg shadow-slate-900/20',
           'transition-colors duration-200',

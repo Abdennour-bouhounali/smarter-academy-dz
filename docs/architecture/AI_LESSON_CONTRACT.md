@@ -27,6 +27,58 @@ staging and assessment metadata**.
    it genuinely evaluates several distinct competencies. When uncertain,
    classify the question as practice and write a better assessment instead.
 
+## The textbook owns the mathematics; the platform owns the experience
+
+**Permanent product principle (2026-09-20).** A generated lesson must never
+turn a textbook activity into a manipulation by copying its story. The pipeline
+is:
+
+```
+textbook activity
+   ↓  extract the mathematical objective        ← never changes
+   ↓  extract the mathematical structure         ← never changes
+   ↓  extract the intended discovery             ← never changes
+   ↓  judge the textbook's CONTEXT for engagement and interactivity
+   ↓  keep it · adapt it · or choose a better age-appropriate one
+   ↓  generate مبتدئ and متقدم (both, always)
+   ↓  choose the visualisation technology (reuse before adding a dependency)
+   ↓  validate mathematics · interaction · age-appropriateness
+```
+
+Two fidelities, and only one is absolute:
+
+- **Mathematical fidelity — non-negotiable.** Concept, definition, property,
+  method, notation, vocabulary, progression, expected outcome. All from the
+  textbook; all unchanged. Arithmetic comes from `packages/core/arithmetic/`.
+- **Contextual fidelity — negotiable, never silent.** A situation may be
+  replaced when the mathematical structure and the objective survive intact,
+  the replacement introduces no ambiguity, and it is age-appropriate.
+
+Every levelled manipulation therefore carries its traceability in
+`lesson.config.js` — where the mathematics came from, what was adapted, and
+why:
+
+```js
+{ level: 'beginner',
+  objective: '…',                  // identical at both levels
+  autonomy: '',                    // required and non-empty on 'advanced'
+  experience: { type: 'platform_context',
+                reason: 'smaller_numbers_for_first_contact', theme: 'football' },
+  sourceElementIds: ['act-1'] }
+```
+
+`validate-lessons.mjs` **fails the build** on a missing level, divergent
+objectives, an `advanced` level with no declared `autonomy`, an adapted context
+with no reason from the closed list, or a levelled manipulation citing no
+textbook element. The vocabularies live in
+`packages/core/curriculum/manipulationLevels.js`; the full rule is
+[`MANIPULATION_CONTRACT.md` §7bis-levels](./MANIPULATION_CONTRACT.md).
+
+**Do not force a context.** When the textbook's situation is already
+manipulable and the drawing *is* the argument, both levels keep it and only the
+cognitive demand changes. A theme bolted onto a list of divisors makes the
+mathematics harder to see, not more engaging.
+
 ## Non-blocking progression — HARD INVARIANT for every generated lesson
 
 A generated lesson inherits this rule automatically. It is **normative**, and

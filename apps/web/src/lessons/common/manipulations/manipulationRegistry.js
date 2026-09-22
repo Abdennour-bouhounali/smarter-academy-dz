@@ -14,6 +14,7 @@ import { MANIPULATION_TYPE_IDS } from '@smarter-academy/core';
 export const MANIPULATION_COMPONENTS = {
   'divisor-explorer': lazy(() => import('./divisibility/DivisorExplorer')),
   'divisor-explorer-books': lazy(() => import('./divisibility/DivisorExplorerBooks')),
+  'team-builder': lazy(() => import('./divisibility/TeamBuilder')),
   'factor-pairs': lazy(() => import('./divisibility/FactorPairs')),
   'divisor-properties': lazy(() => import('./divisibility/DivisorProperties')),
   'common-divisors': lazy(() => import('./divisibility/CommonDivisors')),

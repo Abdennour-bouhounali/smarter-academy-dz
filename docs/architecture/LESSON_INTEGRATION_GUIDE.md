@@ -1,5 +1,23 @@
 # Lesson Integration Guide
 
+> **⚠️ Scope (2026-09-20).** The worked example throughout this document is a
+> **dormant French lesson**, and §1–§4 describe the **older per-lesson wiring**:
+> a hand-written `routes.jsx` with a `MODULE_COMPONENTS` map, a twenty-line
+> `moduleContext.js`, and route registration in `App.jsx`.
+>
+> **An Algerian 4AM lesson is wired differently** — three shared factories in
+> `_unit/` (`unitMeta.js`, `buildModuleContext`, `buildLessonRoutes`) reduce
+> those files to one line each and add the Classroom shell, the notebook anchor
+> and the knowledge provider automatically. See `LESSON_CONTRACT.md`
+> § « L'unité 4AM » and, to build one,
+> [`../lessons/LESSON_DEVELOPMENT_GUIDE.md`](../lessons/LESSON_DEVELOPMENT_GUIDE.md).
+>
+> **What is still accurate and worth reading here:** §5 (module-to-module
+> locking), §6 (step locking, the formative question policy, one tap = one
+> answer), §7 (the Boss Final shape), §8 (the prerequisite diagnostic), §9
+> (persistence) and §11 (the lesson kit). Those mechanisms are shared by every
+> lesson, Algerian or French.
+
 Practical, code-level reference for how a lesson is wired end-to-end into the
 platform — routing, module locking, step locking, learning-point evidence,
 final test, prerequisite diagnostic, and storage. Worked example throughout:
@@ -393,6 +411,14 @@ response. The click rules, by interaction type:
 - **Boss final and module 0 diagnostic are exempt**: they stay silent with
   a single global submit (§7/§8) — that one click covers the whole test
   and must not be removed per-question.
+  **On the student page.** In Classroom Mode (« وضع القسم ») both engines
+  present themselves one question at a time and offer « تحقّق من الإجابة »
+  on the current question, plus « كشف النتائج » at the end — a
+  teacher-at-the-board gesture, on a screen only presenters can open. It
+  changes nothing here: the page keeps its single silent submit, and the
+  reveal-all path *is* that same submit (same evaluator, same scoring, same
+  evidence, written once). See
+  [`CLASSROOM_MODE.md`](./CLASSROOM_MODE.md) §5 *Test*.
 
 ### Micro-celebration / engagement layer (sound, streak, XP burst)
 
@@ -462,6 +488,11 @@ Its non-negotiable rules (first fully implemented in nombres-entiers'
   once ("Valider mes N réponses", disabled until every question has an
   answer). Only then does the review screen show the score, each question,
   the student's answer, the correct answer, and the explanation.
+  This describes the **student page**. Projected in Classroom Mode the same
+  engine shows one épreuve at a time and lets the teacher reveal the current
+  one; the scoring, the evidence and the saved attempt are unchanged, and
+  still written exactly once. See [`CLASSROOM_MODE.md`](./CLASSROOM_MODE.md)
+  §5 *Test*.
 - **Every question tied to learning points.** Each épreuve carries
   `assessment: {enabled: true, type: 'assessment', learningPointIds: [...]}`
   and is submitted through `useEvidenceSubmission` at submit time — this is
@@ -535,6 +566,11 @@ Hard rules, enforced by construction, not by a runtime check:
 - **Score buckets, not pass/fail.** Three tiers by total score (`< 5`, `5–7`,
   `> 7` out of a normalized max), each with its own tone/copy/CTA label —
   never a binary "you failed, try again."
+- **Classroom Mode presents it question by question**, with per-question
+  « تحقّق من الإجابة » and a final « كشف النتائج », inherited from the engine
+  with nothing to wire. The diagnostic questions, thresholds, advice tiers and
+  non-gating behaviour are untouched. See
+  [`CLASSROOM_MODE.md`](./CLASSROOM_MODE.md) §5 *Test*."
 
 Persistence: a dedicated hook,
 `apps/web/src/lessons/common/hooks/usePrerequisiteDiagnostic.js`, modeled on

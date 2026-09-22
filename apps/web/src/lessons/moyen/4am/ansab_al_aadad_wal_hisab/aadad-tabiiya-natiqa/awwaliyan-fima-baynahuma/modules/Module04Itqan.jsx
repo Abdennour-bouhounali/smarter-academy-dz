@@ -1,6 +1,6 @@
 import React from 'react';
 import { BossFinal } from '../../../../../../common/kit';
-import { CompleteView } from '../../../../../../common/knowledge';
+import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { SourceTag } from '../../../../../../common/textbook';
 import { LESSON_CONFIG } from '../lesson.config';
@@ -26,7 +26,7 @@ export default function Module04Itqan() {
           options: ['لا نعرف بعد: يجب حساب PGCD؛ وهو 11', 'نعم، حتمًا', 'لا، لأنهما فرديان', 'نعم، لأن قواعد قابلية القسمة كلها فشلت'], correct: 0, cols: 1, explain: <span><MathText>{'$253 = 11 \\times 23$'}</MathText> و <MathText>{'$407 = 11 \\times 37$'}</MathText>: قاسم مشترك 11 لا تكشفه القواعد الست.</span>, assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_awwaliyan-fima-baynahuma_P3', '4am_awwaliyan-fima-baynahuma_P2'] } },
       ]}
       badges={[{ id: 'wahid', emoji: '1️⃣', label: 'القاسم المشترك الوحيد هو 1', test: (m) => (m.taarif ?? 0) === 0 }]}
-      synthese={<CompleteView />}
+      synthese={<KnowledgeSnapshot complete variant="complete" />}
       completion={{ masterTitle: 'أتقنت العددين الأوليين فيما بينهما', title: 'انتهى الدرس 7', message: 'PGCD = 1 هو مفتاح الدرس 8: كسر بسطه ومقامه أوليان فيما بينهما لا يُختزل.', verbs: ['أتعرّف', 'أثبت', 'أنفي', 'أميّز'], masterBadgeLabel: 'أوليان فيما بينهما' }} />
   );
 }

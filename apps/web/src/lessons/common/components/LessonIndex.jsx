@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Lock, Compass } from 'lucide-react';
@@ -15,6 +15,7 @@ import { isPracticeActive } from '../../../features/practice/practiceCapability'
 import PracticeEntryCard from '../../../features/practice/PracticeEntryCard';
 import ReportButton from '../../../features/reports/ReportButton';
 import { useContentAvailability } from '../../../context/ContentAvailabilityContext';
+import { useClassroomMode, useClassroomStage, ClassroomEntryButton, ClassroomFrame } from '../classroom';
 
 /**
  * Static color map — replaces dynamic `bg-${color}-100` patterns.
@@ -118,6 +119,19 @@ export default function LessonIndex({ config, basePath }) {
   const { completedModules, isModuleCompleted, currentModule } = useProgress(config.id);
   const { isModuleClosed, isLessonLocked } = useContentAvailability();
 
+  // MODE CLASSE (وضع القسم) — 🎓 depuis le sommaire : la leçon entière, du
+  // mdkhal (cette page, en mise en page de projection) au dernier module,
+  // avec « التالي » vers le premier module. La coquille est celle de la
+  // leçon (LessonClassroomShell, au-dessus des routes) ; cette page ne fait
+  // que déclarer son titre et son geste, et se présenter autrement.
+  const classroom = useClassroomMode();
+  const presenting = classroom.isClassroomMode;
+  const lessonNav = classroom.lessonNavigation;
+  const overviewSlot = useMemo(() => (
+    <span className="sa-classroom-position" data-classroom-position>{t('classroom.positionOverview')}</span>
+  ), [t]);
+  useClassroomStage({ title: config.title, onNext: lessonNav?.next ?? undefined, slot: overviewSlot, priority: 1 }, presenting);
+
   const totalModules = config.modules.length;
   const completedCount = completedModules.length;
   const pct = calculateCompletionPercentage(completedModules, totalModules);
@@ -143,6 +157,53 @@ export default function LessonIndex({ config, basePath }) {
   // module ne s'enregistrerait, aucun exercice ne se listerait.
   //
   // Aucun détail du contenu n'est rendu : ni titre de module, ni progression.
+  if (presenting) {
+    return (
+      <div className="sa-classroom-lesson-page" data-lesson-presented={config.id}>
+        <ClassroomFrame maxWidth={1180}>
+          <div className="sa-classroom-lesson-overview">
+            <section className="rounded-3xl border-2 border-indigo-200 bg-white p-8 space-y-5">
+              <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 font-mono text-xs font-semibold text-blue-700">
+                {config.emoji} {config.chapterTitle || config.chapter}
+              </div>
+              <h1 className="font-space text-4xl font-extrabold leading-tight text-slate-900">{config.title}</h1>
+              {config.description && <p className="text-lg leading-relaxed text-slate-700">{config.description}</p>}
+              {config.skills && (
+                <div className="space-y-2">
+                  <h2 className="text-base font-bold text-slate-800">{t('classroom.lessonSkills')}</h2>
+                  <ul className="space-y-1.5">
+                    {config.skills.map((skill, i) => (
+                      <li key={i} className="flex items-start gap-2 text-base text-slate-700">
+                        <span className="mt-0.5 text-blue-400">▸</span>
+                        <span>{skill}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </section>
+            <section className="rounded-3xl border-2 border-slate-200 bg-white p-6 space-y-3" data-lesson-roadmap>
+              <h2 className="text-base font-bold text-slate-800">{t('classroom.lessonPath')}</h2>
+              <ol className="space-y-2">
+                {config.modules.map((module) => (
+                  <li key={module.id} className="flex items-center gap-3 rounded-2xl border border-slate-200 px-4 py-3">
+                    <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl font-mono text-sm font-bold ${getColor(module.color, 'bg')} ${getColor(module.color, 'text')}`}>
+                      {String(module.number).padStart(2, '0')}
+                    </span>
+                    <div className="min-w-0">
+                      <div className="font-space font-bold text-slate-900">{module.title}</div>
+                      <div className="text-sm text-slate-500">{module.desc}</div>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          </div>
+        </ClassroomFrame>
+      </div>
+    );
+  }
+
   if (isLessonLocked(config.id)) {
     return (
       <div className={`min-h-screen flex flex-col justify-between ${chrome.contentOffsetClass} bg-slate-50`}>
@@ -218,6 +279,10 @@ export default function LessonIndex({ config, basePath }) {
               <h1 className="text-3xl sm:text-4xl font-space font-extrabold text-slate-900 leading-tight">
                 {config.title}
               </h1>
+
+              {/* 🎓 وضع القسم — présenter la leçon entière au projecteur
+                  (présentateur seulement : canPresentClassroom). */}
+              <ClassroomEntryButton scope="lesson" title={config.title} />
 
               {config.skills && (
                 <ul className="text-slate-500 text-sm space-y-1 max-w-xl">

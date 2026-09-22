@@ -9,7 +9,8 @@ import DropZone from '../primitives/DropZone';
 import NumberTile from '../primitives/NumberTile';
 import DivisorChip from '../primitives/DivisorChip';
 import DragGhost from '../primitives/DragGhost';
-import Group from '../primitives/Group';
+import GroupingScene from '../primitives/GroupingScene';
+import { themeWords } from '../themeWords';
 import EquationDisplay from '../primitives/EquationDisplay';
 import * as L from '../logic/commonDivisors';
 
@@ -24,10 +25,17 @@ import * as L from '../logic/commonDivisors';
  *    qu'un seul côté est refusé AVEC LA RAISON. Puis il porte le plus grand
  *    dans la case PGCD : le 6 de « PGCD(42 ; 60) = 6 » vient de son geste.
  *
- * `context` habille les bouquets avec les mots du manuel (باقة، زهرة حمراء…).
+ * `theme` choisit les OBJETS DESSINÉS de la scène des groupes (fleurs rouges
+ * et blanches, ballons et maillots, stylos et cahiers — primitives/itemThemes)
+ * et `context` peut en remplacer les mots par ceux de la SITUATION du manuel
+ * (باقة، زهرة حمراء، زهرة بيضاء). Ni l'un ni l'autre ne touche à une
+ * mathématique : la répartition, les restes et les verdicts viennent de
+ * logic/commonDivisors → core. Les groupes sont de vrais cadres contenant de
+ * vrais objets (`GroupingScene`) : « متماثلة » se voit, et le reste est un
+ * nombre d'objets dessinés en dehors, jamais une décimale.
  */
 export default function CommonDivisors({
-  a: a0, b: b0, title, lead, mission, context, startWith = 'bouquets', initialMode = 'student', allowModeSwitch = false, onFinished,
+  a: a0, b: b0, title, lead, mission, context, theme = 'garden', startWith = 'bouquets', initialMode = 'student', allowModeSwitch = false, onFinished,
 }) {
   const { t } = useTranslation('lesson');
   const state = useManipulation({ type: 'common-divisors', initialNumbers: { a: a0, b: b0 }, initialMode, hintCount: 3 });
@@ -74,13 +82,18 @@ export default function CommonDivisors({
 
   const heldValue = drag.held ? Number(drag.held.split(':')[1]) : null;
   const rail = Array.from({ length: Math.min(24, Math.min(a, b)) }, (_, i) => i + 1);
-  const gLabel = context ? t('manipulation.common.perBouquet', { qa: bouquets.qa, qb: bouquets.qb }) : null;
+  // Les mots de la scène : ceux du thème (lesson.json), remplacés par ceux
+  // de la situation du manuel quand la leçon les fournit (`context`).
+  const words = themeWords(t, theme, context);
+  const gLabel = t('manipulation.common.perGroup', { group: words.group, qa: bouquets.qa, qb: bouquets.qb, itemA: words.itemA, itemB: words.itemB });
 
   return (
     <ManipulationShell
       type="common-divisors"
       title={title ?? t('manipulation.common.title', { a, b })}
-      mission={mission ?? (stage === 'bouquets' ? t('manipulation.common.mission', { a, b }) : t('manipulation.common.listsMission', { a, b }))}
+      mission={mission ?? (stage === 'bouquets'
+        ? t('manipulation.common.missionGroups', { a, b, itemA: words.itemsA, itemB: words.itemsB })
+        : t('manipulation.common.listsMission', { a, b }))}
       lead={lead}
       state={state}
       numberFields={[{ key: 'a', label: 'a' }, { key: 'b', label: 'b' }]}
@@ -114,7 +127,9 @@ export default function CommonDivisors({
           {stage === 'bouquets' && bouquets.k !== null && (
             <EquationDisplay tex={`${a} = ${bouquets.k} \\times ${bouquets.qa} + ${bouquets.ra} \\quad ${b} = ${bouquets.k} \\times ${bouquets.qb} + ${bouquets.rb}`} size="sm"
               tone={bouquets.works ? 'ok' : 'neutral'}
-              note={bouquets.works ? t('manipulation.common.worksAll', { k: bouquets.k, a, b }) : t('manipulation.common.leftOver', { ra: bouquets.ra, rb: bouquets.rb })} />
+              note={bouquets.works
+                ? `${words.allUsed} ${t('manipulation.common.worksAll', { k: bouquets.k, a, b }).replace(/^[^:]*: /, '')}`
+                : t('manipulation.common.leftOverItems', { ra: bouquets.ra, rb: bouquets.rb, itemA: words.itemsA, itemB: words.itemsB })} />
           )}
           {stage === 'lists' && lists.placed.length > 0 && (
             <EquationDisplay tex={`\\text{diviseurs communs} = \\{${lists.placed.join(' ; ')}\\}`} tone={L.allCommonPlaced(lists) ? 'ok' : 'neutral'} size="sm" />
@@ -145,10 +160,10 @@ export default function CommonDivisors({
           <div className="space-y-3">
             <div className="space-y-1.5">
               <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <span className="text-sm font-bold text-slate-800">{t('manipulation.common.bouquetsZone')}</span>
+                <span className="text-sm font-bold text-slate-800">{t('manipulation.common.groupsZone', { group: words.group })}</span>
                 <span className="text-[11px] text-slate-500">{t('manipulation.dragHint')}</span>
               </div>
-              <div dir="ltr" className="flex flex-wrap gap-1.5" role="group" aria-label={t('manipulation.common.bouquetsZone')}>
+              <div dir="ltr" className="flex flex-wrap gap-1.5" role="group" aria-label={t('manipulation.common.groupsZone', { group: words.group })}>
                 {rail.map((k) => (
                   <DivisorChip key={k} value={k} drag={drag} id={`k:${k}`} label={`${k}`}
                     state={bouquets.tried[k] === 'common' ? 'common' : bouquets.tried[k] === 'single' ? 'single' : bouquets.tried[k] === 'no' ? 'no' : 'idle'}
@@ -156,31 +171,20 @@ export default function CommonDivisors({
                 ))}
               </div>
             </div>
-            <DropZone drag={drag} id="table" label={t('manipulation.common.bouquetsZone')} hint={bouquets.k === null ? t('manipulation.common.dropCount') : undefined} minHeight="min-h-[130px]" className="p-3">
-              {bouquets.k !== null && (
-                <div className="space-y-2">
-                  <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-bold">
-                    <span className={bouquets.works ? 'text-emerald-700' : 'text-amber-800'}>{gLabel ?? t('manipulation.common.perBouquet', { qa: bouquets.qa, qb: bouquets.qb })}</span>
-                    {!bouquets.works && <span className="text-amber-800">{t('manipulation.common.leftOver', { ra: bouquets.ra, rb: bouquets.rb })}</span>}
-                  </div>
-                  <div className="flex flex-wrap gap-1.5" dir="ltr">
-                    {Array.from({ length: Math.min(bouquets.k, 18) }, (_, i) => (
-                      <Group key={i} tone={bouquets.works ? 'emerald' : 'slate'} identical={bouquets.works} className="min-w-[46px]">
-                        <div className="flex flex-col items-center gap-0.5 font-mono text-[11px]">
-                          <span className="text-rose-600">●{bouquets.qa}</span>
-                          <span className="text-slate-500">○{bouquets.qb}</span>
-                        </div>
-                      </Group>
-                    ))}
-                    {bouquets.k > 18 && <span className="self-center text-xs text-slate-500">+{bouquets.k - 18}</span>}
-                  </div>
-                  {(bouquets.ra > 0 || bouquets.rb > 0) && (
-                    <Group tone="amber" title={t('manipulation.common.leftOver', { ra: bouquets.ra, rb: bouquets.rb })} identical={false}>
-                      <div className="font-mono text-[11px] text-amber-900" dir="ltr">●{bouquets.ra} ○{bouquets.rb}</div>
-                    </Group>
-                  )}
-                </div>
-              )}
+            <DropZone drag={drag} id="table" label={t('manipulation.common.groupsZone', { group: words.group })} minHeight="min-h-[150px]" className="p-3" data-groups-table>
+              {/* LA TABLE : avant tout choix, les deux piles entières ; après,
+                  k cadres identiques et, à part, ce qui n'est entré nulle
+                  part. Tout est dessiné — le reste se compte des yeux. */}
+              <div className="mb-2 flex flex-wrap items-center justify-between gap-2 text-xs font-bold">
+                <span className="text-slate-700">{words.scene}</span>
+                {bouquets.k === null
+                  ? <span className="text-slate-500">{t('manipulation.common.pileHint')}</span>
+                  : <span className={bouquets.works ? 'text-emerald-700' : 'text-amber-800'}>{gLabel}</span>}
+              </div>
+              <GroupingScene
+                a={a} b={b} k={bouquets.k} theme={theme} words={words}
+                ariaLabel={bouquets.k === null ? `${a} ${words.itemsA} · ${b} ${words.itemsB}` : `${a} = ${bouquets.k} × ${bouquets.qa} + ${bouquets.ra} · ${b} = ${bouquets.k} × ${bouquets.qb} + ${bouquets.rb}`}
+              />
             </DropZone>
           </div>
         ) : (

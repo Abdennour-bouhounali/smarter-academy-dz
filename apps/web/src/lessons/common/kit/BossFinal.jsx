@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -11,6 +11,8 @@ import { useFinalTestAttempt } from '../hooks/useFinalTestAttempt';
 import {
   Feedback, ChoiceGrid, ValidateButton, MissionBrief, TimerToggle, TimerDisplay,
 } from '../components/LessonUI';
+import TestPresentation, { useTestPresentation } from './TestPresentation';
+import { revealAll, revealOne } from './testPresentation';
 
 /**
  * Lesson kit — moteur du module final « Boss Final » (évaluatif).
@@ -24,6 +26,14 @@ import {
  *
  * Un module final devient un fichier de DONNÉES : épreuves, compétences,
  * badges, synthèse — zéro logique recopiée.
+ *
+ * MODE CLASSE (وضع القسم). Présenté, le test final devient une ÉPREUVE À LA
+ * FOIS (TestPresentation) : السابق / التالي, « تحقّق من الإجابة » sur l'épreuve
+ * courante, « كشف النتائج » à la fin, puis la revue une à une. Le barème,
+ * l'evidence et la tentative ne changent pas d'un iota : « كشف النتائج »
+ * appelle submitBoss(), le même envoi unique que le bouton de la page. Sur la
+ * page de l'élève, rien ne change — le test reste silencieux jusqu'à son
+ * envoi. Voir docs/architecture/CLASSROOM_MODE.md §5 « Test ».
  */
 
 function Epreuve({ epreuve, index, total, pick, onPick }) {
@@ -72,11 +82,39 @@ function Epreuve({ epreuve, index, total, pick, onPick }) {
  */
 const correctIndexOf = (ep) => (typeof ep.correct === 'number' ? ep.correct : 0);
 
+/** Le libellé d'une option, `optionLabel` quand l'épreuve en fournit un. */
+const optionLabelOf = (ep, i) => (ep.optionLabel ? ep.optionLabel(i) : ep.options[i]);
+
+/**
+ * LA CORRECTION D'UNE ÉPREUVE — le même bloc pour la page et pour la
+ * présentation de classe : « إجابتك », la bonne réponse quand elle diffère,
+ * puis la règle. BossReview (la page) et TestPresentation (le tableau) en
+ * sont tous deux les clients : la correction du test final s'écrit ici, et
+ * nulle part ailleurs.
+ */
+function EpreuveReview({ ep, pick, isCorrect }) {
+  const { t } = useTranslation('lesson');
+  return (
+    <>
+      <div className="text-sm space-y-1">
+        <div className={isCorrect ? 'text-emerald-700' : 'text-rose-700'}>
+          <strong>{t('question.yourAnswer')}</strong>{' '}
+          {pick == null ? t('boss.noAnswer') : optionLabelOf(ep, pick)}
+        </div>
+        {!isCorrect && (
+          <div className="text-emerald-700">
+            <strong>{t('question.correctAnswer')}</strong> {optionLabelOf(ep, correctIndexOf(ep))}
+          </div>
+        )}
+      </div>
+      <Feedback tone={isCorrect ? 'ok' : 'ko'}>{ep.explain}</Feedback>
+    </>
+  );
+}
+
 function BossReview({ epreuves, answers, onContinue, onRedo }) {
   const { t } = useTranslation('lesson');
   const correctCount = epreuves.filter((ep) => answers[ep.id] === correctIndexOf(ep)).length;
-
-  const optionLabel = (ep, i) => (ep.optionLabel ? ep.optionLabel(i) : ep.options[i]);
 
   return (
     <div className="space-y-6">
@@ -116,18 +154,7 @@ function BossReview({ epreuves, answers, onContinue, onRedo }) {
 
               <p className="text-sm text-slate-700 leading-relaxed">{ep.prompt}</p>
 
-              <div className="text-sm space-y-1">
-                <div className={isCorrect ? 'text-emerald-700' : 'text-rose-700'}>
-                  <strong>{t('question.yourAnswer')}</strong> {pick == null ? t('boss.noAnswer') : optionLabel(ep, pick)}
-                </div>
-                {!isCorrect && (
-                  <div className="text-emerald-700">
-                    <strong>{t('question.correctAnswer')}</strong> {optionLabel(ep, correctIndexOf(ep))}
-                  </div>
-                )}
-              </div>
-
-              <Feedback tone={isCorrect ? 'ok' : 'ko'}>{ep.explain}</Feedback>
+              <EpreuveReview ep={ep} pick={pick} isCorrect={isCorrect} />
             </div>
           );
         })}
@@ -232,6 +259,21 @@ export default function BossFinal({
   const [bossAnswers, setBossAnswers] = useState({});
   const [bossSubmitted, setBossSubmitted] = useState(false);
   const [misses, setMisses] = useState({});
+  // CE QUI EST RÉVÉLÉ, épreuve par épreuve — UNIQUEMENT en « وضع القسم ».
+  //
+  // Sur la page de l'élève, le test final reste ce qu'il est : silencieux
+  // jusqu'à l'envoi unique. Révéler une épreuve à la fois est un geste
+  // d'ENSEIGNANT au tableau, et l'entrée en présentation est déjà réservée
+  // aux présentateurs. C'est aussi une garantie de barème : un élève ne peut
+  // pas se faire corriger une épreuve notée avant de répondre aux suivantes.
+  //
+  // Une révélation N'ÉCRIT RIEN : ni evidence, ni XP, ni tentative. Le test
+  // n'est noté, soumis et persisté qu'une seule fois, par submitBoss() — le
+  // même chemin qu'avant, appelé par « كشف النتائج ». Sans cela, chaque
+  // `submitEvidence` tirant un nouvel `attemptId`, valider une épreuve deux
+  // fois en dupliquerait l'evidence de maîtrise.
+  const [revealed, setRevealed] = useState({});
+  const { presenting } = useTestPresentation();
 
   // Une tentative sauvegardée (cet appareil, ou un autre une fois synchro)
   // gagne dès son chargement : correction affichée, jamais un quiz vierge.
@@ -305,8 +347,11 @@ export default function BossFinal({
     setBossAnswers({});
     setBossSubmitted(false);
     setMisses({});
+    setRevealed({});
     timer.setEnabled(false);
   }
+
+  const isEpreuveCorrect = useCallback((ep, pick) => pick === correctIndexOf(ep), []);
 
   const badgesGagnes = badges.filter((b) => b.test(misses));
   const masterBadge = bossDone && badgesGagnes.length === badges.length;
@@ -325,7 +370,50 @@ export default function BossFinal({
       prevLink={navLinks.prevLink}
       nextLink={navLinks.nextLink}
       isCompleted={bossDone}
+      // La présentation cadre CHAQUE épreuve elle-même.
+      presentationFrame={!presenting}
     >
+      {presenting ? (
+        <TestPresentation
+          title={moduleTitle}
+          questions={epreuves}
+          answers={bossAnswers}
+          // Le test soumis (ici ou sur un autre appareil) est entièrement
+          // révélé : on projette la correction, pas un questionnaire vierge.
+          revealed={bossSubmitted ? true : revealed}
+          isCorrect={isEpreuveCorrect}
+          onRevealOne={(id) => setRevealed((r) => revealOne(r, id))}
+          // « كشف النتائج » EST le submit du moteur : mêmes notes, même
+          // evidence, même tentative persistée, une seule fois.
+          onRevealAll={() => { setRevealed(revealAll(epreuves)); submitBoss(); }}
+          renderQuestion={({ question: ep, index: i, revealed: isRevealed }) => (
+            <div className="space-y-4">
+              <p className="text-base leading-relaxed text-slate-700">{ep.prompt}</p>
+              {ep.extra && <div className="rounded-xl border border-slate-200 bg-white p-3">{ep.extra}</div>}
+              <ChoiceGrid
+                options={ep.options}
+                selected={bossAnswers[ep.id] ?? null}
+                onSelect={(idx) => setBossAnswers((a) => ({ ...a, [ep.id]: idx }))}
+                revealed={isRevealed}
+                correctIndex={correctIndexOf(ep)}
+                cols={ep.cols || 2}
+                renderOption={ep.renderOption}
+              />
+            </div>
+          )}
+          renderReview={({ question: ep, correct }) => (
+            <EpreuveReview ep={ep} pick={bossAnswers[ep.id]} isCorrect={correct} />
+          )}
+          // Après la révélation : le profil de maîtrise, la synthèse du
+          // moteur — sans remplacer la revue épreuve par épreuve.
+          summary={(
+            <div className="space-y-5">
+              <ProfilMaitrise skills={skills} scores={misses} lessonConfig={lessonConfig} />
+              {synthese}
+            </div>
+          )}
+        />
+      ) : (
       <div className="sa-page py-8 flex-1 space-y-8">
         <div className="grid grid-cols-3 gap-2">
           {PHASES.map(({ key, labelKey, Icon }) => {
@@ -495,6 +583,7 @@ export default function BossFinal({
           )}
         </AnimatePresence>
       </div >
+      )}
     </ModuleLayout >
   );
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, XCircle, Lightbulb, Info, Timer as TimerIcon, Volume2, VolumeX, Flame } from 'lucide-react';
+import { CheckCircle2, XCircle, Lightbulb, Info, Timer as TimerIcon, Volume2, VolumeX, Flame, BookOpen } from 'lucide-react';
 import { useLessonChrome } from '../hooks/useLessonChrome';
 
 /**
@@ -201,23 +201,109 @@ export function StepCard({ num, title, subtitle, done, locked, children, tone = 
   );
 }
 
-/* ── Bandeau narratif ─────────────────────────────────────────────── */
-export function MissionBrief({ tag, title, children, tone = 'slate' }) {
-  const bg =
-    tone === 'amber'
-      ? 'bg-gradient-to-br from-amber-900 to-amber-700'
-      : tone === 'indigo'
-      ? 'bg-gradient-to-br from-indigo-700 to-violet-700'
-      : 'bg-slate-900';
-  const accent = tone === 'amber' ? 'text-amber-300' : tone === 'indigo' ? 'text-indigo-200' : 'text-amber-400';
-  const body = tone === 'amber' ? 'text-amber-100' : tone === 'indigo' ? 'text-indigo-100' : 'text-slate-300';
+/* ── La CARTE D'ACTIVITÉ d'un module ──────────────────────────────── */
+
+/**
+ * Les TEINTES de la carte. Une seule couleur d'accent par teinte, posée sur
+ * un fond clair : la carte doit être lisible avant d'être décorative, et le
+ * texte mathématique doit rester la chose la plus contrastée de l'écran.
+ *
+ * Les huit teintes existantes sont toutes servies. Avant, `MissionBrief` n'en
+ * connaissait que trois et rendait les cinq autres en gris ardoise sans le
+ * dire : la moitié des modules de l'unité demandaient une couleur qu'ils
+ * n'obtenaient pas.
+ */
+const BRIEF_TONES = {
+  indigo:  { ring: 'border-indigo-200',  wash: 'from-indigo-50',  accent: 'text-indigo-700',  chip: 'bg-indigo-600',  glyph: 'text-indigo-200' },
+  violet:  { ring: 'border-violet-200',  wash: 'from-violet-50',  accent: 'text-violet-700',  chip: 'bg-violet-600',  glyph: 'text-violet-200' },
+  amber:   { ring: 'border-amber-200',   wash: 'from-amber-50',   accent: 'text-amber-800',   chip: 'bg-amber-600',   glyph: 'text-amber-200' },
+  emerald: { ring: 'border-emerald-200', wash: 'from-emerald-50', accent: 'text-emerald-700', chip: 'bg-emerald-600', glyph: 'text-emerald-200' },
+  teal:    { ring: 'border-teal-200',    wash: 'from-teal-50',    accent: 'text-teal-700',    chip: 'bg-teal-600',    glyph: 'text-teal-200' },
+  sky:     { ring: 'border-sky-200',     wash: 'from-sky-50',     accent: 'text-sky-700',     chip: 'bg-sky-600',     glyph: 'text-sky-200' },
+  rose:    { ring: 'border-rose-200',    wash: 'from-rose-50',    accent: 'text-rose-700',    chip: 'bg-rose-600',    glyph: 'text-rose-200' },
+  slate:   { ring: 'border-slate-200',   wash: 'from-slate-50',   accent: 'text-slate-700',   chip: 'bg-slate-700',   glyph: 'text-slate-200' },
+};
+
+/**
+ * LA CARTE D'ACTIVITÉ — ce que l'élève lit avant de commencer un module.
+ *
+ * Elle répond à quatre questions, dans cet ordre visuel :
+ *   1. d'où vient cette activité ?        → `tag` (pastille, en haut)
+ *   2. qu'est-ce qu'on fait ?             → `headline` (l'accroche, optionnelle)
+ *   3. quelle idée va-t-on découvrir ?    → `title` (l'objectif mathématique)
+ *   4. quelle est la situation concrète ? → `children` (l'énoncé, mot pour mot)
+ *   5. sur quelle source s'appuie-t-elle ?→ `footer` (SourceTag, optionnel)
+ *
+ * ELLE EST DIRIGÉE PAR LES DONNÉES, jamais par la leçon. Aucun contexte
+ * particulier n'est codé ici : le football, la bibliothèque ou les fleurs
+ * arrivent par `visual` et par le texte. Un module qui ne fournit ni accroche
+ * ni visuel obtient la même carte, en plus sobre — c'est le cas des 40
+ * modules existants, qui n'ont rien à changer.
+ *
+ * `visual` est OPTIONNEL et n'est affiché que s'il ajoute quelque chose :
+ *   visual={{ src, alt }}            une illustration de contexte
+ *   visual={<PitchBackdrop … />}     ou n'importe quel nœud déjà dessiné
+ * Sans lui, le texte prend toute la largeur au lieu de laisser un trou.
+ *
+ * FOND CLAIR, PAS BLOC SOMBRE. L'ancienne carte était un rectangle sombre à
+ * dégradé : l'énoncé du manuel y perdait en lisibilité, et trois teintes sur
+ * huit seulement étaient honorées. Ici, un fond clair, une seule couleur
+ * d'accent, une bordure fine et un lavis discret — la hiérarchie vient de la
+ * typographie, pas de la saturation.
+ */
+export function MissionBrief({ tag, title, headline, children, footer, visual, emoji, tone = 'slate' }) {
+  const T = BRIEF_TONES[tone] ?? BRIEF_TONES.slate;
+  const hasVisual = Boolean(visual);
 
   return (
-    <div className={`${bg} text-white rounded-2xl p-6 space-y-2`}>
-      {tag && <div className={`${accent} font-mono text-xs font-bold uppercase tracking-widest`}>{tag}</div>}
-      <h2 className="text-lg sm:text-xl font-space font-bold leading-snug">{title}</h2>
-      <div className={`${body} text-sm leading-relaxed space-y-2`}>{children}</div>
-    </div>
+    <section
+      className={`relative overflow-hidden rounded-3xl border-2 bg-white shadow-sm ${T.ring}`}
+      data-module-brief={tone}
+    >
+      {/* Le lavis : une profondeur légère, qui ne touche jamais au texte. */}
+      <div className={`pointer-events-none absolute inset-0 bg-gradient-to-bl ${T.wash} to-white`} aria-hidden="true" />
+
+      <div className={`relative flex flex-col gap-4 p-5 sm:p-6 ${hasVisual ? 'sm:flex-row-reverse sm:items-start sm:gap-6' : ''}`}>
+        {hasVisual && (
+          // Le visuel de CONTEXTE. Décoratif au sens strict : il aide à se
+          // projeter, il ne porte aucune information mathématique — donc
+          // `aria-hidden` quand il n'a pas de texte alternatif propre.
+          <div className="sm:w-44 sm:shrink-0">
+            <div className="mx-auto h-28 w-full max-w-[12rem] overflow-hidden rounded-2xl border border-white/70 bg-white/70 shadow-sm sm:h-36 sm:max-w-none">
+              {visual?.src
+                ? <img src={visual.src} alt={visual.alt ?? ''} aria-hidden={visual.alt ? undefined : 'true'} loading="lazy" className="block h-full w-full object-cover" />
+                : <div className="h-full w-full" aria-hidden="true">{visual}</div>}
+            </div>
+          </div>
+        )}
+
+        <div className="min-w-0 flex-1 space-y-2.5">
+          {tag && (
+            <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-extrabold text-white ${T.chip}`}>
+              <BookOpen className="h-3.5 w-3.5" aria-hidden="true" />
+              {tag}
+            </span>
+          )}
+
+          {headline && (
+            <p className="flex items-center gap-2 text-xl font-extrabold leading-tight text-slate-900 sm:text-2xl">
+              {emoji && <span aria-hidden="true">{emoji}</span>}
+              {headline}
+            </p>
+          )}
+
+          {title && (
+            <h2 className={`font-space text-base font-extrabold leading-snug sm:text-lg ${headline ? T.accent : 'text-slate-900'}`}>
+              {title}
+            </h2>
+          )}
+
+          <div className="space-y-2 text-sm leading-relaxed text-slate-700 sm:text-base">{children}</div>
+
+          {footer && <div className="pt-1">{footer}</div>}
+        </div>
+      </div>
+    </section>
   );
 }
 

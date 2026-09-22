@@ -30,7 +30,29 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   priorKnowledge: ['pgcd-taarif', 'khwarizmiyat-iqlidus', 'qawaid-qisma'],
   resources: [
-    { kind: 'manipulation', code: 'coprime-17-18', type: 'coprime-explorer', module: 1, title: 'هل 17 و 18 أوليان فيما بينهما؟', learningPointIds: ['4am_awwaliyan-fima-baynahuma_P1', '4am_awwaliyan-fima-baynahuma_P3'], sourceElementIds: ['act-7'] },
+    // Module 1 — workspace à deux niveaux, sur les couples du manuel :
+    //   مبتدئ  — 17 et 18 (question أ), VÉCUS d'abord : 17 stylos et 18
+    //            cahiers à ranger en trousses identiques (thème `school`, un
+    //            contexte de la plateforme) — rien ne marche sauf 1 ; puis
+    //            les listes le confirment ;
+    //   متقدم  — 22 et 35 (question ب), sur les listes, sans aucun guidage.
+    // Le couple de مريم (27 et 36), le seul dont la réponse est « non »,
+    // reste à l'étape 2 : le manuel l'y pose, et une manipulation ne se
+    // rend jamais deux fois sur la même page.
+    { kind: 'manipulation', code: 'coprime-17-18', type: 'coprime-explorer', module: 1,
+      level: 'beginner',
+      title: '17 قلمًا و 18 كراسًا: كم حقيبة متماثلة؟',
+      objective: 'عددان أوليان فيما بينهما ⇔ قاسمهما المشترك الوحيد هو 1',
+      autonomy: '',
+      experience: { type: 'platform_context', reason: 'improved_interactivity_and_age_appropriateness', theme: 'school' },
+      learningPointIds: ['4am_awwaliyan-fima-baynahuma_P1'], sourceElementIds: ['act-7'] },
+    { kind: 'manipulation', code: 'coprime-22-35', type: 'coprime-explorer', module: 1,
+      level: 'advanced',
+      title: '22 و 35: أثبت بنفسك دون توجيه',
+      objective: 'عددان أوليان فيما بينهما ⇔ قاسمهما المشترك الوحيد هو 1',
+      autonomy: 'لا توقّع ولا تلميح: التلميذ يكشف القائمتين ويبني الحكم بنفسه',
+      experience: { type: 'textbook', reason: '', theme: 'abstract' },
+      learningPointIds: ['4am_awwaliyan-fima-baynahuma_P1', '4am_awwaliyan-fima-baynahuma_P3'], sourceElementIds: ['act-7'] },
   ],
   modules: [
     { id: '01', number: 1, slug: '17-wa-18', path: `${LESSON_BASE_PATH}/17-wa-18`,

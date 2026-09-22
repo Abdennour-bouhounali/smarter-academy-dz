@@ -1,6 +1,6 @@
 import React from 'react';
 import { BossFinal } from '../../../../../../common/kit';
-import { CompleteView } from '../../../../../../common/knowledge';
+import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { SourceTag } from '../../../../../../common/textbook';
 import { LESSON_CONFIG } from '../lesson.config';
@@ -81,7 +81,7 @@ export default function Module04Itqan() {
         { id: 'qasim', emoji: '🔢', label: 'أعرف ما هو القاسم', test: (m) => (m.baqi ?? 0) === 0 },
         { id: 'lugha', emoji: '🗣️', label: 'أربع جمل، معنى واحد', test: (m) => (m.siyagh ?? 0) === 0 },
       ]}
-      synthese={<CompleteView />}
+      synthese={<KnowledgeSnapshot complete variant="complete" />}
       completion={{
         masterTitle: 'أتقنت التعرّف على قاسم لعدد طبيعي',
         title: 'انتهى الدرس 1',

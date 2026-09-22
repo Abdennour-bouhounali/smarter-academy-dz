@@ -1,0 +1,587 @@
+/* ── الاحتمالات والإحصاء — le laboratoire des probabilités et statistiques ──
+   Le pupitre sur le bord de départ (à droite en arabe), les graphiques qui
+   prennent tout le reste. Sous 768 px : les graphiques en haut, le pupitre
+   en bas, repliable. Les graphiques sont LTR par nature (un axe de valeurs
+   croissantes va de gauche à droite en mathématiques) ; le pupitre suit la
+   direction de la page. */
+
+.sa-ml-ps {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column-reverse;
+  background: #ffffff;
+}
+
+@media (min-width: 768px) {
+  .sa-ml-ps { flex-direction: row; }
+}
+
+/* ── Le pupitre ────────────────────────────────────────────────────────── */
+
+.sa-ml-ps__panel {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  min-height: 0;
+  max-height: 48%;
+  border-top: 1px solid #e2e8f0;
+  background: #ffffff;
+  font-family: 'Inter', 'Cairo', 'Tajawal', sans-serif;
+}
+
+@media (min-width: 768px) {
+  .sa-ml-ps__panel {
+    flex: 0 0 19rem;
+    max-height: none;
+    border-top: 0;
+    border-inline-end: 1px solid #e2e8f0;
+  }
+}
+
+@media (min-width: 1280px) {
+  .sa-ml-ps__panel { flex-basis: 22rem; }
+}
+
+.sa-ml-ps__panel--collapsed .sa-ml-ps__panel-body { display: none; }
+.sa-ml-ps__panel--collapsed { max-height: none; }
+
+.sa-ml-ps__panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex: none;
+  padding: 0.5rem 0.75rem 0.375rem;
+}
+
+.sa-ml-ps__collapse { display: inline-flex; }
+@media (min-width: 768px) { .sa-ml-ps__collapse { display: none; } }
+
+.sa-ml-ps__panel-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 0.75rem 0.875rem;
+}
+
+/* ── Les deux modes : expérience / données ─────────────────────────────── */
+
+.sa-ml-ps__modes {
+  display: inline-flex;
+  padding: 0.1875rem;
+  border-radius: 0.75rem;
+  background: #f1f5f9;
+}
+
+.sa-ml-ps__mode {
+  min-height: 2.25rem;
+  padding: 0 0.75rem;
+  border: 0;
+  border-radius: 0.625rem;
+  background: transparent;
+  font-family: 'Cairo', 'Tajawal', 'Inter', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #475569;
+  cursor: pointer;
+}
+
+.sa-ml-ps__mode--on { background: #ffffff; color: #1d4ed8; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.1); }
+.sa-ml-ps__mode:focus-visible { outline: 2px solid #3b82f6; outline-offset: 2px; }
+
+/* ── Les champs ────────────────────────────────────────────────────────── */
+
+.sa-ml-ps__controls { display: flex; flex-direction: column; gap: 0.75rem; }
+
+.sa-ml-ps__section { display: flex; flex-direction: column; gap: 0.375rem; }
+
+.sa-ml-ps__field { display: flex; flex-direction: column; gap: 0.25rem; }
+
+.sa-ml-ps__field-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.sa-ml-ps__heading {
+  margin: 0;
+  font-family: 'Space Grotesk', 'Cairo', 'Tajawal', sans-serif;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  color: #475569;
+}
+
+.sa-ml-ps__select {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  background: #f8fafc;
+  font-family: 'Cairo', 'Tajawal', 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0f172a;
+  cursor: pointer;
+}
+
+.sa-ml-ps__select:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); background: #ffffff; }
+
+.sa-ml-ps__range {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  padding: 0.625rem;
+  border-radius: 0.75rem;
+  background: #f8fafc;
+}
+
+.sa-ml-ps__bound { display: flex; flex-direction: column; gap: 0.1875rem; }
+.sa-ml-ps__bound--draws { margin-top: 0.5rem; }
+
+.sa-ml-ps__number {
+  width: 6rem;
+  min-height: 2.5rem;
+  padding: 0 0.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0f172a;
+  background: #ffffff;
+  text-align: center;
+}
+
+.sa-ml-ps__number:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); }
+.sa-ml-ps__number--invalid { border-color: #fda4af; }
+
+/* ── Le nombre de tirages : des pastilles, pour passer de 10 à 10 000 ──── */
+
+.sa-ml-ps__draws { border: 0; margin: 0; padding: 0; min-width: 0; }
+
+.sa-ml-ps__chips { display: flex; flex-wrap: wrap; gap: 0.3125rem; margin-top: 0.3125rem; }
+
+.sa-ml-ps__chip {
+  min-height: 2.25rem;
+  padding: 0 0.625rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 9999px;
+  background: #ffffff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #475569;
+  cursor: pointer;
+}
+
+.sa-ml-ps__chip--on { border-color: #2563eb; background: #eff6ff; color: #1d4ed8; }
+.sa-ml-ps__chip:focus-visible { outline: 2px solid #3b82f6; outline-offset: 2px; }
+
+.sa-ml-ps__actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+.sa-ml-ps__run, .sa-ml-ps__reset {
+  flex: 1 1 auto;
+  justify-content: center;
+  min-height: 2.75rem;
+  gap: 0.375rem;
+}
+
+.sa-ml-ps__reset {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  background: #ffffff;
+  color: #475569;
+  font-weight: 700;
+}
+
+.sa-ml-ps__reset:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.sa-ml-ps__hint {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: #64748b;
+}
+
+.sa-ml-ps__error {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: #be123c;
+}
+
+/* ── Les cases à cocher ────────────────────────────────────────────────── */
+
+.sa-ml-ps__options { display: flex; flex-direction: column; }
+
+.sa-ml-ps__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.5rem;
+  font-size: 0.9375rem;
+  color: #334155;
+  cursor: pointer;
+}
+
+.sa-ml-ps__toggle input { width: 1.125rem; height: 1.125rem; accent-color: #2563eb; }
+.sa-ml-ps__toggle input:focus-visible { outline: 2px solid #3b82f6; outline-offset: 2px; }
+
+/* ── La saisie de la série ─────────────────────────────────────────────── */
+
+.sa-ml-ps__dataset { display: flex; flex-direction: column; gap: 0.3125rem; }
+
+.sa-ml-ps__textarea {
+  width: 100%;
+  min-height: 5rem;
+  padding: 0.5rem 0.625rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  background: #ffffff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: #0f172a;
+  resize: vertical;
+}
+
+.sa-ml-ps__textarea:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); }
+.sa-ml-ps__textarea--invalid { border-color: #fda4af; }
+
+/* ── Le résumé statistique ─────────────────────────────────────────────── */
+
+.sa-ml-ps__stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.375rem;
+  margin: 0;
+}
+
+.sa-ml-ps__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.0625rem;
+  padding: 0.4375rem 0.5rem;
+  border-radius: 0.625rem;
+  background: #f8fafc;
+}
+
+.sa-ml-ps__stat--strong { background: #eff6ff; }
+
+.sa-ml-ps__stat dt {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3125rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.sa-ml-ps__stat-symbol {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  color: #1d4ed8;
+  unicode-bidi: isolate;
+}
+
+.sa-ml-ps__stat dd {
+  margin: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: #0f172a;
+  unicode-bidi: isolate;
+}
+
+.sa-ml-ps__stat--strong dd { color: #1d4ed8; }
+
+/* ── La scène : les graphiques ─────────────────────────────────────────── */
+
+.sa-ml-ps__stage {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 12rem;
+  background: #ffffff;
+}
+
+/* L'attribut HTML `dir` ne s'applique PAS aux éléments SVG : sans cette
+   règle, le graphique hérite du `direction: rtl` de la page, et
+   `text-anchor: start` fait courir les légendes vers la GAUCHE (par-dessus
+   les étiquettes d'axe) tandis que `end` sort du cadre à droite. Un axe de
+   valeurs croissantes est LTR par nature ; les textes arabes qu'il porte
+   restent des passages RTL, rendus correctement par l'algorithme bidi. */
+.sa-ml-ps__chart { direction: ltr; }
+
+.sa-ml-ps__scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  padding: 0.875rem 1rem 1.25rem;
+}
+
+.sa-ml-ps__stage-title {
+  margin: 0;
+  font-family: 'Space Grotesk', 'Cairo', 'Tajawal', sans-serif;
+  font-weight: 700;
+  font-size: 1.0625rem;
+  color: #0f172a;
+}
+
+/* Un graphique ne déborde jamais : il se met à l'échelle de sa colonne. */
+.sa-ml-ps__chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 46rem;
+  overflow: visible;
+  user-select: none;
+}
+
+.sa-ml-ps__chart--convergence { max-width: 46rem; }
+
+.sa-ml-ps__bar { fill: #2563eb; }
+
+/* Le trait théorique : plein, épais, ambre — distinct de la barre par sa
+   FORME autant que par sa couleur (§ 13). */
+.sa-ml-ps__theoretical {
+  stroke: #b45309;
+  stroke-width: 3;
+  stroke-linecap: round;
+  fill: none;
+}
+
+.sa-ml-ps__trajectory {
+  stroke: #2563eb;
+  stroke-width: 2.2;
+  fill: none;
+  stroke-linejoin: round;
+}
+
+.sa-ml-ps__chart-tick, .sa-ml-ps__chart-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  fill: #64748b;
+}
+
+.sa-ml-ps__chart-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  fill: #1d4ed8;
+}
+
+.sa-ml-ps__chart-legend {
+  font-family: 'Cairo', 'Tajawal', 'Inter', sans-serif;
+  font-size: 12px;
+  fill: #475569;
+}
+
+.sa-ml-ps__chart-legend--theoretical { fill: #b45309; font-weight: 700; }
+
+/* Sous 768 px le viewBox est étroit (440 unités) ; les textes prennent un
+   corps un peu plus grand pour rester lisibles une fois mis à l'échelle. */
+@media (max-width: 767px) {
+  .sa-ml-ps__chart-tick, .sa-ml-ps__chart-label, .sa-ml-ps__chart-value { font-size: 13px; }
+  .sa-ml-ps__chart-legend, .sa-ml-ps__marker-label { font-size: 14px; }
+}
+
+/* La moyenne : trait plein. La médiane : pointillé. Deux repères qu'on
+   distingue sans voir la couleur. */
+.sa-ml-ps__mean-line { stroke: #dc2626; stroke-width: 2.5; }
+.sa-ml-ps__median-line { stroke: #7c3aed; stroke-width: 2.5; stroke-dasharray: 7 4; }
+
+.sa-ml-ps__marker-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.sa-ml-ps__marker-label--mean { fill: #dc2626; }
+.sa-ml-ps__marker-label--median { fill: #7c3aed; }
+
+.sa-ml-ps__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 9rem;
+  margin: 0;
+  padding: 1rem;
+  border: 2px dashed #e2e8f0;
+  border-radius: 1rem;
+  text-align: center;
+  font-family: 'Cairo', 'Tajawal', 'Inter', sans-serif;
+  font-size: 0.9375rem;
+  color: #94a3b8;
+}
+
+/* ── La table d'expérience : le dé, les dés, la pièce ─────────────────── */
+
+/* Un bloc de hauteur fixe qui accueille le canevas three.js ; la caméra est
+   cadrée pour que le vol le plus haut et deux dés écartés y tiennent, quel
+   que soit le format. La scène est LTR par nature (c'est une table). */
+.sa-ml-ps__dice {
+  position: relative;
+  /* Enfant d'une colonne flex qui déborde : sans `flex: none` il se comprimerait à quelques pixels. */
+  flex: none;
+  width: 100%;
+  max-width: 46rem;
+  height: 15rem;
+  border-radius: 1rem;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  overflow: hidden;
+  direction: ltr;
+}
+
+@media (max-width: 767px) {
+  .sa-ml-ps__dice { height: 11rem; }
+}
+
+.sa-ml-ps__dice-canvas { display: block; width: 100% !important; height: 100% !important; }
+
+.sa-ml-ps__dice-unsupported {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 1rem 2rem;
+  text-align: center;
+  direction: rtl;
+  font-family: 'Cairo', 'Tajawal', 'Inter', sans-serif;
+  font-size: 0.9375rem;
+  color: #475569;
+}
+
+/* Le résultat, en grand, sous la table : ce que l'élève vient de voir tomber. */
+.sa-ml-ps__result {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.375rem 0.625rem;
+  margin: 0;
+  min-height: 2.25rem;
+  font-family: 'Cairo', 'Tajawal', 'Inter', sans-serif;
+  font-size: 1rem;
+  color: #475569;
+}
+
+.sa-ml-ps__result-value {
+  font-family: 'JetBrains Mono', 'Cairo', monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a;
+  unicode-bidi: isolate;
+}
+
+.sa-ml-ps__result--pending { color: #94a3b8; font-style: italic; }
+
+/* ── La lecture en clair : l'issue suivie, et la question ──────────────── */
+
+.sa-ml-ps__tracked {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.375rem 0.625rem;
+  margin: 0;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.875rem;
+  background: #f8fafc;
+  font-family: 'Cairo', 'Tajawal', 'Inter', sans-serif;
+  font-size: 0.9375rem;
+  color: #475569;
+}
+
+.sa-ml-ps__tracked-name { font-weight: 700; color: #0f172a; }
+
+.sa-ml-ps__tracked-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1d4ed8;
+  unicode-bidi: isolate;
+}
+
+.sa-ml-ps__tracked-vs { font-size: 0.8125rem; color: #94a3b8; }
+
+.sa-ml-ps__tracked-theoretical {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: #b45309;
+  unicode-bidi: isolate;
+}
+
+.sa-ml-ps__convergence { display: flex; flex-direction: column; gap: 0.375rem; }
+
+.sa-ml-ps__prompt {
+  margin: 0;
+  font-family: 'Cairo', 'Tajawal', 'Inter', sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #64748b;
+}
+
+/* ── Le tableau, second par rapport au graphique ───────────────────────── */
+
+.sa-ml-ps__table-wrap { max-width: 46rem; overflow-x: auto; }
+
+.sa-ml-ps__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Cairo', 'Tajawal', 'Inter', sans-serif;
+  font-size: 0.875rem;
+}
+
+.sa-ml-ps__table-caption {
+  padding-bottom: 0.375rem;
+  text-align: start;
+  font-size: 0.8125rem;
+  color: #64748b;
+}
+
+.sa-ml-ps__table th, .sa-ml-ps__table td {
+  padding: 0.375rem 0.625rem;
+  text-align: start;
+  border-bottom: 1px solid #f1f5f9;
+  white-space: nowrap;
+}
+
+.sa-ml-ps__table thead th {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #64748b;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.sa-ml-ps__table tbody th {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.sa-ml-ps__fraction {
+  display: inline-block;
+  margin-inline-end: 0.375rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  color: #b45309;
+  unicode-bidi: isolate;
+}
+
+.sa-ml-ps__percent {
+  font-family: 'JetBrains Mono', monospace;
+  color: #64748b;
+  unicode-bidi: isolate;
+}
+
+.sa-ml-ps__percent--strong { font-weight: 700; color: #1d4ed8; }

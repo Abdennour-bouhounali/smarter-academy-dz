@@ -231,6 +231,24 @@ export function parseLessonConfig(lessonDir) {
           module: literalValue(propOf(el, 'module')),
           learningPointIds: literalValue(propOf(el, 'learningPointIds')),
           sourceElementIds: literalValue(propOf(el, 'sourceElementIds')),
+          // Les DEUX NIVEAUX et la traçabilité de l'expérience
+          // (packages/core/curriculum/manipulationLevels.js). `experience`
+          // est un objet littéral : on en lit les champs un par un, parce
+          // que `literalValue` ne descend pas dans les objets — c'est voulu,
+          // les métadonnées de leçon restent statiques et lisibles à l'œil.
+          level: literalValue(propOf(el, 'level')),
+          objective: literalValue(propOf(el, 'objective')),
+          autonomy: literalValue(propOf(el, 'autonomy')),
+          experience: (() => {
+            const node = propOf(el, 'experience');
+            if (node === undefined) return undefined;
+            if (node.type !== 'ObjectExpression') return 'INVALID';
+            return {
+              type: literalValue(propOf(node, 'type')),
+              reason: literalValue(propOf(node, 'reason')),
+              theme: literalValue(propOf(node, 'theme')),
+            };
+          })(),
         }))
       : 'INVALID';
 

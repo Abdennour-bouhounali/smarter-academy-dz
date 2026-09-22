@@ -36,6 +36,12 @@ import {
   LESSON_KINDS,
   REQUIRED_STAGES_BY_KIND,
 } from '../packages/core/curriculum/manipulationTypes.js';
+import {
+  MANIPULATION_LEVEL_IDS,
+  EXPERIENCE_TYPES,
+  ADAPTATION_REASONS,
+  VISUAL_THEME_IDS,
+} from '../packages/core/curriculum/manipulationLevels.js';
 // Shared AST plumbing (also used by scripts/audit-knowledge-dependencies.mjs).
 import {
   traverse,
@@ -164,6 +170,64 @@ for (const lessonDir of findLessonDirs(lessonsRoot)) {
       }
       if (r.sourceElementIds !== undefined && (!Array.isArray(r.sourceElementIds) || r.sourceElementIds.some((x) => typeof x !== 'string'))) {
         errors.push(`${where}: sourceElementIds must be a literal array of extraction element ids`);
+      }
+
+      // ── Les DEUX NIVEAUX et la traçabilité de l'expérience ──────────────
+      // Le manuel dit CE QUE l'élève apprend ; la plateforme décide COMMENT
+      // il le vit. Un contexte réhabillé doit donc dire d'où vient la
+      // mathématique et pourquoi la situation a changé — jamais en silence
+      // (docs/architecture/MANIPULATION_CONTRACT.md §7bis-levels).
+      if (r.kind === 'manipulation') {
+        if (r.level !== undefined) {
+          if (!MANIPULATION_LEVEL_IDS.includes(r.level)) {
+            errors.push(`${where}: manipulation level must be one of ${MANIPULATION_LEVEL_IDS.join('/')} (got ${JSON.stringify(r.level)})`);
+          }
+          if (typeof r.objective !== 'string' || r.objective === '') {
+            errors.push(`${where}: a levelled manipulation must state its 'objective' — the mathematical objective, identical at both levels`);
+          }
+          if (r.level === 'advanced' && (typeof r.autonomy !== 'string' || r.autonomy === '')) {
+            errors.push(`${where}: an 'advanced' manipulation must declare its 'autonomy' — what scaffolding it removes or demands more of. 'Beginner with bigger numbers' is not an advanced level.`);
+          }
+          if (r.experience === 'INVALID' || !r.experience) {
+            errors.push(`${where}: a levelled manipulation must carry a literal 'experience' object { type, reason?, theme? }`);
+          } else {
+            if (!EXPERIENCE_TYPES.includes(r.experience.type)) {
+              errors.push(`${where}: experience.type must be one of ${EXPERIENCE_TYPES.join('/')} (got ${JSON.stringify(r.experience.type)})`);
+            } else if (r.experience.type !== 'textbook' && !ADAPTATION_REASONS.includes(r.experience.reason)) {
+              errors.push(`${where}: an adapted context must carry one of these reasons: ${ADAPTATION_REASONS.join('/')}`);
+            }
+            if (r.experience.theme !== undefined && r.experience.theme !== '' && !VISUAL_THEME_IDS.includes(r.experience.theme)) {
+              errors.push(`${where}: unknown visual theme ${JSON.stringify(r.experience.theme)} (one of ${VISUAL_THEME_IDS.join('/')})`);
+            }
+          }
+          // Une manipulation à niveaux ne cite plus le manuel ? Sa
+          // mathématique viendrait de nulle part.
+          if (!Array.isArray(r.sourceElementIds) || r.sourceElementIds.length === 0) {
+            errors.push(`${where}: a levelled manipulation must cite the textbook element its mathematics comes from (sourceElementIds)`);
+          }
+        }
+      }
+    }
+
+    // ── Un module à niveaux en a DEUX, pas un ────────────────────────────
+    // Dès qu'un module déclare un niveau, il doit déclarer les deux : un
+    // « مبتدئ » seul laisse l'élève avancé sans marche à monter, un
+    // « متقدم » seul laisse le débutant devant un mur (brief §3).
+    const levelledByModule = new Map();
+    for (const r of resources) {
+      if (r.kind !== 'manipulation' || r.level === undefined) continue;
+      if (!levelledByModule.has(r.module)) levelledByModule.set(r.module, []);
+      levelledByModule.get(r.module).push(r);
+    }
+    for (const [moduleNumber, rs] of levelledByModule) {
+      const present = new Set(rs.map((r) => r.level));
+      const missing = MANIPULATION_LEVEL_IDS.filter((id) => !present.has(id));
+      if (missing.length > 0) {
+        errors.push(`${configPath}: module ${moduleNumber} declares a levelled manipulation but is missing its '${missing.join("', '")}' level — a levelled workspace always offers both`);
+      }
+      const objectives = new Set(rs.map((r) => r.objective).filter(Boolean));
+      if (objectives.size > 1) {
+        errors.push(`${configPath}: module ${moduleNumber}: both levels must serve the SAME mathematical objective — the context may change, the objective may not`);
       }
     }
     // Un module de manipulation doit déclarer AU MOINS une manipulation : le

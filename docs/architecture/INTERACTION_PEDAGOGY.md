@@ -291,7 +291,11 @@ not a laboratory.
 REAL SITUATION → CURIOSITY → PREDICTION → MANIPULATION → OBSERVATION → DISCOVERY → MATHEMATICAL QUESTION
 ```
 
-- **Real situation** — two sentences in the `MissionBrief`, an object on screen (§19). Only when
+- **Real situation** — two sentences in the `MissionBrief` — the platform's one activity card,
+  redesigned 2026-09-21: a light card carrying source pill, optional hook, objective, the
+  textbook's own statement, an optional **drawn** context vignette and the source tag. It is
+  data-driven; no lesson-specific design is ever added to it (guide §4bis) — an object on screen
+  (§19). Only when
   the context serves the mathematics; a die, a taxi meter, a market scale and a phone battery
   earned their place, a decorative story does not.
 - **Curiosity** — one question the student cannot yet answer (« Que paie-t-on pour 0 km ? »).
@@ -374,6 +378,41 @@ positive value or a fixed position. Derive the frame from the content (`planeFor
 its frame for the most expensive tariff), keep readouts in the DOM rather than in SVG `<text>`,
 and **sweep the control in the e2e suite** — including a mobile pass at 375 px and an aspect-ratio
 guard on every `CoordPlane` (`viewBox height / width ≤ 3`, the signature of a forgotten `unitY`).
+
+### 6bis.4bis Two levels, one workspace (2026-09-20)
+
+The opening manipulation is offered at **two levels in one workspace** —
+« مبتدئ » by default, « متقدم » one tap away — never as two manipulations
+stacked down the page, and never on a second page. The mechanism, the data
+model and the validator rules are in
+[`MANIPULATION_CONTRACT.md` §7bis-levels](./MANIPULATION_CONTRACT.md); what
+matters pedagogically is this:
+
+- **مبتدئ buys the first contact.** Small numbers, one obvious gesture, an
+  immediate visible consequence. The student must be able to *cause* the
+  phenomenon within seconds, before any notation.
+- **متقدم buys autonomy, not arithmetic.** It removes scaffolding, withdraws
+  suggestions, poses a case where the answer is "no", or uses numbers too large
+  to check by counting. « Beginner with bigger numbers » is not a second level,
+  and the validator rejects it.
+- **Both serve the same objective.** The context may change between levels; the
+  mathematical objective may not. That is what makes them two experiences of
+  one idea rather than two unrelated exercises.
+- **The context serves the mathematics, never the reverse.** A situation the
+  student lives in (teams, a game, a build) is worth choosing when it makes the
+  structure easier to see. When the textbook's own drawing *is* the argument —
+  a rectangle of points, two lists of divisors — keep it at both levels.
+- **One world per lesson, the same quality everywhere (2026-09-21).** The
+  football pitch and the library are the references; every other lesson of
+  unit 1 now opens on its own drawn world — a construction site in bricks of
+  n, a florist's bouquets, school bags, a tailor's ribbons, a recipe — chosen
+  by asking, in this order: what is the concept, what real situation carries
+  exactly its structure, what object does the student move, what quantity
+  changes, what relation becomes visible, what should they conclude. The
+  worlds differ; the shell, the drag engine, the refusal-with-a-reason, the
+  hints, the discovery phase and the tabs do not — that is what makes them
+  recognisably one platform. The table and the rules are in
+  [`MANIPULATION_CONTRACT.md` §2bis](./MANIPULATION_CONTRACT.md).
 
 ### 6bis.5 Scope rule for agents
 

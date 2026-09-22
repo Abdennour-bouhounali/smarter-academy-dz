@@ -562,14 +562,16 @@
 .sa-nb-content [data-nb="mistake"] [data-nb="label"] { color: #be123c; }
 
 /* ── Le déclencheur flottant de la leçon ─────────────────────────────────
-   Même famille que « 🧠 بطاقتي » (KnowledgeMap.jsx), posé juste au-dessus de
-   lui : PHYSIQUEMENT à gauche dans les deux directions — sous RTL la barre
-   latérale occupe la droite. bottom-20 est pris par la carte ; 9rem laisse
-   1rem entre les deux pastilles. */
+   Même famille que « 🧠 بطاقتي » (KnowledgeMap.jsx), PHYSIQUEMENT à gauche
+   dans les deux directions — sous RTL la barre latérale occupe la droite.
+   Il occupe le HAUT de la colonne flottante (voir classroom.css pour la
+   pile complète) : le ras du coin (1.5rem) est pris par « ⛶ عرض » (mode
+   classe) et 5.5rem par la carte des connaissances ; 9.5rem laisse 1rem
+   au-dessus d'elle. */
 .sa-nb-lesson-trigger {
   position: fixed;
   left: 1.5rem;
-  bottom: 9rem;
+  bottom: 9.5rem;
   z-index: 40;
   display: inline-flex;
   align-items: center;

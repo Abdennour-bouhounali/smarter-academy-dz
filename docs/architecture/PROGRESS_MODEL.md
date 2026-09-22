@@ -1,5 +1,32 @@
 # Progress Model
 
+> **Correction (2026-09-20).** Two statements below are now false and are
+> contradicted by this document's own first table:
+>
+> 1. **"No independent mastery signal exists."** A real, evidence-driven
+>    mastery model is implemented and displayed. `student_learning_point_progress`
+>    holds a per-learning-point confidence (0–1) updated by `MasteryModel`
+>    (`STARTING_CONFIDENCE 0.5`, `MASTERED_THRESHOLD 0.70`, `GAP_THRESHOLD 0.40`,
+>    `LEARNING_RATE 0.22`, plus weights for partial answers, secondary learning
+>    points, practice evidence and hint decay). The student sees it as a coloured
+>    dot per learning point on the lesson index, the unit page, the progression
+>    tree and the practice hub. What remains a completion proxy is only
+>    `getModuleMastery`, the **module-unlock** signal — binary 100/0.
+> 2. **The lesson-completion denominator** is `modules.length`, served by the
+>    lesson registry. `LESSON_CONFIG.totalModules` was removed, as this document
+>    says earlier; the "Lesson completion" section below still names it.
+>
+> Also: `completion_mode: 'mastery'` is never emitted — the client never sends
+> the field, so every completion is recorded as `'path'`. And XP is still
+> client-only, as stated.
+>
+> 3. **Module 0 is recorded like any other module** (fixed 2026-09-20). A
+>    module numbered `0` — « أستعدّ », a `prerequisite_check` — used to be
+>    dropped by a truthiness guard in `ModuleLayout`, capping those lessons at
+>    80 %. Progress writes now go through `isValidModuleNumber`, and the resume
+>    path sweeps the lesson's real module range via `getFirstModuleNumber`. See
+>    `LESSON_CONTRACT.md` § « Le module 0 EST un module ».
+
 The cleanup phase unified *how* completion percentage is calculated (one pure function, `calculateCompletionPercentage`, replacing four divergent formulas). This document defines *what* completion means at each level, and draws the line between completion and mastery that the codebase currently blurs.
 
 ## The two progressions (and their two tables)
@@ -63,6 +90,7 @@ completion percentage (the old `totalModules || 7` fallbacks are gone, as is
 ### Module completion
 
 - **Definition:** binary. A module is complete iff `useProgress(lessonId).markModuleCompleted(moduleId)` has been called for it, ever.
+- **Module `0` counts.** The id is written as the module's number stringified, so a lesson opening on « أستعدّ » stores `'0'`. `calculateCompletionPercentage` already normalises it (its regex matches `^(\d+)`), and callers must test module numbers with `isValidModuleNumber`, never for truthiness.
 - **Numerator/denominator:** N/A — not a percentage, a boolean (`isModuleCompleted(moduleId)`, `lessonAccess.js`).
 - **Who decides when this fires:** the module itself, at whatever point its own author considers it "done" (§Module contract, `LESSON_CONTRACT.md`) — intentionally not standardized across module types.
 - **Edge case:** calling `markModuleCompleted` twice for the same id is a no-op (`useProgress.js` checks `.includes()` first) — idempotent by construction.

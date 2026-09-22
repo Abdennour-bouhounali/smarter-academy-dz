@@ -1,4 +1,4 @@
-import { House, BookOpen, Compass, TrendingUp, NotebookPen } from 'lucide-react';
+import { House, BookOpen, Compass, TrendingUp, NotebookPen, PencilRuler } from 'lucide-react';
 
 // The authenticated student area's own navigation — deliberately separate
 // from data/navigation.js (the visitor IA). A student's workspace is a
@@ -9,6 +9,10 @@ export const studentNavLinks = [
   { labelKey: 'home', path: '/espace', icon: House, end: true },
   { labelKey: 'myCourses', path: '/espace/cours', icon: BookOpen },
   { labelKey: 'explore', path: '/espace/explorer', icon: Compass },
+  // Le مختبر الرياضيات : les instruments LIBRES (سبّورة, et demain les
+  // autres), hors de toute leçon. Après « explorer » (le programme) vient
+  // « expérimenter » (docs/architecture/MATH_LAB.md).
+  { labelKey: 'mathLab', path: '/espace/atelier', icon: PencilRuler },
   { labelKey: 'progression', path: '/espace/progression', icon: TrendingUp },
   // Le cahier de l'élève : ses notes, ses erreurs, ses questions, sa
   // révision. Après la progression (« où en suis-je ? ») vient « qu'ai-je

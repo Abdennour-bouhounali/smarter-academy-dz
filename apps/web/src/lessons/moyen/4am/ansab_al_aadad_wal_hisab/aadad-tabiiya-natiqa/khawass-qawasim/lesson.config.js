@@ -35,7 +35,29 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   priorKnowledge: ['qasim-jidaa', 'qisma-iqlidiya'],
   resources: [
-    { kind: 'manipulation', code: 'divisor-properties-18-12', type: 'divisor-properties', module: 1, title: 'n يقسم a و b: ماذا يقسم أيضًا؟',
+    // Module 1 — workspace à deux niveaux. La propriété est la même ; ce qui
+    // change est la possibilité de la VÉRIFIER en comptant. Les nombres du
+    // manuel sont DESSINÉS en murs de briques de longueur n (thème
+    // `construction`) : accoler, enlever, mesurer — le résultat est toujours
+    // un mur de briques entières. Le contexte est déclaré : une adaptation
+    // de la plateforme, jamais silencieuse.
+    //   مبتدئ  — le cas 1 du manuel (3 | 18 et 12) : les briques se comptent.
+    //   متقدم  — 9 | 900 et 90 : impossible à compter, il faut PRÉDIRE avec
+    //            la propriété avant de poser. Les cas 2 et 3 du manuel
+    //            restent à l'étape 1, où le manuel les pose.
+    { kind: 'manipulation', code: 'divisor-properties-18-12', type: 'divisor-properties', module: 1,
+      level: 'beginner',
+      title: 'الحالة 1: n = 3، a = 18، b = 12',
+      objective: 'n يقسم a و b ⇒ n يقسم a + b و a − b وباقي قسمة a على b',
+      autonomy: '',
+      experience: { type: 'platform_adaptation', reason: 'multiple_representations', theme: 'construction' },
+      learningPointIds: ['4am_khawass-qawasim_P1'], sourceElementIds: ['act-3'] },
+    { kind: 'manipulation', code: 'divisor-properties-900-90', type: 'divisor-properties', module: 1,
+      level: 'advanced',
+      title: 'أعداد لا تُعدّ: n = 9، a = 900، b = 90',
+      objective: 'n يقسم a و b ⇒ n يقسم a + b و a − b وباقي قسمة a على b',
+      autonomy: 'أعداد كبيرة لا تُتحقّق بالعدّ: على التلميذ أن يتوقّع بالخاصية قبل الكشف',
+      experience: { type: 'platform_adaptation', reason: 'larger_numbers_for_autonomy', theme: 'construction' },
       learningPointIds: ['4am_khawass-qawasim_P1', '4am_khawass-qawasim_P3'], sourceElementIds: ['act-3'] },
     { kind: 'method', code: 'method-proof', module: 3, title: 'أتعلّم البرهنة: «إذا … فإنّ …»',
       learningPointIds: ['4am_khawass-qawasim_P4'], sourceElementIds: ['method-proof'] },

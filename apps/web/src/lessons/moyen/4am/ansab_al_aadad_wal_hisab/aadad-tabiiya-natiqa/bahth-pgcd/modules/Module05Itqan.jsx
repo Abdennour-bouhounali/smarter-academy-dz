@@ -1,6 +1,6 @@
 import React from 'react';
 import { BossFinal } from '../../../../../../common/kit';
-import { CompleteView } from '../../../../../../common/knowledge';
+import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { SourceTag } from '../../../../../../common/textbook';
 import { LESSON_CONFIG } from '../lesson.config';
@@ -28,7 +28,7 @@ export default function Module05Itqan() {
           options: ['ثلاث قسمات، ونفس النتيجة 45', 'ثمان قسمات أيضًا', 'قسمة واحدة', 'نتيجة مختلفة'], correct: 0, cols: 2, explain: <span>765 = 135 × 5 + 90 ، 135 = 90 × 1 + 45 ، 90 = 45 × 2 + 0. القسمة تختصر الطرحات المتكررة.</span>, assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_bahth-pgcd_P5'] } },
       ]}
       badges={[{ id: 'furuq', emoji: '➖', label: 'أطرح وأعيد', test: (m) => (m.furuq ?? 0) + (m.farq ?? 0) === 0 }, { id: 'iqlidus', emoji: '➗', label: 'خوارزمية إقليدس', test: (m) => (m.iqlidus ?? 0) + (m.baqi ?? 0) === 0 }]}
-      synthese={<CompleteView />}
+      synthese={<KnowledgeSnapshot complete variant="complete" />}
       completion={{ masterTitle: 'أتقنت البحث عن القاسم المشترك الأكبر', title: 'انتهى الدرس 6', message: 'خوارزميتان، خاصيتان تبرّرانهما، ونتيجة واحدة. الدرس 7 يسأل: ماذا لو كان PGCD = 1؟', verbs: ['أطرح', 'أقسم', 'أبرّر', 'أختار'], masterBadgeLabel: 'خوارزمية إقليدس' }} />
   );
 }

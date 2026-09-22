@@ -1,5 +1,6 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
+import { useClassroomPortalTarget } from '../../classroom/ClassroomContext';
 
 /**
  * L'objet porté, dessiné SOUS LE DOIGT pendant le glisser. Un portail vers
@@ -7,9 +8,14 @@ import { createPortal } from 'react-dom';
  * `pointer-events: none` pour ne jamais masquer la zone visée. Rendu en
  * `transform` (pas left/top animés) : une seule propriété composée, fluide
  * sur un téléphone d'entrée de gamme.
+ *
+ * En MODE CLASSE plein écran, <body> n'est plus visible (le navigateur ne
+ * montre que l'élément plein écran) : le portail va alors vers la racine de
+ * la présentation, que le contexte publie. Hors mode classe : <body>.
  */
 export default function DragGhost({ ghost, children }) {
-  if (!ghost || typeof document === 'undefined') return null;
+  const target = useClassroomPortalTarget();
+  if (!ghost || !target) return null;
   return createPortal(
     <div
       aria-hidden="true"
@@ -18,6 +24,6 @@ export default function DragGhost({ ghost, children }) {
     >
       <div className="rounded-xl shadow-2xl">{children}</div>
     </div>,
-    document.body,
+    target,
   );
 }

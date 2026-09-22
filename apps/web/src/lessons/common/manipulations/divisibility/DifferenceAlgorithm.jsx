@@ -9,7 +9,8 @@ import useDragInteraction from '../useDragInteraction';
 import DropZone from '../primitives/DropZone';
 import NumberTile from '../primitives/NumberTile';
 import DragGhost from '../primitives/DragGhost';
-import QuantityBar from '../primitives/QuantityBar';
+import RibbonStrip from '../primitives/RibbonStrip';
+import DraggableObject from '../primitives/DraggableObject';
 import EquationDisplay from '../primitives/EquationDisplay';
 import * as L from '../logic/algorithms';
 
@@ -18,11 +19,13 @@ const { differenceStepTex, pgcdEqualityTex } = divisibility;
 /**
  * pgcd-differences — LA MACHINE À SOUSTRAIRE.
  *
- * A. L'élève PORTE le petit nombre sur le grand. (Le contraire est refusé,
- *    avec la raison : « نطرح دائمًا الأصغر من الأكبر ».)
- * B. Idée : PGCD(a ; b) = PGCD(b ; a − b).
- * C. Les deux barres sont à la même échelle : la part commune s'annule sous
- *    les yeux, la différence reste.
+ * A. L'élève PORTE le petit RUBAN sur le grand : les ciseaux y coupent sa
+ *    longueur. (Le contraire est refusé, avec la raison : « نطرح دائمًا
+ *    الأصغر من الأكبر ».) Atelier de couture, thème `workshop`.
+ * B. Idée : PGCD(a ; b) = PGCD(b ; a − b) — la plus grande longueur qui
+ *    mesure deux rubans mesure aussi ce qui reste après la coupe.
+ * C. Les deux rubans sont à la même échelle (RibbonStrip) : la part commune
+ *    se coupe sous les yeux, la différence reste.
  * D. Émerge : la ligne « 252 − 140 = 112 » et, à côté, l'invariant qui ne
  *    change pas d'un maillon à l'autre.
  * E. À découvrir : la chaîne s'arrête au fruit nul, et le PGCD est le
@@ -70,7 +73,7 @@ export default function DifferenceAlgorithm({
     <ManipulationShell
       type="pgcd-differences"
       title={title ?? t('manipulation.diff.title', { a, b })}
-      mission={mission ?? t('manipulation.diff.mission')}
+      mission={mission ?? t('manipulation.diff.ribbonMission', { a, b })}
       lead={lead}
       state={state}
       numberFields={[{ key: 'a', label: 'a' }, { key: 'b', label: 'b' }]}
@@ -122,31 +125,43 @@ export default function DifferenceAlgorithm({
         <div className="space-y-3">
           <p className="text-xs text-slate-500">{t('manipulation.dragHint')}</p>
 
-          <div className="space-y-2">
+          <div className="space-y-2" data-ribbons>
+            {/* LE PETIT RUBAN : c'est LUI qu'on porte sur le grand. */}
             <div className="flex items-center gap-2">
-              <span className="w-16 shrink-0 text-xs font-bold text-slate-600">{t('manipulation.diff.small')}</span>
+              <span className="w-16 shrink-0 text-xs font-bold text-slate-600">{t('manipulation.diff.ribbonSmall')}</span>
               {!finished ? (
-                <NumberTile value={pair.small} drag={drag} id="num:small" label={`${t('manipulation.diff.small')} ${pair.small}`} tone="divisor" />
-              ) : <NumberTile value={pair.small} tone="dim" />}
-              <QuantityBar value={pair.small} scale={scale} tone="b" className="flex-1" label={String(pair.small)} />
+                <DraggableObject drag={drag} id="num:small" label={`${t('manipulation.diff.ribbonSmall')} ${pair.small}`} className="flex min-h-[44px] flex-1 items-center gap-2 rounded-xl border-2 border-violet-300 bg-violet-50 px-2 py-1">
+                  <NumberTile value={pair.small} tone="divisor" size="sm" />
+                  <RibbonStrip value={pair.small} scale={scale} tone="b" height="h-6" className="flex-1" />
+                </DraggableObject>
+              ) : (
+                <div className="flex min-h-[44px] flex-1 items-center gap-2 rounded-xl border-2 border-slate-200 bg-slate-50 px-2 py-1">
+                  <NumberTile value={pair.small} tone="dim" size="sm" />
+                  <RibbonStrip value={pair.small} scale={scale} tone="ghost" height="h-6" className="flex-1" />
+                </div>
+              )}
             </div>
 
-            <DropZone drag={drag} id="big" label={t('manipulation.diff.big')} disabled={finished} minHeight="min-h-[64px]" className="flex items-center gap-2 p-2">
-              <span className="w-16 shrink-0 text-xs font-bold text-slate-600">{t('manipulation.diff.big')}</span>
-              <NumberTile value={pair.big} tone="dividend" />
-              <QuantityBar value={pair.big} scale={scale} tone="a" className="flex-1"
+            {/* LE GRAND RUBAN : la zone qui reçoit le petit. Sa longueur est
+                déjà découpée en « ce que le petit va couper » + « ce qui
+                restera » : la soustraction se voit avant le geste. */}
+            <DropZone drag={drag} id="big" label={t('manipulation.diff.ribbonBig')} disabled={finished} minHeight="min-h-[72px]" className="flex items-center gap-2 p-2">
+              <span className="w-16 shrink-0 text-xs font-bold text-slate-600">{t('manipulation.diff.ribbonBig')}</span>
+              <NumberTile value={pair.big} tone="dividend" size="sm" />
+              <RibbonStrip value={pair.big} scale={scale} tone="a" className="flex-1" cut={!finished && pair.big > pair.small}
                 segments={pair.small <= pair.big && pair.big > 0 ? [
-                  { value: pair.small, tone: 'b', label: String(pair.small) },
-                  ...(pair.big - pair.small > 0 ? [{ value: pair.big - pair.small, tone: 'diff', label: String(pair.big - pair.small) }] : []),
+                  { value: pair.small, tone: 'b', label: t('manipulation.diff.cm', { n: pair.small }) },
+                  ...(pair.big - pair.small > 0 ? [{ value: pair.big - pair.small, tone: 'diff', label: t('manipulation.diff.cm', { n: pair.big - pair.small }) }] : []),
                 ] : undefined} />
-              {!finished && !drag.held && <span className="text-[11px] text-slate-400">{t('manipulation.diff.dropOnBig')}</span>}
+              {!finished && !drag.held && <span className="hidden text-[11px] text-slate-400 sm:inline">{t('manipulation.diff.dropOnBig')}</span>}
             </DropZone>
+            {finished && <p className="text-xs font-bold text-emerald-800">{t('manipulation.diff.nothingLeft')}</p>}
           </div>
 
           {finished && (
             <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
               <div className="rounded-2xl border-2 border-slate-200 bg-white p-2">
-                <div className="mb-1 text-[11px] font-bold text-slate-700">{t('manipulation.diff.chain')}</div>
+                <div className="mb-1 text-[11px] font-bold text-slate-700">{t('manipulation.diff.piecesTitle')}</div>
                 <div dir="ltr" className="flex flex-wrap gap-1.5">
                   {nonZero.map((v) => <NumberTile key={v} value={v} drag={drag} id={`diff:${v}`} label={`${v}`} tone="quotient" size="sm" />)}
                   <NumberTile value={0} tone="dim" size="sm" />

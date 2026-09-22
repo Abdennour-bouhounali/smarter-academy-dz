@@ -24,5 +24,6 @@
   "sidebarCollapse": "طيّ الشريط الجانبي",
   "sidebarLockedByMap": "الشريط الجانبي مطوي بسبب «خريطتي»",
   "sidebarLockedByMapHint": "«خريطتي» تشغل هذه المساحة — أغلق الخريطة لإعادة فتح الشريط",
-  "studentSpace": "فضاء التلميذ"
+  "studentSpace": "فضاء التلميذ",
+  "mathLab": "المختبر"
 }

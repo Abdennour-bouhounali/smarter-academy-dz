@@ -10,7 +10,8 @@ import DropZone from '../primitives/DropZone';
 import NumberTile from '../primitives/NumberTile';
 import DivisorChip from '../primitives/DivisorChip';
 import DragGhost from '../primitives/DragGhost';
-import QuantityBar from '../primitives/QuantityBar';
+import GroupingScene from '../primitives/GroupingScene';
+import { themeWords } from '../themeWords';
 import MathTransformation from '../primitives/MathTransformation';
 import EquationDisplay from '../primitives/EquationDisplay';
 import * as L from '../logic/fraction';
@@ -20,10 +21,13 @@ const { reductionStepTex, euclidStepTex } = divisibility;
 /**
  * fraction-reduction — LE LABORATOIRE DES DEUX CHEMINS.
  *
- * A. L'élève porte un DIVISEUR COMMUN sur le kasr ; numérateur et
- *    dénominateur sont deux barres qui rétrécissent ENSEMBLE.
+ * A. L'élève porte un DIVISEUR COMMUN sur la RECETTE : 84 cuillères de sucre
+ *    pour 48 tasses de farine. Diviser les deux termes par k, c'est répartir
+ *    les deux ingrédients en k parts identiques — et la fraction réduite est
+ *    ce que contient UNE part (GroupingScene, thème `kitchen`).
  * B. Idée : diviser les deux termes par un diviseur commun ne change pas le
- *    kasr ; on s'arrête quand il n'y a plus de diviseur commun > 1.
+ *    kasr (une part garde les mêmes proportions que la recette entière) ; on
+ *    s'arrête quand il n'y a plus de diviseur commun > 1.
  * C. Un jeton qui ne divise qu'un seul terme est refusé AVEC la raison —
  *    l'erreur classique, expliquée au moment où elle se produit.
  * D. Émerge : la chaîne 84/48 → 21/12 → 7/4, puis, à côté, la même chose en
@@ -32,7 +36,7 @@ const { reductionStepTex, euclidStepTex } = divisibility;
  *    étapes, pas affirmée.
  */
 export default function FractionReduction({
-  n: n0, d: d0, title, lead, mission, path, initialMode = 'student', allowModeSwitch = false, onFinished,
+  n: n0, d: d0, title, lead, mission, path, theme = 'kitchen', initialMode = 'student', allowModeSwitch = false, onFinished,
 }) {
   const { t } = useTranslation('lesson');
   const state = useManipulation({ type: 'fraction-reduction', initialNumbers: { n: n0, d: d0 }, initialMode, hintCount: 3 });
@@ -64,7 +68,11 @@ export default function FractionReduction({
   const candidates = L.candidatesA(lab);
   const chain = L.chainA(lab);
   const finishedA = L.pathAFinished(lab);
-  const scale = Math.max(n, d);
+  // La SCÈNE montre la dernière répartition : la recette d'avant, en k parts,
+  // dont une est mise en évidence — c'est la fraction courante.
+  const last = chain[chain.length - 1];
+  const prev = chain.length > 1 ? chain[chain.length - 2] : null;
+  const words = themeWords(t, theme);
   const heldValue = drag.held ? Number(drag.held.replace(/^[kp]:/, '')) : null;
   // Le chemin du manuel (سمير : ÷4 puis ÷3) sert de guide au mode classe.
   const classPath = path ?? candidates;
@@ -73,7 +81,7 @@ export default function FractionReduction({
     <ManipulationShell
       type="fraction-reduction"
       title={title ?? t('manipulation.reduce.title', { n, d })}
-      mission={mission ?? t('manipulation.reduce.mission')}
+      mission={mission ?? t('manipulation.reduce.recipeMission')}
       lead={lead}
       state={state}
       numberFields={[{ key: 'n', label: t('manipulation.reduce.numerator') }, { key: 'd', label: t('manipulation.reduce.denominator') }]}
@@ -117,6 +125,8 @@ export default function FractionReduction({
               {lab.euclid.map((s, i) => <EquationDisplay key={i} tex={euclidStepTex(s)} tone="muted" size="sm" />)}
               <MathTransformation fromTex={`\\dfrac{${n}}{${d}}`} opLabel={`÷ ${lab.gcd}`} toTex={`\\dfrac{${lab.final.n}}{${lab.final.d}}`} tone="result"
                 note={reductionStepTex(n, d, lab.gcd) ? t('manipulation.reduce.pgcdInOneStep') : undefined} />
+              <GroupingScene a={n} b={d} k={lab.gcd} theme={theme} words={{ ...words, allUsed: undefined }} highlight={0} compact
+                ariaLabel={`${n}/${d} ÷ ${lab.gcd} = ${lab.final.n}/${lab.final.d}`} />
             </div>
           )}
         </div>
@@ -157,16 +167,31 @@ export default function FractionReduction({
             </div>
           </div>
 
-          <DropZone drag={drag} id="fraction" label={t('manipulation.reduce.fractionZone')} hint={lab.pathA.length === 0 ? t('manipulation.reduce.dropDivisor') : undefined} minHeight="min-h-[110px]" className="p-3" disabled={finishedA}>
+          <DropZone drag={drag} id="fraction" label={t('manipulation.reduce.fractionZone')} hint={lab.pathA.length === 0 ? t('manipulation.reduce.dropDivisor') : undefined} minHeight="min-h-[150px]" className="p-3" disabled={finishedA} data-recipe>
             <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <NumberTile value={cur.n} tone="dividend" />
-                <QuantityBar value={cur.n} scale={scale} tone="a" className="flex-1" label={t('manipulation.reduce.numerator')} />
+              <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-bold">
+                <span className="flex items-center gap-2 text-slate-800">
+                  <span dir="ltr" className="inline-flex flex-col items-center gap-0.5">
+                    <NumberTile value={cur.n} tone="dividend" size="sm" />
+                    <span className="h-0.5 w-full rounded bg-slate-800" aria-hidden="true" />
+                    <NumberTile value={cur.d} tone="divisor" size="sm" />
+                  </span>
+                  <span>{t('manipulation.reduce.recipe', { n: cur.n, d: cur.d, itemsA: words.itemsA, itemsB: words.itemsB })}</span>
+                </span>
+                {prev && <span className="text-amber-800">{t('manipulation.reduce.portionsHint', { k: last.k })}</span>}
               </div>
-              <div className="flex items-center gap-2">
-                <NumberTile value={cur.d} tone="divisor" />
-                <QuantityBar value={cur.d} scale={scale} tone="b" className="flex-1" label={t('manipulation.reduce.denominator')} />
-              </div>
+              {prev ? (
+                <GroupingScene a={prev.n} b={prev.d} k={last.k} theme={theme} words={{ ...words, allUsed: undefined }} highlight={0}
+                  ariaLabel={`${prev.n}/${prev.d} ÷ ${last.k} = ${cur.n}/${cur.d}`} />
+              ) : (
+                <GroupingScene a={cur.n} b={cur.d} k={null} theme={theme} words={words}
+                  ariaLabel={t('manipulation.reduce.wholeRecipe', { n: cur.n, d: cur.d, itemsA: words.itemsA, itemsB: words.itemsB })} />
+              )}
+              {prev && (
+                <p className="text-xs font-bold text-emerald-800" data-recipe-portion>
+                  {t('manipulation.reduce.onePortion', { n: cur.n, d: cur.d, itemsA: words.itemsA, itemsB: words.itemsB })}
+                </p>
+              )}
             </div>
           </DropZone>
 

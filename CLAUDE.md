@@ -1,0 +1,125 @@
+# smarter-academy-dz
+
+Arabic-first, RTL mathematics platform for the Algerian curriculum (المتوسط,
+starting with 4AM). Lesson content lives in `apps/web/src/lessons/moyen/`;
+shared engine in `apps/web/src/lessons/common/`; pure logic in `packages/core`;
+API in `apps/api` (Laravel). The French-era lessons under `lessons/college/` and
+`lessons/lycee/` are dormant and not mounted.
+
+## Read before any task
+
+- `docs/README.md` — the documentation map: which document is authoritative
+  for what, and which ones are historical.
+- `docs/lessons/LESSON_DEVELOPMENT_GUIDE.md` — the entry point before creating
+  or modifying a lesson, a module, a manipulation or an exercise.
+- The contract that governs the area you touch (`docs/architecture/*.md`).
+
+## DOCUMENTATION SYNCHRONIZATION RULE (permanent, applies to every prompt)
+
+For every development task — feature, bug fix, refactor, architectural change,
+UI change, lesson change, exercise change, interaction change, or any other
+meaningful modification — you MUST first determine whether the change affects
+any documentation, and if it does, update the relevant `.md` files as part of
+the SAME task. Documentation is not an optional final step, and the user must
+never have to ask for it.
+
+The implicit workflow of every development prompt in this repository is:
+
+1. Read the relevant existing documentation.
+2. Read the relevant current implementation.
+3. Implement the requested change.
+4. Determine what documentation is affected.
+5. Update the relevant `.md` files.
+6. Verify documentation consistency with the implementation.
+7. Run the relevant tests.
+8. Report the documentation changes in the final response.
+
+Before considering a task complete, verify:
+
+1. Did this change modify or introduce an architecture?
+2. Did this change modify an existing component/API/contract?
+3. Did this change introduce a new reusable pattern?
+4. Did this change modify lesson-generation rules?
+5. Did this change modify pedagogy or interaction rules?
+6. Did this change modify UI/UX conventions?
+7. Did this change modify RTL/Arabic rules?
+8. Did this change modify exercises, progression, mastery, or student behavior?
+9. Did this change modify Classroom Mode?
+10. Did this change introduce a new testing requirement?
+
+If YES to any of these, update the appropriate documentation immediately. Even
+when the answer appears to be NO, briefly verify that no documentation is
+affected before finishing.
+
+- NEVER leave the repository documentation knowingly outdated after a
+  meaningful architectural or behavioral change.
+- Do not create unnecessary documentation for trivial changes. Use judgment.
+- Always use the CURRENT CODE as the source of truth; never document behavior
+  that is not actually implemented. Mark planned behavior `Planned` or
+  `Not yet implemented`.
+- If a new reusable pattern is introduced, document it so future developers
+  and AI agents reuse it instead of creating another one-off implementation.
+- Prefer updating the existing authoritative document over creating a new
+  file. When two documents would define the same contract, one is
+  authoritative and the other links to it.
+- At the end of every task, include a short **"Documentation Sync"** section
+  in the final report stating which `.md` files were updated and what was
+  documented — or, if no documentation was required, why the change does not
+  affect the documented architecture/contracts.
+
+### Lesson-generation documentation rule
+
+Whenever a task creates, modifies, or establishes a pattern that could be
+reused in future lessons — a lesson structure, module pattern, activity
+pattern, question type, manipulation or reusable manipulation behaviour,
+exercise type, feedback pattern, `KnowledgeBrick` usage, progression
+behaviour, Classroom presentation pattern, Arabic/RTL convention, responsive
+interaction pattern, or reusable lesson component — the relevant
+lesson-development documentation (`docs/lessons/LESSON_DEVELOPMENT_GUIDE.md`
+and the contract it points to) MUST be updated in the same task. Future
+lesson-generation agents must be able to learn the correct pattern from the
+documentation without reverse-engineering old lessons.
+
+## Images — where they may and may not be generated
+
+### Lesson content: drawn in code, never generated
+
+Everything under `apps/web/src/lessons/` — and `manipulations/` above all — is
+drawn in code: inline SVG and styled DOM, parameterised by props, unit-tested,
+with Arabic as live DOM text. There is not one raster image in the tree, and
+that is deliberate.
+
+**Never generate a raster image (`cf-image`, or any diffusion model) for lesson
+content.** If a manipulation needs a new visual, extend its SVG. Four reasons:
+
+1. **It must react.** A book highlights on drag, snaps to a shelf, recolours on
+   `selected`/`placed`. A flat JPG takes no props. See the hand-drawn book at
+   `manipulations/divisibility/DivisorExplorerBooks.jsx`.
+2. **Arabic.** Diffusion models mangle Latin text and cannot render RTL Arabic
+   at all. Labels like `رف 1` are DOM text so they stay correct and selectable.
+3. **Determinism.** `booksClassroomLayout.test.js` asserts on computed geometry.
+   Generated output differs every run.
+4. **Mathematical truth.** A generated "10 books on a shelf" may show 9 or 11.
+   When the drawing *is* the divisibility argument, that is a wrong lesson.
+
+> Le dessin n'est pas une illustration — il se LIT.
+> See `docs/architecture/MANIPULATION_CONTRACT.md`.
+
+### Marketing and shell surfaces: generation is fine
+
+Homepage hero, OG/social cards, blog headers, empty-state art, print covers —
+anything outside `lessons/`.
+
+- **`prompt-to-design`** — preferred. Deterministic, real typography, free, and
+  the output is reproducible from a committed script.
+- **`cf-image`** — only for photographic or illustrative art, and only when the
+  image carries **no Arabic text**.
+
+### OG share cards
+
+`scripts/og-card.py` renders branded share cards with correctly shaped Arabic
+(Cairo, via Pillow + raqm). Use it rather than generating cards:
+
+```bash
+python3 scripts/og-card.py "عنوان الدرس" --eyebrow "الرياضيات · 4 متوسط" -o card.png
+```

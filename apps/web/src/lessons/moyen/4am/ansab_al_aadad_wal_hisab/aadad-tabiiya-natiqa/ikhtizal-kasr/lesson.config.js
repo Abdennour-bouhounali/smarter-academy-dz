@@ -33,7 +33,29 @@ export const LESSON_CONFIG = {
   // Acquis des années antérieures (أستعدّ 7–10) et du درس 7.
   priorKnowledge: ['al-aadad-al-natiqa', 'awwaliyan-taarif', 'khwarizmiyat-iqlidus'],
   resources: [
-    { kind: 'manipulation', code: 'fraction-reduction-84-48', type: 'fraction-reduction', module: 1, title: 'اختزال الكسر 84/48 كما فعل سمير', learningPointIds: ['4am_ikhtizal-kasr_P1', '4am_ikhtizal-kasr_P2', '4am_ikhtizal-kasr_P3'], sourceElementIds: ['act-8'] },
+    // Module 1 — workspace à deux niveaux. Réduire, c'est diviser les deux
+    // termes par un diviseur COMMUN jusqu'à ce qu'il n'en reste plus. Le
+    // kasr est DESSINÉ en recette (thème `kitchen`) : diviser par k, c'est
+    // répartir sucre et farine en k parts identiques et lire UNE part. Les
+    // nombres du manuel sont gardés ; la situation est une adaptation
+    // déclarée de la plateforme.
+    //   مبتدئ  — 12/18 : peu de chemins, l'idée nue.
+    //   متقدم  — 84/48, le kasr de سمير : plusieurs chemins, et la question
+    //            « أي الطريقين أوفر؟ » qui donne son sens au PGCD.
+    { kind: 'manipulation', code: 'fraction-reduction-12-18', type: 'fraction-reduction', module: 1,
+      level: 'beginner',
+      title: 'وصفة صغيرة: 12 ملعقة سكّر لـ 18 كوب دقيق (12/18)',
+      objective: 'اختزال كسر = القسمة على قاسم مشترك؛ نتوقف عندما لا يبقى قاسم مشترك أكبر من 1',
+      autonomy: '',
+      experience: { type: 'platform_adaptation', reason: 'smaller_numbers_for_first_contact', theme: 'kitchen' },
+      learningPointIds: ['4am_ikhtizal-kasr_P1'], sourceElementIds: ['act-8'] },
+    { kind: 'manipulation', code: 'fraction-reduction-84-48', type: 'fraction-reduction', module: 1,
+      level: 'advanced',
+      title: 'اختزال الكسر 84/48 كما فعل سمير',
+      objective: 'اختزال كسر = القسمة على قاسم مشترك؛ نتوقف عندما لا يبقى قاسم مشترك أكبر من 1',
+      autonomy: 'عدّة قواسم مشتركة ممكنة في كل خطوة: التلميذ يختار طريقه ويقارن عدد الخطوات',
+      experience: { type: 'platform_adaptation', reason: 'multiple_representations', theme: 'kitchen' },
+      learningPointIds: ['4am_ikhtizal-kasr_P1', '4am_ikhtizal-kasr_P2', '4am_ikhtizal-kasr_P3'], sourceElementIds: ['act-8'] },
     { kind: 'method', code: 'method-reduce-595-560', module: 2, title: 'طريقة: استعمال PGCD لكتابة كسر على الشكل غير القابل للاختزال', learningPointIds: ['4am_ikhtizal-kasr_P3'], sourceElementIds: ['method-reduce'] },
   ],
   modules: [

@@ -9,7 +9,7 @@ import useDragInteraction from '../useDragInteraction';
 import DropZone from '../primitives/DropZone';
 import NumberTile from '../primitives/NumberTile';
 import DragGhost from '../primitives/DragGhost';
-import RectangleArray from '../primitives/RectangleArray';
+import BookRectangle from '../primitives/BookRectangle';
 import EquationDisplay from '../primitives/EquationDisplay';
 import DivisorSet from '../primitives/DivisorSet';
 import * as L from '../logic/factorPairs';
@@ -19,9 +19,10 @@ const { divisionTestBound } = divisibility;
 /**
  * factor-pairs — LE LABORATOIRE DU RECTANGLE.
  *
- * A. L'élève porte un nombre de COLONNES sur le tas de n points.
- * B. Idée : n = d × e ⇔ les n points forment un rectangle parfait de d colonnes.
- * C. Le tas se réorganise ; une dernière ligne incomplète (en ambre) se voit.
+ * A. L'élève porte un nombre de COLONNES sur la pile de n livres.
+ * B. Idée : n = d × e ⇔ les n livres forment un rectangle parfait de d rayons.
+ * C. La pile se réorganise en rayons ; un dernier rayon incomplet (en ambre)
+ *    se voit — ce sont les livres « en trop », comme au module 1.
  * D. Émerge : n = d × e, et le couple s'installe dans le tableau — DEUX
  *    diviseurs d'un coup.
  * E. À découvrir : au-delà de √n, les couples REVIENNENT. La règle d'arrêt
@@ -129,7 +130,7 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
 
           <div className="grid gap-3 md:grid-cols-[1fr_auto]">
             <DropZone drag={drag} id="board" label={t('manipulation.factorPairs.colsZone')} hint={!placed ? t('manipulation.factorPairs.dropCols') : undefined} minHeight="min-h-[120px]" className="flex items-center justify-center p-3">
-              {placed && <RectangleArray n={n} cols={lab.cols} ariaLabel={`${n} = ${lab.cols} × ${lab.rows} + ${lab.rest}`} />}
+              {placed && <BookRectangle n={n} cols={lab.cols} ariaLabel={`${n} = ${lab.cols} × ${lab.rows} + ${lab.rest}`} />}
             </DropZone>
 
             <div className="rounded-2xl border-2 border-slate-200 bg-white p-3">

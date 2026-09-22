@@ -19,6 +19,7 @@ import NotebookButton from '../../../features/practice/NotebookButton';
 import ReportButton from '../../../features/reports/ReportButton';
 import RichText from '../../../features/practice/RichText';
 import { ValidateButton } from '../../../lessons/common/components/LessonUI';
+import { ClassroomPresentation, ClassroomEntryButton, ClassroomFrame, ClassroomHidden } from '../../../lessons/common/classroom';
 import MISCONCEPTIONS from '../../../../../../content/practice/misconceptions.json';
 
 const { evaluateAnswer, feedbackFor } = practice;
@@ -248,29 +249,41 @@ export default function PracticeSession() {
 
   return (
     <div className="sa-surface-plain sa-page py-8 sm:py-10 space-y-6">
+      {/* MODE CLASSE (وضع القسم) : la coquille enveloppe TOUTE la page pour que
+          le bouton d'entrée (dans la rangée de navigation) et le contenu
+          présenté partagent la même session ; en présentation, le chrome de
+          séance (retour, progression, en-tête, cahier, signalement) est
+          retiré et seul l'exercice reste, cadré. Rien ne se remonte : la
+          réponse en cours, les indices demandés et la correction restent. */}
+      <ClassroomPresentation scope="exercise" title={exerciseHeading} entry="none" className="space-y-6">
       {/* La sortie de séance. Sans elle, l'élève engagé dans un niveau n'a
           aucun chemin de retour : ni bandeau, ni fil d'Ariane sur cette page.
           Le travail déjà validé est enregistré côté serveur à chaque réponse,
           donc quitter ne perd rien — et la séance reste ouverte, le Hub
           propose de la « Reprendre ». */}
-      <nav className="flex items-center" aria-label={t('nav.breadcrumb', { ns: 'lesson' })}>
+      <ClassroomHidden><nav className="flex items-center justify-between gap-3 flex-wrap" aria-label={t('nav.breadcrumb', { ns: 'lesson' })}>
         <Link
           to={`/espace/pratique/${lessonCode}`}
           className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-500 hover:text-indigo-600 whitespace-nowrap"
         >
           <ArrowBack className="w-3 h-3" aria-hidden="true" /> {t('practice.backToLevels')}
         </Link>
-      </nav>
+        {/* ⛶ عرض التمرين — le mode classe de CET exercice (présentateur
+            seulement). Le bouton est hors de la coquille, le contenu dedans :
+            entrer ne remonte rien, la réponse en cours et la correction
+            restent. */}
+        <ClassroomEntryButton scope="exercise" title={exerciseHeading} tone="quiet" />
+      </nav></ClassroomHidden>
 
-      <SessionProgress
+      <ClassroomHidden><SessionProgress
         index={index}
         total={exerciseIds.length}
         correctCount={correctCount}
         questionIndex={questionIndex}
         questionTotal={totalQuestions}
-      />
+      /></ClassroomHidden>
 
-      <header className="space-y-1">
+      <ClassroomHidden><header className="space-y-1">
         {/* « المستوى 2 · تمرين 2 — السؤال 1 : القسمة على 6 ».
             Le NUMÉRO DE QUESTION s'insère dans le titre de l'exercice, juste
             après « تمرين n — », là où l'élève lit déjà où il se trouve. Les
@@ -281,8 +294,9 @@ export default function PracticeSession() {
         <p className="text-xs font-mono font-bold text-indigo-600 uppercase">
           {t('practice.levelLabel', { level: session.level })} · {exerciseHeading}
         </p>
-      </header>
+      </header></ClassroomHidden>
 
+      <ClassroomFrame maxWidth={1080}>
       <section className="rounded-2xl border-2 border-slate-200 bg-white p-5 sm:p-6 space-y-5">
         <ExerciseStatement
           content={exercise.statement?.content}
@@ -311,13 +325,13 @@ export default function PracticeSession() {
                 {t('practice.checkMyAnswer')}
               </ValidateButton>
             )}
-            {!answered && <NotebookButton key={`note-${question.id}`} context={notebookContext} onSave={saveNote} onUpdate={patchNote} compact />}
+            <ClassroomHidden>{!answered && <NotebookButton key={`note-${question.id}`} context={notebookContext} onSave={saveNote} onUpdate={patchNote} compact />}</ClassroomHidden>
             {/* Même barre d'outils que le carnet : ce sont les deux gestes
                 « à propos de cette question ». `key` par question pour que le
                 panneau se referme en changeant de question — et attemptUuid
                 peut être null au tout premier rendu, ce que le serveur
                 accepte (le champ est facultatif). */}
-            <ReportButton
+            <ClassroomHidden><ReportButton
               key={`report-${question.id}`}
               source="question"
               variant="icon"
@@ -328,7 +342,7 @@ export default function PracticeSession() {
                 questionId: question?.id,
                 attemptUuid,
               }}
-            />
+            /></ClassroomHidden>
           </div>
 
           <HintPanel
@@ -346,7 +360,7 @@ export default function PracticeSession() {
                 message={feedbackMessage}
               />
 
-              <NotebookButton key={`note-answered-${question.id}`} context={notebookContext} onSave={saveNote} onUpdate={patchNote} />
+              <ClassroomHidden><NotebookButton key={`note-answered-${question.id}`} context={notebookContext} onSave={saveNote} onUpdate={patchNote} /></ClassroomHidden>
 
               <div className="flex gap-3 flex-wrap">
                 {/* Réessayer est PROPOSÉ, jamais imposé : une réponse fausse
@@ -375,6 +389,8 @@ export default function PracticeSession() {
           )}
         </div>
       </section>
+      </ClassroomFrame>
+      </ClassroomPresentation>
     </div>
   );
 }

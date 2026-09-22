@@ -1,5 +1,25 @@
 # Learning Architecture
 
+> **Corrections (2026-09-20).** The mechanisms below are accurate; four details
+> have moved on:
+>
+> - **The hierarchy has a unit level.** It is
+>   `GRADE → CHAPTER (ميدان) → UNIT (الوحدة) → LESSON (الدرس) → LEARNING POINT`.
+>   The unit is a real table (`units`, `lessons.unit_id`) and a real navigation
+>   surface. See `LESSON_CONTRACT.md` § « L'unité 4AM ».
+> - **The Algerian learning points come from
+>   `packages/core/curriculum/dz/lessons_4am_2026_2027.json`**, not from
+>   `coursesData.js`'s French tree. The derivation rule is unchanged:
+>   `{gradeId}_{lessonId}_P{n}` in `pointsToLearn` order, append-only.
+> - **The learning-profile UI exists.** "API exists; no UI yet" is stale — the
+>   lesson index, the unit page, the progression tree, the student home and the
+>   practice hub all render mastery today.
+> - **Difficulty is partly fed.** Practice evidence carries its level (1–5),
+>   mapped to difficulty 1–4; final-test evidence still uses the default. The
+>   mastery model also now weights partial answers, secondary learning points,
+>   practice evidence and hint use, and treats `syntax_error` and `abandoned`
+>   as inert.
+
 The curriculum + learning-evidence + mastery system introduced by the
 Grade → Chapter → Lesson → LearningPoint migration (Slice 1). Companion docs:
 `AI_LESSON_CONTRACT.md` (the question-metadata convention),
@@ -53,6 +73,53 @@ coursesData.js ──(node exportCurriculum.mjs)──> .generated/curriculum-ex
 - `php artisan smarter:validate-curriculum {--strict}` — read-only comparison,
   writes `docs/reports/CURRICULUM_SYNC_REPORT.md`. `--strict` exits non-zero
   on drift (CI mode).
+
+### Where lesson existence is authoritative
+
+**The file catalogue decides which lessons exist.** MySQL is the runtime index
+of that source, never a second definition of it. A lesson's identity is its
+`code`, and the same string is the lesson id everywhere:
+
+```
+packages/core/curriculum/dz/lessons_4am_2026_2027.json   code
+  → coursesData.js                                        lesson.id
+  → <lesson>/lesson.config.js                             LESSON_CONFIG.id
+  → apps/web/src/lessons/registry.js                      registry key
+  → MySQL lessons.code                                    the DB row
+  → localStorage `smarter_lesson_{id}`, API `{lessonCode}` in every route
+```
+
+**The import never deletes.** A lesson removed from the catalogue leaves its
+row behind on purpose: evidence, progress and final-test attempts reference it,
+and the students who opened it keep a readable history. Retirement is therefore
+`publication_status = 'archived'` (`smarter:curriculum-sql --retire-lesson=…`),
+not a delete. **This is the only acceptable behaviour in production.**
+
+### Reconciling a LOCAL database with the catalogue
+
+A row left behind still counts for `smarter:registry-health --gate`, which
+checks every lesson of an active grade whatever its publication status. On a
+development database, where that history belongs to test accounts, the gate
+therefore fails until the row is gone. That is what the prune command is for:
+
+```bash
+node packages/core/curriculum/exportCurriculum.mjs          # refresh the export
+php artisan smarter:prune-retired-learning-points --dry-run # what is safe to drop
+
+# a catalogue-absent lesson that still carries history — DEV ONLY
+php artisan smarter:prune-retired-learning-points --with-history --dry-run
+php artisan smarter:prune-retired-learning-points --with-history --force
+```
+
+`--with-history` refuses to run outside `APP_ENV=local`, requires `--force` in
+addition to the flag, and itemises what each lesson would take with it before
+deleting. Every dependent table cascades from `lessons.id` (learning points,
+evidence, progress, mastery, attempts, modules, exercises), so the delete
+leaves no orphan rows; `notebook_notes` and `student_reports` are
+`ON DELETE SET NULL` and keep the student's own writing.
+
+**Never run `--with-history` against production**, and never reach for
+`TRUNCATE`: the reconciliation is targeted, by lesson code, or it is wrong.
 
 ## Practice ≠ assessment
 

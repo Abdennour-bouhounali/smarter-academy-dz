@@ -34,7 +34,22 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   priorKnowledge: ['tariqa-qawasim'],
   resources: [
-    { kind: 'manipulation', code: 'common-divisors-90-54', type: 'common-divisors', module: 1, title: 'باقات متماثلة: 90 زهرة حمراء و 54 زهرة بيضاء',
+    // Module 1 — workspace à deux niveaux. Même objectif, deux échelles :
+    // 12 et 18 se comptent sur les doigts ; 90 et 54 sont les nombres du
+    // manuel et demandent une stratégie.
+    { kind: 'manipulation', code: 'common-divisors-12-18', type: 'common-divisors', module: 1,
+      level: 'beginner',
+      title: 'مجموعات متماثلة: 12 و 18',
+      objective: 'القواسم المشتركة لعددين، وأكبرها هو القاسم المشترك الأكبر',
+      autonomy: '',
+      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'football' },
+      learningPointIds: ['4am_qasim-mushtarak-akbar_P1', '4am_qasim-mushtarak-akbar_P2'], sourceElementIds: ['act-4'] },
+    { kind: 'manipulation', code: 'common-divisors-90-54', type: 'common-divisors', module: 1,
+      level: 'advanced',
+      title: 'باقات متماثلة: 90 زهرة حمراء و 54 زهرة بيضاء',
+      objective: 'القواسم المشتركة لعددين، وأكبرها هو القاسم المشترك الأكبر',
+      autonomy: 'أعداد الكتاب: قائمتان طويلتان، ولا اقتراح لأي عدد باقات — التلميذ يبحث ويقارن',
+      experience: { type: 'textbook', reason: '', theme: 'garden' },
       learningPointIds: ['4am_qasim-mushtarak-akbar_P1', '4am_qasim-mushtarak-akbar_P2', '4am_qasim-mushtarak-akbar_P3'], sourceElementIds: ['act-4'] },
     { kind: 'manipulation', code: 'common-divisors-28-42', type: 'common-divisors', module: 2, title: 'مثال الكتاب: 28 و 42',
       learningPointIds: ['4am_qasim-mushtarak-akbar_P2', '4am_qasim-mushtarak-akbar_P4'], sourceElementIds: ['know-4-def'] },

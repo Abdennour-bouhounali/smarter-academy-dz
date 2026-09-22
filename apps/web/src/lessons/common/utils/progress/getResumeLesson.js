@@ -1,6 +1,6 @@
 import { getLessonProgress } from './getLessonProgress';
 import { getNextIncompleteModule, getFlatAvailableLessons } from '@smarter-academy/core';
-import { getTotalModules, getModulePath } from '../../../registry';
+import { getTotalModules, getModulePath, getFirstModuleNumber } from '../../../registry';
 
 /**
  * Le chemin de reprise d'une leçon : celui du module visé, ou à défaut
@@ -81,7 +81,7 @@ export function getResumeLesson(courseLevels) {
   if (mostRecent.progressPercent < 100) {
     return resumeShape(
       mostRecent,
-      getNextIncompleteModule(mostRecent.uniqueModules, mostRecent.totalCount),
+      getNextIncompleteModule(mostRecent.uniqueModules, mostRecent.totalCount, getFirstModuleNumber(mostRecent.item.lesson.id) ?? 1),
     );
   }
 
@@ -96,7 +96,7 @@ export function getResumeLesson(courseLevels) {
       if (nextProgress && nextProgress.progressPercent < 100) {
         return resumeShape(
           nextProgress,
-          getNextIncompleteModule(nextProgress.uniqueModules, nextProgress.totalCount),
+          getNextIncompleteModule(nextProgress.uniqueModules, nextProgress.totalCount, getFirstModuleNumber(nextItem.lesson.id) ?? 1),
         );
       }
     }
@@ -108,7 +108,7 @@ export function getResumeLesson(courseLevels) {
   if (anyIncomplete) {
     return resumeShape(
       anyIncomplete,
-      getNextIncompleteModule(anyIncomplete.uniqueModules, anyIncomplete.totalCount),
+      getNextIncompleteModule(anyIncomplete.uniqueModules, anyIncomplete.totalCount, getFirstModuleNumber(anyIncomplete.item.lesson.id) ?? 1),
     );
   }
 

@@ -24,15 +24,18 @@ import student from './locales/ar/student.json';
 // Les pages VISITEUR (accueil, méthode, mission, FAQ, pied de page, palette
 // de commandes). Le discours produit, pas le contenu pédagogique.
 import marketing from './locales/ar/marketing.json';
+// Le مختبر الرياضيات (Math Lab) : le chrome des instruments et de leur
+// accueil. Les outils eux-mêmes n'ont pas de contenu pédagogique à traduire.
+import mathlab from './locales/ar/mathlab.json';
 
 i18n.use(initReactI18next).init({
   lng: LOCALE,
   fallbackLng: LOCALE,
   resources: {
-    [LOCALE]: { common, nav, auth, access, lesson, student, marketing },
+    [LOCALE]: { common, nav, auth, access, lesson, student, marketing, mathlab },
   },
   defaultNS: 'common',
-  ns: ['common', 'nav', 'auth', 'access', 'lesson', 'student', 'marketing'],
+  ns: ['common', 'nav', 'auth', 'access', 'lesson', 'student', 'marketing', 'mathlab'],
   interpolation: { escapeValue: false }, // React already escapes.
   returnEmptyString: false,
 });

@@ -43,13 +43,45 @@ async function fresh({ mobile = false, completed = null, lesson = null } = {}) {
   await ctx.close();
 }
 
-// ── 2. Leçon 1, module 1 : le laboratoire est là dès l'entrée ─────────────
+/**
+ * Choisir un niveau dans l'atelier à deux niveaux (MANIPULATION_CONTRACT
+ * §7bis-levels) : les manipulations du manuel vivent au niveau متقدم.
+ */
+/**
+ * La manipulation de `type` DANS le panneau de niveau visible. Un même type
+ * peut servir les deux niveaux (les différences servent 21/14 et 252/140) :
+ * `.first()` attraperait alors le panneau masqué.
+ */
+async function visibleManip(page, type) {
+  const scoped = page.locator(`[data-manipulation-level-panel]:not([hidden]) [data-manipulation="${type}"]`).first();
+  if (await scoped.count()) return scoped;
+  return page.locator(`[data-manipulation="${type}"]`).first();
+}
+
+async function pickLevel(page, level = 'advanced') {
+  const tab = page.locator(`[data-manipulation-workspace] [role="tab"][data-level="${level}"]`).first();
+  if (!(await tab.count())) return false;
+  await tab.click();
+  await page.waitForTimeout(350);
+  return true;
+}
+
+// ── 2. Leçon 1, module 1 : l'atelier à deux niveaux est là dès l'entrée ───
+//    مبتدئ (les équipes) est offert d'office ; la bibliothèque du manuel est
+//    le niveau متقدم. Voir MANIPULATION_CONTRACT §7bis-levels.
 {
   const { ctx, page } = await fresh();
   await page.goto(`${CH}/qasim-adad-tabii/al-maktaba`, { waitUntil: 'networkidle' });
+  const ws = page.locator('[data-manipulation-workspace]').first();
+  await ws.waitFor();
+  check('L1 M1 : l’atelier ouvre sur le niveau مبتدئ, utilisable aussitôt',
+    (await ws.getAttribute('data-level')) === 'beginner'
+    && await page.locator('[data-manipulation="team-builder"]').first().isVisible());
+  await ws.locator('[role="tab"][data-level="advanced"]').click();
+  await page.waitForTimeout(350);
   await page.waitForSelector('[data-manipulation="divisor-explorer-books"]');
   const manip = page.locator('[data-manipulation="divisor-explorer-books"]').first();
-  check('L1 M1 : le laboratoire est utilisable dès l’entrée', await manip.locator('.be-choices').isVisible());
+  check('L1 M1 : le niveau متقدم donne la bibliothèque du manuel', await manip.locator('.be-choices').isVisible());
   // Choisir une taille EST l'expérience (le clavier est couvert par manipulations.mjs).
   await manip.locator('.be-choice', { hasText: /^28$/ }).click();
   await page.waitForTimeout(300);
@@ -65,7 +97,8 @@ async function fresh({ mobile = false, completed = null, lesson = null } = {}) {
 {
   const { ctx, page } = await fresh();
   await page.goto(`${CH}/bahth-pgcd/al-furuq`, { waitUntil: 'networkidle' });
-  const manip = page.locator('[data-manipulation="pgcd-differences"]').first();
+  await pickLevel(page);
+  const manip = await visibleManip(page, 'pgcd-differences');
   await manip.waitFor();
   check('L6 M1 : la manipulation démarre en وضع التلميذ', (await manip.getAttribute('data-manipulation-mode')) === 'student');
   const big = manip.locator('[data-drop-zone="big"]');
@@ -88,7 +121,8 @@ async function fresh({ mobile = false, completed = null, lesson = null } = {}) {
 {
   const { ctx, page } = await fresh({ completed: ['1', '2'], lesson: 'bahth-pgcd' });
   await page.goto(`${CH}/bahth-pgcd/khwarizmiyat-iqlidus`, { waitUntil: 'networkidle' });
-  const manip = page.locator('[data-manipulation="euclidean-algorithm"]').first();
+  await pickLevel(page);
+  const manip = await visibleManip(page, 'euclidean-algorithm');
   await manip.waitFor();
   // وضع التلميذ seul : l'élève pose les copies du diviseur lui-même.
   check('L6 M3 : aucune bascule « وضع القسم »', (await manip.getByRole('button', { name: 'وضع القسم' }).count()) === 0);
@@ -107,7 +141,8 @@ async function fresh({ mobile = false, completed = null, lesson = null } = {}) {
 {
   const { ctx, page } = await fresh({ mobile: true, completed: ['0'], lesson: 'ikhtizal-kasr' });
   await page.goto(`${CH}/ikhtizal-kasr/samir`, { waitUntil: 'networkidle' });
-  const manip = page.locator('[data-manipulation="fraction-reduction"]').first();
+  await pickLevel(page);
+  const manip = await visibleManip(page, 'fraction-reduction');
   await manip.waitFor();
   const fraction = manip.locator('[data-drop-zone="fraction"]');
   await manip.locator('[data-drag-source="k:4"]').first().click();

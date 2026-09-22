@@ -6,6 +6,7 @@ import MathText from '../components/MathText';
 import SourceTag from './SourceTag';
 import IntegerSetQuestion from './IntegerSetQuestion';
 import FractionQuestion from './FractionQuestion';
+import { ClassroomPresentation, ClassroomEntryButton, ClassroomFrame } from '../classroom';
 
 /**
  * Rend UN exercice du manuel à partir de sa donnée (content/exercises.js) :
@@ -23,18 +24,28 @@ import FractionQuestion from './FractionQuestion';
  *
  * Toutes les formes sont NON BLOQUANTES (kit) ; `onAnswered` est appelé dès la
  * réponse, juste ou fausse.
+ *
+ * MODE CLASSE (وضع القسم) : chaque exercice est une portée de présentation
+ * à lui seul — « ⛶ عرض التمرين » dans son en-tête, pour le présentateur.
+ * La coquille (ClassroomPresentation) porte plein écran, repli, Échap et
+ * échelle ; ici on ne fait que cadrer le MÊME exercice (ClassroomFrame), sans
+ * rien remonter : réponse choisie, correction affichée, tout survit. Dans un
+ * module ou une leçon déjà présentés, la coquille est passe-plat et le bouton
+ * n'apparaît pas : une seule session.
  */
 export default function TextbookExercise({ exercise, solved = false, onAnswered, requires }) {
   const { t } = useTranslation('lesson');
   const ex = exercise;
+  const label = ex.source?.number != null ? t('textbook.exerciseN', { n: ex.source.number }) : t('textbook.exercise');
   const header = (
     <div className="space-y-1">
       <div className="flex flex-wrap items-center gap-2">
         <span className="inline-block rounded-md bg-sky-600 px-2 py-0.5 text-xs font-bold text-white">
-          {ex.source?.number != null ? t('textbook.exerciseN', { n: ex.source.number }) : t('textbook.exercise')}
+          {label}
         </span>
         <SourceTag source={ex.source} />
         {ex.difficulty && <span className="text-[11px] text-slate-500">{t(`textbook.difficulty.${ex.difficulty}`)}</span>}
+        <span className="ms-auto"><ClassroomEntryButton scope="exercise" title={label} tone="quiet" compact /></span>
       </div>
       {ex.statement && <p className="text-sm sm:text-base leading-relaxed text-slate-800"><MathText>{ex.statement}</MathText></p>}
       {ex.items && (
@@ -103,13 +114,17 @@ export default function TextbookExercise({ exercise, solved = false, onAnswered,
   }
 
   return (
-    <div className="rounded-2xl border-2 border-sky-200 bg-white p-4 space-y-3" data-textbook-exercise={ex.id}>
-      {header}
-      {body}
-      {ex.commonError && (
-        <p className="text-xs text-slate-500"><strong>{t('textbook.commonError')} :</strong> <MathText>{ex.commonError}</MathText></p>
-      )}
-    </div>
+    <ClassroomPresentation scope="exercise" title={label} entry="none">
+      <ClassroomFrame maxWidth={1000}>
+        <div className="rounded-2xl border-2 border-sky-200 bg-white p-4 space-y-3" data-textbook-exercise={ex.id}>
+          {header}
+          {body}
+          {ex.commonError && (
+            <p className="text-xs text-slate-500"><strong>{t('textbook.commonError')} :</strong> <MathText>{ex.commonError}</MathText></p>
+          )}
+        </div>
+      </ClassroomFrame>
+    </ClassroomPresentation>
   );
 }
 

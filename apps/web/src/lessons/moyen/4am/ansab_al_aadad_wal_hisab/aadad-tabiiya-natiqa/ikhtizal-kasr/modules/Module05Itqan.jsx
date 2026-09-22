@@ -1,6 +1,6 @@
 import React from 'react';
 import { BossFinal } from '../../../../../../common/kit';
-import { CompleteView } from '../../../../../../common/knowledge';
+import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { SourceTag } from '../../../../../../common/textbook';
 import { LESSON_CONFIG } from '../lesson.config';
@@ -26,7 +26,7 @@ export default function Module05Itqan() {
           options: ['1/3', '20/60', '5/15', '4/12'], correct: 0, cols: 2, explain: <span><MathText>{'$\\dfrac{5}{12} \\times \\dfrac{4}{5} = \\dfrac{20}{60} = \\dfrac{1}{3}$'}</MathText>: الأشكال الأخرى قابلة للاختزال.</span>, assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_ikhtizal-kasr_P4'] } },
       ]}
       badges={[{ id: 'ikhtizal', emoji: '➗', label: 'أختزل حتى النهاية', test: (m) => (m.khatwa ?? 0) + (m.pgcd ?? 0) === 0 }]}
-      synthese={<CompleteView />}
+      synthese={<KnowledgeSnapshot complete variant="complete" />}
       completion={{ masterTitle: 'أتقنت اختزال الكسور', title: 'انتهى الدرس 8', message: 'أنهيت الدروس الثمانية للوحدة. بقي «أؤكّد تعلّماتي» ووضعية «أدمج تعلّماتي».', verbs: ['أختزل', 'أتحقّق', 'أستعمل PGCD', 'أحسب'], masterBadgeLabel: 'اختزال كسر' }} />
   );
 }

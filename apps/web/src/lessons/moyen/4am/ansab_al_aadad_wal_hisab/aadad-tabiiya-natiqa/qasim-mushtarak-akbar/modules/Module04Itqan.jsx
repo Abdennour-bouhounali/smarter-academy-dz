@@ -1,6 +1,6 @@
 import React from 'react';
 import { BossFinal } from '../../../../../../common/kit';
-import { CompleteView } from '../../../../../../common/knowledge';
+import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { SourceTag } from '../../../../../../common/textbook';
 import { LESSON_CONFIG } from '../lesson.config';
@@ -34,7 +34,7 @@ export default function Module04Itqan() {
           explain: <span>مجموعة القواسم المشتركة لعددين هي مجموعة قواسم قاسمهما المشترك الأكبر.</span>, assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_qasim-mushtarak-akbar_P4'] } },
       ]}
       badges={[{ id: 'thalath', emoji: '💐', label: 'ثلاث كلمات لا أخلطها', test: (m) => (m.mushtaraka ?? 0) + (m.pgcd ?? 0) === 0 }]}
-      synthese={<CompleteView />}
+      synthese={<KnowledgeSnapshot complete variant="complete" />}
       completion={{ masterTitle: 'أتقنت مفهوم القاسم المشترك الأكبر', title: 'انتهى الدرس 4', message: 'عرفت ما هو PGCD (a ; b). الدرس 5 يعيّنه بحصر القواسم، والدرس 6 يبحث عنه بطريقتين أسرع.', verbs: ['أعيّن', 'أرمّز', 'أفسّر', 'أستنتج'], masterBadgeLabel: 'PGCD' }}
     />
   );

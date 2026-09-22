@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, ArrowRight, Home, CheckCircle, Lock, ListChecks } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useProgress } from '../hooks/useProgress';
-import { isModuleUnlocked, lockedReasonData } from '@smarter-academy/core';
+import { isModuleUnlocked, lockedReasonData, isValidModuleNumber } from '@smarter-academy/core';
 import ReportButton from '../../../features/reports/ReportButton';
 import { scrollToStep } from '../utils/scrollToStep';
 import { LessonChromeContext, useLessonChromeLayout } from '../hooks/useLessonChrome';
+import { useClassroomMode, useClassroomStage, ClassroomEntryButton, ClassroomFrame } from '../classroom';
 
 /**
  * ModuleLayout — shared layout wrapper for every lesson module.
@@ -37,6 +38,10 @@ import { LessonChromeContext, useLessonChromeLayout } from '../hooks/useLessonCh
  *     accessible once the previous module is mastered (>= 80%). Opt-in per
  *     lesson via MODULE_CTX, so lessons that don't set it keep the previous
  *     always-open behavior. See @smarter-academy/core.
+ *   presentationFrame — en MODE CLASSE (وضع القسم), le contenu est-il posé
+ *     dans un ClassroomFrame (agrandissement) par ce layout ? Vrai par défaut
+ *     (moteurs sans unités : test final, diagnostic) ; ContentModule, qui
+ *     présente ses unités une à une et les cadre lui-même, passe false.
  *   incompleteSteps — optional array of {num, title} for the module's own
  *     steps not yet done (e.g. [{num: 2, title: 'Des chiffres vers les mots'}]).
  *     When the "Module suivant"/"Terminer" button is disabled, these are
@@ -79,8 +84,16 @@ export default function ModuleLayout({
   // When absent, the historical derivation from the labels is kept unchanged.
   levelId,
   gradeId: gradeIdProp,
+  presentationFrame = true,
 }) {
   const navigate = useNavigate();
+
+  // MODE CLASSE (وضع القسم). Présenté, le module cache son chrome (fil
+  // d'Ariane, en-tête, XP, navigation basse, pied de page) et ne garde que
+  // son contenu — dans le MÊME arbre React : rien ne se remonte, l'état des
+  // questions et des manipulations survit à l'entrée comme à la sortie.
+  const classroom = useClassroomMode();
+  const presenting = classroom.isClassroomMode;
 
   // Le décalage haut réservé par la coquille du module dépend du bandeau
   // réellement rendu au-dessus : la Navbar visiteur est `fixed` sans
@@ -108,26 +121,54 @@ export default function ModuleLayout({
   // Sans cela, revenir sur un module fini affichait « أتمِم المحور 00 » et
   // renvoyait l'élève hors de son propre travail.
   const alreadyDone = isModuleCompleted(String(moduleNumber));
-  const unlocked = alreadyDone
+  // Présenter n'est pas apprendre : un enseignant projette le module 3 sans
+  // avoir « terminé » les modules 0 à 2 sur son propre compte. Le verrou
+  // séquentiel est un guide de progression de l'ÉLÈVE ; en présentation il
+  // ne s'applique pas — et, symétriquement, rien n'est écrit dans la
+  // progression (ni visite ni complétion) tant qu'on présente.
+  const unlocked = presenting
+    || alreadyDone
     || !sequentialUnlock
     || isModuleUnlocked(isModuleCompleted, moduleNumber, { stage, firstModuleNumber: firstModule, previousStage });
 
-  useEffect(() => {
-    if (lessonId && moduleNumber && unlocked) {
-      markModuleVisited(moduleNumber);
-    }
-  }, [lessonId, moduleNumber, unlocked, markModuleVisited]);
+  // `isValidModuleNumber` et non `moduleNumber` : le module 0 (« أستعدّ »)
+  // est un numéro valide, et `if (moduleNumber)` le rejetait — sa visite et
+  // sa complétion n'étaient jamais écrites, si bien qu'une leçon ouvrant sur
+  // un module 0 plafonnait à 80 % et ne pouvait pas se terminer.
+  const hasModuleNumber = isValidModuleNumber(moduleNumber);
 
   useEffect(() => {
-    if (lessonId && moduleNumber && isCompleted && unlocked) {
-      markModuleCompleted(moduleNumber.toString());
+    if (lessonId && hasModuleNumber && unlocked && !presenting) {
+      markModuleVisited(moduleNumber);
     }
-  }, [lessonId, moduleNumber, isCompleted, unlocked, markModuleCompleted]);
+  }, [lessonId, hasModuleNumber, moduleNumber, unlocked, presenting, markModuleVisited]);
+
+  useEffect(() => {
+    if (lessonId && hasModuleNumber && isCompleted && unlocked && !presenting) {
+      markModuleCompleted(String(moduleNumber));
+    }
+  }, [lessonId, hasModuleNumber, moduleNumber, isCompleted, unlocked, presenting, markModuleCompleted]);
+
+  // Ce que la barre de présentation affiche pour CE module : son titre, sa
+  // position dans la leçon, et — en session leçon — les gestes vers les
+  // modules voisins. ContentModule, qui connaît ses unités, déclare par
+  // dessus (priorité 2) ; ici c'est le repli de tout module (priorité 1).
+  const lessonNav = classroom.lessonNavigation;
+  const positionSlot = useMemo(() => (lessonNav
+    ? <span className="sa-classroom-position" data-classroom-position>{t('classroom.positionModule', { current: lessonNav.position, total: Math.max(1, lessonNav.total - 1) })}</span>
+    : null), [lessonNav, t]);
+  useClassroomStage({
+    title: moduleTitle,
+    onPrevious: lessonNav?.previous ?? undefined,
+    onNext: lessonNav?.next ?? undefined,
+    slot: positionSlot,
+    priority: 1,
+  }, presenting);
 
   const handleNextClick = (e) => {
     e.preventDefault();
-    if (lessonId && moduleNumber) {
-      markModuleCompleted(moduleNumber.toString());
+    if (lessonId && hasModuleNumber) {
+      markModuleCompleted(String(moduleNumber));
     }
     if (onNextClick) onNextClick();
     if (nextLink) navigate(nextLink);
@@ -212,11 +253,14 @@ export default function ModuleLayout({
 
   return (
     <LessonChromeContext.Provider value={chrome}>
-    <div className={`min-h-screen flex flex-col justify-between ${chrome.contentOffsetClass} bg-slate-50`}>
-      <main className="sa-page py-8 flex-1 space-y-8">
+    <div
+      className={presenting ? 'sa-classroom-module-page' : `min-h-screen flex flex-col justify-between ${chrome.contentOffsetClass} bg-slate-50`}
+      data-module-presented={presenting ? moduleNumber : undefined}
+    >
+      <main className={presenting ? 'sa-classroom-module-main' : 'sa-page py-8 flex-1 space-y-8'}>
 
         {/* Navigation Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+        {!presenting && <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
           <nav
             className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500"
             aria-label={t('nav.breadcrumb')}
@@ -284,11 +328,18 @@ export default function ModuleLayout({
                 step: moduleTitle,
               }}
             />
+
+            {/* ⛶ عرض — le point d'entrée du mode classe pour CE
+                module, visible du seul présentateur (canPresentClassroom).
+                FLOTTANT en bas à gauche, dans la même colonne que « كرّاسي »
+                et « خريطتي » : le geste est le même d'une surface à l'autre,
+                et le bouton ne pousse plus la rangée de repères. */}
+            <ClassroomEntryButton scope="module" title={moduleTitle} tone="floating" />
           </div>
-        </div>
+        </div>}
 
         {/* Module Header */}
-        <header className="space-y-2 text-center">
+        {!presenting && <header className="space-y-2 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 font-mono text-xs font-semibold">
             <span aria-hidden="true">⏱️</span>
             {estimatedTime || `5 ${t('nav.minutesShort')}`} · {t('nav.module')} {moduleNumber}
@@ -297,11 +348,11 @@ export default function ModuleLayout({
           <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto">
             {moduleSubtitle}
           </p>
-        </header>
+        </header>}
 
-        {/* Module Content */}
-        <div className="space-y-8">
-          {children}
+        {/* Module Content — le même élément dans les deux modes. */}
+        <div className={presenting ? 'sa-classroom-module-content' : 'space-y-8'}>
+          {presentationFrame ? <ClassroomFrame>{children}</ClassroomFrame> : children}
         </div>
 
         {/* « Signaler un problème » — présent sur CHAQUE module, parce qu'il
@@ -309,7 +360,7 @@ export default function ModuleLayout({
             Le contexte est pris de ce que ModuleLayout a déjà en portée :
             l'élève n'a rien à désigner. */}
         {/* Bottom Navigation */}
-        <div className="flex justify-between items-center pt-8 pb-4">
+        {!presenting && <div className="flex justify-between items-center pt-8 pb-4">
           {prevLink ? (
             <Link
               to={prevLink}
@@ -324,8 +375,8 @@ export default function ModuleLayout({
               <Link
                 to={coursePath}
                 onClick={() => {
-                  if (lessonId && moduleNumber) {
-                    markModuleCompleted(moduleNumber.toString());
+                  if (lessonId && hasModuleNumber) {
+                    markModuleCompleted(String(moduleNumber));
                   }
                 }}
                 className="flex items-center gap-2 px-6 py-2.5 min-h-[44px] rounded-xl font-mono text-xs font-bold shadow-md transition-all focus-visible:ring-2 focus-visible:ring-emerald-400 focus:outline-none bg-emerald-600 hover:bg-emerald-700 text-white"
@@ -356,13 +407,13 @@ export default function ModuleLayout({
               onStepClick={scrollToStep}
             />
           )}
-        </div>
+        </div>}
 
       </main>
 
-      <footer className="border-t border-slate-200 bg-white py-8 text-center text-xs text-slate-500 mt-12">
+      {!presenting && <footer className="border-t border-slate-200 bg-white py-8 text-center text-xs text-slate-500 mt-12">
         <p>© {new Date().getFullYear()} Abdennour BOUHOUNALI — {t('common:footerRole')}</p>
-      </footer>
+      </footer>}
     </div>
     </LessonChromeContext.Provider>
   );

@@ -35,12 +35,36 @@ const catalogueLessons = dzGrade4am.chapters.flatMap((c) =>
 );
 
 describe('découpage 4AM — traçabilité sujet ↔ leçon', () => {
-  it('chaque sujet officiel donne au moins une leçon', () => {
-    // Le sens qui compte le plus : un sujet sans leçon est une partie du
-    // programme qu'on a cessé d'enseigner sans le décider.
-    const covered = new Set(catalogueLessons.map((l) => l.sourceTopicId));
-    const missing = officialTopics.filter((t) => !covered.has(t.id));
-    expect(missing.map((t) => t.id)).toEqual([]);
+  it('ne PUBLIE que les leçons construites, et le dit explicitement', () => {
+    // Le catalogue ne liste plus que ce que la plateforme publie (décision du
+    // propriétaire, 2026-09-21). Un sujet officiel sans leçon n'est donc plus
+    // un oubli : c'est un sujet pas encore construit, et il ne doit
+    // apparaître NULLE PART — pas de carte « قريبًا », pas de ligne dans
+    // l'arbre de progression, pas de rangée en base.
+    //
+    // Ce que ce test garde du précédent : la décision doit être ÉCRITE. Sans
+    // `publishedScope`, un catalogue amputé serait indiscernable d'un
+    // catalogue abîmé.
+    expect(decomposition.publishedScope?.rule).toBe('catalogue_lists_built_lessons_only');
+    expect(decomposition.publishedScope?.unitIds?.length).toBeGreaterThan(0);
+
+    // Et l'inverse reste vrai : tout ce qui EST publié vient du programme.
+    const officialIds = new Set(officialTopics.map((t) => t.id));
+    for (const lesson of catalogueLessons) {
+      expect(officialIds.has(lesson.sourceTopicId), lesson.id).toBe(true);
+    }
+  });
+
+  it('chaque leçon publiée appartient à une unité déclarée dans la portée', () => {
+    // Aujourd'hui : l'unité 1 seulement. Si une leçon publiée sortait de la
+    // portée déclarée, la page du ميدان la montrerait hors de toute unité —
+    // exactement la carte orpheline qu'on vient de retirer.
+    const scope = new Set(decomposition.publishedScope.unitIds);
+    for (const lesson of decomposition.lessons) {
+      expect(lesson.unitId, lesson.code).toBeTruthy();
+      expect(scope.has(lesson.unitId), lesson.code).toBe(true);
+      expect(lesson.status, lesson.code).toBe('available');
+    }
   });
 
   it('chaque leçon vient d’exactement un sujet officiel', () => {
@@ -68,12 +92,14 @@ describe('découpage 4AM — traçabilité sujet ↔ leçon', () => {
     for (const [topicId, count] of perTopic) {
       expect(count, topicId).toBe(1);
     }
-    // Un sujet couvert par une unité peut avoir plusieurs leçons ; un sujet
-    // hors unité en a exactement une.
+    // Un sujet couvert par une unité peut avoir plusieurs leçons. Un sujet
+    // PUBLIÉ hors unité en aurait exactement une — il n'y en a plus aucun
+    // aujourd'hui, la règle reste écrite pour le jour où l'on en republiera.
+    // Un sujet non publié n'a aucune leçon, et c'est voulu (voir ci-dessus).
     for (const topic of officialTopics) {
       const n = catalogueLessons.filter((l) => l.sourceTopicId === topic.id).length;
       if (topicsInUnits.has(topic.id)) expect(n, topic.id).toBeGreaterThanOrEqual(1);
-      else expect(n, topic.id).toBe(1);
+      else expect(n, topic.id).toBeLessThanOrEqual(1);
     }
   });
 

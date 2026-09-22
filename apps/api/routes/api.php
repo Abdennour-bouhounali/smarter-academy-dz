@@ -27,6 +27,8 @@ use App\Http\Controllers\LearningProfileController;
 use App\Http\Controllers\LegalController;
 use App\Http\Controllers\LessonFinalTestAttemptController;
 use App\Http\Controllers\LessonProgressController;
+use App\Http\Controllers\MathLabDocumentController;
+use App\Http\Controllers\MathLabFileController;
 use App\Http\Controllers\PracticeAnswerController;
 use App\Http\Controllers\PracticeNotebookController;
 use App\Http\Controllers\PracticeSessionController;
@@ -163,6 +165,32 @@ Route::prefix('v1')->group(function () {
             Route::patch('/practice/notes/{id}', [PracticeNotebookController::class, 'update']);
             Route::post('/practice/notes/{id}/review', [PracticeNotebookController::class, 'review']);
             Route::delete('/practice/notes/{id}', [PracticeNotebookController::class, 'destroy']);
+
+            // ── Le مختبر الرياضيات (Math Lab) ────────────────────────────
+            // Le travail LIBRE de l'élève, hors de toute leçon : une table pour
+            // tous les instruments, `tool` dit lequel, `data` reste opaque
+            // (docs/architecture/MATH_LAB.md). Le propriétaire est l'élève
+            // authentifié — aucun identifiant d'utilisateur n'est lu dans la
+            // requête. La création est limitée en débit : la sauvegarde
+            // automatique modifie (PATCH) un document existant, elle n'en
+            // crée pas, donc cette limite ne la touche pas.
+            Route::get('/math-lab/documents', [MathLabDocumentController::class, 'index']);
+            Route::post('/math-lab/documents', [MathLabDocumentController::class, 'store'])
+                ->middleware('throttle:30,1');
+            Route::get('/math-lab/documents/{id}', [MathLabDocumentController::class, 'show'])->whereNumber('id');
+            Route::patch('/math-lab/documents/{id}', [MathLabDocumentController::class, 'update'])->whereNumber('id');
+            Route::delete('/math-lab/documents/{id}', [MathLabDocumentController::class, 'destroy'])->whereNumber('id');
+            // Les FICHIERS d'une سبّورة (images, SVG, PDF) : une ligne par
+            // fichier, les octets sur le disque privé, et des quotas tenus sous
+            // verrou (MathLabFileService — 1 Mo, 3 par document, 50 par élève).
+            // Le contenu ne se sert qu'au propriétaire, en pièce jointe.
+            Route::get('/math-lab/quota', [MathLabFileController::class, 'quota']);
+            Route::get('/math-lab/documents/{id}/files', [MathLabFileController::class, 'index'])->whereNumber('id');
+            Route::post('/math-lab/documents/{id}/files', [MathLabFileController::class, 'store'])
+                ->whereNumber('id')
+                ->middleware('throttle:60,1');
+            Route::get('/math-lab/files/{id}/content', [MathLabFileController::class, 'content'])->whereNumber('id');
+            Route::delete('/math-lab/files/{id}', [MathLabFileController::class, 'destroy'])->whereNumber('id');
 
             // « Signaler un problème ». Limité en débit : un signalement est un
             // geste rare, et cette limite empêche qu'un script en produise mille.

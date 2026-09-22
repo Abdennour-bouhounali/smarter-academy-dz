@@ -22,6 +22,16 @@ export { default as ContentModule, useKit } from './ContentModule';
 export { TapQuestion, BatchChoiceQuestion, NumericQuestion } from './questions';
 export { default as BossFinal } from './BossFinal';
 export { default as PrerequisiteDiagnostic } from './PrerequisiteDiagnostic';
+// La PRÉSENTATION D'UN TEST (وضع القسم) : une question à la fois, السابق /
+// التالي, « تحقّق من الإجابة » sur la question courante, « كشف النتائج », puis
+// la revue une à une. Les deux moteurs ci-dessus la consomment — une leçon
+// n'a RIEN à faire pour en hériter, et ne doit jamais écrire la sienne.
+// Voir docs/architecture/CLASSROOM_MODE.md §5 « Test ».
+export { default as TestPresentation, useTestPresentation } from './TestPresentation';
+export {
+  QUESTION_STATE, questionState, testQuestionStates, revealAll, revealOne,
+  allRevealed, clampQuestion, resolveTestNavigation, revealedTally,
+} from './testPresentation';
 // Recueil d'une prédiction SANS verdict (§6ter.3). Fichier byte-identique
 // dans les seize leçons antérieures, qui gardent leur copie ; les leçons
 // construites à partir du 2026-09-06 l'importent d'ici.

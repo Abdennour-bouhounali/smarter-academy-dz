@@ -1,6 +1,6 @@
 import React from 'react';
 import { BossFinal } from '../../../../../../common/kit';
-import { CompleteView } from '../../../../../../common/knowledge';
+import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { SourceTag } from '../../../../../../common/textbook';
 import { LESSON_CONFIG } from '../lesson.config';
@@ -33,7 +33,7 @@ export default function Module03Ahill() {
           explain: <span>2440 = 8 × 305 = 4 × 610 = 10 × 244. عدد القطع الخزفية هو <strong>2440</strong>.</span>, assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_wadiya-idmajiya-aadad_P1'] } },
       ]}
       badges={[{ id: 'idmaj', emoji: '🏛️', label: 'أدمجت تعلّماتي', test: (m) => (m.fahm ?? 0) + (m.istratijiya ?? 0) + (m.tanfidh ?? 0) === 0 }]}
-      synthese={<CompleteView />}
+      synthese={<KnowledgeSnapshot complete variant="complete" />}
       completion={{ masterTitle: 'أنهيت الوحدة 1', title: 'الأعداد الطبيعيّة والأعداد النّاطقة', message: 'عدد القطع الخزفية 2440. عبّأت قابلية القسمة، والقواسم، والترميز بالحروف — ما تعلّمته في الدروس الثمانية.', verbs: ['أقرأ', 'أحلّل', 'أنفّذ', 'أتحقّق'], masterBadgeLabel: 'الوحدة 1' }} />
   );
 }

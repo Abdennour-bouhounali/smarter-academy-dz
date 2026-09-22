@@ -38,11 +38,43 @@ export const LESSON_CONFIG = {
   // Les acquis des années antérieures que « أستعدّ » (p. 7) diagnostique.
   priorKnowledge: ['qisma-iqlidiya', 'qawaid-qabiliyat-al-qisma'],
   resources: [
+    // Le module 1 est un WORKSPACE À DEUX NIVEAUX (MANIPULATION_CONTRACT
+    // §7bis-levels) : même objectif mathématique, deux expériences.
+    //
+    //   مبتدئ  — les équipes : contexte de la PLATEFORME, petits nombres.
+    //   متقدم  — les 420 livres du manuel : la situation d'origine, sans aide.
+    //
+    // `experience` porte la traçabilité exigée : d'où vient la mathématique
+    // (toujours le manuel) et ce que la plateforme a fait de la situation.
+    {
+      kind: 'manipulation', code: 'team-builder-15-3', type: 'team-builder', module: 1,
+      level: 'beginner',
+      title: 'قسمة بالتساوي — 15 لاعبًا في 3 فرق',
+      objective: 'التوزيع بالتساوي: a = b × q + r، والباقي معدوم ⇔ b قاسم لـ a',
+      autonomy: '',
+      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'football' },
+      learningPointIds: ['4am_qasim-adad-tabii_P1'],
+      sourceElementIds: ['act-1'],
+    },
     {
       kind: 'manipulation', code: 'divisor-explorer-420', type: 'divisor-explorer-books', module: 1,
+      level: 'advanced',
       title: 'هل هو قاسم؟ — 420 كتابًا على الرفوف',
+      objective: 'التوزيع بالتساوي: a = b × q + r، والباقي معدوم ⇔ b قاسم لـ a',
+      autonomy: 'سبعة عشر حجمًا دون اقتراح: التلميذ يختار ويقارن محاولاته بنفسه',
+      experience: { type: 'textbook', reason: '', theme: 'library' },
       learningPointIds: ['4am_qasim-adad-tabii_P1', '4am_qasim-adad-tabii_P2'],
       sourceElementIds: ['act-1'],
+    },
+    // Module 2 (معارف) — l'exemple du manuel, dans le MÊME laboratoire
+    // illustré que le module 1. Un seul instrument pour toute la leçon :
+    // l'élève le reconnaît au lieu d'en apprendre un second. Un seul niveau
+    // ici — le module lit une définition, il ne rejoue pas la découverte.
+    {
+      kind: 'manipulation', code: 'divisor-explorer-143', type: 'divisor-explorer-books', module: 2,
+      title: 'مثال الكتاب: 143 كتابًا في رفوف من 11',
+      learningPointIds: ['4am_qasim-adad-tabii_P2'],
+      sourceElementIds: ['know-1'],
     },
   ],
   modules: [

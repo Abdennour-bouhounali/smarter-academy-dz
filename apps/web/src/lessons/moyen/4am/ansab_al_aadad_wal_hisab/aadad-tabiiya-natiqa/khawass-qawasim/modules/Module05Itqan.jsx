@@ -1,6 +1,6 @@
 import React from 'react';
 import { BossFinal } from '../../../../../../common/kit';
-import { CompleteView } from '../../../../../../common/knowledge';
+import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { SourceTag } from '../../../../../../common/textbook';
 import { LESSON_CONFIG } from '../lesson.config';
@@ -39,7 +39,7 @@ export default function Module05Itqan() {
           assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_khawass-qawasim_P4'] } },
       ]}
       badges={[{ id: 'khawass', emoji: '🧩', label: 'أستعمل الخاصيتين', test: (m) => (m.jamaa ?? 0) + (m.baqi ?? 0) === 0 }, { id: 'burhan', emoji: '✍️', label: 'أعرف كيف أبرهن', test: (m) => (m.burhan ?? 0) === 0 }]}
-      synthese={<CompleteView />}
+      synthese={<KnowledgeSnapshot complete variant="complete" />}
       completion={{ masterTitle: 'أتقنت خواص قواسم عدد طبيعي', title: 'انتهى الدرس 3', message: 'الخاصيتان اللتان تعلّمتهما تبرّران، في الدرس 6، خوارزميتَي البحث عن القاسم المشترك الأكبر.', verbs: ['أتحقّق', 'أخمّن', 'أصوغ', 'أبرهن'], masterBadgeLabel: 'خواص القواسم' }}
     />
   );

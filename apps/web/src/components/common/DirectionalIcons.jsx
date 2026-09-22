@@ -1,5 +1,6 @@
 import {
   ArrowLeft, ArrowRight, ChevronLeft, ChevronRight,
+  ChevronsLeft, ChevronsRight,
   PanelLeftClose, PanelLeftOpen, PanelRightClose, PanelRightOpen,
 } from 'lucide-react';
 import { IS_RTL } from '../../locale.js';
@@ -13,5 +14,9 @@ export const ArrowForward = IS_RTL ? ArrowLeft : ArrowRight;
 export const ArrowBack = IS_RTL ? ArrowRight : ArrowLeft;
 export const ChevronForward = IS_RTL ? ChevronLeft : ChevronRight;
 export const ChevronBack = IS_RTL ? ChevronRight : ChevronLeft;
+// Le double chevron : « sauter » plutôt qu'« avancer d'un pas ». Même
+// miroir que le simple — c'est une direction de lecture, pas un symbole fixe.
+export const ChevronsForward = IS_RTL ? ChevronsLeft : ChevronsRight;
+export const ChevronsBack = IS_RTL ? ChevronsRight : ChevronsLeft;
 export const PanelStartOpen = IS_RTL ? PanelRightOpen : PanelLeftOpen;
 export const PanelStartClose = IS_RTL ? PanelRightClose : PanelLeftClose;

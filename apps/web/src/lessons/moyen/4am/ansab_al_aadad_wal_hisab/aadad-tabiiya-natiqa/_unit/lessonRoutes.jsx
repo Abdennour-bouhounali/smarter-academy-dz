@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Route } from 'react-router-dom';
 import { LazyLessonKnowledgeProvider } from '../../../../../common/knowledge/LazyKnowledgeProvider';
 import LessonNotebookAnchor from '../../../../../common/notebook/LessonNotebookAnchor';
+import LessonClassroomShell from '../../../../../common/classroom/LessonClassroomShell';
 import { PRINT_SUBJECT } from './unitMeta';
 
 /**
@@ -29,10 +30,17 @@ export function buildLessonRoutes({ config, basePath, moduleFiles, loadKnowledge
       </LazyLessonKnowledgeProvider>
     </Suspense>
   );
-  return [
-    <Route key={`${config.id}-index`} path={basePath} element={withSuspense(LessonHome)} />,
-    ...config.modules
-      .map((m) => (components[m.number] ? <Route key={`${config.id}-${m.id}`} path={m.path} element={withSuspense(components[m.number], m)} /> : null))
-      .filter(Boolean),
-  ];
+  // La coquille du MODE CLASSE (وضع القسم) est une route « layout » sans
+  // chemin, au-dessus du sommaire et des modules : elle reste montée quand
+  // une présentation de leçon passe d'un module au suivant, et le plein écran
+  // natif — qui est sur sa racine — survit à la navigation. Hors présentation
+  // elle n'est qu'un <div> transparent.
+  return (
+    <Route key={`${config.id}-classroom`} element={<LessonClassroomShell config={config} basePath={basePath} />}>
+      <Route key={`${config.id}-index`} path={basePath} element={withSuspense(LessonHome)} />
+      {config.modules
+        .map((m) => (components[m.number] ? <Route key={`${config.id}-${m.id}`} path={m.path} element={withSuspense(components[m.number], m)} /> : null))
+        .filter(Boolean)}
+    </Route>
+  );
 }

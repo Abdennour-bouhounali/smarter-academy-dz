@@ -1,5 +1,18 @@
 # Lesson & Module Contract
 
+> **Scope note (2026-09-20).** This document is authoritative on the lesson and
+> module contract: fields, stages, unlock rules and the non-blocking invariant.
+> It was written for the French-era lessons and still describes them, because
+> the contract itself did not change. Two things did, and are described in
+> § « L'unité 4AM » at the end: the **file wiring** (an Algerian lesson gets its
+> routes, module context and Classroom shell from shared `_unit/` factories) and
+> the **vocabulary** (المحور = module, الوحدة = a textbook unit).
+>
+> For building a lesson, start at
+> [`../lessons/LESSON_DEVELOPMENT_GUIDE.md`](../lessons/LESSON_DEVELOPMENT_GUIDE.md).
+> Anything below that mentions French grades, `lessons/college/…` paths or
+> `App.jsx` route tables describes the **dormant** French content.
+
 The contract every rebuilt lesson must honor. It descends from the pre-reset
 convention (17 lessons, removed by the controlled lesson reset —
 `docs/reports/LESSON_RESET_AUDIT.md`) with the changes the new pedagogical
@@ -209,9 +222,10 @@ export const LESSON_CONFIG = {
   color: string,             // REQUIRED. One of LessonIndex.jsx's COLOR_MAP keys.
   style: 'featured' | 'boss' | 'assessment',  // Drives the card style on the lesson landing page.
   estimatedMin: number,      // REQUIRED, load-bearing: the per-lesson sum must stay ≤ 45.
-  difficulty: 1|2|3|4,        // Display only (star rating) — NOT read by useAdaptiveExercise
-                               // despite the name suggesting it should be (AUDIT.md finding,
-                               // unchanged — "adaptive" difficulty doesn't exist yet).
+  difficulty: 1|2|3|4,        // Display only (a star rating). Nothing reads it to adapt
+                               // anything: there is no adaptive selection for lesson
+                               // modules. (The practice engine has its own 1–5 levels,
+                               // which DO weight mastery — a separate system.)
   actionText: string,          // Button label on the lesson landing page.
 }
 ```
@@ -261,7 +275,7 @@ Student mode uses `pt-0` because `StudentLayout`'s `<main>` already consumes its
 
 - **`unit`** (literal string, optional) — the textbook unit (الوحدة) code this lesson belongs to; must match the catalogue (`lesson.unitId`). Lesson folders of a unit live under `lessons/<level>/<grade>/<chapter>/<unit>/<lesson>/`.
 - **`kind`** (`'lesson'` default | `'synthesis'`) — `synthesis` is the unit's « أدمج تعلّماتي »; never counted as a درس; required stages `trigger, practice_lab, evaluation` (`REQUIRED_STAGES_BY_KIND`, `packages/core/curriculum/manipulationTypes.js`). The catalogue must declare the same `kind`.
-- **`resources`** (literal array, optional) — `{ kind: 'manipulation'|'method'|'situation'|'example', code, type?, title, module, learningPointIds, sourceElementIds? }`. A `manipulation` names a **type from the closed registry** (`MANIPULATION_TYPES`); the component comes from `apps/web/src/lessons/common/manipulations/manipulationRegistry.js`, never from content. `validate-lessons.mjs` checks kinds, types, module numbers and learning-point ownership. `exportContentRegistry.mjs` → `smarter:import-content-registry` mirrors resources into `lesson_resources` (identity only).
+- **`resources`** (literal array, optional) — `{ kind: 'manipulation'|'method'|'situation'|'example', code, type?, title, module, learningPointIds, sourceElementIds? }`, plus, for a **levelled** manipulation, `{ level: 'beginner'|'advanced', objective, autonomy, experience: { type, reason?, theme? } }` (2026-09-20). A module that declares one level must declare both; the two levels must state the same `objective`; an `advanced` level must declare its `autonomy`; a non-`textbook` experience must carry a reason from the closed list in `packages/core/curriculum/manipulationLevels.js`. `validate-lessons.mjs` enforces all four. See [`MANIPULATION_CONTRACT.md` §7bis-levels](./MANIPULATION_CONTRACT.md). A `manipulation` names a **type from the closed registry** (`MANIPULATION_TYPES`); the component comes from `apps/web/src/lessons/common/manipulations/manipulationRegistry.js`, never from content. `validate-lessons.mjs` checks kinds, types, module numbers and learning-point ownership. `exportContentRegistry.mjs` → `smarter:import-content-registry` mirrors resources into `lesson_resources` (identity only).
 - **Textbook source** — every pedagogical datum of a textbook-derived lesson carries `source: { type: 'textbook', elementId, page, section, number }` resolving to `docs/sources/<grade>/<unit>/extraction.json`; platform additions carry `type: 'platform_addition'` and render as « مثال تفاعلي إضافي ». `npm run check:textbook` enforces one destination per extracted element.
 - **Prerequisites are pedagogical** — `prerequisiteLessonCodes` and `pointPrerequisites` are displayed with mastery state; they never lock anything.
 - **Module file numbers** — `Module<NN>…jsx` must use exactly two digits: `Module0117Wa18.jsx` is read as module 117 and its route is silently not mounted (found and fixed in phase 8).
@@ -286,3 +300,100 @@ Rappel opérationnel : un module `draft` en base est rendu VERROUILLÉ quel que
 soit ce qui précède (`isModuleClosed`). Après un import, publier
 `lesson_modules` fait partie de la mise en ligne, au même titre que
 `practice_exercises`.
+
+
+---
+
+## L'unité 4AM — le câblage réel d'une leçon algérienne (2026-09-20)
+
+Les leçons de l'unité 1 (`lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/`)
+ne recopient plus `routes.jsx` ni `moduleContext.js` : trois fabriques
+partagées vivent dans `_unit/` et sont la manière actuelle de monter une leçon.
+
+**`_unit/unitMeta.js`** — les constantes de l'unité (`UNIT_ID`, `UNIT_TITLE`,
+`CHAPTER_ID`, `CHAPTER_TITLE`, `LEVEL_ID`, `GRADE_ID`, `LEVEL_LABEL`,
+`GRADE_LABEL`, `PRINT_SUBJECT`, `BASE`) et les deux fabriques de provenance :
+`src(elementId, page, section, number)` pour le manuel, `addition(reason)` pour
+un ajout de la plateforme.
+
+**`_unit/moduleContext.js`** — `buildModuleContext(LESSON_CONFIG, LESSON_BASE_PATH)`
+rend `{ MODULE_CTX, getNavLinks }`. Le `moduleContext.js` d'une leçon est donc
+une seule ligne, et non plus vingt. `MODULE_CTX` porte, en plus des champs
+historiques, trois clés que le déverrouillage exige :
+
+- `firstModuleNumber` — le premier module de LA leçon, pas 1. Une leçon qui
+  ouvre sur « أستعدّ » commence à 0 ; traiter 0 comme « pas le premier »
+  réclamerait un module −1 et scellerait la leçon entière.
+- `stageByNumber` — l'étape de chaque module, pour que `ContentModule` lise
+  celle du module PRÉCÉDENT et qu'un `prerequisite_check` ne barre jamais la
+  route.
+- `lastModuleNumber` — le vrai dernier numéro, car `modules.length` ne l'est
+  plus dès qu'un module 0 existe.
+
+**`_unit/lessonRoutes.jsx`** — `buildLessonRoutes({ config, basePath, moduleFiles,
+loadKnowledge, loadIndex })` résout chaque module par le NUMÉRO lu dans son nom
+de fichier, enveloppe chaque page dans le fournisseur de carte des
+connaissances et l'ancre du cahier, et place `LessonClassroomShell` **au-dessus**
+de l'ensemble en route « layout » sans chemin — c'est ce qui fait survivre une
+session de mode classe au passage d'un module à l'autre. Le `routes.jsx` d'une
+leçon se réduit à un `import.meta.glob` (Vite exige le littéral) et un appel.
+
+Conséquence pratique : une leçon 4AM obtient le mode classe, le cahier et la
+carte des connaissances **sans rien déclarer**. Ne reconstruisez aucun des
+trois.
+
+### Vocabulaire — ce que les mots désignent
+
+| Arabe | Désigne | Ne désigne jamais |
+|---|---|---|
+| **الوحدة** | une **unité du manuel** : un groupe de leçons | un module |
+| **المحور** | un **module** d'une leçon | une unité |
+| **الدرس** | une leçon | — |
+| **الميدان** | un domaine du programme (chapitre) | — |
+
+Le seul emploi interne de « unit » pour autre chose est celui du mode classe
+(`moduleUnits`), qui découpe un module présenté en tranches : c'est une notion
+de présentation, pas de curriculum.
+
+### Champs ajoutés par l'unité
+
+`kind` (`'lesson' | 'synthesis'`), `unit`, `unitTitle`, `textbookRef`,
+`resources[]` et `priorKnowledge` sont décrits en § « Phase 8 additions »
+ci-dessus. À noter, vérifié dans le code : `passingScore`, `unitTitle` et le
+`textbookRef` du config ne sont lus par personne ; `difficulty` est purement
+décoratif ; `requiresLearningPointIds` n'est jamais activé à l'exécution
+(`LessonIndex` ne passe pas `masteryStatusById`).
+
+### Le module 0 EST un module — la règle, et le défaut qu'elle a corrigé
+
+Un module peut porter le numéro **0** : c'est le cas de « أستعدّ »
+(`prerequisite_check`), le premier module de `qasim-adad-tabii` et de
+`ikhtizal-kasr`. Toute la chaîne de progression doit donc traiter 0 comme un
+numéro ordinaire.
+
+**La règle, exécutable :** on valide la NATURE d'un numéro de module, jamais sa
+vérité. `isValidModuleNumber(moduleNumber)` (`@smarter-academy/core`) est le
+seul juge — un entier fini ≥ 0, et non les valeurs que `Number()` convertirait
+en 0 (`''`, `[]`, `false`).
+
+```js
+if (lessonId && moduleNumber) …                    // ❌ le module 0 disparaît
+if (lessonId && isValidModuleNumber(moduleNumber)) // ✅
+```
+
+**Le défaut qu'elle remplace (2026-09-20, corrigé).** `ModuleLayout` gardait ses
+quatre écritures derrière `if (lessonId && moduleNumber && …)` : le module 0
+n'était jamais marqué visité ni terminé, les deux leçons concernées plafonnaient
+à 80 % et ne pouvaient pas se terminer. Les suites e2e semaient `completed:
+['0']` à la main, ce qui masquait exactement le défaut.
+
+**Le premier module n'est pas toujours 1**, et la reprise le sait désormais :
+`getNextIncompleteModule(uniqueModules, totalModules, firstModuleNumber)` balaie
+l'intervalle réel de la leçon (défaut 1, donc les appelants qui l'ignorent ne
+changent pas), et `getFirstModuleNumber(lessonId)` du registre le lui fournit.
+Sans cela « continuer » menait au module 1 en sautant أستعدّ.
+
+Verrous : `packages/core/progress/isValidModuleNumber.test.js`,
+`getNextIncompleteModule.test.js` et
+`apps/web/src/lessons/common/components/moduleZeroProgress.test.js`, qui
+interdit le retour du motif dans `ModuleLayout`.

@@ -1,0 +1,168 @@
+import { equalGrouping } from '@smarter-academy/core';
+
+const { groupInto, exactGroupings, fixLeftOver } = equalGrouping;
+
+/**
+ * team-builder — l'état du PARTAGE ÉQUITABLE par le geste.
+ *
+ * L'élève porte des joueurs dans des équipes. Ce fichier ne dessine rien : il
+ * dit ce qui est PERMIS et ce qui est VRAI.
+ *
+ * LA RÈGLE QUI PORTE TOUTE LA MATHÉMATIQUE : une équipe n'accepte un joueur
+ * que si les équipes restent ÉGALES. Concrètement, on ne peut pas mettre un
+ * sixième joueur dans l'équipe 1 tant que les équipes 2 et 3 en ont cinq.
+ * Ce refus n'est pas une contrainte d'interface : c'est la définition du
+ * partage équitable, rendue physique. C'est aussi ce qui fait que le
+ * seizième joueur ne peut ALLER NULLE PART — et le reste devient une chose
+ * qu'on voit, pas un nombre qu'on lit.
+ *
+ * Le verdict n'est jamais calculé « à part » : `leftOver` est le nombre de
+ * joueurs qui restent sur le banc quand plus aucun placement n'est permis.
+ */
+
+/**
+ * @param total   combien de joueurs au départ
+ * @param groups  combien d'équipes demandées
+ * @param bench   les joueurs pas encore placés (ids), par défaut tous
+ */
+export function init({ total, groups }) {
+  const g = Math.max(1, groups | 0);
+  return {
+    total,
+    groups: g,
+    // Chaque joueur est un objet identifiable : c'est LUI qu'on déplace, et
+    // c'est lui qu'on voit rester dehors.
+    bench: Array.from({ length: total }, (_, i) => i),
+    teams: Array.from({ length: g }, () => []),
+    tried: {},
+    attempts: 0,
+  };
+}
+
+/** La cible d'équilibre : ce que chaque équipe doit contenir à la fin. */
+export function targetPerTeam(state) {
+  return groupInto(state.total, state.groups).perGroup;
+}
+
+/** Dans quelle équipe se trouve ce joueur ? `-1` s'il est sur le banc. */
+export function teamOf(state, playerId) {
+  return state.teams.findIndex((team) => team.includes(playerId));
+}
+
+/**
+ * Un joueur peut-il entrer dans l'équipe `t` ?
+ * `true` = accepté ; une CHAÎNE = refus, avec sa raison (clé arabe côté vue).
+ */
+export function canPlace(state, playerId, t) {
+  if (!Number.isInteger(t) || t < 0 || t >= state.groups) return 'noSuchTeam';
+  const from = teamOf(state, playerId);
+  if (from === -1 && !state.bench.includes(playerId)) return 'notOnBench';
+  // DÉPLACER un joueur d'une équipe à une autre est légitime : l'élève change
+  // d'avis, et l'interface ne doit pas se battre avec lui. On raisonne donc
+  // sur les tailles APRÈS le départ du joueur de son équipe actuelle.
+  if (from === t) return 'sameTeam';
+  const sizes = state.teams.map((team, i) => team.length - (i === from ? 1 : 0));
+  const size = sizes[t];
+  const smallest = Math.min(...sizes);
+  // Les équipes restent égales : on ne remplit pas une équipe avant les autres.
+  if (size > smallest) return 'teamsMustStayEqual';
+  // Une équipe ne dépasse jamais la taille que le partage permet.
+  if (size >= targetPerTeam(state)) return 'teamIsFull';
+  return true;
+}
+
+export function place(state, playerId, t) {
+  if (canPlace(state, playerId, t) !== true) return { ...state, attempts: state.attempts + 1 };
+  const teams = state.teams.map((team, i) => {
+    const without = team.filter((p) => p !== playerId);
+    return i === t ? [...without, playerId] : without;
+  });
+  return { ...state, bench: state.bench.filter((p) => p !== playerId), teams };
+}
+
+/** Retirer un joueur d'une équipe : il revient sur le banc. Toujours permis. */
+export function unplace(state, playerId) {
+  const t = state.teams.findIndex((team) => team.includes(playerId));
+  if (t === -1) return state;
+  return {
+    ...state,
+    teams: state.teams.map((team, i) => (i === t ? team.filter((p) => p !== playerId) : team)),
+    bench: [...state.bench, playerId].sort((x, y) => x - y),
+  };
+}
+
+/** Changer le nombre d'équipes remet la scène : c'est une NOUVELLE question. */
+export function setGroups(state, groups) {
+  return { ...init({ total: state.total, groups }), tried: { ...state.tried } };
+}
+
+/** Changer l'effectif — le geste « et si on était 16 ? » (§8 du brief). */
+export function setTotal(state, total) {
+  if (!Number.isInteger(total) || total < 1) return state;
+  return { ...init({ total, groups: state.groups }), tried: { ...state.tried } };
+}
+
+/** Le placement est-il terminé — c'est-à-dire plus aucun placement permis ? */
+export function isSettled(state) {
+  if (state.bench.length === 0) return true;
+  // Seuls les joueurs du BANC comptent : un joueur déjà placé peut toujours
+  // changer d'équipe, et cela ne rend pas la scène « non stabilisée ».
+  return state.bench.every((p) => state.teams.every((_, t) => canPlace(state, p, t) !== true));
+}
+
+/**
+ * Le VERDICT — ce que la scène montre quand plus rien ne peut bouger.
+ * `leftOver` est un nombre de JOUEURS, jamais une décimale.
+ */
+export function verdict(state) {
+  const g = groupInto(state.total, state.groups);
+  return {
+    ...g,
+    settled: isSettled(state),
+    /** Les joueurs effectivement restés dehors — ils existent, on les dessine. */
+    benched: state.bench,
+    /** « combien en ajouter / en retirer pour que tout tombe juste » */
+    fix: fixLeftOver(state.total, state.groups),
+  };
+}
+
+/**
+ * La découverte est prête quand l'élève a VU les deux cas : un partage qui
+ * tombe juste et un partage qui laisse quelqu'un dehors. Un seul des deux ne
+ * fait pas apparaître la règle — c'est le contraste qui l'enseigne.
+ */
+export function discoveryReady(state) {
+  const seen = Object.values(state.tried);
+  return seen.includes(true) && seen.includes(false);
+}
+
+/** Mémoriser le verdict d'une configuration essayée : clé « total:groups ». */
+export function remember(state) {
+  const v = groupInto(state.total, state.groups);
+  return { ...state, tried: { ...state.tried, [`${state.total}:${state.groups}`]: v.exact } };
+}
+
+/** Les nombres d'équipes qui tombent juste — proposés au niveau débutant seulement. */
+export function exactChoices(total, max) {
+  return exactGroupings(total, { min: 2, max });
+}
+
+/** Le prochain geste canonique (mode classe : « الخطوة التالية »). */
+export function nextMove(state) {
+  for (const p of state.bench) {
+    for (let t = 0; t < state.groups; t += 1) {
+      if (canPlace(state, p, t) === true) return { playerId: p, team: t };
+    }
+  }
+  return null;
+}
+
+/** Placer tout ce qui peut l'être — « إظهار الحل » du mode classe. */
+export function fill(state) {
+  let s = state;
+  for (;;) {
+    const mv = nextMove(s);
+    if (!mv) return s;
+    s = place(s, mv.playerId, mv.team);
+  }
+}

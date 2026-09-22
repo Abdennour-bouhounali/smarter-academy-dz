@@ -181,13 +181,13 @@ describe('catalogue algérien (dzCourseLevels)', () => {
     // une unité du manuel sont remplacés par les leçons de cette unité (plus
     // sa synthèse). Le nombre attendu se CALCULE depuis les deux sources ;
     // un littéral ici mentirait dès la prochaine unité.
-    // Un sujet couvert par une unité peut GARDER sa leçon « un sujet = une
-    // leçon » pour la part que l'unité ne traite pas (ex. الأعداد الأولية) :
-    // le compte part donc des sujets, pas d'un littéral.
-    const topicsInUnits = new Set(units4am.units.flatMap((u) => u.sourceTopicIds));
+    // Depuis le 2026-09-21, le catalogue ne liste QUE les leçons construites
+    // (`publishedScope`) : un sujet non construit n'a plus d'entrée, donc plus
+    // de carte « قريبًا ». Le compte reste DÉRIVÉ du découpage — c'est ce que
+    // ce test protège — mais il ne suppose plus une leçon par sujet officiel.
     const singleTopicLessons = decomposition4am.lessons.filter((l) => !l.unitId);
-    for (const topic of sourceTopics.filter((t) => !topicsInUnits.has(t.id))) {
-      expect(singleTopicLessons.filter((l) => l.sourceTopicId === topic.id), topic.id).toHaveLength(1);
+    for (const lesson of singleTopicLessons) {
+      expect(sourceTopics.some((t) => t.id === lesson.sourceTopicId), lesson.code).toBe(true);
     }
     const unitLessons = decomposition4am.lessons.filter((l) => l.unitId).length;
     const lessons4am = grade4am.chapters.flatMap((c) => c.lessons);

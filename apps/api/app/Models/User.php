@@ -218,4 +218,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(DiagnosticSession::class);
     }
+
+    /** Le travail libre de l'élève dans le مختبر الرياضيات (Math Lab). */
+    public function mathLabDocuments(): HasMany
+    {
+        return $this->hasMany(MathLabDocument::class);
+    }
 }

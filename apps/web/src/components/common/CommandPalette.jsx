@@ -106,18 +106,13 @@ export default function CommandPalette() {
 
   return (
     <>
-      {/* Trigger hint (bottom-right fixed) */}
-      <motion.button
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 2 }}
-        onClick={() => setOpen(true)}
-        className="fixed bottom-6 end-6 z-40 flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900/90 backdrop-blur-md text-white text-xs font-mono-jetbrains shadow-xl border border-slate-700 hover:border-slate-500 transition-all"
-        id="command-palette-trigger"
-      >
-        <Search size={13} />
-        <span>Ctrl+K</span>
-      </motion.button>
+      {/* PAS DE PASTILLE FLOTTANTE. La palette s'ouvre au CLAVIER (Ctrl/⌘+K,
+          géré plus haut) et par rien d'autre : son ancien déclencheur occupait
+          le coin bas — physiquement à GAUCHE sous RTL, car il était posé en
+          `end-6` — c'est-à-dire la colonne des repères de la leçon
+          (« ⛶ عرض », « 🧠 بطاقتي », « 📓 كرّاسي »). Il y recouvrait le premier
+          étage et interceptait ses clics. Le coin appartient désormais à la
+          leçon ; la recherche garde son raccourci. */}
 
       <AnimatePresence>
         {open && (

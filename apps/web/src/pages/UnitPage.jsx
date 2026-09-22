@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { BookOpen, Compass, Layers, Wand2, ListChecks, Landmark } from 'lucide-react';
-import { getUnitById, getLessonById } from '@smarter-academy/core';
+import { getUnitById, getLessonById, formatTextbookPages } from '@smarter-academy/core';
 import { getLessonProgress } from '../lessons/common/utils/progress/getLessonProgress';
 import { getTotalModules, getLessonConfig } from '../lessons/registry';
 import { useLearningProfile } from '../lessons/common/hooks/useLearningProfile';
@@ -50,6 +50,7 @@ function LessonBlock({ lesson, index, mastery, t }) {
   const prereqLessons = (lesson.prerequisiteLessonCodes ?? []).map((code) => getLessonById(code)).filter(Boolean);
   const isSynthesis = lesson.kind === 'synthesis';
   const mastered = lesson.learningPoints.filter((lp) => resolveMasteryState(mastery.get(lp.id)) === 'mastered').length;
+  const textbookPages = formatTextbookPages(lesson.textbookRef?.pages);
 
   return (
     <article className={`rounded-3xl border-2 bg-white p-5 sm:p-6 space-y-4 ${isSynthesis ? 'border-amber-300' : 'border-slate-200'}`} data-unit-lesson={lesson.id}>
@@ -116,7 +117,9 @@ function LessonBlock({ lesson, index, mastery, t }) {
       <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-3">
         <span className="text-xs text-slate-500">
           {config ? t('unit.modulesCount', { count: total ?? 0 }) : t('unit.comingSoon')}
-          {lesson.textbookRef?.pages && <> · {t('unit.textbookPages', { pages: lesson.textbookRef.pages })}</>}
+          {/* `pages` est une carte section → page(s), pas un nombre : sans
+              mise en forme, « الكتاب ص {{pages}} » rendait « [object Object] ». */}
+          {textbookPages && <> · {t('unit.textbookPages', { pages: textbookPages })}</>}
         </span>
         {available && (
           <Link to={lesson.path} className="inline-flex items-center gap-1 rounded-xl bg-blue-600 px-4 py-2 text-sm font-bold text-white hover:bg-blue-700">
@@ -160,7 +163,7 @@ export default function UnitPage() {
               </div>
               <h1 className="text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl">{unit.title}</h1>
               {unit.subtitle && <p className="max-w-2xl text-slate-600">{unit.subtitle}</p>}
-              {unit.textbook && <p className="flex items-center gap-1.5 text-xs text-slate-500"><BookOpen className="h-3.5 w-3.5" aria-hidden="true" /> {t('unit.textbookRef', { title: unit.textbook.title, unit: unit.textbook.unit, pages: unit.textbook.pages })}</p>}
+              {unit.textbook && <p className="flex items-center gap-1.5 text-xs text-slate-500"><BookOpen className="h-3.5 w-3.5" aria-hidden="true" /> {t('unit.textbookRef', { title: unit.textbook.title, unit: unit.textbook.unit, pages: formatTextbookPages(unit.textbook.pages) })}</p>}
             </div>
             <div className="w-full shrink-0 space-y-2 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-center md:w-52">
               <div className="text-xs font-mono font-bold uppercase text-slate-500">{t('unit.progress')}</div>

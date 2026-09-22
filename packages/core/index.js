@@ -30,6 +30,7 @@ export * from './validation/validateChoiceAnswer.js';
 export * from './validation/validateScientificNotation.js';
 export * from './progress/calculateCompletionPercentage.js';
 export * from './progress/getNextIncompleteModule.js';
+export * from './progress/isValidModuleNumber.js';
 export * from './progress/getNextLesson.js';
 export * from './exercise/adaptiveExerciseState.js';
 export * from './api/errors.js';
@@ -39,9 +40,14 @@ export * from './curriculum/moduleRecommendations.js';
 export * from './curriculum/activeGrades.js';
 export * from './curriculum/freeLessons.js';
 export * from './curriculum/manipulationTypes.js';
+export * from './curriculum/manipulationLevels.js';
+export * from './curriculum/textbookPages.js';
 // Divisibilité, PGCD, réduction de fractions — le noyau de l'unité 1 de 4AM,
 // partagé par les leçons, les manipulations et les tests de contenu.
 export * as divisibility from './arithmetic/divisibility.js';
+// Partage équitable — le modèle des situations « n objets en groupes égaux »,
+// commun au rangement des livres du manuel et aux scènes de la plateforme.
+export * as equalGrouping from './arithmetic/equalGrouping.js';
 
 // Moteur d'exercices (pratique) — arithmétique exacte et évaluation des
 // réponses. Exporté sous un espace de noms : `Rational.parse` et

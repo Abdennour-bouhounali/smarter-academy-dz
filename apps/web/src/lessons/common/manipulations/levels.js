@@ -30,6 +30,15 @@ export const LEVELS = Object.freeze({
     { id: 3, key: 'autonomy', numbers: { total: 143 }, candidates: [11, 12, 13], ...T('know-1') },
     { id: 4, key: 'challenge', numbers: { total: 1512 }, candidates: [21, 72, 25, 9], ...T('ex-1') },
   ],
+  // team-builder : les paliers restent les quatre du contrat (ils pilotent le
+  // laboratoire libre et le mode classe) ; le couple mبتدئ/متقدم du workspace
+  // est une AUTRE dimension, déclarée par la leçon (voir manipulationLevels.js).
+  'team-builder': [
+    { id: 1, key: 'discover', numbers: { total: 15, groups: 3 }, ...P },
+    { id: 2, key: 'guided', numbers: { total: 16, groups: 3 }, ...T('act-1') },
+    { id: 3, key: 'autonomy', numbers: { total: 24, groups: 4 }, ...T('act-1') },
+    { id: 4, key: 'challenge', numbers: { total: 42, groups: 5 }, ...T('act-1') },
+  ],
   'factor-pairs': [
     { id: 1, key: 'discover', numbers: { n: 24 }, ...P },
     { id: 2, key: 'guided', numbers: { n: 60 }, ...T('act-2') },

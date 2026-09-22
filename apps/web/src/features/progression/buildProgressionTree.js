@@ -67,12 +67,15 @@ export function countStates(points) {
  * prochain module incomplet via le registre (même pont que getResumeLesson),
  * jamais à une URL fabriquée ; sans module résolu, l'index de la leçon.
  */
-function ctaOf(entry, counts, lesson, getModulePath) {
+function ctaOf(entry, counts, lesson, getModulePath, getFirstModuleNumber) {
   const state = activityStateOf(entry);
   const hasWork = counts.gap + counts.reinforce > 0;
   if (state === 'not_started') return { kind: 'start', path: lesson.path };
   if (state === 'in_progress') {
-    const next = getNextIncompleteModule(entry.uniqueModules ?? new Set(), entry.totalCount);
+    // Le premier module n'est pas toujours 1 : une leçon qui ouvre sur
+    // « أستعدّ » commence à 0, et « continuer » doit la reprendre là.
+    const first = getFirstModuleNumber?.(lesson.id) ?? 1;
+    const next = getNextIncompleteModule(entry.uniqueModules ?? new Set(), entry.totalCount, first);
     return { kind: 'continue', path: getModulePath?.(lesson.id, next) || lesson.path };
   }
   return { kind: hasWork ? 'reviewGaps' : 'review', path: lesson.path };
@@ -97,7 +100,7 @@ function buildLessonNode(lesson, ctx) {
     counts,
     assessed,
     hasWork: counts.gap + counts.reinforce > 0,
-    cta: ctaOf(entry, counts, lesson, ctx.getModulePath),
+    cta: ctaOf(entry, counts, lesson, ctx.getModulePath, ctx.getFirstModuleNumber),
   };
 }
 
@@ -214,16 +217,16 @@ function buildFieldNode(chapter, ctx, index) {
  * @param {Array} courseLevels
  * @param {{ lessons: Array }} activity  le retour de getStudentActivity
  * @param {Array} currentMastery         profile.currentMastery (déjà cadré)
- * @param {{ gradeId?: string|null, getModulePath?: Function }} options
+ * @param {{ gradeId?: string|null, getModulePath?: Function, getFirstModuleNumber?: Function }} options
  */
-export function buildProgressionTree(courseLevels, activity, currentMastery, { gradeId = null, getModulePath } = {}) {
+export function buildProgressionTree(courseLevels, activity, currentMastery, { gradeId = null, getModulePath, getFirstModuleNumber } = {}) {
   const activityById = new Map((activity?.lessons || []).map((e) => [e.lesson.id, e]));
   const grades = [];
   for (const level of courseLevels) {
     for (const grade of level.grades) {
       if (gradeId && grade.id !== gradeId) continue;
       if (!grade.chapters?.length) continue;
-      const ctx = { activityById, currentMastery, gradeId: grade.id, getModulePath, order: 0 };
+      const ctx = { activityById, currentMastery, gradeId: grade.id, getModulePath, getFirstModuleNumber, order: 0 };
       const fields = grade.chapters.map((c, i) => buildFieldNode(c, ctx, i));
       grades.push({
         id: grade.id,

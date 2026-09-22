@@ -7,3 +7,30 @@
 export function hasRequiredRole(user, allowedRoles) {
   return Boolean(user) && allowedRoles.includes(user.role);
 }
+
+/**
+ * Les rôles qui peuvent PRÉSENTER en « وضع القسم » (Classroom Mode) : une
+ * leçon, un محور, un exercice ou une manipulation, sur projecteur, tableau
+ * interactif ou téléviseur de classe.
+ *
+ * C'EST LE SEUL ENDROIT où la question « qui peut présenter ? » se décide.
+ * Aucun composant, aucune route, aucun test ne nomme un rôle : tous
+ * appellent `canPresentClassroom`. Ajouter le compte enseignant (« enseignant »,
+ * note du modèle User côté API) le jour où il existera, ou retirer un rôle
+ * d'essai, se fait donc ICI, en une valeur — jamais par un second système de
+ * rôles ni par une condition écrite dans l'interface.
+ *
+ * `student` y figure à la demande du propriétaire, pour éprouver le mode
+ * classe depuis un compte élève ; c'est un réglage temporaire, et rien dans
+ * l'architecture n'en dépend.
+ */
+export const CLASSROOM_PRESENTER_ROLES = Object.freeze(['admin','student']);
+
+/**
+ * L'utilisateur peut-il ouvrir le mode classe ?
+ * @param {{role: string}|null|undefined} user
+ * @returns {boolean}
+ */
+export function canPresentClassroom(user) {
+  return hasRequiredRole(user, CLASSROOM_PRESENTER_ROLES);
+}

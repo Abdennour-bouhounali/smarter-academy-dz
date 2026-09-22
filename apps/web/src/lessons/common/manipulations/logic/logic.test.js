@@ -6,6 +6,7 @@ import * as CD from './commonDivisors';
 import * as AL from './algorithms';
 import * as CP from './coprime';
 import * as FR from './fraction';
+import * as TB from './teamBuilder';
 import { plausibleChoices } from '../useManipulation';
 import { LEVELS, levelMatching } from '../levels';
 import { MANIPULATION_TYPE_IDS } from '@smarter-academy/core';
@@ -212,5 +213,128 @@ describe('paliers et propositions', () => {
     expect(new Set(c).size).toBe(3);
     expect(c).toContain(112);
     expect(plausibleChoices(112, [392, 28, 113])).toEqual(c);
+  });
+});
+
+/* ── team-builder — le partage équitable rendu physique (15 et 16 joueurs) ──
+   Le contexte est de la plateforme (act-1, réhabillé) ; la mathématique est
+   celle du manuel : a = b × q + r, et le reste est un nombre d'objets. */
+describe('team-builder (15 et 16 joueurs, 3 équipes)', () => {
+  it('15 joueurs en 3 équipes : tout le monde joue, 5 par équipe', () => {
+    let s = TB.init({ total: 15, groups: 3 });
+    s = TB.fill(s);
+    expect(s.teams.map((t) => t.length)).toEqual([5, 5, 5]);
+    expect(s.bench).toEqual([]);
+    const v = TB.verdict(s);
+    expect([v.perGroup, v.leftOver, v.exact, v.settled]).toEqual([5, 0, true, true]);
+  });
+
+  it('16 joueurs en 3 équipes : 5 par équipe et UN joueur reste dehors, dessinable', () => {
+    let s = TB.init({ total: 16, groups: 3 });
+    s = TB.fill(s);
+    expect(s.teams.map((t) => t.length)).toEqual([5, 5, 5]);
+    expect(s.bench).toHaveLength(1);
+    const v = TB.verdict(s);
+    expect([v.perGroup, v.leftOver, v.exact]).toEqual([5, 1, false]);
+    expect(v.benched).toEqual(s.bench);
+    expect(v.equality).toEqual({ a: 16, b: 3, q: 5, r: 1 });
+    // Ce que l'élève se demande tout seul : +2 ou −1.
+    expect(v.fix).toEqual({ add: 2, remove: 1 });
+  });
+
+  it('les équipes restent ÉGALES : remplir une équipe avant les autres est refusé, avec sa raison', () => {
+    let s = TB.init({ total: 15, groups: 3 });
+    s = TB.place(s, 0, 0);
+    expect(TB.canPlace(s, 1, 0)).toBe('teamsMustStayEqual');
+    expect(TB.canPlace(s, 1, 1)).toBe(true);
+    // Le refus ne consomme pas le joueur : il reste sur le banc.
+    const after = TB.place(s, 1, 0);
+    expect(after.bench).toContain(1);
+    expect(after.attempts).toBe(1);
+  });
+
+  it('une équipe n’accepte jamais plus que sa part', () => {
+    let s = TB.fill(TB.init({ total: 16, groups: 3 }));
+    const leftover = s.bench[0];
+    // Le seizième ne peut aller NULLE PART : c'est cela, le reste.
+    for (let t = 0; t < 3; t += 1) expect(TB.canPlace(s, leftover, t)).toBe('teamIsFull');
+    expect(TB.isSettled(s)).toBe(true);
+  });
+
+  it('on peut reprendre un joueur : il revient sur le banc, l’erreur ne coûte rien', () => {
+    let s = TB.place(TB.init({ total: 15, groups: 3 }), 0, 0);
+    s = TB.unplace(s, 0);
+    expect(s.bench).toContain(0);
+    expect(s.teams.every((t) => t.length === 0)).toBe(true);
+  });
+
+  it('la découverte attend le CONTRASTE : un partage juste ET un partage avec reste', () => {
+    let s = TB.remember(TB.init({ total: 15, groups: 3 }));
+    expect(TB.discoveryReady(s)).toBe(false);
+    s = TB.remember(TB.setTotal(s, 16));
+    expect(TB.discoveryReady(s)).toBe(true);
+  });
+
+  it('changer d’effectif ou d’équipes rouvre la question sans perdre la mémoire des essais', () => {
+    let s = TB.remember(TB.init({ total: 15, groups: 3 }));
+    s = TB.setGroups(s, 5);
+    expect(s.teams).toHaveLength(5);
+    expect(s.bench).toHaveLength(15);
+    expect(s.tried['15:3']).toBe(true);
+    expect(TB.setTotal(s, 0)).toBe(s);
+  });
+
+  it('les nombres d’équipes qui tombent juste sont exactement les diviseurs', () => {
+    expect(TB.exactChoices(24, 8)).toEqual([2, 3, 4, 6, 8]);
+    expect(TB.exactChoices(420, 8)).toEqual([2, 3, 4, 5, 6, 7]);
+  });
+
+  it('le geste canonique du mode classe avance puis s’arrête', () => {
+    let s = TB.init({ total: 15, groups: 3 });
+    expect(TB.nextMove(s)).toEqual({ playerId: 0, team: 0 });
+    s = TB.fill(s);
+    expect(TB.nextMove(s)).toBeNull();
+  });
+});
+
+/* Déplacer un joueur DÉJÀ PLACÉ vers une autre équipe : l'élève change d'avis,
+   et l'interface ne doit pas se battre avec lui (MANIPULATION_CONTRACT §4). */
+describe('team-builder — changer d’avis', () => {
+  it('un joueur placé peut passer dans une autre équipe sans repasser par le banc', () => {
+    let s = TB.init({ total: 15, groups: 3 });
+    s = TB.place(s, 0, 0);
+    expect(TB.teamOf(s, 0)).toBe(0);
+    // Les équipes 1 et 2 sont vides : y déplacer le joueur garde l'égalité.
+    expect(TB.canPlace(s, 0, 1)).toBe(true);
+    s = TB.place(s, 0, 1);
+    expect(TB.teamOf(s, 0)).toBe(1);
+    expect(s.teams[0]).toEqual([]);
+    // Il n'est pas dupliqué : il est dans UNE seule équipe, et pas sur le banc.
+    expect(s.teams.flat().filter((p) => p === 0)).toHaveLength(1);
+    expect(s.bench).not.toContain(0);
+  });
+
+  it('le reposer dans sa propre équipe ne fait rien, et le dit', () => {
+    const s = TB.place(TB.init({ total: 15, groups: 3 }), 0, 0);
+    expect(TB.canPlace(s, 0, 0)).toBe('sameTeam');
+  });
+
+  it('un déplacement qui romprait l’égalité reste refusé', () => {
+    let s = TB.init({ total: 15, groups: 3 });
+    s = TB.place(s, 0, 0); s = TB.place(s, 1, 1); s = TB.place(s, 2, 2);
+    s = TB.place(s, 3, 0); s = TB.place(s, 4, 1); s = TB.place(s, 5, 2);
+    // Déplacer 3 (équipe 0 → équipe 1) donnerait 1 · 3 · 2 : inégal.
+    expect(TB.canPlace(s, 3, 1)).toBe('teamsMustStayEqual');
+  });
+
+  it('une fois les équipes égales et pleines, un déplacement les déséquilibrerait : refusé, avec la BONNE raison', () => {
+    const s = TB.fill(TB.init({ total: 16, groups: 3 }));
+    const placed = s.teams[0][0];
+    // Sortir ce joueur laisserait 4 · 5 · 5 : l'égalité est ce qui casse en
+    // premier, et c'est donc ce que l'élève doit lire — pas « équipe pleine ».
+    expect(TB.canPlace(s, placed, 1)).toBe('teamsMustStayEqual');
+    // La scène reste stabilisée, avec son joueur dehors : le reste demeure.
+    expect(TB.isSettled(s)).toBe(true);
+    expect(TB.verdict(s).leftOver).toBe(1);
   });
 });

@@ -10,6 +10,8 @@ import DropZone from '../primitives/DropZone';
 import NumberTile from '../primitives/NumberTile';
 import DragGhost from '../primitives/DragGhost';
 import QuantityBar from '../primitives/QuantityBar';
+import RibbonStrip from '../primitives/RibbonStrip';
+import DraggableObject from '../primitives/DraggableObject';
 import EquationBuilder from '../primitives/EquationBuilder';
 import EquationDisplay from '../primitives/EquationDisplay';
 import { Btn } from '../ManipulationTeacherMode';
@@ -20,12 +22,14 @@ const { euclidStepTex, pgcdEqualityTex } = divisibility;
 /**
  * euclidean-algorithm — LA MACHINE À DIVISER.
  *
- * A. L'élève POSE des copies du diviseur dans le dividende (glisser, ou les
- *    boutons + / −). Quand une copie de plus déborde, il s'arrête.
- * B. Idée : a = b × q + r, où q est le NOMBRE DE COPIES qui tiennent et r ce
- *    qui dépasse.
- * C. La barre du dividende se remplit de segments égaux ; le reste apparaît
- *    en ambre au bout.
+ * A. L'élève REPORTE des copies du petit ruban le long du grand (glisser, ou
+ *    les boutons + / −). Quand une copie de plus déborde, il s'arrête.
+ *    Même atelier de couture que les différences (thème `workshop`) : la
+ *    division est une suite de reports, la soustraction une suite de coupes.
+ * B. Idée : a = b × q + r, où q est le NOMBRE DE COPIES qui tiennent et r le
+ *    bout qui dépasse.
+ * C. Le grand ruban se couvre de copies égales (RibbonStrip) ; le bout non
+ *    couvert reste en pointillés, puis le reste apparaît en ambre.
  * D. Émerge : l'égalité se remplit case par case (le q vient du comptage des
  *    copies, le r de ce qui reste), puis l'invariant PGCD(a ; b) = PGCD(b ; r).
  * E. À découvrir : la chaîne des divisions, et le PGCD = DERNIER RESTE NON
@@ -77,7 +81,7 @@ export default function EuclidAlgorithm({
     <ManipulationShell
       type="euclidean-algorithm"
       title={title ?? t('manipulation.euclid.title', { a, b })}
-      mission={mission ?? t('manipulation.euclid.mission')}
+      mission={mission ?? t('manipulation.euclid.ribbonMission', { a, b })}
       lead={lead}
       state={state}
       numberFields={[{ key: 'a', label: 'a' }, { key: 'b', label: 'b' }]}
@@ -151,7 +155,11 @@ export default function EuclidAlgorithm({
           {div ? (
             <>
               <div className="flex flex-wrap items-center gap-2">
-                <NumberTile value={div.b} drag={drag} id="copy" label={`${t('manipulation.divisor')} ${div.b}`} tone="divisor" />
+                {/* LA COPIE : un petit ruban qu'on prend et qu'on reporte. */}
+                <DraggableObject drag={drag} id="copy" label={t('manipulation.euclid.copyRibbon', { b: div.b })} className="flex min-h-[44px] w-56 max-w-full items-center gap-2 rounded-xl border-2 border-violet-300 bg-violet-50 px-2 py-1">
+                  <NumberTile value={div.b} tone="divisor" size="sm" />
+                  <RibbonStrip value={div.b} scale={div.b} tone="b" height="h-6" className="min-w-0 flex-1" />
+                </DraggableObject>
                 <span className="text-xs text-slate-500">{t('manipulation.dragHint')}</span>
                 <span className="ms-auto flex items-center gap-1.5">
                   <Btn small onClick={() => setLab(L.removeCopy)} disabled={lab.copies === 0} ariaLabel={t('manipulation.euclid.removeCopy')}>−</Btn>
@@ -160,17 +168,20 @@ export default function EuclidAlgorithm({
                 </span>
               </div>
 
-              <DropZone drag={drag} id="dividend" label={t('manipulation.euclid.dividendZone', { a: div.a })} minHeight="min-h-[76px]" className="space-y-1.5 p-2">
+              <DropZone drag={drag} id="dividend" label={t('manipulation.euclid.dividendRibbon', { a: div.a })} minHeight="min-h-[84px]" className="space-y-1.5 p-2" data-ribbons>
                 <div className="flex items-center gap-2 text-xs font-bold text-slate-700">
                   <NumberTile value={div.a} tone="dividend" size="sm" />
-                  <span dir="auto">{t('manipulation.euclid.dividendZone', { a: div.a })}</span>
+                  <span dir="auto">{t('manipulation.euclid.dividendRibbon', { a: div.a })}</span>
                 </div>
-                <QuantityBar value={div.a} scale={div.a} tone="ghost"
+                <RibbonStrip value={div.a} scale={div.a} tone="a"
+                  ghost={Math.max(0, div.a - lab.copies * div.b - (rest !== null && quotientReached ? rest : 0))}
                   segments={[
-                    ...Array.from({ length: Math.min(lab.copies, 30) }, () => ({ value: div.b, tone: 'b', label: String(div.b) })),
-                    ...(rest !== null && rest > 0 ? [{ value: rest, tone: 'rem', label: String(rest) }] : []),
+                    ...Array.from({ length: Math.min(lab.copies, 30) }, () => ({ value: div.b, tone: 'b', label: lab.copies <= 12 ? t('manipulation.euclid.cm', { n: div.b }) : undefined })),
+                    ...(rest !== null && rest > 0 && quotientReached ? [{ value: rest, tone: 'rem', label: t('manipulation.euclid.cm', { n: rest }) }] : []),
                   ]} />
-                {quotientReached && <p className="text-[11px] font-bold text-amber-800">{t('manipulation.euclid.overflow', { a: div.a })}</p>}
+                {quotientReached
+                  ? <p className="text-[11px] font-bold text-amber-800">{t('manipulation.euclid.overflow', { a: div.a })}</p>
+                  : <p className="text-[11px] text-slate-500">{t('manipulation.euclid.notCovered')}: <span dir="ltr" className="font-mono">{div.a - lab.copies * div.b}</span></p>}
               </DropZone>
 
               {quotientReached && (

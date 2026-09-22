@@ -2,12 +2,32 @@ import React, { useState } from 'react';
 import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
-import { Manipulation } from '../../../../../../common/manipulations';
+import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import { GardenScene } from '../../../../../../common/manipulations/primitives/ContextScenes';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { ACTIVITY } from '../content/textbook';
+import { ACTIVITY, STARTER } from '../content/textbook';
 
-/** Module 1 — نشاط 4 (p. 8) : 90 و 54، 9 باقات؟ أكبر عدد من الباقات؟ Lab-first (common-divisors, vue « باقات »). LP : P1, P3. */
+/**
+ * Module 1 — نشاط 4 (p. 8) : 90 و 54، 9 باقات؟ أكبر عدد من الباقات؟
+ *
+ * Laboratoire d'ouverture À DEUX NIVEAUX (MANIPULATION_CONTRACT §7bis-levels),
+ * sur le MÊME type `common-divisors` — le contexte est une donnée du type,
+ * donc un second niveau ne coûte pas un second composant :
+ *
+ *   مبتدئ  — 12 ballons et 18 maillots, en équipes (thème `football`, les
+ *            objets du terrain de la leçon 1) : quatre diviseurs communs
+ *            (1, 2, 3, 6), visibles d'un regard. L'élève voit CE QUE veut
+ *            dire « commun ».
+ *   متقدم  — 90 fleurs rouges et 54 blanches, les fleurs du manuel DESSINÉES
+ *            en bouquets (thème `garden`) : les listes sont longues, la
+ *            recherche demande une stratégie, et le PGCD vaut 18.
+ *
+ * Les groupes sont de vrais cadres contenant de vrais objets
+ * (`GroupingScene`) : « متماثلة » se voit, et ce qui reste est dessiné à part.
+ *
+ * LP : P1, P3.
+ */
 export default function Module01Baqat() {
   const [labDone, setLabDone] = useState(false);
   const [q1, setQ1] = useState(false);
@@ -17,8 +37,37 @@ export default function Module01Baqat() {
     <ContentModule
       ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1}
       moduleTitle="نشاط 4 — باقات متماثلة" moduleSubtitle="90 زهرة حمراء و 54 زهرة بيضاء" estimatedTime="12 دقيقة"
-      brief={{ tag: 'أنشطة — الكتاب ص 8', title: ACTIVITY.title, tone: 'indigo', body: <div className="space-y-1"><p>{ACTIVITY.situation}</p>{ACTIVITY.questions.slice(0, 3).map((q) => <p key={q}>{q}</p>)}<SourceTag source={ACTIVITY.source} /></div> }}
-      intro={<Manipulation type="common-divisors" a={red} b={white} context={ACTIVITY.context} title="قواسم 90، قواسم 54، وما بينهما" lead="اختر في القائمتين الأعداد التي تقسم 90 و 54 معًا: كل واحد منها عدد باقات ممكن." onFinished={() => setLabDone(true)} />}
+      brief={{ tag: 'أنشطة — الكتاب ص 8', title: ACTIVITY.title, tone: 'indigo',
+        headline: 'هيا نشكّل الباقات!', emoji: '💐', visual: <GardenScene />,
+        body: <div className="space-y-1"><p>{ACTIVITY.situation}</p>{ACTIVITY.questions.slice(0, 3).map((q) => <p key={q}>{q}</p>)}<SourceTag source={ACTIVITY.source} /></div> }}
+      intro={(
+        // Le niveau par défaut sert LA TÂCHE DU MODULE : ce module porte
+        // l'activité du manuel dans son titre, et sa première étape attend
+        // que CETTE manipulation soit finie (`onFinished`). Ouvrir sur le
+        // petit nombre cachait l'activité derrière un onglet et laissait
+        // l'élève devant une étape qu'il ne pouvait pas satisfaire.
+        <ManipulationWorkspace
+          title="الأنشطة التفاعلية"
+          defaultLevel="advanced"
+          lead="نشاط الكتاب: 90 زهرة حمراء و 54 بيضاء. وإن أردت التمرّن أولًا، جرّب المستوى المبتدئ."
+          levels={{
+            beginner: () => (
+              <div className="space-y-2">
+                <Manipulation type="common-divisors" a={STARTER.numbers.a} b={STARTER.numbers.b} context={STARTER.context} theme="football"
+                  title="تمرّن أولًا: 12 كرة و 18 قميصًا"
+                  lead="كم فريقًا متماثلًا يمكن تشكيله دون أن يبقى شيء؟ جرّب عدّة أعداد." />
+                <SourceTag source={STARTER.source} />
+              </div>
+            ),
+            advanced: () => (
+              <Manipulation type="common-divisors" a={red} b={white} context={ACTIVITY.context} theme="garden"
+                title="قواسم 90، قواسم 54، وما بينهما"
+                lead="اختر في القائمتين الأعداد التي تقسم 90 و 54 معًا: كل واحد منها عدد باقات ممكن."
+                onFinished={() => setLabDone(true)} />
+            ),
+          }}
+        />
+      )}
       steps={[
         { num: 1, title: 'هل يمكنه تشكيل 9 باقات؟ ماذا يمثل العدد 9؟', done: q1,
           content: (

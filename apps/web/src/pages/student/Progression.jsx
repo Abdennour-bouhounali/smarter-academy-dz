@@ -4,7 +4,7 @@ import { motion, MotionConfig } from 'framer-motion';
 import { TrendingUp, BookOpen, GraduationCap, SearchX } from 'lucide-react';
 import { courseLevels, getAllGrades } from '@smarter-academy/core';
 import { getStudentActivity } from '../../lessons/common/utils/progress/getStudentActivity';
-import { getModulePath } from '../../lessons/registry';
+import { getModulePath, getFirstModuleNumber } from '../../lessons/registry';
 import { LESSON_PROGRESS_SYNCED_EVENT } from '../../hooks/useLessonProgressSync';
 import { AuthContext } from '../../context/AuthContext';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
@@ -82,7 +82,7 @@ export default function Progression() {
   // par changement de données ; la vue (recherche/filtres/tri) est une
   // projection pure par-dessus, recalculée sans retoucher l'arbre.
   const tree = useMemo(
-    () => buildProgressionTree(courseLevels, activity, currentMastery, { gradeId, getModulePath }),
+    () => buildProgressionTree(courseLevels, activity, currentMastery, { gradeId, getModulePath, getFirstModuleNumber }),
     [activity, currentMastery, gradeId],
   );
   const [view, setView] = useState(DEFAULT_VIEW);

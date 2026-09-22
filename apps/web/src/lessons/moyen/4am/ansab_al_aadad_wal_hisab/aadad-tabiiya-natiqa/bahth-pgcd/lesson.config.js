@@ -33,9 +33,48 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   priorKnowledge: ['khassiya-1', 'khassiya-2', 'pgcd-taarif'],
   resources: [
-    { kind: 'manipulation', code: 'pgcd-differences-252-140', type: 'pgcd-differences', module: 1, title: 'الفروق المتتابعة: 252 و 140', learningPointIds: ['4am_bahth-pgcd_P1', '4am_bahth-pgcd_P2'], sourceElementIds: ['act-6a'] },
+    // Module 1 — workspace à deux niveaux sur les différences successives,
+    // dans l'ATELIER DE COUTURE (thème `workshop`) : deux rubans, le petit
+    // coupé dans le grand, encore et encore. L'invariant
+    // PGCD(a ; b) = PGCD(b ; a − b) est le même ; ce qui change est la
+    // LONGUEUR de la chaîne, donc la fatigue — et c'est précisément cette
+    // fatigue qui motivera la division au module 3. Les nombres du manuel
+    // sont gardés ; seule la situation est dessinée, et c'est déclaré.
+    { kind: 'manipulation', code: 'pgcd-differences-21-14', type: 'pgcd-differences', module: 1,
+      level: 'beginner',
+      title: 'شريطان: 21 سم و 14 سم (سلسلة قصيرة)',
+      objective: 'PGCD(a ; b) = PGCD(b ; a − b) والقاسم المشترك الأكبر هو آخر فرق غير معدوم',
+      autonomy: '',
+      experience: { type: 'platform_adaptation', reason: 'smaller_numbers_for_first_contact', theme: 'workshop' },
+      learningPointIds: ['4am_bahth-pgcd_P1'], sourceElementIds: ['act-6a'] },
+    { kind: 'manipulation', code: 'pgcd-differences-252-140', type: 'pgcd-differences', module: 1,
+      level: 'advanced',
+      title: 'شريطان: 252 سم و 140 سم — الفروق المتتابعة',
+      objective: 'PGCD(a ; b) = PGCD(b ; a − b) والقاسم المشترك الأكبر هو آخر فرق غير معدوم',
+      autonomy: 'سلسلة طويلة بأعداد الكتاب: التلميذ يحافظ على الترتيب حتى الفرق المعدوم دون توجيه',
+      experience: { type: 'platform_adaptation', reason: 'multiple_representations', theme: 'workshop' },
+      learningPointIds: ['4am_bahth-pgcd_P1', '4am_bahth-pgcd_P2'], sourceElementIds: ['act-6a'] },
     { kind: 'method', code: 'method-differences-117-91', module: 2, title: 'طريقة: خوارزمية الفروق المتتابعة (117 و 91)', learningPointIds: ['4am_bahth-pgcd_P2'], sourceElementIds: ['method-differences'] },
-    { kind: 'manipulation', code: 'euclid-765-135', type: 'euclidean-algorithm', module: 3, title: 'خوارزمية إقليدس: 765 و 135 (3 قسمات بدل 8 خطوات)', learningPointIds: ['4am_bahth-pgcd_P3', '4am_bahth-pgcd_P4', '4am_bahth-pgcd_P5'], sourceElementIds: ['act-6b'] },
+    // Module 3 — workspace à deux niveaux sur la division euclidienne, dans
+    // le MÊME atelier : on ne coupe plus, on reporte le petit ruban le long
+    // du grand ; le bout qui dépasse est le reste.
+    //   مبتدئ  — 45 et 18 : deux divisions, on voit l'algorithme en entier.
+    //   متقدم  — 765 et 135, les nombres du manuel : trois divisions contre
+    //            huit différences, la comparaison que l'activité demande.
+    { kind: 'manipulation', code: 'euclid-45-18', type: 'euclidean-algorithm', module: 3,
+      level: 'beginner',
+      title: 'خوارزمية إقليدس: شريطان 45 سم و 18 سم (قسمتان)',
+      objective: 'PGCD(a ; b) = PGCD(b ; r) والقاسم المشترك الأكبر هو آخر باقٍ غير معدوم',
+      autonomy: '',
+      experience: { type: 'platform_adaptation', reason: 'smaller_numbers_for_first_contact', theme: 'workshop' },
+      learningPointIds: ['4am_bahth-pgcd_P3'], sourceElementIds: ['act-6b'] },
+    { kind: 'manipulation', code: 'euclid-765-135', type: 'euclidean-algorithm', module: 3,
+      level: 'advanced',
+      title: 'خوارزمية إقليدس: 765 و 135 (3 قسمات بدل 8 خطوات)',
+      objective: 'PGCD(a ; b) = PGCD(b ; r) والقاسم المشترك الأكبر هو آخر باقٍ غير معدوم',
+      autonomy: 'أعداد الكتاب مع المقارنة بالفروق: التلميذ يحكم بنفسه أيّ الطريقتين أنجع',
+      experience: { type: 'platform_adaptation', reason: 'multiple_representations', theme: 'workshop' },
+      learningPointIds: ['4am_bahth-pgcd_P3', '4am_bahth-pgcd_P4', '4am_bahth-pgcd_P5'], sourceElementIds: ['act-6b'] },
     { kind: 'method', code: 'method-euclid-1938-836', module: 3, title: 'طريقة: خوارزمية إقليدس (836 و 1938)', learningPointIds: ['4am_bahth-pgcd_P4'], sourceElementIds: ['method-euclid'] },
     { kind: 'situation', code: 'challenge-936-845', module: 4, title: 'تحدّ: 936 مئزرًا ورديًا و 845 مئزرًا أزرقًا', learningPointIds: ['4am_bahth-pgcd_P5'], sourceElementIds: ['challenge'] },
   ],

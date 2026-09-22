@@ -30,7 +30,26 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   priorKnowledge: ['pgcd-taarif', 'tariqa-qawasim'],
   resources: [
-    { kind: 'manipulation', code: 'common-divisors-42-60', type: 'common-divisors', module: 1, title: 'قواسم 42 و 60: من القائمتين إلى PGCD',
+    // Module 1 — workspace à deux niveaux. La MÉTHODE est la même (حصر :
+    // lister, croiser, prendre le plus grand) ; ce qui change est la
+    // longueur des listes, donc le besoin d'être méthodique. Le niveau
+    // débutant part d'un contexte de la plateforme (8 stylos et 12 cahiers
+    // en trousses identiques, thème `school`) pour que « commun » se voie
+    // avant de se lire dans les listes ; le niveau avancé garde les listes
+    // nues du manuel — ici, la liste EST l'objet mathématique.
+    { kind: 'manipulation', code: 'common-divisors-8-12', type: 'common-divisors', module: 1,
+      level: 'beginner',
+      title: 'حقائب متماثلة: 8 أقلام و 12 كراسًا، ثم القائمتان',
+      objective: 'تعيين PGCD بحصر القواسم ثم القواسم المشتركة ثم أكبرها',
+      autonomy: '',
+      experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'school' },
+      learningPointIds: ['4am_tayin-pgcd_P1'], sourceElementIds: ['act-5'] },
+    { kind: 'manipulation', code: 'common-divisors-42-60', type: 'common-divisors', module: 1,
+      level: 'advanced',
+      title: 'قواسم 42 و 60: من القائمتين إلى PGCD',
+      objective: 'تعيين PGCD بحصر القواسم ثم القواسم المشتركة ثم أكبرها',
+      autonomy: 'قائمتان طويلتان (اثنا عشر قاسمًا للعدد 60): لا يمكن النجاح بالمصادفة، يلزم ترتيب',
+      experience: { type: 'textbook', reason: '', theme: 'abstract' },
       learningPointIds: ['4am_tayin-pgcd_P1'], sourceElementIds: ['act-5'] },
     { kind: 'method', code: 'method-hasr', module: 1, title: 'طريقة: حصر القواسم ثم القواسم المشتركة ثم أكبرها', learningPointIds: ['4am_tayin-pgcd_P1'], sourceElementIds: ['act-5'] },
   ],

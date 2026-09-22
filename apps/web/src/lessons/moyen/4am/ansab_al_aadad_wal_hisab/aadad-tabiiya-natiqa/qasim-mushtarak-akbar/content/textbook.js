@@ -1,4 +1,4 @@
-import { src } from '../../_unit/unitMeta.js';
+import { src, addition } from '../../_unit/unitMeta.js';
 
 export const ACTIVITY = {
   source: src('act-4', 8, 'أنشطة', 4),
@@ -8,6 +8,23 @@ export const ACTIVITY = {
   closing: 'نسمّي عدد الباقات المحصّل عليه القاسم المشترك الأكبر للعددين 90 و 54 ونرمز له بالرمز PGCD (90 ; 54).',
   numbers: { red: 90, white: 54 },
   context: { group: 'باقة', itemA: 'زهرة حمراء', itemB: 'زهرة بيضاء' },
+};
+
+/**
+ * LE NIVEAU MBTADI' — même mathématique, situation plus proche de l'élève.
+ *
+ * Structure du manuel : deux collections à répartir EN MÊME TEMPS en groupes
+ * identiques ; les nombres de groupes qui marchent sont les قواسم مشتركة, et
+ * le plus grand est le PGCD. On la garde entière, avec 12 et 18 — deux
+ * nombres dont les diviseurs communs (1, 2, 3, 6) se comptent sur les
+ * doigts, dans une situation d'équipe plutôt que de fleuriste.
+ *
+ * Déclaré comme ajout de la plateforme : rien n'est ajouté sans le dire.
+ */
+export const STARTER = {
+  source: addition('interaction_generation'),
+  numbers: { a: 12, b: 18 },
+  context: { group: 'فريق', itemA: 'كرة', itemB: 'قميصًا' },
 };
 
 export const KNOWLEDGE_3 = {

@@ -1,5 +1,31 @@
 # Smarter Academy — Architecture
 
+> **Scope correction (2026-09-20).** The §1 domain table and §2 frontend tree
+> below describe the **French-era** application and understate the backend. What
+> is true today:
+>
+> - The mounted lesson tree is `lessons/moyen/4am/…`, not
+>   `lessons/college/{6e,4e,3e}`. The French tree is dormant.
+> - The backend is **not** "auth + contact form only" (§3). It carries
+>   curriculum (grades, chapters, units, lessons, learning points), lesson
+>   progress, learning evidence and mastery, the practice engine (sessions,
+>   attempts, hints), the notebook, reports, activation codes and entitlement,
+>   plus an admin surface.
+> - `ProtectedRoute` guards two areas, `/admin` and `/espace` — not one.
+> - The student space also carries the **Math Lab** (`features/mathlab/`,
+>   `/espace/atelier`, table `math_lab_documents`): a standalone workspace of
+>   instruments outside the lesson engine. See `MATH_LAB.md`.
+> - The `admin` Gate guards the whole `/api/v1/admin/*` group, alongside the
+>   `account.active` and `email.verified` middlewares; it is no longer there
+>   just for `GET /contact`.
+> - Progress is **not** purely client-side: `localStorage` is a cache, and
+>   authenticated students sync through a debounced queue. See
+>   `PROGRESS_MODEL.md`.
+>
+> The §5 data-flow shape, the §6 boundary table and the §7 `packages/core`
+> rationale remain correct. Start from [`../README.md`](../README.md) for the
+> documentation map.
+
 This document is the map. Detail on lessons/modules, exercises, and progress/mastery lives in the sibling documents in this folder. Everything here is grounded in `docs/reports/ARCHITECTURE_FOUNDATION_AUDIT.md` — nothing is proposed that isn't either already true or a minimal, justified extension of what's already true.
 
 The repository is an npm-workspaces monorepo: `apps/web` (this section's focus), `apps/api` (§3), and `packages/core` (§7 — no longer hypothetical as of the Repository Organization phase; it's a real, built package). See the root `README.md` for the full layout.

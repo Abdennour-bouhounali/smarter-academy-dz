@@ -2,12 +2,30 @@ import React, { useState } from 'react';
 import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
-import { Manipulation } from '../../../../../../common/manipulations';
+import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import { ConstructionScene } from '../../../../../../common/manipulations/primitives/ContextScenes';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY } from '../content/textbook';
 
-/** Module 1 — نشاط 3 (p. 8) : les trois cas, manipulés avant d'être nommés. LP : P1, P3. */
+/**
+ * Module 1 — نشاط 3 (p. 8) : les trois cas, manipulés avant d'être nommés.
+ *
+ * Laboratoire d'ouverture À DEUX NIVEAUX (MANIPULATION_CONTRACT §7bis-levels) :
+ *
+ *   مبتدئ  — le cas 1 du manuel (3 | 18 et 12), sur un CHANTIER : deux murs
+ *            en briques de longueur 3 (thème `construction`). Accoler,
+ *            enlever, mesurer — le résultat est toujours un mur de briques
+ *            entières, et les briques se comptent des yeux.
+ *   متقدم  — 9 | 900 et 90 : même chantier, briques trop petites pour être
+ *            comptées ; il faut prédire AVEC la propriété avant de poser.
+ *            C'est le passage de « je constate » à « je raisonne », et c'est
+ *            ce que la leçon vise.
+ *
+ * Les cas 2 et 3 du manuel restent à l'étape 1 : c'est là que le manuel les
+ * pose, et une manipulation ne se rend jamais deux fois sur une page.
+ * LP : P1, P3.
+ */
 export default function Module01ThalathHalat() {
   const [c1, setC1] = useState(false);
   const [c2, setC2] = useState(false);
@@ -18,8 +36,27 @@ export default function Module01ThalathHalat() {
       ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1}
       moduleTitle="نشاط 3 — ثلاث حالات" moduleSubtitle="n يقسم a و b. ماذا يقسم أيضًا؟" estimatedTime="12 دقيقة"
       brief={{ tag: 'أنشطة — الكتاب ص 8', title: ACTIVITY.title, tone: 'indigo',
+        headline: 'هيا نبني بالطوب!', emoji: '🧱', visual: <ConstructionScene />,
         body: <div className="space-y-1"><p>{ACTIVITY.questions[0]}</p><p dir="ltr" className="font-mono text-sm">1) a = 18, b = 12, n = 3 &nbsp; 2) a = 35, b = 15, n = 5 &nbsp; 3) a = 56, b = 21, n = 7</p><SourceTag source={ACTIVITY.source} /></div> }}
-      intro={<Manipulation type="divisor-properties" n={n} a={a} b={b} title="الحالة 1: n = 3، a = 18، b = 12" lead="تحقّق أن 3 يقسم 18 و 12، ثم توقّع قبل كل كشف: هل يقسم المجموع؟ الفرق؟ الباقي؟" onFinished={() => setC1(true)} />}
+      intro={(
+        <ManipulationWorkspace
+          title="الأنشطة التفاعلية"
+          lead="جداران من طوب طوله n. في المستوى المبتدئ يمكنك عدّ الطوب. في المستوى المتقدّم لا يمكن: عليك أن تتوقّع بالخاصية."
+          levels={{
+            beginner: () => (
+              <Manipulation type="divisor-properties" n={n} a={a} b={b}
+                title="الحالة 1: n = 3، a = 18، b = 12"
+                lead="جدار من 18 وجدار من 12، بطوب طوله 3. اسحب جدار b: ألصقه بجدار a، ثم انزعه منه، ثم قِس به جدار a. هل يظهر نصف طوبة؟"
+                onFinished={() => setC1(true)} />
+            ),
+            advanced: () => (
+              <Manipulation type="divisor-properties" n={9} a={900} b={90}
+                title="أعداد لا تُعدّ: n = 9، a = 900، b = 90"
+                lead="الطوب هنا أصغر من أن يُعدّ. توقّع بالخاصية قبل أن تسحب: هل 9 يقسم المجموع؟ الفرق؟ الباقي؟" />
+            ),
+          }}
+        />
+      )}
       steps={[
         { num: 1, title: 'الحالتان 2 و 3', subtitle: 'أكمل الحالة 1 في المناولة أولًا', done: c1 && c2,
           content: (

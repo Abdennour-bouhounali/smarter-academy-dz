@@ -1,6 +1,6 @@
 import React from 'react';
 import { BossFinal } from '../../../../../../common/kit';
-import { CompleteView } from '../../../../../../common/knowledge';
+import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { SourceTag } from '../../../../../../common/textbook';
 import { LESSON_CONFIG } from '../lesson.config';
@@ -45,7 +45,7 @@ export default function Module04Itqan() {
           assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_qawasim-adad-tabii_P4'] } },
       ]}
       badges={[{ id: 'jadwal', emoji: '🧮', label: 'أكتب كل الجداءات', test: (m) => (m.jidaa ?? 0) + (m.istintaj ?? 0) === 0 }, { id: 'jidhr', emoji: '√', label: 'أعرف أين أتوقف', test: (m) => (m.tariqa ?? 0) === 0 }]}
-      synthese={<CompleteView />}
+      synthese={<KnowledgeSnapshot complete variant="complete" />}
       completion={{ masterTitle: 'أتقنت تعيين قواسم عدد طبيعي', title: 'انتهى الدرس 2', message: 'تعرف الآن كيف تعيّن كل قواسم عدد دون أن تنسى واحدًا. الدرس 3 يدرس خواص هذه القواسم.', verbs: ['أكتب', 'أستنتج', 'أختبر', 'أُسرّع'], masterBadgeLabel: 'قواسم عدد طبيعي' }}
     />
   );

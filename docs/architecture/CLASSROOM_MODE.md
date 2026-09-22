@@ -1,0 +1,518 @@
+# Classroom Mode — « وضع القسم »
+
+> One presentation shell for the whole learning hierarchy: a teacher takes a lesson, a module, an
+> exercise or a manipulation to the projector, the interactive board or the classroom TV, without
+> the student UI, the page navigation, the sidebars or the margins.
+> Scope: `apps/web/src/lessons/common/classroom/`. Authorization: `packages/core/auth.js`.
+
+## 1. Concept
+
+Classroom Mode is **platform infrastructure**, not a fullscreen button on one component. A content
+opts in by being wrapped; it never implements fullscreen, scroll locking, Escape, viewport fitting
+or a toolbar itself. There is exactly **one** implementation of each of those, and exactly **one**
+active session at a time.
+
+```
+Lesson      → 🎓 وضع القسم     مدخل الدرس → المحور 0 → المحور 1 (وحداته) → …
+Module      → ⛶ عرض (flottant)  المهمة → المختبر → الخطوات → الخلاصة
+Test        → ⛶ عرض (flottant)  السؤال 1 → السؤال 2 → … → كشف النتائج → revue
+Exercise    → ⛶ عرض التمرين     l'exercice seul, interaction intacte
+Manipulation→ ⛶ عرض المناولة    la manipulation seule, mise en page de classe
+```
+
+The wrapped content stays at the **same place in the React tree and in the DOM** when a session
+starts: the shell's root becomes the fullscreen element (or a fixed overlay), it does not move or
+remount its children. A chosen divisor, a typed answer, a revealed correction, a reached step — all
+survive entering and leaving.
+
+## 2. Architecture
+
+```
+classroom/
+├── ClassroomPresentation.jsx  the shell: session state, fullscreen, scroll lock, Escape, focus,
+│                              route scope, orientation, toolbar, nav, context — AND the
+│                              pass-through branch when an ancestor is already presenting
+├── LessonClassroomShell.jsx   the lesson-level session: a pathless layout route above the
+│                              lesson's index + modules, so the session survives module navigation
+├── ClassroomToolbar.jsx       top toolbar (scope badge · title · slot · scale − / +)
+│                              + ClassroomNav, the bottom bar: two tiers of steps, then خروج
+├── ClassroomEntryButton.jsx   the entry point, per scope, presenters only
+├── ClassroomContext.js        useClassroomMode() · useClassroomPortalTarget()
+├── useClassroomStage.js       a presented page declares title / gestures / slot
+├── ClassroomFrame.jsx         reading frame (+ ClassroomHidden) for page-authored content
+├── classroomUnits.js          PURE unit maths: module units, navigation, lesson neighbours
+├── useFullscreen.js           the browser Fullscreen API (+ WebKit spelling); state = real state
+├── useScrollLock.js           html/body overflow: hidden, previous inline values restored
+├── usePresentationFit.js      the viewport-fitting engine (ResizeObserver, rAF, settle, refit)
+├── classroomFit.js            PURE fit maths: scale steps, available area, next fit factor
+├── classroom.css              `sa-classroom-*` scoped styles
+└── index.js
+
+kit/                           (the lesson kit, which CONSUMES the shell)
+├── TestPresentation.jsx       the TEST scope (§5): one question at a time, for both
+│                              PrerequisiteDiagnostic and BossFinal — one implementation
+└── testPresentation.js        PURE test maths: question states, reveal, navigation (+ .test.js)
+```
+
+Separation: everything above is **presentation**. Lesson, module, exercise and manipulation content
+lives in `lessons/**`, `features/practice/**` and `pages/**`, and only *reads* the context.
+
+## 3. Presenter permission
+
+`canPresentClassroom(user)` in `packages/core/auth.js`, built on the existing `hasRequiredRole`;
+the list of roles is `CLASSROOM_PRESENTER_ROLES`. **Nothing anywhere names a role**: entry buttons,
+shells and tests all ask that one function. Changing who may present is editing that one array.
+
+`presenter={true|false}` on `ClassroomPresentation` overrides the account (fixtures, tests);
+`LessonClassroomShell` does not expose it. The permission gates Classroom Mode only — it grants no
+other teacher or admin capability, and it never changes what is written to a student's progress.
+
+> **Temporary test configuration.** `CLASSROOM_PRESENTER_ROLES` currently contains
+> `['admin', 'student']`. `student` is there at the owner's request, to exercise Classroom Mode
+> from a student account; it is a **development/test setting, not a product decision**, and nothing
+> in the architecture depends on it. The tests assert the *mechanism* (every listed role passes, an
+> unlisted role fails, the array is frozen) and deliberately never assert the array's contents, so
+> removing `student` needs no test change. Do not build student-specific presenter behaviour.
+
+Admins read lessons in the **visitor shell** (`CourseLayout` → `MainLayout`): `usesStudentShell(user)`
+is `user?.role === 'student'`. `StudentLayout` is the student workspace, and a user it renders
+without a grade is redirected to `/espace/bienvenue`; `/espace` is itself guarded for students only,
+so a non-student is sent to `/login`. The lesson chrome offset follows the same predicate
+(`useLessonChrome.js`).
+
+## 4. One session, never nested
+
+`ClassroomPresentation` checks its parent context first. If an ancestor is already presenting, it
+renders a **pass-through** `<div data-classroom-nested="true">`: no second `requestFullscreen`, no
+second toolbar, no entry button. Its children read the running session's context, so a manipulation
+inside a presented module still gets its classroom layout, and an exercise inside a presented lesson
+is still framed — through the one shell that owns the screen.
+
+Consequence: wrapping a component is always safe. `TextbookExercise` wraps itself, and stays correct
+whether it is presented alone, inside a presented module, or inside a presented lesson.
+
+Two details a reader will otherwise get wrong:
+
+* **`isNested` in the context is always `false`.** The nested branch renders no provider at all, so
+  children of a pass-through shell read the *running* session's context. Never branch on `isNested`.
+* **Sibling shells are not mutually exclusive.** "One session" is enforced for *ancestors*, not for
+  two shells side by side on one page. In practice fullscreen and the fallback hiding rule make the
+  second unreachable, but nothing rejects it.
+
+## 5. Scope-by-scope
+
+### Lesson — 🎓 وضع القسم
+
+Entry: the lesson index hero (`LessonIndex`). Session owner: `LessonClassroomShell`, a **pathless
+layout route** that `buildLessonRoutes` puts above the index and every module. Because that shell is
+above the routes, it is not unmounted when the URL moves from one module to the next — which is why
+native fullscreen survives `التالي`.
+
+Progression is derived from `LESSON_CONFIG.modules` (`lessonNeighbours`): `مدخل الدرس` → module 0 →
+module 1 → … Inside a module, the module's own units come first; only at a module's last unit does
+`التالي` move to the next module (and `السابق` at the first unit moves back, entering the previous
+module at its **last** unit via `takeArrival()`).
+
+The index renders a dedicated overview when presented: title, description, skills, and the module
+roadmap — not the student page with its progress widget, mastery dots and breadcrumb.
+
+`routeScope` keeps the session while the URL stays inside the lesson, and ends it on the way out.
+
+### Module — ⛶ عرض
+
+Entry: a **floating button, bottom-left** (`tone="floating"` on
+`ClassroomEntryButton`, class `.sa-classroom-fab`), at the **bottom of the
+lesson's floating column** — it sits *under* the knowledge map, in the corner
+itself. The stack, ground up:
+
+| `bottom` | button |
+| --- | --- |
+| `1.5rem` | « ⛶ عرض » (`.sa-classroom-fab`) |
+| `5.5rem` | « 🧠 بطاقتي » (`KnowledgeMap`) |
+| `9.5rem` | « 📓 كرّاسي » (`LessonNotebookAnchor`) |
+
+« عرض » is set **in the angle**: its gap to the bottom (`1.5rem`) equals its
+gap to the left, so the pill reads as anchored to the corner rather than
+floating above it. The three heights are a single system — moving one without
+the others makes two pills overlap.
+
+The corner is free because the site's old « Ctrl+K » pill was **removed**
+(`components/common/CommandPalette.jsx`). It was placed with `end-6`, which
+under RTL resolves to the *physical left*, so it occupied this exact spot and
+swallowed the ground-floor clicks. The palette keeps its keyboard shortcut and
+opens on Ctrl/⌘+K as before; only the floating pill is gone.
+
+`left` is a **physical** value, never `start`: under RTL the student sidebar
+owns the right edge and would swallow the clicks (the lesson recorded in
+`KnowledgeMap.jsx`).
+
+Its label is « عرض » alone — in that column, outside the header of what it
+presents, naming the scope adds nothing. The other scopes keep their explicit
+labels, where the word distinguishes *which* object is being presented. The
+`aria-label` stays descriptive for screen readers, and on phones the label is
+hidden so three buttons do not eat the page.
+
+**Leaving happens at the bottom of the screen, under « التالي ».** During a
+session « ⛶ خروج » is rendered by `ClassroomNav`, on **its own line** at the
+foot of the bottom navigation bar, aligned to the same end edge as the
+« التالي » step (under RTL that end edge is the physical *left*, so the two
+buttons share their `x`). A `margin-top` keeps clear space above it: closing
+the session is not one more step forward, and the teacher should not brush it
+while advancing. The hand is already at the bottom of the screen to navigate,
+so it never travels to the top of a projected display. Escape still works.
+
+Because the exit now lives there, `ClassroomPresentation` renders the nav bar
+for **every** active session, even one with no neighbour to offer — otherwise
+the way out would disappear with it. The nav still renders no dead step
+buttons.
+
+The page's own floating chrome (« كرّاسي », « بطاقتي ») is hidden for the
+duration by `body.sa-classroom-session`, a class the scroll lock adds and
+removes: it has no place on a projector. Nothing unmounts, so no state is
+lost. `classroom.mjs` asserts the exit sits below « التالي » on the same edge,
+that the floating column stacks « عرض » under « بطاقتي » under « كرّاسي » with
+equal corner gaps, and that the page chrome disappears.
+
+The toolbar badge names **what is presented** (« المحور », « التمرين »,
+« المناولة » — `classroom.scopeLabel.*`), not the gesture that opened it:
+reusing the trigger's label would have produced a badge reading « عرض ».
+Presented, `ModuleLayout`
+drops its breadcrumb, header, XP, progress bar, bottom navigation and footer, and keeps the content.
+
+`ContentModule` turns the module into **pedagogical units** in the order it already had
+(`moduleUnits`): المهمة (brief) → المختبر (intro) → each step → الخلاصة (footer, only when the module
+is complete). One unit is shown at a time; the others are rendered in place with `hidden`, so
+nothing remounts and no state is lost. Step locking is untouched: a step that the student has not
+unlocked still shows «أتمِم الخطوة السابقة».
+
+The two **test** engines (`BossFinal`, `PrerequisiteDiagnostic`) have their own unit sequence —
+one *question* at a time — through `TestPresentation`. See **Test** below.
+
+**Presenting is not learning.** While a session is active, `ModuleLayout` writes neither
+`markModuleVisited` nor `markModuleCompleted`, and the sequential unlock does not apply — a teacher
+projects module 3 without having completed 0–2 on their own account.
+
+### Test — ⛶ عرض (module 0 « أستعدّ » et test final « إتقان »)
+
+A **test** is presented like a module, from the same floating « ⛶ عرض » button, but its units are
+its **questions**: one question fills the screen, and `السابق` / `التالي` move between them. Both
+engines go through **one** implementation — `kit/TestPresentation.jsx` — so there is no second
+fullscreen system and no separate screen for the diagnostic and the final test.
+
+```
+Module 0 « أستعدّ »   PrerequisiteDiagnostic ─┐
+                                              ├─→ TestPresentation ─→ ClassroomPresentation
+Final test « إتقان »  BossFinal ──────────────┘
+```
+
+**The presentation never corrects, scores or persists anything.** It decides what is *shown*. Each
+engine keeps its own evaluator, its scoring, its evidence and its single attempt record; the
+presentation is handed that evaluator and calls it. `kit/testPresentation.js` holds the pure logic
+(question states, reveal, navigation), with `testPresentation.test.js` covering it.
+
+**Answer ≠ result.** Four states, never conflated — the rule the whole feature rests on:
+
+| State | Meaning | Where it shows |
+|---|---|---|
+| `unanswered` | nothing chosen | grey dot in the navigator |
+| `answered` | an answer is in, and **nothing is said about it** | indigo dot |
+| `correct` / `incorrect` | revealed, and judged | green / red dot, badge on the question |
+
+Answering never reveals. A question is revealed only by « تحقّق من الإجابة » on **that** question,
+or by « كشف النتائج » on all of them — and `revealAll(questions)` is exactly `revealOne` applied to
+each, so there is provably one correction engine (asserted in `testPresentation.test.js`).
+
+**State survives navigation.** As in `ContentModule`, every question is always rendered at the same
+place in the tree; the others carry `hidden`. Going to question 2 and back leaves question 1's
+answer, its revealed correction and any custom manipulation untouched.
+
+**Validating one question does not end the test.** The teacher stays on it, moves on, or goes back;
+nothing auto-advances. After « كشف النتائج », the engine's summary (diagnostic result, mastery
+profile + synthesis) appears at the last question, and `السابق` still walks back through the
+questions one by one — the summary never replaces the question-by-question review.
+
+**Where it is available, and why.** Only inside a presentation. On the normal student page both
+engines render exactly what they rendered before: the final test stays silent until its single
+« أرسِل إجاباتي », and no student can reveal a graded answer one question at a time. Per-question
+validation is a *teacher-at-the-board* gesture, and entry to Classroom Mode is already restricted
+to `canPresentClassroom`. **Nothing in the test presentation names a role**: when the platform wants
+an explicit teacher mode, it changes `useTestPresentation()` in `kit/TestPresentation.jsx`, and
+neither engine is touched.
+
+**Persistence is unchanged.** A per-question reveal writes nothing — no evidence, no XP, no
+attempt. « كشف النتائج » calls the engine's existing submit, once: `BossFinal` submits its evidence,
+awards XP and saves the attempt exactly as the page's button does; `PrerequisiteDiagnostic` saves
+its local result. This matters because every `submitEvidence` mints a fresh `attemptId`, so
+per-reveal submission would duplicate mastery evidence.
+
+**Toolbar.** The stage is declared at **priority 2** (the test knows its questions), overriding
+`ModuleLayout`'s generic priority-1 declaration, exactly as `ContentModule` does. The slot carries
+« السؤال 3 من 10 », the revealed tally once results are out, and — for **12 questions or fewer**, on
+`sm` and up — a compact navigator of numbered dots coloured by state. Primary navigation remains
+`السابق` / `التالي`; the dots are an optional extra, hidden when they would not fit.
+
+**Navigation matches a module's.** `resolveTestNavigation` delegates to `resolveModuleNavigation`,
+so a test's questions behave exactly like a module's units: in a *lesson* session `السابق` at the
+first question and `التالي` at the last cross into the neighbouring module, and a projected lesson
+stays traversable end to end with one gesture. In module scope there is simply no button at the
+ends — never a dead one.
+
+What protects an unfinished test is therefore **not** a missing button but the *placement* of
+« كشف النتائج »: it is a wide button **inside the content**, under the last question, where the eye
+already is — not on the bottom bar competing with `التالي`.
+
+**Long questions** (`.sa-test-presentation__body`): the statement area scrolls internally past
+~62 % of the offered height (55 % on phones) rather than shrinking the type below readability. The
+validation button and both nav bars stay outside that scroll area, always reachable.
+
+### Exercise — ⛶ عرض التمرين
+
+Two surfaces, one shell:
+
+* **Textbook exercises** (`TextbookExercise`): the button sits in the exercise header; the exercise
+  wraps itself in a shell with `entry="none"`. Choices, corrections, KaTeX and the `requires` gate
+  are the component's own — the shell only frames them.
+* **The practice engine** (`PracticeSession`): the button sits in the session's navigation row; the
+  shell wraps the page so both share one session. Presented, the session chrome (back link,
+  progress, heading, notebook, report) is removed by `ClassroomHidden` and the exercise is framed.
+  Answer, hints, attempt UUID, evaluation and retry state all survive, because nothing unmounts.
+
+### Manipulation — ⛶ عرض المناولة
+
+Unchanged from the first implementation. `DivisorExplorerBooks` wraps itself, reads
+`useClassroomMode()` and **solves** its shelves grid for the offered area
+(`divisibility/booksClassroomLayout.js`, pure and tested): one row of books per shelf, largest book
+that fits, otherwise the smallest readable book (15 px) with the grid scrolling internally while
+counters, equation and floor stay on screen.
+
+## 6. The presentation contract
+
+A presented page tells the shell what to show, without the shell knowing what a module or an
+exercise is:
+
+```jsx
+useClassroomStage({
+  title,          // the toolbar title
+  onPrevious,     // undefined → no button (never a dead one)
+  onNext,
+  slot,           // a chip or controls at the right of the toolbar
+  priority,       // 2 (ContentModule, which knows its units) beats 1 (ModuleLayout)
+}, isPresenting);
+```
+
+Gestures and slot must be stable (`useCallback` / `useMemo`). The highest priority declaration wins,
+so a page with units overrides the generic module declaration.
+
+When no page declares a stage, the shell falls back to its own `onPrevious` / `onNext` /
+`toolbarSlot` props. No consumer uses them today.
+
+## 6bis. The two bars
+
+**Top — `ClassroomToolbar`** (`data-classroom-toolbar`, min-height 48 px, reserves its own height):
+scope badge (`وضع القسم` for a lesson, else `classroom.scopeLabel.*` — « المحور », « التمرين »,
+« المناولة ») · title · the page's `slot` · the scale group (`−`, `حجم العرض NN%` in `dir="ltr"`,
+`+`).
+
+`خروج` is **not** in that bar. It lives at the foot of the **bottom** bar, on its own line under
+« التالي » (see *Module* above). Everything else stays at the top.
+
+There is **no fullscreen toggle, no fit button, no unit jump-list, no timer and no annotation
+tool**, and **no keyboard shortcut other than Escape** — there is no arrow-key navigation anywhere
+in the shell.
+
+**Bottom — `ClassroomNav`** (`data-classroom-nav`), rendered for **every** active session — it
+carries the way out, so it may not disappear with the last neighbour. It has **two tiers of steps**,
+which is what makes a lesson session navigable, and then the exit on its own line:
+
+| Control | Attribute | What it does |
+|---|---|---|
+| `◀◀ المحور السابق` | `data-classroom-nav-module="previous"` | jumps to the previous **module**, named after it; dashed style |
+| `◀ السابق` | `data-classroom-nav-unit="previous"` | previous **unit** inside the module |
+| `التالي ▶` | `data-classroom-nav-unit="next"` | next unit; primary style |
+| `المحور التالي ▶▶` | `data-classroom-nav-module="next"` | jumps to the next module |
+| `⛶ خروج` | `data-classroom-exit` | ends the session; own line under « التالي », same end edge, primary style |
+
+Step buttons come only from the gestures that exist, so the bar still renders **no dead step** —
+a manipulation presented alone shows the exit and nothing else. Module-jump buttons come only from
+`lessonNavigation`, so they exist in a **lesson** session and never in a module-scope one. Below
+640 px the jump labels collapse to chevrons alone; the exit label never hides, because a way out is
+not something to guess. Every button is at least 44 × 44 px, and its icon comes from
+`DirectionalIcons` so it mirrors in RTL.
+
+**A lone exit gets a compact bar.** When the bar carries *only* the exit — a manipulation or an
+exercise presented on its own, with no step and no jump — it drops its padding, its top margin and
+its own band (a `:has()` rule, so the bar recognises itself with no state to thread through). It
+still costs the scene something: a presented manipulation now has a bottom bar it did not have
+before, so the fit engine settles a little lower (0.92 → 0.86 on the 16-shelf library). Projection
+still *enlarges* — `manipulations.mjs` checks that, with a 5 px threshold rather than the old 8 —
+and what actually matters stays wide of its minimum: shelf books at 31 px against a floor of 15,
+floor books at 40 px against 22, one shelf still one unbroken row of 26.
+
+**The bar's height is taken from the scene.** `usePresentationFit` measures both bars
+(`reservedRefs`) and gives the content what is left; the scale bottoms out at `MIN_FIT_FACTOR`
+(0.55), below which a manipulation's objects stop being readable from the back of a room. Adding
+the exit line therefore pushed the presented library of « نشاط 1 » into overflow at 768 px tall.
+The pixels were taken back from **chrome, not from the drawing**: tighter bar padding, and a
+presentation-only rule that trims `[data-manipulation-workspace]` padding and gaps (its border,
+background and مبتدئ/متقدم tabs stay). Do not re-inflate those paddings without re-running
+`classroom.mjs`, which measures that overflow.
+
+## 7. Fullscreen, fallback, cleanup
+
+1. Click → session active **and** `requestFullscreen({ navigationUI: 'hide' })` in the same user
+   gesture (deferring it a render would make Chrome refuse).
+2. `fullscreenchange` is the only truth: Escape, F11 or a system gesture end the session too.
+3. API missing (iOS Safari on non-video) or refused → the root stays `position: fixed; inset: 0;
+   z-index: 70`. In this mode `html[data-sa-classroom="fallback"]` hides everything outside the
+   presentation, because a fixed root cannot escape its ancestors' stacking context and page chrome
+   (command palette, footer, navbar) would otherwise sit on top and swallow clicks. Escape is
+   handled by the shell here, and yields when a drag object is held.
+4. Exit / unmount / leaving `routeScope` → fullscreen released, scroll lock restored, focus returned
+   to the entry button. `screen.orientation.lock('landscape')` is attempted **only in native
+   fullscreen** and under 1024 px, caught, and unlocked only if we locked it.
+5. Body portals are invisible under a native fullscreen element: `useClassroomPortalTarget()`
+   returns the presentation root (used by `DragGhost`).
+
+## 8. Scale and fitting
+
+`--sa-classroom-scale = userScale × fitFactor`, plus `--sa-classroom-w/-h`; the same values in
+`useClassroomMode().scale / .area`.
+
+* `userScale` ∈ {0.9, 1, 1.1, 1.25} — the − / + buttons, remembered per device.
+* `fitFactor` ≤ 1 (floor 0.55): the engine measures the stage against the content box, reduces on
+  overflow, grows back on slack, and decides only on a **settled** layout (120 ms) so a content with
+  its own area-dependent layout can adapt first.
+* `refit()` resets the factor when the content changes nature (a new unit, a new page).
+* Two ways to consume it: `ClassroomFrame` (page-authored content — `zoom` re-lays out the content
+  at the new size, it is not a transform and not a browser zoom), or reading the variables directly
+  (a manipulation that computes its own layout). A frame inside a frame does not enlarge twice.
+
+## 9. RTL and mathematics
+
+The shell inherits the page direction (RTL). Numbers and equations declare LTR themselves, as
+everywhere: `420 = 28 × 15 + 0` stays `direction: ltr` in the books lab, KaTeX keeps its
+`.sa-math-inline` isolation inside a presented exercise (asserted by e2e), and the scale percentage
+is `dir="ltr"`. Directional icons go through `DirectionalIcons`.
+
+## 10. DOM contract (e2e)
+
+```
+[data-classroom-scope=lesson|module|exercise|manipulation]
+[data-classroom-active=true|false] [data-classroom-native=true|false] [data-classroom-scale]
+[data-classroom-nested=true]                 a pass-through shell
+[data-classroom-toolbar] [data-classroom-nav] [data-classroom-position]
+[data-classroom-enter=<scope>]               the entry button
+[data-classroom-units] [data-classroom-current] [data-classroom-unit]   module units
+[data-classroom-frame=<zoom>]                a reading frame
+html[data-sa-classroom=native|fallback]
+```
+
+A presented **test** (§5, *Test*) adds its own, emitted by `kit/TestPresentation.jsx`:
+
+```
+[data-test-presentation] [data-test-questions=N] [data-test-current=i]
+[data-test-question=i] [data-test-state=unanswered|answered|correct|incorrect]
+[data-test-body]        the statement + answer area (the scrolling region)
+[data-test-reveal-all]  « كشف النتائج »          [data-test-summary]  the engine's summary
+[data-test-navigator] [data-test-nav=<i>]        the compact question navigator
+[data-test-position] [data-test-tally]           toolbar chips
+```
+
+Also emitted, and used by the suites: `[data-classroom-nav-unit=previous|next]`,
+`[data-classroom-nav-module=previous|next]`, `[data-classroom-title]`,
+`[data-classroom-scope-label]`, `[data-classroom-unit-index]`, `[data-module-presented]`,
+`[data-lesson-presented]`, `[data-lesson-roadmap]`, and, on the books lab, `[data-presentation]`
+and `[data-shelves-fit]`. The CSS variables `--sa-classroom-scale / -w / -h` are published on the
+root (§8).
+
+### Running the suites
+
+```bash
+# dev server first — NOT vite preview
+npm run dev            # http://localhost:5173
+
+KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/classroom.mjs
+KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/manipulations.mjs
+KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/test-presentation.mjs
+```
+
+**Use a port the API allows.** `apps/api/config/cors.php` permits 5173 / 5174 / 4173 only; a dev
+server that fell back to 5175 makes every API call fail CORS, and `test-presentation.mjs`'s console
+check fails for a reason that has nothing to do with the feature.
+
+**Always pass `KIT_BASE`.** The shared helper defaults to `http://localhost:5183`, which is
+`vite preview` serving a stale build with no API configured — several suite headers still print
+5183, and that is a documentation bug in those files, not a setting to follow.
+
+The presenter is faked without touching the database: the context routes
+`**/api/v1/auth/me` to an `admin` fixture and seeds `localStorage.token`. When a test needs an
+unlocked module on the **normal** page, it seeds that account's own progress key
+`u_<id>_smarter_lesson_<lessonId>` — the sequential lock applies to a presenter like anyone else
+outside a presentation.
+
+`classroom.mjs` covers permissions, the lesson run-through, one-session pass-through, module scope,
+exercise scope, the fallback, Escape, route cleanup, 1366×768 / 1024×768 / 390×844, and the
+practice engine against the real QA account (skipped when the API is down). `manipulations.mjs`
+covers the manipulation scope. Its lesson run-through now steps through module 0's **questions**
+before crossing into module 1, since the diagnostic has units like any other presented page.
+`test-presentation.mjs` (47 checks) covers the **test** scope on both
+engines: one question at a time, answer state surviving navigation, « تحقّق » revealing only the
+current question and not ending the test, the four states, « كشف النتائج » revealing all, the
+question-by-question review afterwards, the statement actually being rendered, the normal page
+staying silent, and 390×844. Its evidence and attempt calls are stubbed, so it writes nothing.
+
+**Not covered:** native Escape (headless Chromium grants fullscreen but a synthetic Escape does not
+leave it — exit through the toolbar instead), the orientation lock, real iOS Safari, the `presenter`
+prop, two sibling shells, and the `DragGhost` portal under fullscreen. Neither suite runs in CI, and
+there are no unit tests for `useFullscreen`, `useScrollLock`, `usePresentationFit` or the shell
+itself; `classroomFit.js`, `classroomUnits.js` and `booksClassroomLayout.js` are the tested parts.
+
+## 11. Opting in
+
+**A manipulation**
+
+```jsx
+export default function MyManipulation(props) {
+  return (
+    <ClassroomPresentation scope="manipulation" title={props.title} entry="none">
+      <MyLab {...props} />   {/* reads useClassroomMode() for its classroom layout */}
+    </ClassroomPresentation>
+  );
+}
+// inside MyLab's header:  <ClassroomEntryButton scope="manipulation" title={title} />
+```
+
+**An exercise** — same shape with `scope="exercise"`, wrapping the content in `<ClassroomFrame>`
+rather than computing a layout, and `<ClassroomHidden>` around page chrome that has no place on a
+projector.
+
+**A module** — nothing to do. `ModuleLayout` carries the entry button and the presented layout;
+`ContentModule` derives the units. A custom module engine gets the generic behaviour for free, and
+can declare its own units with `useClassroomStage` at priority ≥ 2.
+
+**A test (module 0 or the final test)** — nothing to do, and nothing you *may* do. A module built on
+`PrerequisiteDiagnostic` or `BossFinal` inherits the whole test presentation (§5, *Test*) from the engine:
+one question at a time, `السابق` / `التالي`, « تحقّق من الإجابة », « كشف النتائج », the review, the
+existing scoring. A lesson supplies **data** — `questions` / `epreuves` — and never a presentation
+UI. Writing your own fullscreen test screen, your own per-question validation or a second corrector
+is a defect, not a feature.
+
+**A lesson** — nothing to do for lessons built by `buildLessonRoutes`: the shell is in the route
+factory and the entry button is in `LessonIndex`. A lesson family with its own route builder adds
+`<Route element={<LessonClassroomShell config={…} basePath={…} />}>` above its pages.
+
+## 12. Limitations
+
+* Only the 4AM unit-1 lessons use `buildLessonRoutes`, so lesson scope is live there; the 132
+  dormant French lessons have no route factory and are not mounted.
+* Changing module resets the page (as in normal navigation): the session preserves **position**, not
+  the state of a page left behind. Moving between units of one module preserves everything.
+* A content that fills its budget exactly cannot signal slack, so after a legitimate reduction the
+  scale grows back on − / +, a window resize, or `refit()`.
+* Presented, a module's steps still follow the student unlock rule — a teacher who wants to show a
+  later step answers the earlier one, exactly as in class.
+* No keyboard navigation between units: Escape is the only shortcut.
+* The scroll lock sets `overflow: hidden` on `html`/`body` and nothing else — iOS rubber-banding is
+  mitigated only by `overscroll-behavior: contain`.
+* No design tokens and no dark mode: `classroom.css` hard-codes its indigo palette.
+* Not implemented, by design: annotation, drawing, live student sync, recording, remote control.

@@ -2,11 +2,20 @@ import React, { useState } from 'react';
 import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
-import { Manipulation } from '../../../../../../common/manipulations';
+import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
+import { KitchenScene } from '../../../../../../common/manipulations/primitives/ContextScenes';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { ACTIVITY } from '../content/textbook';
-/** Module 1 — نشاط 8 (p. 9) : la réduction de سمير, manipulée (fraction-reduction). LP : P1, P2. */
+/**
+ * Module 1 — نشاط 8 (p. 9) : la réduction de سمير, manipulée (fraction-reduction). LP : P1, P2.
+ *
+ * Le kasr est une RECETTE (thème `kitchen`) : 84 cuillères de sucre pour 48
+ * tasses de farine. Diviser les deux termes par 4, c'est répartir les deux
+ * ingrédients en 4 parts identiques — et la fraction réduite est ce que
+ * contient UNE part. Le chemin de سمير (÷4 puis ÷3) se voit en parts de
+ * parts ; la division par le PGCD, en 12 parts d'un coup.
+ */
 export default function Module01Samir() {
   const [labDone, setLabDone] = useState(false);
   const [q1, setQ1] = useState(false);
@@ -14,8 +23,34 @@ export default function Module01Samir() {
   const { n, d, path } = ACTIVITY.numbers;
   return (
     <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(1)} moduleNumber={1} moduleTitle="نشاط 8 — كيف اختزل سمير 84/48؟" moduleSubtitle="÷4 ثم ÷3 … ثم لا شيء" estimatedTime="12 دقيقة"
-      brief={{ tag: 'أنشطة — الكتاب ص 9', title: ACTIVITY.title, tone: 'indigo', body: <div className="space-y-1"><p><MathText>{ACTIVITY.questions[0]}</MathText></p><p className="text-center text-lg"><MathText>{ACTIVITY.samirPath}</MathText></p><SourceTag source={ACTIVITY.source} /></div> }}
-      intro={<Manipulation type="fraction-reduction" n={n} d={d} path={path} title="اختزل 84/48 بنفسك" lead="اختر قاسمًا مشتركًا للبسط والمقام، اقسم، وأعد. متى تتوقف؟" onFinished={() => setLabDone(true)} />}
+      brief={{ tag: 'أنشطة — الكتاب ص 9', title: ACTIVITY.title, tone: 'indigo',
+        headline: 'هيا نحضّر الوصفة!', emoji: '🥣', visual: <KitchenScene />,
+        body: <div className="space-y-1"><p><MathText>{ACTIVITY.questions[0]}</MathText></p><p className="text-center text-lg"><MathText>{ACTIVITY.samirPath}</MathText></p><SourceTag source={ACTIVITY.source} /></div> }}
+      intro={(
+        // Le niveau par défaut sert LA TÂCHE DU MODULE : ce module porte
+        // l'activité du manuel dans son titre, et sa première étape attend
+        // que CETTE manipulation soit finie (`onFinished`). Ouvrir sur le
+        // petit nombre cachait l'activité derrière un onglet et laissait
+        // l'élève devant une étape qu'il ne pouvait pas satisfaire.
+        <ManipulationWorkspace
+          title="الأنشطة التفاعلية"
+          defaultLevel="advanced"
+          lead="كسر سمير 84/48 كوصفة: 84 ملعقة سكّر لـ 48 كوب دقيق. القسمة على قاسم مشترك = التوزيع على حصص متماثلة. وللتمرّن أولًا، جرّب المستوى المبتدئ بوصفة أصغر."
+          levels={{
+            beginner: () => (
+              <Manipulation type="fraction-reduction" n={12} d={18}
+                title="تمرّن أولًا: 12/18"
+                lead="12 ملعقة سكّر لـ 18 كوب دقيق. اسحب قاسمًا مشتركًا: تتوزّع المقادير على حصص متماثلة، والحصة الواحدة هي الوصفة المختزلة. متى لا تستطيع المواصلة؟" />
+            ),
+            advanced: () => (
+              <Manipulation type="fraction-reduction" n={n} d={d} path={path}
+                title="اختزل 84/48 بنفسك"
+                lead="اسحب قاسمًا مشتركًا على الوصفة، اقرأ الحصة الواحدة، وأعد. متى تتوقف؟"
+                onFinished={() => setLabDone(true)} />
+            ),
+          }}
+        />
+      )}
       steps={[
         { num: 1, title: 'أ) اشرح طريقة سمير', subtitle: 'أنهِ الاختزال في المناولة أولًا', done: q1,
           content: (

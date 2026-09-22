@@ -64,6 +64,11 @@ const DiagnosticResult = lazy(() => import('./pages/student/diagnostic/Diagnosti
 const PracticeHub = lazy(() => import('./pages/student/practice/PracticeHub'));
 const PracticeSession = lazy(() => import('./pages/student/practice/PracticeSession'));
 const PracticeSummary = lazy(() => import('./pages/student/practice/PracticeSummary'));
+// Le مختبر الرياضيات (Math Lab) : les instruments LIBRES de l'élève, hors de
+// toute leçon. Paresseux, comme la pratique — et la سبّورة charge son moteur
+// (Excalidraw) paresseusement à son tour : aucune autre page ne le paie.
+const MathLabHome = lazy(() => import('./pages/student/MathLab'));
+const MathLabToolPage = lazy(() => import('./pages/student/MathLab').then((m) => ({ default: m.MathLabToolPage })));
 import ProtectedRoute from './components/auth/ProtectedRoute';
 
 /**
@@ -222,6 +227,13 @@ export default function App() {
               <Route path="pratique/:lessonCode" element={<PracticeHub />} />
               <Route path="pratique/:lessonCode/session/:sessionId" element={<PracticeSession />} />
               <Route path="pratique/:lessonCode/bilan/:sessionId" element={<PracticeSummary />} />
+              {/* Le مختبر الرياضيات : l'accueil, puis un instrument par
+                  segment d'URL (résolu dans le registre, features/mathlab),
+                  avec ou sans document enregistré. Un instrument de plus
+                  n'ajoute pas de route ici. */}
+              <Route path="atelier" element={<MathLabHome />} />
+              <Route path="atelier/:toolSlug" element={<MathLabToolPage />} />
+              <Route path="atelier/:toolSlug/:documentId" element={<MathLabToolPage />} />
             </Route>
           </Route>
 

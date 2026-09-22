@@ -1,5 +1,79 @@
 # Exercise Contract
 
+> **Read § 0 first (2026-09-20).** This document was written for the French-era
+> lessons and canonicalised `useAdaptiveExercise`'s result shape. **That hook is
+> now dead code** — it, `useSimpleExercise`, `ExerciseValidator`,
+> `AdaptiveFeedback`, `GuidedSolution` and `QuizQuestion` reference only each
+> other and are imported by no live page. The rest of this document is still
+> correct about the **non-blocking invariant** and about what a validator should
+> return, and § 0 describes the two systems that actually run.
+
+---
+
+## 0. The two exercise systems that actually exist
+
+| | **A — lesson exercises** | **B — the practice engine** |
+|---|---|---|
+| Where the content lives | `content/exercises.js` inside the lesson | JSON in `content/practice/<grade>/<lesson>/level-{1..5}/` |
+| Rendered by | `TextbookExercise` inside a `ContentModule` step | `PracticeSession` + `QuestionRenderer` in the student space |
+| Evaluated by | the kit's question components, or `practice.evaluateAnswer` for `integerSet` and `fraction` | `practice.evaluateAnswer` for every type |
+| Persisted | **nothing per exercise** — only module completion | server: sessions, exercise and question attempts, hint events, evidence |
+| Touches mastery | no | yes (`assessment_type: 'practice_exercise'`) |
+
+A third source of evidence is the **final test** (`BossFinal`, `evaluation`
+stage): MCQ only, writes evidence with `assessment_type: 'assessment'`.
+
+**The live evaluation contract is `practice.evaluateAnswer`** in
+`packages/core/practice/answerEvaluator.js`. It returns an **outcome, not a
+boolean**:
+
+```
+correct · equivalent_correct · partially_correct · incorrect · syntax_error · abandoned
+```
+
+`syntax_error` deliberately does not move mastery: not knowing how to write a
+number is not getting the number wrong. Comparison is exact rational
+arithmetic — `Math.abs(a-b) < ε` is banned from the comparison path, so 0.1 +
+0.2 equals 0.3 and 7.5 equals 15/2.
+
+Answer types: `choice`, `multiChoice`, `rational`, `affine`, `interval`,
+`point`, `integerSet`.
+
+**`MathLive is not used.`** The dependency is installed and `MathInput.jsx`
+wraps it, but nothing imports that component. `compareMathExpressions` and the
+compute-engine path are likewise unused by any live page. Free algebraic input
+does not exist: answers are choices, rationals, sets, intervals or points, all
+exactly comparable.
+
+**Lesson exercise entry shape** (`content/exercises.js`), as authored in all
+eight 4AM lessons:
+
+```js
+{
+  id: 'ex-1',                                   // unique in the lesson; also the DOM key
+  source: src('ex-1', 14, 'أوظّف تعلّماتي', 1),  // textbook provenance, always
+  learningPointId: LP.P2,                        // documentation only — nothing reads it
+  difficulty: 'facile',                          // label only — no ordering, no selection
+  statement: '…',                                // the textbook's words
+  interaction: 'choice',                         // choice | trueFalse | numeric | integerSet
+                                                 // | fraction | batch | reasoning
+  question: { /* shape depends on `interaction` */ },
+  method: '…',                                   // NOT rendered today
+  commonError: '…',                              // rendered under the exercise
+}
+```
+
+There is **no schema and no validator** for this file, unlike the practice JSON
+(`content/practice/_schema/exercise.schema.json`).
+
+**Retry and blocking, as implemented:** a lesson exercise has no retry and no
+attempt limit. The answer is revealed immediately, `onAnswered(isCorrect)` fires
+unconditionally, and the controls disable. In the practice engine a retry is
+offered but re-uses the same attempt id, so the server treats it as a duplicate
+and **only the first outcome counts** toward mastery.
+
+---
+
 Three exercise patterns exist today with no shared contract (`docs/reports/ARCHITECTURE_FOUNDATION_AUDIT.md` §6). This document canonicalizes the strongest one — `useAdaptiveExercise`'s result shape — rather than inventing a fourth. It's based on the actual hook contract in `apps/web/src/lessons/common/hooks/useAdaptiveExercise.js`, corrected during the cleanup phase so every consumer now genuinely honors it.
 
 ## The canonical Exercise Result
@@ -89,7 +163,17 @@ useProgress().markModuleCompleted() / .awardXP()   (persistence — NOT pure, lo
 
 Per the phase brief: multiple choice, numeric, fraction, algebra, ordering, matching, interactive manipulation, graphical, free response. The contract above only constrains the **validate → result** boundary — it says nothing about rendering, so `NumberLine`, `OrderingGame`, `InfoSorter`, `AnswerBuilder`, `GroupBuilder`, and free-form `MathInput` remain exactly as different as they need to be. What's shared is only: "however you validate, return `{isCorrect, fields?, feedback?}`."
 
-## Attempt model (documented, not implemented as a table)
+## Attempt model
+
+> **Outdated (2026-09-20).** The table below says attempts are not persisted.
+> That was true for lessons and is **still true for system A**, but the practice
+> engine persists them: `practice_sessions`, `exercise_attempts`,
+> `question_attempts`, `hint_events`, and `learning_evidence` carry `outcome`,
+> `level`, `hints_used` and `misconception_id`. Mastery is a real,
+> evidence-driven value in `student_learning_point_progress` — not a completion
+> proxy. Read the row below as "for in-lesson exercises only".
+
+### Original text (lessons only)
 
 An attempt should eventually capture:
 

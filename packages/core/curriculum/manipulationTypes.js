@@ -23,31 +23,52 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'b قاسم لـ a ⇔ لا يبقى أي كتاب خارج الرفوف ⇔ a = b × q + 0',
     controls: { reset: true, nextStep: false, toggleExplanation: false, changeNumbers: false },
   },
+  'team-builder': {
+    // Le partage équitable DEBOUT : n joueurs, k équipes égales, et celui qui
+    // reste dehors EST le reste. Même mathématique que l'activité 1 (les 420
+    // livres) ; contexte de la plateforme, déclaré dans la leçon
+    // (`experience: platform_context`) — voir manipulationLevels.js.
+    shows: 'قسمة عدد على عدد من المجموعات المتساوية: a = b × q + r، والباقي هو من بقي خارج الفرق',
+    controls: { reset: true, nextStep: true, toggleExplanation: true, hideConclusion: true, changeNumbers: { total: [2, 60], groups: [2, 12] } },
+  },
   'factor-pairs': {
     shows: 'قواسم عدد تأتي أزواجًا d × (a ÷ d) ولا حاجة للاختبار بعد √a',
     controls: { reset: true, nextStep: true, toggleExplanation: true, changeNumbers: { a: [2, 999] } },
   },
   'divisor-properties': {
+    // Le chantier : deux murs en briques de longueur n (thème `construction`) ;
+    // accoler, enlever, mesurer — toujours des briques entières.
     shows: 'n يقسم a و b ⇒ n يقسم a + b و a − b وباقي قسمة a على b',
     controls: { reset: true, nextStep: true, toggleExplanation: true, changeNumbers: { n: [2, 99], a: [2, 999], b: [1, 999], requireCommonDivisor: true } },
   },
   'common-divisors': {
+    // Deux temps : des objets DESSINÉS répartis en groupes identiques (le
+    // thème choisit fleurs, ballons et maillots, ou fournitures), puis les
+    // listes de diviseurs et la case PGCD.
     shows: 'قواسم → قواسم مشتركة → القاسم المشترك الأكبر (تقاطع مجموعتين وأكبر عنصر فيه)',
     controls: { reset: true, nextStep: true, toggleExplanation: true, changeNumbers: { a: [2, 300], b: [2, 300] } },
   },
   'pgcd-differences': {
+    // L'atelier de couture (thème `workshop`) : le petit ruban coupé dans le
+    // grand, encore et encore.
     shows: 'PGCD(a ; b) = PGCD(b ; a − b) والقاسم المشترك الأكبر هو آخر فرق غير معدوم',
     controls: { reset: true, nextStep: true, prevStep: true, toggleExplanation: true, hideConclusion: true, changeNumbers: { a: [2, 9999], b: [1, 9999], maxSteps: 30 } },
   },
   'euclidean-algorithm': {
+    // Le même atelier : le petit ruban REPORTÉ le long du grand ; le bout qui
+    // dépasse est le reste.
     shows: 'PGCD(a ; b) = PGCD(b ; r) والقاسم المشترك الأكبر هو آخر باقٍ غير معدوم',
     controls: { reset: true, nextStep: true, prevStep: true, toggleExplanation: true, hideConclusion: true, changeNumbers: { a: [2, 99999], b: [1, 99999], maxSteps: 12 } },
   },
   'coprime-explorer': {
+    // Au niveau débutant, des trousses identiques (thème `school`) : rien ne
+    // marche sauf 1 ; puis les listes.
     shows: 'عددان أوليان فيما بينهما ⇔ قاسمهما المشترك الوحيد هو 1',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: { a: [2, 300], b: [2, 300] } },
   },
   'fraction-reduction': {
+    // La recette (thème `kitchen`) : diviser les deux termes par k, c'est
+    // répartir deux ingrédients en k parts identiques et lire UNE part.
     shows: 'اختزال كسر = القسمة على قاسم مشترك؛ القسمة على PGCD تعطي الشكل غير القابل للاختزال في خطوة واحدة',
     controls: { reset: true, nextStep: true, toggleExplanation: true, changeNumbers: { n: [1, 9999], d: [2, 9999] } },
   },
