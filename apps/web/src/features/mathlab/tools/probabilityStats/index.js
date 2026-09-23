@@ -1,6 +1,7 @@
 import { Dice5 } from 'lucide-react';
 import { defineMathLabTool } from '../../toolContract.js';
 import { PROBABILITY_STATS_SCHEMA_VERSION, createProbabilityStatsData } from './probabilityState.js';
+import { summarizeProbabilityStats } from './summarize.js';
 
 /**
  * الاحتمالات والإحصاء (probabilités & statistiques) — le quatrième
@@ -27,5 +28,6 @@ export const probabilityStatsTool = defineMathLabTool({
   icon: Dice5,
   schemaVersion: PROBABILITY_STATS_SCHEMA_VERSION,
   createInitialData: createProbabilityStatsData,
+  summarize: summarizeProbabilityStats,
   load: () => import('./ProbabilityStatsTool.jsx'),
 });

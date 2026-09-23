@@ -128,3 +128,37 @@ describe('erreurs — jamais un plantage, toujours un code', () => {
     expect(compileSource('x^').ok).toBe(false);
   });
 });
+
+/**
+ * MathLive n'écrit pas toujours les accolades : dès qu'un argument tient en
+ * UN caractère, il produit la forme courte de LaTeX. `\frac12` est une demie,
+ * et un élève qui tape ½ au clavier virtuel envoie exactement cela. La QA
+ * navigateur du مختبر التحليل l'a trouvé : la bonne réponse était rejetée.
+ */
+describe('la forme courte de \\frac (sans accolades)', () => {
+  const value = (source, x = 2) => {
+    const compiled = compileSource(source);
+    expect(compiled.ok, source).toBe(true);
+
+    return compiled.fn(x);
+  };
+
+  it('lit \\frac12 comme une demie', () => {
+    expect(value('\\frac12')).toBeCloseTo(0.5, 12);
+    expect(value('\\frac34')).toBeCloseTo(0.75, 12);
+    expect(value('\\frac11')).toBeCloseTo(1, 12);
+  });
+
+  it('lit \\frac1x et \\frac x2', () => {
+    expect(value('\\frac1x', 4)).toBeCloseTo(0.25, 12);
+    expect(value('\\frac x2', 6)).toBeCloseTo(3, 12);
+  });
+
+  /** Les accolades gardent EXACTEMENT leur sens : rien n'a changé pour elles. */
+  it('ne touche pas à la forme avec accolades', () => {
+    expect(value('\\frac{12}{5}')).toBeCloseTo(2.4, 12);
+    expect(value('\\frac{1}{2}')).toBeCloseTo(0.5, 12);
+    expect(value('\\frac{x^2-1}{x-1}', 2)).toBeCloseTo(3, 12);
+    expect(value('\\frac{10}{4}')).toBeCloseTo(2.5, 12);
+  });
+});

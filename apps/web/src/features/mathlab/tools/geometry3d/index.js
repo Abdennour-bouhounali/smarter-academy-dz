@@ -1,6 +1,7 @@
 import { Box } from 'lucide-react';
 import { defineMathLabTool } from '../../toolContract.js';
 import { GEOMETRY3D_SCHEMA_VERSION, createGeometry3DData } from './geometryState.js';
+import { summarizeGeometry3D } from './summarize.js';
 
 /**
  * La géométrie dans l'espace (الهندسة ثلاثية الأبعاد) — le troisième
@@ -24,5 +25,6 @@ export const geometry3dTool = defineMathLabTool({
   icon: Box,
   schemaVersion: GEOMETRY3D_SCHEMA_VERSION,
   createInitialData: createGeometry3DData,
+  summarize: summarizeGeometry3D,
   load: () => import('./Geometry3DTool.jsx'),
 });

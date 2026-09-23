@@ -50,6 +50,102 @@ final class MathLabTools
         // l'instrument ne saurait rouvrir. La borne est tenue côté client par
         // MAX_HISTORY (vectorState.js) et vérifiée par vectorState.test.js.
         'vectors' => ['maxBytes' => 120_000],
+        // Le laboratoire de trigonométrie : un angle, un rayon, un triangle,
+        // seize bascules de couches et deux compteurs d'entraînement — le
+        // document mesuré pèse ~700 octets, et le pire cas reste sous 1 Ko.
+        // L'animation, la question courante et le panneau ouvert ne sont
+        // JAMAIS sérialisés (trigState.js). 8 Ko laissent une marge large
+        // aux versions futures (plusieurs angles comparés, une table
+        // personnalisée) sans jamais accepter un document que l'instrument
+        // ne saurait rouvrir ; la borne est vérifiée par trigState.test.js.
+        'trigonometry' => ['maxBytes' => 8_000],
+        // Le laboratoire des متتاليات : une DÉFINITION (la famille, six
+        // paramètres, deux expressions bornées à 200 caractères), une suite
+        // comparée de même forme, un curseur, un indice sondé, seize bascules,
+        // deux fenêtres et deux compteurs d'entraînement. Le document mesuré
+        // pèse ~550 octets, et le pire cas (deux expressions pleines, toutes
+        // les couches, les deux fenêtres) reste sous 1,5 Ko. Les TERMES ne
+        // sont jamais stockés — ils se recalculent de la définition, et en
+        // garder cinq cents serait stocker ce qu'on sait refaire. L'itération,
+        // la question d'entraînement et l'expérience ouverte n'ont aucun champ
+        // (sequenceState.js). 8 Ko laissent une marge large aux versions
+        // futures (plusieurs suites comparées, une bibliothèque de règles)
+        // sans jamais accepter un document que l'instrument ne saurait
+        // rouvrir ; la borne est vérifiée par sequenceState.test.js.
+        'sequences' => ['maxBytes' => 8_000],
+        // Le laboratoire des تحويلات : une SCÈNE (jusqu'à quatre figures de
+        // douze sommets, une pile de six transformations) et le chemin qui y
+        // mène — vingt pas au plus, chacun gardant une copie de la scène
+        // entière, comme le مختبر الأشعة. Le pire cas MESURÉ (quatre
+        // polygones de douze sommets, six pas, vingt états) pèse ~40 Ko ;
+        // 60 Ko laissent de la marge aux versions futures (plusieurs piles
+        // comparées, des figures nommées) sans jamais accepter un document
+        // que l'instrument ne saurait rouvrir. La borne est tenue côté client
+        // par MAX_HISTORY (transformState.js) et vérifiée par
+        // transformState.test.js.
+        'transformations' => ['maxBytes' => 60_000],
+        // Le laboratoire des coniques : une SCÈNE (quatre coniques, deux
+        // droites, une sonde, un point tracé, un lieu) et le chemin qui y
+        // mène — vingt pas au plus, chacun gardant une copie de la scène
+        // entière, comme les أشعة et les تحويلات. Une conique se décrit par
+        // cinq nombres, jamais par ses points : la courbe se RECALCULE de
+        // ses paramètres, et en stocker trois cents échantillons serait
+        // stocker ce qu'on sait refaire. Le pire cas MESURÉ (quatre
+        // coniques, deux droites, une trace, un lieu, vingt états, plus
+        // l'état de référence de §44) pèse ~18 Ko ; 60 Ko laissent de la
+        // marge aux versions futures (coniques tournées, plusieurs scènes
+        // comparées) sans jamais accepter un document que l'instrument ne
+        // saurait rouvrir. La borne est tenue côté client par MAX_HISTORY
+        // (conicState.js) et vérifiée par conicState.test.js.
+        'conics' => ['maxBytes' => 60_000],
+        // Le laboratoire des أعداد : treize MODES, chacun gardant ses propres
+        // nombres — c'est le choix de numberState.js, parce qu'un élève qui
+        // règle 84 et 36 dans le PGCD, passe au crible et revient doit
+        // retrouver SES nombres. Chaque mode ne pèse pourtant que quelques
+        // dizaines d'octets : un nombre, deux fractions `{n, d}`, une fenêtre.
+        // Les LISTES ne sont jamais stockées — diviseurs, multiples, premiers,
+        // passes du crible et termes se RECALCULENT de leur nombre, et en
+        // garder mille serait stocker ce qu'on sait refaire ; seul l'arbre de
+        // factorisation de §24, que l'élève CONSTRUIT, est gardé, borné en
+        // profondeur par normalizeTree. Le pire cas MESURÉ (huit lignes de
+        // proportionnalité, un arbre profond, trente notes pleines) pèse
+        // ~13 Ko, dont les notes font l'essentiel ; un document ordinaire
+        // pèse ~700 octets. 20 Ko laissent de la marge aux versions futures
+        // sans jamais accepter un document que l'instrument ne saurait
+        // rouvrir ; la borne est vérifiée par numberState.test.js.
+        'numberLab' => ['maxBytes' => 20_000],
+        // Le laboratoire d'analyse : une ou deux EXPRESSIONS (200 caractères
+        // au plus chacune), trois paramètres, quatre abscisses (A, B, le point
+        // de la limite, les bornes de l'intégrale), le réglage de Riemann, un
+        // thème de transformation, vingt-six bascules, une fenêtre et deux
+        // compteurs d'entraînement. Le document mesuré pèse ~790 octets, et
+        // le pire cas (deux expressions pleines, toutes les couches, la
+        // fenêtre) reste sous 1,5 Ko.
+        //
+        // Rien de ce qui se CALCULE n'est stocké : ni les échantillons de la
+        // courbe, ni la dérivée, ni les racines, ni les extrema, ni les
+        // tables de limites, ni les rectangles de Riemann — tout cela se
+        // refait de l'expression et de la fenêtre, et en garder une copie
+        // serait garder un mensonge en puissance (celui du jour où la
+        // fonction change et où le tableau reste). 8 Ko laissent une marge
+        // large aux versions futures sans jamais accepter un document que
+        // l'instrument ne saurait rouvrir ; la borne est vérifiée par
+        // analysisState.test.js.
+        'analysis' => ['maxBytes' => 8_000],
+        // Le مختبر المنطق والبرهان : dix aires (comme numberLab), chacune
+        // gardant son propre petit état — une proposition active, P et Q
+        // d'une table de vérité, un préréglage d'implication, les valeurs
+        // essayées pour un contre-exemple, la pile d'une preuve en cours.
+        // Rien de CALCULABLE n'est stocké : la table de vérité, la
+        // contraposée, la recherche de contre-exemple se refont de l'énoncé
+        // (logicMath.js) — comme numberLab ne stocke pas ses listes de
+        // diviseurs. Le document mesuré pèse quelques centaines d'octets, et
+        // le pire cas (notes pleines, historique de défis plein, échantillon
+        // de quantificateur plein) reste sous 2 Ko. 8 Ko laissent une marge
+        // large aux versions futures sans jamais accepter un document que
+        // l'instrument ne saurait rouvrir ; la borne est vérifiée par
+        // logicState.test.js.
+        'logic' => ['maxBytes' => 8_000],
     ];
 
     public static function exists(string $tool): bool

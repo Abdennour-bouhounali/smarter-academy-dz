@@ -32,6 +32,34 @@
  * @property {() => Promise<{default: import('react').ComponentType<MathLabToolProps>}>} load
  *   L'import PARESSEUX du composant : un instrument lourd (la سبّورة embarque
  *   Excalidraw) ne pèse sur aucune autre page.
+ * @property {(data: object) => MathLabSummary | null} [summarize]
+ *   FACULTATIF. Le RÉSUMÉ que l'instrument fait de son propre état : ce que
+ *   « أعمالي » dessine sur une carte et ce que la recherche lit, SANS jamais
+ *   charger l'instrument. Fonction PURE, sans React et sans moteur — elle
+ *   tourne dans la coquille à chaque sauvegarde, et dans les tests.
+ *
+ *   Elle doit rester minuscule (le serveur ignore au-delà de 2 Ko :
+ *   MathLabDocumentService::MAX_SUMMARY_BYTES) et ne contenir que du JSON
+ *   simple. Un instrument sans `summarize` n'est pas en faute : sa carte
+ *   montre l'aperçu de repli (son icône et son nom).
+ */
+
+/**
+ * Ce qu'un instrument dit de son document en quelques centaines d'octets.
+ *
+ * `kind` nomme la FORME de l'aperçu, pas l'outil : c'est lui que
+ * `WorkPreview` regarde pour choisir son dessin, de sorte qu'un futur
+ * instrument qui produit une courbe réutilise l'aperçu « curve » sans une
+ * ligne de plus dans « أعمالي ».
+ *
+ * `text` est ce que la RECHERCHE lit en plus du titre et du nom de
+ * l'instrument : les expressions du grapheur, l'équation du جبر, le nom du
+ * solide. Le reste des champs appartient au dessin de l'aperçu.
+ *
+ * @typedef {object} MathLabSummary
+ * @property {'curve'|'solid'|'strokes'|'chart'|'equation'|'vectors'|'triangle'|'sequence'|'shapes'} kind
+ * @property {string[]} [text]    Les mots que la recherche doit trouver (≤ 6 entrées courtes).
+ * @property {object} [detail]    Ce dont l'aperçu a besoin pour se dessiner — propre à `kind`.
  */
 
 /**
@@ -124,6 +152,35 @@ export function defineMathLabTool(definition) {
   if (typeof definition.createInitialData !== 'function' || typeof definition.load !== 'function') {
     throw new Error(`[mathlab] createInitialData et load doivent être des fonctions pour « ${definition.id} »`);
   }
+  if (definition.summarize !== undefined && typeof definition.summarize !== 'function') {
+    throw new Error(`[mathlab] summarize doit être une fonction pour « ${definition.id} »`);
+  }
 
   return Object.freeze({ ...definition });
+}
+
+
+/**
+ * Le résumé d'un document, SANS jamais faire échouer une sauvegarde.
+ *
+ * `summarize` est écrit par un instrument et tourne sur un état qui vient du
+ * serveur : il peut rencontrer un document plus ancien que lui, ou une forme
+ * qu'il n'attendait pas. Une vignette ne vaut pas un travail perdu — donc
+ * tout ce qui sort de l'ordinaire rend `null`, et la carte retombe sur son
+ * aperçu de repli.
+ *
+ * @param {MathLabTool} tool
+ * @param {object} data
+ * @returns {MathLabSummary | null}
+ */
+export function summarizeDocument(tool, data) {
+  if (typeof tool?.summarize !== 'function' || data == null) return null;
+  try {
+    const summary = tool.summarize(data);
+    if (!summary || typeof summary !== 'object' || typeof summary.kind !== 'string') return null;
+
+    return summary;
+  } catch {
+    return null;
+  }
 }

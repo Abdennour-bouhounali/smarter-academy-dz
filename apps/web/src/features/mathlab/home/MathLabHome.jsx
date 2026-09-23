@@ -2,11 +2,16 @@ import { useTranslation } from 'react-i18next';
 import { PencilRuler } from 'lucide-react';
 import { useDocumentMeta } from '../../../hooks/useDocumentMeta';
 import { MATH_LAB_TOOLS, PLANNED_MATH_LAB_TOOLS } from '../toolRegistry';
+import { mathLabBasePath } from '../mathLabDocument';
+import { useWorkspaceBase } from '../../learning/learningViewer';
 import ToolCard from './ToolCard';
-import DocumentList from './DocumentList';
+import MyWorkSpace from '../work/MyWorkSpace';
+import NewWorkMenu from '../work/NewWorkMenu';
 import '../mathlab.css';
-// La confirmation de suppression est celle du cahier (ConfirmDialog) ; ses
-// styles vivent dans la feuille de « Mon cahier ».
+import '../work/mathlabWork.css';
+// La confirmation de suppression et la feuille de filtres sont celles du
+// cahier (ConfirmDialog, `.sa-ns-sheet`) ; leurs styles vivent dans la
+// feuille de « Mon cahier ».
 import '../../practice/notebook/space/notebookSpace.css';
 
 /**
@@ -16,10 +21,17 @@ import '../../practice/notebook/space/notebookSpace.css';
  *
  * Les instruments annoncés sont des PASTILLES désactivées, pas des cartes :
  * une carte ressemble à quelque chose qu'on ouvre.
+ *
+ * « أعمالي » n'est plus une liste au bas de la page mais un ATELIER
+ * (features/mathlab/work/) : on y cherche, on y filtre, on y trie, on y
+ * sélectionne et on y range. Il garde sa place — sous les instruments —
+ * parce que l'ordre du geste est le bon : on ouvre un instrument, puis on
+ * revient à ce qu'on y a fait.
  */
 export default function MathLabHome() {
   const { t } = useTranslation('mathlab');
   useDocumentMeta(t('metaTitle'), t('metaDescription'));
+  const labRoot = mathLabBasePath(useWorkspaceBase());
 
   return (
     <div className="sa-page py-8 sm:py-10" data-ml-home>
@@ -60,9 +72,14 @@ export default function MathLabHome() {
       )}
 
       <section aria-labelledby="ml-work-heading">
-        <h2 id="ml-work-heading" className="font-space font-bold text-slate-400 text-xs uppercase tracking-widest mb-1">{t('myWork')}</h2>
-        <p className="font-inter text-slate-500 text-xs mb-3">{t('myWorkHint')}</p>
-        <DocumentList />
+        <div className="flex flex-wrap items-end justify-between gap-3 mb-3">
+          <div>
+            <h2 id="ml-work-heading" className="font-space font-bold text-slate-400 text-xs uppercase tracking-widest mb-1">{t('myWork')}</h2>
+            <p className="font-inter text-slate-500 text-xs">{t('myWorkHint')}</p>
+          </div>
+          <NewWorkMenu labRoot={labRoot} />
+        </div>
+        <MyWorkSpace labRoot={labRoot} />
       </section>
     </div>
   );

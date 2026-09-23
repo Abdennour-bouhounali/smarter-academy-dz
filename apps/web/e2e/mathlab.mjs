@@ -219,8 +219,17 @@ try {
   await page.waitForSelector('[data-ml-home]', { timeout: 20000 });
   record('accueil : titre', (await page.locator('h1').first().innerText()).includes('مختبر الرياضيات'));
   record('navigation : entrée « المختبر » dans la barre latérale', await page.locator('aside a[href="/espace/atelier"]').count() === 1);
-  record('accueil : trois cartes d’instrument (السبّورة, راسم الدوال, الهندسة ثلاثية الأبعاد)', await page.locator('[data-ml-tool-card]').count() === 3 && await page.locator('[data-ml-tool-card="whiteboard"]').count() === 1 && await page.locator('[data-ml-tool-card="functionGrapher"]').count() === 1 && await page.locator('[data-ml-tool-card="geometry3d"]').count() === 1);
-  record('accueil : instruments annoncés désactivés, marqués قريبًا', await page.locator('[data-ml-planned] li[aria-disabled="true"]').count() >= 5 && (await page.locator('[data-ml-planned]').innerText()).includes('قريبًا'));
+  // Une carte par instrument LIVRÉ — le nombre suit le registre, il n'est
+  // plus écrit ici : l'assertion « exactement trois » datait du jour où le
+  // مختبر en avait trois, et elle a vieilli à chaque instrument livré.
+  {
+    const cards = await page.locator('[data-ml-tool-card]').count();
+    const named = await Promise.all(['whiteboard', 'functionGrapher', 'geometry3d']
+      .map((id) => page.locator(`[data-ml-tool-card="${id}"]`).count()));
+    record('accueil : une carte par instrument livré, dont السبّورة, راسم الدوال et الهندسة ثلاثية الأبعاد',
+      cards >= 3 && named.every((n) => n === 1), `${cards} cartes`);
+  }
+  record('accueil : instruments annoncés désactivés, marqués قريبًا', await page.locator('[data-ml-planned] li[aria-disabled="true"]').count() >= 1 && (await page.locator('[data-ml-planned]').innerText()).includes('قريبًا'));
   record('accueil : aucun lien vers un instrument annoncé', await page.locator('[data-ml-planned] a').count() === 0);
   await page.screenshot({ path: `${OUT}/01-home-desktop.png`, fullPage: true });
 
@@ -465,6 +474,10 @@ try {
   // ── 13. Suppression depuis « أعمالي » ─────────────────────────────────
   await page.goto(`${BASE}/espace/atelier`, { waitUntil: 'networkidle' });
   await page.waitForSelector(`[data-ml-doc="${docId}"]`, { timeout: 15000 });
+  // Depuis « أعمالي » refait en atelier, les gestes de rangement vivent dans
+  // le menu « ⋮ » de la carte plutôt qu'en boutons alignés : on l'ouvre
+  // d'abord (MATH_LAB.md §5i.3).
+  await page.click(`[data-ml-doc="${docId}"] [data-ml-work-menu]`);
   await page.click(`[data-ml-doc="${docId}"] [data-ml-doc-delete]`);
   await page.waitForSelector('[role="alertdialog"]', { timeout: 5000 });
   await page.click('[data-nb-confirm]');

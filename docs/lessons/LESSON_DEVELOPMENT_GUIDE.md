@@ -749,7 +749,7 @@ flow is `Planned`. When it is implemented, the only API to use is
 `buildMathLabLaunch({ tool, seed, title, origin })` from
 `features/mathlab/openMathLab.js`, which returns `{ to, state }` for
 `<Link>`/`navigate`; the instrument builds its initial state from `seed`.
-Six instruments exist: the whiteboard (`whiteboard`, seed = Excalidraw
+Nine instruments exist: the whiteboard (`whiteboard`, seed = Excalidraw
 skeleton elements), the function grapher (`functionGrapher`, seed =
 `{ functions: [{ expression: '2x+3' }], viewport?, points?, tangent?: { enabled: true, functionIndex: 0, x: 1 } }`
 — expressions in the documented subset, ASCII or LaTeX; `tangent` opens the
@@ -766,5 +766,141 @@ inequalities) and the vectors lab (`vectors`, seed =
 — objects carry stable `id`s and reference each other by id, so a seeded
 ⃗AB is `{ kind: 'points', from: '<idA>', to: '<idB>' }`; an unreadable or
 dangling seed falls back to the default plane rather than opening a broken
-scene). Contract, seed shapes and rules:
-[`../architecture/MATH_LAB.md`](../architecture/MATH_LAB.md) §5b.3, §5b.6, §5c.5, §5d.6, §5f.4, §6.
+scene) and the trigonometry lab (`trigonometry`, seed =
+`{ mode: 'triangle', triangle: { given: 'opp-hyp', opposite: 3, hypotenuse: 5 }, highlight: 'sin' }`
+for the 4AM right-triangle work, or `{ preset: 'unitCircle', angle: 60 }` /
+`{ mode: 'circle', angle: 450, unit: 'rad' }` for the circle; `given` is one
+of `angle-hyp | angle-opp | angle-adj | opp-adj | opp-hyp | adj-hyp`, the
+triangle's angle stays **acute**, and the practice score is never seeded) and
+the sequences lab (`sequences`, seed =
+`{ primary: { kind: 'arithmetic', first: 2, difference: 3, startIndex: 0 }, count?: 10, cursor?, layers? }`
+— `kind` is one of `arithmetic | geometric | affine | explicit | recurrence |
+secondOrder`; a free rule travels as **text** in `explicitSource` (`'2n + 1'`)
+or `ruleSource` (`'2u - 1'`, where `u` is uₙ), never as a function; or simply
+`{ preset: 'fibonacci' }`. Parameters are clamped to `[−1000, 1000]`, `count`
+to `[2, 500]`, and the practice score is never seeded) and the
+transformations lab (`transformations`, seed =
+`{ figures: [{ kind: 'triangle', vertices: [{x:1,y:1},{x:4,y:1},{x:1,y:3}] }], steps: [{ kind: 'rotation', angle: 90, center: { type: 'origin' } }], viewport?, settings? }`
+— `kind` is one of `point | segment | triangle | rectangle | square |
+polygon`; a step is one of `translation {vx, vy}`, `rotation {angle,
+center}`, `reflection {axis}` or `dilation {k, center}`; a `center` is
+`{type:'origin'}`, `{type:'vertex', index}` — which then **follows** that
+vertex when the student drags it — or `{type:'point', point}`; an `axis` is
+`xAxis | yAxis | origin | diagonal | antidiagonal | horizontal {value} |
+vertical {value} | line {slope, intercept} | twoPoints {a, b}`. Coordinates
+are clamped to ±10⁴, `k` to [−10, 10], the angle normalised into [0, 360),
+and the practice score and puzzle state are never seeded) and the conics lab
+(`conics`, seed =
+`{ scene: { objects: [{ kind: 'circle', h: 0, k: 0, r: 3 }], probe?: {x, y} }, viewport? }`
+— `kind` is one of `circle {r} | parabola {a, orientation} | ellipse {a, b} |
+hyperbola {a, b, orientation}`, plus `line {slope, intercept}` or
+`line {vertical: true, x}`; `orientation` is `horizontal | vertical`. At most
+**4 conics and 2 lines**; coordinates are clamped to ±10⁴, radii and
+semi-axes to `]0, 10⁴]`, a parabola's `a` to `[−100, 100]` and never through
+zero (a zero coefficient is a line, not a parabola). A traced point travels
+as its **parameter** (`trace: { targetId, t, branch }`), never as
+coordinates, so it stays exactly on the curve. The practice score is never
+seeded).
+Contract, seed shapes and rules:
+[`../architecture/MATH_LAB.md`](../architecture/MATH_LAB.md) §5b.3, §5b.6, §5c.5, §5d.6, §5f.4, §5g.8, §5h.8, §5j.9, §5k.9, §5l.10, §5n.10, §6.
+
+**Adding a fourteenth instrument?** Besides its definition, its id in the server
+registry and its Arabic strings, it owes « أعمالي » a `summarize(data)` — a
+pure function returning a few hundred bytes that let the workspace draw its
+preview and search its content **without loading the instrument**. The
+checklist is `MATH_LAB.md` §3.2, the contract §5i.2, and
+`summaries.test.js` fails if the function is missing, too large, or throws
+on an unexpected state. Whatever the preview shows, it is drawn in **SVG**
+from that summary — never a generated raster image (root `CLAUDE.md`).
+
+**Which instrument for reasoning, and what NOT to seed.** The logic & proof
+lab (`logic`) is the instrument for « اقترح → اختبر → ابحث عن مثال مضاد →
+ابنِ الحجّة ». Seed `{ area, statementId | implicationId | counterexampleId |
+proofId | connector }`; every seed is re-read by the same guards as a stored
+document (`MATH_LAB.md` §5n.10).
+
+Three rules when a lesson opens it:
+
+- **Seed a QUESTION, never an answer.** The instrument opens on
+  `counterexample` precisely because §54 forbids opening on a menu. Seeding
+  an area so the student *reads* that the converse is false wastes the one
+  thing the lab does: let them find the counterexample themselves.
+- **Formal logic is not on the 4AM programme** — the lab exists because
+  *reasoning* runs through all of it: « أوجد مثالًا مضادًا » is exactly what
+  LP 2.1's divisibility claims ask for, and « إذا كان n زوجيًا فإنّ n² زوجي »
+  is the parity argument of the same unit. Seed `counterexample` or a
+  concrete `proofId`; the quantifier notation (∀, ∃), De Morgan and the
+  fallacy detector are built and correct but are **lycée** material and
+  should not be what a 4AM lesson opens. Same rule as the unit circle
+  (§5g.1) and the cobweb (§5h.1).
+- **L'aire « البرهان بالتراجع » a deux escaliers interactifs — choisir le
+  bon.** Ils ne posent pas la même question, et se tromper envoie l'élève
+  vers une grammaire qui refusera ce qu'il écrit.
+  - **L'escalier des PROPOSITIONS** (`MATH_LAB.md` §5n.6ter) est la forme du
+    BAC : une proposition `gauche RELATION droite` (`uₙ < 3`, `wₙ = −2`) sur
+    des suites **définies par récurrence** (`uₙ₊₁ = ⅓uₙ + 2`), y compris
+    **auxiliaires** (`wₙ = uₙ − vₙ`, dépendances résolues seules). Six
+    relations : `=` `≠` `<` `>` `≤` `≥`. C'est lui qu'une leçon ouvre pour
+    une démonstration par récurrence.
+  - **L'escalier des RÈGLES** (§5n.6bis) pose « ma règle décrit-elle cette
+    suite ? ». Sa grammaire est **explicite uniquement** : `n`, les quatre
+    opérations, les puissances, les parenthèses, le produit implicite. Le
+    factoriel, `Σ` et les règles récurrentes n'y sont pas — une leçon qui les
+    demanderait à CET écran enverrait l'élève vers une erreur.
+  - Les exercices de l'escalier des propositions sont **déclarés**
+    (`inductionExercises.js`) et **vérifiés par les tests** : suites,
+    proposition et chaîne d'hérédité. Ajouter un exercice faux fait échouer
+    la suite plutôt que d'atteindre un élève. C'est le modèle à suivre pour
+    tout nouvel exercice de récurrence.
+  - **Tester n'est jamais prouver.** Un escalier tout vert rend « تحقّق
+    تجريبي », jamais « prouvé » ; seul le couple base + hérédité donne
+    « برهان بالتراجع مكتمل » (§5n.6ter). Une leçon ne doit pas contredire
+    cette distinction : c'est elle que l'écran enseigne.
+- **A search is never a proof.** If a lesson asks a student to test a
+  universal claim, it must not then call the result proved: the lab
+  deliberately says « هذه ملاحظة، وليست برهانًا » and points at
+  « بناء البرهان » (`MATH_LAB.md` §5n.5). A lesson's wording must agree.
+
+**Which instrument for sequences — and whether to use one at all.**
+**المتتاليات are not in the 4AM programme** (`ALGERIA_4AM_CURRICULUM.md`). The
+sequences lab exists because one 4AM gesture genuinely needs it —
+**«الفروق المتتالية»**, successive differences, named by LP 2.1 in the PGCD
+lesson — and because الدوال الخطية/التآلفية (LP 3.7–3.8) have the arithmetic
+sequence as their discrete cousin. A 4AM lesson may therefore seed
+`kind: 'arithmetic'` with `layers: { differences: true }` to let a student see
+a constant difference, and should **not** seed the cobweb, the fixed points or
+the convergence layers: they are lycée material, built and correct, but never
+what a 4AM lesson opens (`MATH_LAB.md` §5h.1). If a lesson only needs to
+*place and compare* numbers on a line, that is a different instrument — the
+**number lab** (`numberLab`), whose `line` mode does exactly that
+(`MATH_LAB.md` §5l.5). Do not press the sequences lab into that role.
+
+**Which instrument for trigonometry.** The 4AM programme's trigonometry is
+**النسب المثلثية في مثلث قائم** (LP 4.2–4.3): a *right triangle* and *acute*
+angles. A lesson on جيب / جيب تمام / ظل therefore seeds
+`mode: 'triangle'`, not the unit circle — the circle is built and correct,
+but it is lycée material and never what a 4AM lesson should open
+(`MATH_LAB.md` §5g.1). Use `highlight: 'sin' | 'cos' | 'tan'` to have the
+lab open with that ratio's two sides already lit.
+
+**Which instrument for numbers, fractions and arithmetic.** The number lab
+(`numberLab`) covers LP 2.1 and 2.2 of the programme — **قواسم عدد طبيعي
+والقاسم المشترك الأكبر** and **الأعداد الأولية / كسر غير قابل للاختزال** —
+and it is the instrument a 4AM lesson seeds for divisors, PGCD, primes,
+factorisation, fractions, decimals, percentages or proportionality.
+
+Seed `{ mode, value }` for a single number (`explorer`, `divisibility`,
+`factors`, `primes`, `place`, `rounding`), `{ mode: 'gcdLcm', a, b }` for two,
+`{ mode: 'fractions', fraction, right }` for fractions, or
+`{ mode: 'percent', percent, quantity }`. Every seed is re-read by the same
+guards as a stored document, so a lesson cannot produce a state the
+instrument could not reopen (`MATH_LAB.md` §5l.3).
+
+Two rules when writing such a lesson:
+
+- **Do not seed a mode to show an answer.** The instrument's whole design is
+  that the mathematics is *seen happening* — seed `gcdLcm` so the student
+  runs Euclid, not so they read « ق.م.أ = 12 ».
+- **A fraction seeded is not reduced.** `2/4` stays `2/4` on purpose: the
+  student discovers equivalence by cutting the parts. If a lesson wants the
+  irreducible form, it seeds the irreducible fraction.

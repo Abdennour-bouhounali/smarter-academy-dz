@@ -1,6 +1,7 @@
 import { LineChart } from 'lucide-react';
 import { defineMathLabTool } from '../../toolContract.js';
 import { FUNCTION_GRAPHER_SCHEMA_VERSION, createFunctionGrapherData } from './grapherState.js';
+import { summarizeFunctionGrapher } from './summarize.js';
 
 /**
  * Le grapheur (راسم الدوال) — le deuxième instrument du مختبر الرياضيات.
@@ -22,5 +23,6 @@ export const functionGrapherTool = defineMathLabTool({
   icon: LineChart,
   schemaVersion: FUNCTION_GRAPHER_SCHEMA_VERSION,
   createInitialData: createFunctionGrapherData,
+  summarize: summarizeFunctionGrapher,
   load: () => import('./FunctionGrapherTool.jsx'),
 });

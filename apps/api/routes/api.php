@@ -201,7 +201,10 @@ Route::prefix('v1')->group(function () {
             Route::get('/math-lab/documents', [MathLabDocumentController::class, 'index']);
             Route::post('/math-lab/documents', [MathLabDocumentController::class, 'store'])
                 ->middleware('throttle:30,1');
+            // Les gestes GROUPÉS de « أعمالي » — avant `{id}`, qui ne prend que des nombres.
+            Route::post('/math-lab/documents/bulk', [MathLabDocumentController::class, 'bulk']);
             Route::get('/math-lab/documents/{id}', [MathLabDocumentController::class, 'show'])->whereNumber('id');
+            Route::post('/math-lab/documents/{id}/duplicate', [MathLabDocumentController::class, 'duplicate'])->whereNumber('id');
             Route::patch('/math-lab/documents/{id}', [MathLabDocumentController::class, 'update'])->whereNumber('id');
             Route::delete('/math-lab/documents/{id}', [MathLabDocumentController::class, 'destroy'])->whereNumber('id');
             // Les FICHIERS d'une سبّورة (images, SVG, PDF) : une ligne par

@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { createMathLabDocument, fetchMathLabDocument, updateMathLabDocument } from '../../services/mathLabService';
 import {
-  MATH_LAB_AUTOSAVE_MS, cleanTitle, fromApiDocument, isPersisted, mathLabToolPath, newMathLabDocument,
+  MATH_LAB_AUTOSAVE_MS, cleanTitle, fromApiDocument, isPersisted, mathLabBasePath, mathLabToolPath, newMathLabDocument,
 } from './mathLabDocument';
+import { useWorkspaceBase } from '../learning/learningViewer';
+import { summarizeDocument } from './toolContract';
 
 /**
  * Le document d'un instrument, ouvert dans la coquille : chargement,
@@ -32,6 +34,22 @@ import {
 export function useMathLabDocument(tool, documentId, { launch, defaultTitle }) {
   const { token } = useContext(AuthContext);
   const navigate = useNavigate();
+  /**
+   * La racine du مختبر DANS L'ESPACE DU LECTEUR.
+   *
+   * À la naissance d'un document, l'adresse est réécrite avec l'identifiant.
+   * Elle l'était vers `/espace/atelier/...` en dur : un ENSEIGNANT, qui
+   * travaille sous `/enseignant/atelier/...`, se retrouvait donc poussé dans
+   * l'espace élève ~2,5 s après son premier geste. `/espace` n'accepte que le
+   * rôle `student` (App.jsx), d'où la chaîne ProtectedRoute → /login →
+   * HomeRedirect → l'accueil enseignant : l'instrument se fermait tout seul
+   * au bout de quelques secondes, et le travail en cours partait avec lui.
+   *
+   * L'espace se lit donc ici, comme `MathLabToolPage` le fait déjà pour le
+   * lien « retour au مختبر ». Cela vaut pour TOUS les instruments : le bogue
+   * était dans la coquille partagée, pas dans l'un d'eux.
+   */
+  const labRoot = mathLabBasePath(useWorkspaceBase());
 
   const [load, setLoad] = useState({ status: 'loading', document: null, files: [], quota: null, loadKey: null, error: null });
   const [title, setTitleState] = useState('');
@@ -69,6 +87,9 @@ export function useMathLabDocument(tool, documentId, { launch, defaultTitle }) {
           title: cleanTitle(doc.title, defaultTitle),
           schemaVersion: doc.schemaVersion,
           data: doc.data,
+          // Le RÉSUMÉ part avec l'état, jamais séparément : « أعمالي » dessine
+          // ainsi un aperçu juste dès la première sauvegarde.
+          summary: summarizeDocument(tool, doc.data),
         });
         const saved = fromApiDocument(document);
         docRef.current = { ...docRef.current, id: saved.id, createdAt: saved.createdAt, updatedAt: saved.updatedAt };
@@ -76,7 +97,7 @@ export function useMathLabDocument(tool, documentId, { launch, defaultTitle }) {
           setLoad((s) => ({ ...s, document: docRef.current }));
           // L'adresse dit maintenant QUEL document — sans recharger, sans
           // démonter l'outil (l'effet de chargement reconnaît l'identifiant).
-          navigate(mathLabToolPath(tool, saved.id), { replace: true });
+          navigate(mathLabToolPath(tool, saved.id, labRoot), { replace: true });
         }
       } else {
         const patch = {};
@@ -84,6 +105,7 @@ export function useMathLabDocument(tool, documentId, { launch, defaultTitle }) {
         if (pending.data) {
           patch.data = doc.data;
           patch.schemaVersion = doc.schemaVersion;
+          patch.summary = summarizeDocument(tool, doc.data);
         }
         const { document } = await updateMathLabDocument(token, doc.id, patch);
         docRef.current = { ...docRef.current, updatedAt: document?.updatedAt ?? docRef.current.updatedAt };
@@ -103,7 +125,7 @@ export function useMathLabDocument(tool, documentId, { launch, defaultTitle }) {
       inFlightRef.current = false;
       if (!unmountedRef.current && (pendingRef.current.title || pendingRef.current.data)) schedule();
     }
-  }, [token, tool, defaultTitle, navigate, schedule]);
+  }, [token, tool, defaultTitle, navigate, schedule, labRoot]);
   flushRef.current = flush;
 
   // ── Chargement ──────────────────────────────────────────────────────────

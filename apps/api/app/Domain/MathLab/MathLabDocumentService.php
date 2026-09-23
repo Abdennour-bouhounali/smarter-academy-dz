@@ -30,6 +30,20 @@ class MathLabDocumentService
 
     public const TOO_LARGE = 'math_lab_document_too_large';
 
+    public const UNKNOWN_ACTION = 'math_lab_unknown_action';
+
+    /**
+     * Le RÉSUMÉ d'un instrument voyage dans une LISTE : il doit rester
+     * minuscule. Deux kilo-octets tiennent six expressions du grapheur, un
+     * solide et ses dimensions, une équation et son pas courant — largement
+     * ce qu'une carte dessine. Au-delà, on préfère aucun résumé (la carte a
+     * un aperçu de repli) à une liste qui pèse.
+     */
+    public const MAX_SUMMARY_BYTES = 2_000;
+
+    /** Ce qu'un geste GROUPÉ peut faire — jamais plus que ce qu'un geste seul fait. */
+    public const BULK_ACTIONS = ['delete', 'favorite', 'unfavorite'];
+
     /** « Mes travaux » : sans `data`, du plus récent au plus ancien. */
     public function listFor(User $user, ?string $tool = null): Collection
     {
@@ -74,6 +88,8 @@ class MathLabDocumentService
             'schema_version' => $attributes['schemaVersion'] ?? 1,
             'data' => $attributes['data'],
             'data_bytes' => $bytes,
+            'summary' => $this->cleanSummary($attributes['summary'] ?? null),
+            'is_favorite' => false,
         ]);
     }
 
@@ -96,10 +112,73 @@ class MathLabDocumentService
         if (array_key_exists('schemaVersion', $attributes)) {
             $document->schema_version = $attributes['schemaVersion'];
         }
+        // Le résumé suit l'état : il arrive avec lui, à chaque sauvegarde.
+        if (array_key_exists('summary', $attributes)) {
+            $document->summary = $this->cleanSummary($attributes['summary']);
+        }
+        if (array_key_exists('isFavorite', $attributes)) {
+            $document->is_favorite = (bool) $attributes['isFavorite'];
+        }
 
         $document->save();
 
         return $document;
+    }
+
+    /**
+     * Une COPIE d'un document à moi : même instrument, même état, même
+     * résumé — un titre neuf, et jamais l'étoile de l'original (une copie
+     * n'est pas encore un travail qu'on a choisi de garder sous la main).
+     *
+     * Les FICHIERS ne sont pas copiés : ils comptent dans le quota de
+     * l'élève (MathLabFilePolicy), et dupliquer une سبّورة ne doit pas
+     * dupliquer silencieusement ses octets. La copie s'ouvre sans eux.
+     */
+    public function duplicate(User $user, int $id, ?string $title = null): MathLabDocument
+    {
+        $source = $this->find($user, $id);
+
+        return MathLabDocument::create([
+            'user_id' => $user->id,
+            'tool' => $source->tool,
+            'title' => $this->cleanTitle($title ?? $source->title),
+            'schema_version' => $source->schema_version,
+            'data' => $source->data,
+            'data_bytes' => $source->data_bytes,
+            'summary' => $source->summary,
+            'is_favorite' => false,
+        ]);
+    }
+
+    /**
+     * Le même geste sur PLUSIEURS documents — et sur les miens seulement :
+     * `user_id` borne la requête, donc un identifiant qui ne m'appartient
+     * pas ne fait rien du tout (ni erreur qui révélerait son existence, ni
+     * effet). Rend le nombre de documents effectivement touchés.
+     *
+     * @param  int[]  $ids
+     */
+    public function bulk(User $user, array $ids, string $action): int
+    {
+        if (! in_array($action, self::BULK_ACTIONS, true)) {
+            throw new DomainException(self::UNKNOWN_ACTION);
+        }
+
+        $ids = array_values(array_unique(array_map('intval', $ids)));
+        $query = MathLabDocument::query()->where('user_id', $user->id)->whereIn('id', $ids);
+
+        if ($action !== 'delete') {
+            return $query->update(['is_favorite' => $action === 'favorite']);
+        }
+
+        // Les octets des fichiers partent AVEC leurs documents : les lignes
+        // s'en vont en cascade, le disque a besoin qu'on le lui dise.
+        $documents = $query->get();
+        foreach ($documents as $document) {
+            $this->files->deleteAllFor($document);
+        }
+
+        return MathLabDocument::query()->where('user_id', $user->id)->whereIn('id', $ids)->delete();
     }
 
     public function delete(User $user, int $id): void
@@ -119,6 +198,23 @@ class MathLabDocumentService
         }
 
         return $bytes;
+    }
+
+    /**
+     * Le résumé tel qu'on le stocke : un objet, ou rien. On ne le lit pas —
+     * on vérifie seulement qu'il est un objet JSON et qu'il reste minuscule.
+     * Un résumé trop gros n'est pas une erreur : il est simplement ignoré,
+     * et la carte retombe sur son aperçu de repli. Refuser la sauvegarde
+     * ferait perdre le TRAVAIL pour une vignette.
+     */
+    private function cleanSummary(mixed $summary): ?array
+    {
+        if (! is_array($summary) || $summary === []) {
+            return null;
+        }
+        $bytes = strlen((string) json_encode($summary, JSON_UNESCAPED_UNICODE));
+
+        return $bytes > self::MAX_SUMMARY_BYTES ? null : $summary;
     }
 
     private function cleanTitle(string $title): string

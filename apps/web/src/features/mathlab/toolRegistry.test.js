@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { MATH_LAB_TOOLS, PLANNED_MATH_LAB_TOOLS, getMathLabTool, getMathLabToolBySlug } from './toolRegistry.js';
 import { defineMathLabTool } from './toolContract.js';
+import { WORK_SORTS, WORK_PERIODS } from './work/workFilters.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 
@@ -39,6 +40,12 @@ describe('registre des instruments', () => {
     expect(getMathLabToolBySlug('algebre')?.id).toBe('algebra');
     expect(getMathLabTool('vectors')?.slug).toBe('vecteurs');
     expect(getMathLabToolBySlug('vecteurs')?.id).toBe('vectors');
+    expect(getMathLabTool('trigonometry')?.slug).toBe('trigonometrie');
+    expect(getMathLabToolBySlug('trigonometrie')?.id).toBe('trigonometry');
+    expect(getMathLabTool('sequences')?.slug).toBe('suites');
+    expect(getMathLabToolBySlug('suites')?.id).toBe('sequences');
+    expect(getMathLabTool('transformations')?.slug).toBe('transformations');
+    expect(getMathLabToolBySlug('transformations')?.id).toBe('transformations');
     expect(getMathLabToolBySlug('inconnu')).toBeNull();
     expect(getMathLabTool('graph')).toBeNull();
   });
@@ -55,6 +62,27 @@ describe('registre des instruments', () => {
     expect(plannedIds).not.toContain('algebra');
     // Le مختبر الأشعة est livré : « الأشعة » a quitté les instruments annoncés.
     expect(plannedIds).not.toContain('vectors');
+    // Le مختبر المثلثات a livré ce que « الدائرة المثلثية » promettait.
+    expect(plannedIds).not.toContain('trigonometry');
+    // Le مختبر المتتاليات est livré : il n'a jamais été annoncé, et il ne
+    // remplaçait PAS « المستقيم المدرّج » — placer et comparer des nombres
+    // quelconques n'est pas manipuler des suites. C'est le مختبر الأعداد qui
+    // a fini par le livrer (ci-dessous).
+    expect(plannedIds).not.toContain('sequences');
+    // Le مختبر التحويلات a livré ce que « الهندسة » promettait : un plan où
+    // l'on construit des figures et où on les transforme. Le chip a donc
+    // quitté la liste des instruments à venir.
+    expect(plannedIds).not.toContain('geometry');
+    expect(plannedIds).not.toContain('transformations');
+    // Le مختبر الأعداد a livré ce que « المستقيم المدرّج » promettait — placer,
+    // comparer et ordonner des nombres, des fractions et des décimaux sur une
+    // droite — mais comme UN mode parmi treize : une droite graduée seule
+    // aurait tenu la promesse trop petitement. Le chip a donc quitté la liste.
+    expect(plannedIds).not.toContain('numberLine');
+    expect(plannedIds).not.toContain('numberLab');
+    // « القياس » reste annoncé : mesurer des grandeurs (longueurs, aires,
+    // volumes, unités) est un autre instrument, pas un mode de celui-ci.
+    expect(plannedIds).toContain('measurement');
   });
 
   it('les instruments annoncés ne sont pas des instruments : ni composant, ni route', () => {
@@ -65,6 +93,18 @@ describe('registre des instruments', () => {
       expect(planned.icon).toBeTruthy();
       expect(planned.load).toBeUndefined();
       expect(planned.slug).toBeUndefined();
+    }
+  });
+
+  /**
+   * « أعمالي » dessine l'aperçu d'un travail à partir du seul RÉSUMÉ que son
+   * instrument a laissé. Un instrument qui n'en produit pas n'est pas en
+   * faute — sa carte a un repli — mais les huit livrés le font, et un
+   * neuvième doit y penser plutôt que le découvrir en production.
+   */
+  it('chaque instrument sait résumer son document pour « أعمالي »', () => {
+    for (const tool of MATH_LAB_TOOLS) {
+      expect(typeof tool.summarize, `${tool.id} n’a pas de summarize`).toBe('function');
     }
   });
 
@@ -100,11 +140,66 @@ describe('defineMathLabTool', () => {
     expect(() => defineMathLabTool({ ...valid, id: 'Bad-Id' })).toThrow(/identifiant/);
     expect(() => defineMathLabTool({ ...valid, slug: 'Tableau' })).toThrow(/URL/);
     expect(() => defineMathLabTool({ ...valid, schemaVersion: 0 })).toThrow(/schemaVersion/);
+    expect(() => defineMathLabTool({ ...valid, summarize: 'pas une fonction' })).toThrow(/summarize/);
+  });
+
+  it('`summarize` reste FACULTATIF : un instrument sans résumé se définit encore', () => {
+    expect(() => defineMathLabTool({ ...valid, summarize: undefined })).not.toThrow();
   });
 
   it('fige la définition', () => {
     const tool = defineMathLabTool(valid);
     expect(Object.isFrozen(tool)).toBe(true);
     expect(tool.id).toBe('demo');
+  });
+});
+
+/**
+ * Le catalogue arabe de « أعمالي » : chaque clé que l'atelier demande doit
+ * exister. Une clé manquante s'affiche à l'élève telle quelle
+ * (« work.bulk.delete ») — c'est un défaut visible, et c'est ici qu'on
+ * l'attrape.
+ */
+describe('les mots de « أعمالي »', () => {
+  const REQUIRED = [
+    'work.newWork', 'work.searchPlaceholder', 'work.searchAria', 'work.clearSearch',
+    'work.countFiltered', 'work.sortLabel', 'work.viewLabel', 'work.viewGrid', 'work.viewList', 'work.copyPrefix',
+    'work.filters.title', 'work.filters.active', 'work.filters.clearAll', 'work.filters.reset',
+    'work.filters.toolLegend', 'work.filters.allTools', 'work.filters.periodLegend', 'work.filters.otherLegend', 'work.filters.favorites',
+    'work.card.select', 'work.card.menu', 'work.card.open', 'work.card.rename', 'work.card.duplicate',
+    'work.card.favorite', 'work.card.unfavorite', 'work.card.delete', 'work.card.modified', 'work.card.unknownTool',
+    'work.bulk.selectAll', 'work.bulk.deselectAll', 'work.bulk.favorite', 'work.bulk.unfavorite', 'work.bulk.delete',
+    'work.deleteMany.title', 'work.deleteMany.body',
+    'work.rename.title', 'work.rename.label', 'work.rename.placeholder', 'work.rename.confirm',
+    'work.empty.title', 'work.empty.body',
+    'work.noResults.title', 'work.noResults.body', 'work.noResults.reset',
+    'work.errors.rename', 'work.errors.duplicate', 'work.errors.favorite', 'work.errors.delete',
+  ];
+
+  const catalog = JSON.parse(readFileSync(resolve(here, '../../i18n/locales/ar/mathlab.json'), 'utf8'));
+  const lookup = (key) => key.split('.').reduce((node, part) => node?.[part], catalog);
+
+  it('chaque libellé de l’atelier existe en arabe', () => {
+    for (const key of REQUIRED) {
+      expect(typeof lookup(key), key).toBe('string');
+    }
+  });
+
+  it('chaque tri et chaque période a son mot', () => {
+    for (const sort of WORK_SORTS) expect(typeof lookup(`work.sorts.${sort}`), sort).toBe('string');
+    for (const period of WORK_PERIODS) expect(typeof lookup(`work.filters.periods.${period}`), period).toBe('string');
+  });
+
+  /**
+   * L'arabe compte en six formes (zéro, un, deux, quelques, beaucoup,
+   * autre). i18next les choisit par SUFFIXE : une forme manquante fait
+   * retomber sur `_other`, et « عملان » devient « 2 عمل ».
+   */
+  it('les compteurs portent les six formes du pluriel arabe', () => {
+    for (const base of ['work.count', 'work.bulk.selected']) {
+      for (const form of ['one', 'two', 'few', 'many', 'other']) {
+        expect(typeof lookup(`${base}_${form}`), `${base}_${form}`).toBe('string');
+      }
+    }
   });
 });

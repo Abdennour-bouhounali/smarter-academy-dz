@@ -65,6 +65,23 @@ export function deleteMathLabDocument(token, id) {
   return call(`/math-lab/documents/${encodeURIComponent(id)}`, { method: 'DELETE', headers: headers(token) }, 'mathLabDelete');
 }
 
+/** Une COPIE d'un de mes documents — même instrument, même état, titre neuf. */
+export function duplicateMathLabDocument(token, id, title) {
+  return call(
+    `/math-lab/documents/${encodeURIComponent(id)}/duplicate`,
+    withBody(token, 'POST', title ? { title } : {}),
+    'mathLabSave',
+  );
+}
+
+/**
+ * Le même geste sur une SÉLECTION : `delete`, `favorite`, `unfavorite`.
+ * La propriété est tenue par le serveur, jamais par cette liste.
+ */
+export function bulkMathLabDocuments(token, ids, action) {
+  return call('/math-lab/documents/bulk', withBody(token, 'POST', { ids, action }), action === 'delete' ? 'mathLabDelete' : 'mathLabSave');
+}
+
 // ── Les fichiers d'une سبّورة ─────────────────────────────────────────────
 // Un fichier = { id, documentId, kind, name, mimeType, size, createdAt } ;
 // chaque réponse porte `quota` = { document: {used, max} | null, user: {used, max}, limits }.

@@ -1,6 +1,7 @@
 import { Presentation } from 'lucide-react';
 import { defineMathLabTool } from '../../toolContract.js';
 import { WHITEBOARD_SCHEMA_VERSION, createWhiteboardData } from './whiteboardState.js';
+import { summarizeWhiteboard } from './summarize.js';
 
 /**
  * La سبّورة — le premier instrument du مختبر الرياضيات.
@@ -21,5 +22,6 @@ export const whiteboardTool = defineMathLabTool({
   icon: Presentation,
   schemaVersion: WHITEBOARD_SCHEMA_VERSION,
   createInitialData: createWhiteboardData,
+  summarize: summarizeWhiteboard,
   load: () => import('./WhiteboardTool.jsx'),
 });

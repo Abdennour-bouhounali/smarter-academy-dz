@@ -1,0 +1,211 @@
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Check, X, RefreshCw, Play, Puzzle } from 'lucide-react';
+import { formatValue } from '../functionGrapher/grapherFormat.js';
+import { VERTEX_NAMES } from './transformState.js';
+import { PUZZLES } from './practice.js';
+import { describeStep } from './transformModel.js';
+
+/**
+ * PRÉDIRE → TRANSFORMER → VÉRIFIER (§38 – §40) et les PUZZLES (§42).
+ *
+ * Deux règles gouvernent ce panneau :
+ *
+ *   1. On ne BLOQUE jamais. Une réponse fausse donne la bonne réponse et
+ *      lance l'animation : l'élève VOIT où il s'était trompé. Il n'y a pas
+ *      de « réessayez » qui retienne.
+ *   2. On n'entraîne pas sans avoir montré. Chaque vérification anime la
+ *      transformation sur le plan — c'est la figure qui explique, pas le
+ *      texte.
+ */
+export default function PracticePanel({
+  challenge, verdict, score, onNew, onSubmit, onReveal,
+  puzzleId, puzzleSolved, onPuzzle, onExitPuzzle,
+}) {
+  const { t } = useTranslation('mathlab');
+  const [x, setX] = useState('');
+  const [y, setY] = useState('');
+
+  const submitTyped = (event) => {
+    event.preventDefault();
+    const px = Number(String(x).replace(',', '.'));
+    const py = Number(String(y).replace(',', '.'));
+    if (!Number.isFinite(px) || !Number.isFinite(py)) return;
+    onSubmit({ x: px, y: py });
+  };
+
+  const newChallenge = () => {
+    setX('');
+    setY('');
+    onNew();
+  };
+
+  return (
+    <div className="sa-ml-tr__practice" data-ml-practice>
+      {/* ── §42 : les puzzles ───────────────────────────────────────── */}
+      <section className="sa-ml-tr__panelsection">
+        <h3 className="sa-ml-tr__paneltitle">
+          <Puzzle size={16} aria-hidden="true" />
+          {' '}
+          {t('tools.transformations.puzzles.title')}
+        </h3>
+
+        {puzzleId ? (
+          <div className="sa-ml-tr__puzzleactive" data-ml-puzzle-active={puzzleId}>
+            <p className="sa-ml-tr__puzzlegoal">{t('tools.transformations.puzzles.goal')}</p>
+            {puzzleSolved ? (
+              <p className="sa-ml-tr__verdict sa-ml-tr__verdict--ok" data-ml-puzzle-solved role="status">
+                <Check size={16} aria-hidden="true" />
+                {t('tools.transformations.puzzles.solved')}
+              </p>
+            ) : (
+              <p className="sa-ml-tr__hint">{t(`tools.transformations.${PUZZLES.find((p) => p.id === puzzleId)?.hintKey ?? ''}`)}</p>
+            )}
+            <button type="button" className="sa-ml-btn sa-ml-tr__wide" onClick={onExitPuzzle} data-ml-puzzle-exit>
+              {t('tools.transformations.puzzles.exit')}
+            </button>
+          </div>
+        ) : (
+          <ul className="sa-ml-tr__puzzlelist">
+            {PUZZLES.map((puzzle) => (
+              <li key={puzzle.id}>
+                <button
+                  type="button"
+                  className="sa-ml-btn sa-ml-tr__wide"
+                  onClick={() => onPuzzle(puzzle.id)}
+                  data-ml-puzzle={puzzle.id}
+                >
+                  {t(`tools.transformations.${puzzle.titleKey}`)}
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      {/* ── §38 – §40 : prédire ─────────────────────────────────────── */}
+      <section className="sa-ml-tr__panelsection">
+        <div className="sa-ml-tr__stackhead">
+          <h3 className="sa-ml-tr__paneltitle">{t('tools.transformations.practice.title')}</h3>
+          <span className="sa-ml-tr__score" data-ml-score dir="ltr">
+            {`${score.solved} / ${score.attempts}`}
+          </span>
+        </div>
+
+        {!challenge ? (
+          <button type="button" className="sa-ml-btn sa-ml-tr__wide sa-ml-tr__primary" onClick={newChallenge} data-ml-practice-start>
+            <Play size={15} aria-hidden="true" />
+            <span>{t('tools.transformations.practice.start')}</span>
+          </button>
+        ) : (
+          <>
+            <p className="sa-ml-tr__question" data-ml-question>
+              {t('tools.transformations.practice.question', {
+                point: `${VERTEX_NAMES[0]}(${formatValue(challenge.point.x)} ; ${formatValue(challenge.point.y)})`,
+              })}
+            </p>
+
+            <ol className="sa-ml-tr__questionsteps">
+              {challenge.steps.map((step, index) => {
+                const description = describeStep(step, []);
+
+                return (
+                  <li key={index} dir="auto">
+                    {t(`tools.transformations.steps.${step.kind}`)}
+                    {' '}
+                    <span dir="ltr">{describeParams(step)}</span>
+                  </li>
+                );
+              })}
+            </ol>
+
+            {/* §39 : choisir une position parmi plusieurs. */}
+            {challenge.choices ? (
+              <div className="sa-ml-tr__choices" role="group" aria-label={t('tools.transformations.practice.choose')}>
+                {challenge.choices.map((choice, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    className="sa-ml-btn sa-ml-tr__choice"
+                    onClick={() => onSubmit(choice)}
+                    disabled={Boolean(verdict)}
+                    data-ml-choice={index}
+                    dir="ltr"
+                  >
+                    {`(${formatValue(choice.x)} ; ${formatValue(choice.y)})`}
+                  </button>
+                ))}
+              </div>
+            ) : (
+              /* §38, §40 : taper les coordonnées. */
+              <form className="sa-ml-tr__answerform" onSubmit={submitTyped}>
+                <label className="sa-ml-tr__answerfield">
+                  <span dir="ltr">x′</span>
+                  <input
+                    type="text" inputMode="decimal" dir="ltr" value={x}
+                    onChange={(event) => setX(event.target.value)}
+                    disabled={Boolean(verdict)}
+                    data-ml-answer-x
+                    aria-label={t('tools.transformations.practice.answerX')}
+                  />
+                </label>
+                <label className="sa-ml-tr__answerfield">
+                  <span dir="ltr">y′</span>
+                  <input
+                    type="text" inputMode="decimal" dir="ltr" value={y}
+                    onChange={(event) => setY(event.target.value)}
+                    disabled={Boolean(verdict)}
+                    data-ml-answer-y
+                    aria-label={t('tools.transformations.practice.answerY')}
+                  />
+                </label>
+                <button type="submit" className="sa-ml-btn sa-ml-tr__primary" disabled={Boolean(verdict)} data-ml-answer-submit>
+                  {t('tools.transformations.practice.check')}
+                </button>
+              </form>
+            )}
+
+            {verdict && (
+              <div
+                className={`sa-ml-tr__verdict ${verdict.correct ? 'sa-ml-tr__verdict--ok' : 'sa-ml-tr__verdict--no'}`}
+                role="status"
+                data-ml-verdict={verdict.correct ? 'correct' : 'wrong'}
+              >
+                {verdict.correct ? <Check size={16} aria-hidden="true" /> : <X size={16} aria-hidden="true" />}
+                <span>
+                  {verdict.correct
+                    ? t('tools.transformations.practice.correct')
+                    : t('tools.transformations.practice.wrong')}
+                </span>
+                {/* On ne bloque pas : la réponse est donnée, et la figure l'a montrée. */}
+                <span className="sa-ml-tr__expected" dir="ltr">
+                  {`${VERTEX_NAMES[0]}′(${formatValue(verdict.expected.x)} ; ${formatValue(verdict.expected.y)})`}
+                </span>
+              </div>
+            )}
+
+            <div className="sa-ml-tr__practiceactions">
+              <button type="button" className="sa-ml-btn" onClick={onReveal} disabled={Boolean(verdict)} data-ml-practice-reveal>
+                {t('tools.transformations.practice.reveal')}
+              </button>
+              <button type="button" className="sa-ml-btn" onClick={newChallenge} data-ml-practice-next>
+                <RefreshCw size={15} aria-hidden="true" />
+                <span>{t('tools.transformations.practice.next')}</span>
+              </button>
+            </div>
+          </>
+        )}
+      </section>
+    </div>
+  );
+}
+
+/** Les paramètres d'un pas, en notation LTR, pour l'énoncé. */
+function describeParams(step) {
+  switch (step.kind) {
+    case 'translation': return `(${formatValue(step.vx)} ; ${formatValue(step.vy)})`;
+    case 'rotation': return `${formatValue(step.angle, 0)}°`;
+    case 'dilation': return `k = ${formatValue(step.k)}`;
+    default: return '';
+  }
+}

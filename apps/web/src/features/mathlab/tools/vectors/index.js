@@ -1,6 +1,7 @@
 import { MoveUpRight } from 'lucide-react';
 import { defineMathLabTool } from '../../toolContract.js';
 import { VECTORS_SCHEMA_VERSION, createVectorsData } from './vectorState.js';
+import { summarizeVectors } from './summarize.js';
 
 /**
  * Le مختبر الأشعة (Laboratoire des vecteurs) — le sixième instrument du
@@ -34,5 +35,6 @@ export const vectorsTool = defineMathLabTool({
   icon: MoveUpRight,
   schemaVersion: VECTORS_SCHEMA_VERSION,
   createInitialData: createVectorsData,
+  summarize: summarizeVectors,
   load: () => import('./VectorsTool.jsx'),
 });

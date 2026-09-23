@@ -1,6 +1,7 @@
 import { Sigma } from 'lucide-react';
 import { defineMathLabTool } from '../../toolContract.js';
 import { ALGEBRA_SCHEMA_VERSION, createAlgebraData } from './algebraState.js';
+import { summarizeAlgebra } from './summarize.js';
 
 /**
  * Le مختبر الجبر (Laboratoire d'algèbre) — le cinquième instrument du
@@ -29,5 +30,6 @@ export const algebraTool = defineMathLabTool({
   icon: Sigma,
   schemaVersion: ALGEBRA_SCHEMA_VERSION,
   createInitialData: createAlgebraData,
+  summarize: summarizeAlgebra,
   load: () => import('./AlgebraTool.jsx'),
 });

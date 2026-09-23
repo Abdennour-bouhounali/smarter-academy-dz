@@ -67,6 +67,10 @@ export function fromApiDocument(payload) {
     schemaVersion: payload.schemaVersion ?? 1,
     data: payload.data ?? null,
     dataBytes: payload.dataBytes ?? 0,
+    // Le résumé que l'instrument a fait de cet état — ce que « أعمالي »
+    // dessine. Nul pour un document enregistré avant les résumés.
+    summary: payload.summary ?? null,
+    isFavorite: payload.isFavorite === true,
     createdAt: payload.createdAt ?? null,
     updatedAt: payload.updatedAt ?? null,
   };

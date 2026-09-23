@@ -1,10 +1,17 @@
-import { Compass, Ruler, Circle, Scale } from 'lucide-react';
+import { Scale } from 'lucide-react';
 import { whiteboardTool } from './tools/whiteboard/index.js';
 import { functionGrapherTool } from './tools/functionGrapher/index.js';
 import { geometry3dTool } from './tools/geometry3d/index.js';
 import { probabilityStatsTool } from './tools/probabilityStats/index.js';
 import { algebraTool } from './tools/algebra/index.js';
 import { vectorsTool } from './tools/vectors/index.js';
+import { trigonometryTool } from './tools/trigonometry/index.js';
+import { sequencesTool } from './tools/sequences/index.js';
+import { transformationsTool } from './tools/transformations/index.js';
+import { conicsTool } from './tools/conics/index.js';
+import { numberLabTool } from './tools/numberLab/index.js';
+import { analysisTool } from './tools/analysis/index.js';
+import { logicTool } from './tools/logic/index.js';
 
 /**
  * Le REGISTRE des instruments du مختبر الرياضيات (Math Lab).
@@ -26,6 +33,13 @@ export const MATH_LAB_TOOLS = Object.freeze([
   probabilityStatsTool,
   algebraTool,
   vectorsTool,
+  trigonometryTool,
+  sequencesTool,
+  transformationsTool,
+  conicsTool,
+  numberLabTool,
+  analysisTool,
+  logicTool,
 ]);
 
 /**
@@ -35,9 +49,6 @@ export const MATH_LAB_TOOLS = Object.freeze([
  * Un instrument passe d'ici à MATH_LAB_TOOLS le jour où il existe.
  */
 export const PLANNED_MATH_LAB_TOOLS = Object.freeze([
-  { id: 'geometry', labelKey: 'tools.geometry.name', icon: Compass },
-  { id: 'numberLine', labelKey: 'tools.numberLine.name', icon: Ruler },
-  { id: 'trigonometry', labelKey: 'tools.trigonometry.name', icon: Circle },
   { id: 'measurement', labelKey: 'tools.measurement.name', icon: Scale },
 ]);
 

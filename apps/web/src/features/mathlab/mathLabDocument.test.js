@@ -15,6 +15,32 @@ describe('document du مختبر', () => {
     expect(mathLabToolPath(tool, 7, '/enseignant/atelier')).toBe('/enseignant/atelier/tableau/7');
   });
 
+  /**
+   * RÉGRESSION (signalée en usage) : un ENSEIGNANT était éjecté vers
+   * `/enseignant` quelques secondes après avoir touché un instrument.
+   *
+   * `useMathLabDocument` réécrit l'adresse à la naissance du document, et
+   * l'écrivait vers `/espace/atelier/...` en dur. `/espace` n'accepte que le
+   * rôle `student`, d'où ProtectedRoute → /login → HomeRedirect →
+   * `/enseignant` : l'instrument se fermait tout seul, travail en cours
+   * compris. Le défaut était dans la COQUILLE partagée, donc il touchait les
+   * huit instruments.
+   *
+   * On ne peut pas monter le crochet ici (pas de DOM dans cette suite), mais
+   * on peut vérifier ce qui compte : que l'appel passe bien une racine.
+   */
+  it('la coquille réécrit l’adresse dans l’espace DU LECTEUR, jamais en dur', async () => {
+    const { readFileSync } = await import('node:fs');
+    const { fileURLToPath } = await import('node:url');
+    const source = readFileSync(fileURLToPath(new URL('./useMathLabDocument.js', import.meta.url)), 'utf8');
+
+    // La racine est lue depuis l'espace de travail…
+    expect(source).toMatch(/mathLabBasePath\(useWorkspaceBase\(\)\)/);
+    // …et l'adresse réécrite l'utilise : `mathLabToolPath(tool, id)` à deux
+    // arguments retomberait sur `/espace/atelier`.
+    expect(source).toMatch(/navigate\(mathLabToolPath\(tool, saved\.id, labRoot\)/);
+  });
+
   it('la racine suit l’espace de travail, `/espace` par défaut', () => {
     expect(mathLabBasePath('/enseignant')).toBe('/enseignant/atelier');
     expect(mathLabBasePath('/espace')).toBe(MATH_LAB_BASE_PATH);

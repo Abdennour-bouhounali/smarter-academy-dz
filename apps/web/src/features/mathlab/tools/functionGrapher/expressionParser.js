@@ -17,7 +17,7 @@
  *   opérations       + - * / ^   \cdot \times \div   × · ÷ −
  *   multiplication implicite   2x   3(x+1)   x\sin x   (x+1)(x-2)
  *   puissances       x^2  x^{10}  x^-1  x²  x³  (associatives à droite)
- *   fractions        \frac{a}{b}   a/b
+ *   fractions        \frac{a}{b}   \frac12 (forme courte LaTeX)   a/b
  *   racines          \sqrt{x}  sqrt(x)  √x   \sqrt[3]{x}
  *   valeur absolue   |x|  \left|x\right|  \lvert x\rvert  abs(x)
  *   fonctions        sin cos tan sqrt abs exp ln log(décimal)
@@ -141,6 +141,21 @@ export function tokenize(source, variables = ['x']) {
       if (!token) throw new ParseError('unknownSymbol', i, `\\${name}`);
       tokens.push({ ...token, position: i });
       i = j;
+      /**
+       * `\frac12` : en LaTeX, chaque argument sans accolade est UN SEUL
+       * caractère — c'est ½, pas « 12 sur rien ». MathLive produit cette
+       * forme dès qu'un élève tape une demie au clavier virtuel, et le
+       * lexeur, qui agglomère les chiffres, lisait `num:12`.
+       *
+       * On découpe donc les deux chiffres qui SUIVENT immédiatement un
+       * `\frac` en deux nombres d'un chiffre. Ailleurs rien ne change :
+       * `\frac{12}{5}` garde ses accolades et ses nombres entiers.
+       */
+      if (token.type === 'frac' && /^[0-9][0-9]/.test(text.slice(i))) {
+        tokens.push({ type: 'num', value: Number(text[i]), position: i });
+        tokens.push({ type: 'num', value: Number(text[i + 1]), position: i + 1 });
+        i += 2;
+      }
       continue;
     }
 
@@ -356,6 +371,44 @@ class Parser {
     return inner;
   }
 
+  /**
+   * L'argument d'un `\frac` ou d'un `\sqrt` : un GROUPE `{…}`, ou — en
+   * LaTeX — le jeton unique qui suit.
+   *
+   * `\frac{1}{2}` et `\frac12` sont la MÊME chose en LaTeX, et MathLive
+   * produit la seconde forme : un élève qui tape ½ au clavier virtuel envoie
+   * `\frac12`. La QA navigateur l'a trouvé en tapant une demie dans le champ
+   * de réponse du مختبر التحليل — la bonne réponse était rejetée comme
+   * incompréhensible.
+   *
+   * Strictement ADDITIF : les accolades continuent d'être lues comme avant,
+   * et seul le cas qui échouait jusqu'ici devient acceptable.
+   */
+  parseBraceOrToken() {
+    const token = this.peek();
+    if (!token) throw new ParseError('syntax', this.length);
+    if (token.type === 'lbrace') return this.parseGroup();
+    if (token.type === 'num') {
+      this.next();
+
+      return { type: 'num', value: token.value };
+    }
+    if (token.type === 'var') {
+      this.next();
+
+      return { type: 'var', name: token.value };
+    }
+    if (token.type === 'const') {
+      this.next();
+
+      return { type: 'const', name: token.value };
+    }
+
+    // Tout le reste garde l'exigence d'accolades : `\frac\sin(x){2}` n'est
+    // pas du LaTeX, et l'accepter ouvrirait une grammaire qu'on ne teste pas.
+    return this.parseGroup();
+  }
+
   /** L'argument d'une fonction : entre parenthèses, entre accolades, ou le produit implicite qui suit. */
   parseFunctionArgument() {
     const token = this.peek();
@@ -420,8 +473,8 @@ class Parser {
       }
       case 'frac': {
         this.next();
-        const numerator = this.parseGroup();
-        const denominator = this.parseGroup();
+        const numerator = this.parseBraceOrToken();
+        const denominator = this.parseBraceOrToken();
 
         return { type: 'bin', op: '/', left: numerator, right: denominator };
       }

@@ -8,6 +8,7 @@ use App\Models\MathLabDocument;
 use DomainException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 /**
  * Les documents du مختبر الرياضيات, côté HTTP. Le service décide ; ici on
@@ -61,6 +62,10 @@ class MathLabDocumentController extends Controller
             'title' => 'required|string|max:160',
             'schemaVersion' => 'nullable|integer|min:1|max:65535',
             'data' => 'required|array',
+            // Le résumé que l'instrument fait de son état — ce que « أعمالي »
+            // dessine. Facultatif : un instrument qui n'en produit pas, ou un
+            // client plus ancien, enregistre exactement comme avant.
+            'summary' => 'nullable|array',
         ]);
 
         try {
@@ -78,6 +83,8 @@ class MathLabDocumentController extends Controller
             'title' => 'sometimes|string|max:160',
             'schemaVersion' => 'sometimes|integer|min:1|max:65535',
             'data' => 'sometimes|array',
+            'summary' => 'sometimes|nullable|array',
+            'isFavorite' => 'sometimes|boolean',
         ]);
 
         try {
@@ -89,6 +96,46 @@ class MathLabDocumentController extends Controller
         // Sans `data` : la réponse d'une sauvegarde reste légère, le client
         // possède déjà l'état qu'il vient d'envoyer.
         return response()->json(['success' => true, 'document' => $this->serialize($document, false)]);
+    }
+
+    /**
+     * « نسخة » : une copie de MON document, prête à diverger de l'original.
+     * Le titre vient du client (« نسخة من … », dans sa langue) ; à défaut,
+     * c'est celui de l'original.
+     */
+    public function duplicate(Request $request, int $id): JsonResponse
+    {
+        $validated = $request->validate(['title' => 'sometimes|string|max:160']);
+
+        try {
+            $document = $this->documents->duplicate($request->user(), $id, $validated['title'] ?? null);
+        } catch (DomainException $e) {
+            return $this->refuse($e, 404);
+        }
+
+        return response()->json(['success' => true, 'document' => $this->serialize($document, false)], 201);
+    }
+
+    /**
+     * Le même geste sur une SÉLECTION. La propriété est tenue par le service
+     * (`where user_id`), pas par le client : une liste d'identifiants qui ne
+     * sont pas à moi ne supprime rien.
+     */
+    public function bulk(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'ids' => 'required|array|min:1|max:200',
+            'ids.*' => 'integer',
+            'action' => ['required', Rule::in(MathLabDocumentService::BULK_ACTIONS)],
+        ]);
+
+        try {
+            $count = $this->documents->bulk($request->user(), $validated['ids'], $validated['action']);
+        } catch (DomainException $e) {
+            return $this->refuse($e, 422);
+        }
+
+        return response()->json(['success' => true, 'count' => $count]);
     }
 
     public function destroy(Request $request, int $id): JsonResponse
@@ -115,6 +162,8 @@ class MathLabDocumentController extends Controller
             'title' => $document->title,
             'schemaVersion' => (int) $document->schema_version,
             'dataBytes' => (int) $document->data_bytes,
+            'summary' => $document->summary,
+            'isFavorite' => (bool) $document->is_favorite,
             'createdAt' => $document->created_at?->toIso8601String(),
             'updatedAt' => $document->updated_at?->toIso8601String(),
         ];
