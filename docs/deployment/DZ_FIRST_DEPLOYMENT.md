@@ -195,7 +195,9 @@ Le workflow reste volontairement prudent :
 
 - `rsync` **sans `--delete`** — rien n'est jamais supprimé du serveur ;
 - `.env`, `storage/`, `bootstrap/cache/` exclus du transfert ;
-- **aucune migration automatique** — le SQL reste relu à la main ;
+- **migrations appliquées automatiquement**, mais JAMAIS sans sauvegarde : le
+  dump s'exécute dans son étape à lui, et son échec arrête le déploiement avant
+  que le schéma ne soit touché (voir « Le schéma » plus bas) ;
 - les caches sont vidés, jamais chauffés (`config:cache` écrirait un
   `config.php` qui prendrait le pas sur `.env`) ;
 - il refuse de partir si un domaine `smarter-academy.fr` apparaît dans ses
@@ -242,6 +244,52 @@ Le workflow reste volontairement prudent :
    une nouvelle version de cette offre (capacité 5, limites techniques vides)
    et archiver `teacher-basic` / `teacher-pro`. Contrat :
    `docs/architecture/TEACHER_CLASSROOM_ARCHITECTURE.md`.
+
+## Le schéma : appliqué par le pipeline depuis le 2026-09-23
+
+**Ce qui a changé, et pourquoi.** Jusqu'à cette date le workflow n'appliquait
+jamais les migrations : le schéma passait par du SQL relu dans phpMyAdmin. Cette
+politique a échoué exactement comme elle devait échouer — `main` a rattrapé cinq
+versions d'un coup, 26 migrations ne sont jamais passées, et un déploiement
+entièrement vert a laissé la production répondre 500 sur
+`/content/availability`, `/student/study-context`, `/practice/notes` et
+`/math-lab/documents`, avec « تعذّر الحفظ » dans le Math Lab.
+
+Livrer du code sans son schéma n'est pas plus prudent que migrer : c'est le même
+risque, pris en silence, et constaté par l'élève au lieu du pipeline.
+
+Le déploiement fait donc maintenant, dans cet ordre :
+
+1. **`smarter:db-backup`** — une sauvegarde complète, dans son étape à elle.
+   Elle est la CONDITION PRÉALABLE : si elle échoue, le job s'arrête et le
+   schéma n'est pas touché. Il n'y a pas d'option pour la sauter. La commande
+   utilise `mysqldump` quand il existe et retombe sinon sur un export écrit avec
+   la connexion PDO de Laravel — sur un hébergement mutualisé le binaire n'est
+   pas garanti, et il faut qu'une copie existe TOUJOURS. Le fichier est écrit
+   dans `api/storage/app/backups/`, hors racine web : il contient toutes les
+   données d'élèves. Les dix dernières sont conservées.
+2. **`php artisan migrate --force --no-interaction`** — avec l'état des
+   migrations affiché avant et après. Si quelque chose reste `Pending` après
+   coup, l'étape échoue au lieu de laisser croire que tout est passé.
+3. **Vérification des points d'entrée qui dépendent du schéma.** L'ancienne
+   sonde n'interrogeait que `/legal/versions`, qui ne touche aucune table
+   récente : elle a répondu 200 pendant toute la panne. Les quatre points
+   d'entrée ci-dessus sont maintenant sondés ; non authentifiés ils doivent
+   répondre 401, et un 5xx fait échouer le déploiement. C'est la signature
+   exacte d'une table ou d'une colonne manquante.
+
+### Rattraper une base en retard
+
+Les fichiers `docs/deployment/*.sql` restent valides et restent la façon de
+réparer une base que le pipeline ne peut pas atteindre. Pour une base qui a
+plusieurs versions de retard, `HOSTINGER_CATCHUP_ALL.sql` les réunit en un seul
+fichier **rejouable** : chaque instruction est gardée par un test d'existence,
+donc il est sûr sur une base à jour (il ne fait rien), à moitié migrée, ou
+relancé après une interruption. Il est assemblé par
+`python3 scripts/build-hostinger-catchup-sql.py` — jamais édité à la main.
+
+Après lui, appliquer `HOSTINGER_UNIT1_CURRICULUM_DATA.sql` (données du
+curriculum, upserts par code) puis vider les caches Laravel.
 
 ## كرّاسي, Math Lab et atelier « أعمالي » — à appliquer sur Hostinger
 

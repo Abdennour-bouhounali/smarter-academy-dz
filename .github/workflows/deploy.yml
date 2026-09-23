@@ -317,15 +317,97 @@ jobs:
             "$SSH_USER@$SSH_HOST:$REMOTE_PATH/api/"
 
       # ───────────────────── Laravel post-deployment ─────────────────────────
-      # Deliberately NOT running migrations. This project applies schema
-      # changes as reviewed SQL through phpMyAdmin
-      # (docs/deployment/HOSTINGER_AUTH_MIGRATION.sql); making them automatic
-      # here would be a new and much riskier policy.
+      # The schema IS applied here, since 2026-09-23. Until then this workflow
+      # deliberately never migrated, and the schema was applied by hand as
+      # reviewed SQL in phpMyAdmin. That policy failed in the way it was always
+      # going to fail: `main` caught up five releases at once, 26 migrations
+      # went unapplied, and a fully green deploy left production returning 500
+      # on /content/availability, /student/study-context, /practice/notes and
+      # /math-lab/documents. Shipping code without its schema is not safer than
+      # migrating — it is the same risk, taken silently.
       #
-      # Only caches are cleared, never warmed: `config:cache` would write
+      # Two rules make this safe enough to automate:
+      #
+      #   1. A BACKUP IS A PRECONDITION. The dump runs first, in its own step.
+      #      If it fails, the job stops and the schema is never touched. No
+      #      backup, no migration — there is no flag to skip it.
+      #   2. The migration step reports `migrate:status` before and after, so
+      #      the log says exactly what changed, and fails on the first error
+      #      rather than continuing through a half-applied batch.
+      #
+      # `docs/deployment/*.sql` stays valid, and stays the way to recover a
+      # database this workflow cannot reach.
+      #
+      # Caches are cleared, never warmed: `config:cache` would write
       # bootstrap/cache/config.php, which then overrides .env. Per docs §7,
       # that file deliberately does not exist on this server so that .env
       # stays editable from the File Manager.
+      # A backup is the PRECONDITION of the migration below, not a nicety. It
+      # runs in its own step so a failure here stops the job with the schema
+      # untouched. `smarter:db-backup` prefers mysqldump and falls back to an
+      # export written through Laravel's own connection when the binary is
+      # absent, as it often is on shared hosting — so a copy always exists. The
+      # dump lands outside the web root: it contains every student record.
+      - name: Back up the database before touching the schema
+        env:
+          SSH_HOST: ${{ secrets.HOSTINGER_HOST }}
+          SSH_PORT: ${{ secrets.HOSTINGER_PORT }}
+          SSH_USER: ${{ secrets.HOSTINGER_USER }}
+          REMOTE_PATH: ${{ secrets.HOSTINGER_PATH }}
+        run: |
+          set -euo pipefail
+          ssh -i ~/.ssh/deploy_key -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" \
+            "REMOTE_PATH='$REMOTE_PATH' SHA='${{ github.sha }}' bash -s" <<'REMOTE'
+          set -euo pipefail
+          cd "$REMOTE_PATH/api"
+
+          # storage/ is excluded from the rsync and sits behind the api/.htaccess,
+          # so a dump here is never served over HTTP.
+          dest="storage/app/backups/pre-deploy-$(date +%Y-%m-%d_%H%M%S)-${SHA:0:8}.sql"
+          mkdir -p storage/app/backups
+
+          php artisan smarter:db-backup --out="$dest" --keep=10
+
+          # Trust the file, not the exit code alone.
+          test -s "$dest"
+          bytes=$(wc -c < "$dest")
+          if [ "$bytes" -lt 1024 ]; then
+            echo "Backup is only $bytes bytes - refusing to migrate." >&2
+            exit 1
+          fi
+          echo "Backup OK: $dest ($bytes bytes)"
+          REMOTE
+
+      # Only reached when the backup step succeeded.
+      - name: Apply database migrations
+        env:
+          SSH_HOST: ${{ secrets.HOSTINGER_HOST }}
+          SSH_PORT: ${{ secrets.HOSTINGER_PORT }}
+          SSH_USER: ${{ secrets.HOSTINGER_USER }}
+          REMOTE_PATH: ${{ secrets.HOSTINGER_PATH }}
+        run: |
+          set -euo pipefail
+          ssh -i ~/.ssh/deploy_key -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" \
+            "REMOTE_PATH='$REMOTE_PATH' bash -s" <<'REMOTE'
+          set -euo pipefail
+          cd "$REMOTE_PATH/api"
+
+          echo "── Pending before ──"
+          php artisan migrate:status | grep -i pending || echo "(none)"
+
+          # --force because there is no TTY to confirm at; --no-interaction so a
+          # destructive-migration prompt cannot hang the deploy forever.
+          php artisan migrate --force --no-interaction
+
+          echo "── Pending after ──"
+          if php artisan migrate:status | grep -qi pending; then
+            echo "Migrations are STILL pending after migrate - see above." >&2
+            php artisan migrate:status | grep -i pending >&2
+            exit 1
+          fi
+          echo "Schema is up to date with the deployed code."
+          REMOTE
+
       - name: Clear Laravel caches
         env:
           SSH_HOST: ${{ secrets.HOSTINGER_HOST }}
@@ -491,6 +573,41 @@ jobs:
           grep -q '"success":true' <<<"$body" \
             || { echo "::error::Unexpected API payload: $body"; exit 1; }
           echo "API responded 200 with the expected JSON."
+
+      # /legal/versions touches no recent table, so it answered 200 all through
+      # the 2026-09-23 outage while four other endpoints returned 500. One
+      # endpoint is not a health check.
+      #
+      # These four are the ones that read the schema shipped since September:
+      # classrooms/plans, the cahier columns, and the Math Lab tables. They are
+      # all behind auth, so unauthenticated they must answer 401 — that alone
+      # proves the route resolved, the controller booted and its queries were
+      # reached. A 5xx is the exact signature of a missing table or column.
+      - name: Verify the endpoints that depend on the schema
+        if: ${{ vars.PRODUCTION_URL != '' }}
+        run: |
+          set -euo pipefail
+          failed=0
+          for endpoint in \
+            'content/availability' \
+            'student/study-context' \
+            'practice/notes' \
+            'math-lab/documents'
+          do
+            code="$(curl --silent --max-time 30 --location -o /dev/null \
+              -w '%{http_code}' "${{ vars.PRODUCTION_URL }}/api/v1/$endpoint")"
+            case "$code" in
+              401|403|200)
+                echo "  ok    $endpoint -> $code" ;;
+              5*)
+                echo "::error::$endpoint returned $code. This is what a missing table or column looks like; check the migration step above and docs/deployment/HOSTINGER_CATCHUP_ALL.sql."
+                failed=1 ;;
+              *)
+                echo "::warning::$endpoint returned an unexpected $code."  ;;
+            esac
+          done
+          [ "$failed" -eq 0 ] || exit 1
+          echo "Every schema-dependent endpoint answered without a server error."
 
       - name: Report a failed deployment
         if: failure()
