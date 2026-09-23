@@ -242,3 +242,74 @@ Le workflow reste volontairement prudent :
    une nouvelle version de cette offre (capacité 5, limites techniques vides)
    et archiver `teacher-basic` / `teacher-pro`. Contrat :
    `docs/architecture/TEACHER_CLASSROOM_ARCHITECTURE.md`.
+
+## كرّاسي, Math Lab et atelier « أعمالي » — à appliquer sur Hostinger
+
+**Obligatoire pour cette version.** Cinq migrations livrées entre le 22 et le
+26 septembre n'avaient aucun fichier SQL relu. Sans elles, en production :
+`math_lab_documents` et `math_lab_files` **n'existent pas** (500 sur
+`GET /api/v1/math-lab/documents`), et le cahier « كرّاسي » lit des colonnes
+absentes de `notebook_notes`. Constaté en production le 2026-09-23 : 500 sur
+`/math-lab/documents` **et** sur `/student/study-context` (ce dernier vient des
+tables `classrooms`, donc du fichier « offres enseignants » ci-dessus).
+
+### Ordre complet des fichiers SQL, du plus ancien au plus récent
+
+Un déploiement qui rattrape plusieurs versions d'un coup doit les exécuter
+**dans cet ordre** (chaque fichier suppose les précédents appliqués) :
+
+| # | Fichier | Migrations |
+|---|---------|-----------|
+| 1 | `HOSTINGER_AUTH_MIGRATION.sql` | `2026_09_18_*` |
+| 2 | `HOSTINGER_UNIT1_MIGRATION.sql` | `2026_09_21_*` |
+| 3 | `HOSTINGER_UNIT1_CURRICULUM_DATA.sql` | données unité 1 |
+| 4 | `HOSTINGER_CAHIER_MATHLAB_MIGRATION.sql` | `2026_09_22` → `2026_09_25` |
+| 5 | `HOSTINGER_MATHLAB_WORK_MIGRATION.sql` | `2026_09_26_000001` (atelier) |
+| 6 | `HOSTINGER_TEACHER_PLANS_MIGRATION.sql` | `2026_09_26_*` / `2026_09_27_*` |
+
+Pour savoir où en est une base : `SELECT migration FROM migrations ORDER BY
+migration;` — tout fichier dont les migrations n'y figurent pas reste à passer.
+Si `artisan` est disponible, l'équivalent des six est `php artisan migrate
+--force && php artisan db:seed --class=PlanSeeder --force`.
+
+### 4 — `HOSTINGER_CAHIER_MATHLAB_MIGRATION.sql`
+
+Quatre migrations additives : `module_number` sur `notebook_notes`, les huit
+colonnes du cahier + quatre index, puis les tables `math_lab_documents` et
+`math_lab_files` (cette seconde référence la première — ordre obligatoire).
+Le bloc « VÉRIFICATION » doit rendre 2 tables, 9 colonnes, le même nombre de
+notes qu'avant, et 4 lignes de migration.
+
+**Reprise des notes** (§ 5 du fichier) : deux UPDATE idempotents remettent les
+notes non terminées dans la file de révision et marquent `erreur` celles qui
+portent un `mistake_type` — exactement la règle de la migration Laravel. La
+troisième partie, `content_text`, **n'est volontairement pas reprise en SQL** :
+elle exige un retrait de balises HTML puis un décodage d'entités que MySQL ne
+fait pas fidèlement, et un `REPLACE()` approximatif mettrait du HTML à moitié
+nettoyé dans la colonne de recherche. Conséquence, mesurée dans le code : une
+note ancienne reste lisible et intacte, mais n'apparaît pas dans la recherche
+jusqu'à sa prochaine modification — `NotebookService` réécrit `content_text` à
+chaque enregistrement, donc la reprise est **auto-réparatrice**.
+
+### 5 — `HOSTINGER_MATHLAB_WORK_MIGRATION.sql`
+
+Le Math Lab remplace sa liste de documents par un atelier (aperçus, tri,
+recherche, favoris), et le code lit/écrit deux colonnes nouvelles.
+
+1. **Schéma** : une migration additive `2026_09_26_000001`, deux colonnes + un
+   index sur la seule table `math_lab_documents`, puis la ligne `migrations`.
+   Le bloc « VÉRIFICATION » doit rendre 2 colonnes, 3 lignes d'index, le même
+   nombre de documents qu'avant, et 0 étoile.
+2. **Rien à faire pour les documents existants** : `summary` est NULL et
+   `is_favorite` faux — l'atelier sait dessiner un aperçu de repli sans résumé,
+   et chaque document réenregistré publie le sien. Aucun état d'outil (`data`)
+   n'est touché.
+3. **Rien dans `.env`** : la borne du résumé est
+   `MathLabDocumentService::MAX_SUMMARY_BYTES`, pas une variable.
+
+Les deux fichiers ont été exécutés **tels quels** sur une base au schéma de
+production avant d'être livrés, avec des notes couvrant les quatre cas de la
+reprise ; `php artisan migrate:status` y voit ensuite les cinq migrations
+« Ran ».
+
+Contrats : `docs/architecture/MATH_LAB.md`, `docs/architecture/NOTEBOOK.md`.
