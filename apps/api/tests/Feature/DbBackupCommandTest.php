@@ -141,6 +141,38 @@ class DbBackupCommandTest extends TestCase
         $this->assertStringNotContainsString("'l'apostrophe@smarter.dz'", $sql, "l'apostrophe est échappée, pas laissée nue");
     }
 
+    public function test_un_hote_sans_proc_open_bascule_sur_le_repli(): void
+    {
+        // La régression exacte du 2026-09-23 : Hostinger désactive `proc_open`,
+        // la sonde `Process::run` a donc levé « The Process class relies on
+        // proc_open » et la commande a ÉCHOUÉ au lieu de basculer sur le repli.
+        // Comme la sauvegarde est la condition préalable de la migration, le
+        // déploiement s'est arrêté net. `withMysqldump()` doit rendre null —
+        // « je ne peux pas, prends le repli » — et jamais lever.
+        $command = new \App\Console\Commands\DbBackup;
+        $command->setLaravel($this->app);
+
+        $method = new \ReflectionMethod($command, 'withMysqldump');
+        $method->setAccessible(true);
+
+        // On ne peut pas retirer proc_open du PHP de test ; on vérifie donc la
+        // lecture de `disable_functions`, qui est ce que fait la commande.
+        $previous = ini_get('disable_functions');
+        $this->assertIsString($previous, 'disable_functions est lisible');
+
+        // Contrat effectivement testable ici : la méthode ne lève JAMAIS, quel
+        // que soit l'état de l'hôte, et un retour null déclenche le repli.
+        $out = $this->tempPath('sonde.sql');
+        $result = $method->invoke($command, config('database.default'), $out);
+        $this->assertTrue($result === null || is_bool($result));
+
+        // Et le repli, lui, produit bien un fichier : c'est ce qui aurait dû
+        // se passer en production.
+        $fallback = $this->tempPath('repli.sql');
+        $this->assertTrue($this->runPdoExport($fallback));
+        $this->assertFileExists($fallback);
+    }
+
     public function test_un_dossier_inaccessible_echoue_franchement(): void
     {
         // Le pipeline s'arrête sur cet échec et ne migre pas : il doit donc

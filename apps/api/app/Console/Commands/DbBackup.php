@@ -102,29 +102,56 @@ class DbBackup extends Command
     }
 
     /**
-     * @return bool|null  null quand le binaire n'existe pas (on passe au repli)
+     * @return bool|null  null quand mysqldump est hors de portée (on passe au repli)
      */
     private function withMysqldump(string $connection, string $path): ?bool
     {
-        $probe = Process::run('command -v mysqldump');
+        // Hostinger — comme beaucoup d'hébergements mutualisés — désactive
+        // `proc_open` et `exec` dans php.ini. Sans cette vérification, le
+        // moindre appel à Process lève « The Process class relies on proc_open »
+        // et la commande échoue au lieu de basculer sur le repli : c'est
+        // précisément ce qui a fait échouer le premier déploiement automatique
+        // du schéma (2026-09-23). On le constate donc AVANT de toucher à
+        // Process, et on n'y touche plus du tout si la fonction est interdite.
+        $disabled = array_map('trim', explode(',', (string) ini_get('disable_functions')));
+        if (! function_exists('proc_open') || in_array('proc_open', $disabled, true)) {
+            return null;
+        }
+
+        try {
+            $probe = Process::run('command -v mysqldump');
+        } catch (Throwable) {
+            // Une autre restriction de l'hôte : le repli reste la bonne réponse.
+            return null;
+        }
+
         if (! $probe->successful()) {
             return null;
         }
 
         $c = config("database.connections.$connection");
-        // Le mot de passe passe par l'environnement : jamais sur la ligne de
-        // commande, qui est lisible par tout le monde dans `ps`.
-        $result = Process::timeout(1800)
-            ->env(['MYSQL_PWD' => (string) ($c['password'] ?? '')])
-            ->run(sprintf(
-                'mysqldump --host=%s --port=%s --user=%s --single-transaction --quick '
-                .'--routines --triggers --default-character-set=utf8mb4 %s > %s',
-                escapeshellarg((string) $c['host']),
-                escapeshellarg((string) ($c['port'] ?: 3306)),
-                escapeshellarg((string) $c['username']),
-                escapeshellarg((string) $c['database']),
-                escapeshellarg($path),
-            ));
+
+        try {
+            // Le mot de passe passe par l'environnement : jamais sur la ligne de
+            // commande, qui est lisible par tout le monde dans `ps`.
+            $result = Process::timeout(1800)
+                ->env(['MYSQL_PWD' => (string) ($c['password'] ?? '')])
+                ->run(sprintf(
+                    'mysqldump --host=%s --port=%s --user=%s --single-transaction --quick '
+                    .'--routines --triggers --default-character-set=utf8mb4 %s > %s',
+                    escapeshellarg((string) $c['host']),
+                    escapeshellarg((string) ($c['port'] ?: 3306)),
+                    escapeshellarg((string) $c['username']),
+                    escapeshellarg((string) $c['database']),
+                    escapeshellarg($path),
+                ));
+        } catch (Throwable $e) {
+            // L'hôte interdit l'exécution de processus : le repli est la bonne
+            // réponse, pas un échec.
+            $this->warn('mysqldump inutilisable ('.$e->getMessage().').');
+
+            return null;
+        }
 
         if (! $result->successful()) {
             $this->warn('mysqldump a échoué : '.trim($result->errorOutput()));
