@@ -22,6 +22,7 @@ export function buildLessonRoutes({ config, basePath, moduleFiles, loadKnowledge
   // `module` : l'entrée de config.modules de la page (null pour l'accueil).
   // C'est ce que le cahier reçoit comme position — la coquille sait où
   // l'élève est, le module n'a rien à déclarer.
+
   const withSuspense = (Component, module = null) => (
     <Suspense fallback={<div className="min-h-screen bg-slate-50" />}>
       <LazyLessonKnowledgeProvider load={loadKnowledge} lessonId={config.id} printTitle={config.title} printSubject={PRINT_SUBJECT}>

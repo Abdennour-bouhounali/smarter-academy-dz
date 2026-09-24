@@ -57,7 +57,20 @@ has since replaced.
 
 **الوحدة is a unit of the textbook, never a module. المحور is a module, never a
 unit.** Changing this vocabulary silently breaks four navigation surfaces and
-the Classroom Mode toolbar. The one exception is internal: Classroom Mode calls
+the Classroom Mode toolbar.
+
+A **محور's breadcrumb names three levels and no more** (since 2026-09-24):
+
+```
+الوحدة  /  الدرس  /  المحور
+```
+
+Neither الرئيسية nor the grade: the student knows which class they are in, and
+the way back to the catalogue is in the sidebar. What helps here is knowing
+*where in the textbook* they are. The الوحدة comes from `MODULE_CTX`
+(`unitTitle`/`unitPath`, built once in the unit's `_unit/moduleContext.js`
+from `unitMeta.js`); a lesson that declares none — the dormant French tree —
+falls back to its المجال, so the trail is never two levels long. The one exception is internal: Classroom Mode calls
 the slices of a presented module "units" in code (`moduleUnits`), which is a
 presentation concept, not a curriculum one.
 
@@ -801,10 +814,19 @@ zero (a zero coefficient is a line, not a parabola). A traced point travels
 as its **parameter** (`trace: { targetId, t, branch }`), never as
 coordinates, so it stays exactly on the curve. The practice score is never
 seeded).
-Contract, seed shapes and rules:
-[`../architecture/MATH_LAB.md`](../architecture/MATH_LAB.md) §5b.3, §5b.6, §5c.5, §5d.6, §5f.4, §5g.8, §5h.8, §5j.9, §5k.9, §5l.10, §5n.10, §6.
+- `measurement` — `{ investigation }`, the id of one of the ten
+  investigations (`rectangle-area`, `rectangle-perimeter`, `triangle-area`,
+  `circle-circumference`, `circle-area`, `cube-volume`, `cuboid-volume`,
+  `unit-conversion`, `pythagoras`, `triangle-angle-sum`). An unknown id
+  falls back to the rectangle rather than failing. **Seed the investigation,
+  never the rule**: the whole instrument exists so the student builds the
+  relation themselves, and a lesson that pre-fills it would hand over the
+  one thing it is there to discover (`MATH_LAB.md` §5o.2).
 
-**Adding a fourteenth instrument?** Besides its definition, its id in the server
+Contract, seed shapes and rules:
+[`../architecture/MATH_LAB.md`](../architecture/MATH_LAB.md) §5b.3, §5b.6, §5c.5, §5d.6, §5f.4, §5g.8, §5h.8, §5j.9, §5k.9, §5l.10, §5n.10, §5o.8, §6.
+
+**Adding a fifteenth instrument?** Besides its definition, its id in the server
 registry and its Arabic strings, it owes « أعمالي » a `summarize(data)` — a
 pure function returning a few hundred bytes that let the workspace draw its
 preview and search its content **without loading the instrument**. The
@@ -812,6 +834,15 @@ checklist is `MATH_LAB.md` §3.2, the contract §5i.2, and
 `summaries.test.js` fails if the function is missing, too large, or throws
 on an unexpected state. Whatever the preview shows, it is drawn in **SVG**
 from that summary — never a generated raster image (root `CLAUDE.md`).
+
+**Which instrument for measurement, and what NOT to seed.** The measurement
+lab (`measurement`) is the instrument for « قِس → قارن → صُغ القاعدة →
+اختبر ». It is the one to open whenever a lesson would otherwise *state* a
+formula for area, perimeter, volume, unit conversion, the Pythagorean
+relation or the angle sum: the lab has the student build that formula from
+their own measurements and test it. Do **not** press the 3D explorer (§5c)
+into this role — it shows a solid and its computed volume, which is the
+opposite gesture.
 
 **Which instrument for reasoning, and what NOT to seed.** The logic & proof
 lab (`logic`) is the instrument for « اقترح → اختبر → ابحث عن مثال مضاد →

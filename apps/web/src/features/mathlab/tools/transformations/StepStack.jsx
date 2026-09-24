@@ -4,6 +4,8 @@ import {
   Eye, EyeOff, Trash2, ChevronUp, ChevronDown, Play,
 } from 'lucide-react';
 import { formatValue } from '../functionGrapher/grapherFormat.js';
+import { vectorColumnText } from '../vectors/vectorFormat.js';
+import VectorColumn from '../vectors/VectorColumn.jsx';
 import { describeStep } from './transformModel.js';
 import { AXIS_TYPES } from './transformModel.js';
 
@@ -189,7 +191,7 @@ function StepEditor({ step, onUpdate, vertexCount, t }) {
           onChange={(vy) => update({ vy })} testId="vy"
         />
         <p className="sa-ml-tr__editorhint" dir="ltr">
-          {`v⃗ = (${formatValue(step.vx)} ; ${formatValue(step.vy)})`}
+          <VectorColumn vector={{ x: step.vx, y: step.vy }} name="\\vec{v}" />
         </p>
       </div>
     );
@@ -368,7 +370,8 @@ function axisFor(type, previous) {
 function summarize(step, description, t) {
   switch (step.kind) {
     case 'translation':
-      return `(${formatValue(step.vx)} ; ${formatValue(step.vy)})`;
+      // Un résumé de LIGNE : une chaîne, donc la colonne en texte (§ vectorFormat).
+      return vectorColumnText({ x: step.vx, y: step.vy });
     case 'rotation':
       return `${formatValue(step.angle, 0)}°`;
     case 'dilation':

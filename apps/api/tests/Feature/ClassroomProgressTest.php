@@ -56,6 +56,14 @@ class ClassroomProgressTest extends TestCase
         $this->assertNull($rows[$b->id]['successRate']);
     }
 
+    /**
+     * Le DOSSIER de progression ne porte pas le cahier — et ne le portera
+     * pas. Depuis le 2026-09-24, l'enseignant peut lire le cahier d'un élève
+     * de sa classe, mais par une route dédiée, en lecture seule et bornée aux
+     * leçons du قسم (TeacherClassroomNotebookTest). Les deux lectures restent
+     * SÉPARÉES : « où en est-il ? » et « qu'a-t-il noté ? » sont deux
+     * questions, deux écrans, deux permissions à faire évoluer séparément.
+     */
     public function test_le_dossier_d_un_eleve_est_cadre_sur_la_classe_et_ne_contient_pas_son_cahier(): void
     {
         $this->defaultTeacherPlan();

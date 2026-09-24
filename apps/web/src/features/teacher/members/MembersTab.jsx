@@ -1,7 +1,7 @@
 import { useCallback, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Users, UserMinus } from 'lucide-react';
+import { Users, UserMinus, NotebookPen } from 'lucide-react';
 import { AuthContext } from '../../../context/AuthContext';
 import { useAdminResource } from '../../../hooks/useAdminResource';
 import DataTable from '../../../components/admin/ui/DataTable';
@@ -71,6 +71,19 @@ export default function MembersTab({ classGroup, entitlements, onChanged }) {
           { key: 'successRate', label: t('students.successRate'), render: (s) => (s.successRate === null ? <span className="text-slate-400">—</span> : <span dir="ltr">{s.successRate}%</span>) },
           { key: 'lastActivityAt', label: t('students.lastActivity'), render: (s) => (s.lastActivityAt ? formatDate(s.lastActivityAt) : t('students.never')) },
           { key: 'via', label: '', render: (s) => <span className="text-slate-400 text-[11px]">{t(`students.joinedVia.${s.joinedVia}`, { defaultValue: '' })}</span> },
+          // Le cahier depuis la LISTE : l'enseignant qui balaie son قسم y
+          // va sans passer par le dossier. Icône seule — la colonne est
+          // étroite sur un téléphone — avec son aria-label.
+          { key: 'notebook', label: '', render: (s) => (
+            <Link
+              to={`/enseignant/classes/${classGroup.id}/eleves/${s.id}/cahier`}
+              className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-slate-300 bg-white text-slate-600 hover:bg-slate-50"
+              aria-label={t('notebook.detailTitle', { name: fullName(s) })}
+              title={t('notebook.open')}
+            >
+              <NotebookPen size={15} aria-hidden="true" />
+            </Link>
+          ) },
           { key: 'actions', label: '', render: (s) => (
             classGroup.status === 'active' ? (
               <button type="button" onClick={() => { setRemoving(s); setRemoveError(null); }} className={btnDanger}><UserMinus size={13} /> {t('students.remove')}</button>

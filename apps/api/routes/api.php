@@ -45,6 +45,7 @@ use App\Http\Controllers\Teacher\TeacherClassroomController;
 use App\Http\Controllers\Teacher\TeacherClassroomInvitationController;
 use App\Http\Controllers\Teacher\TeacherClassroomLessonController;
 use App\Http\Controllers\Teacher\TeacherClassroomProgressController;
+use App\Http\Controllers\Teacher\TeacherClassroomNotebookController;
 use App\Http\Controllers\Teacher\TeacherClassroomStudentController;
 use App\Http\Controllers\Teacher\TeacherDashboardController;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -355,6 +356,14 @@ Route::prefix('v1')->group(function () {
                 ->whereNumber('id')->whereNumber('studentId');
             Route::delete('/classrooms/{id}/students/{studentId}', [TeacherClassroomStudentController::class, 'destroy'])
                 ->whereNumber('id')->whereNumber('studentId');
+
+            // Le cahier d'un élève, EN LECTURE SEULE, borné aux leçons de la
+            // classe. Aucune route d'écriture ici : un enseignant lit, il
+            // n'annote pas (TeacherClassroomNotebookController).
+            Route::get('/classrooms/{id}/students/{studentId}/notebook', [TeacherClassroomNotebookController::class, 'index'])
+                ->whereNumber('id')->whereNumber('studentId');
+            Route::get('/classrooms/{id}/students/{studentId}/notebook/{noteId}', [TeacherClassroomNotebookController::class, 'show'])
+                ->whereNumber('id')->whereNumber('studentId')->whereNumber('noteId');
 
             Route::get('/classrooms/{id}/invitations', [TeacherClassroomInvitationController::class, 'index'])->whereNumber('id');
             Route::post('/classrooms/{id}/invitations', [TeacherClassroomInvitationController::class, 'store'])

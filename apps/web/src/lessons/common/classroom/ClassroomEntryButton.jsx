@@ -6,8 +6,9 @@ import { useClassroomMode } from './ClassroomContext';
 /**
  * Le POINT D'ENTRÉE du mode classe, par portée :
  *
- *   🎓 وضع القسم         scope = lesson        (sommaire de la leçon)
- *   ⛶ عرض               scope = module        (bouton FLOTTANT, tone="floating")
+ *   🎓 وضع القسم         scope = lesson        (sommaire de la leçon ET,
+ *                                              dans un محور, le bouton
+ *                                              FLOTTANT — tone="floating")
  *   ⛶ عرض التمرين       scope = exercise      (en-tête de l'exercice)
  *   ⛶ عرض المناولة      scope = manipulation  (en-tête de la manipulation)
  *
@@ -33,11 +34,14 @@ const ClassroomEntryButton = forwardRef(function ClassroomEntryButton({ scope: s
   if (!ctx.canPresent || ctx.isClassroomMode) return null;
 
   const scope = scopeProp ?? ctx.scope ?? 'manipulation';
-  // Le bouton flottant dit « عرض » tout court : dans la colonne des repères,
-  // hors de l'en-tête de ce qu'il présente, nommer la portée n'ajoute rien.
-  // Les boutons posés DANS un en-tête gardent leur libellé explicite, qui y
-  // distingue ce qu'on présente (l'exercice, la manipulation…).
-  const label = tone === 'floating' ? t('classroom.enter.floating') : t(`classroom.enter.${scope}`);
+  // Le libellé NOMME la portée — « وضع القسم » pour une séance de leçon, où
+  // qu'on l'ouvre (sommaire ou محور) : c'est le même mode, il doit porter le
+  // même nom. Seuls les boutons d'une portée étroite (exercice, manipulation)
+  // gardent leur libellé explicite, qui distingue ce qu'on présente.
+  //
+  // « عرض » (classroom.enter.floating) n'est plus employé : le bouton
+  // flottant d'un محور ouvre désormais une séance de LEÇON.
+  const label = t(`classroom.enter.${scope}`);
   const Icon = scope === 'lesson' ? GraduationCap : Maximize2;
   const floating = tone === 'floating';
   const look = tone === 'quiet' || floating
@@ -55,7 +59,7 @@ const ClassroomEntryButton = forwardRef(function ClassroomEntryButton({ scope: s
       aria-expanded={false}
       title={t('classroom.enterHint')}
       data-classroom-enter={scope}
-      className={`inline-flex min-h-[44px] items-center gap-2 rounded-xl border-2 px-4 py-2 text-sm font-extrabold shadow-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 ${look} ${place} ${className}`}
+      className={`inline-flex min-h-[44px] shrink-0 items-center gap-2 whitespace-nowrap rounded-xl border-2 px-4 py-2 text-sm font-extrabold shadow-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 ${look} ${place} ${className}`}
     >
       <Icon className="h-5 w-5" aria-hidden="true" />
       {!compact && <span>{label}</span>}

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Check, X, RefreshCw, Play, Puzzle } from 'lucide-react';
 import { formatValue } from '../functionGrapher/grapherFormat.js';
+import { vectorColumnText } from '../vectors/vectorFormat.js';
 import { VERTEX_NAMES } from './transformState.js';
 import { PUZZLES } from './practice.js';
 import { describeStep } from './transformModel.js';
@@ -203,7 +204,7 @@ export default function PracticePanel({
 /** Les paramètres d'un pas, en notation LTR, pour l'énoncé. */
 function describeParams(step) {
   switch (step.kind) {
-    case 'translation': return `(${formatValue(step.vx)} ; ${formatValue(step.vy)})`;
+    case 'translation': return vectorColumnText({ x: step.vx, y: step.vy });
     case 'rotation': return `${formatValue(step.angle, 0)}°`;
     case 'dilation': return `k = ${formatValue(step.k)}`;
     default: return '';

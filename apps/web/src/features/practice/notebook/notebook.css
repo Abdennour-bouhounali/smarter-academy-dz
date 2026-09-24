@@ -571,7 +571,10 @@
 .sa-nb-lesson-trigger {
   position: fixed;
   left: 1.5rem;
-  bottom: 9.5rem;
+  /* L'étage au-dessus de « بطاقتي », qui est au ras du coin (1.5rem). La
+     colonne ne compte plus que deux pastilles depuis que « وضع القسم » est
+     remonté dans la rangée de repères du محور. */
+  bottom: 5.5rem;
   z-index: 40;
   display: inline-flex;
   align-items: center;

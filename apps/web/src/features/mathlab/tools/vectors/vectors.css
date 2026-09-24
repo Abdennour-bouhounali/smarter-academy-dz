@@ -109,7 +109,33 @@
 
 .sa-ml-vec__arrowcoords {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem;
+}
+
+/* ── LE شعاع EN COLONNE, SUR LE PLAN ───────────────────────────────────────
+   VectorColumnSvg dessine un <g> : les deux composantes en <text> et les
+   deux délimiteurs en <path>. Le halo blanc qui détachait l'ancienne ligne
+   de coordonnées du quadrillage est donc porté par les GLYPHES, pas par le
+   groupe — `paint-order: stroke` peint le contour avant le remplissage, de
+   sorte que le trait blanc reste derrière le chiffre. Les délimiteurs
+   prennent la couleur du شعاع par `currentColor` : le groupe la reçoit de
+   l'attribut `fill` posé par VectorArrow. */
+.sa-ml-vec__columnvalue {
+  font-family: 'JetBrains Mono', monospace;
+  fill: currentColor;
+  paint-order: stroke;
+  stroke: #ffffff;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+.sa-ml-vec__columndelim {
+  stroke: currentColor;
+  stroke-linecap: round;
+}
+
+.sa-ml-vec__columnlabel {
+  font-family: 'JetBrains Mono', monospace;
+  fill: currentColor;
   paint-order: stroke;
   stroke: #ffffff;
   stroke-width: 3px;

@@ -48,7 +48,7 @@ function ToolbarButton({ onClick, disabled, children, tone = 'slate', ariaLabel,
  * lui passe l'état et les gestes. `slot` accueille les commandes futures
  * d'un contenu (étapes de révélation, §15) sans qu'on touche à la barre.
  */
-const ClassroomToolbar = forwardRef(function ClassroomToolbar({ title, scope, scale, onScaleStep, slot }, ref) {
+const ClassroomToolbar = forwardRef(function ClassroomToolbar({ title, scope, scale, onScaleStep, slot, onExit }, ref) {
   const { t } = useTranslation('lesson');
   const atMin = scale <= SCALE_STEPS[0];
   const atMax = scale >= SCALE_STEPS[SCALE_STEPS.length - 1];
@@ -89,6 +89,24 @@ const ClassroomToolbar = forwardRef(function ClassroomToolbar({ title, scope, sc
           </ToolbarButton>
         </div>
 
+        {/* « خروج » — EN HAUT, au bout de la barre d'outils. Il était sous
+            « التالي », au bas de l'écran : la main y était déjà pour
+            naviguer, mais il fallait la descendre pour SORTIR, et sur un
+            tableau interactif le bas de l'écran est le plus bas atteignable.
+            Ici il est avec les autres commandes de la SÉANCE (l'échelle),
+            et jamais mêlé aux pas du contenu. Échap reste le raccourci. */}
+        {onExit && (
+          <ToolbarButton
+            onClick={onExit}
+            tone="primary"
+            ariaLabel={t('classroom.exitAria')}
+            title={t('classroom.exitHint')}
+            data-classroom-exit
+          >
+            <Minimize2 className="h-5 w-5" aria-hidden="true" />
+            <span className="hidden sm:inline">{t('classroom.exit')}</span>
+          </ToolbarButton>
+        )}
       </div>
     </div>
   );
@@ -102,8 +120,6 @@ export default ClassroomToolbar;
  *
  *   [◀◀ المحور السابق] [◀ السابق]          [التالي ▶] [المحور التالي ▶▶]
  *          saut de محور   pas d'unité        pas d'unité    saut de محور
- *                                                        [⛶ خروج]
- *                                                     la sortie de séance
  *
  * `onPrevious`/`onNext` avancent d'une UNITÉ (la mission, le laboratoire,
  * une étape…) et franchissent le bord du module quand il n'y a plus d'unité.
@@ -115,16 +131,17 @@ export default ClassroomToolbar;
  * module portent en plus le numéro du محور visé (« المحور 3 ») : on sait où
  * l'on va avant de cliquer.
  *
- * `onExit` pose « خروج » SOUS « التالي », sur sa propre ligne et du même
- * côté : la sortie est au bas de l'écran, là où la main navigue, et non
- * dans un coin flottant. Sa ligne propre évite qu'on la frôle en avançant.
- * ClassroomPresentation rend donc TOUJOURS la barre pendant une séance,
- * même sans voisin à proposer — sinon la sortie disparaîtrait avec elle.
+ * « خروج » n'est PLUS ici : il est remonté dans la BARRE D'OUTILS DU HAUT,
+ * avec les commandes de la séance (l'échelle). Cette barre-ci ne porte donc
+ * que les pas du CONTENU — on ne ferme plus la séance en visant « التالي ».
+ *
+ * Conséquence : la barre du bas peut maintenant être VIDE (une unité seule,
+ * sans voisin). Elle ne porte plus la sortie, donc plus rien n'oblige à la
+ * rendre coûte que coûte.
  */
 export const ClassroomNav = forwardRef(function ClassroomNav({
   onPrevious, onNext, previousLabel, nextLabel,
   onPreviousModule, onNextModule, previousModuleLabel, nextModuleLabel,
-  onExit,
 }, ref) {
   const { t } = useTranslation('lesson');
   return (
@@ -170,25 +187,6 @@ export const ClassroomNav = forwardRef(function ClassroomNav({
         )}
       </div>
 
-      {/* « خروج » — SOUS « التالي », sur sa propre ligne au bas de la barre
-          de navigation. Il ferme la séance, ce n'est pas un pas de plus : il
-          garde donc sa ligne, à l'écart des chevrons, pour qu'on ne le frôle
-          pas en avançant. Échap reste le raccourci clavier. */}
-      {onExit && (
-        <div className="sa-classroom-nav__exit">
-          <ToolbarButton
-            onClick={onExit}
-            tone="primary"
-            ariaLabel={t('classroom.exitAria')}
-            title={t('classroom.exitHint')}
-            className="sa-classroom-nav__exit-button"
-            data-classroom-exit
-          >
-            <Minimize2 className="h-5 w-5" aria-hidden="true" />
-            <span>{t('classroom.exit')}</span>
-          </ToolbarButton>
-        </div>
-      )}
     </div>
   );
 });

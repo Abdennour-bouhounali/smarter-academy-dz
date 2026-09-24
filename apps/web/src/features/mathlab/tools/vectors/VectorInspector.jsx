@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Trash2, Ruler, Compass } from 'lucide-react';
 import * as V from './vectorMath.js';
+import VectorColumn from './VectorColumn.jsx';
 import { formatPair, formatNorm, formatAngle, formatFactor, formatValue, formatSlope } from './vectorFormat.js';
 
 /**
@@ -60,7 +61,7 @@ export default function VectorInspector({
             <dl className="sa-ml-vec__readings">
               <div className="sa-ml-vec__reading">
                 <dt>{t('tools.vectors.components')}</dt>
-                <dd dir="ltr" data-ml-reading="components">{formatPair(reading)}</dd>
+                <dd dir="ltr" data-ml-reading="components"><VectorColumn vector={reading} /></dd>
               </div>
               <div className="sa-ml-vec__reading">
                 <dt>{t('tools.vectors.norm')}</dt>

@@ -170,9 +170,23 @@ scoped to the class's grade and to the lessons **effective** for that class.
 There is no teacher-side progress table. A teacher reads the same numbers the
 student and the admin read (`PROGRESS_MODEL.md`, `LEARNING_ARCHITECTURE.md`).
 
-**The notebook (كرّاسي) is never read.** Not by the teacher, not in the class
-summary, not in the student dossier. `NOTEBOOK.md` states the same rule from
-the notebook's side.
+**The notebook (كرّاسي) is not read _here_.** The class summary and the
+student dossier carry no note, and never will: « where is he? » and « what did
+he write down? » are two questions, two screens, two permissions to evolve
+separately (`ClassroomProgressTest` locks it).
+
+Since 2026-09-24 the teacher **can** read the notebook of a student of their
+class, through a dedicated, read-only surface — not through this one:
+
+```
+GET /teacher/classrooms/{id}/students/{studentId}/notebook[/{noteId}]
+```
+
+read-only, scoped to the class's **effective** lessons, behind `can:teacher` +
+`ClassroomPolicy@view` + membership. A note taken in another grade's lesson, in
+a lesson this teacher hid, or outside any lesson stays private — counters
+included. `NOTEBOOK.md` owns this contract; `TeacherClassroomNotebookTest`
+locks it.
 
 Feature keys `progress.class` and `progress.student` gate the two views;
 `analytics.advanced` and `reports.export` are declared in the registry, used

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useTransformContext, vec } from 'mafs';
 import * as V from './vectorMath.js';
-import { formatPair } from './vectorFormat.js';
+import VectorColumn from './VectorColumnSvg.jsx';
 
 /** La pointe de la flèche, en PIXELS : elle ne grandit pas quand on zoome. */
 const HEAD_LENGTH = 13;
@@ -115,9 +115,13 @@ export default function VectorArrow({
           />
           <text className="sa-ml-vec__arrowlabel" x={midX} y={midY} fill={color} textAnchor="middle">{name}</text>
           {showComponents && (
-            <text className="sa-ml-vec__arrowcoords" x={midX} y={midY + 15} fill={color} textAnchor="middle" direction="ltr">
-              {formatPair(V.fromPoints(from, to))}
-            </text>
+            <VectorColumn
+              className="sa-ml-vec__arrowcoords"
+              vector={V.fromPoints(from, to)}
+              x={midX}
+              y={midY + 20}
+              fontSize={12}
+            />
           )}
         </g>
       )}

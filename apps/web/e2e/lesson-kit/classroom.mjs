@@ -8,7 +8,7 @@
 //      jamais de défilement de page ; pas de bouton mort.
 //   3. UNE SEULE SESSION : la manipulation et l'exercice, dans un module
 //      présenté, sont passe-plat (aucun second plein écran, aucun bouton).
-//   4. MODULE : ⛶ عرض المحور depuis l'en-tête ; unités du module seulement.
+//   4. DEPUIS UN محور : 🎓 وضع القسم (flottant) ouvre une séance de LEÇON.
 //   5. EXERCICE : ⛶ عرض التمرين ; la réponse et la correction survivent.
 //   6. ÉTAT : entrer/sortir ne remonte rien (livres, réponses, unité).
 //   7. NETTOYAGE : quitter la leçon rend html/body et ne laisse rien.
@@ -113,17 +113,18 @@ async function settled(page) {
   check('P : présentateur — 🎓 وضع القسم sur le sommaire', (await page.locator('[data-classroom-enter="lesson"]').count()) === 1
     && (await page.locator('[data-classroom-enter="lesson"]').textContent()).includes('وضع القسم'));
   await page.goto(`${LESSON}/al-maktaba`, { waitUntil: 'networkidle' });
-  check('P : présentateur — ⛶ عرض المحور et ⛶ عرض المناولة sur le module 1', (await page.locator('[data-classroom-enter="module"]').count()) === 1
+  check('P : présentateur — 🎓 وضع القسم et ⛶ عرض المناولة sur le module 1', (await page.locator('[data-classroom-enter="lesson"]').count()) === 1
     && (await page.locator('[data-classroom-enter="manipulation"]').count()) === 1);
-  // Le bouton de module est FLOTTANT (colonne de « كرّاسي » / « بطاقتي ») et
-  // dit « عرض » tout court : dans cette colonne, nommer la portée n'ajoute
-  // rien. Ce que ce test garde, c'est la RÈGLE DE VOCABULAIRE : jamais le mot
-  // « الوحدة » pour un محور (LESSON_DEVELOPMENT_GUIDE §2), et un libellé lisible.
+  // Le bouton d'un محور est FLOTTANT (colonne de « كرّاسي » / « بطاقتي ») et
+  // ouvre une séance de LEÇON : il dit donc « وضع القسم », comme celui du
+  // sommaire — un seul mode, un seul nom, où qu'on l'ouvre. Ce test garde
+  // aussi la RÈGLE DE VOCABULAIRE : jamais le mot « الوحدة » pour un محور
+  // (LESSON_DEVELOPMENT_GUIDE §2).
   {
-    const moduleBtn = page.locator('[data-classroom-enter="module"]');
+    const moduleBtn = page.locator('[data-classroom-enter="lesson"]');
     const text = (await moduleBtn.textContent()).trim();
-    check('P : le bouton de module dit « عرض » et jamais « الوحدة »',
-      (await moduleBtn.count()) === 1 && text === 'عرض' && !text.includes('الوحدة'), text);
+    check('P : le bouton d’un محور dit « وضع القسم » et jamais « الوحدة »',
+      (await moduleBtn.count()) === 1 && text === 'وضع القسم' && !text.includes('الوحدة'), text);
     check('P : ce bouton est flottant, à gauche, avec les autres repères',
       await moduleBtn.evaluate((el) => {
         const cs = getComputedStyle(el);
@@ -313,7 +314,7 @@ async function settled(page) {
 {
   // En portée MODULE (pas de session leçon), aucun saut de محور n'est offert.
   const { ctx, page } = await openAs(`${LESSON}/al-maktaba`);
-  await page.locator('[data-classroom-enter="module"]').click();
+  await page.locator('[data-classroom-enter="lesson"]').click();
   await page.waitForSelector('[data-classroom-active="true"]', { timeout: 5000 });
   await settle(page, 700);
   const f = await fits(page);
@@ -323,7 +324,11 @@ async function settled(page) {
   await ctx.close();
 }
 
-/* ── 3 — MODULE : ⛶ عرض (bouton flottant), unités du module seulement ────── */
+/* ── 3 — DEPUIS UN محور : 🎓 وضع القسم (bouton flottant) ──────────────────
+   Le bouton flottant d'un محور ouvre une séance de LEÇON, pas une séance
+   bornée à ce seul محور : c'est le même mode que depuis le sommaire, donc
+   « التالي » sait aller au محور suivant au lieu de mourir au bout de
+   celui-ci. Seul le point d'entrée diffère. */
 {
   const { ctx, page } = await openAs(`${LESSON}/awazzif`, { completed: ['0', '1', '2'] });
   // LA COLONNE FLOTTANTE, du bas vers le haut : « ⛶ عرض » se pose JUSTE
@@ -332,47 +337,48 @@ async function settled(page) {
   {
     const col = await page.evaluate(() => {
       const box = (sel) => { const e = document.querySelector(sel); if (!e) return null; const b = e.getBoundingClientRect(); return { x: Math.round(b.x), top: Math.round(b.top), bottom: Math.round(b.bottom), gapBottom: Math.round(window.innerHeight - b.bottom) }; };
-      return { enter: box('[data-classroom-enter="module"]'), kmap: box('[data-km-trigger]'), nb: box('.sa-nb-lesson-trigger'), ctrlk: box('#command-palette-trigger') };
+      return { enter: box('[data-classroom-enter="lesson"]'), kmap: box('[data-km-trigger]'), nb: box('.sa-nb-lesson-trigger'), ctrlk: box('#command-palette-trigger') };
     });
-    check('M : « عرض » est SOUS « بطاقتي », qui est sous « كرّاسي » — même bord, aucun recouvrement',
+    check('M : « وضع القسم » est SOUS « بطاقتي », qui est sous « كرّاسي » — même bord, aucun recouvrement',
       col.enter && col.kmap && col.nb
       && col.enter.top >= col.kmap.bottom && col.kmap.top >= col.nb.bottom
       && Math.abs(col.enter.x - col.kmap.x) < 3 && Math.abs(col.kmap.x - col.nb.x) < 3,
       JSON.stringify(col));
     // La pastille est posée DANS L'ANGLE : autant d'écart au bas qu'à gauche.
-    check('M : « عرض » est au ras du coin — écart au bas = écart à gauche',
+    check('M : « وضع القسم » est au ras du coin — écart au bas = écart à gauche',
       col.enter && Math.abs(col.enter.x - col.enter.gapBottom) <= 2, JSON.stringify(col.enter));
     // Le coin ne peut l'être que parce que la pastille « Ctrl+K » a été
     // retirée : sous RTL elle tombait exactement là (`end-6`).
     check('M : plus de pastille « Ctrl+K » pour disputer le coin', col.ctrlk === null);
   }
 
-  await page.locator('[data-classroom-enter="module"]').click();
+  await page.locator('[data-classroom-enter="lesson"]').click();
   await page.waitForSelector('[data-classroom-active="true"]', { timeout: 5000 });
   await settle(page, 800);
   let f = await fits(page);
-  check('M : ⛶ عرض → présentation du module 3, badge « المحور », titre du module', f.active && f.scope === 'module' && f.badge.includes('المحور') && f.title.includes('أوظّف'), JSON.stringify(f));
+  check('M : 🎓 وضع القسم depuis un محور → séance de LEÇON (portée lesson), pas une séance bornée au محور', f.active && f.scope === 'lesson', JSON.stringify(f));
 
-  // « خروج » vit au BAS de l'écran, SOUS « التالي » : dans la barre de
-  // navigation, sur sa propre ligne, aligné sur le même bord que le pas
-  // suivant. On compare les deux rectangles.
+  // « خروج » vit EN HAUT, dans la barre d'outils, avec les commandes de la
+  // séance — plus dans la barre de navigation, qui ne porte que les pas du
+  // contenu. On vérifie qu'il est bien au-dessus d'eux.
   {
-    const exitBtn = page.locator('[data-classroom-nav] [data-classroom-exit]');
+    const exitBtn = page.locator('[data-classroom-toolbar] [data-classroom-exit]');
     const exitBox = await exitBtn.first().boundingBox();
     const nextBox = await page.locator('[data-classroom-nav] [data-classroom-nav-unit="next"]').first().boundingBox();
-    check('M : « خروج » est DANS la barre de navigation', (await exitBtn.count()) === 1);
-    // Sous RTL le bord de FIN est le bord physique GAUCHE : les deux boutons
-    // partagent donc leur `x`, et c'est bien l'alignement attendu.
-    check('M : « خروج » est SOUS « التالي » — plus bas, même bord de fin',
-      exitBox && nextBox && exitBox.y >= nextBox.y + nextBox.height - 2
-      && Math.abs(exitBox.x - nextBox.x) < 2,
+    check('M : « خروج » est DANS la barre d’outils du haut', (await exitBtn.count()) === 1
+      && (await page.locator('[data-classroom-nav] [data-classroom-exit]').count()) === 0);
+    check('M : « خروج » est AU-DESSUS des pas du contenu',
+      exitBox && nextBox && exitBox.y + exitBox.height <= nextBox.y,
       `next=${JSON.stringify(nextBox)} exit=${JSON.stringify(exitBox)}`);
     // Le chrome flottant de la page n'a pas sa place sur un projecteur.
     check('M : « كرّاسي » et « بطاقتي » disparaissent pendant la séance',
       !(await page.locator('.sa-nb-lesson-trigger').first().isVisible().catch(() => false))
       && !(await page.locator('[data-km-trigger]').first().isVisible().catch(() => false)));
   }
-  check('M : unités = المهمة + 3 exercices ; à la 1re unité, pas de السابق (portée module, pas de module voisin)', f.units === '4' && f.current === '0' && !f.prev && f.next, JSON.stringify(f));
+  check('M : unités du محور ouvert = المهمة + 3 exercices, on entre à la première', f.units === '4' && f.current === '0' && f.next, JSON.stringify(f));
+  // LA raison du changement : en portée leçon, la séance connaît ses voisins.
+  check('M : le saut « المحور » est offert — ce qu’une séance de portée module ne donnait pas',
+    f.nextModule !== null || f.prevModule !== null, `${f.prevModule} | ${f.nextModule}`);
   check('M : les boutons ⛶ عرض التمرين des exercices sont ABSENTS pendant la présentation (une seule session)', f.enters === 0);
   await next(page); await settle(page, 600);
   f = await fits(page);
@@ -382,9 +388,9 @@ async function settled(page) {
   check('M : exercice présenté — aucun défilement de page', f.pageX && f.contentX, JSON.stringify(f));
   await next(page); await settle(page, 400); await next(page); await settle(page, 400);
   f = await fits(page);
-  check('M : dernière unité — pas de التالي mort', f.current === '3' && !f.next && f.prev);
+  check('M : dernière unité du محور — التالي ne meurt plus, il mène au محور suivant', f.current === '3' && f.prev);
   await exit(page); await settle(page, 500);
-  check('M : sortie → page normale du module 3', (await page.locator('[data-classroom-active="true"]').count()) === 0 && (await page.locator('[data-classroom-enter="module"]').count()) === 1);
+  check('M : sortie → page normale du محور', (await page.locator('[data-classroom-active="true"]').count()) === 0 && (await page.locator('[data-classroom-enter="lesson"]').count()) === 1);
   await ctx.close();
 }
 
@@ -429,7 +435,7 @@ async function settled(page) {
   await page.keyboard.press('Escape');
   await settle(page, 400);
   check('R : Échap ferme le repli', (await page.locator('[data-classroom-active="true"]').count()) === 0 && (await page.evaluate(() => document.body.style.overflow)) === '');
-  await page.locator('[data-classroom-enter="module"]').click();
+  await page.locator('[data-classroom-enter="lesson"]').click();
   await settle(page, 400);
   await page.evaluate(() => { window.history.pushState({}, '', '/courses'); window.dispatchEvent(new PopStateEvent('popstate')); });
   await settle(page, 700);
@@ -441,7 +447,7 @@ async function settled(page) {
 /* ── 6 — TAILLES : 1024×768 et 390×844, unité de module ───────────────────── */
 for (const vp of [{ width: 1024, height: 768 }, { width: 390, height: 844 }]) {
   const { ctx, page } = await openAs(`${LESSON}/al-maktaba`, { viewport: vp, mobile: vp.width < 500 });
-  await page.locator('[data-classroom-enter="module"]').click();
+  await page.locator('[data-classroom-enter="lesson"]').click();
   await page.waitForSelector('[data-classroom-active="true"]', { timeout: 5000 });
   await settle(page, 900);
   let f = await fits(page);

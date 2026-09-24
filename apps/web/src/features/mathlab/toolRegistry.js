@@ -1,4 +1,3 @@
-import { Scale } from 'lucide-react';
 import { whiteboardTool } from './tools/whiteboard/index.js';
 import { functionGrapherTool } from './tools/functionGrapher/index.js';
 import { geometry3dTool } from './tools/geometry3d/index.js';
@@ -12,6 +11,7 @@ import { conicsTool } from './tools/conics/index.js';
 import { numberLabTool } from './tools/numberLab/index.js';
 import { analysisTool } from './tools/analysis/index.js';
 import { logicTool } from './tools/logic/index.js';
+import { measurementTool } from './tools/measurement/index.js';
 
 /**
  * Le REGISTRE des instruments du مختبر الرياضيات (Math Lab).
@@ -40,6 +40,7 @@ export const MATH_LAB_TOOLS = Object.freeze([
   numberLabTool,
   analysisTool,
   logicTool,
+  measurementTool,
 ]);
 
 /**
@@ -48,9 +49,7 @@ export const MATH_LAB_TOOLS = Object.freeze([
  * désactivés, marqués « قريبًا », comme le catalogue montre une leçon à venir.
  * Un instrument passe d'ici à MATH_LAB_TOOLS le jour où il existe.
  */
-export const PLANNED_MATH_LAB_TOOLS = Object.freeze([
-  { id: 'measurement', labelKey: 'tools.measurement.name', icon: Scale },
-]);
+export const PLANNED_MATH_LAB_TOOLS = Object.freeze([]);
 
 /** @returns {import('./toolContract.js').MathLabTool | null} */
 export function getMathLabTool(id) {

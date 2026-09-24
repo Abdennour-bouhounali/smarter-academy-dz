@@ -139,7 +139,11 @@ class TeacherLearningAccessTest extends TestCase
         $this->withToken($this->tokenOf($other))->getJson('/api/v1/practice/notes')->assertOk()->assertJsonCount(0, 'notes');
         $this->withToken($this->tokenOf($student))->getJson("/api/v1/practice/notes/{$created['id']}")->assertStatus(404);
 
-        // Et l'enseignant ne voit pas la note d'un élève.
+        // Et l'enseignant ne voit pas la note d'un élève PAR CETTE PORTE.
+        // Depuis le 2026-09-24 il peut lire le cahier d'un élève de SA classe,
+        // mais par une route dédiée, en lecture seule et bornée aux leçons du
+        // قسم (TeacherClassroomNotebookTest) : /practice/notes reste le cahier
+        // du compte authentifié, et rien d'autre.
         $studentNote = NotebookNote::create(['user_id' => $student->id, 'content' => 'ملاحظة تلميذ', 'content_text' => 'ملاحظة تلميذ', 'note_type' => 'note']);
         $this->withToken($token)->getJson("/api/v1/practice/notes/{$studentNote->id}")->assertStatus(404);
         $this->withToken($token)->patchJson("/api/v1/practice/notes/{$studentNote->id}", ['content' => 'x'])->assertStatus(404);

@@ -4,6 +4,7 @@ import {
 } from 'lucide-react';
 import { EXPERIMENTS } from './experiments.js';
 import { ANALYSIS_KINDS } from './vectorState.js';
+import VectorColumn from './VectorColumn.jsx';
 import { formatValue } from './vectorFormat.js';
 
 /**
@@ -116,7 +117,7 @@ export default function VectorControls({
         {explorer && explorerVector ? (
           <div className="sa-ml-vec__explorer" data-ml-explorer>
             <p className="sa-ml-vec__explorerformula" dir="ltr">
-              {`${explorerVector.name} = (${formatValue(explorerVector.components.x, 1)} ; ${formatValue(explorerVector.components.y, 1)})`}
+              <VectorColumn vector={explorerVector.components} decimals={1} name={explorerVector.name} />
             </p>
             <ComponentSlider
               axis="x"

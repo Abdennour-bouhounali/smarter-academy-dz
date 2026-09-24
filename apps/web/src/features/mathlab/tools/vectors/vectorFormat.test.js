@@ -1,10 +1,13 @@
 import { describe, it, expect } from 'vitest';
-import { formatPair, formatNorm, formatAngle, formatFactor, formatSlope } from './vectorFormat.js';
+import {
+  formatPair, formatNorm, formatAngle, formatFactor, formatSlope,
+  vectorComponents, vectorColumnLatex,
+} from './vectorFormat.js';
 import { exactNorm, slope } from './vectorMath.js';
 
 const P = (x, y) => ({ x, y });
 
-describe('écriture d’un couple', () => {
+describe('écriture d’un POINT — un couple sur une ligne', () => {
   it('écrit (3 ; −2) avec un vrai signe moins et une virgule décimale', () => {
     expect(formatPair(P(3, -2))).toBe('(3 ; −2)');
     expect(formatPair(P(1.5, 0))).toBe('(1,5 ; 0)');
@@ -85,5 +88,44 @@ describe('écriture de la pente (§20)', () => {
 
   it('distingue « pas de droite » de « verticale »', () => {
     expect(formatSlope(slope(P(1, 1), P(1, 1))).kind).toBe('undefined');
+  });
+});
+
+// ── LE شعاع S'ÉCRIT EN COLONNE, LE POINT SUR UNE LIGNE ────────────────────
+// La distinction est le contrat : `formatPair` sert les POINTS (A(3 ; −2)),
+// `vectorColumnLatex` sert les شعاع. Changer l'un ne doit jamais changer
+// l'autre — c'est ce que ce bloc verrouille.
+describe('écriture d’un شعاع — en COLONNE', () => {
+  it('donne les deux composantes formatées, dans l’ordre x puis y', () => {
+    expect(vectorComponents(P(3, -2))).toEqual({ x: '3', y: '−2' });
+    expect(vectorComponents(P(1.5, 0))).toEqual({ x: '1,5', y: '0' });
+  });
+
+  it('n’invente rien pour un شعاع non résolu', () => {
+    expect(vectorComponents(null)).toBeNull();
+    expect(vectorComponents(P(Number.NaN, 1))).toBeNull();
+    expect(vectorColumnLatex(null)).toBeNull();
+  });
+
+  it('rend un \\binom : UNE paire de délimiteurs pour les DEUX composantes', () => {
+    expect(vectorColumnLatex(P(3, -2))).toBe('\\binom{3}{-2}');
+  });
+
+  it('n’écrit JAMAIS un شعاع comme un couple sur une ligne', () => {
+    const latex = vectorColumnLatex(P(3, -2));
+    expect(latex).not.toContain(' ; ');
+    expect(latex).not.toContain(', ');
+  });
+
+  it('donne à KaTeX un moins qu’il sait lire, et protège la virgule décimale', () => {
+    // formatValue rend « −2 » (U+2212) et « 1,5 » : tels quels, KaTeX
+    // afficherait mal le premier et espacerait le second.
+    expect(vectorColumnLatex(P(-2, 1.5))).toBe('\\binom{-2}{1{,}5}');
+    expect(vectorColumnLatex(P(-2, 1.5))).not.toContain('−');
+  });
+
+  it('le POINT garde son écriture en ligne — les deux ne bougent pas ensemble', () => {
+    expect(formatPair(P(3, -2))).toBe('(3 ; −2)');
+    expect(vectorColumnLatex(P(3, -2))).toBe('\\binom{3}{-2}');
   });
 });

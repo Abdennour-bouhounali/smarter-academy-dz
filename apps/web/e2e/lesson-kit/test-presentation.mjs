@@ -59,7 +59,7 @@ const prevQ = (page) => active(page).locator('[data-classroom-nav] [data-classro
 
 /** Entrer en présentation depuis le bouton flottant du module. */
 async function present(page) {
-  await page.locator('[data-classroom-enter="module"]').first().click();
+  await page.locator('[data-classroom-enter="lesson"]').first().click();
   await page.waitForSelector('[data-test-presentation]', { timeout: 10000 });
   await page.waitForTimeout(500);
 }

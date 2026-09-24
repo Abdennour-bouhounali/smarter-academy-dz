@@ -224,9 +224,9 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
     && await page.evaluate(() => document.fullscreenElement?.getAttribute('data-classroom-scope') === 'manipulation'));
   check('C1 : la barre d’outils est là — titre, échelle', (await root.locator('[data-classroom-toolbar]').count()) === 1
     && (await root.getByRole('button', { name: 'تكبير العرض' }).count()) === 1);
-  // La SORTIE vit désormais en bas, dans la barre de navigation : celle-ci
-  // est donc rendue même pour une manipulation seule, mais SANS pas mort.
-  check('C1 : « خروج » est en bas, dans la barre de navigation', (await root.locator('[data-classroom-nav] [data-classroom-exit]').count()) === 1
+  // La SORTIE vit désormais EN HAUT, dans la barre d'outils, avec les
+  // commandes de la séance : la barre du bas ne porte que les pas du contenu.
+  check('C1 : « خروج » est en haut, dans la barre d’outils', (await root.locator('[data-classroom-toolbar] [data-classroom-exit]').count()) === 1
     && (await root.getByRole('button', { name: 'الخروج من وضع القسم' }).count()) === 1);
   check('C1 : pas de navigation السابق/التالي pour une manipulation seule (aucun bouton mort)',
     (await root.locator('[data-classroom-nav] [data-classroom-nav-unit]').count()) === 0

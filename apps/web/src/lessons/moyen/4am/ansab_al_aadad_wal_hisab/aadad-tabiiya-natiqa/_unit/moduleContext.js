@@ -1,4 +1,4 @@
-import { LEVEL_LABEL, GRADE_LABEL, LEVEL_ID, GRADE_ID } from './unitMeta';
+import { LEVEL_LABEL, GRADE_LABEL, LEVEL_ID, GRADE_ID, UNIT_ID, UNIT_TITLE, CHAPTER_ID } from './unitMeta';
 
 /** Le MODULE_CTX et getNavLinks d'une leçon, construits depuis son LESSON_CONFIG. */
 export function buildModuleContext(LESSON_CONFIG, LESSON_BASE_PATH) {
@@ -8,6 +8,13 @@ export function buildModuleContext(LESSON_CONFIG, LESSON_BASE_PATH) {
     courseTitle: LESSON_CONFIG.title,
     chapter: LESSON_CONFIG.chapter,
     chapterTitle: LESSON_CONFIG.chapterTitle,
+    // L'الوحدة du manuel — le GROUPE DE LEÇONS auquel celle-ci appartient,
+    // à ne pas confondre avec le المجال (domaine) ni avec un المحور
+    // (LESSON_DEVELOPMENT_GUIDE §2). Le fil d'Ariane d'un محور la nomme :
+    // « الوحدة / الدرس / المحور ».
+    unitId: UNIT_ID,
+    unitTitle: UNIT_TITLE,
+    unitPath: `/courses/${LEVEL_ID}/${GRADE_ID}/${CHAPTER_ID}/units/${UNIT_ID}`,
     levelLabel: LEVEL_LABEL,
     gradeLabel: GRADE_LABEL,
     levelId: LEVEL_ID,

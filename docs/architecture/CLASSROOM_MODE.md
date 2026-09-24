@@ -63,6 +63,18 @@ lives in `lessons/**`, `features/practice/**` and `pages/**`, and only *reads* t
 the list of roles is `CLASSROOM_PRESENTER_ROLES`. **Nothing anywhere names a role**: entry buttons,
 shells and tests all ask that one function. Changing who may present is editing that one array.
 
+> **Not to be confused with the Math Lab's fullscreen.** Since 2026-09-24 an
+> instrument opened over a lesson has its own fullscreen button, available to
+> **students and teachers alike, with no permission at all** (`MATH_LAB.md`
+> §6a). It reuses `useFullscreen` — a *hook* carries no permission — but
+> nothing in `features/mathlab/overlay/` imports `canPresentClassroom`.
+> Giving an instrument room is not presenting to a class.
+>
+> The Math Lab pill is **rendered by this shell** during a session: it goes
+> into `ClassroomToolbar`'s `slot`, beside whatever the presented page put
+> there, because the module's marker row is not rendered while presenting.
+> The personal floating pills (« كرّاسي », « بطاقتي ») still disappear.
+
 `presenter={true|false}` on `ClassroomPresentation` overrides the account (fixtures, tests);
 `LessonClassroomShell` does not expose it. The permission gates Classroom Mode only — it grants no
 other teacher or admin capability, and it never changes what is written to a student's progress.
@@ -129,18 +141,30 @@ roadmap — not the student page with its progress widget, mastery dots and brea
 
 `routeScope` keeps the session while the URL stays inside the lesson, and ends it on the way out.
 
-### Module — ⛶ عرض
+### From a محور — 🎓 وضع القسم (was ⛶ عرض, module scope)
 
-Entry: a **floating button, bottom-left** (`tone="floating"` on
-`ClassroomEntryButton`, class `.sa-classroom-fab`), at the **bottom of the
-lesson's floating column** — it sits *under* the knowledge map, in the corner
-itself. The stack, ground up:
+Entry: **the محور's marker row**, beside « 🧪 المختبر » (and the XP counter),
+`tone="quiet"`. Since 2026-09-24 it opens a **lesson-scope** session, exactly
+like the one from the lesson index — so `التالي` walks محور → محور from inside
+any محور. It is therefore labelled « وضع القسم » too: one mode, one name,
+wherever it is opened. `classroom.enter.floating` (« عرض ») is gone.
+
+Why it changed: a module-scope session sets `session.scope = 'module'`, and
+`lessonNav` is `null` outside lesson scope — so `التالي` died at the end of
+the محور and the teacher had to *leave the session* to reach the next one. The
+shell answering inside a محور is already `LessonClassroomShell` (mounted above
+every module route), so it was enough to tell it the right scope.
+
+**The floating column is now two pills**, both at the corner:
 
 | `bottom` | button |
 | --- | --- |
-| `1.5rem` | « ⛶ عرض » (`.sa-classroom-fab`) |
-| `5.5rem` | « 🧠 بطاقتي » (`KnowledgeMap`) |
-| `9.5rem` | « 📓 كرّاسي » (`LessonNotebookAnchor`) |
+| `1.5rem` | « 🧠 بطاقتي » (`KnowledgeMap`) — same gap as `left`, in the angle |
+| `5.5rem` | « 📓 كرّاسي » (`LessonNotebookAnchor`) |
+
+Both presentation entry and the Math Lab left this column for the marker row:
+it is `sticky` (always reachable without scrolling) and **in the flow**, so it
+never covers the lesson — which a growing stack of floating pills did.
 
 « عرض » is set **in the angle**: its gap to the bottom (`1.5rem`) equals its
 gap to the left, so the pill reads as anchored to the corner rather than
@@ -163,14 +187,16 @@ labels, where the word distinguishes *which* object is being presented. The
 `aria-label` stays descriptive for screen readers, and on phones the label is
 hidden so three buttons do not eat the page.
 
-**Leaving happens at the bottom of the screen, under « التالي ».** During a
-session « ⛶ خروج » is rendered by `ClassroomNav`, on **its own line** at the
-foot of the bottom navigation bar, aligned to the same end edge as the
-« التالي » step (under RTL that end edge is the physical *left*, so the two
-buttons share their `x`). A `margin-top` keeps clear space above it: closing
-the session is not one more step forward, and the teacher should not brush it
-while advancing. The hand is already at the bottom of the screen to navigate,
-so it never travels to the top of a projected display. Escape still works.
+**Leaving happens at the top, in the toolbar.** « ⛶ خروج » is rendered by
+`ClassroomToolbar`, at its end edge, with the session's other controls (the
+scale). It used to sit under « التالي » at the foot of the nav bar; it moved up
+so that the bar below carries **only the steps of the content** — one never
+closes a session while aiming for « التالي », and on an interactive board the
+bottom of the screen is the hardest place to reach. Escape still works.
+
+Consequence: the bottom bar may now be empty (a manipulation presented alone,
+no step, no neighbour). It no longer carries the exit, so nothing forces it to
+render.
 
 Because the exit now lives there, `ClassroomPresentation` renders the nav bar
 for **every** active session, even one with no neighbour to offer — otherwise

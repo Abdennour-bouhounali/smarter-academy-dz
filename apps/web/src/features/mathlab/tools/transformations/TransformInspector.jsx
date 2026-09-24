@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Check, X, Minus } from 'lucide-react';
 import { formatValue } from '../functionGrapher/grapherFormat.js';
+import VectorColumn from '../vectors/VectorColumn.jsx';
 import * as M from './transformMath.js';
 import { VERTEX_NAMES } from './transformState.js';
 import { analyzeInvariants, coordinateFormula, cumulativeMatrix } from './transformModel.js';
@@ -171,7 +172,7 @@ export default function TransformInspector({ figures, steps, settings, activeSte
             <div className="sa-ml-tr__fact">
               <dt dir="ltr">{`${VERTEX_NAMES[0]}${VERTEX_NAMES[0]}′`}</dt>
               <dd dir="ltr" data-ml-displacement>
-                {`(${formatValue(image[0].x - source[0].x)} ; ${formatValue(image[0].y - source[0].y)})`}
+                <VectorColumn vector={{ x: image[0].x - source[0].x, y: image[0].y - source[0].y }} />
               </dd>
             </div>
             <div className="sa-ml-tr__fact">
@@ -213,7 +214,8 @@ export default function TransformInspector({ figures, steps, settings, activeSte
             <span className="sa-ml-tr__bracket" aria-hidden="true">)</span>
           </div>
           <p className="sa-ml-tr__matrixnote" dir="ltr">
-            {`+ (${formatValue(matrix.e)} ; ${formatValue(matrix.f)})`}
+            {'+ '}
+            <VectorColumn vector={{ x: matrix.e, y: matrix.f }} />
           </p>
           <p className="sa-ml-tr__matrixdet">
             {t('tools.transformations.inspector.determinant')}

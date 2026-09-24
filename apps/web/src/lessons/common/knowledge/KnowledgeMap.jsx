@@ -1196,13 +1196,12 @@ export function KnowledgeMapTrigger({ items = [], open: openProp, onOpenChange, 
           // la droite, et le panneau s'ouvrant à gauche, le déclencheur le
           // recouvrirait s'il n'était pas décalé vers le bas.
           //
-          // HAUTEUR : 5.5rem, en valeur ARBITRAIRE — l'échelle Tailwind par
-          // défaut n'a pas de `bottom-22`, et une classe inexistante ne pose
-          // silencieusement aucune règle. L'étage du dessous appartient au
-          // déclencheur « ⛶ عرض » du mode classe, posé au ras du coin
-          // (1.5rem), qui doit se trouver SOUS la carte. La pile complète
-          // est documentée dans classroom.css.
-          'fixed bottom-[5.5rem] left-6 z-40',
+          // HAUTEUR : au RAS DU COIN (bottom-6 = 1.5rem), autant d'écart au
+          // bas qu'à gauche (left-6). L'étage du dessous était occupé par le
+          // déclencheur « ⛶ عرض » du mode classe ; celui-ci est remonté dans
+          // la rangée de repères du محور, et la carte a pris sa place. La
+          // pile complète est documentée dans classroom.css.
+          'fixed bottom-6 left-6 z-40',
           'flex items-center gap-2 px-4 py-3 rounded-2xl',
           'font-bold text-sm shadow-lg shadow-slate-900/20',
           'transition-colors duration-200',

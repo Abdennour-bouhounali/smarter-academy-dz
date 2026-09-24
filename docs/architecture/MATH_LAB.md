@@ -9,7 +9,8 @@
 > recurrences lab (مختبر المتتاليات) V1, the conic sections & analytic
 > geometry lab (مختبر المقاطع المخروطية) V1, the logic & proof lab
 > (مختبر المنطق والبرهان) V1 — including the proposition staircase for induction
-> proofs over recurrent and auxiliary sequences (§5n.6ter) — and the
+> proofs over recurrent and auxiliary sequences (§5n.6ter) — the measurement
+> & rule-discovery lab (مختبر القياس) V1 (§5o) — and the
 > lesson-integration point. The code is the source of truth; anything marked
 > `Planned` is not built.
 
@@ -24,7 +25,7 @@ without any of the lesson engine: no modules, no progression, no mastery.
 
 | Built today | Announced, not built |
 |---|---|
-| **السبّورة** (whiteboard) — `whiteboard` · **راسم الدوال** (function grapher, with the optional « المماس » tangent/derivative mode) — `functionGrapher` · **الهندسة ثلاثية الأبعاد** (3D geometry explorer) — `geometry3d` · **الاحتمالات والإحصاء** (probability & statistics lab) — `probabilityStats` · **مختبر الجبر** (algebra & equation lab, equations *and* inequalities) — `algebra` · **مختبر الأشعة** (vectors & coordinate geometry lab) — `vectors` · **مختبر المثلثات** (trigonometry & unit circle lab) — `trigonometry` · **مختبر المتتاليات** (sequences & recurrences lab) — `sequences` · **مختبر التحويلات** (transformations & dynamic geometry lab) — `transformations` · **مختبر المقاطع المخروطية** (conic sections & analytic geometry lab) — `conics` · **مختبر الأعداد والحساب** (number & arithmetic lab) — `numberLab` · **مختبر التحليل والدوال** (analysis & calculus lab) — `analysis` · **مختبر المنطق والبرهان** (logic & proof lab) — `logic` | measurement |
+| **السبّورة** (whiteboard) — `whiteboard` · **راسم الدوال** (function grapher, with the optional « المماس » tangent/derivative mode) — `functionGrapher` · **الهندسة ثلاثية الأبعاد** (3D geometry explorer) — `geometry3d` · **الاحتمالات والإحصاء** (probability & statistics lab) — `probabilityStats` · **مختبر الجبر** (algebra & equation lab, equations *and* inequalities) — `algebra` · **مختبر الأشعة** (vectors & coordinate geometry lab) — `vectors` · **مختبر المثلثات** (trigonometry & unit circle lab) — `trigonometry` · **مختبر المتتاليات** (sequences & recurrences lab) — `sequences` · **مختبر التحويلات** (transformations & dynamic geometry lab) — `transformations` · **مختبر المقاطع المخروطية** (conic sections & analytic geometry lab) — `conics` · **مختبر الأعداد والحساب** (number & arithmetic lab) — `numberLab` · **مختبر التحليل والدوال** (analysis & calculus lab) — `analysis` · **مختبر المنطق والبرهان** (logic & proof lab) — `logic` · **مختبر القياس** (measurement & rule discovery lab) — `measurement` | *(none)* |
 
 The two announced chips « الإحصاء » and « الاحتمالات » were retired together
 when `probabilityStats` shipped: one instrument delivers both, because the
@@ -59,12 +60,14 @@ That tool is now built, and the promised line is one of its thirteen modes
 (§5l.5): a whole instrument for a single line would have kept the promise
 too small. `algebra/NumberLine.jsx` stays where it is, reading inequalities.
 
-« القياس » (`measurement`) stays announced: measuring magnitudes is a
-different instrument, not a mode of the number lab (§5l.1).
+« القياس » (`measurement`) was the last announced instrument, and it is now
+built (§5o): measuring magnitudes is indeed a different instrument, not a
+mode of the number lab (§5l.1). `PLANNED_MATH_LAB_TOOLS` is therefore
+**empty** — every instrument the home page ever announced exists.
 
-The announced instruments exist only as a name and an icon in
-`PLANNED_MATH_LAB_TOOLS`, rendered as disabled « قريبًا » chips on the home
-page. They have no route, no component, no placeholder screen.
+Should the list fill again, an announced instrument exists only as a name
+and an icon in `PLANNED_MATH_LAB_TOOLS`, rendered as a disabled « قريبًا »
+chip on the home page: no route, no component, no placeholder screen.
 
 ## 2. Information architecture and routes
 
@@ -74,7 +77,7 @@ allowedRoles={['student']}`), French route slugs like the rest of `/espace`:
 | Route | Page | Role |
 |---|---|---|
 | `/espace/atelier` | `MathLabHome` | the instruments, the announced ones, and « أعمالي » — the personal **workspace** (§5i) |
-| `/espace/atelier/:toolSlug` | `MathLabToolPage` | a **new** document in that instrument (`tableau`, `grapheur`, `geometrie-3d`, `probabilites-statistiques`, `algebre`, `vecteurs`, `trigonometrie`, `suites`, `transformations`, `coniques`, `nombres`, `logique`) |
+| `/espace/atelier/:toolSlug` | `MathLabToolPage` | a **new** document in that instrument (`tableau`, `grapheur`, `geometrie-3d`, `probabilites-statistiques`, `algebre`, `vecteurs`, `trigonometrie`, `suites`, `transformations`, `coniques`, `nombres`, `logique`, `mesure`) |
 | `/espace/atelier/:toolSlug/:documentId` | `MathLabToolPage` | a saved document |
 
 `toolSlug` is resolved against the registry (`getMathLabToolBySlug`); an
@@ -173,6 +176,13 @@ features/mathlab/
                            inductionStep.js (l'hérédité : des maillons VÉRIFIÉS, pas un prouveur) ·
                            inductionExercises.js (les exercices du BAC, vérifiés par les tests) ·
                            DictionaryPanel.jsx · PracticePanel.jsx · logic.css
+    └── measurement/    index.js (definition) · MeasurementTool.jsx · measureMath.js (la mesure : aires, angles,
+                           volumes, conversions, secteurs) · ruleEngine.js (la RÈGLE de l'élève : un arbre, jamais
+                           une chaîne — et le CONTRE-EXEMPLE) · investigations.js (le catalogue DÉCLARATIF des dix
+                           enquêtes, et le secret qu'elles gardent) · measureState.js (dix enquêtes, chacune son
+                           objet et sa table ; la porte de la preuve) · summarize.js ·
+                           MeasureStage.jsx (les scènes DESSINÉES : rectangle, triangle, cercle, pavé, carré unité) ·
+                           ObservationTable.jsx · RuleBuilder.jsx · DiscoveryPanel.jsx · measurement.css
     └── probabilityStats/  index.js (definition) · ProbabilityStatsTool.jsx · probabilityState.js · experiments.js ·
                            simulationEngine.js · datasetStatistics.js · ExperimentControls.jsx · DatasetEditor.jsx ·
                            StatisticsSummary.jsx · TheoreticalComparison.jsx · FrequencyBars.jsx · ConvergenceChart.jsx ·
@@ -252,7 +262,7 @@ One table for every instrument — `math_lab_documents`:
 | `title` | ≤ 160 chars, whitespace-normalised, `بدون عنوان` if empty |
 | `schema_version` | the tool's format version, stored, never interpreted |
 | `data` (json) | the tool's serialised state — **opaque to the server** |
-| `data_bytes` | measured on every write; refused above `MathLabTools::maxBytes` (whiteboard: 2 MB, function grapher: 100 KB, 3D geometry: 20 KB, probability & statistics: 60 KB, algebra: 20 KB, vectors: 120 KB — `MAX_HISTORY × scene`, §5f.5 — trigonometry: 8 KB, §5g.8 — sequences: 8 KB, §5h.8 — transformations: 60 KB, §5j.9 — conics: 60 KB, §5k.9 — numberLab: 20 KB, §5l.10 — analysis: 8 KB, §5m.7 — logic: 8 KB, §5n.10) |
+| `data_bytes` | measured on every write; refused above `MathLabTools::maxBytes` (whiteboard: 2 MB, function grapher: 100 KB, 3D geometry: 20 KB, probability & statistics: 60 KB, algebra: 20 KB, vectors: 120 KB — `MAX_HISTORY × scene`, §5f.5 — trigonometry: 8 KB, §5g.8 — sequences: 8 KB, §5h.8 — transformations: 60 KB, §5j.9 — conics: 60 KB, §5k.9 — numberLab: 20 KB, §5l.10 — analysis: 8 KB, §5m.7 — logic: 8 KB, §5n.10 — measurement: 40 KB, §5o.8) |
 | `summary` (json, nullable) | the **tool's own summary** of `data` (§5i.2), sent with every save, returned **in the list**. Opaque to the server like `data`; above `MathLabDocumentService::MAX_SUMMARY_BYTES` (2 KB) it is stored as `null` rather than refusing the save — a thumbnail never costs a student their work. `null` on every document written before this column existed. |
 | `is_favorite` (bool) | the student's star (§5i.5). `false` by default, so no existing row is invalidated. |
 
@@ -1367,6 +1377,46 @@ against the product of the norms, i.e. bounding |sin θ| / |cos θ|). An absolut
 test lies twice: it calls huge collinear أشعة non-parallel, and tiny
 non-collinear ones parallel.
 
+### 5f.7bis A شعاع is written in a COLUMN — a point is not
+
+Since 2026-09-24 the components of a شعاع are written vertically, with one
+pair of delimiters spanning both:
+
+```
+        ⎛  3 ⎞                     A(3 ; −2)
+    u = ⎝ −2 ⎠                     ← a POINT keeps its row
+```
+
+The column says what the row hides: the first component belongs to the
+abscissa axis, the second to the ordinate, and a sum of two أشعة is obtained
+by adding **line against line**. It is the same writing that becomes a column
+matrix at lycée.
+
+**`formatPair` is the POINT's writing and keeps `(x ; y)`.** It was shared by
+both — its own comment said « pour des composantes comme pour un point » —
+so it could not simply be changed: that would have turned every point into a
+column too. The vector writing is a separate pair of functions.
+
+| Where | What renders it |
+|---|---|
+| HTML (inspector, explorer formula, transformations panel) | `VectorColumn.jsx` → KaTeX `\binom` |
+| Inside the SVG plane (components beside an arrow) | `VectorColumnSvg.jsx` — two `<text>` + two `<path>` delimiters drawn across both lines |
+| A bare string (a step's one-line summary, an exercise statement) | `vectorColumnText()` → `⎡3⎤⎣−2⎦` |
+
+Three renderers, **one** source of truth: `vectorComponents()` formats the two
+numbers, and everything else is presentation. KaTeX is reached directly
+(`InlineMath`) rather than through `MathText`, which takes a *string* to split
+on `$…$` — here the LaTeX is produced, not parsed. No second maths renderer
+was introduced: KaTeX is already the platform's (`MathText.jsx`).
+
+Two details KaTeX forces: the true minus (U+2212) from `formatValue` is
+handed over as `-`, and the decimal comma is braced (`1{,}5`) or KaTeX would
+treat it as a separator and open a gap.
+
+The same rule applies in the **transformations** lab, where a translation
+vector, the displacement AA′ and the affine part of the matrix are أشعة —
+while the points (A, A′, the answer choices) keep their row.
+
 ### 5f.8 Touch (§34)
 
 A handle is a **visible** disc of 5–7 px inside an **invisible** hit circle of
@@ -2451,9 +2501,10 @@ It takes the slot the home page announced as « المستقيم المدرّج 
 mode among thirteen** — a whole instrument for a single line would have kept
 the promise too small. `toolRegistry.test.js` records that decision.
 
-« القياس » (`measurement`) **stays announced**: measuring magnitudes
-(lengths, areas, volumes, unit conversion) is a different instrument, not a
-mode of this one.
+« القياس » (`measurement`) is a **different instrument**, not a mode of this
+one: measuring magnitudes (lengths, areas, volumes, unit conversion) to
+**discover the rules that govern them** is its own subject, and it is built
+as such (§5o).
 
 ### 5l.2 Thirteen modes, one laboratory
 
@@ -3602,11 +3653,315 @@ place les runs neutres correctement tout seul.
 Ces deux-là rappellent la règle de §5l : **regarder les captures**. Une suite
 verte ne dit pas qu'un instrument enseigne la bonne chose.
 
-## 6. From a lesson — integration point only (`openMathLab.js`)
+## 5o. مختبر القياس — Measurement & Rule Discovery Lab V1
+
+> **Authoritative** for the measurement lab: the discovery engine, the
+> investigation catalogue, the rule builder, the evidence gate and the
+> drawn scenes. Code is the source of truth.
+
+The fourteenth instrument, and the only one whose subject is **where a
+formula comes from**. It is not a calculator of areas: nothing in it
+computes a result *for* the student. It hands them an object they can pull
+about, a grid they can count, and a table that fills up — and then it keeps
+quiet. The formula is something the student **builds**, tests, and is asked
+to justify.
+
+The pedagogical loop, which the code enforces stage by stage:
+
+> **قِس → قارن → ابحث عن العلاقة → صُغ القاعدة → اختبر → عمّم**
+
+### 5o.1 Ten investigations, one workshop
+
+`investigations.js` is a **declarative catalogue**, not ten screens. An
+investigation is data: the object and its handles, the quantities that can
+be measured on it, the quantity being hunted, three hints, and the relation
+the instrument will recognise once the student builds it.
+
+| id | scene | what is hunted |
+|---|---|---|
+| `rectangle-area` | rectangle | the count of unit squares |
+| `rectangle-perimeter` | rectangle | the length of the boundary |
+| `triangle-area` | triangle | the area, against base and height |
+| `circle-circumference` | circle | C, against d — and the constant C ÷ d |
+| `circle-area` | circle | A, against r — via the sector fan |
+| `cube-volume` | cuboid | the count of unit cubes |
+| `cuboid-volume` | cuboid | one layer × the number of layers |
+| `unit-conversion` | segment | how many small squares pave the large one |
+| `pythagoras` | triangle | the three squares built on the sides |
+| `triangle-angle-sum` | triangle | the sum of the three angles |
+
+Adding an eleventh investigation on an existing scene is **one entry in the
+catalogue** — no component, no route, no persistence change. Only a genuinely
+new shape needs a drawing in `MeasureStage.jsx`.
+
+Each investigation keeps **its own** object and **its own** table
+(`measureState.js`), like the thirteen modes of the numbers lab (§5l): a
+student who fills in the rectangle's table, goes to look at a circle and
+comes back finds their four rows where they left them.
+
+### 5o.2 The secret is a contract, not an intention
+
+§23 of the brief — *never reveal the formula first* — is enforced in three
+places rather than trusted to good manners:
+
+- the i18n strings name **what is sought**, never what is found
+  (« كم مربّعًا صغيرًا يملأ هذا المستطيل؟ », not « المساحة = الطول × العرض »);
+- `investigationSecretKeys()` lists the fields the interface may not read
+  before the discovery stage, and `investigations.test.js` fails if a
+  visible label carries a formula;
+- `mathlab-measurement.mjs` greps the **rendered DOM** at open for eleven
+  spellings of the answers (`L × l`, `πr`, `a² + b²`, …) and fails on any
+  hit.
+
+π is offered as a token in the rule builder **only** on the two circle
+investigations. Anywhere else it would be a hint.
+
+### 5o.3 A wrong rule is worth more than a verdict
+
+`ruleEngine.js` never answers "false". It answers with a **counterexample**:
+the row where the student's rule departs furthest from the measurement,
+with both numbers side by side.
+
+```
+انظر إلى هذا القياس
+L = 7   l = 4
+القياس الحقيقي = 28
+قاعدتك تعطي = 11
+هل يمكنك إيجاد ملاحظة تبيّن لماذا لا تعمل هذه القاعدة؟
+```
+
+The chosen row is the largest **relative** gap, and ties go to the first —
+so the same state always shows the same row. There is **no `Math.random`
+anywhere in this instrument**; the unseen test object comes from a
+deterministic sweep (`unseenParams`), so a failing check is reproducible.
+
+A rule is a small **tree the student assembles from tokens**, never a string
+that gets parsed: `normalizeRule` rejects anything else, and no input of
+theirs is ever executed. Two writings of one relation are compared **by
+value** (`sameRelation`), so `l × L`, `2 × (L + l)` and `L + l + L + l` are
+each recognised as what they are — the same rule, better written.
+
+### 5o.4 The evidence gate (§25): guessing does not pay
+
+When the rule holds, the instrument does **not** conclude. It shows what is
+still missing, and `evaluateEvidence` requires all of:
+
+| requirement | why it exists |
+|---|---|
+| ≥ 3 observations | one match is a coincidence |
+| ≥ 2 (or 3) **distinct** configurations | three measurements of a 2 × 2 square validate `L + l` as readily as `L × l` |
+| the rule holds on every row | — |
+| it survived an object the student did **not** choose | the anti-guessing clause proper |
+
+Until all four hold, the stage never reaches `found` — **even when the rule
+is the right one**. `reconcileStage` applies the same prudence when reading
+a stored document: a file claiming `found` with no rule and no measurements
+is read back as `exploring`. The instrument never congratulates a discovery
+it cannot witness.
+
+### 5o.5 Conjecture is not proof (§21)
+
+The wording is deliberate and tested: when a rule survives, the instrument
+says it **held on what was measured** (« تصمد ») and immediately adds that
+this is not the same as always being true. The word « برهان » is never
+applied to a conjecture — `mathlab-measurement.mjs` asserts its absence.
+
+Only once the evidence is complete does the **geometric explanation** appear
+— the part no table of measurements can supply:
+
+| investigation | what is shown |
+|---|---|
+| `rows` | rectangle: equal rows of units — multiplication itself |
+| `mirror` | triangle: a second identical triangle completes the rectangle |
+| `unroll` | circle: the thread unrolled spans the diameter three times and a bit, **whatever the circle** |
+| `sectors` | disc: more sectors → the shape tends to a rectangle r by πr |
+| `layers` | cuboid: one layer, repeated |
+| `nesting` | conversion: the square fills in **two** directions, so the factor appears twice |
+| `squares` | Pythagoras: the two small squares fill the large one |
+| `tear` | angles: the three corners, torn off, line up straight |
+
+« كيف ظهرت هذه القاعدة؟ » replays the **path** (measure → count → compare →
+name), never the formula.
+
+### 5o.6 The scenes are drawn, and they are read
+
+`MeasureStage.jsx` draws every object in **inline SVG** — no image anywhere,
+per `MANIPULATION_CONTRACT.md`. The grid is countable, the handles are
+grabbed, and the labels are real DOM text, so they stay correct in Arabic
+and reach a screen reader.
+
+- the **cuboid** is a cavalier projection in SVG, not a second 3D engine:
+  the platform already has one (§5c), and here the student must **count**,
+  not orbit. It is drawn as three face grids — top, front, right — because
+  a depth-first sweep over the cubes skipped cubes on the façade and
+  rendered the solid as a staircase (found by screenshot, never by a test);
+- the **thread** under the circle is the unrolled circumference, marked off
+  in diameters: the π discovery made visible;
+- the **squares on the sides** carry their areas as text (9, 16, 25), which
+  is the whole of Pythagoras before anyone names it;
+- the **foot of the altitude** may fall outside the base, and then the line
+  is dashed rather than forced back between the vertices — it is a
+  geometrical fact, not an error.
+
+### 5o.7 Approximation is deterministic (§27)
+
+`readWithPrecision` rounds to the **graduation of the instrument** (exact,
+tenth, hundredth) and nothing else. A real ruler has marks; two students
+measuring the same segment read the same thing. Quotients and angles are
+never rounded this way — grading C ÷ d to the millimetre would be
+meaningless.
+
+### 5o.8 State format (`measureState.js`, `MEASUREMENT_SCHEMA_VERSION = 1`)
+
+```
+data = {
+  investigation: 'rectangle-area',
+  objects:  { <id>: {params} },
+  records:  { <id>: {observations, rule, stage, hintsUsed, tests} },
+  precision: 0 | 0.1 | 0.01,
+  settings: { grid, labels, showExplanation },
+}
+```
+
+`MAX_OBSERVATIONS = 20`, `MAX_TESTS = 10`, `MAX_RULE_DEPTH = 8`. Stages:
+`exploring → conjecturing → testing → found → explained`.
+
+Nothing **computable** is stored: not the unit squares, not the sectors, not
+the angles — they are recomputed from the object's dimensions. The open tab,
+the drawer, the duplicate warning and the announcement have **no field** in
+`data` and so cannot get there by accident.
+
+Worst case measured (ten investigations, every table full, every test used):
+**~22.5 KB**; an ordinary document is a few hundred bytes. The server cap is
+**40 KB** (`MathLabTools.php`), held client-side by `MAX_OBSERVATIONS` and
+checked by `measureState.test.js`.
+
+### 5o.9 Verification
+
+- `measureMath.test.js` (30) — areas, perimeters, angles, π, sector
+  convergence, volumes, Pythagorean triples, conversions in dimension 1, 2
+  and 3, deterministic approximation.
+- `ruleEngine.test.js` (28) — evaluation, writing with minimal parentheses,
+  the counterexample and its stability, equivalent writings, and that a
+  stored rule is data and never executed.
+- `investigations.test.js` (22) — the ten investigations, the solution
+  predicting the measurement **across the whole adjustable domain**, and the
+  secret not leaking into any visible label.
+- `measureState.test.js` (26) — the tables, the evidence gate (including
+  "three squares are not proof"), stage reconciliation on reload, the byte
+  ceiling.
+- `mathlab-measurement.mjs` — 36 browser checks: the secret at open, drag,
+  recording, the counterexample, the gate, hints, the story, RTL with LTR
+  notation, Cairo, keyboard, focus, persistence, tablet and mobile.
+
+### 5o.10 Curriculum scope and limits
+
+4AM measurement: areas and perimeters of rectangle and triangle, circle,
+volumes of cube and cuboid, unit conversion, the Pythagorean relation and
+the angle sum. Radii and dimensions are bounded to what stays legible
+(`params` per investigation); the tile grid stops at 144 squares and the
+conversion square draws at most 10 subdivisions a side — beyond that the eye
+no longer counts and the table carries the exact number.
+
+**Not built in V1:** no free-form proof, no theorem prover, no exercise
+generator, no teacher authoring, no PNG export, no measurement of arbitrary
+user-drawn shapes (the objects come from the catalogue), no compound solids,
+no surface area of a cylinder or sphere, and no scale/ratio investigation.
+The rule builder composes left to right and raises to a power, which covers
+the ten investigations; it is **not** a general expression editor, and
+`unit-conversion` is fixed on the **area** case for exactly that reason (a
+variable exponent is not a relation the student can lay down).
+
+## 6. From a lesson
+
+### 6a. « 🧪 المختبر » — the Lab opened ON the lesson (`overlay/`)
+
+Since 2026-09-24 a student or a teacher opens an instrument **without
+leaving the lesson**. The entry point is a pill in the module's marker row
+(beside XP and « Signaler ») and in the lesson index hero, next to
+« 🎓 وضع القسم ».
+
+```
+features/mathlab/overlay/
+├── MathLabOverlayProvider.jsx  the session (which tool) + focus return, ABOVE the router
+├── MathLabOverlay.jsx          the layer: bar, fullscreen, Escape, focus trap, tool host
+├── MathLabToolPicker.jsx       the chooser — the Lab HOME's own design (same eyebrow,
+│                               title, `.sa-ml-cards` grid and ToolCard look), rendered
+│                               in the layer; buttons, not links, so nothing navigates
+├── MathLabEntryButton.jsx      the pill
+├── overlayState.js             PURE decisions (+ .test.js): escapeAction, fullscreenAction, nextTool
+└── mathLabOverlay.css          `sa-mlo-*`
+```
+
+**Why a layer and not a route.** Closing must return the student to the same
+module, the same scroll, the same typed answer, the same reached step. A
+`navigate()` to `/espace/atelier` would unmount the lesson and lose all of
+it. The provider sits **above the router** — like `NotebookProvider` — so the
+lesson is never unmounted: there is nothing to save and nothing to restore,
+because nothing moved. A unit test asserts the lesson's DOM node is the
+*same node* before and after.
+
+**Where the pill is, and why not elsewhere.** It was first placed in the
+floating bottom-left column (with « كرّاسي », « بطاقتي », « عرض »). That
+column already carried three pills; a fourth pushed it to 17 rem and, on a
+short screen, it covered the lesson. A tool opened to *read* a lesson must
+not start by hiding it. The marker row is `sticky` (always reachable) and in
+the flow (covers nothing) — the same reasoning that had already moved
+« Signaler » there.
+
+**During وضع القسم the pill moves into the presentation toolbar.** At the
+board, in front of the class, is exactly when a teacher needs to pull out a
+repère mid-explanation — and the hand is already on the top toolbar. The
+محور's marker row is not rendered during a session (`ModuleLayout` hides it),
+so `ClassroomPresentation` puts the pill in the toolbar's `slot`, **next to**
+whatever the presented page already placed there (`useClassroomStage`), never
+replacing it. There is exactly one pill in each mode.
+
+**Where the layer is mounted during a session — and the trap.** The provider
+sits *above the router*, therefore above `ClassroomPresentation`: the
+presentation's context flows **down**, not up, so `useClassroomPortalTarget()`
+would always answer `document.body` and the layer would open *behind* the
+presentation (measured: the root is `z-index: 70` and comes later in the
+document). The provider therefore reads the live DOM instead —
+`document.querySelector('.sa-classroom-root--active')`, resolved **at open
+time**, falling back to `<body>`. There is never more than one such root
+(« one session », `CLASSROOM_MODE.md` §4).
+
+Being a child of that root then costs one CSS rule: the root is a flex column
+with `overflow: hidden`, which would lay the layer out as a column item *and
+clip it*. `.sa-classroom-root--active > .sa-mlo` puts it back to
+`position: absolute; inset: 0; z-index: 100` — absolute against the root,
+which is itself `fixed; inset: 0`, so it covers exactly the screen.
+
+The personal pills (« كرّاسي », « بطاقتي ») keep disappearing during a
+session — they have no place on a projector.
+
+**Fullscreen — NOT Classroom Mode.** Two separate things:
+
+| | Who | What |
+|---|---|---|
+| Lab fullscreen | **student *and* teacher**, no permission | maximum room for one instrument |
+| وضع القسم | presenters (`canPresentClassroom`) | the projector shell, unchanged |
+
+The layer reuses `useFullscreen` — the platform's single Fullscreen API
+implementation — because a *hook* carries no permission. Nothing in
+`overlay/` imports `packages/core/auth.js`. When the browser has no API
+(Safari iOS) or refuses, the layer falls back to an application fullscreen:
+it is already `position: fixed; inset: 0`, so the state flag is all that
+changes. Escape steps down one level at a time (leave fullscreen, *then*
+close) so a student never loses everything at once.
+
+**An EPHEMERAL document.** Opening from a lesson creates nothing in the
+database (the notebook's rule). The instrument works on fresh in-memory
+state; « أعمالي » is populated only from `/espace/atelier`, where a document
+has an identity. An exploration draft is not a piece of work.
+
+### 6b. Seeding an instrument from a lesson (`openMathLab.js`)
 
 `Planned` flow: *lesson → « استكشف في المختبر » → the instrument opens with
 an initial state supplied by the lesson.* The API exists; **no lesson calls
-it yet**, and no lesson button was added.
+it yet**. It is the route-based flow, distinct from the layer above, which
+opens an instrument with no seed.
 
 ```js
 const launch = buildMathLabLaunch({ tool: 'whiteboard', seed, title, origin: { lessonCode } });
@@ -3665,7 +4020,7 @@ another instrument. Each tool documents its own seed shape:
 | Vectors lab maths: components `⃗AB = B − A` (A(2,3) B(6,5) → (4,2)), norm (‖(3,4)‖ = 5), addition ((3,2)+(1,4) = (4,6)) and its commutativity, subtraction ((3,2)−(1,4) = (2,−2)) shown as `u + (−v)`, scalar ((2,3)×−2 = (−4,−6)), k = 0 giving the null شعاع, |k| > 1 / < 1 / k < 0 on length and direction, midpoint (A(0,0) B(4,6) → (2,3)), distance (A(0,0) B(3,4) → 5), translation (A(2,3) by (4,−1) → A′(6,2)) preserving lengths, dot product ((2,3)·(4,1) = 11), perpendicularity ((1,0)⟂(0,1), the quarter-turn, the null شعاع perpendicular to nothing), **vertical slope returning `{vertical: true, value: null}` and never a number**, horizontal slope 0 ≠ undefined, parallelism with its factor (v = ½u, v = −2u) and the **relative** tolerance in both directions (huge collinear أشعة stay parallel, tiny non-collinear ones do not become so), collinearity of three points including on a vertical and the degenerate case, direction normalised in [0,360[ with `NaN` for the null شعاع, exact norms (5, √5, 2√5, non-exact decimals), and null-safety everywhere | `tools/vectors/vectorMath.test.js` (54 tests) |
 | Vectors lab dependencies (§38): ⃗AB anchored at A and following it, a derived point not draggable, the free شعاع whose **origin** moves without changing components and whose **tip** changes them, sum/difference/scaled resolved from their operands, a sum built on ⃗AB following a drag of A through the whole chain, midpoint and image following, an image of an image, a translated triangle preserving side lengths and following a vertex, the delete cascade (A → ⃗AB → the sum; a vertex → the polygon), a dead reference and a **cycle** breaking only the object concerned, naming, colours and snapping | `tools/vectors/vectorScene.test.js` (23 tests) |
 | Vectors lab document and lesson seed: a new document opening on two points and the شعاع they carry with nothing to undo, JSON round trip, survival of any `data`, dead references pruned in cascade, object and k bounds, an invalid viewport falling back, a stale selection dropped; history — undo/redo, the abandoned branch cut, **a drag replacing the current step so undo undoes a gesture and not a pixel**, the depth cap, survival of a save; the worst-case document staying under the server's 120 KB; and the **seed contract** published by `LESSON_DEVELOPMENT_GUIDE.md` (a seeded ⃗AB resolving by id, the viewport kept, a dangling seed falling back to the default plane) | `tools/vectors/vectorState.test.js` (23 tests) |
-| Vectors lab display and experiments: `(3 ; −2)` with a true minus, a decimal comma and **no** Arabic-Indic digits, `√5 ≈ 2,24`, `2√5`, `1/2` rather than `0,5`, the three distinct slope readings, the null شعاع's « — » direction; and every one of the ten experiments opening fully resolved, surviving a storage round trip and leaving something to pull | `tools/vectors/vectorFormat.test.js` (17), `tools/vectors/experiments.test.js` (33) |
+| Vectors lab display and experiments: the **column** شعاع (`\binom`) beside the point's `(3 ; −2)`, a true minus, a decimal comma and **no** Arabic-Indic digits, `√5 ≈ 2,24`, `2√5`, `1/2` rather than `0,5`, the three distinct slope readings, the null شعاع's « — » direction; and every one of the ten experiments opening fully resolved, surviving a storage round trip and leaving something to pull | `tools/vectors/vectorFormat.test.js` (17), `tools/vectors/experiments.test.js` (33) |
 | Workspace query (§5i.1): Arabic normalisation (تشكيل, tatweel, alif/ya/ta-marbuta variants, Arabic-Indic digits) and Latin case/accents, search over title **and** tool name **and** summary text, each filter (tool, the three periods, favourites), the five sorts, search × filters combining without resetting, sorting on a copy, and `duplicateTitle` never producing « نسخة من نسخة من » | `features/mathlab/work/workFilters.test.js` (33 tests) |
 | Summary contract (§5i.2), across **all eight instruments at once**: every shipped tool declares `summarize`; a new document's summary is a known `kind`, is JSON-pure and stays under the server's 2 KB; `text` is short strings only; **no summarizer ever throws** on a null, empty, foreign or malformed state; plus what each one keeps in particular (visible expressions and colours, solid and dimensions, stroke silhouette capped at 24 with the written text, first *and* current equation, frequencies not draws, terms recomputed from the definition, the resolved current vector scene) | `features/mathlab/work/summaries.test.js` (16 tests) |
 | Registry: `summarize` required of every shipped instrument and optional in the contract; every `work.*` label present in Arabic; each sort and period worded; and the **six Arabic plural forms** on both counters, so two works read « عملان » and not « 2 عمل » | `features/mathlab/toolRegistry.test.js` |

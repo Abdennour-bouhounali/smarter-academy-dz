@@ -146,7 +146,14 @@ record('ouverture : A et B sont posés', await page.locator('[data-ml-handle="po
 const comp0 = await reading(page, 'components');
 const norm0 = await reading(page, 'norm');
 const dir0 = await reading(page, 'direction');
-record('ouverture : les composantes de ⃗AB sont (4 ; 3)', comp0 === '(4 ; 3)', comp0);
+// Le شعاع s'écrit EN COLONNE (docs/architecture/MATH_LAB.md) : une seule
+// paire de délimiteurs sur les deux composantes, jamais « (4 ; 3) ». KaTeX
+// rend les deux nombres dans des boîtes distinctes, donc on lit les chiffres
+// et on vérifie surtout qu'aucun couple en ligne n'est revenu.
+const comp0Digits = (comp0 || '').replace(/[^0-9−-]/g, '');
+record('ouverture : les composantes de ⃗AB sont 4 et 3, en colonne', comp0Digits === '43', comp0);
+record('ouverture : le شعاع n’est PAS écrit en ligne (4 ; 3)', !(comp0 || '').includes(';'), comp0);
+record('ouverture : la colonne est bien rendue', await page.locator('[data-ml-reading="components"] [data-ml-vec-column]').count() === 1);
 record('ouverture : ‖⃗AB‖ vaut 5, sans décimales inutiles', norm0 === '5', norm0);
 record('ouverture : la direction vaut 36,87°', dir0 === '36,87°', dir0);
 

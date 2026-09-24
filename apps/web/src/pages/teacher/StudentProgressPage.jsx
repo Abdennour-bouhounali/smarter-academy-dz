@@ -1,16 +1,16 @@
 import { useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { CircleCheckBig, Target, Dumbbell, Percent, Lock } from 'lucide-react';
+import { CircleCheckBig, Target, Dumbbell, Percent, Lock, NotebookPen } from 'lucide-react';
 import { ArrowBack } from '../../components/common/DirectionalIcons';
 import { useAdminResource } from '../../hooks/useAdminResource';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 import StatTile from '../../components/common/StatTile';
 import PathProgress from '../../features/progression/components/PathProgress';
 import { fetchClassStudentProgress } from '../../services/teacher/classGroupService';
-import { TeacherPage, Loading, ErrorBox, btnSecondary, formatDate } from './teacherUi';
+import { TeacherPage, Loading, ErrorBox, btnPrimary, btnSecondary, formatDate } from './teacherUi';
 
-/** Le dossier d'UN élève, cadré sur la classe. Le cahier n'y est pas — et la page le dit. */
+/** Le dossier d'UN élève, cadré sur la classe. Le cahier a son propre écran, en lecture seule. */
 export default function StudentProgressPage() {
   const { t } = useTranslation('teacher');
   const { id, studentId } = useParams();
@@ -24,7 +24,21 @@ export default function StudentProgressPage() {
       eyebrow={t('students.title')}
       title={name || '…'}
       subtitle={data ? `${data.student.email}` : undefined}
-      actions={<Link to={`/enseignant/classes/${id}`} className={btnSecondary}><ArrowBack size={14} /> {t('students.backToClass')}</Link>}
+      actions={(
+        <>
+          {/* Le cahier est une DESTINATION, pas une note de bas de page : il
+              était sous la frise d'activité, ce qui obligeait à dérouler tout
+              le dossier pour l'atteindre. Ici, il est visible à l'ouverture.
+              En `btnPrimary` parce que c'est l'action de la page — « revenir
+              au قسم » n'est qu'une sortie. */}
+          <Link to={`/enseignant/classes/${id}/eleves/${studentId}/cahier`} className={btnPrimary}>
+            <NotebookPen size={14} /> {t('notebook.open')}
+          </Link>
+          <Link to={`/enseignant/classes/${id}`} className={btnSecondary}>
+            <ArrowBack size={14} /> {t('students.backToClass')}
+          </Link>
+        </>
+      )}
     >
       {loading && <Loading />}
       {error && <ErrorBox message={error} onRetry={reload} />}
@@ -84,6 +98,10 @@ export default function StudentProgressPage() {
               </ol>
             )}
           </section>
+          {/* Le cahier n'est pas DANS ce dossier : il a son écran et sa
+              propre autorisation (« où en est-il ? » et « qu'a-t-il noté ? »
+              sont deux questions). Le bouton est en HAUT, dans les actions
+              de la page ; ici il ne reste que le rappel. */}
           <p className="flex items-center gap-2 text-xs text-slate-400"><Lock size={12} /> {t('students.privacy')}</p>
         </div>
       )}

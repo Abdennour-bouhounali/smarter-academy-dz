@@ -64,6 +64,7 @@ const TeacherClassGroupList = lazy(() => import('./pages/teacher/ClassGroupList'
 const TeacherClassGroupCreate = lazy(() => import('./pages/teacher/ClassGroupCreate'));
 const TeacherClassGroupDetail = lazy(() => import('./pages/teacher/ClassGroupDetail'));
 const TeacherStudentProgress = lazy(() => import('./pages/teacher/StudentProgressPage'));
+const TeacherStudentNotebook = lazy(() => import('./pages/teacher/StudentNotebookPage'));
 const TeacherProgressOverview = lazy(() => import('./pages/teacher/ProgressOverview'));
 const TeacherSubscription = lazy(() => import('./pages/teacher/SubscriptionPage'));
 const TeacherProfile = lazy(() => import('./pages/teacher/TeacherProfile'));
@@ -123,6 +124,7 @@ const RtlLessonFixture = QA_FIXTURES_ENABLED
 import { AuthProvider } from './context/AuthContext';
 import { WorkspaceLayoutProvider } from './context/WorkspaceLayoutContext';
 import { NotebookProvider } from './features/practice/notebook/NotebookProvider';
+import { MathLabOverlayProvider } from './features/mathlab/overlay/MathLabOverlayProvider';
 import { ContentAvailabilityProvider } from './context/ContentAvailabilityContext';
 import { StudyContextProvider } from './context/StudyContextContext';
 import { useLessonProgressSync } from './hooks/useLessonProgressSync';
@@ -168,6 +170,11 @@ export default function App() {
           au-dessus du routeur pour survivre au changement de module. Les
           pages de leçon lui publient leur position (LessonNotebookAnchor). */}
       <NotebookProvider>
+      {/* LE مختبر posé SUR la leçon : un seul calque pour toute
+          l'application, au-dessus du routeur lui aussi — ouvrir un
+          instrument ne doit jamais démonter la leçon, sinon l'élève perd sa
+          place (features/mathlab/overlay/). */}
+      <MathLabOverlayProvider>
       <Router>
         {/* Frontière d'attente UNIQUE pour les routes découpées (admin,
             moteur d'exercices, pages légales, diagnostic). Elle est posée
@@ -289,6 +296,10 @@ export default function App() {
               <Route path="classes/nouveau" element={<TeacherClassGroupCreate />} />
               <Route path="classes/:id" element={<TeacherClassGroupDetail />} />
               <Route path="classes/:id/eleves/:studentId" element={<TeacherStudentProgress />} />
+              {/* Le cahier d'un élève, en LECTURE SEULE. La vraie porte est
+                  le serveur : ClassroomPolicy + appartenance au قسم
+                  (TeacherClassroomNotebookTest). */}
+              <Route path="classes/:id/eleves/:studentId/cahier" element={<TeacherStudentNotebook />} />
               <Route path="progression" element={<TeacherProgressOverview />} />
               <Route path="offre" element={<TeacherSubscription />} />
               <Route path="profil" element={<TeacherProfile />} />
@@ -394,6 +405,7 @@ export default function App() {
         </Routes>
         </Suspense>
       </Router>
+      </MathLabOverlayProvider>
       </NotebookProvider>
       </WorkspaceLayoutProvider>
       </StudyContextProvider>

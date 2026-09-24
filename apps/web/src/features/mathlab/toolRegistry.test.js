@@ -80,9 +80,10 @@ describe('registre des instruments', () => {
     // aurait tenu la promesse trop petitement. Le chip a donc quitté la liste.
     expect(plannedIds).not.toContain('numberLine');
     expect(plannedIds).not.toContain('numberLab');
-    // « القياس » reste annoncé : mesurer des grandeurs (longueurs, aires,
-    // volumes, unités) est un autre instrument, pas un mode de celui-ci.
-    expect(plannedIds).toContain('measurement');
+    // Le مختبر القياس est livré : mesurer des grandeurs (longueurs, aires,
+    // volumes, unités) est bien un instrument à part, et c'est le
+    // quatorzième. « القياس » a donc quitté la liste des instruments à venir.
+    expect(plannedIds).not.toContain('measurement');
   });
 
   it('les instruments annoncés ne sont pas des instruments : ni composant, ni route', () => {

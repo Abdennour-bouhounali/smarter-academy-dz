@@ -11,10 +11,50 @@ connaissances, ni une copie de la leçon.
 | 📈 Maîtrise (`LearningPointMastery`, `/practice/overview`) | l'état démontré de l'apprentissage | le moteur d'exercices |
 | 📓 Cahier (`features/practice/notebook`) | les notes personnelles, rattachées à l'endroit où elles ont été prises | **l'élève** |
 
-**Personne d'autre que l'élève ne lit le cahier.** Ni la fiche élève de
-l'administration (`StudentDossier`), ni l'enseignant d'un قسم (progression de
-classe ou d'élève, `TEACHER_CLASSROOM_ARCHITECTURE.md` §4) n'y accèdent :
-quitter ou être retiré d'une classe ne touche pas une note.
+**Le cahier appartient à l'élève. Une seule lecture tierce existe, et elle
+est bornée.** (Règle changée le 2026-09-24 ; jusque-là personne d'autre que
+l'élève ne lisait le cahier.)
+
+| Qui | Lit le cahier ? |
+|---|---|
+| L'élève | oui — le sien, en lecture ET écriture |
+| **L'enseignant d'un قسم dont l'élève est membre** | **oui, en LECTURE SEULE**, et seulement les notes rattachées aux leçons *effectives* de ce قسم |
+| La fiche élève de l'administration (`StudentDossier`) | non |
+| Le dossier de progression d'un élève (`ClassroomProgressService`) | non — « où en est-il ? » et « qu'a-t-il noté ? » restent deux écrans |
+| Un autre élève, un autre enseignant | non (404) |
+
+Pourquoi ce changement : les erreurs qu'un élève NOTE lui-même — « je
+confonds toujours le signe » — disent ce qu'aucun pourcentage de réussite ne
+dit. C'est la matière d'une remédiation.
+
+Ce qui borne la lecture, et qui est verrouillé par
+`TeacherClassroomNotebookTest` :
+
+- **Lecture seule.** Aucune route d'écriture n'existe sous
+  `…/students/{id}/notebook`. Modifier, archiver, réviser ou supprimer
+  passent tous par `ownedBy()`, qui exige d'être le propriétaire.
+- **Périmètre = le قسم.** Seules les notes dont la `lesson_id` est dans
+  `ClassroomProgressService::effectiveLessonIds()`. Une note prise dans une
+  leçon d'un autre niveau, dans une leçon que l'enseignant a lui-même
+  masquée, ou **hors de toute leçon**, reste privée — y compris dans les
+  compteurs.
+- **Trois verrous** : `can:teacher`, puis `ClassroomPolicy@view` (la classe
+  est à cet enseignant), puis l'appartenance de l'élève à cette classe.
+- **La porte de l'élève reste fermée.** `/practice/notes` ne sert que le
+  compte authentifié : un enseignant y reçoit 404 pour la note d'un élève
+  (`TeacherLearningAccessTest`).
+
+Quitter ou être retiré d'une classe ne touche pas une note — mais retire
+l'élève du périmètre de lecture de cet enseignant.
+
+Le serveur : `NotebookService::searchForReader` / `countsForReader` /
+`findForReader` (le même moteur que `search`, pas un second) ·
+`Teacher\TeacherClassroomNotebookController` ·
+`GET /teacher/classrooms/{id}/students/{studentId}/notebook[/{noteId}]`.
+Le client : `pages/teacher/StudentNotebookPage.jsx`, atteint depuis le
+dossier de l'élève. La forme d'une note est rendue par
+`NotebookPresenter::note` — **une seule** sérialisation pour les deux
+surfaces.
 
 **L'enseignant a SON cahier.** Les mêmes pages (`NotebookSpace`, `NoteDetail`,
 `ReviewSession`) et la même fenêtre flottante servent l'enseignant sous

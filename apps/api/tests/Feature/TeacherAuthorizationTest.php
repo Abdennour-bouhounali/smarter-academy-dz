@@ -27,8 +27,8 @@ class TeacherAuthorizationTest extends TestCase
                 continue;
             }
             $uri = str_replace(
-                ['{id}', '{studentId}', '{invitationId}', '{lessonId}', '{requestId}', '{planId}'],
-                ['1', '1', '1', '1', '1', '1'],
+                ['{id}', '{studentId}', '{invitationId}', '{lessonId}', '{requestId}', '{planId}', '{noteId}'],
+                ['1', '1', '1', '1', '1', '1', '1'],
                 $route->uri()
             );
             foreach (array_diff($route->methods(), ['HEAD']) as $method) {

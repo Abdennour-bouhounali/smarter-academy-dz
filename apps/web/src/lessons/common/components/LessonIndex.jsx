@@ -18,6 +18,7 @@ import PracticeEntryCard from '../../../features/practice/PracticeEntryCard';
 import ReportButton from '../../../features/reports/ReportButton';
 import { useContentAvailability } from '../../../context/ContentAvailabilityContext';
 import { useClassroomMode, useClassroomStage, ClassroomEntryButton, ClassroomFrame } from '../classroom';
+import MathLabEntryButton from '../../../features/mathlab/overlay/MathLabEntryButton';
 
 /**
  * Static color map — replaces dynamic `bg-${color}-100` patterns.
@@ -311,9 +312,14 @@ export default function LessonIndex({ config, basePath }) {
                 {config.title}
               </h1>
 
-              {/* 🎓 وضع القسم — présenter la leçon entière au projecteur
-                  (présentateur seulement : canPresentClassroom). */}
-              <ClassroomEntryButton scope="lesson" title={config.title} />
+              {/* Deux portes, deux publics, à ne pas confondre :
+                  🎓 وضع القسم présente la leçon au projecteur (présentateur
+                  seulement : canPresentClassroom) ; 🧪 المختبر ouvre un
+                  instrument SUR la leçon, pour tout le monde. */}
+              <div className="flex flex-wrap items-center gap-2">
+                <ClassroomEntryButton scope="lesson" title={config.title} />
+                <MathLabEntryButton />
+              </div>
 
               {config.skills && (
                 <ul className="text-slate-500 text-sm space-y-1 max-w-xl">

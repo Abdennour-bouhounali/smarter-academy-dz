@@ -65,7 +65,7 @@ class NotebookService
      *   gradeCode?:string, origin?:string, type?:string, sort?:string, page?:int, perPage?:int} $params
      * @return array{notes: \Illuminate\Support\Collection, total: int, page: int, perPage: int, hasMore: bool}
      */
-    public function search(User $user, array $params): array
+    public function search(User $user, array $params, ?array $lessonIds = null): array
     {
         $view = $params['view'] ?? 'all';
         $view = in_array($view, self::VIEWS, true) ? $view : 'all';
@@ -74,7 +74,7 @@ class NotebookService
         $page = max(1, (int) ($params['page'] ?? 1));
         $perPage = min(100, max(1, (int) ($params['perPage'] ?? 20)));
 
-        $query = $this->scope($user, $view);
+        $query = $this->scope($user, $view, $lessonIds);
         $this->applyFilters($query, $params);
         $this->applySearch($query, $params['q'] ?? null);
 
@@ -111,15 +111,82 @@ class NotebookService
     }
 
     /**
+     * LE CAHIER D'UN ÉLÈVE, LU PAR SON ENSEIGNANT — en LECTURE SEULE.
+     *
+     * ── Ce que cette méthode n'est pas ───────────────────────────────────
+     * Ce n'est pas un second cahier, ni une seconde recherche : c'est
+     * `search()`, avec les mêmes vues, les mêmes filtres, le même tri et la
+     * même pagination, sur les notes d'un AUTRE compte. Une seule table, un
+     * seul moteur — le cahier de l'élève et ce que l'enseignant en lit ne
+     * peuvent pas diverger.
+     *
+     * ── Le périmètre ────────────────────────────────────────────────────
+     * Les notes rendues sont bornées aux leçons EFFECTIVES de la classe
+     * (`$lessonIds`, voir ClassroomProgressService::effectiveLessonIds) :
+     * l'enseignant lit ce que son قسم travaille, pas tout ce que l'élève
+     * écrit ailleurs — une note prise dans une leçon d'un autre niveau, ou
+     * dans une leçon qu'il a lui-même masquée, ne le regarde pas. Les notes
+     * SANS leçon (prises hors contexte) restent privées pour la même
+     * raison : rien ne les rattache au قسم.
+     *
+     * ── Ce qui n'est PAS ouvert ─────────────────────────────────────────
+     * L'écriture. Aucune méthode de modification n'accepte un lecteur tiers :
+     * `update`, `review`, `bulk` et `delete` passent tous par `ownedBy()`,
+     * qui compare `user_id` au compte authentifié. L'enseignant lit ; il
+     * n'annote pas, ne classe pas, n'archive pas, ne supprime pas.
+     *
+     * L'AUTORISATION n'est pas ici : c'est au contrôleur de prouver que
+     * l'élève appartient à une classe de cet enseignant (ClassroomPolicy +
+     * TeacherClassroomStudentController::memberOf). Ce service reçoit un
+     * élève déjà légitimé.
+     *
+     * @param  User   $student    l'élève dont on lit le cahier
+     * @param  int[]  $lessonIds  les leçons effectives de la classe
+     * @param  array{q?:string, view?:string, lessonCode?:string, learningPointCode?:string,
+     *   origin?:string, type?:string, sort?:string, page?:int, perPage?:int} $params
+     * @return array{notes: \Illuminate\Support\Collection, total: int, page: int, perPage: int, hasMore: bool}
+     */
+    public function searchForReader(User $student, array $lessonIds, array $params): array
+    {
+        if ($lessonIds === []) {
+            return ['notes' => collect(), 'total' => 0, 'page' => 1, 'perPage' => 20, 'hasMore' => false];
+        }
+
+        return $this->search($student, $params, $lessonIds);
+    }
+
+    /**
+     * Les compteurs du cahier d'un élève, dans le périmètre de la classe.
+     *
+     * @param  int[]  $lessonIds
+     * @return array<string, int>
+     */
+    public function countsForReader(User $student, array $lessonIds): array
+    {
+        if ($lessonIds === []) {
+            return array_fill_keys(self::VIEWS, 0);
+        }
+
+        return $this->counts($student, $lessonIds);
+    }
+
+    /**
      * Les compteurs de l'en-tête, en UNE requête : toutes (hors archives), à
      * revoir, erreurs, questions, importantes, archivées.
      *
      * @return array<string, int>
      */
-    public function counts(User $user): array
+    public function counts(User $user, ?array $lessonIds = null): array
     {
-        $row = NotebookNote::query()
-            ->where('user_id', $user->id)
+        $query = NotebookNote::query()->where('user_id', $user->id);
+
+        // Le même périmètre que `scope()` : un compteur qui dénombrerait des
+        // notes que le lecteur ne peut pas ouvrir les RÉVÉLERAIT quand même.
+        if ($lessonIds !== null) {
+            $query->whereIn('lesson_id', $lessonIds);
+        }
+
+        $row = $query
             ->selectRaw('SUM(archived_at IS NULL) AS all_count')
             ->selectRaw('SUM(archived_at IS NULL AND next_review_at IS NOT NULL) AS review_count')
             ->selectRaw("SUM(archived_at IS NULL AND (note_type = 'erreur' OR mistake_type IS NOT NULL)) AS errors_count")
@@ -165,6 +232,29 @@ class NotebookService
     public function find(User $user, int $id): NotebookNote
     {
         return $this->ownedBy($user, $id)->load(['lesson:id,code,title', 'learningPoint:id,code,title']);
+    }
+
+    /**
+     * UNE note d'un élève, lue par son enseignant — lecture seule.
+     *
+     * La note doit appartenir à cet élève ET tomber dans le périmètre de la
+     * classe, sinon elle est « introuvable » : la même réponse que pour la
+     * note d'un inconnu (404, jamais 403), pour ne rien révéler de ce qui
+     * existe ailleurs dans le cahier. C'est la règle d'`ownedBy()`, appliquée
+     * à un lecteur tiers.
+     *
+     * @param  int[]  $lessonIds  les leçons effectives de la classe
+     *
+     * @throws DomainException
+     */
+    public function findForReader(User $student, int $id, array $lessonIds): NotebookNote
+    {
+        $note = NotebookNote::find($id);
+        if ($note === null || $note->user_id !== $student->id || ! in_array($note->lesson_id, $lessonIds, true)) {
+            throw new DomainException('Note introuvable.');
+        }
+
+        return $note->load(['lesson:id,code,title', 'learningPoint:id,code,title']);
     }
 
     public function create(User $user, array $data): NotebookNote
@@ -316,9 +406,18 @@ class NotebookService
 
     /* ── Requêtes du cahier ─────────────────────────────────────────────── */
 
-    private function scope(User $user, string $view): Builder
+    private function scope(User $user, string $view, ?array $lessonIds = null): Builder
     {
         $q = NotebookNote::query()->where('notebook_notes.user_id', $user->id);
+
+        // Le périmètre d'un LECTEUR tiers (l'enseignant) : les leçons de sa
+        // classe, et elles seules. `null` = le propriétaire, qui voit tout
+        // son cahier. Une liste VIDE ne descend jamais jusqu'ici (les
+        // appelants la court-circuitent), donc `whereIn` ne reçoit jamais
+        // un ensemble vide qui ne filtrerait rien.
+        if ($lessonIds !== null) {
+            $q->whereIn('notebook_notes.lesson_id', $lessonIds);
+        }
 
         return match ($view) {
             'archived' => $q->whereNotNull('archived_at'),

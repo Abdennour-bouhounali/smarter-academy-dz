@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, ArrowRight, Home, CheckCircle, Lock, ListChecks } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle, Lock, ListChecks } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useProgress } from '../hooks/useProgress';
 import { lockedReasonData, isValidModuleNumber } from '@smarter-academy/core';
@@ -11,6 +11,7 @@ import ReportButton from '../../../features/reports/ReportButton';
 import { scrollToStep } from '../utils/scrollToStep';
 import { LessonChromeContext, useLessonChromeLayout } from '../hooks/useLessonChrome';
 import { useClassroomMode, useClassroomStage, ClassroomEntryButton, ClassroomFrame } from '../classroom';
+import MathLabEntryButton from '../../../features/mathlab/overlay/MathLabEntryButton';
 
 /**
  * ModuleLayout — shared layout wrapper for every lesson module.
@@ -18,8 +19,12 @@ import { useClassroomMode, useClassroomStage, ClassroomEntryButton, ClassroomFra
  * Props:
  *   coursePath    — base URL of the lesson (e.g. /courses/college/3e/fonctions-...)
  *   courseTitle   — lesson title for breadcrumb
- *   levelLabel    — human-readable level label, e.g. "Collège" (optional, default "Cours")
- *   gradeLabel    — human-readable grade label, e.g. "3ème" (optional)
+ *   unitTitle     — الوحدة, the textbook unit (a GROUP OF LESSONS) shown first
+ *                   in the breadcrumb « الوحدة / الدرس / المحور »
+ *   unitPath      — its page; without the pair, the breadcrumb falls back to المجال
+ *   levelLabel    — human-readable level label; no longer shown in the
+ *                   breadcrumb, still used to build the catalogue link
+ *   gradeLabel    — human-readable grade label (same)
  *   moduleNumber  — current module index (1-based, or 0 for a prerequisite
  *     diagnostic module)
  *   totalModules  — total number of modules in this lesson
@@ -55,6 +60,10 @@ import { useClassroomMode, useClassroomStage, ClassroomEntryButton, ClassroomFra
 export default function ModuleLayout({
   coursePath,
   courseTitle,
+  // L'الوحدة du manuel (le groupe de leçons), pour le fil d'Ariane
+  // « الوحدة / الدرس / المحور ». Absentes, on retombe sur le المجال.
+  unitTitle,
+  unitPath,
   // Pas de défaut FRANÇAIS ici : ce libellé part dans le fil d'Ariane ET
   // dans le lien `?level=`. Un défaut « Cours » donnait à la fois un mot
   // français au milieu de l'arabe et une requête `?level=cours` cassée, sans
@@ -186,7 +195,6 @@ export default function ModuleLayout({
     if (nextLink) navigate(nextLink);
   };
 
-  const breadcrumbLevel = `${levelLabel || ''} ${gradeLabel || ''}`.trim();
   // `gradeId`/`levelId` sont des IDENTIFIANTS d'URL, pas du texte : ils
   // viennent de la leçon (`gradeId: '4am'`, `levelId: 'moyen'`). L'ancienne
   // heuristique dérivait l'identifiant du LIBELLÉ français (`3ème` → `3e`,
@@ -277,16 +285,21 @@ export default function ModuleLayout({
             className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500"
             aria-label={t('nav.breadcrumb')}
           >
-            <Link to="/courses" className="hover:text-blue-600 flex items-center gap-1">
-              <Home size={12} aria-hidden="true" /> {t('nav.home')}
-            </Link>
-            <span aria-hidden="true">/</span>
-            <Link to={catalogueLink()} className="hover:text-blue-600">{breadcrumbLevel}</Link>
-            {chapter && chapterTitle && (
-              <>
-                <span aria-hidden="true">/</span>
-                <Link to={catalogueLink(chapter)} className="hover:text-blue-600">{chapterTitle}</Link>
-              </>
+            {/* TROIS niveaux : الوحدة / الدرس / المحور.
+                L'accueil et le niveau scolaire en ont été retirés — l'élève
+                sait dans quelle classe il est, et le chemin de retour vers
+                le catalogue reste dans la barre latérale. Ce qui l'aide ici,
+                c'est de savoir OÙ il se trouve dans le manuel.
+
+                L'الوحدة est le groupe de leçons du manuel, jamais le المجال
+                (domaine) ni un المحور (LESSON_DEVELOPMENT_GUIDE §2). Une
+                leçon qui n'en déclare pas — l'arbre français dormant —
+                retombe sur son المجال, pour ne jamais rendre un fil d'Ariane
+                à deux niveaux. */}
+            {unitTitle && unitPath ? (
+              <Link to={unitPath} className="hover:text-blue-600">{unitTitle}</Link>
+            ) : (
+              chapter && chapterTitle && <Link to={catalogueLink(chapter)} className="hover:text-blue-600">{chapterTitle}</Link>
             )}
             <span aria-hidden="true">/</span>
             <Link to={coursePath} className="hover:text-blue-600">{courseTitle}</Link>
@@ -296,7 +309,39 @@ export default function ModuleLayout({
             </span>
           </nav>
 
-          <div className="flex items-center gap-4 self-end sm:self-auto">
+          {/* La rangée ENVELOPPE au lieu de comprimer : avec « المختبر » et
+              « وضع القسم » à côté des XP, un écran étroit manquerait de place
+              et écraserait les pastilles (un libellé sur deux lignes, une
+              cible tactile rétrécie). Elles passent à la ligne, entières. */}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 self-end sm:self-auto">
+            {/* 🧪 المختبر — un instrument de mathématiques, ouvert SUR la
+                leçon sans la quitter. Ici, avec les autres repères du
+                module : toujours atteignable (la rangée est `sticky`) et
+                jamais devant le contenu, contrairement à une pastille
+                flottante. Voir MathLabEntryButton. */}
+            <MathLabEntryButton />
+
+            {/* 🎓 وضع القسم — le point d'entrée du mode classe, visible du
+                seul présentateur (canPresentClassroom). DANS la rangée de
+                repères, à côté de « المختبر » : l'enseignant y trouve ses
+                deux outils au même endroit, en haut, sans dérouler — et la
+                colonne flottante du bas se vide d'autant.
+
+                La portée est « lesson », PAS « module », et le libellé est
+                celui du sommaire : il n'y a qu'un seul وضع القسم, où qu'on
+                l'ouvre. Une séance de portée module ne connaissait pas ses
+                voisins — `lessonNav` est nul hors portée leçon — donc
+                « التالي » s'arrêtait au bout du محور et l'enseignant devait
+                sortir de la séance pour passer au suivant. La coquille qui
+                répond ici est déjà LessonClassroomShell (montée au-dessus de
+                chaque route de module), donc il suffit de le lui dire. */}
+            <ClassroomEntryButton
+              scope="lesson"
+              title={courseTitle ?? moduleTitle}
+              tone="quiet"
+              className="!px-3 !py-1.5 !text-xs !rounded-full"
+            />
+
             <div className="flex items-center gap-2">
               <span className="text-xs font-mono text-blue-600 font-bold">
                 {t('nav.module')}{' '}
@@ -323,31 +368,7 @@ export default function ModuleLayout({
               <span aria-label={t('nav.experiencePoints')}>XP</span>
             </div>
 
-            {/* En haut à droite, avec les autres repères du module.
-                Il était en bas de page : accessible, mais il fallait dérouler
-                toute la leçon pour le trouver — donc trouvé surtout par ceux
-                qui n'en avaient plus besoin. Ici, il est visible au moment où
-                l'élève bute. La variante `icon` garde une pastille discrète
-                (44px de cible, 36px de visuel) : signaler ne doit pas
-                concurrencer « Module suivant ». */}
-            <ReportButton
-              source="module"
-              variant="icon"
-              context={{
-                lessonCode: lessonId,
-                grade: gradeId,
-                moduleNumber,
-                step: moduleTitle,
-              }}
-            />
-
-            {/* ⛶ عرض — le point d'entrée du mode classe pour CE
-                module, visible du seul présentateur (canPresentClassroom).
-                FLOTTANT en bas à gauche, dans la même colonne que « كرّاسي »
-                et « خريطتي » : le geste est le même d'une surface à l'autre,
-                et le bouton ne pousse plus la rangée de repères. */}
-            <ClassroomEntryButton scope="module" title={moduleTitle} tone="floating" />
-          </div>
+</div>
         </div>}
 
         {/* Module Header */}
@@ -423,8 +444,42 @@ export default function ModuleLayout({
 
       </main>
 
-      {!presenting && <footer className="border-t border-slate-200 bg-white py-8 text-center text-xs text-slate-500 mt-12">
-        <p>© {new Date().getFullYear()} Abdennour BOUHOUNALI — {t('common:footerRole')}</p>
+      {/* « Signaler un problème » — présent sur CHAQUE module, parce qu'il
+          est ici, dans le shell partagé, et non recopié dans 1082 modules.
+          Le contexte est pris de ce que ModuleLayout a déjà en portée :
+          l'élève n'a rien à désigner.
+
+          DANS LE PIED DE PAGE, au bord de FIN : signaler est une action
+          rare, qu'on cherche après coup — elle n'a pas à occuper la rangée
+          de repères, où l'élève travaille. */}
+      {!presenting && <footer className="border-t border-slate-200 bg-white py-8 mt-12">
+        {/* Trois colonnes de largeur ÉGALE : la mention reste ainsi au
+            milieu de la PAGE, et non au milieu de la place que lui laisse le
+            bouton — un `justify-between` l'aurait décentrée d'une demi-
+            largeur de pastille. « إبلاغ » occupe la colonne de FIN, qui sous
+            RTL est la gauche physique ; `justify-self-end` l'y pousse sans
+            que la grille ait à connaître le sens de lecture.
+
+            Sur un téléphone, la grille se replie en deux rangées : la
+            mention centrée, la pastille au-dessus. */}
+        <div className="sa-page grid grid-cols-1 items-center justify-items-center gap-4 sm:grid-cols-[1fr_auto_1fr]">
+          <span className="hidden sm:block" aria-hidden="true" />
+          <p className="order-last text-center text-xs text-slate-500 sm:order-none">
+            © {new Date().getFullYear()} Abdennour BOUHOUNALI — {t('common:footerRole')}
+          </p>
+          <div className="sm:justify-self-end">
+            <ReportButton
+              source="module"
+              variant="icon"
+              context={{
+                lessonCode: lessonId,
+                grade: gradeId,
+                moduleNumber,
+                step: moduleTitle,
+              }}
+            />
+          </div>
+        </div>
       </footer>}
     </div>
     </LessonChromeContext.Provider>

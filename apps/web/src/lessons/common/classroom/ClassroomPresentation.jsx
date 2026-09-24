@@ -6,6 +6,7 @@ import { AuthContext } from '../../../context/AuthContext';
 import { storage } from '../../../utils/storage';
 import { ClassroomContext } from './ClassroomContext';
 import ClassroomToolbar, { ClassroomNav } from './ClassroomToolbar';
+import MathLabEntryButton from '../../../features/mathlab/overlay/MathLabEntryButton';
 import ClassroomEntryButton from './ClassroomEntryButton';
 import { useFullscreen } from './useFullscreen';
 import { useScrollLock } from './useScrollLock';
@@ -297,6 +298,21 @@ function ClassroomSession({
   const effPrevious = stage ? stage.onPrevious : onPrevious;
   const effNext = stage ? stage.onNext : onNext;
   const effSlot = stage?.slot ?? toolbarSlot;
+  // 🧪 المختبر DANS la barre d'outils de la présentation : au tableau,
+  // devant la classe, c'est là que la main de l'enseignant se trouve, et un
+  // instrument doit être atteignable sans sortir de la séance. Le calque
+  // (z-index 80) couvre la racine de présentation (70) et se portalise
+  // dedans, donc il s'affiche aussi en plein écran natif.
+  //
+  // Il ne remplace pas `effSlot` : une page présentée peut y avoir mis ses
+  // propres commandes (useClassroomStage), on les garde et on ajoute la
+  // nôtre à côté.
+  const toolbarSlotContent = (
+    <>
+      {effSlot}
+      <MathLabEntryButton />
+    </>
+  );
   // Les SAUTS de محور. Ils n'appartiennent à aucune page : c'est la session
   // leçon qui connaît ses voisins, et elle seule les offre. En portée module,
   // exercice ou manipulation, `lessonNav` est nul et aucun bouton n'apparaît.
@@ -357,7 +373,8 @@ function ClassroomSession({
             scope={scope}
             scale={userScale}
             onScaleStep={onScaleStep}
-            slot={effSlot}
+            slot={toolbarSlotContent}
+            onExit={exitClassroomMode}
           />
         )}
 
@@ -378,7 +395,6 @@ function ClassroomSession({
             onNextModule={effNextModule}
             previousModuleLabel={lessonNav?.previousLabel}
             nextModuleLabel={lessonNav?.nextLabel}
-            onExit={exitClassroomMode}
           />
         )}
       </div>

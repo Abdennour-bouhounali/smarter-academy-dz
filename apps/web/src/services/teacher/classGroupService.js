@@ -1,4 +1,4 @@
-import { call, get, send } from './teacherClient';
+import { call, get, query, send } from './teacherClient';
 
 /**
  * Les classes (« الأقسام ») d'un enseignant. Aucun identifiant d'enseignant
@@ -47,6 +47,17 @@ export function fetchClassStudents(token, id) {
 
 export function fetchClassStudentProgress(token, id, studentId) {
   return call(`/teacher/classrooms/${encodeURIComponent(id)}/students/${encodeURIComponent(studentId)}/progress`, get(token), 'progressLoadClass');
+}
+
+/**
+ * Le CAHIER d'un élève de la classe — en lecture seule, borné aux leçons du
+ * قسم par le serveur. Aucune fonction d'écriture ne l'accompagne : il n'y a
+ * pas de route pour cela (TeacherClassroomNotebookController).
+ */
+export function fetchClassStudentNotebook(token, id, studentId, params = null) {
+  const suffix = params ? query(params) : '';
+
+  return call(`/teacher/classrooms/${encodeURIComponent(id)}/students/${encodeURIComponent(studentId)}/notebook${suffix}`, get(token), 'notebookLoad');
 }
 
 export function removeClassStudent(token, id, studentId) {

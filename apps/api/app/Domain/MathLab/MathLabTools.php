@@ -146,6 +146,24 @@ final class MathLabTools
         // l'instrument ne saurait rouvrir ; la borne est vérifiée par
         // logicState.test.js.
         'logic' => ['maxBytes' => 8_000],
+        // Le مختبر القياس : DIX enquêtes, chacune gardant son objet, son
+        // tableau d'observations (vingt lignes au plus), la règle conjecturée
+        // et ses épreuves (dix au plus) — c'est le choix de measureState.js,
+        // parce qu'un élève qui remplit le tableau de l'aire, part mesurer un
+        // cercle et revient doit retrouver SES mesures.
+        //
+        // Rien de ce qui se CALCULE n'est stocké : ni les carrés unités, ni
+        // les secteurs du disque, ni les angles — tout cela se refait des
+        // dimensions de l'objet, et en garder une copie serait garder un
+        // mensonge en puissance. Une observation ne pèse que ses quelques
+        // nombres, et la règle est un petit arbre borné en profondeur
+        // (MAX_RULE_DEPTH). Le pire cas MESURÉ (les dix enquêtes pleines,
+        // vingt observations et dix épreuves chacune) pèse ~22,5 Ko ; un
+        // document ordinaire pèse quelques centaines d'octets. 40 Ko laissent
+        // de la marge aux versions futures sans jamais accepter un document
+        // que l'instrument ne saurait rouvrir ; la borne est tenue côté
+        // client par MAX_OBSERVATIONS et vérifiée par measureState.test.js.
+        'measurement' => ['maxBytes' => 40_000],
     ];
 
     public static function exists(string $tool): bool
