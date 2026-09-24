@@ -186,7 +186,9 @@ export default function PracticePanel({
             ? t('tools.logic.practice.correct')
             : verdict.readable
               ? t('tools.logic.practice.incorrect')
-              : t('tools.logic.practice.unreadable')}
+              : verdict.detail?.tooLarge
+                ? t('tools.logic.practice.tooLarge', { value: String(verdict.detail.value) })
+                : t('tools.logic.practice.unreadable')}
           {!verdict.correct && (
             <span className="sa-ml-lg__note">{t('tools.logic.practice.retryFreely')}</span>
           )}
@@ -257,8 +259,24 @@ export default function PracticePanel({
   );
 }
 
-/** L'énoncé de la question : une formule, une paire P/Q, un argument. */
+/**
+ * L'énoncé de la question : une formule, une paire P/Q, un argument — et
+ * TOUJOURS son domaine quand il en a un. « 1/n > 0 » est vrai sur ℕ* et
+ * « 1/x > 0 » dépend de x sur ℝ : sans « n ∈ ℕ* » écrit à côté, les deux
+ * questions se ressemblent et l'une des réponses paraît arbitraire (§6).
+ */
 function ChallengeSubject({ challenge }) {
+  return (
+    <>
+      <SubjectBody challenge={challenge} />
+      {challenge.domainLabel && (
+        <Notation block data-ml-lg-practice-domain>{challenge.domainLabel}</Notation>
+      )}
+    </>
+  );
+}
+
+function SubjectBody({ challenge }) {
   const { t } = useTranslation('mathlab');
 
   if (challenge.textKey) {
@@ -270,9 +288,10 @@ function ChallengeSubject({ challenge }) {
     return <Notation block lead data-ml-lg-practice-subject>{challenge.formula}</Notation>;
   }
   if (challenge.pFormula) {
+    // ⇔ pour une équivalence, ⇒ pour tout le reste : le connecteur EST la question.
     return (
       <Notation block lead data-ml-lg-practice-subject>
-        {`${challenge.pFormula}  ⇒  ${challenge.qFormula}`}
+        {`${challenge.pFormula}  ${challenge.connective ?? '⇒'}  ${challenge.qFormula}`}
       </Notation>
     );
   }

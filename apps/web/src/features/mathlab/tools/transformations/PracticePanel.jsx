@@ -2,10 +2,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Check, X, RefreshCw, Play, Puzzle } from 'lucide-react';
 import { formatValue } from '../functionGrapher/grapherFormat.js';
-import { vectorColumnText } from '../vectors/vectorFormat.js';
 import { VERTEX_NAMES } from './transformState.js';
-import { PUZZLES } from './practice.js';
-import { describeStep } from './transformModel.js';
+import { PUZZLES, describeChallengeStep } from './practice.js';
 
 /**
  * PRÉDIRE → TRANSFORMER → VÉRIFIER (§38 – §40) et les PUZZLES (§42).
@@ -108,13 +106,14 @@ export default function PracticePanel({
 
             <ol className="sa-ml-tr__questionsteps">
               {challenge.steps.map((step, index) => {
-                const description = describeStep(step, []);
+                // Le pas ENTIER : axe, centre, sens, rapport — sans quoi la question n'a pas de réponse unique.
+                const description = describeChallengeStep(step, [challenge.point]);
 
                 return (
-                  <li key={index} dir="auto">
-                    {t(`tools.transformations.steps.${step.kind}`)}
-                    {' '}
-                    <span dir="ltr">{describeParams(step)}</span>
+                  <li key={index} data-ml-question-step={description?.key ?? step.kind}>
+                    {description
+                      ? t(`tools.transformations.practice.stepText.${description.key}`, isolateParams(description.params))
+                      : t(`tools.transformations.steps.${step.kind}`)}
                   </li>
                 );
               })}
@@ -201,12 +200,12 @@ export default function PracticePanel({
   );
 }
 
-/** Les paramètres d'un pas, en notation LTR, pour l'énoncé. */
-function describeParams(step) {
-  switch (step.kind) {
-    case 'translation': return vectorColumnText({ x: step.vx, y: step.vy });
-    case 'rotation': return `${formatValue(step.angle, 0)}°`;
-    case 'dilation': return `k = ${formatValue(step.k)}`;
-    default: return '';
-  }
+/**
+ * Les paramètres de l'énoncé sont de la NOTATION (LTR) posée dans une phrase
+ * arabe (RTL) : chacun est enfermé dans un isolat bidi (LRI … PDI), sinon
+ * « (−2 ; 3) » ou « y = x » se retrouveraient retournés par l'algorithme
+ * bidi (ARABIC_RTL_CONTRACT).
+ */
+function isolateParams(params) {
+  return Object.fromEntries(Object.entries(params ?? {}).map(([key, value]) => [key, `\u2066${value}\u2069`]));
 }

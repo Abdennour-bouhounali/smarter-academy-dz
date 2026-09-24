@@ -97,7 +97,7 @@ App
         ├── leçon (buildLessonRoutes → LazyLessonKnowledgeProvider)
         │   ├── <Module />
         │   └── <LessonNotebookAnchor config module />   publie la POSITION + déclencheur « 📓 كرّاسي »
-        ├── pratique (PracticeSession → NotebookButton)  ouvre sur le contexte exercice/question
+        ├── pratique (PracticeSession → NotebookButton)  même pastille « 📓 كرّاسي », contexte exercice/question
         └── Mon cahier (NotebookSpace / NoteDetail)       retrouve, rouvre, révise
 ```
 
@@ -109,6 +109,31 @@ App
   rouverte s'il y en a une, le contenu de départ. La session ne suit pas la
   navigation : une note commencée dans le module A reste du module A si
   l'élève passe au module B. Il ferme et rouvre pour écrire « ici ».
+
+### Un seul déclencheur, une seule ouverture
+
+Le déclencheur est **la même pastille** en leçon et en exercice : « 📓 كرّاسي »,
+classe `.sa-nb-lesson-trigger` (`notebook.css`), bascule ouvrir/fermer
+(`aria-pressed`), fixée au bord **physique gauche** à `bottom: 5.5rem`.
+
+| Espace | Composant | `data-nb-trigger` | Contexte capturé |
+| --- | --- | --- | --- |
+| leçon / محور | `LessonNotebookAnchor` | `lesson` | la position publiée (leçon, module, point) |
+| exercice | `NotebookButton` (porté dans `<body>`) | `practice` | exercice, question, réponse, verdict |
+
+En exercice, `NotebookButton` est remonté (`key`) à chaque question **et au
+verdict** : après validation, la pastille commence une nouvelle note
+pré-remplie de la réponse et du verdict ; après un « حفظ », elle rouvre CETTE
+note (jamais de doublon). Sous `lg`, la barre collante « السؤال التالي » occupe
+l'étage au-dessus de la barre d'onglets : la pastille d'exercice monte à
+`8.5rem`. Sur ordinateur, le pied de question réserve sa fin (`lg:pe-36`) à la
+pastille.
+
+**Le cahier s'ouvre toujours en grand (`data-size="large"`), centré dans
+l'écran** (`inset: 0; margin: auto`), dans les deux espaces. L'élève peut le
+réduire en « petit » (il reste centré) et le déplacer par l'en-tête ; ni la
+taille ni la position ne sont gardées d'une ouverture à l'autre. Sous 640px,
+une seule taille, quasi plein écran.
 
 La fenêtre est un **compagnon non modal** : pas de voile, pas de gel du
 défilement, pas de piège à Tab. La leçon reste utilisable, on change de module
@@ -155,6 +180,6 @@ n'y entre jamais.
 
 - `apps/web/src/features/practice/notebook/*.test.js` — logique pure.
 - `apps/api/tests/Feature/NotebookFlowTest.php` — propriété, contexte, refus.
-- `apps/web/e2e/notebook.mjs` — l'exercice, huit tailles d'écran, glisser.
+- `apps/web/e2e/notebook.mjs` — l'exercice : pastille, ouverture en grand et centrée, huit tailles d'écran, pied de question non recouvert, glisser.
 - `apps/web/e2e/notebook-lesson.mjs` — la leçon : contexte, navigation, brique, retour, sécurité.
 - `apps/web/e2e/notebook-space.mjs` — Mon cahier : compteurs, vues, recherche, filtres, carte, page, groupé, impression, révision, mobile.

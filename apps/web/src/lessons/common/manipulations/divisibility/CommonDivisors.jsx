@@ -15,7 +15,19 @@ import EquationDisplay from '../primitives/EquationDisplay';
 import * as L from '../logic/commonDivisors';
 
 /**
- * common-divisors — DEUX LABORATOIRES ENCHAÎNÉS.
+ * common-divisors — les groupes, puis (au niveau متقدم) les listes.
+ *
+ * LE FLUX SUIT LE NIVEAU (décision du propriétaire, 2026-09-24) :
+ *   مبتدئ   les GROUPES seulement. Poser le plus grand nombre de groupes qui
+ *           tombe juste (6 pour 12 et 18) ouvre la découverte — PGCD trouvé
+ *           par le geste, sans second laboratoire.
+ *   متقدم   les groupes, puis les LISTES. Le passage est un GESTE de l'élève :
+ *           une carte « وجدت أكبر عدد… » et un bouton ; un lien ramène aux
+ *           groupes. Rien ne bascule tout seul — l'ancien seuil « deux ✓ et
+ *           un ✗ » remplaçait la scène par une autre après trois essais, sans
+ *           un mot.
+ *   startWith="lists"  les listes seulement (un exemple du manuel sur les
+ *           listes, ex. 28 et 42 dans معارف).
  *
  * 1) LES BOUQUETS (activité 4). L'élève porte un NOMBRE DE BOUQUETS sur la
  *    table ; les fleurs se répartissent réellement, les restes se voient. Le
@@ -49,16 +61,21 @@ export default function CommonDivisors({
     setBouquets(L.initBouquets({ a, b })); setLists(L.initLists({ a, b })); setStage(startWith); setReject(null);
   }, [a, b, state.epoch, startWith]);
 
+  // مبتدئ : les groupes SEULEMENT (voir l'en-tête).
+  const groupsOnly = startWith !== 'lists' && state.level !== 'advanced';
+  const groupsDone = L.greatestGroupFound(bouquets);
+  // `state.epoch` dans les dépendances : `setNumbers` remet la phase à 'act',
+  // la découverte doit être ré-affirmée sur la scène qui l'a méritée.
+  useEffect(() => {
+    if (groupsOnly && stage === 'bouquets' && groupsDone) state.discover();
+  }, [groupsOnly, stage, groupsDone, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const drag = useDragInteraction({
     onDrop: (sourceId, zoneId) => {
       setReject(null);
       if (sourceId.startsWith('k:')) {
         const k = Number(sourceId.replace('k:', ''));
-        setBouquets((s) => {
-          const next = L.choose(s, k);
-          if (L.bouquetsDiscoveryReady(next)) setStage('lists');
-          return next;
-        });
+        setBouquets((s) => L.choose(s, k));
         return;
       }
       const d = Number(sourceId.split(':')[1]);
@@ -78,10 +95,10 @@ export default function CommonDivisors({
     onReject: (sourceId, _z, reason) => setReject({ reason, d: Number(sourceId.split(':')[1]) }),
   });
 
-  useEffect(() => { if (state.isFormal) onFinished?.(lists.g); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (state.isFormal) state.report(onFinished, lists.g); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const heldValue = drag.held ? Number(drag.held.split(':')[1]) : null;
-  const rail = Array.from({ length: Math.min(24, Math.min(a, b)) }, (_, i) => i + 1);
+  const rail = L.groupRail({ a, b });
   // Les mots de la scène : ceux du thème (lesson.json), remplacés par ceux
   // de la situation du manuel quand la leçon les fournit (`context`).
   const words = themeWords(t, theme, context);
@@ -92,19 +109,25 @@ export default function CommonDivisors({
       type="common-divisors"
       title={title ?? t('manipulation.common.title', { a, b })}
       mission={mission ?? (stage === 'bouquets'
-        ? t('manipulation.common.missionGroups', { a, b, itemA: words.itemsA, itemB: words.itemsB })
+        ? t('manipulation.common.missionGreatestGroups', { a, b, itemA: words.itemsA, itemB: words.itemsB })
         : t('manipulation.common.listsMission', { a, b }))}
       lead={lead}
       state={state}
       numberFields={[{ key: 'a', label: 'a' }, { key: 'b', label: 'b' }]}
       allowModeSwitch={allowModeSwitch}
-      hints={[t('manipulation.common.hint1'), t('manipulation.common.hint2'), t('manipulation.common.hint3')]}
+      hints={stage === 'bouquets'
+        ? [t('manipulation.common.groupsHint1'), t('manipulation.common.groupsHint2', { a, b }), t('manipulation.common.groupsHint3')]
+        : [t('manipulation.common.hint2'), t('manipulation.common.hint3')]}
       controller={{
         autoStep: () => {
           if (stage === 'bouquets') {
-            const next = rail.find((k) => bouquets.tried[k] === undefined);
-            if (next === undefined) { setStage('lists'); return true; }
-            setBouquets((s) => { const x = L.choose(s, next); if (L.bouquetsDiscoveryReady(x)) setStage('lists'); return x; });
+            if (groupsDone) {
+              if (groupsOnly) return false;
+              setStage('lists');
+              return true;
+            }
+            const next = rail.find((k) => bouquets.tried[k] === undefined) ?? lists.g;
+            setBouquets((s) => L.choose(s, next));
             return true;
           }
           if (!L.allCommonPlaced(lists)) {
@@ -115,8 +138,13 @@ export default function CommonDivisors({
           if (lists.pgcd === null) { setLists((s) => { const x = L.placePgcd(s, s.g); state.discover(); return x; }); return true; }
           return false;
         },
-        canAutoStep: () => stage === 'bouquets' || lists.pgcd === null,
+        canAutoStep: () => (stage === 'bouquets' ? !(groupsOnly && groupsDone) : lists.pgcd === null),
         showSolution: () => {
+          if (groupsOnly) {
+            setBouquets((s) => L.choose(s, lists.g));
+            state.discover(); state.formalize();
+            return;
+          }
           setStage('lists');
           setLists((s) => { let x = s; for (const d of s.common) x = L.placeCommon(x, d); x = L.placePgcd(x, x.g); return x; });
           state.discover(); state.formalize();
@@ -186,9 +214,24 @@ export default function CommonDivisors({
                 ariaLabel={bouquets.k === null ? `${a} ${words.itemsA} · ${b} ${words.itemsB}` : `${a} = ${bouquets.k} × ${bouquets.qa} + ${bouquets.ra} · ${b} = ${bouquets.k} × ${bouquets.qb} + ${bouquets.rb}`}
               />
             </DropZone>
+            {!groupsOnly && groupsDone && (
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border-2 border-emerald-300 bg-emerald-50 p-3" data-common-next>
+                <p className="text-sm font-bold text-emerald-900">{t('manipulation.common.groupsDone', { g: lists.g, a, b })}</p>
+                <button type="button" onClick={() => setStage('lists')}
+                  className="min-h-[44px] rounded-xl bg-emerald-600 px-4 py-2 text-sm font-extrabold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500">
+                  {t('manipulation.common.toLists')}
+                </button>
+              </div>
+            )}
           </div>
         ) : (
           <div className="space-y-3">
+            {startWith !== 'lists' && (
+              <button type="button" onClick={() => setStage('bouquets')} data-common-back
+                className="min-h-[44px] rounded-xl border border-slate-300 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 hover:border-emerald-400">
+                {t('manipulation.common.backToGroups')}
+              </button>
+            )}
             <div className="grid gap-2 sm:grid-cols-2">
               {[{ side: 'a', n: a, list: lists.da }, { side: 'b', n: b, list: lists.db }].map(({ side, n, list }) => (
                 <div key={side} className="rounded-2xl border-2 border-slate-200 bg-white p-2">

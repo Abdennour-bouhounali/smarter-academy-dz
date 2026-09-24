@@ -221,6 +221,8 @@ describe('alignement de trois points (§22)', () => {
 
   it('deux points confondus : vrai, mais signalé comme dégénéré', () => {
     expect(V.areCollinear(P(1, 1), P(1, 1), P(5, 2))).toEqual({ collinear: true, degenerate: true });
+    // B et C confondus (A distinct) : dégénéré aussi — audit 2026-09-24.
+    expect(V.areCollinear(P(0, 0), P(2, 3), P(2, 3))).toEqual({ collinear: true, degenerate: true });
   });
 });
 

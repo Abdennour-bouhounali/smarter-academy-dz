@@ -14,6 +14,7 @@ import {
 } from '../components/LessonUI';
 import TestPresentation, { useTestPresentation } from './TestPresentation';
 import { revealAll, revealOne } from './testPresentation';
+import LessonLearningPointsStatus from '../components/LessonLearningPointsStatus';
 
 /**
  * Lesson kit — moteur du module final « Boss Final » (évaluatif).
@@ -181,18 +182,25 @@ function BossReview({ epreuves, answers, onContinue, onRedo }) {
   );
 }
 
+/**
+ * « نتيجة هذا التحدي حسب المهارة » — les erreurs de CETTE tentative, par
+ * compétence déclarée dans le module. Ce n'est PAS la maîtrise : les glyphes
+ * sont neutres (✓ / ~ / ✗, jamais les 🟢🟡🔴 des نقاط التعلّم) pour que
+ * l'élève ne confonde pas le score d'un essai avec l'état calculé par le
+ * serveur, rendu juste en dessous (LessonLearningPointsStatus).
+ */
 function ProfilMaitrise({ skills, scores, lessonConfig }) {
   const { t } = useTranslation('lesson');
   const levelOf = (misses) => (misses === 0 ? 'ok' : misses === 1 ? 'mid' : 'low');
 
   const META = {
-    ok: { dot: '🟢', label: t('boss.masteredWell'), tone: 'border-emerald-200 bg-emerald-50' },
-    mid: { dot: '🟡', label: t('boss.someErrors'), tone: 'border-amber-200 bg-amber-50' },
-    low: { dot: '🔴', label: t('boss.needsWork'), tone: 'border-rose-200 bg-rose-50' },
+    ok: { dot: '✓', label: t('boss.masteredWell'), tone: 'border-slate-200 bg-white', glyph: 'bg-slate-800 text-white' },
+    mid: { dot: '~', label: t('boss.someErrors'), tone: 'border-slate-200 bg-slate-50', glyph: 'bg-slate-200 text-slate-800' },
+    low: { dot: '✗', label: t('boss.needsWork'), tone: 'border-slate-300 bg-slate-50', glyph: 'bg-slate-300 text-slate-900' },
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3" data-attempt-by-skill>
       {Object.entries(skills).map(([key, skill]) => {
         const misses = scores[key] ?? 0;
         const lvl = levelOf(misses);
@@ -200,9 +208,9 @@ function ProfilMaitrise({ skills, scores, lessonConfig }) {
         const target = lessonConfig.modules.find((m) => m.number === skill.module);
 
         return (
-          <div key={key} className={`flex items-center justify-between gap-3 rounded-xl border-2 px-4 py-3 flex-wrap ${meta.tone}`}>
+          <div key={key} className={`flex items-center justify-between gap-3 rounded-xl border-2 px-4 py-3 flex-wrap ${meta.tone}`} data-attempt-skill-level={lvl}>
             <div className="flex items-center gap-3">
-              <span className="text-lg" aria-hidden="true">{meta.dot}</span>
+              <span className={`w-7 h-7 rounded-lg font-mono text-sm font-bold flex items-center justify-center shrink-0 ${meta.glyph}`} aria-hidden="true">{meta.dot}</span>
               <div>
                 <div className="font-space font-bold text-slate-800 text-sm">{skill.label}</div>
                 <div className="text-xs text-slate-600">{meta.label}</div>
@@ -262,6 +270,9 @@ export default function BossFinal({
   const [bossAnswers, setBossAnswers] = useState({});
   const [bossSubmitted, setBossSubmitted] = useState(false);
   const [misses, setMisses] = useState({});
+  // Incrémenté à chaque envoi : le bloc « حالتك على نقاط التعلّم » relit le
+  // profil serveur après un court délai (les preuves partent en arrière-plan).
+  const [evidenceBatch, setEvidenceBatch] = useState(0);
   // CE QUI EST RÉVÉLÉ, épreuve par épreuve — UNIQUEMENT en « وضع القسم ».
   //
   // Sur la page de l'élève, le test final reste ce qu'il est : silencieux
@@ -319,8 +330,12 @@ export default function BossFinal({
     const nextMisses = {};
     const attemptAnswers = [];
     epreuves.forEach((ep) => {
+      // `isCorrect` n'est calculé ici QUE pour la revue de cette page, l'XP et
+      // la tentative sauvegardée. La preuve envoyée au serveur ne le porte
+      // plus (Mastery V2) : elle dit ce que l'élève a choisi — `picked: null`
+      // pour une épreuve laissée sans réponse —, le serveur juge.
       const isCorrect = bossAnswers[ep.id] === correctIndexOf(ep);
-      submitEvidence(ep, isCorrect, { picked: bossAnswers[ep.id] ?? null });
+      submitEvidence(ep, { picked: bossAnswers[ep.id] ?? null });
       attemptAnswers.push({
         questionCode: ep.id,
         picked: bossAnswers[ep.id] ?? null,
@@ -340,6 +355,7 @@ export default function BossFinal({
     saveAttempt({ score, totalQuestions: epreuves.length, answers: attemptAnswers });
 
     setBossSubmitted(true);
+    setEvidenceBatch((n) => n + 1);
   }
 
   function redoBoss() {
@@ -416,6 +432,7 @@ export default function BossFinal({
           summary={(
             <div className="space-y-5">
               <ProfilMaitrise skills={skills} scores={misses} lessonConfig={lessonConfig} />
+              {viewer.tracksProgress && <LessonLearningPointsStatus lessonId={ctx.lessonId} refreshToken={evidenceBatch} />}
               {synthese}
             </div>
           )}
@@ -527,6 +544,16 @@ export default function BossFinal({
 
               <ProfilMaitrise skills={skills} scores={misses} lessonConfig={lessonConfig} />
 
+              {/* La MAÎTRISE, à part et nommée comme telle : l'état serveur des
+                  نقاط التعلّم de la leçon, jamais confondu avec le score de
+                  cet essai. Un enseignant qui prépare le test n'a pas de
+                  profil à lire ici. */}
+              {viewer.tracksProgress && (
+                <div className="rounded-2xl border-2 border-slate-200 bg-slate-50/60 p-4 sm:p-5">
+                  <LessonLearningPointsStatus lessonId={ctx.lessonId} refreshToken={evidenceBatch} />
+                </div>
+              )}
+
               {badgesGagnes.length > 0 && (
                 <div className="space-y-3">
                   <h3 className="font-space font-bold text-slate-800 text-sm">{t('boss.badgesUnlocked')}</h3>
@@ -544,7 +571,7 @@ export default function BossFinal({
                     ))}
                   </div>
                   <p className="text-xs text-slate-400">
-                    Les badges récompensent la compréhension et la justesse du raisonnement — jamais la vitesse.
+                    {t('boss.badgesNote')}
                   </p>
                 </div>
               )}

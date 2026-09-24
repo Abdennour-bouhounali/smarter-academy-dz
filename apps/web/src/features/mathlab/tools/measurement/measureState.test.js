@@ -1,7 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import * as S from './measureState.js';
 import * as R from './ruleEngine.js';
-import { INVESTIGATIONS, getInvestigation, measureAll, matchesSolution, initialParams } from './investigations.js';
+import {
+  INVESTIGATIONS, getInvestigation, measureAll, matchesSolution, initialParams,
+  ruleVariablesFor, ruleNumbersFor, isDefinitionOf,
+} from './investigations.js';
 
 /** Un état neuf, posé sur une enquête donnée. */
 function open(id) {
@@ -310,3 +313,157 @@ describe('resolveMeasurement', () => {
     }
   });
 });
+
+/**
+ * Les défauts d'audit de l'étape 7 : chaque correction, rejouée de bout en
+ * bout (observer → règle → épreuve), avec des attendus calculés à part.
+ */
+describe('les règles du manuel atteignent « trouvé », les tautologies non', () => {
+  /** Trois triangles rectangles variés, une règle, puis l'épreuve non choisie. */
+  function pythagorasWith(rule) {
+    let data = open('pythagoras');
+    data = observeAt(data, { side1: 3, side2: 4 });
+    data = observeAt(data, { side1: 5, side2: 2 });
+    data = observeAt(data, { side1: 6, side2: 8 });
+    data = S.setRule(data, rule);
+
+    return S.runUnseenTest(data);
+  }
+  const v = R.variable;
+
+  it('Pythagore écrit avec les CÔTÉS — a² + b², a × a + b × b — est trouvé', () => {
+    const rules = [
+      R.operation('+', R.power(v('side1'), 2), R.power(v('side2'), 2)),
+      R.operation('+', R.operation('*', v('side1'), v('side1')), R.operation('*', v('side2'), v('side2'))),
+      // …et la formulation par les aires des carrés marche toujours.
+      R.operation('+', v('square1'), v('square2')),
+      R.operation('+', v('square2'), R.power(v('side1'), 2)),
+    ];
+    for (const rule of rules) {
+      const data = pythagorasWith(rule);
+      expect(S.evaluateEvidence(data).satisfied, R.formatRule(rule)).toBe(true);
+      expect(S.currentRecord(data).stage, R.formatRule(rule)).toBe('found');
+    }
+  });
+
+  it('c² n’est pas Pythagore : c n’est pas une variable de règle, et c² n’est jamais « trouvé »', () => {
+    const investigation = getInvestigation('pythagoras');
+    const keys = ruleKeys(investigation);
+    expect(keys).not.toContain('hypotenuse');
+    expect(keys).toEqual(expect.arrayContaining(['side1', 'side2', 'square1', 'square2']));
+    const data = pythagorasWith(R.power(v('hypotenuse'), 2));
+    expect(S.currentRecord(data).stage).not.toBe('found');
+    expect(matchesSolution(investigation, R.power(v('hypotenuse'), 2))).toBe(false);
+  });
+
+  it('(C ÷ d) × d et (A ÷ r²) × r² ne sont pas des découvertes', () => {
+    const circumference = getInvestigation('circle-circumference');
+    const area = getInvestigation('circle-area');
+    expect(ruleKeys(circumference)).not.toContain('ratio');
+    expect(ruleKeys(area)).not.toContain('ratio');
+    expect(matchesSolution(circumference, R.operation('*', v('ratio'), v('diameter')))).toBe(false);
+    expect(matchesSolution(area, R.operation('*', v('ratio'), R.power(v('radius'), 2)))).toBe(false);
+    // Les vraies règles restent reconnues.
+    expect(matchesSolution(circumference, R.operation('*', v('diameter'), R.constant('pi')))).toBe(true);
+    expect(matchesSolution(area, R.operation('*', R.operation('*', R.constant('pi'), v('radius')), v('radius')))).toBe(true);
+  });
+
+  it('une règle fausse reste refusée par la comparaison sur objets réels', () => {
+    const pythagoras = getInvestigation('pythagoras');
+    expect(matchesSolution(pythagoras, R.operation('+', v('side1'), v('side2')))).toBe(false);
+    expect(matchesSolution(pythagoras, R.power(R.operation('+', v('side1'), v('side2')), 2))).toBe(false);
+    const cube = getInvestigation('cube-volume');
+    expect(matchesSolution(cube, R.power(v('edge'), 2))).toBe(false);
+  });
+
+  /**
+   * §16 : la découverte est S = 180°. Â + B̂ + Ĉ est la définition de S — elle
+   * tient toujours, et ne compte pas. 180 s'écrit (puces 90, 180, 360).
+   */
+  it('la somme des angles : 180 est trouvé, Â + B̂ + Ĉ est reconnu comme définition', () => {
+    const investigation = getInvestigation('triangle-angle-sum');
+    expect(ruleNumbersFor(investigation)).toEqual(expect.arrayContaining([90, 180, 360]));
+
+    const flow = (rule) => {
+      let data = open('triangle-angle-sum');
+      data = observeAt(data, { base: 7, height: 4, apex: 3 });
+      data = observeAt(data, { base: 4, height: 8, apex: -5 });
+      data = observeAt(data, { base: 12, height: 1, apex: 11 });
+      data = observeAt(data, { base: 5, height: 5, apex: 0 });
+      data = S.setRule(data, rule);
+
+      return S.runUnseenTest(data);
+    };
+    // Attendu indépendant : la somme des angles d'un triangle, mesurée ici
+    // avec atan2 sur les sommets (0,0), (b,0), (apex,h).
+    const angle = (p, q, r) => {
+      const a = Math.atan2(p.y - q.y, p.x - q.x);
+      const b = Math.atan2(r.y - q.y, r.x - q.x);
+      const d = Math.abs(a - b) * 180 / Math.PI;
+
+      return d > 180 ? 360 - d : d;
+    };
+    const P = [{ x: 0, y: 0 }, { x: 4, y: 0 }, { x: -5, y: 8 }];
+    expect(angle(P[2], P[0], P[1]) + angle(P[0], P[1], P[2]) + angle(P[1], P[2], P[0])).toBeCloseTo(180, 9);
+
+    const found = flow(R.number(180));
+    expect(S.currentRecord(found).stage).toBe('found');
+
+    const definitionRule = R.operation('+', R.operation('+', v('angleA'), v('angleB')), v('angleC'));
+    const definition = flow(definitionRule);
+    expect(S.evaluateEvidence(definition).holds).toBe(true);
+    expect(S.currentRecord(definition).stage).not.toBe('found');
+    expect(isDefinitionOf(investigation, definitionRule)).toBe(true);
+    expect(isDefinitionOf(investigation, R.number(180))).toBe(false);
+
+    for (const wrong of [R.number(90), R.number(360), R.operation('*', R.number(3), v('angleA'))]) {
+      expect(S.currentRecord(flow(wrong)).stage, R.formatRule(wrong)).not.toBe('found');
+    }
+  });
+});
+
+describe('les conversions : quatre crans, quatre objets', () => {
+  it('les facteurs de longueur sont tous différents et suivent le moteur de conversion', () => {
+    const investigation = getInvestigation('unit-conversion');
+    const factors = [1, 2, 3, 4].map((scale) => measureAll(investigation, { scale }, 0).lengthFactor);
+    expect(new Set(factors).size).toBe(4);
+    // Attendus indépendants : 1 dm = 10 cm, 1 m = 100 cm, 1 m = 1 000 mm, 1 km = 10 000 dm.
+    expect(factors).toEqual([10, 100, 1000, 10000]);
+    for (const scale of [1, 2, 3, 4]) {
+      const values = measureAll(investigation, { scale }, 0);
+      expect(values.factor).toBe(values.lengthFactor ** 2);
+    }
+  });
+
+  it('l’objet d’épreuve n’est jamais un cran déjà mesuré', () => {
+    const investigation = getInvestigation('unit-conversion');
+    let data = open('unit-conversion');
+    for (const scale of [1, 2, 3]) data = observeAt(data, { scale });
+    data = S.setRule(data, R.power(R.variable('lengthFactor'), 2));
+    data = S.runUnseenTest(data);
+    const record = S.currentRecord(data);
+    expect(record.tests).toHaveLength(1);
+    expect(record.tests[0].values.lengthFactor).toBe(10000);
+    expect(record.observations.some((row) => row.values.lengthFactor === 10000)).toBe(false);
+    expect(record.stage).toBe('found');
+    // Plus rien de neuf : pas d'objet d'épreuve inventé.
+    expect(S.unseenParams(investigation, record, 0)).toBeNull();
+  });
+
+  it('toute la grille mesurée : l’épreuve est exhaustive, et la règle est trouvée', () => {
+    let data = open('unit-conversion');
+    for (const scale of [1, 2, 3, 4]) data = observeAt(data, { scale });
+    data = S.setRule(data, R.operation('*', R.variable('lengthFactor'), R.variable('lengthFactor')));
+    expect(S.unseenParams(getInvestigation('unit-conversion'), S.currentRecord(data), 0)).toBeNull();
+    const evidence = S.evaluateEvidence(data);
+    expect(evidence.exhaustive).toBe(true);
+    expect(evidence.tested).toBe(true);
+    data = S.runUnseenTest(data);
+    expect(S.currentRecord(data).tests).toHaveLength(0);
+    expect(S.currentRecord(data).stage).toBe('found');
+  });
+});
+
+function ruleKeys(investigation) {
+  return ruleVariablesFor(investigation).map((entry) => entry.key);
+}

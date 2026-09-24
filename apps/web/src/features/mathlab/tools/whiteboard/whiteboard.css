@@ -52,7 +52,8 @@
    le panneau, quelle que soit la direction, et défile si l'écran est bas. */
 .sa-ml-whiteboard .excalidraw .layer-ui__library .library-menu-dropdown-container--in-heading .dropdown-menu .dropdown-menu-container {
   max-width: calc(100vw - 2rem);
-  max-height: calc(100dvh - 12rem);
+  /* 12rem de barres, plus la rangée « أدوات الهندسة » (geometry.css). */
+  max-height: calc(100dvh - 16rem);
   overflow-y: auto;
 }
 
@@ -61,4 +62,24 @@
    élève) : la phrase mentirait. */
 .sa-ml-whiteboard .excalidraw .library-menu-items__no-items__hint {
   display: none;
+}
+
+/* ── La سبّورة et son bureau de géométrie ───────────────────────────────
+   Une colonne : la barre « أدوات الهندسة » dans le flux, puis le canevas
+   qui prend tout le reste (Excalidraw veut une boîte non nulle). */
+.sa-ml-whiteboard {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.sa-ml-whiteboard__canvas {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.sa-ml-whiteboard__canvas > .excalidraw {
+  position: absolute;
+  inset: 0;
 }

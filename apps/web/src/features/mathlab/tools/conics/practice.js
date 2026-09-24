@@ -312,6 +312,49 @@ function shuffle(random, list) {
 export const ANSWER_TOLERANCE = 0.01;
 
 /**
+ * LIRE un nombre saisi : `−2`, `1,5`, `٣`, `۴`, `٢٫٥`, `-3/2`. Rend `NaN`
+ * si la saisie est vide ou illisible.
+ *
+ * ── Pourquoi une fonction, et plus `Number(texte.replace(',', '.'))` ──────
+ * `Number('')` vaut 0 : un champ laissé VIDE était jugé « 0 », donc JUSTE
+ * dès que la réponse attendue était 0 (un centre sur l'axe). Et le vrai signe
+ * moins (U+2212) — celui que le plan AFFICHE — ou les chiffres arabes-indiens
+ * rendaient `NaN`, soit un « faux » sur une bonne réponse. Une saisie qu'on
+ * n'a pas su lire n'est ni juste ni fausse : l'interface le dit, sans
+ * verdict.
+ */
+export function parseNumberInput(text) {
+  if (typeof text === 'number') return Number.isFinite(text) ? text : NaN;
+  if (typeof text !== 'string') return NaN;
+
+  const source = text
+    .replace(/[٠-٩]/g, (d) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)))
+    .replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)))
+    .replace(/[−–]/g, '-')
+    .replace(/[،٫,]/g, '.')
+    .replace(/\s+/g, '');
+  if (!source) return NaN;
+
+  const number = '[-+]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)';
+  const fraction = source.match(new RegExp(`^(${number})/(${number})$`));
+  if (fraction) {
+    const value = Number(fraction[1]) / Number(fraction[2]);
+
+    return Number.isFinite(value) ? value : NaN;
+  }
+
+  return new RegExp(`^${number}$`).test(source) ? Number(source) : NaN;
+}
+
+/** Un point saisi champ par champ, ou `null` si l'une des coordonnées est illisible. */
+export function parsePointInput(draft) {
+  const x = parseNumberInput(draft?.x);
+  const y = parseNumberInput(draft?.y);
+
+  return Number.isFinite(x) && Number.isFinite(y) ? { x, y } : null;
+}
+
+/**
  * Juger une réponse. Rend TOUJOURS de quoi continuer : ce qui était attendu,
  * et — c'est le point — jamais un blocage.
  *
@@ -330,7 +373,8 @@ export function judge(challenge, given) {
       return { correct, expected, given };
     }
     case 'number': {
-      const value = Number(given);
+      // `Number('')` vaudrait 0 : on relit avec la même règle que la saisie.
+      const value = parseNumberInput(given);
 
       return {
         correct: Number.isFinite(value) && Math.abs(value - expected) <= ANSWER_TOLERANCE,

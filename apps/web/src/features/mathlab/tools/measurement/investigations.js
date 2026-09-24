@@ -40,9 +40,16 @@ export const STAGES = Object.freeze(['rectangle', 'triangle', 'circle', 'cuboid'
  *   - `input`   une dimension que l'élève règle (elle a une poignée) ;
  *   - `derived` une mesure que l'instrument prend pour lui (l'aire comptée) ;
  *   - `target`  la grandeur cherchée — la colonne de droite du tableau.
+ *
+ * `inRule: false` retire une colonne du constructeur de règles. C'est le
+ * cas de toute colonne CALCULÉE À PARTIR DE LA CIBLE : C ÷ d, A ÷ r², le
+ * côté c = √(c²). Elle se lit dans le tableau (c'est elle qui montre π
+ * stable), mais une règle qui s'en sert est une tautologie —
+ * (C ÷ d) × d vaut C sur N'IMPORTE QUEL objet, sans rien avoir découvert.
  */
 const quantity = (key, symbol, role, measure, options = {}) => Object.freeze({
   key, symbol, role, measure, decimals: options.decimals ?? 2, unit: options.unit ?? 'length',
+  inRule: options.inRule ?? true,
 });
 
 /**
@@ -182,7 +189,7 @@ const circleCircumference = defineInvestigation({
     quantity('circumference', 'C', 'target', (p) => M.circleCircumference(p.radius), { decimals: 2 }),
     // La COLONNE qui fait tout le travail (§10) : le quotient reste stable.
     // Elle est `derived` : l'instrument la calcule, l'élève la lit.
-    quantity('ratio', 'C ÷ d', 'derived', (p) => M.cleanNumber(M.circleCircumference(p.radius) / (2 * p.radius)), { decimals: 3, unit: 'none' }),
+    quantity('ratio', 'C ÷ d', 'derived', (p) => M.cleanNumber(M.circleCircumference(p.radius) / (2 * p.radius)), { decimals: 3, unit: 'none', inRule: false }),
   ],
   target: 'circumference',
   hintCount: 3,
@@ -205,7 +212,7 @@ const circleArea = defineInvestigation({
   quantities: [
     quantity('radius', 'r', 'input', (p) => p.radius, { decimals: 2 }),
     quantity('area', 'A', 'target', (p) => M.circleArea(p.radius), { decimals: 2, unit: 'area' }),
-    quantity('ratio', 'A ÷ r²', 'derived', (p) => M.cleanNumber(M.circleArea(p.radius) / (p.radius * p.radius)), { decimals: 3, unit: 'none' }),
+    quantity('ratio', 'A ÷ r²', 'derived', (p) => M.cleanNumber(M.circleArea(p.radius) / (p.radius * p.radius)), { decimals: 3, unit: 'none', inRule: false }),
   ],
   target: 'area',
   hintCount: 3,
@@ -291,10 +298,10 @@ const unitConversion = defineInvestigation({
   params: [param('scale', 1, 4, 1, 2)],
   quantities: [
     // k : combien de fois la petite unité entre dans la grande, en LONGUEUR.
-    quantity('lengthFactor', 'k', 'input', (p) => SCALE_FACTORS[Math.round(p.scale)] ?? 10, { decimals: 0, unit: 'none' }),
+    quantity('lengthFactor', 'k', 'input', (p) => scaleFactor(p.scale), { decimals: 0, unit: 'none' }),
     // Ce que l'élève COMPTE : les carrés unités qui pavent le grand carré.
     quantity('factor', 'F', 'target', (p) => {
-      const k = SCALE_FACTORS[Math.round(p.scale)] ?? 10;
+      const k = scaleFactor(p.scale);
 
       return M.cleanNumber(k * k);
     }, { decimals: 0, unit: 'none' }),
@@ -311,11 +318,30 @@ const unitConversion = defineInvestigation({
 });
 
 /**
- * Les facteurs de longueur explorables : dm→cm, m→cm, m→mm, km→m.
- * Ils sont volontairement DIFFÉRENTS les uns des autres — un tableau où k
- * vaudrait toujours 100 ne laisserait rien découvrir.
+ * Les conversions explorables, cran par cran : dm→cm, m→cm, m→mm, km→dm.
+ *
+ * Leurs facteurs sont TOUS DIFFÉRENTS (10, 100, 1 000, 10 000), et c'est une
+ * exigence, pas un choix de goût. Le quatrième cran était km→m, soit 1 000
+ * comme m→mm : deux crans, un seul objet. L'élève qui avait mesuré le cran 3
+ * se voyait proposer le cran 4 comme objet « jamais vu », alors que son
+ * tableau contenait déjà exactement ces mesures — l'épreuve ne prouvait rien.
+ *
+ * Le facteur est lu dans le moteur de conversion (`lengthFactor`), pas
+ * recopié : la scène, le tableau et le moteur disent le même nombre.
  */
-const SCALE_FACTORS = Object.freeze({ 1: 10, 2: 100, 3: 1000, 4: 1000 });
+export const SCALE_UNITS = Object.freeze({
+  1: Object.freeze(['dm', 'cm']),
+  2: Object.freeze(['m', 'cm']),
+  3: Object.freeze(['m', 'mm']),
+  4: Object.freeze(['km', 'dm']),
+});
+
+/** Le facteur de longueur du cran `scale` (m→cm par défaut). */
+export function scaleFactor(scale) {
+  const units = SCALE_UNITS[Math.round(Number(scale))] ?? SCALE_UNITS[2];
+
+  return M.lengthFactor(units[0], units[1]);
+}
 
 // ─────────────────────────────────────────────────────────────────────────
 // §15 — La relation de Pythagore
@@ -334,11 +360,15 @@ const pythagoras = defineInvestigation({
     quantity('squareHyp', 'c²', 'target', (p) => M.cleanNumber(p.side1 * p.side1 + p.side2 * p.side2), { decimals: 2, unit: 'area' }),
     quantity('side1', 'a', 'input', (p) => p.side1, { decimals: 2 }),
     quantity('side2', 'b', 'input', (p) => p.side2, { decimals: 2 }),
-    quantity('hypotenuse', 'c', 'derived', (p) => M.cleanNumber(Math.hypot(p.side1, p.side2)), { decimals: 3 }),
+    // c se LIT (c'est le côté qu'on mesure à la règle), mais il est tiré de c² :
+    // « c² » comme règle serait la définition de la cible, pas Pythagore.
+    quantity('hypotenuse', 'c', 'derived', (p) => M.cleanNumber(Math.hypot(p.side1, p.side2)), { decimals: 3, inRule: false }),
   ],
   target: 'squareHyp',
   hintCount: 3,
-  // C'est bien la relation entre les AIRES des carrés que l'élève cherche.
+  // C'est bien la relation entre les AIRES des carrés que l'élève cherche —
+  // et « a² + b² » écrit avec les CÔTÉS est la même découverte : les deux se
+  // jugent sur des objets réels, où a² vaut toujours a × a (`matchesSolution`).
   solution: R.operation('+', R.variable('square1'), R.variable('square2')),
   explanation: 'squares',
   // Le nom du théorème n'arrive qu'APRÈS (§15).
@@ -368,7 +398,21 @@ const angleSum = defineInvestigation({
   ],
   target: 'sum',
   hintCount: 3,
-  solution: R.operation('+', R.operation('+', R.variable('angleA'), R.variable('angleB')), R.variable('angleC')),
+  /**
+   * La découverte est la CONSTANTE : S = 180°, quel que soit le triangle.
+   *
+   * La solution était `Â + B̂ + Ĉ` — la DÉFINITION de S, vraie de n'importe
+   * quels trois nombres, qui n'apprend rien sur les triangles. Et 180 ne
+   * pouvait pas s'écrire (les nombres posables étaient 2, 3, 4). L'enquête
+   * propose donc trois angles remarquables (`ruleNumbers` : 90, 180, 360) —
+   * trois, pour que la puce ne souffle pas la réponse — et juge « trouvé »
+   * la règle qui prédit 180 sur tout triangle.
+   */
+  solution: R.number(180),
+  ruleNumbers: Object.freeze([90, 180, 360]),
+  // `Â + B̂ + Ĉ` tient sur chaque ligne, mais par définition : ce n'est pas
+  // une découverte, et `matchesSolution` la refuse (voir `definition`).
+  definition: R.operation('+', R.operation('+', R.variable('angleA'), R.variable('angleB')), R.variable('angleC')),
   // L'invariant : la somme ne dépend d'AUCUNE dimension. C'est une constante,
   // et c'est cela qui est remarquable.
   invariantValue: 180,
@@ -423,7 +467,7 @@ export const DEFAULT_INVESTIGATION = 'rectangle-area';
  * ne trahit la formule.
  */
 export function investigationSecretKeys() {
-  return Object.freeze(['solution', 'alternateSolutions', 'invariantValue', 'revealsConstant']);
+  return Object.freeze(['solution', 'alternateSolutions', 'invariantValue', 'revealsConstant', 'definition']);
 }
 
 /** Les paramètres d'ouverture d'une enquête. */
@@ -468,24 +512,135 @@ export function tableColumns(investigation) {
     .sort((a, b) => (order[a.role] ?? 1) - (order[b.role] ?? 1));
 }
 
-/** Les variables que le constructeur de règles propose pour une enquête. */
+/**
+ * Les variables que le constructeur de règles propose pour une enquête :
+ * tout sauf la cible, les colonnes muettes (—) et celles tirées de la cible
+ * (`inRule: false`).
+ */
 export function ruleVariablesFor(investigation) {
   return (investigation?.quantities ?? [])
-    .filter((entry) => entry.key !== investigation.target && entry.symbol !== '—')
+    .filter((entry) => entry.key !== investigation.target && entry.symbol !== '—' && entry.inRule !== false)
     .map((entry) => ({ key: entry.key, symbol: entry.symbol }));
+}
+
+/** Les nombres que le constructeur propose : ceux du programme, et ceux de l'enquête. */
+export function ruleNumbersFor(investigation) {
+  return [...R.RULE_CONSTANTS, ...(investigation?.ruleNumbers ?? [])];
+}
+
+/**
+ * Les configurations de l'objet, dans l'ordre de la grille (le premier
+ * paramètre varie le plus vite). Rend `null` si la grille dépasse `limit`.
+ */
+export function parameterGrid(investigation, limit = Infinity) {
+  const axes = (investigation?.params ?? []).map((entry) => {
+    const span = Math.max(0, Math.round((entry.max - entry.min) / entry.step));
+    const values = [];
+    for (let i = 0; i <= span; i += 1) values.push(M.cleanNumber(Math.min(entry.max, entry.min + i * entry.step)));
+
+    return { key: entry.key, values };
+  });
+  const size = axes.reduce((product, axis) => product * axis.values.length, 1);
+  if (size > limit) return null;
+
+  const grid = [];
+  for (let index = 0; index < size; index += 1) {
+    const params = {};
+    let rest = index;
+    for (const axis of axes) {
+      params[axis.key] = axis.values[rest % axis.values.length];
+      rest = Math.floor(rest / axis.values.length);
+    }
+    grid.push(params);
+  }
+
+  return grid;
+}
+
+/**
+ * Les MESURES exactes d'un échantillon d'objets réels de l'enquête : toute
+ * la grille si elle est petite, sinon un sous-ensemble déterministe qui la
+ * parcourt d'un bout à l'autre. Mis en cache : l'écran le relit à chaque rendu.
+ */
+const SAMPLE_CACHE = new WeakMap();
+const MAX_SAMPLES = 240;
+
+function consistentSamples(investigation) {
+  if (SAMPLE_CACHE.has(investigation)) return SAMPLE_CACHE.get(investigation);
+  const full = parameterGrid(investigation);
+  let chosen = full;
+  if (full.length > MAX_SAMPLES) {
+    // Un pas premier avec la taille de la grille visite des configurations
+    // bien réparties, et jamais deux fois la même.
+    let stride = Math.floor(full.length / MAX_SAMPLES) + 1;
+    while (gcd(stride, full.length) !== 1) stride += 1;
+    chosen = [];
+    for (let i = 0; i < MAX_SAMPLES; i += 1) chosen.push(full[(i * stride) % full.length]);
+  }
+  const samples = chosen.map((params) => measureAll(investigation, params, 0));
+  SAMPLE_CACHE.set(investigation, samples);
+
+  return samples;
+}
+
+function gcd(a, b) {
+  return b === 0 ? a : gcd(b, a % b);
+}
+
+/** La règle n'utilise-t-elle que des colonnes que le constructeur propose ? */
+function usesOnlyRuleVariables(investigation, rule) {
+  const allowed = new Set(ruleVariablesFor(investigation).map((entry) => entry.key));
+
+  return [...R.ruleVariables(rule)].every((name) => allowed.has(name));
 }
 
 /**
  * La règle proposée est-elle CELLE qu'on cherchait ?
  *
- * On compare par les valeurs (`sameRelation`), jamais par la forme de
- * l'arbre : un élève qui écrit `l × L` a trouvé la même règle que `L × l`,
- * et un élève qui écrit `2 × (L + l)` a trouvé la même que `L + l + L + l`.
+ * On compare par les valeurs, jamais par la forme de l'arbre : un élève qui
+ * écrit `l × L` a trouvé la même règle que `L × l`, et un élève qui écrit
+ * `2 × (L + l)` a trouvé la même que `L + l + L + l`.
+ *
+ * Les valeurs sont celles d'OBJETS RÉELS de l'enquête (`consistentSamples`),
+ * pas des nombres tirés indépendamment pour chaque colonne. Tirées
+ * indépendamment, a² et a ne se connaissaient plus : `a² + b²` écrit avec
+ * les côtés ne rejoignait jamais la solution écrite avec les aires des
+ * carrés, et Pythagore, énoncé comme au manuel, n'était jamais « trouvé » —
+ * alors qu'il tenait sur chaque observation et chaque épreuve.
+ *
+ * Deux gardes empêchent que ces valeurs cohérentes ne récompensent une
+ * TAUTOLOGIE :
+ *   · une règle ne peut se servir que des colonnes du constructeur (pas de
+ *     C ÷ d, ni de c tiré de c²) ;
+ *   · une règle qui n'est que la DÉFINITION de la cible (`definition` :
+ *     Â + B̂ + Ĉ pour la somme S), jugée sur des valeurs libres, ne compte pas.
  */
 export function matchesSolution(investigation, rule) {
   if (!investigation || !R.isComplete(rule)) return false;
-  const names = (investigation.quantities ?? []).map((entry) => entry.key);
+  if (!usesOnlyRuleVariables(investigation, rule)) return false;
+  if (isDefinitionOf(investigation, rule)) return false;
   const candidates = [investigation.solution, ...(investigation.alternateSolutions ?? [])];
+  const samples = consistentSamples(investigation);
 
-  return candidates.some((candidate) => R.sameRelation(candidate, rule, names));
+  return candidates.some((candidate) => samples.every((values) => {
+    const expected = R.evaluateRule(candidate, values);
+    const predicted = R.evaluateRule(rule, values);
+
+    return Number.isFinite(expected) && Number.isFinite(predicted)
+      && M.nearlyEqual(expected, predicted, 1e-9);
+  }));
+}
+
+/**
+ * La règle n'est-elle que la DÉFINITION de la cible ? (Â + B̂ + Ĉ pour S)
+ *
+ * Jugée sur des valeurs LIBRES (`sameRelation`) : c'est l'identité des
+ * écritures qui compte, pas la coïncidence sur les triangles. L'écran s'en
+ * sert pour dire pourquoi une règle qui tient n'est pas encore la découverte.
+ */
+export function isDefinitionOf(investigation, rule) {
+  if (!investigation?.definition || !R.isComplete(rule)) return false;
+  const names = (investigation.quantities ?? []).map((entry) => entry.key);
+
+  return R.sameRelation(investigation.definition, rule, names);
 }

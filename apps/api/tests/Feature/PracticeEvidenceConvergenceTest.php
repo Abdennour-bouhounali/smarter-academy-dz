@@ -121,9 +121,12 @@ class PracticeEvidenceConvergenceTest extends TestCase
     public function test_there_is_no_second_mastery_table(): void
     {
         // Une garde bon marché contre l'ajout futur d'un `practice_mastery`.
+        // `mastery_replays` est le JOURNAL des rejeux (qui a recalculé quoi,
+        // quand) : il ne porte aucun état par élève et n'est pas une table
+        // de maîtrise — la seule reste student_learning_point_progress.
         $tables = collect(\DB::select('SHOW TABLES'))
             ->map(fn ($r) => array_values((array) $r)[0])
-            ->filter(fn ($t) => str_contains($t, 'mastery') || str_contains($t, 'maitrise'))
+            ->filter(fn ($t) => (str_contains($t, 'mastery') || str_contains($t, 'maitrise')) && $t !== 'mastery_replays')
             ->values()->all();
 
         $this->assertSame([], $tables, 'la maîtrise vit dans student_learning_point_progress, et nulle part ailleurs');

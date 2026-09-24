@@ -1,23 +1,14 @@
 import { useContext, useEffect, useState, useCallback } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { BookOpen, Dumbbell } from 'lucide-react';
-import { ArrowBack } from '../../../components/common/DirectionalIcons';
+import { BookOpen, Dumbbell, PlayCircle } from 'lucide-react';
+import { ArrowBack, ArrowForward } from '../../../components/common/DirectionalIcons';
 import { AuthContext } from '../../../context/AuthContext';
 import { fetchPracticeOverview, startPracticeSession } from '../../../services/practiceService';
 import LevelSelector from '../../../features/practice/LevelSelector';
-import { MASTERY_STATES, resolveMasteryState } from '../../../lessons/common/components/LearningPointMastery';
+import LearningPointProgress from '../../../features/practice/LearningPointProgress';
+import { resolveMasteryState, reasonLabel, freshnessLabel } from '../../../lessons/common/components/LearningPointMastery';
 import { getLessonPath } from '@smarter-academy/core';
-
-// Les tons de MASTERY_STATES sont des NOMS de couleur, pas des classes :
-// la table de correspondance est privée à LearningPointMastery, on la refait
-// ici pour la mise en page compacte du Hub.
-const TONE = {
-  slate: 'border-slate-200 bg-slate-50',
-  rose: 'border-rose-200 bg-rose-50',
-  amber: 'border-amber-200 bg-amber-50',
-  emerald: 'border-emerald-200 bg-emerald-50',
-};
 
 /**
  * Le Hub de pratique d'une leçon : les niveaux, et l'état des connaissances
@@ -63,7 +54,7 @@ export default function PracticeHub() {
 
   if (error && !overview) {
     return (
-      <div className="sa-surface-plain sa-page py-8 sm:py-10 space-y-8">
+      <div className="sa-surface-plain sa-page sa-page--flush py-6 space-y-6">
         <p className="text-rose-700 bg-rose-50 border-2 border-rose-200 rounded-xl p-4">{error}</p>
         <Link to="/espace/cours" className="text-sm font-bold text-slate-600 hover:text-slate-900">
           ← {t('practice.backToMyCourses')}
@@ -73,7 +64,7 @@ export default function PracticeHub() {
   }
 
   if (!overview) {
-    return <div className="sa-surface-plain sa-page py-8 sm:py-10 space-y-8"><div className="h-64 rounded-2xl bg-slate-100 animate-pulse" /></div>;
+    return <div className="sa-surface-plain sa-page sa-page--flush py-6"><div className="h-64 rounded-2xl bg-slate-100 animate-pulse" /></div>;
   }
 
   const { lesson, levels, recommendedLevel, learningPoints, openSession } = overview;
@@ -82,90 +73,105 @@ export default function PracticeHub() {
   const lessonPath = getLessonPath(lessonCode);
 
   return (
-    <div className="sa-surface-plain sa-page py-8 sm:py-10 space-y-8">
-      <nav className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-mono text-slate-500" aria-label={t('nav.breadcrumb', { ns: 'lesson' })}>
-        <Link to="/espace/cours" className="hover:text-blue-600 inline-flex items-center gap-1 whitespace-nowrap">
-          <ArrowBack className="w-3 h-3" aria-hidden="true" /> {t('practice.breadcrumbMyCourses')}
+    // Même cadre que le lecteur d'exercices : toute la largeur, 20 px de
+    // chaque côté (`.sa-page--flush`), un rythme vertical serré.
+    <div className="sa-surface-plain sa-page sa-page--flush py-4 sm:py-6 space-y-4">
+      <nav className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-semibold text-slate-600" aria-label={t('nav.breadcrumb', { ns: 'lesson' })}>
+        <Link to="/espace/cours" className="inline-flex min-h-[44px] items-center gap-1.5 whitespace-nowrap hover:text-indigo-700">
+          <ArrowBack className="h-4 w-4" aria-hidden="true" /> {t('practice.breadcrumbMyCourses')}
         </Link>
         {lessonPath && (
           <>
-            <span aria-hidden="true">/</span>
-            <Link to={lessonPath} className="hover:text-blue-600 whitespace-nowrap">
-              {lesson.title}
-            </Link>
+            <span aria-hidden="true" className="text-slate-300">/</span>
+            <Link to={lessonPath} className="min-w-0 truncate hover:text-indigo-700">{lesson.title}</Link>
           </>
         )}
       </nav>
 
-      <header className="space-y-2">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 font-mono text-xs font-semibold">
-          <Dumbbell className="w-3.5 h-3.5" aria-hidden="true" /> {t('practice.eyebrow')}
+      <header className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2" data-practice-hub-header>
+        <div className="min-w-0 space-y-1">
+          <p className="inline-flex items-center gap-1.5 text-sm font-bold text-indigo-700">
+            <Dumbbell className="h-4 w-4" aria-hidden="true" /> {t('practice.eyebrow')}
+          </p>
+          <h1 className="text-xl font-bold leading-snug text-slate-900 sm:text-2xl">{lesson.title}</h1>
+          <p className="text-sm text-slate-600">{t('practice.hubSubtitle')}</p>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-space font-extrabold text-slate-900">{lesson.title}</h1>
-        <p className="text-sm text-slate-600">
-          {t('practice.hubSubtitle')}
-        </p>
         {/* Le retour au cours. La pratique n'est pas une impasse : l'élève qui
             butte sur un niveau doit pouvoir relire la leçon en un geste, sans
             repasser par « Mes cours ». `lessonPath` est nul quand la leçon
             n'est pas (encore) au catalogue — on n'affiche alors aucun lien
-            plutôt qu'un lien mort. */}
+            plutôt qu'un lien mort. Action TERTIAIRE : le choix du niveau est
+            l'action de la page. */}
         {lessonPath && (
           <Link
             to={lessonPath}
-            className="inline-flex items-center gap-2 px-4 py-2.5 min-h-[44px] rounded-xl border-2 border-slate-300 bg-white text-slate-700 font-bold text-sm hover:bg-slate-50 hover:border-slate-400 transition-colors focus-visible:ring-2 focus-visible:ring-indigo-400 focus:outline-none"
+            className="inline-flex min-h-[44px] items-center gap-2 rounded-lg px-3 text-sm font-bold text-slate-700 hover:bg-white hover:text-indigo-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
           >
-            <BookOpen className="w-4 h-4" aria-hidden="true" />
+            <BookOpen className="h-4 w-4" aria-hidden="true" />
             {t('practice.reviewLesson')}
           </Link>
         )}
       </header>
 
-      {error && <p className="text-sm text-rose-700 bg-rose-50 border-2 border-rose-200 rounded-xl p-3">{error}</p>}
+      {error && <p className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">{error}</p>}
 
+      {/* Une séance ouverte : UNE rangée, l'action principale de la page
+          quand elle existe. */}
       {openSession && (
-        <div className="rounded-2xl border-2 border-indigo-200 bg-indigo-50 p-4 flex items-center justify-between gap-3 flex-wrap">
-          <p className="text-sm text-indigo-900">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border-s-4 border-indigo-600 bg-white px-4 py-3 ring-1 ring-slate-200" data-open-session>
+          <p className="flex items-center gap-2 text-sm font-semibold text-slate-800">
+            <PlayCircle className="h-5 w-5 text-indigo-600" aria-hidden="true" />
             {t('practice.openSession', { level: openSession.level })}
           </p>
           <Link
             to={`/espace/pratique/${lessonCode}/session/${openSession.sessionId}`}
-            className="px-4 py-2.5 rounded-xl bg-indigo-600 text-white font-bold text-sm min-h-[44px] inline-flex items-center"
+            className="inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-indigo-600 px-5 text-sm font-bold text-white hover:bg-indigo-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
           >
             {t('practice.resume')}
+            <ArrowForward className="h-4 w-4" aria-hidden="true" />
           </Link>
         </div>
       )}
 
-      <section className="space-y-4">
-        <h2 className="text-lg font-space font-bold text-slate-900">{t('practice.levelsTitle')}</h2>
-        <LevelSelector levels={levels} recommendedLevel={recommendedLevel} onSelect={start} busyLevel={busyLevel} />
-      </section>
-
-      {learningPoints.length > 0 && (
-        <section className="space-y-3">
-          <h2 className="text-lg font-space font-bold text-slate-900">{t('practice.whatYouShowed')}</h2>
-          <p className="text-sm text-slate-500">
-            {t('practice.whatYouShowedHint')}
-          </p>
-          <ul className="space-y-2">
-            {learningPoints.map((lp) => {
-              // resolveMasteryState attend la LIGNE entière, pas le statut seul.
-              const state = MASTERY_STATES[resolveMasteryState(lp)];
-
-              return (
-                <li key={lp.code} className={`flex items-start gap-3 rounded-xl border-2 px-4 py-3 ${TONE[state.tone]}`}>
-                  <span aria-hidden="true">{state.emoji}</span>
-                  <div className="min-w-0">
-                    <p className="text-sm font-bold text-slate-800">{lp.title}</p>
-                    <p className="text-xs text-slate-600">{state.label}</p>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
+      {/* Grand écran : les points d'apprentissage en colonne au DÉBUT (à droite
+          en RTL, comme dans le lecteur), les niveaux prennent le reste. Plus
+          petit : les niveaux d'abord — choisir un niveau est l'action. */}
+      <div className="grid grid-cols-1 gap-5 xl:grid-cols-[30.6rem_minmax(0,1fr)] xl:items-start xl:[grid-template-areas:'side_main']">
+        <section className="space-y-2 xl:[grid-area:main]" aria-labelledby="practice-levels-title">
+          <h2 id="practice-levels-title" className="text-base font-bold text-slate-900">{t('practice.levelsTitle')}</h2>
+          <LevelSelector levels={levels} recommendedLevel={recommendedLevel} onSelect={start} busyLevel={busyLevel} />
         </section>
-      )}
+
+        {learningPoints.length > 0 && (
+          <section className="space-y-2 xl:sticky xl:top-4 xl:[grid-area:side]" aria-labelledby="practice-lps-title" data-practice-hub-lps>
+            <div>
+              <h2 id="practice-lps-title" className="text-base font-bold text-slate-900">{t('practice.whatYouShowed')}</h2>
+              <p className="text-xs text-slate-600">{t('practice.whatYouShowedHint')}</p>
+            </div>
+            {/* Le MÊME module que dans le lecteur : chemin d'étoiles (l'état
+                Mastery V2) et compteurs exercices / questions. Sous `xl`,
+                deux par rangée sur tablette. */}
+            <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-1">
+              {learningPoints.map((lp) => {
+                const stateKey = resolveMasteryState(lp);
+                const reason = stateKey === 'reinforce' ? reasonLabel(lp, t) : '';
+                const freshness = stateKey === 'mastered' && lp.freshness && lp.freshness !== 'fresh' ? freshnessLabel(lp, t) : '';
+
+                return (
+                  <li key={lp.code} data-mastery-state={stateKey} className="space-y-1">
+                    <LearningPointProgress point={lp} eyebrow={false} headingTag="h3" />
+                    {(reason || freshness) && (
+                      <p className="px-1 text-xs text-slate-600">
+                        {reason}{reason && freshness ? ' · ' : ''}{freshness && `⏳ ${freshness}`}
+                      </p>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        )}
+      </div>
     </div>
   );
 }

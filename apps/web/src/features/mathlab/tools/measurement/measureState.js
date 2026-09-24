@@ -30,7 +30,7 @@
 
 import {
   INVESTIGATIONS, INVESTIGATION_IDS, DEFAULT_INVESTIGATION, getInvestigation,
-  initialParams, measureAll, matchesSolution,
+  initialParams, measureAll, matchesSolution, parameterGrid,
 } from './investigations.js';
 import { normalizeRule, isComplete, testRule } from './ruleEngine.js';
 import { clamp, cleanNumber } from './measureMath.js';
@@ -317,8 +317,16 @@ export function runUnseenTest(data) {
   if (!isComplete(record.rule)) return data;
 
   const params = unseenParams(investigation, record, data.precision);
-  const values = measureAll(investigation, params, data.precision);
-  const tests = [...record.tests, { id: newId(), values }].slice(-MAX_TESTS);
+  /**
+   * Plus AUCUN objet jamais vu : l'élève a déjà mesuré toute la grille (les
+   * quatre crans des conversions, par exemple). On n'invente pas d'épreuve
+   * sur un objet déjà mesuré — elle ne prouverait rien. La règle a alors
+   * été confrontée à TOUS les objets possibles, et `evaluateEvidence` le
+   * compte comme une épreuve (`exhaustive`).
+   */
+  const tests = params === null
+    ? record.tests
+    : [...record.tests, { id: newId(), values: measureAll(investigation, params, data.precision) }].slice(-MAX_TESTS);
 
   const evidence = evaluateEvidence({ ...data, records: { ...data.records, [investigation.id]: { ...record, tests } } });
   const stage = evidence.satisfied && matchesSolution(investigation, record.rule) ? 'found' : record.stage;
@@ -333,6 +341,24 @@ export function runUnseenTest(data) {
  * du nombre d'essais déjà faits — donc sans hasard, et sans jamais retomber
  * indéfiniment sur la même configuration.
  */
+const GRID_SCAN_LIMIT = 5000;
+
+/**
+ * L'élève a-t-il mesuré TOUS les objets possibles de l'enquête ? Alors une
+ * règle qui tient sur ses observations a été éprouvée partout.
+ */
+function coversWholeGrid(investigation, observations, precision) {
+  const grid = parameterGrid(investigation, GRID_SCAN_LIMIT);
+  if (!grid || grid.length === 0 || observations.length < grid.length) return false;
+
+  return grid.every((params) => {
+    const values = measureAll(investigation, params, precision);
+
+    return observations.some((row) => sameValues(row.values, values));
+  });
+}
+
+/** @returns {object|null} des dimensions jamais mesurées, ou null s'il n'en reste aucune. */
 export function unseenParams(investigation, record, precision = 0) {
   const seen = [...record.observations, ...record.tests];
   const attempts = seen.length;
@@ -346,6 +372,19 @@ export function unseenParams(investigation, record, precision = 0) {
     });
     const values = measureAll(investigation, params, precision);
     if (!seen.some((row) => sameValues(row.values, values))) return params;
+  }
+
+  // Le balayage n'a rien trouvé : on parcourt toute la grille, quand elle est
+  // parcourable. Si TOUT a déjà été vu, il n'existe plus d'objet d'épreuve.
+  const grid = parameterGrid(investigation, GRID_SCAN_LIMIT);
+  if (grid) {
+    const fresh = grid.find((params) => {
+      const values = measureAll(investigation, params, precision);
+
+      return !seen.some((row) => sameValues(row.values, values));
+    });
+
+    return fresh ?? null;
   }
 
   // Filet : les dimensions d'ouverture, décalées d'un pas.
@@ -428,15 +467,17 @@ export function evaluateEvidence(data) {
   const holds = check.verdict === 'holds';
 
   const testCheck = testRule(rule, record.tests, investigation.target);
+  const exhaustive = holds && coversWholeGrid(investigation, record.observations, data.precision);
   const tested = !requirement.requiresUnseenTest
     ? true
-    : record.tests.length > 0 && testCheck.verdict === 'holds';
+    : (record.tests.length > 0 && testCheck.verdict === 'holds') || exhaustive;
 
   return {
     enough,
     varied,
     holds,
     tested,
+    exhaustive,
     check,
     testCheck,
     satisfied: enough && varied && holds && tested,

@@ -67,7 +67,11 @@ export default function EuclidAlgorithm({
     onReject: (_s, _z, reason) => setReject(reason),
   });
 
-  useEffect(() => { if (state.isFormal) onFinished?.(lab.gcd); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (state.isFormal) state.report(onFinished, lab.gcd); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // La contrainte de la configuration — une seule définition, lue par le
+  // laboratoire libre / le mode classe ET par « أكمل القسمات ».
+  const validateNumbers = (x) => (divisibility.euclidSteps(x.a, x.b).steps.length > 12 ? t('manipulation.euclid.tooManySteps') : '');
 
   const div = L.currentDivision(lab);
   const finished = L.isEuclidFinished(lab);
@@ -85,7 +89,7 @@ export default function EuclidAlgorithm({
       lead={lead}
       state={state}
       numberFields={[{ key: 'a', label: 'a' }, { key: 'b', label: 'b' }]}
-      validate={(x) => (divisibility.euclidSteps(x.a, x.b).steps.length > 12 ? t('manipulation.euclid.tooManySteps') : '')}
+      validate={validateNumbers}
       allowModeSwitch={allowModeSwitch}
       hints={[t('manipulation.euclid.hint1'), t('manipulation.euclid.hint2'), t('manipulation.euclid.hint3')]}
       controller={{
@@ -96,6 +100,18 @@ export default function EuclidAlgorithm({
         showSolution: () => {
           setLab((s) => { let x = s; let g = 0; while (!L.isEuclidFinished(x) && g++ < 30) x = L.euclidAutoStep(x); return { ...x, pgcdPlaced: true }; });
           state.discover(); state.formalize();
+        },
+        // « أكمل القسمات » (§6bis) : la PREMIÈRE division se fait à la main —
+        // poser les copies, voir le bout qui dépasse, porter le reste. Les
+        // suivantes répètent ce geste : le bouton pose les copies une à une
+        // et porte les restes, jusqu'au reste nul. La case PGCD reste vide.
+        autoComplete: {
+          label: t('manipulation.euclid.autoComplete'),
+          ready: lab.a === a && lab.b === b && !validateNumbers({ a, b }),
+          manualDone: lab.confirmed > 0,
+          remaining: L.remainingEuclidGestures(lab),
+          step: () => setLab(L.euclidGestureStep),
+          finish: () => setLab(L.completeEuclid),
         },
       }}
       controlsOverride={{ prevStep: true }}

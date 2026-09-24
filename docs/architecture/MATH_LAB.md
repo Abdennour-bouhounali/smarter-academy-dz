@@ -2,7 +2,8 @@
 
 > **Authoritative** for the Math Lab: its information architecture, the tool
 > contract and registry, the document model and persistence, the whiteboard
-> (السبّورة) V1, the function grapher (راسم الدوال) V1 with its optional
+> (السبّورة) V1 and its geometry desk (أدوات الهندسة — instruments that
+> constrain the ordinary pen, §5.8), the function grapher (راسم الدوال) V1 with its optional
 > tangent / derivative mode, the 3D geometry explorer (الهندسة ثلاثية الأبعاد)
 > V1, the probability & statistics lab (الاحتمالات والإحصاء) V1, the
 > trigonometry & unit circle lab (مختبر المثلثات) V1, the sequences &
@@ -115,6 +116,9 @@ features/mathlab/
 │                          WorkFilterPanel · NewWorkMenu · RenameDialog · workFilters.js · mathlabWork.css
 └── tools/
     ├── whiteboard/        index.js (definition) · WhiteboardTool.jsx · whiteboardState.js · whiteboard.css
+    │   └── geometry/      the geometry desk (§5.8): geoMath · instruments · constraints · snap ·
+    │                      constructions · replay (pure, tested) · GeometryDesk · GeometryToolbar ·
+    │                      InstrumentShapes (SVG) · geometry.css
     └── functionGrapher/   index.js (definition) · FunctionGrapherTool.jsx · grapherState.js · expressionParser.js ·
                            expressionEvaluator.js · functionSampler.js · viewport.js · gridStep.js · grapherFormat.js ·
                            CoordinatePlane.jsx · useViewportGestures.js · FunctionCurve.jsx · FunctionPanel.jsx ·
@@ -250,6 +254,44 @@ exactly this way (commit history of `toolRegistry.js`, `MathLabTools.php`,
 `mathlab.json`). `toolRegistry.test.js` fails if the client and server
 registries disagree, if a label key is missing, or if a shipped instrument
 is still announced in `PLANNED_MATH_LAB_TOOLS`.
+
+### 3.3 Practice judging — the answer-reading contract (2026-09-24 answer audit)
+
+Every instrument that poses a question obeys four rules. An independent audit
+(≈ 350 000 generated challenges, every answer recomputed outside the tool)
+found the generated answers right everywhere and the *judging* wrong in
+several places; these rules are what the fixes established.
+
+1. **A correct answer is accepted in every honest writing of it.** Unicode
+   minus `−`, Arabic-Indic / Persian digits and `٫` are normalised; an empty
+   or unreadable field gets **no verdict** (an «unreadable» message), never
+   «0» and never «خطأ».
+2. **When several choices are true, all of them are accepted** (`accepted`),
+   or the choices are rewritten to be exclusive. `expected` is only what the
+   reveal shows.
+3. **A claim is judged on the set it states, not on the sampling window.**
+4. **The question states everything the answer depends on** (axis, centre,
+   direction, domain, which rectangles), and **never shows the answer before
+   the verdict**.
+
+Per instrument:
+
+| Instrument | Rule as implemented |
+|---|---|
+| numberLab | «نسبة مئوية» questions (`unit: 'percent'`) accept `75` and `75 %`; the rounding prompt names the rank (`q.roundingTo.<power>`); hint params are carried in `promptParams` (a test checks every `{{param}}` a hint uses). |
+| trigonometry | `parseAnswer` is a small parser without `eval`. It reads `√3/2`, `√(3)/2`, `sqrt(3)/2`, `racine(3)/2`, `1/√2`, `2√3`, `7π/4`, `π`/`pi`, `×`/`÷` and a trailing `°`. Tolerance is still 1e-3 (0.5 in degrees, 0.02 in radians), so a rounded `0,87` is refused — an open policy question. Triangle mode (4AM) asks only `triangleRatio` and `ratioValue` on 30°/45°/60°, with no radians: `generateChallenge(seed, kinds, { mode })`. Hints take `hintParams`. |
+| sequences | The behaviour labels overlap (a geometric sequence can be both decreasing and «تقترب من قيمة»). `trueBehaviours(spec)` computes every true label, and the judge accepts any of them. تتباعد means "does not converge". The UI still never passes `difficulty`. |
+| conics | Typed answers go through `parseNumberInput` / `parsePointInput`; an empty field is no longer 0. |
+| logic | Membership = the declared set (`domain.symbol` ℕ, ℕ*, ℤ, ℝ + `excluded`) via `domainStatus`; `min`/`max` bound the sample only. Above `JUDGE_LIMIT = 1e6` a value is «too large to check here», not wrong. A fallacy refutation must belong to the set. Every question shows its domain (`domainLabel`); equivalences are drawn with ⇔; preset `formula`s are language-neutral notation; a fallacy's text must fit its `kind` by the lab's own `kindHints` (tested). Negation distractors are the two classic mistakes on the same statement. |
+| transformations | Until a verdict or «أرني», the image, A′ labels, links, traces, arrow tip, pattern copies and the inspector's image sections are masked (`isImageHidden`, `maskImages`); the frame does not include the image (`practiceFrame`). Each step is a full sentence (`describeChallengeStep`, `practice.stepText.*`): axis or centre, rotation centre + angle + direction, homothety centre + ratio, translation vector. No question has the point as its own answer. |
+| algebra | «التحقق» on an **inequality** (`verifyResolution`) substitutes a value inside the solution set, shows both sides equal at the boundary, and checks that the strict or non-strict symbol matches. `c REL x` counts as solved. Known gap: x-term operations do not exist, so level-4 equations (x on both sides) can only be finished with «إظهار الحل». |
+| analysis | One-sided limits are extrapolated to δ = 0 (Aitken, else Richardson) with an error bar. `limitsAgree` is the single agreement rule; `agree` requires two finite limits or two infinities of the same sign. ln x at 0 is a vertical asymptote. Riemann: left rectangles (stated in the prompt and set in the focus); every n is judged by its own left sum against the displayed threshold. Predictions install their own scene; `expected = predictionOutcome()`. The monotonic question has a random leading sign; the wording is «رأس المنحنى». The function is rendered with MathText. |
+| measurement | Rules are judged on real objects from the parameter grid, so `a² + b²` is found. Tautologies are blocked by `inRule: false` (hypotenuse, ratio columns) and `definition` / `isDefinitionOf`. The angle-sum solution is the constant 180 (`ruleNumbers` 90 / 180 / 360). Conversion scales are 10 / 100 / 1 000 / 10 000; `unseenParams` may return null, and `evidence.exhaustive` then counts as tested. |
+| vectors | `areCollinear` flags B = C as degenerate as well. |
+
+**Testing rule:** a practice test must recompute the expected answer itself —
+`checkAnswer(ch, ch.expected)` proves nothing. Each fix above carries a test
+of that kind.
 
 ## 4. Document model and persistence
 
@@ -436,7 +478,10 @@ Freehand pen, selection, move, resize, eraser, undo/redo, zoom (buttons,
 Ctrl+wheel, pinch), pan (hand tool, space+drag, two fingers), rectangle,
 ellipse, diamond, arrow, line, text, stroke colour/width/style, background
 colour, layers, library of shapes, grid (shell toggle), export PNG (shell),
-clear all (shell, with confirmation, undoable), autosave and title.
+clear all (shell, with confirmation, undoable), autosave and title — and,
+since 2026-09-24, the geometry desk « أدوات الهندسة » (ruler, compass,
+protractor, set square that guide the ordinary pen; §5.8). Everything above is
+unchanged by the desk: it is added on top of Excalidraw, never in place of it.
 
 Deliberately **off** (`UI_OPTIONS` in `WhiteboardTool.jsx`): the image tool
 (no photos on a maths board, bounded documents), load/save-to-file/export
@@ -456,6 +501,14 @@ anything Excalidraw normalises at load, such as `gridSize`, would make a
 fresh board look "modified" and create a phantom document), so moving the
 view never triggers a save; serialisation is debounced 300 ms inside the
 tool, autosave 2.5 s in the hook.
+
+Optional key `geometry` (since 2026-09-24): the geometry desk — where the
+instruments lie, their opening, the snap settings (`instruments.js`
+`sanitizeDesk`). It is written only once the desk has been touched, so an
+untouched board still creates nothing; an older document opens unchanged.
+The schema version stays 1: the key is additive and a reader that ignores it
+loses only the instruments' positions — the constructions themselves are
+ordinary Excalidraw elements.
 
 A lesson seed (`seed.elements`, see §6) holds Excalidraw *skeleton* elements;
 `createWhiteboardData` marks the document `seeded` and the tool converts them
@@ -583,12 +636,198 @@ Excalidraw's; its empty-state instance (which opened leftward off-panel
 under RTL) is hidden because its only entry, « فتح », is now the panel; the
 populated-library ⋮ is measured inside the viewport.
 
+**With the geometry desk.** The « أدوات الهندسة » bar (§5.8) is in the flow
+above the canvas, so it takes height. The library ⋮ menu's `max-height` is
+`100dvh − 16rem` (it was 12rem before the bar). On a **short** screen
+(≤ 620 px high) the bar folds away while the files panel is open and comes
+back when it closes. Otherwise panel + bars push the library's ⋮ menu below
+the bottom of a 1280×500 window (`geometry.css`, measured by `e2e/mathlab.mjs`).
+
 **Not supported (deliberately).** `.docx`, `.pptx`, `.xlsx`, `.csv`, `.txt`:
 the board can do nothing with them. PDFs are stored and downloadable, not
 rendered on the canvas (Excalidraw draws images only; rendering PDF pages
 would need a PDF engine). Dropping a file onto the canvas still goes
 through Excalidraw's own handler: images are removed by the guard, library
 files show Excalidraw's generic message — the supported path is the panel.
+
+### 5.8 أدوات الهندسة — the geometry desk (instruments that guide the pen)
+
+**What it is.** A « virtual geometry desk » added on top of the board: المسطرة
+(ruler), المدوّر (compass; tooltip « الفرجار »), المنقلة (protractor), الكوس
+(set square), drawn in SVG as real instruments. The teacher places them, turns
+them and opens them in front of the class, and the students watch the
+construction happen. **The instrument constrains the teacher's ORDINARY pen**
+(Excalidraw's القلم): near a ruler edge the stroke becomes a ruler-straight
+segment, on the compass's pencil tip it becomes an exact arc. There is no
+special « ruler pen ». A « قلم الهندسة » also exists (clean point / segment /
+line / ray / circle without an instrument), but it is optional. Terminology is
+the Algerian school's: المدوّر, الكوس, المنقلة, قطعة مستقيم, نصف مستقيم.
+
+**Where it lives.** `tools/whiteboard/geometry/`. The pure modules (unit-tested,
+`geometry.test.js`, `constraints.test.js`) are `geoMath` (vectors,
+intersections, formatting), `instruments` (state and geometry of each
+instrument, docking, `fitToView`, `sanitizeDesk`), `constraints` (§ below),
+`snap`, `constructions` (the elements it creates, dependency solving) and
+`replay`. The React side is `GeometryDesk` (the layer, gestures, persistence),
+`GeometryToolbar` and `InstrumentShapes`.
+
+**Two layers, never mixed.**
+
+| | Lives in | Undo | Export | Saved |
+|---|---|---|---|---|
+| **Drawing** — everything the desk *constructs* | ordinary Excalidraw elements (line, ellipse, text) with `customData.geo` | yes, **one** entry per construction (`CaptureUpdateAction.IMMEDIATELY` once, at release) | yes | `elements` |
+| **Desk** — where the instruments lie, their opening, settings | `desk` (refs in `GeometryDesk`) | no: moving a ruler 100 times makes no undo steps | only with « تصدير مع أدوات الهندسة » | `data.geometry` (§5.3), written at the **end** of a gesture |
+
+**The layer.** An SVG portalled **inside** `.excalidraw-container`, at z-index 3
+(between Excalidraw's canvas, z 2, and its UI, z 4). Instruments sit above the
+drawing and below Excalidraw's toolbars and menus. A wheel over an instrument
+bubbles to the container, so Excalidraw's zoom and pan still work. The layer is
+`pointer-events: none` except on instrument parts (`data-geo-hit`), on the pen's
+attach zones (`data-geo-zone`) and, while a desk tool is active, on a capture
+rectangle. Everywhere else a pointer goes to Excalidraw as before. The desk
+attaches after mount: Excalidraw hands over its API from its constructor
+(during render), and its container only exists once the DOM is committed.
+
+**The constraint layer (`constraints.js`) — one interface for every instrument.**
+The pen never gets per-instrument logic. The pipeline is:
+
+```
+raw pointer → active constraint (closest in reach) → constrain(p) → exact geometry → Excalidraw element
+```
+
+Every constraint exposes `distance(p)`, `attach(p, opts)`, `constrain(p, state, opts)`
+and `measure(state)`. Three families:
+
+| Family | Instruments | Projection | Creates |
+|---|---|---|---|
+| `straight` | ruler (graduated edge and back edge), set square (its three edges), protractor diameter (mode قياس) | onto the edge's **axis**; the abscissa is read on the edge's own graduations (0 = the ruler's zero) | a segment (or the قلم الهندسة's line/ray) |
+| `ray` | protractor, mode « إنشاء زاوية » | onto the needle's direction from the centre (t ≥ 0) | a ray at exactly the chosen degree |
+| `arc` | compass (pencil tip); protractor, mode « رسم قوس » (outer rim **and** inner cut-out edge) | **polar**: the pointer gives the **angle**, the instrument gives the **radius** — never a straight-line projection | an arc (a compass that turns 360° gives a circle; the protractor never does: it is a semicircle, the arc stays within 0°–180°) |
+
+- **Pen state machine** (`data-geo-pen` on the layer): `idle` → `near` (the pen
+  approaches an edge, the compass tip or the protractor's vertex/curved edge
+  within `ATTACH_PX` = 16 screen px; the edge lights up) → `drawing` (the
+  constraint holds the pen until release) → `released` (a straight constraint
+  lets go when the pen moves more than `DETACH_PX` = 90 px from the axis; the
+  part already drawn is kept). Outside every zone the pointer never reaches the
+  desk: the free pen stays free. A row under the bar says who holds the pen
+  (« القلم متصل بالمسطرة ») and offers « تحرير القلم » (turns off attachment
+  entirely), and Escape cancels a stroke without creating anything.
+- **Priority rule** when several instruments are in reach: the constraint
+  **closest** to the pen wins; on a tie (< 1 px), the instrument touched last.
+  Near an edge the pen has priority over dragging an instrument's body, while
+  the rotate / open / needle **handles** stay handles.
+- **Length-aware.** The ruler, compass and protractor share one virtual scale:
+  `UNITS_PER_CM` = 40 scene units per « cm ». It is **not** a physical
+  centimetre (nothing calibrates the screen, and the UI says so: « وحدة السبّورة
+  سنتيمتر افتراضي »). A ruler stroke from 0 to 5 is a segment of exactly 5 on
+  that scale, and the live label « طول القطعة: 5 سم » is read on the ruler.
+  « التثبيت على التدريج » snaps to the millimetre, and to the whole centimetre
+  within 7 px.
+- **Style.** A stroke guided on the free pen takes the pen's **own** colour,
+  width and dash (Excalidraw's `currentItem*`), with `roughness: 0` so it is
+  clean. Endpoints become points A, B… only when « تسمية النقاط تلقائيًا » is on
+  (always with the قلم الهندسة).
+
+**Semantic geometry (`constructions.js`).** A construction is an Excalidraw
+element that also records **what it is** in `customData.geo`. The kinds are
+`point` (a 7-unit filled disc, grouped with its `label`), `segment | line | ray`
+(`ra`, `rb` relative to the element, `from` / `to` point ids), `circle`
+(`centerId`), `arc` (`rc`, `r`, `start`, `sweep`, `centerId`) and `measure`
+(`AB = 5`, `r = 4`, `θ = 60°`, `∠ABC = 60°`). Every construction also carries
+`seq` (order) and `via` (instrument + pose).
+
+- **Dependencies.** Moving point A redraws AB and moves an arc centred on A
+  (`solveDependents`, idempotent, applied in `onChange` with
+  `CaptureUpdateAction.EVENTUALLY` so it merges into the gesture's undo
+  entry). A segment dragged by itself detaches from its points instead of
+  snapping back.
+- **Instruments are independent.** Moving the ruler after drawing never moves
+  the segment.
+
+**The instruments.**
+
+- **Ruler** — graduated edge with mm/cm ticks, a red zero, the body on the
+  numbered side, a rotate knob. The knob slides towards the zero when the far
+  end is off-screen. The zero snaps onto a point, and rotation snaps so that
+  the edge passes exactly through a point (« zero on A, turn until B ») or onto
+  a line's direction or 15° steps.
+- **Compass** — two legs, hinge, handle, needle (red) and pencil tip. With the
+  المدوّر tool: tap to place the needle (onto a point, even one lying under a
+  ruler), drag the tip to open it (snaps onto a point → radius = AB), or type
+  the radius. Then draw either by turning the handle or by putting the free pen
+  on the pencil tip. The compass turns with the pen, and `r = 4` is shown.
+- **Protractor** — three **explicit** modes (chips): « قياس » (reads the angle
+  its centre sits on: the side lying on the diameter is found, the reading
+  `الزاوية: 42°` and a wedge appear, « ثبّت القياس على السبّورة » pins
+  `∠ABC = 42°`), « إنشاء زاوية » (a needle, typed or dragged, gives the ray
+  constraint; « ضع علامة » and « ارسم الضلع الثاني » are one-click
+  alternatives) and « رسم قوس » (§ table). The centre snaps onto a point and,
+  dropped there, the baseline aligns with a side through it.
+- **Set square** — 45° or 30°/60°, graduated leg, right-angle mark. Dragged
+  near a line (tolerance 10 px, 3°) with « تثبيت عمودي », a leg docks flush on
+  it: the other leg is perpendicular. Against the **ruler** it docks too, then
+  **stays docked** while it slides (36 px of hysteresis) — « نحافظ على الاتجاه
+  نفسه » — which is the classical parallel construction.
+- **Boundaries** — an instrument taken out is sized to the visible board
+  (`fitToView`: a phone gets a 10 cm ruler and a smaller protractor) and
+  placed with its zero in view. After every gesture its centre is kept inside
+  the view (`keepReachable`). « إعادة تمركز الأداة » is in each instrument's
+  row, and an off-screen instrument raises a toolbar button that brings it
+  back.
+
+**Snapping (`snap.js`), subtle and switchable.** « التثبيت الذكي » is the master
+switch; « التثبيت على الأداة / التدريج / النقاط / الزوايا » and « تثبيت عمودي »
+are the individual ones (`snapOn(settings, key)`). Point targets, in priority
+order, are named points → intersections (line/line, line/circle,
+circle/circle, **only on the drawn extent** of arcs and segments) → endpoints
+and centres → grid nodes (when the grid is on). Directions are horizontal,
+vertical, parallel and perpendicular to scene lines, within 2.5°. The feedback
+is a ring, a ⟂ or ∥ mark, or the edge lighting up — never an animation.
+
+**Toolbar.** « أدوات الهندسة » sits in the flow above the canvas, in the
+**whiteboard's own palette** (the blue accent and white surfaces of
+`whiteboard.css`; only the instruments have their real-object colours). It has
+up to four rows: tools; who holds the pen; the pencil's options (kind, width
+رفيع/متوسط/سميك, style مستمر/متقطع/منقط) and the focused instrument's options;
+and the settings (folded by default). Each row **scrolls horizontally** rather
+than wrapping or overflowing, and on phones the long hint sentences hide.
+After any toolbar button, focus returns to the board so Ctrl+Z undoes the
+construction just made. Keyboard on a focused instrument: arrows move it
+(1 mm, Shift 1 cm), `[` / `]` rotate it (1°, Shift 15°), `+` / `−` open the
+compass, Delete puts it away, Escape drops a desk tool. No single-letter
+shortcuts were added: R, P and T belong to Excalidraw.
+
+**« إعادة البناء ».** The construction is replayed in `seq` order on a separate
+stage over the board, which is never modified. For each step the instrument
+appears at the pose it had (`via`), the pencil draws, and the compass turns.
+Stop with the same button or Escape. `replay.js` holds the timeline.
+
+**Export.** The default PNG is the mathematical work only. With « تصدير مع
+أدوات الهندسة », `exportWithInstruments` exports Excalidraw inside a frame
+widened to the instruments (two transparent 1-unit rectangles passed to the
+export only), then paints the instruments' own SVG markup on top in scene
+coordinates. That is why instrument drawings use presentation attributes and
+not CSS classes.
+
+**Teacher and student.** The desk is role-agnostic, like the board. There is
+**no real-time synchronisation** in the platform (none was invented): students
+see the teacher's board projected (the Lab's fullscreen, §6), which is why the
+instruments are drawn and move on screen. The desk is saved with the document,
+so a reopened board shows its instruments where they were left. Nothing here is
+وضع القسم.
+
+**Performance.** Gesture state lives in refs, with at most one React render per
+animation frame (`schedule`). Instrument drawings are `memo`: during a drag
+only a `transform` changes. A compass arc is one polyline element of at most
+181 points, not many objects.
+
+**Verification.** `geometry.test.js` and `constraints.test.js` (a shaky hand
+gives exactly 5 cm; 3 cm at 45°; compass radius kept at every step;
+protractor ray at 60°; protractor arcs 0°→90° and 30°→120° = 90°, rotated,
+never beyond the semicircle; priority; docking) and `e2e/mathlab-geometry.mjs`
+(26 checks, including touch at 390×844, reload, replay and export). The
+original whiteboard is re-verified by `e2e/mathlab.mjs`.
 
 ## 5b. راسم الدوال — Function Grapher V1
 
@@ -4036,6 +4275,7 @@ another instrument. Each tool documents its own seed shape:
 | Logic lab, le document (§5n.10) : l'ouverture sur l'EXPÉRIENCE du contre-exemple (§54) ; aucun résultat calculable sérialisé ; le pire cas sous les 8 Ko du serveur ; toute forme reçue relue sans lever ; un préréglage disparu retombant sur le défaut ; une étape de preuve inconnue écartée ; les transitions pures et non destructrices ; **§15 — une règle différente efface les verdicts, la même règle réécrite les garde** ; « مسح الكل » rendant un document neuf | `tools/logic/logicState.test.js` (33 tests) |
 | Logic lab, les mots (§5n.8) : chaque aire, chaque préréglage, chaque preuve, chaque distracteur, chaque sophisme, chaque niveau et **chaque défi tiré sur 400 graines** ayant sa clé arabe ; le dictionnaire nommant et faisant LIRE chaque symbole, groupes compris ; aucune PHRASE latine oubliée ni valeur vide | `tools/logic/i18n.test.js` (35 tests) |
 | Browser, whiteboard: navigation, refresh, back/forward, every tool, undo/redo, zoom, pan, grid, export, clear, autosave (and that an untouched board creates nothing), library import (valid, image, broken JSON, scene, re-import, persistence), library ⋮ menu inside the viewport, reopen, delete, RTL, ten viewports | `apps/web/e2e/mathlab.mjs` (`node apps/web/e2e/mathlab.mjs [shots-dir]`, dev servers on 5173/8000, QA student) |
+| Browser, whiteboard geometry desk (§5.8): free pen stays free; ruler 0→5 cm = 5,0 cm; 3 cm at 45°; ruler moved, segment stays; compass r = 4 centred on A; protractor ray at 60° and arcs 0°→90°; set square docked and slid → two parallel perpendiculars; « تحرير القلم »; one undo per construction; touch at 390×844; reload, replay, export with/without instruments | `apps/web/e2e/mathlab-geometry.mjs` (`node apps/web/e2e/mathlab-geometry.mjs [shots-dir]`) |
 | Browser, grapher: home card, first run, typing in MathLive, invalid expressions, `1/x`, `√x`, `tan`, add/example/colour/hide/delete/limit, point (tap, type x, drag), tangent mode (toggle, cue, typed x, drag with mid-gesture values, studied function switch, f′ curve and B, slider, reload, off = unchanged grapher, touch drag on mobile), zoom/pan/wheel/keyboard/reset, grid step, readout, grid, export, title, reload, « أعمالي », RTL, clear, visitor, tablet and mobile | `apps/web/e2e/mathlab-grapher.mjs` (same invocation) |
 | Browser, 3D geometry: home card, first run (cube 2, V = 8, A = 24, three labels, no document), orbit by drag, wheel, buttons, keyboard, reset (view restored, solid untouched), camera persisted, face click and release, typed and slider dimensions in sync, invalid values (−4, 50) refused then clamped, decimal comma, every solid with the reference values, carry-over, options (labels and axes hidden, shell grid ↔ panel grid), PNG export, title, reload, « أعمالي », RTL (panel right, Cairo, KaTeX LTR), whiteboard and grapher still open, visitor, tablet and mobile with **real touch events** (one-finger orbit, pinch, no page scroll, collapse) — 69 checks | `apps/web/e2e/mathlab-geometry3d.mjs` (same invocation) |
 | Browser, probability lab: home card and no more « قريبًا » chips for statistics/probability, first run (coin, 100 ready, nothing drawn, no document), coin 10 → « أوقف » during the animation, counts sum, theoretical line, document born on first run, a second run **accumulates** (1 010), convergence chart and question, 100 000 more draws in batches under 15 s and within 1 % of 50 %, stop, reset; die (six bars, 1/6 and 16,67 % in the table), compare off/on; two dice (reset on experiment change, eleven sums, 7 ≫ 2 and 12, 6/36 and 1/36); random integers (bounds shown, 1–6, « abc » refused then reverted, min > max redressed, bounds change resets); custom draws (0 refused, 250); dataset (example n = 7 / Me = 14 / range 8, `[10,20,30]` → 20/20/20 with no button, mean and median lines, bars, `[10,20,30,40]` → 25/25, « abc » named and the other three still counted, `12,5 ; 14,2 ; 9`, empty → dashes, mean checkbox hides its line, 80 dispersed values → classes); persistence (reload restores mode, text, experiment, bounds and 250 draws; the server holds counts, not draws; mode switch saved; « أعمالي »; « مسح الكل » with the tool's wording); RTL (panel right, Cairo, chart **computed** LTR, total legend inside the frame), no horizontal overflow, visitor; tablet and mobile (no overflow, 1 000 draws by tap, chart fits its column, 36 px chips / 44 px button, collapse grows the chart, dataset field wide); **the table** (die posed, contextual button, rolling until all six faces appeared with, for every roll, face read on the object = displayed result = count +1 and 0,7–1,8 s per roll; a roll stopped in the air not counted; a 1 000 batch tumbling then posed on the last draw in < 6 s; « شاهد كل رمية » off → 10 in a batch; coin until both sides with the word matching the side; two dice × 4 with real faces = displayed faces, sum, count of the sum +1; reduced motion → result in < 400 ms, counted, die posed; tablet and mobile: 3D table visible and inside the screen, a roll by tap consistent; the integer generator has no table) — 98 checks | `apps/web/e2e/mathlab-probability.mjs` (same invocation; `QA_BASE` overrides the web origin when 5173 is taken) |
@@ -4076,6 +4316,13 @@ another instrument. Each tool documents its own seed shape:
   cursor-over-a-list pattern — a third is the moment to extract it.
 - Whiteboard: no equation objects (§5.6); no PNG/SVG export beyond the
   shell's PNG and Excalidraw's own « save as image ».
+- Geometry desk (§5.8): no real-time sharing (the platform has none — the
+  board is projected); the virtual « cm » is not calibrated to the screen;
+  dependencies go from points to what is built on them (a segment follows A),
+  not further (C at an intersection does not follow the arcs); a pen that
+  leaves the ruler mid-stroke ends the stroke there rather than continuing
+  freehand (Excalidraw offers no public way to hand a gesture back to its
+  own pen).
 - Grapher: one inspection point; no parameters/sliders, intersections,
   tables of values, domain editor, SVG export or legend in the exported
   image (§5b.9 for what is prepared); numerical limits in §5b.4.

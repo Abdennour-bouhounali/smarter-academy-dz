@@ -1,15 +1,20 @@
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Users, Activity, TrendingUp, CircleCheckBig, Percent } from 'lucide-react';
+import { Users, Activity, TrendingUp, CircleCheckBig, Percent, Target } from 'lucide-react';
 import { useAdminResource } from '../../../hooks/useAdminResource';
 import StatTile from '../../../components/common/StatTile';
 import PathProgress from '../../progression/components/PathProgress';
 import { fetchClassProgress } from '../../../services/teacher/classGroupService';
-import { Loading, ErrorBox, formatDate } from '../../../pages/teacher/teacherUi';
+import { Loading, ErrorBox, formatDate, btnSecondary } from '../../../pages/teacher/teacherUi';
 
-/** La progression d'une classe : un résumé, une ligne par élève. Tout est dérivé. */
-export default function ProgressTab({ classGroup }) {
+/**
+ * La progression d'une classe : un résumé, une ligne par élève. Tout est
+ * dérivé. Les points faibles par élève ne sont PAS ici — ils demanderaient
+ * un appel de plus par ligne ; l'onglet « نقاط التعلّم » les porte, et ce
+ * bouton y mène (`onOpenLearningPoints`, fourni par la page).
+ */
+export default function ProgressTab({ classGroup, onOpenLearningPoints }) {
   const { t } = useTranslation('teacher');
   const loader = useCallback((tk) => fetchClassProgress(tk, classGroup.id), [classGroup.id]);
   const { data, loading, error, reload } = useAdminResource(loader, [loader]);
@@ -29,6 +34,13 @@ export default function ProgressTab({ classGroup }) {
         <StatTile icon={CircleCheckBig} value={s.lessonsCompleted} label={t('progress.lessonsCompleted')} accent="bg-emerald-50 text-emerald-600" hint={`${t('progress.lessonsInScope')}: ${s.lessonsInScope}`} />
         <StatTile icon={Percent} value={s.averageSuccessRate === null ? '—' : <span dir="ltr">{s.averageSuccessRate}%</span>} label={t('progress.averageSuccess')} accent="bg-amber-50 text-amber-600" />
       </div>
+      {onOpenLearningPoints && (
+        <div className="flex justify-end">
+          <button type="button" onClick={onOpenLearningPoints} className={btnSecondary} data-open-learning-points>
+            <Target size={14} /> {t('progress.openLearningPoints')}
+          </button>
+        </div>
+      )}
       {data.students.length === 0 ? (
         <p className="glass-card p-8 text-center text-sm text-slate-500">{t('progress.noStudents')}</p>
       ) : (

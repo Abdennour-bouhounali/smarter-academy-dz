@@ -52,12 +52,12 @@ export default function Module01IthnanWaArbaunWaSittun() {
             beginner: () => (
               <Manipulation type="common-divisors" a={8} b={12} theme="school"
                 title="تدرّب أولًا: 8 أقلام و 12 كراسًا في حقائب متماثلة"
-                lead="جرّب عدد الحقائب: أيّ الأعداد لا يترك شيئًا خارج الحقائب؟ ثم تجد الأعداد نفسها في القائمتين." />
+                lead="جرّب عدد الحقائب: أيّ الأعداد لا يترك شيئًا خارج الحقائب؟ وما أكبرها؟" />
             ),
             advanced: () => (
               <Manipulation type="common-divisors" a={a} b={b}
                 title="1) قواسم 42 و 60 — 2) القواسم المشتركة — 3) أكبرها"
-                lead="عيّن في القائمتين القواسم المشتركة، تحقّق، ثم اختر أكبرها."
+                lead="ابدأ بالمجموعات: ما أكبر عددها؟ ثم عيّن في القائمتين القواسم المشتركة، تحقّق، واختر أكبرها."
                 onFinished={() => setLabDone(true)} />
             ),
           }}

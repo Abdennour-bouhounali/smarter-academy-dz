@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Lightbulb, RefreshCw, Check, Eye } from 'lucide-react';
 import MathField from './MathField.jsx';
+import MathText from '../../../../lessons/common/components/MathText.jsx';
 import { generateChallenge, checkAnswer, PREDICTIONS } from './practice.js';
 
 /**
@@ -22,9 +23,10 @@ import { generateChallenge, checkAnswer, PREDICTIONS } from './practice.js';
  * L'état de la question courante n'est PAS persisté (§42) : un élève qui
  * rouvre son document retrouve son laboratoire, pas un défi à moitié fait.
  */
-export default function PracticePanel({ data, onApplyFocus, onResult }) {
+export default function PracticePanel({ data, onApplyFocus, onResult, initialChallenge = null }) {
   const { t } = useTranslation('mathlab');
-  const [challenge, setChallenge] = useState(null);
+  // `initialChallenge` ne sert qu'aux tests (rendu statique sans effet).
+  const [challenge, setChallenge] = useState(initialChallenge);
   const [answer, setAnswer] = useState('');
   const [verdict, setVerdict] = useState(null);
   const [hintIndex, setHintIndex] = useState(-1);
@@ -80,7 +82,11 @@ export default function PracticePanel({ data, onApplyFocus, onResult }) {
       <p className="sa-ml-an__question" data-ml-an-question>
         {t(challenge.promptKey, challenge.promptParams)}
       </p>
-      <p className="sa-ml-an__math sa-ml-an__math--strong" dir="ltr">f(x) = {challenge.source}</p>
+      {/* La source est du LaTeX (`\\frac{x^2-4}{x-2}`) : elle se REND, elle ne
+          s'affiche pas brute — l'élève lisait « \\frac{x^2-4}{x-2} ». */}
+      <p className="sa-ml-an__math sa-ml-an__math--strong" dir="ltr" data-ml-an-source>
+        <MathText>{`$f(x) = ${challenge.source}$`}</MathText>
+      </p>
 
       <button type="button" className="sa-ml-an__action" onClick={showOnGraph} data-ml-an-show>
         <Eye size={16} aria-hidden="true" />
@@ -178,7 +184,7 @@ export default function PracticePanel({ data, onApplyFocus, onResult }) {
         {t('tools.analysis.practice.score', { solved: data.practice.solved, seen: data.practice.seen })}
       </p>
 
-      <PredictionBlock lab={data.lab} t={t} />
+      <PredictionBlock lab={data.lab} t={t} onApplyFocus={onApplyFocus} />
     </div>
   );
 }
@@ -191,7 +197,7 @@ export default function PracticePanel({ data, onApplyFocus, onResult }) {
  * ferait de « je me suis trompé en devinant » une faute — exactement ce que
  * §28 interdit.
  */
-function PredictionBlock({ lab, t }) {
+function PredictionBlock({ lab, t, onApplyFocus }) {
   const available = PREDICTIONS.filter((prediction) => prediction.lab === lab);
   const [choice, setChoice] = useState(null);
   const [revealed, setRevealed] = useState(false);
@@ -208,6 +214,20 @@ function PredictionBlock({ lab, t }) {
     <section className="sa-ml-an__prediction" data-ml-an-prediction={prediction.id}>
       <h4 className="sa-ml-an__subtitle">{t('tools.analysis.predict.title')}</h4>
       <p className="sa-ml-an__question">{t(`tools.analysis.predict.${prediction.id}`)}</p>
+      {/* La prédiction porte sur SA fonction : sa réponse est calculée sur
+          cette scène, pas sur celle que l'élève a tapée (practice.js). */}
+      <p className="sa-ml-an__math" dir="ltr" data-ml-an-predict-source>
+        <MathText>{`$f(x) = ${prediction.source}$`}</MathText>
+      </p>
+      <button
+        type="button"
+        className="sa-ml-an__action"
+        onClick={() => onApplyFocus?.(prediction.setup, prediction.source)}
+        data-ml-an-predict-setup
+      >
+        <Eye size={16} aria-hidden="true" />
+        <span>{t('tools.analysis.practice.showOnGraph')}</span>
+      </button>
       <div className="sa-ml-an__chips">
         {prediction.choices.map((value) => (
           <button
@@ -225,7 +245,11 @@ function PredictionBlock({ lab, t }) {
       <button
         type="button"
         className="sa-ml-an__action"
-        onClick={() => setRevealed(true)}
+        onClick={() => {
+          setRevealed(true);
+          // Révéler, c'est FAIRE le geste : la scène passe à son état « après ».
+          onApplyFocus?.(prediction.after ?? prediction.setup, prediction.source);
+        }}
         disabled={!choice}
         data-ml-an-reveal
       >

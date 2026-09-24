@@ -202,7 +202,23 @@ describe('les discontinuités (§15)', () => {
    */
   it('ne prend pas un bord de domaine pour une discontinuité', () => {
     expect(findDiscontinuities(f('\\sqrt{x}'), -3, 5, { samples: 480 })).toEqual([]);
-    expect(findDiscontinuities(f('\\ln(x)'), -3, 5, { samples: 480 })).toEqual([]);
+  });
+
+  /**
+   * Un bord OÙ LA FONCTION PART À L'INFINI, lui, est une asymptote verticale.
+   *
+   * Ce test attendait autrefois `[]` pour ln(x) : la table d'approche de ln
+   * en 0⁺ (−6,9 ; −9,2 ; −11,5 ; −13,8) était lue comme une limite FINIE
+   * « ≈ −14 », donc le point passait pour un simple bord, comme √x. Or
+   * lim(x→0⁺) ln x = −∞ : la droite x = 0 est une asymptote verticale, et
+   * ln doit être traité exactement comme 1/√x, qui l'était déjà.
+   */
+  it('reconnaît l’asymptote verticale au bord du domaine de ln', () => {
+    const breaks = findDiscontinuities(f('\\ln(x)'), -3, 5, { samples: 480 });
+    expect(breaks).toHaveLength(1);
+    expect(breaks[0]).toMatchObject({ kind: 'infinite' });
+    expect(breaks[0].x).toBeCloseTo(0, 6);
+    expect(findDiscontinuities(f('\\frac{1}{\\sqrt{x}}'), -3, 5, { samples: 480 })[0]).toMatchObject({ kind: 'infinite' });
   });
 });
 
@@ -236,6 +252,102 @@ describe('les limites (§11 – §14)', () => {
     expect(limit.left).toMatchObject({ kind: 'infinite', sign: 1 });
     expect(limit.right).toMatchObject({ kind: 'infinite', sign: 1 });
     expect(limit.agree).toBe(true);
+  });
+
+  /**
+   * Une droite A une limite en chacun de ses points : la valeur f(a).
+   *
+   * La table s'arrête à δ = 1e−6 de a, et une pente m y décale les deux
+   * lectures de ∓m·1e−6. Comparées brutes à 1e−6 près, elles « différaient » :
+   * l'état PAR DÉFAUT du laboratoire (f = 2x + 1, a = 0) annonçait
+   * « النهايتان مختلفتان » — 658 droites sur 2 057 aux points entiers ou
+   * demi-entiers. L'attendu est calculé à part : f(a) = m·a + p.
+   */
+  it('lit la limite d’une droite en tout point, par défaut 2x + 1 en 0', () => {
+    const limit = twoSidedLimit(f('2x+1'), 0);
+    expect(limit.agree).toBe(true);
+    expect(limit.left.value).toBeCloseTo(1, 8);
+    expect(limit.right.value).toBeCloseTo(1, 8);
+
+    const refused = [];
+    for (let m = -5; m <= 5; m += 1) {
+      for (let p = -5; p <= 5; p += 1) {
+        const source = `${m}x+${p}`.replace('+-', '-');
+        for (let a = -4; a <= 4; a += 0.5) {
+          const reading = twoSidedLimit(f(source), a);
+          const expected = m * a + p;
+          if (!reading.agree || Math.abs(reading.value.value - expected) > 1e-6) refused.push(`${source} @ ${a}`);
+        }
+      }
+    }
+    expect(refused).toEqual([]);
+  });
+
+  it('lit la limite d’un polynôme en tout point (valeur calculée à part)', () => {
+    const polynomials = [
+      ['x^3', (x) => x ** 3],
+      ['x^2-4x+3', (x) => x * x - 4 * x + 3],
+      ['x^3-3x', (x) => x ** 3 - 3 * x],
+      ['4-x^2', (x) => 4 - x * x],
+      ['1000x+1', (x) => 1000 * x + 1],
+    ];
+    for (const [source, exact] of polynomials) {
+      for (let a = -3; a <= 3; a += 0.5) {
+        const reading = twoSidedLimit(f(source), a);
+        expect(reading.agree, `${source} @ ${a}`).toBe(true);
+        expect(reading.value.value, `${source} @ ${a}`).toBeCloseTo(exact(a), 6);
+      }
+    }
+  });
+
+  /** Les vrais sauts restent des sauts : leurs côtés sont CONSTANTS. */
+  it('dit « différentes » pour un vrai saut', () => {
+    const sign = twoSidedLimit(Math.sign, 0);
+    expect(sign.agree).toBe(false);
+    expect(sign.left.value).toBe(-1);
+    expect(sign.right.value).toBe(1);
+
+    const stairs = twoSidedLimit(Math.floor, 2);
+    expect(stairs.agree).toBe(false);
+    expect(stairs.left.value).toBe(1);
+    expect(stairs.right.value).toBe(2);
+
+    const quotient = twoSidedLimit(f('\\frac{|x|}{x}'), 0);
+    expect(quotient.agree).toBe(false);
+
+    // Un petit saut sur une pente raide reste visible : 0,01 contre une pente de 1.
+    const smallJump = twoSidedLimit((x) => x + (x >= 1 ? 0.01 : 0), 1);
+    expect(smallJump.agree).toBe(false);
+  });
+
+  /** Le trou : (x² − 4)/(x − 2) n'est pas définie en 2, sa limite vaut 4 (x + 2 en 2). */
+  it('lit la limite à travers un trou', () => {
+    const limit = twoSidedLimit(f('\\frac{x^2-4}{x-2}'), 2);
+    expect(limit.agree).toBe(true);
+    expect(limit.value.value).toBeCloseTo(4, 6);
+  });
+
+  /** Deux côtés illisibles ne font pas une limite. */
+  it('ne déclare pas « égales » deux limites qui n’existent pas', () => {
+    const limit = twoSidedLimit(f('\\sin(\\frac{1}{x})'), 0);
+    expect(limit.left.kind).toBe('none');
+    expect(limit.agree).toBe(false);
+    expect(limit.value).toBeNull();
+  });
+
+  /** ln|x| → −∞ en 0 : une divergence LENTE (logarithmique) reste une divergence. */
+  it('lit −∞ pour ln|x| en 0, pas une valeur finie', () => {
+    const limit = twoSidedLimit(f('\\ln(|x|)'), 0);
+    expect(limit.left).toMatchObject({ kind: 'infinite', sign: -1 });
+    expect(limit.right).toMatchObject({ kind: 'infinite', sign: -1 });
+    expect(limit.agree).toBe(true);
+  });
+
+  /** Au bord de √ (f ≈ √δ), l'extrapolation rend 0, pas le dernier échantillon 0,001. */
+  it('extrapole la limite au bord de √x', () => {
+    const limit = oneSidedLimit(f('\\sqrt{x}'), 0, 'right');
+    expect(limit.kind).toBe('finite');
+    expect(Math.abs(limit.value)).toBeLessThan(1e-6);
   });
 
   it('lit une limite à l’infini (§14)', () => {

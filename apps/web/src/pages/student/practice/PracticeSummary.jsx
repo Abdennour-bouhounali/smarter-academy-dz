@@ -5,7 +5,7 @@ import { Target } from 'lucide-react';
 import { ArrowForward } from '../../../components/common/DirectionalIcons';
 import { AuthContext } from '../../../context/AuthContext';
 import { fetchPracticeSession, fetchPracticeOverview } from '../../../services/practiceService';
-import { MASTERY_STATES, resolveMasteryState } from '../../../lessons/common/components/LearningPointMastery';
+import { MASTERY_STATES, resolveMasteryState, reasonLabel, freshnessLabel } from '../../../lessons/common/components/LearningPointMastery';
 import MISCONCEPTIONS from '../../../../../../content/practice/misconceptions.json';
 
 const TONE = {
@@ -77,15 +77,24 @@ export default function PracticeSummary() {
         </h1>
       </header>
 
+      {/* Le bilan v2 distingue les issues : correctes, à moitié, fausses — et
+          la part de réussite que le serveur en tire (`successRate`, déjà en
+          pourcentage, `null` sans réponse jugée). Un nombre est une écriture
+          LTR. */}
       <section className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
           { key: 'statExercises', value: s.exercisesAttempted ?? 0 },
           { key: 'statQuestions', value: s.questionsAnswered ?? 0 },
           { key: 'statCorrect', value: s.correctCount ?? 0 },
+          { key: 'statPartial', value: s.partialCount ?? 0 },
+          { key: 'statIncorrect', value: s.incorrectCount ?? 0 },
           { key: 'statHints', value: s.hintsUsed ?? 0 },
+          ...(typeof s.successRate === 'number'
+            ? [{ key: 'statSuccessRate', value: `${Math.round(s.successRate)}٪` }]
+            : []),
         ].map((stat) => (
-          <div key={stat.key} className="rounded-2xl border-2 border-slate-200 bg-white p-4 text-center">
-            <div className="text-2xl font-space font-extrabold text-slate-900 tabular-nums">{stat.value}</div>
+          <div key={stat.key} className="rounded-2xl border-2 border-slate-200 bg-white p-4 text-center" data-practice-stat={stat.key}>
+            <div dir="ltr" className="text-2xl font-space font-extrabold text-slate-900 tabular-nums">{stat.value}</div>
             <div className="text-[11px] font-mono uppercase text-slate-500">{t(`practice.${stat.key}`)}</div>
           </div>
         ))}
@@ -114,14 +123,23 @@ export default function PracticeSummary() {
         <h2 className="text-lg font-space font-bold text-slate-900">{t('practice.yourKnowledgeNow')}</h2>
         <ul className="space-y-2">
           {overview.learningPoints.map((lp) => {
-            const state = MASTERY_STATES[resolveMasteryState(lp)];
+            // TOUS les points de la leçon (v2), avec la raison d'un
+            // `reinforce` et la fraîcheur d'un acquis qui vieillit.
+            const stateKey = resolveMasteryState(lp);
+            const state = MASTERY_STATES[stateKey];
+            const reason = stateKey === 'reinforce' ? reasonLabel(lp, t) : '';
+            const freshness = stateKey === 'mastered' && lp.freshness && lp.freshness !== 'fresh' ? freshnessLabel(lp, t) : '';
 
             return (
-              <li key={lp.code} className={`flex items-start gap-3 rounded-xl border-2 px-4 py-3 ${TONE[state.tone]}`}>
+              <li key={lp.code} className={`flex items-start gap-3 rounded-xl border-2 px-4 py-3 ${TONE[state.tone]}`} data-mastery-state={stateKey}>
                 <span aria-hidden="true">{state.emoji}</span>
                 <div className="min-w-0">
                   <p className="text-sm font-bold text-slate-800">{lp.title}</p>
-                  <p className="text-xs text-slate-600">{state.label}</p>
+                  <p className="text-xs text-slate-600">
+                    {state.label}
+                    {freshness && <span className="text-emerald-800"> · ⏳ {freshness}</span>}
+                  </p>
+                  {reason && <p className="text-xs text-amber-900 mt-0.5">{reason}</p>}
                 </div>
               </li>
             );

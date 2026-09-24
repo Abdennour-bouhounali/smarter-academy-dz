@@ -27,13 +27,15 @@ import { buildLessonIndex, repoRoot } from './lib/lessonAst.mjs';
 import { Rational } from '../packages/core/practice/rational.js';
 import { parseAffineAnswer } from '../packages/core/practice/affineCanonical.js';
 import { parseInterval } from '../packages/core/practice/intervalCompare.js';
-import { SUPPORTED_ANSWER_TYPES, parseIntegerSet } from '../packages/core/practice/answerEvaluator.js';
+import { SUPPORTED_ANSWER_TYPES, parseIntegerSet, evaluateAnswer, isSuccessOutcome } from '../packages/core/practice/answerEvaluator.js';
 
 const argv = process.argv.slice(2);
 const STRICT = argv.includes('--strict');
 const AS_JSON = argv.includes('--json');
 
-const CONTENT_ROOT = join(repoRoot, 'content/practice');
+// SMARTER_PRACTICE_ROOT : une autre racine de contenu — pour les essais de
+// charge (banque synthétique de 500 exercices par niveau), jamais en CI.
+const CONTENT_ROOT = process.env.SMARTER_PRACTICE_ROOT || join(repoRoot, 'content/practice');
 const INDEX_PATH = join(CONTENT_ROOT, 'index.generated.json');
 const LEVELS = [1, 2, 3, 4, 5];
 const MIN_PER_LEVEL = 3;
@@ -75,10 +77,66 @@ const SUPPORT_LABS = new Set(['TankLab', 'RateProbes']);
 
 const HINT_ORDER = ['look', 'direction', 'strategy'];
 
+/**
+ * Mastery V2 — la demande cognitive d'une question (métadonnée d'explication,
+ * jamais un poids dans le moteur) et le gabarit d'exercice partagé par ses
+ * variantes (templateId). Un exercice généré arrive avec ces champs ; il n'a
+ * besoin de rien d'autre pour être « prêt pour la maîtrise ».
+ */
+const COGNITIVE_DEMANDS = new Set(['recall', 'apply', 'transfer', 'reason']);
+const TEMPLATE_ID_PATTERN = /^tpl-[a-z0-9]+(-[a-z0-9]+)*$/;
+
 const errors = [];
 const warnings = [];
 const err = (where, msg) => errors.push(`${where}: ${msg}`);
 const warn = (where, msg) => warnings.push(`${where}: ${msg}`);
+
+/**
+ * La réponse qu'un élève donnerait s'il recopiait exactement la clé — dans la
+ * forme que l'évaluateur reçoit du client (inputs/*.jsx).
+ */
+function answerFromKey(q) {
+  switch (q.answerType) {
+    case 'choice': return { choiceId: (q.choices ?? []).find((c) => c.isCorrect)?.id };
+    case 'multiChoice': return { choiceIds: (q.choices ?? []).filter((c) => c.isCorrect).map((c) => c.id) };
+    case 'rational':
+    case 'integerSet': return { value: Array.isArray(q.expectedAnswer) ? q.expectedAnswer.join(', ') : q.expectedAnswer };
+    default: return q.expectedAnswer; // affine {a,b}, interval {lo,…}, point {x,y}
+  }
+}
+
+function checkAnswerKeyRoundTrip(q, qw) {
+  if (!SUPPORTED_ANSWER_TYPES.includes(q.answerType)) return;
+  let verdict;
+  try {
+    verdict = evaluateAnswer(answerFromKey(q), q);
+  } catch (e) {
+    err(qw, `la clé fait lever l'évaluateur : ${e.message}`);
+    return;
+  }
+  if (!isSuccessOutcome(verdict.outcome)) {
+    err(qw, `la clé déclarée n'est PAS acceptée par l'évaluateur (issue « ${verdict.outcome} ») — la question serait insoluble`);
+  }
+  if (q.answerType === 'choice') {
+    for (const c of q.choices ?? []) {
+      if (c.isCorrect) continue;
+      const v = evaluateAnswer({ choiceId: c.id }, q);
+      if (isSuccessOutcome(v.outcome)) err(qw, `le distracteur « ${c.id} » est accepté comme juste`);
+    }
+  }
+  // Une signature d'erreur égale à la bonne réponse ne se déclencherait
+  // jamais — ou pire, étiquetterait une réponse juste comme une misconception.
+  for (const sig of q.misconceptionSignatures ?? []) {
+    const probe = q.answerType === 'rational' || q.answerType === 'integerSet'
+      ? { value: Array.isArray(sig.value) ? sig.value.join(', ') : sig.value }
+      : sig.value;
+    try {
+      if (isSuccessOutcome(evaluateAnswer(probe, q).outcome)) {
+        err(qw, `la signature « ${sig.id} » (${JSON.stringify(sig.value)}) est une réponse JUSTE`);
+      }
+    } catch { /* signature illisible : signalée plus bas */ }
+  }
+}
 
 /* ── Lecture du contenu ──────────────────────────────────────────────── */
 
@@ -250,9 +308,35 @@ function validateExercise(file, data, ctx) {
     return;
   }
   const [lessonKey, lesson] = lessonEntry;
-  const gradeSegment = rel.split('/')[2]; // content/practice/<grade>/…
+  const gradeSegment = relative(CONTENT_ROOT, file).split('/')[0]; // <racine>/<grade>/…
   if (!lessonKey.startsWith(`${gradeSegment}:`)) {
     err(where, `le dossier annonce le niveau « ${gradeSegment} » mais la leçon appartient à « ${lessonKey.split(':')[0]} »`);
+  }
+
+  /* Mastery V2 — gabarit et provenance (exercices générés, §20 du plan) */
+  if (data.templateId !== undefined) {
+    if (typeof data.templateId !== 'string' || !TEMPLATE_ID_PATTERN.test(data.templateId)) {
+      err(rel, `templateId « ${data.templateId} » doit suivre tpl-<mots-en-kebab>`);
+    } else {
+      // Les variantes d'un gabarit testent la MÊME compétence de la même
+      // façon : même learning point principal, même answerType. Sinon ce
+      // n'est pas une variante, c'est un autre exercice.
+      const primary = (data.questions ?? []).map((q) => (q.learningPoints ?? []).find((lp) => lp.role === 'primary')?.code ?? null);
+      const types = (data.questions ?? []).map((q) => q.answerType ?? null);
+      const signature = JSON.stringify({ lesson: data.lessonCode, primary, types });
+      const seen = ctx.templates.get(data.templateId);
+      if (seen && seen.signature !== signature) {
+        err(rel, `templateId « ${data.templateId} » : les variantes doivent partager learning point principal et answerType par question (voir ${seen.rel})`);
+      } else if (!seen) {
+        ctx.templates.set(data.templateId, { rel, signature });
+      }
+    }
+  }
+  if (data.variantOf !== undefined && (typeof data.variantOf !== 'string' || !/^ex-[a-z0-9]+(-[a-z0-9]+)*-l[1-5]-[0-9]{3}$/.test(data.variantOf))) {
+    err(rel, `variantOf doit être l'identifiant d'un exercice existant (reçu ${JSON.stringify(data.variantOf)})`);
+  }
+  if (data.generator !== undefined && (typeof data.generator !== 'object' || data.generator === null || typeof data.generator.tool !== 'string')) {
+    err(rel, 'generator doit être un objet { tool, version?, seed? } — la provenance d\'un exercice généré');
   }
 
   /* Questions */
@@ -276,6 +360,14 @@ function validateExercise(file, data, ctx) {
       } else if (lp.role === 'primary') {
         ctx.primaryCoverage.get(lessonKey)?.add(lp.code);
       }
+    }
+
+    /* Mastery V2 — métadonnées du registre d'items (facultatives, typées) */
+    if (q.difficulty !== undefined && !(Number.isInteger(q.difficulty) && q.difficulty >= 1 && q.difficulty <= 5)) {
+      err(qw, `difficulty doit être un entier de 1 à 5 (reçu ${JSON.stringify(q.difficulty)})`);
+    }
+    if (q.cognitiveDemand !== undefined && !COGNITIVE_DEMANDS.has(q.cognitiveDemand)) {
+      err(qw, `cognitiveDemand « ${q.cognitiveDemand} » inconnu (attendus : ${[...COGNITIVE_DEMANDS].join(', ')})`);
     }
 
     /* Type de réponse */
@@ -319,6 +411,13 @@ function validateExercise(file, data, ctx) {
         err(qw, 'answerFormat est obligatoire : l\'élève doit savoir COMMENT saisir (invariant 7)');
       }
     }
+
+    /* Aller-retour de la clé (intégrité du contenu, 2026-09-24).
+       La clé déclarée doit être ACCEPTÉE par l'évaluateur réel, et toute
+       autre option refusée. C'est ce qui garantit qu'une question n'est
+       jamais insoluble — « aucun choix n'est accepté » — et qu'aucune
+       mauvaise réponse n'est comptée juste par construction. */
+    checkAnswerKeyRoundTrip(q, qw);
 
     /* Signatures de misconception */
     for (const sig of q.misconceptionSignatures ?? []) {
@@ -410,7 +509,7 @@ function main() {
     else primaryCoverage.set(entry[0], new Set());
   }
 
-  const ctx = { seenIds: new Map(), lessonIndex, misconceptions, primaryCoverage };
+  const ctx = { seenIds: new Map(), lessonIndex, misconceptions, primaryCoverage, templates: new Map() };
   const files = walkExerciseFiles(CONTENT_ROOT);
   const byLessonLevel = new Map();
 

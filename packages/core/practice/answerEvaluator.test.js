@@ -211,9 +211,12 @@ describe('rational + requiredForm irreducible — اختزال كسر', () => {
     expect(r.feedbackKey).toBe('notIrreducible');
     expect(feedbackFor(q, r)).toBe('اختزل أكثر.');
   });
-  it('84/48 non réduite → partiel ; 1,75 en décimal → équivalent juste ; 3/2 → faux', () => {
+  it('84/48 non réduite → partiel ; 1,75 en décimal → partiel (pas une fraction) ; 3/2 → faux', () => {
     expect(evaluateAnswer({ value: '84/48' }, q).outcome).toBe(OUTCOMES.PARTIALLY_CORRECT);
-    expect(evaluateAnswer({ value: '1,75' }, q).outcome).toBe(OUTCOMES.EQUIVALENT_CORRECT);
+    // La consigne demande une FRACTION irréductible : un décimal a la bonne
+    // valeur mais pas la forme exigée (audit d'intégrité, 2026-09-24).
+    expect(evaluateAnswer({ value: '1,75' }, q).outcome).toBe(OUTCOMES.PARTIALLY_CORRECT);
+    expect(evaluateAnswer({ value: '1,75' }, q).feedbackKey).toBe('notIrreducible');
     expect(evaluateAnswer({ value: '3/2' }, q).outcome).toBe(OUTCOMES.INCORRECT);
   });
   it('sans la politique, 21/12 reste une réponse équivalente juste', () => {

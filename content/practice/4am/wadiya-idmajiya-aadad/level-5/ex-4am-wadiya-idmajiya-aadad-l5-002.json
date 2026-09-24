@@ -1,0 +1,93 @@
+{
+  "metadata": {
+    "title": "سلسلة التفوق، الوضعية 9 — أشجار الحديقة",
+    "estimatedMinutes": 7,
+    "tags": [
+      "وضعية إدماجية",
+      "غرس"
+    ],
+    "source": {
+      "type": "worksheet",
+      "worksheetId": "tafawwuq-01",
+      "elementId": "ws01-sit-09",
+      "section": "الوضعيات",
+      "number": 9
+    }
+  },
+  "statement": {
+    "content": "حديقة مثلثة الشكل أطوال أضلاعها 32 m و 60 m و 68 m، نريد إحاطتها بأشجار على أن تكون في كل ركن من أركانها شجرة، والمسافة التي تفصل الأشجار المتجاورة متساوية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "جِد أكبر مسافة (بالمتر) يمكن أن تفصل بين شجرتين متجاورتين.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-aadad_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي (بالمتر)",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المسافة تقسم أطوال الأضلاع الثلاثة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب PGCD(32 ; 60) ثم قاسمه المشترك الأكبر مع 68."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نريد أكبر مسافة ممكنة."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(32 ; 60 ; 68) = 4 m.",
+        "incorrect": "أكبر مسافة هي القاسم المشترك الأكبر للأضلاع الثلاثة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو عدد الأشجار التي يمكن غرسها حول هذه الحديقة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-aadad_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "40",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "محيط الحديقة: 32 + 60 + 68."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "على محيط مغلق، عدد الأشجار = المحيط ÷ المسافة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "160 ÷ 4."
+        }
+      ],
+      "feedback": {
+        "correct": "المحيط 160 m، و 160 ÷ 4 = 40 شجرة.",
+        "incorrect": "على خطّ مغلق، عدد الأشجار يساوي عدد المسافات."
+      }
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-aadad-l5-002",
+  "lessonCode": "wadiya-idmajiya-aadad",
+  "level": 5
+}

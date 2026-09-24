@@ -1,0 +1,93 @@
+{
+  "metadata": {
+    "title": "سلسلة التفوق، الوضعية 3 — بلاط الغرفة",
+    "estimatedMinutes": 7,
+    "tags": [
+      "وضعية إدماجية",
+      "تبليط"
+    ],
+    "source": {
+      "type": "worksheet",
+      "worksheetId": "tafawwuq-01",
+      "elementId": "ws01-sit-03",
+      "section": "الوضعيات",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "غرفة ياسر مستطيلة الشكل طولها 4,6 m وعرضها 3 m، بُلّطت ببلاط مربع الشكل من نفس النوع ومن دون تقطيع، وطول ضلع البلاطة عدد طبيعي بالسنتيمتر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هو طول ضلع هذا البلاط (بالسنتيمتر) بحيث نستعمل أقل عدد ممكن منه؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-aadad_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي (بالسنتيمتر)",
+      "expectedAnswer": "20",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حوّل البعدين إلى السنتيمتر: 460 cm و 300 cm."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ضلع البلاطة يقسم 460 و 300."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أقل عدد من البلاط يعني أكبر ضلع: احسب PGCD(460 ; 300)."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(460 ; 300) = 20 cm.",
+        "incorrect": "حوّل إلى السنتيمتر أولًا، ثم ابحث عن القاسم المشترك الأكبر."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو عدد البلاط المستعمل في هذه الحالة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-aadad_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "345",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "على الطول: 460 ÷ 20 بلاطة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "على العرض: 300 ÷ 20 بلاطة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب العددين."
+        }
+      ],
+      "feedback": {
+        "correct": "23 × 15 = 345 بلاطة.",
+        "incorrect": "عدد البلاط = (الطول ÷ الضلع) × (العرض ÷ الضلع)."
+      }
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-aadad-l4-001",
+  "lessonCode": "wadiya-idmajiya-aadad",
+  "level": 4
+}

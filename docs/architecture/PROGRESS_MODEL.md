@@ -1,31 +1,21 @@
 # Progress Model
 
-> **Correction (2026-09-20).** Two statements below are now false and are
-> contradicted by this document's own first table:
+> **Two progressions, two vocabularies (Mastery V2, 2026-09-24).**
+> **Completion** answers « did the student go through the material? » —
+> modules done, lessons done, percentages. **Mastery** answers « what does the
+> student actually know about each Learning Point? » — the evidence-driven
+> state in `student_learning_point_progress`, owned by
+> [`LEARNING_ARCHITECTURE.md`](./LEARNING_ARCHITECTURE.md) § « Mastery model
+> (V2) ». They are two tables, two APIs, and — since 2026-09-24 — two sets of
+> words: completion never says إتقان / متحكَّم (« أنهيت مسار الدرس ✓ »), and the
+> four mastery states have ONE label set (`student:mastery.*`).
 >
-> 1. **"No independent mastery signal exists."** A real, evidence-driven
->    mastery model is implemented and displayed. `student_learning_point_progress`
->    holds a per-learning-point confidence (0–1) updated by `MasteryModel`
->    (`STARTING_CONFIDENCE 0.5`, `MASTERED_THRESHOLD 0.70`, `GAP_THRESHOLD 0.40`,
->    `LEARNING_RATE 0.22`, plus weights for partial answers, secondary learning
->    points, practice evidence and hint decay). The student sees it as a coloured
->    dot per learning point on the lesson index, the unit page, the progression
->    tree and the practice hub. What remains a completion proxy is only
->    `getModuleMastery`, the **module-unlock** signal — binary 100/0.
-> 2. **The lesson-completion denominator** is `modules.length`, served by the
->    lesson registry. `LESSON_CONFIG.totalModules` was removed, as this document
->    says earlier; the "Lesson completion" section below still names it.
->
-> Also: `completion_mode: 'mastery'` is never emitted — the client never sends
-> the field, so every completion is recorded as `'path'`. And XP is still
-> client-only, as stated.
->
-> 3. **Module 0 is recorded like any other module** (fixed 2026-09-20). A
->    module numbered `0` — « أستعدّ », a `prerequisite_check` — used to be
->    dropped by a truthiness guard in `ModuleLayout`, capping those lessons at
->    80 %. Progress writes now go through `isValidModuleNumber`, and the resume
->    path sweeps the lesson's real module range via `getFirstModuleNumber`. See
->    `LESSON_CONTRACT.md` § « Le module 0 EST un module ».
+> Still true from the 2026-09-20 corrections: the lesson-completion
+> denominator is `modules.length` (registry); module `0` counts like any other
+> module (`isValidModuleNumber`); `completion_mode` is recorded once and the
+> client still never sends `'mastery'` (every completion is `'path'`) — the
+> claim « this student masters the lesson » is made by the Learning Point
+> states, not by this column. XP is still client-only.
 
 The cleanup phase unified *how* completion percentage is calculated (one pure function, `calculateCompletionPercentage`, replacing four divergent formulas). This document defines *what* completion means at each level, and draws the line between completion and mastery that the codebase currently blurs.
 
@@ -59,10 +49,10 @@ mastering a Learning Point, and vice versa.
   student followed the journey to the final evaluation — the default) or
   `'mastery'` (the always-open final evaluation demonstrated mastery
   directly, the "Je pense déjà maîtriser" path). Later snapshots cannot
-  rewrite it. Mastery-path completion is client-asserted today, consistent
-  with the documented client-trust boundary for lesson correctness;
-  server-side verification against `student_learning_point_progress` is a
-  future hardening step.
+  rewrite it. The client never sends `'mastery'` today (every completion is
+  `'path'`), and the column is not a mastery claim: whether a student KNOWS
+  the lesson's points is `student_learning_point_progress`, judged by the
+  server since Mastery V2.
 
 ### localStorage is a cache, not the source of truth
 
@@ -99,7 +89,7 @@ completion percentage (the old `totalModules || 7` fallbacks are gone, as is
 
 - **Definition:** `calculateCompletionPercentage(completedModuleIds, totalModules)`.
 - **Numerator:** count of *unique* completed module numbers, after normalizing mixed-format ids (`"3"`, `"L03"`, `"L03-4e"` all → `3`) via regex and de-duplicating through a `Set`.
-- **Denominator:** `LESSON_CONFIG.totalModules` (must equal `modules.length` — see the known gap in `LESSON_CONTRACT.md`).
+- **Denominator:** `modules.length`, served by the lesson registry (`apps/web/src/lessons/registry.js`); `LESSON_CONFIG.totalModules` no longer exists.
 - **Edge cases, explicit:** `totalModules` missing/zero → `0` (never `NaN`/`Infinity`); `completedModuleIds` missing/not an array → `0`; more completed than total (shouldn't happen, but a stale/corrupted `localStorage` value could produce it) → capped at `100`.
 - **Weighting:** none — every module counts equally. There is no concept of "this module is worth more" anywhere in the current data model.
 
@@ -116,19 +106,24 @@ completion percentage (the old `totalModules || 7` fallbacks are gone, as is
 
 ## Completion vs. Mastery
 
-**These are not the same thing, and the current codebase does not fully distinguish them** — this is the most important finding in this document.
-
 | | Completion | Mastery |
 |---|---|---|
-| **Question answered** | "Did the student go through the material?" | "Did the student demonstrate sufficient understanding?" |
-| **Current implementation** | `calculateCompletionPercentage` (real, accurate, exercised by real UI) | `getModuleMastery()` — returns `100` or `0`, exactly mirroring completion. **No independent mastery signal exists.** |
-| **Data available to compute it properly** | Yes — module completion flags | No — no attempt history, no per-exercise correctness-over-time, no retention/spaced-review signal is persisted anywhere (see `EXERCISE_CONTRACT.md`'s Attempt Model gap) |
+| **Question** | « did the student go through the material? » | « what does the student know about this Learning Point? » |
+| **Unit** | module, lesson, chapter | Learning Point (and counts of Learning Points per lesson/unit) |
+| **Source** | `student_lesson_progress` (+ `smarter_lesson_{id}` cache) | `student_learning_point_progress`, derived from `learning_evidence` by the mastery engine |
+| **Written by** | `PUT /lessons/{code}/progress` | `ProgressEngine` only (final test + practice engine) |
+| **Read by** | lesson index %, unit %, « أنهيت مسار الدرس ✓ », Knowledge Map visibility | coloured dots/pills, «للعمل الآن», practice hub, teacher class × LP, recommendations |
+| **Code names** | `calculateCompletionPercentage`, `getModuleMastery` (a historical name — it returns module COMPLETION, 100/0, and drives unlocking only) | `status`, `status_reason`, `confidence`, evidence counters |
 
-`lessonAccess.js`'s own header comment already states this precisely: today, "mastery" is a placeholder equal to completion, specifically *because* no fractional/retention data exists yet, with `getModuleMastery` named as "the one place to change" once it does. `LessonIndex.jsx`'s `isMastered` variable is the one place this conflation is user-visible — it answers "is this lesson done," not "has this been mastered," despite the name.
+**A student can complete a lesson without mastering its Learning Points, and
+master a Learning Point without completing the lesson** (the final test is
+always open) — `RepeatedAttemptsFlowTest::test_completion_and_mastery_are_independent`.
 
-**Decision for this phase:** do not build a mastery algorithm (explicitly future work, §23 of the phase brief). What this phase does: name the gap precisely, so nobody building the future mastery engine mistakes the existing `isMastered`/`getModuleMastery` naming for a real mastery signal that just needs tuning — it's a completion proxy that needs to be *replaced*, not extended, once real attempt data exists.
+**Aggregation above the Learning Point is a COUNT, never a score.** A lesson
+or unit shows « 3 / 4 متحكَّم فيها » and the four-status distribution; there is
+no « lesson mastery = 87 % ». A numeric lesson mastery would hide which point
+is weak — the one thing a teacher needs to know.
 
-**A student can be 100% complete on a lesson without having mastered its competency.** The architecture must keep these separable when the real mastery model arrives: `Progress` (→ `calculateCompletionPercentage`, module/lesson/chapter) stays a pure function of "what was clicked through," while `Mastery` (→ eventually a function of attempt history, correctness rate, retention over time) becomes its own, separately-computed value once `Attempt` records exist. They should never again be collapsed into one number the way `getModuleMastery` currently does.
 
 ## Who reads progress (2026-09-22)
 
@@ -139,7 +134,11 @@ and `Domain\Progress\StudentDossier` (extracted from the admin service and
 used by both). They read `student_lesson_progress`,
 `student_learning_point_progress`, the practice attempts and
 `users.last_activity_at`, scoped to the class's grade and to the lessons the
-class makes *effective* (a lesson the teacher hid is not counted). **No
+class makes *effective* (a lesson the teacher hid is not counted). Since
+Mastery V2 the teacher also reads **class × Learning Point**
+(`Domain\Classroom\ClassroomLearningPointService`): one `GROUP BY` over the
+canonical state, never a copy. Success rates everywhere come from
+`Domain\Progress\Support\OutcomeStats`. **No
 teacher-side progress table exists and none may be added**: a class view is a
 query over the student's data, never a copy of it. Leaving or being removed
 from a class changes a membership row only — every progress, attempt and

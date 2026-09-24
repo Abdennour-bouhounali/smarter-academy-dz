@@ -257,6 +257,9 @@ export const TruthLine = memo(function TruthLine({
   const width = 320;
   const pad = 18;
   const toX = (value) => pad + ((value - min) / (max - min)) * (width - pad * 2);
+  // Une valeur hors de la FENÊTRE reste valable (31 réfute « tout premier > 2
+  // est pair ») mais ne se dessine pas hors du cadre : elle vit dans le message.
+  const visible = (value) => Number.isFinite(value) && value >= min && value <= max;
   const axisY = height - 38;
   const ticks = niceTicks(min, max);
 
@@ -300,7 +303,7 @@ export const TruthLine = memo(function TruthLine({
         </g>
       ))}
 
-      {marks.map((mark) => (
+      {marks.filter((mark) => visible(mark.value)).map((mark) => (
         <g key={`mark-${mark.value}`}>
           <line x1={toX(mark.value)} x2={toX(mark.value)} y1={axisY - 6} y2={axisY + 6} stroke="#334155" strokeWidth="1.4" />
           <text x={toX(mark.value)} y={axisY - 20} textAnchor="middle" className="sa-ml-lg__svgValue">{mark.label}</text>
@@ -308,7 +311,7 @@ export const TruthLine = memo(function TruthLine({
       ))}
 
       {/* Les points isolés où l'énoncé est vrai (x + 2 = 5). */}
-      {points.map((value) => (
+      {points.filter(visible).map((value) => (
         <circle key={`pt-${value}`} cx={toX(value)} cy={axisY} r="5" fill="#15803d" stroke="#ffffff" strokeWidth="2" />
       ))}
 
@@ -320,7 +323,7 @@ export const TruthLine = memo(function TruthLine({
         </g>
       ))}
 
-      {probe !== null && Number.isFinite(probe) && (
+      {probe !== null && visible(probe) && (
         <g data-ml-lg-probe-marker={probe}>
           <line x1={toX(probe)} x2={toX(probe)} y1={axisY - 30} y2={axisY + 10} stroke="#4f46e5" strokeWidth="2" />
           <circle cx={toX(probe)} cy={axisY} r="6" fill="#4f46e5" stroke="#ffffff" strokeWidth="2" />

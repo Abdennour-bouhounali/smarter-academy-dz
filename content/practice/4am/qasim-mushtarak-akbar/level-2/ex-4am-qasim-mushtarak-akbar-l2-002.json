@@ -1,0 +1,182 @@
+{
+  "metadata": {
+    "title": "سلسلة التفوق، تمرين 2 — قواسم 105 و 60",
+    "estimatedMinutes": 6,
+    "tags": [
+      "قواسم مشتركة"
+    ],
+    "source": {
+      "type": "worksheet",
+      "worksheetId": "tafawwuq-01",
+      "elementId": "ws01-ex-02",
+      "section": "التمارين",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "نعتبر العددين 105 و 60."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عيّن كل قواسم العدد 105.",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-mushtarak-akbar_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        1,
+        3,
+        5,
+        7,
+        15,
+        21,
+        35,
+        105
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "105 فردي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختبر الأعداد من 1 إلى 10، لأن 11² = 121 أكبر من 105."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "105 = 3 × 5 × 7."
+        }
+      ],
+      "feedback": {
+        "correct": "105 = 1 × 105 = 3 × 35 = 5 × 21 = 7 × 15.",
+        "incorrect": "لا تنسَ 1 و 105."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "عيّن كل قواسم العدد 60.",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-mushtarak-akbar_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        10,
+        12,
+        15,
+        20,
+        30,
+        60
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اختبر الأعداد من 1 إلى 7، لأن 8² = 64 أكبر من 60."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل قاسم d يعطي قاسمًا ثانيًا هو 60 ÷ d."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "60 = 2 × 30 = 3 × 20 = 4 × 15 = 5 × 12 = 6 × 10."
+        }
+      ],
+      "feedback": {
+        "correct": "للعدد 60 اثنا عشر قاسمًا.",
+        "incorrect": "تحقّق من الجداءات الستة التي تساوي 60."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "ما هو أكبر قاسم مشترك لهما؟",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-mushtarak-akbar_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن الأعداد الموجودة في القائمتين معًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "القواسم المشتركة: 1، 3، 5، 15."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خذ أكبرها."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(105 ; 60) = 15.",
+        "incorrect": "اختر أكبر عدد يقسم 105 و 60 معًا."
+      }
+    },
+    {
+      "id": "q4",
+      "statement": "ما هو أصغر قاسم مشترك لهما؟",
+      "learningPoints": [
+        {
+          "code": "4am_qasim-mushtarak-akbar_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما العدد الذي يقسم كل عدد طبيعي؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى القواسم المشتركة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خذ أصغرها."
+        }
+      ],
+      "feedback": {
+        "correct": "1 قاسم لكل عدد طبيعي، فهو أصغر قاسم مشترك لأي عددين.",
+        "incorrect": "أصغر قاسم لأي عدد هو 1."
+      }
+    }
+  ],
+  "id": "ex-4am-qasim-mushtarak-akbar-l2-002",
+  "lessonCode": "qasim-mushtarak-akbar",
+  "level": 2
+}

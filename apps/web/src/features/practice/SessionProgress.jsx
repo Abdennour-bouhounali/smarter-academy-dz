@@ -1,102 +1,83 @@
 import { useTranslation } from 'react-i18next';
-import { CheckCircle2 } from 'lucide-react';
+import { TONE_STYLE } from './toneStyle';
 
 /**
- * OÙ SUIS-JE, ET COMBIEN RESTE-T-IL ?
+ * OÙ SUIS-JE DANS CET EXERCICE ? — l'en-tête de la carte de la question.
  *
- * Une séance, c'est deux échelles emboîtées — les QUESTIONS d'un exercice, et
- * les EXERCICES d'un niveau — et l'élève doit lire les deux d'un coup d'œil,
- * à tout moment. L'ancienne version n'en montrait qu'une (« Exercice 2 / 3 »,
- * en français), et le numéro de question vivait ailleurs, plus bas dans la
- * page : il fallait donc assembler soi-même sa position, et rien ne disait ce
- * qu'il restait à faire.
+ *   السؤال 2 من 3                              التمرين 1 من 2
+ *   ▰▰▰▰▰▰▰ ▰▰▰▰▰▰▰ ▱▱▱▱▱▱▱       ← UNE case par question RÉELLE de l'exercice
  *
- * Ce composant répond aux quatre questions dans un seul bandeau :
+ * Deuxième passe (2026-09-24) : la bande vit dans l'en-tête de la carte
+ * courante — là où l'élève regarde — et nulle part ailleurs. « من N » est le
+ * nombre de questions DE CET EXERCICE (`exercise.questions.length`), jamais un
+ * nombre supposé commun : un exercice en compte 2, un autre 5. Chaque segment
+ * d'une question faite prend la tonalité de son issue (`toneStyle.jsx`).
  *
- *   التمرين 2 من 3        ●●○        ← où j'en suis dans le niveau
- *   السؤال 1 من 2         ▪▪         ← où j'en suis dans l'exercice
- *   بقي سؤال واحد… ثم تمرين واحد…    ← ce qu'il me reste
- *
- * Les pastilles sont décoratives (`aria-hidden`) : le texte porte déjà
- * l'information, et un lecteur d'écran n'a pas à compter des points. Le
- * bandeau est `aria-live="polite"` pour annoncer chaque changement de
- * position sans interrompre la lecture.
+ * Le titre « السؤال n من N » est le `h2` de la carte (focalisable, cible de
+ * QuestionArrival). La phrase « ce qu'il reste » n'est plus affichée — la
+ * barre le montre — mais reste lue par le lecteur d'écran (`aria-live`,
+ * `sr-only`), en clés plurielles à six formes (« بقي سؤالان », pas « بقي 2
+ * سؤال »).
  *
  * Pas de minuteur : la pratique entraîne, elle ne chronomètre pas.
  */
 export default function SessionProgress({
-  index, total, correctCount, questionIndex = 0, questionTotal = 1,
+  index, total, questionIndex = 0, questionTotal = 1, questionTones = [], currentTone = null,
+  headingId, headingRef,
 }) {
   const { t } = useTranslation('student');
 
-  // Ce qu'il RESTE, jamais négatif : l'élève est sur la question courante,
-  // donc ce qui reste après elle est `total - index - 1`.
+  // Ce qu'il RESTE, jamais négatif : l'élève est sur la question courante.
   const questionsLeft = Math.max(0, questionTotal - questionIndex - 1);
   const exercisesLeft = Math.max(0, total - index - 1);
-
   const questionsNote = questionsLeft === 0
     ? t('practice.progress.lastQuestion')
-    : questionsLeft === 1
-      ? t('practice.progress.remainingQuestionsOne')
-      : t('practice.progress.remainingQuestions', { count: questionsLeft });
-
+    : t('practice.progress.remainingQuestions', { count: questionsLeft });
   const exercisesNote = exercisesLeft === 0
     ? t('practice.progress.lastExercise')
-    : exercisesLeft === 1
-      ? t('practice.progress.remainingExercisesOne')
-      : t('practice.progress.remainingExercises', { count: exercisesLeft });
+    : t('practice.progress.remainingExercises', { count: exercisesLeft });
+
+  const segmentClass = (i) => {
+    if (i < questionIndex) return TONE_STYLE[questionTones[i] ?? 'correct'].segment;
+    if (i === questionIndex) return currentTone ? TONE_STYLE[currentTone].segment : 'bg-indigo-600';
+
+    return 'bg-indigo-100';
+  };
 
   return (
     <div
       data-session-progress
       data-exercise-index={index}
       data-question-index={questionIndex}
-      className="space-y-2 rounded-2xl border-2 border-slate-200 bg-white px-4 py-3"
-      aria-live="polite"
+      className="space-y-2"
     >
-      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-        {/* ── Les EXERCICES du niveau ─────────────────────────────────── */}
-        <div className="flex items-center gap-2">
-          <span className="font-mono text-sm font-bold text-slate-800" data-exercise-position>
-            {t('practice.progress.exerciseOf', { current: index + 1, total })}
-          </span>
-          <span className="flex items-center gap-1" aria-hidden="true">
-            {Array.from({ length: total }, (_, i) => (
-              <span
-                key={i}
-                className={`h-2.5 w-2.5 rounded-full ${i < index ? 'bg-emerald-500' : i === index ? 'bg-indigo-600 ring-2 ring-indigo-200' : 'bg-slate-200'}`}
-              />
-            ))}
-          </span>
-        </div>
-
-        {correctCount > 0 && (
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 font-mono text-xs font-bold text-emerald-800">
-            <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
-            {t('practice.progress.correctSoFar', { count: correctCount })}
-          </span>
-        )}
+      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-0.5">
+        <h2
+          id={headingId}
+          ref={headingRef}
+          tabIndex={-1}
+          className="rounded-md text-base font-bold text-indigo-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+          data-question-position
+        >
+          {t('practice.progress.questionOfShort', { current: questionIndex + 1, total: questionTotal })}
+        </h2>
+        <span className="text-sm font-semibold text-slate-600" data-exercise-position>
+          {t('practice.progress.exerciseOf', { current: index + 1, total })}
+        </span>
       </div>
 
-      {/* ── Les QUESTIONS de l'exercice courant ───────────────────────── */}
       {questionTotal > 1 && (
-        <div className="flex items-center gap-2 border-t border-slate-100 pt-2">
-          <span className="font-mono text-xs font-bold text-indigo-700" data-question-position>
-            {t('practice.progress.questionOfShort', { current: questionIndex + 1, total: questionTotal })}
-          </span>
-          <span className="flex items-center gap-1" aria-hidden="true">
-            {Array.from({ length: questionTotal }, (_, i) => (
-              <span
-                key={i}
-                className={`h-1.5 w-5 rounded-full ${i < questionIndex ? 'bg-emerald-400' : i === questionIndex ? 'bg-indigo-600' : 'bg-slate-200'}`}
-              />
-            ))}
-          </span>
+        <div className="flex gap-1" aria-hidden="true" data-question-segments>
+          {Array.from({ length: questionTotal }, (_, i) => (
+            <span
+              key={i}
+              className={`h-1.5 flex-1 rounded-full transition-colors duration-300 motion-reduce:transition-none ${segmentClass(i)}`}
+            />
+          ))}
         </div>
       )}
 
-      {/* ── CE QU'IL RESTE, en une phrase ─────────────────────────────── */}
-      <p className="text-xs text-slate-600" data-remaining>
+      <p className="sr-only" aria-live="polite" data-remaining>
         {questionTotal > 1 ? `${questionsNote} · ` : ''}{exercisesNote}
       </p>
     </div>

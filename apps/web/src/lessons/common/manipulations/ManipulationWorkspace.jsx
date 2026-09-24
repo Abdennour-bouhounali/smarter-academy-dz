@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { DEFAULT_MANIPULATION_LEVEL, resolveLevelId } from '@smarter-academy/core';
 import ManipulationLevelSelector from './ManipulationLevelSelector';
 import { availableLevels, activeLevel, panelKey } from './workspaceLevels';
+import { WorkspaceLevelContext } from './workspaceContext';
 
 /**
  * LE WORKSPACE — UN seul atelier, deux niveaux (§3 et §16 du brief).
@@ -28,6 +29,9 @@ import { availableLevels, activeLevel, panelKey } from './workspaceLevels';
  *   • `hidden` (et non `display:none` en CSS) retire aussi le sous-arbre de
  *     l'arbre d'accessibilité et du parcours de tabulation : un lecteur
  *     d'écran ne lit jamais le niveau caché, et Tab ne s'y perd pas.
+ *   • UN SEUL SÉLECTEUR. Chaque panneau fournit son niveau par
+ *     `WorkspaceLevelContext` : la manipulation qu'il contient sait qu'elle
+ *     est dans un workspace et n'affiche pas son propre sélecteur.
  *   • RÉINITIALISATION SÛRE. Quand le MODÈLE mathématique change (la leçon
  *     passe d'autres nombres), la clé `modelKey` remonte les deux niveaux :
  *     c'est le seul cas où l'état doit disparaître, parce qu'il décrirait une
@@ -63,6 +67,7 @@ export default function ManipulationWorkspace({
   const { t } = useTranslation('lesson');
   const [level, setLevel] = useState(() => resolveLevelId(defaultLevel));
   const labelId = useId();
+  const idPrefix = useId();
 
   const change = useCallback((next) => {
     const id = resolveLevelId(next);
@@ -86,7 +91,7 @@ export default function ManipulationWorkspace({
       <header className="space-y-2">
         {title && <h3 className="text-base font-bold text-slate-900 sm:text-lg">{title}</h3>}
         {available.length > 1 && (
-          <ManipulationLevelSelector levels={available} value={active} onChange={change} labelledBy={labelId} />
+          <ManipulationLevelSelector levels={available} value={active} onChange={change} labelledBy={labelId} idPrefix={idPrefix} controlsPanels />
         )}
         {lead && <p className="text-sm text-slate-700">{lead}</p>}
       </header>
@@ -98,13 +103,15 @@ export default function ManipulationWorkspace({
             // `modelKey` : changer de modèle mathématique REMONTE les niveaux.
             // C'est la seule réinitialisation, et elle est voulue.
             key={panelKey(id, modelKey)}
-            id={`manip-level-panel-${id}`}
+            id={`${idPrefix}-panel-${id}`}
             role="tabpanel"
-            aria-labelledby={`manip-level-tab-${id}`}
+            aria-labelledby={available.length > 1 ? `${idPrefix}-tab-${id}` : undefined}
             data-manipulation-level-panel={id}
             hidden={!isActive}
           >
-            {levels[id]({ level: id, isActive })}
+            <WorkspaceLevelContext.Provider value={id}>
+              {levels[id]({ level: id, isActive })}
+            </WorkspaceLevelContext.Provider>
           </div>
         );
       })}

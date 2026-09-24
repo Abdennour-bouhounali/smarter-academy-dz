@@ -36,6 +36,10 @@
     "ikhtizal-kasr": {
       "minPerLevel": 1,
       "source": "كتاب الرياضيات 4AM (الجيل الثاني)، الوحدة 1، ص 7–16 — docs/sources/4am/unit1/extraction.json"
+    },
+    "wadiya-idmajiya-aadad": {
+      "minPerLevel": 1,
+      "source": "سلسلة التفوق رقم 01 (BEM 2021)، الوضعيات 1–10 — docs/sources/4am/unit1/worksheet-tafawwuq-01.json"
     }
   }
 }

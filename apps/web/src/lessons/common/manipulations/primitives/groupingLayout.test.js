@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { groupingLayout, itemWidthFor, perRowFor } from './groupingLayout';
+import { groupingLayout, itemWidthFor, perRowFor, itemSizeCss, ITEM_SCALE_MAX, PILE_SCALE } from './groupingLayout';
 import { ITEM_THEME_IDS } from './itemThemes';
 import { VISUAL_THEME_IDS } from '@smarter-academy/core';
 
@@ -55,6 +55,44 @@ describe('groupingLayout — la répartition dessinée dit la même chose que la
     expect(itemWidthFor(200)).toBeGreaterThanOrEqual(10);
     expect(perRowFor(200)).toBeLessThanOrEqual(12);
     expect(perRowFor(3)).toBeGreaterThanOrEqual(3);
+  });
+});
+
+describe('itemSizeCss — les objets grandissent avec la scène, du téléphone au projecteur', () => {
+  // Le facteur que la règle CSS applique à une scène de `px` de large.
+  const factor = (w, px, opts) => {
+    const m = itemSizeCss(w, opts).match(/^clamp\(([\d.]+)px, calc\(([\d.]+)px \+ ([\d.]+)cqi\), ([\d.]+)px\)$/);
+    const [min, base, per, max] = m.slice(1).map(Number);
+    return Math.min(max, Math.max(min, base + (per * px) / 100)) / w;
+  };
+
+  it('le plancher est la taille du téléphone (itemWidthFor), le plafond ×2', () => {
+    for (const w of [10, 12, 14, 16, 20]) {
+      expect(factor(w, 170)).toBe(1);
+      expect(factor(w, 1920)).toBe(ITEM_SCALE_MAX);
+    }
+  });
+
+  it('au projecteur (scène ≥ 1 250 px) les objets doublent ; sur un portable ils grandissent de ×1,5 au moins', () => {
+    expect(factor(20, 1538)).toBe(2);
+    expect(factor(20, 984)).toBeGreaterThanOrEqual(1.5);
+    expect(factor(20, 518)).toBeGreaterThan(1.2);
+  });
+
+  it('les piles (144 fleurs, 10 px au téléphone) triplent au projecteur, jamais moins que le téléphone', () => {
+    expect(factor(10, 170, PILE_SCALE)).toBeLessThan(1.15);
+    expect(factor(10, 120, PILE_SCALE)).toBe(1);
+    expect(factor(10, 1538, PILE_SCALE)).toBe(3);
+    expect(factor(10, 984, PILE_SCALE)).toBeGreaterThan(factor(10, 984));
+  });
+
+  it('la taille croît avec la largeur, sans marche', () => {
+    let prev = 0;
+    for (let px = 150; px <= 2000; px += 50) {
+      const f = factor(16, px);
+      expect(f).toBeGreaterThanOrEqual(prev);
+      prev = f;
+    }
   });
 });
 

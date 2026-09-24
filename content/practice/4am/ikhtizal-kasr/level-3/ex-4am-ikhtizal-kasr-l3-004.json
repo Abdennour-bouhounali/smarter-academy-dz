@@ -1,0 +1,99 @@
+{
+  "metadata": {
+    "title": "سلسلة التفوق، تمرين 15 — 210/301",
+    "estimatedMinutes": 5,
+    "tags": [
+      "اختزال",
+      "حساب على الكسور"
+    ],
+    "source": {
+      "type": "worksheet",
+      "worksheetId": "tafawwuq-01",
+      "elementId": "ws01-ex-15",
+      "section": "التمارين",
+      "number": 15
+    }
+  },
+  "statement": {
+    "content": "نعتبر الكسر $\\dfrac{210}{301}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "اكتب الكسر $\\dfrac{210}{301}$ على شكل كسر غير قابل للاختزال.",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "30/43",
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب PGCD(210 ; 301)."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "301 = 210 × 1 + 91."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم 210 = 91 × 2 + 28 …"
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(210 ; 301) = 7، و 210/301 = 30/43.",
+        "incorrect": "اقسم البسط والمقام على قاسمهما المشترك الأكبر."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب الفرق $\\dfrac{17}{86} - \\dfrac{210}{301}$ ثم اكتب النتيجة على شكل كسر غير قابل للاختزال.",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "-1/2",
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "210/301 = 30/43."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "86 = 43 × 2: المقام المشترك هو 86."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "17/86 − 60/86."
+        }
+      ],
+      "feedback": {
+        "correct": "17/86 − 60/86 = −43/86 = −1/2.",
+        "incorrect": "وحّد المقامين، ثم اختزل النتيجة."
+      }
+    }
+  ],
+  "id": "ex-4am-ikhtizal-kasr-l3-004",
+  "lessonCode": "ikhtizal-kasr",
+  "level": 3
+}

@@ -15,7 +15,7 @@
  */
 
 import * as R from './rational.js';
-import { RELATION_LATEX } from './equation.js';
+import { RELATION_LATEX, isInequality } from './equation.js';
 import { formToLatex } from './linearForm.js';
 
 /** La valeur d'une forme `a·x + b` en un point. */
@@ -77,4 +77,75 @@ export function verifySolution(equation, value, variable = 'x') {
       evaluated: `${R.toLatex(left)} ${symbol} ${R.toLatex(right)}`,
     },
   };
+}
+
+/**
+ * La vérification d'une RÉSOLUTION : la solution trouvée, `x RELATION s`,
+ * confrontée à la relation de DÉPART.
+ *
+ * Pour une équation, c'est `verifySolution` en s.
+ *
+ * Pour une INÉQUATION (متراجحة), substituer la borne s ne vérifie rien :
+ * elle rend les deux membres ÉGAUX, donc `<` et `>` y sont fausses — « التحقق »
+ * déclarait alors faux un résultat juste (x − 7 < −7 → x < 0 → « −7 < −7 ✗ »),
+ * et pour `≤`/`≥` il présentait la borne comme « la » solution. On vérifie
+ * donc DEUX choses, qui suffisent pour une relation affine :
+ *
+ *   1. une valeur PRISE DANS l'ensemble des solutions (un entier quand il y
+ *      en a un avant la borne) vérifie la relation de départ ;
+ *   2. en la borne, les deux membres sont ÉGAUX — c'est là que la relation
+ *      bascule. La borne n'est solution que si le symbole DE DÉPART accepte
+ *      l'égalité (≤, ≥) ; la solution annoncée doit dire la même chose
+ *      (`x ≤ s` et non `x < s`), sinon elle est fausse.
+ *
+ * Membres affines, différence nulle en s et du bon signe en un point de
+ * l'ensemble : la différence a ce signe sur TOUTE la demi-droite. Les deux
+ * constats ensemble prouvent donc l'ensemble entier, pas un seul point.
+ *
+ * @param {object} start       la relation de départ
+ * @param {object} solution    la borne s (rationnel)
+ * @param {string} relation    le sens de la solution : `x RELATION s`
+ */
+export function verifyResolution(start, solution, relation, variable = 'x') {
+  if (!isInequality(relation)) {
+    const check = verifySolution(start, solution, variable);
+
+    return { kind: 'equation', holds: check.holds, value: solution, check };
+  }
+
+  const sample = sampleInside(solution, relation);
+  const inside = verifySolution(start, sample, variable);
+  const boundary = verifySolution({ ...start, relation: '=' }, solution, variable);
+  // Les membres étant égaux en s, s est solution ssi la relation de départ accepte l'égalité.
+  const included = boundary.holds && verifySolution(start, solution, variable).holds;
+  const claimedIncluded = relation === '<=' || relation === '>=';
+
+  return {
+    kind: 'inequality',
+    holds: inside.holds && boundary.holds && included === claimedIncluded,
+    relation,
+    startRelation: start.relation,
+    sample,
+    inside,
+    boundary: { value: solution, equal: boundary.holds, included, claimedIncluded, check: boundary },
+  };
+}
+
+/**
+ * Une valeur STRICTEMENT dans l'ensemble `x RELATION s` : l'entier le plus
+ * proche du bon côté de s (s − 1 ou s + 1 quand s est entier).
+ */
+export function sampleInside(solution, relation) {
+  const below = relation === '<' || relation === '<=';
+  const floor = R.makeRational(floorDivide(solution.n, solution.d));
+  if (below) return R.isInteger(solution) ? R.subtract(solution, R.ONE) : floor;
+
+  return R.isInteger(solution) ? R.add(solution, R.ONE) : R.add(floor, R.ONE);
+}
+
+/** ⌊n / d⌋ exact, pour d > 0 (le rationnel porte son signe au numérateur). */
+function floorDivide(n, d) {
+  const remainder = ((n % d) + d) % d;
+
+  return (n - remainder) / d;
 }

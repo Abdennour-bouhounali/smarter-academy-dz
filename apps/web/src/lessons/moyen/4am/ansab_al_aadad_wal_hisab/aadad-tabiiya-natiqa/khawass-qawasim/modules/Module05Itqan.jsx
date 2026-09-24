@@ -8,12 +8,12 @@ import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { src } from '../../_unit/unitMeta';
 
 const Q = ({ children, source }) => <span>{children} <SourceTag source={source} /></span>;
-/** Module 5 — إتقان : exemples de معارف 2 (p. 10), exercices 12, 14 (p. 14), méthode p. 11. */
+/** Module 5 — إختبار أولي : exemples de معارف 2 (p. 10), exercices 12, 14 (p. 14), méthode p. 11. */
 export default function Module05Itqan() {
   return (
     <BossFinal
       ctx={MODULE_CTX} navLinks={getNavLinks(5)} moduleNumber={5}
-      moduleTitle="إتقان" moduleSubtitle="خمس أسئلة تُقيّم ما تعلّمته" estimatedTime="7 دقائق" lessonConfig={LESSON_CONFIG} timerSeconds={7 * 60} timerLabel="7 دقائق"
+      moduleTitle="إختبار أولي" moduleSubtitle="خمس أسئلة تُقيّم ما تعلّمته" estimatedTime="7 دقائق" lessonConfig={LESSON_CONFIG} timerSeconds={7 * 60} timerLabel="7 دقائق"
       brief={{ tag: 'التقويم', title: 'أظهر ما تعرفه', tone: 'slate', body: <p>أجب عن الأسئلة الخمسة ثم أرسِلها دفعة واحدة.</p> }}
       skills={{ jamaa: { label: 'المجموع والفرق', module: 2 }, mudaaf: { label: 'المضاعفات', module: 2 }, baqi: { label: 'باقي القسمة', module: 2 }, burhan: { label: 'البرهنة', module: 3 } }}
       epreuves={[
@@ -34,7 +34,7 @@ export default function Module05Itqan() {
           explain: <span><MathText>{'$90 = 25 \\times 3 + 15$'}</MathText>؛ خاصية 2: القاسم المشترك يقسم الباقي.</span>,
           assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_khawass-qawasim_P3'] } },
         { id: 'E5', skill: 'burhan', requires: ['ithbat-qasim'], prompt: <Q source={src('method-proof', 11, 'طرائق')}>لإثبات أن عددًا طبيعيًا <MathText>{'$d$'}</MathText> يقسم عددًا <MathText>{'$m$'}</MathText> يكفي ...</Q>,
-          options: ['إيجاد عدد طبيعي k حيث m = d × k', 'التحقّق من أن m أكبر من d', 'إيجاد عدد طبيعي k حيث d = m × k', 'التحقّق من أن m + d يقبل القسمة على d'], correct: 0, cols: 1,
+          options: ['إيجاد عدد طبيعي k حيث m = d × k', 'التحقّق من أن m أكبر من d', 'إيجاد عدد طبيعي k حيث d = m × k', 'التحقّق من أن m + 1 يقبل القسمة على d'], correct: 0, cols: 1,
           explain: <span>هذه هي جملة الطريقة في الكتاب: نفرض الشرط ونصل إلى <MathText>{'$m = d \\times k$'}</MathText>.</span>,
           assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_khawass-qawasim_P4'] } },
       ]}

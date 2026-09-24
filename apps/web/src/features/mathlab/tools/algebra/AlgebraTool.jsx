@@ -12,6 +12,7 @@ import {
   equationToLatex,
   equationToText,
   isInequality,
+  RELATION_TEXT,
 } from './equation.js';
 import { makeLinear } from './linearForm.js';
 import {
@@ -26,7 +27,7 @@ import {
   createAlgebraData,
 } from './algebraState.js';
 import { suggestOperations, parseOperationValue } from './operationHints.js';
-import { verifySolution } from './verify.js';
+import { verifyResolution } from './verify.js';
 import { generateEquation, LEVELS, DEFAULT_LEVEL } from './generator.js';
 import BalanceScale from './BalanceScale.jsx';
 import NumberLine from './NumberLine.jsx';
@@ -177,11 +178,16 @@ export default function AlgebraTool({ initialData, onChange, onReady }) {
     commit((current) => ({ ...current, showSolution: !current.showSolution }));
   }, [commit]);
 
-  /** « التحقق » : substituer la solution dans l'équation de DÉPART. */
+  /**
+   * « التحقق » : confronter la solution à la relation de DÉPART. Pour une
+   * متراجحة, on ne substitue PAS la borne seule (elle rend les membres
+   * égaux, et `<`/`>` y seraient faussement « ✗ ») : une valeur de
+   * l'ensemble, puis l'égalité en la borne (`verifyResolution`).
+   */
   const verify = useCallback(() => {
     if (!verdict.solution) return;
-    setVerification(verifySolution(data.steps[0].equation, verdict.solution));
-  }, [verdict.solution, data.steps]);
+    setVerification(verifyResolution(data.steps[0].equation, verdict.solution, verdict.relation ?? '='));
+  }, [verdict.solution, verdict.relation, data.steps]);
 
   const goToStep = useCallback((index) => {
     setVerification(null);
@@ -268,15 +274,39 @@ export default function AlgebraTool({ initialData, onChange, onReady }) {
           )}
         </div>
 
-        {verification && (
-          <div className="sa-ml-alg__verification" data-ml-verification>
+        {verification?.kind === 'equation' && (
+          <div className="sa-ml-alg__verification" data-ml-verification="equation">
             <p className="sa-ml-alg__verification-title">
-              {t('tools.algebra.verificationTitle', { value: R.toPlainText(verdict.solution) })}
+              {t('tools.algebra.verificationTitle', { value: R.toPlainText(verification.value) })}
             </p>
-            <MathText>{`$$${verification.lines.substituted}$$`}</MathText>
-            <MathText>{`$$${verification.lines.evaluated}$$`}</MathText>
+            <MathText>{`$$${verification.check.lines.substituted}$$`}</MathText>
+            <MathText>{`$$${verification.check.lines.evaluated}$$`}</MathText>
             <p className={`sa-ml-alg__verification-verdict${verification.holds ? '' : ' sa-ml-alg__verification-verdict--false'}`}>
               {verification.holds ? t('tools.algebra.verificationTrue') : t('tools.algebra.verificationFalse')}
+            </p>
+          </div>
+        )}
+        {verification?.kind === 'inequality' && (
+          <div className="sa-ml-alg__verification" data-ml-verification="inequality" data-ml-verification-holds={String(verification.holds)}>
+            {/* 1. Une valeur DE l'ensemble des solutions vérifie la متراجحة. */}
+            <p className="sa-ml-alg__verification-title">
+              {t('tools.algebra.verificationInequalityTitle', { value: R.toPlainText(verification.sample) })}
+            </p>
+            <MathText>{`$$${verification.inside.lines.substituted}$$`}</MathText>
+            <MathText>{`$$${verification.inside.lines.evaluated}$$`}</MathText>
+            <p className={`sa-ml-alg__verification-verdict${verification.inside.holds ? '' : ' sa-ml-alg__verification-verdict--false'}`}>
+              {verification.inside.holds
+                ? t('tools.algebra.verificationInequalityTrue', { value: R.toPlainText(verification.sample) })
+                : t('tools.algebra.verificationInequalityFalse')}
+            </p>
+            {/* 2. En la borne, les deux membres sont égaux : la relation y bascule. */}
+            <p className="sa-ml-alg__verification-title">
+              {t('tools.algebra.verificationBoundaryTitle', { value: R.toPlainText(verification.boundary.value) })}
+            </p>
+            <MathText>{`$$${verification.boundary.check.lines.substituted}$$`}</MathText>
+            <MathText>{`$$${verification.boundary.check.lines.evaluated}$$`}</MathText>
+            <p className={`sa-ml-alg__verification-verdict${verification.holds ? '' : ' sa-ml-alg__verification-verdict--false'}`}>
+              {boundaryMessage(verification, t)}
             </p>
           </div>
         )}
@@ -373,4 +403,20 @@ export default function AlgebraTool({ initialData, onChange, onReady }) {
       </p>
     </div>
   );
+}
+
+/**
+ * Ce que dit la borne d'une متراجحة : égale ou non, solution ou non — selon
+ * le symbole de DÉPART, seul juge de l'égalité.
+ */
+function boundaryMessage(verification, t) {
+  const { boundary } = verification;
+  const params = {
+    value: R.toPlainText(boundary.value),
+    symbol: RELATION_TEXT[verification.startRelation],
+  };
+  if (!boundary.equal) return t('tools.algebra.verificationBoundaryFalse');
+  if (boundary.included !== boundary.claimedIncluded) return t('tools.algebra.verificationBoundaryMismatch', params);
+
+  return t(boundary.included ? 'tools.algebra.verificationBoundaryIncluded' : 'tools.algebra.verificationBoundaryExcluded', params);
 }

@@ -264,7 +264,8 @@ export default function TrigonometryTool({ initialData, onChange, onReady }) {
 
   const startPractice = useCallback(() => {
     seedRef.current += 1;
-    const challenge = generateChallenge(seedRef.current, kindsForMode(dataRef.current.mode));
+    const { mode } = dataRef.current;
+    const challenge = generateChallenge(seedRef.current, kindsForMode(mode), { mode });
     commit((current) => ({
       ...current,
       practice: {

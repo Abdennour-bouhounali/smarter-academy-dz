@@ -4,6 +4,7 @@ import {
   Lightbulb, Check, Circle, FlaskConical, BookOpen, Sparkles,
 } from 'lucide-react';
 import { formatValue } from '../functionGrapher/grapherFormat.js';
+import { isDefinitionOf } from './investigations.js';
 
 /**
  * Ce que l'instrument RÉPOND à une règle proposée (§7, §20, §21, §24, §25).
@@ -85,7 +86,12 @@ export default function DiscoveryPanel({
             {t('tools.measurement.test.holds', { count: check.passed })}
           </p>
           {/* §21 : ce n'est PAS une démonstration, et on le dit. */}
-          {!solved || !evidence.satisfied ? (
+          {/* Â + B̂ + Ĉ tient toujours : c'est la définition de S, pas encore
+              la découverte. On le dit, au lieu de laisser l'élève attendre un
+              « trouvé » qui ne viendra pas. */}
+          {isDefinitionOf(investigation, record.rule) ? (
+            <p className="sa-ml-ms__notProof" data-ml-ms-definition>{t('tools.measurement.test.isDefinition')}</p>
+          ) : !solved || !evidence.satisfied ? (
             <p className="sa-ml-ms__notProof">{t('tools.measurement.test.holdsNotProof')}</p>
           ) : null}
         </div>
@@ -114,7 +120,9 @@ export default function DiscoveryPanel({
             ))}
           </ul>
 
-          {evidence.holds && !evidence.tested && (
+          {/* Toute la grille déjà mesurée (`exhaustive`) : il n'existe plus
+              d'objet jamais vu, et c'est ce bouton qui constate la découverte. */}
+          {evidence.holds && (!evidence.tested || (evidence.exhaustive && stage !== 'found' && stage !== 'explained')) && (
             <button type="button" className="sa-ml-ms__primaryBtn" onClick={onUnseenTest}>
               <FlaskConical size={16} aria-hidden="true" />
               {t('tools.measurement.rule.testAgain')}

@@ -32,6 +32,11 @@ export function resolveModuleUnlock({
 /**
  * L'état d'une carte de module du sommaire : `locked` | `unlocked` |
  * `current` | `mastered` (le vocabulaire de getModuleStatus).
+ *
+ * `masteryStatusById` est ACCEPTÉ mais volontairement NON transmis au cœur :
+ * `getModuleStatus` ferait d'une porte `requiresLearningPointIds` un verrou,
+ * et une lacune ne doit jamais fermer un module (progression non bloquante).
+ * La porte de maîtrise est un conseil — voir softGate.js (`softGateHint`).
  */
 export function resolveModuleStatus({
   closed = false,
@@ -50,5 +55,7 @@ export function resolveModuleStatus({
   if (freeNavigation) return isDone ? 'mastered' : 'unlocked';
   if (!sequentialUnlock) return isDone ? 'mastered' : 'unlocked';
 
-  return getModuleStatus({ isModuleCompleted, moduleNumber, currentModule, module, masteryStatusById, firstModuleNumber, previousStage });
+  // Porte douce : jamais de `masteryStatusById` ici (voir ci-dessus).
+  void masteryStatusById;
+  return getModuleStatus({ isModuleCompleted, moduleNumber, currentModule, module, masteryStatusById: undefined, firstModuleNumber, previousStage });
 }

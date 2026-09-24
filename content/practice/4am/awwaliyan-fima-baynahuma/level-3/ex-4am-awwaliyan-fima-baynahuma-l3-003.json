@@ -1,0 +1,78 @@
+{
+  "metadata": {
+    "title": "سلسلة التفوق، تمرين 7 — 3a و 6b",
+    "estimatedMinutes": 3,
+    "tags": [
+      "استدلال"
+    ],
+    "source": {
+      "type": "worksheet",
+      "worksheetId": "tafawwuq-01",
+      "elementId": "ws01-ex-07",
+      "section": "التمارين",
+      "number": 7
+    }
+  },
+  "statement": {
+    "content": "a و b عددان طبيعيان أوليان فيما بينهما."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل العددان 3a و 6b أوليان فيما بينهما؟",
+      "learningPoints": [
+        {
+          "code": "4am_awwaliyan-fima-baynahuma_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا، لأن 3 قاسم مشترك للعددين 3a و 6b",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نعم، لأن a و b أوليان فيما بينهما",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "لا يمكن الحكم دون معرفة قيمتي a و b",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "لا، لأن 6 قاسم مشترك لهما مهما كان a و b",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "3a = 3 × a و 6b = 3 × 2b."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ابحث عن عدد يختلف عن 1 يقسم العددين دائمًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جرّب a = 1 و b = 1: هل 6 يقسم 3؟"
+        }
+      ],
+      "feedback": {
+        "correct": "3 يقسم 3a و 6b مهما كان a و b، فـ PGCD(3a ; 6b) ≠ 1.",
+        "incorrect": "يكفي قاسم مشترك واحد يختلف عن 1 لنفي أنهما أوليان."
+      }
+    }
+  ],
+  "id": "ex-4am-awwaliyan-fima-baynahuma-l3-003",
+  "lessonCode": "awwaliyan-fima-baynahuma",
+  "level": 3
+}

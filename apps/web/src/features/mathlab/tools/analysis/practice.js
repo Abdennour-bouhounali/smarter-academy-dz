@@ -35,6 +35,7 @@ import { printExpression } from './expressionPrinter.js';
 import {
   averageRate, findCriticalPoints, findRoots, definiteIntegral, riemannSum, twoSidedLimit,
 } from './analysisMath.js';
+import { MAX_RIEMANN_N } from './analysisState.js';
 
 const KEY = 'tools.analysis.practice';
 
@@ -46,7 +47,7 @@ export const CHALLENGE_KINDS = Object.freeze([
   'readLimit',         // lim x→a f(x) ≈ ?
   'derivativeValue',   // f′(a) = ?
   'monotonic',         // sur quel intervalle f décroît-elle ?
-  'riemannClose',      // quel n approche l'aire à 0,01 près ?
+  'riemannClose',      // combien de rectangles à gauche pour passer sous le seuil ?
   'rootCount',         // combien de solutions à f(x) = 0 ?
 ]);
 
@@ -58,14 +59,18 @@ export const CHALLENGE_KINDS = Object.freeze([
  * un coefficient 1 ne s'écrit pas. La QA a vu « x^2-4x+0 » sortir du
  * générateur.
  */
-function quadraticFromRoots(root1, root2) {
+function quadraticFromRoots(root1, root2, leading = 1) {
   const sum = root1 + root2;
   const product = root1 * root2;
-  let source = 'x^2';
-  if (sum !== 0) source += `${sum > 0 ? '-' : '+'}${Math.abs(sum) === 1 ? '' : Math.abs(sum)}x`;
-  if (product !== 0) source += `${product > 0 ? '+' : '-'}${Math.abs(product)}`;
+  // k(x − r₁)(x − r₂) = k·x² − k(r₁+r₂)·x + k·r₁r₂, avec k = ±1.
+  const k = leading < 0 ? -1 : 1;
+  const linear = -k * sum;
+  const constant = k * product;
+  let source = k < 0 ? '-x^2' : 'x^2';
+  if (linear !== 0) source += `${linear > 0 ? '+' : '-'}${Math.abs(linear) === 1 ? '' : Math.abs(linear)}x`;
+  if (constant !== 0) source += `${constant > 0 ? '+' : '-'}${Math.abs(constant)}`;
 
-  return { source, sum, product, vertex: sum / 2 };
+  return { source, sum, product, vertex: sum / 2, leading: k };
 }
 
 const pick = (rng, list) => list[Math.floor(rng() * list.length) % list.length];
@@ -257,11 +262,21 @@ function derivativeValueChallenge(rng, difficulty) {
   };
 }
 
-/** §30 : « Find the interval where the function is decreasing. » */
+/**
+ * §30 : « Find the interval where the function is decreasing. »
+ *
+ * Le SIGNE du coefficient de x² est tiré au hasard. Il valait toujours +1,
+ * donc la bonne réponse était TOUJOURS « avant le sommet » : l'audit l'a vu
+ * sur 2 400 défis, et un élève pouvait répondre sans regarder la courbe.
+ * Pour k(x − r₁)(x − r₂), f′(x) = k(2x − r₁ − r₂) : négative avant le
+ * sommet si k > 0, APRÈS le sommet si k < 0.
+ */
 function monotonicChallenge(rng, difficulty) {
   const root1 = randomInt(rng, -3, 0);
   const root2 = root1 + randomInt(rng, 2, 4);
-  const { source, vertex } = quadraticFromRoots(root1, root2);
+  const leading = rng() < 0.5 ? -1 : 1;
+  const { source, vertex } = quadraticFromRoots(root1, root2, leading);
+  const opensUp = leading > 0;
 
   return {
     kind: 'monotonic',
@@ -270,24 +285,39 @@ function monotonicChallenge(rng, difficulty) {
     choices: ['beforeVertex', 'afterVertex'],
     promptKey: `${KEY}.q.monotonic`,
     promptParams: {},
-    expected: 'beforeVertex',
+    expected: opensUp ? 'beforeVertex' : 'afterVertex',
     focus: { lab: 'study', point: vertex },
     hintKeys: [`${KEY}.h.parabolaShape`, `${KEY}.h.vertexSplits`, `${KEY}.h.derivativeNegative`],
-    explainKey: `${KEY}.e.monotonic`,
+    explainKey: opensUp ? `${KEY}.e.monotonic` : `${KEY}.e.monotonicDown`,
     explainParams: { vertex: formatNumberForPrompt(vertex) },
   };
 }
 
-/** §30 : « Adjust n until the Riemann approximation is sufficiently close. » */
+/**
+ * §30 : « Adjust n until the Riemann approximation is sufficiently close. »
+ *
+ * Trois choses sont FIXÉES par l'énoncé, et le juge s'y tient :
+ *   · les rectangles sont à GAUCHE (la question le dit, et « اعرض على
+ *     الرسم » règle le laboratoire en mode gauche) — l'énoncé ne le disait
+ *     pas, et un élève en mode milieu lisait d'autres sommes ;
+ *   · le seuil est celui qu'on AFFICHE (arrondi au millième) : on ne juge
+ *     pas à 0,09428 une question qui dit 0,094 ;
+ *   · n est libre (le curseur va de 1 en 1) : `expected` est le VRAI plus
+ *     petit n, cherché de 1 en 1. Il était cherché parmi 2, 5, 10, 20, 50,
+ *     100, et `n ≥ expected` refusait alors 12 à 19 pour √x sur [0 ; 1],
+ *     où 12 suffit déjà.
+ */
 function riemannChallenge(rng, difficulty) {
   const source = pick(rng, ['x^2', 'x^3', '\\sqrt{x}']);
   const model = build(source);
   const b = randomInt(rng, 1, 3);
   const exact = definiteIntegral(model.fn, 0, b);
-  // Le plus petit n (parmi les crans proposés) dont l'erreur passe sous le seuil.
-  const threshold = 0.05 * Math.max(1, Math.abs(exact.value));
-  const steps = [2, 5, 10, 20, 50, 100];
-  const answer = steps.find((n) => Math.abs(riemannSum(model.fn, 0, b, n, 'left').sum - exact.value) < threshold) ?? 100;
+  const threshold = Number((0.05 * Math.max(1, Math.abs(exact.value))).toFixed(3));
+  const challengeShape = { source, riemann: { a: 0, b, mode: 'left' }, exactValue: exact.value, threshold };
+  let answer = null;
+  for (let n = 1; n <= MAX_RIEMANN_N && answer === null; n += 1) {
+    if (riemannIsClose(challengeShape, n)) answer = n;
+  }
 
   return {
     kind: 'riemannClose',
@@ -299,8 +329,9 @@ function riemannChallenge(rng, difficulty) {
     tolerance: 0,
     exactValue: exact.ok ? exact.value : null,
     threshold,
+    riemann: challengeShape.riemann,
     bounds: { a: 0, b },
-    focus: { lab: 'integral', bounds: { a: 0, b } },
+    focus: { lab: 'integral', bounds: { a: 0, b }, riemann: { mode: 'left', n: 1 } },
     hintKeys: [`${KEY}.h.narrowerRectangles`, `${KEY}.h.compareToExact`, `${KEY}.h.increaseUntilClose`],
     explainKey: `${KEY}.e.riemannClose`,
     explainParams: { n: answer, value: formatNumberForPrompt(exact.value ?? 0) },
@@ -345,6 +376,30 @@ function formatNumberForPrompt(value) {
 }
 
 /**
+ * n rectangles À GAUCHE approchent-ils ∫₀ᵇ f à moins du seuil ?
+ *
+ * La somme est celle du laboratoire (`riemannSum`), celle que l'élève voit.
+ * `riemannSum` plafonne à 2 000 rectangles ; au-delà, on se sert de la borne
+ * des fonctions MONOTONES — |S_n − I| ≤ |f(b) − f(a)|·(b − a)/n — et toutes
+ * les fonctions de ce défi (x², x³, √x sur [0 ; b]) le sont.
+ */
+function riemannIsClose(challenge, n) {
+  if (!Number.isInteger(n) || n < 1) return false;
+  const { a, b, mode } = challenge.riemann ?? {};
+  if (!Number.isFinite(a) || !Number.isFinite(b) || !Number.isFinite(challenge.exactValue)) return false;
+  const compiled = compileSource(challenge.source);
+  if (!compiled.ok) return false;
+  if (n > 2000) {
+    const bound = Math.abs(compiled.fn(b) - compiled.fn(a)) * Math.abs(b - a) / n;
+
+    return bound < challenge.threshold;
+  }
+  const { sum } = riemannSum(compiled.fn, a, b, n, mode ?? 'left');
+
+  return Math.abs(sum - challenge.exactValue) < challenge.threshold;
+}
+
+/**
  * Le VERDICT sur une réponse. Jamais un verrou (§43) : il dit juste,
  * et l'interface montre POURQUOI.
  *
@@ -370,9 +425,13 @@ export function checkAnswer(challenge, answer) {
   if (parsed === null) return { correct: false, parsed: null, reason: 'unparsed' };
 
   if (challenge.answerType === 'threshold') {
-    // §30 : « adjust n until close enough » — TOUT n assez grand est juste.
-    // Exiger le n minimal exact serait punir une bonne réponse (§43).
-    return { correct: parsed >= challenge.expected, parsed };
+    /**
+     * §30 : « adjust n until close enough » — TOUT n qui rapproche assez est
+     * juste, pas seulement le minimal (§43). Et on le VÉRIFIE pour ce n-là :
+     * « n ≥ minimal » supposait l'erreur décroissante en n, ce qu'aucun
+     * théorème ne garantit pour une somme à gauche.
+     */
+    return { correct: riemannIsClose(challenge, parsed), parsed };
   }
 
   const tolerance = challenge.tolerance ?? 1e-6;
@@ -388,18 +447,42 @@ export function checkAnswer(challenge, answer) {
  * écrit vraiment. Rend null si ce n'est pas un nombre, JAMAIS NaN (qui se
  * comparerait silencieusement faux).
  */
+function latinDigits(text) {
+  return text
+    .replace(/[\u0660-\u0669]/g, (digit) => String(digit.charCodeAt(0) - 0x0660))
+    .replace(/[\u06F0-\u06F9]/g, (digit) => String(digit.charCodeAt(0) - 0x06F0))
+    .replace(/\u066B/g, '.');
+}
+
 export function parseStudentNumber(input) {
   if (typeof input === 'number') return Number.isFinite(input) ? input : null;
   const raw = String(input ?? '').trim();
   if (!raw) return null;
 
-  const text = raw
+  /**
+   * Les chiffres ARABES-INDIENS (٠-٩, et leur variante persane ۰-۹) et la
+   * virgule décimale arabe « ٫ » sont ceux d'un clavier arabe de téléphone :
+   * « ٢٫٥ » est 2,5, pas une saisie incomprise.
+   */
+  const text = latinDigits(raw)
     .replace(/\u2212/g, '-')
     .replace(/\s+/g, '')
     .replace(',', '.');
 
   // Le cas courant, ecrit a la main : « 2,5 », « -3 ».
   if (/^-?\d*\.?\d+$/.test(text)) {
+    const value = Number(text);
+
+    return Number.isFinite(value) ? value : null;
+  }
+
+  /**
+   * La notation SCIENTIFIQUE d'une calculatrice : « 1e3 » est 1000.
+   * Confiée à l'analyseur du grapheur, elle se lisait 1 × e × 3 ≈ 8,15 —
+   * un nombre juste en apparence et faux de trois ordres de grandeur. Un
+   * exposant entier est exigé : « 2e » (2 × e) reste un produit.
+   */
+  if (/^-?\d*\.?\d+e[+-]?\d+$/i.test(text)) {
     const value = Number(text);
 
     return Number.isFinite(value) ? value : null;
@@ -429,7 +512,7 @@ export function parseStudentNumber(input) {
    */
   let compiled;
   try {
-    compiled = compileSource(raw);
+    compiled = compileSource(latinDigits(raw));
   } catch {
     return null;
   }
@@ -515,14 +598,102 @@ export function getExperiment(id) {
  *
  * Elles portent sur un phénomène que l'élève est en train de provoquer — ce
  * qui les distingue d'un QCM. Chacune nomme le laboratoire où elle a un sens.
+ *
+ * Chaque prédiction porte SA fonction et SON décor (`setup`, et `after` pour
+ * le geste révélé), comme une expérience. Leur réponse était écrite en dur
+ * (« la limite diffère », « l'aire grandit ») et jugeait la fonction que
+ * l'élève avait tapée : pour 4 − x², l'aire de 0 à 3 est PLUS PETITE que de
+ * 0 à 2, et la prédiction « تكبر » était pourtant annoncée juste. Désormais
+ * la question se pose sur une scène connue, et la réponse est CALCULÉE sur
+ * cette scène (`predictionOutcome`), jamais recopiée.
  */
-export const PREDICTIONS = Object.freeze([
-  { id: 'tangentSlopeAtVertex', lab: 'tangent', choices: ['positive', 'zero', 'negative'], expected: 'zero' },
-  { id: 'derivativeSignWhenIncreasing', lab: 'derivative', choices: ['positive', 'zero', 'negative'], expected: 'positive' },
-  { id: 'areaWhenBoundMoves', lab: 'integral', choices: ['larger', 'same', 'smaller'], expected: 'larger' },
-  { id: 'riemannWhenNGrows', lab: 'integral', choices: ['better', 'same', 'worse'], expected: 'better' },
-  { id: 'limitFromBothSides', lab: 'limit', choices: ['same', 'different'], expected: 'different' },
-]);
+const PREDICTION_SCENES = [
+  {
+    id: 'tangentSlopeAtVertex',
+    lab: 'tangent',
+    source: 'x^2-4x+3',
+    choices: ['positive', 'zero', 'negative'],
+    setup: { lab: 'tangent', point: 0 },
+    after: { lab: 'tangent', point: 2 },
+  },
+  {
+    id: 'derivativeSignWhenIncreasing',
+    lab: 'derivative',
+    source: 'x^2-4x+3',
+    choices: ['positive', 'zero', 'negative'],
+    setup: { lab: 'derivative', point: 3.5 },
+  },
+  {
+    id: 'areaWhenBoundMoves',
+    lab: 'integral',
+    source: 'x^2',
+    choices: ['larger', 'same', 'smaller'],
+    setup: { lab: 'integral', bounds: { a: 0, b: 2 } },
+    after: { lab: 'integral', bounds: { a: 0, b: 3 } },
+  },
+  {
+    id: 'riemannWhenNGrows',
+    lab: 'integral',
+    source: 'x^2',
+    choices: ['better', 'same', 'worse'],
+    setup: { lab: 'integral', bounds: { a: 0, b: 2 }, riemann: { n: 4, mode: 'left' } },
+    after: { lab: 'integral', bounds: { a: 0, b: 2 }, riemann: { n: 16, mode: 'left' } },
+  },
+  {
+    id: 'limitFromBothSides',
+    lab: 'limit',
+    source: '\\frac{|x|}{x}',
+    choices: ['equal', 'different'],
+    setup: { lab: 'limit', limitPoint: 0 },
+  },
+];
+
+const signWord = (value) => (Math.abs(value) < 1e-9 ? 'zero' : value > 0 ? 'positive' : 'negative');
+
+/**
+ * Ce qui SE PASSE sur la scène d'une prédiction, mesuré par le moteur du
+ * laboratoire — la même lecture que l'élève fera en révélant.
+ */
+export function predictionOutcome(prediction) {
+  const model = build(prediction.source);
+  if (!model) return null;
+  const { fn, derivative } = model;
+  const setup = prediction.setup ?? {};
+  const after = prediction.after ?? setup;
+
+  switch (prediction.id) {
+    case 'tangentSlopeAtVertex':
+    case 'derivativeSignWhenIncreasing':
+      return derivative ? signWord(derivative(after.point)) : null;
+    case 'areaWhenBoundMoves': {
+      const before = definiteIntegral(fn, setup.bounds.a, setup.bounds.b);
+      const moved = definiteIntegral(fn, after.bounds.a, after.bounds.b);
+      if (!before.ok || !moved.ok) return null;
+      const change = moved.value - before.value;
+
+      return Math.abs(change) < 1e-9 ? 'same' : change > 0 ? 'larger' : 'smaller';
+    }
+    case 'riemannWhenNGrows': {
+      const exact = definiteIntegral(fn, setup.bounds.a, setup.bounds.b);
+      if (!exact.ok) return null;
+      const error = (riemann) => Math.abs(
+        riemannSum(fn, setup.bounds.a, setup.bounds.b, riemann.n, riemann.mode).sum - exact.value,
+      );
+      const change = error(after.riemann) - error(setup.riemann);
+
+      return Math.abs(change) < 1e-9 ? 'same' : change < 0 ? 'better' : 'worse';
+    }
+    case 'limitFromBothSides':
+      return twoSidedLimit(fn, setup.limitPoint).agree ? 'equal' : 'different';
+    default:
+      return null;
+  }
+}
+
+export const PREDICTIONS = Object.freeze(PREDICTION_SCENES.map((scene) => Object.freeze({
+  ...scene,
+  expected: predictionOutcome(scene),
+})));
 
 export function getPrediction(id) {
   return PREDICTIONS.find((prediction) => prediction.id === id) ?? null;

@@ -5,6 +5,10 @@ const { divmod, divisors, commonDivisors, gcdByDefinition } = divisibility;
 /**
  * common-divisors — deux temps, deux états.
  *
+ * Deux temps, et JAMAIS de bascule silencieuse de l'un à l'autre : au niveau
+ * مبتدئ la manipulation reste sur les groupes ; au niveau متقدم le passage aux
+ * listes est un geste de l'élève (voir CommonDivisors.jsx).
+ *
  * BOUQUETS (activité 4) : l'élève choisit un nombre de bouquets `k` ; les
  * `a` fleurs rouges et les `b` blanches se répartissent ; les restes se
  * voient. Le rail garde la marque de chaque essai :
@@ -35,12 +39,21 @@ export function choose(state, k) {
   return { ...state, k, qa: A.q, ra: A.r, qb: B.q, rb: B.r, works: mark === 'common', tried: { ...state.tried, [k]: mark } };
 }
 
-/** Prête quand l'élève a trouvé au moins deux répartitions qui marchent (k > 1) et une qui échoue. */
-export function bouquetsDiscoveryReady(state) {
-  const marks = Object.entries(state.tried);
-  const ok = marks.filter(([k, m]) => m === 'common' && Number(k) > 1).length;
-  const ko = marks.filter(([, m]) => m !== 'common').length;
-  return ok >= 2 && ko >= 1;
+/**
+ * Le temps des groupes est ACCOMPLI quand l'élève a posé le PLUS GRAND
+ * nombre de groupes qui tombe juste — c'est l'idée du PGCD trouvée par le
+ * geste (6 pour 12 et 18, 18 pour 90 et 54). Plus de seuil « deux ✓ et un ✗ »
+ * qui fermait la scène après trois essais.
+ */
+export function greatestGroupFound(state) {
+  return state.tried[gcdByDefinition(state.a, state.b)] === 'common';
+}
+
+/** Les nombres de groupes proposés : 1 … min(a, b) (24 au plus), PGCD toujours compris. */
+export function groupRail({ a, b }) {
+  const g = gcdByDefinition(a, b);
+  const rail = Array.from({ length: Math.min(24, Math.min(a, b)) }, (_, i) => i + 1);
+  return rail.includes(g) ? rail : [...rail, g];
 }
 
 export function initLists({ a, b }) {

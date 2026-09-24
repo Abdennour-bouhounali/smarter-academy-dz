@@ -160,7 +160,7 @@ every module route), so it was enough to tell it the right scope.
 | `bottom` | button |
 | --- | --- |
 | `1.5rem` | « 🧠 بطاقتي » (`KnowledgeMap`) — same gap as `left`, in the angle |
-| `5.5rem` | « 📓 كرّاسي » (`LessonNotebookAnchor`) |
+| `5.5rem` | « 📓 كرّاسي » (`LessonNotebookAnchor`; the exercise player's `NotebookButton` is the same pill at the same height) |
 
 Both presentation entry and the Math Lab left this column for the marker row:
 it is `sticky` (always reachable without scrolling) and **in the flow**, so it
@@ -229,7 +229,7 @@ one *question* at a time — through `TestPresentation`. See **Test** below.
 `markModuleVisited` nor `markModuleCompleted`, and the sequential unlock does not apply — a teacher
 projects module 3 without having completed 0–2 on their own account.
 
-### Test — ⛶ عرض (module 0 « أستعدّ » et test final « إتقان »)
+### Test — ⛶ عرض (module 0 « أستعدّ » et test final « إختبار أولي »)
 
 A **test** is presented like a module, from the same floating « ⛶ عرض » button, but its units are
 its **questions**: one question fills the screen, and `السابق` / `التالي` move between them. Both
@@ -239,7 +239,7 @@ fullscreen system and no separate screen for the diagnostic and the final test.
 ```
 Module 0 « أستعدّ »   PrerequisiteDiagnostic ─┐
                                               ├─→ TestPresentation ─→ ClassroomPresentation
-Final test « إتقان »  BossFinal ──────────────┘
+Final test « إختبار أولي »  BossFinal ──────────────┘
 ```
 
 **The presentation never corrects, scores or persists anything.** It decides what is *shown*. Each
@@ -313,6 +313,11 @@ Two surfaces, one shell:
   shell wraps the page so both share one session. Presented, the session chrome (back link,
   progress, heading, notebook, report) is removed by `ClassroomHidden` and the exercise is framed.
   Answer, hints, attempt UUID, evaluation and retry state all survive, because nothing unmounts.
+  Since the 2026-09-24 redesign the page is a grid from `xl`; presented, it collapses to one block
+  (`[[data-sa-classroom]_&]:block`), the side column (Learning Point module + «سياق السؤال») is `ClassroomHidden`,
+  and the question history («السؤال السابق») **stays** — the class sees the previous step. Arrival
+  scrolling/focus is skipped while presenting (`QuestionArrival` reads `useClassroomMode()`), and
+  buttons carry an explicit text size because the frame's inherited size is `1rem × scale`.
 
 ### Manipulation — ⛶ عرض المناولة
 

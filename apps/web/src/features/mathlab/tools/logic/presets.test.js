@@ -9,7 +9,7 @@
 
 import { describe, it, expect } from 'vitest';
 import {
-  isPrime, isEven, isOdd, sampleOf, findPreset,
+  isPrime, isEven, isOdd, sampleOf, findPreset, KNOWN_SET_SYMBOLS, JUDGE_LIMIT, domainStatus, domainLabel,
   STATEMENTS, IMPLICATIONS, EQUIVALENCES, COUNTEREXAMPLE_CHALLENGES, CONDITIONS,
   QUANTIFIER_STATEMENTS, PROOFS, INDUCTIONS, DIRECT_PROOFS, INDUCTION_CASES, FALLACIES, FALLACY_KINDS,
   DEFAULT_STATEMENT_ID, DEFAULT_IMPLICATION_ID, DEFAULT_COUNTEREXAMPLE_ID, DEFAULT_PROOF_ID,
@@ -198,6 +198,14 @@ describe('QUANTIFIER_STATEMENTS — la valeur de vérité annoncée est la vraie
       const expectSymbol = preset.kind === 'forall' ? '∃' : '∀';
       expect(preset.negationFormula.startsWith(expectSymbol)).toBe(true);
     });
+
+    it(`${preset.id} : sa structure réécrit exactement l’énoncé et sa négation`, () => {
+      const sign = preset.kind === 'forall' ? '∀' : '∃';
+      const other = preset.kind === 'forall' ? '∃' : '∀';
+      const set = preset.domain.symbol;
+      expect(preset.formula).toBe(`${sign}${preset.variable} ∈ ${set}, ${preset.inner}`);
+      expect(preset.negationFormula).toBe(`${other}${preset.variable} ∈ ${set}, ${preset.negatedInner}`);
+    });
   }
 });
 
@@ -362,5 +370,37 @@ describe('FALLACIES — chaque sophisme est réfutable, et nommé correctement',
     expect(affirming.refutes(6)).toBe(true);
     expect(affirming.refutes(10)).toBe(true);
     expect(affirming.refutes(8)).toBe(false); // 8 EST multiple de 4 : il ne réfute rien
+  });
+});
+
+describe('les domaines nomment un ensemble que le juge connaît', () => {
+  // Sans symbole connu, le juge retomberait sur les bornes de la FENÊTRE —
+  // exactement le défaut corrigé le 2026-09-24 (31 refusé pour « tout premier
+  // > 2 est pair » parce que la droite s'arrêtait à 30).
+  const all = [
+    ...COUNTEREXAMPLE_CHALLENGES, ...STATEMENTS.filter((s) => s.domain), ...IMPLICATIONS,
+    ...EQUIVALENCES, ...CONDITIONS, ...QUANTIFIER_STATEMENTS, ...FALLACIES,
+  ];
+  for (const preset of all) {
+    it(`${preset.id} : ${preset.domain.symbol}`, () => {
+      expect(KNOWN_SET_SYMBOLS).toContain(preset.domain.symbol);
+      // Le symbole et l'accroche aux entiers disent la même chose.
+      expect(preset.domain.integer).toBe(preset.domain.symbol !== 'ℝ');
+    });
+  }
+
+  it('domainStatus : ensemble, exclusion, limite du juge', () => {
+    expect(domainStatus(31, { min: 0, max: 30, integer: true, symbol: 'ℕ' })).toBe('in');
+    expect(domainStatus(-1, { min: 0, max: 30, integer: true, symbol: 'ℕ' })).toBe('outside');
+    expect(domainStatus(0, { min: -6, max: 6, integer: false, symbol: 'ℝ', excluded: [0] })).toBe('outside');
+    expect(domainStatus(JUDGE_LIMIT + 2, { min: 0, max: 30, integer: true, symbol: 'ℕ' })).toBe('tooLarge');
+    // Sans ensemble connu, seules les bornes définissent le domaine.
+    expect(domainStatus(11, { min: 0, max: 10, integer: true })).toBe('outside');
+  });
+
+  it('domainLabel écrit la lettre de l’énoncé', () => {
+    expect(domainLabel(findPreset(FALLACIES, 'squareFourConverse'))).toBe('x ∈ ℤ');
+    expect(domainLabel(findPreset(STATEMENTS, 'oneOverNPositive'))).toBe('n ∈ ℕ*');
+    expect(domainLabel(findPreset(STATEMENTS, 'fiveGtThree'))).toBeNull();
   });
 });

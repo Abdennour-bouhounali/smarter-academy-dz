@@ -7,10 +7,10 @@ import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { src } from '../../_unit/unitMeta';
 const Q = ({ children, source }) => <span>{children} <SourceTag source={source} /></span>;
-/** Module 4 — إتقان : نشاط 5, نتائج مباشرة, exercice 17. */
+/** Module 4 — إختبار أولي : نشاط 5, نتائج مباشرة, exercice 17. */
 export default function Module04Itqan() {
   return (
-    <BossFinal ctx={MODULE_CTX} navLinks={getNavLinks(4)} moduleNumber={4} moduleTitle="إتقان" moduleSubtitle="أربع أسئلة تُقيّم ما تعلّمته" estimatedTime="6 دقائق" lessonConfig={LESSON_CONFIG} timerSeconds={6 * 60} timerLabel="6 دقائق"
+    <BossFinal ctx={MODULE_CTX} navLinks={getNavLinks(4)} moduleNumber={4} moduleTitle="إختبار أولي" moduleSubtitle="أربع أسئلة تُقيّم ما تعلّمته" estimatedTime="6 دقائق" lessonConfig={LESSON_CONFIG} timerSeconds={6 * 60} timerLabel="6 دقائق"
       brief={{ tag: 'التقويم', title: 'أظهر ما تعرفه', tone: 'slate', body: <p>أجب عن الأسئلة الأربعة ثم أرسِلها دفعة واحدة.</p> }}
       skills={{ hasr: { label: 'التعيين بالحصر', module: 1 }, nataij: { label: 'النتائج المباشرة', module: 2 }, qasim: { label: 'b قاسم لـ a', module: 2 } }}
       epreuves={[

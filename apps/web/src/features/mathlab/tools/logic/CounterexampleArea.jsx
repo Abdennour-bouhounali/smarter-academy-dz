@@ -2,10 +2,10 @@ import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dice5, Check } from 'lucide-react';
 import { Notation, TruthLine, Statement } from './LogicPieces.jsx';
-import { COUNTEREXAMPLE_CHALLENGES, findPreset, sampleOf } from './presets.js';
+import { COUNTEREXAMPLE_CHALLENGES, findPreset, sampleOf, domainStatus } from './presets.js';
 import { evaluate } from './logicMath.js';
 import { formatNumber, valueList } from './logicFormat.js';
-import { parseNumericAnswer, inDomain } from './practice.js';
+import { parseNumericAnswer } from './practice.js';
 import { setCounterexampleChallenge, setCandidate, tryCandidate } from './logicState.js';
 
 /**
@@ -41,8 +41,11 @@ export default function CounterexampleArea({ data, onChange, announce }) {
   const test = useCallback((raw) => {
     const value = Number.isFinite(raw) ? raw : parseNumericAnswer(raw);
     if (!Number.isFinite(value)) { setMessage({ tone: 'warn', text: t('tools.logic.practice.unreadable') }); return; }
-    if (!inDomain(value, domain)) {
-      setMessage({ tone: 'warn', text: t('tools.logic.counterexample.outsideDomain', { value: formatNumber(value) }) });
+    const status = domainStatus(value, domain);
+    if (status !== 'in') {
+      // Hors de l'ensemble déclaré, ou trop grand pour être calculé exactement : ni l'un ni l'autre n'est « faux ».
+      const key = status === 'tooLarge' ? 'tools.logic.practice.tooLarge' : 'tools.logic.counterexample.outsideDomain';
+      setMessage({ tone: 'warn', text: t(key, { value: formatNumber(value) }) });
 
       return;
     }

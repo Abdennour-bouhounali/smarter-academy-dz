@@ -1081,6 +1081,25 @@ better than four unrelated widgets.
 
 ---
 
+### 18.1 Learning manipulation vs mechanical repetition
+
+The same gesture is not worth the same thing the fifth time. Decide per activity:
+
+- **Keep it manual** when the physical action *is* the concept: choosing which divisor to try,
+  building a vector step by step to discover direction and magnitude, deciding which chips are
+  common. There, completing it for the student means giving the answer.
+- **Offer auto-completion** when the student has already done it once and repeating it only
+  consumes time: carrying the 16th player into a team, cutting the short ribbon a sixth time,
+  laying the tenth copy along the long one.
+
+When offered, auto-completion is an **explicit, secondary button** next to إعادة / تلميح; the manual
+gesture stays available before, during and after it; it reaches the **same underlying state** by
+the **same rule** as the hand; it never opens the discovery or writes the formal rule; and any final
+act of recognition (carrying the PGCD into its box) stays with the student. Contract, audit and
+recipe: [`MANIPULATION_CONTRACT.md` §6bis](./MANIPULATION_CONTRACT.md).
+
+---
+
 ## 19. Real example design
 
 The real-world context must **create a mathematical need**, then get out of the way.
@@ -1237,6 +1256,7 @@ Feedback:
 Formalization:
 Scaffolding:
 Transfer:
+Auto-completion:        AUTO (unlock: config | first-gesture — which gesture repeats) | MANUAL (why)
 ```
 
 Where it lives:

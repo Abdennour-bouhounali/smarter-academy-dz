@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\AdminActivityLogController;
 use App\Http\Controllers\Admin\AdminClassroomController;
 use App\Http\Controllers\Admin\AdminContentController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminMasteryReplayController;
 use App\Http\Controllers\Admin\AdminEntitlementController;
 use App\Http\Controllers\Admin\AdminHealthController;
 use App\Http\Controllers\Admin\AdminManualSubscriptionController;
@@ -28,7 +29,9 @@ use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\InvitationPreviewController;
 use App\Http\Controllers\LearningEvidenceController;
+use App\Http\Controllers\LearningPointExplanationController;
 use App\Http\Controllers\LearningProfileController;
+use App\Http\Controllers\RecommendationController;
 use App\Http\Controllers\LegalController;
 use App\Http\Controllers\LessonFinalTestAttemptController;
 use App\Http\Controllers\LessonProgressController;
@@ -44,6 +47,7 @@ use App\Http\Controllers\StudentReportController;
 use App\Http\Controllers\Teacher\TeacherClassroomController;
 use App\Http\Controllers\Teacher\TeacherClassroomInvitationController;
 use App\Http\Controllers\Teacher\TeacherClassroomLessonController;
+use App\Http\Controllers\Teacher\TeacherClassroomLearningPointController;
 use App\Http\Controllers\Teacher\TeacherClassroomProgressController;
 use App\Http\Controllers\Teacher\TeacherClassroomNotebookController;
 use App\Http\Controllers\Teacher\TeacherClassroomStudentController;
@@ -176,6 +180,8 @@ Route::prefix('v1')->group(function () {
             Route::get('/lessons/{lessonCode}/practice/overview', [PracticeSessionController::class, 'overview']);
             Route::post('/lessons/{lessonCode}/practice/sessions', [PracticeSessionController::class, 'store']);
             Route::get('/practice/sessions/{sessionId}', [PracticeSessionController::class, 'show']);
+            // Le prochain exercice conseillé — le sélecteur lit la maîtrise, ne l'écrit jamais.
+            Route::get('/practice/sessions/{sessionId}/next', [PracticeSessionController::class, 'next']);
             Route::post('/practice/sessions/{sessionId}/questions', [PracticeAnswerController::class, 'openQuestion']);
             Route::post('/practice/sessions/{sessionId}/answers', [PracticeAnswerController::class, 'store']);
             Route::post('/practice/sessions/{sessionId}/exercise-completions', [PracticeAnswerController::class, 'completeExercise']);
@@ -290,6 +296,10 @@ Route::prefix('v1')->group(function () {
                 ->middleware('throttle:10,1');
 
             Route::get('/students/me/learning-profile', [LearningProfileController::class, 'show']);
+            // « Pourquoi ce statut ? » — l'explication d'un point, pour soi (Mastery V2).
+            Route::get('/students/me/learning-points/{code}/explanation', [LearningPointExplanationController::class, 'show']);
+            // Que faire ensuite dans une leçon — dérivé de l'état canonique, jamais bloquant.
+            Route::get('/students/me/lessons/{lessonCode}/recommendations', [RecommendationController::class, 'show']);
             Route::get('/students/me/lesson-progress', [LessonProgressController::class, 'index']);
 
             // ── L'élève et sa CLASSE (« قسمي ») ─────────────────────────
@@ -378,6 +388,14 @@ Route::prefix('v1')->group(function () {
                 ->whereNumber('id')->whereNumber('lessonId');
 
             Route::get('/classrooms/{id}/progress', [TeacherClassroomProgressController::class, 'show'])->whereNumber('id');
+
+            // Classe × learning point (Mastery V2, phase 7) — agrégation de
+            // l'état canonique, en lecture seule, cadrée sur les leçons
+            // effectives de la classe. `?lesson=` est obligatoire sur l'index.
+            Route::get('/classrooms/{id}/learning-points', [TeacherClassroomLearningPointController::class, 'index'])->whereNumber('id');
+            Route::get('/classrooms/{id}/learning-points/{code}', [TeacherClassroomLearningPointController::class, 'show'])->whereNumber('id');
+            Route::get('/classrooms/{id}/students/{studentId}/learning-points/{code}/explanation', [TeacherClassroomLearningPointController::class, 'explanation'])
+                ->whereNumber('id')->whereNumber('studentId');
         });
 
     // Protected routes — admin only
@@ -391,6 +409,12 @@ Route::prefix('v1')->group(function () {
             Route::get('/analytics/learning', [AdminDashboardController::class, 'learning']);
             Route::get('/analytics/content', [AdminDashboardController::class, 'content']);
             Route::get('/analytics/learning-points', [AdminDashboardController::class, 'learningPoints']);
+
+            // Rejeux de maîtrise (Mastery V2) : reconstruire l'état depuis la
+            // preuve immuable, dans une version donnée — dry-run par défaut.
+            Route::get('/mastery/replays', [AdminMasteryReplayController::class, 'index']);
+            Route::post('/mastery/replays', [AdminMasteryReplayController::class, 'store']);
+            Route::get('/mastery/replays/{id}', [AdminMasteryReplayController::class, 'show'])->whereNumber('id');
 
             Route::get('/content/lessons', [AdminContentController::class, 'lessons']);
             Route::get('/content/lessons/{code}', [AdminContentController::class, 'lesson']);

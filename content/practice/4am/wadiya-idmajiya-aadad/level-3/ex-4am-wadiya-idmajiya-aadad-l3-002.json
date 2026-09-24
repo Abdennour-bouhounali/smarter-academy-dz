@@ -1,0 +1,93 @@
+{
+  "metadata": {
+    "title": "سلسلة التفوق، الوضعية 8 — رفوف المصاحف",
+    "estimatedMinutes": 7,
+    "tags": [
+      "وضعية إدماجية",
+      "رفوف"
+    ],
+    "source": {
+      "type": "worksheet",
+      "worksheetId": "tafawwuq-01",
+      "elementId": "ws01-sit-08",
+      "section": "الوضعيات",
+      "number": 8
+    }
+  },
+  "statement": {
+    "content": "تبرّع أحمد لمدرسة قرآنية بـ 114 مصحفًا برواية ورش و 84 مصحفًا برواية حفص، فأراد صاحب المدرسة ترتيبها في رفوف بحيث تكون كل الرفوف متماثلة من حيث عدد المصاحف من كل نوع."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هو أكبر عدد من الرفوف المستعملة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-aadad_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عدد الرفوف يقسم 114 و 84."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نريد أكبر عدد ممكن من الرفوف."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب PGCD(114 ; 84)."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(114 ; 84) = 6 رفوف.",
+        "incorrect": "أكبر عدد من الرفوف هو القاسم المشترك الأكبر."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "سُمك المصحف برواية ورش 3 cm وسُمك المصحف برواية حفص 2,5 cm، والمصاحف توضع جنبًا إلى جنب. ما هو طول كل رفّ (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-aadad_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالسنتيمتر)",
+      "expectedAnswer": "92",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في كل رفّ: 114 ÷ 6 = 19 مصحفًا برواية ورش."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "وفي كل رفّ: 84 ÷ 6 = 14 مصحفًا برواية حفص."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "19 × 3 + 14 × 2,5."
+        }
+      ],
+      "feedback": {
+        "correct": "19 × 3 + 14 × 2,5 = 57 + 35 = 92 cm.",
+        "incorrect": "احسب عدد مصاحف كل نوع في الرفّ، ثم اجمع سُمكها."
+      }
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-aadad-l3-002",
+  "lessonCode": "wadiya-idmajiya-aadad",
+  "level": 3
+}

@@ -8,8 +8,6 @@ import * as CP from './coprime';
 import * as FR from './fraction';
 import * as TB from './teamBuilder';
 import { plausibleChoices } from '../useManipulation';
-import { LEVELS, levelMatching } from '../levels';
-import { MANIPULATION_TYPE_IDS } from '@smarter-academy/core';
 
 /* Les nombres sont ceux du manuel (§29) : 420/26/28, 60, 105, 18-12-3,
    90/54, 42/60, 252/140, 765/135, 1938/836, 17/18, 27/36, 84/48, 595/560. */
@@ -97,9 +95,21 @@ describe('common-divisors', () => {
     expect(s.tried).toEqual({ 9: 'common', 7: 'no' });
     s = CD.choose(s, 5);
     expect(s.tried[5]).toBe('single');
-    expect(CD.bouquetsDiscoveryReady(s)).toBe(false);
+    expect(CD.greatestGroupFound(s)).toBe(false);
     s = CD.choose(s, 18);
-    expect(CD.bouquetsDiscoveryReady(s)).toBe(true);
+    expect(CD.greatestGroupFound(s)).toBe(true);
+  });
+  it('12/18 : trois essais (2 ✓, 5 ✗, 3 ✓) ne suffisent plus — seul le plus grand, 6, accomplit les groupes', () => {
+    let s = CD.initBouquets({ a: 12, b: 18 });
+    for (const k of [2, 5, 3]) s = CD.choose(s, k);
+    expect(CD.greatestGroupFound(s)).toBe(false);
+    s = CD.choose(s, 6);
+    expect(CD.greatestGroupFound(s)).toBe(true);
+  });
+  it('le rail des groupes contient toujours le PGCD', () => {
+    expect(CD.groupRail({ a: 12, b: 18 })).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+    expect(CD.groupRail({ a: 90, b: 54 })).toHaveLength(24);
+    expect(CD.groupRail({ a: 150, b: 300 }).at(-1)).toBe(150);
   });
   it('listes 42/60 : seuls 1, 2, 3, 6 vont au milieu ; 6 seul va dans PGCD, et seulement à la fin', () => {
     let s = CD.initLists({ a: 42, b: 60 });
@@ -198,15 +208,7 @@ describe('fraction-reduction (84/48 et 595/560)', () => {
   });
 });
 
-describe('paliers et propositions', () => {
-  it('chaque type a quatre paliers, dont au plus un ajouté par la plateforme, et ils sont reconnus', () => {
-    for (const type of MANIPULATION_TYPE_IDS) {
-      const lv = LEVELS[type];
-      expect(lv, type).toHaveLength(4);
-      expect(lv.filter((l) => l.source === 'platform').length).toBeLessThanOrEqual(1);
-      expect(levelMatching(type, lv[1].numbers)?.id).toBe(2);
-    }
-  });
+describe('propositions', () => {
   it('plausibleChoices est déterministe, sans doublon, et contient la bonne réponse', () => {
     const c = plausibleChoices(112, [392, 28, 113]);
     expect(c).toHaveLength(3);

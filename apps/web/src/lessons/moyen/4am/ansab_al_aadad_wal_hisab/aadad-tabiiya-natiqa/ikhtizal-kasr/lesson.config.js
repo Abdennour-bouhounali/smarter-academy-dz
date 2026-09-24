@@ -69,7 +69,7 @@ export const LESSON_CONFIG = {
       stage: 'practice_lab', teachesLearningPointIds: ['4am_ikhtizal-kasr_P3'], color: 'amber', style: 'featured', estimatedMin: 13, difficulty: 2, actionText: 'أتدرّب' },
     { id: '04', number: 4, slug: 'awazzif-2', path: `${LESSON_BASE_PATH}/awazzif-2`, title: 'أوظّف تعلّماتي (2)', desc: 'كسور بحرف n، وحساب على الأعداد الناطقة: تمارين 29 ← 33، 37، 38، 40.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_ikhtizal-kasr_P2', '4am_ikhtizal-kasr_P4'], color: 'rose', style: 'featured', estimatedMin: 14, difficulty: 3, actionText: 'أتدرّب أكثر' },
-    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`, title: 'إتقان', desc: 'خمس أسئلة تُقيّم نقاط التعلّم الأربع.',
+    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`, title: 'إختبار أولي', desc: 'خمس أسئلة تُقيّم نقاط التعلّم الأربع.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

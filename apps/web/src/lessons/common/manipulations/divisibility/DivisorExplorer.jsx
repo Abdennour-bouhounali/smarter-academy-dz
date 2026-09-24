@@ -27,15 +27,19 @@ import * as L from '../logic/divisorExplorer';
  * E. À découvrir avant la règle : « diviseur » = « il ne reste rien ».
  */
 export default function DivisorExplorer({
-  a: a0, b: b0 = null, candidates, title, lead, mission, initialMode = 'student', allowModeSwitch = false, onVerdict, onFinished,
+  a: a0, b: b0 = null, candidates: authoredCandidates, title, lead, mission, initialMode = 'student', allowModeSwitch = false, onVerdict, onFinished,
 }) {
   const { t } = useTranslation('lesson');
   const state = useManipulation({ type: 'divisor-explorer', initialNumbers: { a: a0, b: b0 ?? 0 }, initialMode, hintCount: 3 });
   const { a } = state.numbers;
+  // Les tailles proposées suivent le NIVEAU : celles de la leçon sur ses
+  // nombres, celles de levels.js sur l'autre niveau (1512 n'a pas les
+  // candidats de 24).
+  const candidates = state.isAuthoredLevel ? authoredCandidates : state.levelPreset?.candidates;
   const [lab, setLab] = useState(() => L.init({ a: a0, b: b0, candidates }));
   const [reject, setReject] = useState(null);
 
-  // Une nouvelle série de nombres (palier, laboratoire libre, « إعادة ») remet le champ à zéro.
+  // Une nouvelle série de nombres (niveau, laboratoire libre, « إعادة ») remet le champ à zéro.
   useEffect(() => { setLab(L.init({ a, b: null, candidates })); setReject(null); }, [a, state.epoch, candidates]);
 
   const rail = useMemo(() => candidates ?? Array.from({ length: Math.min(a, 24) }, (_, i) => i + 1), [candidates, a]);
@@ -46,7 +50,7 @@ export default function DivisorExplorer({
       setReject(null);
       setLab((s) => {
         const next = L.place(s, b);
-        onVerdict?.({ a: next.a, b: next.b, divides: next.divides });
+        state.report(onVerdict, { a: next.a, b: next.b, divides: next.divides });
         if (L.discoveryReady(next)) state.discover();
         return next;
       });
@@ -58,7 +62,7 @@ export default function DivisorExplorer({
   const heldValue = drag.held ? Number(drag.held.replace('size:', '')) : null;
   const placed = lab.b !== null;
 
-  useEffect(() => { if (state.isFormal) onFinished?.(lab); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (state.isFormal) state.report(onFinished, lab); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const equationParts = placed
     ? [

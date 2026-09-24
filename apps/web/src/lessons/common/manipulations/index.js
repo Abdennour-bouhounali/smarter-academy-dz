@@ -9,5 +9,6 @@ export { default as ManipulationDiscovery } from './ManipulationDiscovery';
 export { useManipulation, plausibleChoices } from './useManipulation';
 export { useStepSequence } from './useStepSequence';
 export { default as useDragInteraction } from './useDragInteraction';
-export { LEVELS, levelsFor, levelMatching } from './levels';
+export { LEVELS, levelsFor, levelMatching, resolveManipulationLevels } from './levels';
+export { WorkspaceLevelContext, useWorkspaceLevel } from './workspaceContext';
 export { MANIPULATION_COMPONENTS } from './manipulationRegistry';

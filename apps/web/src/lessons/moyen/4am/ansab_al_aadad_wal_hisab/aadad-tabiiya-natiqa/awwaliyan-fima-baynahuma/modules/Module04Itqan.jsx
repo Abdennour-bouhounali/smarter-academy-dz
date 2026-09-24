@@ -7,10 +7,10 @@ import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { src } from '../../_unit/unitMeta';
 const Q = ({ children, source }) => <span>{children} <SourceTag source={source} /></span>;
-/** Module 4 — إتقان : نشاط 7, معارف 5, exercices 25, 27, 39, QCM 8. */
+/** Module 4 — إختبار أولي : نشاط 7, معارف 5, exercices 25, 27, 39, QCM 8. */
 export default function Module04Itqan() {
   return (
-    <BossFinal ctx={MODULE_CTX} navLinks={getNavLinks(4)} moduleNumber={4} moduleTitle="إتقان" moduleSubtitle="خمس أسئلة تُقيّم ما تعلّمته" estimatedTime="7 دقائق" lessonConfig={LESSON_CONFIG} timerSeconds={7 * 60} timerLabel="7 دقائق"
+    <BossFinal ctx={MODULE_CTX} navLinks={getNavLinks(4)} moduleNumber={4} moduleTitle="إختبار أولي" moduleSubtitle="خمس أسئلة تُقيّم ما تعلّمته" estimatedTime="7 دقائق" lessonConfig={LESSON_CONFIG} timerSeconds={7 * 60} timerLabel="7 دقائق"
       brief={{ tag: 'التقويم', title: 'أظهر ما تعرفه', tone: 'slate', body: <p>أجب عن الأسئلة الخمسة ثم أرسِلها دفعة واحدة.</p> }}
       skills={{ taarif: { label: 'التعريف', module: 2 }, ithbat: { label: 'الإثبات بحساب PGCD', module: 2 }, nafy: { label: 'النفي بقاسم مشترك', module: 1 } }}
       epreuves={[
@@ -23,7 +23,7 @@ export default function Module04Itqan() {
         { id: 'E4', skill: 'nafy', requires: ['nafy-awwaliyan'], prompt: <Q source={src('ex-27', 15, 'أوظّف تعلّماتي', 27)}>بدون حساب: 152 و 250 ليسا أوليين فيما بينهما لأن ...</Q>,
           options: ['كلاهما زوجي: 2 قاسم مشترك يختلف عن 1', 'فرقهما 98', 'كلاهما أكبر من 100', 'مجموع أرقامهما 8 و 7'], correct: 0, cols: 1, explain: <span>قاسم مشترك واحد يختلف عن 1 يكفي.</span>, assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_awwaliyan-fima-baynahuma_P3'] } },
         { id: 'E5', skill: 'nafy', requires: ['nafy-awwaliyan', 'ithbat-awwaliyan'], prompt: <Q source={src('ex-39', 15, 'أوظّف تعلّماتي', 39)}>253 و 407 لا يقبلان القسمة على 2 ، 3 ، 4 ، 5 ، 9 ، 10. هل هما أوليان فيما بينهما؟</Q>,
-          options: ['لا نعرف بعد: يجب حساب PGCD؛ وهو 11', 'نعم، حتمًا', 'لا، لأنهما فرديان', 'نعم، لأن قواعد قابلية القسمة كلها فشلت'], correct: 0, cols: 1, explain: <span><MathText>{'$253 = 11 \\times 23$'}</MathText> و <MathText>{'$407 = 11 \\times 37$'}</MathText>: قاسم مشترك 11 لا تكشفه القواعد الست.</span>, assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_awwaliyan-fima-baynahuma_P3', '4am_awwaliyan-fima-baynahuma_P2'] } },
+          options: ['لا نعرف بعد: يجب حساب PGCD؛ وهو 11', 'نعم، حتمًا', 'لا، لأنهما فرديان', 'نعم، لأن قواعد قابلية القسمة كلها فشلت'], correct: 0, cols: 1, explain: <span><MathText>{'$253 = 11 \\times 23$'}</MathText> و <MathText>{'$407 = 11 \\times 37$'}</MathText>: قاسم مشترك 11 لا تكشفه القواعد الست.</span>, assessment: { enabled: true, type: 'assessment', learningPoints: [{ code: '4am_awwaliyan-fima-baynahuma_P3', role: 'primary' }, { code: '4am_awwaliyan-fima-baynahuma_P2', role: 'secondary' }] } },
       ]}
       badges={[{ id: 'wahid', emoji: '1️⃣', label: 'القاسم المشترك الوحيد هو 1', test: (m) => (m.taarif ?? 0) === 0 }]}
       synthese={<KnowledgeSnapshot complete variant="complete" />}

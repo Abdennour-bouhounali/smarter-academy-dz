@@ -2,6 +2,7 @@
 
 namespace App\Domain\Progress;
 
+use App\Domain\Progress\Support\OutcomeStats;
 use App\Models\ExerciseAttempt;
 use App\Models\LearningEvidence;
 use App\Models\QuestionAttempt;
@@ -35,25 +36,28 @@ class StudentDossier
             ->orderByDesc('last_activity_at')
             ->get();
 
-        $mastery = StudentLearningPointProgress::with('learningPoint:id,code,title,lesson_id')
+        $mastery = StudentLearningPointProgress::with('learningPoint:id,code,title,lesson_id', 'learningPoint.lesson:id,code,title')
             ->where('user_id', $student->id)
             ->when($lessonIds !== null, fn ($q) => $q->whereHas('learningPoint', fn ($lp) => $lp->whereIn('lesson_id', $lessonIds)))
             ->get();
 
-        $questionStats = QuestionAttempt::where('question_attempts.user_id', $student->id)
-            // question_attempts → exercise_attempts → practice_sessions : la
-            // leçon d'une réponse se lit deux tables plus haut.
-            ->when($lessonIds !== null, fn ($q) => $q
-                ->join('exercise_attempts', 'exercise_attempts.id', '=', 'question_attempts.exercise_attempt_id')
-                ->join('practice_sessions', 'practice_sessions.id', '=', 'exercise_attempts.practice_session_id')
-                ->whereIn('practice_sessions.lesson_id', $lessonIds))
-            ->selectRaw('COUNT(*) as total')
-            ->selectRaw('SUM(CASE WHEN question_attempts.outcome = ? THEN 1 ELSE 0 END) as correct', ['correct'])
+        // question_attempts → exercise_attempts → practice_sessions : la
+        // leçon d'une réponse se lit deux tables plus haut. Les agrégats
+        // d'issue viennent d'OutcomeStats — LA définition du taux de
+        // réussite, la même que la classe, l'administration et le bilan.
+        $questionStats = OutcomeStats::selectInto(
+            QuestionAttempt::where('question_attempts.user_id', $student->id)
+                ->when($lessonIds !== null, fn ($q) => $q
+                    ->join('exercise_attempts', 'exercise_attempts.id', '=', 'question_attempts.exercise_attempt_id')
+                    ->join('practice_sessions', 'practice_sessions.id', '=', 'exercise_attempts.practice_session_id')
+                    ->whereIn('practice_sessions.lesson_id', $lessonIds))
+        )
             ->selectRaw('SUM(question_attempts.hints_used) as hints')
             ->first();
 
-        $answered = (int) ($questionStats->total ?? 0);
-        $correct = (int) ($questionStats->correct ?? 0);
+        $stats = OutcomeStats::fromRow($questionStats);
+        $answered = $stats['answered'];
+        $correct = $stats['successes'];
 
         return [
             'progress' => $progress,
@@ -66,9 +70,12 @@ class StudentDossier
             )->count(),
             'questionsAnswered' => $answered,
             'correctAnswers' => $correct,
+            'partialAnswers' => $stats['partials'],
+            'incorrectAnswers' => $stats['failures'],
+            'inertAnswers' => $stats['inert'],
             // null, et non 0, quand rien n'a été répondu : « aucune donnée »
             // et « 0 % de réussite » ne disent pas la même chose.
-            'successRate' => $answered > 0 ? round($correct / $answered * 100, 1) : null,
+            'successRate' => $stats['successRate'],
             'hintsUsed' => (int) ($questionStats->hints ?? 0),
             'mastery' => $mastery,
             'masteryCounts' => $mastery->groupBy('status')->map->count(),

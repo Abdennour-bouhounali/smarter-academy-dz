@@ -8,7 +8,7 @@ import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { src } from '../../_unit/unitMeta';
 
 /**
- * Module 4 — إتقان (stage: evaluation) : LA SEULE SOURCE DE PREUVE de la
+ * Module 4 — إختبار أولي (stage: evaluation) : LA SEULE SOURCE DE PREUVE de la
  * leçon. Cinq épreuves, chacune tirée d'un élément du manuel (QCM 1–2 de
  * « أؤكّد تعلّماتي » p. 16, exemples de معارف 1 p. 10, activité 2 p. 8) et
  * rattachée à ses points d'apprentissage. Les nombres sont ceux du livre.
@@ -21,7 +21,7 @@ export default function Module04Itqan() {
       ctx={MODULE_CTX}
       navLinks={getNavLinks(4)}
       moduleNumber={4}
-      moduleTitle="إتقان"
+      moduleTitle="إختبار أولي"
       moduleSubtitle="خمس أسئلة تُقيّم ما تعلّمته"
       estimatedTime="7 دقائق"
       lessonConfig={LESSON_CONFIG}
@@ -54,8 +54,8 @@ export default function Module04Itqan() {
         {
           id: 'E3', skill: 'jidaa', requires: ['qasim-jidaa'],
           prompt: <Q source={src('know-1', 10, 'معارف', 1)}>أي مساواة تبيّن أن <MathText>{'$6$'}</MathText> قاسم للعدد <MathText>{'$120$'}</MathText>؟</Q>,
-          options: ['$120 = 6 \\times 20$', '$120 = 6 \\times 19 + 6$', '$6 = 120 \\times 0 + 6$', '$120 = 6 + 114$'].map((o) => <MathText key={o}>{`$${o.slice(1, -1)}$`}</MathText>),
-          optionLabel: (i) => ['120 = 6 × 20', '120 = 6 × 19 + 6', '6 = 120 × 0 + 6', '120 = 6 + 114'][i],
+          options: ['$120 = 6 \\times 20$', '$120 = 7 \\times 17 + 1$', '$6 = 120 \\times 0 + 6$', '$120 = 5 \\times 24$'].map((o) => <MathText key={o}>{`$${o.slice(1, -1)}$`}</MathText>),
+          optionLabel: (i) => ['120 = 6 × 20', '120 = 7 × 17 + 1', '6 = 120 × 0 + 6', '120 = 5 × 24'][i],
           correct: 0, cols: 2,
           explain: <span>«b قاسم لـ a» معناه يوجد عدد طبيعي q حيث <MathText>{'$a = b \\times q$'}</MathText>: هنا <MathText>{'$q = 20$'}</MathText>.</span>,
           assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_qasim-adad-tabii_P2'] },

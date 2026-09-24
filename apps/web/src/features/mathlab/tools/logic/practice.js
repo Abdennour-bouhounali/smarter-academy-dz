@@ -29,6 +29,7 @@ import { makeRng } from '../../../../lessons/common/stats/randomUtils.js';
 import {
   STATEMENTS, IMPLICATIONS, EQUIVALENCES, COUNTEREXAMPLE_CHALLENGES, CONDITIONS,
   QUANTIFIER_STATEMENTS, PROOFS, FALLACIES, FALLACY_KINDS, sampleOf, findPreset,
+  domainStatus, domainLabel,
 } from './presets.js';
 import { analyzeImplication, evaluate, searchVerdict, sameTable } from './logicMath.js';
 import { isComplete, makeGapChallenge, refutesFallacy } from './proofMath.js';
@@ -91,6 +92,8 @@ function trueOrFalse(rng) {
     formula: statement.formula,
     textKey: statement.textKey ?? null,
     domainSymbol: statement.domain?.symbol ?? null,
+    // « 1/n > 0 » n'est vrai que parce que n ∈ ℕ* : le domaine fait partie de l'énoncé (§6).
+    domainLabel: domainLabel(statement),
     choices: ['true', 'false', 'depends'],
     expected: statement.verdict,
     hintKeys: [`${KEY}.h.tryValues`, `${KEY}.h.checkDomain`],
@@ -109,6 +112,7 @@ function counterexample(rng) {
     challengeId: challenge.id,
     textKey: challenge.textKey,
     domainSymbol: challenge.domain.symbol,
+    domainLabel: domainLabel(challenge),
     expected: challenge.knownCounterexample,
     hintKeys: challenge.hintKeys ?? [`${KEY}.h.tryValues`, `${KEY}.h.oneIsEnough`],
     explainKey: `${KEY}.e.counterexample`,
@@ -126,6 +130,7 @@ function implicationVerdict(rng) {
     implicationId: preset.id,
     pFormula: preset.p.formula,
     qFormula: preset.q.formula,
+    domainLabel: domainLabel(preset),
     choices: ['true', 'false'],
     expected: preset.implicationHolds ? 'true' : 'false',
     hintKeys: [`${KEY}.h.everyPIsQ`, `${KEY}.h.lookForPTrueQFalse`],
@@ -146,6 +151,7 @@ function converse(rng) {
     implicationId: preset.id,
     pFormula: preset.p.formula,
     qFormula: preset.q.formula,
+    domainLabel: domainLabel(preset),
     choices: ['true', 'false'],
     expected: holds ? 'true' : 'false',
     hintKeys: [`${KEY}.h.swapPQ`, `${KEY}.h.lookForQTruePFalse`],
@@ -166,6 +172,7 @@ function contrapositive(rng) {
     implicationId: preset.id,
     pFormula: preset.p.formula,
     qFormula: preset.q.formula,
+    domainLabel: domainLabel(preset),
     form: asksContrapositive ? 'contrapositive' : 'converse',
     choices: ['same', 'different'],
     // La vérité vient de la TABLE, pas d'une constante écrite ici.
@@ -186,6 +193,9 @@ function equivalence(rng) {
     equivalenceId: preset.id,
     pFormula: preset.p.formula,
     qFormula: preset.q.formula,
+    // Une équivalence se DESSINE ⇔ : l'écrire ⇒ poserait une autre question.
+    connective: '⇔',
+    domainLabel: domainLabel(preset),
     choices: ['true', 'false'],
     expected: preset.holds ? 'true' : 'false',
     hintKeys: [`${KEY}.h.bothDirections`, `${KEY}.h.checkBackward`],
@@ -212,6 +222,7 @@ function necessarySufficient(rng) {
     conditionId: preset.id,
     aFormula: preset.a.formula,
     bFormula: preset.b.formula,
+    domainLabel: domainLabel(preset),
     question,
     choices: ['yes', 'no'],
     expected: expectedYes ? 'yes' : 'no',
@@ -240,10 +251,17 @@ function quantifier(rng) {
   };
 }
 
-/** §25 — écrire la négation d'un énoncé quantifié : « كل » devient « يوجد ». */
+/**
+ * §25 — écrire la négation d'un énoncé quantifié : « كل » devient « يوجد ».
+ *
+ * Les deux leurres sont les deux ERREURS classiques sur CET énoncé — changer
+ * le seul quantificateur, ou nier le seul prédicat — et non la négation d'un
+ * autre préréglage : celle-ci pouvait être l'énoncé de départ lui-même, ou
+ * seule à parler de ℕ et trahir la réponse.
+ */
 function quantifierNegation(rng) {
   const preset = pick(rng, QUANTIFIER_STATEMENTS);
-  const wrong = QUANTIFIER_STATEMENTS.filter((s) => s.id !== preset.id).map((s) => s.negationFormula);
+  const wrong = negationDistractors(preset);
 
   return {
     kind: 'quantifierNegation',
@@ -257,6 +275,21 @@ function quantifierNegation(rng) {
     hintKeys: [`${KEY}.h.negateQuantifier`, `${KEY}.h.negateInside`],
     explainKey: preset.kind === 'forall' ? `${KEY}.e.negateForall` : `${KEY}.e.negateExists`,
   };
+}
+
+const SWAP_QUANTIFIER = Object.freeze({ forall: '∃', exists: '∀' });
+const QUANTIFIER_SIGN = Object.freeze({ forall: '∀', exists: '∃' });
+
+/** Les deux négations FAUSSES d'un énoncé quantifié, tirées de sa structure. */
+export function negationDistractors(preset) {
+  const set = preset.domain.symbol;
+  const head = (sign) => `${sign}${preset.variable} ∈ ${set}, `;
+  const candidates = [
+    `${head(SWAP_QUANTIFIER[preset.kind])}${preset.inner}`,        // quantificateur seul
+    `${head(QUANTIFIER_SIGN[preset.kind])}${preset.negatedInner}`, // prédicat seul
+  ];
+
+  return candidates.filter((c) => c !== preset.formula && c !== preset.negationFormula);
 }
 
 /** §35 — remettre une preuve dans l'ordre. */
@@ -305,6 +338,7 @@ function fallacy(rng) {
     expected: preset.kind,
     expectedValue: preset.counterexample,
     domainSymbol: preset.domain.symbol,
+    domainLabel: domainLabel(preset),
     hintKeys: [`${KEY}.h.doesItFollow`, `${KEY}.h.trySmallNumbers`],
     explainKey: `${KEY}.e.fallacy.${preset.kind}`,
     explainParams: { value: preset.counterexample },
@@ -359,6 +393,10 @@ export function checkAnswer(challenge, answer) {
     case 'number': {
       const value = parseNumericAnswer(answer);
       if (!Number.isFinite(value)) return { correct: false, readable: false };
+      // Trop grande pour être calculée exactement : on ne juge pas, on ne dit pas « خطأ ».
+      if (domainStatus(value, numericDomain(challenge)) === 'tooLarge') {
+        return { correct: false, readable: false, detail: { value, tooLarge: true } };
+      }
 
       return { correct: checkNumeric(challenge, value), readable: true, detail: { value } };
     }
@@ -378,6 +416,9 @@ export function checkAnswer(challenge, answer) {
       const readable = typeof named === 'string' && named.length > 0 && Number.isFinite(value);
       if (!readable) return { correct: false, readable: false };
       const preset = findPreset(FALLACIES, challenge.fallacyId);
+      if (domainStatus(value, preset.domain) === 'tooLarge') {
+        return { correct: false, readable: false, detail: { value, tooLarge: true } };
+      }
 
       return {
         correct: named === challenge.expected && refutesFallacy(preset, value),
@@ -391,10 +432,20 @@ export function checkAnswer(challenge, answer) {
   }
 }
 
+/** Le domaine contre lequel une réponse numérique se juge. */
+function numericDomain(challenge) {
+  if (challenge.kind === 'counterexample') return findPreset(COUNTEREXAMPLE_CHALLENGES, challenge.challengeId).domain;
+  if (challenge.kind === 'fallacy') return findPreset(FALLACIES, challenge.fallacyId).domain;
+
+  return null;
+}
+
 /**
  * Une réponse numérique. Pour un contre-exemple, on RÉÉVALUE le prédicat :
- * toute valeur du domaine qui le rend faux est juste, pas seulement celle
- * qu'on avait en tête (§10).
+ * toute valeur de l'ENSEMBLE DÉCLARÉ qui le rend faux est juste, pas
+ * seulement celle qu'on avait en tête (§10) — ni seulement celles que la
+ * droite graduée montre : 31 réfute « tout premier > 2 est pair » même si
+ * l'échantillon s'arrête à 30.
  */
 function checkNumeric(challenge, value) {
   if (challenge.kind === 'counterexample') {
@@ -410,12 +461,13 @@ function checkNumeric(challenge, value) {
   return value === challenge.expected;
 }
 
-/** La valeur appartient-elle au domaine déclaré ? (un entier n'accepte pas 2,5). */
+/**
+ * La valeur appartient-elle à l'ENSEMBLE déclaré (ℕ, ℕ*, ℤ, ℝ) et peut-on
+ * la juger ? `min`/`max` ne bornent que l'échantillon affiché : ils ne
+ * restreignent pas l'énoncé (voir `domainStatus`, presets.js).
+ */
 export function inDomain(value, domain) {
-  if (!domain || !Number.isFinite(value)) return false;
-  if (value < domain.min || value > domain.max) return false;
-
-  return domain.integer ? Number.isInteger(value) : true;
+  return domainStatus(value, domain) === 'in';
 }
 
 /**

@@ -73,9 +73,10 @@ system requires:
   (which LPs a learning module teaches — powers post-evaluation
   recommendations; every LP must be taught by ≥ 1 module, and evaluation
   modules teach nothing) and, sparingly, `requiresLearningPointIds` (a
-  mastery gate on LP ids, never scores — only LPs taught by an earlier
-  module, and it blocks only on a *demonstrated* gap, never on missing
-  evidence).
+  SOFT mastery gate on LP ids, never scores — only LPs taught by an earlier
+  module. Since Mastery V2 it never blocks: a demonstrated `gap` shows the
+  hint « نوصي بمراجعة … أولًا » with links to the teaching module
+  (`lessons/common/utils/softGate.js`), and the module stays open).
 - **Module completion is the module's own meaningful learning experience** —
   never time spent, page views, or a generic score. Practice mistakes do not
   block completion; the module exists for learning, not examination.
@@ -216,9 +217,9 @@ export const LESSON_CONFIG = {
                               // Union across modules must cover every lesson LP (strict);
                               // evaluation modules must not declare it. Powers the
                               // post-evaluation "revoir Module N" recommendations.
-  requiresLearningPointIds?: string[], // OPTIONAL mastery gate — LP ids (never scores) that must
-                              // not be in demonstrated-'gap' status. Only LPs taught by an
-                              // EARLIER module; use sparingly, only when pedagogically necessary.
+  requiresLearningPointIds?: string[], // OPTIONAL SOFT mastery gate — LP ids (never scores); a
+                              // demonstrated 'gap' on one of them shows a review hint, never a lock.
+                              // Only LPs taught by an EARLIER module; use sparingly.
   color: string,             // REQUIRED. One of LessonIndex.jsx's COLOR_MAP keys.
   style: 'featured' | 'boss' | 'assessment',  // Drives the card style on the lesson landing page.
   estimatedMin: number,      // REQUIRED, load-bearing: the per-lesson sum must stay ≤ 45.
@@ -362,8 +363,11 @@ de présentation, pas de curriculum.
 `resources[]` et `priorKnowledge` sont décrits en § « Phase 8 additions »
 ci-dessus. À noter, vérifié dans le code : `passingScore`, `unitTitle` et le
 `textbookRef` du config ne sont lus par personne ; `difficulty` est purement
-décoratif ; `requiresLearningPointIds` n'est jamais activé à l'exécution
-(`LessonIndex` ne passe pas `masteryStatusById`).
+décoratif ; `requiresLearningPointIds` produit un CONSEIL, jamais un verrou
+(Mastery V2) : `LessonIndex` construit `masteryStatusById` depuis le profil de
+la leçon et l'utilise pour `softGateHint`, mais `resolveModuleStatus`
+(`utils/moduleGate.js`) ne le transmet VOLONTAIREMENT pas à
+`getModuleStatus` de `packages/core`, qui, lui, verrouillerait.
 
 ### Le module 0 EST un module — la règle, et le défaut qu'elle a corrigé
 

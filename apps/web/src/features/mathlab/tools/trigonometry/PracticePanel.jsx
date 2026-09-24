@@ -161,7 +161,7 @@ export default function PracticePanel({
       {hint && (
         <p className="sa-ml-trig__hintline" role="status" data-ml-trig-hint>
           <Lightbulb size={15} aria-hidden="true" />
-          {t(hint)}
+          {t(hint, challenge.hintParams)}
         </p>
       )}
 

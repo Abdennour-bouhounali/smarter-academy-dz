@@ -39,7 +39,7 @@ export const LESSON_CONFIG = {
     // nues du manuel — ici, la liste EST l'objet mathématique.
     { kind: 'manipulation', code: 'common-divisors-8-12', type: 'common-divisors', module: 1,
       level: 'beginner',
-      title: 'حقائب متماثلة: 8 أقلام و 12 كراسًا، ثم القائمتان',
+      title: 'حقائب متماثلة: 8 أقلام و 12 كراسًا، حتى أكبر عدد من الحقائب',
       objective: 'تعيين PGCD بحصر القواسم ثم القواسم المشتركة ثم أكبرها',
       autonomy: '',
       experience: { type: 'platform_context', reason: 'smaller_numbers_for_first_contact', theme: 'school' },
@@ -64,6 +64,6 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'تمارين الكتاب 17، 18 و 22.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_tayin-pgcd_P1', '4am_tayin-pgcd_P3'], color: 'amber', style: 'featured', estimatedMin: 12, difficulty: 2, actionText: 'أتدرّب' },
     { id: '04', number: 4, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إتقان', desc: 'أربع أسئلة تُقيّم نقاط التعلّم الثلاث.', stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 3, actionText: 'أدخل التقويم' },
+      title: 'إختبار أولي', desc: 'أربع أسئلة تُقيّم نقاط التعلّم الثلاث.', stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 6, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

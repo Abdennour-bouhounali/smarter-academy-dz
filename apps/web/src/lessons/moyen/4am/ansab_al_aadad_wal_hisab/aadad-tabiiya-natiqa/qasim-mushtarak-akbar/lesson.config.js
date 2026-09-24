@@ -48,7 +48,7 @@ export const LESSON_CONFIG = {
       level: 'advanced',
       title: 'باقات متماثلة: 90 زهرة حمراء و 54 زهرة بيضاء',
       objective: 'القواسم المشتركة لعددين، وأكبرها هو القاسم المشترك الأكبر',
-      autonomy: 'أعداد الكتاب: قائمتان طويلتان، ولا اقتراح لأي عدد باقات — التلميذ يبحث ويقارن',
+      autonomy: 'أعداد الكتاب: أكبر عدد من الباقات يُبحث عنه دون اقتراح، ثم قائمتان طويلتان يقارن بينهما التلميذ',
       experience: { type: 'textbook', reason: '', theme: 'garden' },
       learningPointIds: ['4am_qasim-mushtarak-akbar_P1', '4am_qasim-mushtarak-akbar_P2', '4am_qasim-mushtarak-akbar_P3'], sourceElementIds: ['act-4'] },
     { kind: 'manipulation', code: 'common-divisors-28-42', type: 'common-divisors', module: 2, title: 'مثال الكتاب: 28 و 42',
@@ -68,7 +68,7 @@ export const LESSON_CONFIG = {
       stage: 'practice_lab', teachesLearningPointIds: ['4am_qasim-mushtarak-akbar_P1', '4am_qasim-mushtarak-akbar_P2'],
       color: 'amber', style: 'featured', estimatedMin: 10, difficulty: 2, actionText: 'أتدرّب' },
     { id: '04', number: 4, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إتقان', desc: 'خمس أسئلة تُقيّم نقاط التعلّم الأربع.',
+      title: 'إختبار أولي', desc: 'خمس أسئلة تُقيّم نقاط التعلّم الأربع.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 8, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

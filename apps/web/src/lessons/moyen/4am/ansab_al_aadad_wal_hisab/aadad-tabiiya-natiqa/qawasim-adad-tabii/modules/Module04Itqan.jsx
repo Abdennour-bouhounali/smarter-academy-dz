@@ -10,12 +10,12 @@ import { src } from '../../_unit/unitMeta';
 const Q = ({ children, source }) => <span>{children} <SourceTag source={source} /></span>;
 const qcm = (n) => src('qcm', 16, 'أؤكّد تعلّماتي', n);
 
-/** Module 4 — إتقان : QCM 3, 4, 5 (p. 16), طريقة 105 (p. 11), exercices 11 et 7 (p. 14). */
+/** Module 4 — إختبار أولي : QCM 3, 4, 5 (p. 16), طريقة 105 (p. 11), exercices 11 et 7 (p. 14). */
 export default function Module04Itqan() {
   return (
     <BossFinal
       ctx={MODULE_CTX} navLinks={getNavLinks(4)} moduleNumber={4}
-      moduleTitle="إتقان" moduleSubtitle="ست أسئلة تُقيّم ما تعلّمته" estimatedTime="9 دقائق" lessonConfig={LESSON_CONFIG} timerSeconds={9 * 60} timerLabel="9 دقائق"
+      moduleTitle="إختبار أولي" moduleSubtitle="ست أسئلة تُقيّم ما تعلّمته" estimatedTime="9 دقائق" lessonConfig={LESSON_CONFIG} timerSeconds={9 * 60} timerLabel="9 دقائق"
       brief={{ tag: 'التقويم', title: 'أظهر ما تعرفه', tone: 'slate', body: <p>أجب عن الأسئلة الستة ثم أرسِلها دفعة واحدة.</p> }}
       skills={{ jidaa: { label: 'جداء عاملين', module: 1 }, istintaj: { label: 'استنتاج القواسم', module: 1 }, tariqa: { label: 'طريقة الاختبار حتى √a', module: 2 }, qawaid: { label: 'قواعد قابلية القسمة', module: 2 } }}
       epreuves={[
@@ -36,9 +36,9 @@ export default function Module04Itqan() {
           explain: <span>كل قاسم أكبر من 10 هو الناتج في قسمة ذات باقٍ معدوم على عدد أصغر من 10 أو يساويه.</span>,
           assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_qawasim-adad-tabii_P3'] } },
         { id: 'E5', skill: 'tariqa', requires: ['tariqa-qawasim'], prompt: <Q source={src('method-divisors', 11, 'طرائق')}>من المساواة <MathText>{'$105 = 7 \\times 15$'}</MathText> نستنتج أن قاسمَي 105 هما ...</Q>,
-          options: ['7 و 15', '7 فقط', '15 فقط', '7 و 105'], correct: 0, cols: 2,
+          options: ['7 و 15', '7 فقط', '15 فقط', '7 و 8'], correct: 0, cols: 2,
           explain: <span>في حالة الباقي المعدوم، كلا المقسوم عليه (7) والناتج (15) قاسمان للعدد.</span>,
-          assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_qawasim-adad-tabii_P1', '4am_qawasim-adad-tabii_P3'] } },
+          assessment: { enabled: true, type: 'assessment', learningPoints: [{ code: '4am_qawasim-adad-tabii_P1', role: 'primary' }, { code: '4am_qawasim-adad-tabii_P3', role: 'secondary' }] } },
         { id: 'E6', skill: 'qawaid', requires: ['qawaid-qisma'], prompt: <Q source={src('ex-11', 14, 'أوظّف تعلّماتي', 11)}>أي عدد من الأعداد التالية يقبل القسمة على 3 وعلى 5 في آن واحد؟</Q>,
           options: ['375', '275', '370', '175'], correct: 0, cols: 2,
           explain: <span>رقم الوحدات 0 أو 5، ومجموع الأرقام مضاعف لـ 3: <MathText>{'$3 + 7 + 5 = 15$'}</MathText>.</span>,

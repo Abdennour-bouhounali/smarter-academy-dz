@@ -100,7 +100,7 @@ Douze routes, toutes sous `auth:sanctum`. Les 17 routes préexistantes sont
 **byte-identiques** (comparaison de `route:list` avant/après).
 
 ```text
-GET    /lessons/{lessonCode}/practice/overview
+GET    /lessons/{lessonCode}/practice/overview   (+ learningPoints[].practice, 2026-09-24 — EXERCISE_CONTRACT.md)
 POST   /lessons/{lessonCode}/practice/sessions
 GET    /practice/sessions/{sessionId}
 POST   /practice/sessions/{sessionId}/questions
@@ -124,6 +124,10 @@ d'autrui.
 apps/web/src/pages/student/practice/   PracticeHub · PracticeSession · PracticeSummary
 apps/web/src/features/practice/        QuestionRenderer (registre) · inputs/ ·
                                        HintPanel · FeedbackPanel · RichText ·
+                                       SessionProgress · QuestionHistory ·
+                                       QuestionContextPanel · LearningPointProgress ·
+                                       learningPointProgress ·
+                                       QuestionArrival · questionHistory · toneStyle ·
                                        LevelSelector · NotebookButton · PracticeLab ·
                                        practiceCapability · practiceContent
 apps/web/src/services/practiceService.js

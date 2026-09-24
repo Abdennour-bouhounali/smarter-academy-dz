@@ -22,6 +22,10 @@ class QuestionAttempt extends Model
         'submitted_answer',
         'normalized_answer',
         'outcome',
+        // Mastery V2 : qui a jugé (server | client), et ce que le client
+        // avait prédit quand le serveur a jugé autrement.
+        'evaluated_by',
+        'client_outcome',
         'hints_used',
         'misconception_id',
         'attempt_number',

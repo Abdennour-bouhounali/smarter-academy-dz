@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as M from './measureMath.js';
-import { triangleVertices } from './investigations.js';
+import { triangleVertices, scaleFactor } from './investigations.js';
 import { formatValue } from '../functionGrapher/grapherFormat.js';
 
 /**
@@ -783,12 +783,11 @@ function geometryOf(investigation, params) {
   }
 
   // Le segment / le carré des conversions.
-  const scaleIndex = Math.round(read('scale', 2));
-  const factors = { 1: 10, 2: 100, 3: 1000, 4: 1000 };
-
+  // Le facteur vient de l'enquête (et du moteur de conversion) : la scène
+  // ne tient plus sa propre table, qui avait dérivé (deux crans à 1 000).
   return {
     kind: 'segment',
-    lengthFactor: factors[scaleIndex] ?? 100,
+    lengthFactor: scaleFactor(read('scale', 2)),
     bounds: { minX: -1, maxX: 11, minY: -1, maxY: 11 },
     handles: [],
   };

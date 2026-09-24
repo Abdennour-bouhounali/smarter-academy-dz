@@ -33,7 +33,9 @@ export function summarizeWhiteboard(data) {
   return {
     kind: 'strokes',
     text: elements
-      .filter((el) => el?.type === 'text' && typeof el.text === 'string' && el.text.trim() !== '')
+      // Les lettres A, B, C et les mesures « AB = 5 » du bureau de géométrie
+      // ne sont pas ce qu'on CHERCHE : seul le texte écrit par l'élève compte.
+      .filter((el) => el?.type === 'text' && typeof el.text === 'string' && el.text.trim() !== '' && !el.customData?.geo)
       .map((el) => el.text.trim().slice(0, 40))
       .slice(0, 6),
     detail: { box, shapes, total: elements.length },

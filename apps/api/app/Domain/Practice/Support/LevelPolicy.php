@@ -16,6 +16,13 @@ namespace App\Domain\Practice\Support;
  */
 class LevelPolicy
 {
+    /**
+     * Le motif d'un niveau verrouillé est un CODE : c'est le client qui écrit la
+     * phrase, en arabe (ARABIC_RTL_CONTRACT « The API speaks codes »). Avant,
+     * une phrase française arrivait telle quelle sous chaque niveau fermé.
+     */
+    public const REASON_PREVIOUS_LEVEL = 'previous_level_incomplete';
+
     /** Exercices à terminer dans un niveau pour ouvrir le suivant. */
     public const EXERCISES_TO_UNLOCK_NEXT = 1;
 
@@ -51,7 +58,7 @@ class LevelPolicy
 
             $out[] = self::row(
                 $level, $available, $done, $unlocked,
-                $unlocked ? null : "Termine un exercice du niveau {$previous} pour ouvrir celui-ci.",
+                $unlocked ? null : self::REASON_PREVIOUS_LEVEL,
             );
         }
 

@@ -112,6 +112,9 @@ for (const gradeDir of existsSync(SOURCES) ? readdirSync(SOURCES) : []) {
     for (const f of walk(practiceDir)) {
       if (!f.endsWith('.json')) continue;
       const data = JSON.parse(readFileSync(f, 'utf8'));
+      // Une fiche d'exercices (worksheet) n'est PAS le manuel : ses éléments
+      // sont vérifiés à part, contre docs/sources/…/worksheet-<id>.json.
+      if (data.metadata?.source?.type === 'worksheet') continue;
       for (const id of citedIds(readFileSync(f, 'utf8'))) cite(data.lessonCode ?? 'unknown', id, 'practice');
     }
     if (existsSync(unitsJson)) {
@@ -149,6 +152,46 @@ for (const gradeDir of existsSync(SOURCES) ? readdirSync(SOURCES) : []) {
   }
 }
 
+/*
+ * 5. Les FICHES d'exercices (source non-manuel) : docs/sources/<classe>/<unité>/worksheet-<id>.json.
+ *    Chaque élément a au plus UNE destination (un exercice de pratique) ou déclare
+ *    `notIntegrated` avec sa raison ; l'exercice de destination existe et cite cet
+ *    élément ; tout exercice qui cite une fiche cite un élément qui y existe.
+ */
+const worksheetCitations = new Map(); // `${worksheetId}:${elementId}` → [exerciseId]
+for (const f of walk(join(repoRoot, 'content/practice'))) {
+  if (!f.endsWith('.json') || !/\/level-\d\//.test(f)) continue;
+  const data = JSON.parse(readFileSync(f, 'utf8'));
+  const src = data.metadata?.source;
+  if (src?.type !== 'worksheet') continue;
+  if (!src.worksheetId || !src.elementId) { problems.push(`${relative(repoRoot, f)} : source « worksheet » sans worksheetId ou elementId`); continue; }
+  const key = `${src.worksheetId}:${src.elementId}`;
+  worksheetCitations.set(key, [...(worksheetCitations.get(key) ?? []), data.id]);
+}
+const knownWorksheetKeys = new Set();
+for (const file of walk(SOURCES).filter((p) => /\/worksheet-[a-z0-9-]+\.json$/.test(p))) {
+  const ws = JSON.parse(readFileSync(file, 'utf8'));
+  let integrated = 0;
+  for (const el of ws.elements ?? []) {
+    const key = `${ws.worksheetId}:${el.id}`;
+    knownWorksheetKeys.add(key);
+    const citedBy = worksheetCitations.get(key) ?? [];
+    if (!el.destination) {
+      if (!el.notIntegrated) problems.push(`fiche ${ws.worksheetId}: « ${el.id} » n'a ni destination ni raison « notIntegrated »`);
+      if (citedBy.length) problems.push(`fiche ${ws.worksheetId}: « ${el.id} » est déclaré non intégré mais cité par ${citedBy.join(', ')}`);
+      continue;
+    }
+    integrated += 1;
+    if (citedBy.length !== 1 || citedBy[0] !== el.destination.exercise) {
+      problems.push(`fiche ${ws.worksheetId}: « ${el.id} » doit être cité par ${el.destination.exercise} seulement (cité par : ${citedBy.join(', ') || 'aucun'})`);
+    }
+  }
+  report.push({ worksheet: ws.worksheetId, elements: (ws.elements ?? []).length, integrated });
+}
+for (const [key, exercises] of worksheetCitations) {
+  if (!knownWorksheetKeys.has(key)) problems.push(`${exercises.join(', ')} : cite l'élément de fiche inconnu « ${key} »`);
+}
+
 function readUnitCode(gradeDir, unitDir) {
   // docs/sources/4am/unit1 → le code de l'unité n°1 de la classe dans le catalogue.
   const n = Number(unitDir.replace(/\D/g, ''));
@@ -168,7 +211,10 @@ function findUnitDir(unitCode) {
 if (process.argv.includes('--json')) {
   console.log(JSON.stringify({ report, problems }, null, 2));
 } else {
-  for (const r of report) console.log(`unité « ${r.unit} » : ${r.elements} éléments du manuel, ${r.lessons} destinations, ${r.platformAdditions} ajout(s) de la plateforme déclaré(s)`);
+  for (const r of report) {
+    if (r.worksheet) console.log(`fiche « ${r.worksheet} » : ${r.elements} éléments, ${r.integrated} intégrés, ${r.elements - r.integrated} non intégré(s) avec raison`);
+    else console.log(`unité « ${r.unit} » : ${r.elements} éléments du manuel, ${r.lessons} destinations, ${r.platformAdditions} ajout(s) de la plateforme déclaré(s)`);
+  }
   if (problems.length) {
     console.error(`\n${problems.length} problème(s) de couverture :`);
     for (const p of problems) console.error(`  ✗ ${p}`);

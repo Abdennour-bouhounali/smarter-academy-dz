@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   CHALLENGE_KINDS, generateChallenge, parseAnswer, checkAnswer,
-  relativeTolerance, explainTerms, kindsForSpec, revealTarget,
+  relativeTolerance, explainTerms, kindsForSpec, revealTarget, trueBehaviours,
 } from './practice.js';
 import { buildDefinition } from './sequenceModel.js';
 import { generate, termAt, analyseTrend } from './sequenceMath.js';
@@ -300,5 +300,102 @@ describe('les familles pertinentes pour la suite affichée', () => {
         expect(CHALLENGE_KINDS, `${kind} → ${proposed}`).toContain(proposed);
       }
     }
+  });
+});
+
+/**
+ * RÉGRESSION — les étiquettes de comportement ne s'excluent pas.
+ *
+ * Une arithmétique de raison 4 est متزايدة ET تتباعد ; une géométrique de
+ * raison 0,5 est متناقصة ET تقترب من قيمة. Le défi n'acceptait qu'une
+ * étiquette et refusait l'autre, pourtant vraie.
+ *
+ * La vérité est recalculée ICI, sur 400 termes itérés un par un — pas sur la
+ * forme fermée de `trueBehaviours` — pour que le test ne recopie pas le code.
+ */
+describe('le comportement : toute étiquette VRAIE est acceptée, toute fausse refusée', () => {
+  const N = 400;
+
+  /** Les termes u₀ … u_{N−1}, par la définition de récurrence. */
+  function iterate(spec) {
+    const terms = [spec.first];
+    for (let n = 1; n < N; n += 1) {
+      const previous = terms[n - 1];
+      terms.push(spec.kind === 'arithmetic' ? previous + spec.difference : previous * spec.ratio);
+    }
+
+    return terms;
+  }
+
+  /** La table de vérité des cinq étiquettes, lue sur les termes. */
+  function truthTable(spec) {
+    const u = iterate(spec);
+    const pairs = u.slice(1).map((value, n) => [u[n], value]);
+    const increasing = pairs.every(([a, b]) => b - a > 0);
+    const decreasing = pairs.every(([a, b]) => b - a < 0);
+    const alternating = pairs.every(([a, b]) => a * b < 0);
+    // Convergente : la queue est de Cauchy et bornée (400 termes suffisent à
+    // départager |q| < 1, q = ±1 et |q| > 1, r ≠ 0).
+    const tail = u.slice(N - 50);
+    const converges = tail.every((v) => Number.isFinite(v))
+      && Math.max(...tail) - Math.min(...tail) < 1e-9;
+
+    return {
+      increasing, decreasing, alternating, approaching: converges, diverging: !converges,
+    };
+  }
+
+  it('sur 600 graines et trois difficultés, le verdict suit la table de vérité', () => {
+    const seen = new Set();
+    let checked = 0;
+    for (const difficulty of ['easy', 'normal', 'hard']) {
+      for (let seed = 1; seed <= 600; seed += 1) {
+        const challenge = generateChallenge(seed, { kinds: ['behaviour'], difficulty });
+        const truth = truthTable(challenge.spec);
+        // L'étiquette principale est vraie, elle aussi.
+        expect(truth[challenge.expected], `graine ${seed} : ${challenge.expected}`).toBe(true);
+        for (const choice of challenge.choices) {
+          expect(
+            checkAnswer(challenge, choice).correct,
+            `graine ${seed} ${JSON.stringify(challenge.spec)} : « ${choice} »`,
+          ).toBe(truth[choice]);
+          if (truth[choice] && choice !== challenge.expected) seen.add(`${challenge.expected}+${choice}`);
+        }
+        checked += 1;
+      }
+    }
+    expect(checked).toBe(1800);
+    // Les quatre recouvrements signalés par l'audit sont bien couverts.
+    for (const pair of ['approaching+decreasing', 'increasing+diverging', 'decreasing+diverging', 'diverging+increasing']) {
+      expect(seen, pair).toContain(pair);
+    }
+  });
+
+  it('les cas nommés par l’audit, un par un', () => {
+    const behaviour = (spec, expected) => ({
+      answerType: 'choice', expected, accepted: trueBehaviours(spec),
+    });
+    const geoHalf = behaviour({ kind: 'geometric', first: 11, ratio: 0.5 }, 'approaching');
+    expect(checkAnswer(geoHalf, 'decreasing').correct).toBe(true);
+    expect(checkAnswer(geoHalf, 'diverging').correct).toBe(false);
+    const arithUp = behaviour({ kind: 'arithmetic', first: 2, difference: 4 }, 'increasing');
+    expect(checkAnswer(arithUp, 'diverging').correct).toBe(true);
+    expect(checkAnswer(arithUp, 'approaching').correct).toBe(false);
+    const arithDown = behaviour({ kind: 'arithmetic', first: 15, difference: -5 }, 'decreasing');
+    expect(checkAnswer(arithDown, 'diverging').correct).toBe(true);
+    const geoTwo = behaviour({ kind: 'geometric', first: 3, ratio: 2 }, 'diverging');
+    expect(checkAnswer(geoTwo, 'increasing').correct).toBe(true);
+    expect(checkAnswer(geoTwo, 'decreasing').correct).toBe(false);
+    // (−1)ⁿ oscille sans limite : متباعدة au sens du programme.
+    const flip = behaviour({ kind: 'geometric', first: 4, ratio: -1 }, 'alternating');
+    expect(checkAnswer(flip, 'diverging').correct).toBe(true);
+    expect(checkAnswer(flip, 'approaching').correct).toBe(false);
+  });
+
+  it('trueBehaviours : un premier terme négatif renverse le sens de variation', () => {
+    // u₀ = −8, q = 0,5 : −8, −4, −2… CROISSANTE, et convergente vers 0.
+    expect(trueBehaviours({ kind: 'geometric', first: -8, ratio: 0.5 })).toEqual(['increasing', 'approaching']);
+    expect(trueBehaviours({ kind: 'geometric', first: -1, ratio: 3 })).toEqual(['decreasing', 'diverging']);
+    expect(trueBehaviours({ kind: 'affine', first: 1, a: 2, b: 1 })).toBeNull();
   });
 });

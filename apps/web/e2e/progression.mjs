@@ -244,7 +244,7 @@ try {
     const chips = await page.locator('[data-progression-lesson="qasim-adad-tabii"] li[aria-label]').evaluateAll((els) => els.map((e) => e.getAttribute('aria-label')));
     record('riche : les pastilles de la leçon disent 1/1/1/1 avec libellé accessible', chips.length === 4 && chips.every((c) => /: 1$/.test(c)), chips.join(' | '));
     const fieldChips = await page.locator('[data-progression-field="ansab_al_aadad_wal_hisab"] h3 li[aria-label]').evaluateAll((els) => els.map((e) => e.getAttribute('aria-label')));
-    record('riche : le ميدان additionne (2 maîtrisées, 1 en progrès, 2 lacunes)', fieldChips.some((c) => c.startsWith('متحكَّم') && c.endsWith(': 2')) && fieldChips.some((c) => c.startsWith('تحتاج') && c.endsWith(': 2')), fieldChips.join(' | '));
+    record('riche : le ميدان additionne (2 maîtrisées, 1 en progrès, 2 lacunes)', fieldChips.some((c) => c.startsWith('متحكَّم') && c.endsWith(': 2')) && fieldChips.some((c) => c.startsWith('يحتاج') && c.endsWith(': 2')), fieldChips.join(' | '));
     await page.screenshot({ path: `${OUT}/03-rich-profile.png`, fullPage: false });
     await ctx.close();
   }

@@ -20,6 +20,8 @@
  * qui dépend de deux autres les réunit — ce que §32 veut montrer.
  */
 
+import { domainStatus } from './presets.js';
+
 /** Toutes les étapes, y compris les alternatives acceptées (§36). */
 export function stepIds(proof) {
   return proof?.steps?.map((step) => step.id) ?? [];
@@ -152,9 +154,14 @@ export function anyValidOrder(proof) {
   return placed;
 }
 
-/** §33 — un sophisme est réfuté par TOUT contre-exemple valide, pas par un seul. */
+/**
+ * §33 — un sophisme est réfuté par TOUT contre-exemple valide, pas par un
+ * seul — mais seulement PRIS DANS L'ENSEMBLE DÉCLARÉ : « n زوجي » sur ℕ
+ * n'est pas réfuté par −2, qui n'est pas un n de l'argument.
+ */
 export function refutesFallacy(fallacy, value) {
   if (!fallacy || !Number.isFinite(value)) return false;
+  if (fallacy.domain && domainStatus(value, fallacy.domain) !== 'in') return false;
   try {
     return Boolean(fallacy.refutes(value));
   } catch {

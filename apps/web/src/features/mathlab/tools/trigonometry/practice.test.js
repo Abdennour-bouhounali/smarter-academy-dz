@@ -109,7 +109,8 @@ describe('les questions sont JUSTES — deux cents tirages vérifiés', () => {
     for (let seed = 1; seed <= 200; seed += 1) {
       const challenge = generateChallenge(seed);
       if (challenge.answerType !== 'number' || !challenge.expectedText) continue;
-      if (challenge.expectedText.endsWith('°')) continue;  // « 60° » se tape « 60 »
+      // « 60° » compris : la révélation écrit cette forme, l'élève qui la
+      // recopie a raison (l'ancien `continue` masquait un refus).
       expect(
         checkAnswer(challenge, challenge.expectedText).correct,
         `graine ${seed} : « ${challenge.expectedText} »`,
@@ -141,6 +142,53 @@ describe('les questions sont JUSTES — deux cents tirages vérifiés', () => {
       expect(kinds).toContain(generateChallenge(seed, kinds).kind === 'undefinedRatio' ? 'ratioValue' : generateChallenge(seed, kinds).kind);
     }
   });
+
+  it('le mode triangle reste dans le programme de 4AM : angles aigus, pas de radians (régression)', () => {
+    const kinds = kindsForMode('triangle');
+    expect(kinds).not.toContain('degToRad');
+    let ratioQuestions = 0;
+    for (let seed = 1; seed <= 400; seed += 1) {
+      const challenge = generateChallenge(seed, kinds, { mode: 'triangle' });
+      expect(challenge.kind, `graine ${seed}`).not.toBe('degToRad');
+      expect(challenge.kind, `graine ${seed}`).not.toBe('undefinedRatio');
+      if (challenge.kind !== 'ratioValue') continue;
+      ratioQuestions += 1;
+      const { angle, ratio } = challenge.promptParams;
+      // Un angle AIGU non nul d'un triangle rectangle, et la valeur juste.
+      expect(angle, `graine ${seed}`).toBeGreaterThan(0);
+      expect(angle, `graine ${seed}`).toBeLessThan(90);
+      const rad = (angle * Math.PI) / 180;
+      const truth = ratio === 'sin' ? Math.sin(rad) : ratio === 'cos' ? Math.cos(rad) : Math.tan(rad);
+      expect(Math.abs(challenge.expected - truth), `${ratio}(${angle}°)`).toBeLessThan(1e-9);
+    }
+    expect(ratioQuestions).toBeGreaterThan(50);
+  });
+
+  it('le mode cercle garde tout le tour et les conversions', () => {
+    const angles = new Set();
+    const kinds = new Set();
+    for (let seed = 1; seed <= 400; seed += 1) {
+      const challenge = generateChallenge(seed, kindsForMode('circle'), { mode: 'circle' });
+      kinds.add(challenge.kind);
+      if (challenge.kind === 'ratioValue') angles.add(challenge.promptParams.angle);
+    }
+    expect(kinds).toContain('degToRad');
+    expect([...angles].some((a) => a > 90)).toBe(true);
+  });
+
+  it('l’indice « cosZero » nomme l’angle de la question — 270° n’est pas 90°', () => {
+    const seen = new Set();
+    for (let seed = 1; seed <= 2000; seed += 1) {
+      const challenge = generateChallenge(seed, ['ratioValue']);
+      if (challenge.kind !== 'undefinedRatio') continue;
+      expect(challenge.hintKeys).toContain('tools.trigonometry.practice.h.cosZero');
+      expect(challenge.hintParams).toEqual({ angle: challenge.angle });
+      // cos s'annule bien à cet angle : l'indice ne ment pas.
+      expect(Math.abs(Math.cos((challenge.angle * Math.PI) / 180))).toBeLessThan(1e-12);
+      seen.add(challenge.angle);
+    }
+    expect([...seen].sort()).toEqual([270, 90]);
+  });
 });
 
 describe('la lecture d’une réponse — la syntaxe n’est pas le sujet', () => {
@@ -158,12 +206,63 @@ describe('la lecture d’une réponse — la syntaxe n’est pas le sujet', () =
 
   it('lit un radical, sous toutes ses écritures', () => {
     const expected = Math.sqrt(3) / 2;
-    for (const text of ['√3/2', 'sqrt(3)/2'.replace(/[()]/g, ''), 'racine3/2', 'rac3/2']) {
+    // La saisie RÉELLE, parenthèses comprises : l'ancien test les retirait
+    // avant de lire, ce qui masquait le `NaN` rendu à `sqrt(3)/2`.
+    for (const text of ['√3/2', 'sqrt(3)/2', 'racine(3)/2', '√(3)/2', '(√3)/2', 'racine3/2', 'rac3/2', 'SQRT(3)/2']) {
       expect(Math.abs(parseAnswer(text) - expected), text).toBeLessThan(1e-12);
     }
     expect(Math.abs(parseAnswer('√2/2') - Math.SQRT1_2)).toBeLessThan(1e-12);
     expect(Math.abs(parseAnswer('√3') - Math.sqrt(3))).toBeLessThan(1e-12);
     expect(Math.abs(parseAnswer('2√3') - 2 * Math.sqrt(3))).toBeLessThan(1e-12);
+  });
+
+  it('lit les formes exactes à parenthèses et à radical au dénominateur (régression)', () => {
+    // Valeurs attendues calculées ici, indépendamment du parseur.
+    const cases = [
+      ['√(2)/2', Math.sqrt(2) / 2],
+      ['racine(2)/2', Math.sqrt(2) / 2],
+      ['1/√2', 1 / Math.sqrt(2)],
+      ['1/(√2)', 1 / Math.sqrt(2)],
+      ['1/sqrt(2)', 1 / Math.sqrt(2)],
+      ['1/√3', 1 / Math.sqrt(3)],
+      ['√3/3', Math.sqrt(3) / 3],
+      ['−1/√2', -1 / Math.sqrt(2)],
+      ['-√(3)/2', -Math.sqrt(3) / 2],
+      ['−sqrt(3)/2', -Math.sqrt(3) / 2],
+      ['-(√3)/2', -Math.sqrt(3) / 2],
+      ['2/√3', 2 / Math.sqrt(3)],
+      ['√3 / 2', Math.sqrt(3) / 2],
+      ['٠٫٥', 0.5],
+      ['۱/۲', 0.5],
+    ];
+    for (const [text, expected] of cases) {
+      expect(Math.abs(parseAnswer(text) - expected), text).toBeLessThan(1e-12);
+    }
+  });
+
+  it('un défi dont la réponse vaut 1/√2 ou 1/√3 accepte ces écritures', () => {
+    const cos45 = { answerType: 'number', expected: Math.cos(Math.PI / 4) };
+    const tan30 = { answerType: 'number', expected: Math.tan(Math.PI / 6) };
+    expect(checkAnswer(cos45, '1/√2').correct).toBe(true);
+    expect(checkAnswer(cos45, 'sqrt(2)/2').correct).toBe(true);
+    expect(checkAnswer(tan30, '1/√3').correct).toBe(true);
+    expect(checkAnswer(tan30, '1/(√3)').correct).toBe(true);
+    expect(checkAnswer(tan30, '1/√2').correct).toBe(false);
+  });
+
+  it('lit le « ° » final — la forme que la révélation affiche (régression)', () => {
+    expect(parseAnswer('60°')).toBe(60);
+    expect(parseAnswer('60 °')).toBe(60);
+    expect(parseAnswer('٦٠°')).toBe(60);
+    const toDegrees = { answerType: 'number', expected: 180 / 3, tolerance: 0.5 };
+    expect(checkAnswer(toDegrees, '60°').correct).toBe(true);
+    expect(checkAnswer(toDegrees, '°')).toEqual({ correct: false, readable: false });
+  });
+
+  it('refuse toujours ce qui n’a pas de sens — parenthèses non fermées, √ d’un négatif', () => {
+    for (const text of ['sqrt(3/2', '√-3', '()', '1/', '2-3', '√', '1/(√2-√2)']) {
+      expect(parseAnswer(text), text).toBeNaN();
+    }
   });
 
   it('lit le vrai signe moins (U+2212), celui que l’instrument AFFICHE', () => {

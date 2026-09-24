@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RotateCcw, Play } from 'lucide-react';
 import * as R from './ruleEngine.js';
-import { ruleVariablesFor } from './investigations.js';
+import { ruleVariablesFor, ruleNumbersFor } from './investigations.js';
 
 /**
  * Le CONSTRUCTEUR de règles (§19) — visuel, sans syntaxe à taper.
@@ -27,6 +27,9 @@ export default function RuleBuilder({ investigation, rule, onChange, onTest, dis
   const [pendingOperator, setPendingOperator] = useState(null);
 
   const variables = useMemo(() => ruleVariablesFor(investigation), [investigation]);
+  // Les nombres du programme, et ceux propres à l'enquête (90, 180, 360 pour
+  // les angles : la somme cherchée doit pouvoir s'ÉCRIRE).
+  const numbers = useMemo(() => ruleNumbersFor(investigation), [investigation]);
   const symbolOf = useCallback((name) => {
     const found = investigation.quantities.find((entry) => entry.key === name);
 
@@ -166,7 +169,7 @@ export default function RuleBuilder({ investigation, rule, onChange, onTest, dis
         <fieldset className="sa-ml-ms__group">
           <legend>{t('tools.measurement.rule.numbers')}</legend>
           <div className="sa-ml-ms__chips">
-            {R.RULE_CONSTANTS.map((value) => (
+            {numbers.map((value) => (
               <button
                 key={value}
                 type="button"

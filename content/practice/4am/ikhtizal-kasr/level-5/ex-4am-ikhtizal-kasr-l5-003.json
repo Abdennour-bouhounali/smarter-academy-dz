@@ -1,0 +1,172 @@
+{
+  "metadata": {
+    "title": "سلسلة التفوق، تمرين 11 — أربع عبارات",
+    "estimatedMinutes": 10,
+    "tags": [
+      "حساب على الكسور"
+    ],
+    "source": {
+      "type": "worksheet",
+      "worksheetId": "tafawwuq-01",
+      "elementId": "ws01-ex-11",
+      "section": "التمارين",
+      "number": 11
+    }
+  },
+  "statement": {
+    "content": "احسب وأعطِ النتيجة على شكل كسر غير قابل للاختزال."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$A = \\left(\\dfrac{3}{2} - \\dfrac{1}{4}\\right) \\times \\dfrac{7}{5}$",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "7/4",
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ بما بين القوسين: 3/2 − 1/4 = 5/4."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم اضرب في 7/5."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اختزل قبل الضرب إن أمكن."
+        }
+      ],
+      "feedback": {
+        "correct": "A = 7/4.",
+        "incorrect": "راجع أولوية العمليات، ثم اختزل النتيجة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$B = \\dfrac{1}{6} - \\dfrac{7}{2} \\div \\dfrac{14}{3}$",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "-7/12",
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "القسمة قبل الطرح."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "القسمة على 14/3 هي الضرب في 3/14."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "1/6 − 3/4: وحّد المقامين على 12."
+        }
+      ],
+      "feedback": {
+        "correct": "B = −7/12.",
+        "incorrect": "راجع أولوية العمليات، ثم اختزل النتيجة."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "$C = \\dfrac{5}{2} \\times \\dfrac{\\dfrac{7}{3} + \\dfrac{2}{3} \\div 5}{\\dfrac{7}{2} - \\dfrac{5}{2} \\times \\dfrac{1}{4}}$",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "148/69",
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب البسط: 7/3 + 2/15."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب المقام: 7/2 − 5/8."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قسمة كسر على كسر هي الضرب في مقلوبه."
+        }
+      ],
+      "feedback": {
+        "correct": "C = 148/69.",
+        "incorrect": "راجع أولوية العمليات، ثم اختزل النتيجة."
+      }
+    },
+    {
+      "id": "q4",
+      "statement": "$D = \\dfrac{2 - \\dfrac{3}{4}}{1 + \\dfrac{1}{1 + \\dfrac{1}{3}}}$",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "5/7",
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ من الأسفل: 1 + 1/3 = 4/3."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "1 ÷ 4/3 = 3/4."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم احسب البسط 2 − 3/4 والمقام 1 + 3/4."
+        }
+      ],
+      "feedback": {
+        "correct": "D = 5/7.",
+        "incorrect": "راجع أولوية العمليات، ثم اختزل النتيجة."
+      }
+    }
+  ],
+  "id": "ex-4am-ikhtizal-kasr-l5-003",
+  "lessonCode": "ikhtizal-kasr",
+  "level": 5
+}

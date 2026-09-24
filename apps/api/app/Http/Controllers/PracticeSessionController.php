@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Domain\Access\ContentAccess;
 use App\Domain\Practice\ExerciseRepository;
+use App\Domain\Practice\LearningPointPracticeProgress;
+use App\Domain\Practice\ExerciseSelector;
 use App\Domain\Practice\PracticeCapability;
 use App\Domain\Practice\PracticeSessionService;
 use App\Domain\Practice\Support\LevelPolicy;
+use App\Domain\Progress\Support\Freshness;
+use App\Domain\Progress\Support\OutcomeStats;
+use App\Models\LearningPoint;
 use App\Models\ExerciseAttempt;
 use App\Models\Lesson;
 use App\Models\PracticeSession;
@@ -57,18 +62,34 @@ class PracticeSessionController extends Controller
 
         $levels = LevelPolicy::levels($this->exercises->countsByLevel($lessonCode), $completedPerLevel);
 
-        $learningPoints = StudentLearningPointProgress::query()
-            ->where('student_learning_point_progress.user_id', $user->id)
-            ->join('learning_points', 'learning_points.id', '=', 'student_learning_point_progress.learning_point_id')
-            ->where('learning_points.lesson_id', $lesson->id)
-            ->orderBy('learning_points.order')
-            ->get(['learning_points.code', 'learning_points.title', 'student_learning_point_progress.status', 'student_learning_point_progress.confidence'])
-            ->map(fn ($row) => [
-                'code' => $row->code,
-                'title' => $row->title,
-                'status' => $row->status,
-                'confidence' => (float) $row->confidence,
-            ])->all();
+        // TOUS les points de la leçon, évalués ou non : un point sans preuve
+        // est « non évalué », pas absent — l'élève doit voir ce qui reste.
+        $states = StudentLearningPointProgress::query()
+            ->where('user_id', $user->id)
+            ->whereHas('learningPoint', fn ($q) => $q->where('lesson_id', $lesson->id))
+            ->get()->keyBy('learning_point_id');
+        // Ce qui a été FAIT dans la banque de pratique, par point (exercices
+        // terminés / total, questions répondues / total) — un compteur
+        // d'activité, distinct de l'état de maîtrise ci-dessus.
+        $practice = app(LearningPointPracticeProgress::class)->forLesson($user, $lesson);
+        $learningPoints = LearningPoint::query()
+            ->where('lesson_id', $lesson->id)->whereNull('retired_at')->orderBy('order')
+            ->get(['id', 'code', 'title'])
+            ->map(function ($lp) use ($states, $practice) {
+                $s = $states->get($lp->id);
+
+                return [
+                    'code' => $lp->code,
+                    'title' => $lp->title,
+                    'status' => $s?->status ?? 'unassessed',
+                    'statusReason' => $s?->status_reason,
+                    'confidence' => $s ? (float) $s->confidence : null,
+                    'distinctItemsSuccess' => (int) ($s?->distinct_items_success ?? 0),
+                    'freshness' => $s ? Freshness::of($s->last_evidence_at) : null,
+                    'practice' => $practice[$lp->code]
+                        ?? ['exercises' => 0, 'exercisesCompleted' => 0, 'questions' => 0, 'questionsAnswered' => 0],
+                ];
+            })->all();
 
         $open = PracticeSession::where('user_id', $user->id)
             ->where('lesson_id', $lesson->id)
@@ -134,6 +155,27 @@ class PracticeSessionController extends Controller
         ]);
     }
 
+    /**
+     * Le prochain exercice conseillé (Mastery V2, phase 9) — le sélecteur lit
+     * l'état de maîtrise et le registre, il n'écrit rien. `null` quand le
+     * niveau est épuisé. Désactivable (`practice.selector_enabled`) : le
+     * client reprend alors l'ordre du contenu.
+     */
+    public function next(Request $request, string $sessionId, ExerciseSelector $selector)
+    {
+        try {
+            $session = $this->sessions->ownedBy($request->user(), $sessionId);
+        } catch (DomainException) {
+            abort(404);
+        }
+
+        if (! config('practice.selector_enabled', true)) {
+            return response()->json(['success' => true, 'exerciseId' => null, 'reason' => 'disabled', 'candidates' => 0]);
+        }
+
+        return response()->json(['success' => true, ...$selector->next($session)]);
+    }
+
     public function complete(Request $request, string $sessionId)
     {
         try {
@@ -172,10 +214,18 @@ class PracticeSessionController extends Controller
         $attempts = $session->exerciseAttempts()->with('questionAttempts')->get();
         $questions = $attempts->flatMap->questionAttempts;
 
+        // OutcomeStats : la même lecture des issues que le dossier de l'élève
+        // et la classe de l'enseignant — un bilan ne dit pas un autre chiffre.
+        $stats = OutcomeStats::fromOutcomes($questions->whereNotNull('submitted_at')->pluck('outcome'));
+
         return [
             'exercisesAttempted' => $attempts->count(),
-            'questionsAnswered' => $questions->whereNotNull('submitted_at')->count(),
-            'correctCount' => $questions->whereIn('outcome', ['correct', 'equivalent_correct'])->count(),
+            'questionsAnswered' => $stats['answered'],
+            'correctCount' => $stats['successes'],
+            'partialCount' => $stats['partials'],
+            'incorrectCount' => $stats['failures'],
+            'inertCount' => $stats['inert'],
+            'successRate' => $stats['successRate'],
             'hintsUsed' => (int) $questions->sum('hints_used'),
             'misconceptions' => $questions->pluck('misconception_id')->filter()->countBy()->all(),
         ];

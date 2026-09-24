@@ -1,8 +1,9 @@
 import { useCallback, useMemo, useState } from 'react';
-import { NotebookPen, Check } from 'lucide-react';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { getLessonById } from '@smarter-academy/core';
 import { useNotebook } from './notebook/NotebookProvider';
+import './notebook/notebook.css';
 
 /**
  * « Noter dans mon carnet » — le déclencheur du cahier dans un exercice.
@@ -19,19 +20,22 @@ import { useNotebook } from './notebook/NotebookProvider';
  * réponse fausse, la réponse donnée et le verdict. Rien n'est inventé : sans
  * réponse, pas de bloc « خطئي ».
  *
- * Après un enregistrement, la note reste accessible d'ici (« افتح الملاحظة »
- * la rouvre pour la compléter — c'est la MÊME note, pas une seconde) ; et
- * « أضف ملاحظة أخرى » en commence une nouvelle, car une question peut
- * mériter deux remarques.
+ * Le déclencheur est LE MÊME qu'en leçon (LessonNotebookAnchor) : la
+ * pastille flottante « 📓 كرّاسي », même classe, même place, même bascule
+ * ouvrir/fermer (aria-pressed). L'élève reconnaît son cahier partout.
+ *
+ * Après un enregistrement, la pastille ROUVRE cette note pour la compléter
+ * — c'est la MÊME note, pas une seconde. Le composant est remonté (`key`) à
+ * chaque question et au verdict : une nouvelle question, ou la même après
+ * validation, commence une nouvelle note.
  *
  * @param {object} context  { lessonCode, exercise, question, answer, evaluation, feedbackMessage }
  * @param {(data) => Promise<{note}>} onSave     crée la note (POST, avec les codes de la séance)
  * @param {(id, patch) => Promise<{note}>} onUpdate  la modifie (PATCH)
- * @param {boolean} [compact]  icône seule, pour la barre d'outils d'une question en cours
  */
-export default function NotebookButton({ context, onSave, onUpdate, defaultType = null, compact = false }) {
+export default function NotebookButton({ context, onSave, onUpdate, defaultType = null }) {
   const { t } = useTranslation('student');
-  const { openNotebook } = useNotebook();
+  const { openNotebook, closeNotebook, isOpen } = useNotebook();
   const [savedNote, setSavedNote] = useState(null);
 
   // Le contexte d'exercice, complété des TITRES que le repère du cahier
@@ -52,67 +56,40 @@ export default function NotebookButton({ context, onSave, onUpdate, defaultType 
     };
   }, [context]);
 
-  const openNew = useCallback(() => openNotebook({
-    context: fullContext,
-    // Une note prise après une réponse fausse EST une erreur pour le cahier
-    // (« أخطائي ») ; sans verdict ou avec une bonne réponse, une note.
-    onCreate: (data) => onSave({
-      ...data,
-      mistakeType: data.mistakeType ?? defaultType,
-      noteType: context?.evaluation && !context.evaluation.isCorrect ? 'erreur' : 'note',
-    }),
-    onUpdate,
-    onSaved: setSavedNote,
-  }), [openNotebook, fullContext, onSave, onUpdate, defaultType]);
+  const open = useCallback(() => (savedNote
+    ? openNotebook({ note: savedNote, onUpdate, onSaved: setSavedNote })
+    : openNotebook({
+      context: fullContext,
+      // Une note prise après une réponse fausse EST une erreur pour le cahier
+      // (« أخطائي ») ; sans verdict ou avec une bonne réponse, une note.
+      onCreate: (data) => onSave({
+        ...data,
+        mistakeType: data.mistakeType ?? defaultType,
+        noteType: context?.evaluation && !context.evaluation.isCorrect ? 'erreur' : 'note',
+      }),
+      onUpdate,
+      onSaved: setSavedNote,
+    })), [openNotebook, savedNote, fullContext, onSave, onUpdate, defaultType, context]);
 
-  const openSaved = useCallback(() => openNotebook({
-    note: savedNote,
-    onUpdate,
-    onSaved: setSavedNote,
-  }), [openNotebook, savedNote, onUpdate]);
+  const label = isOpen ? t('notebook.window.closeMyNotebook') : t('notebook.window.openMyNotebook');
 
-  const label = t('notebook.noteInMyNotebook');
-
-  if (savedNote) {
-    return (
-      <div className="inline-flex items-center gap-3 flex-wrap">
-        <p className="inline-flex items-center gap-2 text-sm text-emerald-700 font-bold">
-          <Check className="w-4 h-4" aria-hidden="true" /> {t('notebook.savedToNotebook')}
-        </p>
-        <button
-          type="button"
-          onClick={openSaved}
-          aria-haspopup="dialog"
-          className="text-sm font-bold text-violet-700 hover:text-violet-900 underline underline-offset-2 min-h-[44px]"
-        >
-          {t('notebook.window.openSavedNote')}
-        </button>
-        <button
-          type="button"
-          onClick={openNew}
-          aria-haspopup="dialog"
-          className="text-sm font-bold text-slate-500 hover:text-slate-800 underline underline-offset-2 min-h-[44px]"
-        >
-          {t('notebook.addAnotherNote')}
-        </button>
-      </div>
-    );
-  }
-
-  return (
+  // Porté dans <body> : une pastille `position: fixed` sous un ancêtre
+  // animé (transition de page, cadre de présentation) se collerait à lui et
+  // non à l'écran.
+  return createPortal(
     <button
       type="button"
-      onClick={openNew}
-      title={compact ? label : undefined}
+      className="sa-nb-lesson-trigger"
+      onClick={() => (isOpen ? closeNotebook() : open())}
+      aria-label={label}
+      title={label}
+      aria-pressed={isOpen}
       aria-haspopup="dialog"
-      className={
-        compact
-          ? 'inline-flex items-center gap-2 px-3 py-2 min-h-[44px] rounded-xl border-2 border-slate-200 text-slate-600 hover:border-violet-400 hover:text-violet-800 text-sm font-bold'
-          : 'inline-flex items-center gap-2 px-4 py-2.5 min-h-[44px] rounded-xl border-2 border-violet-200 bg-violet-50 text-violet-800 hover:border-violet-400 text-sm font-bold'
-      }
+      data-nb-trigger="practice"
     >
-      <NotebookPen className="w-4 h-4" aria-hidden="true" />
-      {compact ? <span className="sr-only sm:not-sr-only">{t('notebook.noteShort')}</span> : label}
-    </button>
+      <span className="text-lg" aria-hidden="true">📓</span>
+      <span>{t('notebook.window.myNotebookShort')}</span>
+    </button>,
+    document.body,
   );
 }

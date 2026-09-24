@@ -21,11 +21,25 @@ staging and assessment metadata**.
    the question's answer must provide meaningful evidence about that specific
    competency. If no existing question qualifies, generate one and integrate
    it into the challenge / final-evaluation section.
-3. **Questions stay in JSX.** No question content in MySQL, ever.
+3. **Question CONTENT stays in JSX.** No prompt, option text or explanation
+   in MySQL, ever. What the server needs to JUDGE — the learning points and
+   their roles, the difficulty and the answer key (`correct`) — is exported
+   to the assessment-item registry (`assessment_items`) by
+   `exportContentRegistry.mjs` → `smarter:import-content-registry`, exactly as
+   modules and exercises are. That is an index of the content, never a second
+   definition of it (Mastery V2, 2026-09-24).
 4. **Do not force bad mappings.** A question maps to the learning point(s) it
    actually measures — normally one primary learning point; several only when
    it genuinely evaluates several distinct competencies. When uncertain,
    classify the question as practice and write a better assessment instead.
+
+5. **Never remove, fake or force a manipulation's manual gesture.** A
+   generated activity whose gesture repeats mechanically once understood may
+   rely on the type's auto-completion (`controls.autoComplete`,
+   `MANIPULATION_CONTRACT.md` §6bis) — never a completed picture over an
+   unchanged state, never a completion that fires without the learner's
+   click, never a second definition of « correct », and never on a gesture
+   that is itself the learning objective or an answer.
 
 ## The textbook owns the mathematics; the platform owns the experience
 
@@ -147,11 +161,19 @@ BossMission for the worked precedent).
 // ASSESSMENT — the only kind that submits evidence
 {
   id: 'rp-flash-03',                       // REQUIRED: stable, unique within the lesson
-  /* …existing question fields (q/prompt, options, correct, explain, …)… */
+  /* …existing question fields (q/prompt, options, explain, …)… */
+  correct: 2,                              // REQUIRED literal index, inside the options range (validate-lessons --strict): the registry exports it as the answer key
   assessment: {
     enabled: true,
     type: 'assessment',
+    // ONE learning point → the short form is fine:
     learningPointIds: ['6e_resolution-problemes-1_P3'],
+    // SEVERAL learning points → roles are REQUIRED (exactly one primary):
+    // learningPoints: [
+    //   { code: '4am_awwaliyan-fima-baynahuma_P3', role: 'primary' },
+    //   { code: '4am_awwaliyan-fima-baynahuma_P2', role: 'secondary' },
+    // ],
+    difficulty: 3,                         // optional, 1..5 (default 3 on the server)
   },
 }
 
@@ -168,7 +190,14 @@ Rules the validator (`npm run validate:lessons`) enforces:
 - `assessment.enabled` is a boolean literal; `assessment.type` is one of
   `discovery | practice | assessment`.
 - `enabled: true` requires `type: 'assessment'` and a non-empty
-  `learningPointIds` whose every id belongs to **this** lesson.
+  `learningPointIds` **or** `learningPoints` whose every code belongs to
+  **this** lesson.
+- `learningPoints` carries exactly one `primary` (at most 4 entries).
+  `learningPointIds` with **more than one** id is an error in a live lesson
+  (it would declare several primaries — the registry refuses that).
+- `difficulty`, when present, is an integer literal 1..5; `correct`, when
+  present, is a numeric literal (a computed `correct` cannot be exported, so
+  the server could not judge the question).
 - `discovery`/`practice` questions must not carry `learningPointIds`.
 - `enabled: true` questions must sit inside an `evaluation`-stage module's
   own file (`modules/<NN>_<slug>.jsx`).
@@ -183,25 +212,35 @@ conflict: the validator distinguishes them by the presence of `enabled`.
 
 ## Wiring evidence submission
 
-At the exact point the module already knows correctness (its existing
-validate handler), call the shared hook — no new state machine:
+**You normally write nothing.** The final test is `BossFinal`
+(`lessons/common/kit`), which submits every question once, at the single
+global submit. If a new evaluation component ever needs to submit evidence,
+it calls the shared hook with the student's ANSWER — never with its own
+verdict:
 
 ```js
 import { useEvidenceSubmission } from '…/common/hooks/useEvidenceSubmission';
 
 const { submitEvidence } = useEvidenceSubmission(MODULE_CTX.lessonId);
-// in the existing handler:
-submitEvidence(question, isCorrect, { picked });   // fire-and-forget
+submitEvidence(question, { picked });   // picked = option index, or null if unanswered
 ```
 
-`submitEvidence` never throws and never blocks the lesson: failures are
-parked in an offline queue and retried on reconnection. Anonymous visitors
-generate no evidence.
+The payload is `{questionCode, attemptId, answer: {picked}}`. The SERVER looks
+the question up in the registry, judges `picked` against the answer key,
+resolves the learning points, the difficulty and the source; an unanswered
+question is recorded as `abandoned` (inert). The client-side `isCorrect` is
+kept only for the results screen and XP.
 
-No lesson is currently built on disk — every catalogue lesson is
-`coming_soon`. There is no reference implementation to point to right now;
-follow this document and `LESSON_CONTRACT.md` directly when building the
-next one.
+`submitEvidence` never throws and never blocks the lesson: failures are
+parked in an offline queue (`evidenceQueue.js`) and retried on reconnection;
+a 422 is kept with its error and a retry counter and expires after 30 days —
+it is never dropped silently. Anonymous visitors and teachers generate no
+evidence.
+
+Reference implementation: the nine live 4AM lessons of unit 1
+(`apps/web/src/lessons/moyen/4am/…/modules/Module0xItqan.jsx`, final module
+« إختبار أولي »). `qawasim-adad-tabii` E5 and `awwaliyan-fima-baynahuma` E5 show
+the `learningPoints` form with a primary and a secondary point.
 
 ## Quality bar for generated assessment questions
 

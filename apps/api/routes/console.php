@@ -6,3 +6,8 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+// Mastery V2 — chaque nuit, un échantillon de couples (élève, point) est
+// rejoué et comparé à l'état enregistré. Un écart est journalisé
+// (`state.verify_mismatch`) ; la commande ne corrige rien.
+\Illuminate\Support\Facades\Schedule::command('smarter:mastery:verify')->dailyAt('03:30')->withoutOverlapping();

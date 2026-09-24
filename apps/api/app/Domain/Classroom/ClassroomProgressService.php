@@ -5,6 +5,8 @@ namespace App\Domain\Classroom;
 use App\Domain\Plans\EntitlementKeys;
 use App\Domain\Plans\PlanEntitlementResolver;
 use App\Domain\Progress\StudentDossier;
+use App\Domain\Progress\Support\Freshness;
+use App\Domain\Progress\Support\OutcomeStats;
 use App\Models\Classroom;
 use App\Models\ClassroomLesson;
 use App\Models\ClassroomMembership;
@@ -28,6 +30,9 @@ use Illuminate\Support\Facades\DB;
  */
 class ClassroomProgressService
 {
+    /** L'ordre « le plus fragile d'abord » des statuts de maîtrise. */
+    private const STATUS_ORDER = ['gap' => 0, 'reinforce' => 1, 'unassessed' => 2, 'mastered' => 3];
+
     public function __construct(private PlanEntitlementResolver $entitlements) {}
 
     /**
@@ -112,15 +117,31 @@ class ClassroomProgressService
                 'lastActivityAt' => optional($p->last_activity_at)->toIso8601String(),
                 'completedAt' => optional($p->completed_at)->toIso8601String(),
             ])->values()->all(),
-            'mastery' => $profile['mastery']->map(fn ($m) => [
-                'code' => $m->learningPoint?->code,
-                'title' => $m->learningPoint?->title,
-                'status' => $m->status,
-                'confidence' => (float) $m->confidence,
-                'attempts' => $m->attempts,
-                'correctCount' => $m->correct_count,
-                'lastEvidenceAt' => optional($m->last_evidence_at)->toIso8601String(),
-            ])->values()->all(),
+            // Les plus fragiles d'abord : gap, puis reinforce, puis mastered ;
+            // à statut égal, la confiance la plus basse en tête. Jamais tronqué.
+            'mastery' => $profile['mastery']
+                ->sortBy([
+                    fn ($a, $b) => (self::STATUS_ORDER[$a->status] ?? 9) <=> (self::STATUS_ORDER[$b->status] ?? 9),
+                    fn ($a, $b) => (float) $a->confidence <=> (float) $b->confidence,
+                ])
+                ->map(fn ($m) => [
+                    'code' => $m->learningPoint?->code,
+                    'title' => $m->learningPoint?->title,
+                    'lessonCode' => $m->learningPoint?->lesson?->code,
+                    'lessonTitle' => $m->learningPoint?->lesson?->title,
+                    'status' => $m->status,
+                    'statusReason' => $m->status_reason,
+                    'confidence' => (float) $m->confidence,
+                    'attempts' => $m->attempts,
+                    'correctCount' => $m->correct_count,
+                    'partialCount' => (int) $m->partial_count,
+                    'failureCount' => (int) $m->failure_count,
+                    'distinctItemsSuccess' => (int) $m->distinct_items_success,
+                    'assessmentSuccessCount' => (int) $m->assessment_success_count,
+                    'maxDifficultySuccess' => (int) $m->max_difficulty_success,
+                    'lastEvidenceAt' => optional($m->last_evidence_at)->toIso8601String(),
+                    'freshness' => Freshness::of($m->last_evidence_at),
+                ])->values()->all(),
             'timeline' => StudentDossier::timeline($student, 30, $lessonIds),
         ];
     }
@@ -181,15 +202,18 @@ class ClassroomProgressService
                 ->get(['user_id', 'lesson_id', 'status', 'completed_modules', 'last_activity_at'])
                 ->groupBy('user_id');
 
-            $answersByStudent = DB::table('question_attempts')
-                ->join('exercise_attempts', 'exercise_attempts.id', '=', 'question_attempts.exercise_attempt_id')
-                ->join('practice_sessions', 'practice_sessions.id', '=', 'exercise_attempts.practice_session_id')
-                ->whereIn('question_attempts.user_id', $studentIds)
-                ->whereIn('practice_sessions.lesson_id', $lessonIds)
-                ->groupBy('question_attempts.user_id')
-                ->select('question_attempts.user_id')
-                ->selectRaw('COUNT(*) as answered')
-                ->selectRaw('SUM(CASE WHEN question_attempts.outcome = ? THEN 1 ELSE 0 END) as correct', ['correct'])
+            // La MÊME définition du taux de réussite que le dossier et
+            // l'administration (OutcomeStats) : réussites / (réussites +
+            // partiels + échecs), les issues inertes hors dénominateur.
+            $answersByStudent = OutcomeStats::selectInto(
+                DB::table('question_attempts')
+                    ->join('exercise_attempts', 'exercise_attempts.id', '=', 'question_attempts.exercise_attempt_id')
+                    ->join('practice_sessions', 'practice_sessions.id', '=', 'exercise_attempts.practice_session_id')
+                    ->whereIn('question_attempts.user_id', $studentIds)
+                    ->whereIn('practice_sessions.lesson_id', $lessonIds)
+                    ->groupBy('question_attempts.user_id')
+                    ->select('question_attempts.user_id')
+            )
                 ->get()
                 ->keyBy('user_id');
         }
@@ -198,8 +222,8 @@ class ClassroomProgressService
             $student = $m->student;
             $progress = $progressByStudent->get($m->student_id, collect());
             $completed = $progress->where('status', StudentLessonProgress::STATUS_COMPLETED)->count();
-            $answers = $answersByStudent->get($m->student_id);
-            $answered = (int) ($answers->answered ?? 0);
+            $answers = OutcomeStats::fromRow($answersByStudent->get($m->student_id));
+            $answered = $answers['answered'];
 
             return [
                 'id' => $m->student_id,
@@ -215,7 +239,7 @@ class ClassroomProgressService
                 'modulesCompleted' => $progress->sum(fn ($row) => count($row->completed_modules ?? [])),
                 'progressPercent' => $total > 0 ? round($completed / $total * 100) : null,
                 'questionsAnswered' => $answered,
-                'successRate' => $answered > 0 ? round((int) $answers->correct / $answered * 100, 1) : null,
+                'successRate' => $answers['successRate'],
             ];
         });
     }

@@ -73,7 +73,7 @@ export const LESSON_CONFIG = {
       stage: 'practice_lab', teachesLearningPointIds: ['4am_qawasim-adad-tabii_P2', '4am_qawasim-adad-tabii_P4'],
       color: 'amber', style: 'featured', estimatedMin: 15, difficulty: 2, actionText: 'أتدرّب' },
     { id: '04', number: 4, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إتقان', desc: 'ست أسئلة تُقيّم نقاط التعلّم الأربع.',
+      title: 'إختبار أولي', desc: 'ست أسئلة تُقيّم نقاط التعلّم الأربع.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 9, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

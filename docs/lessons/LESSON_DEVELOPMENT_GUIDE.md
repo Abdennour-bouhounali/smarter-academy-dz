@@ -246,7 +246,7 @@ The recurring module roles in the 4AM unit, by their Arabic names:
 | `Module01…` — the activity | `trigger` | the textbook activity, opening on the signature manipulation in the `intro` slot |
 | `Module02Maarif` — معارف | `discovery` | the textbook's definitions, each laid by a `KnowledgeBrick` at the moment it is needed |
 | `Module0xAwazzif` — أوظّف تعلّماتي | `practice_lab` | the textbook's exercises via `TextbookExercise` |
-| `Module0xItqan` — إتقان | `evaluation` | the only source of assessment evidence |
+| `Module0xItqan` — إختبار أولي | `evaluation` | the only source of assessment evidence (displayed title « إختبار أولي » since 2026-09-24; the slug `itqan` and the file name are unchanged, so URLs and saved progress are stable) |
 
 **Two rules the evaluation module must follow**, both learned from shipped
 defects:
@@ -349,6 +349,25 @@ before touching one. In short:
 - A manipulation is a **tactile laboratory**: the student moves a real object
   and the notation appears as a consequence. Never an animated explanation,
   never a quiz.
+- **Exactly two levels, everywhere: `beginner` (مبتدئ) and `advanced`
+  (متقدم).** There is no other manipulation-level system — the old four-palier
+  ladder (اكتشاف · موجّه · استقلالية · تحدّ) was removed on 2026-09-24. Every
+  type declares its pair in `manipulations/levels.js`; a manipulation posed
+  alone shows the مبتدئ / متقدم selector in its own header, and the lesson's
+  numbers are always one of the two levels. **Only one selector is ever on
+  screen**: inside a `ManipulationWorkspace` the workspace owns it. Call
+  lesson callbacks through `state.report(onFinished, …)` so the other level
+  never ticks a lesson step. Full contract:
+  [`MANIPULATION_CONTRACT.md` §7](../architecture/MANIPULATION_CONTRACT.md).
+- **One lab per level, and no silent switch.** A beginner level is ONE
+  laboratory, finished by the gesture that carries the idea (for
+  `common-divisors`: placing the *largest* number of identical groups).
+  When an advanced level chains a second laboratory (groups → divisor lists),
+  the move is **the student's gesture**: a card that says what was found and
+  what comes next, a button, and a way back. Never swap the scene for another
+  one on a hidden threshold — the student reads it as « a different
+  manipulation appeared ». See
+  [`MANIPULATION_CONTRACT.md` §7quater](../architecture/MANIPULATION_CONTRACT.md).
 - **Two levels, one workspace.** Where a manipulation is pedagogically
   appropriate, the module opens on a `ManipulationWorkspace` offering
   **مبتدئ** and **متقدم** — never two stacked manipulations, never a second
@@ -374,7 +393,7 @@ before touching one. In short:
   divisor lists), keep it at both levels and vary the cognitive demand
   instead. A theme bolted onto a list of divisors hides the mathematics.
 - The type registry is **closed**. Content names a `type`; it never supplies a
-  component. The nine types live in
+  component. The ten types live in
   `packages/core/curriculum/manipulationTypes.js` (data) and
   `manipulations/manipulationRegistry.js` (components).
 - **Reuse before writing.** The existing types are reused across lessons by
@@ -398,11 +417,27 @@ before touching one. In short:
   `lesson.json` (`manipulation.themes.<id>`), the scene from `GroupingScene`,
   `BrickWall` or `RibbonStrip`, and the card vignette from `ContextScenes.jsx`.
   Never write a second grouping scene or hardcode a theme's words in a
-  component. The full table, one line per lesson, is
+  component. Never give drawn countable objects a fixed pixel size either:
+  they must read from the back of a classroom, so they scale with the
+  scene's width (`itemSizeCss` — ×1 phone → ×2 projector; see the contract,
+  « Objects are sized for the back of the classroom »). The full table, one line per lesson, is
   [`MANIPULATION_CONTRACT.md` §2bis](../architecture/MANIPULATION_CONTRACT.md).
   A world earns its place only when it shows the structure (whole bricks,
   a cut, identical groups); where the textbook's abstract drawing already *is*
   the argument (the rectangle, the divisor lists), keep it.
+- **Manual first, then « let the lab finish it ».** When a manipulation's
+  gesture *repeats* once understood (carrying 20 players into 4 teams, cutting
+  the short ribbon a 12th time), the type may offer a student button that
+  completes the rest — « أنشئ الفرق », « أكمل الفروق », « أكمل القسمات ». It
+  is declared in the registry (`controls.autoComplete: { unlock: 'config' |
+  'first-gesture' }`) and implemented as `controller.autoComplete` on the
+  type's **own** pure logic, so it reaches exactly the state the hand would.
+  It never removes the manual gesture, never fires without a click, never
+  triggers the discovery, and is **never** added where each gesture is a
+  choice or an answer (a divisor, a column count, which chips are common). A
+  module does nothing to get it: it comes with the type. Rule, audit of the
+  ten types and recipe:
+  [`MANIPULATION_CONTRACT.md` §6bis](../architecture/MANIPULATION_CONTRACT.md).
 - Students never see a وضع القسم toggle inside a module: `allowModeSwitch`
   defaults to `false` everywhere. That is a standing owner rule. It is unrelated
   to the platform's Classroom Mode.
@@ -419,7 +454,16 @@ different systems, often confused:
 | Content | `content/exercises.js` in the lesson | JSON under `content/practice/<grade>/<lesson>/level-{1..5}/` |
 | Rendered by | `TextbookExercise` inside a module | `PracticeSession` in the student space |
 | Purpose | أوظّف تعلّماتي — the textbook's exercises | levelled training, separate from the lesson |
-| Evidence | only from an `evaluation` module | yes, as a second evidence source |
+| Evidence | **never** — they are instructional (D9); their `learningPointId` is documentation | yes, a second evidence source, **judged by the server** |
+
+**How the practice player presents a multi-question exercise** (question
+history, «السؤال السابق», the hint ladder, tones, focus) is specified in
+`EXERCISE_CONTRACT.md` § « The practice player — screen contract ». Authoring
+consequence: a question may lean on the previous one's result («هذا الدنّ»),
+because the student now sees the previous statement and **their own** answer
+right above the current question — but never the expected answer, so the
+statement must still be solvable from the student's own work. Put shared data
+in the exercise `statement`, not in question 1.
 
 An in-lesson exercise entry carries `id`, `source`, `learningPointId`,
 `difficulty`, the textbook `statement` word for word, an `interaction` naming
@@ -430,8 +474,35 @@ Whatever you validate with, return the canonical result shape
 `{ isCorrect, fields?, feedback? }`, and remember that it says nothing about
 progression. Assessment questions — the only ones that generate evidence — may
 live **only** in an `evaluation`-stage module, carry
-`assessment: { enabled: true, type: 'assessment', learningPointIds: [...] }`,
-and every id must belong to this lesson. See `AI_LESSON_CONTRACT.md`.
+`assessment: { enabled: true, type: 'assessment', learningPointIds: ['…'] }`
+(one point) or `learningPoints: [{ code, role: 'primary' }, { code, role:
+'secondary' }]` (several — exactly one primary), a numeric-literal `correct`,
+and optionally `difficulty: 1..5`. Every code must belong to this lesson. See
+`AI_LESSON_CONTRACT.md`.
+
+**What happens to an answer (Mastery V2).** `BossFinal` sends the student's
+ANSWER (`submitEvidence(question, { picked })`), never its verdict. The
+server finds the question in the assessment-item registry (built from your
+JSX by `smarter:import-content-registry`), judges it against `correct`, and
+updates the Learning Point state through the versioned mastery engine.
+Consequence for authors: **after adding or changing a final-test question,
+run the registry import** (`php artisan smarter:import-content-registry`), or
+the server answers 422 « unknown item » — the queue keeps the answer until it
+is imported. A practice exercise that should count toward mastery belongs in
+the practice bank (`content/practice/**`), not in `content/exercises.js`; the
+exercise contract (`EXERCISE_CONTRACT.md` § « Mastery V2 additions ») lists
+the fields a generated bank carries (`templateId`, per-question
+`difficulty`, …).
+
+**`teachesLearningPointIds` now drives three things** — « ما التالي؟ » after the
+test, the Knowledge Map's mastery overlay, and the soft-gate hint — so declare it
+on every learning module. `requiresLearningPointIds` produces a review HINT,
+never a lock.
+
+**The results screen of the final test shows two different things**, and
+never mixes them: « نتيجة هذا التحدي » (this attempt's score, and per skill
+with neutral ✓ / ~ / ✗) and « حالتك على نقاط التعلّم »
+(`LessonLearningPointsStatus`, the Learning Point states from the server).
 
 ---
 
@@ -445,7 +516,7 @@ and `ContentModule` derives the presentation units.
 ### Tests present themselves — never write a test UI
 
 A module built on `PrerequisiteDiagnostic` (module 0 « أستعدّ ») or `BossFinal`
-(the final test « إتقان ») **automatically** gets the full fullscreen test
+(the final test « إختبار أولي ») **automatically** gets the full fullscreen test
 presentation, with no prop to pass and nothing to wire:
 
 | In وضع القسم | What the teacher gets |
@@ -593,6 +664,24 @@ npm run build
 `check:routes`, `check:level-leak`, `check:non-blocking`,
 `check:dormant-isolation`, `check:textbook`, `check:activation-drift`.
 
+**Answer keys are checked, not trusted** (2026-09-24 answer audit).
+`validate:lessons --strict` refuses, in live `moyen/` lessons, an assessed
+option object or a `<TapQuestion>` without an explicit `correct`, or with a
+`correct` outside its option range. `validate:exercises --strict` replays every
+practice key through the real evaluator (key accepted, every distractor
+rejected, no misconception signature that is itself correct), and
+`scripts/practice-answer-oracle.test.mjs` recomputes each constructed answer
+from the mathematics — **a new constructed-answer practice question needs an
+oracle entry** or `npm test` fails. When you write distractors, make each one
+**false**, not just "not the book's argument"; say whether bounds are strict.
+Details: [`EXERCISE_CONTRACT.md`](../architecture/EXERCISE_CONTRACT.md)
+§ « Answer-key integrity ».
+
+**Exercises from another official sheet** (not the textbook) go into the
+practice bank with a declared provenance file and `source.type: "worksheet"` —
+the full recipe is [`EXERCISE_CONTRACT.md`](../architecture/EXERCISE_CONTRACT.md)
+§ « Non-textbook sources — worksheets ».
+
 If you touched a **module 0** or a **final test**, also run the test-presentation
 suite against a running dev server (`npm run dev`), on a port the API's CORS
 allows (5173 / 5174 / 4173):
@@ -698,7 +787,13 @@ Each of these has actually happened in this repository, or is a standing rule.
 - Do not let a diagnostic (`prerequisite_check`) block the next module.
 - Do not put an evidence-generating question outside an `evaluation` module.
 - Do not invent or compute a learning-point id; only ids from this lesson's
-  `pointsToLearn` may appear in `learningPointIds`.
+  `pointsToLearn` may appear in `learningPointIds` / `learningPoints`.
+- Do not list several `learningPointIds` on one question; use
+  `learningPoints` with exactly one `primary`.
+- Do not compute `correct`; the registry exports it as the answer key.
+- Do not call a completed path « إتقان »: completion and mastery never share
+  words (`ARABIC_RTL_CONTRACT.md` § « Mastery and completion never share
+  words »).
 
 **Architecture**
 - Do not write another fullscreen, scroll lock, Escape handler or toolbar.
@@ -730,6 +825,13 @@ Each of these has actually happened in this repository, or is a standing rule.
 - Do not replace a textbook situation without declaring `experience.reason`.
 - Do not render the same manipulation twice on one page — check the module's
   steps before adding a level that duplicates one of them.
+- Do not add a third level, a hidden level, or a « palier » row inside a
+  manipulation. Two levels, one selector.
+- Do not let a manipulation replace its own scene on a threshold (« after
+  three tries, show the lists »). A second laboratory is opened by the
+  student, with an explanation and a way back — and only at متقدم.
+- Do not write a `lead` that promises a stage the level does not have
+  (« ثم تجد الأعداد نفسها في القائمتين » on a groups-only مبتدئ).
 - In e2e, do not select a manipulation with `.first()` when its type serves
   both levels: it resolves to the `hidden` panel and the test hangs. Use
   `pickLevel()` and `visibleManip()` (`manipulations.mjs`).

@@ -16,7 +16,7 @@ import { ChipsSkeleton } from './ProgressionSkeleton';
  * compacte « قيد الإعداد », non dépliable : l'élève voit l'étendue du
  * programme sans qu'on lui prête un 0 % qu'il n'a pas mérité.
  */
-export default function FieldProgressGroup({ field, defaultOpen = false, profileStatus }) {
+export default function FieldProgressGroup({ field, defaultOpen = false, profileStatus, onExplain }) {
   const { t } = useTranslation('student');
   const [override, setOverride] = useState(null);
   useEffect(() => { setOverride(null); }, [field.forceOpen, defaultOpen]);
@@ -95,6 +95,7 @@ export default function FieldProgressGroup({ field, defaultOpen = false, profile
               group={group}
               defaultOpen={group.id === defaultUnitId}
               profileStatus={profileStatus}
+              onExplain={onExplain}
             />
           ))}
         </div>

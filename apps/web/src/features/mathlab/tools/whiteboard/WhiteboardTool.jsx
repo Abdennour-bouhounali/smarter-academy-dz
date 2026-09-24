@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Excalidraw, MainMenu, WelcomeScreen,
-  exportToBlob, serializeAsJSON, getSceneVersion, convertToExcalidrawElements, CaptureUpdateAction, viewportCoordsToSceneCoords,
+  exportToBlob, exportToCanvas, serializeAsJSON, getSceneVersion, convertToExcalidrawElements, CaptureUpdateAction, viewportCoordsToSceneCoords,
+  getCommonBounds,
 } from '@excalidraw/excalidraw';
 import '@excalidraw/excalidraw/index.css';
 import './whiteboard.css';
@@ -10,6 +11,8 @@ import { scopedStorage } from '../../../../utils/storage';
 import { ATTACHMENT_ACCEPT } from '../../attachments/attachmentPolicy.js';
 import { toExcalidrawInitialData, toWhiteboardData, whiteboardChangeSignature } from './whiteboardState.js';
 import { WhiteboardImportError, checkImportFile, parseLibraryText } from './whiteboardImport.js';
+import GeometryDesk from './geometry/GeometryDesk.jsx';
+import './geometry/geometry.css';
 
 // Les polices d'Excalidraw sont servies par NOUS (public/excalidraw/README.md),
 // pas par son CDN de repli. Déclaré au chargement du module, donc avant le
@@ -84,6 +87,51 @@ function storeLibrary(items) {
 /** L'identifiant Excalidraw d'un fichier du serveur : stable, lisible, sans collision avec un collage. */
 export const attachmentFileId = (file) => `sa-${file.id}`;
 
+/** La marge de l'export PNG, en unités de scène (celle qu'Excalidraw ajoute autour du dessin). */
+const EXPORT_PADDING = 32;
+
+/**
+ * L'export « مع أدوات الهندسة » : le dessin d'Excalidraw, dans un cadre
+ * élargi aux instruments, puis les instruments DESSINÉS par-dessus — le même
+ * balisage SVG qu'à l'écran, en coordonnées de scène. Deux rectangles
+ * invisibles, passés à l'export seulement (jamais à la scène), fixent le
+ * cadre : on sait donc exactement où tombe l'origine de la scène dans l'image.
+ */
+async function exportWithInstruments(api, desk) {
+  const elements = api.getSceneElements();
+  const box = desk.instrumentsBounds();
+  const [ex1, ey1, ex2, ey2] = elements.length ? getCommonBounds(elements) : [box.minX, box.minY, box.maxX, box.maxY];
+  const minX = Math.min(ex1, box.minX); const minY = Math.min(ey1, box.minY);
+  const maxX = Math.max(ex2, box.maxX); const maxY = Math.max(ey2, box.maxY);
+  const frame = convertToExcalidrawElements([
+    { type: 'rectangle', x: minX, y: minY, width: 1, height: 1, strokeColor: 'transparent', backgroundColor: 'transparent' },
+    { type: 'rectangle', x: maxX - 1, y: maxY - 1, width: 1, height: 1, strokeColor: 'transparent', backgroundColor: 'transparent' },
+  ]);
+  const canvas = await exportToCanvas({
+    elements: [...elements, ...frame],
+    appState: { ...api.getAppState(), exportBackground: true, exportWithDarkMode: false },
+    files: api.getFiles(),
+    exportPadding: EXPORT_PADDING,
+  });
+  const k = canvas.width / (maxX - minX + 2 * EXPORT_PADDING);
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${canvas.width}" height="${canvas.height}" `
+    + `viewBox="${minX - EXPORT_PADDING} ${minY - EXPORT_PADDING} ${canvas.width / k} ${canvas.height / k}">${desk.instrumentsMarkup()}</svg>`;
+  const url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
+  try {
+    const img = await new Promise((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => resolve(image);
+      image.onerror = reject;
+      image.src = url;
+    });
+    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+
+  return new Promise((resolve, reject) => canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('export'))), 'image/png'));
+}
+
 const blobToDataUrl = (blob) => new Promise((resolve, reject) => {
   const reader = new FileReader();
   reader.onload = () => resolve(reader.result);
@@ -133,6 +181,13 @@ export default function WhiteboardTool({ initialData, title, onChange, onReady, 
   // Les octets déjà rechargés dans Excalidraw (pas deux fois).
   const hydratedRef = useRef(new Set());
   const strayNoticeRef = useRef(0);
+  // Le bureau de géométrie : son état enregistrable (absent tant qu'on n'y a
+  // pas touché — une سبّورة ouverte puis quittée ne devient pas « modifiée »),
+  // l'API d'Excalidraw et le conteneur où son calque se glisse.
+  const deskDataRef = useRef(initialData?.geometry ?? null);
+  const deskApiRef = useRef(null);
+  const [excalidrawApi, setExcalidrawApi] = useState(null);
+  const [deskHost, setDeskHost] = useState(null);
 
   // L'état d'ouverture, lu UNE fois : Excalidraw n'est pas contrôlé.
   const excalidrawInitialData = useMemo(() => {
@@ -161,6 +216,7 @@ export default function WhiteboardTool({ initialData, title, onChange, onReady, 
     const api = apiRef.current;
     if (!api) return;
     const serialized = JSON.parse(serializeAsJSON(api.getSceneElements(), api.getAppState(), api.getFiles(), 'database'));
+    if (deskDataRef.current) serialized.geometry = deskDataRef.current;
     onChangeRef.current?.(toWhiteboardData(serialized));
   }, []);
 
@@ -186,6 +242,13 @@ export default function WhiteboardTool({ initialData, title, onChange, onReady, 
     const signature = whiteboardChangeSignature(getSceneVersion(elements), appState);
     if (signature === signatureRef.current) return;
     signatureRef.current = signature;
+    clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(serializeNow, SERIALIZE_MS);
+  }, [serializeNow]);
+
+  /** Le bureau a changé (fin d'un geste, un réglage) : il part avec la prochaine sérialisation. */
+  const handleDeskChange = useCallback((desk) => {
+    deskDataRef.current = desk;
     clearTimeout(timerRef.current);
     timerRef.current = setTimeout(serializeNow, SERIALIZE_MS);
   }, [serializeNow]);
@@ -245,13 +308,17 @@ export default function WhiteboardTool({ initialData, title, onChange, onReady, 
     onReady?.({
       // Vider en passant par l'historique : « تراجع » ramène le dessin.
       clear: () => api.updateScene({ elements: [], captureUpdate: CaptureUpdateAction.IMMEDIATELY }),
-      exportPng: () => exportToBlob({
+      // Par défaut, l'image est le TRAVAIL mathématique ; les instruments
+      // n'y entrent que si l'on a choisi « تصدير مع أدوات الهندسة ».
+      exportPng: () => (deskApiRef.current?.includeInstruments() && deskApiRef.current.instrumentsBounds()
+        ? exportWithInstruments(api, deskApiRef.current)
+        : exportToBlob({
         elements: api.getSceneElements(),
         appState: { ...api.getAppState(), exportBackground: true, exportWithDarkMode: false },
         files: api.getFiles(),
         mimeType: 'image/png',
-        exportPadding: 32,
-      }),
+        exportPadding: EXPORT_PADDING,
+      })),
       isGridEnabled: () => Boolean(api.getAppState().gridModeEnabled),
       // Rend le NOUVEL état : `updateScene` s'applique au prochain rendu
       // d'Excalidraw, relire `getAppState()` tout de suite rendrait l'ancien.
@@ -333,6 +400,25 @@ export default function WhiteboardTool({ initialData, title, onChange, onReady, 
     });
   }, [onReady, rehydrate]);
 
+  // Le bureau de géométrie se branche APRÈS le montage : Excalidraw livre son
+  // API depuis son constructeur (pendant le rendu, où l'on ne peut pas
+  // changer d'état) et son conteneur n'existe qu'une fois le DOM posé.
+  useEffect(() => {
+    let frame = 0;
+    const attach = () => {
+      const host = containerRef.current?.querySelector('.excalidraw-container');
+      if (host && apiRef.current) {
+        setExcalidrawApi(apiRef.current);
+        setDeskHost(host);
+      } else {
+        frame = requestAnimationFrame(attach);
+      }
+    };
+    attach();
+
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
   // Au démontage : ce qui attendait d'être sérialisé part, et la coquille
   // n'a plus d'actions à offrir.
   useEffect(() => () => {
@@ -342,7 +428,15 @@ export default function WhiteboardTool({ initialData, title, onChange, onReady, 
   }, []);
 
   return (
-    <div ref={containerRef} className="sa-ml-whiteboard" role="region" aria-label={t('tools.whiteboard.canvasLabel')} data-ml-whiteboard>
+    <div className="sa-ml-whiteboard" role="region" aria-label={t('tools.whiteboard.canvasLabel')} data-ml-whiteboard>
+      <GeometryDesk
+        ref={deskApiRef}
+        api={excalidrawApi}
+        host={deskHost}
+        initialDesk={initialData?.geometry ?? null}
+        onDeskChange={handleDeskChange}
+      />
+      <div ref={containerRef} className="sa-ml-whiteboard__canvas">
       <Excalidraw
         initialData={excalidrawInitialData}
         onChange={handleChange}
@@ -366,6 +460,7 @@ export default function WhiteboardTool({ initialData, title, onChange, onReady, 
           <WelcomeScreen.Hints.ToolbarHint />
         </WelcomeScreen>
       </Excalidraw>
+      </div>
     </div>
   );
 }

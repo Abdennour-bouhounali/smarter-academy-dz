@@ -1,6 +1,31 @@
 # Smarter Academy — Learning Point Mastery V2 Execution Plan
 
-> **Status: plan, not a contract (2026-09-24).** Nothing in this document is
+> **Status: IMPLEMENTED (2026-09-24) — historical plan, not a contract.** The
+> implemented contract is [`LEARNING_ARCHITECTURE.md`](../architecture/LEARNING_ARCHITECTURE.md)
+> § « Mastery model (V2) ». Deviations from this plan, each forced by the
+> code or the data:
+>
+> 1. **Failure weights per demonstration kind** (`demonstration_failure`): the
+>    plan said failures always count in full; replaying the demo dataset showed
+>    that practising a KNOWN item at 90 % accuracy then drifted confidence
+>    down. A slip on an already-solved item now weighs ×0.5.
+> 2. **Difficulty scale.** V2 normalises by 5 levels (`dw = d/5`), so the final
+>    test's default difficulty is 3 (the plan's example numbers used V1's /4).
+> 3. **Registry pivot.** `assessment_item_learning_point` was added so « items
+>    per learning point » is an indexed COUNT, not a JSON scan.
+> 4. **`client_legacy`.** Evidence written before the registry is labelled
+>    `client_legacy` and keeps its weight (devaluing it would rewrite history);
+>    only genuinely client-judged NEW evidence (`client`) is discounted.
+> 5. **Soft gates / recommendations** are served by `RecommendationService`
+>    (`GET /students/me/lessons/{code}/recommendations`).
+> 6. The UI « إختبار أولي » is the final module's title (product decision of
+>    2026-09-24), replacing « إتقان ».
+>
+> The original text follows, unchanged, as the record of the design.
+>
+> ---
+>
+> **Original status: plan, not a contract (2026-09-24).** Nothing in this document is
 > implemented. It is the implementation-ready design that follows
 > [`LEARNING_POINT_MASTERY_AUDIT_2026-09-24.md`](./LEARNING_POINT_MASTERY_AUDIT_2026-09-24.md).
 > Every phase that lands must update the authoritative contracts

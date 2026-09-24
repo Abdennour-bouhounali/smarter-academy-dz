@@ -1,12 +1,15 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { CircleCheckBig, Target, Dumbbell, Percent, Lock, NotebookPen } from 'lucide-react';
+import { CircleCheckBig, Target, Dumbbell, Percent, Lock, NotebookPen, Award } from 'lucide-react';
 import { ArrowBack } from '../../components/common/DirectionalIcons';
 import { useAdminResource } from '../../hooks/useAdminResource';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 import StatTile from '../../components/common/StatTile';
 import PathProgress from '../../features/progression/components/PathProgress';
+import MasteryPill, { ReasonChip, FreshnessMark, ConfidenceBar } from '../../features/teacher/learningPoints/MasteryPill';
+import MasteryExplanationPanel from '../../features/teacher/learningPoints/MasteryExplanationPanel';
+import { LP_STATUSES } from '../../features/teacher/learningPoints/lpBar';
 import { fetchClassStudentProgress } from '../../services/teacher/classGroupService';
 import { TeacherPage, Loading, ErrorBox, btnPrimary, btnSecondary, formatDate } from './teacherUi';
 
@@ -18,6 +21,21 @@ export default function StudentProgressPage() {
   const { data, loading, error, reload } = useAdminResource(loader, [loader]);
   const name = data ? ([data.student.firstName, data.student.lastName].filter(Boolean).join(' ') || data.student.email) : '';
   useDocumentMeta(name ? t('students.detailTitle', { name }) : t('students.title'));
+  const [explainCode, setExplainCode] = useState(null);
+
+  // La liste complète, groupée par leçon dans l'ordre où le serveur la livre
+  // (du plus faible au plus fort) : une leçon apparaît à son premier point.
+  const masteryByLesson = useMemo(() => {
+    const groups = new Map();
+    for (const m of data?.mastery ?? []) {
+      const key = m.lessonCode ?? m.lessonTitle ?? '';
+      if (!groups.has(key)) groups.set(key, { key, title: m.lessonTitle ?? m.lessonCode ?? '', points: [] });
+      groups.get(key).points.push(m);
+    }
+    return [...groups.values()];
+  }, [data]);
+  const masteryCounts = data?.learning?.masteryCounts ?? {};
+  const masteryTotal = LP_STATUSES.reduce((sum, key) => sum + (Number(masteryCounts[key]) || 0), 0);
 
   return (
     <TeacherPage
@@ -44,11 +62,16 @@ export default function StudentProgressPage() {
       {error && <ErrorBox message={error} onRetry={reload} />}
       {data && (
         <div className="space-y-6" data-student-progress>
-          <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+          {/* Deux tuiles distinctes pour deux faits distincts : ACHÈVEMENT
+              (des leçons parcourues) et MAÎTRISE (des compétences prouvées).
+              Les confondre ferait passer un élève qui a tout lu pour un
+              élève qui sait. Le taux de réussite ne compte que les exercices. */}
+          <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
             <StatTile icon={CircleCheckBig} value={data.learning.lessonsCompleted} label={t('students.lessonsCompleted')} accent="bg-emerald-50 text-emerald-600" hint={`${data.scope.lessonsInScope} ${t('students.lessonsInScope')}`} />
+            <StatTile icon={Award} value={Number(masteryCounts.mastered) || 0} label={t('students.masteredPoints')} accent="bg-teal-50 text-teal-700" hint={t('students.ofPoints', { count: masteryTotal })} />
             <StatTile icon={Target} value={data.learning.modulesCompleted} label={t('students.modulesCompleted')} accent="bg-blue-50 text-blue-600" />
             <StatTile icon={Dumbbell} value={data.learning.questionsAnswered} label={t('students.questionsAnswered')} accent="bg-violet-50 text-violet-600" hint={`${data.learning.hintsUsed} ${t('students.hints')}`} />
-            <StatTile icon={Percent} value={data.learning.successRate === null ? '—' : <span dir="ltr">{data.learning.successRate}%</span>} label={t('students.successRate')} accent="bg-amber-50 text-amber-600" />
+            <StatTile icon={Percent} value={data.learning.successRate === null ? '—' : <span dir="ltr">{data.learning.successRate}%</span>} label={t('students.successRate')} accent="bg-amber-50 text-amber-600" hint={t('students.exercisesOnly')} />
           </div>
           <div className="glass-card p-4"><PathProgress percent={data.learning.progressPercent ?? 0} /></div>
 
@@ -67,19 +90,53 @@ export default function StudentProgressPage() {
               )}
             </div>
             <div className="glass-card p-5">
-              <h2 className="font-space font-bold text-slate-900 mb-3">{t('students.masteryTitle')}</h2>
-              {data.mastery.length === 0 ? <p className="text-sm text-slate-400">{t('common.noData')}</p> : (
-                <ul className="divide-y divide-slate-100">
-                  {data.mastery.slice(0, 20).map((m) => (
-                    <li key={m.code} className="flex items-center justify-between gap-3 py-2 text-sm">
-                      <span className="min-w-0 truncate text-slate-800">{m.title}</span>
-                      <span className="shrink-0 text-[11px] font-semibold text-slate-500">{t(`students.masteryStatus.${m.status}`, { defaultValue: m.status })} · <span dir="ltr">{m.correctCount}/{m.attempts}</span></span>
-                    </li>
+              <h2 className="font-space font-bold text-slate-900 mb-1">{t('students.masteryTitle')}</h2>
+              {masteryTotal > 0 && (
+                <p className="mb-3 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-slate-500" data-mastery-counts>
+                  {LP_STATUSES.map((key) => (
+                    <span key={key} className="inline-flex items-center gap-1">
+                      <MasteryPill status={key} />
+                      <span className="font-mono-jetbrains font-bold tabular-nums text-slate-700">{Number(masteryCounts[key]) || 0}</span>
+                    </span>
                   ))}
-                </ul>
+                </p>
+              )}
+              {data.mastery.length === 0 ? <p className="text-sm text-slate-400">{t('common.noData')}</p> : (
+                <div className="space-y-4">
+                  {masteryByLesson.map((group) => (
+                    <div key={group.key} data-mastery-lesson={group.key}>
+                      <h3 className="mb-1 font-inter text-xs font-semibold text-teal-800">{group.title}</h3>
+                      <ul className="divide-y divide-slate-100">
+                        {group.points.map((m) => (
+                          <li key={m.code} className="flex flex-wrap items-center gap-x-2 gap-y-1 py-2 text-sm" data-mastery-row={m.code}>
+                            <span className="min-w-0 flex-1 basis-40 truncate text-slate-800">{m.title}</span>
+                            <MasteryPill status={m.status} />
+                            <ReasonChip reason={m.statusReason} />
+                            <ConfidenceBar confidence={m.confidence} />
+                            <FreshnessMark freshness={m.freshness} />
+                            <button type="button" onClick={() => setExplainCode(m.code)} className="text-[11px] font-semibold text-teal-700 hover:underline" data-mastery-why={m.code}>{t('students.why')}</button>
+                            <span className="w-full text-[11px] text-slate-500">
+                              {t('students.masteryFacts', { distinct: Number(m.distinctItemsSuccess) || 0, assessment: Number(m.assessmentSuccessCount) || 0, level: m.maxDifficultySuccess ?? '—' })}
+                              {m.lastEvidenceAt && <> · {formatDate(m.lastEvidenceAt)}</>}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
           </section>
+
+          <MasteryExplanationPanel
+            open={Boolean(explainCode)}
+            onClose={() => setExplainCode(null)}
+            classGroupId={id}
+            studentId={studentId}
+            code={explainCode}
+            studentName={name}
+          />
 
           <section className="glass-card p-5">
             <h2 className="font-space font-bold text-slate-900 mb-3">{t('students.timelineTitle')}</h2>

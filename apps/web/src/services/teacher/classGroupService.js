@@ -93,3 +93,21 @@ export function bulkSetClassLessonStatus(token, id, lessonIds, status) {
 export function fetchClassProgress(token, id) {
   return call(`/teacher/classrooms/${encodeURIComponent(id)}/progress`, get(token), 'progressLoadClass');
 }
+
+/**
+ * La MAÎTRISE par point d'apprentissage (Mastery V2) — trois lectures, du
+ * plus large au plus fin : la classe × les points d'une leçon, un point ×
+ * les élèves (déjà triés du plus faible au plus fort), puis l'EXPLICATION
+ * d'un statut pour un élève. Rien n'est recalculé côté client.
+ */
+export function fetchClassLearningPoints(token, id, lessonCode) {
+  return call(`/teacher/classrooms/${encodeURIComponent(id)}/learning-points${query({ lesson: lessonCode })}`, get(token), 'progressLoadClass');
+}
+
+export function fetchClassLearningPoint(token, id, code) {
+  return call(`/teacher/classrooms/${encodeURIComponent(id)}/learning-points/${encodeURIComponent(code)}`, get(token), 'progressLoadClass');
+}
+
+export function fetchStudentLearningPointExplanation(token, id, studentId, code) {
+  return call(`/teacher/classrooms/${encodeURIComponent(id)}/students/${encodeURIComponent(studentId)}/learning-points/${encodeURIComponent(code)}/explanation`, get(token), 'progressLoadClass').then((d) => d.explanation);
+}

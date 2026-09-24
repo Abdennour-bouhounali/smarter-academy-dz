@@ -29,7 +29,7 @@ import { resolveCenter, resolveAxis } from './transformModel.js';
  */
 export default function SceneLayer({
   figures, steps, settings, activeStepId, selection,
-  animationFigures = null, patternFigures = null, targetFigure = null, view,
+  animationFigures = null, patternFigures = null, targetFigure = null, hideImage = false, view,
 }) {
   const { viewTransform } = useTransformContext();
   const toPx = (point) => vec.transform([point.x, point.y], viewTransform);
@@ -43,6 +43,7 @@ export default function SceneLayer({
           figures={figures}
           toPx={toPx}
           view={view}
+          hideImage={hideImage}
         />
       )}
 
@@ -233,7 +234,7 @@ function Trail({ from, to, step, figureVertices, color, toPx }) {
  * déplacé et l'élève voit l'image le suivre. Sans ce dessin, la réflexion
  * resterait une formule.
  */
-function TransformGuide({ step, figures, toPx, view }) {
+function TransformGuide({ step, figures, toPx, view, hideImage = false }) {
   if (!step || !view) return null;
   const vertices = figures[0]?.figure.vertices ?? [];
 
@@ -267,6 +268,9 @@ function TransformGuide({ step, figures, toPx, view }) {
   }
 
   if (step.kind === 'translation') {
+    // Avant le verdict d'une question, pas de شعاع : tiré depuis A, son bout
+    // serait exactement l'image A′ que l'élève doit trouver.
+    if (hideImage) return null;
     // Le شعاع de l'انسحاب, dessiné depuis le premier sommet (§28).
     const from = vertices[0];
     if (!M.isPoint(from)) return null;

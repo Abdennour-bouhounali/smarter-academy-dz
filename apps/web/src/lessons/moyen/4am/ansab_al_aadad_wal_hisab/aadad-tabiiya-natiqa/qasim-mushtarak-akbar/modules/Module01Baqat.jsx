@@ -18,10 +18,12 @@ import { ACTIVITY, STARTER } from '../content/textbook';
  *   مبتدئ  — 12 ballons et 18 maillots, en équipes (thème `football`, les
  *            objets du terrain de la leçon 1) : quatre diviseurs communs
  *            (1, 2, 3, 6), visibles d'un regard. L'élève voit CE QUE veut
- *            dire « commun ».
+ *            dire « commun » ; les équipes SEULEMENT, jusqu'au plus grand
+ *            nombre (6) — pas de listes à ce niveau.
  *   متقدم  — 90 fleurs rouges et 54 blanches, les fleurs du manuel DESSINÉES
  *            en bouquets (thème `garden`) : les listes sont longues, la
- *            recherche demande une stratégie, et le PGCD vaut 18.
+ *            recherche demande une stratégie, et le PGCD vaut 18. Les
+ *            bouquets d'abord, puis les listes — sur un bouton de l'élève.
  *
  * Les groupes sont de vrais cadres contenant de vrais objets
  * (`GroupingScene`) : « متماثلة » se voit, et ce qui reste est dessiné à part.
@@ -55,14 +57,14 @@ export default function Module01Baqat() {
               <div className="space-y-2">
                 <Manipulation type="common-divisors" a={STARTER.numbers.a} b={STARTER.numbers.b} context={STARTER.context} theme="football"
                   title="تمرّن أولًا: 12 كرة و 18 قميصًا"
-                  lead="كم فريقًا متماثلًا يمكن تشكيله دون أن يبقى شيء؟ جرّب عدّة أعداد." />
+                  lead="ما أكبر عدد من الفرق المتماثلة يمكن تشكيله دون أن يبقى شيء؟ جرّب عدّة أعداد." />
                 <SourceTag source={STARTER.source} />
               </div>
             ),
             advanced: () => (
               <Manipulation type="common-divisors" a={red} b={white} context={ACTIVITY.context} theme="garden"
                 title="قواسم 90، قواسم 54، وما بينهما"
-                lead="اختر في القائمتين الأعداد التي تقسم 90 و 54 معًا: كل واحد منها عدد باقات ممكن."
+                lead="شكّل الباقات أولًا: ما أكبر عدد منها؟ ثم انتقل إلى القائمتين واختر الأعداد التي تقسم 90 و 54 معًا: كل واحد منها عدد باقات ممكن."
                 onFinished={() => setLabDone(true)} />
             ),
           }}

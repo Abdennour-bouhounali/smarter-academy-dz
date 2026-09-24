@@ -7,7 +7,10 @@
 //      du niveau — jamais un nombre négatif, et « آخر… » sur le dernier ;
 //   3. les deux compteurs AVANCENT quand il répond ;
 //   4. aucun texte français ne subsiste dans le parcours (verdicts compris) ;
-//   5. le bandeau tient sur un téléphone de 360 px.
+//   5. le bandeau tient sur un téléphone de 360 px ;
+//   6. l'HISTORIQUE : à la question 2, la question 1 et la réponse de l'élève
+//      restent affichées (carte « السؤال السابق »), sans rien dévoiler de la
+//      question courante ; la colonne « سياق السؤال » sur grand écran.
 //
 // Cette suite a besoin de l'API (jeton élève). Elle vise donc le SERVEUR DE
 // DÉVELOPPEMENT (5173) : la préversion (5183) est construite sans
@@ -50,23 +53,28 @@ const readBanner = (page) => page.evaluate(() => {
 
 /** Répond à la question courante et passe à la suivante. Renvoie false à la fin. */
 async function answerAndAdvance(page) {
-  const opt = page.locator('button:not([disabled])').filter({ hasText: /صحيح|خطأ|^A|^B|^C|^D/ }).first();
-  if (await opt.count()) { await opt.click(); await page.waitForTimeout(250); }
-  const chk = page.getByRole('button', { name: /تحقّق/ }).first();
+  // Un choix (QCM) : les boutons `aria-pressed` de la carte courante — plus de
+  // lettre latine devant les choix (ARABIC_RTL_CONTRACT §4). Sinon un champ.
+  const opt = page.locator('[data-current-question] button[aria-pressed]:not([disabled])').first();
+  if (await opt.count()) { await opt.click(); await page.waitForTimeout(250); } else {
+    const field = page.locator('[data-current-question] input:not([disabled]), [data-current-question] textarea:not([disabled])').first();
+    if (await field.count()) await field.fill('1');
+  }
+  const chk = page.locator('[data-validate]').first();
   if (await chk.count() && await chk.isEnabled().catch(() => false)) { await chk.click(); await page.waitForTimeout(1500); }
-  const next = page.getByRole('button', { name: /السؤال التالي|التمرين التالي/ }).first();
+  const next = page.locator('[data-next]').first();
   if (await next.count() && await next.isEnabled().catch(() => false)) { await next.click(); await page.waitForTimeout(2200); return true; }
   return false;
 }
 
-async function open({ mobile = false } = {}) {
+async function open({ mobile = false, lesson = LESSON, width = 1280 } = {}) {
   const ctx = await browser.newContext({
-    viewport: mobile ? { width: 360, height: 780 } : { width: 1280, height: 900 },
+    viewport: mobile ? { width: 360, height: 780 } : { width, height: 900 },
     isMobile: mobile, hasTouch: mobile,
   });
   await ctx.addInitScript((tok) => { localStorage.setItem('token', tok); }, TOKEN);
   const page = await ctx.newPage();
-  await page.goto(`${B}/espace/pratique/${LESSON}`, { waitUntil: 'networkidle' });
+  await page.goto(`${B}/espace/pratique/${lesson}`, { waitUntil: 'networkidle' });
   await page.waitForTimeout(1600);
   const level = page.locator('[data-practice-level="1"]');
   if (await level.count()) { await level.first().click(); await page.waitForTimeout(3000); }
@@ -111,26 +119,96 @@ async function open({ mobile = false } = {}) {
   await ctx.close();
 }
 
-/* ── 3bis — le NUMÉRO DE QUESTION est dans l'en-tête de l'exercice ───────── */
+/* ── 3bis — le titre est un vrai titre, le numéro est sur la carte ─────── */
+// Depuis la refonte (2026-09-24) : le niveau est un surtitre, le titre de
+// l'exercice un h1 seul, et « السؤال n من N » (N = les questions de CET
+// exercice) est le titre de la carte courante — plus glissé dans le titre.
 {
   const { ctx, page } = await open();
-  const heading = () => page.evaluate(() => document.querySelector('header p')?.innerText.replace(/\s+/g, ' ').trim() ?? '');
+  const level = await page.locator('[data-exercise-level]').innerText().catch(() => '');
+  const title = await page.locator('h1#practice-exercise-title').innerText().catch(() => '');
+  check('le surtitre dit le NIVEAU (المستوى n)', /المستوى\s+\d+/.test(level), level);
+  check('le titre de l’exercice est un h1 non vide, sans « السؤال n »', title.trim().length > 0 && !/السؤال\s+\d/.test(title), title);
+  const heading = () => page.locator('#practice-question-heading').innerText().catch(() => '');
   const first = await heading();
-  check('l’en-tête porte « المستوى n · … السؤال n »', /المستوى\s+\d+\s+·/.test(first) && /السؤال\s+\d+/.test(first), first);
-  check('un titre « تمرين n — sujet » place le numéro avant le sujet',
-    !/تمرين/.test(first) || /تمرين\s+\d+\s+—\s+السؤال\s+\d+\s+:/.test(first), first);
+  check('la carte courante porte « السؤال n من N »', /السؤال\s+\d+\s+من\s+\d+/.test(first), first);
   await answerAndAdvance(page);
   const second = await heading();
   check('le numéro de question suit l’élève', second !== first, `${first} → ${second}`);
   await ctx.close();
 }
 
+/* ── 7 — le POINT D'APPRENTISSAGE : nom, étoiles, deux compteurs réels ──── */
+{
+  const HISTORY_LESSON = process.env.PRACTICE_HISTORY_LESSON || 'wadiya-idmajiya-aadad';
+  const API = process.env.API_BASE || 'http://localhost:8000/api/v1';
+  const overview = await fetch(`${API}/lessons/${HISTORY_LESSON}/practice/overview`, {
+    headers: { Authorization: `Bearer ${TOKEN}`, Accept: 'application/json' },
+  }).then((r) => r.json()).catch(() => null);
+  const { ctx, page } = await open({ lesson: HISTORY_LESSON });
+  const lp = page.locator('[data-learning-point]');
+  check('le module « نقطة التعلّم » est affiché', (await lp.count()) === 1);
+  const code = await lp.getAttribute('data-learning-point').catch(() => null);
+  const row = overview?.learningPoints?.find((p) => p.code === code);
+  const text = (await lp.innerText().catch(() => '')).replace(/\s+/g, ' ');
+  check('… avec le NOM du point (titre du serveur)', !!row && text.includes(row.title.slice(0, 15)), `${code}`);
+  const metric = async (k) => (await page.locator(`[data-lp-metric="${k}"] bdi`).innerText().catch(() => '')).replace(/\s+/g, '');
+  check('… exercices = practice.exercisesCompleted / exercises du serveur',
+    !!row && (await metric('exercises')) === `${row.practice.exercisesCompleted}/${row.practice.exercises}`, await metric('exercises'));
+  check('… questions = practice.questionsAnswered / questions (questions RÉELLES)',
+    !!row && (await metric('questions')) === `${row.practice.questionsAnswered}/${row.practice.questions}`, await metric('questions'));
+  const stage = Number(await lp.getAttribute('data-mastery-stage'));
+  check('… étoiles = l’état Mastery V2 du serveur', stage === ({ unassessed: 0, gap: 1, reinforce: 2, mastered: 3 }[row?.status] ?? 0), `${row?.status} → ${stage}`);
+  await ctx.close();
+}
+
+/* ── 6 — l'historique : la question 1 reste là, à la question 2 ───────── */
+{
+  const HISTORY_LESSON = process.env.PRACTICE_HISTORY_LESSON || 'wadiya-idmajiya-aadad';
+  const { ctx, page } = await open({ lesson: HISTORY_LESSON, width: 1536 });
+  const total = await page.locator('[data-current-question]').count() && await page.evaluate(() => document.querySelectorAll('[data-context-item]').length);
+  if (!total || total < 2) {
+    console.log(`SKIP historique : exercice à une question (${HISTORY_LESSON})`);
+  } else {
+    const field = page.locator('[data-current-question] input:not([disabled]), [data-current-question] textarea:not([disabled])').first();
+    const q1 = (await page.locator('[data-question-statement]').innerText()).trim();
+    check('avant toute réponse : pas d’historique', (await page.locator('[data-previous-question]').count()) === 0);
+    await field.fill('5');
+    await field.press('Enter');
+    await page.waitForTimeout(1500);
+    check('Entrée valide la réponse (formulaire)', (await page.locator('[data-feedback]').count()) === 1);
+    check('le verdict a une icône ET un libellé', /ليس بعد|إجابة صحيحة|نصف الطريق/.test(await page.locator('[data-feedback]').innerText()));
+    check('« السؤال التالي » est actif après une réponse fausse (non bloquant)', await page.locator('[data-next]').isEnabled());
+    await page.locator('[data-retry]').click().catch(() => {});
+    check('« أعِد المحاولة » garde la réponse de l’élève', (await field.inputValue().catch(() => '')) === '5');
+    await page.locator('[data-validate]').click();
+    await page.waitForTimeout(1500);
+    await page.locator('[data-next]').click();
+    await page.waitForTimeout(2200);
+    const prev = page.locator('[data-previous-question]');
+    check('question 2 : la carte « السؤال السابق » est là', (await prev.count()) === 1);
+    const prevText = (await prev.innerText().catch(() => '')).replace(/\s+/g, ' ');
+    check('elle porte l’ÉNONCÉ de la question 1', prevText.includes(q1.replace(/\s+/g, ' ').slice(0, 12)), prevText.slice(0, 80));
+    check('… et la RÉPONSE de l’élève (5)', /إجابتك:?\s*5\b/.test(prevText) || prevText.includes(' 5 '), prevText.slice(0, 120));
+    check('… et son verdict en toutes lettres', /تحتاج إلى مراجعة|إجابة صحيحة|نصف صحيحة/.test(prevText));
+    check('grand écran : « سياق السؤال » montre 1 faite, 1 courante',
+      (await page.locator('[data-context-state="done"]').count()) === 1 && (await page.locator('[data-context-state="current"]').count()) === 1);
+    const q2 = (await page.locator('[data-question-statement]').innerText()).trim();
+    check('la question courante a changé', q2 !== q1);
+    check('le focus est sur la nouvelle question (champ ou titre)', await page.evaluate(() => !!document.activeElement?.closest('[data-current-question]')));
+    await page.setViewportSize({ width: 360, height: 780 });
+    await page.waitForTimeout(400);
+    check('mobile : l’historique tient sans débordement', await page.evaluate(() => document.scrollingElement.scrollWidth <= window.innerWidth + 1));
+  }
+  await ctx.close();
+}
+
 /* ── 4 — tout en arabe, verdict compris ──────────────────────────────────── */
 {
   const { ctx, page } = await open();
-  const opt = page.locator('button:not([disabled])').filter({ hasText: /صحيح|خطأ|^A|^B/ }).first();
+  const opt = page.locator('[data-current-question] button[aria-pressed]:not([disabled])').first();
   if (await opt.count()) { await opt.click(); await page.waitForTimeout(250); }
-  const chk = page.getByRole('button', { name: /تحقّق/ }).first();
+  const chk = page.locator('[data-validate]').first();
   if (await chk.count() && await chk.isEnabled().catch(() => false)) { await chk.click(); await page.waitForTimeout(1800); }
   const body = (await page.locator('body').innerText()).replace(/\s+/g, ' ');
   check('aucun texte français dans la séance', !FR.test(body), (body.match(FR) || [])[0]);

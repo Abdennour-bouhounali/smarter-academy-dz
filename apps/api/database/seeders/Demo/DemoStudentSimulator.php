@@ -2,15 +2,13 @@
 
 namespace Database\Seeders\Demo;
 
-use App\Domain\Progress\Support\MasteryModel;
+use App\Domain\Progress\ProgressEngine;
 use App\Models\ExerciseAttempt;
 use App\Models\HintEvent;
-use App\Models\LearningEvidence;
 use App\Models\LessonFinalTestAttempt;
 use App\Models\NotebookNote;
 use App\Models\PracticeSession;
 use App\Models\QuestionAttempt;
-use App\Models\StudentLearningPointProgress;
 use App\Models\StudentLessonProgress;
 use App\Models\User;
 use Illuminate\Support\Carbon;
@@ -28,7 +26,7 @@ use Illuminate\Support\Str;
  *     reçoit sa réponse, un indice demandé laisse un évènement daté, une
  *     preuve d'évaluation entraîne un recalcul de maîtrise.
  *  2. LA MAÎTRISE NE SE DÉCRÈTE PAS. Elle est rejouée preuve après preuve
- *     par MasteryModel — le modèle de production, importé, jamais recopié.
+ *     par ProgressEngine — la porte de production, appelée, jamais recopiée.
  *     Un élève qui échoue trois fois sur un point ne peut donc pas en
  *     ressortir « maîtrisé » : l'arithmétique l'interdit.
  *
@@ -38,9 +36,6 @@ use Illuminate\Support\Str;
 final class DemoStudentSimulator
 {
     private int $seed;
-
-    /** @var array<string, array{confidence: float, attempts: int, correct: int, last: Carbon}> */
-    private array $mastery = [];
 
     /** @var array<int, array<string, mixed>> */
     private array $notes = [];
@@ -60,7 +55,6 @@ final class DemoStudentSimulator
     public function run(User $student, DemoPersona $persona): array
     {
         $this->seed = crc32($persona->key);
-        $this->mastery = [];
         $this->counters = array_map(fn () => 0, $this->counters);
 
         $days = $this->studyDays($persona);
@@ -77,7 +71,6 @@ final class DemoStudentSimulator
             $this->studyLesson($student, $persona, $plan, $slice);
         }
 
-        $this->persistMastery($student);
         $this->noteWriter->write($student, $persona, $this->notes);
         $this->counters['notes'] = count($this->notes);
 
@@ -397,60 +390,32 @@ final class DemoStudentSimulator
     }
 
     /**
-     * Écrit la preuve ET fait avancer la maîtrise — par le MODÈLE DE
-     * PRODUCTION, jamais par une valeur choisie à la main.
+     * Écrit la preuve ET fait avancer la maîtrise — par la PORTE DE
+     * PRODUCTION (ProgressEngine), jamais par une valeur choisie à la main ni
+     * par une copie de la formule. Le jeu de démonstration obéit donc au
+     * moteur de la version courante, classification des reprises comprise.
      */
     private function recordEvidence(User $student, $lesson, array $exercise, array $question, bool $isCorrect, int $hints, ?string $misconception, Carbon $when): void
     {
-        $levelToDifficulty = [1 => 1, 2 => 2, 3 => 2, 4 => 3, 5 => 4];
-
-        $evidence = LearningEvidence::create([
-            'user_id' => $student->id,
-            'lesson_id' => $lesson->id,
-            'question_code' => $exercise['id'].'::'.$question['id'],
-            'attempt_id' => (string) Str::uuid(),
-            'is_correct' => $isCorrect,
+        app(ProgressEngine::class)->recordEvidence($student, $lesson->code, [
+            'attemptId' => (string) Str::uuid(),
+            'exerciseCode' => $exercise['id'],
+            'questionId' => $question['id'],
+            'assessmentType' => ProgressEngine::SOURCE_PRACTICE,
             'outcome' => $isCorrect ? 'correct' : 'incorrect',
-            'assessment_type' => 'practice_exercise',
+            'learningPointRefs' => array_map(
+                fn ($lp) => ['code' => $lp['code'], 'role' => $lp['role'] ?? 'primary'],
+                $question['learningPoints'],
+            ),
             'level' => $exercise['level'],
-            'hints_used' => $hints,
-            'misconception_id' => $misconception,
-            'submitted_at' => $when,
-            'created_at' => $when,
-            'updated_at' => $when,
+            'difficulty' => $exercise['level'],
+            'hintsUsed' => $hints,
+            'misconceptionId' => $misconception,
+            'evaluatedBy' => 'server',
+            'answer' => ['choice' => $isCorrect ? 'B' : 'A'],
+            'submittedAt' => $when,
         ]);
         $this->counters['evidence']++;
-
-        $pivot = [];
-        foreach ($question['learningPoints'] as $lp) {
-            $id = $this->content->learningPointIds[$lp['code']] ?? null;
-            if ($id === null) {
-                continue;
-            }
-            $pivot[$id] = ['role' => $lp['role'], 'created_at' => $when, 'updated_at' => $when];
-
-            $state = $this->mastery[$lp['code']] ?? [
-                'confidence' => MasteryModel::STARTING_CONFIDENCE,
-                'attempts' => 0, 'correct' => 0, 'last' => $when,
-            ];
-            $state['confidence'] = MasteryModel::updateConfidence(
-                $state['confidence'],
-                $isCorrect,
-                $levelToDifficulty[$exercise['level']] ?? MasteryModel::DEFAULT_DIFFICULTY,
-                $hints,
-                MasteryModel::SOURCE_PRACTICE,
-                $lp['role'],
-                $isCorrect ? 'correct' : 'incorrect',
-            );
-            $state['attempts']++;
-            $state['correct'] += $isCorrect ? 1 : 0;
-            $state['last'] = $when;
-            $this->mastery[$lp['code']] = $state;
-        }
-
-        if ($pivot !== []) {
-            $evidence->learningPoints()->attach($pivot);
-        }
     }
 
     /** Le test final d'une leçon terminée — un score cohérent avec le portrait. */
@@ -470,27 +435,6 @@ final class DemoStudentSimulator
             ['score' => $score, 'total_questions' => $total, 'answers' => $answers, 'submitted_at' => $at]
         );
         $this->counters['finalTests']++;
-    }
-
-    /** La photographie de maîtrise, telle que le rejeu des preuves l'a produite. */
-    private function persistMastery(User $student): void
-    {
-        foreach ($this->mastery as $code => $state) {
-            $id = $this->content->learningPointIds[$code] ?? null;
-            if ($id === null) {
-                continue;
-            }
-            StudentLearningPointProgress::updateOrCreate(
-                ['user_id' => $student->id, 'learning_point_id' => $id],
-                [
-                    'status' => MasteryModel::statusFor($state['confidence']),
-                    'confidence' => $state['confidence'],
-                    'attempts' => $state['attempts'],
-                    'correct_count' => $state['correct'],
-                    'last_evidence_at' => $state['last'],
-                ]
-            );
-        }
     }
 
     /* ---- générateur déterministe (xorshift), pour un jeu reproductible ---- */

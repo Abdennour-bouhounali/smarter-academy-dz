@@ -1,0 +1,59 @@
+{
+  "metadata": {
+    "title": "سلسلة التفوق، الوضعية 5 — صندوق صهيب",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية إدماجية",
+      "مكعبات"
+    ],
+    "source": {
+      "type": "worksheet",
+      "worksheetId": "tafawwuq-01",
+      "elementId": "ws01-sit-05",
+      "section": "الوضعيات",
+      "number": 5
+    }
+  },
+  "statement": {
+    "content": "لصهيب صندوق على شكل متوازي مستطيلات أبعاده 30 cm و 45 cm و 60 cm، أراد أن يملأه بمكعبات لها نفس البُعد d، حيث d عدد طبيعي بالسنتيمتر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "جِد d حتى يكون عدد المكعبات التي تملأ الصندوق أصغر ما يمكن.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-aadad_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي (بالسنتيمتر)",
+      "expectedAnswer": "15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "d يقسم 30 و 45 و 60."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أصغر عدد من المكعبات يعني أكبر حرف ممكن."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب PGCD(30 ; 45) ثم قاسمه المشترك الأكبر مع 60."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(30 ; 45 ; 60) = 15 cm.",
+        "incorrect": "حرف المكعب قاسم مشترك للأبعاد الثلاثة، وأكبرها يعطي أقل عدد."
+      }
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-aadad-l2-002",
+  "lessonCode": "wadiya-idmajiya-aadad",
+  "level": 2
+}

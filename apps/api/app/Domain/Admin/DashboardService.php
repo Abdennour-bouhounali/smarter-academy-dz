@@ -2,6 +2,7 @@
 
 namespace App\Domain\Admin;
 
+use App\Domain\Progress\Support\OutcomeStats;
 use App\Models\AdminActivityLog;
 use App\Models\Classroom;
 use App\Models\Lesson;
@@ -137,22 +138,27 @@ class DashboardService
 
         // Des exercices que presque personne ne réussit. Le seuil de 5
         // tentatives évite de crier au loup sur un échantillon d'une réponse.
-        $weak = DB::table('question_attempts')
-            ->join('exercise_attempts', 'exercise_attempts.id', '=', 'question_attempts.exercise_attempt_id')
-            ->whereNotNull('question_attempts.submitted_at')
-            ->select(
-                'exercise_attempts.exercise_id',
-                DB::raw('COUNT(*) as total'),
-                DB::raw("SUM(CASE WHEN question_attempts.outcome = 'correct' THEN 1 ELSE 0 END) as correct")
-            )
-            ->groupBy('exercise_attempts.exercise_id')
-            ->havingRaw('COUNT(*) >= 5')
-            ->havingRaw("SUM(CASE WHEN question_attempts.outcome = 'correct' THEN 1 ELSE 0 END) / COUNT(*) < 0.3")
-            ->limit(5)
-            ->get();
+        // Le taux est celui d'OutcomeStats : réussites (correct + équivalent)
+        // sur les réponses qui disent quelque chose (réussites + partiels +
+        // échecs) — une erreur de syntaxe n'est pas un exercice raté.
+        $weak = OutcomeStats::selectInto(
+            DB::table('question_attempts')
+                ->join('exercise_attempts', 'exercise_attempts.id', '=', 'question_attempts.exercise_attempt_id')
+                ->whereNotNull('question_attempts.submitted_at')
+                ->select('exercise_attempts.exercise_id')
+                ->groupBy('exercise_attempts.exercise_id')
+        )
+            ->get()
+            ->map(fn ($row) => ['exercise_id' => $row->exercise_id] + OutcomeStats::fromRow($row))
+            ->filter(fn ($r) => ($r['successes'] + $r['partials'] + $r['failures']) >= 5 && $r['successRate'] !== null && $r['successRate'] < 30)
+            ->sortBy('successRate')
+            ->take(5);
 
         foreach ($weak as $row) {
-            $rate = round($row->correct / $row->total * 100);
+            $row = (object) $row;
+            $row->exercise_id = $row->exercise_id;
+            $row->total = $row->successes + $row->partials + $row->failures;
+            $rate = round($row->successRate);
             $alerts[] = [
                 'kind' => 'low_success_exercise',
                 'severity' => 'warning',

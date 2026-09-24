@@ -212,11 +212,20 @@ function relationHolds(left, right, relation) {
   }
 }
 
-/** L'équation est-elle déjà sous la forme `x RELATION valeur` ? */
+/**
+ * L'équation est-elle déjà sous la forme `x RELATION valeur` — ou sous la
+ * forme miroir `valeur RELATION x` ?
+ *
+ * `3 > x` dit exactement `x < 3` : l'inconnue est isolée, il n'y a plus
+ * d'opération à faire. `classify` lit déjà le bon sens (le coefficient de x
+ * passe du côté gauche avec un signe −, donc la relation est retournée) ; la
+ * forme résolue affichée est toujours réécrite `x RELATION valeur`.
+ */
 export function isSolvedForm(equation) {
-  return R.equals(equation.left.a, R.ONE)
-    && R.isZero(equation.left.b)
-    && isConstant(equation.right);
+  const isolated = (form) => R.equals(form.a, R.ONE) && R.isZero(form.b);
+
+  return (isolated(equation.left) && isConstant(equation.right))
+    || (isolated(equation.right) && isConstant(equation.left));
 }
 
 /**

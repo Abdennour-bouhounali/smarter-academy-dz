@@ -270,6 +270,14 @@ empty scaffolding.
 `progressionByModule(items)` returns `[{ module, count }]` — the `M1 +2 → M2 +4 → …` trail that
 makes the cumulative reveal visible.
 
+**Mastery overlay (Mastery V2, 2026-09-24).** Visibility stays COMPLETION-driven; mastery is only
+an overlay on the « بطاقتك » strip (`ProgressionStrip` in `KnowledgeMap.jsx`,
+`knowledgeMastery.js` → `moduleMasteryOverlay`): each module chip carries one dot per Learning
+Point its config declares in `teachesLearningPointIds`, coloured with `MASTERY_STATES`, titled
+with the label + reason. A `gap` point whose module is completed adds a small « راجع » link to
+that module. The profile is fetched only when the lesson's modules declare taught points; the
+overlay is `data-km-noprint` and never reaches the A4 print. The map computes no mastery.
+
 **Adding a category** means placing it in a stratum in `STRATA`; a category listed nowhere simply
 will not render.
 

@@ -1,0 +1,127 @@
+{
+  "metadata": {
+    "title": "سلسلة التفوق، الوضعية 7 — الدنّان",
+    "estimatedMinutes": 5,
+    "tags": [
+      "وضعية إدماجية",
+      "سعة"
+    ],
+    "source": {
+      "type": "worksheet",
+      "worksheetId": "tafawwuq-01",
+      "elementId": "ws01-sit-07",
+      "section": "الوضعيات",
+      "number": 7
+    }
+  },
+  "statement": {
+    "content": "نريد ملء دنّين بالماء باستعمال دنّ سعته x لترًا، حيث x عدد طبيعي، ونفرغ هذا الدنّ كلّيًا في كل مرة. سعة الدنّ الأول 24 L وسعة الدنّ الثاني 18 L."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "جِد أكبر قيمة للعدد x.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-aadad_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي (باللتر)",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "x يجب أن يقسم 24 و 18 معًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "x قاسم مشترك لـ 24 و 18."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نريد أكبر قاسم مشترك."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(24 ; 18) = 6: الدنّ سعته 6 L.",
+        "incorrect": "x هو القاسم المشترك الأكبر للسعتين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "كم مرة استعملنا هذا الدنّ لملء الدنّ الأول؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-aadad_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سعة الدنّ الأول 24 L."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في كل مرة نسكب 6 L."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "24 ÷ 6."
+        }
+      ],
+      "feedback": {
+        "correct": "24 ÷ 6 = 4 مرات.",
+        "incorrect": "اقسم سعة الدنّ الأول على سعة الدنّ الصغير."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "كم مرة استعملنا هذا الدنّ لملء الدنّ الثاني؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-aadad_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سعة الدنّ الثاني 18 L."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في كل مرة نسكب 6 L."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "18 ÷ 6."
+        }
+      ],
+      "feedback": {
+        "correct": "18 ÷ 6 = 3 مرات.",
+        "incorrect": "اقسم سعة الدنّ الثاني على سعة الدنّ الصغير."
+      }
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-aadad-l1-001",
+  "lessonCode": "wadiya-idmajiya-aadad",
+  "level": 1
+}

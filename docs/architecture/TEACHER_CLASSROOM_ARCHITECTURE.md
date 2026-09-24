@@ -170,6 +170,33 @@ scoped to the class's grade and to the lessons **effective** for that class.
 There is no teacher-side progress table. A teacher reads the same numbers the
 student and the admin read (`PROGRESS_MODEL.md`, `LEARNING_ARCHITECTURE.md`).
 
+### Class × Learning Point (Mastery V2, 2026-09-24)
+
+`Domain\Classroom\ClassroomLearningPointService` answers « what do the
+students of this قسم know about each Learning Point of this lesson? » with ONE
+`GROUP BY` over `student_learning_point_progress` joined to the active
+memberships — never a replay of evidence, never a copy:
+
+- **per lesson** (`?lesson=` required, the lesson must be effective for the
+  class, else 422): for each LP `counts {mastered, reinforce, gap,
+  unassessed}` (unassessed = members without a row), `reasons
+  {insufficientEvidence, needsAssessment}` (why high confidence is not yet
+  `mastered`), and `staleMastered` (mastered, last success older than
+  `mastery.freshness.stale_days`);
+- **per LP**: every member with `status`, `statusReason`, `confidence`,
+  `distinctItemsSuccess`, `assessmentSuccessCount`, `maxDifficultySuccess`,
+  `freshness`, sorted gap → reinforce → unassessed → mastered, then by
+  confidence;
+- **per student × LP**: the same explanation the student sees
+  (`MasteryExplainer`), for a member of the class only (404 otherwise).
+
+Cost is bounded by members × Learning Points of ONE lesson, whatever the size
+of the exercise bank (`MasteryScaleTest`: 14 queries at 15 and at 2 500
+exercises). The student dossier's `mastery[]` is the full list, weakest first
+(the former cap of 20 unordered rows is gone), each row with its counters and
+freshness. Success rates come from `Domain\Progress\Support\OutcomeStats` —
+the same number the student's practice summary shows.
+
 **The notebook (كرّاسي) is not read _here_.** The class summary and the
 student dossier carry no note, and never will: « where is he? » and « what did
 he write down? » are two questions, two screens, two permissions to evolve
@@ -440,7 +467,7 @@ gate; `data/teacherNavigation.js`):
 /enseignant                      TeacherHome          usage tiles (UsageMeter, N / M in dir="ltr"), classes, next steps
 /enseignant/classes              ClassGroupList       « قسم جديد » opens ClassGroupForm in a centred Modal, on the page
 /enseignant/classes/nouveau      ClassGroupCreate     same form full-page (direct links, bookmarks); grade from getAllGrades() ∩ allowedGrades
-/enseignant/classes/:id          ClassGroupDetail     tabs التلاميذ / الدروس / التقدّم / الإعدادات
+/enseignant/classes/:id          ClassGroupDetail     tabs التلاميذ / الدروس / التقدّم / نقاط التعلّم / الإعدادات
 /enseignant/classes/:id/eleves/:studentId   StudentProgressPage
 /enseignant/progression          ProgressOverview
 /enseignant/offre                SubscriptionPage     « عرضي »
@@ -490,6 +517,25 @@ and for any billing import.
 
 Teachers may present in Classroom Mode: `'teacher'` is in
 `CLASSROOM_PRESENTER_ROLES` (`packages/core/auth.js`).
+
+### 8a. Mastery in the teacher space (Mastery V2, 2026-09-24)
+
+- **« نقاط التعلّم » tab** (`features/teacher/learningPoints/LearningPointsTab.jsx`,
+  gated by `progress.class` like « التقدّم »): a lesson picker (visible class
+  lessons), one row per LP with a four-segment bar (mastered / reinforce / gap
+  / unassessed) and chips « دليل ناقص », « بحاجة إلى اختبار », « متقن لكن
+  قديم »; a row opens the drill-down (`LearningPointDrilldown.jsx`, students
+  weakest first) and a student opens the explanation
+  (`MasteryExplanationPanel.jsx`, a Modal dialog — not a route).
+- **Student dossier** (`pages/teacher/StudentProgressPage.jsx`): the tiles
+  separate COMPLETION (« دروس مكتملة ») from MASTERY (« كفاءات متقنة » =
+  `masteryCounts.mastered`); « نسبة النجاح » says « التمارين فقط »; the LP list
+  is complete, grouped by lesson, weakest first, with reason, confidence bar,
+  counters, freshness and « لماذا؟ ».
+- **One visual vocabulary.** Every teacher screen showing a mastery status
+  imports `MasteryPill`, `ReasonChip`, `FreshnessMark`, `ConfidenceBar`
+  (`features/teacher/learningPoints/MasteryPill.jsx`) and the colours of
+  `lpBar.js` (`LP_STATUS_BAR`) — never a local redefinition.
 
 ### 8b. The teacher learns like a student — same engine, no progression
 
@@ -649,6 +695,9 @@ GET  /teacher/classrooms/{id}/students/{studentId}/progress
 GET|POST /teacher/classrooms/{id}/invitations      DELETE /teacher/classrooms/{id}/invitations/{invitationId}
 GET  /teacher/classrooms/{id}/lessons              POST /teacher/classrooms/{id}/lessons/bulk
 PATCH /teacher/classrooms/{id}/lessons/{lessonId}  GET  /teacher/classrooms/{id}/progress
+GET  /teacher/classrooms/{id}/learning-points?lesson={code}        (class × LP, progress.class)
+GET  /teacher/classrooms/{id}/learning-points/{code}               (one LP, students weakest first, progress.student)
+GET  /teacher/classrooms/{id}/students/{studentId}/learning-points/{code}/explanation
 
 # admin  (can:admin)
 GET  /admin/teachers  GET /admin/teachers/{id}  PATCH /admin/teachers/{id}/status
@@ -703,7 +752,7 @@ Backend (`apps/api/tests/Feature`, MySQL, `php artisan test -c phpunit.local.xml
 `IndividualActivationCodeTest`, `PlanEntitlementResolverTest`, `PlanAdminTest`,
 `ClassroomLimitTest`, `ClassroomJoinCodeTest`, `ClassroomMembershipCapacityTest`,
 `ClassroomInvitationTest`, `ClassroomLessonVisibilityTest`, `StudyContextTest`,
-`ClassroomProgressTest`, `TeacherCoverageAccessTest`, `AdminTeacherClassroomTest`,
+`ClassroomProgressTest`, **`ClassroomLearningPointTest`** (class × LP counts and reasons, outsiders excluded, hidden lesson out of scope, drill-down order, explanation for members only), `TeacherCoverageAccessTest`, `AdminTeacherClassroomTest`,
 **`TeacherLearningAccessTest`** (published and premium content open by role, hidden-for-class does not block the teacher, unpublished stays closed, progress / evidence / final-test writes refused and no row created, own notebook and Math Lab only),
 **`SeatPricingTest`** (tier boundaries 5/6/20/21/30, N × price, grid
 validation, versioning, the client's price is ignored, admin and teacher

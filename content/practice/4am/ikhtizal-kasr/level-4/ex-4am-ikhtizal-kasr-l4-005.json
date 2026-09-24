@@ -1,0 +1,130 @@
+{
+  "metadata": {
+    "title": "سلسلة التفوق، تمرين 13 — 1631 و 932",
+    "estimatedMinutes": 6,
+    "tags": [
+      "اختزال",
+      "حساب على الكسور"
+    ],
+    "source": {
+      "type": "worksheet",
+      "worksheetId": "tafawwuq-01",
+      "elementId": "ws01-ex-13",
+      "section": "التمارين",
+      "number": 13
+    }
+  },
+  "statement": {
+    "content": "نعتبر العددين 1631 و 932."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب القاسم المشترك الأكبر للعددين 1631 و 932.",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "233",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "1631 = 932 × 1 + 699."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تابع: اقسم 932 على 699."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "توقّف عندما يصبح الباقي معدومًا."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(1631 ; 932) = 233.",
+        "incorrect": "آخر باقٍ غير معدوم في خوارزمية إقليدس."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "اكتب الكسر $\\dfrac{1631}{932}$ على شكل كسر غير قابل للاختزال.",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "7/4",
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقسم على القاسم المشترك الأكبر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم 1631 على 233."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم 932 على 233."
+        }
+      ],
+      "feedback": {
+        "correct": "1631/932 = 7/4.",
+        "incorrect": "اقسم البسط والمقام على 233."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "احسب العدد A حيث $A = \\dfrac{1631}{932} - \\dfrac{1}{2} \\times \\dfrac{3}{2}$.",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض الكسر بشكله غير القابل للاختزال."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الضرب قبل الطرح: 1/2 × 3/2 = 3/4."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "7/4 − 3/4."
+        }
+      ],
+      "feedback": {
+        "correct": "A = 7/4 − 3/4 = 1.",
+        "incorrect": "اختزل أولًا، ثم احترم أولوية الضرب."
+      }
+    }
+  ],
+  "id": "ex-4am-ikhtizal-kasr-l4-005",
+  "lessonCode": "ikhtizal-kasr",
+  "level": 4
+}

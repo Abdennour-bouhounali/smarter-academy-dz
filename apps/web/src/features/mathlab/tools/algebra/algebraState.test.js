@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import * as R from './rational.js';
-import { parseEquation, equationToText, applyOperation } from './equation.js';
+import { parseEquation, equationToText, applyOperation, classify, solve, isSolvedForm } from './equation.js';
 import {
   ALGEBRA_SCHEMA_VERSION,
   MAX_STEPS,
@@ -15,7 +15,8 @@ import {
   canRedo,
 } from './algebraState.js';
 import { generateEquation, LEVELS } from './generator.js';
-import { verifySolution, evaluateForm } from './verify.js';
+import { verifySolution, evaluateForm, verifyResolution, sampleInside } from './verify.js';
+import { suggestOperations } from './operationHints.js';
 
 const parse = (source) => parseEquation(source).equation;
 
@@ -247,5 +248,157 @@ describe('rational', () => {
 
   it('refuse la division par zéro', () => {
     expect(() => R.divide(R.ONE, R.ZERO)).toThrow();
+  });
+});
+
+// ── A1 : « التحقق » d'une متراجحة ne déclare jamais faux un résultat juste ──
+//
+// Attentes calculées À LA MAIN, en nombres ordinaires : pas de `classify`
+// pour dire quelle est la bonne solution.
+
+/** Le générateur pseudo-aléatoire des tests : reproductible. */
+function lcg(seed) {
+  let state = seed;
+
+  return () => {
+    state = (state * 1103515245 + 12345) % 2147483648;
+
+    return state / 2147483648;
+  };
+}
+
+const num = (r) => r.n / r.d;
+const holdsByHand = (l, r, relation) => ({
+  '<': l < r, '>': l > r, '<=': l <= r, '>=': l >= r, '=': l === r,
+})[relation];
+const HAND_FLIP = { '<': '>', '>': '<', '<=': '>=', '>=': '<=' };
+
+/** Résout comme un élève : ôter b, puis diviser par a (niveaux 1 à 3). */
+function resolveByOperations(start) {
+  let current = start;
+  if (!R.isZero(current.left.b)) {
+    current = applyOperation(current, { kind: 'subtract', value: current.left.b }).equation;
+  }
+  if (!R.equals(current.left.a, R.ONE)) {
+    current = applyOperation(current, { kind: 'divide', value: current.left.a }).equation;
+  }
+
+  return current;
+}
+
+describe('A1 — vérifier une inéquation résolue', () => {
+  it('le cas de l’audit : x − 7 < −7 résolue en x < 0 n’est PAS déclarée fausse', () => {
+    const start = parse('x - 7 < -7');
+    const current = applyOperation(start, { kind: 'add', value: R.makeRational(7) }).equation;
+    const verdict = classify(current);
+    expect(verdict.kind).toBe('solved');
+    expect(verdict.relation).toBe('<');
+    expect(R.equals(verdict.solution, R.ZERO)).toBe(true);
+
+    const check = verifyResolution(start, verdict.solution, verdict.relation);
+    expect(check.kind).toBe('inequality');
+    expect(check.holds).toBe(true);
+    // Une valeur DE l'ensemble (−1), pas la borne.
+    expect(R.equals(check.sample, R.makeRational(-1))).toBe(true);
+    expect(check.inside.lines.evaluated).toBe('-8 < -7');
+    // La borne rend les membres égaux, et < n'accepte pas l'égalité.
+    expect(check.boundary.check.lines.evaluated).toBe('-7 = -7');
+    expect(check.boundary.equal).toBe(true);
+    expect(check.boundary.included).toBe(false);
+  });
+
+  it('sur 4 000 inéquations générées (4 niveaux × 4 sens), un résultat juste est TOUJOURS confirmé', () => {
+    for (const relation of ['<', '>', '<=', '>=']) {
+      for (const level of LEVELS) {
+        const random = lcg(level * 131 + relation.length * 17 + relation.charCodeAt(0));
+        for (let i = 0; i < 250; i += 1) {
+          const { equation: start } = generateEquation({ level, relation, random });
+          const a = num(start.left.a);
+          const b = num(start.left.b);
+          const c = num(start.right.a);
+          const d = num(start.right.b);
+          // (a − c)·x REL d − b, divisé par a − c : le sens se retourne si a − c < 0.
+          const s = (d - b) / (a - c);
+          const expected = a - c < 0 ? HAND_FLIP[relation] : relation;
+
+          // L'état « résolu » tel que l'outil le voit : par les opérations
+          // (niveaux 1–3), ou par « إظهار الحل » (niveau 4, x des deux côtés).
+          const current = level <= 3 ? resolveByOperations(start) : start;
+          const verdict = classify(current);
+          if (level <= 3) expect(verdict.kind).toBe('solved');
+          expect(num(verdict.solution)).toBeCloseTo(s, 12);
+          expect(verdict.relation).toBe(expected);
+
+          const check = verifyResolution(start, verdict.solution, verdict.relation);
+          expect(check.holds).toBe(true);
+          // La valeur substituée est bien DANS l'ensemble, et vérifie la relation de départ (à la main).
+          const v = num(check.sample);
+          expect(holdsByHand(v, s, expected)).toBe(true);
+          expect(v).not.toBe(s);
+          expect(holdsByHand(a * v + b, c * v + d, relation)).toBe(true);
+          // La borne : membres égaux ; solution ssi le symbole accepte l'égalité.
+          expect(a * s + b).toBeCloseTo(c * s + d, 9);
+          expect(check.boundary.included).toBe(relation === '<=' || relation === '>=');
+        }
+      }
+    }
+  });
+
+  it('un résultat FAUX reste déclaré faux : sens inversé, borne décalée, égalité mal jugée', () => {
+    const start = parse('3x + 2 >= 11');                   // x ≥ 3
+    const three = R.makeRational(3);
+    expect(verifyResolution(start, three, '>=').holds).toBe(true);
+    expect(verifyResolution(start, three, '<=').holds).toBe(false);   // sens inversé
+    expect(verifyResolution(start, R.makeRational(4), '>=').holds).toBe(false); // borne fausse
+    expect(verifyResolution(start, three, '>').holds).toBe(false);    // 3 est solution : ≥, pas >
+    expect(verifyResolution(parse('3x + 2 > 11'), three, '>=').holds).toBe(false);
+  });
+
+  it('une équation se vérifie toujours en substituant SA solution', () => {
+    const check = verifyResolution(parse('2x + 3 = 11'), R.makeRational(4), '=');
+    expect(check.kind).toBe('equation');
+    expect(check.holds).toBe(true);
+    expect(check.check.lines.evaluated).toBe('11 = 11');
+  });
+
+  it('la valeur témoin : l’entier le plus proche du bon côté, jamais la borne', () => {
+    expect(sampleInside(R.makeRational(0), '<')).toEqual(R.makeRational(-1));
+    expect(sampleInside(R.makeRational(0), '>=')).toEqual(R.makeRational(1));
+    expect(sampleInside(R.makeRational(7, 3), '<')).toEqual(R.makeRational(2));
+    expect(sampleInside(R.makeRational(7, 3), '>')).toEqual(R.makeRational(3));
+    expect(sampleInside(R.makeRational(-7, 3), '<=')).toEqual(R.makeRational(-3));
+    expect(sampleInside(R.makeRational(-7, 3), '>')).toEqual(R.makeRational(-2));
+  });
+});
+
+describe('A2 — la forme résolue miroir « valeur RELATION x »', () => {
+  it('3 > x est résolue, et se lit x < 3', () => {
+    const equation = parse('3 > x');
+    expect(isSolvedForm(equation)).toBe(true);
+    const verdict = classify(equation);
+    expect(verdict.kind).toBe('solved');
+    expect(verdict.relation).toBe('<');
+    expect(R.equals(verdict.solution, R.makeRational(3))).toBe(true);
+    expect(equationToText(solve(equation).equation)).toBe('x < 3');
+    expect(suggestOperations(equation)).toEqual([]);
+  });
+
+  it('chaque sens est retourné correctement (vérifié à la main sur des entiers)', () => {
+    for (const relation of ['<', '>', '<=', '>=', '=']) {
+      const equation = { left: { a: R.ZERO, b: R.makeRational(-2) }, right: { a: R.ONE, b: R.ZERO }, relation };
+      expect(isSolvedForm(equation)).toBe(true);
+      const verdict = classify(equation);
+      for (let x = -5; x <= 5; x += 1) {
+        // −2 REL x  ⇔  x REL′ −2
+        expect(holdsByHand(x, -2, verdict.relation)).toBe(holdsByHand(-2, x, relation));
+      }
+    }
+  });
+
+  it('ne prend pas pour résolu ce qui ne l’est pas', () => {
+    expect(isSolvedForm(parse('2x = 6'))).toBe(false);
+    expect(isSolvedForm(parse('6 = 2x'))).toBe(false);
+    expect(isSolvedForm(parse('3 = x + 1'))).toBe(false);
+    expect(isSolvedForm(parse('x = x + 1'))).toBe(false);
   });
 });

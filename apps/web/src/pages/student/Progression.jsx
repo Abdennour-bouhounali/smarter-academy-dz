@@ -17,6 +17,7 @@ import WorkNowSection from '../../features/progression/components/WorkNowSection
 import ProgressionToolbar from '../../features/progression/components/ProgressionToolbar';
 import FieldProgressGroup from '../../features/progression/components/FieldProgressGroup';
 import ProgressionEmptyState from '../../features/progression/components/ProgressionEmptyState';
+import MasteryExplanationDrawer from '../../features/progression/components/MasteryExplanationDrawer';
 
 /**
  * « تقدّمي » — le tableau de bord de PROGRESSION de l'élève, dans l'ordre
@@ -100,6 +101,10 @@ export default function Progression() {
     const recent = fields.filter((f) => f.agg.lastVisitedAt > 0).sort((a, b) => b.agg.lastVisitedAt - a.agg.lastVisitedAt)[0];
     return recent?.id ?? fields.find((f) => f.agg.lessons > 0)?.id ?? null;
   }, [tree]);
+
+  // Le point dont l'élève demande « لماذا؟ » — `{code, title}` ou null.
+  const [explaining, setExplaining] = useState(null);
+  const closeExplaining = useCallback(() => setExplaining(null), []);
 
   const curriculumRef = useRef(null);
   const showAllWork = useCallback(() => {
@@ -214,6 +219,7 @@ export default function Progression() {
                         field={field}
                         defaultOpen={field.id === defaultFieldId}
                         profileStatus={status}
+                        onExplain={setExplaining}
                       />
                     ))}
                   </div>
@@ -226,6 +232,14 @@ export default function Progression() {
         <p className="mt-8 text-xs text-slate-400 font-inter max-w-xl">
           {t('progression.footnote')}
         </p>
+
+        {/* « لماذا؟ » — le tiroir d'explication d'un point (plan §18). */}
+        <MasteryExplanationDrawer
+          open={explaining !== null}
+          code={explaining?.code ?? null}
+          title={explaining?.title ?? ''}
+          onClose={closeExplaining}
+        />
       </div>
     </MotionConfig>
   );

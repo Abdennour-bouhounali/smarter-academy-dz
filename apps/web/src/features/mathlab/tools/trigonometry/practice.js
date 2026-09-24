@@ -84,14 +84,23 @@ export const CHALLENGE_KINDS = Object.freeze([
 /**
  * Fabrique un défi. `kinds` restreint les familles — le mode triangle ne
  * pose pas de question sur les quadrants, qui n'y ont pas de sens.
+ *
+ * `options.mode === 'triangle'` restreint AUSSI les angles : le programme
+ * de 4AM est celui du triangle rectangle, donc des angles AIGUS
+ * (`CURRICULUM_ANGLES` : 30°, 45°, 60°). Demander cos 210° dans ce mode
+ * poserait une question du lycée sous l'étiquette du collège.
+ *
+ * @param {number} seed
+ * @param {string[]} [kinds]
+ * @param {{mode?: 'circle'|'triangle'}} [options]
  */
-export function generateChallenge(seed, kinds = CHALLENGE_KINDS) {
+export function generateChallenge(seed, kinds = CHALLENGE_KINDS, options = {}) {
   const random = makeRandom(seed);
   const available = kinds.filter((kind) => CHALLENGE_KINDS.includes(kind));
   const kind = pick(random, available.length ? available : CHALLENGE_KINDS);
 
   switch (kind) {
-    case 'ratioValue': return ratioValueChallenge(random);
+    case 'ratioValue': return ratioValueChallenge(random, options.mode === 'triangle');
     case 'quadrantOf': return quadrantChallenge(random);
     case 'signs': return signsChallenge(random);
     case 'triangleRatio': return triangleRatioChallenge(random);
@@ -100,9 +109,15 @@ export function generateChallenge(seed, kinds = CHALLENGE_KINDS) {
   }
 }
 
-/** Challenge 1 — `sin(30°) = ?` La réponse est un NOMBRE, exact ou décimal. */
-function ratioValueChallenge(random) {
-  const entry = pick(random, SPECIAL_ANGLES.filter((a) => !a.tan?.undefined || random() > 0.8));
+/**
+ * Challenge 1 — `sin(30°) = ?` La réponse est un NOMBRE, exact ou décimal.
+ * `acuteOnly` : le mode triangle ne tire que les angles du programme de 4AM.
+ */
+function ratioValueChallenge(random, acuteOnly = false) {
+  const pool = acuteOnly
+    ? SPECIAL_ANGLES.filter((a) => CURRICULUM_ANGLES.includes(a.degrees))
+    : SPECIAL_ANGLES.filter((a) => !a.tan?.undefined || random() > 0.8);
+  const entry = pick(random, pool);
   const ratio = pick(random, ['sin', 'cos', 'tan']);
   const exact = exactValue(entry.degrees, ratio);
 
@@ -117,6 +132,8 @@ function ratioValueChallenge(random) {
       expected: 'undefined',
       angle: entry.degrees,
       hintKeys: ['tools.trigonometry.practice.h.tanQuotient', 'tools.trigonometry.practice.h.cosZero'],
+      // `cosZero` nomme l'angle de la question : 90° OU 270°.
+      hintParams: { angle: entry.degrees },
       explainKey: 'tools.trigonometry.practice.e.undefinedRatio',
       explainParams: { angle: entry.degrees },
     };
@@ -281,11 +298,30 @@ function radianText({ numerator, denominator }) {
 
 /**
  * Lit ce que l'élève a écrit : `1/2`, `0,5`, `√3/2`, `-1`, `sqrt(3)/2`,
- * `racine(2)/2`. Rend un nombre, ou `NaN` si la saisie n'est pas lisible.
+ * `racine(2)/2`, `√(2)/2`, `1/√2`, `1/(√3)`, `7π/4`, `60°`. Rend un
+ * nombre, ou `NaN` si la saisie n'est pas lisible.
  *
  * On accepte large À DESSEIN : la question porte sur la trigonométrie, pas
  * sur la syntaxe. Un élève qui écrit la bonne valeur d'une autre manière a
  * raison, et un instrument qui lui dit le contraire lui apprend une fausseté.
+ *
+ * ── Pourquoi une petite grammaire, et plus des motifs ────────────────────
+ * Les motifs d'origine ne lisaient que `√3/2` : `sqrt(3)/2` — l'écriture
+ * que ce commentaire promettait — rendait `NaN`, comme `1/√2` et `√(2)/2`,
+ * qui sont pourtant la même valeur. Chaque forme ajoutée aurait appelé un
+ * motif de plus. Une grammaire de quatre règles les lit toutes :
+ *
+ *   produit := signé (( '*' | '/' | juxtaposition ) signé)*
+ *   signé   := '-' signé | '+' signé | atome
+ *   atome   := nombre | π | √ atome | '(' produit ')'
+ *
+ * La juxtaposition (`2√3`, `7π`) a la MÊME priorité que `*` et `/`, de
+ * gauche à droite : `7π/4` = (7π)/4. Pas d'addition — une valeur
+ * remarquable s'écrit sans elle. Aucun `eval` : on n'exécute jamais la
+ * saisie d'un élève.
+ *
+ * Le `°` final est ignoré : la révélation écrit `60°`, l'élève qui recopie
+ * cette forme a raison.
  */
 export function parseAnswer(text) {
   if (typeof text !== 'string') return NaN;
@@ -294,53 +330,85 @@ export function parseAnswer(text) {
 
   source = source
     .replace(/[٠-٩]/g, (d) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)))  // chiffres arabes-indiens
-    .replace(/−/g, '-')                                         // vrai signe moins
-    .replace(/،/g, ',')
+    .replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)))  // chiffres persans
+    .replace(/[−–]/g, '-')                                      // vrai signe moins
+    .replace(/[،٫]/g, ',')
     .replace(/,/g, '.')
     .replace(/\s+/g, '')
-    .replace(/racine|sqrt|rac/g, '√');
+    .replace(/×/g, '*')
+    .replace(/÷/g, '/')
+    .replace(/racine|sqrt|rac/g, '√')
+    .replace(/pi/g, 'π')
+    .replace(/°$/, '');
 
-  // π porte un COEFFICIENT dès qu'on sort du premier tour : 315° s'écrit
-  // `7π/4`, et un élève qui tape cela a raison. Remplacer π par sa valeur
-  // sans rétablir la multiplication implicite donnerait `73.14159…/4` —
-  // la concaténation de « 7 » et de « 3,14 », c'est-à-dire un refus de la
-  // bonne réponse. Le `*` est donc rétabli des deux côtés avant la
-  // substitution.
-  source = source
-    .replace(/(\d)(π|pi)/g, '$1*$2')
-    .replace(/(π|pi)(\d|√)/g, '$1*$2')
-    .replace(/π|pi/g, String(Math.PI));
+  const value = evaluateProduct(source);
 
-  // `7*3.14159…/4` : un petit produit/quotient, évalué à la main plutôt que
-  // par `eval` — on n'exécute jamais la saisie d'un élève.
-  const chain = source.match(/^(-?\d+(?:\.\d+)?)\*(\d+(?:\.\d+)?)(?:\/(\d+(?:\.\d+)?))?$/);
-  if (chain) {
-    const denominator = chain[3] === undefined ? 1 : Number(chain[3]);
+  return Number.isFinite(value) ? value : NaN;
+}
 
-    return denominator === 0 ? NaN : (Number(chain[1]) * Number(chain[2])) / denominator;
+/** Lit toute la chaîne comme un produit ; `NaN` s'il reste des caractères. */
+function evaluateProduct(source) {
+  const cursor = { source, at: 0 };
+  const value = readProduct(cursor);
+
+  return cursor.at === source.length ? value : NaN;
+}
+
+const startsAtom = (char) => char !== undefined && /[\d.π√(]/.test(char);
+
+function readProduct(cursor) {
+  let value = readSigned(cursor);
+  for (;;) {
+    const char = cursor.source[cursor.at];
+    if (char === '*' || char === '/') {
+      cursor.at += 1;
+      const right = readSigned(cursor);
+      value = char === '*' ? value * right : value / right;
+    } else if (startsAtom(char)) {
+      value *= readSigned(cursor);   // 2√3, 7π, 2(√3)
+    } else {
+      return value;
+    }
   }
+}
 
-  // √3/2, -√2/2, 2√3, √3
-  const root = source.match(/^(-?)(\d*(?:\.\d+)?)?√(\d+(?:\.\d+)?)(?:\/(\d+(?:\.\d+)?))?$/);
-  if (root) {
-    const [, sign, coefficient, radicand, denominator] = root;
-    const value = (Number(coefficient || 1) * Math.sqrt(Number(radicand))) / Number(denominator || 1);
+function readSigned(cursor) {
+  const char = cursor.source[cursor.at];
+  if (char === '-') { cursor.at += 1; return -readSigned(cursor); }
+  if (char === '+') { cursor.at += 1; return readSigned(cursor); }
 
-    return sign === '-' ? -value : value;
+  return readAtom(cursor);
+}
+
+function readAtom(cursor) {
+  const { source } = cursor;
+  const char = source[cursor.at];
+  if (char === 'π') { cursor.at += 1; return Math.PI; }
+  if (char === '√') {
+    cursor.at += 1;
+    const radicand = readAtom(cursor);
+
+    return radicand < 0 ? NaN : Math.sqrt(radicand);
   }
+  if (char === '(') {
+    cursor.at += 1;
+    const inner = readProduct(cursor);
+    if (source[cursor.at] !== ')') return NaN;
+    cursor.at += 1;
 
-  // 1/2, -3/4
-  const fraction = source.match(/^(-?\d+(?:\.\d+)?)\/(-?\d+(?:\.\d+)?)$/);
-  if (fraction) {
-    const denominator = Number(fraction[2]);
-
-    return denominator === 0 ? NaN : Number(fraction[1]) / denominator;
+    return inner;
   }
+  const number = source.slice(cursor.at).match(/^(?:\d+(?:\.\d+)?|\.\d+)/);
+  if (!number) {
+    // Rien de lisible ici : on avance d'un cran pour que `evaluateProduct`
+    // constate l'échec sans boucler.
+    cursor.at = source.length + 1;
 
-  // 0.5, -1, 45
-  if (/^-?\d+(?:\.\d+)?$/.test(source)) return Number(source);
+    return NaN;
+  }
+  cursor.at += number[0].length;
 
-  return NaN;
+  return Number(number[0]);
 }
 
 /**
@@ -397,12 +465,19 @@ export function revealTarget(challenge) {
   return null;
 }
 
-/** Les familles de questions qui ont un sens dans le mode courant. */
+/**
+ * Les familles de questions qui ont un sens dans le mode courant.
+ *
+ * Le mode triangle est celui de 4AM : le radian n'y figure pas (il arrive
+ * avec le cercle trigonométrique, au lycée), donc pas de `degToRad` ici.
+ * `generateChallenge(seed, kinds, { mode: 'triangle' })` restreint en plus
+ * `ratioValue` aux angles aigus du programme.
+ */
 export function kindsForMode(mode) {
   return mode === 'triangle'
-    ? ['triangleRatio', 'ratioValue', 'degToRad']
+    ? ['triangleRatio', 'ratioValue']
     : CHALLENGE_KINDS;
 }
 
-/** Les angles du programme de 4AM — ce que le mode triangle tire en priorité. */
+/** Les angles du programme de 4AM — les seuls que le mode triangle tire. */
 export { CURRICULUM_ANGLES };

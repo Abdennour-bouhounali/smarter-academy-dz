@@ -127,6 +127,14 @@ try {
 
   await trigger(page).click();
   await dialog(page).waitFor({ state: 'visible', timeout: 5000 });
+  await page.waitForTimeout(450);
+  {
+    const b = await dialog(page).boundingBox();
+    const vp = page.viewportSize();
+    record('le cahier s’ouvre en grand', (await dialog(page).getAttribute('data-size')) === 'large');
+    record('le cahier s’ouvre centré dans l’écran', Math.abs(b.x + b.width / 2 - vp.width / 2) < 2 && Math.abs(b.y + b.height / 2 - vp.height / 2) < 2,
+      `centre (${Math.round(b.x + b.width / 2)}, ${Math.round(b.y + b.height / 2)}) / (${vp.width / 2}, ${vp.height / 2})`);
+  }
   const ctxText1 = await contextLine(page).innerText();
   record('1 · contexte = la leçon, sans module ni point', ctxText1.includes('القاسم المشترك الأكبر') && !ctxText1.includes(MODULE1_TITLE), ctxText1.replace(/\n/g, ' '));
   record('1 · page blanche : l’élève est l’auteur', (await editor(page).getAttribute('data-empty')) === 'true');

@@ -1,0 +1,112 @@
+{
+  "metadata": {
+    "title": "سلسلة التفوق، تمرين 14 — الكسر 133/27",
+    "estimatedMinutes": 3,
+    "tags": [
+      "كسر غير قابل للاختزال"
+    ],
+    "source": {
+      "type": "worksheet",
+      "worksheetId": "tafawwuq-01",
+      "elementId": "ws01-ex-14",
+      "section": "التمارين",
+      "number": 14
+    }
+  },
+  "statement": {
+    "content": "إليك العدد $A = \\dfrac{133}{27}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب القاسم المشترك الأكبر للعددين 133 و 27.",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "133 = 27 × 4 + 25."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تابع: 27 = 25 × 1 + 2."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم 25 = 2 × 12 + 1."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(133 ; 27) = 1.",
+        "incorrect": "آخر باقٍ غير معدوم في خوارزمية إقليدس."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ماذا تستنتج بالنسبة للكسر A؟",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الكسر A غير قابل للاختزال",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الكسر A قابل للاختزال على 7",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "الكسر A قابل للاختزال على 3",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "الكسر A يساوي عددًا طبيعيًا",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما معنى PGCD(133 ; 27) = 1؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بسط الكسر ومقامه أوليان فيما بينهما."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل يوجد قاسم مشترك يختلف عن 1 نقسم عليه؟"
+        }
+      ],
+      "feedback": {
+        "correct": "البسط والمقام أوليان فيما بينهما، فالكسر غير قابل للاختزال.",
+        "incorrect": "كسر بسطه ومقامه أوليان فيما بينهما لا يُختزل."
+      }
+    }
+  ],
+  "id": "ex-4am-ikhtizal-kasr-l2-003",
+  "lessonCode": "ikhtizal-kasr",
+  "level": 2
+}

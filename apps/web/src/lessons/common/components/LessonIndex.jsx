@@ -5,10 +5,12 @@ import { Lock, Compass } from 'lucide-react';
 import { useProgress } from '../hooks/useProgress';
 import { lockedReasonData, getLessonById, getUnitById } from '@smarter-academy/core';
 import { resolveModuleStatus } from '../utils/moduleGate';
+import { softGateHint, masteryStatusByIdFromProfile } from '../utils/softGate';
+import { getModulePath } from '../../registry';
 import { useLearningViewer } from '../../../features/learning/learningViewer';
 import { useLearningProfile } from '../hooks/useLearningProfile';
 import { useLessonChromeLayout } from '../hooks/useLessonChrome';
-import { resolveMasteryState } from './LearningPointMastery';
+import { resolveMasteryState, masteryTooltip } from './LearningPointMastery';
 import { calculateCompletionPercentage } from '@smarter-academy/core';
 // Le moteur d'exercices n'est activé que pour les leçons listées dans
 // content/practice/active.json : pour toutes les autres, isPracticeActive
@@ -109,7 +111,10 @@ export default function LessonIndex({ config, basePath }) {
   const catalogueLesson = getLessonById(config.id);
   const unit = config.unit ? getUnitById(config.unit) : null;
   const prereqLessons = (catalogueLesson?.prerequisiteLessonCodes ?? []).map((code) => getLessonById(code)).filter(Boolean);
-  const { profile } = useLearningProfile();
+  // Le profil de CETTE leçon seulement (`?lesson=`, Mastery V2). Le `status`
+  // du chargement est rendu (squelette / erreur / rien pour l'anonyme) :
+  // « لم تُقيَّم بعد » ne s'affiche que lorsque le profil est vraiment lu.
+  const { profile, status: profileStatus } = useLearningProfile({ lesson: config.id });
   // Le décalage haut suit la coquille réelle (Navbar visiteur / rien sur le
   // bureau élève) — même contrat que ModuleLayout, jamais un pt-16 écrit à la main.
   const chrome = useLessonChromeLayout();
@@ -118,6 +123,9 @@ export default function LessonIndex({ config, basePath }) {
     (profile?.currentMastery ?? []).flatMap((g) => (g.lessons ?? []).flatMap((l) => l.learningPoints ?? []))
       .map((row) => [row.code ?? row.learningPointCode ?? row.learning_point_code, row]),
   );
+  // `code → status` pour les portes de maîtrise DOUCES (softGate.js) : un
+  // conseil sous la carte, jamais un verrou.
+  const masteryStatusById = useMemo(() => masteryStatusByIdFromProfile(profile), [profile]);
   const { t } = useTranslation('lesson');
   const { completedModules, isModuleCompleted, currentModule } = useProgress(config.id);
   const { isModuleClosed, isLessonLocked, isLessonHiddenByClass } = useContentAvailability();
@@ -141,16 +149,48 @@ export default function LessonIndex({ config, basePath }) {
   const totalModules = config.modules.length;
   const completedCount = completedModules.length;
   const pct = calculateCompletionPercentage(completedModules, totalModules);
-  // Avec le déverrouillage séquentiel, la leçon n'est « maîtrisée » que
-  // lorsque TOUS les modules sont validés (pas seulement masteryThreshold
+  // Avec le déverrouillage séquentiel, le PARCOURS de la leçon n'est achevé
+  // que lorsque TOUS les modules sont validés (pas seulement masteryThreshold
   // d'entre eux) — voir lessonAccess.js. Les leçons qui n'activent pas
   // sequentialUnlock gardent leur seuil existant, inchangé.
+  //
+  // C'est une COMPLÉTION (des modules parcourus), jamais une maîtrise : la
+  // maîtrise des نقاط التعلّم vient du profil serveur, plus bas. Le mot
+  // إتقان n'apparaît donc nulle part ici.
   // Le PREMIER module de CETTE leçon : 0 quand elle ouvre par un diagnostic
   // (« أستعدّ »), 1 sinon. Sans cela, un module 0 était traité comme
   // « pas le premier » et exigeait un module -1 inexistant.
+  // PORTE DOUCE (phase 8b) : quand un module exige des points encore en
+  // lacune, la carte reste OUVERTE et une ligne ambre conseille de revoir
+  // d'abord le(s) module(s) qui les enseignent. Rien pour l'enseignant (il ne
+  // suit pas de progression) ni en présentation.
+  const withSoftGateHint = (module, card) => {
+    if (!card || viewer.freeNavigation || presenting) return card;
+    const hint = softGateHint(module, masteryStatusById, config.modules);
+    if (!hint.show) return card;
+    const lpTitle = (id) => masteryRows.get(id)?.title
+      || catalogueLesson?.learningPoints?.find((lp) => lp.id === id)?.title
+      || id;
+    const titles = hint.learningPointIds.map(lpTitle).join(t('index.softGateTitlesSeparator'));
+    return (
+      <div key={module.id} className="space-y-1.5" data-soft-gate={module.number}>
+        {card}
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900" role="note">
+          <span>{t('index.softGateHint', { titles })}</span>
+          {hint.recommendedModules.map((m) => {
+            const path = m.slug ? `${basePath}/${m.slug}` : getModulePath(config.id, m.number);
+            const label = t('index.softGateModuleLink', { number: String(m.number).padStart(2, '0'), title: m.title });
+            return path
+              ? <Link key={m.id ?? m.number} to={path} className="font-bold underline underline-offset-2 hover:text-amber-700">{label}</Link>
+              : <span key={m.id ?? m.number} className="font-bold">{label}</span>;
+          })}
+        </div>
+      </div>
+    );
+  };
   const firstModuleNumber = Math.min(...config.modules.map((m) => Number(m.number)).filter(Number.isFinite));
 
-  const isMastered = config.sequentialUnlock
+  const isPathComplete = config.sequentialUnlock
     ? totalModules > 0 && completedCount === totalModules
     : pct >= Math.round(config.masteryThreshold * 100);
 
@@ -342,13 +382,13 @@ export default function LessonIndex({ config, basePath }) {
             <div className="w-full md:w-56 bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-3 text-center shrink-0">
               <div className="text-xs font-mono text-slate-500 font-bold uppercase">{t('index.yourProgress')}</div>
 
-              <div className={`text-3xl font-space font-extrabold ${isMastered ? 'text-emerald-600' : 'text-blue-600'}`}>
+              <div className={`text-3xl font-space font-extrabold ${isPathComplete ? 'text-emerald-600' : 'text-blue-600'}`}>
                 {pct}%
               </div>
 
               <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
                 <div
-                  className={`h-full transition-all duration-500 ${isMastered
+                  className={`h-full transition-all duration-500 ${isPathComplete
                     ? 'bg-gradient-to-r from-emerald-500 to-green-500'
                     : 'bg-gradient-to-r from-blue-500 to-indigo-600'}`}
                   style={{ width: `${pct}%` }}
@@ -360,9 +400,9 @@ export default function LessonIndex({ config, basePath }) {
                 {t('index.modulesLabel', { count: totalModules })}
               </span>
 
-              {isMastered && (
+              {isPathComplete && (
                 <div className="text-xs font-mono font-bold text-emerald-600 bg-emerald-50 rounded-lg py-1">
-                  {t('index.lessonMastered')}
+                  {t('index.pathCompleted')}
                 </div>
               )}
             </div>
@@ -378,10 +418,38 @@ export default function LessonIndex({ config, basePath }) {
               <h2 className="mb-2 text-sm font-bold text-slate-800">{ts('unit.learningPoints')}</h2>
               <ul className="space-y-1.5">
                 {catalogueLesson.learningPoints.map((lp) => {
-                  const state = resolveMasteryState(masteryRows.get(lp.id));
+                  // L'état du CHARGEMENT se voit : squelette, erreur, ou rien
+                  // pour l'anonyme — un point n'est « لم تُقيَّم بعد » que
+                  // lorsque le profil a vraiment été lu.
+                  if (profileStatus === 'anonymous') {
+                    return (
+                      <li key={lp.id} className="flex items-start gap-2 text-sm text-slate-700">
+                        <span>{lp.title}</span>
+                      </li>
+                    );
+                  }
+                  if (profileStatus !== 'ready') {
+                    const pending = profileStatus === 'loading';
+                    return (
+                      <li key={lp.id} className="flex items-start gap-2 text-sm text-slate-700" title={pending ? ts('mastery.loadingDot') : ts('mastery.errorDot')}>
+                        <span
+                          className={`mt-1.5 inline-block h-2.5 w-2.5 shrink-0 rounded-full ${pending ? 'bg-slate-200 animate-pulse' : 'bg-slate-100 border border-slate-300'}`}
+                          role="img"
+                          aria-label={pending ? ts('mastery.loadingDot') : ts('mastery.errorDot')}
+                          data-mastery-state={pending ? 'loading' : 'error'}
+                        />
+                        <span>{lp.title}</span>
+                      </li>
+                    );
+                  }
+                  const row = masteryRows.get(lp.id);
+                  const state = resolveMasteryState(row);
+                  // UN seul vocabulaire (`mastery.*`) ; le tooltip ajoute la
+                  // raison (`statusReason`) et la fraîcheur d'un acquis qui vieillit.
+                  const tooltip = masteryTooltip(state, row, ts);
                   return (
-                    <li key={lp.id} className="flex items-start gap-2 text-sm text-slate-700">
-                      <span className={`mt-1.5 inline-block h-2.5 w-2.5 shrink-0 rounded-full ${MASTERY_DOT[state]}`} aria-label={ts(`unit.mastery.${state}`)} />
+                    <li key={lp.id} className="flex items-start gap-2 text-sm text-slate-700" title={tooltip}>
+                      <span className={`mt-1.5 inline-block h-2.5 w-2.5 shrink-0 rounded-full ${MASTERY_DOT[state]}`} role="img" aria-label={tooltip} data-mastery-state={state} />
                       <span>{lp.title}</span>
                     </li>
                   );
@@ -426,7 +494,7 @@ export default function LessonIndex({ config, basePath }) {
           <h2 className="text-xl font-space font-bold text-slate-900">{t('index.modulesPath')}</h2>
 
           <div className="space-y-3">
-            {config.modules.map((module) => {
+            {config.modules.map((module) => withSoftGateHint(module, (() => {
               const isDone = isModuleCompleted(module.id) || isModuleCompleted(module.number?.toString());
               const modulePath = `${basePath}/${module.slug}`;
 
@@ -449,6 +517,7 @@ export default function LessonIndex({ config, basePath }) {
                 moduleNumber: module.number,
                 currentModule,
                 module,
+                masteryStatusById,
                 firstModuleNumber,
                 previousStage: config.modules.find((m) => Number(m.number) === Number(module.number) - 1)?.stage,
               });
@@ -649,7 +718,7 @@ export default function LessonIndex({ config, basePath }) {
               }
 
               return null;
-            })}
+            })()))}
           </div>
         </section>
 

@@ -1,0 +1,58 @@
+{
+  "metadata": {
+    "title": "سلسلة التفوق، تمرين 5 — PGCD(a ; 15) = 5",
+    "estimatedMinutes": 4,
+    "tags": [
+      "استدلال"
+    ],
+    "source": {
+      "type": "worksheet",
+      "worksheetId": "tafawwuq-01",
+      "elementId": "ws01-ex-05",
+      "section": "التمارين",
+      "number": 5
+    }
+  },
+  "statement": {
+    "content": "عيّن العدد الطبيعي a المحصور بين 25 و 40 (أي 25 < a < 40) والذي يحقّق PGCD(a ; 15) = 5."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "a = ?",
+      "learningPoints": [
+        {
+          "code": "4am_tayin-pgcd_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "35",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "PGCD(a ; 15) = 5 يعني أن 5 يقسم a."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مضاعفات 5 المحصورة تمامًا بين 25 و 40: 30 و 35."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "30 مضاعف لـ 15 فـ PGCD(30 ; 15) = 15."
+        }
+      ],
+      "feedback": {
+        "correct": "35 مضاعف لـ 5 وليس مضاعفًا لـ 3، فـ PGCD(35 ; 15) = 5.",
+        "incorrect": "ابحث عن مضاعف لـ 5 ليس مضاعفًا لـ 15."
+      }
+    }
+  ],
+  "id": "ex-4am-tayin-pgcd-l5-002",
+  "lessonCode": "tayin-pgcd",
+  "level": 5
+}

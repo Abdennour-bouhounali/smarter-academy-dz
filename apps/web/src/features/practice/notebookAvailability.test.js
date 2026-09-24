@@ -18,17 +18,28 @@ const read = (p) => readFileSync(resolve(srcRoot, p), 'utf8');
 describe('le carnet est atteignable à tout moment', () => {
   const session = read('pages/student/practice/PracticeSession.jsx');
 
+  // Depuis 2026-09-24, le déclencheur n'est plus dans la carte de la
+  // question : c'est la pastille flottante « 📓 كرّاسي » de la leçon, rendue
+  // quel que soit l'état de la question.
   it('un NotebookButton est rendu hors du bloc « répondu »', () => {
-    // On isole le bloc de correction (`{answered && (` … ) pour vérifier qu'il
-    // reste AU MOINS un bouton en dehors de lui.
-    const start = session.indexOf('{answered && (');
-    expect(start).toBeGreaterThan(-1);
-    const before = session.slice(0, start);
-    expect(before).toMatch(/<NotebookButton/);
+    const at = session.indexOf('<NotebookButton');
+    expect(at).toBeGreaterThan(-1);
+    const opener = session.lastIndexOf('{', at);
+    expect(session.slice(opener - 20, opener + 20)).not.toMatch(/answered &&/);
+    // Une seule pastille, remontée au verdict (nouvelle note, avec la réponse).
+    expect(session.match(/<NotebookButton/g)).toHaveLength(1);
+    expect(session).toMatch(/key=\{`note-\$\{answered \? 'answered-' : ''\}\$\{question\.id\}`\}/);
   });
 
-  it('le déclencheur cohabite avec la validation, pas avec le verdict', () => {
-    expect(session).toMatch(/\{!answered && <NotebookButton/);
+  it('le déclencheur est LA pastille de la leçon', () => {
+    const button = read('features/practice/NotebookButton.jsx');
+    const anchor = read('lessons/common/notebook/LessonNotebookAnchor.jsx');
+    for (const src of [button, anchor]) {
+      expect(src).toMatch(/className="sa-nb-lesson-trigger"/);
+      expect(src).toMatch(/notebook\.window\.myNotebookShort/);
+      expect(src).toMatch(/aria-pressed=\{isOpen\}/);
+    }
+    expect(button).toMatch(/data-nb-trigger="practice"/);
   });
 
   it('le libellé de saisie ne présume pas d’une erreur', () => {
@@ -77,10 +88,15 @@ describe('le cahier s’ouvre en fenêtre, pré-rempli du contexte réel', () =>
     expect(studentAr.notebook.window.clearConfirmTitle.trim()).not.toBe('');
   });
 
-  it('deux tailles, et rien d’autre', () => {
+  it('deux tailles, et il s’ouvre toujours en grand, centré', () => {
     const css = read('features/practice/notebook/notebook.css');
     expect(css).toMatch(/\.sa-nb-window\[data-size="large"\]/);
     expect(windowSrc).toMatch(/size === 'small' \? 'large' : 'small'/);
+    expect(windowSrc).toMatch(/useState\('large'\)/);
+    expect(windowSrc).not.toMatch(/localStorage/);
+    const box = css.slice(css.indexOf('.sa-nb-window {'), css.indexOf('}', css.indexOf('.sa-nb-window {')));
+    expect(box).toMatch(/inset: 0;/);
+    expect(box).toMatch(/margin: auto;/);
     expect(css).toMatch(/prefers-reduced-motion/);
   });
 

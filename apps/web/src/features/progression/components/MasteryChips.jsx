@@ -29,7 +29,8 @@ export default function MasteryChips({ counts, total, showZero = false, compact 
     <ul className={`flex items-center gap-1.5 flex-wrap ${className}`} aria-label={t('progression.chips.legend')}>
       {visible.map((state) => {
         const s = MASTERY_STATES[state];
-        const label = t(`progression.chips.${state}`);
+        // UN seul vocabulaire de maîtrise : `mastery.*` (masteryLabels.js).
+        const label = t(s.labelKey);
         return (
           <li
             key={state}

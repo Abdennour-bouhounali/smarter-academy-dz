@@ -68,7 +68,7 @@ export default function Module01Samir() {
               <KnowledgeBrick id="kasr-ghayr-qabil" lead="7 و 4 لا يقسمهما معًا إلا 1: أوليان فيما بينهما." />
               <TapQuestion prompt={<span>لماذا لا يمكن مواصلة اختزال <MathText>{'$\\dfrac{7}{4}$'}</MathText>؟</span>}
                 options={['لأن 7 و 4 أوليان فيما بينهما: PGCD(7 ; 4) = 1', 'لأن 7 عدد أولي', 'لأن 4 أصغر من 7', 'لأن 7 − 4 = 3 عدد فردي']} correct={0} cols={1} requires={['kasr-ghayr-qabil']}
-                explain={<span>{ACTIVITY.questions[2].replace(/\$/g, '')}</span>} onAnswered={() => setQ2(true)} />
+                explain={<MathText>{ACTIVITY.questions[2]}</MathText>} onAnswered={() => setQ2(true)} />
               {q2 && <TextbookBox kind="remark" text={ACTIVITY.questions[2]} compact />}
             </div>
           ) },

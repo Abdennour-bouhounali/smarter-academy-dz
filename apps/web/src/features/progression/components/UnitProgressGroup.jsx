@@ -13,7 +13,7 @@ import { ChipsSkeleton } from './ProgressionSkeleton';
  * unitGrouping.js). Le titre est un <button> qui déplie les leçons ; la
  * progression agrégée et le résumé de maîtrise restent lisibles repliés.
  */
-export default function UnitProgressGroup({ group, defaultOpen = false, profileStatus }) {
+export default function UnitProgressGroup({ group, defaultOpen = false, profileStatus, onExplain }) {
   const { t } = useTranslation('student');
   const [override, setOverride] = useState(null);
   useEffect(() => { setOverride(null); }, [group.forceOpen, defaultOpen]);
@@ -74,7 +74,7 @@ export default function UnitProgressGroup({ group, defaultOpen = false, profileS
       <Collapsible open={built && open} id={panelId}>
         <div className="px-3 pb-3 sm:px-4 sm:pb-4 space-y-3">
           {group.lessons.map((node) => (
-            <LessonProgressRow key={node.id} node={node} profileStatus={profileStatus} />
+            <LessonProgressRow key={node.id} node={node} profileStatus={profileStatus} onExplain={onExplain} />
           ))}
         </div>
       </Collapsible>

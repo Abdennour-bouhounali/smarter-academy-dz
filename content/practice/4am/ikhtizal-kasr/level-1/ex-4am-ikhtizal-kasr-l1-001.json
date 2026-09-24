@@ -26,9 +26,13 @@
           "role": "primary"
         }
       ],
-      "answerType": "rational",
-      "answerFormat": "كسر على الشكل a/b",
-      "expectedAnswer": "21/12",
+      "answerType": "choice",
+      "choices": [
+        { "id": "A", "content": "$\\dfrac{21}{12}$", "isCorrect": true },
+        { "id": "B", "content": "$\\dfrac{7}{4}$", "isCorrect": false },
+        { "id": "C", "content": "$\\dfrac{42}{24}$", "isCorrect": false },
+        { "id": "D", "content": "$\\dfrac{21}{48}$", "isCorrect": false }
+      ],
       "hints": [
         {
           "id": "h1",

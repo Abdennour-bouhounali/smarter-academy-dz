@@ -7,9 +7,10 @@
    « enregistré », rouge pour l'erreur, bleu pour le contexte) reste le même ;
    seule la SURFACE change — c'est un objet personnel, pas une carte de plus.
 
-   Deux tailles, en unités de fenêtre bornées par clamp() : « petit » est le
-   coin de cahier qu'on garde ouvert à côté de l'exercice, « grand » la page
-   qu'on déplie pour rédiger. En dessous de 640px il n'y a plus qu'une taille,
+   Deux tailles, en unités de fenêtre bornées par clamp() : « grand », la
+   page qu'on déplie pour rédiger — c'est ainsi qu'il s'OUVRE, toujours,
+   centré dans l'écran — et « petit », le coin de cahier qu'on garde à côté
+   de l'exercice si l'élève le réduit. En dessous de 640px il n'y a plus qu'une taille,
    quasi plein écran — un quart d'écran de téléphone n'est pas un éditeur.
 
    Les lignes d'écriture ont un pas de 2rem, et l'éditeur la MÊME hauteur de
@@ -26,8 +27,10 @@
 
   position: fixed;
   z-index: 71; /* au-dessus de la fenêtre de signalement (z-60), des barres (z-50) et de la carte (z-40) */
-  inset-block-end: 1rem;
-  inset-inline-end: 1rem;
+  /* Centré : inset 0 + marges automatiques sur une boîte de taille fixe.
+     Le passage grand ↔ petit reste centré, et le glisser part du centre. */
+  inset: 0;
+  margin: auto;
   width: var(--nb-w);
   height: var(--nb-h);
   max-width: calc(100vw - 2rem);
@@ -79,6 +82,7 @@
   .sa-nb-window,
   .sa-nb-window[data-size="large"] {
     inset: 0.5rem;
+    margin: 0;
     width: auto;
     height: auto;
     max-width: none;
@@ -568,6 +572,8 @@
    pile complète) : le ras du coin (1.5rem) est pris par « ⛶ عرض » (mode
    classe) et 5.5rem par la carte des connaissances ; 9.5rem laisse 1rem
    au-dessus d'elle. */
+/* « 📓 كرّاسي » — LE déclencheur du cahier, en leçon (LessonNotebookAnchor)
+   comme en exercice (NotebookButton) : même pastille, même place. */
 .sa-nb-lesson-trigger {
   position: fixed;
   left: 1.5rem;
@@ -594,6 +600,12 @@
 .sa-nb-lesson-trigger:active { transform: scale(0.97); }
 .sa-nb-lesson-trigger[aria-pressed="true"] { background: #4c1d95; color: #ffffff; border-color: #4c1d95; }
 .sa-nb-lesson-trigger:focus-visible { outline: 2px solid #7c3aed; outline-offset: 2px; }
+/* En exercice, sous `lg`, la barre collante « السؤال التالي » occupe
+   l'étage au-dessus de la barre de navigation (4rem) : la pastille monte
+   d'un étage pour ne pas s'y poser. Sur ordinateur, même place qu'en leçon. */
+@media (max-width: 1023px) {
+  .sa-nb-lesson-trigger[data-nb-trigger="practice"] { bottom: calc(8.5rem + env(safe-area-inset-bottom)); }
+}
 @media print { .sa-nb-lesson-trigger { display: none; } }
 
 /* « أضف إلى كرّاسي » — une action discrète sur une brique ou une carte. */

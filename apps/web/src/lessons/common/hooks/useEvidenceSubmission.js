@@ -2,14 +2,21 @@ import { useCallback, useContext, useEffect } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
 import { submitLearningEvidence } from '../../../services/learningEvidenceService';
 import { enqueueEvidence, flushEvidenceQueue } from '../evidenceQueue';
+import { isAssessedQuestion, buildEvidencePayload } from '../evidencePayload';
 import { useLearningViewer } from '../../../features/learning/learningViewer';
 
 /**
  * The smallest possible bridge between a lesson question and the backend's
  * learning-evidence endpoint. Call submitEvidence at the exact point the
- * module already knows correctness (its existing validate handler) — no new
- * state machine, and it NEVER throws or blocks the lesson: a failed
- * submission is parked in the offline queue and retried later.
+ * student's answer is fixed (the final test's single submit) — no new state
+ * machine, and it NEVER throws or blocks the lesson: a failed submission is
+ * parked in the offline queue and retried later.
+ *
+ * Mastery V2 : the payload is `{questionCode, attemptId, answer: {picked}}`
+ * (see evidencePayload.js). Correctness, learning points and difficulty are
+ * the SERVER's — the client no longer sends `isCorrect` or
+ * `learningPointCodes`. An unanswered question is sent with `picked: null`
+ * so the server records it as `abandoned`.
  *
  * Only questions whose metadata is `assessment: {enabled: true, type:
  * 'assessment', learningPointIds: [...]}` generate evidence. The type check
@@ -45,23 +52,13 @@ export function useEvidenceSubmission(lessonCode) {
 
   /**
    * @param {{id: string, assessment?: {enabled: boolean, type: string, learningPointIds: string[]}}} question
-   * @param {boolean} isCorrect
-   * @param {object|null} [answer] - optional raw answer payload for the audit trail
+   * @param {{picked: number|null}|number|null} answer - the picked option index, `null` when unanswered
    */
   const submitEvidence = useCallback(
-    (question, isCorrect, answer = null) => {
-      const meta = question?.assessment;
-      if (!token || !meta?.enabled || meta.type !== 'assessment' || !meta.learningPointIds?.length) {
-        return;
-      }
+    (question, answer = null) => {
+      if (!token || !isAssessedQuestion(question)) return;
 
-      const evidence = {
-        questionCode: question.id,
-        attemptId: crypto.randomUUID(),
-        isCorrect,
-        learningPointCodes: meta.learningPointIds,
-        answer,
-      };
+      const evidence = buildEvidencePayload(question, answer);
 
       submitLearningEvidence(token, lessonCode, evidence).catch(() => {
         // Never surface this to the student — park it for a later flush.

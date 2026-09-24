@@ -205,3 +205,48 @@ describe('la révélation (§36)', () => {
     }
   });
 });
+
+/**
+ * RÉGRESSION — la lecture d'une saisie.
+ *
+ * `Number('')` vaut 0 : un champ VIDE était jugé « 0 », donc juste dès que
+ * la réponse attendue était 0. Et `−2` (le signe moins que le plan affiche)
+ * ou `٣` rendaient `NaN`, soit « faux » sur une bonne réponse.
+ */
+describe('la lecture d’une saisie — vide n’est pas zéro', () => {
+  it('une saisie vide ou illisible n’est PAS un nombre', () => {
+    for (const text of ['', '   ', 'abc', '1,2,3', '--2', '1/0', '/', null, undefined, NaN, Infinity]) {
+      expect(P.parseNumberInput(text), String(text)).toBeNaN();
+    }
+  });
+
+  it('lit le vrai signe moins, les chiffres arabes-indiens et persans, la virgule', () => {
+    const cases = [
+      ['−2', -2], ['-2', -2], ['1,5', 1.5], ['٫5', 0.5], ['٢٫٥', 2.5],
+      ['٣', 3], ['−٤', -4], ['۴', 4], ['۱۲', 12], [' 0 ', 0], ['-3/2', -1.5], ['6/4', 1.5], [7, 7],
+    ];
+    for (const [text, expected] of cases) {
+      expect(P.parseNumberInput(text), String(text)).toBe(expected);
+    }
+  });
+
+  it('un point n’est lu que si SES DEUX coordonnées le sont', () => {
+    expect(P.parsePointInput({ x: '', y: '' })).toBeNull();
+    expect(P.parsePointInput({ x: '0', y: '' })).toBeNull();
+    expect(P.parsePointInput({ x: '−3', y: '٢' })).toEqual({ x: -3, y: 2 });
+    expect(P.parsePointInput(null)).toBeNull();
+  });
+
+  it('le juge ne prend plus un champ vide pour la réponse 0', () => {
+    const numberAtZero = { answerKind: 'number', answer: 0 };
+    expect(P.judge(numberAtZero, '').correct).toBe(false);
+    expect(P.judge(numberAtZero, '   ').correct).toBe(false);
+    expect(P.judge(numberAtZero, '0').correct).toBe(true);
+    expect(P.judge(numberAtZero, 0).correct).toBe(true);
+    const numberAtMinusTwo = { answerKind: 'number', answer: -2 };
+    expect(P.judge(numberAtMinusTwo, '−2').correct).toBe(true);
+    const pointAtOrigin = { answerKind: 'point', answer: { x: 0, y: 0 } };
+    expect(P.judge(pointAtOrigin, P.parsePointInput({ x: '', y: '' })).correct).toBe(false);
+    expect(P.judge(pointAtOrigin, P.parsePointInput({ x: '٠', y: '−0' })).correct).toBe(true);
+  });
+});

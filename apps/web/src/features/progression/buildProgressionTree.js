@@ -52,6 +52,11 @@ export function mergeLearningPoints(lesson, currentMastery, gradeId) {
       order: lp.order,
       state: resolveMasteryState(row),
       confidence: row?.confidence,
+      // Mastery V2 : la raison d'un `reinforce`, la fraîcheur d'un acquis et
+      // le compteur d'items distincts — lus, jamais calculés ici.
+      statusReason: row?.statusReason ?? null,
+      freshness: row?.freshness ?? null,
+      distinctItemsSuccess: row?.distinctItemsSuccess,
     };
   });
 }

@@ -170,6 +170,65 @@ function affineIterate(first, a, b, steps) {
   return value;
 }
 
+/** Les étiquettes de comportement, dans l'ordre des boutons (`tools.sequences.trend.*`). */
+export const BEHAVIOUR_CHOICES = Object.freeze(['increasing', 'decreasing', 'alternating', 'approaching', 'diverging']);
+
+/**
+ * TOUTES les étiquettes VRAIES d'une suite arithmétique ou géométrique —
+ * calculées sur la forme fermée, pas lues sur quelques termes.
+ *
+ * Les cinq étiquettes ne s'excluent PAS : une suite arithmétique de raison 4
+ * est متزايدة ET تتباعد ; une géométrique de raison 0,5 et de premier terme
+ * positif est متناقصة ET تقترب من قيمة. Le défi n'en désignait qu'une, et
+ * l'élève qui choisissait l'autre — tout aussi vraie — recevait « faux ».
+ * C'est une fausseté enseignée, pas une sévérité.
+ *
+ * Le sens de chaque étiquette (mathlab.json) :
+ *   increasing  متزايدة           uₙ₊₁ − uₙ > 0 pour tout n
+ *   decreasing  متناقصة           uₙ₊₁ − uₙ < 0 pour tout n
+ *   alternating متناوبة الإشارة   uₙ · uₙ₊₁ < 0 pour tout n
+ *   approaching تقترب من قيمة     la suite converge (limite finie)
+ *   diverging   تتباعد            la suite ne converge pas — au sens du
+ *                                 programme : « متباعدة » = non convergente,
+ *                                 d'où (−1)ⁿ, qui oscille sans limite, en fait partie.
+ *
+ * @returns {string[]|null} `null` si la famille n'est pas couverte.
+ */
+export function trueBehaviours(spec) {
+  if (!spec) return null;
+  const first = Number(spec.first);
+  if (!Number.isFinite(first)) return null;
+
+  let increasing; let decreasing; let alternating; let converges;
+  if (spec.kind === 'arithmetic') {
+    // uₙ = u₀ + n·r : l'écart vaut r, le signe finit toujours par se fixer.
+    const r = Number(spec.difference);
+    if (!Number.isFinite(r)) return null;
+    increasing = r > 0;
+    decreasing = r < 0;
+    alternating = false;
+    converges = r === 0;
+  } else if (spec.kind === 'geometric') {
+    // uₙ = u₀·qⁿ : l'écart vaut u₀·qⁿ·(q − 1), le produit de deux termes
+    // consécutifs u₀²·q²ⁿ⁺¹ a le signe de q.
+    const q = Number(spec.ratio);
+    if (!Number.isFinite(q)) return null;
+    const nonNull = first !== 0 && q !== 0;
+    increasing = nonNull && q > 0 && first * (q - 1) > 0;
+    decreasing = nonNull && q > 0 && first * (q - 1) < 0;
+    alternating = nonNull && q < 0;
+    converges = first === 0 || (q > -1 && q <= 1);
+  } else {
+    return null;
+  }
+
+  const truth = {
+    increasing, decreasing, alternating, approaching: converges, diverging: !converges,
+  };
+
+  return BEHAVIOUR_CHOICES.filter((label) => truth[label]);
+}
+
 /** §27 « Behavior » : d'après le graphe, croît / décroît / oscille / se stabilise ? */
 function behaviourChallenge(rng, difficulty) {
   const cases = [
@@ -180,14 +239,18 @@ function behaviourChallenge(rng, difficulty) {
     { spec: { kind: 'geometric', startIndex: 0, first: randomInt(rng, 1, 3), ratio: 2 }, expected: 'diverging' },
   ];
   const chosen = pick(rng, difficulty === 'easy' ? cases.slice(0, 4) : cases);
+  // `expected` reste l'étiquette PRINCIPALE, celle que la révélation montre ;
+  // `accepted` porte toutes celles qui sont vraies de cette suite.
+  const accepted = trueBehaviours(chosen.spec) ?? [chosen.expected];
 
   return baseChallenge(chosen.spec, {
     kind: 'behaviour',
     answerType: 'choice',
     promptKey: `${KEY}.q.behaviour`,
     promptParams: {},
-    choices: ['increasing', 'decreasing', 'alternating', 'approaching', 'diverging'],
+    choices: [...BEHAVIOUR_CHOICES],
     expected: chosen.expected,
+    accepted: accepted.includes(chosen.expected) ? accepted : [chosen.expected, ...accepted],
     // La question porte sur le GRAPHE : l'interface doit le montrer avant de
     // demander. `showFirst` le dit — c'est « given a graph, ask… » de §27.
     showFirst: true,
@@ -317,11 +380,18 @@ export function checkAnswer(challenge, answer) {
 
       return { correct: Math.abs(value - expected) <= tolerance, readable: true };
     }
-    case 'choice':
+    case 'choice': {
+      // Plusieurs étiquettes peuvent être VRAIES à la fois (voir
+      // `trueBehaviours`) : `accepted` les porte toutes.
+      const accepted = Array.isArray(challenge.accepted) && challenge.accepted.length
+        ? challenge.accepted
+        : [challenge.expected];
+
       return {
-        correct: answer === challenge.expected,
+        correct: accepted.includes(answer),
         readable: typeof answer === 'string' && answer.length > 0,
       };
+    }
     default:
       return { correct: false, readable: false };
   }

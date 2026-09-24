@@ -1,0 +1,209 @@
+{
+  "metadata": {
+    "title": "سلسلة التفوق، تمرين 8 — خمسة كسور",
+    "estimatedMinutes": 7,
+    "tags": [
+      "اختزال"
+    ],
+    "source": {
+      "type": "worksheet",
+      "worksheetId": "tafawwuq-01",
+      "elementId": "ws01-ex-08",
+      "section": "التمارين",
+      "number": 8
+    }
+  },
+  "statement": {
+    "content": "اكتب كل كسر من الكسور التالية على شكل كسر غير قابل للاختزال."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\dfrac{136}{104}$",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "17/13",
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب PGCD(136 ; 104)."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل خوارزمية إقليدس أو الفروق المتتابعة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم البسط والمقام على القاسم المشترك الأكبر."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(136 ; 104) = 8.",
+        "incorrect": "القسمة على PGCD تعطي الكسر غير القابل للاختزال في خطوة واحدة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$\\dfrac{240}{520}$",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "6/13",
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب PGCD(240 ; 520)."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل خوارزمية إقليدس أو الفروق المتتابعة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم البسط والمقام على القاسم المشترك الأكبر."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(240 ; 520) = 40.",
+        "incorrect": "القسمة على PGCD تعطي الكسر غير القابل للاختزال في خطوة واحدة."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "$\\dfrac{651}{310}$",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "21/10",
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب PGCD(651 ; 310)."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل خوارزمية إقليدس أو الفروق المتتابعة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم البسط والمقام على القاسم المشترك الأكبر."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(651 ; 310) = 31.",
+        "incorrect": "القسمة على PGCD تعطي الكسر غير القابل للاختزال في خطوة واحدة."
+      }
+    },
+    {
+      "id": "q4",
+      "statement": "$\\dfrac{333}{666}$",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "1/2",
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب PGCD(333 ; 666)."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل خوارزمية إقليدس أو الفروق المتتابعة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم البسط والمقام على القاسم المشترك الأكبر."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(333 ; 666) = 333.",
+        "incorrect": "القسمة على PGCD تعطي الكسر غير القابل للاختزال في خطوة واحدة."
+      }
+    },
+    {
+      "id": "q5",
+      "statement": "$\\dfrac{1978}{732}$",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "989/366",
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب PGCD(1978 ; 732)."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل خوارزمية إقليدس أو الفروق المتتابعة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم البسط والمقام على القاسم المشترك الأكبر."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(1978 ; 732) = 2.",
+        "incorrect": "القسمة على PGCD تعطي الكسر غير القابل للاختزال في خطوة واحدة."
+      }
+    }
+  ],
+  "id": "ex-4am-ikhtizal-kasr-l3-003",
+  "lessonCode": "ikhtizal-kasr",
+  "level": 3
+}

@@ -1,0 +1,127 @@
+{
+  "metadata": {
+    "title": "سلسلة التفوق، تمرين 9 — 441/770",
+    "estimatedMinutes": 7,
+    "tags": [
+      "اختزال",
+      "أوليان فيما بينهما"
+    ],
+    "source": {
+      "type": "worksheet",
+      "worksheetId": "tafawwuq-01",
+      "elementId": "ws01-ex-09",
+      "section": "التمارين",
+      "number": 9
+    }
+  },
+  "statement": {
+    "content": "نعتبر العددين 63 و 110، والكسر $\\dfrac{441}{770}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لتبيّن أن 63 و 110 أوليان فيما بينهما، احسب PGCD(63 ; 110).",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "110 = 63 × 1 + 47."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تابع خوارزمية إقليدس."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عددان أوليان فيما بينهما قاسمهما المشترك الأكبر 1."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(63 ; 110) = 1: العددان أوليان فيما بينهما.",
+        "incorrect": "آخر باقٍ غير معدوم في خوارزمية إقليدس."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "لتبيّن أن $\\dfrac{441}{770} = \\dfrac{63}{110}$، احسب PGCD(441 ; 770).",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "770 = 441 × 1 + 329."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تابع خوارزمية إقليدس."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم 441 و 770 على الناتج وقارن بالكسر 63/110."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(441 ; 770) = 7، و 441 ÷ 7 = 63 و 770 ÷ 7 = 110.",
+        "incorrect": "آخر باقٍ غير معدوم هو القاسم المشترك الأكبر."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "عيّن العدد الطبيعي n حيث $\\dfrac{441}{770} = \\dfrac{315}{315 + n}$.",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "235",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{441}{770} = \\dfrac{63}{110}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "315 = 63 × 5."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المقام 315 + n يساوي 110 × 5."
+        }
+      ],
+      "feedback": {
+        "correct": "315 + n = 550 إذن n = 235.",
+        "incorrect": "اكتب الكسر 315/(315 + n) مكافئًا لـ 63/110."
+      }
+    }
+  ],
+  "id": "ex-4am-ikhtizal-kasr-l4-003",
+  "lessonCode": "ikhtizal-kasr",
+  "level": 4
+}

@@ -36,6 +36,18 @@ describe('état de la سبّورة', () => {
     expect(data.files).toEqual({});
   });
 
+  it('garde le bureau de géométrie quand il existe, assaini, et ne l’invente pas sinon', () => {
+    expect(createWhiteboardData()).not.toHaveProperty('geometry');
+    const data = toWhiteboardData({
+      elements: [], appState: {},
+      geometry: { instruments: { ruler: { visible: true, x: 10, y: 20, angle: 0, lengthCm: 20 }, compass: { radius: 'grand' } }, settings: { measures: true } },
+    });
+    expect(data.geometry.instruments.ruler).toMatchObject({ visible: true, x: 10, y: 20, lengthCm: 20 });
+    expect(data.geometry.instruments.compass.radius).toBeGreaterThan(0);
+    expect(data.geometry.settings.measures).toBe(true);
+    expect(toWhiteboardData({ elements: [], geometry: 'x' })).not.toHaveProperty('geometry');
+  });
+
   it('répare un état abîmé plutôt que de planter', () => {
     const data = toWhiteboardData({ elements: 'x', appState: null, files: [] });
     expect(data).toEqual({ elements: [], appState: { viewBackgroundColor: WHITEBOARD_BACKGROUND }, files: {} });

@@ -1,0 +1,93 @@
+{
+  "metadata": {
+    "title": "سلسلة التفوق، الوضعية 4 — سياج حقل النخيل",
+    "estimatedMinutes": 7,
+    "tags": [
+      "وضعية إدماجية",
+      "تسييج"
+    ],
+    "source": {
+      "type": "worksheet",
+      "worksheetId": "tafawwuq-01",
+      "elementId": "ws01-sit-04",
+      "section": "الوضعيات",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "يملك عمي محمد حقل نخيل مستطيل الشكل طوله 135 m وعرضه 39 m، يريد تسييجه. لهذا الغرض يغرس أعمدة متساوية المسافة عن بعضها البعض، حيث تكون هذه المسافة عددًا طبيعيًا بالمتر وأكبر من 2 m، ويضع عمودًا في كل ركن من أركان الحقل."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هي المسافة الفاصلة بين كل عمودين (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-aadad_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي (بالمتر)",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بما أن في كل ركن عمودًا، فالمسافة تقسم 135 و 39."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قواسم PGCD(135 ; 39) هي القواسم المشتركة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اختر القاسم المشترك الأكبر من 2."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(135 ; 39) = 3، والقاسم المشترك الوحيد الأكبر من 2 هو 3 m.",
+        "incorrect": "المسافة قاسم مشترك لـ 135 و 39 وأكبر من 2."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو عدد الأعمدة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-aadad_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "116",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "محيط الحقل: 2 × (135 + 39)."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "على سياج مغلق، عدد الأعمدة = المحيط ÷ المسافة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "348 ÷ 3."
+        }
+      ],
+      "feedback": {
+        "correct": "المحيط 348 m، و 348 ÷ 3 = 116 عمودًا.",
+        "incorrect": "على خطّ مغلق، عدد الأعمدة يساوي عدد المسافات."
+      }
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-aadad-l5-001",
+  "lessonCode": "wadiya-idmajiya-aadad",
+  "level": 5
+}

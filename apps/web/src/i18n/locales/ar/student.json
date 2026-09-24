@@ -247,10 +247,6 @@
       "loginToSee": "سجّل الدخول لعرض نتائجك الحقيقية."
     },
     "chips": {
-      "mastered": "متحكَّم فيها",
-      "reinforce": "قيد التحسّن",
-      "gap": "تحتاج إلى تدعيم",
-      "unassessed": "لم تُقيَّم بعد",
       "aria": "{{label}}: {{count}}",
       "total_one": "كفاءة واحدة",
       "total_two": "كفاءتان",
@@ -294,7 +290,62 @@
     "msgUnassessed": "أنجِز الاختبار النهائي للدرس لتقييم هذه الكفاءة.",
     "msgGap": "صعوبة حقيقية تحتاج إلى عمل.",
     "msgReinforce": "الأساس موجود، لكنه ليس متينًا بعد.",
-    "msgMastered": "كفاءة مكتسبة بمتانة."
+    "msgMastered": "كفاءة مكتسبة بمتانة.",
+    "reason": {
+      "threshold": "",
+      "insufficient_evidence": "ثبّت بتمارين مختلفة: {{done}} من {{needed}} أسئلة متنوعة",
+      "needs_assessment": "جاهز للتحدي: أنجز الاختبار النهائي أو تمرينًا من مستوى أعلى"
+    },
+    "freshness": {
+      "fresh": "حديث",
+      "aging": "منذ فترة",
+      "stale": "يحتاج تذكيرًا"
+    },
+    "loadingDot": "جارٍ التحميل",
+    "errorDot": "تعذّر تحميل حالة نقاط التعلّم",
+    "explain": {
+      "why": "لماذا؟",
+      "whyAria": "لماذا هذه الحالة: {{title}}",
+      "title": "لماذا هذه الحالة؟",
+      "close": "إغلاق",
+      "loading": "جارٍ تحميل التفاصيل…",
+      "error": "تعذّر تحميل التفاصيل. أعِد المحاولة.",
+      "retry": "أعِد المحاولة",
+      "confidence": "الثقة: {{percent}}٪",
+      "evidenceTitle": "الأدلّة",
+      "noEvidence": "لا أدلّة بعد: لم تُجب عن سؤال يقيس هذه النقطة.",
+      "distinctSuccess": "{{done}} من {{needed}} أسئلة متنوعة أُنجزت بنجاح",
+      "distinctSuccessNoNeed": "{{done}} أسئلة متنوعة أُنجزت بنجاح",
+      "attempts": "المحاولات: {{count}}",
+      "successes": "النجاحات: {{count}}",
+      "assessmentSuccesses": "نجاحات في الاختبار النهائي: {{count}}",
+      "withHints": "نجاحات حديثة بإرشاد: {{count}}",
+      "maxDifficulty": "أعلى مستوى صعوبة نجحت فيه: {{level}}",
+      "lastSuccess": "آخر نجاح: {{date}}",
+      "lastFailure": "آخر خطأ: {{date}}",
+      "recentTitle": "آخر المحاولات",
+      "noRecent": "لا محاولات حديثة.",
+      "source": {
+        "practice": "تمرين",
+        "final_test": "اختبار نهائي"
+      },
+      "kind": {
+        "first": "أول مرة",
+        "variant": "صيغة أخرى",
+        "retry_after_failure": "إعادة بعد خطأ",
+        "repeat_after_success": "تكرار بعد نجاح"
+      },
+      "outcome": {
+        "correct": "صحيح",
+        "equivalent_correct": "صحيح",
+        "partially_correct": "نصف صحيح",
+        "incorrect": "غير صحيح",
+        "abandoned": "متجاوَز",
+        "syntax_error": "صيغة غير مفهومة"
+      },
+      "hintsUsed": "بإرشاد ({{count}})",
+      "level": "المستوى {{level}}"
+    }
   },
   "practice": {
     "eyebrow": "التمارين",
@@ -321,7 +372,15 @@
     "statExercises": "التمارين",
     "statQuestions": "الأسئلة",
     "statCorrect": "الصحيحة",
+    "statPartial": "نصف صحيحة",
+    "statIncorrect": "غير صحيحة",
+    "statSuccessRate": "نسبة النجاح",
     "statHints": "الإرشادات",
+    "serverVerdict": "تم التحقق من إجابتك على الخادم",
+    "selectedBecause": {
+      "weak_learning_point": "اخترنا لك هذا التمرين لأنه يتناول نقطة تحتاج إلى تدعيم",
+      "recent_misconception": "اخترنا لك هذا التمرين لمراجعة خطأ ظهر مؤخرًا"
+    },
     "whatResisted": "ما صعُب عليك",
     "timesCount_one": "مرّة واحدة",
     "timesCount_two": "مرّتان",
@@ -333,8 +392,6 @@
     "keepPracticing": "واصل التمرّن",
     "myCourses": "دروسي",
     "multipleAnswers": "قد تكون عدّة إجابات صحيحة.",
-    "askHint": "إرشاد؟",
-    "anotherHint": "إرشاد آخر",
     "allHintsGiven": "لقد أُعطيت كل الإرشادات.",
     "integerSetAria": "الأعداد، مفصولة بفواصل",
     "levelNames": {
@@ -346,16 +403,15 @@
     },
     "levelRecommended": "مُقترح",
     "levelDone": "مكتمل",
-    "levelProgress": "{{done}} من {{total}}",
     "levelOpening": "جارٍ الفتح…",
     "levelLockedHint": "أتمم تمرينًا من المستوى السابق لفتح هذا المستوى.",
+    "levelLockedAfter": "أتمم تمرينًا من المستوى {{level}} لفتح هذا المستوى.",
     "entryTag": "تدرّب",
     "entryTitle": "ابدأ التمارين",
     "entryBody": "{{total}} تمرينًا على {{levels}} مستويات، من الأساسيات إلى التحدّي. ما تُظهره هنا يُحتسب في نفس التقييم الذي يحتسب الاختبار النهائي.",
     "entryStart": "ابدأ التمارين",
     "entryLogin": "سجّل الدخول للتدرّب",
     "entryLoginNote": "تقدّمك محفوظ في حسابك.",
-    "hintsRemaining": "بقي {{count}}",
     "verdict": {
       "correct": "إجابة صحيحة",
       "equivalent_correct": "صحيحة — بكتابة أخرى صحيحة أيضًا",
@@ -382,17 +438,93 @@
     "progress": {
       "exerciseOf": "التمرين {{current}} من {{total}}",
       "questionOfShort": "السؤال {{current}} من {{total}}",
-      "remainingQuestions": "بقي {{count}} سؤال في هذا التمرين",
-      "remainingQuestionsOne": "بقي سؤال واحد في هذا التمرين",
       "lastQuestion": "آخر سؤال في هذا التمرين",
-      "remainingExercises": "ثم {{count}} تمرين في هذا المستوى",
-      "remainingExercisesOne": "ثم تمرين واحد في هذا المستوى",
       "lastExercise": "آخر تمرين في هذا المستوى",
-      "correctSoFar": "{{count}} إجابة صحيحة",
       "ariaExercises": "تقدّمك في التمارين",
-      "ariaQuestions": "تقدّمك في أسئلة هذا التمرين"
+      "ariaQuestions": "تقدّمك في أسئلة هذا التمرين",
+      "remainingQuestions_one": "بقي سؤال واحد في هذا التمرين",
+      "remainingQuestions_two": "بقي سؤالان في هذا التمرين",
+      "remainingQuestions_few": "بقيت {{count}} أسئلة في هذا التمرين",
+      "remainingQuestions_many": "بقي {{count}} سؤالًا في هذا التمرين",
+      "remainingQuestions_other": "بقي {{count}} سؤال في هذا التمرين",
+      "remainingExercises_one": "ثم تمرين واحد في هذا المستوى",
+      "remainingExercises_two": "ثم تمرينان في هذا المستوى",
+      "remainingExercises_few": "ثم {{count}} تمارين في هذا المستوى",
+      "remainingExercises_many": "ثم {{count}} تمرينًا في هذا المستوى",
+      "remainingExercises_other": "ثم {{count}} تمرين في هذا المستوى"
     },
-    "questionNumber": "السؤال {{n}}"
+    "questionNumber": "السؤال {{n}}",
+    "statementLabel": "نصّ التمرين",
+    "yourAnswerLabel": "إجابتك",
+    "exerciseDone": "أتممت هذا التمرين",
+    "exerciseScore": "الإجابات الصحيحة:",
+    "history": {
+      "title": "ما أنجزته في هذا التمرين",
+      "yourAnswer": "إجابتك:",
+      "noAnswer": "بلا إجابة",
+      "status": {
+        "correct": "✓ صحيحة",
+        "partial": "◐ نصف صحيحة",
+        "incorrect": "✕ تحتاج إلى مراجعة",
+        "neutral": "؟ لم تُقيَّم"
+      },
+      "retried": "صُحّحت بعد إعادة المحاولة",
+      "hintsUsed_one": "استعملت إرشادًا واحدًا",
+      "hintsUsed_two": "استعملت إرشادين",
+      "hintsUsed_few": "استعملت {{count}} إرشادات",
+      "hintsUsed_many": "استعملت {{count}} إرشادًا",
+      "hintsUsed_other": "استعملت {{count}} إرشاد",
+      "previous": "السؤال السابق",
+      "showExplanation": "عرض التوضيح",
+      "hideExplanation": "إخفاء التوضيح",
+      "statusLong": {
+        "correct": "إجابة صحيحة",
+        "partial": "نصف صحيحة",
+        "incorrect": "تحتاج إلى مراجعة",
+        "neutral": "لم تُقيَّم"
+      }
+    },
+    "hint": {
+      "title": "الإرشادات",
+      "n": "الإرشاد {{n}}",
+      "reveal": "اطلب الإرشاد {{n}}",
+      "locked": "يُفتح بعد الإرشاد {{n}}",
+      "available_one": "إرشاد واحد متاح",
+      "available_two": "إرشادان متاحان",
+      "available_few": "{{count}} إرشادات متاحة",
+      "available_many": "{{count}} إرشادًا متاحًا",
+      "available_other": "{{count}} إرشاد متاح",
+      "type": {
+        "look": "ملاحظة",
+        "direction": "توجيه",
+        "strategy": "خطّة الحلّ"
+      },
+      "short": "إرشاد"
+    },
+    "previousQuestion": "السؤال السابق",
+    "answerSaved": "حُفظت إجابتك",
+    "context": {
+      "title": "سياق السؤال",
+      "current": "(الحالي)",
+      "inProgress": "قيد الحلّ",
+      "upcoming": "سيظهر بعد السؤال {{n}}"
+    },
+    "meta": {
+      "minutes_one": "دقيقة واحدة",
+      "minutes_two": "دقيقتان",
+      "minutes_few": "{{count}} دقائق",
+      "minutes_many": "{{count}} دقيقة",
+      "minutes_other": "{{count}} دقيقة"
+    },
+    "lp": {
+      "eyebrow": "نقطة التعلّم",
+      "untitled": "نقطة تعلّم هذا السؤال",
+      "starsAria": "حالة التحكّم في نقطة التعلّم: {{state}} — المرحلة {{stage}} من {{total}}",
+      "exercises": "تمارين أنهيتها",
+      "questions": "أسئلة أجبت عنها"
+    },
+    "levelStart": "ابدأ",
+    "levelAgain": "تمرّن من جديد"
   },
   "notebook": {
     "title": "كرّاسي",
@@ -795,12 +927,6 @@
     "textbookPages": "الكتاب ص {{pages}}",
     "start": "أبدأ الدرس",
     "continue": "أواصل",
-    "mastery": {
-      "unassessed": "لم يُقيَّم بعد",
-      "gap": "يحتاج إلى مراجعة",
-      "reinforce": "في طور التثبيت",
-      "mastered": "متحكَّم فيه"
-    },
     "unitCard": {
       "open": "افتح الوحدة",
       "lessonsOf": "دروس الوحدة",

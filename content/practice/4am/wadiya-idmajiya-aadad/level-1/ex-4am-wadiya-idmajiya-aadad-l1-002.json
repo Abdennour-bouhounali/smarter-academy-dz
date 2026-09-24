@@ -1,0 +1,127 @@
+{
+  "metadata": {
+    "title": "سلسلة التفوق، الوضعية 2 — الحماية المدنية",
+    "estimatedMinutes": 5,
+    "tags": [
+      "وضعية إدماجية",
+      "توزيع"
+    ],
+    "source": {
+      "type": "worksheet",
+      "worksheetId": "tafawwuq-01",
+      "elementId": "ws01-sit-02",
+      "section": "الوضعيات",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "يريد المسؤولون عن الحماية المدنية وضع 240 عون حماية و 105 ضابطًا للحماية المدنية في مجموعات متماثلة وبأكبر عدد ممكن من المجموعات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب عدد المجموعات التي تمّ تشكيلها.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-aadad_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجموعات متماثلة: عددها يقسم 240 و 105."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نريد أكبر عدد ممكن من المجموعات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب PGCD(240 ; 105)."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(240 ; 105) = 15 مجموعة.",
+        "incorrect": "عدد المجموعات هو القاسم المشترك الأكبر."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب عدد أعوان الحماية في كل مجموعة.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-aadad_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "16",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "240 عونًا على 15 مجموعة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم 240 على عدد المجموعات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "240 ÷ 15."
+        }
+      ],
+      "feedback": {
+        "correct": "240 ÷ 15 = 16 عونًا.",
+        "incorrect": "اقسم عدد الأعوان على عدد المجموعات."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "احسب عدد الضباط في كل مجموعة.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-aadad_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "105 ضباط على 15 مجموعة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم 105 على عدد المجموعات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "105 ÷ 15."
+        }
+      ],
+      "feedback": {
+        "correct": "105 ÷ 15 = 7 ضباط.",
+        "incorrect": "اقسم عدد الضباط على عدد المجموعات."
+      }
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-aadad-l1-002",
+  "lessonCode": "wadiya-idmajiya-aadad",
+  "level": 1
+}

@@ -60,7 +60,11 @@ export default function DifferenceAlgorithm({
     onReject: (_s, _z, reason) => setReject(reason),
   });
 
-  useEffect(() => { if (state.isFormal) onFinished?.(lab.gcd); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (state.isFormal) state.report(onFinished, lab.gcd); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // La contrainte de la configuration — une seule définition, lue par le
+  // laboratoire libre / le mode classe ET par « أكمل الفروق ».
+  const validateNumbers = (x) => (divisibility.differenceSteps(x.a, x.b).steps.length > 30 ? t('manipulation.diff.tooManySteps') : '');
 
   const pair = L.currentPair(lab);
   const finished = L.isDifferencesFinished(lab);
@@ -77,7 +81,7 @@ export default function DifferenceAlgorithm({
       lead={lead}
       state={state}
       numberFields={[{ key: 'a', label: 'a' }, { key: 'b', label: 'b' }]}
-      validate={(x) => (divisibility.differenceSteps(x.a, x.b).steps.length > 30 ? t('manipulation.diff.tooManySteps') : '')}
+      validate={validateNumbers}
       allowModeSwitch={allowModeSwitch}
       hints={[t('manipulation.diff.hint1'), t('manipulation.diff.hint2'), t('manipulation.diff.hint3')]}
       controller={{
@@ -86,6 +90,17 @@ export default function DifferenceAlgorithm({
         prevStep: () => setLab(L.undoSubtract),
         canPrev: () => lab.done > 0,
         showSolution: () => { setLab((s) => ({ ...s, done: s.steps.length, pgcdPlaced: true })); state.discover(); state.formalize(); },
+        // « أكمل الفروق » (§6bis) : après UNE coupe faite à la main, les
+        // suivantes ne sont plus que le même geste. La case PGCD reste vide :
+        // reconnaître le dernier fruit non nul est la découverte.
+        autoComplete: {
+          label: t('manipulation.diff.autoComplete'),
+          ready: lab.a === a && lab.b === b && !validateNumbers({ a, b }),
+          manualDone: lab.done > 0,
+          remaining: L.remainingDifferences(lab),
+          step: () => setLab(L.subtract),
+          finish: () => setLab(L.completeDifferences),
+        },
       }}
       controlsOverride={{ prevStep: true }}
       representation={shown.length > 0 && (

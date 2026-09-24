@@ -7,10 +7,10 @@ import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { src } from '../../_unit/unitMeta';
 const Q = ({ children, source }) => <span>{children} <SourceTag source={source} /></span>;
-/** Module 5 — إتقان : نشاط 8, معارف 6, طريقة 595/560, exercice 32. */
+/** Module 5 — إختبار أولي : نشاط 8, معارف 6, طريقة 595/560, exercice 32. */
 export default function Module05Itqan() {
   return (
-    <BossFinal ctx={MODULE_CTX} navLinks={getNavLinks(5)} moduleNumber={5} moduleTitle="إتقان" moduleSubtitle="خمس أسئلة تُقيّم ما تعلّمته" estimatedTime="6 دقائق" lessonConfig={LESSON_CONFIG} timerSeconds={6 * 60} timerLabel="6 دقائق"
+    <BossFinal ctx={MODULE_CTX} navLinks={getNavLinks(5)} moduleNumber={5} moduleTitle="إختبار أولي" moduleSubtitle="خمس أسئلة تُقيّم ما تعلّمته" estimatedTime="6 دقائق" lessonConfig={LESSON_CONFIG} timerSeconds={6 * 60} timerLabel="6 دقائق"
       brief={{ tag: 'التقويم', title: 'أظهر ما تعرفه', tone: 'slate', body: <p>أجب عن الأسئلة الخمسة ثم أرسِلها دفعة واحدة.</p> }}
       skills={{ khatwa: { label: 'الاختزال خطوة بخطوة', module: 1 }, taarif: { label: 'الكسر غير القابل للاختزال', module: 2 }, pgcd: { label: 'الاختزال بـ PGCD', module: 2 }, hisab: { label: 'نتيجة حساب مختزلة', module: 4 } }}
       epreuves={[

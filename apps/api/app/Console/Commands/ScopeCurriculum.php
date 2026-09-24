@@ -78,6 +78,11 @@ class ScopeCurriculum extends Command
         // La visibilité d'une leçon pour une classe d'enseignant : un réglage,
         // pas une donnée élève. Il meurt avec la leçon qu'il règle.
         'classroom_lessons' => 'cascade',
+        // Le registre des items d'évaluation (Mastery V2) : un INDEX du
+        // contenu, reconstruit par smarter:import-content-registry — pas une
+        // donnée élève. Il meurt avec sa leçon et avec ses learning points.
+        'assessment_items' => 'cascade',
+        'assessment_item_learning_point' => 'cascade',
     ];
 
     /**
@@ -336,6 +341,7 @@ class ScopeCurriculum extends Command
             'lesson_modules', 'practice_exercises', 'learning_evidence',
             'student_lesson_progress', 'lesson_final_test_attempts',
             'practice_sessions', 'notebook_notes', 'student_reports',
+            'assessment_items',
         ];
 
         $counts = [];
@@ -346,7 +352,7 @@ class ScopeCurriculum extends Command
             $counts[$table] = DB::table($table)->whereIn('lesson_id', $lessonIds)->count();
         }
 
-        foreach (['student_learning_point_progress', 'learning_evidence_learning_point'] as $table) {
+        foreach (['student_learning_point_progress', 'learning_evidence_learning_point', 'assessment_item_learning_point'] as $table) {
             if (! DB::getSchemaBuilder()->hasTable($table)) {
                 continue;
             }

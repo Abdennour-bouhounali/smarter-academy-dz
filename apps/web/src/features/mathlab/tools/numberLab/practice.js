@@ -299,7 +299,8 @@ function equivalentChallenge(random) {
     kind: 'equivalent',
     answerType: 'fraction',
     promptKey: `${KEY}.q.equivalent`,
-    promptParams: { value: fracToText(base), denominator: target.d },
+    // from/to : l'indice « بكم نضرب {{from}} لنحصل على {{to}} » lit les mêmes paramètres.
+    promptParams: { value: fracToText(base), denominator: target.d, from: base.d, to: target.d },
     expected: target,
     base,
     hintKeys: [`${KEY}.h.sameFactor`, `${KEY}.h.whatFactor`, `${KEY}.h.multiplyBoth`],
@@ -363,8 +364,9 @@ function roundingChallenge(random, level) {
   return {
     kind: 'rounding',
     answerType: 'number',
-    promptKey: `${KEY}.q.rounding`,
-    promptParams: { value: formatShort(value), rank: power },
+    // Le rang se DIT (« أقرب جزء من عشرة »), jamais la puissance brute (-1).
+    promptKey: `${KEY}.q.roundingTo.${power}`,
+    promptParams: { value: formatShort(value) },
     expected: detail.rounded,
     tolerance: 10 ** power * 1e-6,
     power,
@@ -396,6 +398,7 @@ function representationChallenge(random) {
     promptKey: `${KEY}.q.representation${asked === 'decimal' ? 'Decimal' : 'Percent'}`,
     promptParams: { value: fracToText(frac) },
     expected: asked === 'decimal' ? value : roundTo(value * 100, 6),
+    ...(asked === 'percent' ? { unit: 'percent' } : {}),
     tolerance: asked === 'decimal' ? 1e-6 : 1e-4,
     hintKeys: [`${KEY}.h.divideNumerator`, `${KEY}.h.denominatorHundred`, `${KEY}.h.percentIsHundredth`],
     explainKey: `${KEY}.e.representation`,
@@ -470,8 +473,11 @@ export function checkAnswer(challenge, answer) {
       return { ...base, correct: String(answer) === String(challenge.expected) };
 
     case 'number': {
-      const value = readAnswerNumber(answer);
+      let value = readAnswerNumber(answer);
       if (value === null) return { ...base, correct: false, unreadable: true };
+      // « اكتب … على شكل نسبة مئوية » : `75` et `75 %` disent la même chose.
+      // `75 %` se lit 0,75 — on le ramène à l'échelle de la réponse attendue.
+      if (challenge.unit === 'percent' && typeof answer === 'string' && parseNumberInput(answer)?.source === 'percent') value *= 100;
       const tolerance = challenge.tolerance ?? 1e-9;
 
       return { ...base, correct: Math.abs(value - challenge.expected) <= tolerance, given: value };

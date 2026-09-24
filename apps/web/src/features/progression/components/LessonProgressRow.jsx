@@ -44,7 +44,7 @@ const CTA_KEY = {
  * liste de points), sauf quand la vue les vise (`forceOpen`) : une
  * recherche qui touche un point l'ouvre d'elle-même.
  */
-export default function LessonProgressRow({ node, profileStatus }) {
+export default function LessonProgressRow({ node, profileStatus, onExplain }) {
   const { t } = useTranslation('student');
   const [override, setOverride] = useState(null);
   // Un changement de vue rend la main à la vue ; l'élève peut toujours
@@ -153,6 +153,10 @@ export default function LessonProgressRow({ node, profileStatus }) {
                 title={p.title}
                 state={p.state}
                 confidence={p.confidence}
+                row={p}
+                // « لماذا؟ » ouvre le tiroir d'explication (page « تقدّمي ») ;
+                // un point jamais évalué n'a rien à expliquer.
+                onExplain={onExplain && p.state !== 'unassessed' ? () => onExplain({ code: p.code, title: p.title }) : undefined}
                 message={t(MASTERY_MESSAGE_KEY[p.state])}
                 action={
                   p.state === 'gap' || p.state === 'reinforce' ? (

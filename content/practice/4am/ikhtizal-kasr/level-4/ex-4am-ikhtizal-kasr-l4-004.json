@@ -1,0 +1,95 @@
+{
+  "metadata": {
+    "title": "سلسلة التفوق، تمرين 10 — 240x = 320y",
+    "estimatedMinutes": 4,
+    "tags": [
+      "اختزال"
+    ],
+    "source": {
+      "type": "worksheet",
+      "worksheetId": "tafawwuq-01",
+      "elementId": "ws01-ex-10",
+      "section": "التمارين",
+      "number": 10
+    }
+  },
+  "statement": {
+    "content": "x و y عددان طبيعيان غير معدومين بحيث: 240x = 320y."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب الكسر $\\dfrac{x}{y}$.",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "4/3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقسم طرفي المساواة على 240y."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{x}{y} = \\dfrac{320}{240}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يمكنك أن تكتبه بأي شكل مساوٍ."
+        }
+      ],
+      "feedback": {
+        "correct": "x/y = 320/240.",
+        "incorrect": "من 240x = 320y نستنتج x/y = 320/240."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "أعطِ الناتج على شكل كسر غير قابل للاختزال.",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "4/3",
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب PGCD(320 ; 240)."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "PGCD(320 ; 240) = 80."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم البسط والمقام على 80."
+        }
+      ],
+      "feedback": {
+        "correct": "x/y = 4/3.",
+        "incorrect": "اقسم 320 و 240 على قاسمهما المشترك الأكبر."
+      }
+    }
+  ],
+  "id": "ex-4am-ikhtizal-kasr-l4-004",
+  "lessonCode": "ikhtizal-kasr",
+  "level": 4
+}

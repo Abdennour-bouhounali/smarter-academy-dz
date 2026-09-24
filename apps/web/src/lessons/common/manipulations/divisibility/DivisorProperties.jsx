@@ -84,7 +84,7 @@ export default function DivisorProperties({
     onReject: (_s, _z, reason) => setReject(reason),
   });
 
-  useEffect(() => { if (state.isFormal) onFinished?.(); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (state.isFormal) state.report(onFinished); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Tous les murs à la MÊME échelle : la plus grande longueur du chantier.
   const scale = Math.max(a + b, 1);

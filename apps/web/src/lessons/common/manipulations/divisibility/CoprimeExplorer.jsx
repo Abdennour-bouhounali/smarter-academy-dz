@@ -70,7 +70,7 @@ export default function CoprimeExplorer({
     setLab((s) => { const next = L.check(s); if (L.allShared(next)) state.discover(); return next; });
   };
 
-  useEffect(() => { if (state.isFormal) onFinished?.(L.isCoprime(lab)); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (state.isFormal) state.report(onFinished, L.isCoprime(lab)); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const coprime = L.isCoprime(lab);
   const heldValue = drag.held ? (drag.held.startsWith('k:') ? Number(drag.held.replace('k:', '')) : L.parseChip(drag.held).d) : null;

@@ -28,18 +28,21 @@ manipulations/
 ├── ManipulationStage.jsx       the manipulation area (centre of the page)
 ├── ManipulationProgress.jsx    جرّب › اكتشف › صِغ  (+ « الخطوة n من N » only when a type
 │                            passes `stepCount` — none does today, so it never renders)
-├── ManipulationControls.jsx    student: إعادة · تلميح · تحقّق · الشرح
+├── ManipulationControls.jsx    student: إعادة · تلميح · [auto-complete] · تحقّق · الشرح
+├── ManipulationAutoComplete.jsx the student's « compléter automatiquement » button + useAutoComplete (§6bis)
+├── autoComplete.js             PURE decisions of that button: status, animation plan (unit-tested)
 ├── ManipulationTeacherMode.jsx class mode: step, replay, hide answer, show solution, change numbers
 ├── ManipulationHint.jsx        progressive hints (never the answer)
 ├── ManipulationDiscovery.jsx   conjecture → formal rule (never before the action)
-├── ManipulationLevels.jsx      4 levels + مختبر حر (constrained)
+├── ManipulationFreeLab.jsx     مختبر حر (constrained) — NOT a level
 ├── ManipulationWorkspace.jsx   ONE workspace, two levels (مبتدئ / متقدم) — §7bis-levels
-├── ManipulationLevelSelector.jsx  the two tabs (role=tablist, arrow keys, RTL-aware)
+├── ManipulationLevelSelector.jsx  THE level selector: two tabs مبتدئ / متقدم (role=tablist, arrow keys, RTL-aware)
 ├── workspaceLevels.js          PURE decisions of the workspace (unit-tested)
+├── workspaceContext.js         WorkspaceLevelContext — tells a manipulation it sits in a workspace
 ├── useManipulation.js          numbers · phase · hints · level · mode · epoch
 ├── useStepSequence.js          bounded step cursor
 ├── useDragInteraction.js       pointer drag + magnet + reject + keyboard alternative
-├── levels.js                   the 4 levels per type, each citing a textbook element
+├── levels.js                   the TWO levels per type { beginner, advanced } + resolveManipulationLevels (§7)
 ├── logic/                      PURE interaction logic per type (unit-tested, no React)
 ├── themeWords.js               the Arabic words of a theme (lesson.json) merged with a lesson's `context`
 ├── primitives/                 shared building blocks, never duplicated by a type
@@ -110,6 +113,18 @@ Rules that make this reusable rather than eight one-offs:
   `coprime-explorer` (`startWith="groups"`) and `fraction-reduction`, because « k identical
   groups of two kinds of object » is one piece of mathematics (`equalGrouping.groupInto` in core,
   laid out by `groupingLayout.js`, unit-tested). Do not write a second grouping scene; pass a theme.
+- **Objects are sized for the back of the classroom.** A drawn object's size is never a fixed
+  pixel count. `groupingLayout.itemWidthFor()` gives the *floor* (what fits a 320 px phone), and
+  `itemSizeCss()` grows it with the **scene's own width**: `GroupingScene` is a CSS size container
+  (`container-type: inline-size`) and sets `--sa-item` / `--sa-item-left`, a single
+  `clamp(floor, 0.75·floor + floor/10·cqi, 2·floor)` with no breakpoints: ×1 on a phone, ≈×1.3 on a
+  tablet, ≈×1.7 on a laptop, ×2 on a projector and in وضع القسم. The initial piles (`k` null,
+  floor 10 px for 144 flowers) use `PILE_SCALE` (steeper, up to ×3). Card widths (`perRow` objects)
+  and the gaps between objects (`--sa-item / 8`) are computed from the same variable, so a
+  larger object never overflows or clips its card, and the count drawn never changes.
+  `ItemFigure` accepts `width` as a number (px) or a CSS length (`var(--sa-item)`). A new scene of
+  countable objects reuses this rule rather than choosing its own pixel sizes. The rule is tested
+  in `groupingLayout.test.js`.
 - **Lengths are objects too.** `BrickWall` and `RibbonStrip` replace the abstract `QuantityBar`
   wherever the lesson talks about a length that must be *measured by* another: bricks make
   « whole multiple of n » visible, ribbons make « cut » and « lay along » physical. Geometry is
@@ -187,22 +202,193 @@ When it is enabled, class mode keeps every student gesture and adds: next step (
 constraints plus the type's cross-constraint** (`validate`). A teacher can never enter values that
 break the pedagogical sequence.
 
+## 6bis. Auto-completion — manual first, then « let the lab finish it »
+
+> The learner performs the **first example by hand** — that is where « equal parts » or « cut the
+> short ribbon out of the long one » is understood. When the same gesture would then only repeat,
+> they may ask the lab to finish it. **Manual stays; automatic is an extra, explicit option.**
+
+### When a type gets it — and when it stays manual
+
+A type may offer auto-completion only if **all five** hold:
+
+1. the target state is **mathematically deterministic** from the configuration;
+2. the learner has a **valid configuration** (the type's own `validate`, never « some input exists »);
+3. the **manual gesture stays available**, before, during and after;
+4. repeating the gesture is **mechanical** — the same move again — not the learning itself;
+5. auto-completion reaches **the same underlying state** the hand would reach, through the same
+   transitions (`canPlace` / `place`, `subtract`, `addCopy` / `carryRemainder`).
+
+It stays **manual-only** when each gesture is an experiment, a choice or an answer: choosing a
+divisor, a number of columns, a number of bouquets, which chips are common, a proof order. There,
+« complete it » means « show the answer », which is what class mode's `showSolution` is for — and it
+is never offered to a student.
+
+Audit of the ten types (2026-09-24):
+
+| Type | Decision | Why |
+|---|---|---|
+| `team-builder` | **AUTO** — `unlock: 'config'` — « أنشئ الفرق » | n players carried one by one into k teams; after the first sharing, carrying 20 more is repetition. The refusal rule stays the one the hand meets. |
+| `pgcd-differences` | **AUTO** — `unlock: 'first-gesture'` — « أكمل الفروق » | up to 30 identical « carry the small ribbon onto the big » gestures. One cut by hand first; the PGCD box stays manual (recognising the last non-zero difference *is* the discovery). |
+| `euclidean-algorithm` | **AUTO** — `unlock: 'first-gesture'` — « أكمل القسمات » | q copies per division, repeated per line. The first division (copies + carry) by hand; the PGCD box stays manual. |
+| `divisor-explorer`, `divisor-explorer-books`, `factor-pairs` | MANUAL | one tap/drop per trial; each trial *is* an experiment, and the arrangement is already drawn by the lab. |
+| `common-divisors`, `coprime-explorer` | MANUAL | choosing the number of groups and carrying the *common* divisors is the judgement being learned. |
+| `divisor-properties` | MANUAL | three distinct operations (join / remove / measure), then a proof — nothing repeats. |
+| `fraction-reduction` | MANUAL | each drop is a choice of divisor, and « which path is shorter » is counted in the student's own steps. |
+
+Outside the registry, `InfoSorter` and the diagnostic `ClassificationQuestion` are judgements (each
+card is an answer): manual-only. The drag components under `lessons/college/` and `lessons/lycee/`
+are dormant and were not changed.
+
+### How it is declared — the registry decides, the type supplies the mechanics
+
+```js
+// packages/core/curriculum/manipulationTypes.js — the pedagogical DECISION (data)
+'team-builder': { controls: { …, autoComplete: { unlock: 'config' } } },
+'pgcd-differences': { controls: { …, autoComplete: { unlock: 'first-gesture' } } },
+// absent or false ⇒ the button is never rendered. AUTO_COMPLETE_UNLOCKS is the closed list.
+```
+
+```js
+// the type's component — the MECHANICS, on its own pure logic
+<ManipulationShell controller={{
+  …,
+  autoComplete: {
+    label: t('manipulation.<ns>.autoComplete'),   // optional; generic « أكمل تلقائيًا » otherwise
+    ready: !stale && !validateNumbers(numbers),   // SAME validate the free lab / class mode use
+    manualDone: lab.done > 0,                     // read only when unlock is 'first-gesture'
+    remaining: L.remainingMoves(lab),             // canonical gestures left; 0 ⇒ « done »
+    step: () => setLab(L.autoStep),               // ONE gesture, functional, no-op at the end
+    finish: () => setLab(L.fill),                 // the final state = step repeated
+  },
+}} />
+```
+
+Rules, each enforced by `autoComplete.test.js` or the e2e:
+
+- **One definition of « correct ».** `step` goes through the same guard as the hand (`autoStep =
+  place(nextMove)`, `fill = autoStep` repeated). `validate` is extracted into one
+  `validateNumbers` read by the shell *and* by `ready`. Never a second algorithm.
+- **The real state, never a picture.** `step`/`finish` update the type's `lab`; the verdict, the
+  bench, the equation and `onVerdict` follow exactly as after a last manual gesture.
+- **Only the gesture.** Auto-completion never calls `discover()` or `formalize()`. Discovery opens
+  on the same conditions as by hand (team-builder: both an exact and an inexact sharing seen). A
+  final identification (the PGCD box) stays manual.
+- **Mixed is the normal case.** It completes from the *current* state: objects the learner placed
+  stay where they are, nothing is duplicated. Afterwards the learner can still move objects if the
+  type allows it, and the button re-enables if something becomes incomplete.
+- **Configuration changes cancel.** `resetKey` is `state.epoch`; a change of numbers or « إعادة »
+  stops the animation and no step of the old configuration lands on the new one.
+- **Never automatic without the learner's click.**
+
+### What the learner sees
+
+`ManipulationControls` renders `ManipulationAutoComplete` in the student row (controls above the
+stage, §8): an outlined `Btn` with the `Wand2` icon, the **same weight as إعادة / تلميح** — never the
+filled colour of تحقّق — so the manipulation stays the visual focus. Status (`autoComplete.js`):
+`hidden · locked · invalid · ready · running · done`. Locked, it says in one line « أنجز الخطوة
+الأولى بيدك، ثم يمكنك الإكمال تلقائيًا. ». Strings: `manipulation.autoComplete.{button,hint,locked}`
+and `manipulation.<ns>.autoComplete` for a type's own verb (« أنشئ الفرق »).
+
+**Motion.** `autoCompletePlan`: one gesture per tick when there are few (the players are *seen*
+arriving), grouped beyond 18 ticks so the whole run stays ≈ 0.9 s; under `prefers-reduced-motion`,
+or without a `step`, the final state directly. Nothing depends on the animation.
+
+DOM contract: `[data-manipulation-autocomplete=<status>]` wraps the button.
+
+### Adding it to a type
+
+1. Check the five conditions above; if any fails, the type stays manual — record why in its header.
+2. Declare `autoComplete: { unlock }` in the registry (`'first-gesture'` when the *first* example
+   must be done by hand inside the same instance; `'config'` when choosing the configuration and
+   one pass by hand is the example, as with the teams).
+3. In `logic/<type>.js`, add the one-gesture step, the completion and the remaining count **built
+   on the existing transitions**, and test that step×remaining = completion, and a mixed start.
+4. Pass `controller.autoComplete` as above, with `ready` reading the extracted `validateNumbers`.
+5. Add `manipulation.<ns>.autoComplete` to `lesson.json`, and extend the e2e block 12.
+
 ## 7. Levels and free lab
 
-Four levels per type (`levels.js`): اكتشاف · موجّه · استقلالية · تحدّ, difficulty following the
-cognitive demand. Every level cites a textbook element (`ref`), except at most one per type marked
-`source: 'platform'`, rendered with «مثال تفاعلي إضافي». The free lab (`مختبر حر`) opens only after
-the discovery, and its inputs are bounded by the registry's `changeNumbers` plus the type's own
-`validate()`.
+**A manipulation has exactly two levels: `beginner` (مبتدئ) and `advanced` (متقدم).** There is no
+other level system. The four-palier ladder that existed until 2026-09-24 (اكتشاف · موجّه ·
+استقلالية · تحدّ, keys `discover/guided/autonomy/challenge`) was **removed, not hidden** — no
+`LEVEL_KEYS`, no `manipulation.levels.*` strings, no four-chip row. `levels.test.js` fails if a
+registered type does not declare exactly `{ beginner, advanced }`, or if the old keys come back.
 
-**Levels (`levels.js`) and the two-level workspace are different dimensions**, and both exist:
-the four paliers are difficulty steps *inside* one manipulation (they drive the free lab and the
-class mode), while مبتدئ / متقدم chooses *which manipulation the module shows* (§7bis-levels).
+| Level | Purpose | How the difficulty rises |
+|---|---|---|
+| **مبتدئ** `beginner` | the entry: the tool is discovered, the relation is visible at a glance | small or familiar numbers, strong visual consequence, minimal load |
+| **متقدم** `advanced` | the **same tool**, a heavier mathematical demand | less obvious numbers, more steps, a strategy to choose, a "no" case — **never a more complicated UI** |
 
-Levels are **presentation state only**: choosing one calls `setNumbers()`, which resets the
-manipulation. Nothing about levels is persisted, no "levels completed" figure is computed, and
-levels feed neither progression nor mastery. `divisor-explorer-books` declares four levels to
-satisfy the registry test but cannot display them — it has no shell.
+### Where the levels come from
+
+- **In a `ManipulationWorkspace`** (the opening of a module): the *lesson* declares the pair in
+  `lesson.config.js` (`level`, `objective`, `autonomy`, `experience`) and the workspace carries
+  the selector — §7bis-levels.
+- **A manipulation posed alone** (a module's `intro`, a step): the pair of its *type* in
+  `levels.js`, resolved against the lesson's numbers by `resolveManipulationLevels(type,
+  authoredNumbers, requested?)`:
+  - the lesson's numbers are **always one of the two levels** — the student lands on them;
+  - which one: `requested` if given, else the level whose preset has exactly these numbers, else
+    `beginner`. The other level is the type's preset.
+
+  So `common-divisors` 28/42 opens on مبتدئ (28/42) with متقدم = 65/78; `coprime-explorer` 27/36
+  opens on متقدم (27/36) with مبتدئ = 17/18.
+
+Every preset cites a textbook element (`ref`); a beginner preset may instead be marked
+`source: 'platform'` and is then tagged «مثال تفاعلي إضافي». The `advanced` preset always comes
+from the textbook. The rationale of each pair is written next to it in `levels.js`.
+
+### One selector, never two
+
+`ManipulationLevelSelector` is the **only** level UI. It is posed in exactly one place:
+
+- by `ManipulationWorkspace`, which switches panels (`controlsPanels` → `aria-controls`);
+- by `ManipulationShell` (in its header), or by `DivisorExplorerBooks` (which has no shell), when
+  the manipulation is **not** inside a workspace — there it switches numbers.
+
+A manipulation knows it is inside a workspace through `WorkspaceLevelContext`
+(`workspaceContext.js`): `useManipulation` then takes the workspace's level, returns
+`levels: null`, and the shell renders no selector. The selector shows the label «مستوى المناولة»,
+a colour per level (green مبتدئ, blue متقدم) so the active one reads without reading, ≥ 44 px
+tabs, `aria-selected` on the active tab, and ids prefixed per instance so several selectors can
+share a page.
+
+### What `useManipulation` exposes
+
+`level` (`'beginner' | 'advanced'`), `levels` (the pair, or `null` in a workspace), `setLevel(id)`,
+`levelPreset`, `isAuthoredLevel`, `inWorkspace`, and **`report(fn, …args)`**. Switching level
+calls `setNumbers()`, which resets the manipulation. Two consequences are enforced centrally:
+
+- **Titles.** A lesson's `title`/`lead` name the lesson's numbers («مثال الكتاب: 22 و 15»). On the
+  other level the shell replaces them with `manipulation.level.practiceTitle`
+  («تدرّب — مستوى متقدم») and drops the lead; the mission is computed from the live numbers and
+  stays.
+- **Lesson callbacks.** Every type calls `onVerdict` / `onFinished` through `state.report(…)`,
+  which fires **only on the lesson's level**: finishing 65/78 must not tick a step that asks about
+  28/42. A new type must do the same — never call a lesson callback directly.
+
+`TeamBuilder`'s behaviour (`isAdvanced`: no proposed sizes) reads the live `state.level`, so it
+follows both the workspace and the standalone selector.
+
+### Persistence, progress, analytics
+
+Levels are **presentation state only**. Nothing about a level is persisted (no column, no
+evidence field, no localStorage key), no "levels completed" figure exists, and levels feed
+neither progression (`moduleGate` / `stepUnlock`), nor mastery, nor the admin analytics. This was
+already true of the four paliers, so their removal required **no data migration**. If a level ever
+has to be recorded, it is recorded as `beginner | advanced` and nothing else.
+
+### Free lab
+
+The free lab (`مختبر حر`, `ManipulationFreeLab.jsx`) is **not a level**: it lets the student type
+their own numbers after the discovery, bounded by the registry's `changeNumbers` plus the type's
+own `validate()`. DOM: `[data-manipulation-free-lab]`.
+
+**Not manipulation levels** (do not merge them into this system): exercise difficulty
+(`Facile / Normal / Difficile`, the practice engine), the Math Lab practice tiers
+(`features/mathlab/tools/*/practice.js`) and the Math Lab algebra generator's equation forms
+(`x + a = b` … `ax + b = cx + d`).
 
 ## 7bis-levels. The two-level workspace — مبتدئ / متقدم
 
@@ -216,7 +402,7 @@ levels**, never on two stacked manipulations and never on a second page:
 
 ```
 ┌──────────────────────────────────────────┐
-│  الأنشطة التفاعلية   [ مبتدئ ] [ متقدم ]   │
+│  مستوى المناولة   [ مبتدئ ] [ متقدم ]      │
 ├──────────────────────────────────────────┤
 │           THE ACTIVE MANIPULATION         │
 └──────────────────────────────────────────┘
@@ -230,7 +416,8 @@ phase already reached all survive. The one deliberate reset is `modelKey`: chang
 panels remount, because the state would describe mathematics that is no longer on screen.
 
 Its decisions live in `workspaceLevels.js` (pure, unit-tested): which tabs exist, which is active,
-what the mount key is. `ManipulationLevelSelector` renders the tabs as a real `role="tablist"`,
+what the mount key is. Each panel provides its level through `WorkspaceLevelContext`, so the
+manipulation inside shows **no second selector** (§7). `ManipulationLevelSelector` renders the tabs as a real `role="tablist"`,
 with arrow-key navigation — in RTL, **← moves to the next level**, because the next tab is drawn
 to the left.
 
@@ -300,11 +487,41 @@ workspace opens on the numbers in its module title.
 [data-manipulation-workspace] [data-level=<active>]
 [data-manipulation-level-panel=<id>] [hidden] on the inactive panel
 [data-manipulation-levels-selector] [role=tab][data-level=…][aria-selected]
+[data-manipulation=<type>] [data-level=beginner|advanced]   (the shell, workspace or alone)
 ```
 
 Because a type may serve **both** levels (the rectangle serves 24 and 60), an e2e selector must be
 scoped to the visible panel — `.first()` otherwise resolves to a `hidden` element and the test
 hangs. `manipulations.mjs` provides `pickLevel()` and `visibleManip()` for exactly this.
+
+## 7quater. Chained laboratories — one lab per level, never a silent switch
+
+Some types chain two laboratories (`common-divisors`: identical **groups**, then the **divisor
+lists** + PGCD box). Found on 2026-09-24 in `qasim-mushtarak-akbar/baqat`: after three tries in
+مبتدئ (2 ✓, 5 ✗, 3 ✓) the teams scene was replaced by the lists without a word — the student
+reported « another manipulation of PGCD appeared ». The rules, owner-approved:
+
+1. **مبتدئ is one laboratory.** It ends on the gesture that carries the idea, not on a count of
+   tries. `common-divisors`: placing the **largest** number of groups that works
+   (`greatestGroupFound`: 6 for 12/18) opens the discovery (« ماذا يمثّل أكبر عدد وضعته؟ » →
+   PGCD). No lists at this level.
+2. **متقدم may chain a second laboratory, but the student opens it.** When the first lab is
+   accomplished, a card says what was found and what comes next (`[data-common-next]`, «وجدت أكبر
+   عدد ممكن…» + «إلى القائمتين ←»); the second lab offers a way back (`[data-common-back]`),
+   and the first lab's state survives the round trip.
+3. **A lesson may pin a single lab** (`startWith="lists"`) when its title/lead is about that lab
+   only (the textbook's 28/42 example in معارف).
+4. **The flow is derived from the level** (`state.level`), never from a lesson flag — so it holds
+   in a workspace and behind the standalone selector alike.
+5. **Texts follow the stage.** Mission and hints are per stage (`missionGreatestGroups`,
+   `groupsHint*` vs `hint2/hint3`), themed words only (no « باقات » in the football theme), and a
+   lesson `lead` must not promise a stage its level does not have.
+6. **The first lab's rail always contains the answer** (`groupRail` includes the PGCD even
+   beyond 24), otherwise « largest found » could be unreachable.
+
+A new chained type follows the same pattern: a pure `…Done(state)` predicate in `logic/`, a
+derived `groupsOnly`-style flag from `state.level`, the card + button + back link, and a
+`logic.test.js` case proving that the old threshold no longer ends the first lab.
 
 ## 7bis. What a manipulation does NOT do
 
@@ -325,9 +542,14 @@ Nine steps, in this order. Steps 1, 2 and 5 are enforced by tests that fail othe
 
 1. **Declare the type** in `packages/core/curriculum/manipulationTypes.js`:
    `'my-type': { shows: '<the idea it makes visible, in Arabic>', controls: { reset, nextStep,
-   prevStep?, toggleExplanation, hideConclusion?, changeNumbers: false | { field: [min, max], … } } }`.
-2. **Add exactly four levels** to `LEVELS['my-type']` in `levels.js`, each citing a textbook
-   element, at most one `source: 'platform'`.
+   prevStep?, toggleExplanation, hideConclusion?, changeNumbers: false | { field: [min, max], … },
+   autoComplete?: false | { unlock: 'config' | 'first-gesture' } } }`. Decide `autoComplete`
+   with §6bis: only for a repetitive gesture, never for a choice.
+2. **Add exactly two levels** to `LEVELS['my-type']` in `levels.js`: `{ beginner, advanced }`,
+   each `{ numbers, ref, source }` (plus any per-level prop the type reads, e.g. `candidates`),
+   with a one-line comment saying why the advanced one is harder. `advanced` cites the textbook;
+   `beginner` may be `source: 'platform'`. `levels.test.js` checks the shape, the bounds and that
+   advanced ≠ beginner. Call lesson callbacks through `state.report(onFinished, …)`.
 3. **Write the pure logic** in `logic/myType.js`: `init()`, guards `canX() → true | <reason key>`,
    transitions `X()`, and `discoveryReady()`. Arithmetic comes from
    `packages/core/arithmetic/divisibility.js`, never from the component. Add a `describe` block to
@@ -381,6 +603,7 @@ state.
 [ ] Hints are progressive and never give the answer
 [ ] Reset works (and clears the type's own state via `state.epoch`)
 [ ] Teacher mode works (step, replay, hide, solution, numbers)
+[ ] Auto-completion decided (§6bis): AUTO with a shared rule and a mixed-start test, or MANUAL with a reason
 [ ] Classroom Mode (if wrapped): enter/exit keeps the state, fits the screen, no page scroll
 [ ] Student mode works
 [ ] Mobile works (320 px, ≥44 px targets, no horizontal scroll)
@@ -389,7 +612,8 @@ state.
 [ ] Reduced motion works
 [ ] No unnecessary animation
 [ ] No decorative interaction
-[ ] Uses textbook examples (levels.js cites the extraction)
+[ ] Exactly two levels in levels.js (beginner / advanced), advanced cites the extraction
+[ ] Lesson callbacks go through state.report (never fire on the other level)
 [ ] Uses core arithmetic functions
 [ ] Mathematical result is tested (logic/logic.test.js)
 ```
@@ -400,6 +624,11 @@ state.
   and the pitch: partition vs quotition, and a remainder that is always a number of objects.
 - `divisibility/teamFormation.test.js` — the formation geometry, **swept over every reachable
   squad size** (no overlap, nothing outside the pitch) rather than sampled at the default.
+- `autoComplete.test.js` — §6bis: which types the registry grants (exactly the three), the button
+  status, the animation plan, and that auto-completion reaches the manual state — team-builder
+  swept over the whole registry domain (`n = k × q + r`, no rounding), step×remaining = fill, a
+  mixed manual start, manual rearrangement afterwards; the differences and Euclid chains without
+  filling the PGCD box.
 - `workspaceLevels.test.js` — the workspace's decisions: default level, always an active level,
   and a mount key that changes only when the mathematical model does.
 - `primitives/groupingLayout.test.js` — the drawn grouping says what the division says (9 bouquets
@@ -422,6 +651,13 @@ state.
   of 16 drawn flowers, 4 leftover flowers drawn on the tray, the coprime insight after 1/2/3
   bags, 4 portions of 33 in the recipe, three built zones with no partial brick, the scissors
   mark and 252 − 140 = 112.
+  Block **12** (2026-09-24, AC1–AC11) covers auto-completion: « أنشئ الفرق » ready on 15/3, a
+  mixed start (two players by hand stay put), 5,5,5 with no duplicate, no discovery triggered,
+  manual rearrangement afterwards, 20/4, 16/3 leaving one player drawn on the bench, a configuration
+  change and « إعادة » in mid-animation, reduced motion, 320 px, the locked → ready ribbons, and no
+  button on the choice-type manipulations. On 2026-09-24 the suite was 176/177 against the dev
+  server; the one failure is C3 (a Classroom Mode toolbar button under 44 px at 390×844 on the books
+  lab), which does not touch this feature.
   **139/139 green on 2026-09-21**, with `4am-aadad-tabiiya-natiqa.mjs` at 27/27.
   Run it against the **dev** server: `KIT_BASE=http://localhost:5173 node
   apps/web/e2e/lesson-kit/manipulations.mjs`. The helper's default is 5183,

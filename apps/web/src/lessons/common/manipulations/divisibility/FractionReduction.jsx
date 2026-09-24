@@ -62,7 +62,7 @@ export default function FractionReduction({
     onReject: (sourceId, _z, reason) => setReject({ reason, k: Number(sourceId.replace(/^[kp]:/, '')) }),
   });
 
-  useEffect(() => { if (state.isFormal) onFinished?.(lab.final); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (state.isFormal) state.report(onFinished, lab.final); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const cur = L.currentA(lab);
   const candidates = L.candidatesA(lab);

@@ -111,12 +111,20 @@ async function openSession(page) {
   const start = await api(TOKEN, 'POST', `/lessons/${LESSON}/practice/sessions`, { sessionId, level: 1 });
   if (start.status >= 300) throw new Error(`séance : ${start.status} ${JSON.stringify(start.data).slice(0, 200)}`);
   await page.goto(`${BASE}/espace/pratique/${LESSON}/session/${sessionId}`, { waitUntil: 'networkidle' });
-  await page.waitForSelector('button[aria-haspopup="dialog"][title]', { timeout: 20000 });
+  await page.waitForSelector('[data-nb-trigger="practice"]', { timeout: 20000 });
 
   return sessionId;
 }
 
 const dialog = (page) => page.locator('section[role="dialog"].sa-nb-window');
+// Le déclencheur de l'exercice est LA pastille flottante « 📓 كرّاسي » de la leçon.
+const nbTrigger = (page) => page.locator('[data-nb-trigger="practice"]');
+// Le cahier s'ouvre en grand, centré : même milieu que l'écran, à 2px près.
+const isCentered = async (page) => {
+  const b = await dialog(page).boundingBox();
+  const vp = page.viewportSize();
+  return Math.abs(b.x + b.width / 2 - vp.width / 2) < 2 && Math.abs(b.y + b.height / 2 - vp.height / 2) < 2;
+};
 const editor = (page) => page.locator('.sa-nb-editor');
 // Le cahier n'est pas modal : Échap ne le ferme que depuis l'INTÉRIEUR. On y
 // pose donc le focus avant, comme le ferait un élève.
@@ -138,9 +146,15 @@ try {
   record('séance ouverte', /\/session\//.test(page.url()));
 
   // 1. Ouverture
-  const trigger = page.locator('button[aria-haspopup="dialog"][title="دوّن في كرّاسي"]');
+  const trigger = nbTrigger(page);
+  const pillClass = await trigger.getAttribute('class');
+  record('le déclencheur est la pastille « 📓 كرّاسي » de la leçon', pillClass === 'sa-nb-lesson-trigger' && (await trigger.innerText()).includes('كرّاسي'));
   await trigger.click();
   await dialog(page).waitFor({ state: 'visible', timeout: 5000 });
+  await page.waitForTimeout(450);
+  record('il s’ouvre en grand', (await dialog(page).getAttribute('data-size')) === 'large');
+  record('il s’ouvre centré dans l’écran', await isCentered(page));
+  record('aria-pressed du déclencheur suit l’état', (await trigger.getAttribute('aria-pressed')) === 'true');
   const role = await dialog(page).getAttribute('role');
   const modal = await dialog(page).getAttribute('aria-modal');
   record('la fenêtre est un dialogue NON modal (la leçon reste utilisable)', role === 'dialog' && modal !== 'true' && (await page.locator('.sa-nb-backdrop').count()) === 0);
@@ -150,34 +164,35 @@ try {
   record('pas de bloc « خطئي » avant toute réponse', !initialHtml.includes('data-nb="mistake"'));
   const focused = await page.waitForFunction(() => document.activeElement?.classList.contains('sa-nb-editor'), null, { timeout: 2000 }).then(() => true).catch(() => false);
   record('le focus est dans l’éditeur', focused);
-  await page.screenshot({ path: `${OUT}/01-open-small.png` });
+  await page.screenshot({ path: `${OUT}/01-open-large.png` });
 
   // 2. Écrire, redimensionner, fermer, rouvrir
   await page.keyboard.press('End');
   await page.keyboard.type('هنا أخطأت في مقارنة القائمتين');
-  const smallBox = await dialog(page).boundingBox();
+  const largeBox = await dialog(page).boundingBox();
   await page.click('button.sa-nb-size-toggle');
   await page.waitForTimeout(400);
-  const largeBox = await dialog(page).boundingBox();
-  record('Petit → Grand agrandit la fenêtre', largeBox.width > smallBox.width * 1.3 && largeBox.height > smallBox.height * 1.1,
+  const smallBox = await dialog(page).boundingBox();
+  record('Grand → Petit réduit la fenêtre', largeBox.width > smallBox.width * 1.3 && largeBox.height > smallBox.height * 1.1,
     `${Math.round(smallBox.width)}×${Math.round(smallBox.height)} → ${Math.round(largeBox.width)}×${Math.round(largeBox.height)}`);
   const afterResize = await editor(page).innerText();
   record('le texte survit au redimensionnement', afterResize.includes('هنا أخطأت'));
-  await page.screenshot({ path: `${OUT}/02-large.png` });
+  record('réduite, elle reste centrée', await isCentered(page));
+  await page.screenshot({ path: `${OUT}/02-small.png` });
   const status1 = await page.locator('.sa-nb-status').getAttribute('data-state');
   record('état « غير محفوظ » affiché', status1 === 'dirty');
 
   await closeWithEscape(page);
   record('Échap ferme la fenêtre', true);
-  const focusBack = await page.evaluate(() => document.activeElement?.getAttribute('title'));
-  record('le focus revient au déclencheur', focusBack === 'دوّن في كرّاسي', String(focusBack));
+  const focusBack = await page.evaluate(() => document.activeElement?.getAttribute('data-nb-trigger'));
+  record('le focus revient au déclencheur', focusBack === 'practice', String(focusBack));
 
   await trigger.click();
   await dialog(page).waitFor({ state: 'visible' });
   const restored = await editor(page).innerText();
   const notice = await page.locator('.sa-nb-notice').count();
   record('le brouillon est restauré à la réouverture', restored.includes('هنا أخطأت') && notice > 0);
-  record('la taille choisie est mémorisée', (await dialog(page).getAttribute('data-size')) === 'large');
+  record('chaque ouverture repart en grand, centré', (await dialog(page).getAttribute('data-size')) === 'large' && await isCentered(page));
 
   // 3. Effacer : confirmation (il y a du texte), puis tout disparaît
   await page.click('button[aria-label="مسح الكل"]');
@@ -249,16 +264,16 @@ try {
 
   await page.click('button[aria-label="إغلاق الكرّاس"]');
   await dialog(page).waitFor({ state: 'hidden' });
-  record('« تمّ التدوين » et « افتح الملاحظة » apparaissent', (await page.locator('text=تمّ التدوين في كرّاسك').count()) > 0 && (await page.locator('text=افتح الملاحظة').count()) > 0);
-  await page.click('text=افتح الملاحظة');
+  // Après un enregistrement, la pastille rouvre CETTE note (pas une seconde).
+  await trigger.click();
   await dialog(page).waitFor({ state: 'visible' });
   const reopened = await editor(page).innerText();
   record('la note enregistrée se rouvre avec son contenu', reopened.includes('إضافة') && reopened.includes('القواسم المشتركة'), reopened.slice(0, 80).replace(/\n/g, ' '));
   await closeWithEscape(page);
 
   // 4b. Déplacer le cahier par son en-tête — même taille, même contenu
-  // (après un enregistrement, le déclencheur est devenu « افتح الملاحظة »)
-  await page.click('text=افتح الملاحظة');
+  // (après un enregistrement, la pastille rouvre la note enregistrée)
+  await trigger.click();
   await dialog(page).waitFor({ state: 'visible' });
   await page.waitForTimeout(450);
   const dragHandle = page.locator('.sa-nb-header .sa-nb-title');
@@ -362,8 +377,8 @@ try {
   await page.fill('textarea[aria-label]', '5, 7');
   await page.click('button:has-text("تحقّق من إجابتي")');
   await page.waitForSelector('[role="status"]:has-text("ليس بعد")', { timeout: 8000 });
-  const fullTrigger = page.locator('button[aria-haspopup="dialog"]:has-text("دوّن في كرّاسي")');
-  await fullTrigger.click();
+  // Le verdict remonte la pastille : une NOUVELLE note, avec la réponse.
+  await nbTrigger(page).click();
   await dialog(page).waitFor({ state: 'visible' });
   const mistakeHtml = await editor(page).innerHTML();
   record('après une réponse fausse, le bloc « خطئي » cite la saisie réelle', mistakeHtml.includes('data-nb="mistake"') && mistakeHtml.includes('5, 7') && mistakeHtml.includes('ليس بعد'));
@@ -451,12 +466,19 @@ for (const [name, width, height, touch] of VIEWPORTS) {
   attach(p);
   try {
     await openSession(p);
-    const t = p.locator('button[aria-haspopup="dialog"][title="دوّن في كرّاسي"]');
-    await t.click();
+    const pill = await nbTrigger(p).boundingBox();
+    // Aucune commande du pied de question (« إنهاء الحصة », « السؤال التالي »…)
+    // sous la pastille, qu'il soit collé ou à sa place naturelle.
+    const covered = await p.$$eval('[data-question-footer] button, [data-question-footer] a', (els, pb) => els
+      .map((el) => el.getBoundingClientRect())
+      .filter((r) => r.width > 0 && r.x < pb.x + pb.width && r.right > pb.x && r.y < pb.y + pb.height && r.bottom > pb.y).length, pill);
+    record(`${name} : la pastille ne recouvre aucune commande du pied de question`, covered === 0, `${covered} commande(s) recouverte(s)`);
+    await nbTrigger(p).click();
     await dialog(p).waitFor({ state: 'visible', timeout: 5000 });
-    await p.evaluate(() => { try { localStorage.setItem('sa_nb_size', 'small'); } catch {} });
+    await p.waitForTimeout(450);
+    if (width >= 640) record(`${name} : ouvert en grand, centré`, (await dialog(p).getAttribute('data-size')) === 'large' && await isCentered(p));
 
-    for (const size of width < 640 ? ['small'] : ['small', 'large']) {
+    for (const size of width < 640 ? ['small'] : ['large', 'small']) {
       const current = await dialog(p).getAttribute('data-size');
       if (current !== size) { await p.click('button.sa-nb-size-toggle'); await p.waitForTimeout(400); }
       await editor(p).click();

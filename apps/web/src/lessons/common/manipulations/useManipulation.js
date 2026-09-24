@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useStepSequence } from './useStepSequence';
-import { levelsFor } from './levels';
+import { resolveManipulationLevels } from './levels';
+import { useWorkspaceLevel } from './workspaceContext';
 
 /**
  * L'état d'une manipulation, UNE SEULE FOIS pour tous les types.
@@ -16,8 +17,17 @@ import { levelsFor } from './levels';
  *   hints                  indices PROGRESSIFS : `hintLevel` monte d'un cran à
  *                          chaque demande, jamais au-delà du dernier ; aucun
  *                          indice ne contient la réponse (règle §19)
- *   level                  le palier de difficulté courant (levels.js) — les
- *                          nombres du module sont le palier de départ
+ *   level                  'beginner' | 'advanced' — les DEUX niveaux, rien
+ *                          d'autre (levels.js). Dans un workspace, c'est le
+ *                          niveau du panneau et `levels` vaut null (le
+ *                          workspace porte le seul sélecteur) ; seule, la
+ *                          manipulation reçoit la paire { beginner, advanced }
+ *                          dont l'un est TOUJOURS les nombres de la leçon
+ *   isAuthoredLevel        l'élève est sur les nombres écrits par la leçon
+ *   report(fn, …args)      appelle un rappel de la leçon (onVerdict,
+ *                          onFinished) SEULEMENT sur le niveau de la leçon :
+ *                          réussir l'autre niveau ne coche pas l'étape qui
+ *                          parle des nombres de la leçon
  *   freeLab                « مختبر حر » : nombres choisis dans les contraintes
  *   answerHidden           mode classe : la conclusion est masquée pour que la
  *                          classe la formule (« إخفاء النتيجة »)
@@ -35,15 +45,21 @@ export function useManipulation({
   initialMode = 'student',
   hintCount = 3,
   answerHiddenByDefault = false,
-  initialLevel = null,
+  initialLevel,
 }) {
+  const workspaceLevel = useWorkspaceLevel();
+  // Figé au montage : la paire décrit les nombres ÉCRITS par la leçon ; un
+  // changement de nombres (free lab, mode classe) ne la réécrit pas.
+  const [setup] = useState(() => (workspaceLevel
+    ? { initial: workspaceLevel, levels: null }
+    : resolveManipulationLevels(type, initialNumbers, initialLevel) ?? { initial: initialLevel ?? 'beginner', levels: null }));
   const [numbers, setNumbersState] = useState(initialNumbers);
   const [mode, setMode] = useState(initialMode);
   const [phase, setPhase] = useState('act');
   const [hintLevel, setHintLevel] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
   const [answerHidden, setAnswerHidden] = useState(answerHiddenByDefault);
-  const [level, setLevelState] = useState(initialLevel);
+  const [level, setLevelState] = useState(setup.initial);
   const [freeLab, setFreeLab] = useState(false);
   const [playing, setPlaying] = useState(false);
   // Un compteur qui change à chaque « إعادة » : les types s'en servent comme
@@ -52,7 +68,8 @@ export function useManipulation({
   const playTimer = useRef(null);
 
   const steps = useStepSequence(stepCount);
-  const levels = useMemo(() => levelsFor(type), [type]);
+  const levels = setup.levels;
+  const authoredLevel = setup.initial;
 
   const stopPlaying = useCallback(() => {
     if (playTimer.current) { clearInterval(playTimer.current); playTimer.current = null; }
@@ -74,11 +91,18 @@ export function useManipulation({
     reset();
   }, [reset]);
 
-  const setLevel = useCallback((lvl) => {
-    setLevelState(lvl?.id ?? null);
+  const setLevel = useCallback((id) => {
+    const preset = levels?.[id];
+    if (!preset) return;
+    setLevelState(id);
     setFreeLab(false);
-    if (lvl?.numbers) setNumbers(lvl.numbers);
-  }, [setNumbers]);
+    setNumbers(preset.numbers);
+  }, [levels, setNumbers]);
+
+  const isAuthoredLevel = level === authoredLevel;
+  const report = useCallback((fn, ...args) => {
+    if (isAuthoredLevel) fn?.(...args);
+  }, [isAuthoredLevel]);
 
   const requestHint = useCallback(() => setHintLevel((h) => Math.min(h + 1, hintCount)), [hintCount]);
 
@@ -105,10 +129,10 @@ export function useManipulation({
     hintLevel, hintCount, requestHint, hintsExhausted: hintLevel >= hintCount,
     showExplanation, toggleExplanation: () => setShowExplanation((s) => !s),
     answerHidden, toggleAnswer: () => setAnswerHidden((s) => !s),
-    levels, level, setLevel,
+    levels, level, setLevel, levelPreset: levels?.[level] ?? null, isAuthoredLevel, report, inWorkspace: workspaceLevel != null,
     freeLab, setFreeLab,
     playing, play, stopPlaying,
-  }), [type, numbers, setNumbers, epoch, steps, reset, phase, discover, formalize, mode, hintLevel, hintCount, requestHint, showExplanation, answerHidden, levels, level, setLevel, freeLab, playing, play, stopPlaying]);
+  }), [type, numbers, setNumbers, epoch, steps, reset, phase, discover, formalize, mode, hintLevel, hintCount, requestHint, showExplanation, answerHidden, levels, level, setLevel, isAuthoredLevel, report, workspaceLevel, freeLab, playing, play, stopPlaying]);
 }
 
 /**

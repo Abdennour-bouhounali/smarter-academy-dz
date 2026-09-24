@@ -150,6 +150,13 @@ function evaluateRational(answer, question) {
         });
         return result(OUTCOMES.PARTIALLY_CORRECT, { normalized: given.toString(), feedbackKey: 'notIrreducible', misconceptionId: partialId });
       }
+      // Une écriture DÉCIMALE (« 1,75 » pour 7/4) n'est pas une fraction du
+      // tout : la tâche demandait « على شكل كسر غير قابل للاختزال ». La valeur
+      // est juste, la forme ne l'est pas — même issue partielle. Un entier
+      // reste accepté : c'est la forme irréductible d'un rationnel entier.
+      if (!written && given.d !== 1) {
+        return result(OUTCOMES.PARTIALLY_CORRECT, { normalized: given.toString(), feedbackKey: 'notIrreducible' });
+      }
     }
     // Même valeur, écriture différente ("3/2" pour "1,5") : juste, et on peut
     // le dire à l'élève plutôt que de faire comme s'il avait recopié.

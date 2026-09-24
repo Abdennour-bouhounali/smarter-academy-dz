@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "title": "سلسلة التفوق، تمرين 4 — خوارزمية إقليدس",
+    "estimatedMinutes": 7,
+    "tags": [
+      "خوارزمية إقليدس"
+    ],
+    "source": {
+      "type": "worksheet",
+      "worksheetId": "tafawwuq-01",
+      "elementId": "ws01-ex-04",
+      "section": "التمارين",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "احسب القاسم المشترك الأكبر للعددين a و b باستعمال خوارزمية إقليدس في كل حالة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "a = 845 و b = 693. PGCD(a ; b) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_bahth-pgcd_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ بالقسمة الإقليدية لـ 845 على 693."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم اقسم المقسوم عليه على الباقي، وكرّر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "توقّف عندما يصبح الباقي معدومًا."
+        }
+      ],
+      "feedback": {
+        "correct": "آخر باقٍ غير معدوم هو 1.",
+        "incorrect": "القاسم المشترك الأكبر هو آخر باقٍ غير معدوم."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "a = 725 و b = 348. PGCD(a ; b) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_bahth-pgcd_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "29",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ بالقسمة الإقليدية لـ 725 على 348."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم اقسم المقسوم عليه على الباقي، وكرّر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "توقّف عندما يصبح الباقي معدومًا."
+        }
+      ],
+      "feedback": {
+        "correct": "آخر باقٍ غير معدوم هو 29.",
+        "incorrect": "القاسم المشترك الأكبر هو آخر باقٍ غير معدوم."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "a = 2736 و b = 1216. PGCD(a ; b) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_bahth-pgcd_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "304",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ بالقسمة الإقليدية لـ 2736 على 1216."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم اقسم المقسوم عليه على الباقي، وكرّر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "توقّف عندما يصبح الباقي معدومًا."
+        }
+      ],
+      "feedback": {
+        "correct": "آخر باقٍ غير معدوم هو 304.",
+        "incorrect": "القاسم المشترك الأكبر هو آخر باقٍ غير معدوم."
+      }
+    }
+  ],
+  "id": "ex-4am-bahth-pgcd-l4-003",
+  "lessonCode": "bahth-pgcd",
+  "level": 4
+}

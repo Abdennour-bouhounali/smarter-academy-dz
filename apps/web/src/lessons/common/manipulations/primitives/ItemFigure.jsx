@@ -18,7 +18,8 @@ import React from 'react';
  *
  * `kind` choisit l'objet ; `tone` sa teinte quand le thème en a deux (les
  * fleurs rouges et blanches) ; `muted` le grise (objet resté en dehors).
- * `width` en px ; la hauteur suit le viewBox carré.
+ * `width` en px (nombre) ou longueur CSS (chaîne : `var(--sa-item)`, la taille
+ * fluide de `GroupingScene`) ; la hauteur suit le viewBox carré.
  *
  * Aucun texte arabe ici : les mots viennent de `itemThemes.js` + lesson.json.
  */
@@ -28,8 +29,12 @@ export const ITEM_KINDS = Object.freeze(['flower', 'ball', 'shirt', 'pen', 'note
 const MUTED = { fill: '#CBD5E1', dark: '#94A3B8', light: '#F1F5F9' };
 
 export default function ItemFigure({ kind = 'flower', tone = 'a', width = 18, muted = false, title, className = '' }) {
+  // Une longueur CSS (var(), clamp()) n'est pas un attribut SVG valide : elle
+  // passe par `style`, qui fixe aussi la boîte cliquable / mesurée.
+  const fluid = typeof width === 'string';
   const common = {
-    width, height: width, viewBox: '0 0 40 40',
+    ...(fluid ? { style: { width, height: width, flex: 'none' } } : { width, height: width }),
+    viewBox: '0 0 40 40',
     className: `sa-item sa-item--${kind} ${muted ? 'sa-item--muted' : ''} ${className}`,
     role: title ? 'img' : undefined,
     'aria-hidden': title ? undefined : 'true',
@@ -50,7 +55,9 @@ export default function ItemFigure({ kind = 'flower', tone = 'a', width = 18, mu
 function Flower({ tone, muted }) {
   const red = tone === 'a' || tone === 'red';
   const petal = muted ? MUTED.fill : red ? '#E11D48' : '#FFFFFF';
-  const petalEdge = muted ? MUTED.dark : red ? '#9F1239' : '#CBD5E1';
+  // Le bord de la fleur blanche est ardoise, pas gris perle : sur un cadre
+  // pâle et au projecteur, un bord #CBD5E1 la faisait disparaître.
+  const petalEdge = muted ? MUTED.dark : red ? '#9F1239' : '#64748B';
   const heart = muted ? MUTED.dark : '#FBBF24';
   const stem = muted ? MUTED.dark : '#15803D';
   return (
@@ -58,7 +65,7 @@ function Flower({ tone, muted }) {
       <path d="M20 22 L20 37" stroke={stem} strokeWidth="2.4" strokeLinecap="round" />
       <path d="M20 31 Q13 30 12 25 Q18 25 20 31 Z" fill={stem} />
       {[0, 60, 120, 180, 240, 300].map((deg) => (
-        <ellipse key={deg} cx="20" cy="9.5" rx="4.2" ry="6.5" fill={petal} stroke={petalEdge} strokeWidth="1" transform={`rotate(${deg} 20 16)`} />
+        <ellipse key={deg} cx="20" cy="9.5" rx="4.2" ry="6.5" fill={petal} stroke={petalEdge} strokeWidth="1.3" transform={`rotate(${deg} 20 16)`} />
       ))}
       <circle cx="20" cy="16" r="4" fill={heart} stroke={muted ? MUTED.dark : '#B45309'} strokeWidth="1" />
     </>

@@ -9,10 +9,19 @@
  *
  *     data = { elements: [...], appState: { viewBackgroundColor, gridSize, gridModeEnabled … }, files: {} }
  *
+ * S'y ajoute, FACULTATIVE, la clé `geometry` : l'état du bureau de
+ * géométrie (où sont la règle, le compas, la منقلة, le كوس, et les réglages —
+ * geometry/instruments.js `sanitizeDesk`). Elle n'existe que si l'élève ou
+ * l'enseignant a touché au bureau ; un document plus ancien s'ouvre donc tel
+ * quel, et un lecteur qui l'ignore ne perd que la place des instruments —
+ * les CONSTRUCTIONS, elles, sont des éléments Excalidraw ordinaires.
+ *
  * `WHITEBOARD_SCHEMA_VERSION` est la version de CE format ; Excalidraw
  * garde ses propres versions par élément et sait rouvrir un dessin ancien
  * (`restore`), c'est pour cela qu'une seule version suffit aujourd'hui.
  */
+
+import { sanitizeDesk } from './geometry/instruments.js';
 
 export const WHITEBOARD_SCHEMA_VERSION = 1;
 
@@ -37,6 +46,7 @@ export function createWhiteboardData(seed = undefined) {
  */
 export function toWhiteboardData(serialized) {
   const appState = serialized?.appState && typeof serialized.appState === 'object' ? serialized.appState : {};
+  const geometry = serialized?.geometry && typeof serialized.geometry === 'object' ? { geometry: sanitizeDesk(serialized.geometry) } : {};
 
   return {
     elements: Array.isArray(serialized?.elements) ? serialized.elements : [],
@@ -49,6 +59,7 @@ export function toWhiteboardData(serialized) {
     // recharge à l'ouverture. Un dessin qui en porterait (collage, ancien
     // document) les perd ici — c'est voulu, et le canevas le dit.
     files: {},
+    ...geometry,
   };
 }
 

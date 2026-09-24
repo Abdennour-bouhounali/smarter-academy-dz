@@ -44,6 +44,10 @@ describe('cadre de page partagé', () => {
     expect(css).toMatch(/min-width:\s*1024px\)\s*\{\s*\.sa-page\s*\{[^}]*padding-left:\s*60px/);
     // Une largeur maximale ici re-briserait l'égalité entre les pages.
     expect(css).not.toMatch(/\.sa-page\s*\{[^}]*max-width/);
+    // La variante pleine largeur garde 20 px à tous les formats (lecteur
+    // d'exercices, 2026-09-24) — et ne pose pas non plus de largeur maximale.
+    expect(css).toMatch(/\.sa-page\.sa-page--flush\s*\{[^}]*padding-left:\s*20px[^}]*padding-right:\s*20px/);
+    expect(css).not.toMatch(/\.sa-page--flush\s*\{[^}]*max-width/);
   });
 
   it.each(PAGES)("%s ne borne plus son cadre principal par un max-w-*xl", (_name, file) => {

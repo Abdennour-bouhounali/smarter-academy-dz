@@ -120,6 +120,12 @@ apart the moment one of them is edited. `StatusBadge` applies this rule for
 statuses, `admin.modules.stage.*` for pipeline stages and
 `admin.analytics.metric.*` for metrics.
 
+Example (2026-09-24): a locked practice level's `reason` was the French
+sentence «Termine un exercice du niveau 1 pour ouvrir celui-ci», shown under
+every locked level. It is now the code `previous_level_incomplete`
+(`LevelPolicy::REASON_PREVIOUS_LEVEL`), and `LevelSelector` writes
+`student.practice.levelLockedAfter` with the previous level.
+
 ### Data the user reads is Arabic too
 
 Not only the interface: anything **stored** that a student or a teacher will
@@ -148,6 +154,28 @@ curriculum, not the French `6e…Terminale` ladder. Translating such copy
 literally produces fluent Arabic that lies.
 
 ---
+
+### Mastery and completion never share words (2026-09-24)
+
+The four Learning Point states have ONE label set, `student:mastery.*`
+(`unassessed` لم تُقيَّم بعد · `gap` يحتاج إلى تدعيم · `reinforce` قيد التحسّن ·
+`mastered` متحكَّم فيها), read through `MASTERY_STATES` /
+`masteryLabels.js`; the former duplicates `progression.chips.*` and
+`unit.mastery.*` are gone and a test forbids their return. The teacher space
+uses `teacher:students.masteryStatus.*` through `MasteryPill`. Reasons and
+freshness have their own keys (`mastery.reason.*`, `mastery.freshness.*`).
+
+The practice player's Learning Point module (2026-09-24) follows the same
+split: its star path is the Mastery V2 state with the `mastery.*` label; its
+counters say «تمارين أنهيتها» / «أسئلة أجبت عنها» and nothing else.
+
+**Completion never says إتقان or متحكَّم**: a finished path is « أنهيت مسار
+الدرس ✓ », the final test's per-skill block is « نتيجة هذا التحدي حسب المهارة »
+with neutral ✓ / ~ / ✗ glyphs, and the lesson's final module is titled
+« إختبار أولي ». The only mastery words on screen describe a Learning Point
+state that came from `student_learning_point_progress`. (Lesson authors'
+`completion.masterTitle` strings are content and are not governed here;
+`question.difficulty.maitrise` is a difficulty label.)
 
 ## 3. Typography — Cairo, global, non-negotiable
 
@@ -236,6 +264,41 @@ common bidi defect in this codebase's history.
 
 The same applies to any numeric block inside a manipulation: tiles, bars,
 equations, divisions and algorithm chains all declare `dir="ltr"`.
+
+### Plain-text equations are isolated too (2026-09-24)
+
+Content written as plain text — exercise titles («معارف — 120 = 6 × 20»,
+«28/42») and 212 of the 1 731 practice strings (hints, feedback, choices:
+«15 = 3 × 5», «407 − 253 = 154») — rendered **reversed** in RTL
+(«20 × 6 = 120»). `apps/web/src/utils/bidi.js` `isolateMathRuns(text)` wraps
+every «number operator number …» run in the invisible isolates LRI … PDI
+(U+2066 / U+2069): no markup, so it works in DOM text, in the notebook HTML and
+in any string. `:`, `—` and `،` are sentence separators and never join two
+numbers. **A number followed by a Latin unit or literal factor** («سعة الدنّ
+الأول 24 L», «7,5 cm²», «240x») is isolated too (2026-09-24): otherwise the
+digits (after Arabic) and the letter form two bidi runs and the sentence reads
+«L 24». A letter followed by a number is an operator, not a unit («2 x 3»). Applied in `features/practice/RichText.jsx` (every practice text
+outside `$…$`), the practice header title (`PracticeSession.jsx`) and the
+notebook title (`noteContent.js`). Any new surface that prints content text
+**without** RichText/MathText must pass it through `isolateMathRuns`.
+
+### The student's own answer is isolated, not typeset (2026-09-24)
+
+When the practice player shows back what the student typed (question history,
+«السؤال السابق», «سياق السؤال»), it renders it in `<bdi dir="ltr">` in the mono
+face — never through KaTeX (free input is not LaTeX) and never «corrected».
+A chosen QCM option is shown by its content through `RichText`.
+
+### No Latin letters in front of choices (2026-09-24)
+
+A Latin option letter (`A`, `B`…) in front of an Arabic choice whose text
+starts with a digit is glued to it by the bidi algorithm: `A` + `6 مضاعف
+للعدد 120` rendered as «A6 مضاعف…», and students misread the options. The
+practice choices (`features/practice/inputs/ChoiceInput.jsx`) therefore show
+**only the choice's content**; `choice.id` stays the internal answer id
+(evidence, registry, the admin « interpreted as » field). Locked by
+`ChoiceInput.test.jsx`. If a label is ever needed beside Arabic text, it must
+be its own flex item with `dir="ltr"` — never an inline span before the text.
 
 ### Directional icons
 
@@ -444,6 +507,8 @@ text. Classify each hit: notation and identifiers stay, prose gets translated.
 [ ] Every expression goes through MathText (or declares dir="ltr" itself)
 [ ] Every N / M pair, counter and score is wrapped dir="ltr"
 [ ] Every numeric block in a manipulation declares dir="ltr"
+[ ] Plain-text content with an equation goes through RichText or isolateMathRuns
+[ ] No Latin option letters before Arabic choices; any label beside Arabic text is its own dir="ltr" flex item
 [ ] Directional icons come from DirectionalIcons; fixed-meaning icons do not
 [ ] Arabic plurals declare all six forms, count inside the key
 [ ] The verb/adjective around a counted noun is pluralised too (count AND counted passed)

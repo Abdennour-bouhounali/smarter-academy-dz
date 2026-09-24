@@ -1,6 +1,10 @@
 import React, { useLayoutEffect, useRef, useState } from "react";
 import { ClassroomPresentation, ClassroomEntryButton, useClassroomMode } from "../../classroom";
+import { useTranslation } from "react-i18next";
 import { solveShelfLayout } from "./booksClassroomLayout";
+import ManipulationLevelSelector from "../ManipulationLevelSelector";
+import { MANIPULATION_LEVEL_IDS, resolveManipulationLevels } from "../levels";
+import { useWorkspaceLevel } from "../workspaceContext";
 
 /**
  * DivisorExplorerBooks.jsx
@@ -45,7 +49,8 @@ import { solveShelfLayout } from "./booksClassroomLayout";
  *      onVerdict={({ b, divides, quotient, remainder }) => ...}
  *   />
  *   It is deliberately self-contained (own styles, own gesture) and does not
- *   go through ManipulationShell; the `divisor-explorer` type remains the
+ *   go through ManipulationShell — so it poses its own مبتدئ / متقدم selector
+ *   when it is not inside a ManipulationWorkspace (levels.js: 24 / 420); the `divisor-explorer` type remains the
  *   shell-based laboratory used by the other modules.
  *
  * No external images are required: the book illustrations are inline SVG,
@@ -177,11 +182,40 @@ function Shelf({ capacity, books, index }) {
 }
 
 export default function DivisorExplorerBooks(props) {
+  const { t } = useTranslation("lesson");
+  const workspaceLevel = useWorkspaceLevel();
+  // TWO LEVELS, like every manipulation (levels.js). Inside a
+  // ManipulationWorkspace the workspace owns the only selector; posed alone,
+  // the lab shows its own. The lesson's numbers are always one of the two
+  // levels; the other one is the type's preset (24 books / 420 books).
+  const [setup] = useState(() => (workspaceLevel
+    ? null
+    : resolveManipulationLevels("divisor-explorer-books", { total: props.total ?? 420 }, props.level)));
+  const [level, setLevel] = useState(() => setup?.initial ?? null);
+  const onLessonLevel = !setup || level === setup.initial;
+  const preset = setup && !onLessonLevel ? setup.levels[level] : null;
+  const labProps = preset
+    ? {
+        total: preset.numbers.total,
+        candidates: preset.candidates,
+        initialCapacity: preset.initialCapacity,
+        pair: preset.pair,
+        title: t("manipulation.level.practiceTitle", { level: t(`manipulation.level.${level}`) }),
+      }
+    : props;
+  // The lesson's callbacks describe the lesson's numbers: the other level
+  // never ticks a lesson step.
+  const onVerdict = onLessonLevel ? props.onVerdict : undefined;
+
   // The presentation shell wraps the lab; the lab's state lives INSIDE, so
-  // entering/leaving classroom mode never remounts it.
+  // entering/leaving classroom mode never remounts it. Changing LEVEL does
+  // remount it (`key`): the other level is a different library.
   return (
-    <ClassroomPresentation scope="manipulation" title={props.title ?? "جرّب: رتّب كتب المكتبة"} entry="none">
-      <BooksLab {...props} />
+    <ClassroomPresentation scope="manipulation" title={labProps.title ?? "جرّب: رتّب كتب المكتبة"} entry="none">
+      {setup && (
+        <ManipulationLevelSelector levels={MANIPULATION_LEVEL_IDS} value={level} onChange={setLevel} className="mb-2" />
+      )}
+      <BooksLab key={level ?? "workspace"} {...labProps} onVerdict={onVerdict} />
     </ClassroomPresentation>
   );
 }

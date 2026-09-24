@@ -21,8 +21,8 @@
 //
 // Usage: node scripts/validate-lessons.mjs [--strict]
 
-import { readFileSync } from 'node:fs';
-import { relative } from 'node:path';
+import { readFileSync, existsSync } from 'node:fs';
+import { relative, join } from 'node:path';
 import {
   LESSON_STAGES,
   STAGE_ORDER,
@@ -86,6 +86,25 @@ function extractQuestions(file) {
       const enabledNode = propOf(assessmentNode, 'enabled');
       if (enabledNode === undefined) return;
 
+      // Deux écritures du lien question → learning point : l'héritage
+      // `learningPointIds: ['…']` (tous principaux) et la forme canonique
+      // `learningPoints: [{code, role}]` (Mastery V2 — un principal, des
+      // secondaires). Les deux sont lues ; le registre les unifie.
+      const lpNode = propOf(assessmentNode, 'learningPoints');
+      let learningPoints;
+      if (lpNode !== undefined) {
+        learningPoints = 'INVALID';
+        if (lpNode.type === 'ArrayExpression' && lpNode.elements.every((el) => el?.type === 'ObjectExpression')) {
+          const read = lpNode.elements.map((el) => ({
+            code: literalValue(propOf(el, 'code')),
+            role: literalValue(propOf(el, 'role')) ?? 'primary',
+          }));
+          if (read.every((lp) => typeof lp.code === 'string' && (lp.role === 'primary' || lp.role === 'secondary'))) {
+            learningPoints = read;
+          }
+        }
+      }
+
       questions.push({
         file,
         line: path.node.loc?.start.line,
@@ -93,6 +112,11 @@ function extractQuestions(file) {
         enabled: literalValue(enabledNode),
         type: literalValue(propOf(assessmentNode, 'type')),
         learningPointIds: literalValue(propOf(assessmentNode, 'learningPointIds')),
+        learningPoints,
+        difficulty: literalValue(propOf(assessmentNode, 'difficulty')),
+        hasDifficulty: propOf(assessmentNode, 'difficulty') !== undefined,
+        correct: literalValue(propOf(path.node, 'correct')),
+        hasCorrect: propOf(path.node, 'correct') !== undefined,
       });
     },
   });
@@ -407,19 +431,63 @@ for (const lessonDir of findLessonDirs(lessonsRoot)) {
     }
 
     if (q.enabled === true) {
-      if (!Array.isArray(q.learningPointIds) || q.learningPointIds.length === 0) {
-        errors.push(`${where}: enabled assessment question must list at least one learningPointId`);
+      // Le lien question → learning point, dans l'une des deux écritures.
+      let refs = null;
+      if (q.learningPoints !== undefined) {
+        if (q.learningPoints === 'INVALID') {
+          errors.push(`${where}: assessment.learningPoints must be a literal array of {code: string, role: 'primary'|'secondary'}`);
+        } else {
+          refs = q.learningPoints;
+          const primaries = refs.filter((lp) => lp.role === 'primary');
+          if (primaries.length !== 1) {
+            errors.push(`${where}: assessment.learningPoints must carry exactly one 'primary' learning point (got ${primaries.length})`);
+          }
+          if (refs.length > 4) {
+            errors.push(`${where}: assessment.learningPoints may list at most 4 learning points`);
+          }
+        }
+      } else if (Array.isArray(q.learningPointIds) && q.learningPointIds.length > 0) {
+        refs = q.learningPointIds.map((id) => ({ code: id, role: 'primary' }));
+        // L'écriture héritée n'a pas de rôle : avec plusieurs points, elle
+        // déclarerait plusieurs PRINCIPAUX, ce que le registre d'items refuse
+        // (Mastery V2 : exactement un principal). Bloquant pour une leçon
+        // vivante ; avertissement pour l'arbre dormant, jamais importé.
+        if (q.learningPointIds.length > 1) {
+          const dormant = /^apps\/web\/src\/lessons\/(college|lycee)\//.test(relative(repoRoot, q.file));
+          (dormant ? warnings : errors).push(`${where}: several learningPointIds without roles — use assessment.learningPoints: [{code, role: 'primary'}, {code, role: 'secondary'}] (exactly one primary)`);
+        }
+      }
+
+      if (!refs || refs.length === 0) {
+        errors.push(`${where}: enabled assessment question must list at least one learning point (learningPoints or learningPointIds)`);
       } else {
-        for (const lpId of q.learningPointIds) {
+        for (const { code: lpId } of refs) {
           if (!catalogEntry.learningPointIds.has(lpId)) {
-            errors.push(`${where}: learningPointId '${lpId}' does not belong to lesson '${code}'`);
+            errors.push(`${where}: learning point '${lpId}' does not belong to lesson '${code}'`);
           } else {
             covered.add(lpId);
           }
         }
       }
-    } else if (q.learningPointIds !== undefined && q.type !== 'assessment') {
-      errors.push(`${where}: discovery/practice questions must not carry learningPointIds`);
+
+      // La difficulté (1..5) que le registre d'items et le moteur de maîtrise
+      // liront ; facultative (défaut 3 côté serveur), littérale quand présente.
+      if (q.hasDifficulty && !(Number.isInteger(q.difficulty) && q.difficulty >= 1 && q.difficulty <= 5)) {
+        errors.push(`${where}: assessment.difficulty must be an integer literal between 1 and 5`);
+      }
+      // La clé de réponse du registre : `correct` doit être lisible. Absent,
+      // la convention BossFinal (index 0) s'applique — mais un `correct`
+      // calculé ne peut pas être exporté, donc pas jugé par le serveur.
+      if (q.hasCorrect && typeof q.correct !== 'number') {
+        // Sans clé lisible, le serveur ne peut pas juger : l'item est exporté
+        // `evaluation: client` et sa preuve pèse moins. Bloquant pour une
+        // leçon vivante ; un avertissement pour l'arbre dormant (college/,
+        // lycee/), qui n'est ni monté ni importé.
+        const dormant = /^apps\/web\/src\/lessons\/(college|lycee)\//.test(relative(repoRoot, q.file));
+        (dormant ? warnings : errors).push(`${where}: 'correct' must be a numeric literal — the assessment-item registry exports it as the answer key (computed ⇒ evaluation: client)`);
+      }
+    } else if ((q.learningPointIds !== undefined || q.learningPoints !== undefined) && q.type !== 'assessment') {
+      errors.push(`${where}: discovery/practice questions must not carry learning points`);
     }
   }
 
@@ -439,6 +507,64 @@ for (const code of coverageTargets) {
     if (!covered.has(lpId)) {
       errors.push(`lesson '${code}': learning point '${lpId}' has no assessment question`);
     }
+  }
+}
+
+// ── Answer-key integrity (2026-09-24) ─────────────────────────────────────
+// Every multiple-choice key a student can be judged against in a LIVE lesson
+// (the Algerian tree, apps/web/src/lessons/moyen/) must point to an option
+// that exists, and a question that shows options must declare its key:
+// TapQuestion compares `pick === correct` with no default (a missing key makes
+// the question unanswerable), and BossFinal would silently fall back to 0.
+// Found necessary by the content-integrity audit; the dormant tree is not
+// mounted and is not checked here.
+const liveRoot = join(lessonsRoot, 'moyen');
+const optionCount = (node) => {
+  if (!node) return null;
+  if (node.type === 'JSXExpressionContainer') return optionCount(node.expression);
+  if (node.type === 'ArrayExpression') return node.elements.length;
+  // ['…', '…'].map((o) => <MathText …/>) keeps the length of its array
+  if (node.type === 'CallExpression' && node.callee?.type === 'MemberExpression'
+      && node.callee.property?.name === 'map') return optionCount(node.callee.object);
+  return null;
+};
+const keyOf = (node) => {
+  if (node === undefined) return { present: false };
+  const n = node.type === 'JSXExpressionContainer' ? node.expression : node;
+  return { present: true, literal: n?.type === 'NumericLiteral', value: n?.type === 'NumericLiteral' ? n.value : null };
+};
+const checkKey = (where, count, key, mustDeclare) => {
+  if (!key.present) {
+    if (mustDeclare) errors.push(`${where}: question shows ${count ?? 'some'} options but declares no 'correct' key`);
+    return;
+  }
+  if (!key.literal || count === null) return; // computed key or options: not checkable statically
+  if (!Number.isInteger(key.value) || key.value < 0 || key.value >= count) {
+    errors.push(`${where}: 'correct' = ${key.value} but there are only ${count} options (valid: 0..${count - 1})`);
+  }
+};
+if (existsSync(liveRoot)) {
+  for (const file of listSourceFiles(liveRoot)) {
+    const source = readFileSync(file, 'utf-8');
+    if (!source.includes('options')) continue;
+    const ast = parseFile(file);
+    const rel = relative(repoRoot, file);
+    traverse(ast, {
+      ObjectExpression(path) {
+        const optionsNode = propOf(path.node, 'options');
+        const count = optionCount(optionsNode);
+        if (count === null) return;
+        const isQuestion = propOf(path.node, 'assessment') !== undefined
+          || propOf(path.node, 'prompt') !== undefined || propOf(path.node, 'explain') !== undefined;
+        checkKey(`${rel}:${path.node.loc?.start.line}`, count, keyOf(propOf(path.node, 'correct')), isQuestion);
+      },
+      JSXOpeningElement(path) {
+        const name = path.node.name?.name;
+        if (name !== 'TapQuestion') return;
+        const attr = (n) => path.node.attributes.find((a) => a.type === 'JSXAttribute' && a.name?.name === n)?.value;
+        checkKey(`${rel}:${path.node.loc?.start.line}`, optionCount(attr('options')), keyOf(attr('correct')), true);
+      },
+    });
   }
 }
 

@@ -12,11 +12,12 @@ import { fetchClassGroup, fetchTeacherEntitlements, updateClassGroup, archiveCla
 import MembersTab from '../../features/teacher/members/MembersTab';
 import LessonsTab from '../../features/teacher/classGroupLessons/LessonsTab';
 import ProgressTab from '../../features/teacher/progress/ProgressTab';
+import LearningPointsTab from '../../features/teacher/learningPoints/LearningPointsTab';
 import { TeacherPage, Loading, ErrorBox, useTableLabels, btnSecondary, btnPrimary, btnDanger, input } from './teacherUi';
 
-const TABS = ['students', 'lessons', 'progress', 'settings'];
+const TABS = ['students', 'lessons', 'progress', 'learningPoints', 'settings'];
 
-/** La page d'une classe : quatre onglets, et le code de classe toujours visible. */
+/** La page d'une classe : cinq onglets, et le code de classe toujours visible. */
 export default function ClassGroupDetail() {
   const { t } = useTranslation('teacher');
   const { id } = useParams();
@@ -101,7 +102,10 @@ export default function ClassGroupDetail() {
           {tab === 'lessons' && <LessonsTab classGroup={classGroup} entitlements={data.entitlements} />}
           {tab === 'progress' && (data.entitlements?.features?.['progress.class'] === false
             ? <p className="glass-card p-8 text-center text-sm text-slate-500">{t('progress.unavailable')}</p>
-            : <ProgressTab classGroup={classGroup} />)}
+            : <ProgressTab classGroup={classGroup} onOpenLearningPoints={() => setTab('learningPoints')} />)}
+          {tab === 'learningPoints' && (data.entitlements?.features?.['progress.class'] === false
+            ? <p className="glass-card p-8 text-center text-sm text-slate-500">{t('progress.unavailable')}</p>
+            : <LearningPointsTab classGroup={classGroup} />)}
           {tab === 'settings' && <SettingsTab classGroup={classGroup} onSaved={replaceClassroom} onArchive={() => setConfirm(classGroup.status === 'archived' ? 'restore' : 'archive')} />}
         </div>
       )}

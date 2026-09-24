@@ -1,0 +1,93 @@
+{
+  "metadata": {
+    "title": "سلسلة التفوق، الوضعية 6 — البيوت البلاستيكية",
+    "estimatedMinutes": 6,
+    "tags": [
+      "وضعية إدماجية",
+      "تبليط"
+    ],
+    "source": {
+      "type": "worksheet",
+      "worksheetId": "tafawwuq-01",
+      "elementId": "ws01-sit-06",
+      "section": "الوضعيات",
+      "number": 6
+    }
+  },
+  "statement": {
+    "content": "يملك عبد الرحيم قطعة أرض مستطيلة الشكل بُعداها 165 m و 88 m، يريد أن يقيم عليها بيوتًا بلاستيكية ذات قواعد مربعة الشكل لها نفس البُعد d (عدد طبيعي بالمتر)، تغطي الأرض كلها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أوجد قيمة d حتى يكون عدد البيوت البلاستيكية أقل ما يمكن.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-aadad_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي (بالمتر)",
+      "expectedAnswer": "11",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "d يقسم 165 و 88 معًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أقل عدد من البيوت يعني أكبر ضلع ممكن."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب PGCD(165 ; 88)."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(165 ; 88) = 11 m.",
+        "incorrect": "أكبر ضلع ممكن هو القاسم المشترك الأكبر للبعدين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو عندئذ عدد البيوت البلاستيكية؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-aadad_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "120",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "على الطول: 165 ÷ 11 بيتًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "على العرض: 88 ÷ 11 بيتًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب العددين."
+        }
+      ],
+      "feedback": {
+        "correct": "15 × 8 = 120 بيتًا.",
+        "incorrect": "عدد البيوت = (الطول ÷ d) × (العرض ÷ d)."
+      }
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-aadad-l2-001",
+  "lessonCode": "wadiya-idmajiya-aadad",
+  "level": 2
+}

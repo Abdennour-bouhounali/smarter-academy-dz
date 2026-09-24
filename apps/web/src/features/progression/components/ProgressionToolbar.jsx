@@ -185,7 +185,7 @@ export default function ProgressionToolbar({ view, onChange, fields, matched, to
                     onClick={() => set({ masteryStates: toggleIn(view.masteryStates, s) })}
                     className={`min-h-[40px] px-3 rounded-xl border text-xs font-inter font-semibold inline-flex items-center gap-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${on ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}`}
                   >
-                    <span aria-hidden="true">{MASTERY_STATES[s].emoji}</span> {t(`progression.chips.${s}`)}
+                    <span aria-hidden="true">{MASTERY_STATES[s].emoji}</span> {t(MASTERY_STATES[s].labelKey)}
                   </button>
                 );
               })}

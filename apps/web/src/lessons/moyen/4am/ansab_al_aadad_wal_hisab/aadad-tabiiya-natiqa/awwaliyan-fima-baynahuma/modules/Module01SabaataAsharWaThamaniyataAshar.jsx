@@ -53,7 +53,7 @@ export default function Module01SabaataAsharWaThamaniyataAshar() {
             <div className="space-y-3">
               <KnowledgeBrick id="awwaliyan-taarif" lead="القاسم المشترك الوحيد هو 1: هذا ما يسمّيه الكتاب عددين أوليين فيما بينهما." />
               <TapQuestion prompt={<span>لماذا القاسم المشترك الأكبر للعددين 17 و 18 هو 1؟</span>}
-                options={['قواسم 17: 1 ، 17؛ قواسم 18: 1 ، 2 ، 3 ، 6 ، 9 ، 18؛ القاسم المشترك الوحيد هو 1', 'لأن 17 عدد أولي', 'لأن 18 − 17 = 1 فقط', 'لأن 17 لا يقسم 18']} correct={0} cols={1} requires={['awwaliyan-taarif']}
+                options={['قواسم 17: 1 ، 17؛ قواسم 18: 1 ، 2 ، 3 ، 6 ، 9 ، 18؛ القاسم المشترك الوحيد هو 1', 'لأن 17 عدد أولي', 'لأن 18 عدد زوجي و 17 عدد فردي', 'لأن 17 لا يقسم 18']} correct={0} cols={1} requires={['awwaliyan-taarif']}
                 explain={<span>نقول إن 17 و 18 أوليان فيما بينهما ونكتب <MathText>{'$\\mathrm{PGCD}(18\\ ;\\ 17) = 1$'}</MathText>.</span>} onAnswered={() => setQ1(true)} />
               <TextbookBox kind="remark" text={ACTIVITY.questions[1]} compact />
             </div>

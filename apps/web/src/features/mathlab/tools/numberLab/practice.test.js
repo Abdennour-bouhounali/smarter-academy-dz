@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { readFileSync } from 'node:fs';
 import * as P from './practice.js';
 import { makeFrac, fracToNumber } from './fraction.js';
 import { gcd, lcm, isPrime, factorPairs } from './numberTheory.js';
@@ -243,5 +244,52 @@ describe('§54 — les expériences ne demandent rien, elles MONTRENT', () => {
 
   it('une expérience inconnue ne jette pas', () => {
     expect(() => P.runExperiment('n’existe pas')).not.toThrow();
+  });
+});
+
+/*
+ * Audit des réponses (2026-09-24) — chaque cas rejoue un défaut réel, avec
+ * une réponse juste calculée ici, pas lue dans le défi.
+ */
+describe('audit — la bonne réponse de l’élève est acceptée, dans son écriture', () => {
+  const ar = JSON.parse(readFileSync(new URL('../../../../i18n/locales/ar/mathlab.json', import.meta.url), 'utf8'));
+  const at = (key) => key.split('.').reduce((node, k) => node?.[k], ar);
+
+  it('« اكتب 3/4 على شكل نسبة مئوية » : 75 et 75 % sont justes, 0,75 % ne l’est pas', () => {
+    for (let seed = 0; seed < 400; seed++) {
+      const c = P.generateChallenge(seed, 3, ['representation']);
+      if (!c.promptKey.endsWith('Percent')) continue;
+      const percent = Math.round(fracToNumber(makeFrac(...c.promptParams.value.split('/').map(Number))) * 100);
+      expect(P.checkAnswer(c, String(percent)).correct).toBe(true);
+      expect(P.checkAnswer(c, `${percent}%`).correct).toBe(true);
+      expect(P.checkAnswer(c, `${percent} %`).correct).toBe(true);
+      expect(P.checkAnswer(c, `${percent / 100}%`).correct).toBe(false);
+    }
+  });
+
+  it('une question décimale ne lit pas « 75 % » comme 75', () => {
+    const c = { kind: 'representation', answerType: 'number', expected: 0.75, tolerance: 1e-6 };
+    expect(P.checkAnswer(c, '75%').correct).toBe(true);
+    expect(P.checkAnswer(c, '75').correct).toBe(false);
+  });
+
+  it('la consigne d’arrondi NOMME le rang — jamais « إلى -1 »', () => {
+    for (let seed = 0; seed < 300; seed++) {
+      const c = P.generateChallenge(seed, 3, ['rounding']);
+      const text = at(c.promptKey);
+      expect(typeof text, c.promptKey).toBe('string');
+      expect(text).toMatch(/أقرب/);
+      expect(text).not.toMatch(/\{\{rank\}\}/);
+    }
+  });
+
+  it('chaque indice ne demande que des paramètres fournis par le défi', () => {
+    for (let seed = 0; seed < 600; seed++) {
+      const c = P.generateChallenge(seed, 1 + (seed % 5));
+      for (const key of c.hintKeys ?? []) {
+        const wanted = [...String(at(key) ?? '').matchAll(/\{\{(\w+)\}\}/g)].map((m) => m[1]);
+        for (const w of wanted) expect(c.promptParams, `${key} veut {{${w}}}`).toHaveProperty(w);
+      }
+    }
   });
 });

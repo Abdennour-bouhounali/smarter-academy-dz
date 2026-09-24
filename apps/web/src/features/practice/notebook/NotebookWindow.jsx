@@ -30,11 +30,6 @@ export const MISTAKE_TYPES = [
   { id: 'etourderie', labelKey: 'notebook.mistakeEtourderie' },
 ];
 
-const SIZE_STORAGE_KEY = 'sa_nb_size';
-const readSize = () => {
-  try { return window.localStorage.getItem(SIZE_STORAGE_KEY) === 'large' ? 'large' : 'small'; } catch { return 'small'; }
-};
-
 // Le seuil « téléphone » de notebook.css, lu depuis le JSX pour la seule
 // décision de mise en page que la CSS ne peut pas prendre seule : le type
 // d'erreur en pastilles (grand, téléphone) ou en liste déroulante (petit).
@@ -66,6 +61,11 @@ function useMediaQuery(query) {
  * Ce qui ne se perd JAMAIS : le texte de l'élève. Chaque frappe alimente un
  * brouillon local (useNoteDraft) ; fermer, redimensionner, perdre le réseau
  * ne l'effacent pas, seul un enregistrement réussi le retire.
+ *
+ * Elle s'OUVRE toujours en grand (« large »), CENTRÉE dans l'écran — en
+ * leçon comme en exercice : la page qu'on déplie pour rédiger. L'élève peut
+ * la réduire en « petit » pendant la session ; ce choix n'est pas gardé
+ * d'une ouverture à l'autre.
  *
  * La fenêtre se DÉPLACE par son en-tête (useNotebookDrag) : la position est
  * un décalage indépendant de tout le reste — taille, contenu, brouillon,
@@ -110,7 +110,7 @@ export default function NotebookWindow({
   onCloseRef.current = onClose;
   const confirmClearRef = useRef(false);
 
-  const [size, setSize] = useState(readSize);
+  const [size, setSize] = useState('large');
   const isPhone = useMediaQuery(PHONE_QUERY);
   // Petit ET pas téléphone : la place manque en hauteur, le pied se resserre.
   const compact = size === 'small' && !isPhone;
@@ -242,10 +242,7 @@ export default function NotebookWindow({
     };
   }, [open]);
 
-  const changeSize = (next) => {
-    setSize(next);
-    try { window.localStorage.setItem(SIZE_STORAGE_KEY, next); } catch { /* confort seulement */ }
-  };
+  const changeSize = (next) => setSize(next);
 
   // Après l'animation d'ouverture et après un changement de taille (260ms de
   // transition CSS), la fenêtre a ses dimensions finales : on la ramène dans

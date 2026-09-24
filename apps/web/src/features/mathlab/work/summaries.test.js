@@ -115,12 +115,15 @@ describe('ce que chaque résumé dit, en particulier', () => {
         { type: 'rectangle', x: 0, y: 0, width: 100, height: 50, strokeColor: '#1e1e1e' },
         { type: 'text', x: 10, y: 10, width: 60, height: 20, text: 'المثلث ABC' },
         { type: 'freedraw', x: 5, y: 5, width: 20, height: 20, isDeleted: true },
+        // Les lettres et les mesures du bureau de géométrie ne sont pas du texte écrit.
+        { type: 'text', x: 0, y: 0, width: 10, height: 20, text: 'A', customData: { geo: { kind: 'label', of: 'p1' } } },
+        { type: 'text', x: 0, y: 30, width: 60, height: 20, text: 'AB = 5', customData: { geo: { kind: 'measure', of: 's1' } } },
       ],
     });
     expect(summary.kind).toBe('strokes');
-    expect(summary.text).toContain('المثلث ABC');
-    // L'élément supprimé ne compte pas.
-    expect(summary.detail.total).toBe(2);
+    expect(summary.text).toEqual(['المثلث ABC']);
+    // L'élément supprimé ne compte pas ; les lettres restent dans la silhouette.
+    expect(summary.detail.total).toBe(4);
     expect(summary.detail.box).toMatchObject({ w: 100, h: 50 });
   });
 

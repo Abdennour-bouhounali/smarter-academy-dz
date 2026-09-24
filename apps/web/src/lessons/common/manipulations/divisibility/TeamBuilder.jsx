@@ -37,6 +37,13 @@ import { formationPositions, playerScale } from './teamFormation';
  * découverte. La traçabilité est déclarée dans `lesson.config.js`
  * (`experience: { type: 'platform_context', reason: … }`).
  *
+ * « أنشئ الفرق » (MANIPULATION_CONTRACT §6bis). Le premier partage se fait
+ * à la main : c'est lui qui montre ce que « à parts égales » veut dire. Pour
+ * les suivants (20 en 4, 18 en 5…), porter vingt joueurs ne serait plus que
+ * de la répétition : le bouton les répartit, joueur par joueur, avec la même
+ * règle `canPlace` que le geste — les joueurs déjà placés restent où l'élève
+ * les a mis, et le seizième reste sur le banc comme à la main.
+ *
  * POURQUOI LE REFUS EST LA LEÇON. `canPlace` n'accepte un joueur que si les
  * équipes restent ÉGALES. L'élève qui essaie d'entasser six joueurs dans une
  * équipe reçoit une raison en arabe — et comprend, par le geste, que
@@ -49,19 +56,22 @@ export default function TeamBuilder({
   teamChoices,
   squadChoices,
   title, lead, mission,
-  level = 'beginner',
+  level,
   initialMode = 'student',
   allowModeSwitch = false,
   onVerdict, onFinished,
 }) {
   const { t } = useTranslation('lesson');
-  const isAdvanced = level === 'advanced';
   const state = useManipulation({
     type: 'team-builder',
     initialNumbers: { total: total0, groups: groups0 },
     initialMode,
     hintCount: 3,
+    initialLevel: level,
   });
+  // Le niveau VIVANT : celui du workspace, ou celui que l'élève a choisi
+  // dans le sélecteur de la manipulation posée seule.
+  const isAdvanced = state.level === 'advanced';
   const { total, groups } = state.numbers;
   const [lab, setLab] = useState(() => L.init({ total: total0, groups: groups0 }));
   const [reject, setReject] = useState(null);
@@ -102,7 +112,7 @@ export default function TeamBuilder({
     if (!settled) return;
     const key = `${total}:${groups}`;
     setTried((prev) => (key in prev ? prev : { ...prev, [key]: v.exact }));
-    onVerdict?.({ total, groups, perGroup: v.perGroup, leftOver: v.leftOver, exact: v.exact });
+    state.report(onVerdict, { total, groups, perGroup: v.perGroup, leftOver: v.leftOver, exact: v.exact });
   }, [settled, v.exact, total, groups]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // La découverte s'ouvre quand les DEUX cas ont été vus — un partage qui
@@ -117,7 +127,7 @@ export default function TeamBuilder({
   const contrastSeen = Object.values(tried).includes(true) && Object.values(tried).includes(false);
   useEffect(() => { if (contrastSeen) state.discover(); }, [contrastSeen, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => { if (state.isFormal) onFinished?.(v); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (state.isFormal) state.report(onFinished, v); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Le refus explique le geste qui vient d'échouer ; dès que la scène change,
   // il n'explique plus rien et doit disparaître (sinon l'élève lit un
@@ -176,6 +186,10 @@ export default function TeamBuilder({
     return isAdvanced ? [] : [12, 15, 16, 18, 20];
   }, [squadChoices, isAdvanced]);
 
+  // La contrainte croisée de la configuration — UNE seule définition, lue par
+  // le laboratoire libre / le mode classe ET par « أنشئ الفرق ».
+  const validateNumbers = (n) => (n.groups > n.total ? t('manipulation.teamBuilder.reject.moreTeamsThanPlayers') : '');
+
   const setGroupsTo = (k) => state.setNumbers({ ...state.numbers, groups: k });
   const setTotalTo = (n) => state.setNumbers({ ...state.numbers, total: n });
 
@@ -198,7 +212,7 @@ export default function TeamBuilder({
         { key: 'total', label: t('manipulation.teamBuilder.squadLabel') },
         { key: 'groups', label: t('manipulation.teamBuilder.teamsLabel') },
       ]}
-      validate={(n) => (n.groups > n.total ? t('manipulation.teamBuilder.reject.moreTeamsThanPlayers') : '')}
+      validate={validateNumbers}
       allowModeSwitch={allowModeSwitch}
       hints={[
         t('manipulation.teamBuilder.hint1'),
@@ -214,6 +228,17 @@ export default function TeamBuilder({
         },
         canAutoStep: () => L.nextMove(lab) !== null,
         showSolution: () => { setLab((s) => L.fill(s)); state.discover(); state.formalize(); },
+        // « أنشئ الفرق » — la complétion automatique de l'élève (§6bis). Elle
+        // ne touche QUE la répartition : ni la découverte, ni la
+        // formalisation. Le verdict, le banc et l'égalité suivent la scène
+        // exactement comme après le dernier geste manuel.
+        autoComplete: {
+          label: t('manipulation.teamBuilder.autoComplete'),
+          ready: !stale && !validateNumbers({ total, groups }),
+          remaining: stale ? 0 : L.remainingMoves(lab),
+          step: () => setLab(L.autoStep),
+          finish: () => setLab(L.fill),
+        },
       }}
       representation={settled && (
         <div className="space-y-2">

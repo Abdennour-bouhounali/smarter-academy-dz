@@ -58,7 +58,7 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
   const placed = lab.cols !== null;
   const lastTest = lab.tested.find((x) => x.d === lab.cols);
 
-  useEffect(() => { if (state.isFormal) onFinished?.(n); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (state.isFormal) state.report(onFinished, n); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <ManipulationShell

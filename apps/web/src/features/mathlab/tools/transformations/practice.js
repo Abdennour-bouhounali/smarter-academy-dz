@@ -14,7 +14,9 @@
  */
 
 import * as M from './transformMath.js';
-import { matrixFor } from './transformModel.js';
+import { matrixFor, resolveCenter, finalFigure } from './transformModel.js';
+import { formatValue } from '../functionGrapher/grapherFormat.js';
+import { vectorColumnText } from '../vectors/vectorFormat.js';
 
 /** Les familles de questions (§38, §39, §40). */
 export const CHALLENGE_KINDS = Object.freeze(['predictPoint', 'choosePosition', 'multiStep']);
@@ -56,24 +58,172 @@ export function generateChallenge(random = Math.random, options = {}) {
   const kind = options.kind && CHALLENGE_KINDS.includes(options.kind)
     ? options.kind
     : pick(random, CHALLENGE_KINDS);
-  const point = { x: randomInt(random, -5, 5), y: randomInt(random, -5, 5) };
 
-  if (kind === 'multiStep') {
-    // Deux pas : assez pour que l'ordre compte, assez peu pour rester suivable.
-    const steps = [randomStep(random, { allowDilation: false }), randomStep(random, { allowDilation: false })];
+  // Une question dont la réponse est le point LUI-MÊME (انسحاب nul, point
+  // sur l'axe, centre de rotation…) ne demande rien : on la retire. Le
+  // plafond ne sert qu'à un `random` dégénéré (une constante, dans un test) ;
+  // il rend alors une question sûre, jamais triviale.
+  for (let attempt = 0; attempt < MAX_DRAWS; attempt += 1) {
+    const point = { x: randomInt(random, -5, 5), y: randomInt(random, -5, 5) };
+    const steps = kind === 'multiStep'
+      // Deux pas : assez pour que l'ordre compte, assez peu pour rester suivable.
+      ? [randomStep(random, { allowDilation: false }), randomStep(random, { allowDilation: false })]
+      : [randomStep(random)];
     const answer = applySteps(point, steps);
-
-    return { kind, point, steps, answer, choices: null };
+    if (!M.samePoint(answer, point)) return finishChallenge(random, kind, point, steps);
   }
 
-  const steps = [randomStep(random)];
+  const fallback = kind === 'multiStep'
+    ? [{ kind: 'translation', enabled: true, vx: 2, vy: 1 }, { kind: 'translation', enabled: true, vx: 1, vy: -3 }]
+    : [{ kind: 'translation', enabled: true, vx: 2, vy: 1 }];
+
+  return finishChallenge(random, kind, { x: 1, y: 2 }, fallback);
+}
+
+/** Le nombre de tirages avant de se rabattre sur une question sûre. */
+const MAX_DRAWS = 50;
+
+function finishChallenge(random, kind, point, steps) {
   const answer = applySteps(point, steps);
+  const choices = kind === 'choosePosition' ? buildChoices(random, answer, point, steps) : null;
 
-  if (kind === 'choosePosition') {
-    return { kind, point, steps, answer, choices: buildChoices(random, answer, point, steps) };
+  return { kind, point, steps, answer, choices };
+}
+
+// ── L'énoncé : chaque pas DIT toute sa transformation ───────────────────
+
+/**
+ * Le texte d'un pas dans l'énoncé, sous forme STRUCTURÉE : la clé i18n
+ * (`tools.transformations.practice.stepText.<key>`) et ses paramètres, déjà
+ * écrits en notation (virgule décimale, vrai moins).
+ *
+ * « تناظر » seul ne dit pas QUEL تناظر, « دوران 90° » ne dit ni le centre ni
+ * le sens : l'élève ne pouvait pas répondre, il devinait. Chaque pas nomme
+ * donc tout ce qui fixe sa matrice — l'axe (ou le centre d'un تناظر مركزي),
+ * le centre ET le sens d'un دوران, le centre ET la نسبة d'un تحاكٍ, le شعاع
+ * d'un انسحاب. Deux pas de matrices différentes ont toujours deux textes
+ * différents (c'est testé).
+ *
+ * `vertices` résout un centre posé sur un sommet (`center.type = 'vertex'`).
+ */
+export function describeChallengeStep(step, vertices = []) {
+  if (!step || typeof step !== 'object') return null;
+  switch (step.kind) {
+    case 'translation':
+      return { key: 'translation', params: { vector: vectorColumnText({ x: Number(step.vx), y: Number(step.vy) }) } };
+    case 'rotation': {
+      const angle = Number(step.angle);
+      // L'angle orienté : positif = sens direct (contraire des aiguilles d'une montre).
+      return {
+        key: angle < 0 ? 'rotationNegative' : 'rotationPositive',
+        params: { center: centerText(resolveCenter(step.center, vertices)), angle: formatValue(Math.abs(angle)) },
+      };
+    }
+    case 'dilation':
+      return {
+        key: 'dilation',
+        params: { center: centerText(resolveCenter(step.center, vertices)), k: formatValue(Number(step.k)) },
+      };
+    case 'reflection':
+      return describeReflection(step.axis ?? {}, vertices);
+    default:
+      return null;
   }
+}
 
-  return { kind, point, steps, answer, choices: null };
+function describeReflection(axis, vertices) {
+  switch (axis.type) {
+    case 'xAxis': return { key: 'reflectXAxis', params: {} };
+    case 'yAxis': return { key: 'reflectYAxis', params: {} };
+    case 'origin': return { key: 'reflectCentral', params: { center: centerText(resolveCenter(axis.center, vertices)) } };
+    case 'diagonal': return { key: 'reflectLine', params: { equation: 'y = x' } };
+    case 'antidiagonal': return { key: 'reflectLine', params: { equation: 'y = −x' } };
+    case 'horizontal': return { key: 'reflectLine', params: { equation: `y = ${formatValue(Number(axis.value) || 0)}` } };
+    case 'vertical': return { key: 'reflectLine', params: { equation: `x = ${formatValue(Number(axis.value) || 0)}` } };
+    case 'line':
+      return { key: 'reflectLine', params: { equation: lineEquation(Number(axis.slope) || 0, Number(axis.intercept) || 0) } };
+    case 'twoPoints': {
+      const a = M.isPoint(axis.a) ? axis.a : vertices[axis.aIndex];
+      const b = M.isPoint(axis.b) ? axis.b : vertices[axis.bIndex];
+      if (!M.isPoint(a) || !M.isPoint(b)) return null;
+
+      return { key: 'reflectThrough', params: { a: pointText(a), b: pointText(b) } };
+    }
+    default:
+      return null;
+  }
+}
+
+/** Le centre : « O » quand c'est l'origine du repère, ses coordonnées sinon. */
+function centerText(center) {
+  return M.samePoint(center, M.ORIGIN, 1e-9) ? 'O' : pointText(center);
+}
+
+function pointText(point) {
+  return `(${formatValue(point.x)} ; ${formatValue(point.y)})`;
+}
+
+/** `y = ax + b`, écrit comme dans le manuel : ni « 1x », ni « + −3 », ni « + 0 ». */
+function lineEquation(slope, intercept) {
+  let linear;
+  if (slope === 0) linear = '';
+  else if (slope === 1) linear = 'x';
+  else if (slope === -1) linear = '−x';
+  else linear = `${formatValue(slope)}x`;
+  if (!linear) return `y = ${formatValue(intercept)}`;
+  if (intercept === 0) return `y = ${linear}`;
+
+  return `y = ${linear} ${intercept < 0 ? '−' : '+'} ${formatValue(Math.abs(intercept))}`;
+}
+
+// ── Ne pas montrer la réponse avant qu'elle soit donnée ─────────────────
+
+/**
+ * La question attend-elle encore sa réponse ?
+ *
+ * Tant que c'est le cas, l'IMAGE ne doit être ni dessinée ni lue : le plan
+ * la calculait et la dessinait dès la pose de la question (avec son
+ * étiquette A′), si bien que la réponse était à l'écran avant que l'élève
+ * ne réponde. Elle réapparaît au verdict ou à « أرني » — et c'est alors
+ * l'animation qui la montre.
+ */
+export function isImageHidden({ mode, challenge, verdict }) {
+  return mode === 'practice' && Boolean(challenge) && !verdict;
+}
+
+/**
+ * La résolution de la scène, IMAGES RETIRÉES : chaque figure a pour image
+ * ses propres sommets et aucun intermédiaire. Le plan et l'inspecteur n'ont
+ * alors rien de « déplacé » à dessiner ni à mesurer — pas d'image, pas de
+ * A′, pas de fil, pas de trace, pas de table original → image.
+ */
+export function maskImages(resolved) {
+  return {
+    ...resolved,
+    figures: resolved.figures.map((entry) => ({
+      ...entry,
+      stages: [],
+      image: entry.figure.vertices.map((vertex) => ({ x: vertex.x, y: vertex.y })),
+    })),
+  };
+}
+
+/**
+ * Ce que la vue CADRE pour une question.
+ *
+ * Avant la réponse, le cadrage ne dépend que de l'énoncé (le point et la
+ * fenêtre par défaut) : cadrer sur l'image désignerait déjà la zone où elle
+ * se trouve. Après le verdict, on cadre sur le point ET son image, pour que
+ * les deux soient à l'écran (§22).
+ */
+export function practiceFrame(challenge, revealed, defaultViewport) {
+  if (!challenge) return [];
+  const corners = defaultViewport
+    ? [{ x: defaultViewport.xMin, y: defaultViewport.yMin }, { x: defaultViewport.xMax, y: defaultViewport.yMax }]
+    : [];
+  if (!revealed) return [challenge.point, ...corners];
+
+  return [challenge.point, ...finalFigure([challenge.point], challenge.steps), ...corners];
 }
 
 /** L'image d'un point par une suite de pas — la réponse attendue. */

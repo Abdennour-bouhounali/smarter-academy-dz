@@ -1,7 +1,7 @@
 import React from 'react';
 import ItemFigure from './ItemFigure';
 import { ITEM_THEMES, resolveItemTheme } from './itemThemes';
-import { groupingLayout } from './groupingLayout';
+import { groupingLayout, itemSizeCss, GROUP_SCALE, PILE_SCALE } from './groupingLayout';
 
 /**
  * LA SCÈNE DES GROUPES IDENTIQUES — `a` objets d'un type et `b` d'un autre,
@@ -25,6 +25,14 @@ import { groupingLayout } from './groupingLayout';
  * elle-même ne contient aucun texte. `highlight` désigne un groupe à mettre en
  * évidence (la « part » qu'on lit dans la recette).
  *
+ * TAILLE (lisibilité au projecteur, 2026-09-24) : la scène est un conteneur
+ * de requête (`container-type: inline-size`) et pose deux variables —
+ * `--sa-item` (objets des piles et des cadres) et `--sa-item-left` (objets
+ * restés dehors). Chaque objet, chaque cadre (`perRow` objets de large) et
+ * chaque espacement se calcule à partir d'elles : les objets grandissent de
+ * ×1 (téléphone) à ×2 (projecteur, ×3 pour les piles) avec la largeur de la scène, et les cadres
+ * suivent sans jamais rogner un objet. La règle est `itemSizeCss`, testée.
+ *
  * CONTRAT DOM (e2e) :
  *   [data-grouping-scene][data-groups=k][data-works]
  *   [data-group-card] × shown  ·  [data-group-leftover]  ·  [data-pile]
@@ -35,11 +43,20 @@ export default function GroupingScene({
   const T = ITEM_THEMES[resolveItemTheme(theme)];
   const L = groupingLayout({ a, b, k, maxGroups });
   const okTone = tone === 'emerald' ? 'border-emerald-300 bg-emerald-50/70' : 'border-indigo-300 bg-indigo-50/70';
-  const item = (kind, t, i, w, muted = false) => (
-    <ItemFigure key={`${kind}-${i}`} kind={kind} tone={t} width={w} muted={muted} />
+  const item = (kind, t, i, muted = false) => (
+    <ItemFigure key={`${kind}-${i}`} kind={kind} tone={t} width={muted ? 'var(--sa-item-left)' : 'var(--sa-item)'} muted={muted} />
   );
+  // L'espace entre deux objets suit leur taille : on les compte un à un.
+  const gap = 'calc(var(--sa-item) / 8)';
+  const itemRow = { gap };
+  const rowWidth = `calc(${L.perRow} * (var(--sa-item) + ${gap}))`;
+  const sizing = {
+    containerType: 'inline-size',
+    '--sa-item': itemSizeCss(L.itemWidth, L.k === null ? PILE_SCALE : GROUP_SCALE),
+    '--sa-item-left': itemSizeCss(Math.max(L.itemWidth, 16), GROUP_SCALE),
+  };
 
-  const pile = (which, count, w) => (
+  const pile = (which, count) => (
     <div
       data-pile={which}
       className="flex-1 min-w-[120px] rounded-2xl border-2 border-slate-200 bg-white p-2"
@@ -48,8 +65,8 @@ export default function GroupingScene({
         <span>{which === 'a' ? words.itemA : words.itemB}</span>
         <span dir="ltr" className="rounded-full bg-slate-100 px-1.5 font-mono text-slate-800">{count}</span>
       </div>
-      <div className="flex flex-wrap items-end gap-0.5" dir="ltr">
-        {Array.from({ length: count }, (_, i) => item(which === 'a' ? T.itemA.kind : T.itemB.kind, which === 'a' ? T.itemA.tone : T.itemB.tone, i, w))}
+      <div className="flex flex-wrap items-end" style={itemRow} dir="ltr">
+        {Array.from({ length: count }, (_, i) => item(which === 'a' ? T.itemA.kind : T.itemB.kind, which === 'a' ? T.itemA.tone : T.itemB.tone, i))}
       </div>
     </div>
   );
@@ -62,11 +79,12 @@ export default function GroupingScene({
       data-groups={L.k ?? undefined}
       data-works={L.works === null ? undefined : L.works ? 'true' : 'false'}
       className="space-y-2"
+      style={sizing}
     >
       {L.k === null ? (
         <div className="flex flex-wrap gap-2">
-          {pile('a', a, L.itemWidth)}
-          {pile('b', b, L.itemWidth)}
+          {pile('a', a)}
+          {pile('b', b)}
         </div>
       ) : (
         <>
@@ -81,15 +99,15 @@ export default function GroupingScene({
                   className={`rounded-xl border-2 p-1.5 transition-colors ${
                     hi ? 'border-amber-500 bg-amber-50 ring-2 ring-amber-300' : L.works ? okTone : 'border-dashed border-slate-300 bg-white'
                   } ${compact ? 'min-w-[40px]' : 'min-w-[52px]'}`}
-                  style={{ maxWidth: `${L.perRow * (L.itemWidth + 2) + 14}px` }}
+                  style={{ maxWidth: `calc(${rowWidth} + 16px)` }}
                 >
                   <div dir="rtl" className="mb-1 flex items-center justify-between gap-1 text-[10px] font-extrabold text-slate-600">
                     <span>{words.group} {g + 1}</span>
                     <span dir="ltr" className="font-mono text-slate-800">{L.qa}+{L.qb}</span>
                   </div>
-                  <div className="flex flex-wrap items-end gap-0.5" style={{ width: `${L.perRow * (L.itemWidth + 2)}px`, maxWidth: '100%' }}>
-                    {Array.from({ length: L.qa }, (_, i) => item(T.itemA.kind, T.itemA.tone, i, L.itemWidth))}
-                    {Array.from({ length: L.qb }, (_, i) => item(T.itemB.kind, T.itemB.tone, i, L.itemWidth))}
+                  <div className="flex flex-wrap items-end" style={{ ...itemRow, width: rowWidth, maxWidth: '100%' }}>
+                    {Array.from({ length: L.qa }, (_, i) => item(T.itemA.kind, T.itemA.tone, i))}
+                    {Array.from({ length: L.qb }, (_, i) => item(T.itemB.kind, T.itemB.tone, i))}
                   </div>
                 </div>
               );
@@ -112,9 +130,9 @@ export default function GroupingScene({
                 <span dir="ltr" className="grid h-6 min-w-[24px] place-items-center rounded-md bg-amber-500 px-1 font-mono text-white">{L.ra + L.rb}</span>
                 <span>{words.leftover}</span>
               </div>
-              <div className="flex flex-wrap items-end gap-0.5" dir="ltr">
-                {Array.from({ length: L.ra }, (_, i) => item(T.itemA.kind, T.itemA.tone, `ra${i}`, Math.max(L.itemWidth, 16), true))}
-                {Array.from({ length: L.rb }, (_, i) => item(T.itemB.kind, T.itemB.tone, `rb${i}`, Math.max(L.itemWidth, 16), true))}
+              <div className="flex flex-wrap items-end" style={{ gap: 'calc(var(--sa-item-left) / 8)' }} dir="ltr">
+                {Array.from({ length: L.ra }, (_, i) => item(T.itemA.kind, T.itemA.tone, `ra${i}`, true))}
+                {Array.from({ length: L.rb }, (_, i) => item(T.itemB.kind, T.itemB.tone, `rb${i}`, true))}
               </div>
             </div>
           )}

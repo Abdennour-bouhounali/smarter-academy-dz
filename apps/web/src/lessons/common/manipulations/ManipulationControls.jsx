@@ -2,14 +2,20 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { RotateCcw, Lightbulb, BookOpen, CheckCircle2 } from 'lucide-react';
 import { Btn } from './ManipulationTeacherMode';
+import ManipulationAutoComplete from './ManipulationAutoComplete';
 
 /**
  * Les contrôles de l'ÉLÈVE : « إعادة », « تلميح » (progressif, compte
  * affiché), « تحقّق » quand le type propose une vérification explicite, et
  * « الشرح ». L'élève AVANCE en manipulant, jamais avec un bouton « suivant » :
  * celui-là n'existe qu'en mode classe (ManipulationTeacherMode).
+ *
+ * « Compléter automatiquement » (`ManipulationAutoComplete`) s'ajoute à la
+ * rangée seulement si le registre l'accorde au type (`controls.autoComplete`)
+ * et que le type en fournit la mécanique (`controller.autoComplete`). Ce n'est
+ * pas un « suivant » : il finit un geste RÉPÉTITIF, l'élève garde la main.
  */
-export default function ManipulationControls({ state, controls = {}, hints = [], onCheck, checkDisabled = false }) {
+export default function ManipulationControls({ state, controls = {}, hints = [], onCheck, checkDisabled = false, autoComplete }) {
   const { t } = useTranslation('lesson');
   return (
     <div className="flex flex-wrap items-center gap-2" data-manipulation-controls>
@@ -21,6 +27,7 @@ export default function ManipulationControls({ state, controls = {}, hints = [],
           <Lightbulb className="h-4 w-4" aria-hidden="true" /> {t('manipulation.hint.button')} <span dir="ltr" className="font-mono text-xs opacity-80">{Math.min(state.hintLevel, hints.length)}/{hints.length}</span>
         </Btn>
       )}
+      <ManipulationAutoComplete capability={controls.autoComplete} auto={autoComplete} resetKey={state.epoch} />
       {onCheck && (
         <Btn tone="blue" onClick={onCheck} disabled={checkDisabled}><CheckCircle2 className="h-4 w-4" aria-hidden="true" /> {t('manipulation.check')}</Btn>
       )}

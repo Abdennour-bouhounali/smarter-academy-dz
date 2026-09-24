@@ -7,7 +7,7 @@ import { getLessonProgress } from '../lessons/common/utils/progress/getLessonPro
 import { getTotalModules, getLessonConfig } from '../lessons/registry';
 import { useLearningProfile } from '../lessons/common/hooks/useLearningProfile';
 import { useLessonChromeLayout } from '../lessons/common/hooks/useLessonChrome';
-import { resolveMasteryState } from '../lessons/common/components/LearningPointMastery';
+import { resolveMasteryState, masteryTooltip } from '../lessons/common/components/LearningPointMastery';
 import { useContentAvailability } from '../context/ContentAvailabilityContext';
 import { ArrowForward } from '../components/common/DirectionalIcons';
 
@@ -79,10 +79,14 @@ function LessonBlock({ lesson, index, mastery, t }) {
           <h4 className="mb-1 flex items-center gap-1.5 text-sm font-bold text-slate-800"><ListChecks className="h-4 w-4" aria-hidden="true" /> {t('unit.learningPoints')}</h4>
           <ul className="space-y-1">
             {lesson.learningPoints.map((lp) => {
-              const state = resolveMasteryState(mastery.get(lp.id));
+              const row = mastery.get(lp.id);
+              const state = resolveMasteryState(row);
+              // UN seul vocabulaire (`mastery.*`) ; le tooltip ajoute la raison
+              // (`statusReason`) et la fraîcheur d'un acquis qui vieillit.
+              const tooltip = masteryTooltip(state, row, t);
               return (
-                <li key={lp.id} className="flex items-start gap-2 text-sm text-slate-700">
-                  <span className={`mt-1.5 inline-block h-2.5 w-2.5 shrink-0 rounded-full ${MASTERY_DOT[state]}`} aria-label={t(`unit.mastery.${state}`)} />
+                <li key={lp.id} className="flex items-start gap-2 text-sm text-slate-700" title={tooltip}>
+                  <span className={`mt-1.5 inline-block h-2.5 w-2.5 shrink-0 rounded-full ${MASTERY_DOT[state]}`} aria-label={tooltip} data-mastery-state={state} />
                   <span>{lp.title}</span>
                 </li>
               );
@@ -137,7 +141,8 @@ export default function UnitPage() {
   const { t } = useTranslation('student');
   const { levelId, gradeId, chapterId, unitId } = useParams();
   const unit = getUnitById(unitId);
-  const { profile } = useLearningProfile();
+  // Le profil de CETTE unité seulement (`?unit=`, Mastery V2).
+  const { profile } = useLearningProfile({ unit: unitId });
   // Même contrat de décalage haut que le sommaire et les modules de leçon.
   const chrome = useLessonChromeLayout();
   const mastery = useMemo(() => masteryIndex(profile), [profile]);

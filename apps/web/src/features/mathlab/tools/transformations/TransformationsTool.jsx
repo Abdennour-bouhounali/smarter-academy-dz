@@ -22,7 +22,7 @@ import {
 } from './transformState.js';
 import {
   generateChallenge, checkAnswer, getPuzzle, puzzleTarget, isPuzzleSolved,
-  getExperiment, patternCopies,
+  getExperiment, patternCopies, isImageHidden, maskImages, practiceFrame,
 } from './practice.js';
 import { useCompactCharts } from '../probabilityStats/useMediaQuery.js';
 
@@ -112,7 +112,14 @@ export default function TransformationsTool({ initialData, onChange, onReady }) 
 
   // ── Ce que l'écran lit : UN calcul par rendu ─────────────────────────
   const scene = currentScene(data);
-  const resolved = useMemo(() => resolveData(data), [data]);
+  // Tant qu'une question attend sa réponse, l'image n'existe pas pour l'écran :
+  // ni sur le plan, ni dans l'inspecteur (sinon la réponse est lue avant d'être donnée).
+  const hideImage = isImageHidden({ mode: data.mode, challenge, verdict });
+  const resolved = useMemo(() => {
+    const full = resolveData(data);
+
+    return hideImage ? maskImages(full) : full;
+  }, [data, hideImage]);
   const { settings } = data;
   const firstFigure = resolved.figures[0] ?? null;
 
@@ -123,7 +130,7 @@ export default function TransformationsTool({ initialData, onChange, onReady }) 
 
   // ── §12 : l'animation ───────────────────────────────────────────────
   const animationFigures = useMemo(() => {
-    if (!animation || !firstFigure) return null;
+    if (!animation || !firstFigure || hideImage) return null;
     const step = scene.steps[animation.stepIndex];
     if (!step) return null;
     // Les pas AVANT celui qu'on anime sont déjà appliqués ; celui-ci est à `fraction`.
@@ -132,7 +139,7 @@ export default function TransformationsTool({ initialData, onChange, onReady }) 
     if (!matrix) return null;
 
     return { [firstFigure.figure.id]: before.map((vertex) => M.applyMatrix(matrix, vertex)) };
-  }, [animation, firstFigure, scene.steps]);
+  }, [animation, firstFigure, scene.steps, hideImage]);
 
   const startAnimation = useCallback((stepId) => {
     const index = scene.steps.findIndex((step) => step.id === stepId);
@@ -266,11 +273,12 @@ export default function TransformationsTool({ initialData, onChange, onReady }) 
    * minuscule dans un coin — c'est exactement ce qu'une capture de la QA a
    * montré. On repose donc la scène ET la vue, ensemble.
    */
-  const installScene = useCallback((prepared, patch = {}) => {
+  const installScene = useCallback((prepared, patch = {}, framed = null) => {
     commit((current) => ({ ...pushScene(current, prepared), viewport: null, ...patch }));
     // On cadre sur l'original ET sur son image : les deux doivent être à
-    // l'écran, sinon l'élève ne peut pas les COMPARER (§22).
-    const vertices = prepared.figures.flatMap((figure) => [
+    // l'écran, sinon l'élève ne peut pas les COMPARER (§22). Une question,
+    // elle, fournit son propre cadrage — qui ne trahit pas la réponse.
+    const vertices = framed ?? prepared.figures.flatMap((figure) => [
       ...figure.vertices,
       ...finalFigure(figure.vertices, prepared.steps),
     ]);
@@ -320,9 +328,10 @@ export default function TransformationsTool({ initialData, onChange, onReady }) 
     const next = generateChallenge();
     setChallenge(next);
     setVerdict(null);
-    // La scène MONTRE la question : le point et la pile demandée.
+    // La scène MONTRE la question : le point et la pile demandée — mais pas
+    // l'image, masquée tant qu'il n'y a pas de verdict (`isImageHidden`).
     const prepared = setSteps(addFigure(emptyScene(), 'point', [next.point]), next.steps);
-    installScene(prepared, { mode: 'practice', puzzle: null });
+    installScene(prepared, { mode: 'practice', puzzle: null }, practiceFrame(next, false, DEFAULT_TRANSFORM_VIEWPORT));
   }, [installScene]);
 
   const handleSubmitAnswer = useCallback((given) => {
@@ -336,7 +345,9 @@ export default function TransformationsTool({ initialData, onChange, onReady }) 
         attempts: current.practice.attempts + 1,
       },
     }));
-    // §38 : on ANIME la transformation — la figure montre la réponse.
+    // §38 : on ANIME la transformation — la figure montre la réponse, et la
+    // vue s'élargit pour que le point ET son image soient à l'écran.
+    planeRef.current?.frame(practiceFrame(challenge, true, DEFAULT_TRANSFORM_VIEWPORT));
     const firstStepId = currentScene(dataRef.current).steps[0]?.id;
     if (firstStepId) startAnimation(firstStepId);
     setAnnouncement(result.correct
@@ -347,6 +358,7 @@ export default function TransformationsTool({ initialData, onChange, onReady }) 
   const handleReveal = useCallback(() => {
     if (!challenge || verdict) return;
     setVerdict({ correct: false, expected: challenge.answer, revealed: true });
+    planeRef.current?.frame(practiceFrame(challenge, true, DEFAULT_TRANSFORM_VIEWPORT));
     const firstStepId = currentScene(dataRef.current).steps[0]?.id;
     if (firstStepId) startAnimation(firstStepId);
   }, [challenge, verdict, startAnimation]);
@@ -381,12 +393,12 @@ export default function TransformationsTool({ initialData, onChange, onReady }) 
 
   // ── §37 : le motif ──────────────────────────────────────────────────
   const patternFigures = useMemo(() => {
-    if (!pattern || !firstFigure) return null;
+    if (!pattern || !firstFigure || hideImage) return null;
     const step = scene.steps.find((candidate) => candidate.id === effectiveStepId) ?? scene.steps[0];
     if (!step) return null;
 
     return patternCopies(firstFigure.figure.vertices, step, pattern);
-  }, [pattern, firstFigure, scene.steps, effectiveStepId]);
+  }, [pattern, firstFigure, scene.steps, effectiveStepId, hideImage]);
 
   // ── La coquille : « مسح الكل » et la grille ─────────────────────────
   useEffect(() => {
@@ -441,6 +453,7 @@ export default function TransformationsTool({ initialData, onChange, onReady }) 
                 animationFigures={animationFigures}
                 patternFigures={patternFigures}
                 targetFigure={target}
+                hideImage={hideImage}
                 view={view}
               />
 
@@ -464,7 +477,8 @@ export default function TransformationsTool({ initialData, onChange, onReady }) 
               )))}
 
               {/* La poignée du CENTRE (§11) ou du bout du شعاع (§7). */}
-              {activeStep?.kind === 'translation' && firstFigure && (
+              {/* Masqué avant le verdict : le bout du شعاع tiré depuis A EST A′. */}
+              {activeStep?.kind === 'translation' && firstFigure && !hideImage && (
                 <DragHandle
                   position={{
                     x: firstFigure.figure.vertices[0].x + Number(activeStep.vx),

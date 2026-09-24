@@ -8,12 +8,12 @@ import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { src } from '../../_unit/unitMeta';
 const Q = ({ children, source }) => <span>{children} <SourceTag source={source} /></span>;
 
-/** Module 4 — إتقان : معارف 3 (12 و 18), معارف 4 (28 و 42), نشاط 4 (90 و 54), ملاحظة (قواسم 14). */
+/** Module 4 — إختبار أولي : معارف 3 (12 و 18), معارف 4 (28 و 42), نشاط 4 (90 و 54), ملاحظة (قواسم 14). */
 export default function Module04Itqan() {
   return (
     <BossFinal
       ctx={MODULE_CTX} navLinks={getNavLinks(4)} moduleNumber={4}
-      moduleTitle="إتقان" moduleSubtitle="خمس أسئلة تُقيّم ما تعلّمته" estimatedTime="8 دقائق" lessonConfig={LESSON_CONFIG} timerSeconds={8 * 60} timerLabel="8 دقائق"
+      moduleTitle="إختبار أولي" moduleSubtitle="خمس أسئلة تُقيّم ما تعلّمته" estimatedTime="8 دقائق" lessonConfig={LESSON_CONFIG} timerSeconds={8 * 60} timerLabel="8 دقائق"
       brief={{ tag: 'التقويم', title: 'أظهر ما تعرفه', tone: 'slate', body: <p>أجب عن الأسئلة الخمسة ثم أرسِلها دفعة واحدة.</p> }}
       skills={{ mushtaraka: { label: 'القواسم المشتركة', module: 2 }, pgcd: { label: 'القاسم المشترك الأكبر والرمز', module: 2 }, wadiya: { label: 'وضعية الباقات', module: 1 }, mulahaza: { label: 'قواسم PGCD', module: 2 } }}
       epreuves={[

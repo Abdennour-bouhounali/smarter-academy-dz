@@ -17,7 +17,7 @@ export default function Module02Maarif() {
       ctx={MODULE_CTX} navLinks={getNavLinks(2)} moduleNumber={2}
       moduleTitle="معارف — القواسم المشتركة والقاسم المشترك الأكبر" moduleSubtitle="التعريف، الرمز، وملاحظة الكتاب" estimatedTime="15 دقيقة"
       brief={{ tag: 'معارف — الكتاب ص 10 و 12', title: 'قواسم → قواسم مشتركة → القاسم المشترك الأكبر', tone: 'violet', body: <p>ثلاث كلمات لا يجوز خلطها. الكتاب يعرّفها بمثالين: 12 و 18، ثم 28 و 42.</p> }}
-      intro={<Manipulation type="common-divisors" a={28} b={42} title="مثال الكتاب: 28 و 42" lead="اكشف قواسم 28، ثم قواسم 42، ثم القواسم المشتركة، ثم أكبرها." />}
+      intro={<Manipulation type="common-divisors" a={28} b={42} startWith="lists" title="مثال الكتاب: 28 و 42" lead="اكشف قواسم 28، ثم قواسم 42، ثم القواسم المشتركة، ثم أكبرها." />}
       steps={[
         { num: 1, title: 'القواسم المشتركة لعددين', done: q1,
           content: (

@@ -21,6 +21,12 @@
 > - Progress is **not** purely client-side: `localStorage` is a cache, and
 >   authenticated students sync through a debounced queue. See
 >   `PROGRESS_MODEL.md`.
+> - **Mastery is not a binary proxy** (the §1 « Mastery » row is stale): since
+>   Mastery V2 (2026-09-24) every Learning Point has an evidence-driven,
+>   server-judged, versioned and replayable state
+>   (`student_learning_point_progress`), fed by the final test and the
+>   practice engine. `getModuleMastery` is module COMPLETION (unlocking only).
+>   See `LEARNING_ARCHITECTURE.md` § « Mastery model (V2) ».
 >
 > The §5 data-flow shape, the §6 boundary table and the §7 `packages/core`
 > rationale remain correct. Start from [`../README.md`](../README.md) for the

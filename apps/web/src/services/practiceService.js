@@ -4,10 +4,11 @@ import { apiMessage } from './apiMessage';
 /**
  * Transport pour le moteur d'exercices — même forme que diagnosticService.js.
  *
- * La justesse d'une réponse est calculée par @smarter-academy/core AVANT
- * d'arriver ici (même frontière de confiance que le test final, documentée
- * dans LEARNING_ARCHITECTURE.md). Ce que le serveur possède : la propriété
- * de la séance, les points d'apprentissage crédités — lus dans le contenu,
+ * Mastery V2 : la justesse d'une réponse est JUGÉE PAR LE SERVEUR. Le client
+ * envoie la réponse brute (et, facultatif, sa prédiction `outcome` pour la
+ * comparaison en ombre) ; la réponse porte `evaluation`, le verdict qui
+ * s'affiche. Ce que le serveur possède : la propriété de la séance,
+ * l'évaluation, les points d'apprentissage crédités — lus dans le contenu,
  * pas dans la requête —, l'idempotence, et l'arithmétique de la maîtrise.
  */
 
@@ -71,7 +72,18 @@ export function requestHint(token, attemptUuid) {
   );
 }
 
-/** Enregistre une réponse et la preuve d'apprentissage qui en découle. */
+/**
+ * Enregistre une réponse ; le serveur la juge et en tire la preuve
+ * d'apprentissage.
+ *
+ * @param {string} token
+ * @param {string} sessionId
+ * @param {{attemptUuid: string, answer: object|null, outcome?: string}} payload
+ *        `outcome` n'est que la PRÉDICTION du client (comparaison en ombre).
+ * @returns {Promise<{success: boolean, duplicate: boolean,
+ *   attempt: {attemptUuid: string, outcome: string, evaluatedBy: string, hintsUsed: number},
+ *   evaluation: {outcome: string, isCorrect: boolean, misconceptionId: string|null, normalized: string, feedbackKey: string}}>}
+ */
 export function submitAnswer(token, sessionId, payload) {
   return call(
     `/practice/sessions/${encodeURIComponent(sessionId)}/answers`,
@@ -86,6 +98,23 @@ export function completeExercise(token, sessionId, exerciseId) {
     `/practice/sessions/${encodeURIComponent(sessionId)}/exercise-completions`,
     auth(token, { exerciseId }),
     'Impossible de valider l’exercice.',
+  );
+}
+
+/**
+ * Le prochain exercice conseillé par le sélecteur (Mastery V2, phase 9).
+ * `exerciseId: null` = niveau épuisé ; `reason: 'disabled'` = sélecteur
+ * coupé côté serveur, le client reprend l'ordre du contenu
+ * (features/practice/nextExercise.js).
+ *
+ * @returns {Promise<{success: boolean, exerciseId: string|null,
+ *   reason: 'weak_learning_point'|'unseen'|'recent_misconception'|'order'|'disabled', candidates: number}>}
+ */
+export function fetchNextExercise(token, sessionId) {
+  return call(
+    `/practice/sessions/${encodeURIComponent(sessionId)}/next`,
+    { headers: { Authorization: `Bearer ${token}` } },
+    'Impossible de choisir l’exercice suivant.',
   );
 }
 

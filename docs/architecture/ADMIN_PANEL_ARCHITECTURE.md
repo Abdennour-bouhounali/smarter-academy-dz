@@ -1067,7 +1067,7 @@ none of its own.
 
 | Concern | Source |
 |---|---|
-| Page gutter | `.sa-page` (20 / 40 / 60 px) — `index.css` |
+| Page gutter | `.sa-page` (20 / 40 / 60 px) — `index.css`; `.sa-page--flush` keeps 20 px at every size for a full-width workspace (practice player) |
 | Workspace shell | `.sa-workspace-main`, `.sa-workspace-sidebar` |
 | Type scale, fonts | `tailwind.config.js` (+25 % body scale; Cairo behind every stack) |
 | Background | `#FAFAFA` — identical to `StudentLayout` / `TeacherLayout` |

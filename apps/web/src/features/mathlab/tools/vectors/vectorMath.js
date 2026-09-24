@@ -241,7 +241,9 @@ export function areCollinear(a, b, c) {
   const ab = fromPoints(a, b);
   const ac = fromPoints(a, c);
   if (!ab || !ac) return { collinear: false, degenerate: true };
-  if (isZero(ab) || isZero(ac)) return { collinear: true, degenerate: true };
+  // B = C compte aussi : ⃗AB = ⃗AC « colinéaires » ne dit rien de trois points.
+  const bc = fromPoints(b, c);
+  if (isZero(ab) || isZero(ac) || (bc && isZero(bc))) return { collinear: true, degenerate: true };
 
   return { collinear: areParallel(ab, ac, { strict: false }), degenerate: false };
 }

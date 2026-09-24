@@ -44,6 +44,21 @@ export function isDifferencesFinished(state) {
   return state.done >= state.steps.length;
 }
 
+/**
+ * Compléter la chaîne (« أكمل الفروق », MANIPULATION_CONTRACT §6bis) : les
+ * soustractions restantes, par `subtract` — le geste de l'élève. La case
+ * PGCD n'est PAS remplie : reconnaître le dernier fruit non nul reste à lui.
+ */
+export function completeDifferences(state) {
+  let s = state;
+  while (!isDifferencesFinished(s)) s = subtract(s);
+  return s;
+}
+
+export function remainingDifferences(state) {
+  return Math.max(0, state.steps.length - state.done);
+}
+
 /** La dernière différence non nulle — le seul objet accepté dans la case PGCD. */
 export function lastNonZeroDiff(state) {
   const nz = state.steps.filter((s) => s.diff !== 0);
@@ -131,6 +146,36 @@ export function euclidAutoStep(state) {
   if (isEuclidFinished(state)) return state;
   if (!quotientReached(state)) return { ...state, copies: currentDivision(state).q };
   return carryRemainder(state);
+}
+
+/**
+ * UN geste de l'élève, dans l'ordre où il le ferait : poser une copie de
+ * plus tant qu'elle tient, puis porter le reste à la ligne suivante. C'est
+ * le pas de « أكمل القسمات » (§6bis) — plus fin que `euclidAutoStep`, qui
+ * remplit une division d'un coup pour le mode classe : l'élève voit les
+ * copies se poser une à une, comme il les posait.
+ */
+export function euclidGestureStep(state) {
+  if (isEuclidFinished(state)) return state;
+  if (!quotientReached(state)) return addCopy(state);
+  return carryRemainder(state);
+}
+
+/** Compléter la chaîne des divisions. La case PGCD reste au geste de l'élève. */
+export function completeEuclid(state) {
+  let s = state;
+  while (!isEuclidFinished(s)) s = euclidGestureStep(s);
+  return s;
+}
+
+/** Combien de gestes (copies + reports) restent avant la fin de la chaîne. */
+export function remainingEuclidGestures(state) {
+  let n = 0;
+  for (let i = state.index; i < state.steps.length; i += 1) {
+    const copies = i === state.index ? state.steps[i].q - state.copies : state.steps[i].q;
+    n += copies + 1;
+  }
+  return n;
 }
 
 export function comparison(a, b) {

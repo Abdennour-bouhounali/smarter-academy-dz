@@ -63,7 +63,7 @@
       ],
       "answerType": "interval",
       "answerFormat": "]… ; …[   (une borne vide signifie l'infini)",
-      "expectedAnswer": { "lo": null, "loOpen": true, "hi": "15", "hiOpen": true },
+      "expectedAnswer": { "lo": "0", "loOpen": false, "hi": "15", "hiOpen": true },
       "evaluationPolicy": { "acceptEquivalent": true, "tolerance": null },
       "misconceptionSignatures": [
         { "value": { "lo": "15", "loOpen": true, "hi": null, "hiOpen": true }, "id": "MISC-AFF-SIGNE-COTE-INVERSE" }

@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "title": "سلسلة التفوق، تمرين 3 — الفوارق المتتابعة",
+    "estimatedMinutes": 7,
+    "tags": [
+      "خوارزمية الفروق"
+    ],
+    "source": {
+      "type": "worksheet",
+      "worksheetId": "tafawwuq-01",
+      "elementId": "ws01-ex-03",
+      "section": "التمارين",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "باستعمال الفوارق المتتابعة، جِد في كل حالة القاسم المشترك الأكبر للعددين a و b."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "a = 88 و b = 40. PGCD(a ; b) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_bahth-pgcd_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ بالفرق 88 − 40 = 48."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في كل خطوة اطرح الأصغر من الأكبر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "توقّف عندما يصبح الفرق معدومًا."
+        }
+      ],
+      "feedback": {
+        "correct": "آخر فرق غير معدوم هو 8.",
+        "incorrect": "القاسم المشترك الأكبر هو آخر فرق غير معدوم."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "a = 837 و b = 341. PGCD(a ; b) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_bahth-pgcd_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "31",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ بالفرق 837 − 341 = 496."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في كل خطوة اطرح الأصغر من الأكبر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "توقّف عندما يصبح الفرق معدومًا."
+        }
+      ],
+      "feedback": {
+        "correct": "آخر فرق غير معدوم هو 31.",
+        "incorrect": "القاسم المشترك الأكبر هو آخر فرق غير معدوم."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "a = 3465 و b = 1575. PGCD(a ; b) = ?",
+      "learningPoints": [
+        {
+          "code": "4am_bahth-pgcd_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "315",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ بالفرق 3465 − 1575 = 1890."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في كل خطوة اطرح الأصغر من الأكبر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "توقّف عندما يصبح الفرق معدومًا."
+        }
+      ],
+      "feedback": {
+        "correct": "آخر فرق غير معدوم هو 315.",
+        "incorrect": "القاسم المشترك الأكبر هو آخر فرق غير معدوم."
+      }
+    }
+  ],
+  "id": "ex-4am-bahth-pgcd-l3-003",
+  "lessonCode": "bahth-pgcd",
+  "level": 3
+}

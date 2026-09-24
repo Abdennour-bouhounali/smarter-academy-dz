@@ -92,6 +92,6 @@ export const LESSON_CONFIG = {
       title: 'أوظّف تعلّماتي', desc: 'دوري الآن (285 و 45)، تمارين 19 ← 21، والعودة إلى تحدّي المآزر.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_bahth-pgcd_P2', '4am_bahth-pgcd_P4', '4am_bahth-pgcd_P5'], color: 'amber', style: 'featured', estimatedMin: 14, difficulty: 3, actionText: 'أتدرّب' },
     { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إتقان', desc: 'ست أسئلة تُقيّم نقاط التعلّم الخمس.', stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 8, difficulty: 4, actionText: 'أدخل التقويم' },
+      title: 'إختبار أولي', desc: 'ست أسئلة تُقيّم نقاط التعلّم الخمس.', stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 8, difficulty: 4, actionText: 'أدخل التقويم' },
   ],
 };

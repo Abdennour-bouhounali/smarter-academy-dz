@@ -3,7 +3,9 @@ import {
   GraduationCap, Lightbulb, ArrowRight, Check, X, LogOut,
 } from 'lucide-react';
 import * as C from './conicMath.js';
-import { hintAt, hintCount } from './practice.js';
+import {
+  hintAt, hintCount, parseNumberInput, parsePointInput,
+} from './practice.js';
 import { formatValue } from '../functionGrapher/grapherFormat.js';
 
 /**
@@ -28,11 +30,15 @@ function PracticePanel({
 }) {
   const [pointDraft, setPointDraft] = useState({ x: '', y: '' });
   const [numberDraft, setNumberDraft] = useState('');
+  // Une saisie illisible (champ vide, « abc ») ne reçoit AUCUN verdict : ni
+  // juste ni fausse, on dit seulement qu'on ne l'a pas lue.
+  const [unreadable, setUnreadable] = useState(false);
 
   // Une nouvelle question vide les champs — sinon la réponse précédente reste.
   useEffect(() => {
     setPointDraft({ x: '', y: '' });
     setNumberDraft('');
+    setUnreadable(false);
   }, [challenge]);
 
   if (mode !== 'practice' || !challenge) {
@@ -83,7 +89,9 @@ function PracticePanel({
           className="sa-ml-cn__answerform"
           onSubmit={(event) => {
             event.preventDefault();
-            onAnswer({ x: Number(pointDraft.x.replace(',', '.')), y: Number(pointDraft.y.replace(',', '.')) });
+            const point = parsePointInput(pointDraft);
+            setUnreadable(!point);
+            if (point) onAnswer(point);
           }}
         >
           <div className="sa-ml-cn__pointinputs" dir="ltr">
@@ -93,7 +101,7 @@ function PracticePanel({
               inputMode="decimal"
               className="sa-ml-cn__answerinput"
               value={pointDraft.x}
-              onChange={(event) => setPointDraft((d) => ({ ...d, x: event.target.value }))}
+              onChange={(event) => { setUnreadable(false); setPointDraft((d) => ({ ...d, x: event.target.value })); }}
               aria-label={t('tools.conics.practice.abscissa')}
               data-ml-cn-answer="x"
             />
@@ -103,7 +111,7 @@ function PracticePanel({
               inputMode="decimal"
               className="sa-ml-cn__answerinput"
               value={pointDraft.y}
-              onChange={(event) => setPointDraft((d) => ({ ...d, y: event.target.value }))}
+              onChange={(event) => { setUnreadable(false); setPointDraft((d) => ({ ...d, y: event.target.value })); }}
               aria-label={t('tools.conics.practice.ordinate')}
               data-ml-cn-answer="y"
             />
@@ -118,7 +126,12 @@ function PracticePanel({
       {!verdict && challenge.answerKind === 'number' && (
         <form
           className="sa-ml-cn__answerform"
-          onSubmit={(event) => { event.preventDefault(); onAnswer(Number(numberDraft.replace(',', '.'))); }}
+          onSubmit={(event) => {
+            event.preventDefault();
+            const value = parseNumberInput(numberDraft);
+            setUnreadable(!Number.isFinite(value));
+            if (Number.isFinite(value)) onAnswer(value);
+          }}
         >
           <input
             type="text"
@@ -126,7 +139,7 @@ function PracticePanel({
             dir="ltr"
             className="sa-ml-cn__answerinput"
             value={numberDraft}
-            onChange={(event) => setNumberDraft(event.target.value)}
+            onChange={(event) => { setUnreadable(false); setNumberDraft(event.target.value); }}
             aria-label={t('tools.conics.practice.value')}
             data-ml-cn-answer="value"
           />
@@ -134,6 +147,12 @@ function PracticePanel({
             {t('tools.conics.practice.check')}
           </button>
         </form>
+      )}
+
+      {!verdict && unreadable && (challenge.answerKind === 'point' || challenge.answerKind === 'number') && (
+        <p className="sa-ml-cn__error" role="status" data-ml-cn-unreadable>
+          {t('tools.conics.practice.unreadable')}
+        </p>
       )}
 
       {!verdict && (challenge.answerKind === 'choice' || challenge.answerKind === 'count') && (

@@ -478,17 +478,38 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
   await ctx.close();
 }
 
-/* ── 7 — paliers ─────────────────────────────────────────────────────────── */
+/* ── 7 — deux niveaux, un seul sélecteur ─────────────────────────────────── */
 {
+  // Dans un workspace : le sélecteur du workspace, et AUCUN dans la manipulation.
   const { ctx, page } = await open(`${CH}/awwaliyan-fima-baynahuma/17-wa-18`);
+  const ws = page.locator('[data-manipulation-workspace]').first();
+  await ws.waitFor();
+  check('niveaux : le workspace propose exactement مبتدئ / متقدم',
+    (await ws.locator('[data-manipulation-levels-selector] [role="tab"]').count()) === 2);
   await pickLevel(page, 'advanced');
   const m = await visibleManip(page, 'coprime-explorer');
   await m.waitFor();
-  const levels = m.locator('[data-manipulation-levels]');
-  check('paliers : les quatre niveaux sont proposés', (await levels.getByRole('button').count()) >= 4);
-  await levels.getByRole('button', { name: /تحدّ/ }).click();
+  check('niveaux : pas de second sélecteur dans la manipulation du workspace',
+    (await m.locator('[data-manipulation-levels-selector]').count()) === 0);
+  check('niveaux : aucune trace des quatre paliers',
+    !/اكتشاف ·|موجّه|استقلالية|· تحدّ/.test(await page.locator('body').textContent()));
+  await ctx.close();
+}
+{
+  // Posée seule (مثال الكتاب 22 و 15) : son propre sélecteur ; l'autre niveau
+  // charge les nombres du type et remplace le titre qui nommait 22 et 15.
+  const { ctx, page } = await open(`${CH}/awwaliyan-fima-baynahuma/maarif`, { completed: ['1'], lesson: 'awwaliyan-fima-baynahuma' });
+  const m = page.locator('[data-manipulation="coprime-explorer"]').first();
+  await m.waitFor();
+  const tabs = m.locator('[data-manipulation-levels-selector] [role="tab"]');
+  check('niveaux (seule) : deux onglets', (await tabs.count()) === 2);
+  check('niveaux (seule) : on arrive sur l’exemple de la leçon (مبتدئ)', (await m.getAttribute('data-level')) === 'beginner');
+  await m.locator('[role="tab"][data-level="advanced"]').click();
   await page.waitForTimeout(250);
-  check('paliers : le palier « تحدّ » charge 27 et 36', (await m.textContent()).includes('27') && (await m.textContent()).includes('36'));
+  const txt = await m.textContent();
+  check('niveaux (seule) : متقدم charge 27 et 36', txt.includes('27') && txt.includes('36'));
+  check('niveaux (seule) : le titre « 22 و 15 » ne coiffe plus d’autres nombres', !txt.includes('مثال الكتاب: 22 و 15'));
+  check('niveaux (seule) : l’onglet actif est annoncé', (await m.locator('[role="tab"][data-level="advanced"]').getAttribute('aria-selected')) === 'true');
   await ctx.close();
 }
 
@@ -786,6 +807,187 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
     if (!(await ws.count())) { await ctx.close(); continue; }
     const shown = await page.locator('[data-manipulation-level-panel]:not([hidden]) [data-manipulation]').first().getAttribute('aria-label');
     check(`D : « ${path} » ouvre sur les nombres de son titre`, expected.test(shown ?? ''), `ouvre sur « ${shown} »`);
+    await ctx.close();
+  }
+}
+
+/* ── 12 — COMPLÉTER AUTOMATIQUEMENT (MANIPULATION_CONTRACT §6bis) ──────────
+   Ce que ce bloc verrouille :
+     • « أنشئ الفرق » est actif dès que la configuration est valide, et il
+       met la VRAIE scène dans l'état qu'aurait donné la main (mêmes
+       effectifs, même banc, même égalité) ;
+     • il ne déclenche ni la découverte ni la règle ;
+     • MIXTE : ce que l'élève a placé reste où il l'a mis ;
+     • après coup, la main reprend la main (renvoyer au banc, recompléter) ;
+     • changer la configuration — même en pleine animation — ne laisse aucun
+       joueur de l'ancienne ;
+     • les machines à PGCD n'ouvrent le bouton qu'après un premier geste, et
+       laissent la case PGCD à l'élève. */
+{
+  const { ctx, page } = await open(`${CH}/qasim-adad-tabii/al-maktaba`);
+  const m = page.locator('[data-manipulation="team-builder"]').first();
+  await m.waitFor();
+  const ac = m.locator('[data-manipulation-autocomplete]');
+  const btn = ac.getByRole('button', { name: /أنشئ الفرق/ });
+  const bench = () => m.locator('[data-drop-zone="bench"] [data-drag-source^="player:"]');
+  const sizes = async () => (await m.locator('[data-team]').evaluateAll((els) => els.map((e) => e.dataset.teamSize))).join(',');
+  const settleAuto = async () => { await page.waitForFunction(() => document.querySelector('[data-manipulation="team-builder"] [data-manipulation-autocomplete]')?.dataset.manipulationAutocomplete !== 'running', null, { timeout: 5000 }); await page.waitForTimeout(250); };
+
+  check('AC1 : « أنشئ الفرق » est proposé dans la rangée des contrôles', (await btn.count()) === 1 && await btn.isVisible());
+  check('AC1 : configuration valide (15 / 3) → le bouton est actif', (await ac.getAttribute('data-manipulation-autocomplete')) === 'ready' && await btn.isEnabled());
+  check('AC1 : rien n’est placé tant que l’élève n’a pas appuyé', (await bench().count()) === 15);
+
+  // MIXTE : deux joueurs placés à la main, puis l'automatique.
+  await dragTo(page, m.locator('[data-drag-source="player:0"]'), m.locator('[data-team="0"]'));
+  await m.locator('[data-drag-source="player:1"]').click();
+  await m.locator('[data-team="2"]').click();
+  await page.waitForTimeout(200);
+  check('AC2 : le geste manuel marche toujours (2 joueurs placés)', (await bench().count()) === 13);
+  check('AC2 : le bouton reste disponible pendant la manipulation manuelle', await btn.isEnabled());
+  await btn.click();
+  await settleAuto();
+  check('AC2 : l’automatique COMPLÈTE : 3 équipes de 5, banc vide', (await sizes()) === '5,5,5' && (await bench().count()) === 0);
+  check('AC2 : les joueurs placés à la main n’ont pas bougé',
+    (await m.locator('[data-team="0"] [data-drag-source="player:0"]').count()) === 1
+    && (await m.locator('[data-team="2"] [data-drag-source="player:1"]').count()) === 1);
+  check('AC2 : aucun joueur dupliqué (15 joueurs dessinés, pas plus)', (await m.locator('[data-drag-source^="player:"]').count()) === 15);
+  const eq = ((await m.locator('[data-manipulation-representation]').textContent()) ?? '').replace(/\s+/g, ' ');
+  check('AC2 : la notation suit l’état réel — 15 = 3 × 5', /15\s*=\s*3\s*×\s*5/.test(eq), eq.slice(0, 60));
+  check('AC2 : l’automatique ne déclenche PAS la découverte', (await phaseOf(m)) === 'act');
+  check('AC2 : plus rien à compléter → bouton désactivé', (await ac.getAttribute('data-manipulation-autocomplete')) === 'done' && !(await btn.isEnabled()));
+
+  // APRÈS l'automatique, l'élève réarrange à la main.
+  await m.locator('[data-team="1"] [data-drag-source^="player:"]').first().click();
+  await m.locator('[data-drop-zone="bench"]').click();
+  await page.waitForTimeout(250);
+  check('AC3 : un joueur placé automatiquement se renvoie au banc à la main', (await bench().count()) === 1 && (await sizes()) === '5,4,5');
+  check('AC3 : le bouton redevient actif', await btn.isEnabled());
+  await btn.click();
+  await settleAuto();
+  check('AC3 : et recomplète la scène', (await sizes()) === '5,5,5' && (await bench().count()) === 0);
+
+  // NOUVELLE CONFIGURATION : aucune trace de l'ancienne.
+  await m.getByRole('button', { name: /^20 لاعب/ }).click();
+  await m.getByRole('button', { name: /كوّن 4 فرق/ }).click();
+  await page.waitForTimeout(300);
+  check('AC4 : 20 / 4 repart à zéro — 20 sur le banc, 4 équipes vides', (await bench().count()) === 20 && (await sizes()) === '0,0,0,0');
+  await btn.click();
+  await settleAuto();
+  check('AC4 : 20 / 4 → 4 équipes de 5', (await sizes()) === '5,5,5,5' && (await bench().count()) === 0);
+
+  // PAS D'ARRONDI : 16 / 3 laisse un joueur dehors, comme la main.
+  await m.getByRole('button', { name: /^16 لاعب/ }).click();
+  await m.getByRole('button', { name: /كوّن 3 فرق/ }).click();
+  await page.waitForTimeout(300);
+  await btn.click();
+  await settleAuto();
+  const eq16 = ((await m.locator('[data-manipulation-representation]').textContent()) ?? '').replace(/\s+/g, ' ');
+  check('AC5 : 16 / 3 → 5,5,5 et UN joueur dessiné sur le banc', (await sizes()) === '5,5,5' && (await bench().count()) === 1);
+  check('AC5 : 16 = 3 × 5 + 1 émerge de l’état réel', /16\s*=\s*3\s*×\s*5\s*\+\s*1/.test(eq16), eq16.slice(0, 70));
+  check('AC5 : les deux cas vus (15/3, 16/3) → la découverte s’ouvre, comme à la main', (await phaseOf(m)) === 'discover');
+
+  // Changer la configuration EN PLEINE ANIMATION.
+  await m.getByRole('button', { name: /^18 لاعب/ }).click();
+  await page.waitForTimeout(250);
+  await btn.click();
+  await page.waitForTimeout(90);
+  await m.getByRole('button', { name: /^12 لاعب/ }).click();
+  await page.waitForTimeout(1300);
+  check('AC6 : changer de configuration pendant l’animation l’arrête — 12 sur le banc, équipes vides',
+    (await bench().count()) === 12 && (await sizes()) === '0,0,0', `${await bench().count()} / ${await sizes()}`);
+
+  // « إعادة » arrête et remet aussi.
+  await btn.click();
+  await page.waitForTimeout(90);
+  await m.getByRole('button', { name: 'إعادة' }).click();
+  await page.waitForTimeout(1300);
+  check('AC6 : « إعادة » pendant l’animation remet la scène à zéro', (await bench().count()) === 12 && (await sizes()) === '0,0,0');
+  await ctx.close();
+}
+
+// Mouvement réduit : l'état final directement, sans animation.
+{
+  const { ctx, page } = await open(`${CH}/qasim-adad-tabii/al-maktaba`, { reducedMotion: true });
+  const m = page.locator('[data-manipulation="team-builder"]').first();
+  await m.waitFor();
+  await m.getByRole('button', { name: /أنشئ الفرق/ }).click();
+  await page.waitForTimeout(120);
+  const s = (await m.locator('[data-team]').evaluateAll((els) => els.map((e) => e.dataset.teamSize))).join(',');
+  check('AC7 : prefers-reduced-motion → les équipes sont complètes aussitôt', s === '5,5,5', s);
+  await ctx.close();
+}
+
+// Téléphone : le bouton tient dans la rangée, sans débordement.
+{
+  const { ctx, page } = await open(`${CH}/qasim-adad-tabii/al-maktaba`, { mobile: true });
+  const m = page.locator('[data-manipulation="team-builder"]').first();
+  await m.waitFor();
+  const b = m.getByRole('button', { name: /أنشئ الفرق/ });
+  const box = await b.boundingBox();
+  check('AC8 (320 px) : le bouton est une cible confortable', box && box.height >= 40, JSON.stringify(box));
+  await b.tap();
+  await page.waitForTimeout(1400);
+  check('AC8 (320 px) : il complète au doigt',
+    (await m.locator('[data-team]').evaluateAll((els) => els.map((e) => e.dataset.teamSize))).join(',') === '5,5,5');
+  check('AC8 (320 px) : aucun débordement horizontal', await noHorizontalScroll(page));
+  await ctx.close();
+}
+
+// Les MACHINES À PGCD : le premier exemple se fait à la main.
+{
+  const { ctx, page } = await open(`${CH}/bahth-pgcd/al-furuq`);
+  await pickLevel(page, 'advanced');
+  const m = await visibleManip(page, 'pgcd-differences');
+  await m.waitFor();
+  const ac = m.locator('[data-manipulation-autocomplete]');
+  check('AC9 : « أكمل الفروق » est VERROUILLÉ avant la première coupe',
+    (await ac.getAttribute('data-manipulation-autocomplete')) === 'locked'
+    && !(await ac.getByRole('button').isEnabled())
+    && /بيدك/.test((await ac.textContent()) ?? ''));
+  await m.locator('[data-drag-source="num:small"]').first().click();
+  await m.locator('[data-drop-zone="big"]').click();
+  await page.waitForTimeout(220);
+  check('AC9 : après une coupe à la main, il s’ouvre', (await ac.getAttribute('data-manipulation-autocomplete')) === 'ready');
+  await ac.getByRole('button').click();
+  await page.waitForTimeout(1400);
+  const chain = (await m.locator('[data-difference-chain]').textContent()) ?? '';
+  check('AC9 : la chaîne 252/140 est complète (… − 28 = 0)', /28\s*−\s*28\s*=\s*0|= 0/.test(chain.replace(/\s+/g, ' ')), chain.slice(-80));
+  check('AC9 : la case PGCD reste à l’élève (pas de découverte)', (await phaseOf(m)) === 'act');
+  await ctx.close();
+}
+{
+  const { ctx, page } = await open(`${CH}/bahth-pgcd/khwarizmiyat-iqlidus`, { completed: ['1', '2'], lesson: 'bahth-pgcd' });
+  await pickLevel(page, 'advanced');
+  const m = await visibleManip(page, 'euclidean-algorithm');
+  await m.waitFor();
+  const ac = m.locator('[data-manipulation-autocomplete]');
+  check('AC10 : « أكمل القسمات » est VERROUILLÉ avant la première division', (await ac.getAttribute('data-manipulation-autocomplete')) === 'locked');
+  const dividend = m.locator('[data-drop-zone="dividend"]');
+  for (let i = 0; i < 5; i += 1) await dragTo(page, tile(m, 'copy'), dividend);
+  check('AC10 : des copies posées ne suffisent pas — la division doit être finie', (await ac.getAttribute('data-manipulation-autocomplete')) === 'locked');
+  await dragTo(page, m.locator('[data-drag-source="rem:90"]').first(), m.locator('[data-drop-zone="carry"]'));
+  check('AC10 : la première division finie à la main ouvre le bouton', (await ac.getAttribute('data-manipulation-autocomplete')) === 'ready');
+  await ac.getByRole('button').click();
+  await page.waitForTimeout(1400);
+  const rep = ((await m.locator('[data-euclid-chain]').textContent()) ?? '').replace(/\s+/g, ' ');
+  check('AC10 : 765/135 → la chaîne va jusqu’à 90 = 45 × 2 + 0', /90\s*=\s*45\s*×\s*2\s*\+\s*0/.test(rep), rep.slice(-90));
+  check('AC10 : la case PGCD reste à l’élève', (await phaseOf(m)) === 'act' && (await ac.getAttribute('data-manipulation-autocomplete')) === 'done');
+  await ctx.close();
+}
+
+// Les types À CHOIX n'ont pas le bouton : chaque geste y est une expérience.
+{
+  const PAGES = [
+    ['factor-pairs', `${CH}/qawasim-adad-tabii/al-adad-60`],
+    ['common-divisors', `${CH}/qasim-mushtarak-akbar/baqat`],
+    ['fraction-reduction', `${CH}/ikhtizal-kasr/samir`],
+  ];
+  for (const [type, url] of PAGES) {
+    const { ctx, page } = await open(url, { completed: ['0', '1', '2'], lesson: url.split('/').slice(-2)[0] });
+    await pickLevel(page, 'advanced');
+    const m = await visibleManip(page, type);
+    const found = await m.waitFor({ timeout: 8000 }).then(() => true).catch(() => false);
+    check(`AC11 : ${type} — pas de complétion automatique (MANUEL SEUL)`, found && (await m.locator('[data-manipulation-autocomplete]').count()) === 0);
     await ctx.close();
   }
 }

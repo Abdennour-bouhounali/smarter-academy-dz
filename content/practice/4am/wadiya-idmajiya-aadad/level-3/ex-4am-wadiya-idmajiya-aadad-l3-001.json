@@ -1,0 +1,127 @@
+{
+  "metadata": {
+    "title": "سلسلة التفوق، الوضعية 1 — الكراريس والكتب",
+    "estimatedMinutes": 6,
+    "tags": [
+      "وضعية إدماجية",
+      "توزيع"
+    ],
+    "source": {
+      "type": "worksheet",
+      "worksheetId": "tafawwuq-01",
+      "elementId": "ws01-sit-01",
+      "section": "الوضعيات",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "اشترى عمي سعيد 1392 كرّاسًا و 812 كتابًا من أجل توزيعها على أكبر عدد ممكن من التلاميذ المحتاجين، بحيث يحصل كل تلميذ على كراريس وكتب في آن واحد، وتكون القسمة عادلة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هو عدد التلاميذ المحتاجين؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-aadad_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "116",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عدد التلاميذ يقسم 1392 و 812."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نريد أكبر عدد ممكن من التلاميذ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب PGCD(1392 ; 812) بخوارزمية إقليدس."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD(1392 ; 812) = 116 تلميذًا.",
+        "incorrect": "عدد التلاميذ هو القاسم المشترك الأكبر."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "كم كرّاسًا يحصل عليه كل تلميذ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-aadad_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "12",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "1392 كرّاسًا على 116 تلميذًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم 1392 على عدد التلاميذ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "1392 ÷ 116."
+        }
+      ],
+      "feedback": {
+        "correct": "1392 ÷ 116 = 12 كرّاسًا.",
+        "incorrect": "اقسم عدد الكراريس على عدد التلاميذ."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "كم كتابًا يحصل عليه كل تلميذ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-aadad_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "812 كتابًا على 116 تلميذًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم 812 على عدد التلاميذ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "812 ÷ 116."
+        }
+      ],
+      "feedback": {
+        "correct": "812 ÷ 116 = 7 كتب.",
+        "incorrect": "اقسم عدد الكتب على عدد التلاميذ."
+      }
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-aadad-l3-001",
+  "lessonCode": "wadiya-idmajiya-aadad",
+  "level": 3
+}

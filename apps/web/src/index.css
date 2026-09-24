@@ -532,6 +532,16 @@ html[data-sa-resizing] .sa-workspace-main {
   }
 }
 
+/* `.sa-page--flush` — la même page, gouttière de 20 px à TOUS les formats.
+   Pour un espace de travail qui veut toute la largeur de l'écran (le lecteur
+   d'exercices : colonne latérale + exercice) : pas de 40/60 px sur tablette
+   et bureau. Deux classes, donc plus spécifique que les media queries
+   ci-dessus. */
+.sa-page.sa-page--flush {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 /* ─────────────────────────────────────────────────────────────────────────
    FOND UNI DU SYSTÈME D'EXERCICES — `.sa-surface-plain`
    ─────────────────────────────────────────────────────────────────────────

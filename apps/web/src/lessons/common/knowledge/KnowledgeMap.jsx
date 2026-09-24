@@ -10,6 +10,12 @@ import { buildStructure, progressionByModule, HIGHLIGHT_CAT } from './knowledgeS
 import ConceptVisual from './ConceptVisual';
 import AddToNotebookButton from '../../../features/practice/notebook/AddToNotebookButton';
 import { useLessonKnowledge } from './KnowledgeProvider';
+import { Link } from 'react-router-dom';
+import { getLessonById } from '@smarter-academy/core';
+import { getLessonConfig, getModulePath } from '../../registry';
+import { useLearningProfile } from '../hooks/useLearningProfile';
+import { MASTERY_STATES, masteryTooltip } from '../components/LearningPointMastery';
+import { moduleMasteryOverlay } from './knowledgeMastery';
 
 /*
  * RTL (ar-DZ — src/locale.js) : le panneau vit sur le bord de FIN de la zone
@@ -276,19 +282,102 @@ function StructuredView({ items, onSelect, columns = 1 }) {
       </div>
 
       {/* Fil cumulatif — la carte s'enrichit module après module */}
-      {steps.length > 0 && (
-        <div className="pt-3 border-t border-slate-100 flex items-center gap-1.5 flex-wrap" data-km-progression="true">
-          <span className="text-[10px] text-slate-400 me-1">{t('map.yourMapColon')}</span>
-          {steps.map((s, i) => (
-            <React.Fragment key={s.module}>
-              {i > 0 && <span className="text-slate-200 text-[10px]" aria-hidden="true">→</span>}
-              <span className="text-[10px] font-mono text-slate-500 bg-slate-50 border border-slate-100 rounded px-1.5 py-0.5">
-                M{s.module}<span className="text-slate-300"> +{s.count}</span>
-              </span>
-            </React.Fragment>
-          ))}
-        </div>
-      )}
+      {steps.length > 0 && <ProgressionStrip steps={steps} />}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   FIL « بطاقتك » + SURCOUCHE DE MAÎTRISE (Mastery V2, phase 8c)
+   La VISIBILITÉ des items reste pilotée par la complétion ; la maîtrise
+   n'ajoute que des pastilles à côté de chaque module (les points qu'il
+   enseigne) et, pour une lacune dans un module parcouru, « راجع ». Rien de
+   tout cela ne part à l'impression (data-km-noprint).
+   ───────────────────────────────────────────────────────────────────────── */
+const MASTERY_DOT_TONE = { slate: 'bg-slate-300', rose: 'bg-rose-500', amber: 'bg-amber-400', emerald: 'bg-emerald-500' };
+
+function ProgressionStrip({ steps }) {
+  const { lessonId } = useLessonKnowledge();
+  const config = lessonId ? getLessonConfig(lessonId) : null;
+  const teaches = config?.modules?.some((m) => m.teachesLearningPointIds?.length);
+  // Le profil n'est lu que pour une leçon qui déclare ce qu'enseignent ses
+  // modules : sinon, le fil reste exactement celui d'avant.
+  return teaches
+    ? <MasteryAwareStrip steps={steps} lessonId={lessonId} config={config} />
+    : <StripBase steps={steps} overlay={null} />;
+}
+
+function MasteryAwareStrip({ steps, lessonId, config }) {
+  const { unlockedModules } = useLessonKnowledge();
+  const { profile, status } = useLearningProfile({ lesson: lessonId });
+  const overlay = React.useMemo(() => {
+    if (status !== 'ready' || !profile) return null;
+    const rowsByCode = new Map(
+      (profile.currentMastery ?? []).flatMap((g) => (g.lessons ?? []).flatMap((l) => l.learningPoints ?? []))
+        .map((row) => [row.code ?? row.learningPointCode, row]),
+    );
+    const titles = new Map((getLessonById(lessonId)?.learningPoints ?? []).map((lp) => [lp.id, lp.title]));
+    const byModule = moduleMasteryOverlay({
+      moduleNumbers: steps.map((s) => s.module),
+      modules: config.modules,
+      rowsByCode,
+      completedModules: unlockedModules,
+      modulePath: (n) => getModulePath(lessonId, n),
+    });
+    for (const entry of byModule.values()) {
+      for (const dot of entry.dots) dot.title = dot.row?.title || titles.get(dot.code) || dot.code;
+    }
+    return byModule;
+  }, [status, profile, steps, config, unlockedModules, lessonId]);
+
+  return <StripBase steps={steps} overlay={overlay} />;
+}
+
+function StripBase({ steps, overlay }) {
+  const { t } = useTranslation('lesson');
+  return (
+    <div className="pt-3 border-t border-slate-100 flex items-center gap-1.5 flex-wrap" data-km-progression="true">
+      <span className="text-[10px] text-slate-400 me-1">{t('map.yourMapColon')}</span>
+      {steps.map((s, i) => {
+        const mastery = overlay?.get(s.module) ?? null;
+        return (
+          <React.Fragment key={s.module}>
+            {i > 0 && <span className="text-slate-200 text-[10px]" aria-hidden="true">→</span>}
+            <span className="inline-flex items-center gap-1 text-[10px] font-mono text-slate-500 bg-slate-50 border border-slate-100 rounded px-1.5 py-0.5">
+              M{s.module}<span className="text-slate-300"> +{s.count}</span>
+              {mastery && (
+                <span className="inline-flex items-center gap-0.5 ms-0.5" data-km-noprint="true" data-km-mastery={s.module} aria-label={t('map.masteryOverlayAria', { module: s.module })}>
+                  {mastery.dots.map((d) => {
+                    const tip = `${d.title} — ${masteryTooltip(d.state, d.row)}`;
+                    const tone = MASTERY_STATES[d.state]?.tone ?? 'slate';
+                    return (
+                      <span
+                        key={d.code}
+                        className={`inline-block h-2 w-2 rounded-full ${MASTERY_DOT_TONE[tone]}`}
+                        title={tip}
+                        role="img"
+                        aria-label={tip}
+                        data-mastery-state={d.state}
+                      />
+                    );
+                  })}
+                </span>
+              )}
+            </span>
+            {mastery?.reviewPath && (
+              <Link
+                to={mastery.reviewPath}
+                className="text-[10px] font-bold text-rose-700 hover:text-rose-900 underline underline-offset-2"
+                aria-label={t('map.reviewModuleAria', { module: s.module })}
+                data-km-noprint="true"
+                data-km-review={s.module}
+              >
+                {t('map.reviewModuleShort')}
+              </Link>
+            )}
+          </React.Fragment>
+        );
+      })}
     </div>
   );
 }

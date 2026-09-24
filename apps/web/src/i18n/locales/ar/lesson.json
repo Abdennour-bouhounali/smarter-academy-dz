@@ -40,7 +40,7 @@
   },
   "index": {
     "yourProgress": "تقدّمك",
-    "lessonMastered": "🏆 تمّ إتقان الدرس!",
+    "pathCompleted": "أنهيت مسار الدرس ✓",
     "modulesPath": "🗺️ مسار المحاور",
     "locked": "مقفل",
     "inProgress": "قيد الإنجاز",
@@ -50,6 +50,9 @@
     "review": "مراجعة ➔",
     "results": "النتائج ➔",
     "startingMission": "مهمة الانطلاق",
+    "softGateHint": "نوصي بمراجعة: {{titles}} أولًا",
+    "softGateModuleLink": "المحور {{number}}: {{title}}",
+    "softGateTitlesSeparator": "، ",
     "home": "الرئيسية",
     "level_moyen": "المتوسط",
     "level_college": "المتوسط",
@@ -70,21 +73,35 @@
   "boss": {
     "trial": "التمرين",
     "challengeResult": "نتيجة التحدي",
-    "seeMasteryProfile": "عرض ملف الإتقان",
+    "seeMasteryProfile": "عرض نتيجتي حسب المهارة",
     "retakeTest": "إعادة الاختبار",
-    "yourMasteryProfile": "ملف الإتقان الخاص بك",
+    "yourMasteryProfile": "نتيجة هذا التحدي حسب المهارة",
     "badgesUnlocked": "الأوسمة المحصّلة",
     "goToSynthesis": "الانتقال إلى الحوصلة ←",
     "reviewModule": "مراجعة المحور {{number}}",
-    "masteredWell": "متحكَّم فيه جيدًا",
-    "someErrors": "لا تزال بعض الأخطاء",
-    "needsWork": "يحتاج إلى مراجعة",
+    "masteredWell": "كل الإجابات صحيحة",
+    "someErrors": "خطأ واحد",
+    "needsWork": "أكثر من خطأ",
     "phaseBoss": "التحدي النهائي",
-    "phaseProfile": "ملفّي",
+    "phaseProfile": "نتيجتي",
     "phaseSynthesis": "الحوصلة",
     "noAnswer": "(بدون إجابة)",
     "submitAnswers": "أرسِل إجاباتي ({{count}})",
-    "profileSubtitle": "ليست مجرّد علامة: ما تتحكّم فيه، وما يستحقّ مراجعة أخرى."
+    "profileSubtitle": "نتيجة هذه المحاولة فقط. حالتك على نقاط التعلّم تُحسب من كل أدلّتك، أسفله.",
+    "learningPointsStatus": "حالتك على نقاط التعلّم",
+    "learningPointsStatusHint": "تُحسب على الخادم من الاختبار النهائي ومن تمارينك معًا — وقد تحتاج لحظة لتظهر إجاباتك الأخيرة.",
+    "learningPointsRefresh": "تحديث",
+    "whatNext": "ما التالي؟",
+    "whatNextHint": "اقتراحات حسب حالتك على نقاط التعلّم — لك أن تتبعها أو لا.",
+    "nextReviewModule": "راجع المحور {{number}}: {{title}}",
+    "nextReviewLearningPoint": "راجع: {{title}}",
+    "nextPractice": "تدرّب على هذه النقطة في التمارين",
+    "nextAssessment": "أنت جاهز للتحدي: أعد الإختبار الأولي",
+    "nextRefresh": "تمرين تذكيري قصير",
+    "learningPointsLoading": "جارٍ تحميل حالتك…",
+    "learningPointsError": "تعذّر تحميل حالة نقاط التعلّم.",
+    "learningPointsLogin": "سجّل الدخول لترى حالتك على نقاط التعلّم.",
+    "badgesNote": "الأوسمة تكافئ الفهم وصحّة الاستدلال — لا السرعة أبدًا."
   },
   "diagnostic": {
     "title": "قبل الانطلاق...",
@@ -92,7 +109,7 @@
     "inProgress": "إلى حدّ الآن",
     "skillGood": "✓ فهم جيّد",
     "skillToReinforce": "💡 يحتاج إلى تدعيم",
-    "prerequisitesMastered": "🏆 المكتسبات القبلية متحكَّم فيها!",
+    "prerequisitesMastered": "🏆 كل المكتسبات القبلية صحيحة!",
     "yourAdvice": "نصيحتك",
     "payAttentionTo": "انتبه بصفة خاصة إلى:",
     "redoDiagnostic": "إعادة التشخيص",
@@ -191,6 +208,9 @@
     "emptyMapLong": "بطاقتك لا تزال فارغة: تمتلئ كلما أتممت محورًا.",
     "traps": "أخطاء شائعة يجب تفاديها",
     "yourMapColon": "بطاقتك:",
+    "masteryOverlayAria": "حالة نقاط التعلّم في المحور {{module}}",
+    "reviewModuleShort": "راجع",
+    "reviewModuleAria": "راجع المحور {{module}}",
     "toRetain": "للتذكّر",
     "starToRetain": "⭐ للتذكّر",
     "discoveredWithIt": "🔗 اكتشفتها مع",
@@ -219,6 +239,11 @@
     "reset": "إعادة",
     "nextStep": "الخطوة التالية",
     "prevStep": "الخطوة السابقة",
+    "autoComplete": {
+      "button": "أكمل تلقائيًا",
+      "hint": "يُكمل الخطوات المتبقّية بنفس قاعدة السحب، ويمكنك بعدها التعديل بيدك.",
+      "locked": "أنجز الخطوة الأولى بيدك، ثم يمكنك الإكمال تلقائيًا."
+    },
     "showExplanation": "إظهار الشرح",
     "hideExplanation": "إخفاء الشرح",
     "showConclusion": "إظهار النتيجة",
@@ -458,7 +483,6 @@
       "opt3": "مجموع القواسم المشتركة.",
       "why2": "انظر: هذا العدد يقسم {{b}} أيضًا.",
       "why3": "لم نجمع شيئًا؛ اخترنا الأكبر.",
-      "hint1": "جرّب أعدادًا مختلفة من الباقات: أيّها لا يترك زهورًا؟",
       "hint2": "اكتب قواسم كل عدد، ثم ابحث عن المشترك بينهما.",
       "hint3": "من بين القواسم المشتركة، أيّها الأكبر؟",
       "genericGroup": "مجموعة",
@@ -467,10 +491,16 @@
       "groupsZone": "عدد المجموعات ({{group}})",
       "perGroup": "في كل {{group}}: {{qa}} {{itemA}} و {{qb}} {{itemB}}",
       "leftOverItems": "يبقى {{ra}} {{itemA}} و {{rb}} {{itemB}}",
-      "missionGroups": "وزّع {{a}} {{itemA}} و {{b}} {{itemB}} على مجموعات متماثلة: اسحب عدد المجموعات.",
       "groupsTried": "المجموعات التي جرّبتها",
       "pileHint": "اسحب عددًا من المجموعات إلى الطاولة: تتوزّع الأشياء فورًا.",
-      "oneGroupPerLine": "في كل {{group}}: {{qa}} {{itemA}} و {{qb}} {{itemB}}"
+      "oneGroupPerLine": "في كل {{group}}: {{qa}} {{itemA}} و {{qb}} {{itemB}}",
+      "missionGreatestGroups": "وزّع {{a}} {{itemA}} و {{b}} {{itemB}} على مجموعات متماثلة دون أن يبقى شيء: ما أكبر عدد ممكن من المجموعات؟",
+      "groupsHint1": "جرّب أعدادًا مختلفة من المجموعات: أيّها لا يترك شيئًا خارجها؟",
+      "groupsHint2": "العدد الذي ينجح يقسم {{a}} ويقسم {{b}} معًا — العلامة ✓ على الأعداد التي جرّبتها.",
+      "groupsHint3": "بين الأعداد التي نجحت، أيّها الأكبر؟ هل جرّبت أعدادًا أكبر منه؟",
+      "groupsDone": "وجدت أكبر عدد ممكن من المجموعات: {{g}}. الخطوة التالية: نكتب قواسم {{a}} وقواسم {{b}} في قائمتين، ونتأكّد أنّ {{g}} هو أكبر قاسم مشترك.",
+      "toLists": "إلى القائمتين ←",
+      "backToGroups": "→ عودة إلى المجموعات"
     },
     "diff": {
       "title": "الفروق المتتابعة: PGCD({{a}} ; {{b}})",
@@ -511,7 +541,8 @@
       "cm": "{{n}} سم",
       "nothingLeft": "لم يبقَ شيء: الشريطان صارا متساويين.",
       "piecesTitle": "القطع التي قُصّت",
-      "pgcdRibbon": "أطول قطعة تقيس الشريطين معًا"
+      "pgcdRibbon": "أطول قطعة تقيس الشريطين معًا",
+      "autoComplete": "أكمل الفروق"
     },
     "euclid": {
       "title": "خوارزمية إقليدس: PGCD({{a}} ; {{b}})",
@@ -559,7 +590,8 @@
       "dividendRibbon": "الشريط الأكبر: {{a}} سم",
       "leftPiece": "القطعة الباقية: {{r}} سم",
       "notCovered": "لم يُغطَّ بعد",
-      "cm": "{{n}} سم"
+      "cm": "{{n}} سم",
+      "autoComplete": "أكمل القسمات"
     },
     "reduce": {
       "title": "اختزال الكسر {{n}}/{{d}}",
@@ -627,13 +659,6 @@
       "tryAgain": "أعد النظر إلى ما فعلته.",
       "hiddenByTeacher": "النتيجة مخفيّة: صِغ القاعدة بنفسك أولًا."
     },
-    "levels": {
-      "title": "المستوى:",
-      "discover": "اكتشاف",
-      "guided": "موجّه",
-      "autonomy": "استقلالية",
-      "challenge": "تحدّ"
-    },
     "freeLab": {
       "title": "مختبر حرّ",
       "lead": "اختر عددين ضمن الحدود المسموح بها، وواصل الاستكشاف."
@@ -647,8 +672,10 @@
     "keyboardHint": "بالمفاتيح: Entrée لأخذ العنصر، ثم Entrée على المكان.",
     "level": {
       "title": "الأنشطة التفاعلية",
+      "label": "مستوى المناولة",
       "beginner": "مبتدئ",
-      "advanced": "متقدم"
+      "advanced": "متقدم",
+      "practiceTitle": "تدرّب — مستوى {{level}}"
     },
     "teamBuilder": {
       "title": "{{total}} لاعبًا في {{groups}} فرق متساوية",
@@ -687,7 +714,8 @@
         "moreTeamsThanPlayers": "عدد الفرق لا يمكن أن يتجاوز عدد اللاعبين.",
         "sameTeam": "هذا اللاعب في هذا الفريق بالفعل."
       },
-      "dropHere": "ضع لاعبًا هنا"
+      "dropHere": "ضع لاعبًا هنا",
+      "autoComplete": "أنشئ الفرق"
     },
     "themes": {
       "garden": {

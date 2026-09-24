@@ -535,10 +535,11 @@ function classifyBreak(fn, x, left, right) {
      * On exige donc, quand une lecture est incertaine, un écart RÉELLEMENT
      * visible — un pour mille. Le trou de (x²−1)/(x−1), lui, a ses deux
      * limites qui s'accordent bien mieux que cela, et il passe.
+     *
+     * Cette règle vit dans `limitsAgree`, partagée avec `twoSidedLimit` :
+     * le tableau de variations et l'inspecteur jugent de la même façon.
      */
-    const uncertain = left.uncertain || right.uncertain;
-    const tolerance = (uncertain ? 1e-3 : 1e-6) * (1 + Math.abs(left.value));
-    if (Math.abs(left.value - right.value) > tolerance) return { kind: 'jump' };
+    if (!limitsAgree(left, right)) return { kind: 'jump' };
 
     /**
      * Les deux limites coïncident. Reste à savoir si f est DÉFINIE là.
@@ -556,7 +557,9 @@ function classifyBreak(fn, x, left, right) {
     const here = fn(x);
     if (!finite(here)) return { kind: 'removable' };
 
-    return { kind: Math.abs(here - left.value) <= tolerance ? 'continuous' : 'removable' };
+    const valueHere = { kind: 'finite', value: here, error: 0, uncertain: left.uncertain || right.uncertain };
+
+    return { kind: limitsAgree(left, valueHere) && limitsAgree(right, valueHere) ? 'continuous' : 'removable' };
   }
 
   /**
@@ -687,15 +690,127 @@ export function oneSidedLimit(fn, a, side, options = {}) {
     return signs.size === 1 ? { kind: 'infinite', sign: Math.sign(last) } : { kind: 'none' };
   }
 
+  /**
+   * La VALEUR lue n'est pas le dernier échantillon : c'est son extrapolation
+   * à δ = 0.
+   *
+   * Le dernier échantillon est pris à δ = 1e−6 de a, pas EN a : pour une
+   * fonction de pente m, il est décalé de m·1e−6, et de signe opposé de
+   * chaque côté. `2x + 1` en 0 rendait 0,999998 à gauche et 1,000002 à
+   * droite — un écart de 4e−6 que la comparaison à 1e−6 déclarait
+   * « deux limites différentes » : l'état par défaut du laboratoire des
+   * limites annonçait qu'une droite n'a pas de limite en 0.
+   *
+   * Voir `extrapolateToPoint`. La correction appliquée est aussi la BARRE
+   * D'ERREUR qu'on rend (`error`) : l'ordre de grandeur de ce que
+   * l'échantillonnage ne sait pas trancher, dont `limitsAgree` tient compte.
+   */
+  const reading = extrapolateToPoint(table, steps, last, tail);
+
+  /**
+   * Une divergence LENTE est une divergence.
+   *
+   * `ln|x|` en 0 : −6,9 ; −9,2 ; −11,5 ; −13,8 — chaque décade retranche la
+   * même quantité. Le test d'explosion ci-dessus ne la voit pas (la suite ne
+   * grandit que de 20 % par pas, et reste loin de 1e4), et la lecture
+   * annonçait « ≈ −14,07 », une limite finie qui n'existe pas. Une suite qui
+   * converge a des écarts qui TENDENT VERS 0 ; des écarts de même signe qui
+   * ne décroissent pas (rapport ≥ 0,9 à chaque décade) disent l'inverse.
+   */
+  const steps4 = tail.slice(1).map((value, index) => value - tail[index]);
+  const steady = steps4.length >= 2
+    && steps4.every((step) => step !== 0 && Math.sign(step) === Math.sign(steps4[0]))
+    && steps4.every((step, index) => index === 0 || Math.abs(step) >= 0.9 * Math.abs(steps4[index - 1]));
+  if (steady) return { kind: 'infinite', sign: Math.sign(steps4[0]) };
+
   // Une stabilisation : les dernières valeurs se resserrent.
   const spread = Math.max(...tail) - Math.min(...tail);
   const scale = 1 + Math.abs(last);
-  if (spread < 1e-4 * scale) return { kind: 'finite', value: last, approximate: true };
+  if (spread < 1e-4 * scale) return { kind: 'finite', approximate: true, ...reading };
+
+  /**
+   * Une convergence RÉGULIÈRE est une convergence, même raide.
+   *
+   * `1000x + 1` en 0 : la table va de 0 à 0,999999, un écart de 1 — au-delà
+   * du seuil ci-dessus, et même du seuil « aucune limite » plus bas. Mais
+   * chaque pas divise l'écart au précédent par 10 : la suite se resserre
+   * géométriquement, et une suite dont les écarts décroissent d'un facteur
+   * ≤ ½ a un reste plus petit que son dernier écart. C'est la même règle que
+   * `limitAtInfinity` (« ce qui caractérise la convergence, c'est que l'écart
+   * DÉCROISSE »). `sin(1/x)` n'y passe pas : ses écarts ne décroissent pas.
+   */
+  const gaps = tail.slice(1).map((value, index) => Math.abs(value - tail[index]));
+  const shrinking = gaps.length >= 2 && gaps.every((gap, index) => index === 0 || gap <= 0.5 * gaps[index - 1]);
+  if (shrinking && gaps[gaps.length - 1] < 1e-2 * scale) return { kind: 'finite', approximate: true, ...reading };
 
   // Ni l'un ni l'autre : on ne tranche pas.
   if (spread > 0.5 * scale) return { kind: 'none' };
 
-  return { kind: 'finite', value: last, approximate: true, uncertain: true };
+  return { kind: 'finite', approximate: true, uncertain: true, ...reading };
+}
+
+/**
+ * L'extrapolation à δ = 0 des dernières lignes de la table.
+ *
+ * Près de a, f(a ± δ) ≈ L + c·δ^p : p = 1 pour une fonction dérivable,
+ * p = ½ au bord de √. Les trois derniers pas (1e−4, 1e−5, 1e−6) forment une
+ * suite GÉOMÉTRIQUE, donc les écarts successifs aussi, de raison ρ = 10^−p —
+ * et l'accélération d'Aitken (Δ²) rend L exactement, quel que soit p :
+ * L = y₃ + d₂·ρ/(1 − ρ), avec d₂ = y₃ − y₂ et ρ = d₂/d₁. Pour p = 1, c'est
+ * l'extrapolation de Richardson (L ≈ y₃ + d₂/9).
+ *
+ * On ne l'applique que si les écarts se resserrent vraiment (0 < ρ < 0,9) ;
+ * sinon Richardson d'ordre 1 sur les deux dernières lignes, et à défaut le
+ * dernier échantillon, avec l'écart de la queue pour barre d'erreur.
+ */
+function extrapolateToPoint(table, steps, last, tail) {
+  const n = table.length;
+  const fallback = { value: last, error: Math.max(...tail) - Math.min(...tail) };
+  const read = (index) => (index >= 0 ? table[index].y : null);
+  const [y1, y2, y3] = [read(n - 3), read(n - 2), read(n - 1)];
+  if (y2 === null || y3 === null) return fallback;
+
+  const d2 = y3 - y2;
+  if (d2 === 0) return { value: y3, error: 0 };
+  if (y1 !== null) {
+    const d1 = y2 - y1;
+    const ratio = d1 === 0 ? NaN : d2 / d1;
+    if (ratio > 0 && ratio < 0.9) {
+      const correction = d2 * ratio / (1 - ratio);
+      if (finite(correction)) return { value: y3 + correction, error: Math.abs(correction) };
+    }
+  }
+
+  const far = steps[n - 2];
+  const near = steps[n - 1];
+  if (!(far > near) || near <= 0) return fallback;
+  const correction = d2 * near / (far - near);
+
+  return finite(correction) ? { value: y3 + correction, error: Math.abs(correction) } : fallback;
+}
+
+/**
+ * Deux limites FINIES sont-elles la même ?
+ *
+ * Une seule règle, pour le verdict du laboratoire (`twoSidedLimit`) comme
+ * pour le classement des ruptures (`classifyBreak`) — deux règles
+ * divergeaient, et la même droite était « continue » sur le tableau de
+ * variations mais « sans limite » dans l'inspecteur.
+ *
+ * La tolérance est celle de l'échantillonnage, pas un epsilon fixe :
+ *   · un plancher relatif, 1e−6, ou 1e−3 quand une lecture est `uncertain`
+ *     (voir `classifyBreak`) ;
+ *   · plus les deux barres d'erreur de l'extrapolation.
+ * Un vrai saut (sign, partie entière, |x|/x) a des côtés CONSTANTS : barres
+ * d'erreur nulles, et un écart de 2 ou de 1 reste un écart.
+ */
+export function limitsAgree(left, right) {
+  if (left?.kind !== 'finite' || right?.kind !== 'finite') return false;
+  const uncertain = left.uncertain || right.uncertain;
+  const scale = 1 + Math.max(Math.abs(left.value), Math.abs(right.value));
+  const tolerance = (uncertain ? 1e-3 : 1e-6) * scale + (left.error ?? 0) + (right.error ?? 0);
+
+  return Math.abs(left.value - right.value) <= tolerance;
 }
 
 /**
@@ -708,9 +823,13 @@ export function oneSidedLimit(fn, a, side, options = {}) {
 export function twoSidedLimit(fn, a, options = {}) {
   const left = oneSidedLimit(fn, a, 'left', options);
   const right = oneSidedLimit(fn, a, 'right', options);
-  const agree = left.kind === right.kind
-    && (left.kind !== 'finite' || Math.abs(left.value - right.value) < 1e-6 * (1 + Math.abs(left.value)))
-    && (left.kind !== 'infinite' || left.sign === right.sign);
+  /**
+   * Deux lectures ne « coïncident » que si elles EXISTENT : deux côtés
+   * `none` (sin(1/x) en 0) ou `undefined` ne font pas une limite, et
+   * l'inspecteur disait pourtant « les deux limites sont égales ».
+   */
+  const agree = (left.kind === 'finite' && limitsAgree(left, right))
+    || (left.kind === 'infinite' && right.kind === 'infinite' && left.sign === right.sign);
 
   return { left, right, agree, value: agree ? left : null };
 }

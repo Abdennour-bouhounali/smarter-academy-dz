@@ -98,7 +98,8 @@
       "students": "التلاميذ",
       "lessons": "الدروس",
       "progress": "التقدّم",
-      "settings": "الإعدادات"
+      "settings": "الإعدادات",
+      "learningPoints": "نقاط التعلّم"
     },
     "errors": {
       "limit_reached": "عرضك لا يسمح بقسم إضافي. راجع صفحة « عرضي ».",
@@ -149,7 +150,37 @@
     },
     "privacy": "ملاحظات التلميذ في كرّاسه، وتُفتح من زرّ «اطّلع على الكرّاس».",
     "seatsHint": "السعة: {{current}} / {{limit}} تلميذ. التلميذ الموجود في قسمين لديك يُحتسب مرّة واحدة.",
-    "seatsFull": "بلغت سعة التلاميذ في عرضك: لن يتمكّن تلميذ جديد من الانضمام حتى توسّع سعتك من صفحة « عرضي »."
+    "seatsFull": "بلغت سعة التلاميذ في عرضك: لن يتمكّن تلميذ جديد من الانضمام حتى توسّع سعتك من صفحة « عرضي ».",
+    "masteredPoints": "كفاءات متقنة",
+    "ofPoints": "من {{count}} نقطة تعلّم",
+    "exercisesOnly": "التمارين فقط",
+    "masteryCountsTitle": "الحصيلة",
+    "why": "لماذا؟",
+    "masteryFacts": "{{distinct}} أسئلة متنوعة · {{assessment}} في الاختبار · أقصى مستوى {{level}}",
+    "masteryReason": {
+      "insufficient_evidence": "دليل غير كافٍ",
+      "needs_assessment": "بحاجة إلى اختبار",
+      "threshold": ""
+    },
+    "freshness": {
+      "fresh": "حديث",
+      "aging": "منذ فترة",
+      "stale": "قديم"
+    },
+    "evidenceKind": {
+      "first": "أول مرة",
+      "variant": "صيغة أخرى",
+      "retry_after_failure": "إعادة بعد خطأ",
+      "repeat_after_success": "تكرار بعد نجاح"
+    },
+    "evidenceOutcome": {
+      "correct": "صحيح",
+      "equivalent_correct": "صحيح (صيغة مكافئة)",
+      "partially_correct": "جزئي",
+      "incorrect": "خطأ",
+      "syntax_error": "كتابة غير مقروءة",
+      "abandoned": "دون إجابة"
+    }
   },
   "invitations": {
     "title": "الدعوات",
@@ -224,7 +255,71 @@
     "averageSuccess": "متوسّط النجاح",
     "lessonsInScope": "دروس في النطاق",
     "unavailable": "متابعة التقدّم غير مشمولة في عرضك.",
-    "noStudents": "لا تلاميذ في هذا القسم بعد."
+    "noStudents": "لا تلاميذ في هذا القسم بعد.",
+    "openLearningPoints": "نقاط التعلّم"
+  },
+  "learningPoints": {
+    "title": "نقاط التعلّم",
+    "pickLesson": "الدرس",
+    "noLessons": "لا دروس متاحة لهذا القسم بعد. أتِح درسًا من تبويب « الدروس » أوّلًا.",
+    "empty": "لا نقاط تعلّم في هذا الدرس.",
+    "sortBy": "الترتيب",
+    "sortGap": "الأكثر صعوبة أوّلًا",
+    "sortOrder": "ترتيب الدرس",
+    "studentsCount_zero": "لا تلاميذ",
+    "studentsCount_one": "تلميذ واحد",
+    "studentsCount_two": "تلميذان",
+    "studentsCount_few": "{{count}} تلاميذ",
+    "studentsCount_many": "{{count}} تلميذًا",
+    "studentsCount_other": "{{count}} تلميذ",
+    "chips": {
+      "insufficientEvidence": "دليل ناقص: {{count}}",
+      "needsAssessment": "بحاجة إلى اختبار: {{count}}",
+      "staleMastered": "متقن لكن قديم: {{count}}"
+    },
+    "backToList": "رجوع إلى القائمة",
+    "drilldownHint": "التلاميذ من الأضعف إلى الأقوى. انقر تلميذًا لمعرفة سبب حالته.",
+    "explainFor": "لماذا هذه الحالة عند {{name}}؟",
+    "confidence": "الثقة",
+    "distinctSuccess_zero": "لا أسئلة متنوعة",
+    "distinctSuccess_one": "سؤال واحد",
+    "distinctSuccess_two": "سؤالان مختلفان",
+    "distinctSuccess_few": "{{count}} أسئلة متنوعة",
+    "distinctSuccess_many": "{{count}} سؤالًا متنوعًا",
+    "distinctSuccess_other": "{{count}} سؤال متنوع",
+    "assessmentSuccess": "{{count}} في الاختبار",
+    "explanation": {
+      "title": "لماذا هذه الحالة؟",
+      "titleFor": "لماذا هذه الحالة؟ — {{title}}",
+      "evidenceTitle": "الوقائع التي اعتمدها المحرّك",
+      "noEvidence": "لا دليل مسجّل بعد لهذه النقطة.",
+      "recentTitle": "آخر الأدلة",
+      "noRecent": "لا أدلة حديثة.",
+      "difficulty": "الصعوبة",
+      "hints": "تلميحات: {{count}}",
+      "engine": "إصدار المحرّك",
+      "source": {
+        "practice": "تمرين",
+        "final_test": "اختبار نهائي"
+      },
+      "facts": {
+        "attempts": "المحاولات",
+        "successes": "الإجابات الصحيحة",
+        "partials": "الإجابات الجزئية",
+        "failures": "الأخطاء",
+        "distinctItemsSuccess": "أسئلة متنوعة صحيحة / المطلوب",
+        "distinctItemsAttempted": "أسئلة متنوعة مُجرَّبة",
+        "availableItems": "الأسئلة المتاحة",
+        "distinctTemplatesSuccess": "نماذج مختلفة صحيحة",
+        "assessmentSuccesses": "نجاحات في الاختبار",
+        "recentPracticeSuccesses": "نجاحات حديثة في التمارين",
+        "recentSuccessesWithHints": "نجاحات حديثة بتلميح",
+        "maxDifficultySuccess": "أقصى مستوى صعوبة ناجح",
+        "lastEvidenceAt": "آخر دليل",
+        "lastSuccessAt": "آخر نجاح",
+        "lastFailureAt": "آخر خطأ"
+      }
+    }
   },
   "subscription": {
     "metaTitle": "عرضي",

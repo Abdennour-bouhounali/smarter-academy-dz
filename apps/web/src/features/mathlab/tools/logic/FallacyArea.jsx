@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Notation, VerdictPill, Statement } from './LogicPieces.jsx';
-import { FALLACIES, FALLACY_KINDS, findPreset } from './presets.js';
+import { FALLACIES, FALLACY_KINDS, findPreset, domainStatus } from './presets.js';
 import { refutesFallacy } from './proofMath.js';
 import { formatNumber } from './logicFormat.js';
-import { parseNumericAnswer, inDomain } from './practice.js';
+import { parseNumericAnswer } from './practice.js';
 import { setFallacy, nameFallacy, tryFallacyValue } from './logicState.js';
 
 /**
@@ -37,8 +37,11 @@ export default function FallacyArea({ data, onChange }) {
     event.preventDefault();
     const value = parseNumericAnswer(typed);
     if (!Number.isFinite(value)) { setMessage({ tone: 'warn', text: t('tools.logic.practice.unreadable') }); return; }
-    if (!inDomain(value, preset.domain)) {
-      setMessage({ tone: 'warn', text: t('tools.logic.counterexample.outsideDomain', { value: formatNumber(value) }) });
+    const status = domainStatus(value, preset.domain);
+    if (status !== 'in') {
+      // Hors de l'ensemble déclaré, ou trop grand pour être calculé exactement : ni l'un ni l'autre n'est « faux ».
+      const key = status === 'tooLarge' ? 'tools.logic.practice.tooLarge' : 'tools.logic.counterexample.outsideDomain';
+      setMessage({ tone: 'warn', text: t(key, { value: formatNumber(value) }) });
 
       return;
     }

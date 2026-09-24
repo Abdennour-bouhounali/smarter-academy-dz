@@ -157,12 +157,33 @@ export function nextMove(state) {
   return null;
 }
 
-/** Placer tout ce qui peut l'être — « إظهار الحل » du mode classe. */
+/**
+ * UN geste canonique, sans effet quand plus rien n'est permis. C'est le pas
+ * de « أنشئ الفرق » (complétion automatique, MANIPULATION_CONTRACT §6bis) :
+ * il passe par `place`, donc par `canPlace` — la même règle que le geste de
+ * l'élève. L'automatique ne peut rien faire que la main n'aurait pu faire.
+ */
+export function autoStep(state) {
+  const mv = nextMove(state);
+  return mv ? place(state, mv.playerId, mv.team) : state;
+}
+
+/**
+ * Placer tout ce qui peut l'être — « إظهار الحل » du mode classe, et la fin
+ * de « أنشئ الفرق ». Part de l'état COURANT : les joueurs que l'élève a déjà
+ * placés restent où il les a mis, seuls les autres sont complétés.
+ */
 export function fill(state) {
   let s = state;
   for (;;) {
-    const mv = nextMove(s);
-    if (!mv) return s;
-    s = place(s, mv.playerId, mv.team);
+    const next = autoStep(s);
+    if (next === s) return s;
+    s = next;
   }
+}
+
+/** Combien de gestes `fill` ferait encore — 0 quand la scène est stabilisée. */
+export function remainingMoves(state) {
+  const placed = (x) => x.teams.reduce((n, team) => n + team.length, 0);
+  return placed(fill(state)) - placed(state);
 }

@@ -1,0 +1,187 @@
+{
+  "metadata": {
+    "title": "سلسلة التفوق، تمرين 12 — العدد E",
+    "estimatedMinutes": 8,
+    "tags": [
+      "اختزال",
+      "حساب على الكسور"
+    ],
+    "source": {
+      "type": "worksheet",
+      "worksheetId": "tafawwuq-01",
+      "elementId": "ws01-ex-12",
+      "section": "التمارين",
+      "number": 12
+    }
+  },
+  "statement": {
+    "content": "إليك العدد E حيث $E = \\dfrac{2175}{1044} + \\dfrac{5}{6}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل العددان 2175 و 1044 أوليان فيما بينهما؟",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا، لأن PGCD(2175 ; 1044) = 87",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نعم، لأن PGCD(2175 ; 1044) = 1",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "نعم، لأن 2175 فردي و 1044 زوجي",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "لا، لأن كليهما يقبل القسمة على 2",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب PGCD(2175 ; 1044) بخوارزمية إقليدس."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "2175 = 1044 × 2 + 87."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل 87 يقسم 1044؟"
+        }
+      ],
+      "feedback": {
+        "correct": "1044 = 87 × 12، فـ PGCD(2175 ; 1044) = 87 ≠ 1.",
+        "incorrect": "عددان أوليان فيما بينهما قاسمهما المشترك الأكبر 1 بالضبط."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "اكتب الكسر $\\dfrac{2175}{1044}$ على شكل كسر غير قابل للاختزال.",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "25/12",
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل القاسم المشترك الأكبر الذي وجدته."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "87 يقسم 2175 و 1044."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم البسط والمقام على 87."
+        }
+      ],
+      "feedback": {
+        "correct": "2175/1044 = 25/12.",
+        "incorrect": "اقسم البسط والمقام على 87."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "نكتب E على الشكل $a + \\dfrac{b}{c}$ حيث a و b و c أعداد طبيعية، مع a أكبر ما يمكن و b أصغر ما يمكن. a = ?",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "E = 25/12 + 10/12."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "E = 35/12."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "كم مرة يحوي 35 العدد 12؟"
+        }
+      ],
+      "feedback": {
+        "correct": "35 = 12 × 2 + 11 إذن a = 2.",
+        "incorrect": "a هو حاصل القسمة الإقليدية لبسط E على مقامه."
+      }
+    },
+    {
+      "id": "q4",
+      "statement": "في نفس الكتابة، $\\dfrac{b}{c} = ?$",
+      "learningPoints": [
+        {
+          "code": "4am_ikhtizal-kasr_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "11/12",
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "E = 35/12."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب القسمة الإقليدية لـ 35 على 12."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الباقي هو البسط b، والمقام c هو 12."
+        }
+      ],
+      "feedback": {
+        "correct": "E = 2 + 11/12.",
+        "incorrect": "b هو باقي قسمة 35 على 12."
+      }
+    }
+  ],
+  "id": "ex-4am-ikhtizal-kasr-l5-004",
+  "lessonCode": "ikhtizal-kasr",
+  "level": 5
+}

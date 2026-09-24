@@ -41,6 +41,76 @@ const INTEGERS = Object.freeze({ min: -12, max: 12, integer: true, symbol: 'ℤ'
 const NATURALS = Object.freeze({ min: 0, max: 30, integer: true, symbol: 'ℕ' });
 const REALS = Object.freeze({ min: -6, max: 6, integer: false, step: 0.5, symbol: 'ℝ' });
 
+/**
+ * L'APPARTENANCE à l'ensemble déclaré — ce que dit l'énoncé, pas ce que la
+ * droite graduée montre.
+ *
+ * `min`/`max` bornent l'ÉCHANTILLON (la droite, le tirage au hasard, la
+ * recherche systématique) ; ils ne font PAS partie de l'énoncé. « كلّ عدد
+ * أوّلي أكبر من 2 زوجي » est réfuté par 31 autant que par 3 : refuser 31
+ * parce que la droite s'arrête à 30 enseignerait une fausseté. Le juge ne
+ * connaît donc que l'ensemble nommé par `symbol` (ℕ, ℕ*, ℤ, ℝ), plus les
+ * valeurs `excluded` du domaine s'il en déclare.
+ *
+ * Un domaine SANS symbole connu n'a que ses bornes pour se définir : on les
+ * garde alors, faute de mieux (aucun préréglage n'est dans ce cas —
+ * presets.test.js le vérifie).
+ */
+const SETS = Object.freeze({
+  'ℕ': (v) => Number.isInteger(v) && v >= 0,
+  'ℕ*': (v) => Number.isInteger(v) && v >= 1,
+  'ℤ': (v) => Number.isInteger(v),
+  'ℝ': () => true,
+});
+
+export const KNOWN_SET_SYMBOLS = Object.freeze(Object.keys(SETS));
+
+/**
+ * Au-delà de cette valeur absolue, le juge NE SE PRONONCE PAS : n² + n + 41
+ * doit rester un entier exact en virgule flottante (< 2⁵³) pour que la
+ * primalité, la parité ou la divisibilité soient calculées juste. 10⁶ laisse
+ * n² + n + 41 ≈ 10¹² — exact, et testé en premier par essais de division en
+ * une milliseconde. Ce n'est PAS une borne de l'énoncé : une valeur plus
+ * grande est « trop grande pour être vérifiée ici », jamais « fausse ».
+ */
+export const JUDGE_LIMIT = 1e6;
+
+/**
+ * 'in' (dans l'ensemble déclaré), 'outside' (hors de l'ensemble : 2,5 dans
+ * ℕ, −2 dans ℕ, 0 exclu) ou 'tooLarge' (au-delà de JUDGE_LIMIT : on ne
+ * juge pas ce qu'on ne sait pas calculer exactement).
+ */
+export function domainStatus(value, domain) {
+  if (!domain || typeof value !== 'number' || !Number.isFinite(value)) return 'outside';
+  const member = SETS[domain.symbol];
+  const inSet = member
+    ? member(value)
+    : value >= domain.min && value <= domain.max && (domain.integer ? Number.isInteger(value) : true);
+  if (!inSet) return 'outside';
+  if (Array.isArray(domain.excluded) && domain.excluded.includes(value)) return 'outside';
+  if (Math.abs(value) > JUDGE_LIMIT) return 'tooLarge';
+
+  return 'in';
+}
+
+/** La valeur appartient-elle à l'ensemble déclaré (et peut-on la juger) ? */
+export const belongsToDomain = (value, domain) => domainStatus(value, domain) === 'in';
+
+/**
+ * Le domaine tel qu'on l'ÉCRIT à côté de l'énoncé : « n ∈ ℕ* », « x ∈ ℝ ».
+ * Sans lui, « 1/n > 0 » (toujours vrai sur ℕ*) et « 1/x > 0 » (يعتمد sur ℝ)
+ * ne se distinguent pas (§6). La lettre est `variable` si le préréglage la
+ * déclare, sinon n pour un ensemble d'entiers et x pour ℝ.
+ */
+export function domainLabel(preset) {
+  const domain = preset?.domain;
+  if (!domain?.symbol) return null;
+  const variable = preset.variable ?? (domain.integer ? 'n' : 'x');
+  const base = `${variable} ∈ ${domain.symbol}`;
+
+  return domain.excludedSymbol ? `${base}, ${domain.excludedSymbol}` : base;
+}
+
 /** Les valeurs qu'une recherche systématique parcourt pour un domaine. */
 export function sampleOf(domain) {
   if (domain.integer) return RANGE(domain.min, domain.max);
@@ -192,8 +262,10 @@ export const EQUIVALENCES = Object.freeze([
     // (contraposée : impair ⇒ carré impair) — le 2e sens est prouvé dans
     // « بناء البرهان » (squareEvenImpliesEven).
     id: 'evenIffSquareEven',
-    p: { formula: 'n pair', textKey: 'tools.logic.formulas.nEven', test: isEven },
-    q: { formula: 'n² pair', textKey: 'tools.logic.formulas.nSquareEven', test: (n) => isEven(n * n) },
+    // `formula` est de la NOTATION, lisible dans toutes les langues : « n pair »
+    // (du français) s'affichait tel quel dans l'aire et dans l'entraînement.
+    p: { formula: '2 | n', textKey: 'tools.logic.formulas.nEven', test: isEven },
+    q: { formula: '2 | n²', textKey: 'tools.logic.formulas.nSquareEven', test: (n) => isEven(n * n) },
     domain: INTEGERS,
     holds: true,
   },
@@ -242,30 +314,43 @@ export const DEFAULT_CONDITION_ID = 'multipleOfFourAndEven';
 
 /* ── §21-25 — Quantifier Lab ────────────────────────────────────────────── */
 
+/**
+ * Chaque énoncé quantifié porte aussi sa STRUCTURE (`variable`, `inner`,
+ * `negatedInner`) : l'entraînement en tire les deux erreurs classiques de
+ * la négation (changer le seul quantificateur, nier le seul prédicat) au
+ * lieu d'emprunter la négation d'un AUTRE énoncé — qui pouvait être
+ * l'énoncé de départ lui-même (¬∃x, x² < 0 s'écrit ∀x, x² ≥ 0) ou trahir la
+ * réponse par son seul ensemble (ℕ). presets.test.js vérifie que la
+ * structure réécrit exactement `formula` et `negationFormula`.
+ */
 export const QUANTIFIER_STATEMENTS = Object.freeze([
   {
     id: 'squareNonNegative', kind: 'forall', formula: '∀x ∈ ℝ, x² ≥ 0', domain: REALS,
     predicate: (x) => x * x >= 0,
     truth: true, // vrai — et un ÉCHANTILLON ne suffit pas à le dire : c'est une propriété du carré
     negationFormula: '∃x ∈ ℝ, x² < 0',
+    variable: 'x', inner: 'x² ≥ 0', negatedInner: 'x² < 0',
   },
   {
     id: 'naturalPositive', kind: 'forall', formula: '∀n ∈ ℕ, n > 0', domain: NATURALS,
     predicate: (n) => n > 0,
     truth: false, // n = 0
     negationFormula: '∃n ∈ ℕ, n ≤ 0',
+    variable: 'n', inner: 'n > 0', negatedInner: 'n ≤ 0',
   },
   {
     id: 'existsSquareFour', kind: 'exists', formula: '∃x ∈ ℝ, x² = 4', domain: REALS,
     predicate: (x) => x * x === 4,
     truth: true, // x = 2 ou x = −2
     negationFormula: '∀x ∈ ℝ, x² ≠ 4',
+    variable: 'x', inner: 'x² = 4', negatedInner: 'x² ≠ 4',
   },
   {
     id: 'existsNegativeSquare', kind: 'exists', formula: '∃x ∈ ℝ, x² < 0', domain: REALS,
     predicate: (x) => x * x < 0,
     truth: false, // aucun témoin — et ne pas en trouver ne le PROUVE pas non plus
     negationFormula: '∀x ∈ ℝ, x² ≥ 0',
+    variable: 'x', inner: 'x² < 0', negatedInner: 'x² ≥ 0',
   },
 ]);
 
@@ -556,9 +641,14 @@ export const FALLACY_KINDS = Object.freeze(['invalidConverse', 'affirmingConsequ
 
 export const FALLACIES = Object.freeze([
   {
+    // L'argument conclut « x² = 4 ⇒ x = 2 » à partir de « x = 2 ⇒ x² = 4 » :
+    // c'est un passage de P ⇒ Q à Q ⇒ P, donc استعمال العكس (kindHints). Il
+    // affirmait autrefois « وبما أنّ x² = 4 فإنّ x = 2 » — de P ⇒ Q et Q vers
+    // P, soit إثبات التالي selon les propres définitions du laboratoire.
     id: 'squareFourConverse',
     kind: 'invalidConverse',
     domain: INTEGERS,
+    variable: 'x',
     refutes: (x) => x * x === 4 && x !== 2,
     counterexample: -2,
   },
