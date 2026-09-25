@@ -113,7 +113,10 @@ class ClassroomInvitationService
      * le nom de la classe, la classe scolaire, le nom de l'enseignant. Rien
      * d'autre — et rien du tout si le jeton n'est pas acceptable.
      *
-     * @return array{classroomName: string, grade: string, teacherName: string, email: string, expiresAt: ?string}
+     * L'adresse invitée n'est PAS rendue : qui tient le lien n'apprend pas à
+     * qui il a été envoyé.
+     *
+     * @return array{classroomName: string, grade: string, teacherName: string, expiresAt: ?string}
      *
      * @throws ClassroomException
      */
@@ -127,7 +130,6 @@ class ClassroomInvitationService
             'classroomName' => $classroom->name,
             'grade' => $classroom->grade,
             'teacherName' => trim(($teacher?->first_name ?? '').' '.($teacher?->last_name ?? '')),
-            'email' => $invitation->email,
             'expiresAt' => optional($invitation->expires_at)->toIso8601String(),
         ];
     }
@@ -137,12 +139,12 @@ class ClassroomInvitationService
      *
      * @throws ClassroomException
      */
-    public function accept(User $student, ?string $token): ClassroomMembership
+    public function accept(User $student, ?string $token, bool $consented = false): ClassroomMembership
     {
-        return DB::transaction(function () use ($student, $token) {
+        return DB::transaction(function () use ($student, $token, $consented) {
             $invitation = $this->acceptable($token, lock: true);
 
-            $membership = $this->memberships->join($student, $invitation->classroom, ClassroomMembership::VIA_INVITATION, $invitation);
+            $membership = $this->memberships->join($student, $invitation->classroom, ClassroomMembership::VIA_INVITATION, $invitation, $consented);
 
             $invitation->forceFill([
                 'status' => ClassroomInvitation::STATUS_ACCEPTED,

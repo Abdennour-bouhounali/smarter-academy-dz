@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Teacher;
 
+use App\Domain\Admin\ActivityLogger;
+use App\Domain\Classroom\ClassroomAccess;
 use App\Domain\Classroom\ClassroomProgressService;
 use App\Domain\Practice\NotebookPresenter;
 use App\Domain\Practice\NotebookService;
 use App\Http\Controllers\Controller;
-use App\Models\ClassroomMembership;
+use App\Models\AdminActivityLog;
+use App\Models\Classroom;
 use App\Models\NotebookNote;
 use App\Models\User;
 use DomainException;
@@ -40,7 +43,8 @@ use Illuminate\Validation\Rule;
  *
  *     can:teacher            le rôle          (routes/api.php)
  *     ClassroomPolicy@view   la classe est à CET enseignant
- *     memberOf()             l'élève est DANS cette classe
+ *     activeStudent()        l'élève est MEMBRE ACTIF de cette classe active
+ *                            (ClassroomAccess — un élève parti n'est plus lu)
  *
  * Aucun n'est décoratif : retirer le dernier laisserait un enseignant lire
  * le cahier de n'importe quel élève en changeant un identifiant dans l'URL.
@@ -51,6 +55,7 @@ class TeacherClassroomNotebookController extends Controller
     public function __construct(
         private NotebookService $notebook,
         private ClassroomProgressService $progress,
+        private ActivityLogger $log,
     ) {}
 
     /**
@@ -77,6 +82,7 @@ class TeacherClassroomNotebookController extends Controller
         $lessonIds = $this->progress->effectiveLessonIds($classroom);
 
         $page = $this->notebook->searchForReader($student, $lessonIds, $params);
+        $this->traceRead($request, $classroom, $student);
         $modules = $this->notebook->modulesFor($page['notes']);
 
         return response()->json([
@@ -125,29 +131,34 @@ class TeacherClassroomNotebookController extends Controller
      * La classe possédée ET l'élève qui en est membre — les deux verrous qui
      * suivent le rôle. 404 si l'un des deux ne tient pas.
      *
-     * @return array{0: \App\Models\Classroom, 1: User}
+     * @return array{0: Classroom, 1: User}
      */
     private function reachable(Request $request, int $id, int $studentId): array
     {
         $classroom = TeacherClassroomController::ownedClassroom($request, $id);
-        $member = ClassroomMembership::where('classroom_id', $classroom->id)
-            ->where('student_id', $studentId)
-            ->exists();
-        $student = $member ? User::find($studentId) : null;
-        if ($student === null) {
-            abort(404);
-        }
 
-        return [$classroom, $student];
+        return [$classroom, ClassroomAccess::activeStudent($classroom, $studentId)];
     }
 
-    /** De qui on lit le cahier — le minimum, comme la liste des élèves. */
+    /**
+     * Une lecture du cahier d'un élève laisse une trace — une ligne par
+     * enseignant, par élève et par jour, pas une par page tournée.
+     */
+    private function traceRead(Request $request, Classroom $classroom, User $student): void
+    {
+        $already = AdminActivityLog::where('user_id', $request->user()->id)
+            ->where('action', ActivityLogger::TEACHER_NOTEBOOK_READ)
+            ->where('entity_type', 'user')->where('entity_id', (string) $student->id)
+            ->where('created_at', '>=', now()->startOfDay())
+            ->exists();
+        if (! $already) {
+            $this->log->log($request->user(), ActivityLogger::TEACHER_NOTEBOOK_READ, 'user', $student->id, null, ['classroom_id' => $classroom->id]);
+        }
+    }
+
+    /** De qui on lit le cahier — l'identité enseignant, jamais le courriel. */
     private function identity(User $student): array
     {
-        return [
-            'id' => $student->id,
-            'firstName' => $student->first_name,
-            'lastName' => $student->last_name,
-        ];
+        return ClassroomAccess::identity($student);
     }
 }

@@ -13,18 +13,27 @@ import MembersTab from '../../features/teacher/members/MembersTab';
 import LessonsTab from '../../features/teacher/classGroupLessons/LessonsTab';
 import ProgressTab from '../../features/teacher/progress/ProgressTab';
 import LearningPointsTab from '../../features/teacher/learningPoints/LearningPointsTab';
+import OverviewTab from '../../features/teacher/overview/OverviewTab';
+import InterventionsTab from '../../features/teacher/interventions/InterventionsTab';
 import { TeacherPage, Loading, ErrorBox, useTableLabels, btnSecondary, btnPrimary, btnDanger, input } from './teacherUi';
 
-const TABS = ['students', 'lessons', 'progress', 'learningPoints', 'settings'];
+const TABS = ['overview', 'students', 'learningPoints', 'interventions', 'lessons', 'progress', 'settings'];
 
-/** La page d'une classe : cinq onglets, et le code de classe toujours visible. */
+/**
+ * La page d'une classe, et le code de classe toujours visible. Elle s'ouvre
+ * sur « نظرة عامة » : ce qui mérite un regard, ce qui a changé, la carte —
+ * DÉTECTER d'abord. Les autres onglets servent à COMPRENDRE (نقاط التعلّم),
+ * INTERVENIR et MESURER (التدخّلات), et administrer (التلاميذ, الدروس,
+ * الإعدادات).
+ */
 export default function ClassGroupDetail() {
   const { t } = useTranslation('teacher');
   const { id } = useParams();
   const { token } = useContext(AuthContext);
   const labels = useTableLabels();
   const [searchParams, setSearchParams] = useSearchParams();
-  const tab = TABS.includes(searchParams.get('tab')) ? searchParams.get('tab') : 'students';
+  const tab = TABS.includes(searchParams.get('tab')) ? searchParams.get('tab') : 'overview';
+  const [focusPoint, setFocusPoint] = useState(null);
 
   const loader = useCallback(async (tk) => {
     const [classroom, entitlements] = await Promise.all([fetchClassGroup(tk, id), fetchTeacherEntitlements(tk)]);
@@ -39,6 +48,7 @@ export default function ClassGroupDetail() {
   const [busy, setBusy] = useState(false);
   const [actionError, setActionError] = useState(null);
 
+  const clearFocus = useCallback(() => setFocusPoint(null), []);
   const setTab = (next) => { const p = new URLSearchParams(searchParams); p.set('tab', next); setSearchParams(p, { replace: true }); };
   const replaceClassroom = (classroom) => setData((cur) => ({ ...cur, classroom: { ...cur.classroom, ...classroom } }));
 
@@ -98,6 +108,12 @@ export default function ClassGroupDetail() {
 
           {actionError && <p role="alert" className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-800">{actionError}</p>}
 
+          {tab === 'overview' && (data.entitlements?.features?.['progress.class'] === false
+            ? <p className="glass-card p-8 text-center text-sm text-slate-500">{t('progress.unavailable')}</p>
+            : <OverviewTab classGroup={classGroup} onOpenTab={setTab} onOpenPoint={(code) => { setFocusPoint(code); setTab('learningPoints'); }} />)}
+          {tab === 'interventions' && (data.entitlements?.features?.['progress.student'] === false
+            ? <p className="glass-card p-8 text-center text-sm text-slate-500">{t('progress.unavailable')}</p>
+            : <InterventionsTab classGroup={classGroup} onOpenPoint={(code) => { setFocusPoint(code); setTab('learningPoints'); }} />)}
           {tab === 'students' && <MembersTab classGroup={classGroup} entitlements={data.entitlements} onChanged={reload} />}
           {tab === 'lessons' && <LessonsTab classGroup={classGroup} entitlements={data.entitlements} />}
           {tab === 'progress' && (data.entitlements?.features?.['progress.class'] === false
@@ -105,7 +121,7 @@ export default function ClassGroupDetail() {
             : <ProgressTab classGroup={classGroup} onOpenLearningPoints={() => setTab('learningPoints')} />)}
           {tab === 'learningPoints' && (data.entitlements?.features?.['progress.class'] === false
             ? <p className="glass-card p-8 text-center text-sm text-slate-500">{t('progress.unavailable')}</p>
-            : <LearningPointsTab classGroup={classGroup} />)}
+            : <LearningPointsTab classGroup={classGroup} focusCode={focusPoint} onFocusConsumed={clearFocus} />)}
           {tab === 'settings' && <SettingsTab classGroup={classGroup} onSaved={replaceClassroom} onArchive={() => setConfirm(classGroup.status === 'archived' ? 'restore' : 'archive')} />}
         </div>
       )}

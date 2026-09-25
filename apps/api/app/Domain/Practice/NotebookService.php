@@ -9,6 +9,7 @@ use App\Models\NotebookNote;
 use App\Models\User;
 use DomainException;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 
 /**
  * Le carnet : les notes et les erreurs que l'élève marque en apprenant.
@@ -63,7 +64,7 @@ class NotebookService
      *
      * @param array{q?:string, view?:string, lessonCode?:string, learningPointCode?:string, chapterCode?:string,
      *   gradeCode?:string, origin?:string, type?:string, sort?:string, page?:int, perPage?:int} $params
-     * @return array{notes: \Illuminate\Support\Collection, total: int, page: int, perPage: int, hasMore: bool}
+     * @return array{notes: Collection, total: int, page: int, perPage: int, hasMore: bool}
      */
     public function search(User $user, array $params, ?array $lessonIds = null): array
     {
@@ -130,6 +131,9 @@ class NotebookService
      * raison : rien ne les rattache au قسم.
      *
      * ── Ce qui n'est PAS ouvert ─────────────────────────────────────────
+     * Les notes ARCHIVÉES : l'élève les a rangées, elles sortent de la
+     * lecture de l'enseignant (liste, compteur et note seule).
+     *
      * L'écriture. Aucune méthode de modification n'accepte un lecteur tiers :
      * `update`, `review`, `bulk` et `delete` passent tous par `ownedBy()`,
      * qui compare `user_id` au compte authentifié. L'enseignant lit ; il
@@ -140,15 +144,17 @@ class NotebookService
      * TeacherClassroomStudentController::memberOf). Ce service reçoit un
      * élève déjà légitimé.
      *
-     * @param  User   $student    l'élève dont on lit le cahier
+     * @param  User  $student  l'élève dont on lit le cahier
      * @param  int[]  $lessonIds  les leçons effectives de la classe
      * @param  array{q?:string, view?:string, lessonCode?:string, learningPointCode?:string,
      *   origin?:string, type?:string, sort?:string, page?:int, perPage?:int} $params
-     * @return array{notes: \Illuminate\Support\Collection, total: int, page: int, perPage: int, hasMore: bool}
+     * @return array{notes: Collection, total: int, page: int, perPage: int, hasMore: bool}
      */
     public function searchForReader(User $student, array $lessonIds, array $params): array
     {
-        if ($lessonIds === []) {
+        // Une note ARCHIVÉE est rangée par l'élève : elle sort de ce que son
+        // enseignant lit. Même réponse qu'un cahier vide, rien n'est révélé.
+        if ($lessonIds === [] || ($params['view'] ?? null) === 'archived') {
             return ['notes' => collect(), 'total' => 0, 'page' => 1, 'perPage' => 20, 'hasMore' => false];
         }
 
@@ -167,7 +173,8 @@ class NotebookService
             return array_fill_keys(self::VIEWS, 0);
         }
 
-        return $this->counts($student, $lessonIds);
+        // Les archives restent privées : leur compteur aussi.
+        return ['archived' => 0] + $this->counts($student, $lessonIds);
     }
 
     /**
@@ -250,7 +257,8 @@ class NotebookService
     public function findForReader(User $student, int $id, array $lessonIds): NotebookNote
     {
         $note = NotebookNote::find($id);
-        if ($note === null || $note->user_id !== $student->id || ! in_array($note->lesson_id, $lessonIds, true)) {
+        if ($note === null || $note->user_id !== $student->id || ! in_array($note->lesson_id, $lessonIds, true)
+            || $note->archived_at !== null) {
             throw new DomainException('Note introuvable.');
         }
 
@@ -356,7 +364,7 @@ class NotebookService
      * Une action sur plusieurs notes À MOI : les identifiants d'autrui sont
      * simplement ignorés (introuvables), jamais touchés.
      *
-     * @param int[] $ids
+     * @param  int[]  $ids
      * @return int le nombre de notes réellement touchées
      */
     public function bulk(User $user, array $ids, string $action): int

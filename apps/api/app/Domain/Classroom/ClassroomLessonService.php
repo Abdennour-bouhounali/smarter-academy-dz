@@ -128,6 +128,8 @@ class ClassroomLessonService
             // Les élèves de la classe verront le changement à leur prochain
             // appel : leur contexte mémorisé est périmé pour cette requête.
             $this->context->forget();
+            // Et les leçons effectives mémorisées pour l'enseignant aussi.
+            app(ClassroomProgressService::class)->forget();
 
             return ['changed' => $before !== $status, 'setting' => $setting];
         });

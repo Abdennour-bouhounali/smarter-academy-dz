@@ -6,6 +6,7 @@ use App\Domain\Classroom\ClassroomLessonService;
 use App\Domain\Classroom\ClassroomProgressService;
 use App\Models\Classroom;
 use App\Models\ClassroomMembership;
+use App\Models\User;
 use DomainException;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -56,6 +57,17 @@ class ClassroomAdminService
         return $classroom;
     }
 
+    /**
+     * @param  array<int, array<string, mixed>>  $rows
+     * @return array<int, array<string, mixed>>
+     */
+    private function withEmails(array $rows): array
+    {
+        $emails = User::whereIn('id', array_column($rows, 'id'))->pluck('email', 'id');
+
+        return array_map(fn ($row) => $row + ['email' => $emails[$row['id']] ?? null], $rows);
+    }
+
     /** @return array<string, mixed> */
     public function detail(Classroom $classroom): array
     {
@@ -63,7 +75,9 @@ class ClassroomAdminService
 
         return [
             'classroom' => self::serialize($classroom),
-            'students' => $this->progress->studentList($classroom),
+            // La ligne de classe est celle de l'enseignant (sans courriel) ;
+            // l'administration, elle, voit l'adresse — elle l'ajoute ici.
+            'students' => $this->withEmails($this->progress->studentList($classroom)),
             'lessons' => $this->lessons->curriculumFor($classroom),
             'membershipHistory' => ClassroomMembership::where('classroom_id', $classroom->id)
                 ->with('student:id,first_name,last_name,email')

@@ -89,7 +89,7 @@ class ClassroomLearningPointTest extends TestCase
         $this->withToken($token)->getJson("/api/v1/teacher/classrooms/{$classroom->id}/students/{$outsider->id}/learning-points/{$p1->code}/explanation")->assertNotFound();
     }
 
-    public function test_a_hidden_lesson_is_out_of_scope_and_the_lesson_parameter_is_required(): void
+    public function test_a_hidden_lesson_is_out_of_scope_including_in_the_whole_scope_map(): void
     {
         $this->defaultTeacherPlan();
         ['lessons' => $lessons] = $this->grade4am(2);
@@ -101,7 +101,11 @@ class ClassroomLearningPointTest extends TestCase
 
         $this->withToken($token)->getJson("/api/v1/teacher/classrooms/{$classroom->id}/learning-points?lesson={$lessons[1]->code}")->assertStatus(422);
         $this->withToken($token)->getJson("/api/v1/teacher/classrooms/{$classroom->id}/learning-points/4am_{$lessons[1]->code}_P1")->assertStatus(422);
-        $this->withToken($token)->getJson("/api/v1/teacher/classrooms/{$classroom->id}/learning-points")->assertStatus(422);
+
+        // Sans `?lesson=`, la carte couvre tout le périmètre — et la leçon
+        // masquée n'y figure pas.
+        $map = $this->withToken($token)->getJson("/api/v1/teacher/classrooms/{$classroom->id}/learning-points")->assertOk();
+        $this->assertNotContains($lessons[1]->code, collect($map->json('lessons'))->pluck('code')->all());
     }
 
     public function test_another_teacher_cannot_read_the_class(): void

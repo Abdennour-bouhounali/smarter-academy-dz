@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { CircleCheckBig, Target, Dumbbell, Percent, Lock, NotebookPen, Award } from 'lucide-react';
+import { CircleCheckBig, Target, Dumbbell, Percent, Lock, NotebookPen, Award, HandHelping } from 'lucide-react';
 import { ArrowBack } from '../../components/common/DirectionalIcons';
 import { useAdminResource } from '../../hooks/useAdminResource';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
@@ -10,16 +10,28 @@ import PathProgress from '../../features/progression/components/PathProgress';
 import MasteryPill, { ReasonChip, FreshnessMark, ConfidenceBar } from '../../features/teacher/learningPoints/MasteryPill';
 import MasteryExplanationPanel from '../../features/teacher/learningPoints/MasteryExplanationPanel';
 import { LP_STATUSES } from '../../features/teacher/learningPoints/lpBar';
+import StudentSnapshot from '../../features/teacher/snapshot/StudentSnapshot';
+import SignalCard from '../../features/teacher/insights/SignalCard';
+import InterventionForm from '../../features/teacher/interventions/InterventionForm';
+import { InterventionCard } from '../../features/teacher/interventions/InterventionsTab';
+import { interventionDefaults, studentName } from '../../features/teacher/insights/insights';
 import { fetchClassStudentProgress } from '../../services/teacher/classGroupService';
 import { TeacherPage, Loading, ErrorBox, btnPrimary, btnSecondary, formatDate } from './teacherUi';
 
-/** Le dossier d'UN élève, cadré sur la classe. Le cahier a son propre écran, en lecture seule. */
+/**
+ * Le dossier d'UN élève, cadré sur la classe — du plus utile au plus détaillé :
+ * l'aperçu (« لمحة »), ce qui mérite un regard à son sujet et ce qu'on a déjà
+ * fait pour lui, puis l'achèvement, la maîtrise point par point et la frise.
+ * Le cahier a son propre écran, en lecture seule. Aucun courriel : le
+ * serveur ne l'envoie pas à l'enseignant.
+ */
 export default function StudentProgressPage() {
   const { t } = useTranslation('teacher');
   const { id, studentId } = useParams();
   const loader = useCallback((tk) => fetchClassStudentProgress(tk, id, studentId), [id, studentId]);
   const { data, loading, error, reload } = useAdminResource(loader, [loader]);
-  const name = data ? ([data.student.firstName, data.student.lastName].filter(Boolean).join(' ') || data.student.email) : '';
+  const name = data ? studentName(data.student, t('common.unnamedStudent')) : '';
+  const [acting, setActing] = useState(null);
   useDocumentMeta(name ? t('students.detailTitle', { name }) : t('students.title'));
   const [explainCode, setExplainCode] = useState(null);
 
@@ -41,7 +53,7 @@ export default function StudentProgressPage() {
     <TeacherPage
       eyebrow={t('students.title')}
       title={name || '…'}
-      subtitle={data ? `${data.student.email}` : undefined}
+      subtitle={data?.student?.lastActivityAt ? `${t('snapshot.lastActivity')} : ${formatDate(data.student.lastActivityAt)}` : undefined}
       actions={(
         <>
           {/* Le cahier est une DESTINATION, pas une note de bas de page : il
@@ -62,6 +74,28 @@ export default function StudentProgressPage() {
       {error && <ErrorBox message={error} onRetry={reload} />}
       {data && (
         <div className="space-y-6" data-student-progress>
+          <StudentSnapshot snapshot={data.snapshot} onExplain={setExplainCode} />
+
+          <section className="grid grid-cols-1 gap-5 lg:grid-cols-2 [&>*]:min-w-0">
+            <div className="space-y-3">
+              <h2 className="font-space font-bold text-slate-900">{t('snapshot.signals')}</h2>
+              {data.signals?.length ? data.signals.map((signal) => (
+                <SignalCard key={signal.key} signal={signal} classGroupId={id} onOpenPoint={setExplainCode} onAct={setActing} />
+              )) : <p className="glass-card p-4 text-sm text-slate-400">{t('snapshot.noSignals')}</p>}
+            </div>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between gap-2">
+                <h2 className="font-space font-bold text-slate-900">{t('snapshot.interventions')}</h2>
+                <button type="button" onClick={() => setActing({ students: [data.student], actions: ['individual_followup'] })} className={btnSecondary} data-student-act>
+                  <HandHelping size={14} /> {t('snapshot.act')}
+                </button>
+              </div>
+              {data.interventions?.length ? (
+                <ul className="space-y-3">{data.interventions.map((iv) => <InterventionCard key={iv.id} classGroup={{ id }} intervention={iv} onChanged={reload} onOpenPoint={setExplainCode} />)}</ul>
+              ) : <p className="glass-card p-4 text-sm text-slate-400">{t('snapshot.noInterventions')}</p>}
+            </div>
+          </section>
+
           {/* Deux tuiles distinctes pour deux faits distincts : ACHÈVEMENT
               (des leçons parcourues) et MAÎTRISE (des compétences prouvées).
               Les confondre ferait passer un élève qui a tout lu pour un
@@ -75,7 +109,7 @@ export default function StudentProgressPage() {
           </div>
           <div className="glass-card p-4"><PathProgress percent={data.learning.progressPercent ?? 0} /></div>
 
-          <section className="grid gap-5 lg:grid-cols-2">
+          <section className="grid grid-cols-1 gap-5 lg:grid-cols-2 [&>*]:min-w-0">
             <div className="glass-card p-5">
               <h2 className="font-space font-bold text-slate-900 mb-3">{t('students.progressTitle')}</h2>
               {data.progress.length === 0 ? <p className="text-sm text-slate-400">{t('students.never')}</p> : (
@@ -128,6 +162,16 @@ export default function StudentProgressPage() {
               )}
             </div>
           </section>
+
+          <InterventionForm
+            open={Boolean(acting)}
+            onClose={() => setActing(null)}
+            onCreated={reload}
+            classGroupId={id}
+            candidates={[data.student]}
+            prefill={acting ? { ...interventionDefaults(acting), studentIds: [data.student.id] } : null}
+            point={acting?.learningPoint ? { code: acting.learningPoint.code, title: acting.learningPoint.title } : null}
+          />
 
           <MasteryExplanationPanel
             open={Boolean(explainCode)}

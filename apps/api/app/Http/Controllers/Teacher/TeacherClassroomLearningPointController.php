@@ -2,39 +2,44 @@
 
 namespace App\Http\Controllers\Teacher;
 
+use App\Domain\Classroom\ClassroomAccess;
+use App\Domain\Classroom\ClassroomInterventionService;
 use App\Domain\Classroom\ClassroomLearningPointService;
-use App\Domain\Progress\Explain\MasteryExplainer;
 use App\Http\Controllers\Controller;
-use App\Models\ClassroomMembership;
-use App\Models\LearningPoint;
 use DomainException;
 use Illuminate\Http\Request;
 
 /**
- * Classe × learning point, en LECTURE SEULE : l'agrégation par leçon, le
- * détail d'un point élève par élève, et l'explication d'un état pour un
- * élève de la classe. Rien n'est écrit, rien n'est copié : chaque réponse
- * est une requête sur l'état canonique.
+ * Classe × learning point, en LECTURE SEULE : la carte (un point par ligne,
+ * la distribution des statuts), le détail d'un point élève par élève, et la
+ * preuve d'un point pour un élève de la classe. Rien n'est écrit, rien n'est
+ * copié : chaque réponse est une requête sur l'état canonique.
  */
 class TeacherClassroomLearningPointController extends Controller
 {
     public function __construct(
         private ClassroomLearningPointService $points,
-        private MasteryExplainer $explainer,
+        private ClassroomInterventionService $interventions,
     ) {}
 
+    /**
+     * GET /teacher/classrooms/{id}/learning-points[?lesson=]
+     *
+     * Avec `lesson` : les points de cette leçon. Sans : tout le périmètre de
+     * la classe, groupé par leçon — la carte d'apprentissage.
+     */
     public function index(Request $request, int $id)
     {
         $classroom = TeacherClassroomController::ownedClassroom($request, $id);
-        $validated = $request->validate(['lesson' => 'required|string|max:120']);
+        $validated = $request->validate(['lesson' => 'nullable|string|max:120']);
 
         try {
-            $overview = $this->points->lessonOverview($classroom, $validated['lesson']);
+            $map = $this->points->map($classroom, $validated['lesson'] ?? null);
         } catch (DomainException $e) {
             return TeacherClassroomController::refuse($e);
         }
 
-        return response()->json(['success' => true, ...$overview]);
+        return response()->json(['success' => true, ...$map]);
     }
 
     public function show(Request $request, int $id, string $code)
@@ -50,24 +55,34 @@ class TeacherClassroomLearningPointController extends Controller
         return response()->json(['success' => true, ...$detail]);
     }
 
+    /**
+     * GET /teacher/classrooms/{id}/students/{studentId}/learning-points/{code}/explanation
+     *
+     * La preuve d'un point pour UN élève membre actif : l'explication du
+     * moteur, l'histoire de son état, ses notes de cahier sur ce point, les
+     * interventions de l'enseignant qui l'ont visé sur ce point.
+     */
     public function explanation(Request $request, int $id, int $studentId, string $code)
     {
         $classroom = TeacherClassroomController::ownedClassroom($request, $id);
-
-        $isMember = ClassroomMembership::where('classroom_id', $classroom->id)->where('student_id', $studentId)->exists();
-        $point = LearningPoint::where('code', $code)->first();
-        if (! $isMember || $point === null) {
-            abort(404);
-        }
+        $student = ClassroomAccess::activeStudent($classroom, $studentId);
 
         try {
-            // Le même périmètre que le détail : un point hors des leçons
-            // effectives de la classe n'est pas lisible par l'enseignant.
-            $this->points->learningPointDetail($classroom, $code);
+            $evidence = $this->points->studentEvidence($classroom, $student, $code);
         } catch (DomainException $e) {
             return TeacherClassroomController::refuse($e);
         }
 
-        return response()->json(['success' => true, 'explanation' => $this->explainer->explain($studentId, $point)]);
+        $interventions = array_values(array_filter(
+            $this->interventions->forStudent($classroom, $request->user(), $student),
+            fn ($i) => ($i['learningPoint']['code'] ?? null) === $code,
+        ));
+
+        return response()->json([
+            'success' => true,
+            'student' => ClassroomAccess::identity($student),
+            ...$evidence,
+            'interventions' => $interventions,
+        ]);
     }
 }

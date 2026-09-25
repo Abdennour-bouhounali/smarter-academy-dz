@@ -1,10 +1,15 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { NotebookPen, HandHelping } from 'lucide-react';
 import { useAdminResource } from '../../../hooks/useAdminResource';
 import Modal from '../../../components/admin/ui/Modal';
-import { fetchStudentLearningPointExplanation } from '../../../services/teacher/classGroupService';
-import { Loading, ErrorBox, formatDate } from '../../../pages/teacher/teacherUi';
+import { fetchStudentLearningPointEvidence } from '../../../services/teacher/classGroupService';
+import { Loading, ErrorBox, formatDate, btnPrimary } from '../../../pages/teacher/teacherUi';
 import MasteryPill, { ReasonChip, FreshnessMark, ConfidenceBar } from './MasteryPill';
+import StatusTrail from '../insights/StatusTrail';
+import InterventionForm from '../interventions/InterventionForm';
+import { InterventionCard } from '../interventions/InterventionsTab';
 
 /**
  * Les issues CANONIQUES renvoyées par l'explication (App\Domain\Progress\Outcome) :
@@ -18,10 +23,15 @@ const OUTCOME_TONE = {
 };
 
 /**
- * « لماذا ؟ » — l'EXPLICATION d'un statut de maîtrise pour un élève : le
- * statut et son motif, les faits que le moteur a comptés, puis les derniers
- * indices dans l'ordre. Rien n'est recalculé ici : l'écran montre ce que le
- * serveur a décidé, pour que l'enseignant puisse le contester en connaissance.
+ * « لماذا ؟ » — la PREUVE d'un point pour un élève : le statut et son motif,
+ * les faits que le moteur a comptés, les derniers indices, le CHEMIN de son
+ * état dans le temps, ce que l'élève a écrit dans son كرّاس sur ce point, et
+ * les interventions de l'enseignant sur ce point. Rien n'est recalculé ici :
+ * l'écran montre ce que le serveur a décidé, pour que l'enseignant puisse le
+ * contester en connaissance — puis agir depuis le même endroit.
+ *
+ * Le cahier reste l'écrit de l'élève : il est MONTRÉ, jamais compté ni mêlé
+ * à la maîtrise (NOTEBOOK.md).
  *
  * Boîte de dialogue du kit (rôle `dialog`, Échap, focus rendu), X arabe via
  * `closeLabel` — le motif documenté au §8 du contrat enseignant.
@@ -36,8 +46,12 @@ const DATE_KEYS = ['lastEvidenceAt', 'lastSuccessAt', 'lastFailureAt'];
 export default function MasteryExplanationPanel({ open, onClose, classGroupId, studentId, code, studentName }) {
   const { t } = useTranslation('teacher');
   const enabled = Boolean(open && classGroupId && studentId && code);
-  const loader = useCallback((tk) => (enabled ? fetchStudentLearningPointExplanation(tk, classGroupId, studentId, code) : Promise.resolve(null)), [enabled, classGroupId, studentId, code]);
-  const { data, loading, error, reload } = useAdminResource(loader, [loader]);
+  const loader = useCallback((tk) => (enabled ? fetchStudentLearningPointEvidence(tk, classGroupId, studentId, code) : Promise.resolve(null)), [enabled, classGroupId, studentId, code]);
+  const resource = useAdminResource(loader, [loader]);
+  const { loading, error, reload } = resource;
+  const data = resource.data?.explanation ?? null;
+  const evidence = resource.data;
+  const [acting, setActing] = useState(false);
 
   const codeLabel = (prefix, value) => {
     if (value === null || value === undefined || value === '') return '—';
@@ -51,7 +65,7 @@ export default function MasteryExplanationPanel({ open, onClose, classGroupId, s
     : t('learningPoints.explanation.title');
 
   return (
-    <Modal open={open} onClose={onClose} title={title} size="lg" closeLabel={t('common.close')}>
+    <Modal open={open} onClose={onClose} title={title} size="xl" closeLabel={t('common.close')}>
       {loading && <Loading />}
       {error && <ErrorBox message={error} onRetry={reload} />}
       {data && !loading && (
@@ -113,10 +127,64 @@ export default function MasteryExplanationPanel({ open, onClose, classGroupId, s
             )}
           </section>
 
+          <section>
+            <h3 className="mb-2 font-space text-sm font-bold text-slate-900">{t('learningPoints.evidence.historyTitle')}</h3>
+            <StatusTrail steps={evidence?.history} />
+          </section>
+
+          <section data-evidence-notebook>
+            <div className="mb-2 flex items-center justify-between gap-2">
+              <h3 className="font-space text-sm font-bold text-slate-900">{t('learningPoints.evidence.notebookTitle')}</h3>
+              {evidence?.notebook?.total > 0 && (
+                <Link to={`/enseignant/classes/${classGroupId}/eleves/${studentId}/cahier`} className="inline-flex items-center gap-1 text-xs font-semibold text-teal-800 hover:underline">
+                  <NotebookPen size={12} /> {t('learningPoints.evidence.openNotebook')}
+                </Link>
+              )}
+            </div>
+            {!evidence?.notebook?.notes?.length ? <p className="text-sm text-slate-400">{t('learningPoints.evidence.noNotes')}</p> : (
+              <ul className="space-y-2">
+                {evidence.notebook.notes.map((note) => (
+                  <li key={note.id} className="rounded-xl border border-slate-100 bg-amber-50/30 p-3 text-xs" data-evidence-note={note.id}>
+                    <p className="mb-1 flex flex-wrap items-center gap-2 text-[10px] text-slate-500">
+                      <span className="rounded-full bg-white px-2 py-0.5 font-semibold text-slate-700">{codeLabel('notebook.type', note.noteType)}</span>
+                      {note.mistakeType && <span>{codeLabel('notebook.mistakeType', note.mistakeType)}</span>}
+                      <span>{formatDate(note.createdAt)}</span>
+                    </p>
+                    {note.title && <p className="font-semibold text-slate-800">{note.title}</p>}
+                    <p className="line-clamp-3 whitespace-pre-line text-slate-700">{note.excerpt}</p>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+
+          <section>
+            <div className="mb-2 flex items-center justify-between gap-2">
+              <h3 className="font-space text-sm font-bold text-slate-900">{t('learningPoints.evidence.interventionsTitle')}</h3>
+              <button type="button" onClick={() => setActing(true)} className={btnPrimary} data-evidence-act><HandHelping size={14} /> {t('learningPoints.act')}</button>
+            </div>
+            {!evidence?.interventions?.length ? <p className="text-sm text-slate-400">{t('learningPoints.evidence.noInterventions')}</p> : (
+              <ul className="space-y-2">
+                {evidence.interventions.map((iv) => <InterventionCard key={iv.id} classGroup={{ id: classGroupId }} intervention={iv} onChanged={reload} />)}
+              </ul>
+            )}
+          </section>
+
           {data.engineVersion && (
             <p className="text-[10px] text-slate-400">{t('learningPoints.explanation.engine')} <span dir="ltr" className="font-mono-jetbrains">{data.engineVersion}</span></p>
           )}
         </div>
+      )}
+      {enabled && evidence?.student && (
+        <InterventionForm
+          open={acting}
+          onClose={() => setActing(false)}
+          onCreated={reload}
+          classGroupId={classGroupId}
+          candidates={[evidence.student]}
+          prefill={{ kind: 'individual_followup', studentIds: [evidence.student.id], sourceSignal: null }}
+          point={data?.learningPoint ?? null}
+        />
       )}
     </Modal>
   );

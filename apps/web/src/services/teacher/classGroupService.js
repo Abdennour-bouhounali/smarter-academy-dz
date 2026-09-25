@@ -104,10 +104,55 @@ export function fetchClassLearningPoints(token, id, lessonCode) {
   return call(`/teacher/classrooms/${encodeURIComponent(id)}/learning-points${query({ lesson: lessonCode })}`, get(token), 'progressLoadClass');
 }
 
+/** La CARTE d'apprentissage : tous les points du périmètre de la classe, groupés par leçon. */
+export function fetchClassLearningMap(token, id) {
+  return call(`/teacher/classrooms/${encodeURIComponent(id)}/learning-points`, get(token), 'progressLoadClass');
+}
+
 export function fetchClassLearningPoint(token, id, code) {
   return call(`/teacher/classrooms/${encodeURIComponent(id)}/learning-points/${encodeURIComponent(code)}`, get(token), 'progressLoadClass');
 }
 
 export function fetchStudentLearningPointExplanation(token, id, studentId, code) {
-  return call(`/teacher/classrooms/${encodeURIComponent(id)}/students/${encodeURIComponent(studentId)}/learning-points/${encodeURIComponent(code)}/explanation`, get(token), 'progressLoadClass').then((d) => d.explanation);
+  return fetchStudentLearningPointEvidence(token, id, studentId, code).then((d) => d.explanation);
+}
+
+/**
+ * La PREUVE d'un point pour un élève : l'explication du moteur, l'histoire
+ * de son état, ses notes de cahier sur ce point, et les interventions qui
+ * l'ont visé sur ce point.
+ */
+export function fetchStudentLearningPointEvidence(token, id, studentId, code) {
+  return call(`/teacher/classrooms/${encodeURIComponent(id)}/students/${encodeURIComponent(studentId)}/learning-points/${encodeURIComponent(code)}/explanation`, get(token), 'progressLoadClass');
+}
+
+/**
+ * DÉTECTER — « تستحقّ نظرة » et « ما الذي تغيّر؟ ». Les signaux sont
+ * calculés par le serveur à chaque lecture ; l'écran les FORMATE, il ne les
+ * recalcule pas.
+ */
+export function fetchClassAttention(token, id) {
+  return call(`/teacher/classrooms/${encodeURIComponent(id)}/attention`, get(token), 'progressLoadClass');
+}
+
+/** INTERVENIR puis MESURER — les gestes de l'enseignant et ce qui a suivi. */
+export function fetchClassInterventions(token, id, params = {}) {
+  return call(`/teacher/classrooms/${encodeURIComponent(id)}/interventions${query(params)}`, get(token), 'progressLoadClass');
+}
+
+export function fetchClassIntervention(token, id, interventionId) {
+  return call(`/teacher/classrooms/${encodeURIComponent(id)}/interventions/${encodeURIComponent(interventionId)}`, get(token), 'progressLoadClass').then((d) => d.intervention);
+}
+
+/**
+ * @param {{kind: string, studentIds: number[], learningPointCode?: string, lessonCode?: string,
+ *   note?: string, studentMessage?: string, reviewAfter?: string, sourceSignal?: string}} payload
+ */
+export function createClassIntervention(token, id, payload) {
+  return call(`/teacher/classrooms/${encodeURIComponent(id)}/interventions`, send('POST', token, payload), 'classroomSave').then((d) => d.intervention);
+}
+
+/** @param {{status?: 'open'|'closed', note?: string|null, reviewAfter?: string|null}} patch */
+export function updateClassIntervention(token, id, interventionId, patch) {
+  return call(`/teacher/classrooms/${encodeURIComponent(id)}/interventions/${encodeURIComponent(interventionId)}`, send('PATCH', token, patch), 'classroomSave').then((d) => d.intervention);
 }

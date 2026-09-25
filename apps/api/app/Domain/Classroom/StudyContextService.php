@@ -50,6 +50,9 @@ class StudyContextService
             'teacherName' => trim(($c->teacher?->first_name ?? '').' '.($c->teacher?->last_name ?? '')),
             'teacherId' => $c->teacher_id,
             'joinedAt' => optional($c->getAttribute('membership_joined_at'))->toIso8601String(),
+            // Adhésion antérieure au texte de partage (ou texte changé) :
+            // « قسمي » le redemande une fois.
+            'consentRequired' => (bool) $c->getAttribute('membership_consent_required'),
         ])->values()->all();
 
         return $this->cache[$user->id] = [
@@ -104,6 +107,7 @@ class StudyContextService
             ->filter(fn (ClassroomMembership $m) => $m->classroom !== null && $m->classroom->isActive())
             ->map(function (ClassroomMembership $m) {
                 $m->classroom->setAttribute('membership_joined_at', $m->joined_at);
+                $m->classroom->setAttribute('membership_consent_required', ! $m->hasCurrentConsent());
 
                 return $m->classroom;
             })

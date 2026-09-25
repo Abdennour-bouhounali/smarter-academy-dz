@@ -10,12 +10,15 @@ import { getAllGrades } from '@smarter-academy/core';
 /**
  * « /rejoindre/:token » — le lien d'une invitation, ouvert depuis un courriel,
  * souvent sans compte. On montre ce que le serveur révèle (nom de la classe,
- * enseignant), puis :
+ * enseignant, année — jamais l'adresse invitée), puis :
  *
- *   élève connecté   → /espace/qism?token=…  (accepté là, par l'API)
+ *   élève connecté   → /espace/qism?token=…  (qui DEMANDE confirmation :
+ *                      texte de partage, puis « أوافق وأنضمّ » ou « لا، شكرًا »)
  *   sans compte      → se connecter / créer un compte élève, puis revenir
  *
- * Aucune adhésion n'est créée ici : la page n'a pas de jeton d'API.
+ * Aucune adhésion n'est créée ici : la page n'a pas de jeton d'API. Et
+ * aucune n'est créée à l'arrivée sur قسمي non plus — ouvrir un lien ne vaut
+ * pas consentement.
  */
 export default function JoinInvitation() {
   const { t } = useTranslation('student');
@@ -61,6 +64,7 @@ export default function JoinInvitation() {
             ) : (
               <>
                 <p className="mt-6 text-center text-sm text-slate-600">{t('qism.invitationNeedsAccount')}</p>
+                <p className="mt-2 text-center text-xs text-slate-500">{t('qism.invitationConfirmLater')}</p>
                 <div className="mt-4 grid gap-2">
                   <Link to={`/login?next=${encodeURIComponent(next)}`} className="flex w-full justify-center rounded-xl bg-teal-700 py-3 px-4 text-sm font-semibold text-white hover:bg-teal-800">{t('qism.invitationLogin')}</Link>
                   <Link to={`/register?next=${encodeURIComponent(next)}`} className="flex w-full justify-center rounded-xl border border-slate-300 bg-white py-3 px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50">{t('qism.invitationRegister')}</Link>

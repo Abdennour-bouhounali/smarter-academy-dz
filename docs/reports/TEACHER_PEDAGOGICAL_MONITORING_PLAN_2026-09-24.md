@@ -4,7 +4,23 @@
 
 - **Date:** 2026-09-24
 - **Branch audited:** `dev`, including the uncommitted working tree
-- **Status:** **a plan awaiting review, not a contract.** It was produced by analysis only; no application code or migration was changed. What is built from it is documented in the authoritative contracts listed in Appendix A, and those documents win wherever this report disagrees with them.
+- **Implementation (2026-09-25):** implemented. The contract now lives in
+  `TEACHER_CLASSROOM_ARCHITECTURE.md` §2 (consent, `ClassroomAccess`) and
+  §4–§4c, and in `LEARNING_ARCHITECTURE.md` « State history ». Deviations from
+  this plan:
+  - transitions are recorded on EVERY real state change, not with an ε
+    threshold (D-8): exact, and bounded by the evidence pivot;
+  - consent for existing members is asked once, **non-blocking** (D-2
+    variant): the teacher's reading is not suspended meanwhile;
+  - signals and interventions are gated by the existing `progress.class` /
+    `progress.student` keys, not by a new or paid key (D-10);
+  - the student snapshot is part of the dossier response (no separate
+    `/snapshot` route), the attention is `GET …/attention` (signals + recent
+    changes), the per-student LP evidence extends `…/explanation`;
+  - archived classes: per-student reads stop (D-5), but «قسمي» does not yet
+    list them and `restore` does not re-check seats (G5/G6 open);
+  - the student can see teacher suggestions but cannot dismiss them yet.
+- **Status (original):** **a plan awaiting review, not a contract.** It was produced by analysis only; no application code or migration was changed. What is built from it is documented in the authoritative contracts listed in Appendix A, and those documents win wherever this report disagrees with them.
 
 **Method**
 - **Documents read first:** `docs/README.md` (the map), then the authoritative contracts:

@@ -17,7 +17,8 @@ use Illuminate\Support\Facades\DB;
  * Extrait d'App\Domain\Admin\StudentService pour que l'administration ET
  * l'enseignant lisent la même chose : une seule façon de calculer « leçons
  * terminées », « taux de réussite », « maîtrise ». Le cahier (كرّاسي) n'est
- * PAS ici : c'est l'écriture privée de l'élève, aucun tiers ne la lit.
+ * PAS ici : c'est l'écriture de l'élève ; l'enseignant la lit par sa propre
+ * porte, bornée (NOTEBOOK.md), jamais mélangée à ce dossier.
  *
  * `$lessonIds` restreint le dossier à un périmètre — les leçons effectives
  * d'une classe, pour l'enseignant. Nul = tout.
@@ -64,10 +65,13 @@ class StudentDossier
             'lessonsStarted' => $progress->count(),
             'lessonsCompleted' => $progress->where('status', StudentLessonProgress::STATUS_COMPLETED)->count(),
             'modulesCompleted' => $progress->sum(fn ($row) => count($row->completed_modules ?? [])),
-            'exerciseAttempts' => ExerciseAttempt::whereHas(
-                'practiceSession',
-                fn ($q) => $q->where('user_id', $student->id)->when($lessonIds !== null, fn ($s) => $s->whereIn('lesson_id', $lessonIds))
-            )->count(),
+            // Une jointure depuis les séances DE L'ÉLÈVE (index user_id,
+            // lesson_id), et non un EXISTS sur toute la table des tentatives.
+            'exerciseAttempts' => ExerciseAttempt::query()
+                ->join('practice_sessions', 'practice_sessions.id', '=', 'exercise_attempts.practice_session_id')
+                ->where('practice_sessions.user_id', $student->id)
+                ->when($lessonIds !== null, fn ($q) => $q->whereIn('practice_sessions.lesson_id', $lessonIds))
+                ->count(),
             'questionsAnswered' => $answered,
             'correctAnswers' => $correct,
             'partialAnswers' => $stats['partials'],
@@ -96,9 +100,13 @@ class StudentDossier
     {
         $events = [];
 
+        // Chaque source est BORNÉE en SQL à `$limit` lignes, les plus récentes :
+        // la fusion des trois ne peut pas en garder davantage.
         $rows = StudentLessonProgress::with('lesson:id,code,title')
             ->where('user_id', $student->id)
             ->when($lessonIds !== null, fn ($q) => $q->whereIn('lesson_id', $lessonIds))
+            ->orderByRaw('COALESCE(completed_at, last_activity_at) DESC')
+            ->limit($limit)
             ->get();
         foreach ($rows as $row) {
             $events[] = [
@@ -115,7 +123,11 @@ class StudentDossier
             ->join('lessons', 'lessons.id', '=', 'practice_sessions.lesson_id')
             ->where('practice_sessions.user_id', $student->id)
             ->when($lessonIds !== null, fn ($q) => $q->whereIn('practice_sessions.lesson_id', $lessonIds))
-            ->select('practice_sessions.*', 'lessons.title as lesson_title', 'lessons.code as lesson_code')
+            ->select('practice_sessions.level', 'practice_sessions.correct_count', 'practice_sessions.questions_answered',
+                'practice_sessions.started_at', 'practice_sessions.completed_at',
+                'lessons.title as lesson_title', 'lessons.code as lesson_code')
+            ->orderByRaw('COALESCE(practice_sessions.completed_at, practice_sessions.started_at) DESC')
+            ->limit($limit)
             ->get() as $session) {
             $events[] = [
                 'type' => 'practice_session',
@@ -133,7 +145,10 @@ class StudentDossier
             ->join('lessons', 'lessons.id', '=', 'lesson_final_test_attempts.lesson_id')
             ->where('lesson_final_test_attempts.user_id', $student->id)
             ->when($lessonIds !== null, fn ($q) => $q->whereIn('lesson_final_test_attempts.lesson_id', $lessonIds))
-            ->select('lesson_final_test_attempts.*', 'lessons.title as lesson_title', 'lessons.code as lesson_code')
+            ->select('lesson_final_test_attempts.score', 'lesson_final_test_attempts.total_questions', 'lesson_final_test_attempts.submitted_at',
+                'lessons.title as lesson_title', 'lessons.code as lesson_code')
+            ->orderByDesc('lesson_final_test_attempts.submitted_at')
+            ->limit($limit)
             ->get() as $attempt) {
             $events[] = [
                 'type' => 'final_test',

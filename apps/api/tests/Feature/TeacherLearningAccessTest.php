@@ -66,7 +66,7 @@ class TeacherLearningAccessTest extends TestCase
 
         // Pour SON élève, la leçon est bien masquée.
         $student = $this->student();
-        $this->withToken($this->tokenOf($student))->postJson('/api/v1/student/classrooms/join', ['code' => $classroom->join_code])->assertCreated();
+        $this->withToken($this->tokenOf($student))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $classroom->join_code])->assertCreated();
         $this->withToken($this->tokenOf($student))->getJson('/api/v1/content/availability')->assertOk()
             ->assertJsonPath('closed.hiddenByClass.0', $lesson->code);
     }

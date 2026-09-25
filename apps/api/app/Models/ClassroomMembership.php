@@ -40,6 +40,7 @@ class ClassroomMembership extends Model
         return [
             'joined_at' => 'datetime',
             'left_at' => 'datetime',
+            'consented_at' => 'datetime',
         ];
     }
 
@@ -51,6 +52,16 @@ class ClassroomMembership extends Model
     public function student(): BelongsTo
     {
         return $this->belongsTo(User::class, 'student_id');
+    }
+
+    /**
+     * L'élève a-t-il accepté le texte de partage ACTUEL ? Une adhésion
+     * antérieure au texte (null) ou à sa version courante le lui redemande.
+     */
+    public function hasCurrentConsent(): bool
+    {
+        return $this->consented_at !== null
+            && $this->consent_version === (string) config('classroom.consent_version');
     }
 
     public function isActive(): bool

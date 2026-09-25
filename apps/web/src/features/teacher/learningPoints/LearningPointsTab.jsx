@@ -2,38 +2,54 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronForward } from '../../../components/common/DirectionalIcons';
 import { useAdminResource } from '../../../hooks/useAdminResource';
-import { fetchClassLessons, fetchClassLearningPoints } from '../../../services/teacher/classGroupService';
+import { fetchClassLessons, fetchClassLearningPoints, fetchClassLearningMap } from '../../../services/teacher/classGroupService';
 import { flattenCurriculum } from '../classGroupLessons/lessonSelection';
 import { Loading, ErrorBox, input } from '../../../pages/teacher/teacherUi';
 import { barSegments, sortLearningPoints, LP_STATUSES, LP_STATUS_BAR } from './lpBar';
 import LearningPointDrilldown from './LearningPointDrilldown';
 
+const ALL = '*';
+
 /**
- * « نقاط التعلّم » — la classe × les points d'apprentissage d'UNE leçon.
- * Une leçon à la fois (choisie parmi les leçons VISIBLES du قسم : une leçon
- * masquée n'a pas d'élèves à mesurer, et le serveur répondrait 422), puis une
- * ligne par point : la barre empilée des quatre statuts, et les trois puces
- * qui disent POURQUOI un statut hésite — pas assez d'indices, pas encore
- * d'évaluation, ou une maîtrise qui date. Cliquer une ligne descend vers les
- * élèves, dans le même onglet.
+ * « نقاط التعلّم » — la CARTE d'apprentissage de la classe.
+ *
+ * Par défaut « كل الدروس » : tous les points du périmètre, groupés par leçon
+ * (une seule requête). Une leçon peut être choisie parmi les leçons VISIBLES
+ * du قسم (une leçon masquée n'a pas d'élèves à mesurer). Une ligne par point :
+ * la barre empilée des quatre statuts, la PORTÉE d'une difficulté (un élève,
+ * un groupe, toute la classe — ce qu'une moyenne cacherait), et les trois
+ * puces qui disent pourquoi un statut hésite. Cliquer descend vers les
+ * élèves, dans le même onglet ; `focusCode` y descend directement (depuis
+ * « نظرة عامة »).
  */
-export default function LearningPointsTab({ classGroup }) {
+export default function LearningPointsTab({ classGroup, focusCode = null, onFocusConsumed }) {
   const { t } = useTranslation('teacher');
   const lessonsLoader = useCallback((tk) => fetchClassLessons(tk, classGroup.id), [classGroup.id]);
   const lessons = useAdminResource(lessonsLoader, [lessonsLoader]);
   const visible = useMemo(() => flattenCurriculum(lessons.data).filter((row) => row.classStatus === 'visible'), [lessons.data]);
 
-  const [lessonCode, setLessonCode] = useState('');
+  const [lessonCode, setLessonCode] = useState(ALL);
   const [sortBy, setSortBy] = useState('gap');
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState(focusCode);
 
   useEffect(() => {
-    if (!lessonCode && visible.length > 0) setLessonCode(visible[0].code);
-  }, [visible, lessonCode]);
+    if (focusCode) {
+      setSelected(focusCode);
+      onFocusConsumed?.();
+    }
+  }, [focusCode, onFocusConsumed]);
 
-  const pointsLoader = useCallback((tk) => (lessonCode ? fetchClassLearningPoints(tk, classGroup.id, lessonCode) : Promise.resolve(null)), [classGroup.id, lessonCode]);
+  const pointsLoader = useCallback((tk) => (lessonCode === ALL
+    ? fetchClassLearningMap(tk, classGroup.id)
+    : fetchClassLearningPoints(tk, classGroup.id, lessonCode)), [classGroup.id, lessonCode]);
   const points = useAdminResource(pointsLoader, [pointsLoader]);
-  const rows = useMemo(() => sortLearningPoints(points.data?.learningPoints, sortBy), [points.data, sortBy]);
+  // Une leçon : une liste. Toutes : une liste par leçon, dans l'ordre du cours.
+  const groups = useMemo(() => {
+    if (!points.data) return [];
+    if (lessonCode === ALL) return (points.data.lessons ?? []).map((l) => ({ code: l.code, title: l.title, rows: sortLearningPoints(l.learningPoints, sortBy) }));
+    return [{ code: lessonCode, title: null, rows: sortLearningPoints(points.data.learningPoints, sortBy) }];
+  }, [points.data, sortBy, lessonCode]);
+  const empty = groups.every((g) => g.rows.length === 0);
 
   const pickLesson = (code) => { setLessonCode(code); setSelected(null); };
 
@@ -47,6 +63,7 @@ export default function LearningPointsTab({ classGroup }) {
         <label className="min-w-[14rem] flex-1">
           <span className="mb-1 block text-xs font-semibold text-slate-700">{t('learningPoints.pickLesson')}</span>
           <select value={lessonCode} onChange={(e) => pickLesson(e.target.value)} className={input} data-lp-lesson-picker>
+            <option value={ALL}>{t('learningPoints.allLessons')}</option>
             {visible.map((row) => <option key={row.code} value={row.code}>{row.title}</option>)}
           </select>
         </label>
@@ -70,14 +87,19 @@ export default function LearningPointsTab({ classGroup }) {
         <>
           {points.loading && <Loading />}
           {points.error && <ErrorBox message={points.error} onRetry={points.reload} />}
-          {points.data && !points.loading && (rows.length === 0
+          {points.data && !points.loading && (empty
             ? <p className="glass-card p-8 text-center text-sm text-slate-500">{t('learningPoints.empty')}</p>
             : (
               <>
                 <Legend />
-                <ul className="glass-card divide-y divide-slate-100">
-                  {rows.map((lp) => <LearningPointRow key={lp.code} lp={lp} onOpen={() => setSelected(lp.code)} />)}
-                </ul>
+                {groups.filter((g) => g.rows.length > 0).map((g) => (
+                  <section key={g.code} data-lp-lesson-group={g.code}>
+                    {g.title && <h3 className="mb-1.5 px-1 font-inter text-xs font-semibold text-teal-800">{g.title}</h3>}
+                    <ul className="glass-card divide-y divide-slate-100">
+                      {g.rows.map((lp) => <LearningPointRow key={lp.code} lp={lp} onOpen={() => setSelected(lp.code)} />)}
+                    </ul>
+                  </section>
+                ))}
               </>
             ))}
         </>
@@ -112,8 +134,13 @@ function LearningPointRow({ lp, onOpen }) {
       <button type="button" onClick={onOpen} className="flex w-full flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3 text-start hover:bg-slate-50">
         <span className="min-w-0 flex-1 basis-56">
           <span className="block truncate font-inter text-sm font-semibold text-slate-800">{lp.title}</span>
-          {chips.length > 0 && (
+          {(chips.length > 0 || (lp.difficultyScope && lp.difficultyScope !== 'none')) && (
             <span className="mt-1 flex flex-wrap gap-1.5">
+              {lp.difficultyScope && lp.difficultyScope !== 'none' && (
+                <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${lp.difficultyScope === 'isolated' ? 'bg-slate-100 text-slate-600' : 'bg-rose-50 text-rose-700'}`} data-lp-scope={lp.difficultyScope}>
+                  {t(`learningPoints.scope.${lp.difficultyScope}`)}
+                </span>
+              )}
               {chips.map(([key, n, tone]) => (
                 <span key={key} className={`rounded-full border border-dashed px-2 py-0.5 text-[10px] ${tone}`} data-lp-chip={key}>{t(`learningPoints.chips.${key}`, { count: Number(n) })}</span>
               ))}

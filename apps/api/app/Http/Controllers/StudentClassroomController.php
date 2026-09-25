@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Domain\Access\EntitlementService;
 use App\Domain\Classroom\ClassroomException;
+use App\Domain\Classroom\ClassroomInterventionService;
 use App\Domain\Classroom\ClassroomInvitationService;
 use App\Domain\Classroom\ClassroomMembershipService;
 use App\Domain\Classroom\StudyContextService;
@@ -23,7 +24,18 @@ class StudentClassroomController extends Controller
         private ClassroomMembershipService $memberships,
         private ClassroomInvitationService $invitations,
         private EntitlementService $access,
+        private ClassroomInterventionService $interventions,
     ) {}
+
+    /**
+     * GET /student/teacher-recommendations — ce que les enseignants de
+     * l'élève lui suggèrent (réviser un prérequis, une leçon, un exercice).
+     * Une suggestion, jamais un verrou ; jamais la note privée.
+     */
+    public function recommendations(Request $request)
+    {
+        return response()->json(['success' => true, 'recommendations' => $this->interventions->recommendationsFor($request->user())]);
+    }
 
     public function context(Request $request)
     {
@@ -35,16 +47,20 @@ class StudentClassroomController extends Controller
         $validated = $request->validate([
             'code' => 'nullable|string|max:16',
             'token' => 'nullable|string|max:64',
+            // Le geste explicite « أوافق وأنضمّ » : sans lui, on ne rejoint pas.
+            'consent' => 'nullable|boolean',
         ]);
 
         if (empty($validated['code']) && empty($validated['token'])) {
             return response()->json(['success' => false, 'reason' => ClassroomException::INVALID, 'message' => 'Code ou invitation manquant.'], 422);
         }
 
+        $consented = (bool) ($validated['consent'] ?? false);
+
         try {
             $membership = ! empty($validated['token'])
-                ? $this->invitations->accept($request->user(), $validated['token'])
-                : $this->memberships->joinByCode($request->user(), $validated['code']);
+                ? $this->invitations->accept($request->user(), $validated['token'], $consented)
+                : $this->memberships->joinByCode($request->user(), $validated['code'], $consented);
         } catch (DomainException $e) {
             return response()->json([
                 'success' => false,
@@ -61,6 +77,27 @@ class StudentClassroomController extends Controller
             'studyContext' => $this->context->resolve($request->user()),
             'access' => $this->access->summarize($request->user()),
         ], 201);
+    }
+
+    /** POST /student/classrooms/{id}/consent — confirmer le texte de partage actuel. */
+    public function consent(Request $request, int $id)
+    {
+        $classroom = Classroom::find($id);
+        if ($classroom === null) {
+            abort(404);
+        }
+
+        try {
+            $this->memberships->confirmConsent($request->user(), $classroom);
+        } catch (DomainException $e) {
+            return response()->json([
+                'success' => false,
+                'reason' => $e instanceof ClassroomException ? $e->reason : null,
+                'message' => $e->getMessage(),
+            ], 422);
+        }
+
+        return response()->json(['success' => true, 'studyContext' => $this->context->resolve($request->user())]);
     }
 
     public function leave(Request $request, int $id)

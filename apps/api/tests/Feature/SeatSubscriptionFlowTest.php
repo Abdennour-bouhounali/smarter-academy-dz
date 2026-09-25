@@ -55,7 +55,7 @@ class SeatSubscriptionFlowTest extends TestCase
         $this->withToken($this->tokenOf($admin))->postJson("/api/v1/admin/teachers/{$teacher->id}/subscriptions", ['planId' => $plan->id, 'studentSeats' => 30])->assertCreated();
         $classroom = Classroom::factory()->ownedBy($teacher)->create();
         for ($i = 0; $i < 8; $i++) {
-            $this->withToken($this->tokenOf($this->student()))->postJson('/api/v1/student/classrooms/join', ['code' => $classroom->join_code])->assertCreated();
+            $this->withToken($this->tokenOf($this->student()))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $classroom->join_code])->assertCreated();
         }
         $this->withToken($token)->postJson('/api/v1/teacher/subscription-requests', ['planId' => $plan->id, 'studentSeats' => 6])
             ->assertStatus(422)->assertJsonPath('reason', 'seats_below_usage');
@@ -107,7 +107,7 @@ class SeatSubscriptionFlowTest extends TestCase
         $this->withToken($adminToken)->postJson("/api/v1/admin/teachers/{$teacher->id}/subscriptions", ['planId' => $plan->id, 'studentSeats' => 30])->assertCreated();
         $classroom = Classroom::factory()->ownedBy($teacher)->create();
         for ($i = 0; $i < 25; $i++) {
-            $this->withToken($this->tokenOf($this->student()))->postJson('/api/v1/student/classrooms/join', ['code' => $classroom->join_code])->assertCreated();
+            $this->withToken($this->tokenOf($this->student()))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $classroom->join_code])->assertCreated();
         }
 
         $r = $this->withToken($adminToken)->postJson("/api/v1/admin/teachers/{$teacher->id}/subscriptions", ['planId' => $plan->id, 'studentSeats' => 20]);

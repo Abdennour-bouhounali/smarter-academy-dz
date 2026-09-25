@@ -27,7 +27,7 @@ class TeacherCapacityTest extends TestCase
 
     private function join(User $student, Classroom $classroom)
     {
-        return $this->withToken($this->tokenOf($student))->postJson('/api/v1/student/classrooms/join', ['code' => $classroom->join_code]);
+        return $this->withToken($this->tokenOf($student))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $classroom->join_code]);
     }
 
     public function test_le_gratuit_donne_des_sieges_et_des_classes_illimitees(): void
@@ -90,13 +90,13 @@ class TeacherCapacityTest extends TestCase
         // L'invitation s'envoie (aucune limite technique), mais son ACCEPTATION passe par la même capacité.
         $invited = $this->student(['email' => 'invite@example.dz']);
         $token = basename($this->withToken($teacherToken)->postJson("/api/v1/teacher/classrooms/{$classroom->id}/invitations", ['email' => 'invite@example.dz'])->assertCreated()->json('joinUrl'));
-        $this->withToken($this->tokenOf($invited))->postJson('/api/v1/student/classrooms/join', ['token' => $token])->assertStatus(422)->assertJsonPath('reason', 'seats_exhausted');
+        $this->withToken($this->tokenOf($invited))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'token' => $token])->assertStatus(422)->assertJsonPath('reason', 'seats_exhausted');
         $this->assertDatabaseHas('classroom_invitations', ['email' => 'invite@example.dz', 'status' => 'pending']);
 
         // Un siège libéré rouvre la porte — pour l'invitation aussi.
         $gone = $classroom->activeMemberships()->first();
         $this->withToken($teacherToken)->deleteJson("/api/v1/teacher/classrooms/{$classroom->id}/students/{$gone->student_id}")->assertOk();
-        $this->withToken($this->tokenOf($invited))->postJson('/api/v1/student/classrooms/join', ['token' => $token])->assertCreated();
+        $this->withToken($this->tokenOf($invited))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'token' => $token])->assertCreated();
     }
 
     public function test_une_expiration_met_en_depassement_sans_rien_supprimer(): void
@@ -182,6 +182,6 @@ class TeacherCapacityTest extends TestCase
         $this->join($student, $a)->assertCreated();
 
         $invitation = ClassroomInvitation::factory()->create(['classroom_id' => $b->id, 'email' => $student->email]);
-        $this->withToken($this->tokenOf($student))->postJson('/api/v1/student/classrooms/join', ['token' => ClassroomInvitationFactory::plainTokenOf($invitation)])->assertCreated();
+        $this->withToken($this->tokenOf($student))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'token' => ClassroomInvitationFactory::plainTokenOf($invitation)])->assertCreated();
     }
 }

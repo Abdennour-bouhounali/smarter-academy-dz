@@ -83,6 +83,12 @@ class ScopeCurriculum extends Command
         // donnée élève. Il meurt avec sa leçon et avec ses learning points.
         'assessment_items' => 'cascade',
         'assessment_item_learning_point' => 'cascade',
+        // L'HISTOIRE des états de maîtrise d'un élève : une donnée élève,
+        // qui bloque la commande comme la preuve dont elle dérive.
+        'learning_point_state_transitions' => 'cascade',
+        // Les interventions de l'enseignant : sa donnée, pas celle du
+        // curriculum. Le lien au point ou à la leçon est coupé, le geste reste.
+        'classroom_interventions' => 'set_null',
     ];
 
     /**
@@ -99,6 +105,7 @@ class ScopeCurriculum extends Command
         'student_lesson_progress',
         'lesson_final_test_attempts',
         'practice_sessions',
+        'learning_point_state_transitions',
     ];
 
     public function handle(): int
@@ -341,7 +348,7 @@ class ScopeCurriculum extends Command
             'lesson_modules', 'practice_exercises', 'learning_evidence',
             'student_lesson_progress', 'lesson_final_test_attempts',
             'practice_sessions', 'notebook_notes', 'student_reports',
-            'assessment_items',
+            'assessment_items', 'classroom_interventions',
         ];
 
         $counts = [];
@@ -352,16 +359,18 @@ class ScopeCurriculum extends Command
             $counts[$table] = DB::table($table)->whereIn('lesson_id', $lessonIds)->count();
         }
 
-        foreach (['student_learning_point_progress', 'learning_evidence_learning_point', 'assessment_item_learning_point'] as $table) {
+        foreach (['student_learning_point_progress', 'learning_evidence_learning_point', 'assessment_item_learning_point', 'learning_point_state_transitions'] as $table) {
             if (! DB::getSchemaBuilder()->hasTable($table)) {
                 continue;
             }
             $counts[$table] = DB::table($table)->whereIn('learning_point_id', $learningPointIds)->count();
         }
 
-        if (DB::getSchemaBuilder()->hasTable('notebook_notes')) {
-            $counts['notebook_notes'] = ($counts['notebook_notes'] ?? 0)
-                + DB::table('notebook_notes')->whereIn('learning_point_id', $learningPointIds)->count();
+        foreach (['notebook_notes', 'classroom_interventions'] as $table) {
+            if (DB::getSchemaBuilder()->hasTable($table)) {
+                $counts[$table] = ($counts[$table] ?? 0)
+                    + DB::table($table)->whereIn('learning_point_id', $learningPointIds)->count();
+            }
         }
 
         return $counts;

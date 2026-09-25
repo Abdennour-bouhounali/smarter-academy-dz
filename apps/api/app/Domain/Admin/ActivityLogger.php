@@ -90,6 +90,17 @@ class ActivityLogger
 
     public const CLASSROOM_MEMBER_REMOVED = 'classroom_member.removed';
 
+    /** L'élève confirme le texte de partage de sa classe. */
+    public const CLASSROOM_MEMBER_CONSENTED = 'classroom_member.consented';
+
+    /** Une intervention pédagogique de l'enseignant, ouverte puis close. */
+    public const CLASSROOM_INTERVENTION_CREATED = 'classroom_intervention.created';
+
+    public const CLASSROOM_INTERVENTION_UPDATED = 'classroom_intervention.updated';
+
+    /** L'enseignant a lu le cahier d'un élève (une ligne par jour et par élève). */
+    public const TEACHER_NOTEBOOK_READ = 'teacher.notebook_read';
+
     public const CLASSROOM_INVITATION_CREATED = 'classroom_invitation.created';
 
     public const CLASSROOM_INVITATION_REVOKED = 'classroom_invitation.revoked';

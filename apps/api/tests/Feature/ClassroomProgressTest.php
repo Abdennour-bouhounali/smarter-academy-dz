@@ -33,10 +33,13 @@ class ClassroomProgressTest extends TestCase
         // La 4e leçon est masquée pour la classe : hors périmètre.
         $this->withToken($teacherToken)->patchJson("/api/v1/teacher/classrooms/{$classroom->id}/lessons/{$lessons[3]->id}", ['status' => 'hidden'])->assertOk();
 
-        foreach ([[$a, $lessons[0], 'completed'], [$a, $lessons[1], 'completed'], [$a, $lessons[3], 'completed'], [$b, $lessons[0], 'in_progress']] as [$student, $lesson, $status]) {
+        // « Actif » se lit dans le PÉRIMÈTRE de la classe (la dernière
+        // activité sur ses leçons), pas sur users.last_activity_at : l'élève B
+        // n'a rien fait dans ces leçons depuis 30 jours.
+        foreach ([[$a, $lessons[0], 'completed', 0], [$a, $lessons[1], 'completed', 0], [$a, $lessons[3], 'completed', 0], [$b, $lessons[0], 'in_progress', 30]] as [$student, $lesson, $status, $daysAgo]) {
             StudentLessonProgress::create([
                 'user_id' => $student->id, 'lesson_id' => $lesson->id, 'status' => $status,
-                'current_module' => 1, 'completed_modules' => ['1', '2'], 'last_activity_at' => now(),
+                'current_module' => 1, 'completed_modules' => ['1', '2'], 'last_activity_at' => now()->subDays($daysAgo),
                 'completed_at' => $status === 'completed' ? now() : null,
             ]);
         }
@@ -90,12 +93,12 @@ class ClassroomProgressTest extends TestCase
         ['lessons' => $lessons] = $this->grade4am(1);
         $classroom = Classroom::factory()->create();
         $student = $this->student();
-        $this->withToken($this->tokenOf($student))->postJson('/api/v1/student/classrooms/join', ['code' => $classroom->join_code])->assertCreated();
+        $this->withToken($this->tokenOf($student))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $classroom->join_code])->assertCreated();
         StudentLessonProgress::create(['user_id' => $student->id, 'lesson_id' => $lessons[0]->id, 'status' => 'completed', 'completed_modules' => ['1'], 'last_activity_at' => now(), 'completed_at' => now()]);
         NotebookNote::create(['user_id' => $student->id, 'lesson_id' => $lessons[0]->id, 'title' => 'n', 'content' => '<p>x</p>', 'content_text' => 'x']);
 
         $this->withToken($this->tokenOf($student))->postJson("/api/v1/student/classrooms/{$classroom->id}/leave")->assertOk();
-        $this->withToken($this->tokenOf($student))->postJson('/api/v1/student/classrooms/join', ['code' => $classroom->join_code])->assertCreated();
+        $this->withToken($this->tokenOf($student))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $classroom->join_code])->assertCreated();
         $this->withToken($this->tokenOf($classroom->teacher))->deleteJson("/api/v1/teacher/classrooms/{$classroom->id}/students/{$student->id}")->assertOk();
         $this->withToken($this->tokenOf($classroom->teacher))->postJson("/api/v1/teacher/classrooms/{$classroom->id}/archive")->assertOk();
 

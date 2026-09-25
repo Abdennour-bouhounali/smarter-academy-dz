@@ -125,25 +125,35 @@ no « lesson mastery = 87 % ». A numeric lesson mastery would hide which point
 is weak — the one thing a teacher needs to know.
 
 
-## Who reads progress (2026-09-22)
+## Who reads progress (2026-09-22, updated 2026-09-25)
 
 Three readers, **one set of tables**: the student (their own space), the
-administrator (`Admin\StudentService`) and, since the teacher phase, the
-teacher of a class (قسم) through `Domain\Classroom\ClassroomProgressService`
-and `Domain\Progress\StudentDossier` (extracted from the admin service and
-used by both). They read `student_lesson_progress`,
-`student_learning_point_progress`, the practice attempts and
-`users.last_activity_at`, scoped to the class's grade and to the lessons the
-class makes *effective* (a lesson the teacher hid is not counted). Since
-Mastery V2 the teacher also reads **class × Learning Point**
-(`Domain\Classroom\ClassroomLearningPointService`): one `GROUP BY` over the
-canonical state, never a copy. Success rates everywhere come from
-`Domain\Progress\Support\OutcomeStats`. **No
-teacher-side progress table exists and none may be added**: a class view is a
-query over the student's data, never a copy of it. Leaving or being removed
-from a class changes a membership row only — every progress, attempt and
-mastery row stays. The notebook is never read (`NOTEBOOK.md`). Contract:
-[`TEACHER_CLASSROOM_ARCHITECTURE.md`](./TEACHER_CLASSROOM_ARCHITECTURE.md) §4.
+administrator (`Admin\StudentService`) and the teacher of a class (قسم)
+through `Domain\Classroom\ClassroomProgressService`,
+`Domain\Progress\StudentDossier` (shared with the admin),
+`Domain\Classroom\ClassroomLearningPointService` (class × Learning Point:
+one `GROUP BY` over the canonical state) and `Domain\Classroom\ClassroomInsightService`
+(signals, recent changes, the student snapshot — pure functions over facts
+loaded once). They read `student_lesson_progress`,
+`student_learning_point_progress`, `learning_point_state_transitions` (the
+history of that state), `learning_evidence` and the practice attempts, scoped
+to the class's grade, to the lessons the class makes *effective* and to its
+**active** members. « Last activity » for a teacher is the latest learning
+activity inside that scope, not `users.last_activity_at`. Success rates
+everywhere come from `Domain\Progress\Support\OutcomeStats`.
+
+**No teacher-side progress table exists and none may be added**, and no
+second mastery: a class view, a signal or an intervention outcome is a query
+over the student's data, never a copy of it and never a recomputed status.
+The only teacher-owned table is `classroom_interventions` (the teacher's
+gestures, with a frozen snapshot of the canonical state at that moment).
+
+Leaving or being removed from a class changes a membership row only — every
+progress, attempt and mastery row stays — but the teacher can no longer read
+that student one by one (`ClassroomAccess`). The notebook is read by the
+teacher only through its own read-only surfaces, never counted into progress
+(`NOTEBOOK.md`). Contract:
+[`TEACHER_CLASSROOM_ARCHITECTURE.md`](./TEACHER_CLASSROOM_ARCHITECTURE.md) §2, §4.
 
 ## Who writes progress
 

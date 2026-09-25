@@ -329,7 +329,9 @@ php artisan smarter:mastery:verify --sample=100                                 
 ```
 
 - Unit of replay = one (student, point): its evidence in arrival order,
-  re-classified in memory, through the chosen engine.
+  re-classified in memory, through the chosen engine. An optional per-step
+  callback receives (evidence row, state before, state after) — the history
+  rebuild uses it.
 - Same evidence + same version ⇒ same state (`MasteryReplayTest`).
 - A write that finds a row produced by another version replays that pair in
   the current version first — a row is always the function of the evidence
@@ -339,6 +341,45 @@ php artisan smarter:mastery:verify --sample=100                                 
   in-process `Artisan::call` — no `proc_open`, Hostinger-safe).
 - **Changing the policy**: add `EngineV3` + `engines.3`, dry-run, review,
   switch `engine_version`, replay. Never edit a released version's numbers.
+
+### State history — `learning_point_state_transitions` (2026-09-25)
+
+`student_learning_point_progress` is the PRESENT; each evidence overwrites it.
+The history of that state is kept separately, append-only:
+
+```text
+learning_point_state_transitions
+  user_id, learning_point_id, learning_evidence_id (nullable)
+  status_before (null = no row yet = unassessed), status_after, reason_after
+  confidence_before, confidence_after, engine_version
+  origin  live | replay | backfill
+  occurred_at  = the evidence's submitted_at (not the write time)
+```
+
+- **One writer**, `Domain\Progress\TransitionRecorder`, called where the state
+  changes: `ProgressEngine::advance` (origin `live`, inside the evidence
+  transaction — state and history cannot diverge), `ReplayService::recompute`
+  and the lazy replay on a version change (origin `replay`, dated now: a
+  recalculation, not something the student learned). One line per REAL change
+  (status, reason or confidence moved); inert answers and duplicate attempt
+  ids write nothing. The trace is exact, not sampled; its volume is bounded by
+  the evidence pivot.
+- **State at a date** = the last line whose `occurred_at` precedes it; no line
+  = unassessed then. This is what the teacher's trajectories, « declined » /
+  « stalled » signals, recent changes and intervention trails read
+  (`TEACHER_CLASSROOM_ARCHITECTURE.md` §4) — never a replay on read.
+- **Rebuilding** history for evidence older than the table:
+  `php artisan smarter:mastery:transitions-backfill --all [--rebuild] | --user=ID`
+  replays each pair through THE replay (`ReplayService::replay`'s `$onStep`
+  hook, no second algorithm) under the current engine and writes origin
+  `backfill` lines dated by the evidence — only for evidence BEFORE the
+  pair's first live line, never over recorded history; idempotent. Screens
+  mark backfilled and replayed steps as such.
+- It is student data: `ScopeCurriculum` treats it like the evidence (it
+  blocks the command) and the demo reset deletes it explicitly.
+
+`LearningPointTransitionTest` locks it (one line per change, chaining,
+idempotency, rebuild = live, replay origin).
 
 ### Outcome taxonomy and success rate — one definition
 

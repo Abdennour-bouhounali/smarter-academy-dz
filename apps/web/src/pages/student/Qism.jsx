@@ -1,16 +1,23 @@
-import { useContext, useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Users, KeyRound, CheckCircle2, AlertCircle, LogOut } from 'lucide-react';
+import { Users, KeyRound, CheckCircle2, AlertCircle, LogOut, Eye, Lightbulb, BookOpen } from 'lucide-react';
 import { AuthContext } from '../../context/AuthContext';
 import { useStudyContext } from '../../context/StudyContextContext';
 import { useContentAvailability } from '../../context/ContentAvailabilityContext';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
-import { joinClassGroup, leaveClassGroup } from '../../services/studyContextService';
+import {
+  joinClassGroup,
+  leaveClassGroup,
+  previewInvitation,
+  confirmClassConsent,
+  fetchTeacherRecommendations,
+} from '../../services/studyContextService';
 import { ConfirmDialog } from '../../components/admin/ui/Modal';
-import { getAllGrades } from '@smarter-academy/core';
+import { getAllGrades, getLessonPath } from '@smarter-academy/core';
 import { LOCALE } from '../../locale';
+import { SHARED_ITEMS, joinRequest, classroomsAwaitingConsent, visibleRecommendations } from './qismConsent';
 
 /**
  * « قسمي » — la classe de l'enseignant que l'élève a rejointe, ou peut
@@ -20,6 +27,15 @@ import { LOCALE } from '../../locale';
  * Cette page n'AUTORISE rien : elle transmet un code et affiche ce que le
  * serveur a décidé. Quitter une classe ne touche à aucune donnée
  * d'apprentissage, et la confirmation le dit.
+ *
+ * ── Rejoindre = consentir, et seulement par un geste ─────────────────────
+ * L'enseignant verra, pour les leçons du قسم, la progression, la maîtrise,
+ * les réponses et le كرّاسي (voir qismConsent.js). La page le DIT avant
+ * d'envoyer quoi que ce soit, et la requête ne part qu'après « أوافق
+ * وأنضمّ ». Un lien d'invitation (`?token=`) n'adhère donc plus tout seul :
+ * il ouvre une carte de confirmation, et « لا، شكرًا » ne rejoint rien.
+ * Une adhésion antérieure au texte (`consentRequired`) reçoit une carte
+ * non bloquante : confirmer, ou quitter.
  */
 function formatDate(iso) {
   const d = new Date(iso);
@@ -44,6 +60,9 @@ export default function Qism() {
   const [success, setSuccess] = useState(null);
   const [leaving, setLeaving] = useState(null);
   const [busy, setBusy] = useState(false);
+  const [invitation, setInvitation] = useState(null);
+  const [consenting, setConsenting] = useState(null);
+  const [recommendations, setRecommendations] = useState([]);
 
   const invitationToken = searchParams.get('token');
 
@@ -52,36 +71,68 @@ export default function Qism() {
     return t(`qism.errors.${err?.reason ?? 'generic'}`, { defaultValue: t('qism.errors.generic') });
   };
 
+  // Des suggestions, jamais un verrou : si elles ne chargent pas, la
+  // section se tait — rien d'autre sur la page n'en dépend.
+  const loadRecommendations = useCallback(() => {
+    if (!token) return Promise.resolve();
+    return fetchTeacherRecommendations(token)
+      .then((list) => setRecommendations(visibleRecommendations(list, getLessonPath)))
+      .catch(() => setRecommendations([]));
+  }, [token]);
+
+  useEffect(() => { loadRecommendations(); }, [loadRecommendations]);
+
   const afterJoin = async (result) => {
     setSuccess(result?.studyContext?.primary?.name ?? '');
     setCode('');
-    await Promise.all([refresh().catch(() => {}), refreshAvailability().catch(() => {})]);
+    await Promise.all([refresh().catch(() => {}), refreshAvailability().catch(() => {}), loadRecommendations()]);
   };
 
-  // Un jeton d'invitation dans l'URL : on l'accepte une fois, puis on nettoie.
+  const clearInvitationToken = () => {
+    const next = new URLSearchParams(searchParams);
+    next.delete('token');
+    setSearchParams(next, { replace: true });
+  };
+
+  // Un jeton d'invitation dans l'URL : on ne fait que LIRE l'aperçu public.
+  // L'adhésion attend le geste de l'élève (handleAcceptInvitation).
   useEffect(() => {
-    if (!invitationToken || !token) return;
+    if (!invitationToken) { setInvitation(null); return undefined; }
     let cancelled = false;
-    (async () => {
-      setPending(true);
-      setError(null);
-      try {
-        const result = await joinClassGroup(token, { token: invitationToken });
-        if (!cancelled) await afterJoin(result);
-      } catch (err) {
-        if (!cancelled) setError(messageFor(err));
-      } finally {
-        if (!cancelled) {
-          setPending(false);
-          const next = new URLSearchParams(searchParams);
-          next.delete('token');
-          setSearchParams(next, { replace: true });
-        }
-      }
-    })();
+    setError(null);
+    previewInvitation(invitationToken)
+      .then((data) => { if (!cancelled) setInvitation(data); })
+      .catch((err) => {
+        if (cancelled) return;
+        setError(messageFor(err));
+        clearInvitationToken();
+      });
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [invitationToken, token]);
+  }, [invitationToken]);
+
+  const handleAcceptInvitation = async () => {
+    const body = joinRequest({ token: invitationToken }, true);
+    if (pending || !body) return;
+    setPending(true);
+    setError(null);
+    setSuccess(null);
+    try {
+      const result = await joinClassGroup(token, body);
+      await afterJoin(result);
+    } catch (err) {
+      setError(messageFor(err));
+    } finally {
+      setPending(false);
+      setInvitation(null);
+      clearInvitationToken();
+    }
+  };
+
+  const handleDeclineInvitation = () => {
+    setInvitation(null);
+    clearInvitationToken();
+  };
 
   const handleJoin = async (event) => {
     event.preventDefault();
@@ -94,7 +145,9 @@ export default function Qism() {
     }
     setPending(true);
     try {
-      const result = await joinClassGroup(token, { code });
+      // Le bouton de ce formulaire EST le geste de consentement : « أوافق
+      // وأنضمّ », sous le texte de partage.
+      const result = await joinClassGroup(token, joinRequest({ code }, true));
       await afterJoin(result);
     } catch (err) {
       setError(messageFor(err));
@@ -109,7 +162,7 @@ export default function Qism() {
     try {
       await leaveClassGroup(token, leaving.id);
       setLeaving(null);
-      await Promise.all([refresh().catch(() => {}), refreshAvailability().catch(() => {})]);
+      await Promise.all([refresh().catch(() => {}), refreshAvailability().catch(() => {}), loadRecommendations()]);
     } catch (err) {
       setError(messageFor(err));
       setLeaving(null);
@@ -118,7 +171,22 @@ export default function Qism() {
     }
   };
 
+  const handleConsent = async (classroom) => {
+    if (consenting) return;
+    setConsenting(classroom.id);
+    setError(null);
+    try {
+      await confirmClassConsent(token, classroom.id);
+      await refresh().catch(() => {});
+    } catch (err) {
+      setError(messageFor(err));
+    } finally {
+      setConsenting(null);
+    }
+  };
+
   const gradeName = (code) => getAllGrades().find((g) => g.id === code)?.name ?? code;
+  const awaitingConsent = classroomsAwaitingConsent(studyContext);
 
   return (
     <div className="sa-page py-8 sm:py-10">
@@ -134,6 +202,45 @@ export default function Qism() {
             <p className="font-semibold text-emerald-900">{t('qism.joinSuccess', { name: success })}</p>
           </motion.div>
         )}
+
+        {invitation && (
+          <section className="glass-card p-5 sm:p-6 border-teal-200" aria-labelledby="qism-invitation-title" data-qism-invitation>
+            <div className="flex items-start gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center shrink-0"><Users size={18} /></div>
+              <div className="min-w-0">
+                <h2 id="qism-invitation-title" className="font-semibold text-slate-900">{t('qism.invitationTitle', { name: invitation.classroomName })}</h2>
+                <p className="text-sm text-slate-600 mt-1">{t('qism.invitationBody', { teacher: invitation.teacherName || '—', grade: gradeName(invitation.grade) })}</p>
+              </div>
+            </div>
+            <SharingDisclosure />
+            <div className="mt-4 flex flex-col sm:flex-row gap-2">
+              <button type="button" onClick={handleAcceptInvitation} disabled={pending} data-qism-consent-join className="px-6 py-3 rounded-xl bg-teal-700 text-white font-semibold hover:bg-teal-800 disabled:opacity-60 disabled:cursor-not-allowed">
+                {pending ? t('qism.joining') : t('qism.consentJoin')}
+              </button>
+              <button type="button" onClick={handleDeclineInvitation} disabled={pending} data-qism-decline className="px-6 py-3 rounded-xl border border-slate-300 bg-white text-slate-700 font-semibold hover:bg-slate-50 disabled:opacity-60">
+                {t('qism.invitationDecline')}
+              </button>
+            </div>
+          </section>
+        )}
+
+        {/* Adhésions antérieures au texte de partage : une carte par قسم,
+            jamais un mur — le reste de l'espace reste ouvert. */}
+        {awaitingConsent.map((c) => (
+          <section key={c.id} className="glass-card p-5 sm:p-6 border-amber-200 bg-amber-50/40" aria-labelledby={`qism-consent-${c.id}`} data-qism-consent-required={c.id}>
+            <h2 id={`qism-consent-${c.id}`} className="font-semibold text-slate-900">{t('qism.consentUpdate.title', { name: c.name })}</h2>
+            <p className="text-sm text-slate-600 mt-1 mb-4">{t('qism.consentUpdate.body')}</p>
+            <SharingDisclosure />
+            <div className="mt-4 flex flex-col sm:flex-row gap-2">
+              <button type="button" onClick={() => handleConsent(c)} disabled={consenting !== null} data-qism-consent-accept className="px-6 py-3 rounded-xl bg-teal-700 text-white font-semibold hover:bg-teal-800 disabled:opacity-60 disabled:cursor-not-allowed">
+                {consenting === c.id ? t('qism.consentUpdate.accepting') : t('qism.consentUpdate.accept')}
+              </button>
+              <button type="button" onClick={() => setLeaving(c)} disabled={consenting !== null} className="inline-flex items-center justify-center gap-1.5 px-6 py-3 rounded-xl border border-slate-300 bg-white text-slate-700 font-semibold hover:text-rose-700 hover:border-rose-200 disabled:opacity-60">
+                <LogOut size={15} /> {t('qism.leave')}
+              </button>
+            </div>
+          </section>
+        ))}
 
         <section className="glass-card p-5 sm:p-6" aria-label={t('qism.currentTitle')} data-qism-current>
           {studyContext.mode === 'classroom' ? (
@@ -164,6 +271,40 @@ export default function Qism() {
           )}
         </section>
 
+        {recommendations.length > 0 && (
+          <section className="glass-card p-5 sm:p-6" aria-labelledby="qism-recommendations-title" data-qism-recommendations>
+            <h2 id="qism-recommendations-title" className="font-semibold text-slate-900">{t('qism.recommendations.title')}</h2>
+            <p className="text-sm text-slate-600 mt-1 mb-4">{t('qism.recommendations.intro')}</p>
+            <ul className="space-y-3">
+              {recommendations.map((r) => (
+                <li key={r.id} className="rounded-xl border border-slate-200 bg-white p-4 flex items-start gap-3" data-qism-recommendation={r.kind}>
+                  <div className="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center shrink-0"><Lightbulb size={18} /></div>
+                  <div className="min-w-0 flex-1 space-y-1">
+                    <p className="font-semibold text-slate-900">{t(`qism.recommendations.kinds.${r.kind}`)}</p>
+                    {r.learningPoint?.title && (
+                      <p className="text-sm text-slate-700">{t('qism.recommendations.learningPointLabel')}: {r.learningPoint.title}</p>
+                    )}
+                    {r.lesson?.title && (
+                      <p className="text-sm text-slate-700">{t('qism.recommendations.lessonLabel')}: {r.lesson.title}</p>
+                    )}
+                    {r.message && (
+                      <blockquote className="mt-2 border-s-4 border-teal-200 ps-3 text-sm text-slate-700" aria-label={t('qism.recommendations.messageLabel')}>
+                        « {r.message} »
+                      </blockquote>
+                    )}
+                    <p className="text-xs text-slate-400">{t('qism.recommendations.from', { teacher: r.teacherName || '—', classroom: r.classroomName || '—' })}</p>
+                    {r.lessonPath && (
+                      <Link to={r.lessonPath} className="inline-flex items-center gap-1 mt-1 text-sm font-semibold text-teal-700 hover:text-teal-800">
+                        <BookOpen size={14} /> {t('qism.recommendations.openLesson')}
+                      </Link>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
         <section className="glass-card p-5 sm:p-6">
           <h2 className="font-semibold text-slate-900">{t('qism.joinTitle')}</h2>
           <p className="text-sm text-slate-600 mt-1 mb-4">{t('qism.joinBody')}</p>
@@ -192,8 +333,9 @@ export default function Qism() {
                 <p className="text-sm text-rose-800">{error}</p>
               </div>
             )}
-            <button type="submit" disabled={pending} className="w-full sm:w-auto px-6 py-3 rounded-xl bg-teal-700 text-white font-semibold hover:bg-teal-800 disabled:opacity-60 disabled:cursor-not-allowed">
-              {pending ? t('qism.joining') : t('qism.join')}
+            <SharingDisclosure />
+            <button type="submit" disabled={pending} data-qism-consent-join className="w-full sm:w-auto px-6 py-3 rounded-xl bg-teal-700 text-white font-semibold hover:bg-teal-800 disabled:opacity-60 disabled:cursor-not-allowed">
+              {pending ? t('qism.joining') : t('qism.consentJoin')}
             </button>
           </form>
         </section>
@@ -212,6 +354,29 @@ export default function Qism() {
         busyLabel={t('qism.joining')}
         closeLabel={t('qism.cancel')}
       />
+    </div>
+  );
+}
+
+/**
+ * Ce que l'enseignant voit — le MÊME texte au formulaire, sur la carte
+ * d'invitation et sur la carte de confirmation : un consentement ne se
+ * donne pas sur trois versions d'un texte.
+ */
+function SharingDisclosure() {
+  const { t } = useTranslation('student');
+  return (
+    <div className="rounded-xl border border-teal-100 bg-teal-50/60 p-4 text-sm text-slate-700" data-qism-sharing>
+      <p className="flex items-center gap-2 font-semibold text-teal-900 mb-2">
+        <Eye size={16} className="shrink-0" aria-hidden="true" /> {t('qism.sharing.title')}
+      </p>
+      <p className="mb-2">{t('qism.sharing.intro')}</p>
+      <ul className="list-disc ps-5 space-y-1 mb-2">
+        {SHARED_ITEMS.map((item) => <li key={item}>{t(`qism.sharing.items.${item}`)}</li>)}
+      </ul>
+      <p className="mb-2">{t('qism.sharing.teacherNotes')}</p>
+      <p>{t('qism.sharing.email')}</p>
+      <p>{t('qism.sharing.leave')}</p>
     </div>
   );
 }

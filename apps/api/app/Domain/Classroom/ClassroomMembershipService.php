@@ -40,7 +40,7 @@ class ClassroomMembershipService
     ) {}
 
     /** @throws ClassroomException */
-    public function joinByCode(User $student, ?string $rawCode): ClassroomMembership
+    public function joinByCode(User $student, ?string $rawCode, bool $consented = false): ClassroomMembership
     {
         $code = JoinCode::normalize($rawCode);
         if ($code === null) {
@@ -52,18 +52,25 @@ class ClassroomMembershipService
             throw new ClassroomException(ClassroomException::INVALID, 'Code de classe invalide.');
         }
 
-        return $this->join($student, $classroom, ClassroomMembership::VIA_JOIN_CODE, null);
+        return $this->join($student, $classroom, ClassroomMembership::VIA_JOIN_CODE, null, $consented);
     }
 
     /**
      * Rejoindre — le geste commun au code et à l'invitation.
      *
+     * `$consented` : l'élève a accepté, par un geste explicite, le texte de
+     * partage (ce que son enseignant lira). Sans lui, on ne rejoint pas : le
+     * partage n'est jamais un effet de bord d'un lien ouvert.
+     *
      * @throws ClassroomException
      */
-    public function join(User $student, Classroom $classroom, string $via, ?ClassroomInvitation $invitation): ClassroomMembership
+    public function join(User $student, Classroom $classroom, string $via, ?ClassroomInvitation $invitation, bool $consented = false): ClassroomMembership
     {
         if (! $student->isStudent()) {
             throw new ClassroomException(ClassroomException::NOT_A_STUDENT, 'Seul un compte élève peut rejoindre une classe.');
+        }
+        if (! $consented) {
+            throw new ClassroomException(ClassroomException::CONSENT_REQUIRED, 'Le partage avec l\'enseignant doit être accepté.');
         }
 
         return DB::transaction(function () use ($student, $classroom, $via, $invitation) {
@@ -100,6 +107,8 @@ class ClassroomMembershipService
                     'joined_via' => $via,
                     'invitation_id' => $invitation?->id,
                     'removed_by' => null,
+                    'consented_at' => $now,
+                    'consent_version' => (string) config('classroom.consent_version'),
                 ])->save();
                 $membership = $existing;
             } else {
@@ -111,6 +120,8 @@ class ClassroomMembershipService
                 ]);
                 $membership->classroom_id = $classroom->id;
                 $membership->student_id = $student->id;
+                $membership->consented_at = $now;
+                $membership->consent_version = (string) config('classroom.consent_version');
                 $membership->save();
             }
 
@@ -122,6 +133,38 @@ class ClassroomMembershipService
 
             return $membership;
         });
+    }
+
+    /**
+     * L'élève confirme le texte de partage ACTUEL pour une classe dont il est
+     * déjà membre (adhésion antérieure au texte, ou texte changé depuis).
+     *
+     * @throws ClassroomException
+     */
+    public function confirmConsent(User $student, Classroom $classroom): ClassroomMembership
+    {
+        $membership = ClassroomMembership::where('classroom_id', $classroom->id)
+            ->where('student_id', $student->id)
+            ->where('status', ClassroomMembership::STATUS_ACTIVE)
+            ->first();
+
+        if ($membership === null) {
+            throw new ClassroomException(ClassroomException::NOT_MEMBER, 'Vous n\'êtes pas dans cette classe.');
+        }
+
+        if (! $membership->hasCurrentConsent()) {
+            $membership->forceFill([
+                'consented_at' => Carbon::now(),
+                'consent_version' => (string) config('classroom.consent_version'),
+            ])->save();
+
+            $this->log->log($student, ActivityLogger::CLASSROOM_MEMBER_CONSENTED, 'classroom', $classroom->id, null, [
+                'student_id' => $student->id, 'version' => $membership->consent_version,
+            ]);
+            $this->context->forget($student);
+        }
+
+        return $membership;
     }
 
     /** L'élève s'en va de lui-même. Son historique reste. */

@@ -7,6 +7,7 @@ import StatTile from '../../../components/common/StatTile';
 import PathProgress from '../../progression/components/PathProgress';
 import { fetchClassProgress } from '../../../services/teacher/classGroupService';
 import { Loading, ErrorBox, formatDate, btnSecondary } from '../../../pages/teacher/teacherUi';
+import { studentName } from '../insights/insights';
 
 /**
  * La progression d'une classe : un résumé, une ligne par élève. Tout est
@@ -23,7 +24,7 @@ export default function ProgressTab({ classGroup, onOpenLearningPoints }) {
   if (error) return <ErrorBox message={error} onRetry={reload} />;
   if (!data) return null;
   const s = data.summary;
-  const fullName = (r) => [r.firstName, r.lastName].filter(Boolean).join(' ') || r.email;
+  const fullName = (r) => studentName(r, t('common.unnamedStudent'));
 
   return (
     <div className="space-y-6" data-progress-tab>

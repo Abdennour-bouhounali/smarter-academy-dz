@@ -27,7 +27,8 @@
     "selectRow": "تحديد {{title}}",
     "emptyTitle": "لا توجد نتائج",
     "emptyHint": "لا يوجد ما يطابق هذه التصفية.",
-    "dash": "—"
+    "dash": "—",
+    "unnamedStudent": "تلميذ بدون اسم"
   },
   "home": {
     "metaTitle": "فضاء الأستاذ",
@@ -95,11 +96,13 @@
     "empty": "لا توجد أقسام.",
     "limitReached": "بلغت الحدّ الأقصى للأقسام في عرضك.",
     "tabs": {
+      "overview": "نظرة عامة",
       "students": "التلاميذ",
       "lessons": "الدروس",
       "progress": "التقدّم",
       "settings": "الإعدادات",
-      "learningPoints": "نقاط التعلّم"
+      "learningPoints": "نقاط التعلّم",
+      "interventions": "التدخّلات"
     },
     "errors": {
       "limit_reached": "عرضك لا يسمح بقسم إضافي. راجع صفحة « عرضي ».",
@@ -107,7 +110,10 @@
       "feature_unavailable": "هذه الميزة غير مشمولة في عرضك.",
       "class_inactive": "هذا القسم غير نشط.",
       "generic": "تعذّر تنفيذ العملية.",
-      "seats_exhausted": "بلغت سعة التلاميذ في عرضك. راجع صفحة « عرضي »."
+      "seats_exhausted": "بلغت سعة التلاميذ في عرضك. راجع صفحة « عرضي ».",
+      "not_member": "أحد التلاميذ لم يعد في هذا القسم.",
+      "invalid": "المعطيات غير مكتملة: تحقّق من نوع التدخّل ونقطة التعلّم.",
+      "lesson_out_of_scope": "هذا الدرس أو هذه النقطة خارج دروس القسم."
     }
   },
   "students": {
@@ -319,6 +325,53 @@
         "lastSuccessAt": "آخر نجاح",
         "lastFailureAt": "آخر خطأ"
       }
+    },
+    "allLessons": "كل الدروس",
+    "scope": {
+      "class_wide": "صعوبة في القسم كلّه",
+      "small_group": "صعوبة عند مجموعة",
+      "isolated": "صعوبة عند تلميذ واحد"
+    },
+    "direction": {
+      "improved": "تحسّن",
+      "declined": "تراجع",
+      "first_assessed": "جديد",
+      "unchanged": "",
+      "not_assessed": ""
+    },
+    "act": "تدخّل",
+    "actForGap": "تدخّل مع من هم في ثغرة",
+    "trajectory": {
+      "title": "تطوّر القسم أسبوعًا بأسبوع",
+      "hint": "عدد التلاميذ في كل حالة في نهاية كل أسبوع.",
+      "unknown": "غير معروف",
+      "until": "حتى {{date}}"
+    },
+    "items": {
+      "title": "الأسئلة التي تُعيق القسم",
+      "hint": "حيث يُخطئ التلاميذ أكثر في هذه النقطة.",
+      "answers": "{{failures}} خاطئة من {{answered}}",
+      "students": "{{failing}} من {{students}} تلاميذ أخطؤوا",
+      "practice": "تمرين",
+      "final_test": "اختبار نهائي",
+      "untitled": "سؤال"
+    },
+    "prerequisites": {
+      "title": "النقاط الأساسية لهذه النقطة",
+      "inGap": "في ثغرة: {{count}}",
+      "none": "لا نقاط أساسية مسجّلة."
+    },
+    "evidence": {
+      "historyTitle": "مسار الحالة",
+      "noHistory": "لا مسار مسجّل بعد.",
+      "reconstructed": "مُعاد بناؤه",
+      "recalculated": "إعادة حساب",
+      "notebookTitle": "من كرّاسه في هذه النقطة",
+      "noNotes": "لا ملاحظات في الكرّاس على هذه النقطة.",
+      "notebookTotal": "{{count}} ملاحظة",
+      "openNotebook": "افتح الكرّاس",
+      "interventionsTitle": "تدخّلاتك على هذه النقطة",
+      "noInterventions": "لا تدخّل على هذه النقطة."
     }
   },
   "subscription": {
@@ -453,6 +506,209 @@
       "astuce": "حيلة",
       "exemple": "مثال",
       "resume": "خلاصة"
+    },
+    "mistakeType": {
+      "calcul": "خطأ حساب",
+      "methode": "خطأ في الطريقة",
+      "lecture": "سوء قراءة",
+      "signe": "خطأ إشارة",
+      "etourderie": "سهو",
+      "autre": "أخرى"
     }
+  },
+  "attention": {
+    "title": "تستحقّ نظرة",
+    "subtitle": "ما يستحقّ انتباهك في القسم خلال الأيام الـ {{days}} الأخيرة، مستخرَج من إجابات التلاميذ وحالات نقاط التعلّم.",
+    "empty": "لا شيء يستدعي انتباهًا خاصًّا الآن.",
+    "emptyHint": "لا صعوبة مشتركة، ولا تراجع، ولا نشاط دون تقدّم في هذه الفترة. خريطة التعلّم أدناه تبقى متاحة.",
+    "engagementTitle": "الانخراط",
+    "engagementHint": "غياب النشاط على المنصّة ليس دليلًا على صعوبة: قد يعمل التلميذ على الورق.",
+    "types": {
+      "class_difficulty": {
+        "title": "صعوبة مشتركة في «{{point}}»",
+        "why": "{{gap}} من {{assessed}} تلاميذ مُقيَّمين في ثغرة على هذه النقطة."
+      },
+      "repeated_difficulty": {
+        "title": "صعوبة متكرّرة في «{{point}}»",
+        "why": "في ثغرة بعد {{failures}} إجابات خاطئة حديثة على هذه النقطة."
+      },
+      "declined": {
+        "title": "تراجع في «{{point}}»",
+        "why": "انتقلت الحالة من «{{from}}» إلى «{{to}}» خلال الفترة."
+      },
+      "stalled": {
+        "title": "نشاط دون تقدّم في «{{point}}»",
+        "why": "{{answered}} إجابة حديثة دون تحسّن في الحالة."
+      },
+      "no_recent_activity": {
+        "title": "لا نشاط مسجّل في دروس القسم",
+        "why": "لا نشاط في دروس القسم منذ {{days}} يومًا على الأقلّ."
+      }
+    },
+    "scope": {
+      "class_wide": "القسم كلّه",
+      "small_group": "مجموعة من التلاميذ",
+      "isolated": "تلميذ واحد",
+      "none": ""
+    },
+    "lastEvidence": "آخر دليل: {{date}}",
+    "prerequisites": "نقاط أساسية في ثغرة عند بعضهم:",
+    "prerequisiteInGap": "{{title}} ({{count}})",
+    "openPoint": "افتح النقطة",
+    "act": "تدخّل",
+    "neverStarted": "لم يبدأ بعد",
+    "lastActivity": "آخر نشاط: {{date}}",
+    "studentFacts": "{{failures}} خاطئة من {{answered}} إجابة حديثة",
+    "ruleVersion": "إصدار قواعد الإشارات",
+    "changes": {
+      "title": "ما الذي تغيّر؟",
+      "subtitle": "حالات نقاط التعلّم بين بداية الفترة واليوم — لا بين يوم وآخر.",
+      "improved": "تحسّن",
+      "declined": "تراجع",
+      "firstAssessed": "قُيِّم لأوّل مرّة",
+      "recalculated": "أُعيد حسابه",
+      "none": "لا تغيّر مسجّل في هذه الفترة.",
+      "byPoint": "النقاط الأكثر حركة",
+      "studentsImproved": "تلاميذ تحسّنوا",
+      "studentsDeclined": "تلاميذ تراجعوا"
+    },
+    "map": {
+      "title": "خريطة التعلّم",
+      "subtitle": "توزيع تلاميذ القسم على كل نقطة — عدد، لا متوسّط يخفي أحدًا.",
+      "open": "افتح الخريطة كاملة"
+    },
+    "openInterventions_zero": "لا تدخّل مفتوح",
+    "openInterventions_one": "تدخّل واحد مفتوح",
+    "openInterventions_two": "تدخّلان مفتوحان",
+    "openInterventions_few": "{{count}} تدخّلات مفتوحة",
+    "openInterventions_many": "{{count}} تدخّلًا مفتوحًا",
+    "openInterventions_other": "{{count}} تدخّل مفتوح",
+    "openInterventionsLink": "التدخّلات",
+    "showAll": "عرض الكل ({{count}})",
+    "showLess": "عرض أقلّ",
+    "neverStartedCount_zero": "",
+    "neverStartedCount_one": "أحدهم لم يبدأ بعد.",
+    "neverStartedCount_two": "اثنان منهم لم يبدآ بعد.",
+    "neverStartedCount_few": "{{count}} منهم لم يبدؤوا بعد.",
+    "neverStartedCount_many": "{{count}} منهم لم يبدؤوا بعد.",
+    "neverStartedCount_other": "{{count}} منهم لم يبدؤوا بعد."
+  },
+  "interventions": {
+    "title": "التدخّلات",
+    "subtitle": "ما قمتَ به، وما حدث بعده — وقائع مسجّلة، لا حكم على الأثر.",
+    "new": "تدخّل جديد",
+    "empty": "لم تسجّل أيّ تدخّل بعد.",
+    "emptyHint": "من «تستحقّ نظرة» أو من نقطة تعلّم، اضغط «تدخّل».",
+    "filters": {
+      "open": "مفتوحة",
+      "closed": "مغلقة",
+      "all": "الكلّ"
+    },
+    "kinds": {
+      "individual_followup": "متابعة فردية",
+      "class_reinforcement": "تدعيم في القسم",
+      "recommend_practice": "اقتراح تمارين",
+      "review_prerequisite": "مراجعة نقطة أساسية",
+      "recommend_lesson": "اقتراح درس",
+      "observation": "ملاحظة"
+    },
+    "kindHints": {
+      "individual_followup": "تتابع التلميذ بنفسك (حديث، عمل موجَّه). لا يرى التلميذ شيئًا.",
+      "class_reinforcement": "تعيد العمل على النقطة مع القسم. لا يرى التلاميذ شيئًا.",
+      "recommend_practice": "يرى التلاميذ المختارون اقتراحًا بالتمرّن على النقطة في «قسمي».",
+      "review_prerequisite": "يرى التلاميذ اقتراحًا بمراجعة هذه النقطة الأساسية في «قسمي».",
+      "recommend_lesson": "يرى التلاميذ اقتراحًا بإعادة قراءة الدرس في «قسمي».",
+      "observation": "ملاحظة لك وحدك."
+    },
+    "form": {
+      "title": "تدخّل",
+      "kind": "نوع التدخّل",
+      "students": "التلاميذ المعنيّون",
+      "selectAll": "الكلّ",
+      "selectNone": "لا أحد",
+      "point": "نقطة التعلّم",
+      "pointNone": "بدون نقطة محدّدة",
+      "lesson": "الدرس",
+      "note": "ملاحظتك",
+      "notePlaceholder": "ماذا لاحظت؟ ماذا ستفعل؟",
+      "notePrivate": "خاصّة بك: لا يراها التلميذ.",
+      "studentMessage": "رسالة للتلميذ (اختيارية)",
+      "studentMessagePlaceholder": "مثال: راجع هذه النقطة قبل الحصّة القادمة.",
+      "visibleNotice": "سيرى التلاميذ المختارون هذا الاقتراح في «قسمي». لا يُقفل أيّ شيء ولا موعد نهائي.",
+      "privateNotice": "لا يرى التلاميذ هذا التدخّل.",
+      "reviewAfter": "راجِع ما حدث بعد",
+      "baselineNotice": "ستُحفظ الآن حالة كل تلميذ على هذه النقطة، لمقارنتها بما سيأتي.",
+      "submit": "سجّل التدخّل",
+      "saving": "جارٍ الحفظ…",
+      "needPoint": "هذا النوع يتطلّب نقطة تعلّم.",
+      "needLesson": "اقتراح درس يتطلّب درسًا.",
+      "noStudents": "اختر تلميذًا واحدًا على الأقلّ."
+    },
+    "status": {
+      "open": "مفتوح",
+      "closed": "مغلق"
+    },
+    "close": "أغلق",
+    "reopen": "أعِد الفتح",
+    "openedAt": "بدأ في {{date}}",
+    "closedAt": "أُغلق في {{date}}",
+    "reviewAfter": "مراجعة بعد {{date}}",
+    "reviewDue": "حان وقت المراجعة",
+    "sourceSignal": "من إشارة: {{type}}",
+    "visibleBadge": "يراه التلميذ",
+    "details": "ما حدث بعده",
+    "hideDetails": "إخفاء",
+    "saved": "سُجِّل التدخّل.",
+    "outcome": {
+      "title": "ما حدث بعده",
+      "disclaimer": "وقائع مُلاحَظة منذ التدخّل، وليست دليلًا على أنّه السبب.",
+      "noPoint": "لا نقطة تعلّم مرتبطة: لا مقارنة آلية.",
+      "withNewEvidence": "{{count}} من {{students}} لهم أدلّة جديدة",
+      "improved": "تحسّن: {{count}}",
+      "declined": "تراجع: {{count}}",
+      "unchanged": "دون تغيّر: {{count}}",
+      "firstAssessed": "قُيِّم لأوّل مرّة: {{count}}",
+      "noNewEvidence": "دون دليل جديد: {{count}}",
+      "before": "عند التدخّل",
+      "now": "الآن",
+      "since": "منذ التدخّل",
+      "answers": "{{answered}} إجابة، منها {{successes}} صحيحة",
+      "noEvidence": "لا دليل جديد بعد",
+      "trail": "المسار",
+      "recalculated": "إعادة حساب",
+      "left": "لم يعد في القسم"
+    }
+  },
+  "snapshot": {
+    "title": "لمحة",
+    "window": "آخر {{days}} يومًا",
+    "trend": {
+      "improving": "في تحسّن",
+      "declining": "في تراجع",
+      "mixed": "تحسّن وتراجع",
+      "started": "بدأ يُقيَّم",
+      "stable": "مستقرّ",
+      "no_recent_evidence": "لا أدلّة حديثة"
+    },
+    "trendHint": "مقروءة من تغيّر حالات النقاط خلال الفترة، لا من نسبة مئوية.",
+    "assessed": "{{assessed}} من {{total}} نقاط مُقيَّمة",
+    "strengths": "نقاط قوّة",
+    "difficulties": "صعوبات",
+    "none": "لا شيء بعد",
+    "insufficient": "{{count}} نقاط بدليل ناقص أو تنتظر اختبارًا — ليست صعوبات.",
+    "changes": "تغيّرات الفترة",
+    "noChanges": "لا تغيّر في الفترة.",
+    "activity": "النشاط",
+    "lastActivity": "آخر نشاط في دروس القسم",
+    "recentAnswered": "إجابات الفترة",
+    "recentSuccess": "نسبة النجاح في الفترة",
+    "currentPoint": "آخر نقطة عمل عليها",
+    "noActivity": "لا نشاط في دروس القسم",
+    "activityNote": "النشاط ليس تعلّمًا: الكثير من الإجابات لا يعني تقدّمًا، والقليل منها لا يعني صعوبة.",
+    "signals": "ما يستحقّ نظرة",
+    "noSignals": "لا إشارة تخصّ هذا التلميذ.",
+    "interventions": "تدخّلاتك",
+    "noInterventions": "لا تدخّل مسجّل لهذا التلميذ.",
+    "act": "تدخّل"
   }
 }

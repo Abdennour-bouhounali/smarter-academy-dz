@@ -23,9 +23,9 @@ class ClassroomMembershipCapacityTest extends TestCase
         $classroom = Classroom::factory()->create();
 
         foreach ([1, 2] as $_) {
-            $this->withToken($this->tokenOf($this->student()))->postJson('/api/v1/student/classrooms/join', ['code' => $classroom->join_code])->assertCreated();
+            $this->withToken($this->tokenOf($this->student()))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $classroom->join_code])->assertCreated();
         }
-        $this->withToken($this->tokenOf($this->student()))->postJson('/api/v1/student/classrooms/join', ['code' => $classroom->join_code])
+        $this->withToken($this->tokenOf($this->student()))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $classroom->join_code])
             ->assertStatus(422)->assertJsonPath('reason', 'class_full');
     }
 
@@ -39,14 +39,14 @@ class ClassroomMembershipCapacityTest extends TestCase
         $s1 = $this->student();
         $s2 = $this->student();
         $s3 = $this->student();
-        $this->withToken($this->tokenOf($s1))->postJson('/api/v1/student/classrooms/join', ['code' => $a->join_code])->assertCreated();
-        $this->withToken($this->tokenOf($s2))->postJson('/api/v1/student/classrooms/join', ['code' => $a->join_code])->assertCreated();
-        $this->withToken($this->tokenOf($s3))->postJson('/api/v1/student/classrooms/join', ['code' => $b->join_code])->assertCreated();
+        $this->withToken($this->tokenOf($s1))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $a->join_code])->assertCreated();
+        $this->withToken($this->tokenOf($s2))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $a->join_code])->assertCreated();
+        $this->withToken($this->tokenOf($s3))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $b->join_code])->assertCreated();
 
         // Un même élève dans deux classes n'occupe qu'un siège.
-        $this->withToken($this->tokenOf($s1))->postJson('/api/v1/student/classrooms/join', ['code' => $b->join_code])->assertCreated();
+        $this->withToken($this->tokenOf($s1))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $b->join_code])->assertCreated();
 
-        $this->withToken($this->tokenOf($this->student()))->postJson('/api/v1/student/classrooms/join', ['code' => $b->join_code])
+        $this->withToken($this->tokenOf($this->student()))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $b->join_code])
             ->assertStatus(422)->assertJsonPath('reason', 'seats_exhausted');
 
         $this->withToken($this->tokenOf($teacher))->getJson('/api/v1/teacher/entitlements')
@@ -54,7 +54,7 @@ class ClassroomMembershipCapacityTest extends TestCase
 
         // L'enseignant retire s3 de B : un siège se libère.
         $this->withToken($this->tokenOf($teacher))->deleteJson("/api/v1/teacher/classrooms/{$b->id}/students/{$s3->id}")->assertOk();
-        $this->withToken($this->tokenOf($this->student()))->postJson('/api/v1/student/classrooms/join', ['code' => $b->join_code])->assertCreated();
+        $this->withToken($this->tokenOf($this->student()))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $b->join_code])->assertCreated();
         $this->assertDatabaseHas('classroom_memberships', ['student_id' => $s3->id, 'status' => 'removed', 'removed_by' => $teacher->id]);
     }
 
@@ -63,7 +63,7 @@ class ClassroomMembershipCapacityTest extends TestCase
         $this->defaultTeacherPlan();
         $classroom = Classroom::factory()->create();
         $student = $this->student();
-        $this->withToken($this->tokenOf($student))->postJson('/api/v1/student/classrooms/join', ['code' => $classroom->join_code])->assertCreated();
+        $this->withToken($this->tokenOf($student))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $classroom->join_code])->assertCreated();
 
         $this->withToken($this->tokenOf($this->teacher()))->deleteJson("/api/v1/teacher/classrooms/{$classroom->id}/students/{$student->id}")->assertStatus(403);
         $this->assertDatabaseHas('classroom_memberships', ['student_id' => $student->id, 'status' => 'active']);

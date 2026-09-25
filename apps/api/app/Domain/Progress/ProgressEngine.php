@@ -11,6 +11,7 @@ use App\Domain\Progress\Replay\ReplayService;
 use App\Models\AssessmentItem;
 use App\Models\LearningEvidence;
 use App\Models\LearningPoint;
+use App\Models\LearningPointStateTransition;
 use App\Models\Lesson;
 use App\Models\StudentLearningPointProgress;
 use App\Models\User;
@@ -143,7 +144,7 @@ class ProgressEngine
         }
 
         $evidence = DB::transaction(function () use (
-            $user, $lesson, $payload, $points, $type, $roles, $outcome, $identity, $item,
+            $user, $lesson, $payload, $points, $type, $roles, $outcome, $identity,
             $level, $difficulty, $templateKey, $evaluatedBy, $submittedAt, $facts, $classification,
         ) {
             $evidence = LearningEvidence::create([
@@ -196,7 +197,7 @@ class ProgressEngine
                     priorSuccessOnTemplate: $facts->successOnTemplate,
                     submittedAt: $submittedAt->toIso8601String(),
                 );
-                $this->advance($user, $point, $event);
+                $this->advance($user, $point, $event, $evidence->id);
             }
 
             return $evidence;
@@ -212,27 +213,36 @@ class ProgressEngine
      * d'abord REJOUÉE intégralement dans la version courante (la preuve qui
      * vient d'être insérée comprise) : l'état reste, à tout instant, la
      * fonction de la preuve et de la version qu'il déclare.
+     *
+     * Chaque changement laisse sa ligne d'histoire (TransitionRecorder), dans
+     * la même transaction que la preuve : l'état courant et son histoire ne
+     * peuvent pas diverger.
      */
-    private function advance(User $user, LearningPoint $point, EvidenceEvent $event): void
+    private function advance(User $user, LearningPoint $point, EvidenceEvent $event, int $evidenceId): void
     {
         $engine = $this->engines->current();
         $progress = StudentLearningPointProgress::firstOrNew([
             'user_id' => $user->id,
             'learning_point_id' => $point->id,
         ]);
+        $before = $progress->exists ? MasteryState::fromRow($progress) : null;
 
         if ($progress->exists && (int) $progress->engine_version !== $engine->version()) {
             $next = $this->replay->replay($user->id, $point->id, $engine);
             $progress->fill($next->toColumns() + ['engine_version' => $engine->version(), 'recomputed_at' => now()])->save();
+            TransitionRecorder::record($user->id, $point->id, $before, $next, $engine->version(),
+                LearningPointStateTransition::ORIGIN_REPLAY, $event->submittedAt, $evidenceId);
 
             return;
         }
 
-        $state = $progress->exists ? MasteryState::fromRow($progress) : $engine->initialState();
+        $state = $before ?? $engine->initialState();
         $context = new EngineContext($this->items->availableItemsForLearningPoint($point->id));
-        $next = $engine->apply($state, $event, $context);
+        $next = $engine->apply($state->copy(), $event, $context);
 
         $progress->fill($next->toColumns() + ['engine_version' => $engine->version()])->save();
+        TransitionRecorder::record($user->id, $point->id, $before, $next, $engine->version(),
+            LearningPointStateTransition::ORIGIN_LIVE, $event->submittedAt, $evidenceId);
     }
 
     // ── Résolution ───────────────────────────────────────────────────────────

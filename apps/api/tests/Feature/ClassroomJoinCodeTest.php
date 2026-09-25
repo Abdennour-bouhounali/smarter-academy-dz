@@ -26,7 +26,7 @@ class ClassroomJoinCodeTest extends TestCase
         $student = $this->student();
         $token = $this->tokenOf($student);
 
-        $this->withToken($token)->postJson('/api/v1/student/classrooms/join', ['code' => strtolower($classroom->join_code)])
+        $this->withToken($token)->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => strtolower($classroom->join_code)])
             ->assertCreated()
             ->assertJsonPath('studyContext.mode', 'classroom')
             ->assertJsonPath('studyContext.primary.id', $classroom->id)
@@ -36,7 +36,7 @@ class ClassroomJoinCodeTest extends TestCase
             ->assertJsonPath('studyContext.mode', 'independent');
         $this->assertDatabaseHas('classroom_memberships', ['classroom_id' => $classroom->id, 'student_id' => $student->id, 'status' => 'left']);
 
-        $this->withToken($token)->postJson('/api/v1/student/classrooms/join', ['code' => $classroom->join_code])->assertCreated();
+        $this->withToken($token)->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $classroom->join_code])->assertCreated();
         $this->assertSame(1, ClassroomMembership::where('student_id', $student->id)->count());
         $this->assertSame('active', ClassroomMembership::where('student_id', $student->id)->first()->status);
     }
@@ -47,24 +47,24 @@ class ClassroomJoinCodeTest extends TestCase
         $student = $this->student();
         $token = $this->tokenOf($student);
 
-        $this->withToken($token)->postJson('/api/v1/student/classrooms/join', ['code' => 'ZZZZZZ'])->assertStatus(422)->assertJsonPath('reason', 'invalid');
-        $this->withToken($token)->postJson('/api/v1/student/classrooms/join', [])->assertStatus(422)->assertJsonPath('reason', 'invalid');
+        $this->withToken($token)->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => 'ZZZZZZ'])->assertStatus(422)->assertJsonPath('reason', 'invalid');
+        $this->withToken($token)->postJson('/api/v1/student/classrooms/join', ['consent' => true])->assertStatus(422)->assertJsonPath('reason', 'invalid');
 
         $classroom->update(['join_code_enabled' => false]);
-        $this->withToken($token)->postJson('/api/v1/student/classrooms/join', ['code' => $classroom->join_code])->assertStatus(422)->assertJsonPath('reason', 'invalid');
+        $this->withToken($token)->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $classroom->join_code])->assertStatus(422)->assertJsonPath('reason', 'invalid');
 
         $classroom->update(['join_code_enabled' => true, 'status' => Classroom::STATUS_ARCHIVED]);
-        $this->withToken($token)->postJson('/api/v1/student/classrooms/join', ['code' => $classroom->join_code])->assertStatus(422)->assertJsonPath('reason', 'class_inactive');
+        $this->withToken($token)->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $classroom->join_code])->assertStatus(422)->assertJsonPath('reason', 'class_inactive');
 
         $classroom->update(['status' => Classroom::STATUS_ACTIVE]);
-        $this->withToken($token)->postJson('/api/v1/student/classrooms/join', ['code' => $classroom->join_code])->assertCreated();
-        $this->withToken($token)->postJson('/api/v1/student/classrooms/join', ['code' => $classroom->join_code])->assertStatus(422)->assertJsonPath('reason', 'already_member');
+        $this->withToken($token)->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $classroom->join_code])->assertCreated();
+        $this->withToken($token)->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $classroom->join_code])->assertStatus(422)->assertJsonPath('reason', 'already_member');
     }
 
     public function test_un_enseignant_ne_rejoint_pas_une_classe(): void
     {
         $classroom = $this->classroom();
-        $this->withToken($this->tokenOf($this->teacher()))->postJson('/api/v1/student/classrooms/join', ['code' => $classroom->join_code])
+        $this->withToken($this->tokenOf($this->teacher()))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $classroom->join_code])
             ->assertStatus(422)->assertJsonPath('reason', 'not_a_student');
     }
 
@@ -74,7 +74,7 @@ class ClassroomJoinCodeTest extends TestCase
         $old = $classroom->join_code;
         $this->withToken($this->tokenOf($classroom->teacher))->postJson("/api/v1/teacher/classrooms/{$classroom->id}/join-code/rotate")->assertOk();
 
-        $this->withToken($this->tokenOf($this->student()))->postJson('/api/v1/student/classrooms/join', ['code' => $old])
+        $this->withToken($this->tokenOf($this->student()))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $old])
             ->assertStatus(422)->assertJsonPath('reason', 'invalid');
     }
 

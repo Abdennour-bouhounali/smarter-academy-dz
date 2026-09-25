@@ -38,9 +38,12 @@ Le simulateur **n'écrit que ce que l'application écrirait** :
 - chaque réponse produit une preuve (`learning_evidence`) reliée à ses points
   de savoir avec leur rôle (`primary` / `secondary`).
 
-**La maîtrise n'est jamais décrétée.** Elle est **rejouée preuve après
-preuve** par `App\Domain\Progress\Support\MasteryModel` — le modèle de
-production, importé, jamais recopié ni approximé. C'est la propriété
+**La maîtrise n'est jamais décrétée.** Chaque preuve passe par
+`App\Domain\Progress\ProgressEngine::recordEvidence` — la porte de
+production, avec le moteur de la version courante (Mastery V2), jamais
+recopiée ni approximée ; datée dans le passé (`submittedAt`), elle laisse
+aussi l'HISTOIRE de l'état (`learning_point_state_transitions`, lignes
+`live` datées de la preuve). C'est la propriété
 structurante de ce jeu de données : un élève qui échoue trois fois sur un
 point ne peut pas en ressortir « maîtrisé », parce que l'arithmétique du
 modèle l'interdit. Les statuts `mastered` / `reinforce` / `gap` qu'affiche la
@@ -110,6 +113,28 @@ La visibilité des leçons diffère d'une classe à l'autre : chaque classe est
 arrivée à un point différent de l'unité, et les leçons suivantes sont
 masquées. Aucune classe n'a tout masqué.
 
+Les adhésions passent par le service avec le consentement (`consented:
+true`) : aucun élève de démonstration n'a de confirmation en attente.
+
+### Interventions (groupe A de `teacher01`)
+
+Après la simulation, `DemoDataSeeder::interventions()` rejoue la boucle
+DÉTECTER → INTERVENIR → MESURER sur la preuve simulée, par le service de
+production :
+
+1. une **proposition d'exercices** datée d'il y a 9 jours, sur le point où
+   des élèves étaient ALORS en ثغرة et ont progressé depuis — « ما حدث بعده »
+   montre un changement réel ;
+2. un **renforcement en classe** daté d'il y a 3 jours, sur la difficulté
+   partagée que « تستحقّ نظرة » signale aujourd'hui (peu ou pas de preuve
+   nouvelle : la mesure le dit) ;
+3. une **observation** privée sur un élève sans activité récente.
+
+Une intervention datée dans le passé a sa photographie de départ relue dans
+l'histoire des états à cette date — ce que l'enseignant aurait vu ce jour-là.
+L'élève visé par la proposition la voit dans «قسمي». QA navigateur :
+`apps/web/e2e/teacher-intelligence.mjs`.
+
 ## Régénérer
 
 ```bash
@@ -131,3 +156,6 @@ progression). La commande est sûre à relancer autant de fois qu'on veut.
   activité récente, régularité — se lit dans les dates réelles des séances.
 - Il ne touche **ni les grades, ni les chapitres, ni les leçons, ni les
   exercices** : le contenu est une donnée d'entrée, jamais une sortie.
+- Ses `created_at` ne sont pas antidatés (ceux des preuves et des
+  progressions) : les écrans et signaux de l'enseignant lisent `submitted_at`
+  / `occurred_at`, jamais `created_at`.

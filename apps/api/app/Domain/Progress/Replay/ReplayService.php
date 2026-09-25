@@ -11,10 +11,15 @@ use App\Domain\Progress\Engine\MasteryState;
 use App\Domain\Progress\EvidenceClassifier;
 use App\Domain\Progress\Outcome;
 use App\Domain\Progress\PriorFacts;
+use App\Domain\Progress\TransitionRecorder;
 use App\Models\LearningEvidence;
+use App\Models\LearningPointStateTransition;
 use App\Models\Lesson;
 use App\Models\StudentLearningPointProgress;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\LazyCollection;
 
 /**
  * Rejoue la preuve immuable et reconstruit l'état canonique.
@@ -36,8 +41,17 @@ class ReplayService
         private AssessmentItemRepository $items,
     ) {}
 
-    /** L'état reconstruit d'un couple, sous une version donnée (courante par défaut). */
-    public function replay(int $userId, int $learningPointId, ?MasteryEngine $engine = null): MasteryState
+    /**
+     * L'état reconstruit d'un couple, sous une version donnée (courante par défaut).
+     *
+     * `$onStep`, s'il est fourni, reçoit chaque pas : (ligne de preuve, état
+     * avant, état après). C'est ainsi que la reconstruction de l'histoire
+     * (smarter:mastery:transitions-backfill) réutilise CE rejeu au lieu d'en
+     * écrire un second.
+     *
+     * @param  (callable(object, MasteryState, MasteryState): void)|null  $onStep
+     */
+    public function replay(int $userId, int $learningPointId, ?MasteryEngine $engine = null, ?callable $onStep = null): MasteryState
     {
         $engine ??= $this->engines->current();
         $context = new EngineContext($this->items->availableItemsForLearningPoint($learningPointId));
@@ -82,10 +96,14 @@ class ReplayService
                 priorNonInertOnItem: $facts->nonInertOnItem > 0,
                 priorSuccessOnItem: $facts->successOnItem,
                 priorSuccessOnTemplate: $facts->successOnTemplate,
-                submittedAt: $row->submitted_at !== null ? \Illuminate\Support\Carbon::parse($row->submitted_at)->toIso8601String() : null,
+                submittedAt: $row->submitted_at !== null ? Carbon::parse($row->submitted_at)->toIso8601String() : null,
             );
 
+            $previous = $state;
             $state = $engine->apply($state, $event, $context);
+            if ($onStep !== null) {
+                $onStep($row, $previous, $state);
+            }
 
             // Les faits avancent APRÈS la preuve : la suivante les verra.
             $item['rows']++;
@@ -124,8 +142,13 @@ class ReplayService
             || $before['engineVersion'] !== $after['engineVersion'];
 
         if (! $dryRun) {
+            $previous = $row ? MasteryState::fromRow($row) : null;
             $row ??= new StudentLearningPointProgress(['user_id' => $userId, 'learning_point_id' => $learningPointId]);
             $row->fill($next->toColumns() + ['engine_version' => $engine->version(), 'recomputed_at' => now()])->save();
+            // Un rejeu qui change l'état est une ligne d'histoire « recalcul »,
+            // datée d'aujourd'hui : l'élève n'a rien appris à cet instant.
+            TransitionRecorder::record($userId, $learningPointId, $previous, $next, $engine->version(),
+                LearningPointStateTransition::ORIGIN_REPLAY, now());
         }
 
         return ['before' => $before, 'after' => $after, 'changed' => $changed];
@@ -163,9 +186,9 @@ class ReplayService
      * Les couples (élève, point) qui ont de la preuve, dans un périmètre.
      *
      * @param  array{user?: int, learningPoint?: int, lesson?: int}  $scope
-     * @return \Illuminate\Support\LazyCollection<int, object{user_id: int, learning_point_id: int}>
+     * @return LazyCollection<int, object{user_id: int, learning_point_id: int}>
      */
-    public function pairs(array $scope = []): \Illuminate\Support\LazyCollection
+    public function pairs(array $scope = []): LazyCollection
     {
         return DB::table('learning_evidence as e')
             ->join('learning_evidence_learning_point as p', 'p.learning_evidence_id', '=', 'e.id')
@@ -196,9 +219,9 @@ class ReplayService
      * le code de la leçon (pour reconstituer l'identité des lignes non
      * complétées).
      *
-     * @return \Illuminate\Support\Collection<int, object>
+     * @return Collection<int, object>
      */
-    private function orderedEvidence(int $userId, int $learningPointId): \Illuminate\Support\Collection
+    private function orderedEvidence(int $userId, int $learningPointId): Collection
     {
         return LearningEvidence::query()
             ->join('learning_evidence_learning_point as p', 'p.learning_evidence_id', '=', 'learning_evidence.id')

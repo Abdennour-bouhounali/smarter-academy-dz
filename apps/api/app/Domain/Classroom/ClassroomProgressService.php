@@ -2,6 +2,7 @@
 
 namespace App\Domain\Classroom;
 
+use App\Domain\Classroom\Insights\ClassroomFacts;
 use App\Domain\Plans\EntitlementKeys;
 use App\Domain\Plans\PlanEntitlementResolver;
 use App\Domain\Progress\StudentDossier;
@@ -22,9 +23,14 @@ use Illuminate\Support\Facades\DB;
  * La progression VUE PAR L'ENSEIGNANT — une agrégation, jamais un stockage.
  *
  * Tout vient des tables d'apprentissage de l'élève (student_lesson_progress,
- * question_attempts ⋈ practice_sessions, users.last_activity_at), cadrées
- * sur les leçons EFFECTIVES de la classe : publiées ET non masquées. Rien
- * n'est recopié dans une table de classe ; retirer un élève ne détruit rien.
+ * question_attempts ⋈ practice_sessions, learning_evidence), cadrées sur les
+ * leçons EFFECTIVES de la classe : publiées ET non masquées. Rien n'est
+ * recopié dans une table de classe ; retirer un élève ne détruit rien.
+ *
+ * L'élève y est décrit par ClassroomAccess::identity — jamais son courriel.
+ * « Dernière activité » est celle du PÉRIMÈTRE de la classe
+ * (ClassroomFacts::lastActivity), pas users.last_activity_at, qui dirait à
+ * l'enseignant quand l'élève a travaillé ailleurs.
  *
  * Le cahier de l'élève (كرّاسي) n'apparaît nulle part ici.
  */
@@ -33,7 +39,22 @@ class ClassroomProgressService
     /** L'ordre « le plus fragile d'abord » des statuts de maîtrise. */
     private const STATUS_ORDER = ['gap' => 0, 'reinforce' => 1, 'unassessed' => 2, 'mastered' => 3];
 
+    /**
+     * Les leçons effectives, par classe, pour la durée d'UNE requête : la
+     * carte, les signaux, l'aperçu et les interventions les demandent chacun.
+     * Vidé à la frontière de requête (AppServiceProvider) et dès qu'un
+     * enseignant change la visibilité d'une leçon (ClassroomLessonService).
+     *
+     * @var array<int, int[]>
+     */
+    private array $lessonIds = [];
+
     public function __construct(private PlanEntitlementResolver $entitlements) {}
+
+    public function forget(): void
+    {
+        $this->lessonIds = [];
+    }
 
     /**
      * Le tableau de la classe : un résumé, et une ligne par élève.
@@ -71,6 +92,27 @@ class ClassroomProgressService
     }
 
     /**
+     * La liste des élèves telle que l'ENSEIGNANT la lit : les chiffres de
+     * progression seulement si son offre comprend « progression de la
+     * classe » ; sinon l'identité, la date d'arrivée et le mode d'entrée.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function rosterFor(Classroom $classroom): array
+    {
+        $teacher = $classroom->teacher;
+        if ($teacher !== null && $this->entitlements->allows($teacher, EntitlementKeys::PROGRESS_CLASS)) {
+            return $this->studentList($classroom);
+        }
+
+        return $this->members($classroom)->map(fn (ClassroomMembership $m) => ClassroomAccess::identity($m->student, (int) $m->student_id) + [
+            'grade' => $m->student?->grade,
+            'joinedAt' => optional($m->joined_at)->toIso8601String(),
+            'joinedVia' => $m->joined_via,
+        ])->values()->all();
+    }
+
+    /**
      * Le dossier d'UN élève de la classe, cadré sur les leçons effectives.
      *
      * @return array<string, mixed>
@@ -84,13 +126,9 @@ class ClassroomProgressService
         $membership = ClassroomMembership::where('classroom_id', $classroom->id)->where('student_id', $student->id)->first();
 
         return [
-            'student' => [
-                'id' => $student->id,
-                'firstName' => $student->first_name,
-                'lastName' => $student->last_name,
-                'email' => $student->email,
+            'student' => ClassroomAccess::identity($student) + [
                 'grade' => $student->grade,
-                'lastActivityAt' => optional($student->last_activity_at)->toIso8601String(),
+                'lastActivityAt' => ClassroomFacts::lastActivity([$student->id], $lessonIds)[$student->id] ?? null,
                 'joinedAt' => optional($membership?->joined_at)->toIso8601String(),
                 'membershipStatus' => $membership?->status,
             ],
@@ -154,6 +192,12 @@ class ClassroomProgressService
      */
     public function effectiveLessonIds(Classroom $classroom): array
     {
+        return $this->lessonIds[$classroom->id] ??= $this->computeEffectiveLessonIds($classroom);
+    }
+
+    /** @return int[] */
+    private function computeEffectiveLessonIds(Classroom $classroom): array
+    {
         $gradeId = Grade::where('code', $classroom->grade)->value('id');
         if ($gradeId === null) {
             return [];
@@ -175,7 +219,7 @@ class ClassroomProgressService
     {
         return ClassroomMembership::where('classroom_id', $classroom->id)
             ->active()
-            ->with('student:id,first_name,last_name,email,grade,last_activity_at')
+            ->with('student:'.ClassroomAccess::IDENTITY_COLUMNS.',grade')
             ->orderBy('joined_at')
             ->get();
     }
@@ -195,6 +239,7 @@ class ClassroomProgressService
 
         $progressByStudent = collect();
         $answersByStudent = collect();
+        $lastActivity = $studentIds === [] ? [] : ClassroomFacts::lastActivity($studentIds, $lessonIds);
 
         if ($studentIds !== [] && $lessonIds !== []) {
             $progressByStudent = StudentLessonProgress::whereIn('user_id', $studentIds)
@@ -218,22 +263,18 @@ class ClassroomProgressService
                 ->keyBy('user_id');
         }
 
-        return $members->map(function (ClassroomMembership $m) use ($progressByStudent, $answersByStudent, $total) {
+        return $members->map(function (ClassroomMembership $m) use ($progressByStudent, $answersByStudent, $total, $lastActivity) {
             $student = $m->student;
             $progress = $progressByStudent->get($m->student_id, collect());
             $completed = $progress->where('status', StudentLessonProgress::STATUS_COMPLETED)->count();
             $answers = OutcomeStats::fromRow($answersByStudent->get($m->student_id));
             $answered = $answers['answered'];
 
-            return [
-                'id' => $m->student_id,
-                'firstName' => $student?->first_name,
-                'lastName' => $student?->last_name,
-                'email' => $student?->email,
+            return ClassroomAccess::identity($student, (int) $m->student_id) + [
                 'grade' => $student?->grade,
                 'joinedAt' => optional($m->joined_at)->toIso8601String(),
                 'joinedVia' => $m->joined_via,
-                'lastActivityAt' => optional($student?->last_activity_at)->toIso8601String(),
+                'lastActivityAt' => $lastActivity[$m->student_id] ?? null,
                 'lessonsStarted' => $progress->count(),
                 'lessonsCompleted' => $completed,
                 'modulesCompleted' => $progress->sum(fn ($row) => count($row->completed_modules ?? [])),

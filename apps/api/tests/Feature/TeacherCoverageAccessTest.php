@@ -46,7 +46,7 @@ class TeacherCoverageAccessTest extends TestCase
         app(SubscriptionActivationService::class)->activate($this->admin(), $teacher, $pro);
         $classroom = Classroom::factory()->ownedBy($teacher)->create();
         $student = $this->student();
-        $this->withToken($this->tokenOf($student))->postJson('/api/v1/student/classrooms/join', ['code' => $classroom->join_code])->assertCreated();
+        $this->withToken($this->tokenOf($student))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $classroom->join_code])->assertCreated();
 
         return ['teacher' => $teacher, 'student' => $student, 'classroom' => $classroom, 'lesson' => $lesson];
     }
@@ -108,7 +108,7 @@ class TeacherCoverageAccessTest extends TestCase
         $this->grade4am(1);
         $classroom = Classroom::factory()->create();
         $student = $this->student();
-        $this->withToken($this->tokenOf($student))->postJson('/api/v1/student/classrooms/join', ['code' => $classroom->join_code])->assertCreated();
+        $this->withToken($this->tokenOf($student))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $classroom->join_code])->assertCreated();
 
         $this->assertFalse($this->entitlements()->satisfies($student, AccessTier::PREMIUM));
     }

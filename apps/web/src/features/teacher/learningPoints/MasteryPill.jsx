@@ -47,6 +47,7 @@ export default function MasteryPill({ status, className = '' }) {
 /** Le motif n'est affiché que s'il dit quelque chose : `threshold` et `null` sont muets. */
 export function ReasonChip({ reason, className = '' }) {
   const label = useCodeLabel();
+  if (!reason || reason === 'threshold') return null;
   const text = label('students.masteryReason', reason);
   if (!text) return null;
   return <span className={`inline-flex shrink-0 items-center rounded-full border border-dashed border-slate-300 px-2 py-0.5 text-[10px] text-slate-600 ${className}`} data-mastery-reason={reason}>{text}</span>;

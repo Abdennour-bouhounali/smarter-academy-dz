@@ -7,6 +7,7 @@ use App\Domain\Billing\PaymentProviderRegistry;
 use App\Domain\Billing\SandboxPaymentProvider;
 use App\Domain\Billing\Stripe\StripeEventTranslator;
 use App\Domain\Billing\Stripe\StripePaymentProvider;
+use App\Domain\Classroom\ClassroomProgressService;
 use App\Domain\Classroom\StudyContextService;
 use App\Domain\Plans\PlanEntitlementResolver;
 use App\Models\Classroom;
@@ -50,6 +51,8 @@ class AppServiceProvider extends ServiceProvider
          */
         $this->app->singleton(PlanEntitlementResolver::class);
         $this->app->singleton(StudyContextService::class);
+        // Les leçons effectives d'une classe, lues par chaque vue enseignant.
+        $this->app->singleton(ClassroomProgressService::class);
 
         /**
          * … mais RECOMMENCÉ à chaque requête.
@@ -73,6 +76,7 @@ class AppServiceProvider extends ServiceProvider
                     $this->app->make(EntitlementService::class)->forget();
                     $this->app->make(PlanEntitlementResolver::class)->forget();
                     $this->app->make(StudyContextService::class)->forget();
+                    $this->app->make(ClassroomProgressService::class)->forget();
                 },
             );
         });

@@ -2,17 +2,20 @@
 
 namespace Database\Seeders;
 
-use App\Domain\Admin\ActivityLogger;
+use App\Domain\Classroom\ClassroomInsightService;
+use App\Domain\Classroom\ClassroomInterventionService;
 use App\Domain\Classroom\ClassroomLessonService;
 use App\Domain\Classroom\ClassroomMembershipService;
 use App\Domain\Classroom\ClassroomService;
 use App\Domain\Plans\SubscriptionActivationService;
 use App\Models\Classroom;
+use App\Models\ClassroomIntervention;
 use App\Models\ClassroomLesson;
 use App\Models\ClassroomMembership;
 use App\Models\ExerciseAttempt;
 use App\Models\HintEvent;
 use App\Models\LearningEvidence;
+use App\Models\LearningPointStateTransition;
 use App\Models\LessonFinalTestAttempt;
 use App\Models\NotebookNote;
 use App\Models\Plan;
@@ -70,6 +73,9 @@ class DemoDataSeeder extends Seeder
 
     private DemoStudentSimulator $simulator;
 
+    /** @var array<string, Classroom> les classes créées, par lettre de groupe */
+    private array $groups = [];
+
     private array $totals = [];
 
     public function run(): void
@@ -89,7 +95,7 @@ class DemoDataSeeder extends Seeder
             .collect($this->content->exercisesByLesson)->flatten(1)->flatten(1)->count().' exercices.'
         );
 
-        $this->simulator = new DemoStudentSimulator($this->content, new DemoNotes());
+        $this->simulator = new DemoStudentSimulator($this->content, new DemoNotes);
 
         $this->purge();
 
@@ -99,6 +105,7 @@ class DemoDataSeeder extends Seeder
         $this->classes($admin, $teachers, $students);
         $this->studentAccess($admin, $students);
         $this->simulate($students);
+        $this->interventions($teachers);
 
         $this->report();
     }
@@ -162,6 +169,7 @@ class DemoDataSeeder extends Seeder
                 ->delete();
             LearningEvidence::whereIn('user_id', $ids)->delete();
 
+            LearningPointStateTransition::whereIn('user_id', $ids)->delete();
             LessonFinalTestAttempt::whereIn('user_id', $ids)->delete();
             StudentLearningPointProgress::whereIn('user_id', $ids)->delete();
             StudentLessonProgress::whereIn('user_id', $ids)->delete();
@@ -170,6 +178,7 @@ class DemoDataSeeder extends Seeder
             // Les classes des enseignants fictifs, et les adhésions fictives
             // partout ailleurs.
             $classes = Classroom::whereIn('teacher_id', $ids)->pluck('id');
+            ClassroomIntervention::whereIn('classroom_id', $classes)->delete();
             ClassroomMembership::whereIn('classroom_id', $classes)->orWhereIn('student_id', $ids)->delete();
             ClassroomLesson::whereIn('classroom_id', $classes)->delete();
             DB::table('classroom_invitations')->whereIn('classroom_id', $classes)->delete();
@@ -423,15 +432,127 @@ class DemoDataSeeder extends Seeder
         $this->hideFrom($lessons, $teachers['second'], $groupC, $ordered, 4);
         $this->hideFrom($lessons, $teachers['free'], $groupD, $ordered, 3);
 
+        $this->groups = ['A' => $groupA, 'B' => $groupB, 'C' => $groupC, 'D' => $groupD];
         $this->totals['classes'] = $created;
         $this->totals['memberships'] = $joined;
+    }
+
+    /**
+     * Les gestes de l'enseignant principal dans le groupe A — la boucle
+     * DÉTECTER → INTERVENIR → MESURER, sur la preuve simulée.
+     *
+     *   1. une intervention d'il y a neuf jours sur le point où des élèves
+     *      étaient alors en ثغرة et ont depuis progressé : « ما حدث بعده »
+     *      montre un changement RÉEL (la preuve postérieure du simulateur) ;
+     *   2. un renforcement en classe, d'il y a trois jours, sur la
+     *      difficulté partagée que « تستحقّ نظرة » signale aujourd'hui ;
+     *   3. une observation privée, sans point, sur un élève silencieux.
+     *
+     * Chaque intervention passe par le service (mêmes contrôles qu'en
+     * production), puis est DATÉE dans le passé comme le simulateur date sa
+     * preuve : sa photographie de départ est relue dans l'histoire des états
+     * (learning_point_state_transitions) à la date du geste.
+     */
+    private function interventions(array $teachers): void
+    {
+        $classroom = $this->groups['A'] ?? null;
+        if ($classroom === null) {
+            return;
+        }
+        $teacher = $teachers['main'];
+        $service = app(ClassroomInterventionService::class);
+        $members = ClassroomMembership::where('classroom_id', $classroom->id)->active()->pluck('student_id')->all();
+        $created = 0;
+
+        // 1. Là où des élèves en ثغرة il y a neuf jours ont depuis progressé.
+        $then = now()->subDays(9);
+        $improvers = [];
+        foreach (DB::table('student_learning_point_progress')->whereIn('user_id', $members)->whereIn('status', ['reinforce', 'mastered'])->get(['user_id', 'learning_point_id']) as $row) {
+            if ($this->statusAt((int) $row->user_id, (int) $row->learning_point_id, $then) === 'gap') {
+                $improvers[(int) $row->learning_point_id][] = (int) $row->user_id;
+            }
+        }
+        uasort($improvers, fn ($a, $b) => count($b) <=> count($a));
+        $pointId = array_key_first($improvers);
+        if ($pointId !== null) {
+            $code = DB::table('learning_points')->where('id', $pointId)->value('code');
+            $iv = $service->create($teacher, $classroom, [
+                'kind' => 'recommend_practice',
+                'studentIds' => $improvers[$pointId],
+                'learningPointCode' => $code,
+                'note' => 'راجعنا القاعدة معًا في الحصّة، واقترحت عليهم تمارين المستوى الأوّل.',
+                'studentMessage' => 'تمرّن على هذه النقطة قبل الفرض.',
+                'sourceSignal' => 'repeated_difficulty',
+            ]);
+            $this->backdate($iv, $then);
+            $created++;
+        }
+
+        // 2. La difficulté partagée d'aujourd'hui.
+        $signals = collect(app(ClassroomInsightService::class)->attention($classroom)['signals']);
+        $shared = $signals->firstWhere('type', 'class_difficulty');
+        if ($shared !== null) {
+            $iv = $service->create($teacher, $classroom, [
+                'kind' => 'class_reinforcement',
+                'studentIds' => array_column($shared['students'], 'id'),
+                'learningPointCode' => $shared['learningPoint']['code'],
+                'note' => 'حصّة دعم مبرمجة يوم الخميس على هذه النقطة.',
+                'reviewAfter' => now()->addDays(7)->toDateString(),
+                'sourceSignal' => 'class_difficulty',
+            ]);
+            $this->backdate($iv, now()->subDays(3));
+            $created++;
+        }
+
+        // 3. Un élève silencieux : une observation, sans point.
+        $silent = $signals->firstWhere('type', 'no_recent_activity');
+        if ($silent !== null) {
+            $service->create($teacher, $classroom, [
+                'kind' => 'observation',
+                'studentIds' => [$silent['students'][0]['id']],
+                'note' => 'غائب عن المنصّة، لكنه يُنجز أعماله على الكرّاس الورقي. سأتحدّث مع وليّه.',
+            ]);
+            $created++;
+        }
+
+        $this->totals['interventions'] = $created;
+    }
+
+    /** Le statut d'un couple à une date, lu dans l'histoire des états. */
+    private function statusAt(int $userId, int $pointId, Carbon $at): ?string
+    {
+        return LearningPointStateTransition::where('user_id', $userId)->where('learning_point_id', $pointId)
+            ->where('occurred_at', '<=', $at)->orderByDesc('occurred_at')->orderByDesc('id')->value('status_after');
+    }
+
+    /** Date un geste dans le passé, et refait sa photographie de départ à cette date. */
+    private function backdate(ClassroomIntervention $iv, Carbon $at): void
+    {
+        $students = [];
+        foreach ($iv->students()->pluck('users.id') as $id) {
+            $t = LearningPointStateTransition::where('user_id', $id)->where('learning_point_id', $iv->learning_point_id)
+                ->where('occurred_at', '<=', $at)->orderByDesc('occurred_at')->orderByDesc('id')->first();
+            $students[(string) $id] = [
+                'status' => $t?->status_after ?? 'unassessed',
+                'reason' => $t?->reason_after,
+                'confidence' => $t?->confidence_after,
+                'attempts' => null,
+                'distinctItemsSuccess' => null,
+                'lastEvidenceAt' => $t?->occurred_at?->toIso8601String(),
+            ];
+        }
+        $iv->forceFill([
+            'opened_at' => $at,
+            'created_at' => $at,
+            'baseline' => ['takenAt' => $at->toIso8601String(), 'students' => $students],
+        ])->save();
     }
 
     /** Assoit un élève, en datant son adhésion. Renvoie 1 s'il est entré. */
     private function seat(ClassroomMembershipService $service, array $student, Classroom $classroom, int $daysAgo): int
     {
         try {
-            $membership = $service->join($student['user'], $classroom, ClassroomMembership::VIA_JOIN_CODE, null);
+            $membership = $service->join($student['user'], $classroom, ClassroomMembership::VIA_JOIN_CODE, null, consented: true);
         } catch (\Throwable $e) {
             // Une capacité épuisée est une information, pas un échec : on la
             // dit, et la démonstration continue.

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react';
 
@@ -9,6 +10,12 @@ import { X } from 'lucide-react';
  * Écrite ici parce que le projet n'en avait aucune — et une action
  * conséquente (désactiver un compte, archiver une leçon) doit se confirmer
  * dans quelque chose qui piège le focus, pas dans un `window.confirm`.
+ *
+ * Rendue dans `document.body` (portail) : un ancêtre avec `backdrop-filter`
+ * ou `transform` — une `glass-card`, par exemple — devient sinon le repère de
+ * `position: fixed`, et la boîte se centre dans la carte au lieu de l'écran,
+ * son fond gris ne couvrant que la carte. Sa hauteur est bornée à l'écran :
+ * l'en-tête et le pied restent visibles, seul le contenu défile.
  */
 export default function Modal({ open, onClose, title, children, footer, size = 'md', closeLabel }) {
   const panelRef = useRef(null);
@@ -38,9 +45,9 @@ export default function Modal({ open, onClose, title, children, footer, size = '
 
   if (!open) return null;
 
-  const width = { sm: 'max-w-md', md: 'max-w-lg', lg: 'max-w-3xl' }[size] ?? 'max-w-lg';
+  const width = { sm: 'max-w-md', md: 'max-w-lg', lg: 'max-w-3xl', xl: 'max-w-5xl' }[size] ?? 'max-w-lg';
 
-  return (
+  const dialog = (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4"
       onMouseDown={(event) => {
@@ -55,9 +62,9 @@ export default function Modal({ open, onClose, title, children, footer, size = '
         aria-modal="true"
         aria-label={title}
         tabIndex={-1}
-        className={`w-full ${width} rounded-2xl bg-white shadow-xl outline-none`}
+        className={`flex max-h-[calc(100dvh-2rem)] w-full ${width} flex-col rounded-2xl bg-white shadow-xl outline-none`}
       >
-        <div className="flex items-start justify-between gap-4 border-b border-slate-200 px-5 py-4">
+        <div className="flex shrink-0 items-start justify-between gap-4 border-b border-slate-200 px-5 py-4">
           <h2 className="font-space text-lg font-bold text-slate-900">{title}</h2>
           <button
             type="button"
@@ -69,12 +76,15 @@ export default function Modal({ open, onClose, title, children, footer, size = '
           </button>
         </div>
 
-        <div className="px-5 py-4 font-inter text-sm text-slate-700">{children}</div>
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-4 font-inter text-sm text-slate-700">{children}</div>
 
-        {footer && <div className="flex justify-end gap-2 border-t border-slate-200 px-5 py-3">{footer}</div>}
+        {footer && <div className="flex shrink-0 justify-end gap-2 border-t border-slate-200 px-5 py-3">{footer}</div>}
       </div>
     </div>
   );
+
+  // Hors navigateur (rendu serveur des tests), pas de portail possible.
+  return typeof document === 'undefined' ? dialog : createPortal(dialog, document.body);
 }
 
 /**

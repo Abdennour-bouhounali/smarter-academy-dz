@@ -131,3 +131,23 @@ describe('la carte de leçon lit le troisième axe', () => {
     expect(ctx).toMatch(/hiddenByClass: result\.hiddenByClass \?\? \[\]/);
   });
 });
+
+/**
+ * Le COURRIEL d'un élève n'entre dans aucun écran enseignant. Le serveur ne
+ * l'envoie plus (TeacherPrivacyContractTest) ; ce test empêche qu'un écran
+ * le réclame à nouveau — par exemple en repli d'un nom vide (`|| s.email`).
+ * Seules exceptions : l'adresse que l'enseignant TAPE pour inviter
+ * (InvitationsPanel) et son propre profil.
+ */
+describe('aucun écran enseignant ne lit le courriel d’un élève', () => {
+  const ALLOWED = [/InvitationsPanel\.jsx$/, /TeacherProfile\.jsx$/];
+  for (const rel of ['pages/teacher', 'features/teacher']) {
+    it(`${rel} ne lit pas .email d’un élève`, () => {
+      for (const file of walk(resolve(src, rel))) {
+        if (ALLOWED.some((re) => re.test(file))) continue;
+        const code = readFileSync(file, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+        expect(code, `${file} lit un courriel`).not.toMatch(/\.email\b/);
+      }
+    });
+  }
+});

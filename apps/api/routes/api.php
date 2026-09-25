@@ -8,10 +8,10 @@ use App\Http\Controllers\Admin\AdminActivityLogController;
 use App\Http\Controllers\Admin\AdminClassroomController;
 use App\Http\Controllers\Admin\AdminContentController;
 use App\Http\Controllers\Admin\AdminDashboardController;
-use App\Http\Controllers\Admin\AdminMasteryReplayController;
 use App\Http\Controllers\Admin\AdminEntitlementController;
 use App\Http\Controllers\Admin\AdminHealthController;
 use App\Http\Controllers\Admin\AdminManualSubscriptionController;
+use App\Http\Controllers\Admin\AdminMasteryReplayController;
 use App\Http\Controllers\Admin\AdminPlanController;
 use App\Http\Controllers\Admin\AdminProviderEventController;
 use App\Http\Controllers\Admin\AdminReportController;
@@ -31,7 +31,6 @@ use App\Http\Controllers\InvitationPreviewController;
 use App\Http\Controllers\LearningEvidenceController;
 use App\Http\Controllers\LearningPointExplanationController;
 use App\Http\Controllers\LearningProfileController;
-use App\Http\Controllers\RecommendationController;
 use App\Http\Controllers\LegalController;
 use App\Http\Controllers\LessonFinalTestAttemptController;
 use App\Http\Controllers\LessonProgressController;
@@ -42,14 +41,17 @@ use App\Http\Controllers\PracticeAnswerController;
 use App\Http\Controllers\PracticeNotebookController;
 use App\Http\Controllers\PracticeSessionController;
 use App\Http\Controllers\ProviderWebhookController;
+use App\Http\Controllers\RecommendationController;
 use App\Http\Controllers\StudentClassroomController;
 use App\Http\Controllers\StudentReportController;
 use App\Http\Controllers\Teacher\TeacherClassroomController;
+use App\Http\Controllers\Teacher\TeacherClassroomInsightController;
+use App\Http\Controllers\Teacher\TeacherClassroomInterventionController;
 use App\Http\Controllers\Teacher\TeacherClassroomInvitationController;
-use App\Http\Controllers\Teacher\TeacherClassroomLessonController;
 use App\Http\Controllers\Teacher\TeacherClassroomLearningPointController;
-use App\Http\Controllers\Teacher\TeacherClassroomProgressController;
+use App\Http\Controllers\Teacher\TeacherClassroomLessonController;
 use App\Http\Controllers\Teacher\TeacherClassroomNotebookController;
+use App\Http\Controllers\Teacher\TeacherClassroomProgressController;
 use App\Http\Controllers\Teacher\TeacherClassroomStudentController;
 use App\Http\Controllers\Teacher\TeacherDashboardController;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -312,6 +314,9 @@ Route::prefix('v1')->group(function () {
             Route::post('/student/classrooms/join', [StudentClassroomController::class, 'join'])
                 ->middleware('throttle:classroom-join');
             Route::post('/student/classrooms/{id}/leave', [StudentClassroomController::class, 'leave'])->whereNumber('id');
+            Route::post('/student/classrooms/{id}/consent', [StudentClassroomController::class, 'consent'])->whereNumber('id');
+            // Les suggestions de l'enseignant (interventions visibles) — jamais un verrou.
+            Route::get('/student/teacher-recommendations', [StudentClassroomController::class, 'recommendations']);
 
             // ── « Mon offre » — élève comme enseignant ───────────────────
             // AUCUN paiement en ligne : ces routes montrent les offres (prix
@@ -396,6 +401,19 @@ Route::prefix('v1')->group(function () {
             Route::get('/classrooms/{id}/learning-points/{code}', [TeacherClassroomLearningPointController::class, 'show'])->whereNumber('id');
             Route::get('/classrooms/{id}/students/{studentId}/learning-points/{code}/explanation', [TeacherClassroomLearningPointController::class, 'explanation'])
                 ->whereNumber('id')->whereNumber('studentId');
+
+            // DÉTECTER : « تستحقّ نظرة » et « ما الذي تغيّر؟ » — calculés à la
+            // lecture depuis l'état canonique, jamais stockés.
+            Route::get('/classrooms/{id}/attention', [TeacherClassroomInsightController::class, 'attention'])->whereNumber('id');
+
+            // INTERVENIR puis MESURER — le geste de l'enseignant et ce qui a suivi.
+            Route::get('/classrooms/{id}/interventions', [TeacherClassroomInterventionController::class, 'index'])->whereNumber('id');
+            Route::post('/classrooms/{id}/interventions', [TeacherClassroomInterventionController::class, 'store'])
+                ->whereNumber('id')->middleware('throttle:60,1');
+            Route::get('/classrooms/{id}/interventions/{interventionId}', [TeacherClassroomInterventionController::class, 'show'])
+                ->whereNumber('id')->whereNumber('interventionId');
+            Route::patch('/classrooms/{id}/interventions/{interventionId}', [TeacherClassroomInterventionController::class, 'update'])
+                ->whereNumber('id')->whereNumber('interventionId');
         });
 
     // Protected routes — admin only

@@ -25,13 +25,39 @@ export function fetchStudyContext(token) {
   return call('/student/study-context', { headers: auth(token) }, 'studyContext').then((d) => d.studyContext);
 }
 
-/** @param {{code?: string, token?: string}} by */
+/**
+ * Rejoindre = CONSENTIR au partage : le serveur refuse (422
+ * `consent_required`) tout corps sans `consent: true`. Le drapeau ne part
+ * que si l'appelant le passe explicitement — il doit venir d'un geste de
+ * l'élève (« أوافق وأنضمّ »), jamais d'un défaut du service.
+ *
+ * @param {{code?: string, token?: string, consent?: boolean}} by
+ */
 export function joinClassGroup(token, by) {
+  const body = by.token ? { token: by.token } : { code: by.code };
+  if (by.consent === true) body.consent = true;
   return call('/student/classrooms/join', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...auth(token) },
-    body: JSON.stringify(by),
+    body: JSON.stringify(body),
   }, 'classroomJoin');
+}
+
+/**
+ * Confirmer le texte de partage ACTUEL pour une adhésion déjà active
+ * (`consentRequired` : adhésion antérieure au texte, ou texte modifié).
+ */
+export function confirmClassConsent(token, classroomId) {
+  return call(`/student/classrooms/${encodeURIComponent(classroomId)}/consent`, {
+    method: 'POST',
+    headers: auth(token),
+  }, 'classroomJoin').then((d) => d.studyContext);
+}
+
+/** Les suggestions des enseignants de l'élève — jamais un verrou. */
+export function fetchTeacherRecommendations(token) {
+  return call('/student/teacher-recommendations', { headers: auth(token) }, 'studyContext')
+    .then((d) => (Array.isArray(d.recommendations) ? d.recommendations : []));
 }
 
 export function leaveClassGroup(token, classroomId) {

@@ -20,6 +20,8 @@ class ClassroomMembershipFactory extends Factory
             'status' => ClassroomMembership::STATUS_ACTIVE,
             'joined_at' => now()->subDay(),
             'joined_via' => ClassroomMembership::VIA_JOIN_CODE,
+            'consented_at' => now()->subDay(),
+            'consent_version' => (string) config('classroom.consent_version'),
         ];
     }
 
@@ -31,6 +33,12 @@ class ClassroomMembershipFactory extends Factory
     public function of(User $student): static
     {
         return $this->state(['student_id' => $student->id]);
+    }
+
+    /** Une adhésion antérieure au texte de partage. */
+    public function withoutConsent(): static
+    {
+        return $this->state(['consented_at' => null, 'consent_version' => null]);
     }
 
     public function left(): static

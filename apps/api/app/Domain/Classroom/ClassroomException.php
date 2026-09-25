@@ -37,6 +37,9 @@ class ClassroomException extends DomainException
 
     public const LESSON_OUT_OF_SCOPE = 'lesson_out_of_scope';
 
+    /** Rejoindre sans avoir accepté le texte de partage. */
+    public const CONSENT_REQUIRED = 'consent_required';
+
     public function __construct(public readonly string $reason, string $message)
     {
         parent::__construct($message);

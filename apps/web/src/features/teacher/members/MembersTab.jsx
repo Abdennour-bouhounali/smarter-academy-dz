@@ -10,6 +10,7 @@ import PathProgress from '../../progression/components/PathProgress';
 import { fetchClassStudents, removeClassStudent } from '../../../services/teacher/classGroupService';
 import { useTableLabels, formatDate, btnDanger } from '../../../pages/teacher/teacherUi';
 import InvitationsPanel from './InvitationsPanel';
+import { studentName } from '../insights/insights';
 
 /** Les élèves d'une classe : progression, dernière activité, retrait. */
 export default function MembersTab({ classGroup, entitlements, onChanged }) {
@@ -37,7 +38,7 @@ export default function MembersTab({ classGroup, entitlements, onChanged }) {
     }
   };
 
-  const fullName = (s) => [s.firstName, s.lastName].filter(Boolean).join(' ') || s.email;
+  const fullName = (s) => studentName(s, t('common.unnamedStudent'));
 
   const seats = entitlements?.students;
   const seatsFull = seats && seats.maximum != null && seats.current >= seats.maximum;

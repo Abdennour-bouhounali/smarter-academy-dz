@@ -78,7 +78,7 @@ student and admin.
 | Table | Key columns | Rules |
 |---|---|---|
 | `classrooms` | `teacher_id`, `name`, `grade` (same code as `users.grade`, e.g. `4am`), `academic_year`, `status` `active\|archived\|suspended`, `join_code` (unique), `join_code_enabled`, `archived_at` | grade must be allowed by `content.allowed_grades` and exist in `grades`; **classes are not a commercial unit** — a teacher creates as many as they want unless the technical limit `classrooms.max` is configured (null = unlimited) |
-| `classroom_memberships` | `classroom_id`, `student_id`, `status` `active\|left\|removed`, `joined_via` `join_code\|invitation`, `invitation_id`, `removed_by` | **unique `(classroom_id, student_id)`**: rejoining reactivates the row; only `role = student`; class must be `active` |
+| `classroom_memberships` | `classroom_id`, `student_id`, `status` `active\|left\|removed`, `joined_via` `join_code\|invitation`, `invitation_id`, `removed_by`, **`consented_at`, `consent_version`** | **unique `(classroom_id, student_id)`**: rejoining reactivates the row; only `role = student`; class must be `active`; **joining requires the explicit consent** (see « Consent and what the teacher may read ») |
 | `classroom_invitations` | `email`, `token_hash` (HMAC of the plain token, unique), `token_hint` (last 4), `status` `pending\|accepted\|revoked`, `expires_at` | `expired` is derived (`effectiveStatus()`), like `ActivationCode`; TTL from `config/classroom.php` (`CLASSROOM_INVITATION_TTL_DAYS`, 14) |
 | `classroom_lessons` | `classroom_id`, `lesson_id`, `status` `visible\|hidden`, `created_by`, `updated_by` | **absence of a row = visible**; unique `(classroom_id, lesson_id)` |
 
@@ -88,14 +88,18 @@ student and admin.
 |---|---|
 | `ClassroomService` | create (limit + allowed grade), update, archive, restore (re-checks the limit), suspend, rotate join code, list, show |
 | `JoinCode` | 6 characters, same unambiguous alphabet as activation codes, unique in the table |
-| `ClassroomMembershipService` | `joinByCode`, `acceptInvitation`, `remove`, `leave`; capacity checked **at join, under `DB::transaction` with `lockForUpdate` on the class AND on the teacher row** (so two joins into two different classes of one teacher serialise): the technical per-class limit, then the seat capacity through `TeacherCapacityService` |
+| `ClassroomMembershipService` | `joinByCode`, `acceptInvitation`, `remove`, `leave`, `confirmConsent`; every join takes `consented: true` or fails with `consent_required`; capacity checked **at join, under `DB::transaction` with `lockForUpdate` on the class AND on the teacher row** (so two joins into two different classes of one teacher serialise): the technical per-class limit, then the seat capacity through `TeacherCapacityService` |
 | `TeacherCapacityService` | the **seat capacity**: `seatLimit` (`students_total.max` resolved from the plan / purchased seats / override), `currentStudentCount` (**distinct** active students across the teacher's non-archived classes — a student in two classes is one seat), `remainingSeats`, `isSeated`, `canAddStudent` (an already-seated student never consumes a second seat), `assertCanSeat` → `seats_exhausted`, `summary` |
 | `ClassroomInvitationService` | create (limit `invitations.active.max`), revoke, preview (public), accept; `ClassroomInvitationNotification` (Arabic mail with the link `/rejoindre/{token}`) |
 | `InvitationToken` | plain token issued once, only the hash is stored |
 | `ClassroomLessonService` | the class's curriculum tree (ميادين → وحدات → دروس) with `publicationStatus`, `tier`, `classStatus`, `effectiveForStudents`; `setStatus`; `bulkSetStatus` (a unit = its lessons repeated) → `{applied, unchanged, failed}` in the `ContentService::bulk()` shape |
-| `ClassroomProgressService` | class summary + per-student rows, from existing progress data only |
+| `ClassroomProgressService` | **singleton** (per-request memo of the effective lessons, flushed on `RequestHandled` and on every visibility change); class summary + per-student rows + `rosterFor` (statistics only with `progress.class`), from existing progress data only |
+| `ClassroomAccess` | **the one teacher → student gate and the one teacher-facing identity** — see « Consent and what the teacher may read » |
+| `ClassroomLearningPointService` | the learning map (whole scope or one lesson), one LP × students with trajectory / items / prerequisites, one LP × one student (evidence) — § 4 |
+| `ClassroomInsightService` + `Insights/*` | DETECT: attention signals, recent changes, the student snapshot — § 4a |
+| `ClassroomInterventionService` | INTERVENE and MEASURE — § 4b |
 | `StudyContextService` | singleton, per-request memo: `{mode, classrooms[], primary, hiddenLessonCodes}` for a student |
-| `ClassroomException` | closed reasons: `limit_reached`, `grade_not_allowed`, `feature_unavailable`, `class_inactive`, `class_full`, `seats_exhausted`, `already_member`, `not_a_student`, `invalid`, `expired`, `revoked`, `not_member`, `lesson_out_of_scope` → 422 `{reason}`; the client renders Arabic from the reason, never the French message |
+| `ClassroomException` | closed reasons: `limit_reached`, `grade_not_allowed`, `feature_unavailable`, `class_inactive`, `class_full`, `seats_exhausted`, `already_member`, `not_a_student`, `invalid`, `expired`, `revoked`, `not_member`, `lesson_out_of_scope`, `consent_required` → 422 `{reason}`; the client renders Arabic from the reason, never the French message |
 
 Rate limiter `classroom-join` (per user and per IP, registered beside
 `activation-redeem`) guards `POST /student/classrooms/join`.
@@ -118,6 +122,78 @@ an over-limit state that blocks new seats only.
 A student who leaves or is removed keeps every progress row, attempt, mastery
 value and note. Only the membership row changes status. Archiving a class
 keeps its memberships and visibility rows. `ClassroomProgressTest` locks this.
+
+What leaving DOES change is what the teacher may read — next section.
+
+### Consent and what the teacher may read (2026-09-25)
+
+**The product rule.** A student who joins a قسم agrees that its teacher reads
+their learning *in the class's effective lessons*: progress, mastery per
+learning point, answers to exercises and final tests, the notebook notes taken
+in those lessons (not archived ones), and that the teacher may record
+interventions about them and suggest a lesson or practice. **The student's
+email is never shared.** Leaving the class ends the teacher's per-student
+reading.
+
+**Consent is a gesture, dated and versioned.**
+
+- `POST /student/classrooms/join` requires `consent: true`, otherwise 422
+  `consent_required` and nothing is created. The student-side button «أوافق
+  وأنضمّ» sits under the disclosure text (`student.json` → `qism.sharing.*`,
+  one component `SharingDisclosure` for the form, the invitation card and the
+  re-confirmation card).
+- An invitation link **never joins by itself**: `/rejoindre/:token` → «قسمي»
+  shows the class, the teacher and the same disclosure, with «أوافق وأنضمّ» /
+  «لا، شكرًا». (Until 2026-09-25 a logged-in student joined on opening the
+  link.)
+- `consented_at` + `consent_version` (`config('classroom.consent_version')`)
+  are stored on the membership. Changing the disclosure text means bumping the
+  version: `studyContext.classrooms[].consentRequired` becomes true and «قسمي»
+  asks once (`POST /student/classrooms/{id}/consent`, or leave). Memberships
+  older than the text have `consented_at = null` and are asked the same way.
+  The request is **non-blocking**: the teacher's reading of an existing member
+  is not suspended while the student has not answered (decision recorded in
+  `reports/TEACHER_PEDAGOGICAL_MONITORING_PLAN_2026-09-24.md`, D-2 variant).
+
+**The gate — `Domain\Classroom\ClassroomAccess`.** Every per-student teacher
+read goes through `ClassroomAccess::activeStudent($classroom, $studentId)`:
+an **active** membership in an **active** class, otherwise **404** (not 403:
+the teacher does not learn that the student was a member). This covers the
+dossier, the notebook (list and single note), the LP evidence, and the
+targets of an intervention (`activeStudentIds`, all-or-nothing). Aggregates
+(roster, map, signals) count active members only. A student who left, was
+removed, or whose class is archived is therefore no longer readable one by one
+— which is what the leave dialog promises. (Until 2026-09-25 the per-student
+endpoints accepted a membership in any status.)
+
+**The identity — `ClassroomAccess::identity()`**: `{id, firstName,
+lastName}`, loaded with `IDENTITY_COLUMNS` — never `email`. It is the only
+place a teacher-facing student shape is built; the frontend falls back on the
+Arabic placeholder «تلميذ بدون اسم» (`common.unnamedStudent`), never on an
+email. The admin detail of a class adds the email itself
+(`ClassroomAdminService::withEmails`) — the admin surface may show it. The
+public invitation preview no longer returns the invited address.
+
+**Scope.** Teacher reads stay bounded to the class's effective lessons
+(published, not hidden, of the class grade). History before joining in those
+lessons is visible (D-3); archived notebook notes are not
+(`NotebookService::searchForReader`/`countsForReader`/`findForReader`).
+`lastActivityAt` shown to a teacher is the last learning activity **inside
+that scope** (`ClassroomFacts::lastActivity`: latest evidence or lesson
+progress on an effective lesson), not `users.last_activity_at`.
+
+**Audit.** A teacher's reading of a student's notebook writes
+`admin_activity_logs` `teacher.notebook_read` (one line per teacher, student
+and day). Interventions write `classroom_intervention.created/updated`; a
+consent confirmation writes `classroom_member.consented`.
+
+`TeacherPrivacyContractTest` locks all of this: it walks every `/teacher` read
+of a seeded class and fails on any `email` key or student address at any
+depth, re-reads every per-student route after leave / removal / archive (404),
+tries every route as another teacher and as a student, and checks archived
+notes and the invitation preview. `ClassroomConsentTest` locks consent;
+`pages/teacherContract.test.js` fails if a teacher screen reads `.email` of a
+student.
 
 ## 3. Per-class lesson visibility — the third access axis
 
@@ -161,64 +237,207 @@ from `Admin\StudentService`, used by the admin *and* the teacher) read:
 
 ```text
 student_lesson_progress             completion per lesson
-student_learning_point_progress     mastery per learning point
+student_learning_point_progress     mastery per learning point (the canonical state)
+learning_point_state_transitions    how that state moved (history, § 4c)
+learning_evidence (+ pivot)         every judged answer, append-only
 question_attempts ⋈ exercise_attempts ⋈ practice_sessions   practice evidence
-users.last_activity_at              « actif ces N derniers jours » (CLASSROOM_ACTIVE_WINDOW_DAYS, 7)
 ```
 
-scoped to the class's grade and to the lessons **effective** for that class.
-There is no teacher-side progress table. A teacher reads the same numbers the
-student and the admin read (`PROGRESS_MODEL.md`, `LEARNING_ARCHITECTURE.md`).
+scoped to the class's grade, to the lessons **effective** for that class and
+to its **active** members (§ 2 « Consent and what the teacher may read »).
+There is no teacher-side progress table, and no second mastery: a teacher
+reads the same status the student and the admin read (`PROGRESS_MODEL.md`,
+`LEARNING_ARCHITECTURE.md`). « Active these last N days »
+(`CLASSROOM_ACTIVE_WINDOW_DAYS`, 7) is computed on activity **inside the
+class's scope**.
 
-### Class × Learning Point (Mastery V2, 2026-09-24)
+The teacher's space is organised around one loop — **DETECT → UNDERSTAND →
+INTERVENE → MEASURE** — and three entry points onto the SAME data: the class
+(« نظرة عامة »), the learning point (« نقاط التعلّم ») and the student (the
+dossier). None of them computes a status of its own.
+
+### Class × Learning Point — the learning map (Mastery V2)
 
 `Domain\Classroom\ClassroomLearningPointService` answers « what do the
-students of this قسم know about each Learning Point of this lesson? » with ONE
-`GROUP BY` over `student_learning_point_progress` joined to the active
-memberships — never a replay of evidence, never a copy:
+students of this قسم know about each Learning Point? » with ONE `GROUP BY`
+over `student_learning_point_progress` joined to the active memberships —
+never a replay of evidence, never a copy:
 
-- **per lesson** (`?lesson=` required, the lesson must be effective for the
-  class, else 422): for each LP `counts {mastered, reinforce, gap,
-  unassessed}` (unassessed = members without a row), `reasons
-  {insufficientEvidence, needsAssessment}` (why high confidence is not yet
-  `mastered`), and `staleMastered` (mastered, last success older than
-  `mastery.freshness.stale_days`);
-- **per LP**: every member with `status`, `statusReason`, `confidence`,
-  `distinctItemsSuccess`, `assessmentSuccessCount`, `maxDifficultySuccess`,
-  `freshness`, sorted gap → reinforce → unassessed → mastered, then by
-  confidence;
-- **per student × LP**: the same explanation the student sees
-  (`MasteryExplainer`), for a member of the class only (404 otherwise).
+- **the map** (`map()`): without `?lesson=` every non-retired LP of the
+  effective lessons, grouped by lesson (`{students, lessons[{code, title,
+  learningPoints[]}]}`); with `?lesson=` one lesson (`{lesson, students,
+  learningPoints[]}`, the historic shape; a lesson out of scope → 422). For
+  each LP `counts {mastered, reinforce, gap, unassessed}` (unassessed =
+  members without a row), `reasons {insufficientEvidence, needsAssessment}`,
+  `staleMastered`, and **`difficultyScope`** — `none | isolated | small_group
+  | class_wide` (`Insights\LearningTrend::difficultyScope`): how many students
+  are in ثغرة among the ASSESSED ones. A class shows a **distribution, never an
+  average**: a class « at 70 % » can hide five students in ثغرة, the counts
+  show them;
+- **one LP** (`learningPointDetail()`): every active member with `status`,
+  `statusReason`, `confidence`, counters, `freshness` and **`recentDirection`**
+  (the movement over the window, `LearningTrend::direction`), sorted gap →
+  reinforce → unassessed → mastered, then by confidence; plus
+  - `trajectory`: for each of the last 8 weeks (Algerian weeks, ending
+    Saturday, `Insights\InsightWindow::weekEnds`), how many members were in
+    each status — read from the history (§ 4c); a member whose state
+    predates the recorded history is counted `unknown`, never guessed;
+  - `items`: the assessment items of this LP the members answered, the most
+    failed first (`title`, `source` practice / final_test, `failures`,
+    `studentsFailing`) — the evidence behind « the class struggles here »;
+  - `prerequisites`: the LP's prerequisites (`learning_point_prerequisites`)
+    and how many members are in ثغرة on each;
+- **one LP × one student** (`studentEvidence()`, route `…/explanation`):
+  `explanation` (the same `MasteryExplainer` text the student sees),
+  `history` (the student's state transitions on that LP), `notebook` (the
+  student's notes on that LP, teacher scope, non-archived, the 10 most
+  recent), and `interventions` (this teacher's gestures on that student and
+  LP). Active member only (404 otherwise).
 
-Cost is bounded by members × Learning Points of ONE lesson, whatever the size
-of the exercise bank (`MasteryScaleTest`: 14 queries at 15 and at 2 500
-exercises). The student dossier's `mastery[]` is the full list, weakest first
-(the former cap of 20 unordered rows is gone), each row with its counters and
-freshness. Success rates come from `Domain\Progress\Support\OutcomeStats` —
-the same number the student's practice summary shows.
+Cost: constant in queries whatever the class size (`ClassroomInsightScaleTest`:
+the same query count for 5 and 40 students on the map, the attention, one LP,
+the dossier, the progress and the interventions) and whatever the bank size
+(`MasteryScaleTest`).
 
-**The notebook (كرّاسي) is not read _here_.** The class summary and the
-student dossier carry no note, and never will: « where is he? » and « what did
-he write down? » are two questions, two screens, two permissions to evolve
-separately (`ClassroomProgressTest` locks it).
-
-Since 2026-09-24 the teacher **can** read the notebook of a student of their
-class, through a dedicated, read-only surface — not through this one:
+**The notebook in these views.** The class summary and the student dossier
+carry no note (`ClassroomProgressTest`). The student × LP evidence DOES show
+the student's own notes on that LP — they are evidence the teacher reads,
+never counted, never aggregated across the class, never mixed into mastery
+(`NOTEBOOK.md` owns the rule). The full notebook keeps its own read-only
+surface:
 
 ```
 GET /teacher/classrooms/{id}/students/{studentId}/notebook[/{noteId}]
 ```
 
 read-only, scoped to the class's **effective** lessons, behind `can:teacher` +
-`ClassroomPolicy@view` + membership. A note taken in another grade's lesson, in
-a lesson this teacher hid, or outside any lesson stays private — counters
-included. `NOTEBOOK.md` owns this contract; `TeacherClassroomNotebookTest`
-locks it.
+`ClassroomPolicy@view` + `ClassroomAccess::activeStudent`, archived notes
+excluded, paginated. `TeacherClassroomNotebookTest` and
+`TeacherPrivacyContractTest` lock it.
 
-Feature keys `progress.class` and `progress.student` gate the two views;
-`analytics.advanced` and `reports.export` are declared in the registry, used
-by the plan editor and the teacher summary, and have **no consumer screen yet**
-(`Planned`).
+Feature keys `progress.class` and `progress.student` gate the views: the map,
+the overview and the attention need `progress.class`; one LP, the dossier,
+the evidence and the interventions need `progress.student`. The roster
+(`/students`) is always readable but carries statistics only with
+`progress.class`. `analytics.advanced` and `reports.export` are declared in
+the registry and have **no consumer screen yet** (`Planned`).
+
+### 4a. DETECT and UNDERSTAND — « تستحقّ نظرة » (2026-09-25)
+
+`Domain\Classroom\ClassroomInsightService` loads the class's facts ONCE
+(`Insights\ClassroomFacts`, ≈ 8 grouped queries) and applies pure functions
+to them. Three layers stay apart, in code and on screen:
+
+```text
+raw facts        Insights\ClassroomFacts   canonical states, the window's evidence per (student, LP)
+                                           (OutcomeStats definition), the window's transitions,
+                                           scoped last activity, prerequisites
+indicators       Insights\LearningTrend    direction (improved / declined / unchanged /
+                                           first_assessed), difficulty scope
+interpretation   Insights\AttentionSignals the signals, each with its indicator and its evidence
+```
+
+« Recently » is a window of `teacher_insights.window_days` (14) full days in
+`classroom.timezone` (Africa/Algiers), `Insights\InsightWindow`. A movement is
+read from the state at the START of the window (the `status_before` of its
+first transition) to the state NOW — three round trips that end where they
+started are not progress. A window that contains a recalculation (engine
+version change) is not interpreted.
+
+**The signals** (`config/teacher_insights.php`, `rule_version` carried by
+every response):
+
+| Type | Rule | Why this threshold |
+|---|---|---|
+| `class_difficulty` | ≥ `class_difficulty_min_students` (2) active members in ثغرة on one LP; `class_wide` when ≥ `class_wide_share` (50 %) of the ASSESSED ones and ≥ 3 assessed | one student is an isolated case (dossier), two share a difficulty |
+| `repeated_difficulty` | in ثغرة AND ≥ `repeated_difficulty_min_failures` (3) wrong answers on that LP in the window | one wrong answer can already produce ثغرة (V2 arithmetic); repetition is what makes it a signal |
+| `declined` | status at window start → now went DOWN (mastered/reinforce → lower) | the engine's own order, no number |
+| `stalled` | ≥ `stalled_min_attempts` (5) answers on the LP in the window, still gap/reinforce, no upward movement | effort without progress |
+| `no_recent_activity` | ENGAGEMENT, not learning: no learning activity in the class's scope for `inactive_days` (14) — shown apart, with the reminder that work may happen on paper | inactivity is never read as failure |
+
+Rules for every signal: it names WHO (teacher identity), WHAT (type), WHY
+(`indicator` numbers), the EVIDENCE (per student: status, status at window
+start, the window's answered / failures / successes / items, last evidence),
+the LP and its lesson, WHEN (`lastEvidenceAt`), a lead (`prerequisites` in
+ثغرة among the same students) and the gestures that fit (`actions`). **No
+duplicate**: a student counted in a `class_difficulty` signal gets no
+per-student signal on that LP; per (student, LP) at most one of repeated
+difficulty > declined > stalled. **Never a difficulty**: `unassessed`,
+`insufficient_evidence`, `needs_assessment` (not knowing is not struggling),
+the notebook (a reflective student would look weak), time spent (not
+collected, D10), any class average. Signals are **never stored**, never
+notified: they exist while the facts do and disappear with them. The order
+groups (shared difficulties first, most students first); students inside a
+signal are ordered by status then name — never ranked by a score.
+
+`recentChanges` (`Insights\RecentChanges`): improved / declined / first
+assessed / recalculated over the window, the LPs that moved most, the students
+who improved and declined.
+
+**The student snapshot** (« لمحة », `Insights\StudentSnapshot`, in the dossier
+response as `snapshot`, with `signals` = the class signals filtered to this
+student): LP counts by status; strengths (mastered, with freshness);
+difficulties (gap, or reinforce by threshold — never insufficient evidence);
+the window's changes and a `trend` read on status movements (`improving`,
+`declining`, `mixed`, `started`, `stable`, `no_recent_evidence`); ACTIVITY kept
+apart (last activity in scope, answers and success rate in the window, the LP
+last worked on) with the reminder that activity is not learning.
+
+`GET /teacher/classrooms/{id}/attention` → `{ruleVersion, window, signals[],
+summary, recentChanges}`. `AttentionSignalsTest` (pure, per rule and its
+negative case), `ClassroomLearningLoopTest` (end to end on real evidence) lock
+it.
+
+### 4b. INTERVENE and MEASURE — « التدخّلات » (2026-09-25)
+
+`classroom_interventions` + `classroom_intervention_students`,
+`Domain\Classroom\ClassroomInterventionService`. An intervention belongs to
+the teacher and the class: `kind`, optional `learning_point_id` / `lesson_id`,
+the students (active members, all-or-nothing), a **private** `note`, an
+optional `student_message`, `status` open / closed, `review_after`,
+`source_signal`.
+
+| Kind | Needs an LP | The student sees it |
+|---|---|---|
+| `individual_followup`, `observation` | no | no |
+| `class_reinforcement` | yes | no |
+| `recommend_practice`, `review_prerequisite` | yes | yes — a suggestion in «قسمي» |
+| `recommend_lesson` | an LP or a lesson | yes |
+
+A student-visible intervention appears in «قسمي» → «اقتراحات أستاذك»
+(`GET /student/teacher-recommendations`) while it is open and the student an
+active member: teacher name, class, the LP / lesson, the `student_message`.
+Never the note, never a lock, never a deadline (D8). The student's notebook is
+never touched: an intervention is teacher data.
+
+**MEASURE.** On creation the service FREEZES each targeted student's canonical
+state on the LP (`baseline`: status, reason, confidence, counters). The
+outcome is computed on read, in constant queries per page: for each still-active
+student, `before` (the baseline), `now`, the evidence `since` opened_at
+(answered / successes / partials / failures, OutcomeStats), the `direction`
+(LearningTrend), `observed` (new evidence or not), and in detail the `trail` of
+transitions since. The summary counts improved / declined / unchanged / first
+assessed / no new evidence. The wording is **descriptive, never causal**
+(«وقائع مُلاحَظة منذ التدخّل، وليست دليلًا على أنّه السبب»); a student without
+new evidence is « no new evidence », never « no progress ». A student who
+left drops out of the measure.
+
+Routes: `GET|POST /teacher/classrooms/{id}/interventions` (filters status,
+studentId, learningPointCode; paginated), `GET|PATCH …/{interventionId}`
+(status, note, review date — the targets, the LP and the baseline never
+change). Resolved by class AND teacher (404 otherwise); writing needs the
+`manage` ability. `ClassroomLearningLoopTest` locks the loop,
+`TeacherPrivacyContractTest` the access.
+
+### 4c. History — how a state moved
+
+`learning_point_state_transitions` (`LEARNING_ARCHITECTURE.md` « State
+history ») is written by `ProgressEngine::advance` inside the evidence
+transaction: one line per real change of a (student, LP) state, with the
+state before and after, the engine version and the evidence date. It feeds the
+trajectory, the student's history on an LP, `declined` / `stalled`, the
+recent changes and the intervention trail. The teacher views never replay
+evidence on read.
 
 ## 5. The DZ commercial model — no online payment, for anyone
 
@@ -467,8 +686,9 @@ gate; `data/teacherNavigation.js`):
 /enseignant                      TeacherHome          usage tiles (UsageMeter, N / M in dir="ltr"), classes, next steps
 /enseignant/classes              ClassGroupList       « قسم جديد » opens ClassGroupForm in a centred Modal, on the page
 /enseignant/classes/nouveau      ClassGroupCreate     same form full-page (direct links, bookmarks); grade from getAllGrades() ∩ allowedGrades
-/enseignant/classes/:id          ClassGroupDetail     tabs التلاميذ / الدروس / التقدّم / نقاط التعلّم / الإعدادات
-/enseignant/classes/:id/eleves/:studentId   StudentProgressPage
+/enseignant/classes/:id          ClassGroupDetail     tabs نظرة عامة (default) / التلاميذ / نقاط التعلّم / التدخّلات / الدروس / التقدّم / الإعدادات
+/enseignant/classes/:id/eleves/:studentId   StudentProgressPage   « لمحة », signals, interventions, completion, mastery, timeline
+/enseignant/classes/:id/eleves/:studentId/cahier   StudentNotebookPage   read-only, paginated
 /enseignant/progression          ProgressOverview
 /enseignant/offre                SubscriptionPage     « عرضي »
 /enseignant/profil               TeacherProfile
@@ -487,7 +707,11 @@ validation and the call, and the caller only decides what follows through
 list lives in `features/teacher/`, takes `onCreated`/`onCancel`, and is
 mounted both in a `Modal` and on its route — never duplicated. `Modal` takes
 `closeLabel` so its X is Arabic on teacher screens and French in the admin
-panel (default « Fermer »).
+panel (default « Fermer »). It renders through a portal on `document.body` (a
+`glass-card` ancestor would otherwise capture `position: fixed` and shrink the
+dialog and its backdrop to the card), its height is capped to the viewport with
+a scrolling body, and sizes are `sm | md | lg | xl` (the LP evidence panel uses
+`xl`).
 
 « عرضي » shows the effective plan with the purchased seats and the seat
 meter (« سعة التلاميذ N / M », classes shown as unlimited), then **the seat
@@ -536,6 +760,51 @@ Teachers may present in Classroom Mode: `'teacher'` is in
   imports `MasteryPill`, `ReasonChip`, `FreshnessMark`, `ConfidenceBar`
   (`features/teacher/learningPoints/MasteryPill.jsx`) and the colours of
   `lpBar.js` (`LP_STATUS_BAR`) — never a local redefinition.
+
+### 8c. The learning loop in the teacher space (2026-09-25)
+
+The class page opens on **« نظرة عامة »** (`features/teacher/overview/OverviewTab.jsx`),
+in the order of the teacher's questions and nothing else: « تستحقّ نظرة »
+(the learning signals, the most shared first, 4 visible then « عرض الكل »),
+« ما الذي تغيّر؟ » (recent changes), « خريطة التعلّم » (the whole-scope map,
+bars of counts, no average), then engagement apart. No average of the class
+is shown on this screen.
+
+Reusable pieces — every screen imports them, none redefines them:
+
+- `features/teacher/insights/insights.js` — pure (tested): `studentName`
+  (never an email fallback), the intervention kinds and their rules mirrored
+  from the server, `interventionDefaults(signal)`, `signalWhyParams`,
+  `trajectoryColumns`, `outcomeLine`, tones. It FORMATS what the server
+  decided; it never computes a pedagogical rule.
+- `insights/SignalCard.jsx` — one signal: title from the type and the LP,
+  « why » from the indicator, the students (each to their dossier), the
+  prerequisites lead, the last evidence, « افتح النقطة » and « تدخّل ».
+- `insights/StatusTrail.jsx` — a state's path as coloured dots (no
+  percentages); recalculated / rebuilt steps marked.
+- `interventions/InterventionForm.jsx` — THE intervention form, in the kit
+  `Modal`, opened from a signal, an LP drill-down, the evidence panel or the
+  dossier with a prefill (`candidates`, `prefill`, `point`); it says whether
+  the student will see the gesture and that the state is frozen now.
+- `interventions/InterventionsTab.jsx` (+ exported `InterventionCard`),
+  `interventions/InterventionOutcome.jsx` — the list, the measure, the
+  non-causal disclaimer.
+- `snapshot/StudentSnapshot.jsx` — « لمحة » at the top of the dossier.
+
+« نقاط التعلّم » opens on « كل الدروس » (the map) and accepts a `focusCode`
+to open one LP directly (from a signal or a change). The drill-down adds the
+week-by-week trajectory, the items the class fails, the prerequisites, each
+student's direction, and « تدخّل مع من هم في ثغرة ». The evidence panel
+(`MasteryExplanationPanel`) adds the state history, the student's notes on
+that LP (link to the notebook) and the interventions on that LP.
+
+No teacher component reads `.email` of a student (`teacherContract.test.js`);
+labels live in `teacher.json` → `attention.*`, `interventions.*`,
+`snapshot.*`, `learningPoints.{allLessons, scope, direction, trajectory,
+items, prerequisites, evidence}`, `common.unnamedStudent`. Browser QA:
+`apps/web/e2e/teacher-intelligence.mjs` (demo dataset; 31 checks including no
+email on screen, 390 / 1280 px without overflow, the invitation card that joins
+nothing, the student's suggestion).
 
 ### 8b. The teacher learns like a student — same engine, no progression
 
@@ -681,7 +950,8 @@ GET  /me/subscription-requests POST /me/subscription-requests {planId, studentSe
 POST /activation-codes/redeem  (existing)
 
 # student
-GET  /student/study-context    POST /student/classrooms/join {code}|{token}   POST /student/classrooms/{id}/leave
+GET  /student/study-context    POST /student/classrooms/join {code|token, consent:true}   POST /student/classrooms/{id}/leave
+POST /student/classrooms/{id}/consent            GET /student/teacher-recommendations
 GET  /invitations/{token}      (public, throttled preview)
 
 # teacher  (auth:sanctum + account.active + email.verified + can:teacher)
@@ -695,9 +965,11 @@ GET  /teacher/classrooms/{id}/students/{studentId}/progress
 GET|POST /teacher/classrooms/{id}/invitations      DELETE /teacher/classrooms/{id}/invitations/{invitationId}
 GET  /teacher/classrooms/{id}/lessons              POST /teacher/classrooms/{id}/lessons/bulk
 PATCH /teacher/classrooms/{id}/lessons/{lessonId}  GET  /teacher/classrooms/{id}/progress
-GET  /teacher/classrooms/{id}/learning-points?lesson={code}        (class × LP, progress.class)
-GET  /teacher/classrooms/{id}/learning-points/{code}               (one LP, students weakest first, progress.student)
-GET  /teacher/classrooms/{id}/students/{studentId}/learning-points/{code}/explanation
+GET  /teacher/classrooms/{id}/learning-points[?lesson={code}]      (the map: whole scope, or one lesson; progress.class)
+GET  /teacher/classrooms/{id}/learning-points/{code}               (one LP: students, trajectory, items, prerequisites; progress.student)
+GET  /teacher/classrooms/{id}/students/{studentId}/learning-points/{code}/explanation   (explanation, history, notebook, interventions)
+GET  /teacher/classrooms/{id}/attention                            (signals + recent changes; progress.class)
+GET|POST /teacher/classrooms/{id}/interventions   GET|PATCH /teacher/classrooms/{id}/interventions/{interventionId}
 
 # admin  (can:admin)
 GET  /admin/teachers  GET /admin/teachers/{id}  PATCH /admin/teachers/{id}/status
@@ -752,7 +1024,7 @@ Backend (`apps/api/tests/Feature`, MySQL, `php artisan test -c phpunit.local.xml
 `IndividualActivationCodeTest`, `PlanEntitlementResolverTest`, `PlanAdminTest`,
 `ClassroomLimitTest`, `ClassroomJoinCodeTest`, `ClassroomMembershipCapacityTest`,
 `ClassroomInvitationTest`, `ClassroomLessonVisibilityTest`, `StudyContextTest`,
-`ClassroomProgressTest`, **`ClassroomLearningPointTest`** (class × LP counts and reasons, outsiders excluded, hidden lesson out of scope, drill-down order, explanation for members only), `TeacherCoverageAccessTest`, `AdminTeacherClassroomTest`,
+`ClassroomProgressTest`, **`TeacherPrivacyContractTest`** (no email in any /teacher response, left / removed / archived → 404 per student, cross-teacher IDOR, archived notes private, invitation preview), **`ClassroomConsentTest`**, **`ClassroomLearningLoopTest`** (detect → understand → intervene → measure on real evidence, the student's suggestion, the signal following the facts), **`LearningPointTransitionTest`**, **`Scale/ClassroomInsightScaleTest`** (constant queries for 5 and 40 students), `Unit/Classroom/{LearningTrendTest, AttentionSignalsTest}`, **`ClassroomLearningPointTest`** (class × LP counts and reasons, outsiders excluded, hidden lesson out of scope, drill-down order, explanation for members only), `TeacherCoverageAccessTest`, `AdminTeacherClassroomTest`,
 **`TeacherLearningAccessTest`** (published and premium content open by role, hidden-for-class does not block the teacher, unpublished stays closed, progress / evidence / final-test writes refused and no row created, own notebook and Math Lab only),
 **`SeatPricingTest`** (tier boundaries 5/6/20/21/30, N × price, grid
 validation, versioning, the client's price is ignored, admin and teacher
@@ -773,11 +1045,11 @@ table above), `lessons/common/utils/moduleGate.test.js` (student locked,
 teacher open, unpublished closed for all), `features/practice/notebook/space/noteMeta.test.js`
 (`notebookPaths`, exercise note → lesson outside the student space),
 `features/mathlab/mathLabDocument.test.js` (paths per workspace),
-`features/teacher/**/*.test.js` (entitlement summary,
+`features/teacher/**/*.test.js` (**insights helpers**, entitlement summary,
 subscription state, **seat pricing preview**, lesson selection),
 `features/admin/plans/pricingTiers.test.js` (grid editor validation),
 `services/teacher/teacherServices.test.js`,
-`pages/teacherContract.test.js`, `context/contentAvailability.test.js`,
+`pages/teacherContract.test.js` (+ no `.email` of a student), `pages/student/{qismConsent.test.js, Qism.render.test.jsx}` (consent gesture, no join on an invitation link), `context/contentAvailability.test.js`,
 `adminServices.test.js` (navigation snapshot), `legalConsentContract.test.js`.
 
 Any change to a rule in this document changes one of those tests first.
@@ -788,5 +1060,11 @@ Any change to a rule in this document changes one of those tests first.
 - Model C: school / institution licences as a first-class object (today a
   school is served by a plan-bound batch).
 - Consumers for `analytics.advanced` and `reports.export`.
+- Notifications of any kind for signals or interventions (deliberately not
+  built: signals live while the teacher looks).
+- A student-side dismissal of a teacher suggestion (it disappears when the
+  teacher closes the intervention).
+- Seat re-check on `restore` of an archived class, and showing archived
+  classes in «قسمي» (audit 2026-09-24, G5/G6 — not part of the learning loop).
 - Online payment of any kind. If it ever comes, it is a new acquisition source
   writing through `SubscriptionActivationService`, not a new access path.

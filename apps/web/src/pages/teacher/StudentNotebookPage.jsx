@@ -9,9 +9,14 @@ import NotebookContent from '../../features/practice/notebook/NotebookContent';
 import { NOTE_TYPES, typeOf, timeAgo } from '../../features/practice/notebook/space/noteMeta';
 import { fetchClassStudentNotebook } from '../../services/teacher/classGroupService';
 import '../../features/practice/notebook/space/notebookSpace.css';
-import { TeacherPage, Loading, ErrorBox, btnSecondary } from './teacherUi';
+import { Pagination } from '../../components/admin/ui/FilterBar';
+import { TeacherPage, Loading, ErrorBox, btnSecondary, useTableLabels } from './teacherUi';
+import { notebookPagerMeta } from './StudentNotebookPage.paging';
 
+// Pas de vue « archivées » : le serveur ne rend plus à l'enseignant les
+// notes que l'élève a archivées.
 const VIEWS = ['all', 'errors', 'questions'];
+const PER_PAGE = 50;
 
 /**
  * LE CAHIER D'UN ÉLÈVE, LU PAR SON ENSEIGNANT.
@@ -32,15 +37,22 @@ const VIEWS = ['all', 'errors', 'questions'];
  * Les notes rendues sont celles des leçons effectives du قسم. Cette page ne
  * filtre rien elle-même : elle ne saurait pas le faire honnêtement, et un
  * filtre côté client ne serait pas une sécurité.
+ *
+ * ── Paginé, et le pager le MONTRE ────────────────────────────────────────
+ * Le serveur rend `PER_PAGE` notes et une meta `{ total, page, perPage,
+ * hasMore }`. Sans pager, tout ce qui dépassait la première page était
+ * caché sans le dire. Changer de vue ramène à la page 1.
  */
 export default function StudentNotebookPage() {
   const { t } = useTranslation('teacher');
   const { id, studentId } = useParams();
+  const labels = useTableLabels();
   const [view, setView] = useState('all');
+  const [page, setPage] = useState(1);
 
   const loader = useCallback(
-    (tk) => fetchClassStudentNotebook(tk, id, studentId, { view, perPage: 50 }),
-    [id, studentId, view],
+    (tk) => fetchClassStudentNotebook(tk, id, studentId, { view, page, perPage: PER_PAGE }),
+    [id, studentId, view, page],
   );
   const { data, loading, error, reload } = useAdminResource(loader, [loader]);
   const name = data ? [data.student.firstName, data.student.lastName].filter(Boolean).join(' ') : '';
@@ -68,7 +80,7 @@ export default function StudentNotebookPage() {
           <button
             key={key}
             type="button"
-            onClick={() => setView(key)}
+            onClick={() => { setView(key); setPage(1); }}
             aria-pressed={view === key}
             className={`min-h-11 rounded-full border px-4 text-sm font-bold transition-colors ${
               view === key
@@ -93,6 +105,14 @@ export default function StudentNotebookPage() {
         <ul className="space-y-3" data-teacher-notebook>
           {data.notes.map((note) => <NoteCard key={note.id} note={note} />)}
         </ul>
+      )}
+
+      {data && (
+        <Pagination
+          meta={notebookPagerMeta(data.meta, data.notes.length)}
+          onPage={setPage}
+          labels={labels.pagination}
+        />
       )}
     </TeacherPage>
   );

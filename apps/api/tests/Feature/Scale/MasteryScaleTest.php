@@ -170,7 +170,7 @@ class MasteryScaleTest extends TestCase
         // 3. Classe × learning point.
         $service = app(ClassroomLearningPointService::class);
         $t = microtime(true);
-        $counts['classByLp'] = $this->countQueries(fn () => $service->lessonOverview($classroom, $lesson->code));
+        $counts['classByLp'] = $this->countQueries(fn () => $service->map($classroom, $lesson->code));
         $classMs = round((microtime(true) - $t) * 1000, 1);
 
         // 4. Choisir l'exercice suivant (le seul chemin qui DOIT lire la banque — un niveau).

@@ -18,9 +18,11 @@ l'élève ne lisait le cahier.)
 | Qui | Lit le cahier ? |
 |---|---|
 | L'élève | oui — le sien, en lecture ET écriture |
-| **L'enseignant d'un قسم dont l'élève est membre** | **oui, en LECTURE SEULE**, et seulement les notes rattachées aux leçons *effectives* de ce قسم |
+| **L'enseignant d'un قسم dont l'élève est membre ACTIF** | **oui, en LECTURE SEULE**, et seulement les notes NON ARCHIVÉES rattachées aux leçons *effectives* de ce قسم |
 | La fiche élève de l'administration (`StudentDossier`) | non |
-| Le dossier de progression d'un élève (`ClassroomProgressService`) | non — « où en est-il ? » et « qu'a-t-il noté ? » restent deux écrans |
+| Le dossier de progression d'un élève (`ClassroomProgressService`) et l'aperçu « لمحة » | non — « où en est-il ? » et « qu'a-t-il noté ? » restent deux écrans |
+| La preuve d'un point pour un élève (`…/learning-points/{code}/explanation`) | **oui** : ses 10 notes les plus récentes sur CE point (mêmes règles), montrées comme l'écrit de l'élève, jamais comptées |
+| Les signaux de classe, la carte, les interventions | non — une note n'est jamais un détecteur ni un agrégat de classe |
 | Un autre élève, un autre enseignant | non (404) |
 
 Pourquoi ce changement : les erreurs qu'un élève NOTE lui-même — « je
@@ -39,7 +41,17 @@ Ce qui borne la lecture, et qui est verrouillé par
   masquée, ou **hors de toute leçon**, reste privée — y compris dans les
   compteurs.
 - **Trois verrous** : `can:teacher`, puis `ClassroomPolicy@view` (la classe
-  est à cet enseignant), puis l'appartenance de l'élève à cette classe.
+  est à cet enseignant), puis `ClassroomAccess::activeStudent` — l'élève est
+  membre ACTIF d'une classe ACTIVE (depuis le 2026-09-25 ; avant, une
+  adhésion quittée suffisait, contrairement à ce que ce document promettait).
+- **Les notes archivées restent privées** : l'élève les a rangées. Elles
+  sortent de la liste, du compteur (`archived` vaut toujours 0 pour un
+  lecteur) et de la lecture d'une note seule (404).
+- **Trace** : la lecture du cahier d'un élève écrit `teacher.notebook_read`
+  dans `admin_activity_logs` (une ligne par enseignant, élève et jour).
+- **L'élève est prévenu** : le texte qu'il accepte en rejoignant un قسم dit
+  que son enseignant lit ce qu'il note dans les leçons de la classe, hors
+  notes archivées (`TEACHER_CLASSROOM_ARCHITECTURE.md` §2 « Consent »).
 - **La porte de l'élève reste fermée.** `/practice/notes` ne sert que le
   compte authentifié : un enseignant y reçoit 404 pour la note d'un élève
   (`TeacherLearningAccessTest`).
@@ -51,8 +63,8 @@ Le serveur : `NotebookService::searchForReader` / `countsForReader` /
 `findForReader` (le même moteur que `search`, pas un second) ·
 `Teacher\TeacherClassroomNotebookController` ·
 `GET /teacher/classrooms/{id}/students/{studentId}/notebook[/{noteId}]`.
-Le client : `pages/teacher/StudentNotebookPage.jsx`, atteint depuis le
-dossier de l'élève. La forme d'une note est rendue par
+Le client : `pages/teacher/StudentNotebookPage.jsx` (paginé, 50 notes par
+page), atteint depuis le dossier de l'élève et depuis la preuve d'un point. La forme d'une note est rendue par
 `NotebookPresenter::note` — **une seule** sérialisation pour les deux
 surfaces.
 
@@ -68,7 +80,9 @@ pratique étant une surface d'élève (`TEACHER_CLASSROOM_ARCHITECTURE.md` §8b)
 Rien ne passe de la carte au cahier tout seul : « أضف إلى كرّاسي »
 (`AddToNotebookButton`) dépose le titre et le résumé d'une connaissance comme
 *point de départ*, que l'élève réécrit. La carte n'est jamais modifiée depuis
-le cahier ; le cahier ne touche ni à la maîtrise ni à la progression.
+le cahier ; le cahier ne touche ni à la maîtrise ni à la progression. Une
+**intervention** de l'enseignant (« تدخّل ») n'écrit jamais dans le cahier de
+l'élève : c'est une donnée de l'enseignant (`classroom_interventions`).
 
 ## Trois surfaces, une table
 
