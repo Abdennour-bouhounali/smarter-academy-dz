@@ -466,15 +466,21 @@ jobs:
 
           # Tiers are captured BEFORE and compared AFTER: the sync must leave
           # every existing lesson's tier exactly as the administrator set it.
-          before="$(php artisan smarter:lesson-inventory --tiers-only)"
+          # Temporary FILES, not process substitution: Hostinger has no
+          # /dev/fd, so `join <(…) <(…)` fails there ("/dev/fd/63: No such
+          # file or directory" — the first run of this step, 2026-09-25).
+          before="$(mktemp -p storage/app)"; after="$(mktemp -p storage/app)"
+          trap 'rm -f "$before" "$after"' EXIT
+          php artisan smarter:lesson-inventory --tiers-only | sort > "$before"
 
           php artisan smarter:import-curriculum --from-json="$sync/curriculum-export.json"
           php artisan smarter:import-content-registry --from-json="$sync/content-registry-export.json"
           php artisan smarter:prune-retired-learning-points --from-json="$sync/curriculum-export.json"
 
-          after="$(php artisan smarter:lesson-inventory --tiers-only)"
-          changed="$(join <(printf '%s\n' "$before" | sort) <(printf '%s\n' "$after" | sort) \
-            | awk '$2 != $3')"
+          php artisan smarter:lesson-inventory --tiers-only | sort > "$after"
+          # Only lessons present on BOTH sides are compared: a lesson created
+          # (born free) or pruned by the sync is not a tier change.
+          changed="$(join "$before" "$after" | awk '$2 != $3')"
           if [ -n "$changed" ]; then
             echo "The curriculum sync CHANGED the tier of existing lessons (code, before, after):" >&2
             printf '%s\n' "$changed" >&2
