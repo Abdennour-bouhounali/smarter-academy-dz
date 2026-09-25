@@ -4,8 +4,11 @@
 > below describe the **French-era** application and understate the backend. What
 > is true today:
 >
-> - The mounted lesson tree is `lessons/moyen/4am/…`, not
->   `lessons/college/{6e,4e,3e}`. The French tree is dormant.
+> - The lesson tree is `lessons/moyen/4am/…` only. The French tree
+>   (`lessons/college/`, `lessons/lycee/`) and the French reference
+>   catalogue were deleted on 2026-09-25.
+> - What loads when (entry vs lazy chunks, lesson runtime, Math Lab overlay,
+>   notebook window, on-demand i18n): [`BUNDLE_BOUNDARIES.md`](./BUNDLE_BOUNDARIES.md).
 > - The backend is **not** "auth + contact form only" (§3). It carries
 >   curriculum (grades, chapters, units, lessons, learning points), lesson
 >   progress, learning evidence and mastery, the practice engine (sessions,
@@ -45,7 +48,7 @@ Not every concept below has a backend representation yet — that's the point of
 | **Student** | Identity + current grade, as of the Student Grade phase (identity alone since Phase 4). `User` with `role='student'` and a `grade` column (one of `packages/core`'s `courseLevels[].grades[].id` values), self-registered via `POST /auth/register`, changeable via `PATCH /auth/grade`. No progress/attempt/mastery data is linked to it yet — see the rows below. | `apps/api/app/Models/User.php`, `apps/api/app/Http/Controllers/AuthController.php` |
 | **Course** (= grade, in current usage) | `courseLevels[].grades[]` | `packages/core/curriculum/coursesData.js` |
 | **Grade** | Same as Course above — the codebase doesn't distinguish "course" from "grade"; a grade (6e, 5e, 4e, 3e) *is* the course-level grouping. | `coursesData.js` |
-| **Chapter** (= domain) | `grades[].chapters[]`, sourced from the official curriculum JSON's `domains[]` | `coursesData.js` + `smarter_academy_programmes_maths_2026.json` |
+| **Chapter** (= domain) | `grades[].chapters[]`, sourced from the official programme JSON's `domains[]` (only domains that carry lessons are shown) | `coursesData.js` + `dz/programme_4am_2026_2027.json` |
 | **Lesson** | `chapters[].lessons[]` (catalogue entry) **and**, separately, each lesson's own `LESSON_CONFIG` (richer, authoritative for modules) | `coursesData.js` (catalogue) + `<lesson>/lesson.config.js` (detail) |
 | **Module** | `LESSON_CONFIG.modules[]` entries, each backed by one React component | `<lesson>/lesson.config.js`, `<lesson>/modules/Module*.jsx` |
 | **Activity** | Not modeled as a distinct layer — a module's internal steps/interactions are undifferentiated JSX. See `LESSON_CONTRACT.md` §Module for the decision on whether to introduce this now (we don't). | — |

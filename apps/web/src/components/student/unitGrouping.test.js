@@ -7,7 +7,10 @@ const chapter1 = grade4am.chapters.find((c) => c.id === 'ansab_al_aadad_wal_hisa
 
 describe('groupLessonsByUnit', () => {
   it("renvoie null pour un ميدان sans unité (la grille garde ses cartes de leçon)", () => {
-    const chapter = grade4am.chapters.find((c) => c.id === 'hisab_harfi');
+    // Le catalogue ne montre plus de ميدان sans leçons (coursesData.js,
+    // 2026-09-25) : le cas est construit ici, avec la forme d'un chapitre
+    // du catalogue — des leçons hors de toute unité, `units` vide.
+    const chapter = { id: 'hisab_harfi', units: [], lessons: [{ id: 'l1', unitId: null }, { id: 'l2', unitId: null }] };
     expect(groupLessonsByUnit([chapter], chapter.lessons)).toBeNull();
     expect(groupLessonsByUnit([], [])).toBeNull();
   });

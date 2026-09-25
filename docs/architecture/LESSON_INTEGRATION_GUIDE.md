@@ -1,7 +1,8 @@
 # Lesson Integration Guide
 
-> **⚠️ Scope (2026-09-20).** The worked example throughout this document is a
-> **dormant French lesson**, and §1–§4 describe the **older per-lesson wiring**:
+> **⚠️ Scope (2026-09-25).** The worked example throughout this document is a
+> **French lesson that was deleted on 2026-09-25** (with every French lesson —
+> read it from git history), and §1–§4 describe the **older per-lesson wiring**:
 > a hand-written `routes.jsx` with a `MODULE_COMPONENTS` map, a twenty-line
 > `moduleContext.js`, and route registration in `App.jsx`.
 >
@@ -11,6 +12,15 @@
 > and the knowledge provider automatically. See `LESSON_CONTRACT.md`
 > § « L'unité 4AM » and, to build one,
 > [`../lessons/LESSON_DEVELOPMENT_GUIDE.md`](../lessons/LESSON_DEVELOPMENT_GUIDE.md).
+>
+> **Loading (2026-09-25).** `buildLessonRoutes` no longer imports the lesson
+> wrappers statically: the classroom shell, the access gate, the knowledge
+> provider and the notebook anchor live in ONE lazy chunk,
+> `lessons/common/lessonRuntime.jsx` (`LessonClassroomShell`,
+> `LessonPageFrame`), shared by every lesson and loaded through
+> `lessonRuntimeLoader.js`. The registry (`lessons/registry.js`) globs only
+> the active grades' `lesson.config.js`. See
+> [`BUNDLE_BOUNDARIES.md`](./BUNDLE_BOUNDARIES.md).
 >
 > **What is still accurate and worth reading here:** §5 (module-to-module
 > locking), §6 (step locking, the formative question policy, one tap = one

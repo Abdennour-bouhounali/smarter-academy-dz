@@ -8,9 +8,14 @@
 
 The platform is Arabic-first (ar-DZ, RTL) and follows the Algerian curriculum.
 The live content is the 4AM textbook unit 1 under
-`apps/web/src/lessons/moyen/4am/`. The French-era lessons under
-`lessons/college/` and `lessons/lycee/` are **dormant**: present on disk, not
-indexed by the registry, not mounted, not reachable.
+`apps/web/src/lessons/moyen/4am/` — the unit « الأعداد الطبيعيّة والأعداد
+النّاطقة », and it is the **only** lesson content in the repository. The
+French-era lessons (`lessons/college/`, `lessons/lycee/`), their practice
+content, specs, e2e scripts, French-only engines and the French reference
+catalogue were **deleted on 2026-09-25**. Architecture documents still use
+some of them as examples (a 6e manipulation, a 2nde lesson…): those passages
+explain a pattern, but the files they cite no longer exist — use git history
+to read them.
 
 ## Start here
 
@@ -22,6 +27,7 @@ indexed by the registry, not mounted, not reachable.
 | Work on a manipulation | [`architecture/MANIPULATION_CONTRACT.md`](./architecture/MANIPULATION_CONTRACT.md) |
 | Work on exercises or the practice engine | [`architecture/EXERCISE_CONTRACT.md`](./architecture/EXERCISE_CONTRACT.md) |
 | Write Arabic UI or lesson text | [`architecture/ARABIC_RTL_CONTRACT.md`](./architecture/ARABIC_RTL_CONTRACT.md) |
+| Add a provider, a route, a heavy dependency, an `import.meta.glob` or an i18n namespace — or ask « why is this in the bundle? » | [`architecture/BUNDLE_BOUNDARIES.md`](./architecture/BUNDLE_BOUNDARIES.md) |
 | Work on the Math Lab (مختبر الرياضيات) or add an instrument to it | [`architecture/MATH_LAB.md`](./architecture/MATH_LAB.md) |
 | Work on teachers — how a teacher reads lessons (free navigation, no progress), classes (الأقسام), seat-based plans and pricing tiers, subscriptions, requests or plan-bound activation codes | [`architecture/TEACHER_CLASSROOM_ARCHITECTURE.md`](./architecture/TEACHER_CLASSROOM_ARCHITECTURE.md) |
 | Build or change an admin screen (Arabic, RTL, shared design system) | [`architecture/ADMIN_PANEL_ARCHITECTURE.md`](./architecture/ADMIN_PANEL_ARCHITECTURE.md) §33.0 |
@@ -44,6 +50,7 @@ may describe it, but they defer to this one.
 | Classroom Mode / presentation layer | [`architecture/CLASSROOM_MODE.md`](./architecture/CLASSROOM_MODE.md) |
 | Arabic, RTL, typography, terminology, bidi rules | [`architecture/ARABIC_RTL_CONTRACT.md`](./architecture/ARABIC_RTL_CONTRACT.md) |
 | Exercise validation boundary, answer shapes, practice engine | [`architecture/EXERCISE_CONTRACT.md`](./architecture/EXERCISE_CONTRACT.md) |
+| What the entry bundle may contain, lazy boundaries (lesson runtime, Math Lab overlay, notebook window, on-demand i18n namespaces), prefetch points, measured before/after | [`architecture/BUNDLE_BOUNDARIES.md`](./architecture/BUNDLE_BOUNDARIES.md) |
 | Question metadata, evidence, assessment rules for generated lessons | [`architecture/AI_LESSON_CONTRACT.md`](./architecture/AI_LESSON_CONTRACT.md) |
 | Knowledge before demand (`priorKnowledge`, `KnowledgeBrick`, `requires`) | [`architecture/KNOWLEDGE_DEPENDENCY.md`](./architecture/KNOWLEDGE_DEPENDENCY.md) |
 | The cumulative Knowledge Map and `knowledge.jsx` | [`architecture/KNOWLEDGE_MAP.md`](./architecture/KNOWLEDGE_MAP.md) |
@@ -61,7 +68,6 @@ may describe it, but they defer to this one.
 - [`sources/4am/unit1/extraction.json`](./sources/4am/unit1/) — the textbook
   extraction every unit-1 content element cites. The PDF itself
   (`official-book-pdfs/`) is copyrighted and untracked.
-- [`architecture/CURRICULUM_MATRIX_5E_4E.md`](./architecture/CURRICULUM_MATRIX_5E_4E.md) — generated, regenerable.
 - `data-verification/` — curriculum-scope reference data.
 - `deployment/` — deployment procedures.
 - [`reports/LEARNING_POINT_MASTERY_AUDIT_2026-09-24.md`](./reports/LEARNING_POINT_MASTERY_AUDIT_2026-09-24.md)
@@ -105,8 +111,8 @@ contract.
 | `reports/` | Point-in-time audits. Several predate the Algerian takeover and describe the French product or a two-table backend. Cross-check every number against the code. |
 | `architecture/EXERCISE_ENGINE_INTEGRATION_AUDIT.md` | Superseded by `EXERCISE_ENGINE_REFERENCE_IMPLEMENTATION.md`. |
 | `architecture/EXERCISE_ENGINE_ARCHITECTURE.md` | Target design. Largely implemented, but some paths in it are illustrative, not real. |
-| `architecture/DIAGNOSTIC_6E.md`, `KNOWLEDGE_MAP_MIGRATION_2NDE.md`, `KNOWLEDGE_MAP_REFONTE_6E.md`, `CURRICULUM_MATRIX_5E_4E.md` | Scoped to dormant French grades. |
-| `lessons/*_SPEC.md` (French lesson specs) | Specifications of dormant French lessons. Useful as pedagogical examples only. |
+| `architecture/DIAGNOSTIC_6E.md` | Scoped to a French grade; the diagnostic flow it documents is still mounted. |
+| `architecture/EXERCISE_ENGINE_REFERENCE_IMPLEMENTATION.md` | Its reference lesson (`fonction-affine-2nde`) and labs (`TankLab`, `RateProbes`) were deleted on 2026-09-25; the engine it describes is live. |
 | `experiments/JSXGRAPH_PILOT.md` | Concluded: rejected, removed from the codebase. |
 
 ## Language of the documentation

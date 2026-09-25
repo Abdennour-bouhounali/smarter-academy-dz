@@ -42,6 +42,18 @@ i18next is initialised in `apps/web/src/i18n/index.js` with a single locale
 | `teacher` | the teacher space — classes, members, plan |
 | `admin` | the admin panel — navigation, page titles, table columns, states, status badges, dialogs |
 
+**Eight namespaces ship with the app; `mathlab` is loaded on demand**
+(2026-09-25). `i18n/index.js` registers an inline backend
+(`onDemandBackend`, a dynamic `import()` of the JSON) with
+`partialBundledLanguages: true`. The first `useTranslation('mathlab')`
+suspends until the catalogue arrives — the surrounding `<Suspense>` shows its
+fallback, then full Arabic text, never a raw key. Rules: an on-demand
+namespace is read only by components that render under a `<Suspense>`
+boundary of their own feature, never by a shared component; a string a
+lesson page needs lives in `lesson` (e.g. `mathLabEntry.*`). `admin` stays
+eager because its UI primitives are shared with the teacher space and
+« قسمي ». See [`BUNDLE_BOUNDARIES.md`](./BUNDLE_BOUNDARIES.md) rule 5.
+
 **Every role's space is Arabic, the admin panel included.** There is no
 "internal tool gets to stay French" exemption: an administrator is a user of
 this product, reading the same language on the same design system. See §9 of

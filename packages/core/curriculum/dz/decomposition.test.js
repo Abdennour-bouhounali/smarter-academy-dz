@@ -3,7 +3,7 @@ import { existsSync } from 'node:fs';
 import programme from './programme_4am_2026_2027.json';
 import decomposition from './lessons_4am_2026_2027.json';
 import units from './units_4am_2026_2027.json';
-import { dzCourseLevels, referenceCourseLevels } from '../coursesData.js';
+import { dzCourseLevels } from '../coursesData.js';
 
 /**
  * La TRAÇABILITÉ du découpage 4AM (phase 7).
@@ -270,13 +270,10 @@ describe('découpage 4AM — points d’apprentissage', () => {
 
 describe('découpage 4AM — périmètre', () => {
   it('ne fait entrer aucune leçon française dans le catalogue algérien', () => {
-    const frenchLessonIds = new Set(
-      referenceCourseLevels.flatMap((level) =>
-        level.grades.flatMap((g) => g.chapters.flatMap((c) => c.lessons.map((l) => l.id)))
-      )
-    );
+    // Le catalogue français a été supprimé (2026-09-25) : une leçon française
+    // se reconnaît désormais à son chemin, hors du niveau « moyen » algérien.
     for (const lesson of catalogueLessons) {
-      expect(frenchLessonIds.has(lesson.id), lesson.id).toBe(false);
+      expect(lesson.path, lesson.id).not.toMatch(/^\/courses\/(college|lycee)\//);
     }
   });
 

@@ -10,8 +10,16 @@
 >
 > For building a lesson, start at
 > [`../lessons/LESSON_DEVELOPMENT_GUIDE.md`](../lessons/LESSON_DEVELOPMENT_GUIDE.md).
-> Anything below that mentions French grades, `lessons/college/…` paths or
-> `App.jsx` route tables describes the **dormant** French content.
+> Anything below that mentions French grades, `lessons/college/…` paths,
+> `smaMetadata` or `App.jsx` route tables describes French content that was
+> **deleted on 2026-09-25** (lessons and catalogue alike); the contract it
+> illustrates still applies to 4AM lessons.
+>
+> **Catalogue scope (2026-09-25).** `coursesData.js` holds only the Algerian
+> catalogue, and it shows only the ميادين that carry at least one lesson
+> (today: ميدان أنساب الأعداد والحساب, with the unit « الأعداد الطبيعيّة
+> والأعداد النّاطقة »). The official programme JSON keeps all four ميادين
+> and 28 topics; a ميدان reappears automatically when a lesson names it.
 
 The contract every rebuilt lesson must honor. It descends from the pre-reset
 convention (17 lessons, removed by the controlled lesson reset —
@@ -339,6 +347,13 @@ connaissances et l'ancre du cahier, et place `LessonClassroomShell` **au-dessus*
 de l'ensemble en route « layout » sans chemin — c'est ce qui fait survivre une
 session de mode classe au passage d'un module à l'autre. Le `routes.jsx` d'une
 leçon se réduit à un `import.meta.glob` (Vite exige le littéral) et un appel.
+
+Depuis le 2026-09-25, ces enveloppes (`LessonClassroomShell`, et
+`LessonPageFrame` = porte de palier → carte des connaissances → page → ancre
+du cahier) vivent dans `common/lessonRuntime.jsx`, UN lot paresseux partagé par
+toutes les leçons : la fabrique est importée par `App.jsx`, donc rien de lourd
+ne doit y être importé statiquement. Une leçon nouvelle n'a rien à faire de
+plus. Voir [`BUNDLE_BOUNDARIES.md`](./BUNDLE_BOUNDARIES.md).
 
 Conséquence pratique : une leçon 4AM obtient le mode classe, le cahier et la
 carte des connaissances **sans rien déclarer**. Ne reconstruisez aucun des

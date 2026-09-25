@@ -115,6 +115,14 @@ App
         └── Mon cahier (NotebookSpace / NoteDetail)       retrouve, rouvre, révise
 ```
 
+**Chargement (2026-09-25).** `NotebookProvider` est dans le lot d'entrée
+(au-dessus du routeur) ; `NotebookWindow` n'y est plus : elle est chargée
+paresseusement (`lazy()` + `<Suspense>`), car elle embarque l'éditeur et
+KaTeX. Dès qu'une page publie sa position (`setLocation` non nul — leçon,
+محور, pratique), `preloadNotebookWindow()` la demande au prochain moment
+d'inactivité : la pastille « 📓 كرّاسي » s'ouvre sans attente là où elle
+existe. Voir [`BUNDLE_BOUNDARIES.md`](./BUNDLE_BOUNDARIES.md).
+
 `NotebookProvider` porte deux états **indépendants** :
 
 - `location` — où l'élève est (publiée par la coquille de la leçon, retirée

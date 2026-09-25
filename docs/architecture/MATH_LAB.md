@@ -4140,6 +4140,19 @@ lesson is never unmounted: there is nothing to save and nothing to restore,
 because nothing moved. A unit test asserts the lesson's DOM node is the
 *same node* before and after.
 
+**Loaded on demand (2026-09-25).** Because the provider sits above the
+router, anything it imports statically is in every visitor's entry bundle.
+It therefore `lazy()`-loads `MathLabOverlay.jsx` (which imports the tool
+registry, i.e. every instrument's state module and math engine — ≈ 700 KB of
+source before the split) behind a `<Suspense>` whose fallback is a spinner
+backdrop. `MathLabEntryButton` calls `preloadMathLabOverlay()` on
+pointer-enter and focus, so the chunk is usually there before the click. The
+`mathlab` i18n namespace is itself loaded on demand (see
+`ARABIC_RTL_CONTRACT.md`); the pill's two strings therefore live in the
+`lesson` namespace (`mathLabEntry.openLab`, `mathLabEntry.openLabShort`) so a
+lesson page never suspends on the Lab's vocabulary. See
+[`BUNDLE_BOUNDARIES.md`](./BUNDLE_BOUNDARIES.md).
+
 **Where the pill is, and why not elsewhere.** It was first placed in the
 floating bottom-left column (with « كرّاسي », « بطاقتي », « عرض »). That
 column already carried three pills; a fourth pushed it to 17 rem and, on a

@@ -24,27 +24,62 @@ import student from './locales/ar/student.json';
 // Les pages VISITEUR (accueil, méthode, mission, FAQ, pied de page, palette
 // de commandes). Le discours produit, pas le contenu pédagogique.
 import marketing from './locales/ar/marketing.json';
-// Le مختبر الرياضيات (Math Lab) : le chrome des instruments et de leur
-// accueil. Les outils eux-mêmes n'ont pas de contenu pédagogique à traduire.
-import mathlab from './locales/ar/mathlab.json';
 // L'espace ENSEIGNANT (« فضاء الأستاذ ») : ses classes, ses élèves, son
 // offre. Le chrome seulement — l'enseignant lit les leçons dans la coquille
 // visiteur, il n'a pas de contenu à lui.
 import teacher from './locales/ar/teacher.json';
+
 // LA LOUVE DE L'ADMINISTRATION (« لوحة الإدارة ») : le chrome du panneau —
 // navigation, titres, colonnes, états, pastilles, dialogues. Le panneau parle
 // la MÊME langue que l'espace élève : le produit algérien est arabe pour tous
 // ses rôles, l'administration comprise (master spec §14, ARABIC_RTL_CONTRACT).
+// Livré avec l'application et NON à la demande : ses primitives (Modal,
+// DataTable, FilterBar, states) sont aussi rendues par l'espace enseignant et
+// par « قسمي » — un dialogue qui suspend à son ouverture ferait disparaître
+// la page derrière son repli.
 import admin from './locales/ar/admin.json';
 
-i18n.use(initReactI18next).init({
+// ── Le namespace CHARGÉ À LA DEMANDE : `mathlab` ─────────────────────────
+// Le chrome du مختبر الرياضيات (Math Lab) — instruments et accueil,
+// ≈ 250 Ko de JSON qui partaient dans le lot d'entrée de CHAQUE visiteur.
+// Il n'est lu que par features/mathlab, dont chaque écran est derrière une
+// frontière <Suspense> : les pages /atelier (lots paresseux sous
+// StudentLayout / TeacherLayout) et le calque posé sur la leçon
+// (MathLabOverlayProvider). Le seul libellé rendu sur une page de leçon
+// (« المختبر », MathLabEntryButton) vit dans `lesson`.
+//
+// `useTranslation('mathlab')` SUSPEND jusqu'à l'arrivée du catalogue : la
+// frontière montre son repli, puis le texte arabe complet — jamais une clé
+// brute. Un namespace ajouté ici doit donc n'être lu QUE sous une telle
+// frontière, jamais par un composant partagé. Voir
+// docs/architecture/BUNDLE_BOUNDARIES.md.
+const ON_DEMAND_NAMESPACES = {
+  mathlab: () => import('./locales/ar/mathlab.json'),
+};
+
+const onDemandBackend = {
+  type: 'backend',
+  init() {},
+  read(language, namespace, callback) {
+    const load = ON_DEMAND_NAMESPACES[namespace];
+    if (!load) return callback(null, {});
+    load().then((module) => callback(null, module.default), (error) => callback(error, null));
+  },
+};
+
+i18n.use(onDemandBackend).use(initReactI18next).init({
   lng: LOCALE,
   fallbackLng: LOCALE,
   resources: {
-    [LOCALE]: { common, nav, auth, access, lesson, student, marketing, mathlab, teacher, admin },
+    [LOCALE]: { common, nav, auth, access, lesson, student, marketing, teacher, admin },
   },
+  // Les namespaces ci-dessus sont livrés avec l'application ; les autres
+  // passent par `onDemandBackend`.
+  partialBundledLanguages: true,
   defaultNS: 'common',
-  ns: ['common', 'nav', 'auth', 'access', 'lesson', 'student', 'marketing', 'mathlab', 'teacher', 'admin'],
+  // Chargés à l'initialisation. `mathlab` n'y est PAS : il est demandé par le
+  // premier `useTranslation('mathlab')`.
+  ns: ['common', 'nav', 'auth', 'access', 'lesson', 'student', 'marketing', 'teacher', 'admin'],
   interpolation: { escapeValue: false }, // React already escapes.
   returnEmptyString: false,
 });

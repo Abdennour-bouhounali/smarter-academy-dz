@@ -188,8 +188,8 @@ faire taire un constat.
 ### Sorties
 
 - `docs/reports/KNOWLEDGE_DEPENDENCY_AUDIT.md` — le rapport : 6e, 3e et 2nde dans le périmètre
-  courant, 4e relevée hors périmètre. (La 6e y est entrée le 2026-09-07 ; voir
-  `KNOWLEDGE_MAP_REFONTE_6E.md`.)
+  courant, 4e relevée hors périmètre. (La 6e y est entrée le 2026-09-07. Ces leçons françaises et leurs notes de
+  migration ont été supprimées le 2026-09-25 ; le rapport reste un historique.)
 - `docs/reports/knowledge-contracts/<niveau>_<leçon>.json` — le contrat par leçon : connaissances
   introduites, et pour chaque question ses `requires`, l'état de chacun (`prior`,
   `established@M2`, `later@M5`, `missing`, `enrichment`) et `pedagogicallyValid`.

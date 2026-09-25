@@ -1,10 +1,16 @@
 import { lazy, Suspense } from 'react';
 import { Route } from 'react-router-dom';
-import { LazyLessonKnowledgeProvider } from '../../../../../common/knowledge/LazyKnowledgeProvider';
-import LessonNotebookAnchor from '../../../../../common/notebook/LessonNotebookAnchor';
-import LessonClassroomShell from '../../../../../common/classroom/LessonClassroomShell';
-import LessonAccessGate from '../../../../../common/components/LessonAccessGate';
 import { PRINT_SUBJECT } from './unitMeta';
+import { loadLessonRuntime } from '../../../../../common/lessonRuntimeLoader';
+
+// Le runtime de leçon (coquille du mode classe, porte de palier, carte des
+// connaissances, ancre du cahier) est UN lot paresseux partagé par toutes les
+// leçons : ce fichier est importé par App.jsx, donc tout ce qu'il importe
+// statiquement part dans le lot d'entrée. Voir common/lessonRuntime.jsx et
+// docs/architecture/BUNDLE_BOUNDARIES.md.
+const LessonClassroomShell = lazy(() => loadLessonRuntime().then((m) => ({ default: m.LessonClassroomShell })));
+const LessonPageFrame = lazy(() => loadLessonRuntime().then((m) => ({ default: m.LessonPageFrame })));
+const LESSON_FALLBACK = <div className="min-h-screen bg-slate-50" />;
 
 /**
  * Fabrique les routes d'une leçon de l'unité : la page d'accueil de la leçon
@@ -30,15 +36,18 @@ export function buildLessonRoutes({ config, basePath, moduleFiles, loadKnowledge
   // pas ouvrir ne télécharge même pas le code de ses modules, et une URL de
   // module tapée directement tombe sur le même panneau que le sommaire. Le
   // palier vient du serveur (lessons.tier, décidé par l'administrateur).
+  // (La composition porte → connaissances → page → ancre vit dans
+  // LessonPageFrame, common/lessonRuntime.jsx.)
   const withSuspense = (Component, module = null) => (
-    <LessonAccessGate lessonId={config.id} title={config.title}>
-      <Suspense fallback={<div className="min-h-screen bg-slate-50" />}>
-        <LazyLessonKnowledgeProvider load={loadKnowledge} lessonId={config.id} printTitle={config.title} printSubject={PRINT_SUBJECT}>
-          <Component />
-          <LessonNotebookAnchor config={config} module={module} />
-        </LazyLessonKnowledgeProvider>
-      </Suspense>
-    </LessonAccessGate>
+    <Suspense fallback={LESSON_FALLBACK}>
+      <LessonPageFrame
+        config={config}
+        Component={Component}
+        module={module}
+        loadKnowledge={loadKnowledge}
+        printSubject={PRINT_SUBJECT}
+      />
+    </Suspense>
   );
   // La coquille du MODE CLASSE (وضع القسم) est une route « layout » sans
   // chemin, au-dessus du sommaire et des modules : elle reste montée quand
@@ -46,7 +55,14 @@ export function buildLessonRoutes({ config, basePath, moduleFiles, loadKnowledge
   // natif — qui est sur sa racine — survit à la navigation. Hors présentation
   // elle n'est qu'un <div> transparent.
   return (
-    <Route key={`${config.id}-classroom`} element={<LessonClassroomShell config={config} basePath={basePath} />}>
+    <Route
+      key={`${config.id}-classroom`}
+      element={(
+        <Suspense fallback={LESSON_FALLBACK}>
+          <LessonClassroomShell config={config} basePath={basePath} />
+        </Suspense>
+      )}
+    >
       <Route key={`${config.id}-index`} path={basePath} element={withSuspense(LessonHome)} />
       {config.modules
         .map((m) => (components[m.number] ? <Route key={`${config.id}-${m.id}`} path={m.path} element={withSuspense(components[m.number], m)} /> : null))

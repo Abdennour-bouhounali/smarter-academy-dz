@@ -9,9 +9,9 @@
 Companion docs: `LESSON_CONTRACT.md` (module/stage contract, including the `knowledgeMap: true`
 exemption), `LESSON_INTEGRATION_GUIDE.md` (routing, locking, storage), `PROGRESS_MODEL.md`
 (completion vs mastery), `INTERACTION_PEDAGOGY.md` (how a module teaches).
-Migration notes: `KNOWLEDGE_MAP_MIGRATION_2NDE.md` (2nde), `KNOWLEDGE_MAP_REFONTE_6E.md`
-(the 24 6e lessons, 2026-09-07 — including the « a brick must live in the literal `steps` »
-trap and the 6e-specific map visuals in `common/knowledge6e/`).
+Migration notes for the French 2nde and 6e lessons (including the « a brick must live in
+the literal `steps` » trap) were deleted on 2026-09-25 together with those lessons and
+`common/knowledge6e/`; they remain in git history.
 
 ---
 
@@ -1285,7 +1285,7 @@ after any change to `common/knowledge/`. They mock `/auth/me` to exercise the st
 sidebar inset is where sizing bugs actually appear.
 
 Every migrated lesson ships its own `*-carte.mjs` copy; see
-`KNOWLEDGE_MAP_MIGRATION_2NDE.md` for the per-lesson counts.
+the migration notes (deleted on 2026-09-25 with the French lessons; in git history) for the per-lesson counts.
 
 `2nde-vecteurs-carte.mjs` is the template to copy. It asserts, at every stage: the map is empty at
 lesson start; module 1 completed live updates both snapshot and drawer without navigation; for each

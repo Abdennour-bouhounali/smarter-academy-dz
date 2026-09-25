@@ -29,7 +29,7 @@
 // of mistake (an unexpected mount) as on the original one (a missing mount).
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
-import { referenceCourseLevels, dzCourseLevels } from '../packages/core/curriculum/coursesData.js';
+import { dzCourseLevels } from '../packages/core/curriculum/coursesData.js';
 import { ACTIVE_GRADE_IDS } from '../packages/core/curriculum/activeGrades.js';
 
 const ROOT = new URL('../', import.meta.url).pathname;
@@ -83,12 +83,10 @@ for (const file of walk(LESSONS)) {
 }
 
 // ── Contrôle 2 : le chemin déclaré est-il celui du lien de la carte ? ──────
-// Contre LES DEUX arbres : l'arbre de référence français décrit les 132
-// dossiers hérités ; le catalogue DZ décrit les leçons algériennes écrites
-// sous lessons/moyen/4am/ (phase 8). Les clés `<classe>:<leçon>` ne peuvent
-// pas entrer en collision (aucune classe n'appartient aux deux arbres).
+// Contre le catalogue DZ : les leçons algériennes écrites sous
+// lessons/moyen/4am/ (le catalogue français a été supprimé le 2026-09-25).
 const catalogue = new Map();
-for (const niveau of [...referenceCourseLevels, ...dzCourseLevels]) {
+for (const niveau of dzCourseLevels) {
   for (const grade of niveau.grades) {
     for (const chapitre of grade.chapters) {
       for (const lecon of chapitre.lessons) catalogue.set(`${grade.id}:${lecon.id}`, lecon.path);

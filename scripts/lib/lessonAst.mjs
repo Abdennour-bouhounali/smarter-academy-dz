@@ -13,34 +13,17 @@ import { join, dirname, resolve, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse } from '@babel/parser';
 import traverseModule from '@babel/traverse';
-// LES DEUX ARBRES, et c'est voulu.
-//
-// Cet outillage valide l'arbre de leçons SUR LE DISQUE contre les
-// déclarations structurelles du catalogue. Il doit donc voir tout dossier de
-// leçon qui existe, quelle que soit sa provenance :
-//
-//   referenceCourseLevels → les 132 dossiers FRANÇAIS, toujours sur le disque
-//                           (master spec §3). Sans eux, `validate-lessons`
-//                           les déclarerait « absents de coursesData.js » —
-//                           dormant deviendrait invalide, ce qu'il n'est pas.
-//   dzCourseLevels        → les leçons ALGÉRIENNES écrites sous
-//                           lessons/moyen/4am/. C'est la couverture que le
-//                           commentaire précédent annonçait pour « quand la
-//                           phase 7 en écrira » : elle est écrite.
-//
-// Les deux arbres ne peuvent pas entrer en collision : la clé d'index est
-// `<classe>:<leçon>`, et aucune classe n'appartient aux deux (les classes
-// françaises sont 6e…terminale, les algériennes 4am et terminale_dz).
+// Cet outillage valide l'arbre de leçons SUR LE DISQUE contre le catalogue
+// algérien (`dzCourseLevels`) : les leçons écrites sous lessons/moyen/4am/.
+// Le catalogue français et ses 132 dossiers ont été supprimés le 2026-09-25 ;
+// un dossier de leçon absent du catalogue DZ est désormais une erreur.
 //
 // ATTENTION : indexer une leçon ne l'ACTIVE pas. Ce qu'un élève peut ouvrir
 // est décidé par ACTIVE_GRADE_IDS et le registre de l'application, que
 // check-dormant-isolation.mjs vérifie séparément.
-import {
-  referenceCourseLevels,
-  dzCourseLevels,
-} from '../../packages/core/curriculum/coursesData.js';
+import { dzCourseLevels } from '../../packages/core/curriculum/coursesData.js';
 
-const courseLevels = [...referenceCourseLevels, ...dzCourseLevels];
+const courseLevels = dzCourseLevels;
 
 export const traverse = traverseModule.default || traverseModule;
 export const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..');

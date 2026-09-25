@@ -324,8 +324,7 @@ export default function ModuleLayout({
 
                 L'الوحدة est le groupe de leçons du manuel, jamais le المجال
                 (domaine) ni un المحور (LESSON_DEVELOPMENT_GUIDE §2). Une
-                leçon qui n'en déclare pas — l'arbre français dormant —
-                retombe sur son المجال, pour ne jamais rendre un fil d'Ariane
+                leçon qui n'en déclare pas retombe sur son المجال, pour ne jamais rendre un fil d'Ariane
                 à deux niveaux. */}
             {unitTitle && unitPath ? (
               <Link to={unitPath} className="hover:text-blue-600">{unitTitle}</Link>

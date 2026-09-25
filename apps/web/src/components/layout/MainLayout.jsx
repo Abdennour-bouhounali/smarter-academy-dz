@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from '../navigation/Navbar';
 import Footer from '../navigation/Footer';
@@ -33,7 +34,12 @@ export default function MainLayout() {
         style={{ '--sa-gutter-w': `${contentGutter}px` }}
         data-workspace-prior={isPrior ? 'true' : undefined}
       >
-        <Outlet />
+        {/* Les pages sont des lots paresseux (App.jsx) : cette frontière
+            garde la coquille — barre, navigation — à l'écran pendant
+            qu'une page arrive, au lieu du repli plein écran du routeur. */}
+        <Suspense fallback={<div className="min-h-[60vh]" aria-busy="true" />}>
+          <Outlet />
+        </Suspense>
       </main>
 
       {/* Footer */}

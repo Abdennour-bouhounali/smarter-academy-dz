@@ -13,9 +13,9 @@ describe('registry — dormant-grade isolation', () => {
   it('ne résout AUCUNE leçon française, alors que deux classes sont actives', () => {
     // La version positive du contrôle, et celle qui compte depuis la phase
     // 6F : les classes actives ne sont plus vides, donc « rien ne résout »
-    // ne peut plus être vrai par accident. Les 132 dossiers français sont
-    // toujours sur le disque et `import.meta.glob` les voit ; seul le filtre
-    // d'activation les empêche de se résoudre.
+    // ne peut plus être vrai par accident. (Les dossiers français ont été
+    // supprimés le 2026-09-25 ; ce test garde qu'aucun identifiant français
+    // ne se résout, même si un dossier revenait.)
     expect(ACTIVE_GRADE_IDS.length).toBeGreaterThan(0);
     expect(getLessonConfig('fonction-affine-2nde')).toBeNull();
     expect(getTotalModules('fonction-affine-2nde')).toBeNull();
@@ -40,5 +40,19 @@ describe('registry — dormant-grade isolation', () => {
       const resolved = getLessonConfig(lessonId) !== null;
       expect(resolved, `grade '${gradeId}' lesson '${lessonId}': expected resolvable=${shouldResolve}`).toBe(shouldResolve);
     }
+  });
+});
+
+// The glob in registry.js is a build-time boundary: only the active grades'
+// configs are inlined into the bundle. It must be a literal, so this guards
+// it against drifting from ACTIVE_GRADE_IDS (docs/architecture/BUNDLE_BOUNDARIES.md).
+import registrySource from './registry.js?raw';
+
+describe('registry — build-time glob scope', () => {
+  it('globs exactly the active grades, never ./**', () => {
+    const globCall = registrySource.match(/import\.meta\.glob\(\s*\[([^\]]*)\]/);
+    expect(globCall, 'registry.js must glob an explicit list of grade patterns').not.toBeNull();
+    const grades = [...globCall[1].matchAll(/'\.\/\*\/([^/]+)\/\*\*\/lesson\.config\.js'/g)].map((m) => m[1]);
+    expect(grades.sort()).toEqual([...ACTIVE_GRADE_IDS].sort());
   });
 });

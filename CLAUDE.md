@@ -3,8 +3,11 @@
 Arabic-first, RTL mathematics platform for the Algerian curriculum (المتوسط,
 starting with 4AM). Lesson content lives in `apps/web/src/lessons/moyen/`;
 shared engine in `apps/web/src/lessons/common/`; pure logic in `packages/core`;
-API in `apps/api` (Laravel). The French-era lessons under `lessons/college/` and
-`lessons/lycee/` are dormant and not mounted.
+API in `apps/api` (Laravel). The only lesson content in the repository is the
+unit « الأعداد الطبيعيّة والأعداد النّاطقة » (9 lessons, 4AM); the French-era
+lessons (`lessons/college/`, `lessons/lycee/`) and the French reference
+catalogue were **deleted on 2026-09-25** — older docs that cite them describe
+code that no longer exists.
 
 ## Read before any task
 
@@ -13,6 +16,9 @@ API in `apps/api` (Laravel). The French-era lessons under `lessons/college/` and
 - `docs/lessons/LESSON_DEVELOPMENT_GUIDE.md` — the entry point before creating
   or modifying a lesson, a module, a manipulation or an exercise.
 - The contract that governs the area you touch (`docs/architecture/*.md`).
+- `docs/architecture/BUNDLE_BOUNDARIES.md` before adding a provider, a route,
+  a heavy dependency, an `import.meta.glob` or an i18n namespace — it says
+  what may enter the entry bundle and where lazy boundaries sit.
 
 ## DOCUMENTATION SYNCHRONIZATION RULE (permanent, applies to every prompt)
 

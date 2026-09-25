@@ -625,7 +625,7 @@ formal mathematics? → *only then* the technical architecture.
 ### 15.3 Produce the design spec before code
 
 For a from-scratch or rebuilt lesson, write the lesson's Markdown design contract first
-(`docs/lessons/<GRADE>_<LESSON>_SPEC.md`; worked example: `6E_CONTENANCES_SPEC.md`), with this
+(`docs/lessons/<GRADE>_<LESSON>_SPEC.md`; the French worked examples were deleted on 2026-09-25 with their lessons), with this
 structure: Lesson Identity · Curriculum Contract · Pedagogical Vision · Target Student &
 Cognitive Challenges · Mathematical Model · Invariants · Representation Model · Global Journey ·
 Module Architecture (per-module) · Interaction Design (candidates + verdicts) · Signature

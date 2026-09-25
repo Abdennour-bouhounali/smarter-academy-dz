@@ -9,11 +9,11 @@
 // voulu n'est plus celui-là. Le catalogue algérien (`dzCourseLevels`) ne
 // contient QUE les deux classes DZ, et la base non plus ne contient qu'elles.
 //
-// L'arbre français survit sous `referenceCourseLevels`, hors produit, pour une
-// seule raison : les 132 dossiers de leçons sont restés sur le disque
-// (master spec §3) et l'outillage d'intégrité doit continuer à les valider.
-// D'où le contrôle 2 ci-dessous, qui est le vrai garde-fou de la nouvelle
-// architecture : rien de ce qui est servi à un élève ne doit lire cet arbre.
+// Depuis le 2026-09-25, l'arbre français n'existe plus du tout : le
+// catalogue de référence (`referenceCourseLevels`) et les 132 dossiers de
+// leçons françaises ont été supprimés — le dépôt ne porte plus que l'unité
+// « الأعداد الطبيعيّة والأعداد النّاطقة ». Ce contrôle garde désormais qu'ils
+// ne REVIENNENT pas (contrôles 2 et 3).
 //
 // Complète, et reste délibérément distinct de, check-routes.mjs (surface de
 // montage App.jsx) et du filtre de registry.js (couvert par
@@ -23,9 +23,9 @@
 // vocabulaire, sans rapport avec l'activation.
 //
 //   node scripts/check-dormant-isolation.mjs
-import { readFileSync, readdirSync, statSync } from 'node:fs';
-import { join, relative } from 'node:path';
-import { courseLevels, dzCourseLevels, referenceCourseLevels } from '../packages/core/curriculum/coursesData.js';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import { courseLevels, dzCourseLevels } from '../packages/core/curriculum/coursesData.js';
 import { ACTIVE_GRADE_IDS } from '../packages/core/curriculum/activeGrades.js';
 
 const ROOT = new URL('../', import.meta.url).pathname;
@@ -54,14 +54,12 @@ for (const id of ACTIVE_GRADE_IDS) {
 // ── Contrôle 2 : AUCUNE classe française dans le catalogue algérien ───────
 //
 // Le cœur de la phase 6F. Le catalogue DZ est construit depuis le programme
-// algérien ; qu'une classe française y entre signifierait que quelqu'un a
-// rebranché l'arbre de référence sur le produit.
-const frenchGradeIds = new Set(referenceCourseLevels.flatMap((l) => l.grades.map((g) => g.id)));
-const frenchLessonIds = new Set(
-  referenceCourseLevels.flatMap((level) =>
-    level.grades.flatMap((grade) => grade.chapters.flatMap((chapter) => chapter.lessons.map((l) => l.id))),
-  ),
-);
+// algérien ; qu'une classe ou une leçon française y entre signifierait que
+// quelqu'un a rebranché l'héritage français sur le produit. Le catalogue
+// français ayant été supprimé, ses classes sont nommées ici, et une leçon
+// française se reconnaît à son chemin (/courses/college|lycee/…).
+const frenchGradeIds = new Set(['6e', '5e', '4e', '3e', 'seconde', 'premiere_specialite', 'terminale_specialite', 'terminale_complementaires']);
+const isFrenchPath = (path) => /^\/courses\/(college|lycee)\//.test(path ?? '');
 
 for (const level of dzCourseLevels) {
   for (const grade of level.grades) {
@@ -70,7 +68,7 @@ for (const level of dzCourseLevels) {
     }
     for (const chapter of grade.chapters ?? []) {
       for (const lesson of chapter.lessons ?? []) {
-        if (frenchLessonIds.has(lesson.id)) {
+        if (isFrenchPath(lesson.path)) {
           problems.push(`Le catalogue algérien contient la leçon FRANÇAISE « ${lesson.id} » (classe « ${grade.id} »).`);
         }
       }
@@ -78,28 +76,15 @@ for (const level of dzCourseLevels) {
   }
 }
 
-// ── Contrôle 3 : la FRONTIÈRE de l'arbre de référence ─────────────────────
+// ── Contrôle 3 : les dossiers de leçons français ne reviennent pas ───────
 //
-// `referenceCourseLevels` est réexporté par le baril @smarter-academy/core,
-// donc RIEN dans le système de modules n'empêche une page élève de l'importer
-// et de réafficher les 133 leçons françaises. C'est la seule barrière.
-//
-// Volontairement un grep sur les sources plutôt qu'une analyse statique : la
-// faute qu'on cherche s'écrit en une ligne et se lit en une ligne.
-const walkSources = (dir, out = []) => {
-  for (const entry of readdirSync(dir)) {
-    const full = join(dir, entry);
-    if (statSync(full).isDirectory()) walkSources(full, out);
-    else if (/\.(jsx?|mjs)$/.test(entry)) out.push(full);
-  }
-  return out;
-};
-
-for (const file of walkSources(WEB_SRC)) {
-  // Les tests ont le droit de valider l'arbre français : c'est leur objet.
-  if (/\.test\.[jm]sx?$/.test(file)) continue;
-  if (readFileSync(file, 'utf8').includes('referenceCourseLevels')) {
-    problems.push(`${relative(ROOT, file)} importe « referenceCourseLevels » — l'arbre français hérité n'a aucune place dans une surface produit (il ne sert qu'à l'outillage d'intégrité des fichiers).`);
+// Supprimés le 2026-09-25. Un dossier restauré (fusion, cherry-pick) ne
+// serait ni monté ni indexé — registry.js ne globbe que les classes actives
+// — mais il ramènerait des centaines de fichiers morts que l'outillage
+// déclarerait « absents du catalogue ». On le signale ici, nommément.
+for (const legacy of ['college', 'lycee']) {
+  if (existsSync(join(WEB_SRC, 'lessons', legacy))) {
+    problems.push(`apps/web/src/lessons/${legacy}/ existe à nouveau — les leçons françaises ont été retirées du dépôt (2026-09-25) ; seule l'unité « الأعداد الطبيعيّة والأعداد النّاطقة » est gardée.`);
   }
 }
 
@@ -132,5 +117,5 @@ if (problems.length) {
 
 const dzGrades = [...dzGradeIds];
 console.log(`✅ Périmètre du catalogue : ${dzGrades.length} classe(s) algérienne(s) (${dzGrades.join(', ')}), dont ${ACTIVE_GRADE_IDS.length} active(s) (${ACTIVE_GRADE_IDS.join(', ') || 'aucune'}).`);
-console.log(`✅ Aucune classe ni leçon française dans le catalogue algérien ; aucune surface produit n'importe l'arbre de référence.`);
+console.log(`✅ Aucune classe ni leçon française dans le catalogue algérien, ni dossier de leçon français sur le disque.`);
 console.log('✅ Aucun palier dans le catalogue : gratuit / premium est décidé en base par l\'administrateur (lessons.tier).');

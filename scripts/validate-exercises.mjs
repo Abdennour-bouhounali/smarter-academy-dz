@@ -73,7 +73,8 @@ const COORDPLANE_PROPS = new Set([
 ]);
 
 /** Registre FERMÉ de laboratoires réutilisables. Jamais du code arbitraire. */
-const SUPPORT_LABS = new Set(['TankLab', 'RateProbes']);
+// Vide depuis le 2026-09-25 (voir apps/web/src/features/practice/PracticeLab.jsx).
+const SUPPORT_LABS = new Set([]);
 
 const HINT_ORDER = ['look', 'direction', 'strategy'];
 

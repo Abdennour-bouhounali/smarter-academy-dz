@@ -10,6 +10,7 @@ import { useLessonChromeLayout } from '../lessons/common/hooks/useLessonChrome';
 import { resolveMasteryState, masteryTooltip } from '../lessons/common/components/LearningPointMastery';
 import { useContentAvailability } from '../context/ContentAvailabilityContext';
 import { ArrowForward } from '../components/common/DirectionalIcons';
+import { usePrefetchLessonRuntime } from '../lessons/common/lessonRuntimeLoader';
 
 /**
  * La page d'une UNITÉ du manuel (الوحدة) — le niveau entre le ميدان et le درس.
@@ -138,6 +139,9 @@ function LessonBlock({ lesson, index, mastery, t }) {
 }
 
 export default function UnitPage() {
+  // Cette page mène à des leçons : leur runtime partagé arrive pendant
+  // l'inactivité, le clic ne l'attend pas (lessonRuntimeLoader.js).
+  usePrefetchLessonRuntime();
   const { t } = useTranslation('student');
   const { levelId, gradeId, chapterId, unitId } = useParams();
   const unit = getUnitById(unitId);

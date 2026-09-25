@@ -7,9 +7,9 @@ English and French.
 
 The live content is the 4AM textbook unit 1 (« الأعداد الطبيعيّة والأعداد
 النّاطقة ») — eight lessons plus a synthesis — under
-`apps/web/src/lessons/moyen/4am/`. The French lessons under `lessons/college/`
-and `lessons/lycee/` are **dormant**: they stay on disk but are not indexed,
-mounted or reachable.
+`apps/web/src/lessons/moyen/4am/` — the only lesson content in the repository.
+The French-era lessons (`lessons/college/`, `lessons/lycee/`) and the French
+reference catalogue were deleted on 2026-09-25.
 
 ## Repository structure
 

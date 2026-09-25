@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlaskConical } from 'lucide-react';
 import { AuthContext } from '../../../context/AuthContext';
-import { useMathLabOverlay } from './MathLabOverlayProvider.jsx';
+import { preloadMathLabOverlay, useMathLabOverlay } from './MathLabOverlayProvider.jsx';
 
 /**
  * « 🧪 المختبر » — LE POINT D'ENTRÉE du مختبر depuis une leçon ou un محور.
@@ -35,18 +35,26 @@ import { useMathLabOverlay } from './MathLabOverlayProvider.jsx';
  * rend, donc le bouton suit sans rien à portaliser.
  */
 export default function MathLabEntryButton({ className = '' }) {
-  const { t } = useTranslation('mathlab');
+  // Namespace `lesson`, pas `mathlab` : ce bouton est rendu sur CHAQUE page
+  // de leçon, alors que `mathlab` (≈ 250 Ko) est chargé à la demande. Le lire
+  // ici suspendrait la leçon entière le temps de télécharger le vocabulaire
+  // de quatorze instruments (i18n/index.js).
+  const { t } = useTranslation('lesson');
   const { token } = useContext(AuthContext);
   const { open, isOpen } = useMathLabOverlay();
 
   if (!token) return null;
 
-  const label = t('overlay.openLab');
+  const label = t('mathLabEntry.openLab');
 
   return (
     <button
       type="button"
       onClick={() => open()}
+      // Le calque est un lot à part : on le demande dès que l'intention se
+      // devine (survol, focus clavier, doigt posé), pas au clic.
+      onPointerEnter={preloadMathLabOverlay}
+      onFocus={preloadMathLabOverlay}
       title={label}
       aria-label={label}
       aria-haspopup="dialog"
@@ -60,7 +68,7 @@ export default function MathLabEntryButton({ className = '' }) {
           porte alors seule le sens. */}
       <span className="flex h-9 items-center gap-1.5 rounded-full border border-blue-200 bg-white px-2.5 font-mono text-xs font-bold text-blue-600 shadow-sm transition-colors group-hover:border-blue-300 group-hover:bg-blue-50 group-hover:text-blue-700 group-focus-visible:ring-2 group-focus-visible:ring-blue-400 sm:px-3">
         <FlaskConical size={14} aria-hidden="true" />
-        <span className="hidden sm:inline">{t('overlay.openLabShort')}</span>
+        <span className="hidden sm:inline">{t('mathLabEntry.openLabShort')}</span>
       </span>
     </button>
   );

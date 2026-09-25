@@ -2,6 +2,15 @@
 
 > Livrée le 2026-09-10. **Activée pour une seule leçon : 2nde « Fonction affine ».**
 >
+> **2026-09-25 :** cette leçon de référence, son contenu de pratique
+> (`content/practice/seconde/`), ses misconceptions `MISC-AFF-*` et ses deux
+> laboratoires (`TankLab`, `RateProbes`) ont été **supprimés** avec toutes les
+> leçons françaises. Le moteur décrit ici est inchangé et sert les 9 leçons de
+> l'unité 4AM. Le registre fermé des laboratoires
+> (`features/practice/PracticeLab.jsx`, `SUPPORT_LABS` dans
+> `scripts/validate-exercises.mjs`) est désormais **vide** : un labo s'y ajoute
+> aux deux endroits, jamais dans le contenu.
+>
 > Cible : [`EXERCISE_ENGINE_ARCHITECTURE.md`](./EXERCISE_ENGINE_ARCHITECTURE.md).
 > Audit préalable : [`EXERCISE_ENGINE_INTEGRATION_AUDIT.md`](./EXERCISE_ENGINE_INTEGRATION_AUDIT.md).
 

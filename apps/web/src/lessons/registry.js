@@ -7,16 +7,26 @@
 // implementation yet (status 'coming_soon'); progress utilities must skip it
 // rather than assume a module count.
 //
-// Dormant-grade isolation (docs/ALGERIA_MIGRATION_AUDIT.md §15): every
-// French lesson folder stays physically present on disk (master spec §3),
-// but only folders under an active grade (path shape
-// `./<college|lycee>/<gradeId>/...`) are indexed here. This is defense in
+// Active-grade isolation (docs/ALGERIA_MIGRATION_AUDIT.md §15): only folders
+// under an active grade (path shape `./<level>/<gradeId>/...`) are indexed
+// here. (The French lesson folders this once filtered out were deleted on
+// 2026-09-25.) This is defense in
 // depth on top of the coursesData.js catalogue filter (activeGrades.js) —
 // even if some other code path bypassed the catalogue, an inactive grade's
 // lesson.config.js still could not be resolved through this registry.
+//
+// The glob itself is ALSO scoped to the active grades, at build time. A glob
+// over './**' made Vite inline all 132 French configs into the entry bundle
+// (≈ 1.1 MB of source, every visitor, discarded by the runtime filter below).
+// `import.meta.glob` only accepts literals, so the grade list is spelled out
+// here — registry.test.js fails if it drifts from ACTIVE_GRADE_IDS.
+// See docs/architecture/BUNDLE_BOUNDARIES.md.
 import { ACTIVE_GRADE_IDS } from '@smarter-academy/core';
 
-const configModules = import.meta.glob('./**/lesson.config.js', { eager: true });
+const configModules = import.meta.glob(
+  ['./*/4am/**/lesson.config.js', './*/terminale_dz/**/lesson.config.js'],
+  { eager: true },
+);
 
 function gradeIdFromModulePath(path) {
   // './college/6e/domaine/lecon/lesson.config.js' -> '6e'

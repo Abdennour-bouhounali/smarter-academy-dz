@@ -7,11 +7,10 @@ import CourseLayout from './components/layout/CourseLayout';
 import Home from './pages/Home';
 const Methode = lazy(() => import('./pages/Methode'));
 const About = lazy(() => import('./pages/About'));
-import Courses from './pages/Courses';
+const Courses = lazy(() => import('./pages/Courses'));
 // ── Stripe : DÉMONTÉ du produit algérien (master spec §18) ─────────────
 // Tarifs.jsx, Abonnement.jsx et AbonnementRetour.jsx restent PHYSIQUEMENT
-// présents sur le disque — comme les 132 leçons françaises dormantes, et
-// pour la même raison : le produit algérien ne les sert pas, mais un
+// présents sur le disque : le produit algérien ne les sert pas, mais un
 // paiement en ligne algérien autorisé pourrait un jour réutiliser cette
 // mécanique. Ce qui compte est qu'aucune route ne les atteigne : sans
 // import ni montage, elles ne sont ni navigables ni même incluses au lot.
@@ -71,13 +70,20 @@ const TeacherProfile = lazy(() => import('./pages/teacher/TeacherProfile'));
 // L'élève et sa classe (« قسمي »), et le lien public d'une invitation.
 const Qism = lazy(() => import('./pages/student/Qism'));
 const JoinInvitation = lazy(() => import('./pages/JoinInvitation'));
-import StudentHome from './pages/student/StudentHome';
-import MesCours from './pages/student/MesCours';
-import Explorer from './pages/student/Explorer';
-import Progression from './pages/student/Progression';
-import Notebook, { NotebookNotePage, NotebookReviewPage } from './pages/student/Notebook';
-import Profil from './pages/student/Profil';
-import ChooseGrade from './pages/student/ChooseGrade';
+// Les pages de l'espace élève sont des lots À PART, comme l'admin et
+// l'enseignant : un visiteur de « / » ne paie ni le cahier (KaTeX), ni la
+// progression, ni l'explorateur. Les layouts (StudentLayout, MainLayout)
+// posent leur propre <Suspense> autour de <Outlet/> : la barre latérale reste
+// à l'écran pendant qu'une page arrive. Voir docs/architecture/BUNDLE_BOUNDARIES.md.
+const StudentHome = lazy(() => import('./pages/student/StudentHome'));
+const MesCours = lazy(() => import('./pages/student/MesCours'));
+const Explorer = lazy(() => import('./pages/student/Explorer'));
+const Progression = lazy(() => import('./pages/student/Progression'));
+const Notebook = lazy(() => import('./pages/student/Notebook'));
+const NotebookNotePage = lazy(() => import('./pages/student/Notebook').then((m) => ({ default: m.NotebookNotePage })));
+const NotebookReviewPage = lazy(() => import('./pages/student/Notebook').then((m) => ({ default: m.NotebookReviewPage })));
+const Profil = lazy(() => import('./pages/student/Profil'));
+const ChooseGrade = lazy(() => import('./pages/student/ChooseGrade'));
 const Activation = lazy(() => import('./pages/student/Activation'));
 const DiagnosticIntro = lazy(() => import('./pages/student/diagnostic/DiagnosticIntro'));
 const DiagnosticRun = lazy(() => import('./pages/student/diagnostic/DiagnosticRun'));
@@ -143,12 +149,12 @@ function LessonProgressSync() {
 // docs/architecture/LESSON_CONTRACT.md. An unmatched /courses/... URL falls
 // through to the catch-all below.
 //
-// Les 132 leçons FRANÇAISES héritées restent non importées : leurs classes
-// sont hors du produit algérien (activeGrades.js). Seules les leçons 4AM
-// écrites sous lessons/moyen/4am/ sont montées ici.
+// Les leçons FRANÇAISES héritées ont été supprimées du dépôt (2026-09-25) :
+// seules les leçons 4AM écrites sous lessons/moyen/4am/ existent, et elles
+// sont toutes montées ici.
 // Les neuf leçons de l'unité 1 du manuel (phase 8), dans l'ordre du manuel.
 // Chaque fabrique est importée ET appelée ici : c'est ce que scripts/check-routes.mjs relit.
-import UnitPage from './pages/UnitPage';
+const UnitPage = lazy(() => import('./pages/UnitPage'));
 import qasimAdadTabiiRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/routes';
 import qawasimAdadTabiiRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qawasim-adad-tabii/routes';
 import khawassQawasimRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/khawass-qawasim/routes';
@@ -368,11 +374,10 @@ export default function App() {
             {/* La page d'une UNITÉ du manuel (الوحدة) : le niveau entre le ميدان et le درس (phase 8). */}
             <Route path="/courses/:levelId/:gradeId/:chapterId/units/:unitId" element={<UnitPage />} />
 
-            {/* Les leçons 4AM montées. Les dossiers de leçons FRANÇAISES
-                restent sur le disque sans être importés : leurs classes ne
-                sont pas dans ACTIVE_GRADE_IDS
-                (packages/core/curriculum/activeGrades.js), et
-                check-dormant-isolation.mjs le vérifie à chaque build. */}
+            {/* Les leçons 4AM montées — les seules du dépôt depuis le
+                2026-09-25. check-routes.mjs vérifie que chacune est branchée,
+                check-dormant-isolation.mjs qu'aucun dossier français ne
+                revient. */}
             {qasimAdadTabiiRoutes()}
             {qawasimAdadTabiiRoutes()}
             {khawassQawasimRoutes()}

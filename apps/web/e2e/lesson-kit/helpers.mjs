@@ -1,10 +1,8 @@
 // Shared harness for the lesson-kit deep tests (Playwright, resolved from the repo's node_modules).
-// Run: node apps/web/e2e/lesson-kit/t1-core.mjs   (dev server on :5183)
+// Run e.g.: node apps/web/e2e/lesson-kit/4am-aadad-tabiiya-natiqa.mjs   (dev server on :5183)
 import { chromium } from 'playwright';
 
 export const BASE = process.env.KIT_BASE || 'http://localhost:5183';
-export const LESSON = `${BASE}/courses/college/6e/nombres_calculs/nombres-entiers`;
-export const STORE_KEY = 'u_anon_smarter_lesson_nombres-entiers';
 export const XP_KEY = 'u_anon_smarter_global_xp';
 export const SHOT_DIR = new URL('./shots/', import.meta.url).pathname;
 import { mkdirSync } from 'node:fs';

@@ -64,6 +64,15 @@ They must NOT appear in:
 
 Do NOT delete dormant content unless there is a later explicit decision to remove it.
 
+> **Later explicit decision (2026-09-25, project owner).** The dormant French
+> content has been removed: the French lessons (`lessons/college/`,
+> `lessons/lycee/`), their practice content, specs, e2e scripts, French-only
+> engines and the French reference catalogue. The repository now holds only
+> the unit « الأعداد الطبيعيّة والأعداد النّاطقة » of 4AM, and the catalogue
+> shows only the ميادين that carry lessons. The requirements below about not
+> exposing French content remain true, and `check:dormant-isolation` now also
+> fails if a French lesson folder reappears.
+
 The exact dormant content must be determined from the copied repository rather than guessed.
 
 ---

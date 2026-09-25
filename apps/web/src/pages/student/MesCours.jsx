@@ -11,8 +11,12 @@ import LessonCard from '../../components/student/LessonCard';
 import UnitGroup from '../../components/student/UnitGroup';
 import { groupLessonsByUnit } from '../../components/student/unitGrouping';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
+import { usePrefetchLessonRuntime } from '../../lessons/common/lessonRuntimeLoader';
 
 export default function MesCours() {
+  // Cette page mène à des leçons : leur runtime partagé arrive pendant
+  // l'inactivité, le clic ne l'attend pas (lessonRuntimeLoader.js).
+  usePrefetchLessonRuntime();
   const { t } = useTranslation('student');
   const { t: tc } = useTranslation('common');
   useDocumentMeta(t('courses.metaTitle'), t('courses.metaDescription'));

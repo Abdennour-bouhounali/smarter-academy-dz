@@ -28,6 +28,7 @@ import RecentLearning from '../../features/home/components/RecentLearning';
 import LearningSpaceNav from '../../features/home/components/LearningSpaceNav';
 import PremiumCard from '../../features/home/components/PremiumCard';
 import ClassContextBanner from '../../features/home/components/ClassContextBanner';
+import { usePrefetchLessonRuntime } from '../../lessons/common/lessonRuntimeLoader';
 
 /**
  * « 🏠 فضائي » — l'ACCUEIL de l'espace élève, qui répond à une seule
@@ -53,6 +54,9 @@ import ClassContextBanner from '../../features/home/components/ClassContextBanne
  * (« — », squelette) au lieu d'afficher un zéro.
  */
 export default function StudentHome() {
+  // Cette page mène à des leçons : leur runtime partagé arrive pendant
+  // l'inactivité, le clic ne l'attend pas (lessonRuntimeLoader.js).
+  usePrefetchLessonRuntime();
   const { t } = useTranslation('student');
   const { t: tc } = useTranslation('common');
   useDocumentMeta(t('home.metaTitle'), t('home.metaDescription'));

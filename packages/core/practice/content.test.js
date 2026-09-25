@@ -3,6 +3,7 @@ import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { evaluateAnswer, OUTCOMES } from './answerEvaluator.js';
+import { dzCourseLevels } from '../curriculum/coursesData.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../../content/practice');
 
@@ -100,15 +101,25 @@ describe('contenu de pratique — contrat exécutable', () => {
     }
   });
 
-  it('chaque learning point de la leçon est primaire quelque part', () => {
+  it('chaque learning point d\'une leçon pratiquée est primaire quelque part', () => {
+    // Généralisé le 2026-09-25 : ce test visait la seule leçon française qui
+    // avait des exercices (fonction-affine-2nde, supprimée). La règle vaut
+    // pour toute leçon qui a un dossier de pratique : aucun de ses points
+    // d'apprentissage ne doit rester sans question qui le vise en premier.
     const primary = new Set();
     for (const { data } of exercises) {
       for (const q of data.questions) {
         for (const lp of q.learningPoints) if (lp.role === 'primary') primary.add(lp.code);
       }
     }
-    for (let n = 1; n <= 11; n++) {
-      expect(primary, `P${n} n'est primaire nulle part`).toContain(`seconde_fonction-affine-2nde_P${n}`);
+    const practised = dzCourseLevels
+      .flatMap((level) => level.grades.flatMap((grade) => grade.chapters.flatMap((c) => c.lessons.map((lesson) => ({ grade, lesson })))))
+      .filter(({ grade, lesson }) => existsSync(join(ROOT, grade.id, lesson.id)));
+    expect(practised.length).toBeGreaterThan(0);
+    for (const { lesson } of practised) {
+      for (const lp of lesson.learningPoints) {
+        expect(primary, `${lp.id} n'est primaire nulle part`).toContain(lp.id);
+      }
     }
   });
 });

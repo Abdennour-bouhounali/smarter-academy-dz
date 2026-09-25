@@ -1,10 +1,37 @@
 import {
-  createContext, useCallback, useContext, useMemo, useRef, useState,
+  Suspense, createContext, lazy, useCallback, useContext, useMemo, useRef, useState,
 } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
 import { createNote, updateNote } from '../../../services/practiceService';
 import { contextPayload } from './noteContext';
-import NotebookWindow from './NotebookWindow';
+
+/**
+ * La fenêtre est un lot À PART, chargé à la demande.
+ *
+ * Ce fournisseur est monté au-dessus du routeur : ce qu'il importe
+ * statiquement part dans le lot d'entrée de chaque visiteur. La fenêtre
+ * embarque l'éditeur, KaTeX (≈ 580 Ko de source) et framer-motion — pour un
+ * cahier qui ne s'ouvre que sur un geste de l'élève.
+ *
+ * Préchargement : dès qu'une page PUBLIE sa position (`setLocation` non nul,
+ * c.-à-d. une leçon, un محور, une pratique), le lot est demandé au prochain
+ * moment d'inactivité. La pastille « كرّاسي » s'ouvre donc sans attente là où
+ * elle existe, et « / » ne paie rien. Voir docs/architecture/BUNDLE_BOUNDARIES.md.
+ */
+const loadNotebookWindow = () => import('./NotebookWindow');
+const NotebookWindow = lazy(loadNotebookWindow);
+let notebookWindowRequested = false;
+
+export function preloadNotebookWindow() {
+  if (notebookWindowRequested) return;
+  notebookWindowRequested = true;
+  const run = () => loadNotebookWindow().catch(() => { notebookWindowRequested = false; });
+  if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+    window.requestIdleCallback(run, { timeout: 3000 });
+  } else {
+    setTimeout(run, 1);
+  }
+}
 
 /**
  * LE cahier — une seule instance, montée au-dessus du routeur.
@@ -42,6 +69,7 @@ export function NotebookProvider({ children }) {
   const callbacks = useRef({});
 
   const setLocation = useCallback((next) => {
+    if (next) preloadNotebookWindow();
     setLocationState((prev) => (sameLocation(prev, next) ? prev : next));
   }, []);
 
@@ -92,6 +120,7 @@ export function NotebookProvider({ children }) {
     <NotebookContext.Provider value={value}>
       {children}
       {session && (
+        <Suspense fallback={null}>
         <NotebookWindow
           key={session.key}
           open={open}
@@ -103,6 +132,7 @@ export function NotebookProvider({ children }) {
           onUpdate={update}
           onSaved={saved}
         />
+        </Suspense>
       )}
     </NotebookContext.Provider>
   );

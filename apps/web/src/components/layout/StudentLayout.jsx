@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { Suspense, useContext } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import StudentNavbar from '../student/StudentNavbar';
 import BackgroundLayer from '../common/BackgroundLayer';
@@ -59,7 +59,12 @@ export default function StudentLayout() {
         }}
         data-workspace-prior={isPrior ? 'true' : undefined}
       >
-        <Outlet />
+        {/* Les pages sont des lots paresseux (App.jsx) : cette frontière
+            garde la coquille — barre, navigation — à l'écran pendant
+            qu'une page arrive, au lieu du repli plein écran du routeur. */}
+        <Suspense fallback={<div className="min-h-screen" aria-busy="true" />}>
+          <Outlet />
+        </Suspense>
       </main>
     </div>
   );

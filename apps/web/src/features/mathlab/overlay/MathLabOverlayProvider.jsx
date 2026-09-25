@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo, useRef, useState } from 'react';
+import { Suspense, createContext, lazy, useCallback, useContext, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 /**
  * La racine d'une séance de وضع القسم EN COURS, ou `document.body`.
@@ -20,10 +20,47 @@ function presentationRoot() {
 
   return document.querySelector('.sa-classroom-root--active') ?? document.body;
 }
-import MathLabOverlay from './MathLabOverlay.jsx';
 import { PICKER } from './overlayState.js';
 
 export { PICKER };
+
+/**
+ * Le calque est chargé À LA DEMANDE — jamais au démarrage.
+ *
+ * Ce fournisseur est monté au-dessus du routeur, donc tout ce qu'il importe
+ * statiquement part dans le lot d'entrée de CHAQUE visiteur. Le calque, lui,
+ * importe le registre des instruments (toolRegistry.js), et chaque
+ * descripteur y importe son état et son `summarize` — les moteurs
+ * mathématiques des quatorze instruments (≈ 700 Ko de source). Mesuré dans
+ * index-*.js avant ce découpage, pour un calque que la plupart des visiteurs
+ * n'ouvrent jamais.
+ *
+ * `preloadMathLabOverlay()` est appelé par MathLabEntryButton au survol et
+ * au focus : le temps que le doigt ou le clic arrive, le lot est déjà là.
+ * `import()` est mémoïsé par le navigateur, l'appeler dix fois ne coûte rien.
+ * Voir docs/architecture/BUNDLE_BOUNDARIES.md.
+ */
+const loadOverlay = () => import('./MathLabOverlay.jsx');
+const MathLabOverlay = lazy(loadOverlay);
+
+export function preloadMathLabOverlay() {
+  loadOverlay().catch(() => {
+    // Un préchargement raté n'est pas une panne : l'ouverture réessaiera.
+  });
+}
+
+/** Ce que l'élève voit pendant le PREMIER téléchargement du calque, s'il n'a pas été préchargé. */
+function OverlayLoading() {
+  return (
+    <div
+      className="fixed inset-0 z-[90] flex items-center justify-center bg-slate-900/30"
+      role="status"
+      aria-busy="true"
+    >
+      <span className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" aria-hidden="true" />
+    </div>
+  );
+}
 
 /**
  * LE مختبر OUVERT PAR-DESSUS LA LEÇON — une seule instance, montée au-dessus
@@ -97,7 +134,11 @@ export function MathLabOverlayProvider({ children }) {
     [tool, open, close, pick, backToPicker],
   );
 
-  const overlay = tool !== null ? <MathLabOverlay /> : null;
+  const overlay = tool !== null ? (
+    <Suspense fallback={<OverlayLoading />}>
+      <MathLabOverlay />
+    </Suspense>
+  ) : null;
 
   return (
     <MathLabOverlayContext.Provider value={value}>

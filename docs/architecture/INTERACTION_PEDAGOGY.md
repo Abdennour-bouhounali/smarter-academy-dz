@@ -1262,7 +1262,9 @@ Auto-completion:        AUTO (unlock: config | first-gesture — which gesture r
 Where it lives:
 
 - in the per-lesson design spec under `docs/lessons/` (pattern:
-  `docs/lessons/6E_ALGORITHMIQUE_PROGRAMMATION_SPEC.md`), one block per activity;
+  `docs/lessons/<GRADE>_<LESSON>_SPEC.md`; the French worked examples were
+  deleted on 2026-09-25 with their lessons — read one from git history), one
+  block per activity;
 - as the header comment of the component or module that implements the activity, so an auditing
   agent can compare the intent with the code without leaving the file.
 

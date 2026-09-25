@@ -8,10 +8,17 @@
 
 The live reference is the 4AM textbook unit 1 under
 `apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/`:
-eight textbook lessons plus one synthesis. Everything under `lessons/college/`
-and `lessons/lycee/` is **dormant French content** — not indexed, not mounted,
-not a model to copy from. It uses an older per-lesson wiring that the 4AM unit
-has since replaced.
+eight textbook lessons plus one synthesis — the **only** lesson content in the
+repository. The French-era lessons (`lessons/college/`, `lessons/lycee/`), their
+specs, practice content, e2e scripts and French-only engines were deleted on
+2026-09-25; older docs that cite them are describing git history.
+
+**Loading.** A new lesson inherits the loading ladder with nothing to declare:
+its `lesson.config.js` is metadata in the entry bundle (via the registry), the
+shared lesson runtime is one lazy chunk, and each page/module is its own lazy
+chunk. Never import something heavy from `routes.jsx` or `_unit/lessonRoutes.jsx`
+— `App.jsx` imports them. See
+[`../architecture/BUNDLE_BOUNDARIES.md`](../architecture/BUNDLE_BOUNDARIES.md).
 
 ---
 
@@ -69,8 +76,7 @@ Neither الرئيسية nor the grade: the student knows which class they are i
 the way back to the catalogue is in the sidebar. What helps here is knowing
 *where in the textbook* they are. The الوحدة comes from `MODULE_CTX`
 (`unitTitle`/`unitPath`, built once in the unit's `_unit/moduleContext.js`
-from `unitMeta.js`); a lesson that declares none — the dormant French tree —
-falls back to its المجال, so the trail is never two levels long. The one exception is internal: Classroom Mode calls
+from `unitMeta.js`); a lesson that declares none falls back to its المجال, so the trail is never two levels long. The one exception is internal: Classroom Mode calls
 the slices of a presented module "units" in code (`moduleUnits`), which is a
 presentation concept, not a curriculum one.
 
@@ -686,8 +692,11 @@ npm run build
 
 `check:lessons` runs, in order: `validate:lessons --strict`,
 `validate:exercises --strict`, `audit:knowledge:gate`, `check:katex`,
-`check:routes`, `check:level-leak`, `check:non-blocking`,
-`check:dormant-isolation`, `check:textbook`, `check:activation-drift`.
+`check:routes`, `check:non-blocking`, `check:dormant-isolation`,
+`check:textbook`, `check:activation-drift`. (`check:level-leak`, a French 6e
+vocabulary audit, was removed with the French lessons on 2026-09-25;
+`check:dormant-isolation` now also fails if a `lessons/college|lycee/` folder
+comes back.)
 
 **Answer keys are checked, not trusted** (2026-09-24 answer audit).
 `validate:lessons --strict` refuses, in live `moyen/` lessons, an assessed
@@ -758,8 +767,8 @@ cd apps/api && php artisan test -c phpunit.local.xml
 > The active-grade gate is **deliberately off during tests**
 > (`config/curriculum.php` explains why): the inherited Feature suite builds ad
 > hoc grade fixtures — `6e`, `seconde`, `3e` — to exercise publication, tier
-> and entitlement logic that has nothing to do with grade activation. Dormant
-> isolation has its own dedicated coverage (`registry.test.js`,
+> and entitlement logic that has nothing to do with grade activation.
+> Active-grade isolation has its own dedicated coverage (`registry.test.js`,
 > `check-dormant-isolation.mjs`, `check-routes.mjs`).
 >
 > Omitting that line makes eleven progression and evidence tests fail on a 422,

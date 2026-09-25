@@ -852,5 +852,9 @@
     "navigator": "الأسئلة",
     "goToQuestion": "الانتقال إلى السؤال {{number}}",
     "reviewHint": "تمّ كشف النتائج: {{correct}} من {{total}}. استعمل «السابق» و«التالي» لمراجعة الأسئلة واحدًا واحدًا."
+  },
+  "mathLabEntry": {
+    "openLab": "افتح مختبر الرياضيات",
+    "openLabShort": "المختبر"
   }
 }

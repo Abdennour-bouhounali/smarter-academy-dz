@@ -18,7 +18,7 @@
 > | TanStack Query for server state (§11) | a fetch-based client in `apps/web/src/services/` |
 > | NestJS + Prisma + PostgreSQL (§15) | Laravel + Eloquent + MySQL, in `apps/api` |
 > | PixiJS / Phaser / Matter.js (§12–§14) | none of them; manipulations are inline SVG + DOM |
-> | "Fractions 6e" as the reference lesson (§33–§34) | the 4AM unit-1 lessons; all 6e content is dormant |
+> | "Fractions 6e" as the reference lesson (§33–§34) | the 4AM unit-1 lessons; all French content (6e included) was deleted on 2026-09-25 |
 > | French collège/lycée students (§1, §5, §35) | Algerian المتوسط students; the UI is Arabic and RTL |
 > | `lesson.config.ts`, `Module01.tsx` (§53) | `lesson.config.js`, `Module<NN><Descriptor>.jsx` |
 >

@@ -39,11 +39,11 @@ class PublicationAccessMatrixTest extends TestCase
     {
         parent::setUp();
 
-        $grade = Grade::create(['code' => 'seconde', 'name' => 'Seconde', 'level' => 'lycee']);
-        $chapter = Chapter::create(['grade_id' => $grade->id, 'code' => 'fonctions', 'title' => 'Fonctions', 'order' => 0]);
+        $grade = Grade::create(['code' => '4am', 'name' => 'السنة الرابعة متوسط', 'level' => 'moyen']);
+        $chapter = Chapter::create(['grade_id' => $grade->id, 'code' => 'ansab_al_aadad_wal_hisab', 'title' => 'ميدان أنساب الأعداد والحساب', 'order' => 0]);
         $this->lesson = Lesson::create([
-            'chapter_id' => $chapter->id, 'code' => 'fonction-affine-2nde',
-            'title' => 'Fonction affine', 'status' => 'available', 'order' => 0,
+            'chapter_id' => $chapter->id, 'code' => 'qasim-mushtarak-akbar',
+            'title' => 'القاسم المشترك الأكبر', 'status' => 'available', 'order' => 0,
             'publication_status' => Lesson::PUB_PUBLISHED,
         ]);
         $this->module = LessonModule::create([
@@ -51,11 +51,11 @@ class PublicationAccessMatrixTest extends TestCase
             'title' => 'Découvrir', 'publication_status' => LessonModule::PUB_PUBLISHED,
         ]);
         LearningPoint::create([
-            'lesson_id' => $this->lesson->id, 'code' => 'seconde_fonction-affine-2nde_P1',
+            'lesson_id' => $this->lesson->id, 'code' => '4am_qasim-mushtarak-akbar_P1',
             'title' => 'Reconnaître une fonction affine', 'order' => 1,
         ]);
 
-        $this->student = User::factory()->create(['role' => User::ROLE_STUDENT, 'grade' => 'seconde']);
+        $this->student = User::factory()->create(['role' => User::ROLE_STUDENT, 'grade' => '4am']);
         PracticeCapability::forget();
     }
 
@@ -82,7 +82,7 @@ class PublicationAccessMatrixTest extends TestCase
     {
         $this->lesson->update(['publication_status' => $status]);
 
-        $response = $this->asStudent()->putJson('/api/v1/lessons/fonction-affine-2nde/progress', [
+        $response = $this->asStudent()->putJson('/api/v1/lessons/qasim-mushtarak-akbar/progress', [
             'completedModules' => [],
             'currentModule' => 1,
             'status' => 'in_progress',
@@ -97,11 +97,11 @@ class PublicationAccessMatrixTest extends TestCase
     {
         $this->lesson->update(['publication_status' => $status]);
 
-        $response = $this->asStudent()->postJson('/api/v1/lessons/fonction-affine-2nde/evidence', [
+        $response = $this->asStudent()->postJson('/api/v1/lessons/qasim-mushtarak-akbar/evidence', [
             'questionCode' => 'q1',
             'attemptId' => (string) Str::uuid(),
             'isCorrect' => true,
-            'learningPointCodes' => ['seconde_fonction-affine-2nde_P1'],
+            'learningPointCodes' => ['4am_qasim-mushtarak-akbar_P1'],
         ]);
 
         // Publié : 200/201. Fermé : 422, et surtout AUCUNE preuve enregistrée.
@@ -114,7 +114,7 @@ class PublicationAccessMatrixTest extends TestCase
     {
         $this->lesson->update(['publication_status' => $status]);
 
-        $response = $this->asStudent()->putJson('/api/v1/lessons/fonction-affine-2nde/final-test-attempt', [
+        $response = $this->asStudent()->putJson('/api/v1/lessons/qasim-mushtarak-akbar/final-test-attempt', [
             'score' => 4, 'totalQuestions' => 5, 'answers' => [], 'submittedAt' => now()->toIso8601String(),
         ]);
 
@@ -132,7 +132,7 @@ class PublicationAccessMatrixTest extends TestCase
     {
         $this->module->update(['publication_status' => $status]);
 
-        $response = $this->asStudent()->putJson('/api/v1/lessons/fonction-affine-2nde/progress', [
+        $response = $this->asStudent()->putJson('/api/v1/lessons/qasim-mushtarak-akbar/progress', [
             'completedModules' => ['1'],
             'currentModule' => 1,
             'status' => 'in_progress',
@@ -148,7 +148,7 @@ class PublicationAccessMatrixTest extends TestCase
         $this->module->update(['publication_status' => LessonModule::PUB_DRAFT]);
         $this->lesson->update(['publication_status' => Lesson::PUB_PUBLISHED]);
 
-        $this->asStudent()->putJson('/api/v1/lessons/fonction-affine-2nde/progress', [
+        $this->asStudent()->putJson('/api/v1/lessons/qasim-mushtarak-akbar/progress', [
             'completedModules' => ['1'],
             'currentModule' => 1,
             'status' => 'in_progress',
@@ -177,7 +177,7 @@ class PublicationAccessMatrixTest extends TestCase
 
         $this->module->update(['publication_status' => LessonModule::PUB_HIDDEN]);
 
-        $this->asStudent()->putJson('/api/v1/lessons/fonction-affine-2nde/progress', [
+        $this->asStudent()->putJson('/api/v1/lessons/qasim-mushtarak-akbar/progress', [
             'completedModules' => ['1', '2'],
             'currentModule' => 2,
             'status' => 'in_progress',
@@ -194,16 +194,16 @@ class PublicationAccessMatrixTest extends TestCase
     {
         PracticeExercise::create([
             'lesson_id' => $this->lesson->id,
-            'exercise_code' => 'ex-2de-fonction-affine-l1-001',
+            'exercise_code' => 'ex-4am-qasim-mushtarak-akbar-l1-001',
             'level' => 1, 'publication_status' => $status,
         ]);
 
         $response = $this->asStudent()
-            ->getJson('/api/v1/lessons/fonction-affine-2nde/exercises')
+            ->getJson('/api/v1/lessons/qasim-mushtarak-akbar/exercises')
             ->assertStatus(200);
 
         $codes = collect($response->json('exercises'))->pluck('exerciseCode');
-        $this->assertSame($listed, $codes->contains('ex-2de-fonction-affine-l1-001'), "état {$status}");
+        $this->assertSame($listed, $codes->contains('ex-4am-qasim-mushtarak-akbar-l1-001'), "état {$status}");
     }
 
     /** Une leçon fermée ne liste aucun exercice, quel que soit leur état. */
@@ -215,7 +215,7 @@ class PublicationAccessMatrixTest extends TestCase
         ]);
         $this->lesson->update(['publication_status' => Lesson::PUB_HIDDEN]);
 
-        $this->asStudent()->getJson('/api/v1/lessons/fonction-affine-2nde/exercises')
+        $this->asStudent()->getJson('/api/v1/lessons/qasim-mushtarak-akbar/exercises')
             ->assertStatus(200)
             ->assertJsonPath('available', false)
             ->assertJsonPath('reason', 'lesson_unavailable')
@@ -231,8 +231,8 @@ class PublicationAccessMatrixTest extends TestCase
 
         $this->asStudent()->getJson('/api/v1/content/availability')
             ->assertStatus(200)
-            ->assertJsonPath('closed.lessons', ['fonction-affine-2nde'])
-            ->assertJsonPath('closed.modules.fonction-affine-2nde', [1]);
+            ->assertJsonPath('closed.lessons', ['qasim-mushtarak-akbar'])
+            ->assertJsonPath('closed.modules.qasim-mushtarak-akbar', [1]);
     }
 
     public function test_rien_n_est_ferme_quand_tout_est_publie(): void
@@ -258,7 +258,7 @@ class PublicationAccessMatrixTest extends TestCase
         $other = Grade::create(['code' => '3e', 'name' => 'Troisième', 'level' => 'college']);
         $otherChapter = Chapter::create(['grade_id' => $other->id, 'code' => 'fonctions', 'title' => 'F', 'order' => 0]);
         Lesson::create([
-            'chapter_id' => $otherChapter->id, 'code' => 'fonction-affine-2nde',
+            'chapter_id' => $otherChapter->id, 'code' => 'qasim-mushtarak-akbar',
             'title' => 'Homonyme', 'status' => 'available', 'order' => 0,
             'publication_status' => Lesson::PUB_PUBLISHED,
         ]);

@@ -1,15 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { getAllGrades, courseLevels, dzCourseLevels, referenceCourseLevels } from './coursesData';
+import { getAllGrades, courseLevels, dzCourseLevels } from './coursesData';
 import programme4am from './dz/programme_4am_2026_2027.json';
 import units4am from './dz/units_4am_2026_2027.json';
 import decomposition4am from './dz/lessons_4am_2026_2027.json';
 
-// Les invariants de FORME ci-dessous (durée, identifiants de points
-// d'apprentissage, chemins, origine) portent sur l'arbre FRANÇAIS DE
-// RÉFÉRENCE : c'est lui qui décrit les 132 dossiers de leçons restés sur le
-// disque. Le catalogue algérien ne déclare encore aucune leçon — ses
-// invariants à lui sont testés plus bas, et portent sur les SUJETS.
-const allLessons = referenceCourseLevels.flatMap((level) =>
+// Les invariants de FORME portent sur les leçons du catalogue algérien (le
+// catalogue français hérité a été supprimé le 2026-09-25, avec ses leçons).
+const allLessons = dzCourseLevels.flatMap((level) =>
   level.grades.flatMap((grade) =>
     grade.chapters.flatMap((chapter) =>
       chapter.lessons.map((lesson) => ({ levelId: level.id, gradeId: grade.id, chapterId: chapter.id, lesson }))
@@ -39,13 +36,13 @@ describe('getAllGrades', () => {
 });
 
 describe('lesson catalogue invariants', () => {
+  it('has lessons to check', () => {
+    expect(allLessons.length).toBeGreaterThan(0);
+  });
+
   it('derives the display duration string from durationMinutes', () => {
     for (const { lesson } of allLessons) {
-      if (lesson.durationMinutes != null) {
-        expect(lesson.duration).toBe(`${lesson.durationMinutes} min`);
-      } else {
-        expect(lesson.duration).toBe('--');
-      }
+      expect(lesson.duration).toBe(lesson.durationMinutes != null ? `${lesson.durationMinutes} min` : '--');
     }
   });
 
@@ -58,62 +55,12 @@ describe('lesson catalogue invariants', () => {
     expect(duplicates).toEqual([]);
   });
 
-  it('keeps split-lesson parts coherent', () => {
-    const byOfficialObject = new Map();
-    for (const { gradeId, chapterId, lesson } of allLessons) {
-      // Une leçon d'EXTENSION a `officialObject === null` : c'est son
-      // `extensionObject` qui identifie l'objet dont elle dérive. Sans cela
-      // toutes les extensions d'un même chapitre tomberaient dans le même
-      // seau `null` et le test des parties les croirait morcelées.
-      const key = `${gradeId}/${chapterId}/${lesson.officialObject ?? lesson.extensionObject}`;
-      if (!byOfficialObject.has(key)) byOfficialObject.set(key, []);
-      byOfficialObject.get(key).push(lesson);
-    }
-
-    for (const [key, parts] of byOfficialObject) {
-      expect(new Set(parts.map((p) => p.partTotal)).size, key).toBe(1);
-      expect(parts.map((p) => p.partIndex), key).toEqual(parts.map((_, i) => i + 1));
-      expect(parts[0].partTotal, key).toBe(parts.length);
-      if (parts.length > 1) {
-        // Each part carries its OWN authored id — not a positional `-1`/`-2`
-        // suffix. The suffix convention belonged to the retired "Partie 1 /
-        // Partie 2" split, where parts were arbitrary slices of one notion;
-        // a split is now pedagogical (4e `calcul_litteral` → « Calcul
-        // littéral » + « Équations du premier degré »), so each part gets a
-        // name that says what it teaches. What must hold is that the ids are
-        // distinct — the Learning Point namespace (`<grade>_<id>_P<n>`) and
-        // every progress key hang off them.
-        const partIds = parts.map((p) => p.id);
-        expect(new Set(partIds).size, key).toBe(partIds.length);
-        parts.forEach((part) => {
-          expect(part.id, key).toBeTruthy();
-          expect(part.pointsToLearn.length, `${key} part ${part.partIndex}`).toBeGreaterThanOrEqual(1);
-        });
-      }
-    }
-  });
-
   it('builds paths under the owning level, not hardcoded college', () => {
     for (const { levelId, gradeId, lesson } of allLessons) {
       expect(lesson.path.startsWith(`/courses/${levelId}/${gradeId}/`), lesson.path).toBe(true);
     }
   });
 
-  it('every lesson declares a valid origin, and extensions are not official', () => {
-    for (const { gradeId, lesson } of allLessons) {
-      const where = `${gradeId}/${lesson.id}`;
-      expect(['official', 'extension'], where).toContain(lesson.origin);
-      if (lesson.origin === 'official') {
-        expect(lesson.officialObject, where).toBeTruthy();
-        expect(lesson.extensionObject, where).toBeNull();
-      } else {
-        // Une leçon hors référentiel ne doit JAMAIS pouvoir être prise pour une
-        // leçon officielle : c'est ce que l'interface lit pour la badger.
-        expect(lesson.officialObject, where).toBeNull();
-        expect(lesson.extensionObject, where).toBeTruthy();
-      }
-    }
-  });
 });
 
 // ── Le catalogue ALGÉRIEN ────────────────────────────────────────────────
@@ -140,23 +87,36 @@ describe('catalogue algérien (dzCourseLevels)', () => {
   });
 
   it("ne contient AUCUNE classe française, même dormante", () => {
-    const frenchIds = new Set(
-      referenceCourseLevels.flatMap((l) => l.grades.map((g) => g.id))
-    );
+    // Les identifiants des 8 classes du clone français, écrits en dur : le
+    // catalogue qui les portait a été supprimé (2026-09-25).
+    const frenchIds = new Set(['6e', '5e', '4e', '3e', 'seconde', 'premiere_specialite', 'terminale_specialite', 'terminale_complementaires']);
     for (const { grade } of dzGrades) {
       expect(frenchIds.has(grade.id), grade.id).toBe(false);
     }
   });
 
-  it('porte les 4 domaines du programme, dans son ordre', () => {
-    expect(grade4am.chapters.map((c) => c.id)).toEqual(programme4am.domains.map((d) => d.id));
-    expect(grade4am.chapters.map((c) => c.title)).toEqual(programme4am.domains.map((d) => d.titleAr));
+  // Le catalogue ne montre que les ميادين qui portent des leçons (décision du
+  // 2026-09-25) ; le programme source, lui, reste entier. Les deux tests
+  // ci-dessous protègent les DEUX moitiés de cette règle.
+  const domainsWithLessons = programme4am.domains.filter((d) =>
+    decomposition4am.lessons.some((l) => l.chapterId === d.id));
+
+  it('ne montre que les domaines du programme qui portent des leçons, dans son ordre', () => {
+    expect(programme4am.domains).toHaveLength(4);
+    expect(grade4am.chapters.length).toBeGreaterThan(0);
+    expect(grade4am.chapters.map((c) => c.id)).toEqual(domainsWithLessons.map((d) => d.id));
+    expect(grade4am.chapters.map((c) => c.title)).toEqual(domainsWithLessons.map((d) => d.titleAr));
+    for (const chapter of grade4am.chapters) expect(chapter.lessons.length, chapter.id).toBeGreaterThan(0);
+    // `order` reste la position dans le PROGRAMME.
+    for (const chapter of grade4am.chapters) {
+      expect(chapter.order).toBe(programme4am.domains.findIndex((d) => d.id === chapter.id));
+    }
   });
 
-  it('porte les 28 sujets du programme, au mot près', () => {
+  it('porte, au mot près, les sujets du programme des domaines montrés — et le programme garde ses 28', () => {
+    expect(sourceTopics).toHaveLength(28);
     const catalogueTopics = grade4am.chapters.flatMap((c) => c.topics);
-    expect(catalogueTopics).toHaveLength(28);
-    expect(catalogueTopics).toHaveLength(sourceTopics.length);
+    expect(catalogueTopics).toHaveLength(domainsWithLessons.flatMap((d) => d.topics).length);
 
     const source = new Map(sourceTopics.map((t) => [t.id, t.titleAr]));
     for (const topic of catalogueTopics) {
