@@ -102,7 +102,8 @@
       "progress": "التقدّم",
       "settings": "الإعدادات",
       "learningPoints": "نقاط التعلّم",
-      "interventions": "التدخّلات"
+      "interventions": "التدخّلات",
+      "dailyChallenge": "التحدّي اليومي"
     },
     "errors": {
       "limit_reached": "عرضك لا يسمح بقسم إضافي. راجع صفحة « عرضي ».",

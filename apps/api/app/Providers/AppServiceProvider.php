@@ -57,6 +57,8 @@ class AppServiceProvider extends ServiceProvider
         // Les réglages « الوصول والحدود » et le palier d'un compte, relus une
         // fois par requête. La CONSOMMATION n'est jamais mémorisée.
         $this->app->singleton(FeatureAccessService::class);
+        // « التحدّي اليومي » : la configuration effective, mémorisée par requête.
+        $this->app->singleton(\App\Domain\DailyChallenge\DailyChallengeConfig::class);
 
         /**
          * … mais RECOMMENCÉ à chaque requête.
@@ -82,6 +84,7 @@ class AppServiceProvider extends ServiceProvider
                     $this->app->make(StudyContextService::class)->forget();
                     $this->app->make(ClassroomProgressService::class)->forget();
                     $this->app->make(FeatureAccessService::class)->forget();
+                    $this->app->make(\App\Domain\DailyChallenge\DailyChallengeConfig::class)->forget();
                 },
             );
         });

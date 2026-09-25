@@ -26,6 +26,7 @@ use App\Models\StudentLessonProgress;
 use App\Models\Subscription;
 use App\Models\User;
 use Database\Seeders\Demo\DemoContent;
+use Database\Seeders\Demo\DemoDailyChallenges;
 use Database\Seeders\Demo\DemoNotes;
 use Database\Seeders\Demo\DemoPersona;
 use Database\Seeders\Demo\DemoStudentSimulator;
@@ -106,6 +107,7 @@ class DemoDataSeeder extends Seeder
         $this->studentAccess($admin, $students);
         $this->simulate($students);
         $this->interventions($teachers);
+        $this->dailyChallenges($teachers, $students);
 
         $this->report();
     }
@@ -178,6 +180,7 @@ class DemoDataSeeder extends Seeder
             // Les classes des enseignants fictifs, et les adhésions fictives
             // partout ailleurs.
             $classes = Classroom::whereIn('teacher_id', $ids)->pluck('id');
+            DemoDailyChallenges::purge($ids, $classes);
             ClassroomIntervention::whereIn('classroom_id', $classes)->delete();
             ClassroomMembership::whereIn('classroom_id', $classes)->orWhereIn('student_id', $ids)->delete();
             ClassroomLesson::whereIn('classroom_id', $classes)->delete();
@@ -689,6 +692,18 @@ class DemoDataSeeder extends Seeder
         $user->forceFill(['created_at' => $at, 'updated_at' => $at])->save();
 
         return $user;
+    }
+
+    /**
+     * « التحدّي اليومي » : deux semaines de défis joués par le service de
+     * production, et les quatre configurations de classe (Demo/DemoDailyChallenges).
+     */
+    private function dailyChallenges(array $teachers, array $students): void
+    {
+        $this->command?->info('Défis quotidiens (14 jours)…');
+        $demo = new DemoDailyChallenges($this->content);
+        $demo->run($students, $this->groups, $teachers['main'], $teachers['second'], $teachers['free']);
+        $this->totals += $demo->totals;
     }
 
     private function report(): void

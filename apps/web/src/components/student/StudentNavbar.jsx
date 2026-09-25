@@ -313,7 +313,8 @@ export default function StudentNavbar() {
             }
           >
             <link.icon size={19} />
-            {t(link.labelKey)}
+            {/* La barre mobile est étroite : un libellé court quand il existe. */}
+            {t(link.shortLabelKey ?? link.labelKey)}
           </NavLink>
         ))}
       </nav>

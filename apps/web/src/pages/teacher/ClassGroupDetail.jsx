@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState } from 'react';
+import { lazy, Suspense, useCallback, useContext, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Copy, Check, RefreshCw, Archive, ArchiveRestore } from 'lucide-react';
@@ -15,9 +15,11 @@ import ProgressTab from '../../features/teacher/progress/ProgressTab';
 import LearningPointsTab from '../../features/teacher/learningPoints/LearningPointsTab';
 import OverviewTab from '../../features/teacher/overview/OverviewTab';
 import InterventionsTab from '../../features/teacher/interventions/InterventionsTab';
+// « التحدّي اليومي » : lot et catalogue `challenge` chargés à l'ouverture de l'onglet.
+const DailyChallengeTab = lazy(() => import('../../features/teacher/dailyChallenge/DailyChallengeTab'));
 import { TeacherPage, Loading, ErrorBox, useTableLabels, btnSecondary, btnPrimary, btnDanger, input } from './teacherUi';
 
-const TABS = ['overview', 'students', 'learningPoints', 'interventions', 'lessons', 'progress', 'settings'];
+const TABS = ['overview', 'students', 'learningPoints', 'interventions', 'dailyChallenge', 'lessons', 'progress', 'settings'];
 
 /**
  * La page d'une classe, et le code de classe toujours visible. Elle s'ouvre
@@ -114,6 +116,11 @@ export default function ClassGroupDetail() {
           {tab === 'interventions' && (data.entitlements?.features?.['progress.student'] === false
             ? <p className="glass-card p-8 text-center text-sm text-slate-500">{t('progress.unavailable')}</p>
             : <InterventionsTab classGroup={classGroup} onOpenPoint={(code) => { setFocusPoint(code); setTab('learningPoints'); }} />)}
+          {tab === 'dailyChallenge' && (
+            <Suspense fallback={<Loading />}>
+              <DailyChallengeTab classGroup={classGroup} onOpenPoint={(code) => { setFocusPoint(code); setTab('learningPoints'); }} />
+            </Suspense>
+          )}
           {tab === 'students' && <MembersTab classGroup={classGroup} entitlements={data.entitlements} onChanged={reload} />}
           {tab === 'lessons' && <LessonsTab classGroup={classGroup} entitlements={data.entitlements} />}
           {tab === 'progress' && (data.entitlements?.features?.['progress.class'] === false

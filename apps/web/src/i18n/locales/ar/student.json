@@ -1021,5 +1021,22 @@
       "messageLabel": "رسالة أستاذك",
       "openLesson": "افتح الدرس"
     }
+  },
+  "challengeCard": {
+    "eyebrow": "التحدّي اليومي",
+    "title": "استرجع ما تعلّمته في دقائق",
+    "titleDone": "أنهيت تحدّي اليوم",
+    "streak_zero": "ابدأ سلسلتك اليوم",
+    "streak_one": "🔥 سلسلة يوم واحد",
+    "streak_two": "🔥 سلسلة يومين",
+    "streak_few": "🔥 سلسلة {{count}} أيام",
+    "streak_many": "🔥 سلسلة {{count}} يومًا",
+    "streak_other": "🔥 سلسلة {{count}} يوم",
+    "questions": "{{count}} أسئلة · حتى {{points}} نقطة",
+    "start": "ابدأ",
+    "resume": "أكمل",
+    "result": "النتيجة",
+    "score": "{{score}} نقطة اليوم",
+    "restDay": "لا تحدّي اليوم — نلتقي في اليوم القادم."
   }
 }

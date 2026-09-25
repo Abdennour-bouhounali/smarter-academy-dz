@@ -78,6 +78,10 @@ class TeacherPrivacyContractTest extends TestCase
             'interventions' => "/api/v1/teacher/classrooms/{$c}/interventions",
             'intervention' => "/api/v1/teacher/classrooms/{$c}/interventions/{$s['intervention']}",
             'dashboard' => '/api/v1/teacher/dashboard',
+            // « التحدّي اليومي » : résultats, affichage, réglages.
+            'dailyChallengeResults' => "/api/v1/teacher/classrooms/{$c}/daily-challenge/results",
+            'dailyChallengeDisplay' => "/api/v1/teacher/classrooms/{$c}/daily-challenge/display",
+            'dailyChallengeSettings' => "/api/v1/teacher/classrooms/{$c}/daily-challenge/settings",
         ];
     }
 

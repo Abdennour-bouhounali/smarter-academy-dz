@@ -412,7 +412,7 @@ export default function PracticeSession() {
 
   if (error) {
     return (
-      <div className="sa-surface-plain sa-page sa-page--flush py-6 space-y-6">
+      <div className="sa-surface-plain sa-page sa-page--flush py-6 sm:py-8 space-y-6">
         <p className="text-rose-700 bg-rose-50 border-2 border-rose-200 rounded-xl p-4">{error}</p>
         <Link to={`/espace/pratique/${lessonCode}`} className="text-sm font-bold text-slate-600 hover:text-slate-900">
           ← {t('practice.backToPractice')}
@@ -422,7 +422,7 @@ export default function PracticeSession() {
   }
 
   if (!exercise || !question) {
-    return <div className="sa-surface-plain sa-page sa-page--flush py-6"><div className="h-64 rounded-2xl bg-slate-100 animate-pulse" /></div>;
+    return <div className="sa-surface-plain sa-page sa-page--flush py-6 sm:py-8"><div className="h-64 rounded-2xl bg-slate-100 animate-pulse" /></div>;
   }
 
   const answered = evaluation !== null;
@@ -463,7 +463,7 @@ export default function PracticeSession() {
     // formats (demande du propriétaire, 2026-09-24) : le cadre partagé
     // `.sa-page` avec sa variante `--flush` (index.css), sans largeur
     // maximale — l'exercice prend tout ce que la colonne latérale laisse.
-    <div className="sa-surface-plain sa-page sa-page--flush py-4 sm:py-6">
+    <div className="sa-surface-plain sa-page sa-page--flush py-6 sm:py-8">
       <MotionConfig reducedMotion="user">
       {/* MODE CLASSE (وضع القسم) : la coquille enveloppe TOUTE la page pour que
           le bouton d'entrée (dans la rangée de navigation) et le contenu

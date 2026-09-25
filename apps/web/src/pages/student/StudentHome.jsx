@@ -28,6 +28,7 @@ import RecentLearning from '../../features/home/components/RecentLearning';
 import LearningSpaceNav from '../../features/home/components/LearningSpaceNav';
 import PremiumCard from '../../features/home/components/PremiumCard';
 import ClassContextBanner from '../../features/home/components/ClassContextBanner';
+import DailyChallengeCard from '../../features/home/components/DailyChallengeCard';
 import { usePrefetchLessonRuntime } from '../../lessons/common/lessonRuntimeLoader';
 
 /**
@@ -154,6 +155,11 @@ export default function StudentHome() {
           {/* ── Le héros ─────────────────────────────────────────────── */}
           <motion.div {...enter(0.05)}>
             <NextStepHero step={nextStep} gradeId={gradeId} curriculumIndex={curriculumIndex} />
+          </motion.div>
+
+          {/* ── L'habitude du jour : « التحدّي اليومي » ─────────────────── */}
+          <motion.div {...enter(0.08)}>
+            <DailyChallengeCard />
           </motion.div>
 
           {/* ── Le profil n'a pas pu être chargé : on le dit, on ne met pas

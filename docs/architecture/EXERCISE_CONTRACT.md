@@ -296,6 +296,22 @@ a bound in a statement must say whether it is strict (`40 < a < 55`); a
 question that asks for an intermediate form (« بعد القسمة على 4 ») is a choice,
 not a `rational` (which would accept every equal value).
 
+## A practice question may be served alone — the daily challenge (2026-09-25)
+
+The daily challenge (`DAILY_CHALLENGE.md`) picks single QUESTIONS from the
+practice bank and serves each one alone: the exercise `statement` (text +
+`visual`) above the question `statement`, rendered by the same
+`QuestionRenderer`. Consequences for authors: a question should be
+answerable from the exercise statement and its own text (a question that
+needs the answer of the previous question reads badly out of context);
+`feedback.correct` is shown as the one-line explanation after the verdict,
+so it should explain, not just congratulate. For the challenge the server
+serves the question **without** its answer key (`expectedAnswer`, choice
+`isCorrect`, signatures, hints, feedback) and reveals the correction only
+after the answer — the practice player still receives the full JSON (D5).
+Exercises with an interactive `support` lab are not excluded by the
+selector; none exists in the live bank.
+
 ## Non-textbook sources — worksheets (2026-09-24)
 
 The textbook is the default source, but the owner may bring **other official
@@ -355,8 +371,11 @@ evaluation, hints, busy). The redesign added presentation only; the API calls,
 the server verdict, the non-blocking invariant and the notebook are unchanged.
 
 **Layout (second pass, 2026-09-24).** The page is full screen width with a
-20 px gutter at every size (`.sa-page.sa-page--flush`, `index.css`; no
-max-width). Mobile/tablet: one column — Learning Point module → exercise header
+gutter of 60 px from 640 px up and 20 px on phones (`.sa-page.sa-page--flush`,
+`index.css`; ×3 at the owner's request 2026-09-25, 20 px at every size before;
+no max-width) and `py-6 sm:py-8` vertically — the SAME frame on the hub, the
+player, the summary (« الحصيلة ») and the daily challenge (owner request,
+2026-09-25; the summary used the wider 40/60 px gutter before). Mobile/tablet: one column — Learning Point module → exercise header
 (level · level name · estimated minutes · tags, `h1` title) → statement
 («نصّ التمرين») → question history → current-question card → footer. From
 `xl` (1280 px): ONE side column (28rem, 30.6rem at `2xl` — widened ×1.7 at the owner's request, 2026-09-24; sticky) at the

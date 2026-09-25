@@ -135,6 +135,27 @@ l'histoire des états à cette date — ce que l'enseignant aurait vu ce jour-l�
 L'élève visé par la proposition la voit dans «قسمي». QA navigateur :
 `apps/web/e2e/teacher-intelligence.mjs`.
 
+## Défis quotidiens — « التحدّي اليومي » (2026-09-25)
+
+`Demo/DemoDailyChallenges.php` joue les **14 derniers jours** de défis (hors
+aujourd'hui, laissé ouvert pour la QA) **par le service de production**
+(`DailyChallengeService` : chronométrage serveur, évaluation, preuve par
+`ProgressEngine`, datée du jour joué), selon le portrait : un élève inactif
+ne joue pas, un irrégulier manque des jours (série cassée, pénalité bornée),
+un moteur joue presque tous les jours. Réponses justes / fausses LUES dans le
+contenu. Les quatre classes portent les quatre configurations :
+
+| Classe | Réglage | Sert à vérifier |
+|---|---|---|
+| A (`teacher01`) | compétition ON, Top 3 ON, participation visible | podium, rang, « ↑ n » |
+| B (`teacher01`) | compétition ON, Top 3 OFF | l'enseignant voit le classement, les élèves leur seul rang |
+| C (`teacher02`) | compétition OFF | aucun classement pour personne |
+| D (`teacher03`) | défi désactivé | `student05`, `student12` (D est leur classe principale) ont un défi PERSONNEL |
+
+QA navigateur : `apps/web/e2e/daily-challenge.mjs` (joue le défi du jour de
+`student01` — relancer le seeder pour recommencer ; un jour de repos est
+ouvert le temps de la QA puis restauré).
+
 ## Régénérer
 
 ```bash
@@ -151,7 +172,8 @@ progression). La commande est sûre à relancer autant de fois qu'on veut.
 - Il **ne complète jamais tout le curriculum** : « aujourd'hui est un jour
   ordinaire au milieu du parcours ». La dernière leçon touchée par chaque
   élève reste en cours.
-- Il ne crée **ni XP, ni badges, ni série de jours** : ces notions n'existent
+- Il ne crée **ni XP ni badges**. La **série** du défi quotidien, elle, existe
+  (voir « Défis quotidiens » ci-dessus) ; hors du défi, ces notions n'existent
   pas dans le modèle actuel (voir `PROGRESS_MODEL.md`). Ce qui en tient lieu —
   activité récente, régularité — se lit dans les dates réelles des séances.
 - Il ne touche **ni les grades, ni les chapitres, ni les leçons, ni les

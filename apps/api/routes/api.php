@@ -60,6 +60,9 @@ use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DailyChallengeController;
+use App\Http\Controllers\Teacher\TeacherClassroomDailyChallengeController;
+use App\Http\Controllers\Admin\AdminDailyChallengeController;
 use Laravel\Sanctum\Http\Middleware\AuthenticateSession;
 
 Route::prefix('v1')->group(function () {
@@ -184,6 +187,17 @@ Route::prefix('v1')->group(function () {
                 Route::put('/lessons/{lessonCode}/progress', [LessonProgressController::class, 'upsert']);
                 Route::put('/lessons/{lessonCode}/final-test-attempt', [LessonFinalTestAttemptController::class, 'store']);
                 Route::delete('/lessons/{lessonCode}/final-test-attempt', [LessonFinalTestAttemptController::class, 'destroy']);
+
+                // « التحدّي اليومي » — le défi quotidien (DAILY_CHALLENGE.md).
+                // Élève seulement : ses réponses sont des preuves d'apprentissage.
+                Route::get('/daily-challenge', [DailyChallengeController::class, 'today']);
+                Route::post('/daily-challenge/start', [DailyChallengeController::class, 'start'])->middleware('throttle:30,1');
+                Route::get('/daily-challenge/history', [DailyChallengeController::class, 'history']);
+                Route::get('/daily-challenge/attempts/{uuid}', [DailyChallengeController::class, 'show'])->whereUuid('uuid');
+                Route::post('/daily-challenge/attempts/{uuid}/next', [DailyChallengeController::class, 'next'])->whereUuid('uuid')->middleware('throttle:60,1');
+                Route::post('/daily-challenge/attempts/{uuid}/answers', [DailyChallengeController::class, 'answer'])->whereUuid('uuid')->middleware('throttle:60,1');
+                Route::post('/daily-challenge/attempts/{uuid}/complete', [DailyChallengeController::class, 'complete'])->whereUuid('uuid');
+                Route::get('/daily-challenge/attempts/{uuid}/review', [DailyChallengeController::class, 'review'])->whereUuid('uuid');
             });
             Route::get('/lessons/{lessonCode}/final-test-attempt', [LessonFinalTestAttemptController::class, 'show']);
             // Moteur d'exercices. Activé leçon par leçon
@@ -429,6 +443,12 @@ Route::prefix('v1')->group(function () {
                 ->whereNumber('id')->whereNumber('interventionId');
             Route::patch('/classrooms/{id}/interventions/{interventionId}', [TeacherClassroomInterventionController::class, 'update'])
                 ->whereNumber('id')->whereNumber('interventionId');
+
+            // « التحدّي اليومي » de la classe : réglages, résultats, affichage.
+            Route::get('/classrooms/{id}/daily-challenge/settings', [TeacherClassroomDailyChallengeController::class, 'settings'])->whereNumber('id');
+            Route::patch('/classrooms/{id}/daily-challenge/settings', [TeacherClassroomDailyChallengeController::class, 'updateSettings'])->whereNumber('id');
+            Route::get('/classrooms/{id}/daily-challenge/results', [TeacherClassroomDailyChallengeController::class, 'results'])->whereNumber('id');
+            Route::get('/classrooms/{id}/daily-challenge/display', [TeacherClassroomDailyChallengeController::class, 'display'])->whereNumber('id');
         });
 
     // Protected routes — admin only
@@ -581,6 +601,10 @@ Route::prefix('v1')->group(function () {
                 ->where('key', '[a-zA-Z0-9_.]+');
             Route::get('/access-usage', [AdminAccessPolicyController::class, 'usage']);
             Route::get('/users/{id}/feature-usage', [AdminAccessPolicyController::class, 'userUsage'])->whereNumber('id');
+
+            // ── « التحدّي اليومي » : barème et défauts globaux ──
+            Route::get('/daily-challenge/config', [AdminDailyChallengeController::class, 'show']);
+            Route::put('/daily-challenge/config', [AdminDailyChallengeController::class, 'update']);
 
             Route::get('/account', [AdminAccountController::class, 'show']);
             Route::patch('/account/profile', [AdminAccountController::class, 'updateProfile']);

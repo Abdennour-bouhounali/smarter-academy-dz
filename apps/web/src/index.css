@@ -532,7 +532,9 @@ html[data-sa-resizing] .sa-workspace-main {
   }
 }
 
-/* `.sa-page--flush` — la même page, gouttière de 20 px à TOUS les formats.
+/* `.sa-page--flush` — la même page, gouttière de 60 px dès 640 px
+   (20 px × 3 à la demande du propriétaire, 2026-09-25 : exercices et défi
+   quotidien) ; 20 px sur téléphone, où 60 px mangeraient un tiers de l'écran.
    Pour un espace de travail qui veut toute la largeur de l'écran (le lecteur
    d'exercices : colonne latérale + exercice) : pas de 40/60 px sur tablette
    et bureau. Deux classes, donc plus spécifique que les media queries
@@ -540,6 +542,13 @@ html[data-sa-resizing] .sa-workspace-main {
 .sa-page.sa-page--flush {
   padding-left: 20px;
   padding-right: 20px;
+}
+
+@media (min-width: 640px) {
+  .sa-page.sa-page--flush {
+    padding-left: 60px;
+    padding-right: 60px;
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────────────────

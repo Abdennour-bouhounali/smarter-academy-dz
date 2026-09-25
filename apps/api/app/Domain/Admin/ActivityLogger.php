@@ -161,6 +161,9 @@ class ActivityLogger
     /** « الوصول والحدود » : le réglage d'une fonctionnalité par palier (FeatureAccessAdminService). */
     public const ACCESS_POLICY_UPDATED = 'access_policy.updated';
 
+    /** « التحدّي اليومي » : le barème global (écran d'administration). */
+    public const DAILY_CHALLENGE_CONFIG_UPDATED = 'daily_challenge.config_updated';
+
     /**
      * Clés dont la valeur n'est jamais journalisée, quelle que soit la façon
      * dont l'appelant les nomme. Défense en profondeur : l'appelant est déjà

@@ -95,6 +95,12 @@ const DiagnosticResult = lazy(() => import('./pages/student/diagnostic/Diagnosti
 const PracticeHub = lazy(() => import('./pages/student/practice/PracticeHub'));
 const PracticeSession = lazy(() => import('./pages/student/practice/PracticeSession'));
 const PracticeSummary = lazy(() => import('./pages/student/practice/PracticeSummary'));
+// « التحدّي اليومي » : l'écran du jour, l'historique, la revue d'un jour.
+const DailyChallengePage = lazy(() => import('./pages/student/challenge/DailyChallengePage'));
+const ChallengeHistoryPage = lazy(() => import('./pages/student/challenge/ChallengeHistoryPage'));
+const ChallengeReviewPage = lazy(() => import('./pages/student/challenge/ChallengeReviewPage'));
+const TeacherChallengeDisplay = lazy(() => import('./pages/teacher/ChallengeDisplayPage'));
+const AdminDailyChallenge = lazy(() => import('./pages/admin/dailyChallenge/DailyChallengeConfig'));
 // Le مختبر الرياضيات (Math Lab) : les instruments LIBRES de l'élève, hors de
 // toute leçon. Paresseux, comme la pratique — et la سبّورة charge son moteur
 // (Excalidraw) paresseusement à son tour : aucune autre page ne le paie.
@@ -235,6 +241,7 @@ export default function App() {
               <Route path="offres/demandes" element={<AdminSubscriptionRequests />} />
               <Route path="offres/abonnements" element={<AdminSubscriptions />} />
               <Route path="offres/acces" element={<AdminAccessLimits />} />
+              <Route path="offres/defi-quotidien" element={<AdminDailyChallenge />} />
               <Route path="offres/:id" element={<AdminPlanEditor />} />
 
               <Route path="compte" element={<AdminProfile />} />
@@ -279,6 +286,11 @@ export default function App() {
               <Route path="pratique/:lessonCode" element={<PracticeHub />} />
               <Route path="pratique/:lessonCode/session/:sessionId" element={<PracticeSession />} />
               <Route path="pratique/:lessonCode/bilan/:sessionId" element={<PracticeSummary />} />
+              {/* « التحدّي اليومي » : le serveur tient la tentative ; ces
+                  routes ne font que l'afficher (DAILY_CHALLENGE.md). */}
+              <Route path="defi" element={<DailyChallengePage />} />
+              <Route path="defi/historique" element={<ChallengeHistoryPage />} />
+              <Route path="defi/:attemptId" element={<ChallengeReviewPage />} />
               {/* Le مختبر الرياضيات : l'accueil, puis un instrument par
                   segment d'URL (résolu dans le registre, features/mathlab),
                   avec ou sans document enregistré. Un instrument de plus
@@ -298,6 +310,9 @@ export default function App() {
               can:teacher (TeacherAuthorizationTest), et la propriété d'une
               classe derrière ClassroomPolicy. */}
           <Route path="/enseignant" element={<ProtectedRoute allowedRoles={['teacher']} />}>
+            {/* Le mode d'AFFICHAGE du défi : plein écran, hors de la coquille
+                enseignant — c'est ce que la classe voit au tableau. */}
+            <Route path="classes/:id/defi/affichage" element={<TeacherChallengeDisplay />} />
             <Route element={<TeacherLayout />}>
               <Route index element={<TeacherHome />} />
               <Route path="classes" element={<TeacherClassGroupList />} />

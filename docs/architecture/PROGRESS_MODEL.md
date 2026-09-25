@@ -75,6 +75,13 @@ catalogue lesson without a built config is not resumable and contributes no
 completion percentage (the old `totalModules || 7` fallbacks are gone, as is
 `LESSON_CONFIG.totalModules` itself).
 
+## The daily challenge score is not progress (2026-09-25)
+
+« التحدّي اليومي » keeps its own game metric (`daily_challenge_standings`:
+cumulative score, streak): it is neither completion nor mastery and is never
+read as either. Its answers DO produce ordinary practice evidence. See
+`DAILY_CHALLENGE.md`.
+
 ## Completion levels
 
 ### Module completion

@@ -108,7 +108,8 @@
     "activityLog": "سجلّ النشاط",
     "registryHealth": "سلامة السجلّ",
     "contactMessages": "رسائل الاتصال",
-    "accessLimits": "الوصول والحدود"
+    "accessLimits": "الوصول والحدود",
+    "dailyChallenge": "التحدّي اليومي"
   },
   "dashboard": {
     "metaTitle": "لوحة التحكم — الإدارة",
@@ -1437,5 +1438,76 @@
       "limitInvalid": "الحدّ عدد صحيح بين 0 و1 000 000، أو اختر «غير محدود».",
       "save": "تعذّر حفظ الإعداد."
     }
+  },
+  "dailyChallenge": {
+    "metaTitle": "التحدّي اليومي",
+    "title": "التحدّي اليومي",
+    "subtitle": "سلّم النقاط والقيم الافتراضية لكل الأقسام والتلاميذ المستقلّين.",
+    "save": "حفظ التغييرات",
+    "reset": "تراجع",
+    "saved": "حُفظت الإعدادات. تسري على التحدّيات التي تُنشأ من الآن.",
+    "error": "رُفض الحفظ:",
+    "default": "الافتراضي",
+    "none": "بلا حدّ",
+    "on": "مفعّل",
+    "off": "متوقّف",
+    "seconds": "ث",
+    "tierSeconds": "الثواني",
+    "tierBonus": "المكافأة",
+    "addTier": "إضافة شريحة",
+    "removeTier": "حذف الشريحة",
+    "snapshotNote": "كل تحدٍّ يحتفظ بالإعدادات التي أُنشئ بها: تغيير السلّم لا يعيد حساب أيّ نتيجة سابقة. الإجابة الصحيحة تبقى أهمّ من السرعة دائمًا: مجموع مكافآت السرعة في تحدٍّ واحد لا يبلغ قيمة إجابة صحيحة إضافية.",
+    "groups": {
+      "challenge": "التحدّي",
+      "scoring": "النقاط",
+      "competition": "المنافسة"
+    },
+    "tieBreakingTitle": "قواعد فضّ التعادل (ثابتة)",
+    "tieBreaking": {
+      "cumulative_score": "الرصيد التراكمي (الأعلى أوّلًا)",
+      "total_correct": "عدد الإجابات الصحيحة (الأكثر أوّلًا)",
+      "average_response_time": "متوسّط وقت الإجابة (الأسرع أوّلًا)",
+      "score_reached_at": "تاريخ بلوغ الرصيد (الأسبق أوّلًا)",
+      "user_id": "المعرّف (لضمان ترتيب ثابت)"
+    },
+    "timezone": "المنطقة الزمنية",
+    "weekdays": {
+      "1": "الإثنين",
+      "2": "الثلاثاء",
+      "3": "الأربعاء",
+      "4": "الخميس",
+      "5": "الجمعة",
+      "6": "السبت",
+      "7": "الأحد"
+    },
+    "fields": {
+      "challenge_enabled": "تفعيل التحدّي اليومي على المنصّة",
+      "challenge_default_question_count": "عدد الأسئلة الافتراضي",
+      "challenge_allowed_question_counts": "أعداد الأسئلة المسموح بها",
+      "challenge_attempt_window_minutes": "مدّة المحاولة (دقائق)",
+      "challenge_available_from": "بداية الإتاحة اليومية",
+      "challenge_available_until": "نهاية الإتاحة اليومية",
+      "challenge_challenge_weekdays": "أيام التحدّي",
+      "challenge_estimated_seconds_per_question": "الوقت التقديري للسؤال (ثوانٍ)",
+      "scoring_base_points": "نقاط الإجابة الصحيحة",
+      "scoring_partial_ratio": "نسبة الإجابة الناقصة (0–1)",
+      "scoring_speed_tiers": "شرائح مكافأة السرعة",
+      "scoring_max_speed_bonus": "أقصى مكافأة سرعة للسؤال",
+      "scoring_min_plausible_ms": "أدنى زمن معقول (ملّي ثانية) — أسرع منه بلا مكافأة",
+      "scoring_streak_bonus_per_day": "مكافأة السلسلة: القاعدة",
+      "scoring_streak_bonus_growth": "مكافأة السلسلة: الزيادة اليومية",
+      "scoring_streak_bonus_max": "مكافأة السلسلة: الحدّ الأقصى",
+      "scoring_streak_bonus_min_correct": "مكافأة السلسلة: أدنى عدد إجابات صحيحة",
+      "scoring_missed_day_penalty_enabled": "خصم الأيام الفائتة",
+      "scoring_missed_day_penalty_per_day": "الخصم عن كل يوم فائت",
+      "scoring_missed_day_penalty_max_days_per_gap": "أقصى أيام محسوبة في الغياب الواحد",
+      "scoring_max_daily_score": "سقف نقاط اليوم",
+      "competition_class_challenge_enabled_by_default": "التحدّي مفعّل افتراضيًا في الأقسام",
+      "competition_class_competition_enabled_by_default": "منافسة القسم مفعّلة افتراضيًا",
+      "competition_show_top3_by_default": "إظهار الثلاثة الأوائل افتراضيًا",
+      "competition_show_results_to_class_by_default": "إظهار نسبة المشاركة افتراضيًا",
+      "competition_show_own_rank_to_students": "يرى التلميذ ترتيبه عند تفعيل المنافسة"
+    },
+    "weekdaysNote": "تغيير أيام التحدّي يسري أيضًا على قراءة الأيام الماضية: يوم يصبح «يوم تحدٍّ» قد يُحتسب فائتًا في السلاسل والخصم. غيّرها في بداية أسبوع."
   }
 }

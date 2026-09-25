@@ -692,9 +692,10 @@ gate; `data/teacherNavigation.js`):
 /enseignant                      TeacherHome          usage tiles (UsageMeter, N / M in dir="ltr"), classes, next steps
 /enseignant/classes              ClassGroupList       « قسم جديد » opens ClassGroupForm in a centred Modal, on the page
 /enseignant/classes/nouveau      ClassGroupCreate     same form full-page (direct links, bookmarks); grade from getAllGrades() ∩ allowedGrades
-/enseignant/classes/:id          ClassGroupDetail     tabs نظرة عامة (default) / التلاميذ / نقاط التعلّم / التدخّلات / الدروس / التقدّم / الإعدادات
+/enseignant/classes/:id          ClassGroupDetail     tabs نظرة عامة (default) / التلاميذ / نقاط التعلّم / التدخّلات / التحدّي اليومي / الدروس / التقدّم / الإعدادات
 /enseignant/classes/:id/eleves/:studentId   StudentProgressPage   « لمحة », signals, interventions, completion, mastery, timeline
 /enseignant/classes/:id/eleves/:studentId/cahier   StudentNotebookPage   read-only, paginated
+/enseignant/classes/:id/defi/affichage   ChallengeDisplayPage   the daily challenge on the classroom screen — outside TeacherLayout, full screen (DAILY_CHALLENGE.md §10)
 /enseignant/progression          ProgressOverview
 /enseignant/offre                SubscriptionPage     « عرضي »
 /enseignant/profil               TeacherProfile
@@ -976,6 +977,7 @@ GET  /teacher/classrooms/{id}/learning-points/{code}               (one LP: stud
 GET  /teacher/classrooms/{id}/students/{studentId}/learning-points/{code}/explanation   (explanation, history, notebook, interventions)
 GET  /teacher/classrooms/{id}/attention                            (signals + recent changes; progress.class)
 GET|POST /teacher/classrooms/{id}/interventions   GET|PATCH /teacher/classrooms/{id}/interventions/{interventionId}
+GET|PATCH /teacher/classrooms/{id}/daily-challenge/settings   GET …/daily-challenge/results?date=   GET …/daily-challenge/display?date=   (DAILY_CHALLENGE.md)
 
 # admin  (can:admin)
 GET  /admin/teachers  GET /admin/teachers/{id}  PATCH /admin/teachers/{id}/status

@@ -54,7 +54,7 @@ export default function PracticeHub() {
 
   if (error && !overview) {
     return (
-      <div className="sa-surface-plain sa-page sa-page--flush py-6 space-y-6">
+      <div className="sa-surface-plain sa-page sa-page--flush py-6 sm:py-8 space-y-6">
         <p className="text-rose-700 bg-rose-50 border-2 border-rose-200 rounded-xl p-4">{error}</p>
         <Link to="/espace/cours" className="text-sm font-bold text-slate-600 hover:text-slate-900">
           ← {t('practice.backToMyCourses')}
@@ -64,7 +64,7 @@ export default function PracticeHub() {
   }
 
   if (!overview) {
-    return <div className="sa-surface-plain sa-page sa-page--flush py-6"><div className="h-64 rounded-2xl bg-slate-100 animate-pulse" /></div>;
+    return <div className="sa-surface-plain sa-page sa-page--flush py-6 sm:py-8"><div className="h-64 rounded-2xl bg-slate-100 animate-pulse" /></div>;
   }
 
   const { lesson, levels, recommendedLevel, learningPoints, openSession } = overview;
@@ -74,8 +74,8 @@ export default function PracticeHub() {
 
   return (
     // Même cadre que le lecteur d'exercices : toute la largeur, 20 px de
-    // chaque côté (`.sa-page--flush`), un rythme vertical serré.
-    <div className="sa-surface-plain sa-page sa-page--flush py-4 sm:py-6 space-y-4">
+    // chaque côté (`.sa-page--flush`), le même cadre que « التحدّي اليومي » (py-6 sm:py-8).
+    <div className="sa-surface-plain sa-page sa-page--flush py-6 sm:py-8 space-y-4">
       <nav className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-semibold text-slate-600" aria-label={t('nav.breadcrumb', { ns: 'lesson' })}>
         <Link to="/espace/cours" className="inline-flex min-h-[44px] items-center gap-1.5 whitespace-nowrap hover:text-indigo-700">
           <ArrowBack className="h-4 w-4" aria-hidden="true" /> {t('practice.breadcrumbMyCourses')}

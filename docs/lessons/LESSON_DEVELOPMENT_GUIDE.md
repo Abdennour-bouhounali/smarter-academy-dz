@@ -501,6 +501,15 @@ exercise contract (`EXERCISE_CONTRACT.md` § « Mastery V2 additions ») lists
 the fields a generated bank carries (`templateId`, per-question
 `difficulty`, …).
 
+**Every practice question is also a daily-challenge candidate** (« التحدّي
+اليومي », 2026-09-25): once a student has worked a Learning Point, its
+published practice items can be served ALONE, one per day, to retrieve it.
+Write each question so it stands on the exercise statement plus its own text,
+give it an honest per-question `difficulty`, and make `feedback.correct` a
+one-line explanation — `EXERCISE_CONTRACT.md` § « A practice question may be
+served alone ». More distinct items per point = better spaced retrieval
+(the selector prefers items the student has never seen).
+
 **`teachesLearningPointIds` now drives three things** — « ما التالي؟ » after the
 test, the Knowledge Map's mastery overlay, and the soft-gate hint — so declare it
 on every learning module. `requiresLearningPointIds` produces a review HINT,

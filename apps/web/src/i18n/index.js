@@ -55,6 +55,10 @@ import admin from './locales/ar/admin.json';
 // docs/architecture/BUNDLE_BOUNDARIES.md.
 const ON_DEMAND_NAMESPACES = {
   mathlab: () => import('./locales/ar/mathlab.json'),
+  // « التحدّي اليومي » : les écrans du défi (élève, onglet enseignant, mode
+  // d'affichage). Chacun est un lot paresseux sous <Suspense> ; la carte de
+  // l'accueil et l'onglet de la classe lisent `student` / `teacher`.
+  challenge: () => import('./locales/ar/challenge.json'),
 };
 
 const onDemandBackend = {

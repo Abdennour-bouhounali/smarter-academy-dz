@@ -1,6 +1,6 @@
 import {
   LayoutDashboard, BarChart3, BookOpen, Flag, Users, KeyRound, Package,
-  UserCog, ScrollText, GraduationCap, School, BadgeCheck, Inbox, CreditCard, SlidersHorizontal,
+  UserCog, ScrollText, GraduationCap, School, BadgeCheck, Inbox, CreditCard, SlidersHorizontal, Flame,
 } from 'lucide-react';
 
 /**
@@ -87,6 +87,8 @@ export const adminNavSections = [
       { labelKey: 'nav.plansSubscriptions', path: '/admin/offres/abonnements', icon: CreditCard },
       // « الوصول والحدود » : outils du مختبر, cahier et travaux, par palier.
       { labelKey: 'nav.accessLimits', path: '/admin/offres/acces', icon: SlidersHorizontal },
+      // « التحدّي اليومي » : barème et défauts (DAILY_CHALLENGE.md).
+      { labelKey: 'nav.dailyChallenge', path: '/admin/offres/defi-quotidien', icon: Flame },
     ],
   },
   {

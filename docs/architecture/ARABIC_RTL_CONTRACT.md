@@ -274,6 +274,10 @@ In an RTL page, `{score} / {max}` renders reversed: `10/11` reads as
 wrapper**, exactly as `MathText` does for expressions. This is the single most
 common bidi defect in this codebase's history.
 
+A Latin display name ending in a period inside Arabic text (« Amine K. »,
+the daily challenge's Top 3) renders as « .Amine K » unless it is isolated:
+wrap user-provided names in `<bdi>`.
+
 The same applies to any numeric block inside a manipulation: tiles, bars,
 equations, divisions and algorithm chains all declare `dir="ltr"`.
 

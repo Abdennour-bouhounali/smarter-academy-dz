@@ -131,6 +131,14 @@ Three kinds of question, and only two sources of evidence:
 | Final test (« إختبار أولي », `BossFinal`, `evaluation` stage) | the lesson's evaluation module | yes | `assessment` |
 | Practice engine exercises | `content/practice/**`, the practice hub | yes, at practice weight | `practice_exercise` |
 
+**Daily challenge answers** (« التحدّي اليومي », 2026-09-25) are practice
+engine questions served by the server: they enter through the same door as
+`practice_exercise` evidence on the registry item — same weight, same
+repetition rules, no new source type and no new engine version — with the
+provenance `source_id = "daily_challenge:{attempt uuid}"` (the column was
+widened to 64 characters for it). The challenge's points, streak and ranking
+never touch this state. Contract: `DAILY_CHALLENGE.md` §5.
+
 "Practice" in the first row means **module practice questions**; the practice
 **engine** is a genuine evidence source. Both evidence sources feed the same
 canonical state — there is no second mastery table

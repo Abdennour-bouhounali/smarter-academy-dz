@@ -89,6 +89,10 @@ class ScopeCurriculum extends Command
         // Les interventions de l'enseignant : sa donnée, pas celle du
         // curriculum. Le lien au point ou à la leçon est coupé, le geste reste.
         'classroom_interventions' => 'set_null',
+        // « التحدّي اليومي » : les questions d'un défi référencent une leçon
+        // et un point ; leur suppression emporterait les RÉPONSES des élèves
+        // (daily_challenge_answers). Donnée élève : elle bloque la commande.
+        'daily_challenge_questions' => 'cascade',
     ];
 
     /**
@@ -106,6 +110,7 @@ class ScopeCurriculum extends Command
         'lesson_final_test_attempts',
         'practice_sessions',
         'learning_point_state_transitions',
+        'daily_challenge_questions',
     ];
 
     public function handle(): int
@@ -348,7 +353,7 @@ class ScopeCurriculum extends Command
             'lesson_modules', 'practice_exercises', 'learning_evidence',
             'student_lesson_progress', 'lesson_final_test_attempts',
             'practice_sessions', 'notebook_notes', 'student_reports',
-            'assessment_items', 'classroom_interventions',
+            'assessment_items', 'classroom_interventions', 'daily_challenge_questions',
         ];
 
         $counts = [];
