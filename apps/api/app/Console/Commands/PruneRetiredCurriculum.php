@@ -116,6 +116,24 @@ class PruneRetiredCurriculum extends Command
                 ->get();
         }
 
+        // ── Kept for history, but never served ───────────────────────────
+        // A catalogue-absent lesson that carries history is KEPT (above). It
+        // has no content any more — no route, no card — so it must not stay
+        // published: the API would still accept writes on it, and the admin
+        // would list it as live. It is ARCHIVED instead, the same act as
+        // `smarter:curriculum-sql --retire-lesson`: the history stays readable,
+        // nothing is deleted. Only lessons not already archived, and not those
+        // --with-history is about to delete.
+        $toArchive = Lesson::whereNotIn('code', array_keys($sourceLessonCodes))
+            ->whereNotIn('id', $prunableLessons->pluck('id'))
+            ->whereNotIn('id', $historyLessons->pluck('id'))
+            ->where('publication_status', '!=', Lesson::PUB_ARCHIVED)
+            ->get();
+
+        foreach ($toArchive as $lesson) {
+            $this->line("lesson `{$lesson->code}` — absent from the catalogue, carries history: archived, not deleted");
+        }
+
         foreach ($prunablePoints as $point) {
             $this->line("learning point `{$point->code}`");
         }
@@ -138,11 +156,13 @@ class PruneRetiredCurriculum extends Command
         $willDelete = ! $this->option('dry-run') && ! $blocked;
 
         $this->info(sprintf(
-            '%d retired learning point(s), %d orphaned lesson(s) and %d lesson(s) with history %s.',
+            '%d retired learning point(s), %d orphaned lesson(s) and %d lesson(s) with history %s; %d lesson(s) kept for history %s.',
             $prunablePoints->count(),
             $prunableLessons->count(),
             $historyLessons->count(),
-            $willDelete ? 'deleted' : 'would be deleted'
+            $willDelete ? 'deleted' : 'would be deleted',
+            $toArchive->count(),
+            $willDelete ? 'archived' : 'would be archived'
         ));
 
         if ($blocked) {
@@ -152,7 +172,11 @@ class PruneRetiredCurriculum extends Command
         }
 
         if ($willDelete) {
-            DB::transaction(function () use ($prunablePoints, $prunableLessons, $historyLessons) {
+            DB::transaction(function () use ($prunablePoints, $prunableLessons, $historyLessons, $toArchive) {
+                Lesson::whereIn('id', $toArchive->pluck('id'))->update([
+                    'publication_status' => Lesson::PUB_ARCHIVED,
+                    'archived_at' => now(),
+                ]);
                 LearningPoint::whereIn('id', $prunablePoints->pluck('id'))->delete();
                 Lesson::whereIn('id', $prunableLessons->pluck('id'))->delete();
                 // Les clés étrangères sont en ON DELETE CASCADE : points

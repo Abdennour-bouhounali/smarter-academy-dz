@@ -308,6 +308,7 @@ touche     titres, descriptions, unités, points d'apprentissage, prérequis, mo
 crée       une leçon nouvelle → publiée, tier = free ; un module / exercice nouveau → draft
 ne touche  lessons.tier d'une leçon existante, publication_status de quoi que ce soit
 supprime   une leçon absente du catalogue ET sans aucune trace d'élève — rien d'autre
+archive    une leçon absente du catalogue MAIS porteuse d'historique : gardée, jamais servie
 ```
 
 Le palier est une décision d'administration (`lessons.tier`, seule source de
@@ -332,7 +333,8 @@ autres ميادين, sans contenu) ne sont plus dans le catalogue ; le premier
 déploiement qui porte la synchronisation les retire (aucune trace d'élève
 possible sur une leçon sans contenu). Le prototype `pgcd` archivé est retiré
 lui aussi s'il ne porte aucun historique, et GARDÉ (archivé, invisible des
-élèves) s'il en porte. Une unité suivante entrera en production par le chemin
+élèves) s'il en porte — constaté au premier déploiement : `pgcd` porte un
+historique, il est conservé et archivé par la synchronisation. Une unité suivante entrera en production par le chemin
 normal : écrite dans le catalogue, livrée, synchronisée — ses leçons naissent
 gratuites, l'administrateur décide ensuite.
 

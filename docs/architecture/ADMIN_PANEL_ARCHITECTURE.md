@@ -1512,7 +1512,9 @@ déduit le palier de production d'une donnée embarquée. Le déploiement
 (`deploy.yml`, étape « Synchronise the curriculum mirror ») applique les
 migrations puis rejoue la MÊME synchronisation qu'un développeur en local
 (`smarter:import-curriculum`, `smarter:import-content-registry`,
-`smarter:prune-retired-learning-points`, sans `--with-history`), capture
+`smarter:prune-retired-learning-points`, sans `--with-history` — une leçon
+absente du catalogue est supprimée si aucun élève ne l'a touchée, ARCHIVÉE
+sinon), capture
 `smarter:lesson-inventory --tiers-only` avant et après, et **échoue si le
 palier d'une leçon existante a changé**. Il imprime ensuite l'inventaire des
 leçons de production (classe, unité, publication, palier). Procédure :

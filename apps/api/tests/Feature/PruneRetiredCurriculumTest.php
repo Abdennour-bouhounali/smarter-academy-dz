@@ -105,6 +105,10 @@ class PruneRetiredCurriculumTest extends TestCase
 
         $this->assertDatabaseHas('lessons', ['code' => 'fractions']);
         $this->assertDatabaseHas('learning_points', ['code' => '6e_fractions_P1']);
+        // Kept for its history — but no longer served: archived, never deleted.
+        $this->assertSame(Lesson::PUB_ARCHIVED, Lesson::where('code', 'fractions')->value('publication_status'));
+        // The lesson the catalogue still declares is untouched.
+        $this->assertSame(Lesson::PUB_PUBLISHED, Lesson::where('code', 'fractions-1')->value('publication_status'));
     }
 
     /**
@@ -128,6 +132,7 @@ class PruneRetiredCurriculumTest extends TestCase
             ->assertSuccessful();
 
         $this->assertDatabaseHas('lessons', ['code' => 'fractions']);
+        $this->assertSame(Lesson::PUB_ARCHIVED, Lesson::where('code', 'fractions')->value('publication_status'));
     }
 
     public function test_dry_run_deletes_nothing(): void
@@ -140,5 +145,6 @@ class PruneRetiredCurriculumTest extends TestCase
         ])->assertSuccessful();
 
         $this->assertDatabaseHas('lessons', ['code' => 'fractions']);
+        $this->assertSame(Lesson::PUB_PUBLISHED, Lesson::where('code', 'fractions')->value('publication_status'));
     }
 }
