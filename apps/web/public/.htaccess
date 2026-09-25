@@ -7,3 +7,12 @@
   RewriteCond %{REQUEST_URI} !^/api [NC]
   RewriteRule . /index.html [L]
 </IfModule>
+
+# The app shell is never cached without revalidation: it names the hashed
+# assets of the CURRENT build, so a deploy must reach visitors on their next
+# visit. (The hashed files themselves are cached for a year: assets/.htaccess.)
+<IfModule mod_headers.c>
+  <Files "index.html">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </Files>
+</IfModule>

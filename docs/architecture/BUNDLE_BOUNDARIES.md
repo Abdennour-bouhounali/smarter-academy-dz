@@ -157,6 +157,22 @@ so the added cost is about one round-trip per lazy level, not per file.
    proxies `/api` to the Laravel API, log in once via the API (login is
    throttled at 6/min) and inject the token in `localStorage`.
 
+## 8. Browser caching (production, Hostinger)
+
+Hostinger sent every file — hashed chunks included — with
+`Cache-Control: private, max-age=0, no-store, no-cache`, so a returning
+visitor re-downloaded the whole application on every visit. Two rules ship
+inside the build (`apps/web/public/`):
+
+| File | Rule | Why |
+|---|---|---|
+| `assets/.htaccess` | `public, max-age=31536000, immutable` | Vite names every file after its content hash: a new build means new names, so these can be kept forever. Scoped to `assets/` so `api/` (which inherits the web root's `.htaccess`) is never affected. |
+| `.htaccess` (web root) | `index.html` → `no-cache, must-revalidate` | the shell names the current build's assets, so a deploy reaches visitors on their next visit. |
+
+The deploy uses `rsync` without `--delete`: the previous build's chunks stay on
+the server, so a tab opened before a deploy can still load its lazy chunks.
+`deploy.yml` refuses to ship a build without `assets/.htaccess`.
+
 ## 7. Deliberately not done (and why)
 
 - **framer-motion `LazyMotion`** (≈ 350 KB source in the entry). It is used

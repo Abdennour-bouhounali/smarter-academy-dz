@@ -108,6 +108,9 @@ jobs:
           # link (/cours/..., /progression) would 404 in production.
           test -f apps/web/dist/.htaccess
           test -d apps/web/dist/assets
+          # Long-term caching of the hashed files; without it the server sends
+          # « no-store » and every visit re-downloads the app (BUNDLE_BOUNDARIES.md §8).
+          test -f apps/web/dist/assets/.htaccess
 
       # ─────────────────────────── Build the backend ─────────────────────────
       # 8.4, the version the Algerian server serves.

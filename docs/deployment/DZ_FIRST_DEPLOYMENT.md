@@ -163,6 +163,11 @@ Il emporte `public_html/.htaccess`, qui renvoie toutes les routes vers
 `index.html` **sauf `/api`**. Sans lui, un lien profond (`/courses`,
 `/espace/...`) renvoie 404.
 
+Depuis le 2026-09-25 il porte aussi le cache : `index.html` en
+`no-cache, must-revalidate`, et `public_html/assets/.htaccess` met les
+fichiers hachés en `max-age=31536000, immutable` (l'hébergeur envoyait
+`no-store` partout). Détail : `docs/architecture/BUNDLE_BOUNDARIES.md` §8.
+
 ---
 
 ## 7. Tests après bootstrap
