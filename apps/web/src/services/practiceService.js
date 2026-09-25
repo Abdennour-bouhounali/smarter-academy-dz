@@ -15,7 +15,12 @@ import { apiMessage } from './apiMessage';
 async function call(path, options, fallbackMessage) {
   const { ok, status, data } = await apiRequest(path, options);
   if (!ok) {
-    throw new ApiError(apiMessage('practice', data, status), classifyStatus(status), status);
+    const error = new ApiError(apiMessage('practice', data, status), classifyStatus(status), status);
+    // Le CODE et le corps (un refus « الوصول والحدود » y porte son quota) :
+    // lus par refusalFromError, jamais affichés tels quels.
+    error.code = typeof data?.code === 'string' ? data.code : null;
+    error.data = data ?? null;
+    throw error;
   }
 
   return data;

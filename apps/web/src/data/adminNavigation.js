@@ -1,6 +1,6 @@
 import {
   LayoutDashboard, BarChart3, BookOpen, Flag, Users, KeyRound, Package,
-  UserCog, ScrollText, GraduationCap, School, BadgeCheck, Inbox, CreditCard,
+  UserCog, ScrollText, GraduationCap, School, BadgeCheck, Inbox, CreditCard, SlidersHorizontal,
 } from 'lucide-react';
 
 /**
@@ -85,6 +85,8 @@ export const adminNavSections = [
       { labelKey: 'nav.plansAll', path: '/admin/offres', icon: BadgeCheck, end: true },
       { labelKey: 'nav.plansRequests', path: '/admin/offres/demandes', icon: Inbox },
       { labelKey: 'nav.plansSubscriptions', path: '/admin/offres/abonnements', icon: CreditCard },
+      // « الوصول والحدود » : outils du مختبر, cahier et travaux, par palier.
+      { labelKey: 'nav.accessLimits', path: '/admin/offres/acces', icon: SlidersHorizontal },
     ],
   },
   {

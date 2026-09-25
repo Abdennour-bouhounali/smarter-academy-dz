@@ -54,6 +54,7 @@ const AdminClassroomList = lazy(() => import('./pages/admin/classrooms/Classroom
 const AdminClassroomDetail = lazy(() => import('./pages/admin/classrooms/ClassroomDetail'));
 const AdminPlanList = lazy(() => import('./pages/admin/plans/PlanList'));
 const AdminPlanEditor = lazy(() => import('./pages/admin/plans/PlanEditor'));
+const AdminAccessLimits = lazy(() => import('./pages/admin/access/AccessLimits'));
 const AdminSubscriptionRequests = lazy(() => import('./pages/admin/requests/SubscriptionRequests'));
 const AdminSubscriptions = lazy(() => import('./pages/admin/subscriptions/Subscriptions').then((m) => ({ default: m.AdminSubscriptions })));
 // L'ESPACE ENSEIGNANT (« فضاء الأستاذ ») : arabe, RTL, sa propre coquille.
@@ -233,6 +234,7 @@ export default function App() {
               <Route path="offres" element={<AdminPlanList />} />
               <Route path="offres/demandes" element={<AdminSubscriptionRequests />} />
               <Route path="offres/abonnements" element={<AdminSubscriptions />} />
+              <Route path="offres/acces" element={<AdminAccessLimits />} />
               <Route path="offres/:id" element={<AdminPlanEditor />} />
 
               <Route path="compte" element={<AdminProfile />} />

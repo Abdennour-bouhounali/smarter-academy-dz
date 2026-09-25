@@ -14,7 +14,7 @@ import { mathLabToolPath } from '../mathLabDocument';
  * en RTL il s'aligne sur le bord de départ, donc il ne sort jamais de
  * l'écran (`inset-inline-start: 0`, voir mathlabWork.css).
  */
-export default function NewWorkMenu({ labRoot }) {
+export default function NewWorkMenu({ labRoot, tools = null }) {
   const { t } = useTranslation('mathlab');
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -46,7 +46,7 @@ export default function NewWorkMenu({ labRoot }) {
       </button>
       {open && (
         <div className="sa-mlw-menu sa-mlw-menu--wide" role="menu" aria-label={t('work.newWork')} data-ml-work-new-menu>
-          {MATH_LAB_TOOLS.map((tool) => {
+          {(tools ?? MATH_LAB_TOOLS).map((tool) => {
             const Icon = tool.icon;
 
             return (

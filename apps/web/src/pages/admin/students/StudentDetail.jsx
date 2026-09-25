@@ -10,6 +10,7 @@ import DataTable from '../../../components/admin/ui/DataTable';
 import { LoadingState, ErrorState, EmptyState, MetricUnavailable } from '../../../components/admin/ui/states';
 import { ConfirmDialog } from '../../../components/admin/ui/Modal';
 import CommercialPanel from '../../../components/admin/commercial/CommercialPanel';
+import FeatureUsagePanel from '../../../components/admin/commercial/FeatureUsagePanel';
 import { AuthContext } from '../../../context/AuthContext';
 import { useAdminResource } from '../../../hooks/useAdminResource';
 import { fetchStudent, changeStudentStatus } from '../../../services/admin/studentService';
@@ -122,6 +123,7 @@ export default function AdminStudentDetail() {
           <section>
             <h2 className="mb-3 font-space text-lg font-bold text-slate-900">{t('students.offerSection')}</h2>
             <CommercialPanel role="students" userId={id} planType="student" onChanged={reload} />
+            <FeatureUsagePanel userId={id} />
           </section>
 
           <section>

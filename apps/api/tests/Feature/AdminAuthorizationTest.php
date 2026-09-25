@@ -31,8 +31,8 @@ class AdminAuthorizationTest extends TestCase
 
             $methods = array_diff($route->methods(), ['HEAD']);
             $uri = str_replace(
-                ['{code}', '{id}', '{type}', '{role}', '{requestId}', '{subscriptionId}', '{overrideId}', '{versionId}', '{studentId}', '{invitationId}', '{lessonId}'],
-                ['fractions', '1', 'lesson', 'teachers', '1', '1', '1', '1', '1', '1', '1'],
+                ['{code}', '{id}', '{type}', '{role}', '{requestId}', '{subscriptionId}', '{overrideId}', '{versionId}', '{studentId}', '{invitationId}', '{lessonId}', '{key}'],
+                ['fractions', '1', 'lesson', 'teachers', '1', '1', '1', '1', '1', '1', '1', 'notebook'],
                 $route->uri()
             );
 

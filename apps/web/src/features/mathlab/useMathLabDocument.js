@@ -7,6 +7,8 @@ import {
 } from './mathLabDocument';
 import { useWorkspaceBase } from '../learning/learningViewer';
 import { summarizeDocument } from './toolContract';
+import { refusalFromError } from '../access/featureAccess';
+import { refreshFeatureAccess, reportRefusal } from '../../hooks/useFeatureAccess';
 
 /**
  * Le document d'un instrument, ouvert dans la coquille : chargement,
@@ -55,6 +57,10 @@ export function useMathLabDocument(tool, documentId, { launch, defaultTitle }) {
   const [title, setTitleState] = useState('');
   const [saveState, setSaveState] = useState('clean'); // clean | dirty | saving | saved | error
   const [lastSavedAt, setLastSavedAt] = useState(null);
+  // Un refus d'accès ou de quota (403) : on ne réessaie PAS en boucle — le
+  // serveur a dit non, et l'interface l'explique (FeatureLockedPanel).
+  const [refusal, setRefusal] = useState(null);
+  const refusedRef = useRef(false);
 
   const docRef = useRef(null);
   const pendingRef = useRef({ title: false, data: false });
@@ -72,7 +78,7 @@ export function useMathLabDocument(tool, documentId, { launch, defaultTitle }) {
   const flush = useCallback(async () => {
     clearTimeout(timerRef.current);
     const doc = docRef.current;
-    if (!doc || !token || inFlightRef.current) return;
+    if (!doc || !token || inFlightRef.current || refusedRef.current) return;
     const pending = pendingRef.current;
     if (!pending.title && !pending.data) return;
 
@@ -93,6 +99,8 @@ export function useMathLabDocument(tool, documentId, { launch, defaultTitle }) {
         });
         const saved = fromApiDocument(document);
         docRef.current = { ...docRef.current, id: saved.id, createdAt: saved.createdAt, updatedAt: saved.updatedAt };
+        // Un travail de plus : le compteur « X متبقّية » change.
+        refreshFeatureAccess(token);
         if (!unmountedRef.current) {
           setLoad((s) => ({ ...s, document: docRef.current }));
           // L'adresse dit maintenant QUEL document — sans recharger, sans
@@ -114,16 +122,24 @@ export function useMathLabDocument(tool, documentId, { launch, defaultTitle }) {
         setLastSavedAt(new Date());
         setSaveState(pendingRef.current.title || pendingRef.current.data ? 'dirty' : 'saved');
       }
-    } catch {
+    } catch (error) {
       // Ce qui n'est pas parti reste à envoyer : rien n'est perdu, on réessaiera.
       pendingRef.current = {
         title: pending.title || pendingRef.current.title,
         data: pending.data || pendingRef.current.data,
       };
-      if (!unmountedRef.current) setSaveState('error');
+      const refused = refusalFromError(error);
+      if (refused) {
+        refusedRef.current = true;
+        reportRefusal(refused);
+      }
+      if (!unmountedRef.current) {
+        setSaveState(refused ? 'blocked' : 'error');
+        if (refused) setRefusal(refused);
+      }
     } finally {
       inFlightRef.current = false;
-      if (!unmountedRef.current && (pendingRef.current.title || pendingRef.current.data)) schedule();
+      if (!unmountedRef.current && !refusedRef.current && (pendingRef.current.title || pendingRef.current.data)) schedule();
     }
   }, [token, tool, defaultTitle, navigate, schedule, labRoot]);
   flushRef.current = flush;
@@ -136,6 +152,8 @@ export function useMathLabDocument(tool, documentId, { launch, defaultTitle }) {
     const seq = ++loadSeqRef.current;
     clearTimeout(timerRef.current);
     pendingRef.current = { title: false, data: false };
+    refusedRef.current = false;
+    setRefusal(null);
     setSaveState('clean');
     setLastSavedAt(null);
 
@@ -214,6 +232,7 @@ export function useMathLabDocument(tool, documentId, { launch, defaultTitle }) {
     if (!docRef.current) return;
     docRef.current = { ...docRef.current, data };
     pendingRef.current.data = true;
+    if (refusedRef.current) return;
     setSaveState('dirty');
     schedule();
   }, [schedule]);
@@ -240,6 +259,7 @@ export function useMathLabDocument(tool, documentId, { launch, defaultTitle }) {
     updateData,
     saveNow: flush,
     saveState,
+    refusal,
     lastSavedAt,
     isPersisted: isPersisted(load.document),
   };

@@ -50,6 +50,9 @@ class MathLabFileController extends Controller
             return $this->refuse($e, 404);
         }
 
+        // Joindre un fichier, c'est se servir de l'instrument : 403 s'il est fermé.
+        $this->documents->ensureTool($user, $document->tool);
+
         $request->validate(['file' => 'required|file']);
 
         try {

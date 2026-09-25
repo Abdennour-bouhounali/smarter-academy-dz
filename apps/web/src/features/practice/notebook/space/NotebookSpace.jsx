@@ -16,6 +16,9 @@ import ConfirmDialog from './ConfirmDialog';
 import { PrintDialog } from './PrintSheet';
 import { VIEWS, SORTS, notebookPaths } from './noteMeta';
 import { useWorkspaceBase } from '../../../learning/learningViewer';
+import QuotaMeter from '../../../../components/access/QuotaMeter';
+import { useFeatureAccess } from '../../../../hooks/useFeatureAccess';
+import { NOTEBOOK_FEATURE, featureState } from '../../../access/featureAccess';
 import '../notebook.css';
 import './notebookSpace.css';
 
@@ -38,6 +41,8 @@ const VIEW_ICON = { all: NotebookPen, review: RotateCcw, errors: CircleX, questi
  */
 export default function NotebookSpace() {
   const { t } = useTranslation('student');
+  // Le compteur des NOUVELLES notes (« الوصول والحدود ») — lu, jamais décidé ici.
+  const notebookQuota = featureState(useFeatureAccess().summary, NOTEBOOK_FEATURE).quota;
   const { t: tc } = useTranslation('common');
   const s = (key, opts) => t(`notebook.space.${key}`, opts);
   useDocumentMeta(s('metaTitle'), s('metaDescription'));
@@ -155,6 +160,7 @@ export default function NotebookSpace() {
             <span aria-hidden="true">📓</span> {s('title')}
           </h1>
           <p className="text-slate-500 text-sm mt-1 max-w-xl">{s('subtitle')}</p>
+          {notebookQuota && !notebookQuota.unlimited && <QuotaMeter quota={notebookQuota} className="mt-2" />}
         </div>
         <button type="button" className="sa-ns-btn sa-ns-btn--primary" onClick={newNote} data-nb-new>
           <Plus size={18} aria-hidden="true" /> {s('newNote')}

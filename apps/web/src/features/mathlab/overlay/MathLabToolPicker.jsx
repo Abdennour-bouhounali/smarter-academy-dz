@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { PencilRuler } from 'lucide-react';
+import { Lock, PencilRuler } from 'lucide-react';
 import { ArrowForward } from '../../../components/common/DirectionalIcons';
 import '../mathlab.css';
 
@@ -29,8 +29,9 @@ import '../mathlab.css';
  * instruments seulement ANNONCÉS n'y sont pas — on ne propose pas dans une
  * leçon une porte qui n'ouvre sur rien.
  */
-export default function MathLabToolPicker({ tools, onPick }) {
+export default function MathLabToolPicker({ tools, onPick, lockedIds = [] }) {
   const { t } = useTranslation('mathlab');
+  const { t: ta } = useTranslation('access');
 
   return (
     <div className="sa-page py-8 sm:py-10" data-ml-overlay-picker>
@@ -52,10 +53,18 @@ export default function MathLabToolPicker({ tools, onPick }) {
               type="button"
               onClick={() => onPick(tool.id)}
               data-ml-overlay-tool={tool.id}
+              data-ml-tool-locked={lockedIds.includes(tool.id) ? 'true' : undefined}
               className="group flex flex-col gap-3 rounded-2xl border-2 border-slate-200 bg-white p-5 text-start transition-colors hover:border-blue-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
             >
-              <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                <Icon size={24} aria-hidden="true" />
+              <span className="flex items-start justify-between gap-2">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                  <Icon size={24} aria-hidden="true" />
+                </span>
+                {lockedIds.includes(tool.id) && (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 font-inter text-[11px] font-bold text-amber-800">
+                    <Lock size={11} aria-hidden="true" /> {ta('feature.badgePremium')}
+                  </span>
+                )}
               </span>
               <span className="min-w-0">
                 <span className="block font-space font-bold text-lg text-slate-900">{t(tool.labelKey)}</span>

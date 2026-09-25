@@ -1452,6 +1452,12 @@ ne portent aucune information — leur absence dit déjà la même chose — et
 créerait un risque d'élève enfermé dehors parce qu'une migration a oublié de
 lui fabriquer son droit.
 
+> **Les fonctionnalités (instruments du مختبر, cahier, travaux) ont leur
+> propre réglage par palier** — écran « الوصول والحدود »
+> (`/admin/offres/acces`), table `feature_access_policies`, journal
+> `access_policy.updated`. Le palier de l'UTILISATEUR y est celui
+> d'`EntitlementService` décrit ici. Contrat : [`ACCESS_AND_LIMITS.md`](./ACCESS_AND_LIMITS.md).
+
 ### Le palier du contenu, et son défaut
 
 **`lessons.tier` est la seule source de vérité** du palier d'une leçon
@@ -1793,6 +1799,7 @@ commerciales enseignant/élève ne vivent qu'en base et aucun écran DZ ne lit
 | Offres | `/admin/offres`, `/admin/offres/{id}` | éditeur : informations · demandes autorisées · versions (nouvelle, publier, gel) · capacité élèves · **grille de prix par élève** (paliers min/max/prix/devise/actif/ordre, erreurs listées avant l'enregistrement, aperçu « pour N élèves » local + vérification serveur) · durée activée · fonctionnalités · contenu · limites techniques · abonnés (sièges) |
 | Offres › Demandes | `/admin/offres/demandes` | la file `subscription_requests` avec sièges demandés et total calculé par le serveur ; « Activer » ouvre la fiche du compte, « Refuser » exige un motif |
 | Offres › Abonnements | `/admin/offres/abonnements` | offre, version, source (`acquisition_source`), accordé par ; Suspendre / Reprendre / Annuler / Prolonger / Changer d'offre |
+| Offres › الوصول والحدود | `/admin/offres/acces` | par palier (مجاني / وصول كامل) : chaque instrument du مختبر (activé, gratuit, premium), le cahier et les travaux (accès, limite ou « غير محدود », période mois / à vie), confirmation de tout geste restrictif, consommation du mois par palier et par instrument ; la fiche élève / enseignant montre utilisé / limite / restant (`FeatureUsagePanel`). Contrat : `ACCESS_AND_LIMITS.md` |
 | Accès › Codes | `/admin/codes-activation` | le formulaire de lot gagne « Offre » (obligatoire pour une offre enseignant, facultatif pour un lot élève) et « Élèves par code » pour une offre par sièges ; les listes montrent l'offre et la capacité |
 
 Le tableau de bord compte enseignants, classes et demandes en attente ; une

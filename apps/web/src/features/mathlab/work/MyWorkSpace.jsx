@@ -12,6 +12,9 @@ import ConfirmDialog from '../../practice/notebook/space/ConfirmDialog';
 import { MATH_LAB_TOOLS, getMathLabTool } from '../toolRegistry';
 import { mathLabToolPath, fromApiDocument } from '../mathLabDocument';
 import WorkCard from './WorkCard';
+import FeatureLockedPanel from '../../../components/access/FeatureLockedPanel';
+import { refusalFromError } from '../../access/featureAccess';
+import { refreshFeatureAccess, reportRefusal } from '../../../hooks/useFeatureAccess';
 import WorkFilterPanel from './WorkFilterPanel';
 import RenameDialog from './RenameDialog';
 import {
@@ -56,6 +59,9 @@ export default function MyWorkSpace({ labRoot }) {
   const [confirm, setConfirm] = useState(null); // { ids: number[] }
   const [renaming, setRenaming] = useState(null); // le travail à renommer
   const [actionError, setActionError] = useState(null);
+  // Une copie refusée par le serveur (instrument fermé, quota atteint) :
+  // on l'explique avec ses nombres, pas avec « تعذّر النسخ ».
+  const [refusal, setRefusal] = useState(null);
   const [busy, setBusy] = useState(false);
   const searchRef = useRef(null);
 
@@ -158,6 +164,7 @@ export default function MyWorkSpace({ labRoot }) {
 
   const duplicate = useCallback(async (work) => {
     setActionError(null);
+    setRefusal(null);
     setBusy(true);
     try {
       const title = duplicateTitle(work.title || t('untitled'), w('copyPrefix'), state.works.map((entry) => entry.title));
@@ -165,8 +172,15 @@ export default function MyWorkSpace({ labRoot }) {
       const copy = fromApiDocument(document);
       // La copie se pose en tête : c'est elle qu'on vient de faire.
       setState((s) => ({ ...s, works: [copy, ...s.works] }));
-    } catch {
-      setActionError(w('errors.duplicate'));
+      refreshFeatureAccess(token);
+    } catch (error) {
+      const refused = refusalFromError(error);
+      if (refused) {
+        reportRefusal(refused);
+        setRefusal(refused);
+      } else {
+        setActionError(w('errors.duplicate'));
+      }
     } finally {
       setBusy(false);
     }
@@ -326,6 +340,7 @@ export default function MyWorkSpace({ labRoot }) {
       )}
 
       {actionError && <p role="alert" className="sa-mlw-error" data-ml-work-error>{actionError}</p>}
+      {refusal && <FeatureLockedPanel compact reason={refusal.reason} quota={refusal.quota} resource="documents" />}
 
       {/* ── Le corps : filtres en colonne (bureau) + les travaux ─────── */}
       <div className="sa-mlw-body-grid">

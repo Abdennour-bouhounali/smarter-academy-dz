@@ -40,5 +40,42 @@
   "errorPlanMismatch": "هذا الرمز مخصّص لنوع حساب آخر.",
   "planFreeBadge": "مجاني",
   "planInformationalPrice": "دج",
-  "planPriceHint": "سعر إرشادي — يُدفع خارج المنصّة."
+  "planPriceHint": "سعر إرشادي — يُدفع خارج المنصّة.",
+  "feature": {
+    "badgePremium": "وصول كامل",
+    "lockedLabel": "مقفل — يتطلّب الوصول الكامل",
+    "premium_required": {
+      "title": "هذه الميزة متاحة مع الوصول الكامل",
+      "body": "فعّل الوصول الكامل لاستعمالها. ما حفظته من قبل يبقى لك: تجده في قائمتك ويمكنك حذفه متى شئت."
+    },
+    "feature_disabled": {
+      "title": "هذه الميزة غير متاحة حاليًا",
+      "body": "أوقفتها الإدارة مؤقتًا. ما حفظته من قبل يبقى لك."
+    },
+    "not_available": {
+      "title": "هذه الميزة غير متاحة في حسابك",
+      "body": "ما حفظته من قبل يبقى لك."
+    },
+    "quota_exceeded": {
+      "title": "بلغت حدّك الحالي",
+      "body": "استعملت {{used}} من {{limit}} ({{resource}}).",
+      "bodyPremium": "فعّل الوصول الكامل لرفع هذا الحدّ."
+    },
+    "resetsOn": "يتجدّد الحدّ يوم {{date}}.",
+    "neverResets": "هذا الحدّ لا يتجدّد.",
+    "meter": {
+      "remaining": "{{remaining}} متبقّية من {{limit}}",
+      "unlimited": "غير محدود",
+      "month": "هذا الشهر",
+      "lifetime": "إجمالًا"
+    },
+    "resource": {
+      "documents": "الأعمال المحفوظة في المختبر",
+      "notebook": "الملاحظات الجديدة في كرّاستي"
+    },
+    "used": "المستعمل",
+    "limit": "الحدّ",
+    "remainingLabel": "المتبقّي",
+    "cta": "تفعيل الوصول الكامل"
+  }
 }

@@ -12,6 +12,9 @@ import { useWorkspaceBase } from '../learning/learningViewer';
 import { readMathLabLaunch } from './openMathLab';
 import { useMathLabDocument } from './useMathLabDocument';
 import MathLabShell from './MathLabShell';
+import FeatureLockedPanel from '../../components/access/FeatureLockedPanel';
+import { useFeatureAccess } from '../../hooks/useFeatureAccess';
+import { featureState, toolFeatureKey } from '../access/featureAccess';
 
 // Un composant paresseux par instrument, créé UNE fois par module : `lazy`
 // dans le rendu recréerait le composant — et remonterait l'outil — à chaque rendu.
@@ -37,7 +40,32 @@ export default function MathLabToolPage() {
 
   if (!tool) return <Navigate to={labHome} replace />;
 
-  return <ToolPage key={tool.id} tool={tool} documentId={parseDocumentId(rawId)} />;
+  return <ToolGate key={tool.id} tool={tool} documentId={parseDocumentId(rawId)} labHome={labHome} />;
+}
+
+/**
+ * La porte de l'instrument : le RÉSUMÉ du serveur dit s'il est ouvert à ce
+ * compte. Fermé → on explique (FeatureLockedPanel), on ne monte ni l'outil ni
+ * le document. C'est de l'interface : même en contournant cette porte, le
+ * serveur refuse d'ouvrir, d'enregistrer ou de copier un travail de cet
+ * instrument (403). Tant que le résumé n'est pas arrivé, on ne ferme rien.
+ */
+function ToolGate({ tool, documentId, labHome }) {
+  const { t } = useTranslation('mathlab');
+  const { summary } = useFeatureAccess();
+  const access = featureState(summary, toolFeatureKey(tool.id));
+
+  if (access.known && !access.allowed) {
+    return (
+      <div className="sa-page py-10" data-ml-tool-locked={tool.id}>
+        <h1 className="font-space font-bold text-2xl text-slate-900 mb-4">{t(tool.labelKey)}</h1>
+        <FeatureLockedPanel reason={access.reason} />
+        <p className="mt-4 text-center"><Link to={labHome} className="sa-ml-btn sa-ml-btn--primary">{t('shell.backToLab')}</Link></p>
+      </div>
+    );
+  }
+
+  return <ToolPage tool={tool} documentId={documentId} />;
 }
 
 function ToolPage({ tool, documentId }) {
@@ -88,6 +116,9 @@ function ToolPage({ tool, documentId }) {
       onToggleFiles={toggleFiles}
       notice={notice}
       onNoticeDismiss={dismissNotice}
+      banner={model.refusal
+        ? <FeatureLockedPanel compact reason={model.refusal.reason} quota={model.refusal.quota} resource="documents" />
+        : null}
     >
       {model.status === 'loading' && (
         <div className="sa-ml-placeholder" aria-busy="true" data-ml-loading>

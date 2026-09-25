@@ -248,6 +248,11 @@ key fallback in `MathLabShell.jsx`).
    no `summarize`, if its summary exceeds the server's 2 KB, or if it throws
    on a malformed state.
 
+6. Nothing for access: its feature key `math_lab.tool.<id>` derives from
+   `MathLabTools` and is **open to both tiers** until the admin closes it in
+   « الوصول والحدود » (`ACCESS_AND_LIMITS.md` §11). Never gate a tool in
+   code; to ship it premium, a migration inserts its policy row.
+
 Nothing else: no route, no shell change, no persistence change, no
 migration. The grapher, the 3D explorer and the probability lab were added
 exactly this way (commit history of `toolRegistry.js`, `MathLabTools.php`,
@@ -324,6 +329,16 @@ API (`routes/api.php`, inside the `auth:sanctum` + `account.active` +
 
 Refusals carry a `code`; the client shows Arabic from
 `common.apiErrors.*` (`apiMessage.js`), never the server's text.
+
+**Access and quota (since 2026-09-25, `ACCESS_AND_LIMITS.md`).** POST and
+`duplicate` also require the instrument's tier access and consume one
+`document_generation` unit atomically (403 `premium_required` /
+`feature_disabled` / `quota_exceeded`); GET `{id}`, a PATCH that carries
+`data`, and file uploads require the instrument's access. Listing, renaming,
+starring and deleting are always allowed — a closed instrument never
+confiscates work. On a 403 the client stops autosaving (`saveState:
+'blocked'`) and shows `FeatureLockedPanel`; the home, « جديد » menu and the
+overlay picker hide a switched-off instrument and badge a locked one.
 
 ### 4.1 Client-side lifecycle (`useMathLabDocument`)
 

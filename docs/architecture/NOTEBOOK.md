@@ -84,6 +84,20 @@ le cahier ; le cahier ne touche ni à la maîtrise ni à la progression. Une
 **intervention** de l'enseignant (« تدخّل ») n'écrit jamais dans le cahier de
 l'élève : c'est une donnée de l'enseignant (`classroom_interventions`).
 
+## Accès et quota (« الوصول والحدود », depuis le 2026-09-25)
+
+Le cahier est une fonctionnalité réglable par palier (`notebook`, voir
+[`ACCESS_AND_LIMITS.md`](./ACCESS_AND_LIMITS.md)). **Une « copie du cahier »
+(`notebook_copy`) = une NOUVELLE note** (`POST /practice/notes`), d'où
+qu'elle vienne ; modifier, réviser, archiver, imprimer ne comptent pas, et
+supprimer ne rembourse pas. `NotebookService::create` consomme l'unité dans
+la même transaction que la note (verrou de la ligne `users`) ; `update` et
+`review` exigent l'accès. Lire, archiver et supprimer restent permis quand
+le cahier est fermé au palier. La lecture enseignant (`…ForReader`) ne
+dépend pas du palier de l'élève. Côté client : compteur dans la fenêtre
+(note neuve, limite finie) et dans « Mon cahier », panneau explicatif sur
+un refus — le texte reste dans la fenêtre et le brouillon local.
+
 ## Trois surfaces, une table
 
 | | Répond à | Où |

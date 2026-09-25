@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\MathLabDocument;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Support\FeatureAccessFixtures;
 use Tests\TestCase;
 
 /**
@@ -14,6 +15,7 @@ use Tests\TestCase;
  */
 class MathLabDocumentFlowTest extends TestCase
 {
+    use FeatureAccessFixtures;
     use RefreshDatabase;
 
     private User $student;
@@ -25,6 +27,9 @@ class MathLabDocumentFlowTest extends TestCase
         parent::setUp();
         $this->student = User::factory()->create(['role' => 'student']);
         $this->other = User::factory()->create(['role' => 'student']);
+        // Cette suite éprouve la PERSISTANCE des instruments ; l'accès par
+        // palier et les quotas sont l'affaire de FeatureAccessTest.
+        $this->openAllFeatures();
     }
 
     private function scene(int $strokes = 1): array

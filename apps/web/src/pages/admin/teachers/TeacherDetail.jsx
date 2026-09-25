@@ -8,6 +8,7 @@ import DataTable from '../../../components/admin/ui/DataTable';
 import { LoadingState, ErrorState, EmptyState } from '../../../components/admin/ui/states';
 import { ConfirmDialog } from '../../../components/admin/ui/Modal';
 import CommercialPanel from '../../../components/admin/commercial/CommercialPanel';
+import FeatureUsagePanel from '../../../components/admin/commercial/FeatureUsagePanel';
 import { AuthContext } from '../../../context/AuthContext';
 import { useAdminResource } from '../../../hooks/useAdminResource';
 import { fetchTeacher, changeTeacherStatus, grantTeacherOverride, revokeTeacherOverride } from '../../../services/admin/teacherService';
@@ -125,6 +126,7 @@ export default function AdminTeacherDetail() {
           )}
 
           <CommercialPanel role="teachers" userId={id} planType="teacher" onChanged={reload} />
+          <FeatureUsagePanel userId={id} />
 
           <section className="rounded-xl border border-slate-200 bg-white p-4" data-entitlements-block>
             <h2 className="mb-1 font-space text-sm font-bold text-slate-900">{t('teachers.effectiveEntitlements')}</h2>

@@ -22,7 +22,7 @@ import './mathlab.css';
  */
 export default function MathLabShell({
   tool, title, onTitleChange, saveState, isPersisted, onSave, toolApi, children,
-  attachments = null, filesOpen = false, onToggleFiles = null, notice = null, onNoticeDismiss = null,
+  attachments = null, filesOpen = false, onToggleFiles = null, notice = null, onNoticeDismiss = null, banner = null,
 }) {
   const { t } = useTranslation('mathlab');
   const rootRef = useRef(null);
@@ -188,7 +188,7 @@ export default function MathLabShell({
             type="button"
             className="sa-ml-btn sa-ml-btn--primary"
             onClick={onSave}
-            disabled={saveState === 'saving' || saveState === 'clean' || saveState === 'saved'}
+            disabled={saveState === 'saving' || saveState === 'clean' || saveState === 'saved' || saveState === 'blocked'}
             aria-label={t('shell.save')}
             title={t('shell.save')}
             data-ml-save
@@ -199,6 +199,7 @@ export default function MathLabShell({
         </div>
       </header>
 
+      {banner && <div className="px-4 pt-3" data-ml-banner>{banner}</div>}
       {notice && <Notice notice={notice} onDismiss={onNoticeDismiss} />}
 
       {hasFiles && filesOpen && (
@@ -224,6 +225,7 @@ function statusFor(saveState, isPersisted) {
     case 'saving': return { key: 'shell.saving', tone: 'busy', icon: Loader2, spin: true };
     case 'dirty': return { key: 'shell.dirty', tone: 'dirty', icon: CloudOff };
     case 'error': return { key: 'shell.saveError', tone: 'error', icon: CircleAlert };
+    case 'blocked': return { key: 'shell.saveBlocked', tone: 'error', icon: CircleAlert };
     case 'saved': return { key: 'shell.saved', tone: 'saved', icon: Check };
     default: return isPersisted
       ? { key: 'shell.saved', tone: 'saved', icon: Check }

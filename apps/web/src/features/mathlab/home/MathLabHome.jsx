@@ -7,6 +7,9 @@ import { useWorkspaceBase } from '../../learning/learningViewer';
 import ToolCard from './ToolCard';
 import MyWorkSpace from '../work/MyWorkSpace';
 import NewWorkMenu from '../work/NewWorkMenu';
+import QuotaMeter from '../../../components/access/QuotaMeter';
+import { useFeatureAccess } from '../../../hooks/useFeatureAccess';
+import { DOCUMENTS_FEATURE, featureState, isToolVisible, toolFeatureKey } from '../../access/featureAccess';
 import '../mathlab.css';
 import '../work/mathlabWork.css';
 // La confirmation de suppression et la feuille de filtres sont celles du
@@ -32,6 +35,12 @@ export default function MathLabHome() {
   const { t } = useTranslation('mathlab');
   useDocumentMeta(t('metaTitle'), t('metaDescription'));
   const labRoot = mathLabBasePath(useWorkspaceBase());
+  // « الوصول والحدود » : lu, jamais décidé ici. Un instrument coupé par
+  // l'administration disparaît ; un instrument fermé au palier reste montré,
+  // avec son cadenas — sa page explique pourquoi.
+  const { summary } = useFeatureAccess();
+  const tools = MATH_LAB_TOOLS.filter((tool) => isToolVisible(summary, tool.id));
+  const documents = featureState(summary, DOCUMENTS_FEATURE);
 
   return (
     <div className="sa-page py-8 sm:py-10" data-ml-home>
@@ -47,7 +56,9 @@ export default function MathLabHome() {
       <section className="mb-8" aria-labelledby="ml-tools-heading">
         <h2 id="ml-tools-heading" className="font-space font-bold text-slate-400 text-xs uppercase tracking-widest mb-3">{t('toolsHeading')}</h2>
         <div className="sa-ml-cards">
-          {MATH_LAB_TOOLS.map((tool) => <ToolCard key={tool.id} tool={tool} />)}
+          {tools.map((tool) => (
+            <ToolCard key={tool.id} tool={tool} locked={!featureState(summary, toolFeatureKey(tool.id)).allowed} />
+          ))}
         </div>
       </section>
 
@@ -76,8 +87,9 @@ export default function MathLabHome() {
           <div>
             <h2 id="ml-work-heading" className="font-space font-bold text-slate-400 text-xs uppercase tracking-widest mb-1">{t('myWork')}</h2>
             <p className="font-inter text-slate-500 text-xs">{t('myWorkHint')}</p>
+            {documents.quota && <QuotaMeter quota={documents.quota} className="mt-2" />}
           </div>
-          <NewWorkMenu labRoot={labRoot} />
+          <NewWorkMenu labRoot={labRoot} tools={tools} />
         </div>
         <MyWorkSpace labRoot={labRoot} />
       </section>

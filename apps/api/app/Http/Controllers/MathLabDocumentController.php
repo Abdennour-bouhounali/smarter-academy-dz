@@ -40,7 +40,7 @@ class MathLabDocumentController extends Controller
     public function show(Request $request, int $id): JsonResponse
     {
         try {
-            $document = $this->documents->find($request->user(), $id);
+            $document = $this->documents->open($request->user(), $id);
         } catch (DomainException $e) {
             return $this->refuse($e, 404);
         }

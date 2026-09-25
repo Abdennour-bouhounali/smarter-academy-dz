@@ -158,6 +158,9 @@ class ActivityLogger
 
     public const TEACHER_STATUS = 'teacher.status_changed';
 
+    /** « الوصول والحدود » : le réglage d'une fonctionnalité par palier (FeatureAccessAdminService). */
+    public const ACCESS_POLICY_UPDATED = 'access_policy.updated';
+
     /**
      * Clés dont la valeur n'est jamais journalisée, quelle que soit la façon
      * dont l'appelant les nomme. Défense en profondeur : l'appelant est déjà

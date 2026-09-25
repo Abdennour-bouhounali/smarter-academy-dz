@@ -7,6 +7,9 @@ import { MATH_LAB_TOOLS, getMathLabTool } from '../toolRegistry';
 import { useMathLabOverlay } from './MathLabOverlayProvider.jsx';
 import { PICKER, escapeAction, fullscreenAction } from './overlayState.js';
 import MathLabToolPicker from './MathLabToolPicker.jsx';
+import FeatureLockedPanel from '../../../components/access/FeatureLockedPanel';
+import { useFeatureAccess } from '../../../hooks/useFeatureAccess';
+import { featureState, isToolVisible, toolFeatureKey } from '../../access/featureAccess';
 import './mathLabOverlay.css';
 
 // Un composant paresseux par instrument, créé UNE fois — `lazy()` appelé au
@@ -211,7 +214,7 @@ export default function MathLabOverlay() {
       </header>
 
       <div className="sa-mlo__body">
-        {isPicking ? <MathLabToolPicker tools={MATH_LAB_TOOLS} onPick={pick} /> : <ToolHost tool={tool} />}
+        {isPicking ? <OverlayPicker onPick={pick} /> : <ToolHost tool={tool} />}
       </div>
     </div>
   );
@@ -225,7 +228,32 @@ export default function MathLabOverlay() {
  * pièces jointes, pas de sauvegarde. `onChange` garde l'état en mémoire pour
  * que la bascule plein écran — un simple re-rendu — ne reparte pas de zéro.
  */
+/**
+ * Le sélecteur, filtré par « الوصول والحدود » comme l'accueil : un instrument
+ * coupé n'est pas proposé, un instrument fermé au palier porte son cadenas.
+ */
+function OverlayPicker({ onPick }) {
+  const { summary } = useFeatureAccess();
+  const tools = MATH_LAB_TOOLS.filter((tool) => isToolVisible(summary, tool.id));
+  const lockedIds = tools.filter((tool) => !featureState(summary, toolFeatureKey(tool.id)).allowed).map((tool) => tool.id);
+
+  return <MathLabToolPicker tools={tools} lockedIds={lockedIds} onPick={onPick} />;
+}
+
 function ToolHost({ tool }) {
+  const { summary } = useFeatureAccess();
+  const access = featureState(summary, toolFeatureKey(tool.id));
+  // Dans le calque, rien n'est enregistré : cette porte est de l'interface
+  // seulement (le code de l'instrument est dans le navigateur). Ce que le
+  // serveur protège — enregistrer, rouvrir, copier — est refusé en 403.
+  if (access.known && !access.allowed) {
+    return <div className="sa-page py-8"><FeatureLockedPanel reason={access.reason} /></div>;
+  }
+
+  return <ToolHostOpen tool={tool} />;
+}
+
+function ToolHostOpen({ tool }) {
   const { t } = useTranslation('mathlab');
   const ToolComponent = useMemo(() => lazyToolComponent(tool), [tool]);
   // L'état de départ est figé à la PREMIÈRE ouverture de cet instrument :

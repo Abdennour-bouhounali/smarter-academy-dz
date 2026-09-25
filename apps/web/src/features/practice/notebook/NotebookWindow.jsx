@@ -19,6 +19,10 @@ import {
 import { draftKeyFor, readDraft, useNoteDraft } from './useNoteDraft';
 import { contextLabels, contextOfNote } from './noteContext';
 import { useNotebookDrag } from './useNotebookDrag';
+import FeatureLockedPanel from '../../../components/access/FeatureLockedPanel';
+import QuotaMeter from '../../../components/access/QuotaMeter';
+import { useFeatureAccess, refreshFeatureAccess, reportRefusal } from '../../../hooks/useFeatureAccess';
+import { NOTEBOOK_FEATURE, featureState, refusalFromError } from '../../access/featureAccess';
 import './notebook.css';
 
 // Des CLÉS, résolues au rendu — i18next n'est pas prêt à l'évaluation du module.
@@ -96,8 +100,13 @@ export default function NotebookWindow({
 }) {
   const { t } = useTranslation('student');
   const { t: tc } = useTranslation('common');
-  const { user } = useContext(AuthContext);
+  const { user, token } = useContext(AuthContext);
   const reduceMotion = useReducedMotion();
+  // « الوصول والحدود » : de quoi DESSINER le compteur et le cadenas. Le
+  // serveur reste l'autorité — une note refusée revient en 403 avec son quota.
+  const { summary: accessSummary } = useFeatureAccess();
+  const notebookAccess = featureState(accessSummary, NOTEBOOK_FEATURE);
+  const [refusal, setRefusal] = useState(null);
   const w = (key, opts) => t(`notebook.window.${key}`, opts);
 
   const editorRef = useRef(null);
@@ -328,13 +337,17 @@ export default function NotebookWindow({
     }
     setStatus('saving');
     setError(null);
+    setRefusal(null);
     try {
       const payload = { content: clean, mistakeType };
-      const result = noteId != null
-        ? await onUpdate(noteId, payload)
-        : await onCreate(payload);
+      const creating = noteId == null;
+      const result = creating
+        ? await onCreate(payload)
+        : await onUpdate(noteId, payload);
       const saved = result?.note ?? result;
       if (saved?.id != null) setNoteId(saved.id);
+      // Une note de plus : le compteur « X متبقّية » change.
+      if (creating) refreshFeatureAccess(token);
       draft.clear();
       setDraftRestored(false);
       setStatus('saved');
@@ -343,7 +356,13 @@ export default function NotebookWindow({
       // Le texte reste à l'écran ET dans le brouillon local : rien n'est perdu.
       draft.flush();
       setStatus('error');
-      setError(w('statusError'));
+      const refused = refusalFromError(e);
+      if (refused) {
+        reportRefusal(refused);
+        setRefusal(refused);
+      } else {
+        setError(w('statusError'));
+      }
     }
   };
 
@@ -540,6 +559,13 @@ export default function NotebookWindow({
               {error && (
                 <p role="alert" className="text-sm font-semibold text-rose-700">{error}</p>
               )}
+              {refusal ? (
+                <FeatureLockedPanel compact reason={refusal.reason} quota={refusal.quota} resource="notebook" />
+              ) : notebookAccess.known && !notebookAccess.allowed ? (
+                <FeatureLockedPanel compact reason={notebookAccess.reason} />
+              ) : (noteId == null && notebookAccess.quota && !notebookAccess.quota.unlimited && (
+                <QuotaMeter quota={notebookAccess.quota} className="self-start" />
+              ))}
               <div className="sa-nb-footer-row">
                 {compact && (
                   <select

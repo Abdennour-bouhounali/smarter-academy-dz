@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccessController;
 use App\Http\Controllers\ActivationCodeController;
+use App\Http\Controllers\Admin\AdminAccessPolicyController;
 use App\Http\Controllers\Admin\AdminAccountController;
 use App\Http\Controllers\Admin\AdminActivationCodeController;
 use App\Http\Controllers\Admin\AdminActivityLogController;
@@ -23,6 +24,7 @@ use App\Http\Controllers\BillingCheckoutController;
 use App\Http\Controllers\BillingSubscriptionController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContentAvailabilityController;
+use App\Http\Controllers\FeatureAccessController;
 use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\DiagnosticController;
 use App\Http\Controllers\EmailVerificationController;
@@ -216,6 +218,10 @@ Route::prefix('v1')->group(function () {
             // requête. La création est limitée en débit : la sauvegarde
             // automatique modifie (PATCH) un document existant, elle n'en
             // crée pas, donc cette limite ne la touche pas.
+            // « الوصول والحدود » : ce que CE compte peut utiliser (instruments,
+            // cahier, travaux) et ce qu'il lui reste. Lecture seule ; chaque
+            // geste protégé est revérifié par FeatureAccessService.
+            Route::get('/me/feature-access', [FeatureAccessController::class, 'show']);
             Route::get('/math-lab/documents', [MathLabDocumentController::class, 'index']);
             Route::post('/math-lab/documents', [MathLabDocumentController::class, 'store'])
                 ->middleware('throttle:30,1');
@@ -568,6 +574,13 @@ Route::prefix('v1')->group(function () {
             Route::get('/plan-versions/{id}/pricing', [AdminPlanController::class, 'pricing'])->whereNumber('id');
             Route::put('/plan-versions/{id}/pricing', [AdminPlanController::class, 'replacePricing'])->whereNumber('id');
             Route::get('/plan-versions/{id}/pricing/quote', [AdminPlanController::class, 'quote'])->whereNumber('id');
+
+            // ── « الوصول والحدود » : paliers × fonctionnalités, sans déploiement ──
+            Route::get('/access-policies', [AdminAccessPolicyController::class, 'index']);
+            Route::put('/access-policies/{key}', [AdminAccessPolicyController::class, 'update'])
+                ->where('key', '[a-zA-Z0-9_.]+');
+            Route::get('/access-usage', [AdminAccessPolicyController::class, 'usage']);
+            Route::get('/users/{id}/feature-usage', [AdminAccessPolicyController::class, 'userUsage'])->whereNumber('id');
 
             Route::get('/account', [AdminAccountController::class, 'show']);
             Route::patch('/account/profile', [AdminAccountController::class, 'updateProfile']);

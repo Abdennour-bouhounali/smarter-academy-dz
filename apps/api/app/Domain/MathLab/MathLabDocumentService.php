@@ -2,6 +2,8 @@
 
 namespace App\Domain\MathLab;
 
+use App\Domain\Access\Features\FeatureAccessService;
+use App\Domain\Access\Features\FeatureRegistry;
 use App\Models\MathLabDocument;
 use App\Models\User;
 use DomainException;
@@ -19,10 +21,18 @@ use Illuminate\Support\Collection;
  * cet instrument sait lire. Il n'en vérifie que deux choses — l'instrument
  * existe (MathLabTools) et la taille reste dans sa borne. L'instrument d'un
  * document ne change jamais : un dessin ne devient pas un graphe.
+ *
+ * ── Accès et quota (« الوصول والحدود ») ─────────────────────────────────
+ * Ouvrir, modifier ou copier un travail exige l'accès à SON instrument
+ * (`math_lab.tool.<id>`) ; en CRÉER un — premier enregistrement ou copie —
+ * consomme une unité `document_generation`, atomiquement avec la création
+ * (FeatureAccessService::consume). Lister et supprimer restent toujours
+ * permis : un instrument fermé ne confisque pas le travail déjà fait.
+ * Les refus sont des FeatureAccessDenied (403), jamais des DomainException.
  */
 class MathLabDocumentService
 {
-    public function __construct(private MathLabFileService $files) {}
+    public function __construct(private MathLabFileService $files, private FeatureAccessService $access) {}
 
     public const NOT_FOUND = 'math_lab_document_not_found';
 
@@ -56,6 +66,26 @@ class MathLabDocumentService
             ->get();
     }
 
+    /**
+     * Un travail à OUVRIR : le mien, et d'un instrument qui m'est ouvert.
+     * `find()` seul ne vérifie que la propriété — il sert aussi à supprimer.
+     */
+    public function open(User $user, int $id): MathLabDocument
+    {
+        $document = $this->find($user, $id);
+        $this->ensureTool($user, $document->tool);
+
+        return $document;
+    }
+
+    /** L'accès à un instrument (403 FeatureAccessDenied), s'il est connu. */
+    public function ensureTool(User $user, string $tool): void
+    {
+        if (MathLabTools::exists($tool)) {
+            $this->access->ensure($user, FeatureRegistry::toolKey($tool));
+        }
+    }
+
     public function find(User $user, int $id): MathLabDocument
     {
         $document = MathLabDocument::query()
@@ -80,8 +110,9 @@ class MathLabDocumentService
         }
 
         $bytes = $this->measure($tool, $attributes['data']);
+        $this->ensureTool($user, $tool);
 
-        return MathLabDocument::create([
+        return $this->access->consume($user, FeatureRegistry::MATH_LAB_DOCUMENTS, fn () => MathLabDocument::create([
             'user_id' => $user->id,
             'tool' => $tool,
             'title' => $this->cleanTitle($attributes['title']),
@@ -90,7 +121,7 @@ class MathLabDocumentService
             'data_bytes' => $bytes,
             'summary' => $this->cleanSummary($attributes['summary'] ?? null),
             'is_favorite' => false,
-        ]);
+        ]), $tool);
     }
 
     /**
@@ -100,7 +131,9 @@ class MathLabDocumentService
      */
     public function update(User $user, int $id, array $attributes): MathLabDocument
     {
-        $document = $this->find($user, $id);
+        // Changer l'ÉTAT, c'est se servir de l'instrument ; renommer ou mettre
+        // en favori, c'est ranger son travail — permis même instrument fermé.
+        $document = array_key_exists('data', $attributes) ? $this->open($user, $id) : $this->find($user, $id);
 
         if (array_key_exists('title', $attributes)) {
             $document->title = $this->cleanTitle($attributes['title']);
@@ -136,9 +169,9 @@ class MathLabDocumentService
      */
     public function duplicate(User $user, int $id, ?string $title = null): MathLabDocument
     {
-        $source = $this->find($user, $id);
+        $source = $this->open($user, $id);
 
-        return MathLabDocument::create([
+        return $this->access->consume($user, FeatureRegistry::MATH_LAB_DOCUMENTS, fn () => MathLabDocument::create([
             'user_id' => $user->id,
             'tool' => $source->tool,
             'title' => $this->cleanTitle($title ?? $source->title),
@@ -147,7 +180,7 @@ class MathLabDocumentService
             'data_bytes' => $source->data_bytes,
             'summary' => $source->summary,
             'is_favorite' => false,
-        ]);
+        ]), $source->tool);
     }
 
     /**

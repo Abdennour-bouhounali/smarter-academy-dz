@@ -2,6 +2,8 @@
 
 namespace App\Domain\Practice;
 
+use App\Domain\Access\Features\FeatureAccessService;
+use App\Domain\Access\Features\FeatureRegistry;
 use App\Models\LearningPoint;
 use App\Models\Lesson;
 use App\Models\LessonModule;
@@ -36,6 +38,14 @@ use Illuminate\Support\Collection;
  * L'espace dédié lit les MÊMES lignes, avec recherche, filtres, tri et
  * pagination côté serveur (`search`). Les vues (toutes, à revoir, erreurs,
  * questions, importantes, archivées) sont des filtres, pas des tables.
+ *
+ * ── Accès et quota (« الوصول والحدود ») ─────────────────────────────────
+ * ÉCRIRE — créer, modifier, réviser une note — exige la fonctionnalité
+ * `notebook` pour le palier du compte ; CRÉER une note consomme une unité
+ * `notebook_copy`, atomiquement avec la création (FeatureAccessService).
+ * Lire, archiver et supprimer restent permis : un cahier fermé ne confisque
+ * pas ce que l'élève y a écrit. La lecture de l'enseignant (…ForReader)
+ * n'est jamais soumise au palier de l'élève.
  */
 class NotebookService
 {
@@ -43,7 +53,7 @@ class NotebookService
 
     public const SORTS = ['newest', 'oldest', 'review', 'updated'];
 
-    public function __construct(private ExerciseRepository $exercises) {}
+    public function __construct(private ExerciseRepository $exercises, private FeatureAccessService $access) {}
 
     public function listFor(User $user, ?string $lessonCode = null)
     {
@@ -275,7 +285,7 @@ class NotebookService
         $context = $this->resolveContext($data);
         $type = $this->type($data['noteType'] ?? null, $data['mistakeType'] ?? null);
 
-        return NotebookNote::create([
+        return $this->access->consume($user, FeatureRegistry::NOTEBOOK, fn () => NotebookNote::create([
             'user_id' => $user->id,
             'title' => $this->title($data['title'] ?? null),
             'content' => $content,
@@ -286,12 +296,13 @@ class NotebookService
             // Toute note naît « à revoir » : le cahier sert d'abord à
             // retravailler ce qu'on vient d'écrire. L'élève l'en retire.
             'next_review_at' => array_key_exists('review', $data) && ! $data['review'] ? null : now(),
-        ] + $context);
+        ] + $context));
     }
 
     public function update(User $user, int $id, array $data): NotebookNote
     {
         $note = $this->ownedBy($user, $id);
+        $this->access->ensure($user, FeatureRegistry::NOTEBOOK);
         $payload = [];
         if (array_key_exists('content', $data)) {
             $content = trim((string) $data['content']);
@@ -346,6 +357,7 @@ class NotebookService
     public function review(User $user, int $id, string $outcome): NotebookNote
     {
         $note = $this->ownedBy($user, $id);
+        $this->access->ensure($user, FeatureRegistry::NOTEBOOK);
         if (! in_array($outcome, ['known', 'again'], true)) {
             throw new DomainException('Issue de révision inconnue.');
         }

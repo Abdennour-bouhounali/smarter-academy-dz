@@ -561,6 +561,12 @@ seats and their frozen price (`SeatPricingTest::test_les_prix_sont_versionnes…
   the technical limits**. Values live only in the DB and change without a
   deploy.
 
+> **Math Lab, notebook and saved works are not plan keys.** They are gated
+> per **tier** (free / premium) in « الوصول والحدود »
+> ([`ACCESS_AND_LIMITS.md`](./ACCESS_AND_LIMITS.md)), and a teacher account
+> is premium there explicitly (`teacher_role`) — whatever its plan. A
+> plan key for them would have been a second, contradictory authority.
+
 ### Resolution precedence (`PlanEntitlementResolver`, singleton, per-request memo)
 
 ```text

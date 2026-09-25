@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Domain\Access\EntitlementService;
+use App\Domain\Access\Features\FeatureAccessService;
 use App\Domain\Billing\PaymentProviderRegistry;
 use App\Domain\Billing\SandboxPaymentProvider;
 use App\Domain\Billing\Stripe\StripeEventTranslator;
@@ -53,6 +54,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(StudyContextService::class);
         // Les leçons effectives d'une classe, lues par chaque vue enseignant.
         $this->app->singleton(ClassroomProgressService::class);
+        // Les réglages « الوصول والحدود » et le palier d'un compte, relus une
+        // fois par requête. La CONSOMMATION n'est jamais mémorisée.
+        $this->app->singleton(FeatureAccessService::class);
 
         /**
          * … mais RECOMMENCÉ à chaque requête.
@@ -77,6 +81,7 @@ class AppServiceProvider extends ServiceProvider
                     $this->app->make(PlanEntitlementResolver::class)->forget();
                     $this->app->make(StudyContextService::class)->forget();
                     $this->app->make(ClassroomProgressService::class)->forget();
+                    $this->app->make(FeatureAccessService::class)->forget();
                 },
             );
         });
