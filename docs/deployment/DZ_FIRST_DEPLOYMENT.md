@@ -207,7 +207,7 @@ Le workflow reste volontairement prudent :
 ## Unité 1 du manuel (phase 8) — à appliquer sur Hostinger
 
 1. **Schéma** : `docs/deployment/HOSTINGER_UNIT1_MIGRATION.sql` (cinq migrations additives + lignes `migrations`). Sauvegarder, relire, exécuter dans phpMyAdmin.
-2. **Données** : `docs/deployment/HOSTINGER_UNIT1_CURRICULUM_DATA.sql`, généré par `php artisan smarter:curriculum-sql --grade=4am --retire-lesson=pgcd` — upserts PAR CODE, rejouables, sans DELETE, sans toucher `publication_status`. Les nouveaux modules/ressources/exercices naissent `draft`.
+2. **Données** : `docs/deployment/HOSTINGER_UNIT1_CURRICULUM_DATA.sql`, généré par `php artisan smarter:curriculum-sql --grade=4am --retire-lesson=pgcd` — upserts PAR CODE, rejouables, sans DELETE, sans toucher `publication_status` **ni `tier`** d'une ligne existante (une leçon nouvelle naît `free`). Les nouveaux modules/ressources/exercices naissent `draft`. Depuis le 2026-09-25 le déploiement applique lui-même cette synchronisation (voir « Le curriculum : synchronisé par le pipeline »), ce fichier ne sert plus qu'à une base que le pipeline ne peut pas atteindre.
 3. **Pratique** : synchroniser `content/practice/` (dossier `4am/`, `policy.json`, `misconceptions.json`, `index.generated.json`) à côté de l'API.
 
 ## Enseignants, classes et offres configurables — à appliquer sur Hostinger
@@ -277,6 +277,64 @@ Le déploiement fait donc maintenant, dans cet ordre :
    d'entrée ci-dessus sont maintenant sondés ; non authentifiés ils doivent
    répondre 401, et un 5xx fait échouer le déploiement. C'est la signature
    exacte d'une table ou d'une colonne manquante.
+
+## Le curriculum : synchronisé par le pipeline depuis le 2026-09-25
+
+Après la sauvegarde et les migrations, l'étape **« Synchronise the curriculum
+mirror »** de `deploy.yml` aligne la base de production sur le catalogue qui
+vient d'être livré, avec les MÊMES commandes qu'en local — il n'y a pas de
+seconde synchronisation :
+
+1. Dans la CI (qui a Node) : `exportCurriculum.mjs` et
+   `exportContentRegistry.mjs` écrivent les deux exports dans
+   `apps/api/database/curriculum-sync/` (ignoré par git), livrés avec l'API.
+   Rien sous `api/` n'est servi en HTTP (`api/.htaccess` réécrit tout vers
+   `public/`) — l'export du registre porte des clés de réponse.
+2. Sur le serveur (sans `proc_open`, d'où `--from-json`) :
+   `smarter:import-curriculum`, `smarter:import-content-registry`, puis
+   `smarter:prune-retired-learning-points` (sans `--with-history`, refusé hors
+   environnement local de toute façon) : il supprime uniquement une leçon que
+   le catalogue ne déclare plus ET qu'aucun élève n'a touchée (ni preuve, ni
+   progression, ni tentative de test final, ni séance de pratique).
+3. `smarter:lesson-inventory --tiers-only` est capturé AVANT et APRÈS : si le
+   palier d'une leçon existante a changé, **le déploiement échoue**. Puis
+   `smarter:lesson-inventory` imprime les leçons de production (classe, unité,
+   statut, publication, palier) dans le journal du job.
+
+### Ce que la synchronisation touche, et ce qu'elle ne touche jamais
+
+```text
+touche     titres, descriptions, unités, points d'apprentissage, prérequis, modules, exercices, items
+crée       une leçon nouvelle → publiée, tier = free ; un module / exercice nouveau → draft
+ne touche  lessons.tier d'une leçon existante, publication_status de quoi que ce soit
+supprime   une leçon absente du catalogue ET sans aucune trace d'élève — rien d'autre
+```
+
+Le palier est une décision d'administration (`lessons.tier`, seule source de
+vérité ; contrat : `architecture/ADMIN_PANEL_ARCHITECTURE.md` « Le palier du
+contenu »). Chaque base porte les siens : la base locale fait foi en
+développement, la base de production fait foi en production. Aucun
+déploiement ne les réinitialise, et aucun code ne les déduit du catalogue.
+
+### Périmètre actuel de la production (décision de contenu, 2026-09-25)
+
+**Pour l'instant**, la base de production DZ ne contient que les leçons de
+l'unité **« الأعداد الطبيعيّة والأعداد النّاطقة »** (`aadad-tabiiya-natiqa`,
+ميدان أنساب الأعداد والحساب, 4AM) — les neuf leçons que déclare le catalogue :
+`qasim-adad-tabii`, `qawasim-adad-tabii`, `khawass-qawasim`,
+`qasim-mushtarak-akbar`, `tayin-pgcd`, `bahth-pgcd`,
+`awwaliyan-fima-baynahuma`, `ikhtizal-kasr`, `wadiya-idmajiya-aadad`.
+
+C'est un état de CONTENU, pas une limite d'architecture : il découle de ce que
+le catalogue déclare, et aucune ligne de code ne le fige. Les 27 leçons « à
+venir » que l'ancien SQL de phase 8 avait créées (une par sujet officiel des
+autres ميادين, sans contenu) ne sont plus dans le catalogue ; le premier
+déploiement qui porte la synchronisation les retire (aucune trace d'élève
+possible sur une leçon sans contenu). Le prototype `pgcd` archivé est retiré
+lui aussi s'il ne porte aucun historique, et GARDÉ (archivé, invisible des
+élèves) s'il en porte. Une unité suivante entrera en production par le chemin
+normal : écrite dans le catalogue, livrée, synchronisée — ses leçons naissent
+gratuites, l'administrateur décide ensuite.
 
 ### Rattraper une base en retard
 

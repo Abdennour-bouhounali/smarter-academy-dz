@@ -13,6 +13,7 @@ use App\Models\StudentLessonProgress;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 /**
@@ -302,57 +303,73 @@ class CurriculumScopeTest extends TestCase
     }
 
     /**
-     * La dérive de PALIER, au niveau leçon — le trou de couverture que la
-     * phase 6F a mis en évidence : `RegistryHealthService::tier()` compare
-     * chaque leçon SOURCE contre la base, mais aucun test ne l'exerçait
-     * directement (le catalogue français n'a jamais eu ce test non plus).
-     * Fixture minimale plutôt qu'une vraie leçon 4AM : la phase 7 décidera
-     * du découpage, ce test n'a pas à en dépendre.
+     * Un 4am actif, un ميدان, une leçon — et l'export qui la déclare, SANS
+     * palier (le catalogue n'en porte plus).
      */
-    public function test_registry_health_gate_fails_on_a_lesson_tier_drift(): void
+    private function seedActiveLesson(?string $tier, string $code = 'thales'): string
     {
         $grade = Grade::create(['code' => '4am', 'name' => '4am', 'level' => 'moyen', 'order' => 0, 'is_active' => true]);
         $chapter = Chapter::create(['grade_id' => $grade->id, 'code' => 'handasa', 'title' => 'ميدان الهندسة', 'order' => 0]);
         Lesson::create([
-            'chapter_id' => $chapter->id, 'code' => 'thales', 'title' => 'Thalès',
-            'status' => 'available', 'tier' => 'premium', 'order' => 0,
+            'chapter_id' => $chapter->id, 'code' => $code, 'title' => 'Thalès',
+            'status' => 'available', 'order' => 0,
         ]);
+        // Écrit en SQL brut : le modèle et la colonne n'acceptent pas tous les
+        // cas qu'on veut éprouver ici (NULL, faute de frappe).
+        DB::table('lessons')->where('code', $code)->update(['tier' => $tier]);
 
-        $export = tempnam(sys_get_temp_dir(), 'tierdrift').'.json';
+        $export = tempnam(sys_get_temp_dir(), 'tier').'.json';
         file_put_contents($export, json_encode(['grades' => [[
             'code' => '4am', 'active' => true, 'chapters' => [[
-                'code' => 'handasa', 'lessons' => [
-                    // La base dit « premium », la source dit « free » : une
-                    // leçon annoncée gratuite resterait vendue à l'élève.
-                    ['code' => 'thales', 'tier' => 'free'],
-                ],
+                'code' => 'handasa', 'lessons' => [['code' => 'thales']],
             ]],
         ]]]));
-        config(['curriculum.export_output_path' => $export]);
+
+        return $export;
+    }
+
+    /**
+     * Le palier appartient à la BASE : une leçon que l'administrateur a
+     * passée premium alors que le catalogue ne dit rien n'est PAS une
+     * dérive. C'est la configuration voulue — l'ancienne porte l'aurait
+     * refusée, et aurait ainsi appris à « réparer » la décision de
+     * l'administrateur par un import.
+     */
+    #[DataProvider('adminTiers')]
+    public function test_registry_health_gate_accepts_any_admin_decided_tier(string $tier): void
+    {
+        config(['curriculum.export_output_path' => $this->seedActiveLesson($tier)]);
+
+        $this->artisan('smarter:registry-health', ['--gate' => true])->assertSuccessful();
+    }
+
+    public static function adminTiers(): array
+    {
+        return ['free' => ['free'], 'premium' => ['premium']];
+    }
+
+    /** Un palier ABSENT ou INCONNU en base reste un défaut, signalé. */
+    public function test_registry_health_gate_fails_on_an_invalid_tier_in_the_database(): void
+    {
+        config(['curriculum.export_output_path' => $this->seedActiveLesson('premiun')]);
 
         $this->artisan('smarter:registry-health', ['--gate' => true])
             ->expectsOutputToContain('thales')
             ->assertFailed();
     }
 
-    public function test_registry_health_gate_passes_when_tier_matches(): void
+    /**
+     * Une leçon en base que le catalogue ne déclare plus : une question de
+     * PÉRIMÈTRE, détectée comme telle (et non plus comme une « dérive de
+     * palier » dont la source serait absente).
+     */
+    public function test_registry_health_gate_fails_on_a_lesson_outside_the_catalogue(): void
     {
-        $grade = Grade::create(['code' => '4am', 'name' => '4am', 'level' => 'moyen', 'order' => 0, 'is_active' => true]);
-        $chapter = Chapter::create(['grade_id' => $grade->id, 'code' => 'handasa', 'title' => 'ميدان الهندسة', 'order' => 0]);
-        Lesson::create([
-            'chapter_id' => $chapter->id, 'code' => 'thales', 'title' => 'Thalès',
-            'status' => 'available', 'tier' => 'free', 'order' => 0,
-        ]);
+        config(['curriculum.export_output_path' => $this->seedActiveLesson('free', 'lecon-orpheline')]);
 
-        $export = tempnam(sys_get_temp_dir(), 'tiermatch').'.json';
-        file_put_contents($export, json_encode(['grades' => [[
-            'code' => '4am', 'active' => true, 'chapters' => [[
-                'code' => 'handasa', 'lessons' => [['code' => 'thales', 'tier' => 'free']],
-            ]],
-        ]]]));
-        config(['curriculum.export_output_path' => $export]);
-
-        $this->artisan('smarter:registry-health', ['--gate' => true])->assertSuccessful();
+        $this->artisan('smarter:registry-health', ['--gate' => true])
+            ->expectsOutputToContain('lecon-orpheline')
+            ->assertFailed();
     }
 
     public function test_it_leaves_curriculum_untouched_when_already_in_scope(): void

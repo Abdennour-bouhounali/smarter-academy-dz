@@ -2,7 +2,8 @@ import { call, get, send, query } from './adminClient';
 
 export function fetchLessons(token, filters = {}) {
   return call(`/admin/content/lessons${query(filters)}`, get(token), 'Impossible de charger les leçons.')
-    .then((data) => data.lessons);
+    // `units` : les options du filtre « الوحدة », lues en base par l'API.
+    .then((data) => ({ ...data.lessons, units: data.units ?? [] }));
 }
 
 export function fetchLesson(token, code) {

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Lock, Compass } from 'lucide-react';
 import { useProgress } from '../hooks/useProgress';
 import { lockedReasonData, getLessonById, getUnitById } from '@smarter-academy/core';
+import PremiumLessonLocked from './PremiumLessonLocked';
 import { resolveModuleStatus } from '../utils/moduleGate';
 import { softGateHint, masteryStatusByIdFromProfile } from '../utils/softGate';
 import { getModulePath } from '../../registry';
@@ -279,27 +280,16 @@ export default function LessonIndex({ config, basePath }) {
   if (isLessonLocked(config.id)) {
     return (
       <div className={`min-h-screen flex flex-col justify-between ${chrome.contentOffsetClass} bg-slate-50`}>
-        <main className="sa-page py-8 flex-1">
-          <nav className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500 mb-8">
-            <Link to="/courses" className="hover:text-blue-600">{t('index.home')}</Link>
-            <span>/</span>
-            <span className="text-slate-900 font-semibold">{config.title}</span>
-          </nav>
-
-          <div className="sa-premium-card-locked mx-auto max-w-lg rounded-2xl border p-8 text-center shadow-xs">
-            <Lock size={28} className="mx-auto mb-4 text-violet-600" />
-            <h1 className="font-space text-xl font-bold text-slate-800 mb-2">{config.title}</h1>
-            <p className="font-inter text-sm leading-relaxed text-slate-600 mb-6">
-              هذا الدرس يتطلّب وصولاً كاملاً.
-            </p>
-            <Link
-              to="/espace/activation"
-              className="inline-flex items-center gap-1 rounded-xl bg-violet-600 px-5 py-2.5 font-inter text-sm font-bold text-white transition-colors hover:bg-violet-700"
-            >
-              تفعيل الوصول
-            </Link>
-          </div>
-        </main>
+        <PremiumLessonLocked
+          title={config.title}
+          crumbs={(
+            <nav className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500 mb-8">
+              <Link to="/courses" className="hover:text-blue-600">{t('index.home')}</Link>
+              <span>/</span>
+              <span className="text-slate-900 font-semibold">{config.title}</span>
+            </nav>
+          )}
+        />
       </div>
     );
   }

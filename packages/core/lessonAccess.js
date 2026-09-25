@@ -158,24 +158,3 @@ export function lockedReason(moduleNumber) {
   const { previousModule, threshold } = lockedReasonData(moduleNumber);
   return `Termine le module ${previousModule} à ${threshold} % pour débloquer ce module.`;
 }
-
-/**
- * Porte de PALIER — distincte du déverrouillage séquentiel ci-dessus.
- *
- * Une leçon `tier: 'free'` est ouverte à tous ; une leçon `tier: 'premium'`
- * exige un droit d'accès, que le SERVEUR évalue (EntitlementService) et que
- * l'appelant transmet ici via `isPremiumUser`. Le catalogue vivant dans le
- * bundle, le palier est connu côté client — mais la décision, elle, ne l'est
- * pas : elle arrive avec `GET /content/availability`.
- *
- * Cette fonction ne fait donc qu'AFFICHER une décision déjà prise ailleurs.
- * Un élève qui forcerait `isPremiumUser` à vrai dans son navigateur verrait
- * une carte cliquable et rien de plus : chaque écriture repasse par
- * ContentAccess côté serveur, qui ne lit jamais l'état du client.
- *
- * @param {{ tier?: 'free' | 'premium' }} lesson
- * @param {{ isPremiumUser?: boolean }} [ctx]
- */
-export function isLessonUnlocked(lesson, { isPremiumUser = false } = {}) {
-  return lesson?.tier !== 'premium' || isPremiumUser;
-}

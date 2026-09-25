@@ -73,7 +73,9 @@ const grades = dzCourseLevels.flatMap((level) =>
         description: lesson.description ?? null,
         status: lesson.status,
         durationMinutes: lesson.durationMinutes ?? null,
-        tier: lesson.tier,
+        // No `tier`: the access tier is owned by the database (admin), not
+        // by the catalogue. The importer creates a new lesson `free` and
+        // never rewrites the tier of an existing one.
         order: lessonIndex,
         // Phase 8 : rattachement à l'unité, nature (leçon / synthèse),
         // référence au manuel et prérequis pédagogiques inter-leçons.

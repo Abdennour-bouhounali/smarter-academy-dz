@@ -45,6 +45,9 @@ class CurriculumSqlCommandTest extends TestCase
         foreach (explode("\n", $sql) as $line) {
             if (str_contains($line, 'ON DUPLICATE KEY UPDATE')) {
                 $this->assertStringNotContainsString('`publication_status` = VALUES', $line);
+                // Le palier non plus : rejouer ce SQL ne réécrit jamais la
+                // décision de l'administrateur (lessons.tier).
+                $this->assertStringNotContainsString('`tier` = VALUES', $line);
             }
         }
     }

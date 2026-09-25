@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
-import { isLessonUnlocked } from '@smarter-academy/core';
+import { courseLevels } from '@smarter-academy/core';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const webRoot = resolve(here, '../..');
@@ -21,25 +21,56 @@ const read = (p) => readFileSync(resolve(webRoot, p), 'utf8');
  * (EntitlementAccessMatrixTest) — c'est lui l'autorité.
  */
 describe('la porte de palier côté élève', () => {
-  it('une leçon gratuite est ouverte sans aucun droit', () => {
-    expect(isLessonUnlocked({ tier: 'free' })).toBe(true);
-    expect(isLessonUnlocked({})).toBe(true);
-    // Palier absent ou inconnu : ouvert. Même défaut sûr que côté serveur —
-    // une donnée manquante ne doit jamais fermer une leçon.
-    expect(isLessonUnlocked({ tier: undefined })).toBe(true);
+  it('le catalogue embarqué ne porte AUCUN palier', () => {
+    // `lessons.tier` (en base, décidé par l'administrateur) est la seule
+    // source de vérité. Un palier dans le bundle serait une seconde autorité
+    // — une liste figée de leçons gratuites ou payantes.
+    const lessons = courseLevels.flatMap((l) => l.grades)
+      .flatMap((g) => g.chapters ?? [])
+      .flatMap((c) => c.lessons ?? []);
+    expect(lessons.length).toBeGreaterThan(0);
+    for (const lesson of lessons) {
+      expect(lesson, lesson.id).not.toHaveProperty('tier');
+    }
   });
 
-  it('une leçon payante reste fermée sans droit, ouverte avec', () => {
-    expect(isLessonUnlocked({ tier: 'premium' })).toBe(false);
-    expect(isLessonUnlocked({ tier: 'premium' }, { isPremiumUser: true })).toBe(true);
+  it('aucune surface élève ne lit un palier embarqué', () => {
+    for (const file of [
+      'src/components/student/LessonCard.jsx',
+      'src/pages/student/StudentHome.jsx',
+      'src/lessons/common/components/LessonIndex.jsx',
+      'src/lessons/common/components/ModuleLayout.jsx',
+    ]) {
+      expect(read(file), file).not.toMatch(/lesson\??\.tier\b/);
+    }
+    expect(read('src/components/student/LessonCard.jsx')).not.toContain('isLessonUnlocked');
   });
 
-  it('la carte lit le droit d’accès du SERVEUR, pas une constante locale', () => {
+  it('la carte lit le palier et le verrou du SERVEUR', () => {
     const source = read('src/components/student/LessonCard.jsx');
-    // La valeur codée en dur qui existait avant l'implémentation des droits
-    // ne doit pas revenir : elle rendrait la porte insensible au serveur.
     expect(source).not.toMatch(/isPremiumUser:\s*false/);
-    expect(source).toContain('access?.premiumAccess === true');
+    expect(source).toContain('const isPremiumLesson = isLessonPremium(lesson.id);');
+    expect(source).toContain('const isUnlocked = !isLessonLocked(lesson.id);');
+  });
+
+  it('un visiteur reçoit aussi le palier du serveur', () => {
+    const service = read('src/services/contentAvailabilityService.js');
+    expect(service).toContain("'/content/availability/public'");
+    const context = read('src/context/ContentAvailabilityContext.jsx');
+    // Plus de court-circuit « pas de jeton = rien à charger ».
+    expect(context).not.toContain('if (!token) return null;');
+  });
+
+  it('une URL de leçon ou de module tapée directement passe par la porte', () => {
+    // La fabrique de routes de l'unité enveloppe CHAQUE page (sommaire et
+    // modules) : une leçon générée demain en hérite sans code.
+    const routes = read('src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/_unit/lessonRoutes.jsx');
+    expect(routes).toContain('<LessonAccessGate lessonId={config.id}');
+    const gate = read('src/lessons/common/components/LessonAccessGate.jsx');
+    expect(gate).toContain('isLessonLocked(lessonId)');
+    // Et le module lui-même refuse d'écrire une progression sous verrou.
+    const layout = read('src/lessons/common/components/ModuleLayout.jsx');
+    expect(layout).toContain('const unlocked = sequentiallyUnlocked && !premiumLocked;');
   });
 
   it('le contexte distingue « retiré » de « verrouillé »', () => {
@@ -58,19 +89,21 @@ describe('la porte de palier côté élève', () => {
   it('le sommaire d’une leçon verrouillée ne révèle aucun contenu', () => {
     const source = read('src/lessons/common/components/LessonIndex.jsx');
     expect(source).toContain('isLessonLocked(config.id)');
-    // Le message ARABE attendu (l'interface élève est en arabe depuis la
-    // phase 4), et un retour AVANT le rendu du sommaire : le bloc verrouillé
-    // sort de la fonction, il ne se superpose pas au contenu (qui resterait
-    // alors dans le DOM).
-    expect(source).toContain('هذا الدرس يتطلّب وصولاً كاملاً.');
-    // … et il mène à la SAISIE D'UN CODE, jamais à une page de tarifs : le
-    // produit algérien se paie en espèces, hors de l'application (§17/§18).
-    expect(source).toContain('/espace/activation');
-    expect(source).not.toContain('/tarifs');
+    expect(source).toContain('<PremiumLessonLocked');
+    // Un retour AVANT le rendu du sommaire : le bloc verrouillé sort de la
+    // fonction, il ne se superpose pas au contenu (qui resterait dans le DOM).
     const lockedAt = source.indexOf('isLessonLocked(config.id)');
     const roadmapAt = source.indexOf('isModuleClosed(config.id, module.number)');
     expect(lockedAt).toBeGreaterThan(-1);
     expect(roadmapAt).toBeGreaterThan(lockedAt);
+
+    // Le panneau partagé : message arabe (clé i18n) et chemin vers la SAISIE
+    // D'UN CODE, jamais une page de tarifs — le produit algérien se paie en
+    // espèces, hors de l'application (§17/§18).
+    const panel = read('src/lessons/common/components/PremiumLessonLocked.jsx');
+    expect(panel).toContain("t('lockedHint')");
+    expect(panel).toContain('/espace/activation');
+    expect(panel).not.toContain('/tarifs');
   });
 
   it('le badge Premium reste visible quand l’élève A l’accès', () => {
@@ -82,13 +115,6 @@ describe('la porte de palier côté élève', () => {
     // Le badge vit aussi dans la branche ACCESSIBLE, pas seulement dans la
     // branche verrouillée : deux occurrences de « Premium » au minimum.
     expect(source.match(/Premium/g).length).toBeGreaterThanOrEqual(2);
-  });
-
-  it('le palier vient du serveur autant que du bundle', () => {
-    const source = read('src/components/student/LessonCard.jsx');
-    // Le bundle peut être en retard sur la base : une leçon rendue payante
-    // côté serveur reste `free` dans coursesData.js jusqu'au déploiement.
-    expect(source).toContain("lesson.tier === 'premium' || isLessonPremium(lesson.id)");
   });
 
   it('le badge suit le CONTENU, le verrou suit l’ÉLÈVE', () => {

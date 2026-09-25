@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 import { LazyLessonKnowledgeProvider } from '../../../../../common/knowledge/LazyKnowledgeProvider';
 import LessonNotebookAnchor from '../../../../../common/notebook/LessonNotebookAnchor';
 import LessonClassroomShell from '../../../../../common/classroom/LessonClassroomShell';
+import LessonAccessGate from '../../../../../common/components/LessonAccessGate';
 import { PRINT_SUBJECT } from './unitMeta';
 
 /**
@@ -23,13 +24,21 @@ export function buildLessonRoutes({ config, basePath, moduleFiles, loadKnowledge
   // C'est ce que le cahier reçoit comme position — la coquille sait où
   // l'élève est, le module n'a rien à déclarer.
 
+  //
+  // LA PORTE DE PALIER entoure chaque page — sommaire ET modules — AVANT le
+  // chargement paresseux du module : une leçon premium que ce compte ne peut
+  // pas ouvrir ne télécharge même pas le code de ses modules, et une URL de
+  // module tapée directement tombe sur le même panneau que le sommaire. Le
+  // palier vient du serveur (lessons.tier, décidé par l'administrateur).
   const withSuspense = (Component, module = null) => (
-    <Suspense fallback={<div className="min-h-screen bg-slate-50" />}>
-      <LazyLessonKnowledgeProvider load={loadKnowledge} lessonId={config.id} printTitle={config.title} printSubject={PRINT_SUBJECT}>
-        <Component />
-        <LessonNotebookAnchor config={config} module={module} />
-      </LazyLessonKnowledgeProvider>
-    </Suspense>
+    <LessonAccessGate lessonId={config.id} title={config.title}>
+      <Suspense fallback={<div className="min-h-screen bg-slate-50" />}>
+        <LazyLessonKnowledgeProvider load={loadKnowledge} lessonId={config.id} printTitle={config.title} printSubject={PRINT_SUBJECT}>
+          <Component />
+          <LessonNotebookAnchor config={config} module={module} />
+        </LazyLessonKnowledgeProvider>
+      </Suspense>
+    </LessonAccessGate>
   );
   // La coquille du MODE CLASSE (وضع القسم) est une route « layout » sans
   // chemin, au-dessus du sommaire et des modules : elle reste montée quand

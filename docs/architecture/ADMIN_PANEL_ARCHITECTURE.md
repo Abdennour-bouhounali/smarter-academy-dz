@@ -331,6 +331,21 @@ Visibility changes must be backend-enforced.
 
 # 9. Lesson management
 
+> **Implemented (2026-09-25) — `/admin/contenu/lecons`.** Filters: search,
+> grade, **الوحدة** (the textbook unit, `?unit=<code>`), publication, tier.
+> The unit options are read from the database by the API
+> (`GET /admin/content/lessons` → `units[]`: only units that carry at least one
+> lesson, active grades only), never listed in the UI — today that is the one
+> unit « الأعداد الطبيعيّة والأعداد النّاطقة », and a unit imported tomorrow
+> appears on its own. Each row shows its unit under the title
+> (`unit`, `unitTitle`), falling back to the ميدان.
+>
+> **Terminology (Arabic admin).** A lesson's *module* is **المحور**
+> (plural المحاور); **الوحدة** is only ever the textbook unit — the level
+> between the ميدان and the درس. The admin labels that used « الوحدة » for a
+> module were corrected on 2026-09-25. (« وحدة البيع », the unit of sale of a
+> teacher plan, is a different word use and stays.)
+
 Lesson list must support:
 
 - search
@@ -1439,19 +1454,69 @@ lui fabriquer son droit.
 
 ### Le palier du contenu, et son défaut
 
-`lessons.tier` vaut `free` ou `premium`. **Le défaut est `free`**, à trois
-niveaux : la colonne, `CurriculumImporter` et `AccessTier::normalize()`, qui
-traite tout ce qui n'est pas exactement `premium` (NULL, chaîne vide, faute de
-frappe) comme gratuit.
+**`lessons.tier` est la seule source de vérité** du palier d'une leçon
+(`free` | `premium`), et **l'administrateur en est l'autorité** (révisé le
+2026-09-25). Il n'existe AUCUNE liste figée de leçons gratuites ou payantes :
+ni dans le code, ni dans le catalogue, ni dans un fichier de configuration.
+L'ancienne liste `FREE_LESSON_IDS` (`packages/core/curriculum/freeLessons.js`),
+que chaque import recopiait dans `lessons.tier` en écrasant les décisions de
+l'administration, a été supprimée.
+
+```text
+leçon NOUVELLE (import, SQL de rattrapage)   → tier = 'free'   (défaut de CRÉATION, pas une classification)
+leçon EXISTANTE (tout import, tout déploiement) → tier JAMAIS réécrit
+changement de palier                          → administration uniquement : PATCH /admin/content/lesson/{id}/tier
+                                                 (ou le geste en lot), journalisé
+```
+
+- Le **catalogue ne porte aucun palier** : ni `coursesData.js`, ni
+  `dz/lessons_4am_*.json`, ni l'export (`exportCurriculum.mjs`). Un `tier`
+  présent dans un export ancien est ignoré, même à la création.
+  `scripts/check-dormant-isolation.mjs` fait échouer la CI si un `tier`
+  réapparaît dans le catalogue algérien.
+- `CurriculumImporter` pose `tier = 'free'` **à la création seulement** ; la
+  mise à jour d'une leçon existante ne contient pas la colonne.
+  `smarter:curriculum-sql` suit la même règle : `'free'` dans l'`INSERT`,
+  aucune mention de `tier` dans l'`ON DUPLICATE KEY UPDATE`.
+- Le défaut reste `free` à trois niveaux : la colonne, `CurriculumImporter` et
+  `AccessTier::normalize()`, qui traite tout ce qui n'est pas exactement
+  `premium` (NULL, chaîne vide, faute de frappe) comme gratuit.
 
 Ce sens est délibéré et c'est la protection principale de tout le dispositif :
-un palier oublié laisse une leçon OUVERTE. Le contenu payant se déclare ; il ne
-s'obtient pas par distraction. C'est l'inverse de la liste blanche de
-publication (où l'inconnu ferme) parce que l'inconnu n'y signifie pas la même
-chose : un état de publication inconnu est un bug, un palier absent veut dire
-« personne n'a décidé de le vendre ».
+un palier oublié laisse une leçon OUVERTE. Le contenu payant se déclare — par
+l'administrateur ; il ne s'obtient pas par distraction. C'est l'inverse de la
+liste blanche de publication (où l'inconnu ferme) parce que l'inconnu n'y
+signifie pas la même chose : un état de publication inconnu est un bug, un
+palier absent veut dire « personne n'a décidé de le vendre ».
 
-À ce jour les 133 leçons sont `free` : **aucun contenu n'est verrouillé**.
+#### Synchronisation du contenu ≠ autorité du palier
+
+```text
+synchronisation du catalogue (import, SQL, déploiement)   décrit ce qu'EST une leçon : titre, unité, points, modules
+administration                                            décide QUI peut l'ouvrir : lessons.tier, publication_status
+```
+
+La synchronisation met à jour le contenu et **préserve** toute configuration
+d'accès décidée par l'administrateur — le palier comme la publication.
+`smarter:registry-health` ne compare donc plus le palier au catalogue (une
+décision d'administration n'est pas une « dérive ») ; il contrôle la base sur
+sa propre règle : chaque leçon d'une classe active porte un palier explicite et
+connu. La présence en base d'une leçon que le catalogue ne déclare plus est
+signalée à part, comme une question de PÉRIMÈTRE (`lessonsOutsideCatalogue`).
+
+#### Base locale, base de production
+
+Chaque base porte SES leçons et SES paliers : la base locale fait foi pour le
+développement, la base de production fait foi pour la production. Aucun code ne
+déduit le palier de production d'une donnée embarquée. Le déploiement
+(`deploy.yml`, étape « Synchronise the curriculum mirror ») applique les
+migrations puis rejoue la MÊME synchronisation qu'un développeur en local
+(`smarter:import-curriculum`, `smarter:import-content-registry`,
+`smarter:prune-retired-learning-points`, sans `--with-history`), capture
+`smarter:lesson-inventory --tiers-only` avant et après, et **échoue si le
+palier d'une leçon existante a changé**. Il imprime ensuite l'inventaire des
+leçons de production (classe, unité, publication, palier). Procédure :
+[`deployment/DZ_FIRST_DEPLOYMENT.md`](../deployment/DZ_FIRST_DEPLOYMENT.md).
 
 ### Validité temporelle
 
@@ -1484,7 +1549,8 @@ revient. L'accès change, l'histoire reste.
 
 | Point d'entrée | Qui | Quoi |
 | --- | --- | --- |
-| `GET /content/availability` | élève | `closed.lessons` (retiré), `closed.locked` (verrouillé), `access` (résumé) |
+| `GET /content/availability` | élève | `closed.lessons` (retiré), `closed.premium` (payant), `closed.locked` (verrouillé), `closed.hiddenByClass`, `access` (résumé) |
+| `GET /content/availability/public` | visiteur (sans compte) | le même inventaire pour un utilisateur `null` : `locked` = `premium`, aucune donnée personnelle ; un jeton éventuel est ignoré |
 | `GET /me/access` | élève | le résumé seul |
 | `GET /admin/students/{id}/entitlements` | admin | état + historique complet |
 | `POST /admin/students/{id}/entitlements/override` | admin | accorder |
@@ -1506,16 +1572,33 @@ l'écriture.
 
 ### Le frontend n'autorise rien
 
-`ContentAvailabilityContext` porte la décision du serveur et la donne à
-`isLessonUnlocked(lesson, {isPremiumUser})`. La carte de cours consulte aussi
-`closed.locked`, parce que le bundle peut être en retard sur la base — une
-leçon rendue payante côté serveur reste `free` dans le catalogue embarqué
-jusqu'au prochain déploiement, et la carte afficherait sinon « Commencer » sur
-une leçon qui refusera de s'ouvrir.
+Le bundle ne connaît AUCUN palier : `ContentAvailabilityContext` porte la
+décision du serveur (`/content/availability`, et `/content/availability/public`
+pour un visiteur) et chaque surface la lit par `isLessonPremium(code)` (badge)
+et `isLessonLocked(code)` (verrou). `isLessonUnlocked(lesson, …)`, qui lisait un
+`lesson.tier` embarqué, a été supprimé. Surfaces concernées : `LessonCard`
+(catalogue, « دروسي », exploration), `StudentHome` (compte des leçons premium),
+`LessonIndex` (sommaire), `ModuleLayout` (un module verrouillé n'écrit ni visite
+ni complétion) et **`LessonAccessGate`**, que la fabrique de routes de l'unité
+(`_unit/lessonRoutes.jsx`) pose autour de CHAQUE page d'une leçon — sommaire et
+modules, avant le chargement paresseux du module : une URL de module tapée
+directement tombe sur le même panneau (`PremiumLessonLocked`) que le sommaire,
+et une leçon générée demain en hérite sans code.
 
-Un élève qui forcerait cet état dans son navigateur verrait une carte
-cliquable et rien de plus : chaque écriture repasse par `ContentAccess`, qui ne
-lit jamais l'état du client.
+Le contenu d'une leçon est du JSX livré dans le bundle : le serveur ne peut pas
+le retenir. La frontière de sécurité est donc chaque ÉCRITURE et chaque
+ressource servie par l'API — progression, preuve, test final, liste des
+exercices, séance et question de pratique — qui repasse par `ContentAccess`, et
+celui-ci ne lit jamais l'état du client. Un élève qui forcerait l'état du
+contexte dans son navigateur verrait une page et rien de plus : aucune
+progression, aucune pratique, aucune maîtrise.
+
+**Fraîcheur.** Aucun cache ne porte le palier : ni HTTP, ni Laravel (le mémo
+d'`EntitlementService` vit le temps d'une requête), ni service worker. Le
+contexte relit l'inventaire au changement de compte, à la saisie d'un code
+d'activation (`refresh`), et quand l'élève REVIENT sur l'onglet (au plus une fois
+toutes les 30 s, `AVAILABILITY_REFRESH_MIN_MS`) : une décision de
+l'administrateur atteint un navigateur déjà ouvert sans rechargement complet.
 
 Politique d'ouverture, comme partout ailleurs : tant que la réponse n'est pas
 arrivée, rien n'est verrouillé.

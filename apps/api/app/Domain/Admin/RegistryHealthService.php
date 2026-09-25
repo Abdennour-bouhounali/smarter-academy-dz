@@ -2,9 +2,10 @@
 
 namespace App\Domain\Admin;
 
+use App\Domain\Access\AccessTier;
 use App\Models\Chapter;
-use App\Models\LearningPoint;
 use App\Models\Grade;
+use App\Models\LearningPoint;
 use App\Models\Lesson;
 use App\Models\LessonModule;
 use App\Models\PracticeExercise;
@@ -315,6 +316,7 @@ class RegistryHealthService
             'active' => $db->where('is_active', true)->pluck('code')->values()->all(),
             'drift' => $drift,
             'unexpectedGrades' => $unexpected,
+            'lessonsOutsideCatalogue' => $source !== null ? ($this->lessonsOutsideCatalogue() ?? []) : [],
             'orphans' => $this->curriculumOrphans(),
             'sourceAvailable' => $source !== null,
         ];
@@ -348,72 +350,90 @@ class RegistryHealthService
     }
 
     /**
-     * Le PALIER COMMERCIAL : la base (`lessons.tier`) doit refléter ce que le
-     * catalogue déclare (freeLessons.js → coursesData.js → export).
+     * Le PALIER COMMERCIAL, contrôlé sur SA seule autorité : la base.
      *
-     * Même poignée de main que l'activation, et même conséquence si elle
-     * dérive — mais sur l'argent plutôt que sur la visibilité :
+     * `lessons.tier` est la seule source de vérité du palier, et
+     * l'administrateur en est l'autorité (ContentService::changeTier). Le
+     * catalogue n'en porte aucun — l'import crée une leçon nouvelle en `free`
+     * et ne réécrit jamais celui d'une leçon existante. Comparer la base au
+     * catalogue ferait donc passer chaque décision d'administration pour une
+     * dérive : ce n'en est pas une, c'est la configuration voulue.
      *
-     *   base « premium », source « free »  → une leçon annoncée gratuite est
-     *                                        refusée à l'élève qui l'ouvre.
-     *   base « free », source « premium »  → une leçon vendue est servie
-     *                                        gratuitement à tout le monde.
+     * Ce qui reste un DÉFAUT, et que ce contrôle signale : un palier absent
+     * ou inconnu (NULL, chaîne vide, faute de frappe). AccessTier::normalize()
+     * le sert comme gratuit — la protection tient — mais l'administration
+     * afficherait une valeur que personne n'a choisie. La règle de
+     * ContentService (« une leçon doit porter un palier explicite ») vaut
+     * aussi pour la base.
      *
-     * La seconde est la fuite commerciale que la phase 6 existe pour fermer :
-     * un oubli d'import suffirait à offrir tout le programme.
+     * Limité aux classes ACTIVES, comme l'activation.
      *
-     * Limité aux classes ACTIVES : les 133 leçons françaises dormantes ne sont
-     * servies à personne, et les compter ici noierait la vraie dérive dans un
-     * bruit permanent.
-     *
-     * @return array{drift: array<int, array{code: string, grade: string, database: string, source: ?string}>, sourceAvailable: bool, checked: int}
+     * @return array{invalid: array<int, array{code: string, grade: string, database: ?string}>, counts: array<string, int>, checked: int, authority: string}
      */
     private function tier(): array
     {
-        $export = $this->loadCurriculumExport();
-
-        if ($export === null) {
-            return ['drift' => [], 'sourceAvailable' => false, 'checked' => 0];
-        }
-
-        // Source : code de leçon → palier, pour les classes actives seulement.
-        $sourceTiers = [];
-        foreach ($export as $grade) {
-            if (! ($grade['active'] ?? false)) {
-                continue;
-            }
-            foreach ($grade['chapters'] ?? [] as $chapter) {
-                foreach ($chapter['lessons'] ?? [] as $lesson) {
-                    $sourceTiers[$lesson['code']] = $lesson['tier'] ?? 'free';
-                }
-            }
-        }
-
-        $drift = [];
-        $checked = 0;
-
         $rows = Lesson::query()
             ->join('chapters', 'chapters.id', '=', 'lessons.chapter_id')
             ->join('grades', 'grades.id', '=', 'chapters.grade_id')
             ->where('grades.is_active', true)
             ->get(['lessons.code', 'lessons.tier', 'grades.code as grade_code']);
 
-        foreach ($rows as $row) {
-            $checked++;
-            $expected = $sourceTiers[$row->code] ?? null;
-            $actual = $row->tier ?? 'free';
+        $invalid = [];
+        $counts = array_fill_keys(AccessTier::TIERS, 0);
 
-            if ($expected === null || $expected !== $actual) {
-                $drift[] = [
-                    'code' => $row->code,
-                    'grade' => $row->grade_code,
-                    'database' => $actual,
-                    'source' => $expected,
-                ];
+        foreach ($rows as $row) {
+            if (! in_array($row->tier, AccessTier::TIERS, true)) {
+                $invalid[] = ['code' => $row->code, 'grade' => $row->grade_code, 'database' => $row->tier];
+
+                continue;
+            }
+            $counts[$row->tier]++;
+        }
+
+        return [
+            'invalid' => $invalid,
+            'counts' => $counts,
+            'checked' => $rows->count(),
+            'authority' => 'database',
+        ];
+    }
+
+    /**
+     * L'IDENTITÉ du curriculum : une leçon en base, sous une classe active,
+     * dont le catalogue ne déclare pas le code.
+     *
+     * Ce contrôle vivait jusqu'ici dans celui du palier (« source absente »).
+     * Il n'a rien à voir avec l'argent : c'est une question de périmètre — la
+     * base porte une leçon que le produit ne connaît plus. `smarter:prune-
+     * retired-learning-points` la retire si elle ne porte aucun historique.
+     *
+     * @return string[]|null null quand l'export est introuvable
+     */
+    private function lessonsOutsideCatalogue(): ?array
+    {
+        $export = $this->loadCurriculumExport();
+        if ($export === null) {
+            return null;
+        }
+
+        $known = [];
+        foreach ($export as $grade) {
+            foreach ($grade['chapters'] ?? [] as $chapter) {
+                foreach ($chapter['lessons'] ?? [] as $lesson) {
+                    $known[$lesson['code']] = true;
+                }
             }
         }
 
-        return ['drift' => $drift, 'sourceAvailable' => true, 'checked' => $checked];
+        return Lesson::query()
+            ->join('chapters', 'chapters.id', '=', 'lessons.chapter_id')
+            ->join('grades', 'grades.id', '=', 'chapters.grade_id')
+            ->where('grades.is_active', true)
+            ->pluck('lessons.code')
+            ->reject(fn (string $code) => isset($known[$code]))
+            ->unique()
+            ->values()
+            ->all();
     }
 
     /**

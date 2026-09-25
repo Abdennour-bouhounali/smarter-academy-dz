@@ -20,7 +20,8 @@ use Illuminate\Support\Facades\Process;
  *   ON DUPLICATE KEY UPDATE title = VALUES(title), …
  *
  * Idempotent (rejouable), additif (jamais de DELETE), et il ne touche JAMAIS
- * `publication_status` d'une ligne existante — l'admin possède cet état. Les
+ * `publication_status` ni `tier` d'une ligne existante — l'admin possède ces
+ * deux états. Une leçon nouvelle naît `tier = 'free'`. Les
  * lignes nouvelles de `lesson_modules`/`practice_exercises` naissent en
  * `draft`, comme à l'import.
  *
@@ -129,8 +130,9 @@ class CurriculumSql extends Command
         $this->sql[] = '-- SMARTER ACADEMY — MIROIR DU CURRICULUM (UPSERT PAR CODE)';
         $this->sql[] = '-- Généré par `php artisan smarter:curriculum-sql`. Rejouable : chaque ligne';
         $this->sql[] = '-- est identifiée par son CODE, les clés étrangères sont résolues par';
-        $this->sql[] = '-- sous-requête, et rien n\'est supprimé. publication_status n\'est jamais';
-        $this->sql[] = '-- modifié sur une ligne existante. Appliquer APRÈS le SQL de schéma.';
+        $this->sql[] = '-- sous-requête, et rien n\'est supprimé. Ni publication_status ni tier ne';
+        $this->sql[] = '-- sont modifiés sur une ligne existante : l\'administrateur en est l\'autorité.';
+        $this->sql[] = '-- Une leçon nouvelle naît tier = \'free\'. Appliquer APRÈS le SQL de schéma.';
         $this->sql[] = '-- ============================================================================';
         $this->sql[] = 'SET NAMES utf8mb4;';
         $this->sql[] = 'START TRANSACTION;';
@@ -153,11 +155,16 @@ class CurriculumSql extends Command
             }
 
             foreach ($c['lessons'] as $l) {
+                // Le palier : `'free'` pour une leçon CRÉÉE par ce SQL, et
+                // absent de l'ON DUPLICATE KEY UPDATE — rejouer ce fichier ne
+                // touche jamais au palier qu'un administrateur a décidé
+                // (lessons.tier, seule source de vérité). Même règle que
+                // CurriculumImporter.
                 $unitSelect = ! empty($l['unitCode'])
                     ? "(SELECT u.id FROM `units` u WHERE u.chapter_id = c.id AND u.code = {$this->q($l['unitCode'])})"
                     : 'NULL';
-                $this->sql[] = "INSERT INTO `lessons` (`chapter_id`, `unit_id`, `code`, `kind`, `official_object_code`, `title`, `title_source`, `description`, `textbook_ref`, `status`, `duration_minutes`, `tier`, `order`, `created_at`, `updated_at`) SELECT c.id, {$unitSelect}, {$this->q($l['code'])}, {$this->q($l['kind'] ?? 'lesson')}, {$this->qn($l['officialObjectCode'] ?? null)}, {$this->q($l['title'])}, {$this->q($l['titleSource'] ?? 'official_topic')}, {$this->qn($l['description'] ?? null)}, {$this->qj($l['textbookRef'] ?? null)}, {$this->q($l['status'])}, {$this->n($l['durationMinutes'] ?? null)}, {$this->q($l['tier'] ?? 'free')}, ".(int) $l['order'].", NOW(), NOW() FROM `chapters` c JOIN `grades` g ON g.id = c.grade_id WHERE g.code = {$this->q($g['code'])} AND c.code = {$this->q($c['code'])}"
-                    .' ON DUPLICATE KEY UPDATE `unit_id` = VALUES(`unit_id`), `kind` = VALUES(`kind`), `official_object_code` = VALUES(`official_object_code`), `title` = VALUES(`title`), `title_source` = VALUES(`title_source`), `description` = VALUES(`description`), `textbook_ref` = VALUES(`textbook_ref`), `status` = VALUES(`status`), `duration_minutes` = VALUES(`duration_minutes`), `tier` = VALUES(`tier`), `order` = VALUES(`order`), `updated_at` = NOW();';
+                $this->sql[] = "INSERT INTO `lessons` (`chapter_id`, `unit_id`, `code`, `kind`, `official_object_code`, `title`, `title_source`, `description`, `textbook_ref`, `status`, `duration_minutes`, `tier`, `order`, `created_at`, `updated_at`) SELECT c.id, {$unitSelect}, {$this->q($l['code'])}, {$this->q($l['kind'] ?? 'lesson')}, {$this->qn($l['officialObjectCode'] ?? null)}, {$this->q($l['title'])}, {$this->q($l['titleSource'] ?? 'official_topic')}, {$this->qn($l['description'] ?? null)}, {$this->qj($l['textbookRef'] ?? null)}, {$this->q($l['status'])}, {$this->n($l['durationMinutes'] ?? null)}, 'free', ".(int) $l['order'].", NOW(), NOW() FROM `chapters` c JOIN `grades` g ON g.id = c.grade_id WHERE g.code = {$this->q($g['code'])} AND c.code = {$this->q($c['code'])}"
+                    .' ON DUPLICATE KEY UPDATE `unit_id` = VALUES(`unit_id`), `kind` = VALUES(`kind`), `official_object_code` = VALUES(`official_object_code`), `title` = VALUES(`title`), `title_source` = VALUES(`title_source`), `description` = VALUES(`description`), `textbook_ref` = VALUES(`textbook_ref`), `status` = VALUES(`status`), `duration_minutes` = VALUES(`duration_minutes`), `order` = VALUES(`order`), `updated_at` = NOW();';
 
                 foreach ($l['learningPoints'] as $lp) {
                     $this->sql[] = "INSERT INTO `learning_points` (`lesson_id`, `code`, `title`, `order`, `retired_at`, `created_at`, `updated_at`) SELECT l.id, {$this->q($lp['code'])}, {$this->q($lp['title'])}, ".(int) $lp['order'].", NULL, NOW(), NOW() FROM `lessons` l WHERE l.code = {$this->q($l['code'])}"

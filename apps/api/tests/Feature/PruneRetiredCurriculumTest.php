@@ -7,8 +7,10 @@ use App\Models\Grade;
 use App\Models\LearningEvidence;
 use App\Models\LearningPoint;
 use App\Models\Lesson;
+use App\Models\PracticeSession;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class PruneRetiredCurriculumTest extends TestCase
@@ -31,7 +33,7 @@ class PruneRetiredCurriculumTest extends TestCase
                     'lessons' => [[
                         'code' => 'fractions-1', 'officialObjectCode' => 'fractions',
                         'title' => 'Fractions — Partie 1', 'description' => null,
-                        'status' => 'coming_soon', 'durationMinutes' => 45, 'tier' => 'premium', 'order' => 0,
+                        'status' => 'coming_soon', 'durationMinutes' => 45, 'order' => 0,
                         'learningPoints' => [
                             ['code' => '6e_fractions-1_P1', 'title' => 'Construire', 'order' => 1],
                         ],
@@ -103,6 +105,29 @@ class PruneRetiredCurriculumTest extends TestCase
 
         $this->assertDatabaseHas('lessons', ['code' => 'fractions']);
         $this->assertDatabaseHas('learning_points', ['code' => '6e_fractions_P1']);
+    }
+
+    /**
+     * Cette commande tourne à CHAQUE déploiement de production (deploy.yml),
+     * donc « aucun historique » couvre toute trace d'élève — ici une séance de
+     * pratique, sans preuve ni progression : la leçon est gardée.
+     */
+    public function test_a_lesson_a_student_practised_is_kept(): void
+    {
+        $this->makeLesson('fractions-1', ['6e_fractions-1_P1']);
+        $lesson = $this->makeLesson('fractions', ['6e_fractions_P1']);
+        PracticeSession::create([
+            'session_id' => (string) Str::uuid(),
+            'user_id' => User::factory()->create()->id,
+            'lesson_id' => $lesson->id,
+            'level' => 1,
+            'started_at' => now(),
+        ]);
+
+        $this->artisan('smarter:prune-retired-learning-points', ['--from-json' => $this->exportPath])
+            ->assertSuccessful();
+
+        $this->assertDatabaseHas('lessons', ['code' => 'fractions']);
     }
 
     public function test_dry_run_deletes_nothing(): void

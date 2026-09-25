@@ -90,8 +90,7 @@
       "durationMinutes": 45,
       "difficulty": "سهل",
       "status": "available",
-      "icon": "🔢",
-      "tier": "premium"
+      "icon": "🔢"
     },
     {
       "code": "qawasim-adad-tabii",
@@ -142,8 +141,7 @@
       "durationMinutes": 50,
       "difficulty": "سهل",
       "status": "available",
-      "icon": "🧮",
-      "tier": "premium"
+      "icon": "🧮"
     },
     {
       "code": "khawass-qawasim",
@@ -198,8 +196,7 @@
       "durationMinutes": 55,
       "difficulty": "متوسط",
       "status": "available",
-      "icon": "🧩",
-      "tier": "premium"
+      "icon": "🧩"
     },
     {
       "code": "qasim-mushtarak-akbar",
@@ -254,8 +251,7 @@
       "durationMinutes": 45,
       "difficulty": "متوسط",
       "status": "available",
-      "icon": "💐",
-      "tier": "premium"
+      "icon": "💐"
     },
     {
       "code": "tayin-pgcd",
@@ -307,8 +303,7 @@
       "durationMinutes": 40,
       "difficulty": "متوسط",
       "status": "available",
-      "icon": "🎯",
-      "tier": "premium"
+      "icon": "🎯"
     },
     {
       "code": "bahth-pgcd",
@@ -368,8 +363,7 @@
       "durationMinutes": 65,
       "difficulty": "صعب",
       "status": "available",
-      "icon": "🔁",
-      "tier": "premium"
+      "icon": "🔁"
     },
     {
       "code": "awwaliyan-fima-baynahuma",
@@ -419,8 +413,7 @@
       "durationMinutes": 40,
       "difficulty": "متوسط",
       "status": "available",
-      "icon": "1️⃣",
-      "tier": "premium"
+      "icon": "1️⃣"
     },
     {
       "code": "ikhtizal-kasr",
@@ -475,8 +468,7 @@
       "durationMinutes": 65,
       "difficulty": "صعب",
       "status": "available",
-      "icon": "➗",
-      "tier": "premium"
+      "icon": "➗"
     },
     {
       "code": "wadiya-idmajiya-aadad",
@@ -516,8 +508,7 @@
       "durationMinutes": 40,
       "difficulty": "صعب",
       "status": "available",
-      "icon": "🏛️",
-      "tier": "premium"
+      "icon": "🏛️"
     }
   ],
   "publishedScope": {

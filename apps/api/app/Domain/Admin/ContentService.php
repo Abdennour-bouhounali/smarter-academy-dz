@@ -8,6 +8,7 @@ use App\Models\Lesson;
 use App\Models\LessonModule;
 use App\Models\PracticeExercise;
 use App\Models\StudentReport;
+use App\Models\Unit;
 use App\Models\User;
 use DomainException;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -38,7 +39,7 @@ class ContentService
     public function lessons(array $filters = []): LengthAwarePaginator
     {
         $query = Lesson::query()
-            ->with('chapter.grade')
+            ->with(['chapter.grade', 'unit'])
             ->withCount([
                 'modules as modules_count' => fn ($q) => $q->whereNull('retired_at'),
                 'practiceExercises as exercises_count' => fn ($q) => $q->whereNull('retired_at'),
@@ -72,6 +73,12 @@ class ContentService
             $query->whereHas('chapter', fn ($q) => $q->where('code', $chapter));
         }
 
+        // الوحدة — l'unité du manuel (units), entre le ميدان et le درس. À ne
+        // pas confondre avec le MODULE d'une leçon, qui est un المحور.
+        if ($unit = ($filters['unit'] ?? null)) {
+            $query->whereHas('unit', fn ($q) => $q->where('code', $unit));
+        }
+
         if ($status = ($filters['status'] ?? null)) {
             $query->where('publication_status', $status);
         }
@@ -86,6 +93,38 @@ class ContentService
         $query->orderBy(in_array($sort, $sortable, true) ? $sort : 'title', $direction);
 
         return $query->paginate(min((int) ($filters['perPage'] ?? 25), 100));
+    }
+
+    /**
+     * Les UNITÉS (الوحدات) qui portent au moins une leçon, pour le filtre de
+     * la gestion des leçons. Lues en BASE, jamais listées dans l'interface :
+     * le filtre propose exactement ce qui existe, et une unité importée
+     * demain y apparaît sans code. Mêmes classes que la liste (actives, sauf
+     * regard explicite `scope=all`).
+     *
+     * @return array<int, array{code: string, title: string, grade: ?string, chapterTitle: ?string, lessonsCount: int}>
+     */
+    public function lessonUnits(array $filters = []): array
+    {
+        $query = Unit::query()
+            ->with('chapter.grade')
+            ->withCount('lessons')
+            ->has('lessons');
+
+        if (($filters['scope'] ?? null) !== 'all' && config('curriculum.enforce_active_grades', true)) {
+            $query->whereHas('chapter.grade', fn ($q) => $q->where('is_active', true));
+        }
+
+        return $query->orderBy('order')->get()
+            ->map(fn (Unit $u) => [
+                'code' => $u->code,
+                'title' => $u->title,
+                'grade' => $u->chapter?->grade?->code,
+                'chapterTitle' => $u->chapter?->title,
+                'lessonsCount' => (int) $u->lessons_count,
+            ])
+            ->values()
+            ->all();
     }
 
     /** Une leçon, ses modules et ses exercices — la vue d'inspection. */

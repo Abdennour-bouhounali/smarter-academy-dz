@@ -14,7 +14,7 @@ class RegistryHealth extends Command
 {
     protected $signature = 'smarter:registry-health
         {--json : Sortie brute}
-        {--gate : Échoue (code 1) si l\'activation ou le palier ont dérivé — pour l\'intégration continue}';
+        {--gate : Échoue (code 1) si l\'activation ou le périmètre ont dérivé, ou si un palier en base est invalide — pour l\'intégration continue}';
 
     protected $description = 'Vérifie la cohérence entre le contenu source et le registre en base';
 
@@ -29,14 +29,17 @@ class RegistryHealth extends Command
         // déploiement sur une leçon « à venir » apprendrait surtout à
         // l'ignorer.
         //
-        // Avec, elle ne juge QUE deux choses, les deux où un écart n'est pas
-        // une imperfection mais une contradiction entre deux autorités :
+        // Avec, elle ne juge QUE ce qui est une contradiction, pas une
+        // imperfection :
         //
         //   activation → le frontend cache une classe que l'API sert (ou
         //                l'inverse) : la fuite de contenu dormant que la
         //                phase 3 existe pour fermer.
-        //   palier     → le catalogue annonce « gratuit » et la base facture
-        //                (ou, bien pire, le catalogue vend et la base offre).
+        //   périmètre  → une leçon en base que le catalogue ne déclare plus.
+        //   palier     → un palier ABSENT ou INCONNU en base. Le palier n'est
+        //                JAMAIS comparé au catalogue : il appartient à la base
+        //                (lessons.tier, décidé par l'administrateur), et une
+        //                décision d'administration n'est pas une dérive.
         //
         // Une source ABSENTE est un échec en mode porte, à la différence du
         // mode diagnostic : une porte qui ne peut pas vérifier ne s'ouvre pas.
@@ -153,9 +156,14 @@ class RegistryHealth extends Command
             $failures[] = "Classe « {$row['code']} » : base = {$database}, source = {$source}.";
         }
 
-        foreach ($tier['drift'] ?? [] as $row) {
-            $source = $row['source'] ?? 'ABSENTE de la source';
-            $failures[] = "Leçon « {$row['code']} » ({$row['grade']}) : palier base = {$row['database']}, source = {$source}.";
+        foreach ($activation['lessonsOutsideCatalogue'] ?? [] as $code) {
+            $failures[] = "Leçon « {$code} » présente en base (classe active) mais ABSENTE du catalogue.\n"
+                .'    Lancez : php artisan smarter:prune-retired-learning-points --dry-run';
+        }
+
+        foreach ($tier['invalid'] ?? [] as $row) {
+            $value = $row['database'] === null ? 'NULL' : "« {$row['database']} »";
+            $failures[] = "Leçon « {$row['code']} » ({$row['grade']}) : palier {$value} — ni free ni premium. Fixez-le dans l'administration (contenu → palier).";
         }
 
         if ($this->option('json')) {
@@ -171,7 +179,7 @@ class RegistryHealth extends Command
 
         if ($failures === []) {
             $active = $activation['active'] === [] ? 'aucune' : implode(', ', $activation['active']);
-            $this->info("✅ Activation et paliers cohérents (classes actives : {$active} ; {$tier['checked']} leçon(s) vérifiée(s)).");
+            $this->info("✅ Activation, périmètre et paliers cohérents (classes actives : {$active} ; {$tier['checked']} leçon(s) vérifiée(s) : {$tier['counts']['free']} gratuite(s), {$tier['counts']['premium']} premium — paliers décidés en base par l'administrateur).");
 
             return self::SUCCESS;
         }
@@ -181,7 +189,8 @@ class RegistryHealth extends Command
             $this->line("  ✗ {$failure}");
         }
         $this->newLine();
-        $this->line('Le catalogue (packages/core) et l\'API ne s\'accordent plus sur ce qui est ouvert ou vendu.');
+        $this->line('Le catalogue (packages/core) et l\'API ne s\'accordent plus sur ce qui est ouvert ou sur ce qui existe,');
+        $this->line('ou un palier en base n\'est pas une valeur connue.');
         $this->line('Réappliquez la poignée de main :');
         $this->line('  node packages/core/curriculum/exportCurriculum.mjs && php artisan smarter:import-curriculum');
 

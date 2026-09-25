@@ -35,6 +35,9 @@ export default function AdminLessons() {
   const [grade, setGrade] = useState();
   const [status, setStatus] = useState();
   const [tier, setTier] = useState();
+  // الوحدة du manuel — les options viennent de l'API (lessonUnits), jamais
+  // d'une liste écrite ici : une unité importée demain y apparaît seule.
+  const [unit, setUnit] = useState();
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState({ key: 'title', direction: 'asc' });
 
@@ -43,15 +46,16 @@ export default function AdminLessons() {
 
   const loader = useCallback(
     (token) => fetchLessons(token, {
-      search: debouncedSearch, grade, status, tier, page,
+      search: debouncedSearch, grade, unit, status, tier, page,
       sort: sort.key, direction: sort.direction,
     }),
-    [debouncedSearch, grade, status, tier, page, sort],
+    [debouncedSearch, grade, unit, status, tier, page, sort],
   );
 
   const { data, loading, error, reload, setData } = useAdminResource(loader, [loader]);
 
   const rows = data?.data ?? [];
+  const units = data?.units ?? [];
   // La sélection se vide d'elle-même de tout ce qui quitte l'écran — filtre,
   // page, recherche, tri, rechargement. Voir useBulkSelection.
   const selection = useBulkSelection(rows);
@@ -107,7 +111,10 @@ export default function AdminLessons() {
               en faisant défiler n'existe pas vraiment. */}
           {/* Le code de la leçon est un identifiant technique : il reste latin et LTR. */}
           <span dir="ltr" className="block truncate font-mono-jetbrains text-xs text-slate-400 text-start">{row.code}</span>
-          <span className="block truncate font-inter text-xs text-slate-400">{row.chapterTitle ?? t('common.dash')}</span>
+          {/* الوحدة d'abord (le niveau que le manuel nomme), puis le ميدان. */}
+          <span className="block truncate font-inter text-xs text-slate-400">
+            {row.unitTitle ? `${t('lessons.columnUnit')} : ${row.unitTitle}` : (row.chapterTitle ?? t('common.dash'))}
+          </span>
         </Link>
       ),
     },
@@ -187,6 +194,11 @@ export default function AdminLessons() {
             label={t('common.grade')} allLabel={t('lessons.allGrades')} value={grade}
             onChange={(value) => { setGrade(value); setPage(1); }}
             options={GRADES.map((g) => ({ value: g, label: g }))}
+          />
+          <SelectFilter
+            label={t('lessons.columnUnit')} allLabel={t('lessons.allUnits')} value={unit}
+            onChange={(value) => { setUnit(value); setPage(1); }}
+            options={units.map((u) => ({ value: u.code, label: u.title }))}
           />
           <SelectFilter
             label={t('lessons.columnPublication')} allLabel={t('lessons.allStates')} value={status}

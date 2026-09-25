@@ -14,9 +14,13 @@ import { apiMessage } from './apiMessage';
  * = ouvert.
  */
 export async function fetchClosedContent(token) {
-  const { ok, status, data } = await apiRequest('/content/availability', {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  // Sans jeton : l'inventaire du VISITEUR (route publique, même calcul pour
+  // un utilisateur null). Le catalogue embarqué ne porte aucun palier —
+  // lessons.tier, en base, est la seule source de vérité — donc un visiteur
+  // doit lui aussi demander au serveur ce qui est premium.
+  const { ok, status, data } = token
+    ? await apiRequest('/content/availability', { headers: { Authorization: `Bearer ${token}` } })
+    : await apiRequest('/content/availability/public');
 
   if (!ok) {
     throw new ApiError(apiMessage('availability', data, status), classifyStatus(status), status);

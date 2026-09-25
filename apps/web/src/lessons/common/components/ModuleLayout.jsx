@@ -12,6 +12,8 @@ import { scrollToStep } from '../utils/scrollToStep';
 import { LessonChromeContext, useLessonChromeLayout } from '../hooks/useLessonChrome';
 import { useClassroomMode, useClassroomStage, ClassroomEntryButton, ClassroomFrame } from '../classroom';
 import MathLabEntryButton from '../../../features/mathlab/overlay/MathLabEntryButton';
+import { useContentAvailability } from '../../../context/ContentAvailabilityContext';
+import PremiumLessonLocked from './PremiumLessonLocked';
 
 /**
  * ModuleLayout — shared layout wrapper for every lesson module.
@@ -140,7 +142,7 @@ export default function ModuleLayout({
   // séquentiel est un guide de progression de l'ÉLÈVE ; en présentation il
   // ne s'applique pas — et, symétriquement, rien n'est écrit dans la
   // progression (ni visite ni complétion) tant qu'on présente.
-  const unlocked = resolveModuleUnlock({
+  const sequentiallyUnlocked = resolveModuleUnlock({
     presenting,
     freeNavigation: viewer.freeNavigation,
     alreadyDone,
@@ -151,6 +153,17 @@ export default function ModuleLayout({
     firstModuleNumber: firstModule,
     previousStage,
   });
+
+  // ── Le PALIER, avant la progression ──────────────────────────────────
+  // Une leçon premium que ce compte ne peut pas ouvrir est verrouillée sur
+  // son sommaire (LessonIndex) — et ICI aussi, sinon l'URL d'un module tapée
+  // directement contournerait le cadenas. La décision vient du serveur
+  // (lessons.tier, décidé par l'administrateur, lu via /content/availability) ;
+  // le serveur refuse de toute façon chaque écriture (ContentAccess). Un
+  // module verrouillé par le palier n'écrit donc ni visite ni complétion.
+  const { isLessonLocked } = useContentAvailability();
+  const premiumLocked = Boolean(lessonId) && isLessonLocked(lessonId);
+  const unlocked = sequentiallyUnlocked && !premiumLocked;
 
   // `isValidModuleNumber` et non `moduleNumber` : le module 0 (« أستعدّ »)
   // est un numéro valide, et `if (moduleNumber)` le rejetait — sa visite et
@@ -220,6 +233,24 @@ export default function ModuleLayout({
   // Protection de route : un module verrouillé ne s'affiche jamais, même en
   // tapant son URL directement. Aucune navigation, aucune écriture de
   // progression ne se produit pour un module inaccessible.
+  if (premiumLocked) {
+    return (
+      <LessonChromeContext.Provider value={chrome}>
+        <div className={`min-h-screen flex flex-col justify-between ${chrome.contentOffsetClass} bg-slate-50`}>
+          <PremiumLessonLocked
+            title={courseTitle}
+            crumbs={(
+              <nav className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500 mb-8">
+                <Link to={coursePath} className="hover:text-blue-600">{courseTitle}</Link>
+                {moduleTitle ? <><span>/</span><span className="text-slate-900 font-semibold">{moduleTitle}</span></> : null}
+              </nav>
+            )}
+          />
+        </div>
+      </LessonChromeContext.Provider>
+    );
+  }
+
   if (!unlocked) {
     return (
       <LessonChromeContext.Provider value={chrome}>

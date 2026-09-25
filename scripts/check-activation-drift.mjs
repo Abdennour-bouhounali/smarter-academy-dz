@@ -1,10 +1,16 @@
 // Garde d'INTÉGRATION CONTINUE : le catalogue et l'API doivent s'accorder sur
-// ce qui est OUVERT (activation des classes) et sur ce qui est VENDU (palier).
+// ce qui est OUVERT (activation des classes) et sur ce qui EXISTE (leçons).
+//
+// Le PALIER (gratuit / premium) n'est PAS contrôlé ici, et c'est voulu : il
+// appartient à la base (`lessons.tier`, décidé par l'administrateur), pas au
+// catalogue. Le catalogue n'en porte aucun ; comparer les deux ferait passer
+// chaque décision d'administration pour une « dérive ». La base contrôle ses
+// propres paliers (valeur explicite et connue) : `smarter:registry-health`.
 //
 // ── Pourquoi cette garde existe ─────────────────────────────────────────
-// L'activation d'une classe et le palier d'une leçon vivent dans le code
-// JavaScript (activeGrades.js, freeLessons.js), mais l'autorité côté serveur
-// est la base (`grades.is_active`, `lessons.tier`). Entre les deux, une
+// L'activation d'une classe et la liste des leçons vivent dans le code
+// JavaScript (activeGrades.js, coursesData.js), mais l'autorité côté serveur
+// est la base (`grades.is_active`, `lessons`). Entre les deux, une
 // poignée de main en DEUX temps :
 //
 //   node packages/core/curriculum/exportCurriculum.mjs   (1) écrit l'export
@@ -15,7 +21,7 @@
 // disent plus la même chose. Les deux sens de la divergence font mal :
 //
 //   le frontend cache une leçon que l'API sert    → fuite de contenu dormant
-//   le catalogue vend une leçon que la base offre → fuite commerciale
+//   le catalogue déclare une leçon que la base ignore → leçon inaccessible
 //
 // C'est exactement le problème d'« autorités concurrentes » que la reprise
 // précédente avait identifié et laissé sans porte (rapport de reprise §18,
@@ -25,7 +31,7 @@
 // ── Ce qu'elle vérifie, en deux temps ───────────────────────────────────
 //   1. L'EXPORT EST-IL À JOUR ? On reconstruit le catalogue en mémoire et on
 //      le compare au fichier .generated/. Un écart = quelqu'un a modifié
-//      activeGrades.js ou freeLessons.js sans relancer l'export.
+//      activeGrades.js ou le catalogue sans relancer l'export.
 //   2. LA BASE SUIT-ELLE L'EXPORT ? Délégué à `php artisan
 //      smarter:registry-health --gate`, qui est la seule autorité sur ce que
 //      la base contient.
@@ -51,7 +57,7 @@ const problems = [];
 
 /**
  * Le même extrait que celui qu'écrit exportCurriculum.mjs, réduit à ce que
- * cette garde surveille : l'activation par classe et le palier par leçon.
+ * cette garde surveille : l'activation par classe et la présence des leçons.
  *
  * Volontairement une PROJECTION et non l'export complet : comparer titres et
  * descriptions ferait échouer la garde sur une correction de faute de frappe,
@@ -64,7 +70,7 @@ function projectFromSource() {
       const lessons = {};
       for (const chapter of grade.chapters) {
         for (const lesson of chapter.lessons) {
-          lessons[lesson.id] = lesson.tier ?? 'free';
+          lessons[lesson.id] = true;
         }
       }
       grades[grade.id] = { active: isGradeActive(grade.id), lessons };
@@ -79,7 +85,7 @@ function projectFromExport(exported) {
     const lessons = {};
     for (const chapter of grade.chapters ?? []) {
       for (const lesson of chapter.lessons ?? []) {
-        lessons[lesson.code] = lesson.tier ?? 'free';
+        lessons[lesson.code] = true;
       }
     }
     grades[grade.code] = { active: Boolean(grade.active), lessons };
@@ -117,15 +123,14 @@ if (exported) {
       );
     }
 
-    for (const [lessonId, expectedTier] of Object.entries(expected.lessons)) {
-      const actualTier = actual.lessons[lessonId];
-      if (actualTier === undefined) {
+    for (const lessonId of Object.keys(expected.lessons)) {
+      if (!actual.lessons[lessonId]) {
         problems.push(`Leçon « ${lessonId} » (${gradeId}) absente de l'export — l'export est périmé.`);
-      } else if (actualTier !== expectedTier) {
-        problems.push(
-          `Leçon « ${lessonId} » (${gradeId}) : le catalogue dit « ${expectedTier} », ` +
-            `l'export dit « ${actualTier} » — l'export est périmé.`,
-        );
+      }
+    }
+    for (const lessonId of Object.keys(actual.lessons)) {
+      if (!expected.lessons[lessonId]) {
+        problems.push(`Leçon « ${lessonId} » (${gradeId}) dans l'export mais absente du catalogue — l'export est périmé.`);
       }
     }
   }
@@ -171,13 +176,13 @@ if (problems.length) {
   report();
 }
 
-console.log('✅ Aucune dérive : le catalogue, son export et la base s\'accordent sur l\'activation et les paliers.');
+console.log('✅ Aucune dérive : le catalogue, son export et la base s\'accordent sur l\'activation et les leçons.');
 
 function report() {
-  console.error(`\n${problems.length} problème(s) de cohérence activation / palier :\n`);
+  console.error(`\n${problems.length} problème(s) de cohérence activation / leçons :\n`);
   for (const p of problems) console.error(`  ✗ ${p}`);
   console.error(
-    '\nLe catalogue (packages/core) et l\'API doivent s\'accorder sur ce qui est ouvert et sur ce qui est vendu.\n' +
+    '\nLe catalogue (packages/core) et l\'API doivent s\'accorder sur ce qui est ouvert et sur ce qui existe.\n' +
       'Réappliquez la poignée de main :\n' +
       '  node packages/core/curriculum/exportCurriculum.mjs && (cd apps/api && php artisan smarter:import-curriculum)\n',
   );

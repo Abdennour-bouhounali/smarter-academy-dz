@@ -97,6 +97,15 @@ Route::prefix('v1')->group(function () {
         ->middleware('throttle:30,1')
         ->where('token', '[A-Za-z0-9]{1,64}');
 
+    // ── L'inventaire d'accès d'un VISITEUR ───────────────────────────────
+    // Les leçons sont lisibles sans compte, et le catalogue embarqué ne porte
+    // aucun palier (lessons.tier est la seule source de vérité). Sans cette
+    // lecture, un visiteur ne saurait pas qu'une leçon est premium. Même
+    // calcul que /content/availability, pour un utilisateur null : aucune
+    // donnée personnelle, et aucune écriture n'en dépend (ContentAccess).
+    Route::get('/content/availability/public', [ContentAvailabilityController::class, 'guest'])
+        ->middleware('throttle:60,1');
+
     Route::middleware('throttle:6,1')->group(function () {
         Route::post('/auth/register', [AuthController::class, 'register']);
         Route::post('/auth/login', [AuthController::class, 'login']);

@@ -140,12 +140,8 @@ class CurriculumImporter
                         'description' => $lessonData['description'],
                         'status' => $lessonData['status'],
                         'duration_minutes' => $lessonData['durationMinutes'] ?? null,
-                        // Défaut GRATUIT, et non payant : depuis que le palier
-                        // est appliqué (EntitlementService), un `tier` oublié
-                        // dans le catalogue fermerait la leçon aux élèves. Le
-                        // contenu payant se déclare ; il ne s'obtient pas par
-                        // omission. Voir AccessTier::normalize().
-                        'tier' => $lessonData['tier'] ?? AccessTier::FREE,
+                        // PAS de `tier` ici : voir le bloc de création
+                        // ci-dessous. Le palier appartient à l'administrateur.
                         'order' => $lessonData['order'],
                     ];
                     $existingLesson = Lesson::where('chapter_id', $chapter->id)->where('code', $lessonData['code'])->first();
@@ -156,10 +152,30 @@ class CurriculumImporter
                         $lessonSource
                     );
 
-                    $lesson = Lesson::updateOrCreate(
-                        ['chapter_id' => $chapter->id, 'code' => $lessonData['code']],
-                        $lessonSource
-                    );
+                    // ── Le PALIER : écrit à la CRÉATION, jamais à la mise à jour ──
+                    //
+                    // `lessons.tier` est la seule source de vérité du palier, et
+                    // l'ADMINISTRATEUR en est l'autorité (ContentService::changeTier).
+                    // Une synchronisation du catalogue décrit ce qu'est une leçon
+                    // — titre, unité, points — jamais qui peut l'ouvrir. Elle ne
+                    // touche donc pas au palier d'une leçon existante : une leçon
+                    // rendue premium le reste après chaque import et chaque
+                    // déploiement, une leçon rendue gratuite aussi.
+                    //
+                    // Une leçon NOUVELLE naît gratuite. C'est un défaut de création,
+                    // pas une classification : aucune liste, aucun identifiant,
+                    // aucun chapitre ne la rend gratuite — et un `tier` présent
+                    // dans un export ancien est ignoré, pour la même raison.
+                    if ($existingLesson === null) {
+                        $lesson = Lesson::create(
+                            ['chapter_id' => $chapter->id, 'code' => $lessonData['code']]
+                            + $lessonSource
+                            + ['tier' => AccessTier::FREE]
+                        );
+                    } else {
+                        $existingLesson->fill($lessonSource)->save();
+                        $lesson = $existingLesson;
+                    }
 
                     $this->importLearningPoints($lesson, $lessonData['learningPoints'], $summary['learningPoints']);
 

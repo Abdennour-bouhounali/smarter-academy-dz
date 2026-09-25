@@ -45,3 +45,4 @@ _*.html
 _*_files/
 *.log
 scripts/__pycache__/
+apps/api/database/curriculum-sync/

@@ -8,7 +8,6 @@ import programme4am from './dz/programme_4am_2026_2027.json' with { type: 'json'
 import lessons4am from './dz/lessons_4am_2026_2027.json' with { type: 'json' };
 import units4am from './dz/units_4am_2026_2027.json' with { type: 'json' };
 import { filterActiveCourseLevels } from './activeGrades.js';
-import { resolveLessonTier } from './freeLessons.js';
 
 // --- Métadonnées Smarter Academy ---
 // Ces données enrichissent les objets officiels sans en modifier la liste.
@@ -22,13 +21,12 @@ import { resolveLessonTier } from './freeLessons.js';
 // `durationMinutes` is the authored duration estimate (number); the display
 // string `duration` is derived from it in buildLesson.
 //
-// `tier` ('free' | 'premium') is the content-tier flag introduced for the
-// visitor/free-account/premium distinction. There is no subscription/
-// entitlement system yet — this only controls what a visitor or free account
-// can open today (see lessonAccess.js's isLessonUnlocked). Defaults to
-// 'premium' when omitted. Every lesson is currently 'free' — the
-// free/premium split is not enforced yet; flip individual lessons back to
-// 'premium' once the entitlement model is ready.
+// No `tier` here, on purpose. Whether a lesson is free or premium is an
+// ADMINISTRATOR decision stored in `lessons.tier` (the single source of
+// truth): a new lesson is created `free` by the importer and the admin panel
+// changes it afterwards. The catalogue describes what a lesson IS, never who
+// may open it — see docs/architecture/ADMIN_PANEL_ARCHITECTURE.md
+// « Le palier du contenu ».
 const smaMetadata = {
   '6e_nombres_entiers': {
     id: 'nombres-entiers',
@@ -47,7 +45,6 @@ const smaMetadata = {
     difficulty: 'Facile',
     status: 'available',
     icon: '🔢',
-    tier: 'free',
   },
   '6e_nombres_decimaux': {
     id: 'nombres-decimaux',
@@ -66,7 +63,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '🎯',
-    tier: 'free',
   },
   '6e_fractions': {
     id: 'fractions',
@@ -83,7 +79,6 @@ const smaMetadata = {
     difficulty: 'Facile',
     status: 'available',
     icon: '🍕',
-    tier: 'free',
   },
   '6e_ordre_grandeur_estimation': {
     id: 'ordre-grandeur-estimation',
@@ -100,7 +95,6 @@ const smaMetadata = {
     difficulty: 'Facile',
     status: 'available',
     icon: '🔎',
-    tier: 'free',
   },
   '6e_resolution_problemes': {
     id: 'resolution-problemes',
@@ -118,7 +112,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '🧭',
-    tier: 'free',
   },
   '6e_operations': {
     id: 'quatre-operations',
@@ -136,7 +129,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '🧮',
-    tier: 'free',
   },
   '6e_longueurs': {
     id: 'longueurs',
@@ -154,7 +146,6 @@ const smaMetadata = {
     difficulty: 'Facile',
     status: 'available',
     icon: '📏',
-    tier: 'free',
   },
   '6e_masses': {
     id: 'masses',
@@ -172,7 +163,6 @@ const smaMetadata = {
     difficulty: 'Facile',
     status: 'available',
     icon: '⚖️',
-    tier: 'free',
   },
   '6e_contenances': {
     id: 'contenances',
@@ -190,7 +180,6 @@ const smaMetadata = {
     difficulty: 'Facile',
     status: 'available',
     icon: '💧',
-    tier: 'free',
   },
   '6e_perimetres': {
     id: 'perimetres',
@@ -210,7 +199,6 @@ const smaMetadata = {
     difficulty: 'Facile',
     status: 'available',
     icon: '📐',
-    tier: 'free',
   },
   '6e_aires': {
     id: 'aires',
@@ -229,7 +217,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '▦',
-    tier: 'free',
   },
   '6e_durees': {
     id: 'durees',
@@ -248,7 +235,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '⏱️',
-    tier: 'free',
   },
   '6e_angles': {
     id: 'angles',
@@ -267,7 +253,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '📐',
-    tier: 'free',
   },
   // --- Espace et géométrie (6e) ---
   // Les clés reprennent l'id de l'objet officiel du programme
@@ -293,7 +278,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '🗺️',
-    tier: 'free',
   },
   '6e_droites_segments': {
     id: 'droites-segments',
@@ -314,7 +298,6 @@ const smaMetadata = {
     difficulty: 'Facile',
     status: 'available',
     icon: '📏',
-    tier: 'free',
   },
   '6e_paralleles_perpendiculaires': {
     id: 'parallelisme-perpendicularite',
@@ -336,7 +319,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '📐',
-    tier: 'free',
   },
   '6e_figures_planes': {
     id: 'figures-planes',
@@ -358,7 +340,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '🔷',
-    tier: 'free',
   },
   '6e_symetrie': {
     id: 'symetrie',
@@ -380,7 +361,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '🪞',
-    tier: 'free',
   },
   '6e_solides_patrons': {
     id: 'solides-patrons',
@@ -402,7 +382,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '🧊',
-    tier: 'free',
   },
   '6e_constructions_geometriques': {
     id: 'constructions-geometriques',
@@ -426,7 +405,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '🛠️',
-    tier: 'free',
   },
   '6e_tableaux': {
     id: 'tableaux',
@@ -447,7 +425,6 @@ const smaMetadata = {
     difficulty: 'Facile',
     status: 'available',
     icon: '📋',
-    tier: 'free',
   },
   '6e_graphiques': {
     id: 'graphiques',
@@ -469,7 +446,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '📊',
-    tier: 'free',
   },
   '6e_proportionnalite': {
     id: 'proportionnalite',
@@ -492,7 +468,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '⚖️',
-    tier: 'free',
   },
   '6e_algorithmique_programmation': {
     id: 'algorithmique-programmation',
@@ -518,7 +493,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '🤖',
-    tier: 'free',
   },
   '3e_nombres_rationnels': {
     id: 'nombres-rationnels',
@@ -541,7 +515,6 @@ const smaMetadata = {
     difficulty: 'Difficile',
     status: 'available',
     icon: '➗',
-    tier: 'free',
   },
   '4e_racine_carree': {
     id: 'racines-carrees-4e',
@@ -563,7 +536,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '√',
-    tier: 'free',
   },
   '3e_racine_carree': {
     id: 'racines-carrees-3e',
@@ -586,7 +558,6 @@ const smaMetadata = {
     difficulty: 'Difficile',
     status: 'available',
     icon: '√',
-    tier: 'free',
   },
   '3e_equations_inequations': {
     id: 'equations-produit',
@@ -610,7 +581,6 @@ const smaMetadata = {
     difficulty: 'Difficile',
     status: 'available',
     icon: '⚖️',
-    tier: 'free',
   },
   '3e_reperage': {
     id: 'reperage-droite-plan-3e',
@@ -633,7 +603,6 @@ const smaMetadata = {
     difficulty: 'Difficile',
     status: 'available',
     icon: '🗺️',
-    tier: 'free',
   },
   '3e_representations_espace': {
     id: 'representation-espace-3e',
@@ -656,7 +625,6 @@ const smaMetadata = {
     difficulty: 'Difficile',
     status: 'available',
     icon: '🧊',
-    tier: 'free',
   },
   '3e_triangles': {
     id: 'triangles-3e',
@@ -680,7 +648,6 @@ const smaMetadata = {
     difficulty: 'Difficile',
     status: 'available',
     icon: '🔺',
-    tier: 'free',
   },
   '3e_translations_vecteurs': {
     id: 'translations-vecteurs-3e',
@@ -703,7 +670,6 @@ const smaMetadata = {
     difficulty: 'Difficile',
     status: 'available',
     icon: '➡️',
-    tier: 'free',
   },
   '3e_thales': {
     id: 'thales-3e',
@@ -728,7 +694,6 @@ const smaMetadata = {
     difficulty: 'Difficile',
     status: 'available',
     icon: '📐',
-    tier: 'free',
   },
   '3e_pythagore': {
     id: 'pythagore-3e',
@@ -753,7 +718,6 @@ const smaMetadata = {
     difficulty: 'Difficile',
     status: 'available',
     icon: '📐',
-    tier: 'free',
   },
   '3e_trigonometrie': {
     id: 'trigonometrie-triangle-rectangle-3e',
@@ -780,7 +744,6 @@ const smaMetadata = {
     difficulty: 'Difficile',
     status: 'available',
     icon: '📐',
-    tier: 'free',
   },
   // ── Domaine « Organisation et gestion de données, fonctions » (3e) ──
   // Les neuf objets officiels du domaine ont chacun leur entrée : les six
@@ -808,7 +771,6 @@ const smaMetadata = {
     difficulty: 'Difficile',
     status: 'available',
     icon: '📊',
-    tier: 'free',
   },
   '3e_probabilites': {
     id: 'probabilites-3e',
@@ -833,7 +795,6 @@ const smaMetadata = {
     difficulty: 'Difficile',
     status: 'available',
     icon: '🎲',
-    tier: 'free',
   },
   '3e_proportionnalite': {
     id: 'proportionnalite-3e',
@@ -858,7 +819,6 @@ const smaMetadata = {
     difficulty: 'Difficile',
     status: 'available',
     icon: '⚖️',
-    tier: 'free',
   },
   '3e_fonctions': {
     id: 'fonctions-3e',
@@ -882,7 +842,6 @@ const smaMetadata = {
     difficulty: 'Difficile',
     status: 'available',
     icon: '📈',
-    tier: 'free',
   },
   '3e_fonctions_lineaires': {
     id: 'fonctions-lineaires-3e',
@@ -905,7 +864,6 @@ const smaMetadata = {
     difficulty: 'Difficile',
     status: 'available',
     icon: '📈',
-    tier: 'free',
   },
   '3e_fonctions_affines': {
     id: 'fonctions-affines-3e',
@@ -928,7 +886,6 @@ const smaMetadata = {
     difficulty: 'Difficile',
     status: 'available',
     icon: '📈',
-    tier: 'free',
   },
   '3e_representation_graphique': {
     id: 'representation-graphique-3e',
@@ -951,7 +908,6 @@ const smaMetadata = {
     difficulty: 'Difficile',
     status: 'available',
     icon: '📊',
-    tier: 'free',
   },
   '3e_lecture_graphique': {
     id: 'lecture-graphique-3e',
@@ -973,7 +929,6 @@ const smaMetadata = {
     difficulty: 'Difficile',
     status: 'available',
     icon: '🔎',
-    tier: 'free',
   },
   '3e_modelisation': {
     id: 'modelisation-3e',
@@ -998,7 +953,6 @@ const smaMetadata = {
     difficulty: 'Difficile',
     status: 'available',
     icon: '🧠',
-    tier: 'free',
   },
   '3e_puissances': {
     id: 'puissances-3e',
@@ -1022,7 +976,6 @@ const smaMetadata = {
     difficulty: 'Difficile',
     status: 'available',
     icon: '🚀',
-    tier: 'free',
   },
   '3e_multiples_diviseurs': {
     id: 'multiples-diviseurs',
@@ -1045,7 +998,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '🔢',
-    tier: 'free',
   },
   '3e_calcul_litteral': {
     id: 'calcul-litteral-algebrique',
@@ -1069,7 +1021,6 @@ const smaMetadata = {
     difficulty: 'Difficile',
     status: 'available',
     icon: '𝑥',
-    tier: 'free',
   },
   '3e_resolution_problemes': {
     id: 'resolution-problemes-3e',
@@ -1093,7 +1044,6 @@ const smaMetadata = {
     difficulty: 'Difficile',
     status: 'available',
     icon: '🧠',
-    tier: 'free',
   },
 
 
@@ -1130,7 +1080,6 @@ const smaMetadata = {
     difficulty: 'Facile',
     status: 'available',
     icon: '🧮',
-    tier: 'free',
   },
   '5e_nombres_relatifs': {
     id: 'nombres-relatifs-5e',
@@ -1151,7 +1100,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '🌡️',
-    tier: 'free',
   },
   '5e_nombres_rationnels': {
     id: 'nombres-rationnels-5e',
@@ -1170,7 +1118,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '🍰',
-    tier: 'free',
   },
   '5e_puissances': {
     id: 'puissances-5e',
@@ -1188,7 +1135,6 @@ const smaMetadata = {
     difficulty: 'Facile',
     status: 'available',
     icon: '⚡',
-    tier: 'free',
   },
   '5e_calcul_litteral': {
     id: 'calcul-litteral-5e',
@@ -1206,7 +1152,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '🔤',
-    tier: 'free',
   },
 
   // ---- 5E — ESPACE ET GÉOMÉTRIE ----
@@ -1225,7 +1170,6 @@ const smaMetadata = {
     difficulty: 'Facile',
     status: 'available',
     icon: '📍',
-    tier: 'free',
   },
   '5e_representations_espace': {
     id: 'representations-espace-5e',
@@ -1243,7 +1187,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '📦',
-    tier: 'free',
   },
   '5e_transformations': {
     id: 'transformations-5e',
@@ -1261,7 +1204,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '🔄',
-    tier: 'free',
   },
   '5e_angles': {
     id: 'angles-5e',
@@ -1278,7 +1220,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '📐',
-    tier: 'free',
   },
   '5e_triangles': {
     id: 'triangles-5e',
@@ -1297,7 +1238,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '📐',
-    tier: 'free',
   },
   '5e_parallelogrammes': {
     id: 'parallelogrammes-5e',
@@ -1315,7 +1255,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '🔷',
-    tier: 'free',
   },
 
   // ---- 5E — DONNÉES ET PROBABILITÉS ----
@@ -1336,7 +1275,6 @@ const smaMetadata = {
     difficulty: 'Facile',
     status: 'available',
     icon: '📊',
-    tier: 'free',
   },
   '5e_probabilites': {
     id: 'probabilites-5e',
@@ -1354,7 +1292,6 @@ const smaMetadata = {
     difficulty: 'Facile',
     status: 'available',
     icon: '🎲',
-    tier: 'free',
   },
 
   // ---- 5E — PROPORTIONNALITÉ ET FONCTIONS ----
@@ -1375,7 +1312,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '⚖️',
-    tier: 'free',
   },
   '5e_fonctions': {
     id: 'fonctions-5e',
@@ -1393,7 +1329,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '📈',
-    tier: 'free',
   },
 
   // ---- 5E — PENSÉE INFORMATIQUE ----
@@ -1414,7 +1349,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '💻',
-    tier: 'free',
   },
 
   // ============================================================
@@ -1447,7 +1381,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '➕',
-    tier: 'free',
   },
   '4e_nombres_rationnels': {
     id: 'nombres-rationnels-4e',
@@ -1467,7 +1400,6 @@ const smaMetadata = {
     difficulty: 'Difficile',
     status: 'available',
     icon: '🍰',
-    tier: 'free',
   },
   '4e_puissances': {
     id: 'puissances-4e',
@@ -1487,7 +1419,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '⚡',
-    tier: 'free',
   },
   // L'objet officiel `calcul_litteral` de 4e porte huit points d'apprentissage,
   // des transformations d'expression jusqu'à la résolution d'équations. Les
@@ -1519,7 +1450,6 @@ const smaMetadata = {
       difficulty: 'Difficile',
       status: 'available',
       icon: '🔤',
-      tier: 'free',
     },
     {
       id: 'equations-4e',
@@ -1538,7 +1468,6 @@ const smaMetadata = {
       difficulty: 'Difficile',
       status: 'available',
       icon: '⚖️',
-      tier: 'free',
     },
     {
       id: 'raisonnement-problemes-4e',
@@ -1558,7 +1487,6 @@ const smaMetadata = {
       difficulty: 'Difficile',
       status: 'available',
       icon: '🔎',
-      tier: 'free',
     },
   ],
 
@@ -1578,7 +1506,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '➡️',
-    tier: 'free',
   },
   '4e_reperage': {
     id: 'reperage-4e',
@@ -1594,7 +1521,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '📍',
-    tier: 'free',
   },
   '4e_representations_espace': {
     id: 'representations-espace-4e',
@@ -1612,7 +1538,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '🔺',
-    tier: 'free',
   },
   '4e_parallelogrammes_translations': {
     id: 'parallelogrammes-translations-4e',
@@ -1628,7 +1553,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '🔷',
-    tier: 'free',
   },
   // Un objet officiel, DEUX leçons (mécanisme `buildLesson`, partIndex 1 et 2).
   // La coupe est pédagogique : « Triangles » démontre (cercle circonscrit,
@@ -1651,7 +1575,6 @@ const smaMetadata = {
       difficulty: 'Difficile',
       status: 'available',
       icon: '📐',
-      tier: 'free',
     },
     {
       id: 'pythagore-4e',
@@ -1670,7 +1593,6 @@ const smaMetadata = {
       difficulty: 'Difficile',
       status: 'available',
       icon: '📐',
-      tier: 'free',
     },
   ],
 
@@ -1691,7 +1613,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '📊',
-    tier: 'free',
   },
   '4e_probabilites': {
     id: 'probabilites-4e',
@@ -1710,7 +1631,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '🎲',
-    tier: 'free',
   },
 
   // ---- 4E — PROPORTIONNALITÉ ET FONCTIONS ----
@@ -1739,7 +1659,6 @@ const smaMetadata = {
       difficulty: 'Moyen',
       status: 'available',
       icon: '⚖️',
-      tier: 'free',
     },
     {
       id: 'grandeurs-composees-4e',
@@ -1758,7 +1677,6 @@ const smaMetadata = {
       difficulty: 'Moyen',
       status: 'available',
       icon: '🚴',
-      tier: 'free',
     },
   ],
   '4e_fonctions': {
@@ -1777,7 +1695,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '📈',
-    tier: 'free',
   },
 
   // ---- 4E — PENSÉE INFORMATIQUE ----
@@ -1797,7 +1714,6 @@ const smaMetadata = {
     difficulty: 'Moyen',
     status: 'available',
     icon: '💻',
-    tier: 'free',
   },
 
   // ============================================================
@@ -1827,7 +1743,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "🔢",
-    tier: 'free',
   },
   'seconde_logique_et_raisonnement': {
     id: "logique-et-raisonnement-2nde",
@@ -1850,7 +1765,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "🧠",
-    tier: 'free',
   },
   'seconde_arithmetique': {
     id: "arithmetique-2nde",
@@ -1867,7 +1781,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "🔢",
-    tier: 'free',
   },
   'seconde_nombres_reels': {
     id: "nombres-reels-2nde",
@@ -1885,7 +1798,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "ℝ",
-    tier: 'free',
   },
   'seconde_valeur_absolue_et_distance': {
     id: "valeur-absolue-distance-2nde",
@@ -1904,7 +1816,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "📏",
-    tier: 'free',
   },
   'seconde_calcul_litteral': {
     id: "calcul-litteral-2nde",
@@ -1926,7 +1837,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "✏️",
-    tier: 'free',
   },
   'seconde_equations_et_inequations': {
     id: "equations-et-inequations-2nde",
@@ -1948,7 +1858,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "⚖️",
-    tier: 'free',
   },
 
   // ---- SECONDE — GÉOMÉTRIE ----
@@ -1976,7 +1885,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "➡️",
-    tier: 'free',
   },
   'seconde_colinearite_et_alignement': {
     id: "colinearite-alignement-2nde",
@@ -1997,7 +1905,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "📐",
-    tier: 'free',
   },
   'seconde_equations_de_droites': {
     id: "equations-de-droites-2nde",
@@ -2021,7 +1928,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "📈",
-    tier: 'free',
   },
   'seconde_positions_relatives_droites': {
     id: "positions-relatives-droites-2nde",
@@ -2041,7 +1947,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "✖️",
-    tier: 'free',
   },
 
   // ---- SECONDE — FONCTIONS ----
@@ -2067,7 +1972,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "ƒ",
-    tier: 'free',
   },
   'seconde_fonctions_de_reference': {
     id: "fonctions-de-reference-2nde",
@@ -2090,7 +1994,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "📈",
-    tier: 'free',
   },
   'seconde_signe_fonctions': {
     id: "signe-fonctions-2nde",
@@ -2114,7 +2017,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "➕➖",
-    tier: 'free',
   },
   'seconde_variations_et_extremums': {
     id: "variations-extremums-2nde",
@@ -2138,7 +2040,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "📊",
-    tier: 'free',
   },
   'seconde_fonction_affine': {
     id: "fonction-affine-2nde",
@@ -2161,7 +2062,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "📈",
-    tier: 'free',
   },
 
   // ---- SECONDE — STATISTIQUES ET PROBABILITÉS ----
@@ -2186,7 +2086,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "%",
-    tier: 'free',
   },
   'seconde_evolutions_successives_reciproques': {
     id: "evolutions-successives-reciproques-2nde",
@@ -2206,7 +2105,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "📈",
-    tier: 'free',
   },
   'seconde_statistiques_une_variable': {
     id: "statistiques-une-variable-2nde",
@@ -2230,7 +2128,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "📊",
-    tier: 'free',
   },
   'seconde_series_regroupees_classes': {
     id: "series-regroupees-classes-2nde",
@@ -2252,7 +2149,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "📊",
-    tier: 'free',
   },
   'seconde_boites_a_moustaches': {
     id: "boites-a-moustaches-2nde",
@@ -2273,7 +2169,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "📦",
-    tier: 'free',
   },
   'seconde_tableaux_croises': {
     id: "tableaux-croises-2nde",
@@ -2295,7 +2190,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "🗂️",
-    tier: 'free',
   },
   'seconde_frequences_conditionnelles': {
     id: "frequences-conditionnelles-2nde",
@@ -2317,7 +2211,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "📊",
-    tier: 'free',
   },
   'seconde_loi_des_grands_nombres': {
     id: "loi-grands-nombres-2nde",
@@ -2338,7 +2231,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "🎲",
-    tier: 'free',
   },
   'seconde_probabilites_conditionnelles': {
     id: "probabilites-conditionnelles-2nde",
@@ -2359,7 +2251,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "🎯",
-    tier: 'free',
   },
   'seconde_arbres_de_probabilites': {
     id: "arbres-probabilites-2nde",
@@ -2381,7 +2272,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "🌳",
-    tier: 'free',
   },
   'seconde_tests_diagnostiques': {
     id: "tests-diagnostiques-probabilites-2nde",
@@ -2404,7 +2294,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "🧪",
-    tier: 'free',
   },
 
   // ---- SECONDE — ALGORITHMIQUE ET PROGRAMMATION ----
@@ -2430,7 +2319,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "💻",
-    tier: 'free',
   },
   'seconde_fonctions_en_python': {
     id: "fonctions-en-python-2nde",
@@ -2454,7 +2342,6 @@ const smaMetadata = {
     difficulty: "Difficile",
     status: 'available',
     icon: "🐍",
-    tier: 'free',
   },
 
   // ---- PREMIÈRE SPÉCIALITÉ ----
@@ -2488,7 +2375,6 @@ const smaMetadata = {
       difficulty: 'Difficile',
       status: 'available',
       icon: "📐",
-      tier: 'free',
     },
     {
       id: "second-degre-signe-problemes-1ere",
@@ -2506,7 +2392,6 @@ const smaMetadata = {
       difficulty: 'Difficile',
       status: 'available',
       icon: "🎯",
-      tier: 'free',
     },
   ],
   'premiere_specialite_suites_numeriques': [
@@ -2527,7 +2412,6 @@ const smaMetadata = {
       difficulty: 'Difficile',
       status: 'available',
       icon: "🔢",
-      tier: 'free',
     },
     {
       id: "suites-calculer-modeliser-1ere",
@@ -2546,7 +2430,6 @@ const smaMetadata = {
       difficulty: 'Difficile',
       status: 'available',
       icon: "📊",
-      tier: 'free',
     },
   ],
   'premiere_specialite_derivation': [
@@ -2565,7 +2448,6 @@ const smaMetadata = {
       difficulty: 'Difficile',
       status: 'available',
       icon: "📈",
-      tier: 'free',
     },
     {
       id: "derivation-calculer-1ere",
@@ -2583,7 +2465,6 @@ const smaMetadata = {
       difficulty: 'Difficile',
       status: 'available',
       icon: "🧮",
-      tier: 'free',
     },
     {
       id: "derivation-variations-optimisation-1ere",
@@ -2599,7 +2480,6 @@ const smaMetadata = {
       difficulty: 'Difficile',
       status: 'available',
       icon: "🏔️",
-      tier: 'free',
     },
   ],
   'premiere_specialite_fonction_exponentielle': [
@@ -2620,7 +2500,6 @@ const smaMetadata = {
       difficulty: 'Difficile',
       status: 'available',
       icon: "🚀",
-      tier: 'free',
     },
     {
       id: "exponentielle-calculer-modeliser-1ere",
@@ -2639,7 +2518,6 @@ const smaMetadata = {
       difficulty: 'Difficile',
       status: 'available',
       icon: "📉",
-      tier: 'free',
     },
   ],
   'premiere_specialite_fonctions_trigonometriques': [
@@ -2660,7 +2538,6 @@ const smaMetadata = {
       difficulty: 'Difficile',
       status: 'available',
       icon: "🌊",
-      tier: 'free',
     },
     {
       id: "trigonometrie-equations-modeles-1ere",
@@ -2679,7 +2556,6 @@ const smaMetadata = {
       difficulty: 'Difficile',
       status: 'available',
       icon: "🔁",
-      tier: 'free',
     },
   ],
   'premiere_specialite_produit_scalaire': [
@@ -2699,7 +2575,6 @@ const smaMetadata = {
       difficulty: 'Difficile',
       status: 'available',
       icon: "⊥",
-      tier: 'free',
     },
     {
       id: "produit-scalaire-mesurer-demontrer-1ere",
@@ -2717,7 +2592,6 @@ const smaMetadata = {
       difficulty: 'Difficile',
       status: 'available',
       icon: "📏",
-      tier: 'free',
     },
   ],
   'premiere_specialite_geometrie_espace': [
@@ -2737,7 +2611,6 @@ const smaMetadata = {
       difficulty: 'Difficile',
       status: 'available',
       icon: "🧊",
-      tier: 'free',
     },
     {
       id: "espace-droites-plans-1ere",
@@ -2757,7 +2630,6 @@ const smaMetadata = {
       difficulty: 'Difficile',
       status: 'available',
       icon: "📦",
-      tier: 'free',
     },
   ],
   'premiere_specialite_variables_aleatoires': [
@@ -2778,7 +2650,6 @@ const smaMetadata = {
       difficulty: 'Difficile',
       status: 'available',
       icon: "🎲",
-      tier: 'free',
     },
     {
       id: "variables-aleatoires-dispersion-binomiale-1ere",
@@ -2797,7 +2668,6 @@ const smaMetadata = {
       difficulty: 'Difficile',
       status: 'available',
       icon: "🔔",
-      tier: 'free',
     },
   ],
   'premiere_specialite_probabilites_conditionnelles_independance': [
@@ -2817,7 +2687,6 @@ const smaMetadata = {
       difficulty: 'Difficile',
       status: 'available',
       icon: "🎯",
-      tier: 'free',
     },
     {
       id: "probabilites-independance-1ere",
@@ -2835,7 +2704,6 @@ const smaMetadata = {
       difficulty: 'Difficile',
       status: 'available',
       icon: "🔀",
-      tier: 'free',
     },
   ],
   // ---- SECONDE — EXTENSION HORS PROGRAMME : trigonométrie ----
@@ -2866,7 +2734,6 @@ const smaMetadata = {
       difficulty: "Difficile",
       status: 'available',
       icon: "🔵",
-      tier: 'free',
     },
     {
       id: "trigonometrie-equations-2nde",
@@ -2883,7 +2750,6 @@ const smaMetadata = {
       difficulty: "Difficile",
       status: 'available',
       icon: "🧭",
-      tier: 'free',
     },
   ],
 
@@ -2945,12 +2811,6 @@ function buildLesson({ gradeId, levelId, domainId, obj, meta, partIndex, partTot
     status: meta.status || 'coming_soon',
     icon: meta.icon || '📘',
     isNew: meta.isNew || false,
-    // Le PALIER COMMERCIAL. Pour une classe algérienne active, il vient de
-    // la liste nommée des leçons gratuites (freeLessons.js) : trois ouvertes,
-    // le reste vendu. Pour une classe française dormante, le palier hérité
-    // est laissé intact. Voir resolveLessonTier pour le pourquoi des deux
-    // régimes.
-    tier: resolveLessonTier(gradeId, lessonId, meta.tier),
     path: meta.path || `/courses/${levelId}/${gradeId}/${domainId}/${lessonId}`,
   };
 }
@@ -3078,7 +2938,7 @@ export const referenceCourseLevels = [
  *
  * Volontairement SÉPARÉ de `buildLesson` (le constructeur français) : celui-ci
  * fusionne un objet du référentiel français avec des métadonnées Smarter
- * Academy, dérive des paliers via `resolveLessonTier`, et porte un vocabulaire
+ * Academy, et porte un vocabulaire
  * (`origin`, `officialObject`, `extensionObject`) qui n'a pas de sens ici. La
  * leçon algérienne a une autre provenance — un SUJET du programme — et la
  * déclare telle quelle, plutôt que de se déguiser en leçon française.
@@ -3128,17 +2988,6 @@ function buildDzLesson(lesson, { levelId, gradeId, topicTitle }) {
     // phase 7 — le contenu est la phase suivante.
     status: lesson.status,
     icon: lesson.icon,
-    // Le palier vient de `freeLessons.js`, PAS du JSON source.
-    //
-    // La gratuité est une décision commerciale, portée par une liste nommée
-    // (FREE_LESSON_IDS) que `resolveLessonTier` fait seule autorité sur une
-    // classe active — exactement comme pour le catalogue français. Recopier
-    // `lesson.tier` depuis le découpage faisait vivre la même décision à deux
-    // endroits : ajouter une leçon à la liste des gratuites ne changeait
-    // alors rien, et le cadenas restait posé sans que personne ne comprenne
-    // pourquoi. Le `tier` du JSON reste une intention d'auteur ; c'est la
-    // liste qui tranche.
-    tier: resolveLessonTier(gradeId, lesson.code, lesson.tier),
     // La TRAÇABILITÉ, portée par la leçon elle-même plutôt que par un registre
     // parallèle : le sujet officiel dont elle vient, et le fait que le
     // découpage soit une décision de projet et non une prescription du

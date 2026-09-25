@@ -38,7 +38,6 @@ export * from './curriculum/coursesData.js';
 export * from './curriculum/lessonStages.js';
 export * from './curriculum/moduleRecommendations.js';
 export * from './curriculum/activeGrades.js';
-export * from './curriculum/freeLessons.js';
 export * from './curriculum/manipulationTypes.js';
 export * from './curriculum/manipulationLevels.js';
 export * from './curriculum/textbookPages.js';

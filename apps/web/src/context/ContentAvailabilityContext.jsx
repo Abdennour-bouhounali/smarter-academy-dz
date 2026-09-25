@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { AuthContext } from './AuthContext';
 import { fetchClosedContent } from '../services/contentAvailabilityService';
 
@@ -28,9 +28,20 @@ export const ContentAvailabilityContext = createContext({
   refresh: async () => {},
 });
 
+const EMPTY_CLOSED = { lessons: [], modules: {}, locked: [], premium: [], hiddenByClass: [] };
+
+/**
+ * Délai minimal entre deux relectures déclenchées par le RETOUR sur l'onglet.
+ * Le palier est décidé par l'administrateur en base : une décision prise
+ * pendant que l'élève a la page ouverte doit l'atteindre sans rechargement
+ * complet, mais sans transformer chaque changement d'onglet en requête.
+ */
+export const AVAILABILITY_REFRESH_MIN_MS = 30_000;
+
 export function ContentAvailabilityProvider({ children }) {
   const { token } = useContext(AuthContext);
-  const [closed, setClosed] = useState({ lessons: [], modules: {}, locked: [], premium: [], hiddenByClass: [] });
+  const [closed, setClosed] = useState(EMPTY_CLOSED);
+  const lastFetchedAt = useRef(0);
   const [access, setAccess] = useState(null);
   const [loaded, setLoaded] = useState(false);
 
@@ -47,8 +58,7 @@ export function ContentAvailabilityProvider({ children }) {
    * (la page d'activation) veut afficher l'état d'accès tout de suite.
    */
   const load = useCallback(async () => {
-    if (!token) return null;
-
+    lastFetchedAt.current = Date.now();
     const result = await fetchClosedContent(token);
 
     setClosed({
@@ -67,15 +77,14 @@ export function ContentAvailabilityProvider({ children }) {
   useEffect(() => {
     let cancelled = false;
 
-    if (!token) {
-      // Visiteur anonyme : rien à masquer côté client. Le serveur refuse
-      // déjà toute écriture, et le contenu non publié n'est de toute façon
-      // pas atteignable en écriture sans compte.
-      setClosed({ lessons: [], modules: {}, locked: [], premium: [], hiddenByClass: [] });
-      setAccess(null);
-      setLoaded(false);
-      return () => { cancelled = true; };
-    }
+    // Visiteur anonyme compris : le palier n'est connu QUE du serveur (le
+    // bundle n'en porte aucun), donc un visiteur charge l'inventaire public.
+    // Changer de compte (connexion, déconnexion) relance la lecture : aucun
+    // état d'un utilisateur ne survit à l'autre.
+    setClosed(EMPTY_CLOSED);
+    setAccess(null);
+    setLoaded(false);
+    lastFetchedAt.current = Date.now();
 
     fetchClosedContent(token)
       .then((result) => {
@@ -97,6 +106,23 @@ export function ContentAvailabilityProvider({ children }) {
 
     return () => { cancelled = true; };
   }, [token]);
+
+  // ── Pas d'état périmé après une décision d'administration ────────────
+  // Un administrateur qui passe une leçon de premium à gratuit (ou
+  // l'inverse) change `lessons.tier` en base ; rien ne le pousse vers les
+  // navigateurs ouverts. Relire quand l'élève REVIENT sur l'onglet suffit à
+  // aligner l'affichage sans rechargement — le serveur, lui, applique la
+  // nouvelle décision dès la requête suivante (ContentAccess, sans cache).
+  useEffect(() => {
+    if (typeof document === 'undefined') return undefined;
+    const onVisible = () => {
+      if (document.visibilityState !== 'visible') return;
+      if (Date.now() - lastFetchedAt.current < AVAILABILITY_REFRESH_MIN_MS) return;
+      load().catch(() => {});
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => document.removeEventListener('visibilitychange', onVisible);
+  }, [load]);
 
   const value = useMemo(() => {
     const lessonSet = new Set(closed.lessons);

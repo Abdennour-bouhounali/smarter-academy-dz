@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Clock, Lock, Crown, EyeOff } from 'lucide-react';
 import { ArrowForward } from '../common/DirectionalIcons';
-import { isLessonUnlocked } from '@smarter-academy/core';
 import { useContentAvailability } from '../../context/ContentAvailabilityContext';
 import { getLessonProgress } from '../../lessons/common/utils/progress/getLessonProgress';
 import { getTotalModules } from '../../lessons/registry';
@@ -15,10 +14,10 @@ import { getTotalModules } from '../../lessons/registry';
  * available/premium-locked/coming-soon visual states instead of three
  * near-identical inline copies drifting apart.
  *
- * Premium gating goes through `isLessonUnlocked` (packages/core/lessonAccess.js)
- * rather than a local `tier !== 'premium'` check, so that once a real
- * `isPremiumUser` signal exists (subscription entitlement), only the call
- * site here needs to change — not the card markup or the three-state logic.
+ * The access tier comes ONLY from the server (`GET /content/availability`,
+ * via ContentAvailabilityContext). The bundled catalogue carries no `tier`:
+ * `lessons.tier` in the database is the single source of truth and the
+ * administrator decides it. The card never computes free/premium itself.
  *
  * Wrapped in forwardRef: callers render this directly inside
  * <AnimatePresence>, which attaches a ref to measure exit animations —
@@ -30,31 +29,26 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
   // retirée par l'administration retombe donc dans l'état « bientôt
   // disponible » déjà géré plus bas — l'élève voit un message qu'il connaît,
   // pas une carte cliquable qui le mènera à un refus.
-  const { isLessonClosed, isLessonLocked, isLessonPremium, isLessonHiddenByClass, access } = useContentAvailability();
+  const { isLessonClosed, isLessonLocked, isLessonPremium, isLessonHiddenByClass } = useContentAvailability();
   const isAvailable = lesson.status === 'available' && !isLessonClosed(lesson.id);
   // Le TROISIÈME axe : masquée par l'enseignant pour la classe de l'élève.
   // Publiée, dans son droit, mais « pas maintenant » — la carte le dit avec
   // ses mots, sans cadenas commercial ni « bientôt ».
   const hiddenByTeacher = isAvailable && isLessonHiddenByClass(lesson.id);
-  // Le droit d'accès vient du SERVEUR, jamais d'un état local : la carte ne
-  // fait qu'afficher une décision déjà prise (GET /content/availability).
+  // Le palier ET le droit d'accès viennent du SERVEUR, jamais du bundle :
+  // le catalogue embarqué ne porte aucun palier (lessons.tier est la seule
+  // source de vérité, décidée par l'administrateur). La carte ne fait
+  // qu'afficher une décision déjà prise (GET /content/availability, servi
+  // aussi aux visiteurs par /content/availability/public).
   //
-  // Deux sources de palier, et c'est VOULU : le catalogue embarqué
-  // (`lesson.tier`) et la liste `locked` du serveur. Le bundle peut être en
-  // retard sur la base — une leçon rendue payante côté serveur reste `free`
-  // dans le bundle jusqu'au prochain déploiement — et c'est justement le cas
-  // où la carte mentirait à l'élève en affichant « Commencer » sur une leçon
-  // qui refusera de s'ouvrir. Le serveur tranche donc en dernier.
+  //   premium → la leçon est payante (badge), que l'élève y ait accès ou non ;
+  //   locked  → payante ET hors du droit de CET élève (cadenas).
   //
-  // Tant que la réponse n'est pas arrivée, `locked` est vide et `access` nul :
-  // la carte retombe sur le palier du bundle, politique d'ouverture identique
-  // au reste du contexte.
-  const hasPremium = access?.premiumAccess === true;
-  // Le contenu est-il payant ? Question distincte de « l'élève y a-t-il
-  // accès ». Le serveur tranche en dernier, comme pour le verrou.
-  const isPremiumLesson = lesson.tier === 'premium' || isLessonPremium(lesson.id);
-  const isUnlocked = isLessonUnlocked(lesson, { isPremiumUser: hasPremium })
-    && !isLessonLocked(lesson.id);
+  // Tant que la réponse n'est pas arrivée, les deux listes sont vides :
+  // politique d'ouverture identique au reste du contexte — et le serveur
+  // refuse de toute façon chaque écriture sur une leçon verrouillée.
+  const isPremiumLesson = isLessonPremium(lesson.id);
+  const isUnlocked = !isLessonLocked(lesson.id);
   const { progressPercent } = isAvailable
     ? getLessonProgress(lesson.id, getTotalModules(lesson.id))
     : { progressPercent: 0 };

@@ -82,10 +82,20 @@ class PruneRetiredCurriculum extends Command
         // Lessons gone from the source with no evidence, no lesson progress,
         // and no learning point still carrying evidence (a cascade delete
         // would otherwise take evidence-bearing retired points with it).
+        //
+        // Since 2026-09-25 this runs on EVERY production deploy (deploy.yml,
+        // after the curriculum sync), so « no history » is checked against
+        // every table a student writes for a lesson — not only evidence and
+        // progress. A lesson a student ever touched is never deleted here.
         $prunableLessons = Lesson::whereNotIn('code', array_keys($sourceLessonCodes))
             ->whereDoesntHave('learningPoints.learningEvidence')
             ->whereNotIn('id', DB::table('learning_evidence')->select('lesson_id'))
             ->whereNotIn('id', DB::table('student_lesson_progress')->select('lesson_id'))
+            ->whereNotIn('id', DB::table('lesson_final_test_attempts')->select('lesson_id'))
+            ->whereNotIn('id', DB::table('practice_sessions')->select('lesson_id'))
+            ->whereNotIn('id', DB::table('learning_points')
+                ->join('student_learning_point_progress', 'student_learning_point_progress.learning_point_id', '=', 'learning_points.id')
+                ->select('learning_points.lesson_id'))
             ->get();
 
         // ── Les leçons absentes du catalogue MAIS porteuses d'historique ──

@@ -27,7 +27,6 @@ import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { courseLevels, dzCourseLevels, referenceCourseLevels } from '../packages/core/curriculum/coursesData.js';
 import { ACTIVE_GRADE_IDS } from '../packages/core/curriculum/activeGrades.js';
-import { FREE_LESSON_IDS } from '../packages/core/curriculum/freeLessons.js';
 
 const ROOT = new URL('../', import.meta.url).pathname;
 const WEB_SRC = join(ROOT, 'apps/web/src');
@@ -104,31 +103,23 @@ for (const file of walkSources(WEB_SRC)) {
   }
 }
 
-// ── Contrôle 4 : les leçons gratuites existent et sont atteignables ───────
+// ── Contrôle 4 : le catalogue ne porte AUCUN palier ──────────────────────
 //
-// Deux fautes distinctes, toutes deux silencieuses sans ce contrôle :
-//   — un identifiant mal orthographié n'ouvre rien : la leçon annoncée
-//     gratuite reste vendue, et personne ne le voit avant une réclamation ;
-//   — une leçon gratuite sous une classe non active est une contradiction :
-//     elle serait « offerte » et pourtant inatteignable.
-const activeLessonIds = new Set(
-  dzCourseLevels.flatMap((level) =>
-    level.grades
-      .filter((grade) => ACTIVE_GRADE_IDS.includes(grade.id))
-      .flatMap((grade) => (grade.chapters ?? []).flatMap((chapter) => (chapter.lessons ?? []).map((l) => l.id))),
-  ),
-);
-const dzLessonIds = new Set(
-  dzCourseLevels.flatMap((level) =>
-    level.grades.flatMap((grade) => (grade.chapters ?? []).flatMap((chapter) => (chapter.lessons ?? []).map((l) => l.id))),
-  ),
-);
-
-for (const id of FREE_LESSON_IDS) {
-  if (!dzLessonIds.has(id)) {
-    problems.push(`FREE_LESSON_IDS contient « ${id} », qui n'existe dans aucune leçon du catalogue algérien — probablement une faute de frappe (cette leçon resterait payante).`);
-  } else if (!activeLessonIds.has(id)) {
-    problems.push(`FREE_LESSON_IDS contient « ${id} », qui appartient à une classe non active — une leçon « gratuite » que personne ne peut atteindre.`);
+// Gratuit ou premium est une décision d'ADMINISTRATEUR, stockée dans
+// `lessons.tier` (la seule source de vérité) : l'import crée une leçon
+// nouvelle en `free` et ne réécrit jamais le palier d'une leçon existante.
+// Un `tier` réapparu dans le catalogue serait une seconde autorité — une
+// liste figée de leçons gratuites ou payantes que personne ne voit dans
+// l'administration. On le refuse ici plutôt que de l'ignorer en silence.
+for (const level of dzCourseLevels) {
+  for (const grade of level.grades) {
+    for (const chapter of grade.chapters ?? []) {
+      for (const lesson of chapter.lessons ?? []) {
+        if (Object.prototype.hasOwnProperty.call(lesson, 'tier')) {
+          problems.push(`La leçon « ${lesson.id} » porte un \`tier\` dans le catalogue — le palier appartient à la base (lessons.tier, décidé par l'administrateur), jamais au catalogue.`);
+        }
+      }
+    }
   }
 }
 
@@ -142,4 +133,4 @@ if (problems.length) {
 const dzGrades = [...dzGradeIds];
 console.log(`✅ Périmètre du catalogue : ${dzGrades.length} classe(s) algérienne(s) (${dzGrades.join(', ')}), dont ${ACTIVE_GRADE_IDS.length} active(s) (${ACTIVE_GRADE_IDS.join(', ') || 'aucune'}).`);
 console.log(`✅ Aucune classe ni leçon française dans le catalogue algérien ; aucune surface produit n'importe l'arbre de référence.`);
-console.log(`✅ Leçons gratuites : ${FREE_LESSON_IDS.length} (${FREE_LESSON_IDS.join(', ') || 'aucune'}), toutes rattachées à une classe active.`);
+console.log('✅ Aucun palier dans le catalogue : gratuit / premium est décidé en base par l\'administrateur (lessons.tier).');

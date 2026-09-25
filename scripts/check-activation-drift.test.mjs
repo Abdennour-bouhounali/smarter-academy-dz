@@ -58,27 +58,35 @@ describe('check-activation-drift', () => {
     }
   });
 
-  // Réactivés en phase 7 : le catalogue algérien déclare désormais 28 leçons
-  // (une par sujet officiel), donc le contrôle du PALIER PAR LEÇON a enfin
-  // de quoi s'exercer. En phase 6F ces deux tests étaient `it.skip` faute de
-  // leçon à muter — voir l'historique.
-  it('échoue quand le palier d’une leçon a dérivé', () => {
+  // Le PALIER n'est plus une affaire de catalogue : il appartient à la base
+  // (lessons.tier, décidé par l'administrateur). L'export ne doit donc en
+  // porter aucun, et la garde ne doit pas en comparer — sinon chaque
+  // décision d'administration redeviendrait une « dérive ».
+  it('l’export ne porte aucun palier de leçon', () => {
+    regenerate();
+    const exported = JSON.parse(readFileSync(exportPath, 'utf8'));
+    const lessons = exported.grades.flatMap((g) => g.chapters ?? []).flatMap((c) => c.lessons ?? []);
+    expect(lessons.length).toBeGreaterThan(0);
+    for (const lesson of lessons) {
+      expect(lesson, lesson.code).not.toHaveProperty('tier');
+    }
+  });
+
+  it('échoue quand l’export porte une leçon inconnue du catalogue', () => {
     regenerate();
     const exported = JSON.parse(readFileSync(exportPath, 'utf8'));
     const original = JSON.stringify(exported, null, 2);
 
-    // La fuite commerciale : le catalogue vend, l'export offre.
     const chapter = exported.grades
       .flatMap((g) => g.chapters ?? [])
       .find((c) => (c.lessons ?? []).length > 0);
-    const lesson = chapter.lessons[0];
-    lesson.tier = lesson.tier === 'premium' ? 'free' : 'premium';
+    chapter.lessons.push({ ...chapter.lessons[0], code: '__lecon-fantome__' });
     writeFileSync(exportPath, JSON.stringify(exported, null, 2));
 
     try {
       const result = run();
       expect(result.status).toBe(1);
-      expect(result.stderr).toContain(lesson.code);
+      expect(result.stderr).toContain('__lecon-fantome__');
     } finally {
       writeFileSync(exportPath, original);
     }

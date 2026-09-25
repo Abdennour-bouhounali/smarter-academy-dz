@@ -21,6 +21,8 @@ class AdminContentController extends Controller
         return response()->json([
             'success' => true,
             'lessons' => $lessons->through(fn (Lesson $lesson) => $this->serializeLesson($lesson)),
+            // Les options du filtre « الوحدة », lues en base.
+            'units' => $this->content->lessonUnits($request->query()),
         ]);
     }
 
@@ -250,6 +252,9 @@ class AdminContentController extends Controller
             'gradeName' => $lesson->chapter?->grade?->name,
             'chapter' => $lesson->chapter?->code,
             'chapterTitle' => $lesson->chapter?->title,
+            // الوحدة du manuel (null pour une leçon hors unité).
+            'unit' => $lesson->unit?->code,
+            'unitTitle' => $lesson->unit?->title,
             'publicationStatus' => $lesson->publication_status,
             'catalogueStatus' => $lesson->status,
             'tier' => $lesson->tier,

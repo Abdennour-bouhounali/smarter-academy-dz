@@ -279,7 +279,9 @@ L'élève ne doit jamais se demander quoi faire.
 **Reste à faire** :
 
 1. Classer chaque LP algérien contre le français, LP par LP (phase 8).
-2. Choisir les **trois leçons gratuites** et les inscrire dans
-   `packages/core/curriculum/freeLessons.js` — désormais possible, les leçons
-   existant.
+2. ~~Choisir les trois leçons gratuites dans `freeLessons.js`~~ — **caduc
+   (2026-09-25)** : le palier est une décision d'administration
+   (`lessons.tier`, modifié dans le panneau), il n'existe plus de liste
+   figée. Voir `architecture/ADMIN_PANEL_ARCHITECTURE.md` « Le palier du
+   contenu ».
 3. Faire relire le découpage par une autorité curriculaire externe.

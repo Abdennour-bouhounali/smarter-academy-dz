@@ -12,6 +12,7 @@ import { getModulePath } from '../../lessons/registry';
 import { LESSON_PROGRESS_SYNCED_EVENT } from '../../hooks/useLessonProgressSync';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 import { usePremiumStatus } from '../../hooks/usePremiumStatus';
+import { useContentAvailability } from '../../context/ContentAvailabilityContext';
 import { useLearningProfile } from '../../lessons/common/hooks/useLearningProfile';
 import { getDisplayName } from '../../utils/userDisplay';
 import DiagnosticInviteBanner from '../../components/diagnostic/DiagnosticInviteBanner';
@@ -57,6 +58,9 @@ export default function StudentHome() {
   useDocumentMeta(t('home.metaTitle'), t('home.metaDescription'));
   const { user } = useContext(AuthContext);
   const { isPremium, canSeeUpgrade } = usePremiumStatus();
+  // Le palier vient du serveur (lessons.tier, décidé par l'administrateur) :
+  // le catalogue embarqué n'en porte aucun.
+  const { isLessonPremium } = useContentAvailability();
 
   // L'activité est lue dans le stockage local au montage. Deux moments la
   // rendent obsolète sans changer de classe : la fusion des lignes du
@@ -120,7 +124,7 @@ export default function StudentHome() {
   const whereContext = useMemo(() => pickCurriculumContext(tree, focusLessonId), [tree, focusLessonId]);
 
   const recent = gradeActivity.recentlyActive.slice(0, 3);
-  const premiumCount = gradeActivity.lessons.filter((l) => l.lesson.tier === 'premium').length;
+  const premiumCount = gradeActivity.lessons.filter((l) => isLessonPremium(l.lesson.id)).length;
 
   const enter = (delay = 0) => ({
     initial: { opacity: 0, y: 12 },

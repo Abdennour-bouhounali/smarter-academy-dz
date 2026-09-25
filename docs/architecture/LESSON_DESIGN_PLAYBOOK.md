@@ -27,7 +27,8 @@ Structurally, a lesson is:
 
 - **One catalogue entry** (`packages/core/curriculum/coursesData.js` `smaMetadata`, merged with
   the official ministry JSON) — the source of truth for WHAT is taught: identity, description,
-  prerequisites, `pointsToLearn`, duration, difficulty, status, icon, tier.
+  prerequisites, `pointsToLearn`, duration, difficulty, status, icon. **Never a `tier`**: free
+  or premium is decided by the administrator in `lessons.tier` (new lessons are created free).
 - **One lesson directory** (`apps/web/src/lessons/college/{grade}/{domain}/{lesson}/`) with
   `lesson.config.js` (source of truth for HOW: modules, stages, LP wiring), `moduleContext.js`,
   `index.jsx`, `routes.jsx`, `components/`, `modules/Module<NN><Descriptor>.jsx`.

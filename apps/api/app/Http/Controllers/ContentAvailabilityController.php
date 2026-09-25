@@ -55,6 +55,23 @@ class ContentAvailabilityController extends Controller
     }
 
     /**
+     * Le même inventaire, pour un VISITEUR sans compte.
+     *
+     * Le sujet est null EXPLICITEMENT — jamais lu depuis la requête : cette
+     * route est publique, et aucun jeton qui l'accompagnerait ne doit y
+     * changer la réponse. Pour null, `locked` vaut la liste `premium` entière
+     * et `hiddenByClass` est vide (ContentAccess::closedInventory).
+     */
+    public function guest()
+    {
+        return response()->json([
+            'success' => true,
+            'closed' => ContentAccess::closedInventory(null),
+            'access' => $this->entitlements->summarize(null),
+        ]);
+    }
+
+    /**
      * L'inventaire des exercices d'une leçon — servi par le REGISTRE, pas par
      * le contenu.
      *

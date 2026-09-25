@@ -119,10 +119,11 @@ export default function myLessonRoutes() {
 ```
 
 `buildLessonRoutes` resolves each module component by the **number in its
-filename**, wraps every page in the knowledge provider and the notebook anchor,
-and puts `LessonClassroomShell` above the whole lesson as a pathless layout
-route so a Classroom session survives module navigation. You get Classroom Mode
-and the notebook for free; do not rebuild either.
+filename**, wraps every page in the premium gate (`LessonAccessGate`), the
+knowledge provider and the notebook anchor, and puts `LessonClassroomShell`
+above the whole lesson as a pathless layout route so a Classroom session
+survives module navigation. You get Classroom Mode, the notebook and the
+free/premium lock for free; do not rebuild any of them.
 
 > **Two digits, always.** `Module0117Wa18.jsx` is read as module **117**, and
 > its route is silently not mounted. This shipped once and was found in
@@ -560,6 +561,30 @@ instead, or the state is lost. Portals go through `useClassroomPortalTarget()`.
 See [`CLASSROOM_MODE.md`](../architecture/CLASSROOM_MODE.md) §11.
 
 ---
+
+### Free or premium is not your lesson's decision — you do nothing
+
+Whether a lesson is free or premium is an **administrator decision** stored in
+`lessons.tier` — the single source of truth. **Never write a `tier` anywhere**:
+not in `lesson.config.js`, not in `dz/lessons_*.json`, not in `coursesData.js`,
+and never a list of free or premium lesson ids. `check-dormant-isolation.mjs`
+fails the build if a catalogue lesson carries a `tier`.
+
+What happens to a lesson you add:
+
+```text
+new lesson in the catalogue → smarter:import-curriculum (locally, and on every deploy)
+  → created in `lessons` with tier = free   (creation default, not a classification)
+  → appears in /admin/contenu/lecons, filterable by its الوحدة
+  → the administrator may switch it free ↔ premium at any time
+  → every later sync or deploy keeps whatever the administrator chose
+```
+
+The student side follows automatically: `LessonAccessGate` (put around every
+page by `buildLessonRoutes`), `LessonIndex`, `ModuleLayout` and `LessonCard`
+read the server's decision from `ContentAvailabilityContext`, and the server
+refuses every write on a locked lesson (`ContentAccess`). Contract:
+`docs/architecture/ADMIN_PANEL_ARCHITECTURE.md` « Le palier du contenu ».
 
 ### A teacher may hide your lesson from a class — you do nothing
 

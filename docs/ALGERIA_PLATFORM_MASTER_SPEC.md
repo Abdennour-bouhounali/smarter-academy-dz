@@ -502,8 +502,15 @@ The mathematics and pedagogy remain the priority.
 
 Initial Algeria product:
 
-- 3 lessons are free.
-- Remaining lessons are premium.
+- Which lessons are free and which are premium is an **administrator
+  decision**, stored in `lessons.tier` (the single source of truth) and changed
+  from the admin panel. There is no fixed list of free lessons in the code or
+  the catalogue. A newly created lesson defaults to **free**; curriculum
+  synchronisation and deployment never overwrite an existing tier. (Revised
+  2026-09-25 — this line originally read « 3 lessons are free, the rest
+  premium », which was then encoded as a hardcoded list and has been removed.
+  Contract: `architecture/ADMIN_PANEL_ARCHITECTURE.md` « Le palier du
+  contenu ».)
 - No online payment UI initially.
 - Students pay physically in cash.
 - Student receives an activation code.
