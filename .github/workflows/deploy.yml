@@ -338,6 +338,39 @@ jobs:
             apps/api/ \
             "$SSH_USER@$SSH_HOST:$REMOTE_PATH/api/"
 
+      # ───────────────────── Deploy the practice content ─────────────────────
+      # The API reads content/practice/ at RUNTIME (active.json, the index, the
+      # exercise JSON, misconceptions) from config('practice.*_path'), whose
+      # default is base_path('../../content/practice') — the repository layout,
+      # where the API lives in apps/api/. The frontend bundles active.json at
+      # BUILD time. Until 2026-09-25 this workflow shipped only apps/api/, so
+      # production offered practice (bundled list) while the server had no
+      # list at all: every GET /lessons/{code}/practice/overview answered 422
+      # « La pratique n'est pas encore disponible pour cette leçon. »
+      #
+      # Mirrored to the SAME relative place — $REMOTE_PATH/api/../../content/
+      # practice, outside the web root — so the config default resolves on the
+      # server exactly as in the repository, with no .env change. No --delete,
+      # like the other rsyncs: a removed exercise lingers as a file but leaves
+      # index.generated.json, which is the only thing the server serves from.
+      # `smarter:practice-doctor` below proves the server reads THIS copy.
+      - name: Deploy the practice content
+        env:
+          SSH_HOST: ${{ secrets.HOSTINGER_HOST }}
+          SSH_PORT: ${{ secrets.HOSTINGER_PORT }}
+          SSH_USER: ${{ secrets.HOSTINGER_USER }}
+          REMOTE_PATH: ${{ secrets.HOSTINGER_PATH }}
+        run: |
+          set -euo pipefail
+          test -s content/practice/active.json
+          test -s content/practice/index.generated.json
+          ssh -i ~/.ssh/deploy_key -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" \
+            "mkdir -p '$REMOTE_PATH/api/../../content/practice'"
+          rsync -rlptz --human-readable --omit-dir-times \
+            -e "ssh -i ~/.ssh/deploy_key -p $SSH_PORT" \
+            content/practice/ \
+            "$SSH_USER@$SSH_HOST:$REMOTE_PATH/api/../../content/practice/"
+
       # ───────────────────── Laravel post-deployment ─────────────────────────
       # The schema IS applied here, since 2026-09-23. Until then this workflow
       # deliberately never migrated, and the schema was applied by hand as
@@ -522,6 +555,26 @@ jobs:
           php artisan view:clear
           echo "Caches cleared. Laravel will regenerate what it needs."
           REMOTE
+
+      # The server must read the practice content of THIS commit: the files
+      # exist, the active list is not empty, every active lesson has exercises
+      # and its learning points exist, and the fingerprints of active.json and
+      # index.generated.json match the ones computed here. A missing, stale or
+      # relocated copy (PRACTICE_*_PATH in .env) fails the deployment instead
+      # of turning every practice overview into a 422. Runs after the cache
+      # clear: the doctor must not read a list cached before the sync.
+      - name: Verify the practice content
+        env:
+          SSH_HOST: ${{ secrets.HOSTINGER_HOST }}
+          SSH_PORT: ${{ secrets.HOSTINGER_PORT }}
+          SSH_USER: ${{ secrets.HOSTINGER_USER }}
+          REMOTE_PATH: ${{ secrets.HOSTINGER_PATH }}
+        run: |
+          set -euo pipefail
+          active="$(sha256sum content/practice/active.json | cut -d' ' -f1)"
+          index="$(sha256sum content/practice/index.generated.json | cut -d' ' -f1)"
+          ssh -i ~/.ssh/deploy_key -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" \
+            "cd '$REMOTE_PATH/api' && php artisan smarter:practice-doctor --expect-active=$active --expect-index=$index"
 
       # ────────────────────────── Verification ───────────────────────────────
       - name: Verify the deployed files

@@ -524,7 +524,11 @@
       "questions": "أسئلة أجبت عنها"
     },
     "levelStart": "ابدأ",
-    "levelAgain": "تمرّن من جديد"
+    "levelAgain": "تمرّن من جديد",
+    "unavailable": {
+      "practice_unavailable": "التمارين غير متاحة لهذا الدرس حاليًا. عد إليها لاحقًا.",
+      "lesson_unavailable": "هذا الدرس غير مفتوح لك حاليًا، لذا لا يمكن فتح تمارينه."
+    }
   },
   "notebook": {
     "title": "كرّاسي",

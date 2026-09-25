@@ -8,6 +8,7 @@ import { AuthContext } from '../../../context/AuthContext';
 import { fetchLessonRecommendations } from '../../../services/learningEvidenceService';
 import { getModulePath } from '../../registry';
 import { isPracticeActive, practiceHubPath } from '../../../features/practice/practiceCapability';
+import { useLearningViewer } from '../../../features/learning/learningViewer';
 import { buildNextSteps } from '../utils/nextSteps';
 import { LearningPointCard, resolveMasteryState } from './LearningPointMastery';
 
@@ -41,6 +42,7 @@ const MASTERY_MESSAGE_KEY = {
  */
 export default function LessonLearningPointsStatus({ lessonId, refreshToken = 0, refreshDelayMs = 1500 }) {
   const { t } = useTranslation('lesson');
+  const { tracksProgress } = useLearningViewer();
   const { t: ts } = useTranslation('student');
   const { profile, status, reload } = useLearningProfile({ lesson: lessonId });
   const catalogueLesson = getLessonById(lessonId);
@@ -72,7 +74,8 @@ export default function LessonLearningPointsStatus({ lessonId, refreshToken = 0,
   const learningPoints = catalogueLesson?.learningPoints ?? [];
   const nextSteps = buildNextSteps(recommendations, {
     modulePath: (n) => getModulePath(lessonId, n),
-    practicePath: isPracticeActive(lessonId) ? practiceHubPath(lessonId) : null,
+    // Pas de lien vers la pratique pour qui n'y a pas de route (enseignant, admin).
+    practicePath: tracksProgress && isPracticeActive(lessonId) ? practiceHubPath(lessonId) : null,
   });
   const rows = new Map(
     (profile?.currentMastery ?? [])

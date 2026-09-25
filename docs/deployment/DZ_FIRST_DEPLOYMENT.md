@@ -213,7 +213,7 @@ Le workflow reste volontairement prudent :
 
 1. **Schéma** : `docs/deployment/HOSTINGER_UNIT1_MIGRATION.sql` (cinq migrations additives + lignes `migrations`). Sauvegarder, relire, exécuter dans phpMyAdmin.
 2. **Données** : `docs/deployment/HOSTINGER_UNIT1_CURRICULUM_DATA.sql`, généré par `php artisan smarter:curriculum-sql --grade=4am --retire-lesson=pgcd` — upserts PAR CODE, rejouables, sans DELETE, sans toucher `publication_status` **ni `tier`** d'une ligne existante (une leçon nouvelle naît `free`). Les nouveaux modules/ressources/exercices naissent `draft`. Depuis le 2026-09-25 le déploiement applique lui-même cette synchronisation (voir « Le curriculum : synchronisé par le pipeline »), ce fichier ne sert plus qu'à une base que le pipeline ne peut pas atteindre.
-3. **Pratique** : synchroniser `content/practice/` (dossier `4am/`, `policy.json`, `misconceptions.json`, `index.generated.json`) à côté de l'API.
+3. **Pratique** : livrée par le pipeline depuis le 2026-09-25 — voir « Le contenu de pratique : livré et vérifié par le pipeline ». (Avant, cette étape était manuelle et sa liste oubliait `active.json` : voir l'incident ci-dessous.)
 
 ## Enseignants, classes et offres configurables — à appliquer sur Hostinger
 
@@ -282,6 +282,41 @@ Le déploiement fait donc maintenant, dans cet ordre :
    d'entrée ci-dessus sont maintenant sondés ; non authentifiés ils doivent
    répondre 401, et un 5xx fait échouer le déploiement. C'est la signature
    exacte d'une table ou d'une colonne manquante.
+
+## Le contenu de pratique : livré et vérifié par le pipeline (2026-09-25)
+
+L'API lit `content/practice/` **à l'exécution** — `active.json` (quelles
+leçons ont la pratique), `index.generated.json` (quels exercices, à quel
+niveau), les fichiers d'exercices et `misconceptions.json` — au chemin
+`config('practice.*_path')`, par défaut `base_path('../../content/practice')`,
+c'est-à-dire la disposition du dépôt (l'API vit dans `apps/api/`). Le
+frontend, lui, embarque `active.json` **au build**.
+
+**Incident du 2026-09-25.** Le pipeline ne livrait que `apps/api/`. En
+production, le frontend proposait donc la pratique (liste embarquée) pendant
+que le serveur n'avait aucune liste : chaque `GET /api/v1/lessons/{code}/
+practice/overview` répondait **422** « La pratique n'est pas encore disponible
+pour cette leçon » (constaté sur `qasim-adad-tabii`, première leçon de
+l'unité). La procédure manuelle ci-dessus oubliait `active.json`, et les deux
+lecteurs mettaient en cache une liste VIDE pendant une heure.
+
+Désormais :
+
+1. **« Deploy the practice content »** copie `content/practice/` vers
+   `$REMOTE_PATH/api/../../content/practice/` — le même emplacement relatif
+   qu'en local, hors de la racine web, sans variable `.env` à régler.
+2. **« Verify the practice content »** (après le vidage des caches) lance
+   `php artisan smarter:practice-doctor --expect-active=… --expect-index=…`
+   avec les empreintes SHA-256 du commit déployé : fichier absent, liste vide,
+   leçon active sans exercice, learning point absent de la base, ou copie
+   périmée / lue ailleurs (`PRACTICE_CONTENT_PATH`, `PRACTICE_ACTIVE_PATH`)
+   **font échouer le déploiement**.
+3. Un fichier absent n'est plus mis en cache (`PracticeCapability`,
+   `ExerciseRepository`) : dès qu'il arrive, il est lu.
+4. Un refus de l'aperçu ou de l'ouverture d'une séance porte un motif clos :
+   `code: practice_unavailable` (pas de pratique pour cette leçon, ou le
+   serveur ne la voit pas) ou `lesson_unavailable` (palier, publication,
+   masquée par l'enseignant) — statut 422 inchangé.
 
 ## Le curriculum : synchronisé par le pipeline depuis le 2026-09-25
 

@@ -43,11 +43,17 @@ class ExerciseRepository
      */
     public function indexFor(string $lessonCode): array
     {
-        $index = Cache::remember('practice:index', config('practice.cache_ttl', 3600), function () {
+        $index = Cache::get('practice:index');
+        if (! is_array($index)) {
             $file = $this->contentPath().'/index.generated.json';
-
-            return is_file($file) ? (json_decode((string) file_get_contents($file), true) ?: []) : [];
-        });
+            // Index absent : on ne met rien en cache (même raison que
+            // PracticeCapability::activeLessons) — il sera relu dès qu'il existe.
+            if (! is_file($file)) {
+                return [];
+            }
+            $index = json_decode((string) file_get_contents($file), true) ?: [];
+            Cache::put('practice:index', $index, config('practice.cache_ttl', 3600));
+        }
 
         $levels = $index[$lessonCode] ?? [];
         $out = [];

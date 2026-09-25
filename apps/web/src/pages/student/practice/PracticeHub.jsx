@@ -27,6 +27,14 @@ export default function PracticeHub() {
   const [overview, setOverview] = useState(null);
   const [error, setError] = useState(null);
   const [busyLevel, setBusyLevel] = useState(null);
+  // Un refus du serveur porte un motif clos (`code`) : « pas de pratique ici »
+  // et « leçon non ouverte » se disent différemment ; sinon, le message
+  // arabe générique du service (jamais la phrase française du serveur).
+  const refusalText = (e) => (
+    e?.code === 'practice_unavailable' || e?.code === 'lesson_unavailable'
+      ? t(`practice.unavailable.${e.code}`)
+      : e?.message
+  );
 
   useEffect(() => {
     if (!token) return undefined;
@@ -34,9 +42,10 @@ export default function PracticeHub() {
     setError(null);
     fetchPracticeOverview(token, lessonCode)
       .then((data) => !cancelled && setOverview(data))
-      .catch((e) => !cancelled && setError(e.message));
+      .catch((e) => !cancelled && setError(refusalText(e)));
 
     return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, lessonCode]);
 
   const start = useCallback(async (level) => {
@@ -47,9 +56,10 @@ export default function PracticeHub() {
       await startPracticeSession(token, lessonCode, sessionId, level);
       navigate(`/espace/pratique/${lessonCode}/session/${sessionId}`);
     } catch (e) {
-      setError(e.message);
+      setError(refusalText(e));
       setBusyLevel(null);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, lessonCode, navigate]);
 
   if (error && !overview) {

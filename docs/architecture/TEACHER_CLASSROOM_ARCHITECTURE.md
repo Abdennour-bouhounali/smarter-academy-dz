@@ -894,6 +894,12 @@ usesWorkspaceShell   StudentLayout  MainLayout     TeacherLayout  MainLayout
   is a student surface (`sourceLinkFor(note, base)`).
 - **Practice sessions** (`/espace/pratique`) remain a student surface: not
   mounted for teachers, and their rows would be the teacher's own anyway.
+  They are therefore **not offered** either (2026-09-25): `PracticeEntryCard`
+  and the « next steps » practice link of `LessonLearningPointsStatus` render
+  only when `useLearningViewer().tracksProgress` (student, or visitor → login
+  invitation). Before, a teacher clicking « التمارين » on a lesson hit the
+  student-only route guard and landed on `/login`, then on their home
+  (`PracticeEntryCard.test.jsx`).
 
 ## 9. The admin control surface (French)
 

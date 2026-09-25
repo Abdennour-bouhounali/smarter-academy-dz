@@ -411,6 +411,18 @@ eyebrow «نقطة التعلّم», the point's name (the primary Learning Poin
   name clamps to two lines (full name in `title`) and stars + counters share
   one row.
 
+**Refusals of `GET /lessons/{code}/practice/overview` and `POST
+/lessons/{code}/practice/sessions` (2026-09-25).** Status 422 (the content-access
+convention shared with the final test and the evidence routes) with a closed
+`code`: `practice_unavailable` — the lesson is not in
+`content/practice/active.json` **as the server reads it** — or
+`lesson_unavailable` — `ContentAccess` refused (tier, publication, hidden by
+the teacher). `PracticeHub` renders `student.json` →
+`practice.unavailable.{code}`. Unknown lesson → 404, guest → 401. The server's
+copy of `content/practice/` is shipped and fingerprint-checked by the deploy
+(`smarter:practice-doctor`, `docs/deployment/DZ_FIRST_DEPLOYMENT.md`); a missing
+`active.json` is never cached. `PracticeOverviewTest` locks all of it.
+
 **`GET /lessons/{code}/practice/overview` — `learningPoints[].practice`**
 (additive, 2026-09-24): `{exercises, exercisesCompleted, questions,
 questionsAnswered}` from `App\Domain\Practice\LearningPointPracticeProgress`.

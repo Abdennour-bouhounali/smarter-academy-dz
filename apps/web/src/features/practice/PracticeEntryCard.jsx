@@ -5,6 +5,7 @@ import { Dumbbell } from 'lucide-react';
 import { ArrowForward } from '../../components/common/DirectionalIcons';
 import { AuthContext } from '../../context/AuthContext';
 import { practiceHubPath } from './practiceCapability';
+import { useLearningViewer } from '../learning/learningViewer';
 import { levelCounts } from './practiceContent';
 
 /**
@@ -27,8 +28,13 @@ export default function PracticeEntryCard({ lessonId }) {
   const { token } = useContext(AuthContext);
   const counts = levelCounts(lessonId);
   const total = Object.values(counts).reduce((sum, n) => sum + n, 0);
+  // La pratique est un espace ÉLÈVE (/espace/pratique, TEACHER_CLASSROOM
+  // § 8b) : un enseignant ou un administrateur qui lit la leçon n'y a pas de
+  // route — le lien le renvoyait vers /login puis vers son accueil.
+  // `tracksProgress` = élève ou visiteur (qui reçoit l'invitation à se connecter).
+  const { tracksProgress } = useLearningViewer();
 
-  if (total === 0) return null;
+  if (total === 0 || !tracksProgress) return null;
 
   const levelCount = Object.keys(counts).length;
 

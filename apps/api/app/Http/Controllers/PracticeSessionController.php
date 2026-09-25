@@ -27,6 +27,12 @@ use Illuminate\Http\Request;
  */
 class PracticeSessionController extends Controller
 {
+    /** content/practice/active.json n'active pas la pratique de cette leçon (ou le serveur ne le voit pas). */
+    public const PRACTICE_UNAVAILABLE = 'practice_unavailable';
+
+    /** La leçon n'est pas ouverte à cet utilisateur (palier, publication, masquée par l'enseignant). */
+    public const LESSON_UNAVAILABLE = 'lesson_unavailable';
+
     public function __construct(
         private PracticeSessionService $sessions,
         private ExerciseRepository $exercises,
@@ -40,11 +46,17 @@ class PracticeSessionController extends Controller
             abort(404);
         }
 
+        // Deux refus distincts, deux motifs clos : le client doit pouvoir dire
+        // « la pratique n'existe pas (encore) ici » autrement que « cette leçon
+        // ne t'est pas ouverte ». Le statut reste 422, comme pour tout refus
+        // d'accès au contenu (LearningEvidence, LessonFinalTestAttempt…).
+        if (! PracticeCapability::isActive($lessonCode)) {
+            return self::refuse(self::PRACTICE_UNAVAILABLE, "La pratique n'est pas encore disponible pour cette leçon.");
+        }
         try {
-            PracticeCapability::assertActive($lessonCode);
             ContentAccess::assertLessonAvailable($lessonCode, $request->user());
         } catch (DomainException $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 422);
+            return self::refuse(self::LESSON_UNAVAILABLE, $e->getMessage());
         }
 
         $user = $request->user();
@@ -116,6 +128,10 @@ class PracticeSessionController extends Controller
             'sessionId' => 'required|string|size:36',
             'level' => 'required|integer|min:1|max:5',
         ]);
+
+        if (! PracticeCapability::isActive($lessonCode)) {
+            return self::refuse(self::PRACTICE_UNAVAILABLE, "La pratique n'est pas encore disponible pour cette leçon.");
+        }
 
         try {
             $result = $this->sessions->startOrResume(
@@ -229,5 +245,11 @@ class PracticeSessionController extends Controller
             'hintsUsed' => (int) $questions->sum('hints_used'),
             'misconceptions' => $questions->pluck('misconception_id')->filter()->countBy()->all(),
         ];
+    }
+
+    /** Un refus 422 avec son motif clos (`code`), que le client traduit en arabe. */
+    private static function refuse(string $code, string $message)
+    {
+        return response()->json(['success' => false, 'code' => $code, 'message' => $message], 422);
     }
 }
