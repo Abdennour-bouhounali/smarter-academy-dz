@@ -8,6 +8,7 @@ import { courseLevels } from '@smarter-academy/core';
 import { getResumeLesson } from '../lessons/common/utils/progress/getResumeLesson';
 import { getLessonProgress } from '../lessons/common/utils/progress/getLessonProgress';
 import { getTotalModules } from '../lessons/registry';
+import GradeLessonSearch, { filterLessonsByQuery } from '../components/student/GradeLessonSearch';
 import UnitGroup from '../components/student/UnitGroup';
 import { groupLessonsByUnit } from '../components/student/unitGrouping';
 import { storage, scopedStorage } from '../utils/storage';
@@ -142,15 +143,8 @@ export default function CoursesPage() {
       targetLessons = chapter ? chapter.lessons : [];
     }
 
-    if (!searchQuery.trim()) return targetLessons;
-    
-    const query = searchQuery.toLowerCase();
     // When searching, we search across all chapters of the grade regardless of effectiveChapterId
-    const allLessons = gradeData.chapters.flatMap(c => c.lessons);
-    return allLessons.filter(lesson => 
-      lesson.title.toLowerCase().includes(query) || 
-      lesson.description.toLowerCase().includes(query)
-    );
+    return filterLessonsByQuery(gradeData.chapters.flatMap(c => c.lessons), searchQuery) ?? targetLessons;
   }, [gradeData, effectiveChapterId, searchQuery]);
 
   // Les chapitres dont le PROGRAMME doit être montré : ceux qui portent des
@@ -314,16 +308,7 @@ export default function CoursesPage() {
                </>
              )}
           </div>
-          <div className="relative w-full md:w-72">
-            <Search size={18} className="absolute start-3 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input
-              type="text"
-              placeholder={t('searchInGrade', { grade: gradeData.name })}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white border border-slate-200 rounded-xl ps-10 pe-4 py-2.5 text-sm font-inter focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow shadow-sm"
-            />
-          </div>
+          <GradeLessonSearch value={searchQuery} onChange={setSearchQuery} gradeName={gradeData.name} />
         </section>
 
         {/* CLASSE SANS PROGRAMME (invariant I2 de la phase 6F).

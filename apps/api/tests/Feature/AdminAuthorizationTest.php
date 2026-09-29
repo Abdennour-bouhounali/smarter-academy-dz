@@ -31,7 +31,7 @@ class AdminAuthorizationTest extends TestCase
 
             $methods = array_diff($route->methods(), ['HEAD']);
             $uri = str_replace(
-                ['{code}', '{id}', '{type}', '{role}', '{requestId}', '{subscriptionId}', '{overrideId}', '{versionId}', '{studentId}', '{invitationId}', '{lessonId}', '{key}'],
+                ['{code}', '{id}', '{type}', '{role}', '{requestId}', '{subscriptionId}', '{overrideId}', '{versionId}', '{studentId}', '{lessonId}', '{key}'],
                 ['fractions', '1', 'lesson', 'teachers', '1', '1', '1', '1', '1', '1', '1', 'notebook'],
                 $route->uri()
             );
@@ -94,6 +94,7 @@ class AdminAuthorizationTest extends TestCase
     public function test_une_inscription_ne_peut_pas_se_donner_le_role_admin(): void
     {
         $response = $this->postJson('/api/v1/auth/register', [
+            'firstName' => 'أمين', 'lastName' => 'بن علي',
             'email' => 'malin@example.com',
             'password' => 'motdepasse123',
             'role' => 'admin',

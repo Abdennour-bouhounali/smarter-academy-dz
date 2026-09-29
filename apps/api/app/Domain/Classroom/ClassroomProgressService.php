@@ -15,7 +15,6 @@ use App\Models\Grade;
 use App\Models\Lesson;
 use App\Models\StudentLessonProgress;
 use App\Models\User;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -54,33 +53,6 @@ class ClassroomProgressService
     public function forget(): void
     {
         $this->lessonIds = [];
-    }
-
-    /**
-     * Le tableau de la classe : un résumé, et une ligne par élève.
-     *
-     * @return array<string, mixed>
-     */
-    public function classSummary(Classroom $classroom): array
-    {
-        $this->assertFeature($classroom->teacher, EntitlementKeys::PROGRESS_CLASS);
-
-        $lessonIds = $this->effectiveLessonIds($classroom);
-        $members = $this->members($classroom);
-        $rows = $this->studentRows($members, $lessonIds);
-
-        $count = $rows->count();
-        $window = Carbon::now()->subDays((int) config('classroom.active_window_days', 7));
-
-        return [
-            'lessonsInScope' => count($lessonIds),
-            'students' => $count,
-            'activeStudents' => $rows->filter(fn ($r) => $r['lastActivityAt'] !== null && Carbon::parse($r['lastActivityAt'])->greaterThan($window))->count(),
-            'averageProgress' => $count > 0 ? round($rows->avg('progressPercent'), 1) : null,
-            'lessonsCompleted' => $rows->sum('lessonsCompleted'),
-            'averageSuccessRate' => $rows->whereNotNull('successRate')->isEmpty() ? null : round($rows->whereNotNull('successRate')->avg('successRate'), 1),
-            'students_rows' => $rows->values()->all(),
-        ];
     }
 
     /** @return array<int, array<string, mixed>> */

@@ -4,20 +4,17 @@ namespace Tests\Feature;
 
 use App\Domain\Classroom\TeacherCapacityService;
 use App\Models\Classroom;
-use App\Models\ClassroomInvitation;
 use App\Models\ClassroomMembership;
 use App\Models\Subscription;
 use App\Models\User;
-use Database\Factories\ClassroomInvitationFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Notification;
 use Tests\Support\CommercialFixtures;
 use Tests\TestCase;
 
 /**
  * LA CAPACITÉ EN SIÈGES — l'unité de vente est l'élève distinct, jamais la
  * classe. Classes illimitées ; un élève dans deux classes = un siège ; les
- * invitations passent par la même porte ; rien n'est supprimé en
+ * liens de classe passent par la même porte ; rien n'est supprimé en
  * dépassement.
  */
 class TeacherCapacityTest extends TestCase
@@ -72,9 +69,8 @@ class TeacherCapacityTest extends TestCase
         $this->assertSame(3, app(TeacherCapacityService::class)->currentStudentCount($teacher->fresh()));
     }
 
-    public function test_ajouter_jusqu_a_la_capacite_puis_refus_par_code_et_par_invitation(): void
+    public function test_ajouter_jusqu_a_la_capacite_puis_refus_par_code_et_par_lien(): void
     {
-        Notification::fake();
         $this->freeSeatsPlan(5);
         $teacher = $this->teacher();
         $classroom = Classroom::factory()->ownedBy($teacher)->create();
@@ -87,16 +83,14 @@ class TeacherCapacityTest extends TestCase
         $this->join($this->student(), $classroom)->assertCreated();
         $this->join($this->student(), $classroom)->assertStatus(422)->assertJsonPath('reason', 'seats_exhausted');
 
-        // L'invitation s'envoie (aucune limite technique), mais son ACCEPTATION passe par la même capacité.
-        $invited = $this->student(['email' => 'invite@example.dz']);
-        $token = basename($this->withToken($teacherToken)->postJson("/api/v1/teacher/classrooms/{$classroom->id}/invitations", ['email' => 'invite@example.dz'])->assertCreated()->json('joinUrl'));
-        $this->withToken($this->tokenOf($invited))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'token' => $token])->assertStatus(422)->assertJsonPath('reason', 'seats_exhausted');
-        $this->assertDatabaseHas('classroom_invitations', ['email' => 'invite@example.dz', 'status' => 'pending']);
+        // Le LIEN de classe passe par la même capacité que le code.
+        $viaLink = $this->student();
+        $this->withToken($this->tokenOf($viaLink))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'link' => $classroom->join_link_token])->assertStatus(422)->assertJsonPath('reason', 'seats_exhausted');
 
-        // Un siège libéré rouvre la porte — pour l'invitation aussi.
+        // Un siège libéré rouvre la porte — pour le lien aussi.
         $gone = $classroom->activeMemberships()->first();
         $this->withToken($teacherToken)->deleteJson("/api/v1/teacher/classrooms/{$classroom->id}/students/{$gone->student_id}")->assertOk();
-        $this->withToken($this->tokenOf($invited))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'token' => $token])->assertCreated();
+        $this->withToken($this->tokenOf($viaLink))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'link' => $classroom->join_link_token])->assertCreated();
     }
 
     public function test_une_expiration_met_en_depassement_sans_rien_supprimer(): void
@@ -172,7 +166,7 @@ class TeacherCapacityTest extends TestCase
             ->assertJsonPath('capacity.current', 2);
     }
 
-    public function test_un_eleve_invite_deja_assis_ne_consomme_pas_de_siege(): void
+    public function test_un_eleve_deja_assis_rejoint_une_autre_classe_par_lien_sans_nouveau_siege(): void
     {
         $this->freeSeatsPlan(1);
         $teacher = $this->teacher();
@@ -181,7 +175,6 @@ class TeacherCapacityTest extends TestCase
         $student = $this->student();
         $this->join($student, $a)->assertCreated();
 
-        $invitation = ClassroomInvitation::factory()->create(['classroom_id' => $b->id, 'email' => $student->email]);
-        $this->withToken($this->tokenOf($student))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'token' => ClassroomInvitationFactory::plainTokenOf($invitation)])->assertCreated();
+        $this->withToken($this->tokenOf($student))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'link' => $b->join_link_token])->assertCreated();
     }
 }

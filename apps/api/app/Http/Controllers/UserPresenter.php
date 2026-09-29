@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Domain\Identity\PersonName;
 use App\Models\User;
 
 /**
@@ -27,6 +28,11 @@ final class UserPresenter
             'id' => $user->id,
             'firstName' => $user->first_name,
             'lastName' => $user->last_name,
+            // Faux tant que « الاسم و اللقب » ne sont pas TOUS DEUX renseignés
+            // ET écrits en lettres arabes (comptes antérieurs à leur collecte,
+            // ou nom latin) : le frontend fait alors passer l'élève ou
+            // l'enseignant par l'étape qui les demande.
+            'nameComplete' => PersonName::isComplete($user->first_name, $user->last_name),
             'email' => $user->email,
             'role' => $user->role,
             'grade' => $user->grade,

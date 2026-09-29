@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Domain\Classroom\PendingClassJoin;
 use App\Domain\Identity\EmailVerificationLink;
 use App\Models\User;
 use App\Notifications\VerifyEmailAddress;
@@ -50,6 +51,10 @@ class EmailVerificationController extends Controller
         if (! $user->markEmailAsVerified()) {
             return $this->redirectToFrontend('deja-verifie');
         }
+
+        // Inscrit depuis le lien d'une classe : l'adhésion à laquelle il a
+        // consenti se fait MAINTENANT, quel que soit le navigateur.
+        app(PendingClassJoin::class)->complete($user);
 
         return $this->redirectToFrontend('succes');
     }

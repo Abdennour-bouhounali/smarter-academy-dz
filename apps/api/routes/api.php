@@ -29,7 +29,6 @@ use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\DiagnosticController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\GoogleAuthController;
-use App\Http\Controllers\InvitationPreviewController;
 use App\Http\Controllers\LearningEvidenceController;
 use App\Http\Controllers\LearningPointExplanationController;
 use App\Http\Controllers\LearningProfileController;
@@ -45,15 +44,14 @@ use App\Http\Controllers\PracticeSessionController;
 use App\Http\Controllers\ProviderWebhookController;
 use App\Http\Controllers\RecommendationController;
 use App\Http\Controllers\StudentClassroomController;
+use App\Http\Controllers\ClassJoinLinkController;
 use App\Http\Controllers\StudentReportController;
 use App\Http\Controllers\Teacher\TeacherClassroomController;
 use App\Http\Controllers\Teacher\TeacherClassroomInsightController;
 use App\Http\Controllers\Teacher\TeacherClassroomInterventionController;
-use App\Http\Controllers\Teacher\TeacherClassroomInvitationController;
 use App\Http\Controllers\Teacher\TeacherClassroomLearningPointController;
 use App\Http\Controllers\Teacher\TeacherClassroomLessonController;
 use App\Http\Controllers\Teacher\TeacherClassroomNotebookController;
-use App\Http\Controllers\Teacher\TeacherClassroomProgressController;
 use App\Http\Controllers\Teacher\TeacherClassroomStudentController;
 use App\Http\Controllers\Teacher\TeacherDashboardController;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -96,9 +94,11 @@ Route::prefix('v1')->group(function () {
     // fait autorité sur les versions, le client ne fait que les montrer.
     Route::get('/legal/versions', [LegalController::class, 'versions']);
 
-    // Ce qu'un lien d'invitation révèle AVANT tout compte (nom de la classe,
-    // enseignant) : publique, limitée en débit, sans aucun secret en retour.
-    Route::get('/invitations/{token}', [InvitationPreviewController::class, 'show'])
+    // Ce qu'un LIEN DE CLASSE révèle avant tout compte (nom du قسم, classe
+    // scolaire, enseignant, adhésions ouvertes) : publique, limitée en débit,
+    // sans aucun secret ni identifiant en retour. Le jeton fait 32 symboles ;
+    // tout autre format répond `invalid` sans toucher la base.
+    Route::get('/join-links/{token}', [ClassJoinLinkController::class, 'show'])
         ->middleware('throttle:30,1')
         ->where('token', '[A-Za-z0-9]{1,64}');
 
@@ -161,6 +161,10 @@ Route::prefix('v1')->group(function () {
 
         Route::patch('/auth/grade', [AuthController::class, 'updateGrade'])
             ->middleware('email.verified');
+        // « الاسم و اللقب » : le profil et l'étape d'accueil. Même garde que
+        // la classe scolaire — l'adresse doit être prouvée avant.
+        Route::patch('/auth/profile', [AuthController::class, 'updateProfile'])
+            ->middleware(['email.verified', 'throttle:20,1']);
 
         // ── L'ESPACE D'APPRENTISSAGE — adresse vérifiée exigée ───────────
         //
@@ -334,9 +338,9 @@ Route::prefix('v1')->group(function () {
             Route::get('/students/me/lesson-progress', [LessonProgressController::class, 'index']);
 
             // ── L'élève et sa CLASSE (« قسمي ») ─────────────────────────
-            // « Où j'étudie », rejoindre par code ou par invitation, quitter.
+            // « Où j'étudie », rejoindre par code ou par lien de classe, quitter.
             // L'élève est toujours l'utilisateur authentifié ; rejoindre ne
-            // prend qu'un code ou un jeton, jamais un identifiant de classe.
+            // prend qu'un code ou le jeton du lien, jamais un identifiant de classe.
             // Limite NOMMÉE à deux compteurs, comme la saisie d'un code
             // d'activation : un code de classe est court.
             Route::get('/student/study-context', [StudentClassroomController::class, 'context']);
@@ -394,6 +398,8 @@ Route::prefix('v1')->group(function () {
             Route::post('/classrooms/{id}/archive', [TeacherClassroomController::class, 'archive'])->whereNumber('id');
             Route::post('/classrooms/{id}/restore', [TeacherClassroomController::class, 'restore'])->whereNumber('id');
             Route::post('/classrooms/{id}/join-code/rotate', [TeacherClassroomController::class, 'rotateJoinCode'])->whereNumber('id');
+            // Renouveler le LIEN de classe : l'ancien n'ouvre plus rien.
+            Route::post('/classrooms/{id}/join-link/rotate', [TeacherClassroomController::class, 'rotateJoinLink'])->whereNumber('id');
 
             Route::get('/classrooms/{id}/students', [TeacherClassroomStudentController::class, 'index'])->whereNumber('id');
             Route::get('/classrooms/{id}/students/{studentId}/progress', [TeacherClassroomStudentController::class, 'progress'])
@@ -409,19 +415,12 @@ Route::prefix('v1')->group(function () {
             Route::get('/classrooms/{id}/students/{studentId}/notebook/{noteId}', [TeacherClassroomNotebookController::class, 'show'])
                 ->whereNumber('id')->whereNumber('studentId')->whereNumber('noteId');
 
-            Route::get('/classrooms/{id}/invitations', [TeacherClassroomInvitationController::class, 'index'])->whereNumber('id');
-            Route::post('/classrooms/{id}/invitations', [TeacherClassroomInvitationController::class, 'store'])
-                ->whereNumber('id')->middleware('throttle:30,1');
-            Route::delete('/classrooms/{id}/invitations/{invitationId}', [TeacherClassroomInvitationController::class, 'destroy'])
-                ->whereNumber('id')->whereNumber('invitationId');
 
             // Le lot AVANT `{lessonId}`, pour que « bulk » ne soit pas lu comme un identifiant.
             Route::get('/classrooms/{id}/lessons', [TeacherClassroomLessonController::class, 'index'])->whereNumber('id');
             Route::post('/classrooms/{id}/lessons/bulk', [TeacherClassroomLessonController::class, 'bulk'])->whereNumber('id');
             Route::patch('/classrooms/{id}/lessons/{lessonId}', [TeacherClassroomLessonController::class, 'update'])
                 ->whereNumber('id')->whereNumber('lessonId');
-
-            Route::get('/classrooms/{id}/progress', [TeacherClassroomProgressController::class, 'show'])->whereNumber('id');
 
             // Classe × learning point (Mastery V2, phase 7) — agrégation de
             // l'état canonique, en lecture seule, cadrée sur les leçons

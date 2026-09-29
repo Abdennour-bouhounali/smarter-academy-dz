@@ -1,8 +1,9 @@
 import React, { forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Presentation, Minimize2, Minus, Plus } from 'lucide-react';
+import { Presentation, Minimize2, Minus, Plus, Flashlight } from 'lucide-react';
 import { ChevronBack, ChevronForward, ChevronsBack, ChevronsForward } from '../../../components/common/DirectionalIcons';
 import { SCALE_STEPS, scalePercent } from './classroomFit';
+import { POINTER_SIZES } from './classroomPointer';
 
 /**
  * Un bouton de la barre de présentation : ≥ 44 px, bordure épaisse, focus
@@ -48,7 +49,7 @@ function ToolbarButton({ onClick, disabled, children, tone = 'slate', ariaLabel,
  * lui passe l'état et les gestes. `slot` accueille les commandes futures
  * d'un contenu (étapes de révélation, §15) sans qu'on touche à la barre.
  */
-const ClassroomToolbar = forwardRef(function ClassroomToolbar({ title, scope, scale, onScaleStep, slot, onExit }, ref) {
+const ClassroomToolbar = forwardRef(function ClassroomToolbar({ title, scope, scale, onScaleStep, slot, onExit, pointer }, ref) {
   const { t } = useTranslation('lesson');
   const atMin = scale <= SCALE_STEPS[0];
   const atMax = scale >= SCALE_STEPS[SCALE_STEPS.length - 1];
@@ -73,6 +74,8 @@ const ClassroomToolbar = forwardRef(function ClassroomToolbar({ title, scope, sc
 
       <div className="flex shrink-0 items-center gap-2 sm:gap-3">
         {slot}
+
+        {pointer && <PointerControls pointer={pointer} />}
 
         <div className="inline-flex items-center gap-1 rounded-2xl border-2 border-slate-200 bg-white/80 p-1" role="group" aria-label={t('classroom.scale')}>
           <ToolbarButton onClick={() => onScaleStep(-1)} disabled={atMin} ariaLabel={t('classroom.scaleDown')} title={t('classroom.scaleDown')} className="border-transparent">
@@ -113,6 +116,65 @@ const ClassroomToolbar = forwardRef(function ClassroomToolbar({ title, scope, sc
 });
 
 export default ClassroomToolbar;
+
+/**
+ * « 🔴 المؤشّر » — le pointeur de classe (ClassroomPointer.jsx). Éteint, un
+ * seul bouton ; allumé, il dit « المؤشّر مفعّل » et offre la taille
+ * (صغير · متوسط · كبير, grande par défaut) et l'éclairage. P / Maj+P au
+ * clavier. Absent sous 640 px : un pointeur de projecteur n'a pas de sens
+ * sur un téléphone, et la barre y garde toute sa place pour le contenu.
+ */
+function PointerControls({ pointer }) {
+  const { t } = useTranslation('lesson');
+  const { on, size, spotlight, onToggle, onSize, onSpotlight } = pointer;
+  return (
+    <div className="hidden sm:inline-flex items-center gap-1 rounded-2xl border-2 border-slate-200 bg-white/80 p-1" role="group" aria-label={t('classroom.pointer.label')} data-classroom-pointer-controls>
+      <ToolbarButton
+        onClick={onToggle}
+        pressed={on}
+        ariaLabel={on ? t('classroom.pointer.toggleOff') : t('classroom.pointer.toggleOn')}
+        title={t('classroom.pointer.hint')}
+        className="sa-classroom-pointer-toggle border-transparent"
+        data-classroom-pointer-toggle
+      >
+        <span className="sa-classroom-pointer-dot" aria-hidden="true" />
+        <span className="hidden md:inline">{on ? t('classroom.pointer.active') : t('classroom.pointer.label')}</span>
+      </ToolbarButton>
+      {on && (
+        <>
+          <span className="hidden items-center gap-0.5 sm:inline-flex" role="radiogroup" aria-label={t('classroom.pointer.size')}>
+            {POINTER_SIZES.map((key) => (
+              <button
+                key={key}
+                type="button"
+                role="radio"
+                aria-checked={size === key}
+                onClick={() => onSize(key)}
+                aria-label={t('classroom.pointer.sizeAria', { size: t(`classroom.pointer.sizes.${key}`) })}
+                title={t('classroom.pointer.sizeAria', { size: t(`classroom.pointer.sizes.${key}`) })}
+                className={`inline-flex min-h-[44px] min-w-[40px] items-center justify-center rounded-xl text-xs font-extrabold focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${size === key ? 'bg-red-600 text-white' : 'text-slate-700 hover:bg-red-50'}`}
+                data-classroom-pointer-size={key}
+              >
+                {t(`classroom.pointer.sizes.${key}`)}
+              </button>
+            ))}
+          </span>
+          <ToolbarButton
+            onClick={onSpotlight}
+            pressed={spotlight}
+            ariaLabel={spotlight ? t('classroom.pointer.spotlightOff') : t('classroom.pointer.spotlightOn')}
+            title={`${t('classroom.pointer.spotlightOn')} (Shift+P)`}
+            className={`border-transparent ${spotlight ? 'bg-amber-100 text-amber-900 hover:bg-amber-100' : ''}`}
+            data-classroom-spotlight-toggle
+          >
+            <Flashlight className="h-5 w-5" aria-hidden="true" />
+            <span className="hidden xl:inline">{t('classroom.pointer.spotlight')}</span>
+          </ToolbarButton>
+        </>
+      )}
+    </div>
+  );
+}
 
 /**
  * La navigation du bas de présentation (brief §16). Deux ÉCHELLES de pas,

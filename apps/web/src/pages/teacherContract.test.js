@@ -46,7 +46,7 @@ describe('l’espace enseignant est arabe, sans défaut français', () => {
   const FRENCH = [/Réessayer/, /Chargement…/, /Annuler/, /Précédent/, /Suivant/, /Aucun résultat/, /Confirmer/, /Sélectionner /];
   // Les surfaces PARTAGÉES par l'élève et l'enseignant en font partie : le
   // même moteur de leçon, le même cahier, le même مختبر (§8b du contrat).
-  for (const rel of ['pages/teacher', 'features/teacher', 'features/learning', 'components/teacher', 'pages/student/Qism.jsx', 'pages/JoinInvitation.jsx', 'features/mathlab', 'features/practice/notebook']) {
+  for (const rel of ['pages/teacher', 'features/teacher', 'features/learning', 'components/teacher', 'pages/student/Qism.jsx', 'pages/JoinClassLink.jsx', 'features/mathlab', 'features/practice/notebook']) {
     it(`${rel} ne rend aucun libellé français`, () => {
       const target = resolve(src, rel);
       const files = statSync(target).isDirectory() ? walk(target) : [target];
@@ -136,11 +136,32 @@ describe('la carte de leçon lit le troisième axe', () => {
  * Le COURRIEL d'un élève n'entre dans aucun écran enseignant. Le serveur ne
  * l'envoie plus (TeacherPrivacyContractTest) ; ce test empêche qu'un écran
  * le réclame à nouveau — par exemple en repli d'un nom vide (`|| s.email`).
- * Seules exceptions : l'adresse que l'enseignant TAPE pour inviter
- * (InvitationsPanel) et son propre profil.
+ * Seule exception : son propre profil. (L'invitation par courriel, qui
+ * faisait taper une adresse à l'enseignant, a été retirée le 2026-10-01 : les
+ * élèves entrent par le lien ou le code de la classe.)
  */
 describe('aucun écran enseignant ne lit le courriel d’un élève', () => {
-  const ALLOWED = [/InvitationsPanel\.jsx$/, /TeacherProfile\.jsx$/];
+  const ALLOWED = [/TeacherProfile\.jsx$/];
+  it('l’invitation par courriel n’existe plus dans l’espace enseignant', () => {
+    for (const rel of ['pages/teacher', 'features/teacher', 'services/teacher']) {
+      for (const file of walk(resolve(src, rel))) {
+        const code = readFileSync(file, 'utf8');
+        expect(code, `${file} invite par courriel`).not.toMatch(/\/invitations|InvitationsPanel|sendClassInvitation/);
+      }
+    }
+  });
+
+  it('la page d’une classe montre le LIEN au-dessus du CODE', () => {
+    const card = readFileSync(resolve(src, 'features/teacher/members/JoinAccessCard.jsx'), 'utf8');
+    const linkAt = card.indexOf('<JoinLinkBlock');
+    const codeAt = card.indexOf('data-join-code-card');
+    expect(linkAt).toBeGreaterThan(-1);
+    expect(codeAt).toBeGreaterThan(linkAt);
+    const page = readFileSync(resolve(src, 'pages/teacher/ClassGroupDetail.jsx'), 'utf8');
+    expect(page).toMatch(/<JoinAccessCard /);
+    expect(page.indexOf('<JoinAccessCard ')).toBeLessThan(page.indexOf('role="tablist"'));
+  });
+
   for (const rel of ['pages/teacher', 'features/teacher']) {
     it(`${rel} ne lit pas .email d’un élève`, () => {
       for (const file of walk(resolve(src, rel))) {

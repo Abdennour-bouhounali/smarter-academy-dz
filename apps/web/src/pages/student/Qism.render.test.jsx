@@ -51,7 +51,20 @@ describe('Qism — rejoindre, c’est consentir', () => {
     expect(render(INDEPENDENT)).not.toContain('data-qism-recommendations');
   });
 
-  it('un ?token= n’affiche aucune carte avant l’aperçu, et ne rejoint rien au rendu', () => {
-    expect(render(INDEPENDENT, '/espace/qism?token=abc')).not.toContain('data-qism-invitation');
+  it('l’ancien ?token= d’invitation n’a plus d’effet : aucune carte, aucune adhésion', () => {
+    const html = render(INDEPENDENT, '/espace/qism?token=abc');
+    expect(html).not.toContain('data-qism-invitation');
+    expect(html).not.toContain('data-qism-joined');
+  });
+
+  it('arrivé depuis le lien de classe : la confirmation nomme le قسم rejoint', () => {
+    const html = render(INDEPENDENT, { pathname: '/espace/qism', state: { joinedClassroom: 'رياضيات 4م2', alreadyMember: false } });
+    expect(html).toContain('data-qism-joined');
+    expect(html).toContain('رياضيات 4م2');
+  });
+
+  it('déjà membre : « أنت في هذا القسم بالفعل » plutôt qu’une nouvelle adhésion', () => {
+    const html = render(INDEPENDENT, { pathname: '/espace/qism', state: { joinedClassroom: 'رياضيات 4م2', alreadyMember: true } });
+    expect(html).toContain('أنت في هذا القسم بالفعل');
   });
 });

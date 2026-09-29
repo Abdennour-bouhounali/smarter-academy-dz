@@ -8,11 +8,10 @@ import { apiMessage } from './apiMessage';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
 
 /**
- * Registers a new student account from email + password alone and returns
- * an authenticated session, exactly like login() does. Self-registration
- * always produces a student — the backend ignores any role sent by the
- * client. Grade and any other profile data are collected afterwards
- * (see updateGrade()), not at registration.
+ * Registers a new account from « الاسم و اللقب » + email + password and
+ * returns an authenticated session, exactly like login() does. The role comes
+ * from a server whitelist (student by default, or teacher). Grade is collected
+ * afterwards (see updateGrade()), not at registration.
  *
  * `acceptLegal` est un BOOLÉEN, et c'est tout ce que le client transmet du
  * consentement : les versions acceptées sont écrites par le SERVEUR, d'après
@@ -23,13 +22,21 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
  * @throws {ApiError} On network failure or a non-2xx response (e.g. a
  *   duplicate email or a weak password come back as 422).
  */
-export async function register({ email, password, acceptLegal, accountType = 'student' }) {
+export async function register({ firstName, lastName, email, password, acceptLegal, accountType = 'student', classJoinLink, classJoinConsent }) {
   // `accountType` : 'student' (défaut) ou 'teacher'. Le serveur tient la
   // liste blanche ; le client ne fait que transmettre le choix.
+  // `classJoinLink` + `classJoinConsent` : l'élève vient du lien d'une classe
+  // et y a consenti ; le serveur revalide le jeton et rejoint à la
+  // vérification de l'adresse (PendingClassJoin).
+  const body = { firstName, lastName, email, password, accept_legal: acceptLegal, accountType };
+  if (classJoinLink && classJoinConsent === true) {
+    body.classJoinLink = classJoinLink;
+    body.classJoinConsent = true;
+  }
   const { ok, status, data } = await apiRequest('/auth/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password, accept_legal: acceptLegal, accountType }),
+    body: JSON.stringify(body),
   });
 
   if (!ok) {
@@ -94,6 +101,26 @@ export async function logout(token) {
   if (!ok) {
     throw new ApiError(apiMessage('logout', data, status), classifyStatus(status), status);
   }
+}
+
+/**
+ * Changes the current user's « الاسم و اللقب » — students and teachers alike
+ * (profile page, and the onboarding step for accounts that have none yet).
+ * @returns {Promise<object>} The updated user.
+ * @throws {ApiError} On network failure or a non-2xx response.
+ */
+export async function updateProfile(token, { firstName, lastName }) {
+  const { ok, status, data } = await apiRequest('/auth/profile', {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ firstName, lastName }),
+  });
+
+  if (!ok) {
+    throw new ApiError(apiMessage('profileUpdate', data, status), classifyStatus(status), status);
+  }
+
+  return data.user;
 }
 
 /**
@@ -181,11 +208,11 @@ export function googleRedirectUrl(accountType = 'student') {
  * `handoff` est le jeton d'attente opaque rendu par le serveur au retour de
  * Google. Il est chiffré : ni lisible ni falsifiable ici.
  */
-export async function completeGoogleSignup({ handoff, acceptLegal, accountType = 'student' }) {
+export async function completeGoogleSignup({ handoff, firstName, lastName, acceptLegal, accountType = 'student' }) {
   const { ok, status, data } = await apiRequest('/auth/google/complete', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ handoff, accept_legal: acceptLegal, accountType }),
+    body: JSON.stringify({ handoff, firstName, lastName, accept_legal: acceptLegal, accountType }),
   });
 
   if (!ok) {

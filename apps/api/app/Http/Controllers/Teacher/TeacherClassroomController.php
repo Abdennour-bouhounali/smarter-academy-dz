@@ -104,6 +104,13 @@ class TeacherClassroomController extends Controller
         return response()->json(['success' => true, 'classroom' => self::serialize($classroom)]);
     }
 
+    public function rotateJoinLink(Request $request, int $id)
+    {
+        $classroom = $this->classrooms->rotateJoinLink($request->user(), $this->owned($request, $id, 'manage'));
+
+        return response()->json(['success' => true, 'classroom' => self::serialize($classroom)]);
+    }
+
     /**
      * La classe, SI elle est à cet enseignant. 404 si elle n'existe pas,
      * 403 si elle est à un autre — la politique tranche.
@@ -137,7 +144,11 @@ class TeacherClassroomController extends Controller
             'academicYear' => $c->academic_year,
             'status' => $c->status,
             'joinCode' => $c->join_code,
+            // « الانضمام مفتوح » : ferme le lien ET le code (nom historique).
             'joinCodeEnabled' => $c->join_code_enabled,
+            // Le jeton seul ; le client compose l'URL sur sa propre origine
+            // (/rejoindre/classe/{jeton}). Rendu au seul propriétaire.
+            'joinLinkToken' => $c->join_link_token,
             'studentsCount' => $c->students_count ?? null,
             'archivedAt' => optional($c->archived_at)->toIso8601String(),
             'createdAt' => optional($c->created_at)->toIso8601String(),

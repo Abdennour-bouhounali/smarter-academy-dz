@@ -65,12 +65,12 @@ const TeacherClassGroupCreate = lazy(() => import('./pages/teacher/ClassGroupCre
 const TeacherClassGroupDetail = lazy(() => import('./pages/teacher/ClassGroupDetail'));
 const TeacherStudentProgress = lazy(() => import('./pages/teacher/StudentProgressPage'));
 const TeacherStudentNotebook = lazy(() => import('./pages/teacher/StudentNotebookPage'));
-const TeacherProgressOverview = lazy(() => import('./pages/teacher/ProgressOverview'));
 const TeacherSubscription = lazy(() => import('./pages/teacher/SubscriptionPage'));
 const TeacherProfile = lazy(() => import('./pages/teacher/TeacherProfile'));
-// L'élève et sa classe (« قسمي »), et le lien public d'une invitation.
+const TeacherLessonMemo = lazy(() => import('./pages/teacher/LessonMemoPage'));
+// L'élève et sa classe (« قسمي »), et le lien public d'une classe.
 const Qism = lazy(() => import('./pages/student/Qism'));
-const JoinInvitation = lazy(() => import('./pages/JoinInvitation'));
+const JoinClassLink = lazy(() => import('./pages/JoinClassLink'));
 // Les pages de l'espace élève sont des lots À PART, comme l'admin et
 // l'enseignant : un visiteur de « / » ne paie ni le cahier (KaTeX), ni la
 // progression, ni l'explorateur. Les layouts (StudentLayout, MainLayout)
@@ -85,6 +85,9 @@ const NotebookNotePage = lazy(() => import('./pages/student/Notebook').then((m) 
 const NotebookReviewPage = lazy(() => import('./pages/student/Notebook').then((m) => ({ default: m.NotebookReviewPage })));
 const Profil = lazy(() => import('./pages/student/Profil'));
 const ChooseGrade = lazy(() => import('./pages/student/ChooseGrade'));
+// « عرّفنا بنفسك » : l'étape qui demande الاسم و اللقب à un compte qui n'en a
+// pas encore (élève ET enseignant — pages/onboarding/CompleteName.jsx).
+const CompleteName = lazy(() => import('./pages/onboarding/CompleteName'));
 const Activation = lazy(() => import('./pages/student/Activation'));
 const DiagnosticIntro = lazy(() => import('./pages/student/diagnostic/DiagnosticIntro'));
 const DiagnosticRun = lazy(() => import('./pages/student/diagnostic/DiagnosticRun'));
@@ -259,6 +262,7 @@ export default function App() {
               l'élève depuis le portail du fournisseur, et qu'une URL de retour
               se doit d'être courte et stable. */}
           <Route path="/espace" element={<ProtectedRoute allowedRoles={['student']} />}>
+            <Route path="bienvenue/nom" element={<CompleteName />} />
             <Route path="bienvenue" element={<ChooseGrade />} />
             <Route path="diagnostic" element={<DiagnosticIntro />} />
             <Route path="diagnostic/run" element={<DiagnosticRun />} />
@@ -299,7 +303,7 @@ export default function App() {
               <Route path="atelier/:toolSlug" element={<MathLabToolPage />} />
               <Route path="atelier/:toolSlug/:documentId" element={<MathLabToolPage />} />
               {/* « قسمي » : la classe de l'enseignant que l'élève a rejointe, ou
-                  peut rejoindre par code / invitation. Un contexte, pas un
+                  peut rejoindre par code / lien de classe. Un contexte, pas un
                   contenu : le serveur reste l'autorité sur ce qui est visible. */}
               <Route path="qism" element={<Qism />} />
             </Route>
@@ -313,6 +317,7 @@ export default function App() {
             {/* Le mode d'AFFICHAGE du défi : plein écran, hors de la coquille
                 enseignant — c'est ce que la classe voit au tableau. */}
             <Route path="classes/:id/defi/affichage" element={<TeacherChallengeDisplay />} />
+            <Route path="bienvenue" element={<CompleteName />} />
             <Route element={<TeacherLayout />}>
               <Route index element={<TeacherHome />} />
               <Route path="classes" element={<TeacherClassGroupList />} />
@@ -323,7 +328,6 @@ export default function App() {
                   le serveur : ClassroomPolicy + appartenance au قسم
                   (TeacherClassroomNotebookTest). */}
               <Route path="classes/:id/eleves/:studentId/cahier" element={<TeacherStudentNotebook />} />
-              <Route path="progression" element={<TeacherProgressOverview />} />
               <Route path="offre" element={<TeacherSubscription />} />
               <Route path="profil" element={<TeacherProfile />} />
               {/* L'ENSEIGNANT APPREND COMME UN ÉLÈVE — mêmes pages, même
@@ -335,6 +339,12 @@ export default function App() {
                   (features/learning/learningViewer) : tous les modules
                   ouverts, aucune progression écrite. */}
               <Route path="cours" element={<Explorer />} />
+              {/* « مذكرة الدرس » : le guide d'orchestration d'une séance,
+                  construit depuis la leçon (features/teacher/lessonMemo).
+                  Enseignant seulement — la porte est ce ProtectedRoute ;
+                  les notes « كرّاسي » qu'elle affiche sont servies par le
+                  serveur au seul propriétaire. */}
+              <Route path="cours/:lessonId/memoire" element={<TeacherLessonMemo />} />
               <Route path="atelier" element={<MathLabHome />} />
               <Route path="atelier/:toolSlug" element={<MathLabToolPage />} />
               <Route path="atelier/:toolSlug/:documentId" element={<MathLabToolPage />} />
@@ -368,9 +378,13 @@ export default function App() {
                 encore authentifié quand la connexion commence. */}
             <Route path="/auth/google" element={<AuthGoogle />} />
 
-            {/* Le lien d'une invitation à une classe, ouvert depuis un courriel,
-                souvent sans compte. Publique ; n'accepte rien elle-même. */}
-            <Route path="/rejoindre/:token" element={<JoinInvitation />} />
+            {/* Le LIEN DE CLASSE (رابط الانضمام), ouvert depuis WhatsApp, souvent
+                sans compte. Publique ; l'adhésion reste une requête de l'élève
+                authentifié, après son consentement. L'ancienne adresse des
+                invitations par courriel (/rejoindre/:token) aboutit à la même
+                page, qui la dit invalide — aucun chemin mort. */}
+            <Route path="/rejoindre/classe/:token" element={<JoinClassLink />} />
+            <Route path="/rejoindre/:token" element={<JoinClassLink />} />
 
             {/* ── Les pages légales ───────────────────────────────────
                 Publiques et accessibles SANS compte : on doit pouvoir lire

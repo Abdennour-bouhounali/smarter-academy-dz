@@ -1,11 +1,12 @@
 import { Suspense, useContext } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import StudentNavbar from '../student/StudentNavbar';
 import BackgroundLayer from '../common/BackgroundLayer';
 import ScrollToTop from '../common/ScrollToTop';
 import { AuthContext } from '../../context/AuthContext';
 import { useWorkspaceLayout } from '../../context/WorkspaceLayoutContext';
 import { getAllGrades } from '@smarter-academy/core';
+import { needsName } from '../../utils/personName';
 
 /**
  * The authenticated student area's shell — a workspace (sidebar + content),
@@ -31,6 +32,14 @@ import { getAllGrades } from '@smarter-academy/core';
 export default function StudentLayout() {
   const { user } = useContext(AuthContext);
   const { isPrior, contentGutter, sidebarWidth } = useWorkspaceLayout();
+  const location = useLocation();
+
+  // « الاسم و اللقب » AVANT la classe scolaire : un compte sans nom (créé
+  // avant leur collecte) passe d'abord par l'étape qui les demande, puis
+  // revient ici — `from` le ramène à la page qu'il visait.
+  if (needsName(user)) {
+    return <Navigate to="/espace/bienvenue/nom" replace state={{ from: location.pathname + location.search }} />;
+  }
 
   // No Algerian grade exists yet (packages/core/curriculum/activeGrades.js —
   // ACTIVE_GRADE_IDS is empty pending Phase 7's official curriculum), so

@@ -19,13 +19,13 @@ class ClassroomProgressTest extends TestCase
     use CommercialFixtures;
     use RefreshDatabase;
 
-    public function test_la_classe_agrege_la_progression_de_ses_eleves_sur_les_lecons_effectives(): void
+    public function test_la_liste_des_eleves_lit_la_progression_sur_les_lecons_effectives(): void
     {
         $this->defaultTeacherPlan();
         ['lessons' => $lessons] = $this->grade4am(4);
         $classroom = Classroom::factory()->create();
         $a = $this->student(['last_activity_at' => now()]);
-        $b = $this->student(['last_activity_at' => now()->subDays(30)]);
+        $b = $this->student(['last_activity_at' => now()]);
         ClassroomMembership::factory()->in($classroom)->of($a)->create();
         ClassroomMembership::factory()->in($classroom)->of($b)->create();
         $teacherToken = $this->tokenOf($classroom->teacher);
@@ -33,9 +33,6 @@ class ClassroomProgressTest extends TestCase
         // La 4e leçon est masquée pour la classe : hors périmètre.
         $this->withToken($teacherToken)->patchJson("/api/v1/teacher/classrooms/{$classroom->id}/lessons/{$lessons[3]->id}", ['status' => 'hidden'])->assertOk();
 
-        // « Actif » se lit dans le PÉRIMÈTRE de la classe (la dernière
-        // activité sur ses leçons), pas sur users.last_activity_at : l'élève B
-        // n'a rien fait dans ces leçons depuis 30 jours.
         foreach ([[$a, $lessons[0], 'completed', 0], [$a, $lessons[1], 'completed', 0], [$a, $lessons[3], 'completed', 0], [$b, $lessons[0], 'in_progress', 30]] as [$student, $lesson, $status, $daysAgo]) {
             StudentLessonProgress::create([
                 'user_id' => $student->id, 'lesson_id' => $lesson->id, 'status' => $status,
@@ -44,19 +41,14 @@ class ClassroomProgressTest extends TestCase
             ]);
         }
 
-        $response = $this->withToken($teacherToken)->getJson("/api/v1/teacher/classrooms/{$classroom->id}/progress")->assertOk();
-        $summary = $response->json('summary');
-        $this->assertSame(3, $summary['lessonsInScope']);
-        $this->assertSame(2, $summary['students']);
-        $this->assertSame(1, $summary['activeStudents']);
-        $this->assertSame(2, $summary['lessonsCompleted']); // la leçon masquée ne compte pas
-        $this->assertEqualsWithDelta(33.5, $summary['averageProgress'], 0.6); // (67 + 0) / 2
-
-        $rows = collect($response->json('students'))->keyBy('id');
-        $this->assertSame(2, $rows[$a->id]['lessonsCompleted']);
+        $rows = collect($this->withToken($teacherToken)->getJson("/api/v1/teacher/classrooms/{$classroom->id}/students")->assertOk()->json('students'))->keyBy('id');
+        $this->assertSame(2, $rows[$a->id]['lessonsCompleted']); // la leçon masquée ne compte pas
         $this->assertSame(67.0, (float) $rows[$a->id]['progressPercent']);
         $this->assertSame(1, $rows[$b->id]['lessonsStarted']);
         $this->assertNull($rows[$b->id]['successRate']);
+        // La dernière activité se lit dans le PÉRIMÈTRE de la classe (ses
+        // leçons), pas sur users.last_activity_at.
+        $this->assertTrue(now()->subDays(29)->greaterThan($rows[$b->id]['lastActivityAt']));
     }
 
     /**

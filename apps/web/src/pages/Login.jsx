@@ -2,10 +2,12 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../context/AuthContext';
-import { motion } from 'framer-motion';
 import { Eye, EyeOff } from 'lucide-react';
 import { login as loginRequest } from '../services/authService';
+import { postAuthPath, readPendingClassJoin } from '../features/classJoin/pendingClassJoin';
 import GoogleButton from '../components/auth/GoogleButton';
+import AuthShell, { AuthDivider, AuthSubmit, authInputClass } from '../components/auth/AuthShell';
+import ClassJoinNotice from '../components/auth/ClassJoinNotice';
 
 /**
  * Où va un utilisateur qui vient de s'authentifier.
@@ -19,7 +21,9 @@ import GoogleButton from '../components/auth/GoogleButton';
 function postLoginPath(user) {
   if (user.role === 'admin') return '/admin';
   if (user.role === 'student') {
-    return user.emailVerified === false ? '/verification-email' : '/espace';
+    // Venu du lien d'une classe : retour sur le lien, qui rejoint seul
+    // (pendingClassJoin.js — jamais une URL lue dans la requête).
+    return postAuthPath(user, user.emailVerified === false ? '/verification-email' : '/espace');
   }
   // L'enseignant vérifie son adresse comme l'élève, puis entre dans SON espace.
   if (user.role === 'teacher') {
@@ -38,6 +42,7 @@ export default function Login() {
 
   const { login, user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [pendingJoin] = useState(() => readPendingClassJoin());
 
   // Redirect if already logged in
   useEffect(() => {
@@ -63,123 +68,82 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-center px-4 pt-24 pb-12 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Background decorations — purely decorative blurs, not RTL-sensitive
-          (a diagonal glow reads the same regardless of reading direction),
-          left as physical left/right on purpose. */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-400/20 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-teal-400/20 blur-3xl pointer-events-none" />
+    <AuthShell
+      title={t('loginHeading')}
+      subtitle={t('loginSubtitle')}
+      footer={(
+        <>
+          {t('noAccountYet')}{' '}
+          <Link to="/register" className="font-semibold text-blue-600 hover:text-blue-700">
+            {t('registerLink')}
+          </Link>
+        </>
+      )}
+    >
+      {pendingJoin && <ClassJoinNotice text={t('classJoinPendingLogin', { name: pendingJoin.classroomName || '—' })} />}
+      <GoogleButton label={t('continueWithGoogle')} />
+      <AuthDivider />
 
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="sm:mx-auto sm:w-full sm:max-w-md z-10"
-      >
-        <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-slate-900 font-display">
-          {t('loginTitle')}
-        </h2>
-        <p className="mt-2 text-center text-sm text-slate-600">
-          {t('loginSubtitle')}
-        </p>
-      </motion.div>
-
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-        className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10"
-      >
-        <div className="bg-white/70 backdrop-blur-xl py-8 px-4 shadow-xl shadow-slate-200/50 sm:rounded-2xl sm:px-10 border border-white/50">
-          <GoogleButton label={t('continueWithGoogle')} />
-
-          <div className="my-6 flex items-center gap-4">
-            <span className="h-px flex-1 bg-slate-200" />
-            <span className="text-xs font-medium uppercase tracking-wider text-slate-400">{t('common:or')}</span>
-            <span className="h-px flex-1 bg-slate-200" />
+      <form className="space-y-5" onSubmit={handleSubmit}>
+        {errorMsg && (
+          <div role="alert" className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+            {errorMsg}
           </div>
+        )}
 
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            {errorMsg && (
-              <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm">
-                {errorMsg}
-              </div>
-            )}
-            
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-700">
-                {t('emailLabel')}
-              </label>
-              <div className="mt-1">
-                {/* dir="ltr": email addresses are Latin-script/punctuation
-                    content ('@', '.') that reads better LTR even inside an
-                    RTL form — the label above stays RTL, only the input's
-                    own text direction is pinned. */}
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  dir="ltr"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full appearance-none rounded-xl border border-slate-300 px-4 py-3 placeholder-slate-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm bg-white/50 backdrop-blur-sm text-start"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-700">
-                {t('passwordLabel')}
-              </label>
-              <div className="mt-1 relative">
-                <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  dir="ltr"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full appearance-none rounded-xl border border-slate-300 px-4 py-3 pr-12 placeholder-slate-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm bg-white/50 backdrop-blur-sm text-start"
-                />
-                {/* Reveal-password toggle sits at the FIELD's own end. The field
-                    is dir="ltr" (a password is Latin-script data), so that end
-                    is the physical right in both page directions — hence a
-                    deliberate physical `right-0`, not a logical `end-0`. */}
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  aria-label={showPassword ? t('hidePassword') : t('showPassword')}
-                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 focus:outline-none"
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5" aria-hidden="true" />
-                  ) : (
-                    <Eye className="h-5 w-5" aria-hidden="true" />
-                  )}
-                </button>
-              </div>
-            </div>
-
-            <div>
-              <button
-                type="submit"
-                disabled={loading}
-                className="flex w-full justify-center rounded-xl border border-transparent bg-blue-600 py-3 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-70"
-              >
-                {loading ? t('loginButtonLoading') : t('loginButton')}
-              </button>
-            </div>
-          </form>
-
-          <p className="mt-6 text-center text-sm text-slate-600">
-            {t('noAccountYet')}{' '}
-            <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500">
-              {t('registerLink')}
-            </Link>
-          </p>
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-slate-700">
+            {t('emailLabel')}
+          </label>
+          {/* dir="ltr": an address is Latin-script data ('@', '.') that reads
+              better LTR even inside the RTL form; only the field is pinned. */}
+          <input
+            id="email"
+            name="email"
+            type="email"
+            dir="ltr"
+            required
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className={`mt-1.5 text-start ${authInputClass()}`}
+          />
         </div>
-      </motion.div>
-    </div>
+
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium text-slate-700">
+            {t('passwordLabel')}
+          </label>
+          <div className="relative mt-1.5">
+            <input
+              id="password"
+              name="password"
+              type={showPassword ? 'text' : 'password'}
+              dir="ltr"
+              required
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={`pr-12 text-start ${authInputClass()}`}
+            />
+            {/* The reveal toggle sits at the FIELD's own end. The field is
+                dir="ltr" (a password is Latin-script data), so that end is the
+                physical right in both page directions — a deliberate `right-0`. */}
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              aria-label={showPassword ? t('hidePassword') : t('showPassword')}
+              className="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-400 hover:text-slate-600 focus:outline-none"
+            >
+              {showPassword ? <EyeOff className="h-5 w-5" aria-hidden="true" /> : <Eye className="h-5 w-5" aria-hidden="true" />}
+            </button>
+          </div>
+        </div>
+
+        <div className="pt-2">
+          <AuthSubmit loading={loading}>{loading ? t('loginButtonLoading') : t('loginButton')}</AuthSubmit>
+        </div>
+      </form>
+    </AuthShell>
   );
 }

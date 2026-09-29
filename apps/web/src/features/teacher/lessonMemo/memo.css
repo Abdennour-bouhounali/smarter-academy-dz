@@ -1,0 +1,52 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   « مذكرة الدرس » — pages/teacher/LessonMemoPage.jsx.
+   Tailwind porte la mise en page ; ici : le papier du cahier et l'impression.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Le cahier : un papier crème à lignes, comme « كرّاسي ». */
+.sa-memo-notebook {
+  background: linear-gradient(180deg, #FFFBEB 0%, #FEF3C7 100%);
+}
+
+.sa-memo-lined {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(2rem - 1px),
+    rgba(217, 119, 6, 0.18) calc(2rem - 1px),
+    rgba(217, 119, 6, 0.18) 2rem
+  );
+  background-attachment: local;
+}
+
+/* ── Impression : une fiche de préparation, sans le chrome de l'application ── */
+@media print {
+  @page { margin: 12mm; }
+
+  body:has([data-lesson-memo]) aside,
+  body:has([data-lesson-memo]) header.fixed,
+  body:has([data-lesson-memo]) nav.fixed,
+  [data-lesson-memo] .sa-memo-no-print,
+  [data-memo-toolbar] {
+    display: none !important;
+  }
+
+  body:has([data-lesson-memo]) main {
+    padding: 0 !important;
+  }
+
+  [data-lesson-memo] {
+    padding: 0 !important;
+  }
+
+  [data-lesson-memo] .sa-memo-phase,
+  [data-lesson-memo] [data-memo-note] {
+    break-inside: avoid;
+    box-shadow: none !important;
+  }
+
+  [data-lesson-memo] * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

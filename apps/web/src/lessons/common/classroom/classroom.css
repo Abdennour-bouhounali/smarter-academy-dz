@@ -456,3 +456,95 @@ body.sa-classroom-session [data-km-trigger] {
     line-height: 1.7;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   LE POINTEUR DE CLASSE (« المؤشّر ») — ClassroomPointer.jsx.
+
+   Un calque fixe DANS la racine de la séance (donc visible en plein écran
+   natif), au-dessus de tout ce qu'elle contient — y compris le مختبر (80)
+   et le fantôme de glisser. `pointer-events: none` partout : il ne prend
+   jamais un clic. La position est écrite en `transform` par un seul
+   requestAnimationFrame ; `--sa-pointer-d` vient de pointerDiameter().
+   ───────────────────────────────────────────────────────────────────────── */
+.sa-classroom-pointer-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.sa-classroom-pointer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--sa-pointer-d, 96px);
+  height: var(--sa-pointer-d, 96px);
+  margin: calc(var(--sa-pointer-d, 96px) / -2) 0 0 calc(var(--sa-pointer-d, 96px) / -2);
+  border-radius: 9999px;
+  box-sizing: border-box;
+  /* Le halo : un disque rouge translucide cerclé — on voit le contenu à travers. */
+  background: var(--sa-pointer-halo);
+  border: max(3px, calc(var(--sa-pointer-d, 96px) * 0.045)) solid var(--sa-pointer-ring);
+  box-shadow: 0 0 calc(var(--sa-pointer-d, 96px) * 0.35) var(--sa-pointer-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 120ms ease-out;
+  will-change: transform;
+}
+
+/* Le cœur : un point plein, bordé de blanc pour rester lisible sur un fond
+   rouge ou sombre (une information portée aussi par la FORME, pas que la couleur). */
+.sa-classroom-pointer__core {
+  width: 34%;
+  height: 34%;
+  border-radius: 9999px;
+  background: var(--sa-pointer-core);
+  box-shadow: 0 0 0 max(2px, calc(var(--sa-pointer-d, 96px) * 0.03)) #fff, 0 0 0 max(3px, calc(var(--sa-pointer-d, 96px) * 0.05)) rgba(127, 29, 29, 0.55);
+}
+
+/* « تسليط الضوء » : tout s'assombrit sauf un disque autour du pointeur, au
+   bord adouci. Les coordonnées sont des variables écrites par le même rAF. */
+.sa-classroom-spotlight {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 160ms ease-out;
+  background: radial-gradient(
+    circle at var(--sa-spot-x, -1000px) var(--sa-spot-y, -1000px),
+    transparent 0,
+    transparent var(--sa-spot-r, 200px),
+    rgba(15, 23, 42, 0.62) calc(var(--sa-spot-r, 200px) + 28px)
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sa-classroom-pointer,
+  .sa-classroom-spotlight {
+    transition: none;
+  }
+}
+
+/* Les commandes du pointeur dans la barre du haut. */
+.sa-classroom-pointer-toggle[aria-pressed="true"] {
+  border-color: #B91C1C;
+  background: #FEF2F2;
+  color: #991B1B;
+}
+
+.sa-classroom-pointer-dot {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background: #EF4444;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 3px rgba(185, 28, 28, 0.6);
+}
+
+@media print {
+  .sa-classroom-pointer-layer {
+    display: none !important;
+  }
+}

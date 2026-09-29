@@ -3,7 +3,6 @@
 namespace App\Domain\Plans;
 
 use App\Models\Classroom;
-use App\Models\ClassroomInvitation;
 use App\Models\ClassroomMembership;
 use App\Models\Plan;
 use App\Models\PlanEntitlementOverride;
@@ -69,7 +68,7 @@ class PlanEntitlementResolver
     /**
      * Ce qui est CONSOMMÉ aujourd'hui, pour comparer aux limites.
      *
-     * @return array{classrooms: int, students: int, invitations: int}
+     * @return array{classrooms: int, students: int}
      */
     public function usage(User $user): array
     {
@@ -80,7 +79,6 @@ class PlanEntitlementResolver
             // Des SIÈGES : un élève présent dans deux classes n'en occupe qu'un.
             'students' => $classroomIds->isEmpty() ? 0 : ClassroomMembership::whereIn('classroom_id', $classroomIds)
                 ->active()->distinct('student_id')->count('student_id'),
-            'invitations' => $classroomIds->isEmpty() ? 0 : ClassroomInvitation::whereIn('classroom_id', $classroomIds)->open()->count(),
         ];
     }
 
@@ -92,7 +90,7 @@ class PlanEntitlementResolver
     public function summaryFor(User $user): array
     {
         $resolved = $this->resolve($user);
-        $usage = $user->isTeacher() ? $this->usage($user) : ['classrooms' => 0, 'students' => 0, 'invitations' => 0];
+        $usage = $user->isTeacher() ? $this->usage($user) : ['classrooms' => 0, 'students' => 0];
         $values = $resolved['values'];
 
         $meter = function (string $key, int $current) use ($values): array {
@@ -137,7 +135,6 @@ class PlanEntitlementResolver
             'classes' => $classes,
             'students' => $meter(EntitlementKeys::STUDENTS_TOTAL_MAX, $usage['students']),
             'studentsPerClass' => ['maximum' => isset($values[EntitlementKeys::STUDENTS_PER_CLASSROOM_MAX]) ? (int) $values[EntitlementKeys::STUDENTS_PER_CLASSROOM_MAX] : null],
-            'invitations' => $meter(EntitlementKeys::INVITATIONS_ACTIVE_MAX, $usage['invitations']),
             'features' => $features,
             'allowedGrades' => $values[EntitlementKeys::CONTENT_ALLOWED_GRADES] ?? [],
         ];

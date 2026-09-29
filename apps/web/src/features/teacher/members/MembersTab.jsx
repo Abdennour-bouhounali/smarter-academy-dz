@@ -9,7 +9,6 @@ import { ConfirmDialog } from '../../../components/admin/ui/Modal';
 import PathProgress from '../../progression/components/PathProgress';
 import { fetchClassStudents, removeClassStudent } from '../../../services/teacher/classGroupService';
 import { useTableLabels, formatDate, btnDanger } from '../../../pages/teacher/teacherUi';
-import InvitationsPanel from './InvitationsPanel';
 import { studentName } from '../insights/insights';
 
 /** Les élèves d'une classe : progression, dernière activité, retrait. */
@@ -93,7 +92,6 @@ export default function MembersTab({ classGroup, entitlements, onChanged }) {
         ]}
       />
 
-      {classGroup.status === 'active' && <InvitationsPanel classGroup={classGroup} />}
 
       <ConfirmDialog
         open={Boolean(removing)}

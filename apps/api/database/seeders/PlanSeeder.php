@@ -39,7 +39,6 @@ class PlanSeeder extends Seeder
     private const PAID_TEACHER_FEATURES = [
         K::CLASSROOMS_MAX => null,
         K::STUDENTS_PER_CLASSROOM_MAX => null,
-        K::INVITATIONS_ACTIVE_MAX => null,
         K::LESSONS_VISIBILITY => true,
         K::LESSONS_BULK_ACTIONS => true,
         K::PROGRESS_CLASS => true,
@@ -77,7 +76,6 @@ class PlanSeeder extends Seeder
             K::STUDENTS_TOTAL_MAX => 5,
             K::CLASSROOMS_MAX => null,
             K::STUDENTS_PER_CLASSROOM_MAX => null,
-            K::INVITATIONS_ACTIVE_MAX => null,
             K::LESSONS_VISIBILITY => true,
             K::LESSONS_BULK_ACTIONS => false,
             K::PROGRESS_CLASS => true,

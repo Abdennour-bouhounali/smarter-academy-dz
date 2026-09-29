@@ -45,6 +45,8 @@ classroom/
 ├── useScrollLock.js           html/body overflow: hidden, previous inline values restored
 ├── usePresentationFit.js      the viewport-fitting engine (ResizeObserver, rAF, settle, refit)
 ├── classroomFit.js            PURE fit maths: scale steps, available area, next fit factor
+├── ClassroomPointer.jsx       the classroom pointer « المؤشّر » + spotlight overlay (§6quater)
+├── classroomPointer.js        PURE pointer logic: sizes, diameter per viewport, P / Shift+P shortcut
 ├── classroom.css              `sa-classroom-*` scoped styles
 └── index.js
 
@@ -126,7 +128,8 @@ Two details a reader will otherwise get wrong:
 
 ### Lesson — 🎓 وضع القسم
 
-Entry: the lesson index hero (`LessonIndex`). Session owner: `LessonClassroomShell`, a **pathless
+Entry: the lesson index hero (`LessonIndex`) — and, for a teacher, the « وضع القسم » button of a
+lesson on its **unit page** and in its « مذكرة الدرس » (§6ter). Session owner: `LessonClassroomShell`, a **pathless
 layout route** that `buildLessonRoutes` puts above the index and every module. Because that shell is
 above the routes, it is not unmounted when the URL moves from one module to the next — which is why
 native fullscreen survives `التالي`.
@@ -355,12 +358,12 @@ scope badge (`وضع القسم` for a lesson, else `classroom.scopeLabel.*` —
 « المناولة ») · title · the page's `slot` · the scale group (`−`, `حجم العرض NN%` in `dir="ltr"`,
 `+`).
 
-`خروج` is **not** in that bar. It lives at the foot of the **bottom** bar, on its own line under
-« التالي » (see *Module* above). Everything else stays at the top.
+The top bar also carries the **classroom pointer** group (« 🔴 المؤشّر », §6quater, from `sm` up) and
+`خروج`, at its end edge (see *Module* above — the bottom bar carries only the steps of the content).
 
 There is **no fullscreen toggle, no fit button, no unit jump-list, no timer and no annotation
-tool**, and **no keyboard shortcut other than Escape** — there is no arrow-key navigation anywhere
-in the shell.
+tool**. Keyboard: **Escape** (leave, in fallback), **P** (pointer on/off) and **Shift+P**
+(spotlight) — there is no arrow-key navigation anywhere in the shell.
 
 **Bottom — `ClassroomNav`** (`data-classroom-nav`), rendered for **every** active session — it
 carries the way out, so it may not disappear with the last neighbour. It has **two tiers of steps**,
@@ -398,6 +401,54 @@ The pixels were taken back from **chrome, not from the drawing**: tighter bar pa
 presentation-only rule that trims `[data-manipulation-workspace]` padding and gaps (its border,
 background and مبتدئ/متقدم tabs stay). Do not re-inflate those paddings without re-running
 `classroom.mjs`, which measures that overflow.
+
+## 6ter. Starting a session from outside the lesson (teacher)
+
+`TeacherLessonActions` (unit page, teacher reader only) and the « مذكرة الدرس » page link to the
+lesson — or to one of its محاور — with the navigation state `CLASSROOM_START_STATE`
+(`features/teacher/lessonMemo/memoRoutes.js`). `LessonClassroomShell` renders `StartOnArrival`,
+which, once `canPresent` is known, clears the state (`replace`) and calls the same
+`enterClassroomMode({ scope: 'lesson' })` as the index button. Consequences:
+
+* a **navigation state, never a URL parameter**: a shared link, a refresh or a back navigation never
+  opens a presentation by itself;
+* fullscreen is requested a few milliseconds after the click, inside the browser's transient user
+  activation — if the browser refuses, the session opens in the fallback, as everywhere else;
+* the permission is unchanged (`canPresentClassroom`); a module link opens a **lesson** session
+  positioned on that محور.
+
+## 6quater. The classroom pointer — « المؤشّر »
+
+In a large room the mouse arrow is invisible from the back row. The pointer is a large red disc with
+a translucent halo, a white-rimmed core (shape as well as colour) and a soft glow, that **follows**
+the real mouse. It does not replace it: the browser cursor stays underneath and acts.
+
+| | |
+|---|---|
+| Toggle | « 🔴 المؤشّر » in the top bar (`aria-pressed`, label « المؤشّر مفعّل » when on) · key **P** |
+| Size | three presets — صغير / متوسط / **كبير (default)** — remembered per device (`smarter_classroom_pointer_size`) |
+| Spotlight | « تسليط الضوء » · **Shift+P**: the screen darkens except a disc around the pointer (radius 2.2 × the pointer); turning it on turns the pointer on |
+| Colour | red only; `POINTER_COLORS` is a table so another colour is one entry, not a component change |
+| Lifetime | off when a session starts, reset when it ends; announced in an `aria-live` region |
+| Phones | the group is hidden below `sm` (640 px): no projector use, and the bar keeps its room for the content |
+
+Rules (all asserted — `classroomPointer.test.js`, `e2e/teacher-memo.mjs`):
+
+* **Never intercepts anything.** The layer is `pointer-events: none`; a click under the disc reaches
+  « التالي ».
+* **Inside the session root**, `position: fixed`, `z-index: 2147483000` — so it is visible in native
+  fullscreen (only the fullscreen element's subtree is drawn) and above the Math Lab overlay (80).
+* **No React render per movement.** One `pointermove` listener stores the position, one
+  `requestAnimationFrame` writes `transform` (and the spotlight's CSS variables).
+* **Diameter follows the viewport** — `pointerDiameter(size, w, h)` = small side × {0.05, 0.075,
+  0.1}, clamped to [40–120], [56–170], [72–240] px: L is 77 px on a 1366×768 laptop, 108 px at 1080p,
+  144 px at 1440p, 216 px in 4K; recomputed on `resize`.
+* Hidden when the mouse leaves the window; follows a finger or pen on touch.
+* **The shortcut reads `event.code === 'KeyP'`** (the key's position — the same key on AZERTY and on
+  an Arabic layout, where it types « ح »), never with Ctrl/Cmd/Alt, never on repeat, and never when
+  the target is editable (`input`, `textarea`, `contenteditable`, `math-field`) or inside a Math Lab
+  instrument (`[data-ml-overlay]`, `.excalidraw` — Excalidraw's own « P » is its pen).
+* Hidden when printing.
 
 ## 7. Fullscreen, fallback, cleanup
 
@@ -447,6 +498,9 @@ is `dir="ltr"`. Directional icons go through `DirectionalIcons`.
 [data-classroom-units] [data-classroom-current] [data-classroom-unit]   module units
 [data-classroom-frame=<zoom>]                a reading frame
 html[data-sa-classroom=native|fallback]
+[data-classroom-pointer-controls] [data-classroom-pointer-toggle][aria-pressed]
+[data-classroom-pointer-size=s|m|l] [data-classroom-spotlight-toggle]
+[data-classroom-pointer-layer] [data-classroom-pointer=<size>] [data-classroom-spotlight]
 ```
 
 A presented **test** (§5, *Test*) adds its own, emitted by `kit/TestPresentation.jsx`:
@@ -476,7 +530,15 @@ npm run dev            # http://localhost:5173
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/classroom.mjs
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/manipulations.mjs
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/test-presentation.mjs
+# the pointer, the card → session entry, the مذكرة (real QA accounts, API on 8000)
+node apps/web/e2e/teacher-memo.mjs
 ```
+
+> **State on 2026-09-29:** `classroom.mjs` passes 66/73 on `dev` **before and after** the pointer
+> was added — the same 7 checks fail on both. Most describe the pre-2026-09-24 layout (the floating
+> « عرض » column, module scope — since then « وضع القسم » lives in the محور marker row and opens a
+> lesson session); the others are the module-3 exercise entry and one 390×844 overflow check, not
+> investigated. None is caused by the pointer; check them before relying on the suite.
 
 **Use a port the API allows.** `apps/api/config/cors.php` permits 5173 / 5174 / 4173 only; a dev
 server that fell back to 5175 makes every API call fail CORS, and `test-presentation.mjs`'s console
@@ -553,7 +615,7 @@ factory and the entry button is in `LessonIndex`. A lesson family with its own r
   scale grows back on − / +, a window resize, or `refit()`.
 * Presented, a module's steps still follow the student unlock rule — a teacher who wants to show a
   later step answers the earlier one, exactly as in class.
-* No keyboard navigation between units: Escape is the only shortcut.
+* No keyboard navigation between units: the shortcuts are Escape, P (pointer) and Shift+P (spotlight).
 * The scroll lock sets `overflow: hidden` on `html`/`body` and nothing else — iOS rubber-banding is
   mitigated only by `overscroll-behavior: contain`.
 * No design tokens and no dark mode: `classroom.css` hard-codes its indigo palette.

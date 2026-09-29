@@ -59,6 +59,10 @@ const ON_DEMAND_NAMESPACES = {
   // d'affichage). Chacun est un lot paresseux sous <Suspense> ; la carte de
   // l'accueil et l'onglet de la classe lisent `student` / `teacher`.
   challenge: () => import('./locales/ar/challenge.json'),
+  // « مذكرة الدرس » : la page de préparation de l'enseignant
+  // (pages/teacher/LessonMemoPage.jsx, lot paresseux, sa propre <Suspense>).
+  // Les deux libellés des boutons qui y mènent vivent dans `teacher`.
+  memo: () => import('./locales/ar/memo.json'),
 };
 
 const onDemandBackend = {

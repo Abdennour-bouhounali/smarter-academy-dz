@@ -2,15 +2,21 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../context/AuthContext';
-import { motion } from 'framer-motion';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, GraduationCap, Presentation } from 'lucide-react';
 import { register as registerRequest } from '../services/authService';
+import { postAuthPath, readPendingClassJoin } from '../features/classJoin/pendingClassJoin';
+import ClassJoinNotice from '../components/auth/ClassJoinNotice';
 import LegalConsentCheckbox from '../components/auth/LegalConsentCheckbox';
 import GoogleButton from '../components/auth/GoogleButton';
+import PersonNameFields from '../components/auth/PersonNameFields';
+import AuthShell, { AuthDivider, AuthSubmit, authInputClass } from '../components/auth/AuthShell';
+import { normalizeName, personNameErrors } from '../utils/personName';
 
 export default function Register() {
   const { t } = useTranslation('auth');
   const { t: tm } = useTranslation('marketing');
+  const [names, setNames] = useState({ firstName: '', lastName: '' });
+  const [nameErrors, setNameErrors] = useState({});
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -21,6 +27,10 @@ export default function Register() {
 
   const { login, user } = useContext(AuthContext);
   const navigate = useNavigate();
+  // Venu du LIEN d'une classe, après « أوافق، أنشئ حسابي وأنضمّ » : le compte
+  // est un compte élève, et l'intention part avec l'inscription pour que le
+  // serveur rejoigne à la vérification, même dans un autre navigateur.
+  const [pendingJoin] = useState(() => readPendingClassJoin());
   // Le TYPE de compte se choisit ici : élève (défaut) ou enseignant
   // (`?type=enseignant`). Un seul formulaire, une seule vérification
   // d'adresse ; le serveur tient la liste blanche.
@@ -48,7 +58,7 @@ export default function Register() {
     if (user.role === 'admin') {
       navigate('/admin');
     } else if (user.role === 'student') {
-      navigate(user.emailVerified === false ? '/verification-email' : '/espace');
+      navigate(postAuthPath(user, user.emailVerified === false ? '/verification-email' : '/espace'));
     } else if (user.role === 'teacher') {
       navigate(user.emailVerified === false ? '/verification-email' : '/enseignant');
     } else {
@@ -60,6 +70,12 @@ export default function Register() {
     e.preventDefault();
     setErrorMsg('');
     setConsentError('');
+
+    // « الاسم و اللقب » : le message arabe du champ fautif, avant tout
+    // aller-retour (le serveur applique la même règle, PersonName).
+    const errors = personNameErrors(names);
+    setNameErrors(errors);
+    if (Object.keys(errors).length > 0) return;
 
     // Contrôle côté navigateur : il évite un aller-retour inutile, et rien
     // de plus. Le serveur refuse de toute façon une inscription sans
@@ -73,7 +89,15 @@ export default function Register() {
 
     setLoading(true);
     try {
-      const data = await registerRequest({ email, password, acceptLegal, accountType });
+      const data = await registerRequest({
+        firstName: normalizeName(names.firstName),
+        lastName: normalizeName(names.lastName),
+        email,
+        password,
+        acceptLegal,
+        accountType,
+        ...(pendingJoin && accountType === 'student' ? { classJoinLink: pendingJoin.token, classJoinConsent: true } : {}),
+      });
       login(data.user, data.token);
       // Le compte existe, mais l'adresse n'est pas encore prouvée : l'espace
       // élève reste fermé côté serveur. On envoie donc l'élève vers l'écran
@@ -87,156 +111,138 @@ export default function Register() {
     }
   };
 
+  const tone = isTeacher ? 'teacher' : 'student';
+  const typeButton = (type, Icon, label) => {
+    const active = accountType === type;
+    return (
+      <button
+        type="button"
+        onClick={() => switchType(type)}
+        aria-pressed={active}
+        className={`flex h-11 flex-1 items-center justify-center gap-2 rounded-lg text-sm font-semibold transition ${
+          active ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200' : 'text-slate-500 hover:text-slate-700'
+        }`}
+      >
+        <Icon size={17} className={active ? (type === 'teacher' ? 'text-teal-600' : 'text-blue-600') : ''} aria-hidden="true" />
+        {label}
+      </button>
+    );
+  };
+
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-center px-4 pt-24 pb-12 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Background decorations — decorative, direction-neutral (see Login.jsx). */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-400/20 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-teal-400/20 blur-3xl pointer-events-none" />
+    <AuthShell
+      tone={tone}
+      title={isTeacher ? t('registerTeacherHeading') : t('registerHeading')}
+      subtitle={isTeacher ? t('registerTeacherSubtitle') : t('registerSubtitle')}
+      footer={(
+        <>
+          {t('alreadyHaveAccount')}{' '}
+          <Link to="/login" className={`font-semibold ${isTeacher ? 'text-teal-700 hover:text-teal-800' : 'text-blue-600 hover:text-blue-700'}`}>
+            {t('loginLink')}
+          </Link>
+        </>
+      )}
+    >
+      {/* Deux portes, un formulaire : la bascule dit QUI s'inscrit. */}
+      <div className="mb-6 flex gap-1 rounded-xl bg-slate-100 p-1" role="group" aria-label={t('accountTypeLabel')}>
+        {typeButton('student', GraduationCap, t('accountTypeStudent'))}
+        {typeButton('teacher', Presentation, t('accountTypeTeacher'))}
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="sm:mx-auto sm:w-full sm:max-w-md z-10"
-      >
-        <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-slate-900 font-display">
-          {isTeacher ? t('registerTeacherTitle') : t('registerTitle')}
-        </h2>
-        <p className="mt-2 text-center text-sm text-slate-600">
-          {isTeacher ? t('registerTeacherSubtitle') : t('registerSubtitle')}
-        </p>
-        {/* Deux portes, un formulaire : la bascule dit QUI s'inscrit. */}
-        <div className="mt-4 flex justify-center" role="group" aria-label={t('accountTypeLabel')}>
-          <div className="inline-flex rounded-xl border border-slate-200 bg-white p-1">
-            <button
-              type="button"
-              onClick={() => switchType('student')}
-              aria-pressed={!isTeacher}
-              className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors ${!isTeacher ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}
-            >
-              {t('accountTypeStudent')}
-            </button>
-            <button
-              type="button"
-              onClick={() => switchType('teacher')}
-              aria-pressed={isTeacher}
-              className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors ${isTeacher ? 'bg-teal-700 text-white' : 'text-slate-600 hover:bg-slate-50'}`}
-            >
-              {t('accountTypeTeacher')}
-            </button>
+      {/* Google, pour l'élève COMME pour l'enseignant : le type de compte
+          choisi ici part avec la navigation et revient sur l'écran de
+          consentement, où il peut encore être confirmé. */}
+      {pendingJoin && !isTeacher && <ClassJoinNotice text={t('classJoinPendingRegister', { name: pendingJoin.classroomName || '—' })} />}
+      <GoogleButton label={t('continueWithGoogleRegister')} accountType={accountType} />
+      <AuthDivider />
+
+      <form className="space-y-5" onSubmit={handleSubmit}>
+        {errorMsg && (
+          <div role="alert" className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+            {errorMsg}
           </div>
+        )}
+
+        <PersonNameFields
+          idPrefix="register"
+          value={names}
+          onChange={(next) => {
+            setNames(next);
+            setNameErrors({});
+          }}
+          errors={nameErrors}
+          disabled={loading}
+          autoFocus
+          tone={isTeacher ? 'teal' : 'blue'}
+          hint={isTeacher ? null : undefined}
+        />
+
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-slate-700">
+            {t('emailLabel')}
+          </label>
+          {/* dir="ltr": see Login.jsx — an address reads better LTR even
+              inside an RTL form. */}
+          <input
+            id="email"
+            name="email"
+            type="email"
+            dir="ltr"
+            required
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className={`mt-1.5 text-start ${authInputClass(tone)}`}
+          />
         </div>
-      </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-        className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10"
-      >
-        <div className="bg-white/70 backdrop-blur-xl py-8 px-4 shadow-xl shadow-slate-200/50 sm:rounded-2xl sm:px-10 border border-white/50">
-          {/* Google, pour l'élève COMME pour l'enseignant : le type de compte
-              choisi ici part avec la navigation et revient sur l'écran de
-              consentement, où il peut encore être confirmé. */}
-          <GoogleButton label={t('continueWithGoogleRegister')} accountType={accountType} />
-
-          <div className="my-6 flex items-center gap-4">
-            <span className="h-px flex-1 bg-slate-200" />
-            <span className="text-xs font-medium uppercase tracking-wider text-slate-400">{t('common:or')}</span>
-            <span className="h-px flex-1 bg-slate-200" />
-          </div>
-
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            {errorMsg && (
-              <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm">
-                {errorMsg}
-              </div>
-            )}
-
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-700">
-                {t('emailLabel')}
-              </label>
-              <div className="mt-1">
-                {/* dir="ltr": see Login.jsx — email content reads better LTR
-                    even inside an RTL form. */}
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  dir="ltr"
-                  required
-                  autoFocus
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full appearance-none rounded-xl border border-slate-300 px-4 py-3 placeholder-slate-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm bg-white/50 backdrop-blur-sm text-start"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-700">
-                {t('passwordLabel')}
-              </label>
-              <div className="mt-1 relative">
-                <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  dir="ltr"
-                  required
-                  minLength={8}
-                  autoComplete="new-password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full appearance-none rounded-xl border border-slate-300 px-4 py-3 pr-12 placeholder-slate-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm bg-white/50 backdrop-blur-sm text-start"
-                />
-                {/* Toggle at the FIELD's own (LTR) end — physical right in both
-                    page directions; see Login.jsx. */}
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  aria-label={showPassword ? t('hidePassword') : t('showPassword')}
-                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 focus:outline-none"
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5" aria-hidden="true" />
-                  ) : (
-                    <Eye className="h-5 w-5" aria-hidden="true" />
-                  )}
-                </button>
-              </div>
-              <p className="mt-1 text-xs text-slate-500">{t('passwordHint')}</p>
-            </div>
-
-            <LegalConsentCheckbox
-              checked={acceptLegal}
-              onChange={(next) => {
-                setAcceptLegal(next);
-                if (next) setConsentError('');
-              }}
-              error={consentError}
-              disabled={loading}
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium text-slate-700">
+            {t('passwordLabel')}
+          </label>
+          <div className="relative mt-1.5">
+            <input
+              id="password"
+              name="password"
+              type={showPassword ? 'text' : 'password'}
+              dir="ltr"
+              required
+              minLength={8}
+              autoComplete="new-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={`pr-12 text-start ${authInputClass(tone)}`}
             />
-
-            <div>
-              <button
-                type="submit"
-                disabled={loading}
-                className="flex w-full justify-center rounded-xl border border-transparent bg-blue-600 py-3 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-70"
-              >
-                {loading ? t('registerButtonLoading') : t('registerButton')}
-              </button>
-            </div>
-          </form>
-
-          <p className="mt-6 text-center text-sm text-slate-600">
-            {t('alreadyHaveAccount')}{' '}
-            <Link to="/login" className="font-medium text-blue-600 hover:text-blue-500">
-              {t('loginLink')}
-            </Link>
-          </p>
+            {/* Toggle at the FIELD's own (LTR) end — physical right in both
+                page directions; see Login.jsx. */}
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              aria-label={showPassword ? t('hidePassword') : t('showPassword')}
+              className="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-400 hover:text-slate-600 focus:outline-none"
+            >
+              {showPassword ? <EyeOff className="h-5 w-5" aria-hidden="true" /> : <Eye className="h-5 w-5" aria-hidden="true" />}
+            </button>
+          </div>
+          <p className="mt-1.5 text-xs text-slate-500">{t('passwordHint')}</p>
         </div>
-      </motion.div>
-    </div>
+
+        <LegalConsentCheckbox
+          checked={acceptLegal}
+          onChange={(next) => {
+            setAcceptLegal(next);
+            if (next) setConsentError('');
+          }}
+          error={consentError}
+          disabled={loading}
+        />
+
+        <div className="pt-1">
+          <AuthSubmit tone={tone} loading={loading}>
+            {loading ? t('registerButtonLoading') : t('registerButton')}
+          </AuthSubmit>
+        </div>
+      </form>
+    </AuthShell>
   );
 }

@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { AuthContext } from './AuthContext';
 import { fetchStudyContext } from '../services/studyContextService';
 
@@ -26,12 +26,17 @@ export function StudyContextProvider({ children }) {
   const { token, user } = useContext(AuthContext);
   const [studyContext, setStudyContext] = useState(EMPTY);
   const [loaded, setLoaded] = useState(false);
+  // Seule la lecture la plus récente s'applique (voir ContentAvailabilityContext :
+  // la lecture de la connexion ne doit pas écraser celle qui suit l'adhésion).
+  const sequence = useRef(0);
 
   const isStudent = user?.role === 'student';
 
   const refresh = useCallback(async () => {
     if (!token || !isStudent) return EMPTY;
+    const ticket = ++sequence.current;
     const next = await fetchStudyContext(token);
+    if (ticket !== sequence.current) return next;
     setStudyContext(next ?? EMPTY);
     setLoaded(true);
     return next;
@@ -44,9 +49,10 @@ export function StudyContextProvider({ children }) {
       setLoaded(false);
       return () => { cancelled = true; };
     }
+    const ticket = ++sequence.current;
     fetchStudyContext(token)
-      .then((next) => { if (!cancelled) { setStudyContext(next ?? EMPTY); setLoaded(true); } })
-      .catch(() => { if (!cancelled) setLoaded(false); });
+      .then((next) => { if (!cancelled && ticket === sequence.current) { setStudyContext(next ?? EMPTY); setLoaded(true); } })
+      .catch(() => { if (!cancelled && ticket === sequence.current) setLoaded(false); });
     return () => { cancelled = true; };
   }, [token, isStudent]);
 

@@ -27,6 +27,13 @@ class ClassroomMembership extends Model
 
     public const VIA_JOIN_CODE = 'join_code';
 
+    public const VIA_JOIN_LINK = 'join_link';
+
+    /**
+     * Historique : l'invitation par courriel (retirée le 2026-10-01). Des
+     * lignes anciennes la portent encore, avec leur `invitation_id` ; plus
+     * aucune n'est créée ainsi.
+     */
     public const VIA_INVITATION = 'invitation';
 
     protected $fillable = ['status', 'joined_at', 'left_at', 'joined_via', 'invitation_id', 'removed_by'];

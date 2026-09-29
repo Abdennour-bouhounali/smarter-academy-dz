@@ -104,7 +104,12 @@ describe('La page d’inscription', () => {
   it('transmet le consentement au serveur', () => {
     // `accountType` (élève ou enseignant) part avec le consentement ; la liste
     // blanche est tenue par le serveur.
-    expect(source).toContain('registerRequest({ email, password, acceptLegal, accountType })');
+    const call = source.match(/registerRequest\(\{[\s\S]*?\}\)/)?.[0] ?? '';
+    expect(call).toMatch(/\bacceptLegal\b/);
+    expect(call).toMatch(/\baccountType\b/);
+    // « الاسم و اللقب » naissent avec le compte (PersonName côté serveur).
+    expect(call).toMatch(/firstName:/);
+    expect(call).toMatch(/lastName:/);
   });
 
   it('conduit vers la vérification, et non vers l’espace élève', () => {

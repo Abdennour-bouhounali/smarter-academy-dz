@@ -1,8 +1,10 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import ClassroomPresentation from './ClassroomPresentation';
 import { lessonNeighbours } from './classroomUnits';
+import { useClassroomMode } from './ClassroomContext';
+import { wantsClassroomStart } from '../../../features/teacher/lessonMemo/memoRoutes';
 
 /**
  * La coquille de présentation d'une LEÇON — un élément de route « layout »
@@ -51,7 +53,38 @@ export default function LessonClassroomShell({ config, basePath }) {
       lessonNavigation={lessonNavigation}
       className="sa-classroom-lesson"
     >
+      <StartOnArrival title={config.title} />
       <Outlet />
     </ClassroomPresentation>
   );
+}
+
+/**
+ * « وضع القسم » depuis une CARTE du catalogue enseignant (TeacherLessonCard)
+ * ou depuis la مذكرة الدرس : on arrive sur la leçon avec l'état
+ * `CLASSROOM_START_STATE`, et la séance s'ouvre ici — exactement comme le
+ * bouton du sommaire (`enterClassroomMode`, même permission
+ * `canPresentClassroom`, même plein écran).
+ *
+ * Le clic d'origine date de quelques millisecondes : le navigateur accorde
+ * encore le plein écran (activation utilisateur transitoire). S'il le
+ * refuse, la présentation s'ouvre en repli, comme partout ailleurs.
+ *
+ * L'état est effacé aussitôt (`replace`) : un rafraîchissement ou un retour
+ * arrière ne rouvre jamais la séance tout seul.
+ */
+function StartOnArrival({ title }) {
+  const { state, pathname, search } = useLocation();
+  const navigate = useNavigate();
+  const { canPresent, isClassroomMode, enterClassroomMode } = useClassroomMode();
+  const done = useRef(false);
+  useEffect(() => {
+    // `canPresent` attend le compte (AuthContext) : tant qu'il n'est pas là,
+    // on patiente sans consommer la demande.
+    if (done.current || !wantsClassroomStart(state) || !canPresent) return;
+    done.current = true;
+    navigate(`${pathname}${search}`, { replace: true, state: null });
+    if (!isClassroomMode) enterClassroomMode({ scope: 'lesson', title });
+  }, [state, pathname, search, navigate, canPresent, isClassroomMode, enterClassroomMode, title]);
+  return null;
 }

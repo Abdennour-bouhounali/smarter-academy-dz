@@ -1,8 +1,8 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Users, KeyRound, CheckCircle2, AlertCircle, LogOut, Eye, Lightbulb, BookOpen } from 'lucide-react';
+import { Users, KeyRound, CheckCircle2, AlertCircle, LogOut, Lightbulb, BookOpen } from 'lucide-react';
 import { AuthContext } from '../../context/AuthContext';
 import { useStudyContext } from '../../context/StudyContextContext';
 import { useContentAvailability } from '../../context/ContentAvailabilityContext';
@@ -10,19 +10,20 @@ import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 import {
   joinClassGroup,
   leaveClassGroup,
-  previewInvitation,
   confirmClassConsent,
   fetchTeacherRecommendations,
 } from '../../services/studyContextService';
 import { ConfirmDialog } from '../../components/admin/ui/Modal';
 import { getAllGrades, getLessonPath } from '@smarter-academy/core';
 import { LOCALE } from '../../locale';
-import { SHARED_ITEMS, joinRequest, classroomsAwaitingConsent, visibleRecommendations } from './qismConsent';
+import SharingDisclosure from '../../components/student/SharingDisclosure';
+import { joinRequest, classroomsAwaitingConsent, visibleRecommendations } from './qismConsent';
 
 /**
  * « قسمي » — la classe de l'enseignant que l'élève a rejointe, ou peut
- * rejoindre par code (six symboles, en LTR comme un code d'activation) ou
- * par le jeton d'une invitation (`?token=`).
+ * rejoindre par code (six symboles, en LTR comme un code d'activation). Le
+ * LIEN de classe a sa propre page (pages/JoinClassLink.jsx) et revient ici
+ * une fois l'adhésion faite, avec `state.joinedClassroom`.
  *
  * Cette page n'AUTORISE rien : elle transmet un code et affiche ce que le
  * serveur a décidé. Quitter une classe ne touche à aucune donnée
@@ -32,8 +33,7 @@ import { SHARED_ITEMS, joinRequest, classroomsAwaitingConsent, visibleRecommenda
  * L'enseignant verra, pour les leçons du قسم, la progression, la maîtrise,
  * les réponses et le كرّاسي (voir qismConsent.js). La page le DIT avant
  * d'envoyer quoi que ce soit, et la requête ne part qu'après « أوافق
- * وأنضمّ ». Un lien d'invitation (`?token=`) n'adhère donc plus tout seul :
- * il ouvre une carte de confirmation, et « لا، شكرًا » ne rejoint rien.
+ * وأنضمّ ». Le lien de classe applique la même règle sur sa page.
  * Une adhésion antérieure au texte (`consentRequired`) reçoit une carte
  * non bloquante : confirmer, ou quitter.
  */
@@ -52,19 +52,17 @@ export default function Qism() {
   const { token } = useContext(AuthContext);
   const { studyContext, refresh } = useStudyContext();
   const { refresh: refreshAvailability, hiddenByClassCount } = useContentAvailability();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
 
   const [code, setCode] = useState('');
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  // Arrivé depuis le lien de classe : l'adhésion vient d'être faite là-bas.
+  const [success, setSuccess] = useState(location.state?.joinedClassroom ?? null);
   const [leaving, setLeaving] = useState(null);
   const [busy, setBusy] = useState(false);
-  const [invitation, setInvitation] = useState(null);
   const [consenting, setConsenting] = useState(null);
   const [recommendations, setRecommendations] = useState([]);
-
-  const invitationToken = searchParams.get('token');
 
   const messageFor = (err) => {
     if (err?.type === 'RATE_LIMITED') return t('qism.errors.rate_limited');
@@ -86,52 +84,6 @@ export default function Qism() {
     setSuccess(result?.studyContext?.primary?.name ?? '');
     setCode('');
     await Promise.all([refresh().catch(() => {}), refreshAvailability().catch(() => {}), loadRecommendations()]);
-  };
-
-  const clearInvitationToken = () => {
-    const next = new URLSearchParams(searchParams);
-    next.delete('token');
-    setSearchParams(next, { replace: true });
-  };
-
-  // Un jeton d'invitation dans l'URL : on ne fait que LIRE l'aperçu public.
-  // L'adhésion attend le geste de l'élève (handleAcceptInvitation).
-  useEffect(() => {
-    if (!invitationToken) { setInvitation(null); return undefined; }
-    let cancelled = false;
-    setError(null);
-    previewInvitation(invitationToken)
-      .then((data) => { if (!cancelled) setInvitation(data); })
-      .catch((err) => {
-        if (cancelled) return;
-        setError(messageFor(err));
-        clearInvitationToken();
-      });
-    return () => { cancelled = true; };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [invitationToken]);
-
-  const handleAcceptInvitation = async () => {
-    const body = joinRequest({ token: invitationToken }, true);
-    if (pending || !body) return;
-    setPending(true);
-    setError(null);
-    setSuccess(null);
-    try {
-      const result = await joinClassGroup(token, body);
-      await afterJoin(result);
-    } catch (err) {
-      setError(messageFor(err));
-    } finally {
-      setPending(false);
-      setInvitation(null);
-      clearInvitationToken();
-    }
-  };
-
-  const handleDeclineInvitation = () => {
-    setInvitation(null);
-    clearInvitationToken();
   };
 
   const handleJoin = async (event) => {
@@ -199,29 +151,8 @@ export default function Qism() {
         {success !== null && (
           <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} role="status" className="glass-card p-5 border-emerald-200 bg-emerald-50/60 flex items-start gap-3">
             <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
-            <p className="font-semibold text-emerald-900">{t('qism.joinSuccess', { name: success })}</p>
+            <p className="font-semibold text-emerald-900" data-qism-joined>{location.state?.alreadyMember && success === location.state?.joinedClassroom ? t('qism.errors.already_member') : t('qism.joinSuccess', { name: success })}</p>
           </motion.div>
-        )}
-
-        {invitation && (
-          <section className="glass-card p-5 sm:p-6 border-teal-200" aria-labelledby="qism-invitation-title" data-qism-invitation>
-            <div className="flex items-start gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center shrink-0"><Users size={18} /></div>
-              <div className="min-w-0">
-                <h2 id="qism-invitation-title" className="font-semibold text-slate-900">{t('qism.invitationTitle', { name: invitation.classroomName })}</h2>
-                <p className="text-sm text-slate-600 mt-1">{t('qism.invitationBody', { teacher: invitation.teacherName || '—', grade: gradeName(invitation.grade) })}</p>
-              </div>
-            </div>
-            <SharingDisclosure />
-            <div className="mt-4 flex flex-col sm:flex-row gap-2">
-              <button type="button" onClick={handleAcceptInvitation} disabled={pending} data-qism-consent-join className="px-6 py-3 rounded-xl bg-teal-700 text-white font-semibold hover:bg-teal-800 disabled:opacity-60 disabled:cursor-not-allowed">
-                {pending ? t('qism.joining') : t('qism.consentJoin')}
-              </button>
-              <button type="button" onClick={handleDeclineInvitation} disabled={pending} data-qism-decline className="px-6 py-3 rounded-xl border border-slate-300 bg-white text-slate-700 font-semibold hover:bg-slate-50 disabled:opacity-60">
-                {t('qism.invitationDecline')}
-              </button>
-            </div>
-          </section>
         )}
 
         {/* Adhésions antérieures au texte de partage : une carte par قسم,
@@ -354,29 +285,6 @@ export default function Qism() {
         busyLabel={t('qism.joining')}
         closeLabel={t('qism.cancel')}
       />
-    </div>
-  );
-}
-
-/**
- * Ce que l'enseignant voit — le MÊME texte au formulaire, sur la carte
- * d'invitation et sur la carte de confirmation : un consentement ne se
- * donne pas sur trois versions d'un texte.
- */
-function SharingDisclosure() {
-  const { t } = useTranslation('student');
-  return (
-    <div className="rounded-xl border border-teal-100 bg-teal-50/60 p-4 text-sm text-slate-700" data-qism-sharing>
-      <p className="flex items-center gap-2 font-semibold text-teal-900 mb-2">
-        <Eye size={16} className="shrink-0" aria-hidden="true" /> {t('qism.sharing.title')}
-      </p>
-      <p className="mb-2">{t('qism.sharing.intro')}</p>
-      <ul className="list-disc ps-5 space-y-1 mb-2">
-        {SHARED_ITEMS.map((item) => <li key={item}>{t(`qism.sharing.items.${item}`)}</li>)}
-      </ul>
-      <p className="mb-2">{t('qism.sharing.teacherNotes')}</p>
-      <p>{t('qism.sharing.email')}</p>
-      <p>{t('qism.sharing.leave')}</p>
     </div>
   );
 }

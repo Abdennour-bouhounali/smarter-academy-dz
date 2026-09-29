@@ -5,7 +5,10 @@ import { useTranslation } from 'react-i18next';
 import { AlertTriangle } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 import { completeGoogleSignup, fetchCurrentUser } from '../services/authService';
+import { postAuthPath } from '../features/classJoin/pendingClassJoin';
 import LegalConsentCheckbox from '../components/auth/LegalConsentCheckbox';
+import PersonNameFields from '../components/auth/PersonNameFields';
+import { nameError, normalizeName, personNameErrors } from '../utils/personName';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
 /**
@@ -36,7 +39,9 @@ import { useDocumentMeta } from '../hooks/useDocumentMeta';
 function landingFor(user) {
   if (user?.role === 'teacher') return '/enseignant';
   if (user?.role === 'admin') return '/admin';
-  return user?.grade ? '/espace' : '/espace/bienvenue';
+  // Arrivé par le lien d'une classe (et consentant) : on y retourne, et la
+  // page du lien rejoint seule. Voir features/classJoin/pendingClassJoin.js.
+  return postAuthPath(user, user?.grade ? '/espace' : '/espace/bienvenue');
 }
 
 export default function AuthGoogle() {
@@ -55,6 +60,18 @@ export default function AuthGoogle() {
   // enseignant) que l'inscription classique. Jamais admin.
   const [accountType, setAccountType] = useState(searchParams.get('type') === 'teacher' ? 'teacher' : 'student');
 
+  // « الاسم و اللقب » : PRÉ-REMPLIS avec ce que Google suggère (`prenom`,
+  // `nom`), mais confirmés ici — c'est la première connexion, et le nom
+  // enregistré est celui que la personne valide, pas celui de Google.
+  // Seuls des noms déjà ARABES sont suggérés (le serveur filtre, et on
+  // revérifie ici) : un « Léa » latin ouvrirait l'écran sur une erreur.
+  const suggested = (param) => {
+    const v = searchParams.get(param) || '';
+    return nameError(v) === null ? v : '';
+  };
+  const [names, setNames] = useState({ firstName: suggested('prenom'), lastName: suggested('nom') });
+  const [nameErrors, setNameErrors] = useState({});
+  const prefilledByGoogle = Boolean(names.firstName || names.lastName);
   const [acceptLegal, setAcceptLegal] = useState(false);
   const [consentError, setConsentError] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
@@ -90,6 +107,10 @@ export default function AuthGoogle() {
     setConsentError('');
     setErrorMsg('');
 
+    const errors = personNameErrors(names);
+    setNameErrors(errors);
+    if (Object.keys(errors).length > 0) return;
+
     if (!acceptLegal) {
       setConsentError(
         tm('consent.required'),
@@ -99,7 +120,13 @@ export default function AuthGoogle() {
 
     setLoading(true);
     try {
-      const data = await completeGoogleSignup({ handoff, acceptLegal, accountType });
+      const data = await completeGoogleSignup({
+        handoff,
+        firstName: normalizeName(names.firstName),
+        lastName: normalizeName(names.lastName),
+        acceptLegal,
+        accountType,
+      });
       login(data.user, data.token);
       // L'adresse est déjà prouvée par Google : pas d'écran de vérification.
       navigate(landingFor(data.user), { replace: true });
@@ -182,6 +209,20 @@ export default function AuthGoogle() {
                     </button>
                   </div>
                 </div>
+
+                <PersonNameFields
+                  idPrefix="google"
+                  value={names}
+                  onChange={(next) => {
+                    setNames(next);
+                    setNameErrors({});
+                  }}
+                  errors={nameErrors}
+                  disabled={loading}
+                  autoFocus={!prefilledByGoogle}
+                  tone={accountType === 'teacher' ? 'teal' : 'blue'}
+                  hint={prefilledByGoogle ? t('name.googlePrefilled') : undefined}
+                />
 
                 <LegalConsentCheckbox
                   id="accept-legal-google"

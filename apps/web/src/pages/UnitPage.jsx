@@ -11,6 +11,8 @@ import { resolveMasteryState, masteryTooltip } from '../lessons/common/component
 import { useContentAvailability } from '../context/ContentAvailabilityContext';
 import { ArrowForward } from '../components/common/DirectionalIcons';
 import { usePrefetchLessonRuntime } from '../lessons/common/lessonRuntimeLoader';
+import { useLearningViewer } from '../features/learning/learningViewer';
+import { LessonModuleChips, TeacherLessonActions } from '../components/teacher/TeacherLessonActions';
 
 /**
  * La page d'une UNITÉ du manuel (الوحدة) — le niveau entre le ميدان et le درس.
@@ -41,6 +43,10 @@ function masteryIndex(profile) {
 
 function LessonBlock({ lesson, index, mastery, t }) {
   const { isLessonClosed, isLessonHiddenByClass } = useContentAvailability();
+  // L'enseignant voit, sur chaque leçon de l'unité, ses محاور et ses deux
+  // gestes (مذكرة الدرس · وضع القسم). Le catalogue reste au niveau de la
+  // وحدة ; c'est ici, une fois l'unité ouverte, qu'il choisit une leçon.
+  const { isTeacher } = useLearningViewer();
   // Masquée par l'enseignant : traitée comme indisponible pour l'élève de
   // cette classe, sans toucher à la publication.
   const available = lesson.status === 'available' && !isLessonClosed(lesson.id) && !isLessonHiddenByClass(lesson.id);
@@ -74,6 +80,8 @@ function LessonBlock({ lesson, index, mastery, t }) {
           {lesson.learningPoints.length > 0 && <span dir="ltr">{mastered}/{lesson.learningPoints.length} ✓</span>}
         </div>
       </header>
+
+      {isTeacher && <LessonModuleChips lessonId={lesson.id} />}
 
       <div className="grid gap-4 md:grid-cols-2">
         <section>
@@ -128,7 +136,15 @@ function LessonBlock({ lesson, index, mastery, t }) {
               mise en forme, « الكتاب ص {{pages}} » rendait « [object Object] ». */}
           {textbookPages && <> · {t('unit.textbookPages', { pages: textbookPages })}</>}
         </span>
-        {available && (
+        {available && isTeacher && config && (
+          <div className="flex flex-wrap items-center gap-2">
+            <TeacherLessonActions lesson={lesson} />
+            <Link to={lesson.path} className="inline-flex min-h-[44px] items-center gap-1 rounded-xl px-3 py-2 text-sm font-bold text-slate-600 hover:text-teal-700">
+              {t('unit.start')} <ArrowForward className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          </div>
+        )}
+        {available && !(isTeacher && config) && (
           <Link to={lesson.path} className="inline-flex items-center gap-1 rounded-xl bg-blue-600 px-4 py-2 text-sm font-bold text-white hover:bg-blue-700">
             {progressPercent > 0 ? t('unit.continue') : t('unit.start')} <ArrowForward className="h-4 w-4" aria-hidden="true" />
           </Link>

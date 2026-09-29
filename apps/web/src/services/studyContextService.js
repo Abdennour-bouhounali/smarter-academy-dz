@@ -4,8 +4,8 @@ import { apiMessage } from './apiMessage';
 /**
  * L'élève et sa classe (« قسمي ») : où il étudie, rejoindre, quitter.
  *
- * Le serveur reste l'autorité : rejoindre ne prend qu'un code ou un jeton
- * (jamais un identifiant de classe), et ce que l'élève voit ensuite —
+ * Le serveur reste l'autorité : rejoindre ne prend qu'un code ou le jeton
+ * du lien de classe (jamais un identifiant de classe), et ce que l'élève voit ensuite —
  * dont les leçons que l'enseignant a masquées — revient par
  * GET /content/availability. Le MOTIF clos voyage sur l'erreur.
  */
@@ -31,10 +31,13 @@ export function fetchStudyContext(token) {
  * que si l'appelant le passe explicitement — il doit venir d'un geste de
  * l'élève (« أوافق وأنضمّ »), jamais d'un défaut du service.
  *
- * @param {{code?: string, token?: string, consent?: boolean}} by
+ * Par le LIEN, la réponse est idempotente : un membre reçoit
+ * `alreadyMember: true` (200) au lieu d'une erreur.
+ *
+ * @param {{code?: string, link?: string, consent?: boolean}} by
  */
 export function joinClassGroup(token, by) {
-  const body = by.token ? { token: by.token } : { code: by.code };
+  const body = by.link ? { link: by.link } : { code: by.code };
   if (by.consent === true) body.consent = true;
   return call('/student/classrooms/join', {
     method: 'POST',
@@ -67,7 +70,12 @@ export function leaveClassGroup(token, classroomId) {
   }, 'classroomLeave');
 }
 
-/** Publique : ce qu'un lien d'invitation révèle avant tout compte. */
-export function previewInvitation(inviteToken) {
-  return call(`/invitations/${encodeURIComponent(inviteToken)}`, {}, 'invitationLoad').then((d) => d.invitation);
+/**
+ * Publique : ce qu'un lien de classe révèle avant tout compte (nom du قسم,
+ * classe scolaire, enseignant, adhésions ouvertes). Avec le jeton d'un élève
+ * connecté, dit aussi s'il est déjà membre (`alreadyMember`).
+ */
+export function previewJoinLink(linkToken, authToken = null) {
+  return call(`/join-links/${encodeURIComponent(linkToken)}`, authToken ? { headers: auth(authToken) } : {}, 'joinLinkLoad')
+    .then((d) => d.joinLink);
 }

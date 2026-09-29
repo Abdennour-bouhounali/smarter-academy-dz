@@ -72,7 +72,6 @@ export default function AdminTeacherDetail() {
     if (!e) return null;
     if (key === 'classrooms.max') return e.classes.current;
     if (key === 'students_total.max') return e.students.current;
-    if (key === 'invitations.active.max') return e.invitations.current;
     return null;
   };
 

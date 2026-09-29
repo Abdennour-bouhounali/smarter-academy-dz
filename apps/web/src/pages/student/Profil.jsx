@@ -7,7 +7,8 @@ import { getAllGrades } from '@smarter-academy/core';
 import { AuthContext } from '../../context/AuthContext';
 import { useContentAvailability } from '../../context/ContentAvailabilityContext';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
-import { getDisplayName, getInitials } from '../../utils/userDisplay';
+import { getFullName, getInitials } from '../../utils/userDisplay';
+import NameEditor from '../../components/account/NameEditor';
 import { LOCALE } from '../../locale.js';
 
 /**
@@ -117,11 +118,15 @@ export default function Profil() {
             {initials}
           </div>
           <div className="min-w-0">
-            <p className="font-space font-bold text-slate-900 text-lg truncate">{getDisplayName(user)}</p>
+            <p className="font-space font-bold text-slate-900 text-lg truncate" dir="auto">{getFullName(user)}</p>
             <p className="font-inter text-slate-500 text-sm flex items-center gap-1.5 truncate">
               <Mail size={13} className="flex-shrink-0" /> {user?.email}
             </p>
           </div>
+        </div>
+
+        <div className="mb-6">
+          <NameEditor />
         </div>
 
         <label htmlFor="profile-grade" className="block font-inter text-sm font-semibold text-slate-700 mb-2 flex items-center gap-1.5">

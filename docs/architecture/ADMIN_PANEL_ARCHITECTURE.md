@@ -1815,5 +1815,5 @@ journalisé dans la même transaction (`plan.*`, `plan_version.*`,
   pas son abonnement ; suspendre un abonnement ne ferme pas le compte.
 - **Une rétrogradation ne détruit rien.** Expiration, suspension, annulation
   ou offre plus petite : le résolveur retombe sur l'offre par défaut et
-  `overLimit` bloque la création (classe, adhésion, invitation). Classes,
+  `overLimit` bloque la création (classe, adhésion par lien ou par code). Classes,
   membres, visibilités et progression restent lisibles.

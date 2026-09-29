@@ -1,7 +1,10 @@
-import { Outlet } from 'react-router-dom';
+import { useContext } from 'react';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import TeacherNavbar from '../teacher/TeacherNavbar';
 import BackgroundLayer from '../common/BackgroundLayer';
 import ScrollToTop from '../common/ScrollToTop';
+import { AuthContext } from '../../context/AuthContext';
+import { needsName } from '../../utils/personName';
 
 /**
  * La coquille de l'espace ENSEIGNANT (« فضاء الأستاذ ») — le même espace de
@@ -11,8 +14,19 @@ import ScrollToTop from '../common/ScrollToTop';
  * Pas de garde de classe scolaire : un enseignant n'a pas de `grade`, il
  * possède des classes qui ont chacune la leur. Le rôle est vérifié par
  * ProtectedRoute en amont ; la vraie porte reste le serveur (can:teacher).
+ *
+ * UNE garde, en revanche : « الاسم و اللقب ». Les élèves d'un enseignant le
+ * lisent sous ce nom ; un compte qui n'en a pas encore passe par l'étape
+ * /enseignant/bienvenue, puis revient à la page qu'il visait.
  */
 export default function TeacherLayout() {
+  const { user } = useContext(AuthContext);
+  const location = useLocation();
+
+  if (needsName(user)) {
+    return <Navigate to="/enseignant/bienvenue" replace state={{ from: location.pathname + location.search }} />;
+  }
+
   return (
     <div className="relative min-h-screen bg-[#FAFAFA]">
       <ScrollToTop />

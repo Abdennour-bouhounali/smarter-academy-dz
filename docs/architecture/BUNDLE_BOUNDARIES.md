@@ -45,7 +45,7 @@ Nothing below a line is fetched until the level above needs it.
 
 | Boundary | Where | What it keeps out of the entry | Prefetch |
 |---|---|---|---|
-| Lazy route pages | `App.jsx` (`lazy(() => import(...))`), `CourseLayout.jsx` (`TeacherLayout`) | every page except the landing `Home`, `Login`, `Register` | — |
+| Lazy route pages | `App.jsx` (`lazy(() => import(...))`), `CourseLayout.jsx` (`TeacherLayout`) | every page except the landing `Home`, `Login`, `Register` — including the join-link page `JoinClassLink` (2026-10-01). Because `Login`/`Register` are eager, the pending-join helper they read (`features/classJoin/pendingClassJoin.js`, ≈2.1 KB gzip as commented source, less minified) and `components/auth/ClassJoinNotice.jsx` (≈0.5 KB) are in the entry; keep that helper dependency-free | — |
 | Layout `<Suspense>` | `StudentLayout`, `MainLayout` around `<Outlet/>` | — (UX: the sidebar/navbar stay on screen while a page chunk arrives) | — |
 | Lesson registry glob | `lessons/registry.js` globs **only active grades** (`'./*/4am/**'`, `'./*/terminale_dz/**'`) | configs of any inactive grade | — |
 | Lesson runtime | `lessons/common/lessonRuntime.jsx`, loaded by `_unit/lessonRoutes.jsx` through `lessonRuntimeLoader.js` | classroom mode, access gate, knowledge map, notebook anchor | idle prefetch from `UnitPage`, `StudentHome`, `MesCours` (`usePrefetchLessonRuntime`) |
@@ -53,6 +53,7 @@ Nothing below a line is fetched until the level above needs it.
 | Notebook window | `NotebookProvider.jsx` lazy-loads `NotebookWindow.jsx` | editor, KaTeX (~580 KB source), framer-motion use of the window | idle prefetch the first time a page publishes its position (`setLocation`) |
 | `mathlab` i18n namespace | `i18n/index.js` `onDemandBackend` | ~250 KB of JSON | loaded by the first `useTranslation('mathlab')` |
 | `challenge` i18n namespace (2026-09-25) | `i18n/index.js` `onDemandBackend` | the daily challenge's screens (≈ 17 KB JSON, 3.8 KB gzip chunk) | read only by the lazy challenge pages, the class tab `DailyChallengeTab` (lazy, own `<Suspense>` in `ClassGroupDetail`) and `ChallengeDisplayPage` (own `<Suspense>`); the home card lives in `student`, the admin screen in `admin`, the nav labels in `nav` — those few strings (~2 KB gzip) are the feature's whole cost in the entry |
+| `memo` i18n namespace + lesson-content glob (2026-09-29) | `i18n/index.js` `onDemandBackend`; `features/teacher/lessonMemo/loadLessonMemoSources.js` (**lazy** `import.meta.glob`, scoped to `lessons/moyen/4am/**/knowledge.jsx` and `…/content/*.js`) | the « مذكرة الدرس » page (`LessonMemoPage` ≈ 13 KB gzip, `memo` ≈ 4.7 KB gzip) and every lesson's content modules | read only by `LessonMemoPage` under its own `<Suspense>`; only the opened lesson's content is fetched, and those files are the same chunks its modules already use. The card buttons' labels live in `teacher`; entry cost of the whole feature (pointer, search, memo route, keys) measured at +0.7 KB gzip (233.74 → 234.44 KB) |
 | French reference catalogue | removed 2026-09-25 (was tree-shaken via `@__PURE__` before removal) | — | — |
 | KaTeX dedupe | `vite.config.js` `resolve.dedupe: ['katex']` | a **second** KaTeX copy (react-katex/mafs nested 0.16) | — |
 

@@ -11,7 +11,7 @@ use Tests\TestCase;
 /**
  * Rejoindre un قسم partage l'apprentissage de l'élève avec son enseignant :
  * ce partage est un geste EXPLICITE, daté, et lié au texte lu. Ni un code
- * tapé, ni un lien d'invitation ouvert ne suffisent sans lui.
+ * tapé, ni un lien de classe ouvert ne suffisent sans lui.
  */
 class ClassroomConsentTest extends TestCase
 {
@@ -30,15 +30,13 @@ class ClassroomConsentTest extends TestCase
         $this->assertSame(0, ClassroomMembership::count());
     }
 
-    public function test_an_invitation_link_without_consent_is_refused(): void
+    public function test_a_join_link_without_consent_is_refused(): void
     {
         $this->defaultTeacherPlan();
         $this->grade4am(1);
         $classroom = Classroom::factory()->create();
-        $url = $this->withToken($this->tokenOf($classroom->teacher))
-            ->postJson("/api/v1/teacher/classrooms/{$classroom->id}/invitations", ['email' => 'x@example.dz'])->json('joinUrl');
 
-        $this->withToken($this->tokenOf($this->student()))->postJson('/api/v1/student/classrooms/join', ['token' => basename($url)])
+        $this->withToken($this->tokenOf($this->student()))->postJson('/api/v1/student/classrooms/join', ['link' => $classroom->join_link_token])
             ->assertStatus(422)->assertJsonPath('reason', 'consent_required');
         $this->assertSame(0, ClassroomMembership::count());
     }

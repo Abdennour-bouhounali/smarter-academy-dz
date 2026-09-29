@@ -39,10 +39,9 @@ export default function TeacherHome() {
             </div>
             {/* Les SIÈGES d'abord : c'est l'unité de l'offre. Les classes ne
                 sont que des contenants (∞ sauf limite technique). */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <UsageMeter label={t('home.seats')} meter={ent.students} hint={ent.classes.maximum == null ? t('home.classesUnlimited') : undefined} />
               <UsageMeter label={t('home.classes')} meter={ent.classes} />
-              <UsageMeter label={t('home.invitations')} meter={ent.invitations} />
             </div>
             {ent.students.overLimit || ent.classes.overLimit ? (
               <p className="mt-3 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900" role="status">{t('home.overLimit')}</p>

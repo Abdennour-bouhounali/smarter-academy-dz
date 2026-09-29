@@ -225,14 +225,19 @@ Le workflow reste volontairement prudent :
    colonnes, 16 lignes de migration, 3 offres (dont la grille de 6 paliers de
    `teacher-seats`) et **exactement une** offre enseignant par défaut. Si `artisan` est disponible, l'équivalent est
    `php artisan migrate --force && php artisan db:seed --class=PlanSeeder --force`.
-2. **`.env`** : `FRONTEND_URL` doit être l'URL publique du SPA — les liens
-   d'invitation (`/rejoindre/{token}`) en dérivent. Facultatif :
-   `CLASSROOM_INVITATION_TTL_DAYS` (14), `CLASSROOM_INVITATION_URL`,
-   `CLASSROOM_ACTIVE_WINDOW_DAYS` (7). Aucune limite commerciale n'est dans
+2. **`.env`** : `FRONTEND_URL` doit être l'URL publique du SPA — la
+   vérification d'adresse y renvoie. Le lien de classe
+   (`/rejoindre/classe/{jeton}`) est composé par le navigateur de
+   l'enseignant sur sa propre origine : aucune variable. (Les variables
+   `CLASSROOM_INVITATION_*` n'existent plus depuis le 2026-10-01 ; la
+   migration `2026_10_01_000002` donne un lien à chaque classe existante.)
+   Aucune limite commerciale n'est dans
    `.env` : elles sont dans les offres, modifiables depuis le panneau.
-3. **Courriel** : les invitations de classe et les codes d'activation
-   individuels partent par le pipeline mail existant (`MAIL_*`). Sans mail
-   fonctionnel, un enseignant peut toujours donner son رمز الانضمام à l'oral,
+3. **Courriel** : les codes d'activation individuels et la vérification
+   d'adresse partent par le pipeline mail existant (`MAIL_*`) — l'élève
+   inscrit depuis un lien de classe rejoint au moment où il vérifie son
+   adresse. Sans mail fonctionnel, un enseignant peut toujours partager son
+   lien de classe ou donner son رمز الانضمام à l'oral,
    et l'administrateur voit le code individuel une fois à l'écran.
 4. **Rien à faire pour les élèves existants** : sans classe, ils sont
    « indépendants » et `/content/availability` ne change pas ; leurs codes et

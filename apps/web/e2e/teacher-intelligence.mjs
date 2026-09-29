@@ -10,7 +10,7 @@
 // d'un élève (histoire de l'état, cahier) ; un geste s'enregistre et sa
 // mesure s'affiche ; l'aperçu d'un élève ; AUCUN courriel d'élève à l'écran
 // ni dans les réponses /teacher ; RTL sans débordement à 390 et 1280 px ;
-// côté élève, une invitation ne rejoint rien sans le geste « أوافق وأنضمّ »,
+// côté élève, le lien de classe ne rejoint rien sans le geste « أوافق وأنضمّ »,
 // et la suggestion de l'enseignant apparaît dans « قسمي ».
 //
 // Effet de bord assumé : chaque passage enregistre UNE intervention dont la
@@ -156,8 +156,8 @@ await mobile.close();
 // Qui a reçu une suggestion ? La mesure de la première intervention le dit.
 const list = json(await api(teacherToken, 'GET', `/teacher/classrooms/${groupA.id}/interventions?status=open`));
 const visible = (list.interventions ?? []).find((iv) => iv.studentVisible && iv.students.length > 0);
-const invitation = json(await api(teacherToken, 'POST', `/teacher/classrooms/${groupA.id}/invitations`, { email: 'qa-invite@example.dz' }));
-const inviteToken = String(invitation.joinUrl ?? '').split('/').pop();
+// Le LIEN de classe (l'invitation par courriel a été retirée le 2026-10-01).
+const joinLinkToken = json(await api(teacherToken, 'GET', `/teacher/classrooms/${groupA.id}`)).classroom?.joinLinkToken ?? null;
 if (visible) {
   const who = visible.students[0];
   // L'enseignant ne connaît pas le courriel de l'élève (c'est la règle) :
@@ -174,17 +174,15 @@ if (visible) {
     record('…sans la note privée de l’enseignant', !(await student.page.locator('main').innerText()).includes('QA : suivi'));
     await student.page.screenshot({ path: `${OUT}/09-student-qism-1280.png`, fullPage: true });
 
-    // Une invitation ouverte par un élève connecté : une carte, rien de rejoint.
-    if (inviteToken) {
+    // Le lien de classe rouvert par un MEMBRE : retour à « قسمي », aucune ligne de plus.
+    if (joinLinkToken) {
       const before = json(await api(teacherToken, 'GET', `/teacher/classrooms/${groupA.id}/students`)).students?.length ?? 0;
-      await student.page.goto(`${BASE}/rejoindre/${inviteToken}`, { waitUntil: 'networkidle' });
+      await student.page.goto(`${BASE}/rejoindre/classe/${joinLinkToken}`, { waitUntil: 'networkidle' });
       await student.page.waitForURL(/\/espace\/qism/, { timeout: 20000 });
       await student.page.waitForTimeout(1500);
-      const card = await student.page.locator('[data-qism-invitation]').count();
       const after = json(await api(teacherToken, 'GET', `/teacher/classrooms/${groupA.id}/students`)).students?.length ?? 0;
-      record('un lien d’invitation ne rejoint RIEN sans le geste', after === before, `avant=${before} après=${after}`);
-      record('…et montre une carte de confirmation (ou « déjà membre »)', card >= 0);
-      await student.page.screenshot({ path: `${OUT}/10-invitation-card-1280.png`, fullPage: false });
+      record('un membre qui rouvre le lien de classe revient à « قسمي », sans doublon', after === before, `avant=${before} après=${after}`);
+      await student.page.screenshot({ path: `${OUT}/10-join-link-member-1280.png`, fullPage: false });
     }
     await student.context.close();
   } else {

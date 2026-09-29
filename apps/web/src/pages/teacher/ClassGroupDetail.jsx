@@ -1,17 +1,17 @@
 import { lazy, Suspense, useCallback, useContext, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Copy, Check, RefreshCw, Archive, ArchiveRestore } from 'lucide-react';
+import { Archive, ArchiveRestore } from 'lucide-react';
 import { ArrowBack } from '../../components/common/DirectionalIcons';
 import { getAllGrades } from '@smarter-academy/core';
 import { AuthContext } from '../../context/AuthContext';
 import { useAdminResource } from '../../hooks/useAdminResource';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 import { ConfirmDialog } from '../../components/admin/ui/Modal';
-import { fetchClassGroup, fetchTeacherEntitlements, updateClassGroup, archiveClassGroup, restoreClassGroup, rotateJoinCode } from '../../services/teacher/classGroupService';
+import { fetchClassGroup, fetchTeacherEntitlements, updateClassGroup, archiveClassGroup, restoreClassGroup, rotateJoinCode, rotateJoinLink } from '../../services/teacher/classGroupService';
+import JoinAccessCard from '../../features/teacher/members/JoinAccessCard';
 import MembersTab from '../../features/teacher/members/MembersTab';
 import LessonsTab from '../../features/teacher/classGroupLessons/LessonsTab';
-import ProgressTab from '../../features/teacher/progress/ProgressTab';
 import LearningPointsTab from '../../features/teacher/learningPoints/LearningPointsTab';
 import OverviewTab from '../../features/teacher/overview/OverviewTab';
 import InterventionsTab from '../../features/teacher/interventions/InterventionsTab';
@@ -19,10 +19,12 @@ import InterventionsTab from '../../features/teacher/interventions/Interventions
 const DailyChallengeTab = lazy(() => import('../../features/teacher/dailyChallenge/DailyChallengeTab'));
 import { TeacherPage, Loading, ErrorBox, useTableLabels, btnSecondary, btnPrimary, btnDanger, input } from './teacherUi';
 
-const TABS = ['overview', 'students', 'learningPoints', 'interventions', 'dailyChallenge', 'lessons', 'progress', 'settings'];
+const TABS = ['overview', 'students', 'learningPoints', 'interventions', 'dailyChallenge', 'lessons', 'settings'];
 
 /**
- * La page d'une classe, et le code de classe toujours visible. Elle s'ouvre
+ * La page d'une classe, et la façon d'y entrer toujours visible en haut : le
+ * LIEN de classe d'abord (la voie recommandée), le CODE juste en dessous
+ * (le repli manuel) — JoinAccessCard. Elle s'ouvre
  * sur « نظرة عامة » : ce qui mérite un regard, ce qui a changé, la carte —
  * DÉTECTER d'abord. Les autres onglets servent à COMPRENDRE (نقاط التعلّم),
  * INTERVENIR et MESURER (التدخّلات), et administrer (التلاميذ, الدروس,
@@ -45,7 +47,6 @@ export default function ClassGroupDetail() {
   const classGroup = data?.classroom;
   useDocumentMeta(classGroup?.name ?? t('classes.title'));
 
-  const [copied, setCopied] = useState(false);
   const [confirm, setConfirm] = useState(null);
   const [busy, setBusy] = useState(false);
   const [actionError, setActionError] = useState(null);
@@ -54,15 +55,12 @@ export default function ClassGroupDetail() {
   const setTab = (next) => { const p = new URLSearchParams(searchParams); p.set('tab', next); setSearchParams(p, { replace: true }); };
   const replaceClassroom = (classroom) => setData((cur) => ({ ...cur, classroom: { ...cur.classroom, ...classroom } }));
 
-  const copyCode = async () => {
-    try { await navigator.clipboard.writeText(classGroup.joinCode); setCopied(true); setTimeout(() => setCopied(false), 1500); } catch { /* code visible */ }
-  };
-
   const run = async (kind) => {
     setBusy(true);
     setActionError(null);
     try {
       if (kind === 'rotate') replaceClassroom(await rotateJoinCode(token, id));
+      if (kind === 'rotateLink') replaceClassroom(await rotateJoinLink(token, id));
       if (kind === 'archive') { const r = await archiveClassGroup(token, id); replaceClassroom(r.classroom); }
       if (kind === 'restore') { const r = await restoreClassGroup(token, id); replaceClassroom(r.classroom); }
       setConfirm(null);
@@ -80,24 +78,18 @@ export default function ClassGroupDetail() {
       eyebrow={gradeName}
       title={classGroup?.name ?? '…'}
       subtitle={classGroup?.description || undefined}
-      actions={<Link to="/enseignant/classes" className={btnSecondary}><ArrowBack size={14} /> {t('common.back')}</Link>}
+      actions={(
+        <>
+          {classGroup && <span className={`rounded-full px-2.5 py-1 font-mono-jetbrains text-[10px] font-bold ${classGroup.status === 'active' ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>{t(`classes.status.${classGroup.status}`)}</span>}
+          <Link to="/enseignant/classes" className={btnSecondary}><ArrowBack size={14} /> {t('common.back')}</Link>
+        </>
+      )}
     >
       {loading && <Loading />}
       {error && <ErrorBox message={error} onRetry={reload} />}
       {classGroup && (
         <div className="space-y-5">
-          <div className="glass-card p-4 flex flex-wrap items-center gap-3" data-join-code-card>
-            <div className="min-w-0">
-              <p className="font-inter text-xs text-slate-500">{t('classes.joinCode')}</p>
-              <p dir="ltr" className="font-mono-jetbrains text-2xl font-black tracking-[0.35em] text-teal-800" data-join-code>{classGroup.joinCodeEnabled ? classGroup.joinCode : '······'}</p>
-              <p className="text-[11px] text-slate-400">{classGroup.joinCodeEnabled ? t('classes.joinCodeHint') : t('classes.joinCodeDisabled')}</p>
-            </div>
-            <div className="ms-auto flex flex-wrap gap-2">
-              <button type="button" onClick={copyCode} className={btnSecondary}>{copied ? <Check size={14} /> : <Copy size={14} />} {copied ? t('classes.copied') : t('classes.copy')}</button>
-              {classGroup.status === 'active' && <button type="button" onClick={() => setConfirm('rotate')} className={btnSecondary}><RefreshCw size={14} /> {t('classes.rotateJoinCode')}</button>}
-            </div>
-            <span className={`rounded-full px-2.5 py-1 font-mono-jetbrains text-[10px] font-bold ${classGroup.status === 'active' ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>{t(`classes.status.${classGroup.status}`)}</span>
-          </div>
+          <JoinAccessCard classGroup={classGroup} onRotateLink={() => setConfirm('rotateLink')} onRotateCode={() => setConfirm('rotate')} />
 
           <div role="tablist" className="flex overflow-x-auto gap-2 [&::-webkit-scrollbar]:hidden">
             {TABS.map((key) => (
@@ -123,9 +115,6 @@ export default function ClassGroupDetail() {
           )}
           {tab === 'students' && <MembersTab classGroup={classGroup} entitlements={data.entitlements} onChanged={reload} />}
           {tab === 'lessons' && <LessonsTab classGroup={classGroup} entitlements={data.entitlements} />}
-          {tab === 'progress' && (data.entitlements?.features?.['progress.class'] === false
-            ? <p className="glass-card p-8 text-center text-sm text-slate-500">{t('progress.unavailable')}</p>
-            : <ProgressTab classGroup={classGroup} onOpenLearningPoints={() => setTab('learningPoints')} />)}
           {tab === 'learningPoints' && (data.entitlements?.features?.['progress.class'] === false
             ? <p className="glass-card p-8 text-center text-sm text-slate-500">{t('progress.unavailable')}</p>
             : <LearningPointsTab classGroup={classGroup} focusCode={focusPoint} onFocusConsumed={clearFocus} />)}
@@ -139,9 +128,9 @@ export default function ClassGroupDetail() {
         onConfirm={() => run(confirm)}
         busy={busy}
         tone={confirm === 'archive' ? 'danger' : 'default'}
-        title={confirm === 'rotate' ? t('classes.rotateConfirmTitle') : confirm === 'archive' ? t('classes.archiveConfirmTitle', { name: classGroup?.name ?? '' }) : t('classes.restore')}
-        message={<p>{confirm === 'rotate' ? t('classes.rotateConfirmBody') : confirm === 'archive' ? t('classes.archiveConfirmBody') : ''}</p>}
-        confirmLabel={confirm === 'rotate' ? t('classes.rotateJoinCode') : confirm === 'archive' ? t('classes.archive') : t('classes.restore')}
+        title={confirm === 'rotate' ? t('classes.rotateConfirmTitle') : confirm === 'rotateLink' ? t('classes.rotateLinkConfirmTitle') : confirm === 'archive' ? t('classes.archiveConfirmTitle', { name: classGroup?.name ?? '' }) : t('classes.restore')}
+        message={<p>{confirm === 'rotate' ? t('classes.rotateConfirmBody') : confirm === 'rotateLink' ? t('classes.rotateLinkConfirmBody') : confirm === 'archive' ? t('classes.archiveConfirmBody') : ''}</p>}
+        confirmLabel={confirm === 'rotate' ? t('classes.rotateJoinCode') : confirm === 'rotateLink' ? t('classes.rotateJoinLink') : confirm === 'archive' ? t('classes.archive') : t('classes.restore')}
         {...labels.dialog}
       />
     </TeacherPage>
@@ -181,7 +170,11 @@ function SettingsTab({ classGroup, onSaved, onArchive }) {
         <label className="block"><span className="mb-1 block text-sm font-semibold text-slate-800">{t('classes.nameLabel')}</span><input value={name} onChange={(e) => setName(e.target.value)} required maxLength={120} className={input} /></label>
         <label className="block"><span className="mb-1 block text-sm font-semibold text-slate-800">{t('classes.descriptionLabel')}</span><textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={2} maxLength={500} className={input} /></label>
         <label className="block"><span className="mb-1 block text-sm font-semibold text-slate-800">{t('classes.academicYearLabel')}</span><input value={academicYear} onChange={(e) => setAcademicYear(e.target.value)} dir="ltr" pattern="\d{4}-\d{4}" placeholder={t('classes.academicYearPlaceholder')} className={input} /></label>
-        <label className="flex items-center gap-2 text-sm text-slate-800"><input type="checkbox" checked={joinCodeEnabled} onChange={(e) => setJoinCodeEnabled(e.target.checked)} className="h-4 w-4" /> {t('classes.joinCode')}</label>
+        {/* Un seul interrupteur ferme le LIEN et le CODE : les membres restent. */}
+        <label className="flex items-start gap-2 text-sm text-slate-800" data-joining-toggle>
+          <input type="checkbox" checked={joinCodeEnabled} onChange={(e) => setJoinCodeEnabled(e.target.checked)} className="mt-0.5 h-4 w-4" />
+          <span><span className="font-semibold">{t('classes.joiningEnabled')}</span><span className="block text-xs text-slate-500">{t('classes.joiningEnabledHint')}</span></span>
+        </label>
         {error && <p role="alert" className="text-sm text-rose-700">{error}</p>}
         {saved && <p role="status" className="text-sm text-emerald-700">{t('common.save')} ✓</p>}
         <button type="submit" disabled={pending} className={btnPrimary}>{pending ? t('common.saving') : t('common.save')}</button>

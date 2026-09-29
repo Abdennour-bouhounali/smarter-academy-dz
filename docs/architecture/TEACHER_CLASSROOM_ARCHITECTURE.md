@@ -22,7 +22,8 @@
 | **القسم / الأقسام** (« قسمي », « أقسامي ») | a teacher's class: a roster of students of one grade | `classrooms`, `Classroom`, frontend identifier `classGroup` | the presentation mode |
 | **وضع القسم** | Classroom Mode, the projector presentation shell | `lessons/common/classroom/` — see `CLASSROOM_MODE.md` | a class roster |
 | **رمز الانضمام** | the join code a teacher gives orally / on the board | `classrooms.join_code` | an activation code |
-| **الدعوة** | an e-mail invitation to a class | `classroom_invitations` | — |
+| **رابط الانضمام** | the class's join link `/rejoindre/classe/{token}` — the recommended way in | `classrooms.join_link_token` | an activation code, an invitation |
+| ~~الدعوة~~ | the e-mail invitation — **removed 2026-10-01**; its table is kept read-only for history | `classroom_invitations` (no code reads or writes it) | — |
 | **العرض / العروض** | a plan (offer) | `plans` | a "presentation" (« عرض » in Classroom Mode is a different word in a different place) |
 | **الاشتراك** | a subscription: the fact that a paid plan is running on an account | `subscriptions` | account status |
 | **رمز التفعيل** | an activation code (paid access, cash-sold) | `activation_codes` | a join code |
@@ -50,6 +51,13 @@ student     /register, Google                   /espace          (default)
   pending-signup handoff (`PendingGoogleSignup::issue($identity, $role)`), and
   `POST /auth/google/complete` accepts `accountType` for the consent step. The
   role is whitelisted at each hop; a tampered value falls back to `student`.
+- **« الاسم و اللقب » for every account (2026-09-29).** The register form
+  and the Google consent step both collect first name + family name
+  in Arabic letters only (`PersonName` rule, validated live — see `ARCHITECTURE.md` §9); a teacher or student
+  account without one is sent to a name step before its space
+  (`/enseignant/bienvenue`, `/espace/bienvenue/nom`), and both edit it from
+  their profile (`PATCH /auth/profile`). This is what makes the identity
+  below readable: a teacher lists students by name, never by email.
 - Teachers verify their e-mail exactly like students (`email.verified`
   middleware on every teacher route).
 - **Account status ≠ subscription status.** `users.account_status`
@@ -66,7 +74,7 @@ ownership    ClassroomPolicy (view/update)   teacher_id === user.id → 403 (nev
 entitlement  PlanEntitlementResolver         limits and features of the effective plan → 422 reason
 ```
 
-Members, invitations, lessons and progress are always resolved **through the
+Members, lessons and progress are always resolved **through the
 owner** (`$classroom->memberships()`), never from an id in the request body.
 `TeacherAuthorizationTest` sweeps every `/api/v1/teacher` route as guest,
 student and admin.
@@ -77,9 +85,10 @@ student and admin.
 
 | Table | Key columns | Rules |
 |---|---|---|
-| `classrooms` | `teacher_id`, `name`, `grade` (same code as `users.grade`, e.g. `4am`), `academic_year`, `status` `active\|archived\|suspended`, `join_code` (unique), `join_code_enabled`, `archived_at` | grade must be allowed by `content.allowed_grades` and exist in `grades`; **classes are not a commercial unit** — a teacher creates as many as they want unless the technical limit `classrooms.max` is configured (null = unlimited) |
-| `classroom_memberships` | `classroom_id`, `student_id`, `status` `active\|left\|removed`, `joined_via` `join_code\|invitation`, `invitation_id`, `removed_by`, **`consented_at`, `consent_version`** | **unique `(classroom_id, student_id)`**: rejoining reactivates the row; only `role = student`; class must be `active`; **joining requires the explicit consent** (see « Consent and what the teacher may read ») |
-| `classroom_invitations` | `email`, `token_hash` (HMAC of the plain token, unique), `token_hint` (last 4), `status` `pending\|accepted\|revoked`, `expires_at` | `expired` is derived (`effectiveStatus()`), like `ActivationCode`; TTL from `config/classroom.php` (`CLASSROOM_INVITATION_TTL_DAYS`, 14) |
+| `classrooms` | `teacher_id`, `name`, `grade` (same code as `users.grade`, e.g. `4am`), `academic_year`, `status` `active\|archived\|suspended`, `join_code` (unique), **`join_link_token`** (unique, 32 base62, born with the class), `join_code_enabled` (**« الانضمام مفتوح » — closes the link AND the code**; historical name), `archived_at` | grade must be allowed by `content.allowed_grades` and exist in `grades`; **classes are not a commercial unit** — a teacher creates as many as they want unless the technical limit `classrooms.max` is configured (null = unlimited) |
+| `classroom_memberships` | `classroom_id`, `student_id`, `status` `active\|left\|removed`, `joined_via` `join_link\|join_code` (`invitation` on historical rows only), `invitation_id` (historical), `removed_by`, **`consented_at`, `consent_version`** | **unique `(classroom_id, student_id)`**: rejoining reactivates the row; only `role = student`; class must be `active`; **joining requires the explicit consent** (see « Consent and what the teacher may read ») |
+| `classroom_invitations` | **historical, read-only** (e-mail invitations, removed 2026-10-01) | kept because old memberships point to it (`invitation_id`); the migration `2026_10_01_000002` revoked the rows still pending; no model, route or service remains |
+| `users.pending_class_join_token` / `pending_class_join_at` | a join the student consented to on the link page **before having an account** | written at registration (`PendingClassJoin::remember`), consumed when the e-mail is verified (`complete`); hidden from every serialization |
 | `classroom_lessons` | `classroom_id`, `lesson_id`, `status` `visible\|hidden`, `created_by`, `updated_by` | **absence of a row = visible**; unique `(classroom_id, lesson_id)` |
 
 ### Services (`app/Domain/Classroom/`)
@@ -88,21 +97,44 @@ student and admin.
 |---|---|
 | `ClassroomService` | create (limit + allowed grade), update, archive, restore (re-checks the limit), suspend, rotate join code, list, show |
 | `JoinCode` | 6 characters, same unambiguous alphabet as activation codes, unique in the table |
-| `ClassroomMembershipService` | `joinByCode`, `acceptInvitation`, `remove`, `leave`, `confirmConsent`; every join takes `consented: true` or fails with `consent_required`; capacity checked **at join, under `DB::transaction` with `lockForUpdate` on the class AND on the teacher row** (so two joins into two different classes of one teacher serialise): the technical per-class limit, then the seat capacity through `TeacherCapacityService` |
+| `ClassroomMembershipService` | `joinByCode`, **`joinByLink`** (idempotent: an active member gets `alreadyMember: true`, no consent asked, even if joining was closed since), `classroomForLink`, `remove`, `leave`, `confirmConsent`; **both doors end in the same `join()`**; every join takes `consented: true` or fails with `consent_required`; capacity checked **at join, under `DB::transaction` with `lockForUpdate` on the class AND on the teacher row** (so two joins into two different classes of one teacher serialise): the technical per-class limit, then the seat capacity through `TeacherCapacityService` |
 | `TeacherCapacityService` | the **seat capacity**: `seatLimit` (`students_total.max` resolved from the plan / purchased seats / override), `currentStudentCount` (**distinct** active students across the teacher's non-archived classes — a student in two classes is one seat), `remainingSeats`, `isSeated`, `canAddStudent` (an already-seated student never consumes a second seat), `assertCanSeat` → `seats_exhausted`, `summary` |
-| `ClassroomInvitationService` | create (limit `invitations.active.max`), revoke, preview (public), accept; `ClassroomInvitationNotification` (Arabic mail with the link `/rejoindre/{token}`) |
-| `InvitationToken` | plain token issued once, only the hash is stored |
+| `JoinLinkToken` | 32 base62 symbols from `random_int` (CSPRNG, ≈190 bits), derived from nothing (not the id, teacher, code); unique; **stored in clear** like `join_code`, because the teacher must re-read it on the class page and it is semi-public by nature (shared on WhatsApp). Protected by its length, the rate limit, `join_code_enabled` and rotation |
+| `PendingClassJoin` | the join that waits for the verified address: `remember` at registration (valid link of an open class + consent + student, otherwise silently ignored — registration never fails on a stale link), `complete` in `EmailVerificationController::verify` (re-validates the token; any refusal just clears the wait) |
 | `ClassroomLessonService` | the class's curriculum tree (ميادين → وحدات → دروس) with `publicationStatus`, `tier`, `classStatus`, `effectiveForStudents`; `setStatus`; `bulkSetStatus` (a unit = its lessons repeated) → `{applied, unchanged, failed}` in the `ContentService::bulk()` shape |
-| `ClassroomProgressService` | **singleton** (per-request memo of the effective lessons, flushed on `RequestHandled` and on every visibility change); class summary + per-student rows + `rosterFor` (statistics only with `progress.class`), from existing progress data only |
+| `ClassroomProgressService` | **singleton** (per-request memo of the effective lessons, flushed on `RequestHandled` and on every visibility change); per-student rows (`studentList`) + `rosterFor` (statistics only with `progress.class`), from existing progress data only |
 | `ClassroomAccess` | **the one teacher → student gate and the one teacher-facing identity** — see « Consent and what the teacher may read » |
 | `ClassroomLearningPointService` | the learning map (whole scope or one lesson), one LP × students with trajectory / items / prerequisites, one LP × one student (evidence) — § 4 |
 | `ClassroomInsightService` + `Insights/*` | DETECT: attention signals, recent changes, the student snapshot — § 4a |
 | `ClassroomInterventionService` | INTERVENE and MEASURE — § 4b |
 | `StudyContextService` | singleton, per-request memo: `{mode, classrooms[], primary, hiddenLessonCodes}` for a student |
-| `ClassroomException` | closed reasons: `limit_reached`, `grade_not_allowed`, `feature_unavailable`, `class_inactive`, `class_full`, `seats_exhausted`, `already_member`, `not_a_student`, `invalid`, `expired`, `revoked`, `not_member`, `lesson_out_of_scope`, `consent_required` → 422 `{reason}`; the client renders Arabic from the reason, never the French message |
+| `ClassroomException` | closed reasons: `limit_reached`, `grade_not_allowed`, `feature_unavailable`, `class_inactive`, `class_full`, `seats_exhausted`, `already_member`, `not_a_student`, `invalid`, **`joining_closed`** (link only: a valid link of a class that no longer accepts new members; the CODE answers `invalid` there, since six symbols can be guessed and a distinct reason would reveal which exist), `expired`, `revoked`, `not_member`, `lesson_out_of_scope`, `consent_required` → 422 `{reason}`; the client renders Arabic from the reason, never the French message |
 
 Rate limiter `classroom-join` (per user and per IP, registered beside
-`activation-redeem`) guards `POST /student/classrooms/join`.
+`activation-redeem`) guards `POST /student/classrooms/join` (code and link);
+the public preview `GET /join-links/{token}` is `throttle:30,1`.
+
+### The two doors: join link and join code (2026-10-01)
+
+```text
+join link  /rejoindre/classe/{token} ─┐  (recommended: one tap from WhatsApp)
+                                      ├──> ClassroomMembershipService::join()  (consent, capacity, unique row)
+join code  6 symbols in «قسمي» ───────┘  (manual fallback: written on the board)
+```
+
+- **A student who joins without a grade takes the class's grade**
+  (`join()`, only when `users.grade` is null): a brand-new account arriving
+  by the link lands in its class instead of the grade picker.
+- **Closing** (`joinCodeEnabled: false`, « السماح بالانضمام » in الإعدادات)
+  refuses new students by both doors; members stay, and a member reopening
+  the link is still sent to the class. **Rotating the link**
+  (`POST …/join-link/rotate`) kills the old link at once (`invalid`) and does
+  *not* reopen closed joining (rotating the code still does, as before).
+- The e-mail invitation was removed on 2026-10-01: routes, controller,
+  service, token, notification, entitlement key `invitations.active.max`
+  (stored rows of that key are inert — the resolver skips unknown keys), the
+  teacher panel and the « الدعوات المعلّقة » meter. The old address
+  `/rejoindre/:token` renders the « رابط غير صالح » page.
 
 ### Capacity is counted in students, never in classes
 
@@ -113,8 +145,8 @@ educational dimension     which lessons are visible, who is in which class, what
 access dimension          which subscription / entitlement opens paid content
 ```
 
-Invitations go through the same door: sending one is never limited by seats,
-**accepting** one is (`TeacherCapacityTest`). A downgrade puts the teacher in
+The link goes through the same door as the code: opening it costs nothing,
+**joining** by it is counted against the seats (`TeacherCapacityTest`). A downgrade puts the teacher in
 an over-limit state that blocks new seats only.
 
 ### Leaving and removal never delete anything
@@ -140,11 +172,20 @@ reading.
 - `POST /student/classrooms/join` requires `consent: true`, otherwise 422
   `consent_required` and nothing is created. The student-side button «أوافق
   وأنضمّ» sits under the disclosure text (`student.json` → `qism.sharing.*`,
-  one component `SharingDisclosure` for the form, the invitation card and the
-  re-confirmation card).
-- An invitation link **never joins by itself**: `/rejoindre/:token` → «قسمي»
-  shows the class, the teacher and the same disclosure, with «أوافق وأنضمّ» /
-  «لا، شكرًا». (Until 2026-09-25 a logged-in student joined on opening the
+  one component `components/student/SharingDisclosure.jsx` for the code form,
+  the join-link page and the re-confirmation card).
+- **A join link never joins by being opened.** `/rejoindre/classe/:token`
+  shows the class, the teacher and the same disclosure *before* any button.
+  The consent gesture is the button itself: « أوافق وأنضمّ » for a signed-in
+  student, « أوافق، أنشئ حسابي وأنضمّ » / « أوافق، سجّل دخولي وأنضمّ » for a
+  visitor. The visitor's gesture is kept (`features/classJoin/pendingClassJoin.js`,
+  localStorage, 7 days, token-shaped only) and — for a registration — sent
+  to the server (`classJoinLink`, `classJoinConsent`), so the join completes
+  **automatically** after login, Google, or e-mail verification, even when
+  the verification mail is opened in another browser. The page's only
+  automatic join is `autoJoinRequest(pending, token)`: it exists only if the
+  gesture was made *for this link* (`pages/JoinClassLink.test.jsx` guards
+  it). (Until 2026-09-25 a logged-in student joined on opening an invitation
   link.)
 - `consented_at` + `consent_version` (`config('classroom.consent_version')`)
   are stored on the membership. Changing the disclosure text means bumping the
@@ -170,9 +211,12 @@ endpoints accepted a membership in any status.)
 lastName}`, loaded with `IDENTITY_COLUMNS` — never `email`. It is the only
 place a teacher-facing student shape is built; the frontend falls back on the
 Arabic placeholder «تلميذ بدون اسم» (`common.unnamedStudent`), never on an
-email. The admin detail of a class adds the email itself
+email. Since 2026-09-29 that placeholder is transitional: every student is
+asked for « الاسم و اللقب » at signup or, for older accounts, at their next
+visit (see §1 « Who exists »). The admin detail of a class adds the email itself
 (`ClassroomAdminService::withEmails`) — the admin surface may show it. The
-public invitation preview no longer returns the invited address.
+public join-link preview returns the class name, grade, teacher name and
+`joiningOpen` — never an id, an address or the roster.
 
 **Scope.** Teacher reads stay bounded to the class's effective lessons
 (published, not hidden, of the class grade). History before joining in those
@@ -191,7 +235,7 @@ consent confirmation writes `classroom_member.consented`.
 of a seeded class and fails on any `email` key or student address at any
 depth, re-reads every per-student route after leave / removal / archive (404),
 tries every route as another teacher and as a student, and checks archived
-notes and the invitation preview. `ClassroomConsentTest` locks consent;
+notes and the join-link preview. `ClassroomConsentTest` locks consent;
 `pages/teacherContract.test.js` fails if a teacher screen reads `.email` of a
 student.
 
@@ -247,9 +291,16 @@ scoped to the class's grade, to the lessons **effective** for that class and
 to its **active** members (§ 2 « Consent and what the teacher may read »).
 There is no teacher-side progress table, and no second mastery: a teacher
 reads the same status the student and the admin read (`PROGRESS_MODEL.md`,
-`LEARNING_ARCHITECTURE.md`). « Active these last N days »
-(`CLASSROOM_ACTIVE_WINDOW_DAYS`, 7) is computed on activity **inside the
-class's scope**.
+`LEARNING_ARCHITECTURE.md`). A student's « last activity » in the roster is
+computed on activity **inside the class's scope** (its effective lessons), not
+on `users.last_activity_at`.
+
+There is **no class-average view**. The former « التقدّم » tab and the
+`/enseignant/progression` page (class averages + one bar per student, backed
+by `GET /teacher/classrooms/{id}/progress` and `classSummary()`) were removed
+on 2026-09-29: an average hides the group in difficulty, and the per-student
+bars already live in « التلاميذ ». Class-level reading is the learning map
+below and « نظرة عامة ».
 
 The teacher's space is organised around one loop — **DETECT → UNDERSTAND →
 INTERVENE → MEASURE** — and three entry points onto the SAME data: the class
@@ -296,10 +347,10 @@ never a replay of evidence, never a copy:
 
 Cost: constant in queries whatever the class size (`ClassroomInsightScaleTest`:
 the same query count for 5 and 40 students on the map, the attention, one LP,
-the dossier, the progress and the interventions) and whatever the bank size
+the dossier and the interventions) and whatever the bank size
 (`MasteryScaleTest`).
 
-**The notebook in these views.** The class summary and the student dossier
+**The notebook in these views.** The roster and the student dossier
 carry no note (`ClassroomProgressTest`). The student × LP evidence DOES show
 the student's own notes on that LP — they are evidence the teacher reads,
 never counted, never aggregated across the class, never mixed into mastery
@@ -545,7 +596,6 @@ seats and their frozen price (`SeatPricingTest::test_les_prix_sont_versionnes…
 | `students_total.max` | limit | **capacity** | the commercial unit: distinct active students across the teacher's non-archived classes. Default 0 (a forgotten capacity closes). On a seat-based subscription the purchased `student_seat_limit` **replaces** the version's value |
 | `classrooms.max` | limit | technical | non-archived classes; default **null = unlimited**. Never a pricing unit |
 | `students_per_classroom.max` | limit | technical | active members per class; default null |
-| `invitations.active.max` | limit | technical | pending, unexpired invitations; default null |
 | `lessons.visibility` | feature | may hide / show lessons per class |
 | `lessons.bulk_actions` | feature | bulk hide / show (unit-level) |
 | `progress.class` | feature | class progress view |
@@ -586,7 +636,7 @@ already covers.
 *Droits* section: `{plan{…, seatBased, studentSeatLimit, seatUnitPriceCents,
 seatTotalCents, seatCurrency}, request, classes{current,maximum,remaining,
 canCreate,overLimit}, students{current,maximum,remaining,canAdd,overLimit},
-invitations, features, allowedGrades}`. `explain($user)` says, per key,
+features, allowedGrades}`. `explain($user)` says, per key,
 whether the value comes from the plan, the subscription (purchased seats) or
 which override. `GET /teacher/capacity` returns the seat summary alone.
 
@@ -616,7 +666,7 @@ activation). Metadata, never payment logic.
 Expiry, suspension, cancellation or a smaller plan → the resolver falls back
 (e.g. 30 purchased seats → the free 5) and `overLimit` becomes true. **Nothing
 is deleted or archived.** What over-limit blocks: seating a **new** student
-(join code or invitation acceptance). A student already seated may still join
+(join code or join link). A student already seated may still join
 another class; classes may still be created. Existing classes, members,
 visibility rows and progress stay readable. A downgrade *request* below the
 current usage is refused up front (`seats_below_usage`); the admin cannot
@@ -674,8 +724,25 @@ frontend holds it in `StudyContextContext` (one fetch, `refresh()`).
 | Surface | What it does |
 |---|---|
 | `StudentHome` banner (`ClassContextBanner`) | « أنت تدرس ضمن القسم X مع الأستاذ Y » |
-| `/espace/qism` (« قسمي ») | join by code (LTR input), current classes, leave (confirm: history preserved) |
-| `/rejoindre/:token` (public) | invitation preview → login / register → accept |
+| `/espace/qism` (« قسمي ») | join by code (LTR input), current classes, leave (confirm: history preserved); shows « انضممت إلى القسم … » when arriving from the link (`location.state.joinedClassroom`) |
+| `/rejoindre/classe/:token` (public, `pages/JoinClassLink.jsx`) | preview → invalid / closed / member (→ قسمي) / consent + join, or consent → register / login → automatic join → قسمي. Built on `AuthShell plain` (one column, no brand panel) |
+| `/rejoindre/:token` | old invitation addresses → the same page, « رابط غير صالح » |
+
+After any authentication (`Login`, `Register`, `AuthGoogle`,
+`VerificationEmail`) the landing path goes through
+`postAuthPath(user, fallback)`: a verified student with a pending join is
+sent back to the link page; nobody else is affected. No `?next=` URL is ever
+read — the only produced path is `/rejoindre/classe/` + a token that passed
+the format check, so there is no open redirect.
+
+**No reload after joining.** Before navigating to «قسمي», the join page
+re-reads the user, the study context (the class, its teacher, the home
+banner) and content availability (`access`: the teacher's coverage, shown as
+« وصول كامل ») — also when the answer was `alreadyMember`, since the server
+may have joined at e-mail verification after those were first read. Both
+providers apply only their most recent response (a request sequence), so the
+read started at login cannot overwrite the post-join one
+(`pages/JoinClassLink.test.jsx` guards the refresh).
 | `LessonCard`, `UnitPage`, `LessonIndex` | hidden-by-teacher state, same visual as closed |
 
 A student who is in no class is « independent » and sees exactly what they saw
@@ -692,11 +759,10 @@ gate; `data/teacherNavigation.js`):
 /enseignant                      TeacherHome          usage tiles (UsageMeter, N / M in dir="ltr"), classes, next steps
 /enseignant/classes              ClassGroupList       « قسم جديد » opens ClassGroupForm in a centred Modal, on the page
 /enseignant/classes/nouveau      ClassGroupCreate     same form full-page (direct links, bookmarks); grade from getAllGrades() ∩ allowedGrades
-/enseignant/classes/:id          ClassGroupDetail     tabs نظرة عامة (default) / التلاميذ / نقاط التعلّم / التدخّلات / التحدّي اليومي / الدروس / التقدّم / الإعدادات
+/enseignant/classes/:id          ClassGroupDetail     JoinAccessCard on top (join LINK, then the CODE below), then tabs نظرة عامة (default) / التلاميذ / نقاط التعلّم / التدخّلات / التحدّي اليومي / الدروس / الإعدادات
 /enseignant/classes/:id/eleves/:studentId   StudentProgressPage   « لمحة », signals, interventions, completion, mastery, timeline
 /enseignant/classes/:id/eleves/:studentId/cahier   StudentNotebookPage   read-only, paginated
 /enseignant/classes/:id/defi/affichage   ChallengeDisplayPage   the daily challenge on the classroom screen — outside TeacherLayout, full screen (DAILY_CHALLENGE.md §10)
-/enseignant/progression          ProgressOverview
 /enseignant/offre                SubscriptionPage     « عرضي »
 /enseignant/profil               TeacherProfile
 ```
@@ -752,7 +818,7 @@ Teachers may present in Classroom Mode: `'teacher'` is in
 ### 8a. Mastery in the teacher space (Mastery V2, 2026-09-24)
 
 - **« نقاط التعلّم » tab** (`features/teacher/learningPoints/LearningPointsTab.jsx`,
-  gated by `progress.class` like « التقدّم »): a lesson picker (visible class
+  gated by `progress.class` like « نظرة عامة »): a lesson picker (visible class
   lessons), one row per LP with a four-segment bar (mastered / reinforce / gap
   / unassessed) and chips « دليل ناقص », « بحاجة إلى اختبار », « متقن لكن
   قديم »; a row opens the drill-down (`LearningPointDrilldown.jsx`, students
@@ -810,8 +876,8 @@ labels live in `teacher.json` → `attention.*`, `interventions.*`,
 `snapshot.*`, `learningPoints.{allLessons, scope, direction, trajectory,
 items, prerequisites, evidence}`, `common.unnamedStudent`. Browser QA:
 `apps/web/e2e/teacher-intelligence.mjs` (demo dataset; 31 checks including no
-email on screen, 390 / 1280 px without overflow, the invitation card that joins
-nothing, the student's suggestion).
+email on screen, 390 / 1280 px without overflow, a member re-opening the join
+link lands on «قسمي» without a second row, the student's suggestion).
 
 ### 8b. The teacher learns like a student — same engine, no progression
 
@@ -878,6 +944,62 @@ usesWorkspaceShell   StudentLayout  MainLayout     TeacherLayout  MainLayout
   is still checked first by `ContentAccess` (unpublished stays closed), and the
   per-class visibility axis never applies to non-students — a lesson the
   teacher hid for قسم 1 stays open to the teacher (`TeacherLearningAccessTest`).
+- **Finding a lesson (2026-09-29).** `/enseignant/cours` (and the student's
+  « دروسي » / « استكشاف ») carry the **same search as `/courses`** —
+  `components/student/GradeLessonSearch.jsx`, one field and one rule for the
+  four pages: title + description, case-insensitive, across every ميدان of
+  the grade, live while typing. Empty → the catalogue keeps its **unit
+  cards** (الوحدة level, unchanged); typing → the matching lessons, flat, in
+  catalogue order; no match → « لا يوجد درس يطابق … » (`common.noCourseMatches`).
+- **The teacher's lesson block (unit page).** The catalogue stays at the
+  الوحدة level; lesson-level gestures live one level down, on the unit page
+  (`pages/UnitPage.jsx`), for the teacher reader only
+  (`useLearningViewer().isTeacher`; a student's unit page is unchanged):
+  the lesson's **محاور** as compact numbered chips, in `lesson.config.js`
+  order (`LessonModuleChips`), and two distinct actions
+  (`TeacherLessonActions`): **« مذكرة الدرس »** and **« وضع القسم »** — the
+  latter opens the lesson directly in a lesson session
+  (`CLASSROOM_MODE.md` §6ter).
+- **« مذكرة الدرس » — `/enseignant/cours/:lessonId/memoire`.** A teacher-only
+  orchestration document for one lesson, a single continuous page meant to
+  stay open during the class (`pages/teacher/LessonMemoPage.jsx`,
+  `features/teacher/lessonMemo/`). **It is built, never written:**
+  `buildLessonMemo` (pure, tested on every real lesson) turns the catalogue
+  entry, `lesson.config.js`, `knowledge.jsx` and `content/*.js` into
+  sections — header (level, domain, unit, duration, planned minutes, محاور),
+  objectives (skills / knowledge bricks / scope include–exclude / unit
+  objectives), prerequisites (catalogue notions + prerequisite lessons),
+  starting activity (the textbook `ACTIVITY` / `ACTIVITY_A` / `SITUATION`,
+  its questions and closing; the trigger محور's manipulations first, with a
+  « اعرض » that opens it in وضع القسم), a **timeline** with one phase per
+  محور (stage, minutes and cumulative clock, teacher / students / support /
+  intention, expected outcome = the learning points and bricks it teaches,
+  textbook questions + stage prompts, vigilance = the `commonError` of the
+  exercises on those points, transition to the next محور), examples, anticipated
+  errors (with the brick as the nudge and the exercise's `explain` as the
+  fix), differentiation (exercise `difficulty` and manipulation `level`
+  only), the trace to build, the end-of-session check (oral questions from
+  brick summaries, the evaluation محور, success indicators = learning points,
+  an exit ticket = the first `facile` exercise) and « ما بعد الحصة » (next
+  lesson in the unit, lessons that depend on it, remediation lessons). What a
+  phase *asks of the teacher and the students* is the only authored text: one
+  paragraph **per stage** in the on-demand `memo` i18n namespace, never per
+  lesson. A section with no source data is not rendered. Sticky bar:
+  « رجوع » (to `location.state.from`, else history, else `/enseignant/cours`),
+  « كرّاسي », print, open the lesson, « وضع القسم »; `@media print` gives a
+  preparation sheet without the app chrome.
+  **Access:** the route is under `ProtectedRoute allowedRoles={['teacher']}`
+  (a student or a visitor is redirected, asserted by `e2e/teacher-memo.mjs`);
+  the page also refuses an unknown, unbuilt or admin-closed lesson. The memo's
+  content is lesson content the teacher can already read; the only
+  server-side data is the teacher's notes, below.
+- **The teacher's notes in the مذكرة (« كرّاسي »).** Not a second notes
+  system: the same `notebook_notes` and `/practice/notes` API as the
+  teacher's notebook, context `lessonCode` (`MemoNotes.jsx`, see
+  `NOTEBOOK.md`). Autosave (POST on the first pause, PATCH after — never a
+  duplicate), « ✓ حُفظ », local draft as a safety net, edit and delete; a rich
+  note written in the lesson's notebook window is shown and edited in
+  « كرّاسي ». No migration, no new endpoint.
 - **Fullscreen.** Classroom Mode (وضع القسم) is the platform's fullscreen
   presentation; the teacher is a presenter role, so the « عرض » entries are
   there in the teacher shell. Students keep whatever `CLASSROOM_PRESENTER_ROLES`
@@ -943,7 +1065,7 @@ The dashboard counts teachers, classes and pending requests; a pending request
 is an alert linking to `/admin/offres/demandes`.
 
 Everything above is logged by `ActivityLogger` in the same transaction
-(`classroom.*`, `classroom_member.*`, `classroom_invitation.*`,
+(`classroom.*` incl. `classroom.join_link_rotated`, `classroom_member.*`, historical `classroom_invitation.*`,
 `classroom_lesson.status_changed`, `plan.*`, `plan_version.*`,
 `plan_override.*`, `plan_pricing.updated` (before / after grid),
 `subscription_request.*` (seats and total), `subscription.*` (seats and
@@ -963,21 +1085,24 @@ GET  /me/subscription-requests POST /me/subscription-requests {planId, studentSe
 POST /activation-codes/redeem  (existing)
 
 # student
-GET  /student/study-context    POST /student/classrooms/join {code|token, consent:true}   POST /student/classrooms/{id}/leave
+GET  /student/study-context    POST /student/classrooms/join {code|link, consent:true}   POST /student/classrooms/{id}/leave
+     (link: 201 joined, 200 {alreadyMember:true}; 422 invalid | joining_closed | consent_required | seats_exhausted …)
 POST /student/classrooms/{id}/consent            GET /student/teacher-recommendations
-GET  /invitations/{token}      (public, throttled preview)
+GET  /join-links/{token}       (public, throttle:30,1 → {classroomName, grade, teacherName, joiningOpen, alreadyMember})
+                               (alreadyMember only with a student's bearer token, else null)
+POST /auth/register            + optional classJoinLink, classJoinConsent (pending join, completed at e-mail verification)
 
 # teacher  (auth:sanctum + account.active + email.verified + can:teacher)
 GET  /teacher/dashboard        GET /teacher/entitlements (+capacity)   GET /teacher/capacity
 GET  /teacher/plans            GET /teacher/plans/{planId}/quote?seats=N   GET /teacher/subscription
 GET|POST /teacher/subscription-requests            POST /teacher/subscription-requests/{requestId}/cancel
 GET|POST /teacher/classrooms   GET|PATCH /teacher/classrooms/{id}
-POST /teacher/classrooms/{id}/archive | restore | join-code/rotate
+POST /teacher/classrooms/{id}/archive | restore | join-code/rotate | join-link/rotate
+     (classroom JSON carries joinCode, joinCodeEnabled, joinLinkToken — the client builds the URL on its own origin)
 GET  /teacher/classrooms/{id}/students             DELETE /teacher/classrooms/{id}/students/{studentId}
 GET  /teacher/classrooms/{id}/students/{studentId}/progress
-GET|POST /teacher/classrooms/{id}/invitations      DELETE /teacher/classrooms/{id}/invitations/{invitationId}
 GET  /teacher/classrooms/{id}/lessons              POST /teacher/classrooms/{id}/lessons/bulk
-PATCH /teacher/classrooms/{id}/lessons/{lessonId}  GET  /teacher/classrooms/{id}/progress
+PATCH /teacher/classrooms/{id}/lessons/{lessonId}
 GET  /teacher/classrooms/{id}/learning-points[?lesson={code}]      (the map: whole scope, or one lesson; progress.class)
 GET  /teacher/classrooms/{id}/learning-points/{code}               (one LP: students, trajectory, items, prerequisites; progress.student)
 GET  /teacher/classrooms/{id}/students/{studentId}/learning-points/{code}/explanation   (explanation, history, notebook, interventions)
@@ -1009,8 +1134,9 @@ carry the same choice.
 
 ## 11. Configuration and seeds
 
-- `config/classroom.php`: `invitation_ttl_days`, `invitation_url`
-  (`FRONTEND_URL/rejoindre/{token}`), `active_window_days`. **No commercial
+- `config/classroom.php`: `consent_version`, `timezone` (the invitation
+  settings were removed with the feature; the server returns only the link
+  token, never a URL). **No commercial
   limit lives in config**: limits are plan data.
 - `PlanSeeder` (wired in `DatabaseSeeder`): `teacher-free` (« الأستاذ —
   مجاني », default: 5 seats, unlimited classes), `teacher-seats` (« الأستاذ —
@@ -1037,13 +1163,13 @@ Backend (`apps/api/tests/Feature`, MySQL, `php artisan test -c phpunit.local.xml
 `SubscriptionLifecycleTest`, `ActivationCodeBulkPlanTest`,
 `IndividualActivationCodeTest`, `PlanEntitlementResolverTest`, `PlanAdminTest`,
 `ClassroomLimitTest`, `ClassroomJoinCodeTest`, `ClassroomMembershipCapacityTest`,
-`ClassroomInvitationTest`, `ClassroomLessonVisibilityTest`, `StudyContextTest`,
+**`ClassroomJoinLinkTest`** (token randomness and scope, public preview, idempotent re-join, code + link = one row, closed joining keeps members, rotation, owner-only management, pending join through registration and e-mail verification), `ClassroomLessonVisibilityTest`, `StudyContextTest`,
 `ClassroomProgressTest`, **`TeacherPrivacyContractTest`** (no email in any /teacher response, left / removed / archived → 404 per student, cross-teacher IDOR, archived notes private, invitation preview), **`ClassroomConsentTest`**, **`ClassroomLearningLoopTest`** (detect → understand → intervene → measure on real evidence, the student's suggestion, the signal following the facts), **`LearningPointTransitionTest`**, **`Scale/ClassroomInsightScaleTest`** (constant queries for 5 and 40 students), `Unit/Classroom/{LearningTrendTest, AttentionSignalsTest}`, **`ClassroomLearningPointTest`** (class × LP counts and reasons, outsiders excluded, hidden lesson out of scope, drill-down order, explanation for members only), `TeacherCoverageAccessTest`, `AdminTeacherClassroomTest`,
 **`TeacherLearningAccessTest`** (published and premium content open by role, hidden-for-class does not block the teacher, unpublished stays closed, progress / evidence / final-test writes refused and no row created, own notebook and Math Lab only),
 **`SeatPricingTest`** (tier boundaries 5/6/20/21/30, N × price, grid
 validation, versioning, the client's price is ignored, admin and teacher
 quotes), **`TeacherCapacityTest`** (free seats + unlimited classes, distinct
-students, join and invitation refused at capacity, over-limit after expiry
+students, join by code and by link refused at capacity, over-limit after expiry
 without deletion, a teacher cannot grant themselves seats, technical class
 limit still honoured when configured), **`SeatSubscriptionFlowTest`** (request
 with seats pending and priceless, reasoned refusals, manual activation with
@@ -1063,7 +1189,8 @@ teacher open, unpublished closed for all), `features/practice/notebook/space/not
 subscription state, **seat pricing preview**, lesson selection),
 `features/admin/plans/pricingTiers.test.js` (grid editor validation),
 `services/teacher/teacherServices.test.js`,
-`pages/teacherContract.test.js` (+ no `.email` of a student), `pages/student/{qismConsent.test.js, Qism.render.test.jsx}` (consent gesture, no join on an invitation link), `context/contentAvailability.test.js`,
+`pages/teacherContract.test.js` (+ no `.email` of a student, no e-mail invitation left, link above code), `pages/student/{qismConsent.test.js, Qism.render.test.jsx}` (consent gesture, joined confirmation), `features/classJoin/pendingClassJoin.test.js` (pending join, TTL, no open redirect, `autoJoinRequest`), `pages/JoinClassLink.test.jsx`,
+E2E `apps/web/e2e/class-join-link.mjs` (link above code, copy, register → verify → class, login → class, re-open, code, closed / rotated / invalid, desktop + mobile), `context/contentAvailability.test.js`,
 `adminServices.test.js` (navigation snapshot), `legalConsentContract.test.js`.
 
 Any change to a rule in this document changes one of those tests first.

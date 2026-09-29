@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { MailCheck, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 import { resendVerificationEmail } from '../services/authService';
+import { postAuthPath } from '../features/classJoin/pendingClassJoin';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
 /**
@@ -55,10 +56,12 @@ export default function VerificationEmail() {
     refreshUser?.();
   }, [statut, token, refreshUser]);
 
-  // Vérifié : l'élève n'a plus rien à faire ici.
+  // Vérifié : l'élève n'a plus rien à faire ici. Venu du lien d'une classe,
+  // il y retourne — la page du lien rejoint seule (ou constate que la
+  // vérification l'a déjà fait côté serveur : alreadyMember).
   useEffect(() => {
     if (user?.emailVerified) {
-      navigate(user.grade ? '/espace' : '/espace/bienvenue', { replace: true });
+      navigate(postAuthPath(user, user.grade ? '/espace' : '/espace/bienvenue'), { replace: true });
     }
   }, [user, navigate]);
 

@@ -29,6 +29,14 @@ class ClassroomException extends DomainException
 
     public const INVALID = 'invalid';
 
+    /**
+     * Le lien de classe est bon, mais la classe n'accepte plus de nouvel élève
+     * (adhésions fermées par l'enseignant, classe archivée ou suspendue). Le
+     * CODE, lui, répond `invalid` dans ce cas : six symboles se devinent, et
+     * un motif distinct dirait lesquels existent. 190 bits ne se devinent pas.
+     */
+    public const JOINING_CLOSED = 'joining_closed';
+
     public const EXPIRED = 'expired';
 
     public const REVOKED = 'revoked';

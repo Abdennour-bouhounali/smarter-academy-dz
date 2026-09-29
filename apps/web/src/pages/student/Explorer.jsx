@@ -10,6 +10,7 @@ import LessonCard from '../../components/student/LessonCard';
 import UnitGroup from '../../components/student/UnitGroup';
 import { groupLessonsByUnit } from '../../components/student/unitGrouping';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
+import GradeLessonSearch, { filterLessonsByQuery, NoLessonMatches } from '../../components/student/GradeLessonSearch';
 
 export default function Explorer() {
   const { t } = useTranslation('student');
@@ -53,6 +54,15 @@ export default function Explorer() {
     return groupLessonsByUnit(chapters, lessons);
   }, [gradeData, activeChapter, lessons]);
 
+  // La recherche de /courses (GradeLessonSearch) : tous les ميادين du
+  // niveau, titre + description. Vide → la structure en وحدات ci-dessous ;
+  // sinon les leçons trouvées, à plat.
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchResults = useMemo(
+    () => (gradeData ? filterLessonsByQuery(gradeData.chapters.flatMap((c) => c.lessons), searchQuery) : null),
+    [gradeData, searchQuery],
+  );
+
   return (
     <div className="sa-page py-8 sm:py-10">
       <div className="mb-8">
@@ -62,6 +72,12 @@ export default function Explorer() {
         <h1 className="font-space font-bold text-2xl sm:text-3xl text-slate-900">{t('explorer.title')}</h1>
         <p className="font-inter text-slate-500 text-sm mt-1">{t('explorer.subtitle')}</p>
       </div>
+
+      {gradeData && (
+        <div className="mb-8">
+          <GradeLessonSearch value={searchQuery} onChange={setSearchQuery} gradeName={gradeData.name} className="w-full md:w-96" />
+        </div>
+      )}
 
       {/* Mon niveau */}
       {myGrade && (
@@ -134,9 +150,13 @@ export default function Explorer() {
             })}
           </div>
 
-          <motion.div key={selectedGradeId + activeChapter} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <motion.div key={selectedGradeId + activeChapter + (searchResults ? ':search' : '')} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <AnimatePresence mode="popLayout">
-              {lessons.length === 0 ? (
+              {searchResults ? (
+                searchResults.length === 0
+                  ? <NoLessonMatches key="no-match" query={searchQuery} />
+                  : searchResults.map((lesson) => <LessonCard key={lesson.id} lesson={lesson} />)
+              ) : lessons.length === 0 ? (
                 <p className="col-span-full text-center py-10 text-slate-400 font-inter text-sm">{t('explorer.emptyChapter')}</p>
               ) : unitGroups ? (
                 <>

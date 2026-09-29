@@ -27,6 +27,7 @@ class EmailVerificationTest extends TestCase
     private function registerStudent(string $email = 'eleve@example.com'): array
     {
         $response = $this->postJson('/api/v1/auth/register', [
+            'firstName' => 'أمين', 'lastName' => 'بن علي',
             'email' => $email,
             'password' => 'password123',
             'accept_legal' => true,

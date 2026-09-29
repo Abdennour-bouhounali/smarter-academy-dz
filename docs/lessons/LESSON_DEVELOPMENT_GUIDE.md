@@ -632,6 +632,34 @@ for a teacher what the policy just opened. `pages/teacherContract.test.js`
 fails the build if a lesson under `lessons/moyen/` does it.
 Contract: `TEACHER_CLASSROOM_ARCHITECTURE.md` §8b.
 
+### Your lesson feeds the teacher's « مذكرة الدرس » — keep these shapes
+
+Every built lesson gets a teacher orchestration page,
+`/enseignant/cours/<id>/memoire`, **generated from your files** by
+`features/teacher/lessonMemo/buildLessonMemo.js` — nobody writes it. What
+you author therefore shows up there, and what you omit leaves a section
+empty (never filled with invented text). To make it useful:
+
+| You write | It becomes in the مذكرة |
+|---|---|
+| `modules[]` with `stage`, `estimatedMin`, `desc`, `teachesLearningPointIds` | the timeline — one phase per محور, its clock, its stage guidance, its expected outcome |
+| `skills`, `teachingScope.include/exclude` | objectives and « حدود الحصة » |
+| `resources[]` manipulations with `module` and `level` | the phase's support; `beginner` → « للمرافقة », `advanced` → « المستوى المنتظر » |
+| `content/textbook.js` export **`ACTIVITY`** (or `ACTIVITY_A`, or `SITUATION` for a synthesis) with `situation`/`text`, `questions[]`, `closing`, `source` | « وضعية الانطلاق » and the trigger phase's questions |
+| `content/exercises.js` export **`EXERCISES`** (or `EXERCISES_1`, `EXERCISES_2`…) with `statement`, `difficulty`, `learningPointId`, `question.explain`, **`commonError`** | examples, anticipated errors, each phase's vigilance, differentiation, exit ticket |
+| `knowledge.jsx` bricks with a plain-text **`summary`** | knowledge objectives, the trace to build, oral questions, the « nudge » for an error |
+| catalogue `prerequisiteLessonCodes`, `learningPoints` | prerequisites, remediation, success indicators |
+
+Rules: keep those export **names** (the builder recognises only them); give
+every exercise that has a known pitfall a `commonError`; keep each brick's
+`summary` a short plain sentence (`$…$` math is rendered, JSX is not — the
+brick's `body` never reaches the مذكرة).
+`buildLessonMemo.test.js` builds the memo of **every** lesson and fails if a
+phase or a text cannot be traced back to the lesson. Do not add memo-specific
+fields to a lesson; if a phase needs richer teacher guidance, it belongs in the
+per-stage text of the `memo` i18n namespace. Contract:
+`TEACHER_CLASSROOM_ARCHITECTURE.md` §8b.
+
 ## 9. Reference lessons — what each one demonstrates
 
 All under

@@ -6,12 +6,9 @@
  * données d'offre (plan_entitlements), configurées par l'administration.
  */
 return [
-    // Combien de jours une invitation par courriel reste acceptable.
-    'invitation_ttl_days' => (int) env('CLASSROOM_INVITATION_TTL_DAYS', 14),
-
-    // Où le lien d'invitation envoie l'élève. Le frontend accepte ensuite le
-    // jeton via l'API ; le serveur reste l'autorité.
-    'invitation_url' => env('CLASSROOM_INVITATION_URL', env('FRONTEND_URL', 'http://localhost:5173').'/rejoindre/{token}'),
+    // (Pas d'URL de lien de classe ici : le serveur ne rend que le jeton, et
+    // le client compose /rejoindre/classe/{jeton} sur sa propre origine.
+    // L'invitation par courriel et ses réglages ont été retirés le 2026-10-01.)
 
     // La version du TEXTE de partage que l'élève accepte en rejoignant un
     // قسم (student.json → qism.consent.*). Changer le texte = changer cette
@@ -21,7 +18,4 @@ return [
     // Le fuseau des fenêtres « cette semaine », « les 14 derniers jours » que
     // lit l'enseignant. Le stockage reste en UTC.
     'timezone' => env('CLASSROOM_TIMEZONE', 'Africa/Algiers'),
-
-    // « Actif ces N derniers jours » pour la progression de classe.
-    'active_window_days' => (int) env('CLASSROOM_ACTIVE_WINDOW_DAYS', 7),
 ];

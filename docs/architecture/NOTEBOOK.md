@@ -98,6 +98,18 @@ dépend pas du palier de l'élève. Côté client : compteur dans la fenêtre
 (note neuve, limite finie) et dans « Mon cahier », panneau explicatif sur
 un refus — le texte reste dans la fenêtre et le brouillon local.
 
+**La مذكرة الدرس de l'enseignant (depuis le 2026-09-29).** La page
+`/enseignant/cours/:lessonId/memoire` montre, sous « كرّاسي », les notes du
+compte sur CETTE leçon (`GET /practice/notes?lessonCode=…`) et en crée de
+nouvelles avec le contexte `lessonCode` seul
+(`features/teacher/lessonMemo/MemoNotes.jsx`). Ce n'est pas un second
+cahier : même table, même API, mêmes règles de propriété et de quota
+(`notebook_copy` = une note neuve) ; ces notes réapparaissent dans
+« كرّاسي » (/enseignant/cahier) et inversement. Enregistrement automatique
+(POST au premier arrêt de frappe, PATCH ensuite), brouillon local
+`smarter_memo_draft_<leçon>` tant que la note n'est pas née. Une note riche
+(HTML de l'éditeur) s'y lit en texte et se modifie dans « كرّاسي ».
+
 ## Trois surfaces, une table
 
 | | Répond à | Où |

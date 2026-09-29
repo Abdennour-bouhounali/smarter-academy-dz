@@ -25,7 +25,7 @@ use DomainException;
  *               l'unité de vente (sièges) ; son défaut est 0 — une
  *               capacité oubliée ferme, elle n'ouvre pas. Un abonnement
  *               porte sa propre valeur (student_seat_limit), qui l'emporte.
- *   technical → classes maximum, élèves par classe, invitations en attente :
+ *   technical → classes maximum, élèves par classe :
  *               des garde-fous TECHNIQUES, jamais l'unité de vente. Leur
  *               défaut est null = illimité : les classes sont des contenants
  *               et l'enseignant en crée autant qu'il veut.
@@ -47,8 +47,6 @@ final class EntitlementKeys
     public const STUDENTS_PER_CLASSROOM_MAX = 'students_per_classroom.max';
 
     public const STUDENTS_TOTAL_MAX = 'students_total.max';
-
-    public const INVITATIONS_ACTIVE_MAX = 'invitations.active.max';
 
     public const LESSONS_VISIBILITY = 'lessons.visibility';
 
@@ -76,7 +74,6 @@ final class EntitlementKeys
             self::STUDENTS_TOTAL_MAX => ['type' => self::TYPE_LIMIT, 'category' => 'capacity', 'default' => 0, 'label' => 'Sièges élèves (capacité commerciale)'],
             self::CLASSROOMS_MAX => ['type' => self::TYPE_LIMIT, 'category' => 'technical', 'default' => null, 'label' => 'Classes maximum (technique, vide = illimité)'],
             self::STUDENTS_PER_CLASSROOM_MAX => ['type' => self::TYPE_LIMIT, 'category' => 'technical', 'default' => null, 'label' => 'Élèves maximum par classe (technique)'],
-            self::INVITATIONS_ACTIVE_MAX => ['type' => self::TYPE_LIMIT, 'category' => 'technical', 'default' => null, 'label' => 'Invitations en attente maximum (technique)'],
             self::LESSONS_VISIBILITY => ['type' => self::TYPE_FEATURE, 'category' => 'features', 'default' => false, 'label' => 'Afficher / masquer des leçons'],
             self::LESSONS_BULK_ACTIONS => ['type' => self::TYPE_FEATURE, 'category' => 'features', 'default' => false, 'label' => 'Actions groupées sur les leçons'],
             self::PROGRESS_CLASS => ['type' => self::TYPE_FEATURE, 'category' => 'features', 'default' => false, 'label' => 'Progression de la classe'],

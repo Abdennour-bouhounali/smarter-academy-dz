@@ -84,6 +84,9 @@ class ActivityLogger
 
     public const CLASSROOM_JOIN_CODE_ROTATED = 'classroom.join_code_rotated';
 
+    /** Le lien de classe renouvelé : l'ancien n'ouvre plus rien. */
+    public const CLASSROOM_JOIN_LINK_ROTATED = 'classroom.join_link_rotated';
+
     public const CLASSROOM_MEMBER_JOINED = 'classroom_member.joined';
 
     public const CLASSROOM_MEMBER_LEFT = 'classroom_member.left';
@@ -100,12 +103,6 @@ class ActivityLogger
 
     /** L'enseignant a lu le cahier d'un élève (une ligne par jour et par élève). */
     public const TEACHER_NOTEBOOK_READ = 'teacher.notebook_read';
-
-    public const CLASSROOM_INVITATION_CREATED = 'classroom_invitation.created';
-
-    public const CLASSROOM_INVITATION_REVOKED = 'classroom_invitation.revoked';
-
-    public const CLASSROOM_INVITATION_ACCEPTED = 'classroom_invitation.accepted';
 
     public const CLASSROOM_LESSON_STATUS_CHANGED = 'classroom_lesson.status_changed';
 

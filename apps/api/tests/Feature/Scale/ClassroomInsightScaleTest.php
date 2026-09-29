@@ -60,7 +60,6 @@ class ClassroomInsightScaleTest extends TestCase
             'attention' => "/api/v1/teacher/classrooms/{$c}/attention",
             'point' => "/api/v1/teacher/classrooms/{$c}/learning-points/{$points[0]->code}",
             'dossier' => "/api/v1/teacher/classrooms/{$c}/students/{$sid}/progress",
-            'progress' => "/api/v1/teacher/classrooms/{$c}/progress",
             'interventions' => "/api/v1/teacher/classrooms/{$c}/interventions",
         ];
         $counts = [];

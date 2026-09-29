@@ -79,11 +79,13 @@ class ClassroomService
     {
         $before = $classroom->only(['name', 'description', 'academic_year', 'join_code_enabled']);
 
-        $classroom->fill(array_filter([
-            'name' => $attrs['name'] ?? null,
+        // Seuls les champs ENVOYÉS changent : un PATCH qui ne porte que
+        // `joinCodeEnabled` (fermer les adhésions) ne doit pas effacer le nom.
+        $classroom->fill([
+            'name' => $attrs['name'] ?? $classroom->name,
             'description' => array_key_exists('description', $attrs) ? $attrs['description'] : $classroom->description,
             'academic_year' => array_key_exists('academicYear', $attrs) ? $attrs['academicYear'] : $classroom->academic_year,
-        ], fn ($v) => $v !== null || true));
+        ]);
 
         if (array_key_exists('joinCodeEnabled', $attrs)) {
             $classroom->join_code_enabled = (bool) $attrs['joinCodeEnabled'];
@@ -146,6 +148,21 @@ class ClassroomService
         $classroom->forceFill(['join_code' => JoinCode::unique(), 'join_code_enabled' => true])->save();
 
         $this->log->log($teacher, ActivityLogger::CLASSROOM_JOIN_CODE_ROTATED, 'classroom', $classroom->id);
+
+        return $classroom;
+    }
+
+    /**
+     * Un nouveau lien de classe : l'ancien cesse aussitôt d'ouvrir quoi que
+     * ce soit (il répond `invalid`). Les membres restent membres. Contrairement
+     * au code, renouveler le lien ne ROUVRE PAS les adhésions fermées : c'est
+     * un geste de sécurité (« le lien a fuité »), pas d'ouverture.
+     */
+    public function rotateJoinLink(User $teacher, Classroom $classroom): Classroom
+    {
+        $classroom->forceFill(['join_link_token' => JoinLinkToken::unique()])->save();
+
+        $this->log->log($teacher, ActivityLogger::CLASSROOM_JOIN_LINK_ROTATED, 'classroom', $classroom->id);
 
         return $classroom;
     }

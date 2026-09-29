@@ -41,6 +41,11 @@ export function rotateJoinCode(token, id) {
   return call(`/teacher/classrooms/${encodeURIComponent(id)}/join-code/rotate`, send('POST', token), 'classroomSave').then((d) => d.classroom);
 }
 
+/** Un nouveau lien de classe : l'ancien n'ouvre plus rien, les membres restent. */
+export function rotateJoinLink(token, id) {
+  return call(`/teacher/classrooms/${encodeURIComponent(id)}/join-link/rotate`, send('POST', token), 'classroomSave').then((d) => d.classroom);
+}
+
 export function fetchClassStudents(token, id) {
   return call(`/teacher/classrooms/${encodeURIComponent(id)}/students`, get(token), 'progressLoadClass').then((d) => d.students);
 }
@@ -64,18 +69,6 @@ export function removeClassStudent(token, id, studentId) {
   return call(`/teacher/classrooms/${encodeURIComponent(id)}/students/${encodeURIComponent(studentId)}`, send('DELETE', token), 'classroomSave');
 }
 
-export function fetchClassInvitations(token, id) {
-  return call(`/teacher/classrooms/${encodeURIComponent(id)}/invitations`, get(token), 'invitationLoad').then((d) => d.invitations);
-}
-
-export function sendClassInvitation(token, id, email) {
-  return call(`/teacher/classrooms/${encodeURIComponent(id)}/invitations`, send('POST', token, { email }), 'invitationSend');
-}
-
-export function revokeClassInvitation(token, id, invitationId) {
-  return call(`/teacher/classrooms/${encodeURIComponent(id)}/invitations/${encodeURIComponent(invitationId)}`, send('DELETE', token), 'invitationSend');
-}
-
 export function fetchClassLessons(token, id) {
   return call(`/teacher/classrooms/${encodeURIComponent(id)}/lessons`, get(token), 'classroomLoad').then((d) => d.curriculum);
 }
@@ -88,10 +81,6 @@ export function setClassLessonStatus(token, id, lessonId, status) {
 /** Le lot : `{ applied, unchanged, failed }` — trois issues, jamais un simple « succès ». */
 export function bulkSetClassLessonStatus(token, id, lessonIds, status) {
   return call(`/teacher/classrooms/${encodeURIComponent(id)}/lessons/bulk`, send('POST', token, { lessonIds, status }), 'lessonVisibility');
-}
-
-export function fetchClassProgress(token, id) {
-  return call(`/teacher/classrooms/${encodeURIComponent(id)}/progress`, get(token), 'progressLoadClass');
 }
 
 /**

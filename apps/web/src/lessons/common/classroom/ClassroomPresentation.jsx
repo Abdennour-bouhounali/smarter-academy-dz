@@ -12,6 +12,8 @@ import { useFullscreen } from './useFullscreen';
 import { useScrollLock } from './useScrollLock';
 import { usePresentationFit } from './usePresentationFit';
 import { DEFAULT_SCALE, clampScale, stepScale } from './classroomFit';
+import ClassroomPointer from './ClassroomPointer';
+import { POINTER_SIZE_KEY, normalizePointerSize, pointerShortcut } from './classroomPointer';
 import './classroom.css';
 
 /** Préférence d'APPAREIL (comme le son des effets) : l'échelle choisie au tableau. */
@@ -130,6 +132,12 @@ function ClassroomSession({
   const [userScale, setUserScale] = useState(() => clampScale(parseFloat(storage.getItem(SCALE_KEY)) || DEFAULT_SCALE));
   // Les déclarations des pages présentées (useClassroomStage), par priorité.
   const [stages, setStages] = useState({});
+  // Le pointeur de classe (« المؤشّر ») : éteint à chaque séance, taille
+  // gardée par appareil (comme l'échelle). Voir ClassroomPointer.jsx.
+  const [pointerOn, setPointerOn] = useState(false);
+  const [spotlight, setSpotlight] = useState(false);
+  const [pointerSize, setPointerSize] = useState(() => normalizePointerSize(storage.getItem(POINTER_SIZE_KEY)));
+  const [pointerAnnounce, setPointerAnnounce] = useState('');
 
   const fullscreen = useFullscreen(rootRef);
   const isNative = active && fullscreen.isFullscreen;
@@ -157,6 +165,48 @@ function ClassroomSession({
     setSession(null);
     fullscreen.exit();
   }, [fullscreen]);
+
+  // Une séance terminée éteint le pointeur : la prochaine repart propre.
+  useEffect(() => {
+    if (active) return;
+    setPointerOn(false);
+    setSpotlight(false);
+    setPointerAnnounce('');
+  }, [active]);
+
+  const togglePointer = useCallback(() => {
+    const next = !pointerOn;
+    setPointerOn(next);
+    if (!next) setSpotlight(false);
+    setPointerAnnounce(t(next ? 'classroom.pointer.announceOn' : 'classroom.pointer.announceOff'));
+  }, [pointerOn, t]);
+  const toggleSpotlight = useCallback(() => {
+    const next = !spotlight;
+    setSpotlight(next);
+    if (next) {
+      setPointerOn(true);
+      setPointerAnnounce(t('classroom.pointer.announceSpotlight'));
+    }
+  }, [spotlight, t]);
+  const choosePointerSize = useCallback((size) => {
+    const next = normalizePointerSize(size);
+    storage.setItem(POINTER_SIZE_KEY, next);
+    setPointerSize(next);
+  }, []);
+
+  // P : le pointeur ; Maj+P : l'éclairage. Seulement pendant la séance, et
+  // jamais pendant une saisie ni dans un instrument (pointerShortcut).
+  useEffect(() => {
+    if (!active || typeof document === 'undefined') return undefined;
+    const onKey = (e) => {
+      const which = pointerShortcut(e);
+      if (!which) return;
+      e.preventDefault();
+      if (which === 'spotlight') toggleSpotlight(); else togglePointer();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [active, togglePointer, toggleSpotlight]);
 
   const toggleClassroomMode = useCallback(() => {
     if (active) exitClassroomMode(); else enterClassroomMode();
@@ -375,8 +425,13 @@ function ClassroomSession({
             onScaleStep={onScaleStep}
             slot={toolbarSlotContent}
             onExit={exitClassroomMode}
+            pointer={{
+              on: pointerOn, size: pointerSize, spotlight,
+              onToggle: togglePointer, onSize: choosePointerSize, onSpotlight: toggleSpotlight,
+            }}
           />
         )}
+        {active && <span className="sr-only" aria-live="polite">{pointerAnnounce}</span>}
 
         <div className="sa-classroom-content" ref={contentRef}>
           <div className="sa-classroom-stage" ref={stageRef}>
@@ -397,6 +452,8 @@ function ClassroomSession({
             nextModuleLabel={lessonNav?.nextLabel}
           />
         )}
+
+        {active && pointerOn && <ClassroomPointer size={pointerSize} spotlight={spotlight} />}
       </div>
     </ClassroomContext.Provider>
   );

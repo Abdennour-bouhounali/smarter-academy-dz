@@ -15,19 +15,20 @@ const qismSrc = readFileSync(new URL('./Qism.jsx', import.meta.url), 'utf8');
 
 /**
  * Rejoindre un قسم = consentir au partage. Ce fichier défend la règle :
- * aucune requête d'adhésion sans geste explicite, et un lien d'invitation
+ * aucune requête d'adhésion sans geste explicite, et un lien de classe
  * n'adhère JAMAIS tout seul.
  */
 describe('joinRequest', () => {
   it('ne produit aucun corps sans consentement', () => {
     expect(joinRequest({ code: 'ABC123' }, false)).toBeNull();
-    expect(joinRequest({ token: 'tok' }, undefined)).toBeNull();
-    expect(joinRequest({ token: 'tok' }, 'yes')).toBeNull();
+    expect(joinRequest({ link: 'tok' }, undefined)).toBeNull();
+    expect(joinRequest({ link: 'tok' }, 'yes')).toBeNull();
   });
 
   it('porte consent: true après le geste', () => {
     expect(joinRequest({ code: 'ABC123' }, true)).toEqual({ code: 'ABC123', consent: true });
-    expect(joinRequest({ token: 'tok' }, true)).toEqual({ token: 'tok', consent: true });
+    expect(joinRequest({ link: 'tok' }, true)).toEqual({ link: 'tok', consent: true });
+    expect(joinRequest({ token: 'tok' }, true)).toBeNull();
   });
 
   it('refuse un corps vide', () => {
@@ -84,7 +85,7 @@ describe('le catalogue arabe couvre le consentement', () => {
   });
 });
 
-describe('Qism : un lien d’invitation n’adhère jamais tout seul', () => {
+describe('Qism : rien n’adhère tout seul', () => {
   it('aucun joinClassGroup dans un effet', () => {
     const effects = qismSrc.split('useEffect(').slice(1).map((chunk) => chunk.split('}, [')[0]);
     for (const body of effects) expect(body).not.toMatch(/joinClassGroup/);

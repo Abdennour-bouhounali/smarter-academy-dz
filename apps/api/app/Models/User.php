@@ -17,7 +17,7 @@ use Laravel\Sanctum\HasApiTokens;
  * path this note used to promise). "Famille" remains a future account type;
  * this is a note on the existing column, not a speculative table.
  */
-#[Hidden(['password', 'remember_token'])]
+#[Hidden(['password', 'remember_token', 'pending_class_join_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */

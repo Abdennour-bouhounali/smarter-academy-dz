@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Domain\Access\EntitlementService;
 use App\Domain\Classroom\ClassroomException;
 use App\Domain\Classroom\ClassroomInterventionService;
-use App\Domain\Classroom\ClassroomInvitationService;
 use App\Domain\Classroom\ClassroomMembershipService;
 use App\Domain\Classroom\StudyContextService;
 use App\Models\Classroom;
@@ -13,16 +12,15 @@ use DomainException;
 use Illuminate\Http\Request;
 
 /**
- * L'élève et sa classe : « où j'étudie », rejoindre (code ou invitation),
- * quitter. L'élève est toujours `$request->user()` ; rejoindre ne prend
- * qu'un code ou un jeton, jamais un identifiant de classe.
+ * L'élève et sa classe : « où j'étudie », rejoindre (code ou lien de
+ * classe), quitter. L'élève est toujours `$request->user()` ; rejoindre ne
+ * prend qu'un code ou le jeton du lien, jamais un identifiant de classe.
  */
 class StudentClassroomController extends Controller
 {
     public function __construct(
         private StudyContextService $context,
         private ClassroomMembershipService $memberships,
-        private ClassroomInvitationService $invitations,
         private EntitlementService $access,
         private ClassroomInterventionService $interventions,
     ) {}
@@ -46,21 +44,27 @@ class StudentClassroomController extends Controller
     {
         $validated = $request->validate([
             'code' => 'nullable|string|max:16',
-            'token' => 'nullable|string|max:64',
+            // Le jeton du lien de classe (/rejoindre/classe/{jeton}).
+            'link' => 'nullable|string|max:64',
             // Le geste explicite « أوافق وأنضمّ » : sans lui, on ne rejoint pas.
             'consent' => 'nullable|boolean',
         ]);
 
-        if (empty($validated['code']) && empty($validated['token'])) {
-            return response()->json(['success' => false, 'reason' => ClassroomException::INVALID, 'message' => 'Code ou invitation manquant.'], 422);
+        if (empty($validated['code']) && empty($validated['link'])) {
+            return response()->json(['success' => false, 'reason' => ClassroomException::INVALID, 'message' => 'Code ou lien de classe manquant.'], 422);
         }
 
         $consented = (bool) ($validated['consent'] ?? false);
+        $alreadyMember = false;
 
         try {
-            $membership = ! empty($validated['token'])
-                ? $this->invitations->accept($request->user(), $validated['token'], $consented)
-                : $this->memberships->joinByCode($request->user(), $validated['code'], $consented);
+            if (! empty($validated['link'])) {
+                // Idempotent : un membre qui rouvre le lien est renvoyé à sa
+                // classe, sans seconde ligne et sans erreur.
+                ['membership' => $membership, 'alreadyMember' => $alreadyMember] = $this->memberships->joinByLink($request->user(), $validated['link'], $consented);
+            } else {
+                $membership = $this->memberships->joinByCode($request->user(), $validated['code'], $consented);
+            }
         } catch (DomainException $e) {
             return response()->json([
                 'success' => false,
@@ -74,9 +78,10 @@ class StudentClassroomController extends Controller
         return response()->json([
             'success' => true,
             'classroomId' => $membership->classroom_id,
+            'alreadyMember' => $alreadyMember,
             'studyContext' => $this->context->resolve($request->user()),
             'access' => $this->access->summarize($request->user()),
-        ], 201);
+        ], $alreadyMember ? 200 : 201);
     }
 
     /** POST /student/classrooms/{id}/consent — confirmer le texte de partage actuel. */

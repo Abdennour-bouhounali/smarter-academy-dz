@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { fetchCurrentUser, logout as logoutRequest, updateGrade as updateGradeRequest } from '../services/authService';
+import { fetchCurrentUser, logout as logoutRequest, updateGrade as updateGradeRequest, updateProfile as updateProfileRequest } from '../services/authService';
 import { storage, migrateLegacyStorageToUser } from '../utils/storage';
 import { setCurrentUserId } from '../utils/authUserId';
 import { LEGACY_PER_STUDENT_KEYS, isLegacyLessonKey } from '../lessons/common/studentStorageKeys';
@@ -57,6 +57,14 @@ export const AuthProvider = ({ children }) => {
     return updatedUser;
   };
 
+  // « الاسم و اللقب » — same shape as updateGrade: the server answers with
+  // the whole user, which replaces ours.
+  const updateProfile = async (names) => {
+    const updatedUser = await updateProfileRequest(token, names);
+    setUser(updatedUser);
+    return updatedUser;
+  };
+
   const fetchUser = async () => {
     if (!token) {
       setLoading(false);
@@ -105,7 +113,7 @@ export const AuthProvider = ({ children }) => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, loading, updateGrade, refreshUser }}>
+    <AuthContext.Provider value={{ user, token, login, logout, loading, updateGrade, updateProfile, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

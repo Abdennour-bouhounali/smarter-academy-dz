@@ -557,7 +557,7 @@ replaced. Authoritative contract:
   student); the server alone calculates `N × price`, and every subscription
   and every activation code keeps the exact seats and price it was granted.
   Unique students are counted (a student in two classes of one teacher is one
-  seat); invitations cannot bypass capacity; a downgrade blocks additions and
+  seat); neither the join link nor the join code can bypass capacity; a downgrade blocks additions and
   deletes nothing.
 - A teacher plan may **cover** the students of the teacher's classes (Model B);
   the student's own code (Model A) still works; institution licences are

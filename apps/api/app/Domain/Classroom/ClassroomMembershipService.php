@@ -7,7 +7,6 @@ use App\Domain\Admin\ActivityLogger;
 use App\Domain\Plans\EntitlementKeys;
 use App\Domain\Plans\PlanEntitlementResolver;
 use App\Models\Classroom;
-use App\Models\ClassroomInvitation;
 use App\Models\ClassroomMembership;
 use App\Models\User;
 use Illuminate\Support\Carbon;
@@ -15,6 +14,11 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * L'appartenance : rejoindre, quitter, retirer.
+ *
+ * Deux portes, UNE serrure : le code de classe (joinByCode) et le lien de
+ * classe (joinByLink) aboutissent tous deux à `join()` — même consentement,
+ * même capacité, même ligne unique (classe, élève). Il n'existe pas de
+ * second système d'adhésion.
  *
  * La CAPACITÉ est vérifiée ICI, au moment de rejoindre, sous verrou de la
  * classe ET de l'enseignant — jamais dans un contrôleur, jamais avec un
@@ -52,11 +56,80 @@ class ClassroomMembershipService
             throw new ClassroomException(ClassroomException::INVALID, 'Code de classe invalide.');
         }
 
-        return $this->join($student, $classroom, ClassroomMembership::VIA_JOIN_CODE, null, $consented);
+        return $this->join($student, $classroom, ClassroomMembership::VIA_JOIN_CODE, $consented);
     }
 
     /**
-     * Rejoindre — le geste commun au code et à l'invitation.
+     * La classe que désigne un lien, ou un refus. Rien sur la classe ne fuit
+     * d'un jeton inconnu : mal formé et inexistant répondent pareil.
+     *
+     * @throws ClassroomException
+     */
+    public function classroomForLink(?string $token): Classroom
+    {
+        if (! JoinLinkToken::isWellFormed($token)) {
+            throw new ClassroomException(ClassroomException::INVALID, 'Lien de classe invalide.');
+        }
+
+        $classroom = Classroom::where('join_link_token', $token)->with('teacher:id,first_name,last_name')->first();
+        if ($classroom === null) {
+            throw new ClassroomException(ClassroomException::INVALID, 'Lien de classe invalide.');
+        }
+
+        return $classroom;
+    }
+
+    /**
+     * Rejoindre par le LIEN de classe — IDEMPOTENT.
+     *
+     * Un élève déjà membre actif reçoit sa ligne telle quelle
+     * (`alreadyMember: true`) : rouvrir le lien n'est ni une erreur ni une
+     * seconde adhésion, et ne redemande pas le consentement — rien de
+     * nouveau n'est partagé. L'ordre compte : un membre garde l'accès à sa
+     * classe même si l'enseignant a fermé les adhésions depuis.
+     *
+     * @return array{membership: ClassroomMembership, alreadyMember: bool}
+     *
+     * @throws ClassroomException
+     */
+    public function joinByLink(User $student, ?string $token, bool $consented = false): array
+    {
+        $classroom = $this->classroomForLink($token);
+
+        if (! $student->isStudent()) {
+            throw new ClassroomException(ClassroomException::NOT_A_STUDENT, 'Seul un compte élève peut rejoindre une classe.');
+        }
+
+        $existing = ClassroomMembership::where('classroom_id', $classroom->id)
+            ->where('student_id', $student->id)
+            ->active()
+            ->first();
+        if ($existing !== null) {
+            return ['membership' => $existing, 'alreadyMember' => true];
+        }
+
+        if (! $classroom->acceptsNewMembers()) {
+            throw new ClassroomException(ClassroomException::JOINING_CLOSED, 'Cette classe n\'accepte plus de nouvel élève.');
+        }
+
+        try {
+            $membership = $this->join($student, $classroom, ClassroomMembership::VIA_JOIN_LINK, $consented);
+        } catch (ClassroomException $e) {
+            // Deux onglets, deux clics : le second arrive après le premier
+            // sous le verrou. Même réponse que ci-dessus, pas une erreur.
+            if ($e->reason !== ClassroomException::ALREADY_MEMBER) {
+                throw $e;
+            }
+            $membership = ClassroomMembership::where('classroom_id', $classroom->id)->where('student_id', $student->id)->firstOrFail();
+
+            return ['membership' => $membership, 'alreadyMember' => true];
+        }
+
+        return ['membership' => $membership, 'alreadyMember' => false];
+    }
+
+    /**
+     * Rejoindre — le geste commun au code et au lien.
      *
      * `$consented` : l'élève a accepté, par un geste explicite, le texte de
      * partage (ce que son enseignant lira). Sans lui, on ne rejoint pas : le
@@ -64,7 +137,7 @@ class ClassroomMembershipService
      *
      * @throws ClassroomException
      */
-    public function join(User $student, Classroom $classroom, string $via, ?ClassroomInvitation $invitation, bool $consented = false): ClassroomMembership
+    public function join(User $student, Classroom $classroom, string $via, bool $consented = false): ClassroomMembership
     {
         if (! $student->isStudent()) {
             throw new ClassroomException(ClassroomException::NOT_A_STUDENT, 'Seul un compte élève peut rejoindre une classe.');
@@ -73,7 +146,7 @@ class ClassroomMembershipService
             throw new ClassroomException(ClassroomException::CONSENT_REQUIRED, 'Le partage avec l\'enseignant doit être accepté.');
         }
 
-        return DB::transaction(function () use ($student, $classroom, $via, $invitation) {
+        return DB::transaction(function () use ($student, $classroom, $via) {
             // Verrou sur la classe, puis sur l'ENSEIGNANT : la capacité se
             // compte sur toutes ses classes, donc deux adhésions simultanées
             // dans deux classes différentes doivent aussi se sérialiser.
@@ -105,7 +178,7 @@ class ClassroomMembershipService
                     'joined_at' => $now,
                     'left_at' => null,
                     'joined_via' => $via,
-                    'invitation_id' => $invitation?->id,
+                    'invitation_id' => null,
                     'removed_by' => null,
                     'consented_at' => $now,
                     'consent_version' => (string) config('classroom.consent_version'),
@@ -116,13 +189,20 @@ class ClassroomMembershipService
                     'status' => ClassroomMembership::STATUS_ACTIVE,
                     'joined_at' => $now,
                     'joined_via' => $via,
-                    'invitation_id' => $invitation?->id,
                 ]);
                 $membership->classroom_id = $classroom->id;
                 $membership->student_id = $student->id;
                 $membership->consented_at = $now;
                 $membership->consent_version = (string) config('classroom.consent_version');
                 $membership->save();
+            }
+
+            // Un élève qui n'a pas encore choisi sa classe scolaire (arrivé
+            // par le lien, compte tout neuf) prend celle du قسم qu'il rejoint :
+            // c'est la réponse que l'accueil lui demanderait, et il la change
+            // depuis son profil. Une classe déjà choisie n'est jamais touchée.
+            if ($student->grade === null || $student->grade === '') {
+                $student->forceFill(['grade' => $classroom->grade])->save();
             }
 
             $this->log->log($student, ActivityLogger::CLASSROOM_MEMBER_JOINED, 'classroom', $classroom->id, null, [

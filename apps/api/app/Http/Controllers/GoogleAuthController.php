@@ -8,6 +8,7 @@ use App\Domain\Identity\GoogleIdentityRejected;
 use App\Domain\Identity\GoogleLinkOutcome;
 use App\Domain\Identity\LegalConsent;
 use App\Domain\Identity\PendingGoogleSignup;
+use App\Domain\Identity\PersonName;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -117,12 +118,21 @@ class GoogleAuthController extends Controller
         if ($outcome->kind === GoogleLinkOutcome::NEEDS_CONSENT) {
             $role = $this->requestedRole(self::roleFromState((string) $request->query('state', '')));
 
-            return $this->back([
+            // `prenom`/`nom` : ce que Google SUGGÈRE, pour pré-remplir l'écran
+            // où la personne confirme « الاسم و اللقب ». Une suggestion
+            // seulement — le nom enregistré est celui qu'elle valide (voir
+            // complete()). Même exposition que l'adresse déjà présente ici.
+            // Seul un nom qui passe DÉJÀ la règle arabe est suggéré : un
+            // « Amine » latin pré-rempli ne ferait qu'ouvrir l'écran sur une
+            // erreur ; le champ vide invite à l'écrire en arabe.
+            return $this->back(array_filter([
                 'etape' => 'consentement',
                 'handoff' => PendingGoogleSignup::issue($identity, $role),
                 'email' => $identity->email,
                 'type' => $role,
-            ]);
+                'prenom' => PersonName::isValid($identity->firstName) ? PersonName::normalize($identity->firstName) : null,
+                'nom' => PersonName::isValid($identity->lastName) ? PersonName::normalize($identity->lastName) : null,
+            ], fn ($v) => $v !== null && $v !== ''));
         }
 
         return $this->issueSessionRedirect($outcome->user);
@@ -134,8 +144,14 @@ class GoogleAuthController extends Controller
      */
     public function complete(Request $request): JsonResponse
     {
+        PersonName::normalizeRequest($request);
+
         $validated = $request->validate([
             'handoff' => 'required|string',
+            // « الاسم و اللقب » CONFIRMÉS par la personne à la première
+            // connexion — pré-remplis depuis Google, mais c'est ce qu'elle
+            // valide qui fait foi (un pseudo Google n'est pas un nom d'élève).
+            ...PersonName::rules(),
             // Un BOOLÉEN, et rien d'autre. Aucune version n'est acceptée du
             // client : le serveur écrit celles qui ont cours (§7).
             'accept_legal' => 'required|accepted',
@@ -145,6 +161,7 @@ class GoogleAuthController extends Controller
         ], [
             'accept_legal.required' => "Vous devez accepter les Conditions Générales d'Utilisation et la Politique de confidentialité.",
             'accept_legal.accepted' => "Vous devez accepter les Conditions Générales d'Utilisation et la Politique de confidentialité.",
+            ...PersonName::messages(),
         ]);
 
         $identity = PendingGoogleSignup::open($validated['handoff']);
@@ -159,7 +176,11 @@ class GoogleAuthController extends Controller
         $role = $validated['accountType'] ?? PendingGoogleSignup::roleOf($validated['handoff']);
 
         try {
-            $user = $this->linker->createFromIdentity($identity, LegalConsent::current(), $role);
+            $user = $this->linker->createFromIdentity(
+                $identity->withName($validated['firstName'], $validated['lastName']),
+                LegalConsent::current(),
+                $role,
+            );
         } catch (GoogleIdentityRejected $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 422);
         }

@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { GraduationCap, Sparkles } from 'lucide-react';
@@ -8,6 +8,8 @@ import { getAllGrades } from '@smarter-academy/core';
 import { AuthContext } from '../../context/AuthContext';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 import { isDiagnosticAvailableForGrade } from '../../services/diagnosticService';
+import { needsName } from '../../utils/personName';
+import { getDisplayName } from '../../utils/userDisplay';
 
 const GRADES_BY_LEVEL = getAllGrades().reduce((groups, grade) => {
   (groups[grade.levelTitle] ??= []).push(grade);
@@ -15,9 +17,11 @@ const GRADES_BY_LEVEL = getAllGrades().reduce((groups, grade) => {
 }, {});
 
 /**
- * The one onboarding step between account creation and the student space:
- * picking a grade. Registration itself only asks for email + password, so a
- * freshly-created account always lands here with `user.grade === null`
+ * The onboarding step between account creation and the student space:
+ * picking a grade. It comes AFTER « الاسم و اللقب » — an account without a
+ * name is sent to /espace/bienvenue/nom first (CompleteName.jsx). Registration
+ * collects the name but not the grade, so a freshly-created account always
+ * lands here with `user.grade === null`
  * (StudentLayout redirects here for any student in that state, not just
  * right after signup). Grade stays editable anytime from the profile page —
  * this screen just picks the starting value.
@@ -31,6 +35,10 @@ export default function ChooseGrade() {
   const [selecting, setSelecting] = useState(null);
   const [error, setError] = useState('');
   const hasGrades = Object.keys(GRADES_BY_LEVEL).length > 0;
+
+  if (needsName(user)) {
+    return <Navigate to="/espace/bienvenue/nom" replace />;
+  }
 
   const handleSelect = async (gradeId) => {
     setSelecting(gradeId);
@@ -61,7 +69,7 @@ export default function ChooseGrade() {
           <GraduationCap size={26} />
         </div>
         <h1 className="font-space font-bold text-2xl sm:text-3xl text-slate-900">
-          {t('chooseGradeWelcome')}{user?.email ? ` ${user.email.split('@')[0]}` : ''} 👋
+          {t('chooseGradeWelcome')} {getDisplayName(user)} 👋
         </h1>
         {hasGrades && (
           <p className="mt-2 font-inter text-sm text-slate-500">

@@ -67,7 +67,6 @@ class TeacherPrivacyContractTest extends TestCase
 
         return [
             'students' => "/api/v1/teacher/classrooms/{$c}/students",
-            'progress' => "/api/v1/teacher/classrooms/{$c}/progress",
             'dossier' => "/api/v1/teacher/classrooms/{$c}/students/{$sid}/progress",
             'notebook' => "/api/v1/teacher/classrooms/{$c}/students/{$sid}/notebook",
             'map' => "/api/v1/teacher/classrooms/{$c}/learning-points",
@@ -198,17 +197,18 @@ class TeacherPrivacyContractTest extends TestCase
         $this->withToken($s['token'])->getJson("/api/v1/teacher/classrooms/{$c}/students/{$sid}/notebook/{$note->id}")->assertNotFound();
     }
 
-    public function test_the_invitation_preview_does_not_reveal_the_invited_address(): void
+    public function test_the_join_link_preview_reveals_no_address_no_id_and_no_roster(): void
     {
         $this->defaultTeacherPlan();
         $this->grade4am(1);
         $classroom = Classroom::factory()->create();
-        $token = $this->withToken($this->tokenOf($classroom->teacher))
-            ->postJson("/api/v1/teacher/classrooms/{$classroom->id}/invitations", ['email' => 'invite.secret@example.dz'])
-            ->assertCreated()->json('joinUrl');
-        $plain = basename((string) $token);
+        $member = $this->student(['email' => 'membre.secret@example.dz']);
+        $this->withToken($this->tokenOf($member))->postJson('/api/v1/student/classrooms/join', ['consent' => true, 'code' => $classroom->join_code])->assertCreated();
 
-        $preview = $this->getJson("/api/v1/invitations/{$plain}")->assertOk();
-        $this->assertStringNotContainsString('invite.secret@example.dz', $preview->getContent());
+        $preview = $this->getJson("/api/v1/join-links/{$classroom->join_link_token}")->assertOk();
+        $body = $preview->getContent();
+        $this->assertStringNotContainsString('membre.secret@example.dz', $body);
+        $this->assertStringNotContainsString((string) $classroom->teacher->email, $body);
+        $this->assertSame(['classroomName', 'grade', 'teacherName', 'joiningOpen', 'alreadyMember'], array_keys($preview->json('joinLink')));
     }
 }

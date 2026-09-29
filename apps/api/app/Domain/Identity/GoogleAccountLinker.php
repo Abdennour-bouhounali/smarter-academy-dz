@@ -146,8 +146,9 @@ final class GoogleAccountLinker
 
             $user = User::create([
                 'email' => $identity->email,
-                // Le prénom si Google le donne — il alimente l'accueil de
-                // l'élève. Jamais obligatoire : un compte se crée sans.
+                // « الاسم و اللقب » tels que la personne les a confirmés sur
+                // l'écran de consentement (GoogleAuthController::complete) —
+                // pré-remplis depuis Google, jamais pris tels quels.
                 'first_name' => $identity->firstName,
                 'last_name' => $identity->lastName,
                 // PAS de mot de passe. Ni vide, ni aléatoire : NULL.

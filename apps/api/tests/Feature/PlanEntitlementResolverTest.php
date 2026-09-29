@@ -106,7 +106,7 @@ class PlanEntitlementResolverTest extends TestCase
     {
         $this->defaultTeacherPlan();
         $summary = $this->resolver()->summaryFor($this->teacher());
-        $this->assertSame(['plan', 'request', 'classes', 'students', 'studentsPerClass', 'invitations', 'features', 'allowedGrades'], array_keys($summary));
+        $this->assertSame(['plan', 'request', 'classes', 'students', 'studentsPerClass', 'features', 'allowedGrades'], array_keys($summary));
         $this->assertSame(['current', 'maximum', 'remaining', 'overLimit', 'canCreate'], array_keys($summary['classes']));
     }
 }

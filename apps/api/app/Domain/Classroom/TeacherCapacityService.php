@@ -19,7 +19,7 @@ use App\Models\User;
  *
  * Le nombre de classes n'entre nulle part : les classes sont des
  * contenants, pas l'unité de vente. C'est le seul endroit qui répond
- * « peut-il asseoir cet élève ? » ; l'adhésion (code ou invitation) le
+ * « peut-il asseoir cet élève ? » ; l'adhésion (code ou lien de classe) le
  * demande sous verrou de l'enseignant.
  */
 class TeacherCapacityService

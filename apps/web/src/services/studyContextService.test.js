@@ -1,6 +1,7 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 import {
   joinClassGroup,
+  previewJoinLink,
   confirmClassConsent,
   fetchTeacherRecommendations,
 } from './studyContextService';
@@ -38,13 +39,40 @@ describe('studyContextService', () => {
 
     it('avec consent: true, le corps le porte', async () => {
       respond(201, { success: true });
-      await joinClassGroup('tk', { token: 'inv', consent: true });
-      expect(sentBody()).toEqual({ token: 'inv', consent: true });
+      await joinClassGroup('tk', { link: 'L'.repeat(32), consent: true });
+      expect(sentBody()).toEqual({ link: 'L'.repeat(32), consent: true });
+    });
+
+    it('le jeton d’invitation (`token`) n’existe plus : jamais envoyé', async () => {
+      respond(201, { success: true });
+      await joinClassGroup('tk', { token: 'inv', code: 'ABC123', consent: true });
+      expect(sentBody()).toEqual({ code: 'ABC123', consent: true });
     });
 
     it('le motif consent_required voyage sur l’erreur', async () => {
       respond(422, { success: false, reason: 'consent_required' });
       await expect(joinClassGroup('tk', { code: 'ABC123' })).rejects.toMatchObject({ reason: 'consent_required' });
+    });
+  });
+
+  describe('previewJoinLink', () => {
+    it('publique : sans jeton d’API, aucun en-tête Authorization', async () => {
+      respond(200, { success: true, joinLink: { classroomName: 'أ', joiningOpen: true } });
+      const preview = await previewJoinLink('abc');
+      expect(sentUrl()).toMatch(/\/join-links\/abc$/);
+      expect(global.fetch.mock.calls[0][1]?.headers?.Authorization).toBeUndefined();
+      expect(preview).toEqual({ classroomName: 'أ', joiningOpen: true });
+    });
+
+    it('avec le jeton d’un élève connecté, l’en-tête part (alreadyMember)', async () => {
+      respond(200, { success: true, joinLink: { alreadyMember: true } });
+      await previewJoinLink('abc', 'tk');
+      expect(global.fetch.mock.calls[0][1].headers.Authorization).toBe('Bearer tk');
+    });
+
+    it('le motif invalid voyage sur l’erreur', async () => {
+      respond(422, { success: false, reason: 'invalid' });
+      await expect(previewJoinLink('zzz')).rejects.toMatchObject({ reason: 'invalid' });
     });
   });
 

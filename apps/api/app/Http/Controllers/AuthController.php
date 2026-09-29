@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Domain\Classroom\PendingClassJoin;
 use App\Domain\Identity\LegalConsent;
+use App\Domain\Identity\PersonName;
 use App\Models\User;
 use App\Notifications\VerifyEmailAddress;
 use Illuminate\Http\Request;
@@ -14,7 +16,13 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
+        PersonName::normalizeRequest($request);
+
         $validated = $request->validate([
+            // « الاسم و اللقب » — obligatoires dès la naissance du compte :
+            // c'est ainsi que l'enseignant reconnaîtra l'élève (jamais par
+            // son courriel). Même règle que le profil et Google (PersonName).
+            ...PersonName::rules(),
             'email' => 'required|email|unique:users,email',
             'password' => ['required', Password::min(8)->letters()->numbers()],
             // LE CONSENTEMENT — obligatoire, et réduit à un booléen.
@@ -30,6 +38,12 @@ class AuthController extends Controller
             // enseignant. Jamais admin — cette valeur n'est pas dans la liste,
             // donc un client qui l'enverrait est refusé en 422, pas ignoré.
             'accountType' => ['nullable', 'string', Rule::in(User::SELF_REGISTERABLE_ROLES)],
+            // Arrivé par le LIEN d'une classe, après avoir accepté le texte de
+            // partage sur sa page : l'adhésion attendra l'adresse vérifiée
+            // (PendingClassJoin). Le jeton est revalidé côté serveur ; un
+            // lien périmé est ignoré, il ne fait jamais échouer l'inscription.
+            'classJoinLink' => 'nullable|string|max:64',
+            'classJoinConsent' => 'nullable|boolean',
         ], [
             'email.unique' => 'Un compte existe déjà avec cet email.',
             'email.email' => 'Format email invalide.',
@@ -38,13 +52,14 @@ class AuthController extends Controller
             'password.numbers' => 'Le mot de passe doit contenir au moins un chiffre.',
             'accept_legal.required' => "Vous devez accepter les Conditions Générales d'Utilisation et la Politique de confidentialité.",
             'accept_legal.accepted' => "Vous devez accepter les Conditions Générales d'Utilisation et la Politique de confidentialité.",
+            ...PersonName::messages(),
         ]);
 
         // Le rôle vient d'une LISTE BLANCHE (student par défaut, teacher sur
         // demande explicite) — jamais d'une valeur libre du client. Le seul
         // moyen de créer un administrateur reste la commande CreateAdmin.
-        // first_name/last_name/grade ne sont pas collectés ici : le compte
-        // naît de l'email et du mot de passe, le reste vient après.
+        // Le nom naît avec le compte ; la classe scolaire (grade) est choisie
+        // juste après, à l'accueil (/espace/bienvenue).
         //
         // Un enseignant n'a pas de classe scolaire (grade) : il possède des
         // classes (Classroom), chacune avec la sienne. Il est immédiatement
@@ -54,11 +69,17 @@ class AuthController extends Controller
         // Le consentement naît avec le compte, dans le même INSERT : il
         // n'existe pas d'instant où un compte existe sans lui.
         $user = User::create([
+            'first_name' => $validated['firstName'],
+            'last_name' => $validated['lastName'],
             'email' => $validated['email'],
             'password' => $validated['password'],
             'role' => $validated['accountType'] ?? User::ROLE_STUDENT,
             ...LegalConsent::current()->attributes(),
         ]);
+
+        if (! empty($validated['classJoinLink'])) {
+            app(PendingClassJoin::class)->remember($user, $validated['classJoinLink'], (bool) ($validated['classJoinConsent'] ?? false));
+        }
 
         // L'adresse n'est PAS vérifiée (email_verified_at reste nul) : le
         // courriel qui suit est la seule façon de la prouver.
@@ -160,6 +181,29 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Déconnecté.',
+        ]);
+    }
+
+    /**
+     * « الاسم و اللقب » — le seul geste par lequel un élève ou un enseignant
+     * change son propre nom (profil, ou l'étape d'accueil qui le demande à
+     * un compte qui n'en a pas encore). Les deux parties, toujours ensemble :
+     * un nom à moitié rempli ne sortirait pas l'utilisateur de l'étape.
+     */
+    public function updateProfile(Request $request)
+    {
+        PersonName::normalizeRequest($request);
+        $validated = $request->validate(PersonName::rules(), PersonName::messages());
+
+        $user = $request->user();
+        $user->update([
+            'first_name' => $validated['firstName'],
+            'last_name' => $validated['lastName'],
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'user' => UserPresenter::format($user),
         ]);
     }
 

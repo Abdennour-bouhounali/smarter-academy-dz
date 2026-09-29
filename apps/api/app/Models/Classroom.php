@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Domain\Classroom\JoinLinkToken;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +14,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * `teacher_id` n'est PAS assignable en masse : c'est ClassroomService qui le
  * pose, depuis l'utilisateur authentifié, jamais depuis un corps de requête.
+ * `join_link_token` non plus : il naît avec la classe (booted) et ne change
+ * que par ClassroomService::rotateJoinLink.
+ *
+ * Deux portes d'entrée, une seule serrure : le lien et le code ne s'ouvrent
+ * que si `join_code_enabled` (« الانضمام مفتوح ») — le nom de la colonne
+ * date d'avant le lien.
  */
 class Classroom extends Model
 {
@@ -42,6 +49,13 @@ class Classroom extends Model
         'join_code_enabled' => true,
     ];
 
+    protected static function booted(): void
+    {
+        static::creating(function (Classroom $classroom) {
+            $classroom->join_link_token ??= JoinLinkToken::unique();
+        });
+    }
+
     protected function casts(): array
     {
         return [
@@ -65,11 +79,6 @@ class Classroom extends Model
         return $this->hasMany(ClassroomMembership::class)->where('status', ClassroomMembership::STATUS_ACTIVE);
     }
 
-    public function invitations(): HasMany
-    {
-        return $this->hasMany(ClassroomInvitation::class);
-    }
-
     public function lessonSettings(): HasMany
     {
         return $this->hasMany(ClassroomLesson::class);
@@ -78,6 +87,12 @@ class Classroom extends Model
     public function isActive(): bool
     {
         return $this->status === self::STATUS_ACTIVE;
+    }
+
+    /** La classe accepte-t-elle un NOUVEL élève (par le lien ou le code) ? */
+    public function acceptsNewMembers(): bool
+    {
+        return $this->isActive() && $this->join_code_enabled;
     }
 
     /** Compte dans la limite de classes : tout ce qui n'est pas archivé. */

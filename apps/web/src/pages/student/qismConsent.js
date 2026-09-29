@@ -16,12 +16,12 @@ export const SHARED_ITEMS = ['progress', 'mastery', 'answers', 'notebook'];
  * Le corps d'une demande d'adhésion, ou `null` tant que l'élève n'a pas
  * consenti : pas de consentement, pas de requête.
  *
- * @param {{code?: string, token?: string}} by
+ * @param {{code?: string, link?: string}} by
  * @param {boolean} consented  vrai seulement après « أوافق وأنضمّ »
  */
 export function joinRequest(by, consented) {
   if (consented !== true) return null;
-  if (by?.token) return { token: by.token, consent: true };
+  if (by?.link) return { link: by.link, consent: true };
   if (by?.code) return { code: by.code, consent: true };
   return null;
 }

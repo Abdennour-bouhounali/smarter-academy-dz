@@ -470,7 +470,7 @@ The teacher and commercial register, settled by the owner (2026-09-22):
 | **القسم / الأقسام** (« قسمي », « أقسامي ») | a teacher's class — a roster of students | the presentation mode; never الصف, never الفصل |
 | **وضع القسم** | Classroom Mode, the projector shell | a class roster |
 | **رمز الانضمام** | the join code of a class | an activation code |
-| **الدعوة** | an e-mail invitation to a class | — |
+| **رابط الانضمام** | the join link of a class (`/rejoindre/classe/…`), the recommended way in; the URL is Latin data, shown `dir="ltr"` in its own read-only field | an activation code; never « دعوة » (the e-mail invitation was removed on 2026-10-01) |
 | **العرض / العروض** (« عرضي ») | a plan (offer) | a Classroom Mode « عرض » (presentation) |
 | **الاشتراك** | a subscription running on an account | the account status |
 | **رمز التفعيل** | an activation code (paid access) | a join code |

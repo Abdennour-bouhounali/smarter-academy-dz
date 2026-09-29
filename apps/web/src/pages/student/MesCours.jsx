@@ -11,6 +11,7 @@ import LessonCard from '../../components/student/LessonCard';
 import UnitGroup from '../../components/student/UnitGroup';
 import { groupLessonsByUnit } from '../../components/student/unitGrouping';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
+import GradeLessonSearch, { filterLessonsByQuery, NoLessonMatches } from '../../components/student/GradeLessonSearch';
 import { usePrefetchLessonRuntime } from '../../lessons/common/lessonRuntimeLoader';
 
 export default function MesCours() {
@@ -49,6 +50,15 @@ export default function MesCours() {
     return groupLessonsByUnit(chapters, lessons);
   }, [gradeData, activeChapter, lessons]);
 
+  // La recherche de /courses (GradeLessonSearch) : tous les ميادين du
+  // niveau, titre + description. Vide → la structure en وحدات ci-dessous ;
+  // sinon les leçons trouvées, à plat.
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchResults = useMemo(
+    () => (gradeData ? filterLessonsByQuery(gradeData.chapters.flatMap((c) => c.lessons), searchQuery) : null),
+    [gradeData, searchQuery],
+  );
+
   if (!grade || !gradeData) {
     return (
       <div className="sa-page py-10 text-center">
@@ -75,6 +85,10 @@ export default function MesCours() {
           <Compass size={15} />
           {t('courses.exploreOtherGrades')}
         </Link>
+      </div>
+
+      <div className="mb-6">
+        <GradeLessonSearch value={searchQuery} onChange={setSearchQuery} gradeName={grade.name} className="w-full md:w-96" />
       </div>
 
       {/* Chapter filter */}
@@ -109,7 +123,11 @@ export default function MesCours() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <AnimatePresence mode="popLayout">
-          {unitGroups ? (
+          {searchResults ? (
+            searchResults.length === 0
+              ? <NoLessonMatches key="no-match" query={searchQuery} />
+              : searchResults.map((lesson) => <LessonCard key={lesson.id} lesson={lesson} />)
+          ) : unitGroups ? (
             <>
               <h3 className="col-span-full text-sm font-bold text-slate-700">{t('unit.unitCard.unitsTitle')}</h3>
               {unitGroups.units.map((unit) => <UnitGroup key={unit.id} unit={unit} />)}

@@ -19,10 +19,16 @@ describe('services enseignant', () => {
     expect(source).not.toMatch(/teacher_id/);
   });
 
-  it('rejoindre ne prend qu’un code ou un jeton, jamais un identifiant de classe', () => {
+  it('rejoindre ne prend qu’un code ou le jeton du lien, jamais un identifiant de classe', () => {
     const source = read('../studyContextService.js');
     expect(source).toMatch(/joinClassGroup\(token, by\)/);
     expect(source).not.toMatch(/classroomId.*join/);
+  });
+
+  it('le lien de classe se renouvelle par sa route, sans identifiant d’enseignant', () => {
+    const source = read('./classGroupService.js');
+    expect(source).toMatch(/\/join-link\/rotate/);
+    expect(source).not.toMatch(/\/invitations/);
   });
 
   it('le message rendu vient du catalogue arabe, jamais du serveur', () => {

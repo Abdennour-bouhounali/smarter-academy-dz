@@ -27,7 +27,7 @@ class TeacherAuthorizationTest extends TestCase
                 continue;
             }
             $uri = str_replace(
-                ['{id}', '{studentId}', '{invitationId}', '{lessonId}', '{requestId}', '{planId}', '{noteId}', '{interventionId}'],
+                ['{id}', '{studentId}', '{lessonId}', '{requestId}', '{planId}', '{noteId}', '{interventionId}'],
                 ['1', '1', '1', '1', '1', '1', '1', '1'],
                 $route->uri()
             );

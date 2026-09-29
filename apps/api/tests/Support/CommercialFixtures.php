@@ -27,7 +27,6 @@ trait CommercialFixtures
             K::CLASSROOMS_MAX => 1,
             K::STUDENTS_PER_CLASSROOM_MAX => 10,
             K::STUDENTS_TOTAL_MAX => 10,
-            K::INVITATIONS_ACTIVE_MAX => 5,
             K::LESSONS_VISIBILITY => true,
             K::LESSONS_BULK_ACTIONS => false,
             K::PROGRESS_CLASS => true,
@@ -44,7 +43,6 @@ trait CommercialFixtures
             K::CLASSROOMS_MAX => 5,
             K::STUDENTS_PER_CLASSROOM_MAX => 35,
             K::STUDENTS_TOTAL_MAX => 100,
-            K::INVITATIONS_ACTIVE_MAX => 50,
             K::LESSONS_VISIBILITY => true,
             K::LESSONS_BULK_ACTIONS => true,
             K::PROGRESS_CLASS => true,
@@ -69,7 +67,6 @@ trait CommercialFixtures
             K::STUDENTS_TOTAL_MAX => $seats,
             K::CLASSROOMS_MAX => null,
             K::STUDENTS_PER_CLASSROOM_MAX => null,
-            K::INVITATIONS_ACTIVE_MAX => null,
         ], $entitlements));
     }
 
@@ -83,7 +80,6 @@ trait CommercialFixtures
         return Plan::factory()->teacher()->withCurrentVersion(array_merge([
             K::CLASSROOMS_MAX => null,
             K::STUDENTS_PER_CLASSROOM_MAX => null,
-            K::INVITATIONS_ACTIVE_MAX => null,
             K::LESSONS_VISIBILITY => true,
             K::LESSONS_BULK_ACTIONS => true,
             K::PROGRESS_CLASS => true,

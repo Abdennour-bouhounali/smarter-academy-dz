@@ -42,6 +42,11 @@ export function ContentAvailabilityProvider({ children }) {
   const { token } = useContext(AuthContext);
   const [closed, setClosed] = useState(EMPTY_CLOSED);
   const lastFetchedAt = useRef(0);
+  // Chaque lecture reçoit un numéro ; seule la PLUS RÉCENTE s'applique. Sans
+  // lui, la lecture lancée à la connexion (avant qu'un lien de classe ne fasse
+  // rejoindre) pouvait arriver APRÈS le `refresh()` qui suit l'adhésion et
+  // réafficher l'accès d'avant — « وصول كامل » n'apparaissait qu'au rechargement.
+  const sequence = useRef(0);
   const [access, setAccess] = useState(null);
   const [loaded, setLoaded] = useState(false);
 
@@ -59,7 +64,9 @@ export function ContentAvailabilityProvider({ children }) {
    */
   const load = useCallback(async () => {
     lastFetchedAt.current = Date.now();
+    const ticket = ++sequence.current;
     const result = await fetchClosedContent(token);
+    if (ticket !== sequence.current) return result;
 
     setClosed({
       lessons: result.lessons ?? [],
@@ -85,10 +92,11 @@ export function ContentAvailabilityProvider({ children }) {
     setAccess(null);
     setLoaded(false);
     lastFetchedAt.current = Date.now();
+    const ticket = ++sequence.current;
 
     fetchClosedContent(token)
       .then((result) => {
-        if (cancelled) return;
+        if (cancelled || ticket !== sequence.current) return;
         setClosed({
           lessons: result.lessons ?? [],
           modules: result.modules ?? {},
@@ -101,7 +109,7 @@ export function ContentAvailabilityProvider({ children }) {
       })
       .catch(() => {
         // Échec silencieux ET ouvert : voir la politique ci-dessus.
-        if (!cancelled) setLoaded(false);
+        if (!cancelled && ticket === sequence.current) setLoaded(false);
       });
 
     return () => { cancelled = true; };

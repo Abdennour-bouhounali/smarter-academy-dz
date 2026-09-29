@@ -122,10 +122,9 @@ export default function SubscriptionPage() {
                 {!ent.plan?.endsAt && state.base === 'active' && <p className="text-sm text-slate-500 mt-0.5">{t('subscription.unlimited')}</p>}
               </div>
             </div>
-            <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
               <UsageMeter label={t('subscription.limitLabels.students')} meter={ent.students} hint={t('subscription.seats.classesUnlimited')} />
               <UsageMeter label={t('subscription.limitLabels.classes')} meter={ent.classes} />
-              <UsageMeter label={t('subscription.limitLabels.invitations')} meter={ent.invitations} />
             </div>
             <ul className="mt-4 flex flex-wrap gap-2">
               {Object.entries(ent.features ?? {}).map(([key, on]) => (
