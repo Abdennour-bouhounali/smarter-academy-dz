@@ -39,9 +39,16 @@ export default function FactorPairs({ n: n0, title, lead, mission, initialMode =
   useEffect(() => { setLab(L.init({ n })); setReject(null); }, [n, state.epoch]);
 
   // Le rail va au-delà de √n : c'est en testant 15 pour 105 que la répétition se voit.
+  // Le premier diviseur au-delà de √n y est TOUJOURS (comme le PGCD dans le
+  // rail des groupes) : c'est lui qui redonne un couple connu. Sans lui, la
+  // découverte était hors d'atteinte pour 659 des 998 nombres du labo libre
+  // (7, 25, 94, tout nombre premier…) — audit du 2026-09-29.
   const rail = useMemo(() => {
     const upto = Math.min(n, bound + Math.max(4, Math.ceil(bound / 2)));
-    return Array.from({ length: upto }, (_, i) => i + 1);
+    const base = Array.from({ length: upto }, (_, i) => i + 1);
+    let firstAbove = bound + 1;
+    while (firstAbove <= n && n % firstAbove !== 0) firstAbove += 1;
+    return firstAbove > upto && firstAbove <= n ? [...base, firstAbove] : base;
   }, [n, bound]);
 
   const drag = useDragInteraction({

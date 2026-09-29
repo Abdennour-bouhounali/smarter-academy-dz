@@ -23,6 +23,7 @@ export default function Module03AtaallamAlBurhana() {
               <TextbookBox kind="exercise" text={PROOF.exercise} source={PROOF.source} />
               <TapQuestion prompt={<span>ما هو المطلوب في هذا التمرين؟</span>}
                 options={['n يقسم a + b', 'n يقسم كلا من a و b', 'a + b عدد طبيعي', 'n ≠ 0']} correct={0} cols={2}
+                requires={['qasim-mushtarak-rappel']}
                 explain={<span>«n يقسم كلا من a و b» هو الشرط (المعطيات)؛ «n يقسم a + b» هو النتيجة (المطلوب).</span>}
                 onAnswered={() => setQ1(true)} />
             </div>
@@ -34,7 +35,7 @@ export default function Module03AtaallamAlBurhana() {
             <div className="space-y-3">
               <KnowledgeBrick id="burhan-idha-fainna" />
               <TapQuestion prompt={<span>في البرهان، ما دور العدد <MathText>{'$k = q + q\'$'}</MathText>؟</span>}
-                options={['هو العدد الطبيعي الذي يحقّق a + b = n × k، فيثبت أن n يقسم a + b', 'هو باقي قسمة a + b على n', 'هو القاسم المشترك الأكبر', 'لا دور له']} correct={0} cols={1}
+                options={['هو العدد الطبيعي الذي يحقّق a + b = n × k، فيثبت أن n يقسم a + b', 'هو باقي قسمة a + b على n', 'هو حاصل قسمة a على n', 'لا دور له']} correct={0} cols={1}
                 requires={['ithbat-qasim', 'burhan-idha-fainna']}
                 explain={<span>لإثبات أن d يقسم m يكفي إيجاد عدد طبيعي k حيث m = d × k — وهذا ما وجدناه.</span>}
                 onAnswered={() => setQ2(true)} />

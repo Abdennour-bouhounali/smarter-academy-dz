@@ -22,7 +22,7 @@ export default function Module02Khassiyatan() {
               <TextbookBox kind="property" title="خاصيتان" lines={[PROPERTIES.intro, pd.text]} source={PROPERTIES.source} />
               <TextbookBox kind="example" text={pd.example} compact />
               <TapQuestion prompt={<span>في المثال، لماذا توقّفنا عند PGCD(7 ; 7) = 7؟</span>}
-                options={['لأن 7 − 7 = 0: العددان متساويان، وقاسمهما المشترك الأكبر هو 7 نفسه', 'لأن 7 عدد أولي', 'لأن 21 = 3 × 7', 'لأن الفرق أصغر من 10']} correct={0} cols={1} requires={['pgcd-farq']}
+                options={['لأن 7 − 7 = 0: العددان متساويان، وقاسمهما المشترك الأكبر هو 7 نفسه', 'لأن 7 أصغر من 14', 'لأن 21 = 3 × 7', 'لأن الفرق أصغر من 10']} correct={0} cols={1} requires={['pgcd-farq', 'nataij-mubashira']}
                 explain={<span>PGCD(a ; a) = a (نتائج مباشرة). آخر فرق غير معدوم هو 7.</span>} onAnswered={() => setQ1(true)} />
             </div>
           ) },

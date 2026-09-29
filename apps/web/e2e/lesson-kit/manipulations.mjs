@@ -362,7 +362,8 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
     const f = await page.evaluate(() => {
       const r = document.querySelector('[data-classroom-active="true"]');
       const tb = r?.querySelector('[data-classroom-toolbar]');
-      const small = [...(tb?.querySelectorAll('button') ?? [])].filter((b) => b.getBoundingClientRect().height < 44 || b.getBoundingClientRect().width < 44).length;
+      // Un bouton masqué sous 640 px (le pointeur de classe) n'est pas une petite cible.
+      const small = [...(tb?.querySelectorAll('button') ?? [])].filter((b) => b.getClientRects().length > 0).filter((b) => b.getBoundingClientRect().height < 44 || b.getBoundingClientRect().width < 44).length;
       return { active: !!r, pageX: document.scrollingElement.scrollWidth <= window.innerWidth + 1, rootX: r ? r.scrollWidth <= r.clientWidth + 1 : false, small };
     });
     check(`C3 ${vp.width}×${vp.height} : présentation active, aucun débordement horizontal`, f.active && f.pageX && f.rootX, JSON.stringify(f));

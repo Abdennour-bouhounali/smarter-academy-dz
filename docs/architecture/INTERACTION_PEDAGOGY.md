@@ -15,8 +15,22 @@
 > playbook.
 
 Every file path below is repo-relative. Components are cited as **examples of interaction
-primitives**, never as mandatory building blocks. A new lesson may reuse them, extend them, or
-build its own — the rules in this document apply either way.
+primitives**, never as mandatory building blocks. The rules in this document apply to any
+manipulation.
+
+> **Historical examples (read this first).** Most example components this document cites —
+> `PartitionShape`, `ShapeComposer`, `FormulaBuilder`, `LiquidContainer`, `Balance`,
+> `FractionBuilder`, `AreaGrid`, `ClockFace`, `FunctionMachine`, `TaxiMeter`, `planeFor`… and
+> every path under `lessons/college/` or `lessons/lycee/` — belonged to the **French-era lessons
+> deleted on 2026-09-25** (read them in git history). They are kept as illustrations of the
+> principles, not as components to import. **The current manipulations are the closed registry of
+> 10 types** in `packages/core/curriculum/manipulationTypes.js` (mounted by
+> `apps/web/src/lessons/common/manipulations/manipulationRegistry.js`): `divisor-explorer`,
+> `divisor-explorer-books`, `team-builder`, `factor-pairs`, `divisor-properties`,
+> `common-divisors`, `pgcd-differences`, `euclidean-algorithm`, `coprime-explorer`,
+> `fraction-reduction` — reused across lessons by props and theme data
+> (`MANIPULATION_CONTRACT.md`). Shared components still present include `NumberLine`,
+> `CoordPlane` and `InfoSorter` (`apps/web/src/lessons/common/components/`).
 
 ---
 
@@ -53,8 +67,10 @@ interaction.** A rule that opens a module is a rule the student has no reason to
 
 ### 1.1 Vocabulary mapping
 
-Three vocabularies exist in the repo. They describe the same journey; use the one the context
-demands.
+Three vocabularies exist in the repo. The **authoritative** stage sequence is the machine-checked
+`stage` of `packages/core/curriculum/lessonStages.js` (`prerequisite_check → trigger → discovery →
+manipulation → formalization → practice_lab → evaluation`). `.agents/AGENTS.md` is a French-era
+pedagogical vocabulary (its 8-step loop), kept for reference — not a contract.
 
 | This guide (design vocabulary) | `stage` in `lesson.config.js` (machine-checked) | `.agents/AGENTS.md` (French loop) |
 |---|---|---|
@@ -87,9 +103,10 @@ Canonical touches:
 
 ### TRUE MANIPULATION
 
-**An action changes a mathematical state.** Tapping a part of `PartitionShape`
-(`apps/web/src/lessons/college/6e/nombres_calculs/fractions/components/PartitionShape.jsx`)
-adds an index to `cells`; the numerator *is* `cells.length`. Dragging the cursor of `NumberLine`
+**An action changes a mathematical state.** Tapping a part of the (historical, deleted
+2026-09-25) `PartitionShape` added an index to `cells`; the numerator *was* `cells.length`. In the
+4AM unit, placing a book on a shelf of `divisor-explorer-books` builds the partition whose
+equal shelves *are* the divisor. Dragging the cursor of `NumberLine`
 (`apps/web/src/lessons/common/components/NumberLine.jsx`) in `mode="place"` sets `value`; the
 position *is* the number.
 
@@ -163,19 +180,22 @@ A primitive is **appropriate when the variable the student controls is the conce
 variable.** If the concept is "denominator", the control must change the number of equal parts —
 not scroll a carousel of pre-cut pizzas.
 
-| Primitive | Student controls | Mathematical state | Appropriate when | Existing examples (not mandatory) |
+*The « examples » column names French-era components deleted on 2026-09-25 (historical); the
+« 4AM registry types » column names what exists today.*
+
+| Primitive | Student controls | Mathematical state | Appropriate when | Historical examples (deleted) · 4AM registry types |
 |---|---|---|---|---|
-| **A. Partition** | how many equal parts; which parts are taken | denominator, numerator, ratio, area share, probability | the concept is *about* equal parts or the whole/part relation | `PartitionShape` (`weights` allows deliberately unequal parts for the "4 morceaux ≠ 4 parts égales" conflict); `ObjectGroup` (fractions of a collection — the student selects *groups*, never single objects) |
+| **A. Partition** | how many equal parts; which parts are taken | denominator, numerator, ratio, area share, probability | the concept is *about* equal parts or the whole/part relation | `PartitionShape` (`weights` allows deliberately unequal parts for the "4 morceaux ≠ 4 parts égales" conflict); `ObjectGroup` (fractions of a collection — the student selects *groups*, never single objects) · 4AM: `divisor-explorer-books`, `team-builder` |
 | **B. Combine / Compose** | which pieces join | sum of fractions, of lengths, of expressions; composed figure | the concept is additive or compositional | `ShapeComposer` (aires: tap piece → tap slot); `FormulaBuilder` (perimetres: chips → formula tokens) |
 | **C. Move** | position of an object | abscissa, coordinate, measure read at a position | the concept is a *position* or a *value on a continuum* | `NumberLine` mode `place`; `Ruler` mode `place-object`; `ReferenceRuler` (estimate with a 1 m reference) |
 | **D. Resize** | a dimension or scale | length, width, area, volume, scale factor | the concept links dimensions to a derived quantity | none shared yet — design note: two steppers (width, height) driving one rectangle whose area and perimeter mirrors update live |
 | **E. Fill / Empty** | how much is in a container | capacity, fraction / percentage of a whole, volume | the concept is a *quantity relative to a capacity* | `MeasureFillMission` + `LiquidContainer` (one `fillPct` prop drives level, wave, overflow) |
-| **F. Group / Ungroup** | how objects are bundled | place value, factors, equal groups, powers of ten | the concept is a *structure of a count* | `GroupBuilder`, `EqualShareBoard` (nombres-entiers); `UnitGrid` (nombres-decimaux, tenths/hundredths) |
-| **G. Compare** | which of two objects is bigger / first / heavier | order, equality, ratio | the concept is a *relation* between two objects | `OrderingGame` (tap-to-order, reports first break point); `Balance` + `ItemBank` (masses) |
+| **F. Group / Ungroup** | how objects are bundled | place value, factors, equal groups, powers of ten | the concept is a *structure of a count* | `GroupBuilder`, `EqualShareBoard` (nombres-entiers); `UnitGrid` (nombres-decimaux, tenths/hundredths) · 4AM: `factor-pairs`, `divisor-explorer` |
+| **G. Compare** | which of two objects is bigger / first / heavier | order, equality, ratio | the concept is a *relation* between two objects | `OrderingGame` (tap-to-order, reports first break point); `Balance` + `ItemBank` (masses) · 4AM: `common-divisors`, `coprime-explorer` |
 | **H. Construct** | the object itself, from nothing | the target fraction, angle, figure, graph | the concept is a *definition* the student must instantiate | `FractionBuilder` (stepper + denominator options); `AreaGrid` (paint cells); `PolygonPerimeter` (tap sides in contour order) |
-| **I. Transform** | a transformation parameter; the unit of description | image of a figure; same magnitude in another unit | the concept is an *invariant under change* | `ConservedSegment`, `ConservedMass` (unit changes, bar never moves); geometry via `common/utils/geometry2d.js` (`reflectPoint`, `isSymmetryAxis`) |
+| **I. Transform** | a transformation parameter; the unit of description | image of a figure; same magnitude in another unit | the concept is an *invariant under change* | `ConservedSegment`, `ConservedMass` (unit changes, bar never moves); geometry via `common/utils/geometry2d.js` (`reflectPoint`, `isSymmetryAxis`) · 4AM: `fraction-reduction`, `pgcd-differences`, `euclidean-algorithm` |
 | **J. Balance** | what goes on each side | equality of two sums, equation state | the concept is *equality maintained under the same operation on both sides* | `Balance` (tilt derived from the two mass sums) |
-| **K. Adjust a parameter** | one number via stepper / slider / chip | coefficient, slope, denominator, radius, unit, time | the concept is *how one output depends on one input* | `UnitSwitcher`; `ClockFace` (drag + mandatory ±buttons); `CircleUnroller` (`step` 0..4 rolls the circle) |
+| **K. Adjust a parameter** | one number via stepper / slider / chip | coefficient, slope, denominator, radius, unit, time | the concept is *how one output depends on one input* | `UnitSwitcher`; `ClockFace` (drag + mandatory ±buttons); `CircleUnroller` (`step` 0..4 rolls the circle) · 4AM: `divisor-properties` |
 
 Choose the **fewest** primitives that expose the concept's variable. A lesson rarely needs more
 than two.
@@ -311,7 +331,13 @@ REAL SITUATION → CURIOSITY → PREDICTION → MANIPULATION → OBSERVATION →
   defining it. Formal vocabulary and `f(x)` notation belong to the module whose stage is
   `discovery`/`formalization` (§6, §14).
 
-Only after this arc may explanation begin — in the next module.
+Only after this arc may explanation begin. **Naming happens after the gesture, never before it:**
+in the 4AM unit, the Module 1 of each of the eight concept lessons ends its manipulation step with
+a `KnowledgeBrick` (default `variant="new"`) that names what the student has just caused — e.g.
+`qasim-adad-tabii/modules/Module01AlMaktaba.jsx` lays `qasim-baqi` after the books are shelved
+(KNOWLEDGE_DEPENDENCY.md « teach before the demand »). A `synthesis` lesson (the unit's
+وضعية إدماجية, `wadiya-idmajiya-aadad`) has **no opening manipulation**: its Module 1 is the
+situation and its analysis, with `variant="rappel"` bricks only.
 
 ### 6bis.2 Design the manipulation from the mathematics, not from a widget list
 
@@ -329,7 +355,10 @@ drive the taxi back to 0 km, place the fifth point, slide the probe to 400 m.
 
 **Each lesson must have its own mathematical identity.** Reuse the *quality* of a proven
 opening, never the exact interaction: a graph plus a slider used five times with different labels
-is five failures, not one success. The five 3e function lessons are the precedent —
+is five failures, not one success. *(Historical — the five French-era 3e function lessons below
+were deleted on 2026-09-25, with every component the table names; the table is kept for the
+pedagogical pattern. For the current openings, see the Module 1 of each 4AM lesson and the drawn
+worlds table of `MANIPULATION_CONTRACT.md` §2bis.)*
 
 | Lesson | Opening laboratory | Phenomenon the student makes happen | What is *not* done here (later module) |
 |---|---|---|---|
@@ -373,10 +402,11 @@ later module's responsibility (playbook §6) before shipping it.
 The opening manipulation is the most manipulated screen of the lesson, so §17bis applies with
 full force: **no number, label, symbol, line, point, arrow or control may overlap, collide, clip
 or leave its frame for any reachable state**. Never assume a digit count, a short label, a
-positive value or a fixed position. Derive the frame from the content (`planeFor(points)` in
-`fonctions-3e` fits range, step and pixel units to whatever the student typed; `TaxiMeter` sizes
-its frame for the most expensive tariff), keep readouts in the DOM rather than in SVG `<text>`,
-and **sweep the control in the e2e suite** — including a mobile pass at 375 px and an aspect-ratio
+positive value or a fixed position. Derive the frame from the content (historical examples, deleted
+2026-09-25: `planeFor(points)` fitted range, step and pixel units to whatever the student typed;
+`TaxiMeter` sized its frame for the most expensive tariff), keep readouts in the DOM rather than in
+SVG `<text>`, run `npm run audit:collisions` (`scripts/audit-svg-collisions.mjs`), and **sweep the
+control in the e2e suite** — including a mobile pass at 375 px and an aspect-ratio
 guard on every `CoordPlane` (`viewBox height / width ≤ 3`, the signature of a forgotten `unitY`).
 
 ### 6bis.4bis Two levels, one workspace (2026-09-20)
@@ -438,7 +468,9 @@ playbook §16b). Writing a guide section is never a licence to update the lesson
 
 ## 6ter. The mathematical laboratory — rules confirmed by the 3e « données » batch
 
-Written after building `probabilites-3e`, `proportionnalite-3e` and `modelisation-3e` (2026-09-05),
+*(Historical provenance — these three French-era lessons were deleted on 2026-09-25; the rules
+remain normative, the component names below are historical.)* Written after building
+`probabilites-3e`, `proportionnalite-3e` and `modelisation-3e` (2026-09-05),
 the last three lessons of the 3e « Organisation et gestion de données, fonctions » chapter. §6bis
 states the principles; this section pins the operational rules those three builds proved, so the
 next lesson does not rediscover them. Every rule below is normative for new lessons; none is a
@@ -516,11 +548,12 @@ Devices that held under sweeps in these three lessons:
 > When an AI agent modifies a manipulation, it must modify only the current manipulation unless
 > explicitly instructed otherwise.
 
-Corollaries met here: a lab needed in two lessons is **copied and adapted** (`probaUtils` from
-`diceUtils`, `propUtils` from the 6e `proportionUtils`), never imported across lesson folders;
-a shared component is touched only when the current manipulation cannot exist without it (none
-was, in this batch); a sibling lesson's overlapping module (the die lab of `statistiques-3e`) is
-left as is and the overlap is reported.
+Corollaries (current rule): manipulations are a **closed registry of types** reused across lessons
+by props and theme data (`MANIPULATION_CONTRACT.md`) — never copied into a lesson folder; a shared
+component is **extended behind an optional prop, never forked**, and only when the current
+manipulation cannot exist without it; a sibling lesson's overlapping module is left as is and the
+overlap is reported. *(Historical: the French-era batch copied labs between lesson folders —
+`probaUtils` from `diceUtils` — a practice the registry replaced.)*
 
 ### 6ter.7 Bug classes found and fixed in this batch — grep for them
 
@@ -537,9 +570,10 @@ left as is and the overlap is reported.
 - **Single-line imports and scripted edits.** Appending `, x` to an import that is on one line
   needs a different edit than a multi-line list; always recompile after a scripted edit.
 
-## 6quater. Displacement lessons — the ladder confirmed by `vecteurs-2nde`
+## 6quater. Displacement lessons — the ladder confirmed by `vecteurs-2nde` (historical)
 
-Written after building the 2nde « Vecteurs » lesson (2026-09-05). §6bis and §6ter state the
+*(Historical — the 2nde « Vecteurs » lesson and its components were deleted on 2026-09-25; read
+them in git history. The ladder below remains a pedagogical pattern.)* Written after building the 2nde « Vecteurs » lesson (2026-09-05). §6bis and §6ter state the
 principles; this section pins the shape that worked for a concept that IS a transformation rather
 than a quantity, so the next lesson on translations, vectors, or coordinates does not rediscover it.
 
@@ -794,8 +828,9 @@ House policy, applied by construction in `common/kit/questions.jsx`:
 - `onAnswered(isCorrect)` always fires — a wrong answer never blocks progression;
 - on a wrong answer the student sees **their answer, the correct answer, and the rule** — never a
   «Réessayer» loop;
-- `Feedback` (`common/components/LessonUI.jsx`) carries meaning by icon plus an `sr-only` French
-  prefix («Correct : », «À revoir : », «Indice : »), never by colour alone.
+- `Feedback` (`common/components/LessonUI.jsx`) carries meaning by icon plus an `sr-only` prefix
+  read from i18n (`t(toneSpec.prefixKey)` — `feedback.correct` « صحيح », `feedback.toReview`
+  « للمراجعة », `feedback.hint` « إرشاد » in `locales/ar/lesson.json`), never by colour alone.
 
 Avoid: long explanations, popups, constant celebrations, generic «Bravo !». Feedback **describes
 mathematics**:
@@ -961,9 +996,10 @@ available space, collision-aware placement, responsive containers, and scaling t
 drawing unit) when the magnitude grows. When an object moves, its label moves with it or finds
 another safe position. Reserve space for the **longest** reachable string, not the current one.
 
-Practical devices already used in this repo: a collision-aware label placer fed with the drawing's
-own obstacles (`vecteurs-2nde/components/labelLayout.js`, §6quater.3); an axis floor so the scale never collapses around small
-values (`graphiques/components/BarChart.jsx`'s `axisFloor`); capped representative tiles plus a
+Practical devices (the first two from French-era lessons deleted on 2026-09-25 — historical): a
+collision-aware label placer fed with the drawing's own obstacles (`vecteurs-2nde/components/labelLayout.js`,
+§6quater.3); an axis floor so the scale never collapses around small values
+(`graphiques/components/BarChart.jsx`'s `axisFloor`); capped representative tiles plus a
 « ×N » badge instead of rendering a thousand nodes; readouts placed outside the figure in a normal
 DOM row rather than inside the SVG, where they cannot collide with the drawing at all.
 
@@ -1053,10 +1089,11 @@ a.x < c.x + c.width && c.x < a.x + a.width && // → chevauchement
   a.y < c.y + c.height && c.y < a.y + a.height
 ```
 
-Worked pattern: `apps/web/e2e/lesson-kit/_fo-overflow-audit.mjs` (initial states)
-and `_fo-extremes-audit.mjs` (reachable extremes, driven by the keyboard path so
-the run is deterministic). Both run at 375 px **and** at desktop width — a layout
-that survives one width can fail the other.
+Worked pattern: `npm run audit:collisions` (`scripts/audit-svg-collisions.mjs`) opens
+the visuals in a browser, measures the real `getBBox` boxes and crosses every `<text>`
+with the meaningful elements; run it at 375 px **and** at desktop width
+(`--width`) — a layout that survives one width can fail the other. *(The French-era
+`_fo-overflow-audit.mjs` / `_fo-extremes-audit.mjs` scripts were deleted.)*
 
 Reference fix: `CoordPlane`'s `planeGeometry(range, unit, pad)` accepts a per-side
 margin, and the component measures its own tick labels to choose it; labels flip
@@ -1148,7 +1185,9 @@ mathematics dictates.
 
 ## 21. Example — fractions
 
-Reference lesson: `apps/web/src/lessons/college/6e/nombres_calculs/fractions/`.
+*(Historical — the reference lesson `apps/web/src/lessons/college/6e/nombres_calculs/fractions/`
+and every component this section names were deleted on 2026-09-25; read them in git history. The
+current worked examples are the 4AM lessons — see `docs/lessons/LESSON_DEVELOPMENT_GUIDE.md` §9.)*
 
 ```
 Real chocolate bar → divide the whole → take pieces → observe the quantity → the fraction appears
@@ -1193,7 +1232,8 @@ mirrors, reveal-as-conclusion.
 ## 22. Example patterns for other topics
 
 Format: **real situation → manipulation → controlled variable → observation → formalization**.
-Where the repo has a primitive, it is named; otherwise the row is a design note.
+The « Existing primitive » column names French-era components deleted on 2026-09-25 (historical);
+where no primitive existed, the row is a design note.
 
 | Topic | Real situation | Manipulation | Controlled variable | Observation | Formalization | Existing primitive |
 |---|---|---|---|---|---|---|
@@ -1340,8 +1380,8 @@ Require:
 
 - keyboard alternatives for every manipulation
 - visible focus
-- screen-reader labels in French stating the *reading* («Curseur à 3 sur 4», «Carreau ligne 2,
-  colonne 3»)
+- screen-reader labels in Arabic stating the *reading* (every `aria-label` is Arabic —
+  `ARABIC_RTL_CONTRACT.md`)
 - accessible alternatives to dragging that reach the same mathematical state
 - sufficient contrast
 - touch-friendly controls (§17)
@@ -1516,4 +1556,4 @@ Run before declaring a lesson complete. Every answer must be **yes**.
 
 ## Manipulation system (phase 8, 2026-09-18)
 
-Implemented once in `apps/web/src/lessons/common/manipulations/`: a closed registry of TYPES (each named by the mathematical idea it makes visible), a shared shell and state hook, and shared primitives. A lesson declares its manipulations as DATA (`lesson.config.js` → `resources[]`) and renders `<Manipulation type="…" />` in the module's `intro` slot (§6bis). Modules run in « وضع التلميذ » (the student acts at each step); class mode exists in `TeacherControls` for a future teacher surface.
+Implemented once in `apps/web/src/lessons/common/manipulations/`: a closed registry of TYPES (each named by the mathematical idea it makes visible), a shared shell and state hook, and shared primitives. A lesson declares its manipulations as DATA (`lesson.config.js` → `resources[]`) and renders `<Manipulation type="…" />` in the module's `intro` slot (§6bis). Modules run in « وضع التلميذ » (the student acts at each step); class mode lives in `ManipulationTeacherMode` (`apps/web/src/lessons/common/manipulations/ManipulationTeacherMode.jsx`), driven by Classroom Mode.

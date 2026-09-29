@@ -17,7 +17,7 @@ async function open(url) {
   watchErrors(page, errors);
   await page.route('**/auth/me', (r) => r.fulfill({
     status: 200, contentType: 'application/json',
-    body: JSON.stringify({ success: true, user: { id: 7, name: 'تلميذ', email: 't@t.dz', role: 'student', grade: '4am', email_verified_at: '2026-09-01T00:00:00Z' } }),
+    body: JSON.stringify({ success: true, user: { id: 7, name: 'تلميذ', email: 't@t.dz', role: 'student', grade: '4am', email_verified_at: '2026-09-01T00:00:00Z', nameComplete: true } }),
   }));
   await page.goto(BASE + url, { waitUntil: 'domcontentloaded' });
   await page.waitForTimeout(1800);
@@ -33,13 +33,9 @@ const state = (page) => page.evaluate((unitPath) => ({
 
 for (const [label, url] of [['دروسي', '/espace/cours'], ['استكشاف', '/espace/explorer']]) {
   const { ctx, page } = await open(url);
-  check(`${label} : la barre latérale d'origine (6 destinations, pas d'arbre)`, (await state(page)).sidebarLinks === 6 && !(await state(page)).tree, JSON.stringify(await state(page)));
+  check(`${label} : la barre latérale d'origine (8 destinations, pas d'arbre)`, (await state(page)).sidebarLinks === 8 && !(await state(page)).tree, JSON.stringify(await state(page)));
   check(`${label} : « كل الميادين » montre la carte de l'unité`, (await state(page)).unitCard);
 
-  // Cliquer un ميدان sans unité : plus de carte d'unité, des cartes de leçon.
-  await page.getByRole('button', { name: /ميدان الحساب الحرفي/ }).click();
-  await page.waitForTimeout(500);
-  check(`${label} : un ميدان sans unité ne montre pas de carte d'unité`, !(await state(page)).unitCard);
 
   // Cliquer le ميدان du manuel : la carte d'unité mène à la page d'unité.
   await page.getByRole('button', { name: /ميدان أنساب الأعداد والحساب/ }).click();

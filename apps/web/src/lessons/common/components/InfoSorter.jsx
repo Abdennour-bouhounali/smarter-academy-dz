@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { CheckCircle2, XCircle } from 'lucide-react';
 import useDragDrop from '../manip6e/useDragDrop';
@@ -28,6 +29,7 @@ import useDragDrop from '../manip6e/useDragDrop';
  *   (ex. pour brancher le son/la série du lesson kit : `onCheck={kit.react}`).
  */
 export default function InfoSorter({ items, onSolved, solved, formative = false, onCheck }) {
+  const { t } = useTranslation('lesson');
   const [assign, setAssign] = useState({}); // id -> 'utile' | 'inutile'
   const [checked, setChecked] = useState(false);
 
@@ -79,8 +81,8 @@ export default function InfoSorter({ items, onSolved, solved, formative = false,
       {/* Réserve de cartes */}
       {pool.length > 0 && (
         <div>
-          <div className="text-[11px] font-mono font-bold text-slate-400 uppercase tracking-wider mb-2">
-            Fais glisser une information dans un bac
+          <div className="text-xs font-bold text-slate-500 mb-2">
+            {t('infoSorter.pool')}
           </div>
           <div className="flex flex-wrap gap-2">
             {pool.map((it) => (
@@ -115,8 +117,8 @@ export default function InfoSorter({ items, onSolved, solved, formative = false,
               : 'border-slate-200 bg-slate-50'
           }`}
         >
-          <div className="text-[11px] font-mono font-bold text-emerald-600 uppercase tracking-wider">
-            Données utiles
+          <div className="text-xs font-bold text-emerald-700">
+            {t('infoSorter.useful')}
           </div>
           {utiles.map((it) => (
             <motion.button
@@ -126,7 +128,7 @@ export default function InfoSorter({ items, onSolved, solved, formative = false,
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               onClick={(e) => { e.stopPropagation(); unassign(it.id); }}
-              className={`w-full text-left px-3 py-2 rounded-lg border-2 text-sm transition-colors ${cardTone(it)} ${solved ? '' : 'hover:opacity-80'}`}
+              className={`w-full text-start px-3 py-2 rounded-lg border-2 text-sm transition-colors ${cardTone(it)} ${solved ? '' : 'hover:opacity-80'}`}
             >
               {checked && (it.useful ? <CheckCircle2 className="inline w-3.5 h-3.5 me-1.5" aria-hidden="true" /> : <XCircle className="inline w-3.5 h-3.5 me-1.5" aria-hidden="true" />)}
               {it.text}
@@ -146,8 +148,8 @@ export default function InfoSorter({ items, onSolved, solved, formative = false,
               : 'border-slate-200 bg-slate-50'
           }`}
         >
-          <div className="text-[11px] font-mono font-bold text-slate-400 uppercase tracking-wider">
-            Informations inutiles
+          <div className="text-xs font-bold text-slate-500">
+            {t('infoSorter.useless')}
           </div>
           {inutiles.map((it) => (
             <motion.button
@@ -157,7 +159,7 @@ export default function InfoSorter({ items, onSolved, solved, formative = false,
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               onClick={(e) => { e.stopPropagation(); unassign(it.id); }}
-              className={`w-full text-left px-3 py-2 rounded-lg border-2 text-sm transition-colors ${cardTone(it)} ${solved ? '' : 'hover:opacity-80'}`}
+              className={`w-full text-start px-3 py-2 rounded-lg border-2 text-sm transition-colors ${cardTone(it)} ${solved ? '' : 'hover:opacity-80'}`}
             >
               {checked && (!it.useful ? <CheckCircle2 className="inline w-3.5 h-3.5 me-1.5" aria-hidden="true" /> : <XCircle className="inline w-3.5 h-3.5 me-1.5" aria-hidden="true" />)}
               {it.text}
@@ -175,16 +177,16 @@ export default function InfoSorter({ items, onSolved, solved, formative = false,
               onCheck?.(allRight);
               if (allRight || formative) onSolved?.();
             }}
-            className="px-5 py-2.5 rounded-xl font-mono text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-sm min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            className="px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-sm min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
           >
-            Vérifier mon tri
+            {t('infoSorter.check')}
           </button>
         </div>
       )}
 
       {checked && !allRight && !formative && !solved && (
         <p className="text-sm text-rose-700 bg-rose-50 border border-rose-200 rounded-xl px-4 py-3">
-          Certaines cartes sont mal placées (voir les icônes). Touche-les pour les réassigner.
+          {t('infoSorter.retry')}
         </p>
       )}
 
@@ -192,10 +194,9 @@ export default function InfoSorter({ items, onSolved, solved, formative = false,
           `!solved` ici : onSolved vient d'être appelé, solved est déjà vrai.) */}
       {checked && !allRight && formative && (
         <p className="text-sm text-rose-700 bg-rose-50 border border-rose-200 rounded-xl px-4 py-3">
-          Certaines cartes sont mal placées (voir les icônes ✗). Les <strong>données utiles</strong> sont celles
-          qui servent au calcul :{' '}
-          <strong>{items.filter((it) => it.useful).map((it) => it.text).join(' ')}</strong> Le reste ne change
-          pas le résultat.
+          {t('infoSorter.formativeLead')}{' '}
+          <strong>{items.filter((it) => it.useful).map((it) => it.text).join(' ')}</strong>{' '}
+          {t('infoSorter.formativeRest')}
         </p>
       )}
     </div>

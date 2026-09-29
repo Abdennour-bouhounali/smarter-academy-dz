@@ -37,15 +37,31 @@
       "type": "methodes",
       "module": 1,
       "brick": {
-        "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/tayin-pgcd/modules/Module03Awazzif.jsx",
-        "line": 14,
+        "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/tayin-pgcd/modules/Module01IthnanWaArbaunWaSittun.jsx",
+        "line": 70,
         "step": 1,
-        "variant": "rappel"
+        "variant": "new"
       }
     }
   ],
   "memorisation": [],
   "questions": [
+    {
+      "questionId": "M01-S1-Q1",
+      "module": 1,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/tayin-pgcd/modules/Module01IthnanWaArbaunWaSittun.jsx",
+      "line": 72,
+      "requires": [
+        "tayin-bil-hasr"
+      ],
+      "prerequisiteStatus": {
+        "tayin-bil-hasr": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
     {
       "questionId": "M02-S1-Q1",
       "module": 2,
@@ -89,7 +105,7 @@
         "tayin-bil-hasr"
       ],
       "prerequisiteStatus": {
-        "tayin-bil-hasr": "established@M3"
+        "tayin-bil-hasr": "established@M1"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -105,7 +121,7 @@
         "tayin-bil-hasr"
       ],
       "prerequisiteStatus": {
-        "tayin-bil-hasr": "established@M3"
+        "tayin-bil-hasr": "established@M1"
       },
       "lexiconHits": [],
       "pedagogicallyValid": true
@@ -167,66 +183,6 @@
       "term": null,
       "questionId": null,
       "position": -1
-    },
-    {
-      "code": "W_BRICK_MODULE_MISMATCH",
-      "severity": "medium",
-      "message": "brick 'tayin-bil-hasr' renders in module 3 but knowledge.jsx declares it under module 1 — the map attributes it to 1",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/tayin-pgcd/modules/Module03Awazzif.jsx",
-      "line": 14,
-      "module": 3,
-      "step": 1,
-      "term": null,
-      "questionId": null,
-      "position": 29
-    },
-    {
-      "code": "W_BRICK_MODULE_MISMATCH",
-      "severity": "medium",
-      "message": "brick 'tayin-bil-hasr' renders in module 3 but knowledge.jsx declares it under module 1 — the map attributes it to 1",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/tayin-pgcd/modules/Module03Awazzif.jsx",
-      "line": 14,
-      "module": 3,
-      "step": 2,
-      "term": null,
-      "questionId": null,
-      "position": 31
-    },
-    {
-      "code": "W_BRICK_MODULE_MISMATCH",
-      "severity": "medium",
-      "message": "brick 'tayin-bil-hasr' renders in module 3 but knowledge.jsx declares it under module 1 — the map attributes it to 1",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/tayin-pgcd/modules/Module03Awazzif.jsx",
-      "line": 14,
-      "module": 3,
-      "step": 3,
-      "term": null,
-      "questionId": null,
-      "position": 33
-    },
-    {
-      "code": "W_BRICK_MODULE_MISMATCH",
-      "severity": "medium",
-      "message": "brick 'tayin-bil-hasr' renders in module 3 but knowledge.jsx declares it under module 1 — the map attributes it to 1",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/tayin-pgcd/modules/Module03Awazzif.jsx",
-      "line": 14,
-      "module": 3,
-      "step": 4,
-      "term": null,
-      "questionId": null,
-      "position": 35
-    },
-    {
-      "code": "W_BRICK_MODULE_MISMATCH",
-      "severity": "medium",
-      "message": "brick 'tayin-bil-hasr' renders in module 3 but knowledge.jsx declares it under module 1 — the map attributes it to 1",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/tayin-pgcd/modules/Module03Awazzif.jsx",
-      "line": 14,
-      "module": 3,
-      "step": 5,
-      "term": null,
-      "questionId": null,
-      "position": 37
     }
   ]
 }

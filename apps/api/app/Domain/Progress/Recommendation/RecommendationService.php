@@ -45,7 +45,7 @@ class RecommendationService
     public function forLesson(int $userId, Lesson $lesson): array
     {
         $points = LearningPoint::where('lesson_id', $lesson->id)->whereNull('retired_at')->orderBy('order')
-            ->with('prerequisites:id,code,title,lesson_id')->get();
+            ->with(['prerequisites:id,code,title,lesson_id', 'prerequisites.lesson:id,code'])->get();
         $states = StudentLearningPointProgress::where('user_id', $userId)
             ->whereIn('learning_point_id', $points->pluck('id')->merge($points->flatMap->prerequisites->pluck('id'))->unique())
             ->get()->keyBy('learning_point_id');
@@ -80,7 +80,8 @@ class RecommendationService
             // Un prérequis en gap passe devant : réapprendre sur du sable ne tient pas.
             $weakPrerequisites = $lp->prerequisites
                 ->filter(fn ($p) => ($states->get($p->id)?->status) === MasteryState::STATUS_GAP)
-                ->map(fn ($p) => ['code' => $p->code, 'title' => $p->title])->values()->all();
+                // `lessonCode` : la leçon où ce prérequis se rattrape (le client y renvoie).
+                ->map(fn ($p) => ['code' => $p->code, 'title' => $p->title, 'lessonCode' => $p->lesson?->code])->values()->all();
             if ($kind === self::KIND_RETEACH && $weakPrerequisites !== []) {
                 $kind = self::KIND_PREREQUISITE;
             }

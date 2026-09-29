@@ -16,6 +16,8 @@
  */
 
 /** Au-delà, un produit en croix risque de dépasser Number.MAX_SAFE_INTEGER. */
+import { toLatinDigits } from '../numberFormat.js';
+
 const MAX_SAFE_COMPONENT = 94_906_265; // ⌊√(2^53 − 1)⌋
 
 const gcd = (a, b) => {
@@ -32,7 +34,11 @@ const gcd = (a, b) => {
  * point, et les enrobages LaTeX de MathLive sont retirés.
  */
 export function normalizeNumeric(raw) {
-  return String(raw)
+  // Chiffres arabo-indiens/persans, virgule décimale arabe (٫) et barre de
+  // division (∕) : une écriture, jamais une erreur (audit du 2026-09-29).
+  return toLatinDigits(raw)
+    .replace(/\u066B/g, '.')
+    .replace(/\u2215/g, '/')
     .replace(/[−‒–—―]/g, '-')
     .replace(/[\s   ]/g, '')
     .replace(/\\left|\\right|\\,|\;|\\!|\\ /g, '')

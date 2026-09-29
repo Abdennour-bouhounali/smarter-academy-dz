@@ -9,7 +9,7 @@ staging and assessment metadata**.
 
 - Grade, chapter, lesson (codes from `coursesData.js`).
 - The lesson's `learningPoints` array: `[{id, title, order}]`, e.g.
-  `{id: '6e_resolution-problemes-1_P3', title: 'Modéliser une situation (…)', order: 3}`.
+  `{id: '4am_qasim-adad-tabii_P1', title: 'التعرّف على قاسم لعدد طبيعي من خلال الباقي المعدوم للقسمة الإقليدية', order: 1}`.
 
 ## Absolute rules
 
@@ -152,8 +152,8 @@ A lesson's questions belong to one of three roles:
 
 Judge the role from the question's actual pedagogical function, not its
 location: a scaffolded, hint-laden, retry-until-correct sequence is practice
-even if it sits in a "Boss Final" module (see the `resolution-problemes`
-BossMission for the worked precedent).
+even if it sits in a "Boss Final" module. A live assessment module to read:
+`apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module04Itqan.jsx`.
 
 ## Question metadata
 
@@ -162,12 +162,12 @@ BossMission for the worked precedent).
 {
   id: 'rp-flash-03',                       // REQUIRED: stable, unique within the lesson
   /* …existing question fields (q/prompt, options, explain, …)… */
-  correct: 2,                              // REQUIRED literal index, inside the options range (validate-lessons --strict): the registry exports it as the answer key
+  correct: 2,                              // REQUIRED literal index in the AUTHOR's `options` array, inside its range (validate-lessons --strict): the registry exports it as the answer key
   assessment: {
     enabled: true,
     type: 'assessment',
     // ONE learning point → the short form is fine:
-    learningPointIds: ['6e_resolution-problemes-1_P3'],
+    learningPointIds: ['4am_qasim-adad-tabii_P1'],
     // SEVERAL learning points → roles are REQUIRED (exactly one primary):
     // learningPoints: [
     //   { code: '4am_awwaliyan-fima-baynahuma_P3', role: 'primary' },
@@ -199,6 +199,16 @@ Rules the validator (`npm run validate:lessons`) enforces:
   present, is a numeric literal (a computed `correct` cannot be exported, so
   the server could not judge the question).
 - `discovery`/`practice` questions must not carry `learningPointIds`.
+
+**Display order ≠ author order (2026-09-29).** The final test shows each
+question's options in a stable, per-question **display** order —
+`optionOrder(id, n)` in `apps/web/src/lessons/common/kit/testPresentation.js`,
+a deterministic shuffle seeded by the question id (same order on the board and
+for the student, from one load to the next); `keepOrder: true` on a question
+keeps the written order (a scale, an ordered list). The stored and submitted
+`picked` and the registry's `correct` stay in the **author's index space**, so
+authors keep writing `correct` as the index in their own `options` array and
+never compensate for the shuffle.
 - `enabled: true` questions must sit inside an `evaluation`-stage module's
   own file (`modules/<NN>_<slug>.jsx`).
 - All metadata must be static literals (no computed values) — it is parsed,
@@ -231,8 +241,17 @@ resolves the learning points, the difficulty and the source; an unanswered
 question is recorded as `abandoned` (inert). The client-side `isCorrect` is
 kept only for the results screen and XP.
 
+The server **refuses the legacy `{isCorrect, learningPointCodes}` payload by
+default** since 2026-09-29: `apps/api/config/mastery.php`
+`accept_legacy_evidence_payload` defaults to `false`;
+`MASTERY_ACCEPT_LEGACY_EVIDENCE=true` reopens it (the test suite's
+`apps/api/phpunit.xml` sets it for inherited fixtures). A generated lesson
+never sends that shape.
+
 `submitEvidence` never throws and never blocks the lesson: failures are
-parked in an offline queue (`evidenceQueue.js`) and retried on reconnection;
+parked in an offline queue (`evidenceQueue.js`) and retried: `flushEvidenceQueue`
+runs at app start and on every `online` event (`apps/web/src/hooks/useLessonProgressSync.js`,
+mounted in `App.jsx`), and again when a final test mounts (`useEvidenceSubmission`);
 a 422 is kept with its error and a retry counter and expires after 30 days —
 it is never dropped silently. Anonymous visitors and teachers generate no
 evidence.

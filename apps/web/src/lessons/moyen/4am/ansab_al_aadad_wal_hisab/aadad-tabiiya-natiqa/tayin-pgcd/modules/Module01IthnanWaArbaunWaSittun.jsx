@@ -55,7 +55,7 @@ export default function Module01IthnanWaArbaunWaSittun() {
                 lead="جرّب عدد الحقائب: أيّ الأعداد لا يترك شيئًا خارج الحقائب؟ وما أكبرها؟" />
             ),
             advanced: () => (
-              <Manipulation type="common-divisors" a={a} b={b}
+              <Manipulation type="common-divisors" a={a} b={b} theme="school"
                 title="1) قواسم 42 و 60 — 2) القواسم المشتركة — 3) أكبرها"
                 lead="ابدأ بالمجموعات: ما أكبر عددها؟ ثم عيّن في القائمتين القواسم المشتركة، تحقّق، واختر أكبرها."
                 onFinished={() => setLabDone(true)} />

@@ -36,8 +36,8 @@ system requires:
   for them. Exception: a lesson declaring `knowledgeMap: true` formalises
   continuously through its cumulative Knowledge Map (every module's « À
   retenir » is the current map, the final synthèse is the complete map) and
-  needs no `formalization` module — reference: `vecteurs-2nde`, see
-  `KNOWLEDGE_MAP.md`. There is no `results` stage — the results / learning-profile
+  needs no `formalization` module — reference: every lesson of the 4AM unit
+  (all nine declare `knowledgeMap: true`), see `KNOWLEDGE_MAP.md`. There is no `results` stage — the results / learning-profile
   screen is the completion view of the `evaluation` module.
 - **A built lesson's modules fit in 90 minutes** (`MAX_LESSON_MINUTES`,
   enforced by `validate-lessons.mjs` on the sum of module `estimatedMin`, and
@@ -46,15 +46,14 @@ system requires:
   genuinely warrants more than one sitting can be built as multiple
   `lesson.config.js` files (the retired "Partie 1 / Partie 2" convention),
   but the catalogue (`coursesData.js`) always presents it as one entry per
-  official curriculum object. Some already-built lessons currently exceed
-  this cap (flagged by `smarter:validate-curriculum`'s duration-violation
-  section) — a known backlog, not silently ignored drift.
+  official curriculum object. No built lesson exceeds the cap today (the
+  longest 4AM lessons, `bahth-pgcd` and `ikhtizal-kasr`, sum to 65 min).
 - **`totalModules` is gone** — it is derived (`modules.length`) and served to
   the app by the lesson registry (`apps/web/src/lessons/registry.js`).
 - **Module files live directly under `modules/`**, one file per module,
   named `Module<NN><Descriptor>.jsx` (module number, zero-padded to two
   digits, followed by a PascalCase descriptor, e.g.
-  `modules/Module03Decouper.jsx`) — this is the restored pre-reset
+  `modules/Module02Maarif.jsx`) — this is the restored pre-reset
   convention, standard for every lesson. The validator maps a question file
   to its owning module by reading the file's `Module(\d+)` number prefix and
   matching it against the module's `number` field in `lesson.config.js` (not
@@ -166,25 +165,28 @@ this.
 ```js
 export const LESSON_CONFIG = {
   id: string,                    // REQUIRED, unique. Progress storage key: `smarter_lesson_${id}`.
-                                  // Must match coursesData.js's smaMetadata[...].id (convention only,
-                                  // not enforced — see "known gap" below).
+                                  // Must equal the catalogue code (packages/core/curriculum/dz/
+                                  // lessons_<grade>_*.json) — validate-lessons.mjs enforces it.
   sequentialUnlock: boolean,     // REQUIRED. Whether modules gate on the previous one's completion
                                   // (lessonAccess.js). Existing lessons vary — this is a real per-lesson
                                   // decision, not a bug (fonctions-lineaires-affines opts out deliberately
                                   // per the cleanup-phase audit's finding, revisit only with intent).
   title: string,                 // REQUIRED. Display name.
   description: string,           // REQUIRED. One paragraph, shown on the lesson landing page.
-  level: 'college' | 'lycee',    // REQUIRED.
-  grade: string,                 // REQUIRED. e.g. '6e', '3e'.
-  chapter: string,                // REQUIRED. Domain id, e.g. 'nombres_calculs'.
+  level: 'moyen',                // REQUIRED. (The French 'college' | 'lycee' values are gone.)
+  grade: string,                 // REQUIRED. An ACTIVE grade id — '4am' today.
+  chapter: string,                // REQUIRED. المجال id, e.g. 'ansab_al_aadad_wal_hisab'.
   chapterTitle: string,           // REQUIRED. Display name for the chapter.
                                   // (totalModules was removed — modules.length is the count,
                                   // exposed to the app via apps/web/src/lessons/registry.js.)
-  passingScore: number,           // Used by boss/assessment modules for a pass/fail threshold.
-  masteryThreshold: number,       // 0–1. Feeds the non-sequential isMastered check in LessonIndex.jsx.
+  passingScore: number,           // Declared by every 4AM lesson, READ BY NOTHING (verified 2026-09-29):
+                                  // the final test has no pass/fail threshold; mastery is the server's.
+  masteryThreshold: number,       // 0–1. Read only on the NON-sequential branch of LessonIndex.jsx
+                                  // (`isPathComplete`); all 4AM lessons are sequential, so inert today.
   emoji: string,                  // Display icon.
-  estimatedDurationMin: number,   // Sum of module estimatedMin — ≤ 45 (validator-enforced) and
-                                  // within 10 min of the catalogue's durationMinutes.
+  estimatedDurationMin: number,   // = sum of module estimatedMin (convention, true for all 9 lessons;
+                                  // the validator checks the SUM ≤ 90 and warns at ±10 min from the
+                                  // catalogue's durationMinutes, not this equality).
   skills: string[],               // Free-text learning objectives, shown on the lesson landing page.
   teachingScope: {                // Optional but present on every inspected lesson.
     include: string[],
@@ -194,7 +196,7 @@ export const LESSON_CONFIG = {
 }
 ```
 
-**Id agreement, now partially enforced:** `LESSON_CONFIG.id` must equal `coursesData.js`'s lesson id for the grade the folder path names — `validate-lessons.mjs` fails on a config id that doesn't exist in the catalogue for that grade. Still convention-only: the folder path's last segment matching the id, and the `App.jsx` route table matching `modules[].path` (a future lesson-registration mechanism replacing the static route table can validate against this contract).
+**Id agreement:** `LESSON_CONFIG.id` must equal the catalogue lesson code for the grade the folder path names — `validate-lessons.mjs` fails otherwise. Routes are not a separate table any more: `buildLessonRoutes` (`_unit/lessonRoutes.jsx`) mounts exactly `config.modules[].path`, and `check:routes` verifies that every active lesson is wired in `App.jsx` with the catalogue's base path. Still convention-only: the folder name equal to the id (true for all nine lessons).
 
 ## Module contract
 
@@ -206,7 +208,9 @@ export const LESSON_CONFIG = {
                         // number as the id going forward for consistency, but this contract
                         // does not require renaming existing ones (explicitly out of scope —
                         // module IDs are load-bearing for existing student progress data).
-  number: number,       // REQUIRED. 1-indexed position — drives prev/next nav (moduleContext.js)
+  number: number,       // REQUIRED. Integer ≥ 0; the FIRST module may be 0 (« أستعدّ »), and
+                        // numbers must be CONTIGUOUS (ContentModule reads the previous module's
+                        // stage as number − 1). Drives prev/next nav (moduleContext.js)
                         // AND the module's file identity: its file lives at
                         // modules/Module<NN><Descriptor>.jsx, where <NN> is this number
                         // zero-padded to two digits (the validator maps questions to
@@ -228,9 +232,11 @@ export const LESSON_CONFIG = {
   requiresLearningPointIds?: string[], // OPTIONAL SOFT mastery gate — LP ids (never scores); a
                               // demonstrated 'gap' on one of them shows a review hint, never a lock.
                               // Only LPs taught by an EARLIER module; use sparingly.
-  color: string,             // REQUIRED. One of LessonIndex.jsx's COLOR_MAP keys.
-  style: 'featured' | 'boss' | 'assessment',  // Drives the card style on the lesson landing page.
-  estimatedMin: number,      // REQUIRED, load-bearing: the per-lesson sum must stay ≤ 45.
+  color: string,             // REQUIRED. One of LessonIndex.jsx's COLOR_MAP keys (emerald, indigo,
+                             // violet, blue, teal, sky, amber, rose, slate…); an unknown key falls
+                             // back to slate silently.
+  style: 'featured' | 'diagnostic' | 'boss' | 'assessment',  // Card style on the lesson landing page.
+  estimatedMin: number,      // REQUIRED, load-bearing: the per-lesson sum must stay ≤ 90.
   difficulty: 1|2|3|4,        // Display only (a star rating). Nothing reads it to adapt
                                // anything: there is no adaptive selection for lesson
                                // modules. (The practice engine has its own 1–5 levels,
@@ -244,7 +250,7 @@ export const LESSON_CONFIG = {
 A module is **one React component**, always wrapped in `<ModuleLayout>`, whose body is an author-controlled sequence of steps. This phase does **not** introduce an `Activity` layer between Module and Exercise (§23 of the phase brief explicitly reserves "activity model" formalization for later) — the current reality is that a module's JSX *is* its sequence of content + activities + exercises, undifferentiated in code. What the contract requires structurally:
 
 - Wrapped in `<ModuleLayout lessonId totalModules moduleNumber prevLink nextLink isCompleted>`.
-- Calls `useProgress(lessonId).markModuleCompleted(moduleId)` (directly, or via `ModuleLayout`'s `onNextClick`) exactly when the module's own definition of "done" is met — this is module-specific and intentionally not standardized (a "discovery" module and a "boss" module have different completion definitions; forcing one shape here would be exactly the kind of premature abstraction the phase brief warns against).
+- Tells `ModuleLayout` its own definition of "done" through `isCompleted` — module-specific on purpose (a content module is done when every step is answered, a « أستعدّ » when its answers are submitted, a final test when it is submitted). **`ModuleLayout` is the only writer of module completion** and applies ONE rule everywhere — the effect, « التالي » and « إنهاء » alike: it writes `markModuleCompleted` only when `isCompleted && unlocked && !presenting` (since 2026-09-29; « التالي » on a non-blocking module used to write completion unconditionally, so skipping « أستعدّ » marked it done). Leaving a module is not finishing it. A module never calls the progress API itself.
 - Where the module contains a *gradeable* exercise, the exercise portion should honor the Exercise Contract (`EXERCISE_CONTRACT.md`) rather than inventing a new validate/feedback shape.
 
 ### Module Progress Bar — layout contract
@@ -269,16 +275,16 @@ Student and teacher modes use `pt-0` because their `<main>` already consumes the
 - The progress bar must **never reserve space for a header that is not rendered.** Reserving 64px in the student shell is the regression this contract exists to prevent.
 - It sticks immediately below the highest persistent navigation element, and at the very top of the viewport when there is none.
 - All modules use the **same shared component**. No lesson may implement an independent progress-bar variant without an explicit architectural reason.
-- A module must never silently omit the bar. Content modules that don't use the `ContentModule` kit still render `StepProgressBar` themselves, fed by the same state that gates `nextLink` (see `college/4e/nombres_calculs/racines-carrees`).
+- A module must never silently omit the bar. Every 4AM content module uses the `ContentModule` kit, which renders it; a module that did not would have to render `StepProgressBar` itself, fed by the same state that gates `nextLink`.
 - Progress values are always **derived**, never hardcoded — `doneCount`/`total` come from real step/exercise state, and the bar hides at `allDone` (`{!allDone && …}` in `ContentModule`).
 - **No layout hacks**: negative offsets (`-mt-16`), `translateY` compensation, or `overflow: hidden` to mask the gap are forbidden. Fix the layout relationship instead.
 - Offsets are expressed as Tailwind scale steps in `lessonChrome.js`'s literal class tables. Every class must exist **verbatim** in that file, or Tailwind's JIT scan won't emit it and the offset silently becomes zero.
 
-**Guards:** `lessons/common/utils/lessonChrome.test.js` (unit — offsets, no-negative-offset, JIT literals, single implementation) and `apps/web/e2e/lesson-kit/lesson-chrome-sticky.mjs` (browser — both shells across 320→1440px, module transitions, reload).
+**Guards:** `lessons/common/utils/lessonChrome.test.js` (unit — offsets, no-negative-offset, JIT literals, single implementation). The browser guard `lesson-chrome-sticky.mjs` was deleted with the French lessons on 2026-09-25; `apps/web/e2e/lesson-kit/4am-aadad-tabiiya-natiqa.mjs` checks horizontal overflow at phone width.
 
 ### Module types observed (not enforced, described)
 
-`style: 'featured'` (the default — explanation + manipulation + practice), `'boss'` (multi-phase capstone, e.g. `Module11BossFinal.jsx`'s épreuves/profil/synthèse/flash structure), `'assessment'` (used by `Module10BilanEvaluation.jsx`-style modules). The contract supports all three without requiring they behave identically — per the phase brief's explicit instruction not to force different module types into one artificial shape.
+In the 4AM unit: `style: 'featured'` (the default — activity, معارف, أوظّف تعلّماتي), `'diagnostic'` (the two « أستعدّ » module 0s, built on `PrerequisiteDiagnostic`) and `'boss'` (every « إختبار أولي », built on `BossFinal`, e.g. `qasim-adad-tabii/modules/Module04Itqan.jsx`). `'assessment'` is accepted but unused today. The style only changes the landing-page card.
 
 
 ## Phase 8 additions — unit, kind, resources (2026-09-18)
@@ -296,8 +302,9 @@ Student and teacher modes use `pt-0` because their `<main>` already consumes the
 Trois invariants, tous dans `packages/core/lessonAccess.js` et couverts par
 `lessonAccess.test.js` :
 
-1. **Le premier module est celui de la leçon**, pas le numéro 1. 137 leçons
-   ouvrent sur un module 0 (« أستعدّ ») ; le traiter comme « pas le premier »
+1. **Le premier module est celui de la leçon**, pas le numéro 1. Deux leçons
+   de l'unité 4AM (`qasim-adad-tabii`, `ikhtizal-kasr`) ouvrent sur un
+   module 0 (« أستعدّ ») ; le traiter comme « pas le premier »
    exigeait un module −1 inexistant et scellait la leçon entière.
 2. **Un module terminé ne se referme jamais.** La maîtrise passe avant le
    verrou : revenir sur un module fini dont le prédécesseur ne l'est pas

@@ -25,7 +25,7 @@ export default function Module02Tariqa105() {
       steps={[
         { num: 1, title: 'لماذا نتوقف عند 10؟', done: q1,
           content: (
-            <TapQuestion prompt={<span>للبحث عن قواسم 105، إلى أي عدد يكفي أن نختبر؟</span>}
+            <TapQuestion prompt={<span>للبحث عن قواسم 105، ما أصغر عدد نتوقّف عنده ونحن متأكّدون، قبل أي حساب، أنّنا لم ننسَ قاسمًا؟</span>}
               options={['إلى 10، لأن 10² ≤ 105 < 11²', 'إلى 52، أي نصف 105', 'إلى 105', 'إلى 7، لأن 7 قاسم']} correct={0} cols={1}
               requires={['jidaa-aamilayn']}
               explain={<span>إذا كان <MathText>{'$105 = d \\times e$'}</MathText> مع <MathText>{'$d \\leq e$'}</MathText> فإن <MathText>{'$d^2 \\leq 105$'}</MathText>: كل قاسم أكبر من 10 هو شريك قاسم أصغر.</span>}

@@ -119,7 +119,7 @@ async function validateCurrent(page) {
 
   check('D1 : le diagnostic se présente en une question à la fois', s.active && s.total > 1 && s.shownCount === 1 && s.current === 0, JSON.stringify({ total: s.total, shown: s.shownCount }));
   check('D1 : le repère « السؤال 1 من N » est affiché', /1/.test(s.position) && s.position.includes('السؤال'), s.position);
-  check('D1 : pas de bouton « السابق » sur la première question', !s.prev);
+  check('D1 : en séance de leçon, « السابق » sur la première question sort du محور (jamais de bouton mort)', s.prev);
   check('D1 : « التالي » existe', s.next);
   check('D1 : toutes les questions commencent « unanswered »', s.states.every((x) => x === 'unanswered'), JSON.stringify(s.states));
   check('D1 : aucun débordement (page ni contenu)', s.pageX && s.contentX);
@@ -167,7 +167,7 @@ async function validateCurrent(page) {
     if (i < total - 1) await nextQ(page);
   }
   s = await state(page);
-  check('D4 : à la dernière question, « التالي » disparaît', !s.next, `next=${s.next}`);
+  check('D4 : à la dernière question, « التالي » mène au محور suivant (séance de leçon)', s.next, `next=${s.next}`);
   check('D4 : toutes les questions sont « answered », aucune révélée', s.states.every((x) => x === 'answered'), JSON.stringify(s.states));
   check('D4 : le geste final « كشف النتائج » est offert', s.hasRevealAll);
 

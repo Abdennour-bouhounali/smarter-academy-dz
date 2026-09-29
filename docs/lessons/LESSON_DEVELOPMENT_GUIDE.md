@@ -13,6 +13,10 @@ repository. The French-era lessons (`lessons/college/`, `lessons/lycee/`), their
 specs, practice content, e2e scripts and French-only engines were deleted on
 2026-09-25; older docs that cite them are describing git history.
 
+**Frozen reference (2026-09-29).** The lesson architecture was audited and
+frozen for generation: §14 is the generation contract — what a generated
+lesson must implement, reuse and pass.
+
 **Loading.** A new lesson inherits the loading ladder with nothing to declare:
 its `lesson.config.js` is metadata in the entry bundle (via the registry), the
 shared lesson runtime is one lazy chunk, and each page/module is its own lazy
@@ -152,7 +156,8 @@ export const LESSON_CONFIG = {
   title, description,             // Arabic
   level: 'moyen', grade: '4am',
   chapter: 'ansab_al_aadad_wal_hisab', chapterTitle: 'ميدان أنساب الأعداد والحساب',
-  passingScore: 4, masteryThreshold: 0.8, emoji: '🔢',
+  passingScore: 4, masteryThreshold: 0.8, emoji: '🔢',   // both INERT today (read by nothing /
+                                  // only on the non-sequential branch) — keep them for the validator
   estimatedDurationMin: 45,       // = sum of module estimatedMin, cap 90
   textbookRef: { unit: 1, activity: 1, pages: '8, 10, 14' },
   skills: [ /* Arabic objectives, shown on the lesson index */ ],
@@ -249,7 +254,7 @@ The recurring module roles in the 4AM unit, by their Arabic names:
 
 | Module | Stage | What it is |
 |---|---|---|
-| `Module00Astaidd` — أستعدّ | `prerequisite_check` | diagnoses `priorKnowledge` only. Never the lesson's own material. Never gates, never persists evidence. |
+| `Module00Astaidd` — أستعدّ | `prerequisite_check` | OPTIONAL (2 of 9 lessons). Diagnoses `priorKnowledge` from previous years only — never the lesson's own material. Never gates, never persists evidence; its result is stored locally and read by nothing but its own results screen, so its copy must not promise that the lesson adapts. Advice tiers are computed on the score ratio (`kit/diagnosticLevel.js`). « التالي » without submitting does not complete it. |
 | `Module01…` — the activity | `trigger` | the textbook activity, opening on the signature manipulation in the `intro` slot |
 | `Module02Maarif` — معارف | `discovery` | the textbook's definitions, each laid by a `KnowledgeBrick` at the moment it is needed |
 | `Module0xAwazzif` — أوظّف تعلّماتي | `practice_lab` | the textbook's exercises via `TextbookExercise` |
@@ -330,6 +335,14 @@ leaves `nextLink` undefined forever and locks the next module. This is a
 | `BatchChoiceQuestion` | N rows, one correction at the last pick | `intro`, `rows: [{ id, label, options, correct, correction }]`, `feedback({allRight, nCorrect, total})`, `onAnswered(allRight)` |
 | `NumericQuestion` | a typed number | `prompt`, `expected` (value or predicate), `parse`, `display`, `explainFor(n)`, `onAnswered(ok, n)` |
 
+**What a typed answer may look like.** Every parser accepts Arabic-Indic
+(٠–٩) and Persian (۰–۹) digits; `NumericQuestion`'s default parser (`parseFr`)
+reads integers and accepts a dot only as a well-formed thousands separator;
+`TextbookExercise` numeric answers go through `parseDec`; fractions through
+`Rational.parse`; integer sets accept `{…}`, `،`, `؛`, `,` and « و ». Never
+write your own `Number(...)` parser in a lesson. Table:
+`EXERCISE_CONTRACT.md` « Student input normalisation ».
+
 **Knowledge** — `knowledge.jsx` is the single source of what the lesson
 teaches. A `<KnowledgeBrick id="…">` in a module and the Knowledge Map render
 the same item, written once. A brick establishes an id at the point it is
@@ -361,10 +374,12 @@ before touching one. In short:
   ladder (اكتشاف · موجّه · استقلالية · تحدّ) was removed on 2026-09-24. Every
   type declares its pair in `manipulations/levels.js`; a manipulation posed
   alone shows the مبتدئ / متقدم selector in its own header, and the lesson's
-  numbers are always one of the two levels. **Only one selector is ever on
-  screen**: inside a `ManipulationWorkspace` the workspace owns it. Call
-  lesson callbacks through `state.report(onFinished, …)` so the other level
-  never ticks a lesson step. Full contract:
+  numbers are always one of the two levels. **One selector per
+  manipulation**: inside a `ManipulationWorkspace` the workspace owns it and the
+  manipulations inside show none; a standalone `<Manipulation>` placed in a
+  later step shows its own (MANIPULATION_CONTRACT « One selector, never
+  two »). Call lesson callbacks through `state.report(onFinished, …)` so the
+  other level never ticks a lesson step. Full contract:
   [`MANIPULATION_CONTRACT.md` §7](../architecture/MANIPULATION_CONTRACT.md).
 - **One lab per level, and no silent switch.** A beginner level is ONE
   laboratory, finished by the gesture that carries the idea (for
@@ -409,7 +424,11 @@ before touching one. In short:
 - Embed it in the module's `intro` slot so it is usable immediately, with no
   question or button between the student and the instrument.
 - **`onFinished` is not completion.** It fires when the manipulation reaches its
-  formal phase; use it for presentation only. Never make a step depend on it.
+  formal phase. It never completes a module, writes progress or produces
+  evidence. A step may WAIT on it only when the manipulation is the module's
+  own textbook activity, opened by default, and its formal phase is reachable
+  for its numbers (four steps of the unit do this); otherwise use it for
+  presentation only. Full rule: MANIPULATION_CONTRACT §7bis.
 - **Draw real objects as real objects.** If the lesson talks about books on
   shelves, draw recognisable books on shelves, in parameterised inline SVG with
   Arabic labels as DOM text — not abstract bars. The drawing *is* the
@@ -500,6 +519,17 @@ the practice bank (`content/practice/**`), not in `content/exercises.js`; the
 exercise contract (`EXERCISE_CONTRACT.md` § « Mastery V2 additions ») lists
 the fields a generated bank carries (`templateId`, per-question
 `difficulty`, …).
+
+**The final test shows options in a stable shuffled order** (2026-09-29).
+Authors habitually put the right answer first; `BossFinal` therefore displays
+each question's options in a per-question order seeded by its `id`
+(`optionOrder`, `kit/testPresentation.js`) — the same on the student page and
+on the board. Keep writing `correct` as the index in YOUR `options` array: the
+picked index, the attempt, the evidence and the registry stay in your index
+space. Set `keepOrder: true` on a question whose options must keep their
+written order (a scale, « صحيح / خاطئ »). And the trophy « أتقنت … » /
+`completion.masterTitle` appears only after a PERFECT attempt (every answer
+right and every declared badge), never on a partial one.
 
 **Every practice question is also a daily-challenge candidate** (« التحدّي
 اليومي », 2026-09-25): once a student has worked a Learning Point, its
@@ -854,7 +884,9 @@ Each of these has actually happened in this repository, or is a standing rule.
   `isValidModuleNumber`.
 - Do not render `<CompleteView />` without items — use
   `<KnowledgeSnapshot complete />` for the final synthesis.
-- Do not make a step depend on a manipulation's `onFinished`.
+- Do not make a step depend on a manipulation's `onFinished` unless it is the
+  module's own, default-open textbook activity with a reachable formal phase
+  (MANIPULATION_CONTRACT §7bis). Never on a question's correctness.
 - Do not let a diagnostic (`prerequisite_check`) block the next module.
 - Do not put an evidence-generating question outside an `evaluation` module.
 - Do not invent or compute a learning-point id; only ids from this lesson's
@@ -926,16 +958,122 @@ presentation pattern, an Arabic/RTL convention, a responsive interaction
 pattern, or a reusable component — update this guide and the relevant contract
 **in the same task**, and report it. The full rule is in the root `CLAUDE.md`.
 
+## 14. LESSON REFERENCE ARCHITECTURE — FROZEN FOR GENERATION (2026-09-29)
+
+The architecture below was audited end to end on 2026-09-29 (all nine lessons,
+every shared component, every gate, the server judge and the browser suites;
+record: [`../reports/LESSON_ARCHITECTURE_AUDIT_2026-09-29.md`](../reports/LESSON_ARCHITECTURE_AUDIT_2026-09-29.md)).
+It is the reference a generated lesson must follow. **Generated lessons reuse
+it; they never add a parallel lesson architecture.** Changing any part of it is
+an architectural change, made deliberately and documented here first.
+
+### 14.1 The real structure
+
+```
+App.jsx ─ CourseLayout
+  ├─ /courses/:level/:grade/:chapter/units/:unit      → UnitPage (unit card, 8 lessons + synthesis)
+  └─ <lesson>Routes() ─ buildLessonRoutes (_unit/lessonRoutes.jsx)
+       └─ LessonClassroomShell   (pathless layout: one Classroom session across modules)
+            ├─ LESSON_BASE_PATH  → LessonAccessGate → KnowledgeProvider → LessonIndex
+            └─ modules[].path    → LessonAccessGate → KnowledgeProvider → NotebookAnchor → Module<NN>
+                                     └─ ContentModule | PrerequisiteDiagnostic | BossFinal
+                                          └─ ModuleLayout (breadcrumb الوحدة/الدرس/المحور, header,
+                                             step bar, prev/next, the ONLY completion writer)
+
+A lesson  = lesson.config.js + index.jsx + routes.jsx + moduleContext.js + knowledge.jsx
+            + content/{textbook.js, exercises.js} + modules/Module<NN><Descriptor>.jsx
+A module  = one stage (prerequisite_check → trigger → discovery → manipulation →
+            formalization → practice_lab → evaluation), numbers contiguous from 0 or 1
+Knowledge = knowledge.jsx items, laid by <KnowledgeBrick> where taught, mapped by the Knowledge Map,
+            demanded by `requires` (audited), closed by <KnowledgeSnapshot complete> in the final test
+Evidence  = ONLY the evaluation module's assessed questions → { picked } → server registry judge
+            → versioned mastery engine (Learning Point states). Everything else is formative.
+Progress  = useProgress (localStorage cache) → progressQueue → PUT /progress (union merge)
+Practice  = content/practice/<grade>/<lesson>/level-N (separate engine, server-judged evidence)
+```
+
+### 14.2 The generation contract — what a generated lesson must implement
+
+**Input (must exist before any JSX):**
+grade and المجال; the الوحدة in `units_<grade>_*.json`; the lesson entry in
+`lessons_<grade>_*.json` with its `pointsToLearn` (learning-point ids are
+DERIVED: `{grade}_{lessonId}_P{n}`), `prerequisiteLessonCodes`,
+`durationMinutes`; the textbook extraction `docs/sources/<grade>/<unit>/extraction.json`
+for every element the lesson cites. Mastery criteria are the server's
+(Mastery V2) — a lesson declares none.
+
+**Required output:**
+
+| Part | Contract |
+|---|---|
+| Files | exactly the layout of §3; `index.jsx`, `routes.jsx`, `moduleContext.js` are the one-line factories |
+| `lesson.config.js` | static literals only; `id` = catalogue code; `kind`; `unit`; stages in journey order with the required set per kind (§3); `teachesLearningPointIds` on every learning module covering every LP; `estimatedDurationMin` = Σ `estimatedMin` ≤ 90; `color` a `COLOR_MAP` key; `resources[]` for every workspace manipulation (both levels, same `objective`, `autonomy` on advanced, `experience` with reason and theme) |
+| Module shape | `ContentModule` for content, `PrerequisiteDiagnostic` for an optional « أستعدّ » (previous-year prerequisites only), `BossFinal` for « إختبار أولي » — never a hand-rolled module shell, test UI, fullscreen, toolbar or progress write |
+| Steps | `done` on ANSWERED, never on correct (`check:non-blocking`); a step may wait on `onFinished` only per §6; never pass `locked` |
+| Questions | kit components only (`TapQuestion`, `BatchChoiceQuestion`, `NumericQuestion`, `TextbookExercise` for the textbook's exercises); explicit `correct`; every distractor FALSE; `requires` on every question; the parsers of §5, never a custom one |
+| Manipulation | a type from the closed registry (10 types), two levels in one `ManipulationWorkspace`, the lesson's world as a `theme` (§6); a new type only by the recipe of MANIPULATION_CONTRACT §7ter |
+| Knowledge | `knowledge.jsx` with a plain-text `summary` per item; a brick at the point of teaching; `knowledgeMap: true`; every content module's footer `<KnowledgeSnapshot moduleNumber={N} />`; the final test's `synthese={<KnowledgeSnapshot complete variant="complete" />}` |
+| Final test | only in the `evaluation` module; every question assessed with ONE primary LP of this lesson; every LP covered; 4–6 questions; timer ≈ 1 min per question + 1; `badges`, `completion`, `skills` as in the reference lessons |
+| Textbook | every pedagogical block carries a `source` (`src()` / `addition()`); `check:textbook` maps each extracted element to exactly one destination |
+| Practice | a separate bank under `content/practice/**` with provenance, oracle entries for constructed answers (§11) |
+| Arabic/RTL | all user-visible text Arabic (including `aria-label`, `title`, placeholders, KaTeX `\text{}` — put words in DOM, not in KaTeX); numbers and equations `dir="ltr"`; `PGCD` Latin |
+| Responsive / a11y | no horizontal scroll at 320 px; controls ≥ 44 px; every gesture has a tap and keyboard path; visible focus; reduced motion honoured |
+| Teacher / Classroom | nothing: `buildLessonRoutes` + `ContentModule` give free navigation, the مذكرة, the premium gate and Classroom Mode |
+
+**Reuse, never rebuild:** `buildLessonRoutes`, `buildModuleContext`,
+`ContentModule`, `ModuleLayout`, `BossFinal`, `PrerequisiteDiagnostic`,
+`TestPresentation`, the kit questions, `TextbookBox`/`SourceTag`/`MethodSteps`,
+`KnowledgeBrick`/`KnowledgeSnapshot`, `Manipulation`/`ManipulationWorkspace`,
+the primitives (`GroupingScene`, `BrickWall`, `RibbonStrip`, `BookRectangle`…),
+`useProgress`/`useEvidenceSubmission`/`useFinalTestAttempt`, the parsers of
+`@smarter-academy/core`. Prohibited: everything in §12, plus a second state or
+progress system, a second corrector, a client-computed verdict sent as
+evidence, a raster image under `lessons/`, a `tier` anywhere in the lesson.
+
+### 14.3 Validation a generated lesson must pass
+
+| Gate | Command / check |
+|---|---|
+| Build | `npm run build` |
+| Unit + scripts tests | `npm test` (core, web, scripts — includes the practice oracle and the memo builder over every lesson) |
+| Editorial gates | `npm run check:lessons` (validate:lessons --strict, validate:exercises --strict, audit:knowledge:gate, check:katex, check:routes, check:non-blocking, check:dormant-isolation, check:textbook, check:activation-drift) |
+| DB handshake | `node packages/core/curriculum/exportCurriculum.mjs && php artisan smarter:import-curriculum`; `node packages/core/curriculum/exportContentRegistry.mjs && php artisan smarter:import-content-registry` |
+| Runtime | the browser suites of §11 against the dev server (all green on 2026-09-29: 27/27, 183/183, 73/73, 47/47, 9/9) + the new lesson loaded at 320 / 414 / 820 / 1440 px with no console error, no failed request, no horizontal overflow |
+| Mathematics | every key recomputed; every distractor false; parsers exercised with Arabic digits |
+| Interaction | the manipulation by drag, tap and keyboard; a deliberately wrong run still progresses; reload keeps progress |
+| Documentation | a new reusable pattern is documented here and in its contract in the same task |
+
+### 14.4 Known open items (do not block generation)
+
+Recorded by the audit, owned by the product owner, none of them a defect a
+generated lesson would inherit if it follows 14.2:
+
+- A module closed by the admin between a student's offline completion and the
+  sync makes that lesson's later snapshots 422 (PROGRESS_MODEL « Known gap »).
+- `priorKnowledge` mixes previous-year knowledge and earlier lessons of the
+  unit; only 2 lessons have a « أستعدّ ». `W_PRIOR_NOT_DIAGNOSED` is a warning.
+- The weak-prerequisite recommendation links to the prerequisite's lesson
+  (2026-09-29) but the diagnostic result itself drives nothing.
+- Four textbook-activity steps wait on their lab's `onFinished` (allowed, §6).
+- The textbook's own erratum « رتبة عشرات الآلاف (مشكّل من أربعة أرقام) »
+  (wadiya analysis) is kept verbatim: textbook words are never edited.
+- `docs/reports/QUESTION_ANSWER_AUDIT_2026-09-24.md` « Flagged » items that are
+  wording choices (true-fact distractors in bahth M01, « فقط » in khawass E1…).
+
 ## Opening the Math Lab from a lesson (integration point only)
 
 The Math Lab (مختبر الرياضيات, `/espace/atelier`) is a standalone workspace,
-**not** part of a lesson, and no lesson links to it yet. Do **not** add
-« استكشف في المختبر » buttons to lessons as part of ordinary lesson work: the
+**not** part of a lesson. Every lesson page already carries the generic
+« 🧪 المختبر » button (`MathLabEntryButton`, mounted by `LessonIndex` and
+`ModuleLayout`), which opens the Lab OVER the lesson without seeding it. What
+is **not** built is a *seeded*, per-activity button: do **not** add
+« استكشف في المختبر » buttons to lessons as part of ordinary lesson work — that
 flow is `Planned`. When it is implemented, the only API to use is
 `buildMathLabLaunch({ tool, seed, title, origin })` from
 `features/mathlab/openMathLab.js`, which returns `{ to, state }` for
 `<Link>`/`navigate`; the instrument builds its initial state from `seed`.
-Nine instruments exist: the whiteboard (`whiteboard`, seed = Excalidraw
+Fourteen instruments exist (`MATH_LAB_TOOLS`, `features/mathlab/toolRegistry.js`;
+`PLANNED_MATH_LAB_TOOLS` is empty): the whiteboard (`whiteboard`, seed = Excalidraw
 skeleton elements), the function grapher (`functionGrapher`, seed =
 `{ functions: [{ expression: '2x+3' }], viewport?, points?, tangent?: { enabled: true, functionIndex: 0, x: 1 } }`
 — expressions in the documented subset, ASCII or LaTeX; `tangent` opens the

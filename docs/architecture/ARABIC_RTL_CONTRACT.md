@@ -149,8 +149,11 @@ latin identifier (`teacher-seats`), because it is vocabulary for the code,
 never text for a reader. Locked by `PlanSeederLanguageTest`. The same rule
 covers any future seeded label a learner sees.
 
-Admin-only strings (activity-log reasons, batch labels, activation notes,
-the French admin panel) are exempt: no student or teacher ever reads them.
+Admin-only free-text data (activity-log reasons, batch labels, activation
+notes typed by an administrator) is exempt from the seeded-label rule: no
+student or teacher ever reads it. The admin panel's own UI is **not** exempt —
+it is Arabic (the `admin` i18n namespace, enforced by a contract test; see
+« Every role's space is Arabic » above).
 
 ### Product facts, not just language
 
@@ -187,7 +190,12 @@ with neutral ✓ / ~ / ✗ glyphs, and the lesson's final module is titled
 « إختبار أولي ». The only mastery words on screen describe a Learning Point
 state that came from `student_learning_point_progress`. (Lesson authors'
 `completion.masterTitle` strings are content and are not governed here;
-`question.difficulty.maitrise` is a difficulty label.)
+`question.difficulty.maitrise` is a difficulty label.) **When it shows:**
+since 2026-09-29 `completion.masterTitle` (« أتقنت … ») and the 🏆 appear
+**only after a perfect attempt** — every answer right *and* every declared
+badge earned (`perfectAttempt` / `masterBadge` in
+`apps/web/src/lessons/common/kit/BossFinal.jsx`); any other finished attempt
+shows `completion.title` with 🎓.
 
 ## 3. Typography — Cairo, global, non-negotiable
 

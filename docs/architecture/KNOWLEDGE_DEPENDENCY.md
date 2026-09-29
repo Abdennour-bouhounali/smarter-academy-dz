@@ -13,7 +13,8 @@
 ## Le problème que ceci résout
 
 Une leçon peut être mathématiquement juste et pédagogiquement impossible. Exemple réel, corrigé
-depuis, dans `fonctions-3e` module 2 :
+depuis, dans `fonctions-3e` module 2 *(historique — leçon française supprimée le 2026-09-25 ;
+à lire dans l'historique git)* :
 
 ```text
 étape 1   « Que vaut f(6) ? »                    ← f(x) n'a jamais été introduit
@@ -35,7 +36,7 @@ Avant chaque demande, chaque connaissance requise est dans l'un de ces états :
 
 | État | Sens | Déclaration dans le code |
 | --- | --- | --- |
-| **A — acquis** | vient des années précédentes | `priorKnowledge: [...]` dans `lesson.config.js`, diagnostiqué par le module 0 |
+| **A — acquis** | vient des années précédentes **ou** d'une leçon antérieure de la même unité | `priorKnowledge: [...]` dans `lesson.config.js` (diagnostiqué par le module 0 quand la leçon en a un) |
 | **B — vient d'être enseigné** | posé juste avant, en position d'enseignement | `<KnowledgeBrick id variant="new">` plus haut dans le flux |
 | **C — juste à temps** | montré à l'instant parce que la demande l'exige | `<KnowledgeBrick variant="rappel">` |
 | **D — enrichissement** | signalé comme facultatif, jamais requis | `<KnowledgeBrick variant="enrichment">`, jamais dans un `requires` |
@@ -101,8 +102,13 @@ l'exemple anticipe un module ultérieur est signalé comme n'importe quelle expo
 priorKnowledge: ['abscisse', 'ordonnee', 'coordonnees', 'calcul-litteral'],
 ```
 
-Des ids du lexique, venus des années précédentes. Le module 0 doit les diagnostiquer — et **rien
-d'autre** : un diagnostic mesure les prérequis, il n'enseigne pas la matière de la leçon.
+Des ids de connaissances établies **soit** dans les années précédentes, **soit** dans une leçon
+antérieure de la même unité (ex. `qasim-adad-tabii` : `priorKnowledge: ['qisma-iqlidiya',
+'qawaid-qabiliyat-al-qisma']`). Seules 2 des 9 leçons 4AM ont un module 0 (`qasim-adad-tabii`,
+`ikhtizal-kasr`) ; quand il existe, il diagnostique ces prérequis — et **rien d'autre** : un
+diagnostic mesure les prérequis, il n'enseigne pas la matière de la leçon. Un `priorKnowledge`
+qu'aucune question de module 0 ne mesure lève `W_PRIOR_NOT_DIAGNOSED`, un avertissement `medium`
+(non bloquant, `high` seulement en `--strict`).
 
 ### 2. `<KnowledgeBrick id>` — ce que la leçon établit
 
@@ -140,7 +146,7 @@ npm run audit:knowledge            # rapport complet + contrats JSON
 npm run audit:knowledge:gate       # sortie 1 si un contrat est violé
 npm run check:lessons              # validate:lessons && audit:knowledge:gate
 
-node scripts/audit-knowledge-dependencies.mjs --lesson fonctions-3e --strict
+node scripts/audit-knowledge-dependencies.mjs --lesson qasim-adad-tabii --strict
 ```
 
 ### Contrôle 1 — le contrat déclaré (exact, bloquant)
@@ -156,11 +162,16 @@ node scripts/audit-knowledge-dependencies.mjs --lesson fonctions-3e --strict
 | `E_PRIOR_KNOWLEDGE_NOT_LITERAL` | `priorKnowledge` n'est pas un tableau littéral |
 | `E_QUESTION_WITHOUT_REQUIRES` | *(--strict)* une question ne déclare pas ses dépendances |
 | `W_PRIOR_NOT_DIAGNOSED` | un prérequis déclaré qu'aucune question du module 0 ne mesure |
-| `W_BRICK_MODULE_MISMATCH` | la brique et `knowledge.jsx` ne s'accordent pas sur le module |
+| `W_BRICK_MODULE_MISMATCH` | la brique et `knowledge.jsx` ne s'accordent pas sur le module (ignoré pour une brique `variant="rappel"`, posée exprès hors de son module d'origine) |
 | `W_ITEM_WITHOUT_BRICK` | un item n'apparaît que dans l'« À retenir » de fin de module |
 | `W_UNPARSEABLE_STEPS` | les étapes ne se résolvent pas en tableau littéral : le module est invisible à l'audit |
 
 ### Contrôle 2 — le lexique (détecteur, non juge)
+
+> **Limite actuelle :** `scripts/audit/lexicon.json` ne contient **que des termes français**. Pour
+> les leçons arabes de l'unité 4AM, le contrôle lexical ne trouve donc rien — son silence n'est
+> pas une preuve. Un lexique arabe : *Not yet implemented*. Pour le 4AM, seul le contrôle 1 (le
+> contrat déclaré) et la lecture manuelle comptent.
 
 `scripts/audit/lexicon.json` liste des termes et notations mathématiques avec le niveau où ils
 deviennent la matière de l'élève. Un terme dont la **première** apparition est une demande ou un
@@ -187,9 +198,9 @@ faire taire un constat.
 
 ### Sorties
 
-- `docs/reports/KNOWLEDGE_DEPENDENCY_AUDIT.md` — le rapport : 6e, 3e et 2nde dans le périmètre
-  courant, 4e relevée hors périmètre. (La 6e y est entrée le 2026-09-07. Ces leçons françaises et leurs notes de
-  migration ont été supprimées le 2026-09-25 ; le rapport reste un historique.)
+- `docs/reports/KNOWLEDGE_DEPENDENCY_AUDIT.md` — le rapport, régénéré par `npm run audit:knowledge` ;
+  son périmètre courant est celui des classes actives (`ACTIVE_GRADE_IDS` de
+  `packages/core/curriculum/activeGrades.js`), soit aujourd'hui les 9 leçons 4AM.
 - `docs/reports/knowledge-contracts/<niveau>_<leçon>.json` — le contrat par leçon : connaissances
   introduites, et pour chaque question ses `requires`, l'état de chacun (`prior`,
   `established@M2`, `later@M5`, `missing`, `enrichment`) et `pedagogicallyValid`.
@@ -217,16 +228,20 @@ notation.
 
 ## Exemple de référence
 
-`fonctions-3e` module 2 est l'implémentation de référence :
+`apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module02Maarif.jsx`
+est l'implémentation de référence (chaque question déclare `requires={[…]}`) :
 
 ```text
-étape 1  manipuler la machine  →  brique « image »        →  essai « image de 3 »
-étape 2                           brique « notation-fx »  →  essai « f(6) »
-étape 3  remonter la machine   →  brique « antécédent »   →  essai « antécédent de 11 »
-étape 4  les trois mots ensemble (la question d'origine, désormais légitime)
-étape 5  deux entrées, une sortie → brique « à mémoriser »
+module 1  ranger les livres (manipulation)  →  brique « qasim-baqi » (après le geste)
+module 2
+étape 1  manipulation  →  essai « تعريف بالباقي »            requires qasim-baqi (établi au module 1)
+étape 2  brique « qasim-jidaa »  →  essai « تعريف بالجداء »  requires qasim-jidaa
+étape 3  briques « siyagh-mutakafia », « wahid-wa-nafsuh »  →  essai  requires siyagh-mutakafia
 ```
 
-Vérifié par `apps/web/e2e/lesson-kit/3e-fonctions-carte.mjs` : la brique n'existe pas avant le
-geste, la carte grandit à l'instant où la brique paraît — sans attendre la fin du module —, et
-aucune connaissance d'un module ultérieur ne fuite.
+Vérifié par `npm run audit:knowledge:gate` (sortie 1 si un contrat est violé ; inclus dans
+`npm run check:lessons`). Le moment d'apparition de la brique sur la carte est couvert par les
+tests vitest de `apps/web/src/lessons/common/knowledge/*.test.js` ; aucune suite e2e 4AM ne le
+vérifie dans le navigateur (`4am-aadad-tabiiya-natiqa.mjs` garde la page d'unité et le laboratoire
+d'ouverture). *(Historique : l'ancienne référence `fonctions-3e` module 2
+et sa suite `3e-fonctions-carte.mjs` ont été supprimées le 2026-09-25.)*

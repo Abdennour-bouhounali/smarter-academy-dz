@@ -5413,5 +5413,408 @@
     "expected": {
       "throws": "expectedAnswer illisible"
     }
+  },
+  {
+    "name": "integerSet-braces-2026-09-29",
+    "question": {
+      "id": "q-set",
+      "answerType": "integerSet",
+      "expectedAnswer": [
+        1,
+        2,
+        3,
+        4,
+        6,
+        12
+      ],
+      "feedback": {
+        "correct": "Oui.",
+        "incorrect": "Non.",
+        "partial": "Presque."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": [
+            2,
+            3,
+            4,
+            6
+          ],
+          "id": "MISC-QAWASIM-OUBLI-1-ET-N"
+        }
+      ]
+    },
+    "answer": {
+      "value": "{1, 2, 3, 4, 6, 12}"
+    },
+    "expected": {
+      "outcome": "correct",
+      "misconceptionId": null,
+      "normalized": "1;2;3;4;6;12",
+      "isCorrect": true,
+      "feedbackKey": "correct"
+    }
+  },
+  {
+    "name": "integerSet-latex-braces-2026-09-29",
+    "question": {
+      "id": "q-set",
+      "answerType": "integerSet",
+      "expectedAnswer": [
+        1,
+        2,
+        3,
+        4,
+        6,
+        12
+      ],
+      "feedback": {
+        "correct": "Oui.",
+        "incorrect": "Non.",
+        "partial": "Presque."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": [
+            2,
+            3,
+            4,
+            6
+          ],
+          "id": "MISC-QAWASIM-OUBLI-1-ET-N"
+        }
+      ]
+    },
+    "answer": {
+      "value": "\\{1 ; 2 ; 3 ; 4 ; 6 ; 12\\}"
+    },
+    "expected": {
+      "outcome": "correct",
+      "misconceptionId": null,
+      "normalized": "1;2;3;4;6;12",
+      "isCorrect": true,
+      "feedbackKey": "correct"
+    }
+  },
+  {
+    "name": "integerSet-wa-conjunction-2026-09-29",
+    "question": {
+      "id": "q-set",
+      "answerType": "integerSet",
+      "expectedAnswer": [
+        1,
+        2,
+        3,
+        4,
+        6,
+        12
+      ],
+      "feedback": {
+        "correct": "Oui.",
+        "incorrect": "Non.",
+        "partial": "Presque."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": [
+            2,
+            3,
+            4,
+            6
+          ],
+          "id": "MISC-QAWASIM-OUBLI-1-ET-N"
+        }
+      ]
+    },
+    "answer": {
+      "value": "1 و 2 و 3 و 4 و 6 و 12"
+    },
+    "expected": {
+      "outcome": "correct",
+      "misconceptionId": null,
+      "normalized": "1;2;3;4;6;12",
+      "isCorrect": true,
+      "feedbackKey": "correct"
+    }
+  },
+  {
+    "name": "integerSet-trailing-dot-2026-09-29",
+    "question": {
+      "id": "q-set",
+      "answerType": "integerSet",
+      "expectedAnswer": [
+        1,
+        2,
+        3,
+        4,
+        6,
+        12
+      ],
+      "feedback": {
+        "correct": "Oui.",
+        "incorrect": "Non.",
+        "partial": "Presque."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": [
+            2,
+            3,
+            4,
+            6
+          ],
+          "id": "MISC-QAWASIM-OUBLI-1-ET-N"
+        }
+      ]
+    },
+    "answer": {
+      "value": "1, 2, 3, 4, 6, 12."
+    },
+    "expected": {
+      "outcome": "correct",
+      "misconceptionId": null,
+      "normalized": "1;2;3;4;6;12",
+      "isCorrect": true,
+      "feedbackKey": "correct"
+    }
+  },
+  {
+    "name": "integerSet-inner-dot-still-syntax-2026-09-29",
+    "question": {
+      "id": "q-set",
+      "answerType": "integerSet",
+      "expectedAnswer": [
+        1,
+        2,
+        3,
+        4,
+        6,
+        12
+      ],
+      "feedback": {
+        "correct": "Oui.",
+        "incorrect": "Non.",
+        "partial": "Presque."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": [
+            2,
+            3,
+            4,
+            6
+          ],
+          "id": "MISC-QAWASIM-OUBLI-1-ET-N"
+        }
+      ]
+    },
+    "answer": {
+      "value": "1.5"
+    },
+    "expected": {
+      "outcome": "syntax_error",
+      "misconceptionId": null,
+      "normalized": "1.5",
+      "isCorrect": false,
+      "feedbackKey": "incorrect"
+    }
+  },
+  {
+    "name": "rational-arabic-indic-digits-2026-09-29",
+    "question": {
+      "id": "q-irr",
+      "answerType": "rational",
+      "expectedAnswer": "7/4",
+      "feedback": {
+        "correct": "Oui.",
+        "incorrect": "Non.",
+        "partial": "Presque.",
+        "notIrreducible": "اختزل أكثر."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "14/8",
+          "id": "MISC-IKHTIZAL-ARRET-EN-CHEMIN"
+        }
+      ]
+    },
+    "answer": {
+      "value": "٣/٤"
+    },
+    "expected": {
+      "outcome": "incorrect",
+      "misconceptionId": null,
+      "normalized": "3/4",
+      "isCorrect": false,
+      "feedbackKey": "incorrect"
+    }
+  },
+  {
+    "name": "rational-persian-digits-2026-09-29",
+    "question": {
+      "id": "q-irr",
+      "answerType": "rational",
+      "expectedAnswer": "7/4",
+      "feedback": {
+        "correct": "Oui.",
+        "incorrect": "Non.",
+        "partial": "Presque.",
+        "notIrreducible": "اختزل أكثر."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "14/8",
+          "id": "MISC-IKHTIZAL-ARRET-EN-CHEMIN"
+        }
+      ]
+    },
+    "answer": {
+      "value": "۳/۴"
+    },
+    "expected": {
+      "outcome": "incorrect",
+      "misconceptionId": null,
+      "normalized": "3/4",
+      "isCorrect": false,
+      "feedbackKey": "incorrect"
+    }
+  },
+  {
+    "name": "rational-division-slash-2026-09-29",
+    "question": {
+      "id": "q-irr",
+      "answerType": "rational",
+      "expectedAnswer": "7/4",
+      "feedback": {
+        "correct": "Oui.",
+        "incorrect": "Non.",
+        "partial": "Presque.",
+        "notIrreducible": "اختزل أكثر."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "14/8",
+          "id": "MISC-IKHTIZAL-ARRET-EN-CHEMIN"
+        }
+      ]
+    },
+    "answer": {
+      "value": "3∕4"
+    },
+    "expected": {
+      "outcome": "incorrect",
+      "misconceptionId": null,
+      "normalized": "3/4",
+      "isCorrect": false,
+      "feedbackKey": "incorrect"
+    }
+  },
+  {
+    "name": "rational-arabic-decimal-separator-2026-09-29",
+    "question": {
+      "id": "q-irr",
+      "answerType": "rational",
+      "expectedAnswer": "7/4",
+      "feedback": {
+        "correct": "Oui.",
+        "incorrect": "Non.",
+        "partial": "Presque.",
+        "notIrreducible": "اختزل أكثر."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "14/8",
+          "id": "MISC-IKHTIZAL-ARRET-EN-CHEMIN"
+        }
+      ]
+    },
+    "answer": {
+      "value": "٠٫٧٥"
+    },
+    "expected": {
+      "outcome": "incorrect",
+      "misconceptionId": null,
+      "normalized": "3/4",
+      "isCorrect": false,
+      "feedbackKey": "incorrect"
+    }
+  },
+  {
+    "name": "rational-arabic-indic-correct-2026-09-29",
+    "question": {
+      "id": "q-irr",
+      "answerType": "rational",
+      "expectedAnswer": "7/4",
+      "feedback": {
+        "correct": "Oui.",
+        "incorrect": "Non.",
+        "partial": "Presque.",
+        "notIrreducible": "اختزل أكثر."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "14/8",
+          "id": "MISC-IKHTIZAL-ARRET-EN-CHEMIN"
+        }
+      ]
+    },
+    "answer": {
+      "value": "٧/٤"
+    },
+    "expected": {
+      "outcome": "equivalent_correct",
+      "misconceptionId": null,
+      "normalized": "7/4",
+      "isCorrect": true,
+      "feedbackKey": "correct"
+    }
+  },
+  {
+    "name": "rational-arabic-indic-not-irreducible-2026-09-29",
+    "question": {
+      "id": "q-irr",
+      "answerType": "rational",
+      "expectedAnswer": "7/4",
+      "feedback": {
+        "correct": "Oui.",
+        "incorrect": "Non.",
+        "partial": "Presque.",
+        "notIrreducible": "اختزل أكثر."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "14/8",
+          "id": "MISC-IKHTIZAL-ARRET-EN-CHEMIN"
+        }
+      ]
+    },
+    "answer": {
+      "value": "١٤/٨"
+    },
+    "expected": {
+      "outcome": "partially_correct",
+      "misconceptionId": "MISC-IKHTIZAL-ARRET-EN-CHEMIN",
+      "normalized": "7/4",
+      "isCorrect": false,
+      "feedbackKey": "notIrreducible"
+    }
   }
 ]

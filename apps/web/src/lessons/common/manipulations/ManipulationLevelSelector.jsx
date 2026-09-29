@@ -37,10 +37,14 @@ export default function ManipulationLevelSelector({ levels, value, onChange, lab
   const prefix = idPrefix ?? ownId;
   const labelId = labelledBy ?? `${prefix}-label`;
 
+  // Motif « tabs » de l'APG : la flèche change d'onglet ET y porte le focus.
+  // Sans le focus, il restait sur l'ancien onglet, passé à tabIndex −1.
   const move = (dir) => {
     const i = levels.indexOf(value);
     const next = levels[(i + dir + levels.length) % levels.length];
-    if (next) onChange(next);
+    if (!next) return;
+    onChange(next);
+    document.getElementById(`${prefix}-tab-${next}`)?.focus();
   };
 
   return (

@@ -52,8 +52,8 @@ Not every concept below has a backend representation yet — that's the point of
 | **Lesson** | `chapters[].lessons[]` (catalogue entry) **and**, separately, each lesson's own `LESSON_CONFIG` (richer, authoritative for modules) | `coursesData.js` (catalogue) + `<lesson>/lesson.config.js` (detail) |
 | **Module** | `LESSON_CONFIG.modules[]` entries, each backed by one React component | `<lesson>/lesson.config.js`, `<lesson>/modules/Module*.jsx` |
 | **Activity** | Not modeled as a distinct layer — a module's internal steps/interactions are undifferentiated JSX. See `LESSON_CONTRACT.md` §Module for the decision on whether to introduce this now (we don't). | — |
-| **Exercise** | An interaction widget within a module (`useAdaptiveExercise`-backed, `QuizQuestion`, or bespoke) | See `EXERCISE_CONTRACT.md` |
-| **Attempt** | Not modeled *for lessons* — `useAdaptiveExercise` still only tracks an in-memory counter, never persisted. A real, backend-persisted equivalent exists, but scoped to the diagnostic only: `diagnostic_responses`, one row per answered question. | See `EXERCISE_CONTRACT.md` §Attempt (lessons); `DIAGNOSTIC_6E.md` §8 (diagnostic) |
+| **Exercise** | An interaction widget within a module — today the kit question components (`TapQuestion`, `BatchChoiceQuestion`, `NumericQuestion` in `common/kit/questions.jsx`), a registry manipulation, or the practice engine's exercises. (`useAdaptiveExercise`, `useSimpleExercise`, `ExerciseValidator` and `QuizQuestion` were deleted on 2026-09-29 as dead code with no importer.) | See `EXERCISE_CONTRACT.md` |
+| **Attempt** | Not modeled *for lesson modules* — in-module answers live in component state, never persisted as attempts (the final test persists its attempt locally via `useFinalTestAttempt` and sends learning evidence). A real, backend-persisted equivalent exists, but scoped to the diagnostic only: `diagnostic_responses`, one row per answered question. | See `EXERCISE_CONTRACT.md` §Attempt (lessons); `DIAGNOSTIC_6E.md` §8 (diagnostic) |
 | **Answer** | Component-local `useState`, never persisted independent of the pass/fail outcome — *for lessons*. The diagnostic persists the raw structured answer (`diagnostic_responses.answer`, JSON). | — (lessons); `DIAGNOSTIC_6E.md` §8 (diagnostic) |
 | **Feedback** | A rendered message (`AdaptiveFeedback`/`FeedbackBox`/inline JSX), never persisted | — |
 | **Skill / Competency** | For lessons: `LESSON_CONFIG.skills[]` (free-text strings) and the curriculum JSON's `prerequisites`/`teaching_scope` — descriptive metadata, not a queryable graph. The diagnostic has a real one: a 13-node, 4-tier dependency graph for 6e, with explicit `prerequisites` between skill ids (not free text) — the first such graph in the codebase. | `lesson.config.js`, curriculum JSON (lessons); `DIAGNOSTIC_6E.md` §2 (diagnostic) |
@@ -80,11 +80,13 @@ src/
 └── lessons/
     ├── common/
     │   ├── components/     shared lesson UI (ModuleLayout, LessonIndex, exercise widgets)
-    │   ├── hooks/           useProgress, useAdaptiveExercise, useSimpleExercise — localStorage/React-coupled, stay here
+    │   ├── hooks/           useProgress, useFinalTestAttempt, useEvidenceSubmission, … — localStorage/React-coupled, stay here
     │   └── utils/            progress/getResumeLesson & friends — localStorage-coupled, stay here (see packages/core/README.md for the boundary)
-    └── college/{6e,4e,3e}/<domain>/<lesson>/
+    └── moyen/4am/<chapter>/<unit>/<lesson>/   (the French college/ tree was deleted on 2026-09-25)
         ├── lesson.config.js    canonical per-lesson detail (see LESSON_CONTRACT.md)
-        ├── moduleContext.js    derives MODULE_CTX + prev/next nav from lesson.config.js
+        ├── moduleContext.js    one line: buildModuleContext(...) from ../_unit/
+        ├── routes.jsx           buildLessonRoutes(...) from ../_unit/
+        ├── knowledge.jsx        the lesson's knowledge (Knowledge Map)
         ├── index.jsx            thin wrapper rendering <LessonIndex>
         └── modules/Module*.jsx  one component per module
 ```
@@ -97,7 +99,7 @@ The curriculum catalogue (`coursesData.js`), answer validation, math/number form
 
 ## 4. Lesson & exercise systems
 
-See `LESSON_CONTRACT.md` and `EXERCISE_CONTRACT.md`. Summary: lessons and modules already have a real, consistent contract (`LESSON_CONFIG`) — it just isn't formally documented until now. Exercises don't have one consistent contract; this phase formalizes the strongest existing pattern (`useAdaptiveExercise`'s `{isCorrect, fields?, feedback?}`) as canonical and migrates one representative call site to prove it, without mass-migrating the rest.
+See `LESSON_CONTRACT.md` and `EXERCISE_CONTRACT.md`. Summary: lessons and modules already have a real, consistent contract (`LESSON_CONFIG`) — it just isn't formally documented until now. Exercises: the phase that wrote this section formalized `useAdaptiveExercise`'s `{isCorrect, fields?, feedback?}` as canonical — **historical**: that hook, `useSimpleExercise` and `ExerciseValidator` were deleted on 2026-09-29 (dead code, no importer). In-lesson questions are now the kit's data-driven question components (`apps/web/src/lessons/common/kit/questions.jsx`), and evidence flows only from the final test (`BossFinal` → `useEvidenceSubmission`); out-of-lesson exercises are the practice engine's. See `EXERCISE_CONTRACT.md`.
 
 ## 5. Data flow & persistence
 

@@ -156,3 +156,42 @@ export function revealedTally(states) {
     answered: list.filter((s) => s.answered).length,
   };
 }
+
+/**
+ * L'ORDRE D'AFFICHAGE des options d'une question à choix, stable et propre à
+ * la question : une permutation de 0..n−1 tirée de son `id`.
+ *
+ * Pourquoi : les auteurs écrivent la bonne réponse en premier — 36 des 45
+ * questions des défis finaux de l'unité 1 avaient `correct: 0` (audit du
+ * 2026-09-29), si bien que cliquer toujours la première option valait ~80 %
+ * sur la seule source de preuve de maîtrise.
+ *
+ * Ce n'est qu'un ordre d'AFFICHAGE : l'indice choisi reste celui de l'auteur
+ * (`ChoiceGrid` rend `options[order[k]]` et renvoie `order[k]`), donc la
+ * preuve (`picked`), le registre d'items et le juge serveur sont inchangés.
+ * Déterministe (même ordre au tableau et chez l'élève, d'un chargement à
+ * l'autre) et sans aléa : un hash FNV-1a de l'id amorce un mulberry32.
+ *
+ * @param {string} id
+ * @param {number} n
+ * @returns {number[]}
+ */
+export function optionOrder(id, n) {
+  const order = Array.from({ length: Math.max(0, n | 0) }, (_, i) => i);
+  if (order.length < 2) return order;
+  let h = 0x811c9dc5;
+  for (const ch of String(id ?? '')) { h ^= ch.codePointAt(0); h = Math.imul(h, 0x01000193) >>> 0; }
+  let a = h;
+  const rand = () => {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  for (let i = order.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(rand() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  return order;
+}

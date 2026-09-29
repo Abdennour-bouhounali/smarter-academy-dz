@@ -27,6 +27,10 @@
              inherited French Feature suite creates ad hoc grade fixtures
              unrelated to grade-activation testing. See config/curriculum.php. -->
         <env name="CURRICULUM_ENFORCE_ACTIVE_GRADES" value="false"/>
+        <!-- Les fixtures héritées postent encore l'ancienne charge {isCorrect, learningPointCodes} ;
+             la production la refuse par défaut depuis le 2026-09-29 (config/mastery.php).
+             EvidenceTrustBoundaryTest couvre le refus. -->
+        <env name="MASTERY_ACCEPT_LEGACY_EVIDENCE" value="true"/>
         <env name="DB_CONNECTION" value="sqlite"/>
         <env name="DB_DATABASE" value=":memory:"/>
         <env name="DB_URL" value=""/>

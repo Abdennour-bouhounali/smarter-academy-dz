@@ -60,7 +60,7 @@ export default function MathLabEntryButton({ className = '' }) {
       aria-haspopup="dialog"
       aria-expanded={isOpen}
       data-ml-overlay-trigger
-      className={`group inline-flex h-11 shrink-0 items-center justify-center rounded-full focus:outline-none ${className}`}
+      className={`group inline-flex h-11 min-w-[44px] shrink-0 items-center justify-center rounded-full focus:outline-none ${className}`}
     >
       {/* La même pastille que « Signaler » juste à côté : 44 px de cible,
           36 px de visuel. Le mot apparaît à partir de `sm` — sur un

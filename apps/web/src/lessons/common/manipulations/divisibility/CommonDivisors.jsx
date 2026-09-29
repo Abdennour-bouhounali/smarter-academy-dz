@@ -53,12 +53,14 @@ export default function CommonDivisors({
   const state = useManipulation({ type: 'common-divisors', initialNumbers: { a: a0, b: b0 }, initialMode, hintCount: 3 });
   const { a, b } = state.numbers;
   const [stage, setStage] = useState(startWith);
-  const [bouquets, setBouquets] = useState(() => L.initBouquets({ a: a0, b: b0 }));
+  // La scène porte l'`epoch` pour lequel elle a été construite : voir l'effet
+  // de découverte plus bas.
+  const [bouquets, setBouquets] = useState(() => ({ ...L.initBouquets({ a: a0, b: b0 }), epoch: 0 }));
   const [lists, setLists] = useState(() => L.initLists({ a: a0, b: b0 }));
   const [reject, setReject] = useState(null);
 
   useEffect(() => {
-    setBouquets(L.initBouquets({ a, b })); setLists(L.initLists({ a, b })); setStage(startWith); setReject(null);
+    setBouquets({ ...L.initBouquets({ a, b }), epoch: state.epoch }); setLists(L.initLists({ a, b })); setStage(startWith); setReject(null);
   }, [a, b, state.epoch, startWith]);
 
   // مبتدئ : les groupes SEULEMENT (voir l'en-tête).
@@ -66,9 +68,12 @@ export default function CommonDivisors({
   const groupsDone = L.greatestGroupFound(bouquets);
   // `state.epoch` dans les dépendances : `setNumbers` remet la phase à 'act',
   // la découverte doit être ré-affirmée sur la scène qui l'a méritée.
+  // Sur « إعادة », les deux effets tournent dans le MÊME commit : celui-ci
+  // voyait encore l'ancienne scène (le plus grand groupe posé) et rouvrait la
+  // découverte sur une scène vide. Une scène d'un autre epoch ne compte pas.
   useEffect(() => {
-    if (groupsOnly && stage === 'bouquets' && groupsDone) state.discover();
-  }, [groupsOnly, stage, groupsDone, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (groupsOnly && stage === 'bouquets' && groupsDone && bouquets.epoch === state.epoch) state.discover();
+  }, [groupsOnly, stage, groupsDone, state.epoch, bouquets.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const drag = useDragInteraction({
     onDrop: (sourceId, zoneId) => {
@@ -160,7 +165,7 @@ export default function CommonDivisors({
                 : t('manipulation.common.leftOverItems', { ra: bouquets.ra, rb: bouquets.rb, itemA: words.itemsA, itemB: words.itemsB })} />
           )}
           {stage === 'lists' && lists.placed.length > 0 && (
-            <EquationDisplay tex={`\\text{diviseurs communs} = \\{${lists.placed.join(' ; ')}\\}`} tone={L.allCommonPlaced(lists) ? 'ok' : 'neutral'} size="sm" />
+            <EquationDisplay tex={`\\{${lists.placed.join(' ; ')}\\}`} note={t('manipulation.commonDivisorsLabel')} tone={L.allCommonPlaced(lists) ? 'ok' : 'neutral'} size="sm" />
           )}
         </div>
       )}

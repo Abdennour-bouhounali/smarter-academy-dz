@@ -41,7 +41,7 @@ export default function ManipulationFreeLab({ state, numberFields = [], constrai
   return (
     <div data-manipulation-free-lab>
       <button type="button" onClick={() => state.setFreeLab(!state.freeLab)} aria-pressed={state.freeLab}
-        className={`inline-flex min-h-[36px] items-center gap-1.5 rounded-lg border px-2.5 py-1 text-xs font-bold ${state.freeLab ? 'border-slate-800 bg-slate-800 text-white' : 'border-slate-300 bg-white text-slate-700'}`}>
+        className={`inline-flex min-h-[44px] items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${state.freeLab ? 'border-slate-800 bg-slate-800 text-white' : 'border-slate-300 bg-white text-slate-700'}`}>
         <FlaskConical className="h-3.5 w-3.5" aria-hidden="true" /> {t('manipulation.freeLab.title')}
       </button>
       {state.freeLab && (

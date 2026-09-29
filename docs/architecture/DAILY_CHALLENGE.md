@@ -27,7 +27,7 @@ Two systems stay separate, in code and in the database:
 | Moves with | correctness, difficulty, repetition (engine V2) | correctness, speed, continuity |
 
 No challenge point ever touches mastery; no mastery value is read as a score.
-There is no XP system in the product; the challenge score is its own metric.
+The daily challenge awards no XP, and there is no server-side XP; the only XP in the product is a client-only counter (`localStorage` `smarter_global_xp`, per device — see `PROGRESS_MODEL.md`). The challenge score is its own metric.
 
 It is **not** a second exercise engine (questions are references into
 `content/practice`, rendered by `features/practice/QuestionRenderer`), **not**

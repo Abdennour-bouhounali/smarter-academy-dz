@@ -12,7 +12,12 @@
       "id": "awwaliyan-taarif",
       "type": "concepts",
       "module": 1,
-      "brick": null
+      "brick": {
+        "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/awwaliyan-fima-baynahuma/modules/Module01SabaataAsharWaThamaniyataAshar.jsx",
+        "line": 54,
+        "step": 1,
+        "variant": "new"
+      }
     }
   ],
   "vocabularyIntroduced": [],
@@ -21,7 +26,12 @@
       "id": "nafy-awwaliyan",
       "type": "methodes",
       "module": 1,
-      "brick": null
+      "brick": {
+        "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/awwaliyan-fima-baynahuma/modules/Module01SabaataAsharWaThamaniyataAshar.jsx",
+        "line": 67,
+        "step": 2,
+        "variant": "new"
+      }
     },
     {
       "id": "ithbat-awwaliyan",
@@ -49,6 +59,38 @@
     }
   ],
   "questions": [
+    {
+      "questionId": "M01-S1-Q1",
+      "module": 1,
+      "step": 1,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/awwaliyan-fima-baynahuma/modules/Module01SabaataAsharWaThamaniyataAshar.jsx",
+      "line": 55,
+      "requires": [
+        "awwaliyan-taarif"
+      ],
+      "prerequisiteStatus": {
+        "awwaliyan-taarif": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "M01-S2-Q2",
+      "module": 1,
+      "step": 2,
+      "component": "TapQuestion",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/awwaliyan-fima-baynahuma/modules/Module01SabaataAsharWaThamaniyataAshar.jsx",
+      "line": 68,
+      "requires": [
+        "nafy-awwaliyan"
+      ],
+      "prerequisiteStatus": {
+        "nafy-awwaliyan": "established@M1"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
     {
       "questionId": "M02-S1-Q1",
       "module": 2,
@@ -92,10 +134,10 @@
         "awwaliyan-taarif"
       ],
       "prerequisiteStatus": {
-        "awwaliyan-taarif": "missing"
+        "awwaliyan-taarif": "established@M1"
       },
       "lexiconHits": [],
-      "pedagogicallyValid": false
+      "pedagogicallyValid": true
     },
     {
       "questionId": "E2",
@@ -108,10 +150,10 @@
         "awwaliyan-taarif"
       ],
       "prerequisiteStatus": {
-        "awwaliyan-taarif": "missing"
+        "awwaliyan-taarif": "established@M1"
       },
       "lexiconHits": [],
-      "pedagogicallyValid": false
+      "pedagogicallyValid": true
     },
     {
       "questionId": "E3",
@@ -140,10 +182,10 @@
         "nafy-awwaliyan"
       ],
       "prerequisiteStatus": {
-        "nafy-awwaliyan": "missing"
+        "nafy-awwaliyan": "established@M1"
       },
       "lexiconHits": [],
-      "pedagogicallyValid": false
+      "pedagogicallyValid": true
     },
     {
       "questionId": "E5",
@@ -157,62 +199,14 @@
         "ithbat-awwaliyan"
       ],
       "prerequisiteStatus": {
-        "nafy-awwaliyan": "missing",
+        "nafy-awwaliyan": "established@M1",
         "ithbat-awwaliyan": "established@M2"
       },
       "lexiconHits": [],
-      "pedagogicallyValid": false
+      "pedagogicallyValid": true
     }
   ],
   "findings": [
-    {
-      "code": "E_REQUIRES_NOT_ESTABLISHED",
-      "severity": "critical",
-      "message": "question 'E1' requires 'awwaliyan-taarif', which no brick establishes and priorKnowledge does not declare",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/awwaliyan-fima-baynahuma/modules/Module04Itqan.jsx",
-      "line": 17,
-      "module": 4,
-      "step": null,
-      "term": null,
-      "questionId": "E1",
-      "position": 31
-    },
-    {
-      "code": "E_REQUIRES_NOT_ESTABLISHED",
-      "severity": "critical",
-      "message": "question 'E2' requires 'awwaliyan-taarif', which no brick establishes and priorKnowledge does not declare",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/awwaliyan-fima-baynahuma/modules/Module04Itqan.jsx",
-      "line": 19,
-      "module": 4,
-      "step": null,
-      "term": null,
-      "questionId": "E2",
-      "position": 37
-    },
-    {
-      "code": "E_REQUIRES_NOT_ESTABLISHED",
-      "severity": "critical",
-      "message": "question 'E4' requires 'nafy-awwaliyan', which no brick establishes and priorKnowledge does not declare",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/awwaliyan-fima-baynahuma/modules/Module04Itqan.jsx",
-      "line": 23,
-      "module": 4,
-      "step": null,
-      "term": null,
-      "questionId": "E4",
-      "position": 48
-    },
-    {
-      "code": "E_REQUIRES_NOT_ESTABLISHED",
-      "severity": "critical",
-      "message": "question 'E5' requires 'nafy-awwaliyan', which no brick establishes and priorKnowledge does not declare",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/awwaliyan-fima-baynahuma/modules/Module04Itqan.jsx",
-      "line": 25,
-      "module": 4,
-      "step": null,
-      "term": null,
-      "questionId": "E5",
-      "position": 54
-    },
     {
       "code": "W_PRIOR_NOT_DIAGNOSED",
       "severity": "medium",
@@ -250,100 +244,16 @@
       "position": -1
     },
     {
-      "code": "W_BRICK_MODULE_MISMATCH",
+      "code": "M_NAMED_IN_LOCKED_TITLE",
       "severity": "medium",
-      "message": "brick 'ithbat-awwaliyan' renders in module 3 but knowledge.jsx declares it under module 2 — the map attributes it to 2",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/awwaliyan-fima-baynahuma/modules/Module03Awazzif.jsx",
-      "line": 14,
-      "module": 3,
+      "message": "« PGCD » est nommé dans le titre de l'étape 1 (module 1), lisible avant que l'étape ne s'ouvre",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/awwaliyan-fima-baynahuma/modules/Module01SabaataAsharWaThamaniyataAshar.jsx",
+      "line": 51,
+      "module": 1,
       "step": 1,
-      "term": null,
+      "term": "pgcd",
       "questionId": null,
-      "position": 19
-    },
-    {
-      "code": "W_BRICK_MODULE_MISMATCH",
-      "severity": "medium",
-      "message": "brick 'ithbat-awwaliyan' renders in module 3 but knowledge.jsx declares it under module 2 — the map attributes it to 2",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/awwaliyan-fima-baynahuma/modules/Module03Awazzif.jsx",
-      "line": 14,
-      "module": 3,
-      "step": 2,
-      "term": null,
-      "questionId": null,
-      "position": 21
-    },
-    {
-      "code": "W_BRICK_MODULE_MISMATCH",
-      "severity": "medium",
-      "message": "brick 'ithbat-awwaliyan' renders in module 3 but knowledge.jsx declares it under module 2 — the map attributes it to 2",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/awwaliyan-fima-baynahuma/modules/Module03Awazzif.jsx",
-      "line": 14,
-      "module": 3,
-      "step": 3,
-      "term": null,
-      "questionId": null,
-      "position": 23
-    },
-    {
-      "code": "W_BRICK_MODULE_MISMATCH",
-      "severity": "medium",
-      "message": "brick 'ithbat-awwaliyan' renders in module 3 but knowledge.jsx declares it under module 2 — the map attributes it to 2",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/awwaliyan-fima-baynahuma/modules/Module03Awazzif.jsx",
-      "line": 14,
-      "module": 3,
-      "step": 4,
-      "term": null,
-      "questionId": null,
-      "position": 25
-    },
-    {
-      "code": "W_BRICK_MODULE_MISMATCH",
-      "severity": "medium",
-      "message": "brick 'ithbat-awwaliyan' renders in module 3 but knowledge.jsx declares it under module 2 — the map attributes it to 2",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/awwaliyan-fima-baynahuma/modules/Module03Awazzif.jsx",
-      "line": 14,
-      "module": 3,
-      "step": 5,
-      "term": null,
-      "questionId": null,
-      "position": 27
-    },
-    {
-      "code": "W_BRICK_MODULE_MISMATCH",
-      "severity": "medium",
-      "message": "brick 'ithbat-awwaliyan' renders in module 3 but knowledge.jsx declares it under module 2 — the map attributes it to 2",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/awwaliyan-fima-baynahuma/modules/Module03Awazzif.jsx",
-      "line": 14,
-      "module": 3,
-      "step": 6,
-      "term": null,
-      "questionId": null,
-      "position": 29
-    },
-    {
-      "code": "W_ITEM_WITHOUT_BRICK",
-      "severity": "info",
-      "message": "knowledge item 'awwaliyan-taarif' (module 1) is never established by a brick — it only appears in the end-of-module snapshot",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/awwaliyan-fima-baynahuma/knowledge.jsx",
-      "line": 7,
-      "module": 1,
-      "step": null,
-      "term": null,
-      "questionId": null,
-      "position": -1
-    },
-    {
-      "code": "W_ITEM_WITHOUT_BRICK",
-      "severity": "info",
-      "message": "knowledge item 'nafy-awwaliyan' (module 1) is never established by a brick — it only appears in the end-of-module snapshot",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/awwaliyan-fima-baynahuma/knowledge.jsx",
-      "line": 9,
-      "module": 1,
-      "step": null,
-      "term": null,
-      "questionId": null,
-      "position": -1
+      "position": 0
     }
   ]
 }

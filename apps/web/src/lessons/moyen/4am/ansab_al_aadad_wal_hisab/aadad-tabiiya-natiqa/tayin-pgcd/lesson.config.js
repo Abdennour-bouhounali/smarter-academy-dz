@@ -49,7 +49,7 @@ export const LESSON_CONFIG = {
       title: 'قواسم 42 و 60: من القائمتين إلى PGCD',
       objective: 'تعيين PGCD بحصر القواسم ثم القواسم المشتركة ثم أكبرها',
       autonomy: 'قائمتان طويلتان (اثنا عشر قاسمًا للعدد 60): لا يمكن النجاح بالمصادفة، يلزم ترتيب',
-      experience: { type: 'textbook', reason: '', theme: 'abstract' },
+      experience: { type: 'textbook', reason: '', theme: 'school' },
       learningPointIds: ['4am_tayin-pgcd_P1'], sourceElementIds: ['act-5'] },
     { kind: 'method', code: 'method-hasr', module: 1, title: 'طريقة: حصر القواسم ثم القواسم المشتركة ثم أكبرها', learningPointIds: ['4am_tayin-pgcd_P1'], sourceElementIds: ['act-5'] },
   ],

@@ -22,9 +22,14 @@ return [
     'server_evaluation' => filter_var(env('MASTERY_SERVER_EVALUATION', true), FILTER_VALIDATE_BOOL),
 
     // Le client peut-il encore envoyer l'ancienne charge utile du test final
-    // ({isCorrect, learningPointCodes}) ? Accepté et JOURNALISÉ pendant la
-    // transition ; refusé (422) une fois à `false`.
-    'accept_legacy_evidence_payload' => filter_var(env('MASTERY_ACCEPT_LEGACY_EVIDENCE', true), FILTER_VALIDATE_BOOL),
+    // ({isCorrect, learningPointCodes}) ? Refusé (422) par défaut depuis le
+    // 2026-09-29 : accepté, il laissait une requête fabriquée déclarer une
+    // réponse juste sur une question que le registre ne connaît pas — le
+    // client décidait donc de la maîtrise (LEARNING_ARCHITECTURE « Trust
+    // boundary »). Le client web n'envoie plus que la réponse depuis Mastery
+    // V2. `MASTERY_ACCEPT_LEGACY_EVIDENCE=true` rouvre la transition si besoin
+    // (les tests hérités le font, phpunit.xml).
+    'accept_legacy_evidence_payload' => filter_var(env('MASTERY_ACCEPT_LEGACY_EVIDENCE', false), FILTER_VALIDATE_BOOL),
 
     // Le canal du journal de maîtrise (config/logging.php → `mastery`).
     'log_channel' => env('MASTERY_LOG_CHANNEL', 'mastery'),

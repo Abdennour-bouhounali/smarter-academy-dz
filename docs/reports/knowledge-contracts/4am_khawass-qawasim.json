@@ -37,7 +37,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/khawass-qawasim/modules/Module01ThalathHalat.jsx",
-        "line": 27,
+        "line": 64,
         "step": 1,
         "variant": "rappel"
       }
@@ -50,7 +50,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/khawass-qawasim/modules/Module03AtaallamAlBurhana.jsx",
-        "line": 35,
+        "line": 36,
         "step": 3,
         "variant": "new"
       }
@@ -61,7 +61,7 @@
       "module": 3,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/khawass-qawasim/modules/Module03AtaallamAlBurhana.jsx",
-        "line": 31,
+        "line": 32,
         "step": 2,
         "variant": "new"
       }
@@ -75,7 +75,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/khawass-qawasim/modules/Module01ThalathHalat.jsx",
-      "line": 36,
+      "line": 73,
       "requires": [
         "qasim-mushtarak-rappel"
       ],
@@ -140,8 +140,12 @@
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/khawass-qawasim/modules/Module03AtaallamAlBurhana.jsx",
       "line": 24,
-      "requires": null,
-      "prerequisiteStatus": {},
+      "requires": [
+        "qasim-mushtarak-rappel"
+      ],
+      "prerequisiteStatus": {
+        "qasim-mushtarak-rappel": "established@M1"
+      },
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -151,7 +155,7 @@
       "step": 3,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/khawass-qawasim/modules/Module03AtaallamAlBurhana.jsx",
-      "line": 36,
+      "line": 37,
       "requires": [
         "ithbat-qasim",
         "burhan-idha-fainna"

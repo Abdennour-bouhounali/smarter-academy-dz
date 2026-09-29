@@ -38,4 +38,14 @@ describe('buildNextSteps — « ما التالي؟ »', () => {
     expect(steps).toHaveLength(1);
     expect(buildNextSteps(null)).toEqual([]);
   });
+
+  it('un prérequis faible renvoie à SA leçon, pas à un module de celle-ci', () => {
+    const steps = buildNextSteps([
+      { kind: 'prerequisite', learningPoint: lp('P2'), modules: [{ number: 2, title: 'م' }],
+        prerequisites: [{ code: '4am_qasim-adad-tabii_P1', title: 'قاسم عدد', lessonCode: 'qasim-adad-tabii' }] },
+    ], { modulePath, lessonPath: (code) => `/courses/l/${code}` });
+    expect(steps).toEqual([expect.objectContaining({
+      labelKey: 'boss.nextReviewLearningPoint', params: { title: 'قاسم عدد' }, to: '/courses/l/qasim-adad-tabii',
+    })]);
+  });
 });

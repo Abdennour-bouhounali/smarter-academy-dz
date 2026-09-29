@@ -13,7 +13,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module01AlMaktaba.jsx",
-        "line": 80,
+        "line": 132,
         "step": 2,
         "variant": "new"
       }
@@ -24,7 +24,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module02Maarif.jsx",
-        "line": 62,
+        "line": 73,
         "step": 2,
         "variant": "new"
       }
@@ -37,7 +37,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module02Maarif.jsx",
-        "line": 78,
+        "line": 89,
         "step": 3,
         "variant": "new"
       }
@@ -51,7 +51,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module02Maarif.jsx",
-        "line": 79,
+        "line": 90,
         "step": 3,
         "variant": "new"
       }
@@ -64,9 +64,13 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module01AlMaktaba.jsx",
-      "line": 65,
-      "requires": null,
-      "prerequisiteStatus": {},
+      "line": 116,
+      "requires": [
+        "qisma-iqlidiya"
+      ],
+      "prerequisiteStatus": {
+        "qisma-iqlidiya": "prior"
+      },
       "lexiconHits": [],
       "pedagogicallyValid": true
     },
@@ -76,7 +80,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module01AlMaktaba.jsx",
-      "line": 81,
+      "line": 138,
       "requires": [
         "qasim-baqi"
       ],
@@ -92,7 +96,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module02Maarif.jsx",
-      "line": 48,
+      "line": 59,
       "requires": [
         "qasim-baqi"
       ],
@@ -108,7 +112,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module02Maarif.jsx",
-      "line": 64,
+      "line": 75,
       "requires": [
         "qasim-jidaa"
       ],
@@ -124,7 +128,7 @@
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module02Maarif.jsx",
-      "line": 81,
+      "line": 92,
       "requires": [
         "siyagh-mutakafia"
       ],
@@ -251,18 +255,6 @@
       "term": null,
       "questionId": null,
       "position": -1
-    },
-    {
-      "code": "W_BRICK_MODULE_MISMATCH",
-      "severity": "medium",
-      "message": "brick 'qasim-jidaa' renders in module 3 but knowledge.jsx declares it under module 2 — the map attributes it to 2",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module03Awazzif.jsx",
-      "line": 29,
-      "module": 3,
-      "step": 1,
-      "term": null,
-      "questionId": null,
-      "position": 55
     }
   ]
 }

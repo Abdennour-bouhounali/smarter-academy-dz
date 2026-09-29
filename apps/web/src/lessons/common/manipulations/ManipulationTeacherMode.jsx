@@ -10,7 +10,7 @@ export function Btn({ onClick, disabled, children, tone = 'slate', pressed, aria
   return (
     <button
       type="button" onClick={onClick} disabled={disabled} aria-pressed={pressed} aria-label={ariaLabel} title={title}
-      className={`inline-flex min-h-[40px] items-center gap-1.5 rounded-xl border-2 ${small ? 'px-2.5 py-1.5 text-xs' : 'px-3 py-2 text-sm'} font-bold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-40 ${
+      className={`inline-flex min-h-[44px] items-center gap-1.5 rounded-xl border-2 ${small ? 'px-2.5 py-1.5 text-xs' : 'px-3 py-2 text-sm'} font-bold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-40 ${
         tone === 'blue' ? 'border-blue-600 bg-blue-600 text-white hover:bg-blue-700'
           : tone === 'amber' ? 'border-amber-500 bg-amber-100 text-amber-900 hover:bg-amber-200'
           : pressed ? 'border-slate-800 bg-slate-800 text-white'
@@ -69,11 +69,11 @@ export default function ManipulationTeacherMode({
         {allowModeSwitch && (
           <div className="inline-flex overflow-hidden rounded-xl border-2 border-slate-300" role="group" aria-label={t('manipulation.mode')}>
             <button type="button" onClick={() => { state.stopPlaying(); state.setMode('student'); }} aria-pressed={!isClass}
-              className={`inline-flex min-h-[40px] items-center gap-1 px-3 py-2 text-sm font-bold ${!isClass ? 'bg-slate-800 text-white' : 'bg-white text-slate-600'}`}>
+              className={`inline-flex min-h-[44px] items-center gap-1 px-3 py-2 text-sm font-bold ${!isClass ? 'bg-slate-800 text-white' : 'bg-white text-slate-600'}`}>
               <User className="h-4 w-4" aria-hidden="true" /> {t('manipulation.modeStudent')}
             </button>
             <button type="button" onClick={() => state.setMode('class')} aria-pressed={isClass}
-              className={`inline-flex min-h-[40px] items-center gap-1 px-3 py-2 text-sm font-bold ${isClass ? 'bg-slate-800 text-white' : 'bg-white text-slate-600'}`}>
+              className={`inline-flex min-h-[44px] items-center gap-1 px-3 py-2 text-sm font-bold ${isClass ? 'bg-slate-800 text-white' : 'bg-white text-slate-600'}`}>
               <Presentation className="h-4 w-4" aria-hidden="true" /> {t('manipulation.modeClass')}
             </button>
           </div>

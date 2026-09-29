@@ -1,5 +1,16 @@
 # Diagnostic 6e — Architecture
 
+> **Historical — dormant, not reachable by a 4AM student (verified 2026-09-29).** The
+> 6e diagnostic flow is still routed (`/espace/diagnostic`, `apps/web/src/App.jsx`) and
+> its backend still exists (`apps/api/app/Domain/Diagnostic/`), but
+> `DIAGNOSTIC_AVAILABLE_GRADES = ['6e']` (`apps/web/src/services/diagnosticService.js`)
+> and `6e` is not an active grade (`ACTIVE_GRADE_IDS` = `4am`, `terminale_dz` in
+> `packages/core/curriculum/activeGrades.js`), so neither the grade picker nor the
+> invite banner sends anyone there. Its skill→lesson starting points
+> (`SixiemeDiagnosticProvider.php`) target `/courses/college/6e/*` routes of French
+> lessons **deleted on 2026-09-25**. Read this document as the design record of the
+> engine, not as a description of a live feature.
+
 The first Smarter Academy adaptive diagnostic. Not a quiz, not a fixed-length test: it estimates what a 6e student already masters, what's fragile, and what's missing, using as few questions as the evidence allows, then recommends one specific place to start learning. This document is the map — the reference for extending it to 5e/4e/3e later, adding question types, and understanding why the pieces are shaped the way they are.
 
 Everything here is grounded in the actual repository: the 13-skill competency graph below was derived from the real `skills[]`/`prerequisites` fields already present in the 9 available 6e lessons (see `packages/core/curriculum/coursesData.js` and each lesson's `lesson.config.js`), not invented. See `ARCHITECTURE.md` §1/§9/§10 for how this fits the rest of the identity/grade/lesson system.
@@ -161,7 +172,7 @@ pages/student/diagnostic/
 
 **Adding a question type** = one new component in `questions/` implementing `{question, onChange, disabled} → void`, one line in `QuestionRenderer`'s `REGISTRY`, and a matching `case` in the backend's `AnswerChecker::check()` + `DiagnosticEngine::toPublicQuestion()`. No branching logic anywhere else needs to know the full set of types.
 
-**Why the diagnostic doesn't reuse `useAdaptiveExercise`** (the lesson system's hint/retry/solution-reveal state machine, `apps/web/src/lessons/common/hooks/`): that hook's whole purpose is scaffolding a student toward a correct answer within one exercise (hints, "voir la solution," multiple attempts) — the opposite of what a diagnostic needs, which is one clean, unscaffolded data point per question, then move on. Reusing it would mean either fighting its API to disable the parts a diagnostic can't use, or quietly leaking the correct answer via its hint ladder. `DiagnosticRun.jsx` implements its own minimal two-phase flow (`answering` → `feedback`) instead — a genuinely different, simpler state shape. It does keep the same result-shape philosophy (`{isCorrect, fields?, feedback?}` from `EXERCISE_CONTRACT.md`) as its qualitative reference, just decided server-side instead of by a client-side `validate` function.
+**Why the diagnostic doesn't reuse `useAdaptiveExercise`** (historical — that hook was deleted on 2026-09-29; the lesson system's hint/retry/solution-reveal state machine, `apps/web/src/lessons/common/hooks/`): that hook's whole purpose is scaffolding a student toward a correct answer within one exercise (hints, "voir la solution," multiple attempts) — the opposite of what a diagnostic needs, which is one clean, unscaffolded data point per question, then move on. Reusing it would mean either fighting its API to disable the parts a diagnostic can't use, or quietly leaking the correct answer via its hint ladder. `DiagnosticRun.jsx` implements its own minimal two-phase flow (`answering` → `feedback`) instead — a genuinely different, simpler state shape. It does keep the same result-shape philosophy (`{isCorrect, fields?, feedback?}` from `EXERCISE_CONTRACT.md`) as its qualitative reference, just decided server-side instead of by a client-side `validate` function.
 
 **Feedback tone**: no red/green, no "Correct !"/"Faux !" banner, no per-question explanation — a neutral acknowledgement (`"On continue."`, `"Pas de souci, on continue."`, picked from a small varied set) and a single "Continuer" button. The lesson system's red/green `AdaptiveFeedback` is correct for *that* context (practice, immediate correction is the point) and wrong for this one (assessment, where over-explaining after every answer would bias the remaining responses and turn the diagnostic into a lesson).
 

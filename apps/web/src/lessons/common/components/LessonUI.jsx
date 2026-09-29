@@ -83,12 +83,16 @@ export function ChoiceGrid({
   cols = 2,
   disabled = false,
   renderOption,
+  order,          // optionnel : ordre d'AFFICHAGE (indices d'options) ; `selected`,
+                  // `correctIndex` et `onSelect` restent dans l'indexation de l'auteur
 }) {
   const grid = cols === 1 ? 'grid-cols-1' : cols === 3 ? 'grid-cols-1 sm:grid-cols-3' : 'grid-cols-1 sm:grid-cols-2';
+  const shown = order && order.length === options.length ? order : options.map((_, i) => i);
 
   return (
     <div className={`grid ${grid} gap-2`} role="group">
-      {options.map((opt, i) => {
+      {shown.map((i) => {
+        const opt = options[i];
         const isSel = selected === i;
         const isRight = revealed && i === correctIndex;
         const isWrongPick = revealed && isSel && i !== correctIndex;
@@ -375,6 +379,7 @@ export function TimerToggle({ enabled, onChange, durationLabel, disabled = false
         type="button"
         role="switch"
         aria-checked={enabled}
+        aria-label={t('timer.label')}
         disabled={disabled}
         onClick={() => onChange(!enabled)}
         className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 ${

@@ -31,7 +31,7 @@ export const LESSON_CONFIG = {
   ],
   teachingScope: { include: ['الخاصيتان وخوارزميتا الكتاب', 'مقارنة عدد الخطوات (765 و 135)'], exclude: ['التحليل إلى عوامل أولية', 'المضاعف المشترك الأصغر (غير وارد في البرنامج)'] },
   knowledgeMap: true,
-  priorKnowledge: ['khassiya-1', 'khassiya-2', 'pgcd-taarif'],
+  priorKnowledge: ['khassiya-1', 'khassiya-2', 'pgcd-taarif', 'nataij-mubashira'],
   resources: [
     // Module 1 — workspace à deux niveaux sur les différences successives,
     // dans l'ATELIER DE COUTURE (thème `workshop`) : deux rubans, le petit

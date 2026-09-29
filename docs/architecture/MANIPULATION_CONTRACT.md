@@ -96,7 +96,7 @@ notation that follows the gesture. That standard now holds across the unit. Each
 | 2 قواسم عدد طبيعي | `library` | the same books, in rectangles | drag a column count onto the pile | a perfect rectangle ⇔ `n = d × e` |
 | 3 خواص القواسم | `construction` | two walls in bricks of length n (`BrickWall`) | carry wall b: join it, remove it, or measure wall a with it | sum, difference and remainder are still whole bricks ⇔ n divides them |
 | 4 القاسم المشترك الأكبر | `football` (مبتدئ) / `garden` (متقدم) | balls & shirts / red & white flowers in identical groups (`GroupingScene`) | drag a number of groups onto the table | the k that leave nothing outside are exactly the common divisors |
-| 5 تعيين PGCD | `school` (مبتدئ) / lists (متقدم) | pens & notebooks in identical bags, then the divisor lists | groups first, then carry the common divisors to the middle and the greatest to PGCD | « commun » seen on objects, then read in the lists — which *are* the object of this lesson |
+| 5 تعيين PGCD | `school` (both levels; متقدم continues to the lists) | pens & notebooks in identical bags (8/12, then 42/60), then the divisor lists | groups first, then carry the common divisors to the middle and the greatest to PGCD | « commun » seen on objects, then read in the lists — which *are* the object of this lesson |
 | 6 البحث عن PGCD | `workshop` | two ribbons (`RibbonStrip`) | cut the short ribbon out of the long one (differences) / lay copies of it along (Euclid) | the greatest common length survives every cut and every remainder |
 | 7 أوليان فيما بينهما | `school` (مبتدئ) / lists (متقدم) | 17 pens and 18 notebooks in identical bags | try 2, 3, 4… bags — nothing works but 1 | coprime ⇔ no identical grouping beyond one bag ⇔ only 1 in the middle |
 | 8 اختزال كسر | `kitchen` | spoons of sugar and cups of flour, in portions | drag a common divisor onto the recipe | dividing both terms by k = k identical portions; the reduced fraction is one portion |
@@ -161,6 +161,9 @@ GCD, a divisor list, or an algorithm trace itself. `logic/*.js` holds the *inter
 - Pointer Events, `setPointerCapture`, `touch-action: none` — no page scroll while dragging.
 - Below 6 px of movement the gesture is a **tap**: it picks up / puts down. Above, the object follows.
 - The nearest valid zone within 56 px is **magnetised**: it lights up and receives the drop.
+- Zones belong to ONE instance: each `useDragInteraction` tags its zones with its own id
+  (`data-drop-owner`, `useId`) and only looks for its own (2026-09-29). Two manipulations on one
+  step share zone names (`table`, `pgcd`…) and used to receive each other's drops.
 - A refused drop returns the object with a short shake and an **Arabic reason** (`accepts` returns
   the reason string). Never a silent red state.
 - **Every drag has a non-drag alternative**: tap the object, then tap the zone. Keyboard: Enter/Space
@@ -237,8 +240,7 @@ Audit of the ten types (2026-09-24):
 | `fraction-reduction` | MANUAL | each drop is a choice of divisor, and « which path is shorter » is counted in the student's own steps. |
 
 Outside the registry, `InfoSorter` and the diagnostic `ClassificationQuestion` are judgements (each
-card is an answer): manual-only. The drag components under `lessons/college/` and `lessons/lycee/`
-are dormant and were not changed.
+card is an answer): manual-only.
 
 ### How it is declared — the registry decides, the type supplies the mechanics
 
@@ -349,10 +351,16 @@ from the textbook. The rationale of each pair is written next to it in `levels.j
 
 A manipulation knows it is inside a workspace through `WorkspaceLevelContext`
 (`workspaceContext.js`): `useManipulation` then takes the workspace's level, returns
-`levels: null`, and the shell renders no selector. The selector shows the label «مستوى المناولة»,
+`levels: null`, and the shell renders no selector. « One selector » is per MANIPULATION, not per
+page: a standalone `<Manipulation>` placed inside a later step (khawass M1 cases 2–3, bahth M1/M3,
+awwaliyan M1, qawasim M1) shows its own selector below the workspace's. Those standalone labs are
+not always declared in `resources[]` (48 and 105 in qawasim, 35/15/5 and 56/21/7 in khawass,
+378/315 and 3356/1528 in bahth, 22/15 and 27/36 in awwaliyan) — a known gap, harmless at runtime
+(`resources[]` feeds the registry and the teacher's مذكرة, not the page). The selector shows the label «مستوى المناولة»,
 a colour per level (green مبتدئ, blue متقدم) so the active one reads without reading, ≥ 44 px
-tabs, `aria-selected` on the active tab, and ids prefixed per instance so several selectors can
-share a page.
+tabs, `aria-selected` on the active tab, arrow keys that change the tab AND move focus to it
+(WAI-ARIA tabs pattern, 2026-09-29), and ids prefixed per instance so several selectors can share a
+page.
 
 ### What `useManipulation` exposes
 
@@ -529,12 +537,30 @@ A manipulation is a learning instrument, not an assessment. Verified in code:
 
 - **It writes nothing.** No localStorage, no API call, no evidence. The only manipulation state
   that outlives a remount is whatever the module holds.
-- **`onFinished` is not completion.** Every shell type fires `onFinished` from an effect when the
-  phase reaches `formal`, but the 4AM modules use it only to hide a hint line. It does not mark a
-  step done, and a module step must never require it — that would gate progression on a gesture
-  (`LESSON_CONTRACT.md`, non-blocking invariant).
+- **`onFinished` is not completion — but it may open a step.** Every shell type fires `onFinished`
+  (through `state.report`, so only the lesson's own level ticks the lesson) from an effect when the
+  phase reaches `formal`. It never marks a MODULE done, never writes progress and never produces
+  evidence. What it may do, and what the unit does in exactly four places (verified 2026-09-29 —
+  qawasim M1 step 1, khawass M1 step 1, bahth M1 step 2, bahth M3 step 3), is make the step that
+  *comments on the activity* wait until the activity's lab has been done; the other 4AM modules
+  use it only to hide a hint line. This is allowed on two conditions, both true today:
+  1. the formal phase is **always reachable** by the lesson's numbers — the discovery is reached by
+     the gesture (with hints, and « أكمل … » auto-completion for a repetitive gesture, §6bis), and
+     the conjecture that follows can be retried without limit, each wrong pick explaining itself
+     (`ManipulationDiscovery`); and
+  2. the manipulation is the module's **own textbook activity**, opened by default on the level
+     that carries it (`defaultLevel="advanced"`, §7quater).
+  Never make a step wait on a manipulation whose discovery the lesson's numbers cannot reach (the
+  free lab now refuses such numbers: Euclid when one number divides the other, differences when
+  a = b; the factor-pairs rail always includes the first divisor above √n). This is distinct from
+  the non-blocking invariant of `LESSON_CONTRACT.md`, which is about *questions*: a question step is
+  done when answered, never when answered correctly.
 - **Mistakes cost nothing.** A refused drop keeps the object in hand and explains why in Arabic; a
-  wrong conjecture is replayable. Attempt counters exist in two logic files and are read by nothing.
+  wrong conjecture is replayable. Attempt counters exist in three logic files (`teamBuilder`,
+  `commonDivisors`, `coprime`) and are read by nothing.
+- **The result is never shown before the gesture that finds it.** The difference and Euclid chains
+  print `PGCD(a ; b) = ?` on their last row until the student has placed the PGCD in its box
+  (2026-09-29: « أكمل الفروق / القسمات » used to reveal it in one click).
 
 ## 7ter. Creating a new manipulation
 
@@ -574,7 +600,8 @@ Nine steps, in this order. Steps 1, 2 and 5 are enforced by tests that fail othe
    `booksClassroomLayout.js`). Never a raster image — root `CLAUDE.md`.
 
 **Reuse before you write.** The ten types are reused across the unit by changing props alone
-(`factor-pairs` serves 60, 48 and 105; `common-divisors` serves four lessons). Write a new type
+(`factor-pairs` serves 24, 60, 48 and 105; `common-divisors` serves two lessons — 4 and 5 — with
+two themes). Write a new type
 only when the mathematical idea or the gesture genuinely differs; go standalone (no shell) only
 when the drawing itself carries the argument, and accept that you lose levels, hints, discovery and
 the free lab.
@@ -583,7 +610,9 @@ the free lab.
 
 Interface RTL in Cairo; every numeric block (`dir="ltr"`): tiles, bars, equations, divisions,
 chains. `PGCD` stays Latin, as in the textbook. Full RTL rules:
-`ARABIC_RTL_CONTRACT.md`. Touch targets ≥ 44 px for controls; note that
+`ARABIC_RTL_CONTRACT.md`. Touch targets ≥ 44 px for controls — the shell's buttons (`Btn` in
+`ManipulationTeacherMode.jsx`: إعادة, تلميح, auto-complete, الشرح…) and the free-lab toggle were 40
+and 36 px until 2026-09-29 and are 44 px now; note that
 `NumberTile size="sm"` — used by most rails — is **40 px**, and the mobile e2e
 asserts ≥ 40 px accordingly. Layout works from 320 px:
 controls above the stage (they must not move under the finger), vertical composition on phones.
@@ -656,8 +685,9 @@ state.
   manual rearrangement afterwards, 20/4, 16/3 leaving one player drawn on the bench, a configuration
   change and « إعادة » in mid-animation, reduced motion, 320 px, the locked → ready ribbons, and no
   button on the choice-type manipulations. On 2026-09-24 the suite was 176/177 against the dev
-  server; the one failure is C3 (a Classroom Mode toolbar button under 44 px at 390×844 on the books
-  lab), which does not touch this feature.
+  server; the one failure, C3, was the Math Lab « المختبر » button in the Classroom toolbar (36 px
+  wide under 640 px). Fixed 2026-09-29 (`MathLabEntryButton` `min-w-[44px]`); C3 now also ignores
+  the pointer controls, which are `hidden` below `sm` on purpose.
   **139/139 green on 2026-09-21**, with `4am-aadad-tabiiya-natiqa.mjs` at 27/27.
   Run it against the **dev** server: `KIT_BASE=http://localhost:5173 node
   apps/web/e2e/lesson-kit/manipulations.mjs`. The helper's default is 5183,

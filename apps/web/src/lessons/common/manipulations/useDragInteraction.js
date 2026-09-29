@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, useId } from 'react';
 
 /**
  * useDragInteraction — le GESTE « prendre un objet, le porter, le poser »,
@@ -41,6 +41,10 @@ export default function useDragInteraction({ onDrop, accepts, onReject, magnetRa
   // L'objet dont le geste de pointeur vient de se terminer. Voir `bubbledFrom`.
   const lastGestureNode = useRef(null);
   const rejectTimer = useRef(null);
+  // Chaque instance ne voit QUE ses zones : deux manipulations sur une même
+  // étape (khawass, cas 2 et 3) recevaient les dépôts l'une de l'autre, les
+  // zones portant les mêmes ids ('table', 'pgcd'…).
+  const owner = useId();
 
   useEffect(() => () => { if (rejectTimer.current) clearTimeout(rejectTimer.current); }, []);
 
@@ -66,10 +70,11 @@ export default function useDragInteraction({ onDrop, accepts, onReject, magnetRa
   /** La zone sous le pointeur, sinon la plus proche dans le rayon de l'aimant. */
   const zoneAt = useCallback((x, y) => {
     if (typeof document === 'undefined') return null;
+    const mine = `[data-drop-zone][data-drop-owner="${owner}"]`;
     const under = document.elementFromPoint(x, y)?.closest?.('[data-drop-zone]');
-    if (under) return under.getAttribute('data-drop-zone');
+    if (under) return under.matches(mine) ? under.getAttribute('data-drop-zone') : null;
     let best = null; let bestD = magnetRadius;
-    for (const el of document.querySelectorAll('[data-drop-zone]')) {
+    for (const el of document.querySelectorAll(mine)) {
       const r = el.getBoundingClientRect();
       const dx = x < r.left ? r.left - x : x > r.right ? x - r.right : 0;
       const dy = y < r.top ? r.top - y : y > r.bottom ? y - r.bottom : 0;
@@ -77,7 +82,7 @@ export default function useDragInteraction({ onDrop, accepts, onReject, magnetRa
       if (d < bestD) { bestD = d; best = el.getAttribute('data-drop-zone'); }
     }
     return best;
-  }, [magnetRadius]);
+  }, [magnetRadius, owner]);
 
   const tryDrop = useCallback((sourceId, zoneId) => {
     if (!sourceId || !zoneId) return false;
@@ -154,6 +159,7 @@ export default function useDragInteraction({ onDrop, accepts, onReject, magnetRa
   /** À poser sur la ZONE d'accueil. */
   const zoneProps = useCallback((id, { disabled = false } = {}) => ({
     'data-drop-zone': id,
+    'data-drop-owner': owner,
     'data-drop-active': hoverZone === id ? 'true' : undefined,
     'data-drop-ready': held && !dragging && !disabled ? 'true' : undefined,
     onClick: (e) => {
@@ -166,7 +172,7 @@ export default function useDragInteraction({ onDrop, accepts, onReject, magnetRa
       if (disabled || !held) return;
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (tryDrop(held, id)) setHeld(null); }
     },
-  }), [hoverZone, held, dragging, tryDrop]);
+  }), [hoverZone, held, dragging, tryDrop, owner]);
 
   const release = useCallback(() => setHeld(null), []);
   const dropHere = useCallback((zoneId) => { if (held && tryDrop(held, zoneId)) setHeld(null); }, [held, tryDrop]);

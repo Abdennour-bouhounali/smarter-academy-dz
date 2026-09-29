@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { parseDec } from '@smarter-academy/core';
 import { TapQuestion, NumericQuestion, BatchChoiceQuestion } from '../kit';
 import { Feedback } from '../components/LessonUI';
 import MathText from '../components/MathText';
@@ -79,7 +80,7 @@ export default function TextbookExercise({ exercise, solved = false, onAnswered,
     case 'numeric':
       body = (
         <NumericQuestion prompt={q.prompt ? <MathText>{q.prompt}</MathText> : undefined} expected={q.expected} display={q.display ?? String(q.expected)}
-          parse={(s) => Number(String(s).replace(/[٠-٩]/g, (ch) => String(ch.charCodeAt(0) - 0x0660)).replace(/\s/g, ''))}
+          parse={parseDec}
           explain={explain} explainFor={q.explainFor ? (n) => <MathText>{q.explainFor(n)}</MathText> : undefined}
           requires={requires} solved={solved} onAnswered={(ok) => onAnswered?.(ok)} />
       );

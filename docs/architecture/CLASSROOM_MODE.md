@@ -14,8 +14,8 @@ active session at a time.
 
 ```
 Lesson      → 🎓 وضع القسم     مدخل الدرس → المحور 0 → المحور 1 (وحداته) → …
-Module      → ⛶ عرض (flottant)  المهمة → المختبر → الخطوات → الخلاصة
-Test        → ⛶ عرض (flottant)  السؤال 1 → السؤال 2 → … → كشف النتائج → revue
+Module      → 🎓 وضع القسم      (rangée de repères du محور ; séance de LEÇON) المهمة → المختبر → الخطوات → الخلاصة
+Test        → 🎓 وضع القسم      (idem) السؤال 1 → السؤال 2 → … → كشف النتائج → revue
 Exercise    → ⛶ عرض التمرين     l'exercice seul, interaction intacte
 Manipulation→ ⛶ عرض المناولة    la manipulation seule, mise en page de classe
 ```
@@ -169,10 +169,11 @@ Both presentation entry and the Math Lab left this column for the marker row:
 it is `sticky` (always reachable without scrolling) and **in the flow**, so it
 never covers the lesson — which a growing stack of floating pills did.
 
-« عرض » is set **in the angle**: its gap to the bottom (`1.5rem`) equals its
+« بطاقتي » is set **in the angle**: its gap to the bottom (`1.5rem`) equals its
 gap to the left, so the pill reads as anchored to the corner rather than
-floating above it. The three heights are a single system — moving one without
-the others makes two pills overlap.
+floating above it. The two heights are a single system — moving one without
+the other makes the pills overlap. *(Until 2026-09-24 a third pill, « ⛶ عرض »,
+sat in the angle below them; it moved to the marker row as « وضع القسم ».)*
 
 The corner is free because the site's old « Ctrl+K » pill was **removed**
 (`components/common/CommandPalette.jsx`). It was placed with `end-6`, which
@@ -184,11 +185,9 @@ opens on Ctrl/⌘+K as before; only the floating pill is gone.
 owns the right edge and would swallow the clicks (the lesson recorded in
 `KnowledgeMap.jsx`).
 
-Its label is « عرض » alone — in that column, outside the header of what it
-presents, naming the scope adds nothing. The other scopes keep their explicit
-labels, where the word distinguishes *which* object is being presented. The
-`aria-label` stays descriptive for screen readers, and on phones the label is
-hidden so three buttons do not eat the page.
+The exercise and manipulation scopes keep their explicit labels (« عرض
+التمرين », « عرض المناولة »), where the word distinguishes *which* object is
+being presented.
 
 **Leaving happens at the top, in the toolbar.** « ⛶ خروج » is rendered by
 `ClassroomToolbar`, at its end edge, with the session's other controls (the
@@ -209,9 +208,10 @@ buttons.
 The page's own floating chrome (« كرّاسي », « بطاقتي ») is hidden for the
 duration by `body.sa-classroom-session`, a class the scroll lock adds and
 removes: it has no place on a projector. Nothing unmounts, so no state is
-lost. `classroom.mjs` asserts the exit sits below « التالي » on the same edge,
-that the floating column stacks « عرض » under « بطاقتي » under « كرّاسي » with
-equal corner gaps, and that the page chrome disappears.
+lost. `classroom.mjs` asserts (updated 2026-09-29) that « وضع القسم » lives in
+the محور's marker row next to « المختبر », outside the floating column; that
+the column stacks « بطاقتي » under « كرّاسي » on the same edge, « بطاقتي » with
+equal corner gaps; and that the page chrome disappears.
 
 The toolbar badge names **what is presented** (« المحور », « التمرين »,
 « المناولة » — `classroom.scopeLabel.*`), not the gesture that opened it:
@@ -234,7 +234,7 @@ projects module 3 without having completed 0–2 on their own account.
 
 ### Test — ⛶ عرض (module 0 « أستعدّ » et test final « إختبار أولي »)
 
-A **test** is presented like a module, from the same floating « ⛶ عرض » button, but its units are
+A **test** is presented like a module, from the same « وضع القسم » entry (a lesson-scope session), but its units are
 its **questions**: one question fills the screen, and `السابق` / `التالي` move between them. Both
 engines go through **one** implementation — `kit/TestPresentation.jsx` — so there is no second
 fullscreen system and no separate screen for the diagnostic and the final test.
@@ -534,11 +534,15 @@ KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/test-presentation.mj
 node apps/web/e2e/teacher-memo.mjs
 ```
 
-> **State on 2026-09-29:** `classroom.mjs` passes 66/73 on `dev` **before and after** the pointer
-> was added — the same 7 checks fail on both. Most describe the pre-2026-09-24 layout (the floating
-> « عرض » column, module scope — since then « وضع القسم » lives in the محور marker row and opens a
-> lesson session); the others are the module-3 exercise entry and one 390×844 overflow check, not
-> investigated. None is caused by the pointer; check them before relying on the suite.
+> **State on 2026-09-29 (lesson audit):** `classroom.mjs` **73/73**, `test-presentation.mjs`
+> **47/47**, against the dev server. The 7 + 2 checks that failed earlier that day were triaged one
+> by one: all but one described the pre-2026-09-24 layout or scope and were updated (the entry lives
+> in the محور marker row and opens a LESSON session, so السابق/التالي cross into the neighbouring
+> محور at a test's first/last question; the admin presenter reads in free navigation, so all three
+> exercises of module 3 render and the module has 5 units with الخلاصة). The one product defect was
+> the Math Lab « المختبر » button in the toolbar, 36 px wide under 640 px — fixed
+> (`MathLabEntryButton` `min-w-[44px]`); the pointer controls, `hidden` below `sm` on purpose, are
+> no longer counted as small targets.
 
 **Use a port the API allows.** `apps/api/config/cors.php` permits 5173 / 5174 / 4173 only; a dev
 server that fell back to 5175 makes every API call fail CORS, and `test-presentation.mjs`'s console
@@ -607,8 +611,8 @@ factory and the entry button is in `LessonIndex`. A lesson family with its own r
 
 ## 12. Limitations
 
-* Only the 4AM unit-1 lessons use `buildLessonRoutes`, so lesson scope is live there; the 132
-  dormant French lessons have no route factory and are not mounted.
+* Only the 4AM unit-1 lessons exist (the French lessons were deleted on 2026-09-25); all of them use
+  `buildLessonRoutes`, so lesson scope is live everywhere a lesson exists.
 * Changing module resets the page (as in normal navigation): the session preserves **position**, not
   the state of a page left behind. Moving between units of one module preserves everything.
 * A content that fills its budget exactly cannot signal slack, so after a legitimate reduction the

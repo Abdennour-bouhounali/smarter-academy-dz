@@ -98,7 +98,7 @@ class LearningEvidenceController extends Controller
                     }
                 }
             } elseif ($legacy) {
-                if (! config('mastery.accept_legacy_evidence_payload', true)) {
+                if (! config('mastery.accept_legacy_evidence_payload', false)) {
                     return response()->json(['success' => false, 'message' => 'Charge utile de preuve obsolète : envoyez la réponse, pas sa correction.'], 422);
                 }
                 Log::channel(config('mastery.log_channel', 'mastery'))->info('evidence.legacy_payload', [

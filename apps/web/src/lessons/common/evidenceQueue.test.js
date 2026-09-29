@@ -169,3 +169,17 @@ describe('evidenceQueue', () => {
     expect(result).toEqual({ flushed: 0, remaining: 1, expired: 0 });
   });
 });
+
+describe('flush concurrent (audit 2026-09-29)', () => {
+  beforeEach(() => memory.clear());
+
+  it('garde une réponse parquée PENDANT le flush', async () => {
+    enqueueEvidence(entry('a-1'));
+    const submit = vi.fn(async () => {
+      // Pendant l'envoi de a-1, le défi final parque a-2.
+      enqueueEvidence(entry('a-2'));
+    });
+    await flushEvidenceQueue('tok', submit);
+    expect(readQueue().map((e) => e.evidence.attemptId)).toEqual(['a-2']);
+  });
+});

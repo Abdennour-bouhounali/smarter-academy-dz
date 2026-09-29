@@ -12,7 +12,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-mushtarak-akbar/modules/Module01Baqat.jsx",
-        "line": 26,
+        "line": 77,
         "step": 1,
         "variant": "new"
       }
@@ -62,7 +62,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-mushtarak-akbar/modules/Module01Baqat.jsx",
-      "line": 27,
+      "line": 78,
       "requires": [
         "qawasim-mushtaraka"
       ],
@@ -78,7 +78,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-mushtarak-akbar/modules/Module01Baqat.jsx",
-      "line": 36,
+      "line": 87,
       "requires": [
         "qawasim-mushtaraka"
       ],
@@ -229,30 +229,6 @@
       "term": "pgcd",
       "questionId": null,
       "position": 20
-    },
-    {
-      "code": "W_BRICK_MODULE_MISMATCH",
-      "severity": "medium",
-      "message": "brick 'qawasim-mushtaraka' renders in module 3 but knowledge.jsx declares it under module 1 — the map attributes it to 1",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-mushtarak-akbar/modules/Module03Awazzif.jsx",
-      "line": 18,
-      "module": 3,
-      "step": 1,
-      "term": null,
-      "questionId": null,
-      "position": 40
-    },
-    {
-      "code": "W_BRICK_MODULE_MISMATCH",
-      "severity": "medium",
-      "message": "brick 'qawasim-mushtaraka' renders in module 3 but knowledge.jsx declares it under module 1 — the map attributes it to 1",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-mushtarak-akbar/modules/Module03Awazzif.jsx",
-      "line": 18,
-      "module": 3,
-      "step": 2,
-      "term": null,
-      "questionId": null,
-      "position": 42
     }
   ]
 }

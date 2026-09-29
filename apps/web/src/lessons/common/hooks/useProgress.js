@@ -1,7 +1,8 @@
-import { useState, useCallback, useContext } from 'react';
+import { useState, useCallback, useContext, useEffect } from 'react';
 import { scopedStorage as storage } from '../../../utils/storage';
 import { AuthContext } from '../../../context/AuthContext';
 import { scheduleProgressSync } from '../progressQueue';
+import { LESSON_PROGRESS_SYNCED_EVENT } from '../../../hooks/useLessonProgressSync';
 import { useLearningViewer } from '../../../features/learning/learningViewer';
 
 /**
@@ -57,6 +58,16 @@ export function useProgress(lessonId) {
 
   const [lessonData, setLessonData] = useState(readLessonData);
   const [xp, setXp] = useState(readGlobalXP);
+
+  // La synchro serveur (useLessonProgressSync) est ASYNCHRONE : sur un
+  // appareil neuf, une page de leçon ouverte par lien direct lisait un
+  // stockage encore vide (0 %, modules fermés) et ne se corrigeait qu'au
+  // remontage. On relit le stockage quand la synchro l'a rempli.
+  useEffect(() => {
+    const reread = () => setLessonData(readLessonData());
+    window.addEventListener(LESSON_PROGRESS_SYNCED_EVENT, reread);
+    return () => window.removeEventListener(LESSON_PROGRESS_SYNCED_EVENT, reread);
+  }, [storageKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Persist helpers ───────────────────────────────────────────────────────
   const persistLessonData = (next) => {

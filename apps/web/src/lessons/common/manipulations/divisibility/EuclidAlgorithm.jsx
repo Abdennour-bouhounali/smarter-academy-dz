@@ -71,7 +71,11 @@ export default function EuclidAlgorithm({
 
   // La contrainte de la configuration — une seule définition, lue par le
   // laboratoire libre / le mode classe ET par « أكمل القسمات ».
-  const validateNumbers = (x) => (divisibility.euclidSteps(x.a, x.b).steps.length > 12 ? t('manipulation.euclid.tooManySteps') : '');
+  // Quand l'un divise l'autre, le seul reste est 0 : le PGCD (le plus petit
+  // nombre) n'est jamais une tuile à poser, la case restait vide pour de bon.
+  const validateNumbers = (x) => (
+    Math.max(x.a, x.b) % Math.min(x.a, x.b) === 0 ? t('manipulation.euclid.dividesOther')
+      : divisibility.euclidSteps(x.a, x.b).steps.length > 12 ? t('manipulation.euclid.tooManySteps') : '');
 
   const div = L.currentDivision(lab);
   const finished = L.isEuclidFinished(lab);
@@ -120,7 +124,7 @@ export default function EuclidAlgorithm({
           {done.map((s, i) => (
             <div key={i} className="grid gap-2 md:grid-cols-2">
               <EquationDisplay tex={euclidStepTex(s)} tone={s.r === 0 ? 'result' : 'ok'} size="sm" />
-              <EquationDisplay tex={s.r === 0 ? `\\mathrm{PGCD}(${a}\\ ;\\ ${b}) = ${lab.gcd}` : pgcdEqualityTex(s.a, s.b, s.b, s.r)} tone="muted" size="sm"
+              <EquationDisplay tex={s.r === 0 ? `\\mathrm{PGCD}(${a}\\ ;\\ ${b}) = ${lab.pgcdPlaced ? lab.gcd : '\\,?'}` : pgcdEqualityTex(s.a, s.b, s.b, s.r)} tone="muted" size="sm"
                 note={s.r === 0 ? t('manipulation.euclid.remainderZero') : t('manipulation.euclid.invariant')} />
             </div>
           ))}

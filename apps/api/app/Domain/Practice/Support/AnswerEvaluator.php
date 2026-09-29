@@ -104,7 +104,8 @@ final class AnswerEvaluator
 
     /**
      * Chiffres arabo-indiens (U+0660–0669) et persans (U+06F0–06F9) → ASCII ;
-     * séparateurs « ، ؛ ; , » et sauts de ligne → espace ; découpe sur les blancs.
+     * accolades, « و », séparateurs « ، ؛ ; , » et sauts de ligne → espace ;
+     * un point final ôté ; découpe sur les blancs.
      *
      * @return string[]
      */
@@ -114,9 +115,14 @@ final class AnswerEvaluator
         if (! mb_check_encoding($s, 'UTF-8')) {
             return [$s];
         }
-        $s = preg_replace_callback('/[\x{0660}-\x{0669}]/u', static fn ($m) => (string) (mb_ord($m[0]) - 0x0660), $s);
-        $s = preg_replace_callback('/[\x{06F0}-\x{06F9}]/u', static fn ($m) => (string) (mb_ord($m[0]) - 0x06F0), $s);
+        $s = Rational::latinDigits($s);
+        // Accolades (« \{8 ; 12\} »), « و » et un point final : miroir du JS (2026-09-29).
+        $s = preg_replace('/\\\\[{}]/u', ' ', $s);
+        $s = preg_replace('/[{}]/u', ' ', $s);
+        $s = preg_replace('/و/u', ' ', $s);
         $s = preg_replace('/[،؛;,\n]/u', ' ', $s);
+        $s = preg_replace('/^['.Rational::JS_WS.']+|['.Rational::JS_WS.']+\z/u', '', $s);
+        $s = preg_replace('/\.\z/u', '', $s);
         $s = preg_replace('/^['.Rational::JS_WS.']+|['.Rational::JS_WS.']+\z/u', '', $s);
         if ($s === '') {
             return [];

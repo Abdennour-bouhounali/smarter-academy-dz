@@ -8,7 +8,7 @@ import { PREP_ITEMS } from '../content/textbook';
 export default function Module00Astaidd() {
   return (
     <PrerequisiteDiagnostic ctx={MODULE_CTX} navLinks={getNavLinks(0)} moduleTitle="🎯 أستعدّ" moduleSubtitle="أصحيح أم خاطئ؟ برّر إجابتك. تشخيص قصير لا يمنعك من متابعة الدرس." estimatedTime="6 دقائق"
-      brief={{ tag: 'أستعدّ — الكتاب ص 7', title: 'أربع عبارات عن الأعداد الناطقة', tone: 'teal', body: <p>من الكتاب المدرسي. ليست اختبارًا: الغاية أن يعرف الدرس أين يبطئ من أجلك.</p> }}
+      brief={{ tag: 'أستعدّ — الكتاب ص 7', title: 'أربع عبارات عن الأعداد الناطقة', tone: 'teal', body: <p>من الكتاب المدرسي. ليست اختبارًا: الغاية أن تعرف أنت ما ينبغي أن تراجعه قبل أن تبدأ.</p> }}
       skills={{ kusur: { label: 'الكسور المتساوية والجمع', emoji: '🔢' }, natiq: { label: 'الأعداد الناطقة: المقلوب والقسمة', emoji: '➗' } }}
       levels={{
         fragile: { emoji: '🌱', title: 'مكتسباتك عن الكسور لا تزال هشّة.', body: 'لا بأس: الدرس يبدأ باختزال ملموس، خطوة بخطوة.', advice: 'راجع الكسور المتساوية: نضرب أو نقسم البسط والمقام على نفس العدد.', cta: 'أبدأ الدرس على كل حال', tone: 'from-emerald-500 to-teal-500' },

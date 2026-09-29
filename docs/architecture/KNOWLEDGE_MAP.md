@@ -1,10 +1,16 @@
 # Knowledge Map Architecture
 
 > **The contract for integrating the cumulative Knowledge Map (« Ma carte des connaissances »)
-> into a lesson.** Written for AI coding agents and developers migrating the generated 3e and
-> 2nde lessons. Everything below describes code that exists today in the reference lesson — it is
-> not a design proposal. Where something is deliberately not built, it is marked
-> **NOT IMPLEMENTED**.
+> into a lesson.** Written for AI coding agents and developers. It was first written while migrating
+> the French-era 3e and 2nde lessons (reference: `vecteurs-2nde`); **those lessons were deleted on
+> 2026-09-25**. The reference integration today is the **4AM unit** « الأعداد الطبيعيّة والأعداد
+> النّاطقة » — all 9 lessons declare `knowledgeMap: true`, own a `knowledge.jsx`, and pass
+> `loadKnowledge: () => import('./knowledge')` to `buildLessonRoutes`. The shared implementation
+> lives in `apps/web/src/lessons/common/knowledge/`. Passages that cite `vecteurs-2nde`, a
+> lesson-local `components/…` path or an e2e suite (`km-*.mjs`, `*-carte.mjs`,
+> `sidebar-toggle.mjs`) are **historical** — those files no longer exist; the current automated
+> coverage is the vitest tests in `apps/web/src/lessons/common/knowledge/*.test.js(x)`. Where
+> something is deliberately not built, it is marked **NOT IMPLEMENTED**.
 
 Companion docs: `LESSON_CONTRACT.md` (module/stage contract, including the `knowledgeMap: true`
 exemption), `LESSON_INTEGRATION_GUIDE.md` (routing, locking, storage), `PROGRESS_MODEL.md`
@@ -51,8 +57,8 @@ The layout state lives in `src/context/WorkspaceLayoutContext.jsx`, mounted abov
 `App.jsx` — **above every shell**, since `CourseLayout` picks `StudentLayout`, `TeacherLayout` (a
 teacher reads the same lesson in their own space — `TEACHER_CLASSROOM_ARCHITECTURE.md` §8b) or
 `MainLayout` by the reader, and the column must work under any of them. `mode` is `closed | normal | prior`; only
-`prior` changes the shell, so the drawer and expanded geometry (locked by `km-layout.mjs` and the
-ten `*-carte.mjs` suites) are untouched.
+`prior` changes the shell, so the drawer and expanded geometry are untouched. (They were locked by
+`km-layout.mjs` and ten `*-carte.mjs` e2e suites — historical, deleted with the French lessons.)
 
 **How the content actually shrinks.** The shell reserves a right gutter in the padding of its
 `<main>`, via `--sa-gutter-w` and the `.sa-workspace-main` rule in `index.css`. This is deliberate:
@@ -76,7 +82,8 @@ fullscreen covers the lesson area itself, so reserving a column there would ampu
 rectangle it fills — the card stopped short of the right edge. For the same reason `expandedGeom`
 is computed as *sidebar edge → window edge* rather than read from `<main>`: the shell only releases
 the gutter on the next render, so a measured width made the panel lurch left before correcting
-right. Both are regression-tested in `km-prior.mjs`.
+right. (Both were regression-tested in `km-prior.mjs` — historical, deleted; no current e2e suite
+covers them.)
 
 **Opening and closing** slide in from the right (`x: 100% → 0`, 300ms) while the shell's gutter
 opens underneath on the same curve — the lesson makes room *while* the card arrives, and both
@@ -88,7 +95,8 @@ a real bug: framer-motion interpolated from its own zero state (`left: 0`), so t
 the *left* edge and travelled across the screen. `useLessonViewport` also measures in a
 `useLayoutEffect`, so the first painted frame already carries the true rectangle.
 
-Covered by `apps/web/e2e/lesson-kit/km-prior.mjs` (54 assertions) and `sidebar-toggle.mjs` (29).
+*(Historical: this was covered by `km-prior.mjs` (54 assertions) and `sidebar-toggle.mjs` (29),
+deleted on 2026-09-25 — no current e2e suite covers the prior column.)*
 
 The architectural rule that motivates everything else:
 
@@ -99,52 +107,49 @@ The architectural rule that motivates everything else:
 
 ## Reference Implementation
 
-**`vecteurs-2nde` is the reference integration**, and `common/knowledge/` is the single shared
-implementation. Migrate other lessons by *importing* it — never by copying it.
+**The 4AM unit is the reference integration**, and `apps/web/src/lessons/common/knowledge/` is the
+single shared implementation. A lesson *imports* it — never copies it.
 
 ```text
-apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/
-├── knowledge.jsx                        ← WHAT each module contributes (the data)
-├── lesson.config.js                     ← declares knowledgeMap: true
-├── routes.jsx                           ← wraps every page in the provider
-├── components/
-│   ├── KnowledgeMap.jsx                 ← the drawer UI (generic; do not fork)
-│   ├── knowledgeVisuals.jsx             ← SVG mini-figures used by knowledge.jsx
-│   ├── knowledgeState.js                ← pure cumulative reducer
-│   ├── knowledgeState.test.js           ← unit tests for the reducer
-│   ├── KnowledgeProvider.jsx            ← cumulative state + mounts the drawer
-│   └── KnowledgeSnapshot.jsx            ← the « À retenir » presentation
-└── modules/Module0*.jsx                 ← each passes <KnowledgeSnapshot> as its footer
+apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/<lesson>/
+├── knowledge.jsx         ← WHAT each module contributes (the data: LESSON_KNOWLEDGE)
+├── lesson.config.js      ← declares knowledgeMap: true
+├── routes.jsx            ← passes loadKnowledge: () => import('./knowledge') to buildLessonRoutes
+└── modules/Module0*.jsx  ← each passes <KnowledgeSnapshot moduleNumber={n} /> as its footer
+
+apps/web/src/lessons/common/knowledge/
+├── KnowledgeMap.jsx            ← the drawer UI (generic; do not fork)
+├── knowledgeVisuals.jsx        ← shared SVG mini-figures
+├── knowledgeState.js (+ test)  ← pure cumulative reducer
+├── knowledgeStructure.js       ← hierarchy / strata
+├── knowledgeMastery.js (+ test)
+├── KnowledgeProvider.jsx       ← cumulative state + mounts the drawer
+├── LazyKnowledgeProvider.jsx   ← loads knowledge.jsx on demand
+├── KnowledgeSnapshot.jsx       ← the « À retenir » presentation
+└── ConceptVisual.jsx (+ test), finalSynthesis.test.js
 ```
 
-Everything lives **inside the lesson folder** for the ten lessons migrated on 2026-09-05.
-
-**Since 2026-09-06 the generic files also exist as a shared implementation**,
-`apps/web/src/lessons/common/knowledge/` (`KnowledgeMap.jsx`, `knowledgeState.js` + test,
-`KnowledgeSnapshot.jsx`, `knowledgeVisuals.jsx` with `MiniPlane` / `MiniGraph`, and a
-parameterised `KnowledgeProvider.jsx` taking `lessonId`, `knowledge`, `printTitle`,
-`printSubject`). The six lessons built that day (`positions-relatives-droites-2nde`,
-`fonctions-2nde`, `fonctions-de-reference-2nde`, `signe-fonctions-2nde`,
-`variations-extremums-2nde`, `fonction-affine-2nde`) import it:
+**Who wraps the page in the provider.** Not `routes.jsx`: `buildLessonRoutes`
+(`lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/_unit/lessonRoutes.jsx`) renders
+every page through `LessonPageFrame` of the lazy lesson runtime
+(`apps/web/src/lessons/common/lessonRuntime.jsx`), which mounts
+`<LazyLessonKnowledgeProvider load={loadKnowledge} lessonId={config.id} …>`. `routes.jsx` only
+passes `loadKnowledge`. Modules import the snapshot from the shared folder:
 
 ```jsx
-import { LessonKnowledgeProvider } from '../../../../common/knowledge';   // routes.jsx
-import { KnowledgeSnapshot } from '../../../../../common/knowledge';       // modules
-<LessonKnowledgeProvider lessonId={LESSON_CONFIG.id} knowledge={LESSON_KNOWLEDGE} printTitle="…" printSubject="Mathématiques · 2nde">
+import { KnowledgeSnapshot } from '../../../../../../common/knowledge';   // modules
 ```
 
-**Since 2026-09-06 there is exactly one implementation.** The eleven per-lesson
-`components/KnowledgeMap.jsx` files (~9 270 duplicated lines) are now one-line **re-exports** of
-`common/knowledge/KnowledgeMap`, so their existing `./KnowledgeMap` imports still resolve while
-every lesson shares the same drawer, expanded mode, hierarchy and print view. Never reintroduce a
-copy.
+*(Historical: until 2026-09-25 the reference was `lycee/seconde/geometrie/vecteurs-2nde/`, with
+lesson-local `components/KnowledgeMap.jsx` re-exports and a `routes.jsx` that wrapped each route in
+`<LessonKnowledgeProvider>` itself. Those lessons were deleted; read them in git history.)*
 
 ---
 
 ## Architecture
 
 ```text
-                         LESSON (vecteurs-2nde)
+                         LESSON (any 4AM lesson)
                                   │
         ┌─────────────────────────┴─────────────────────────┐
         ↓                                                   ↓
@@ -205,11 +210,11 @@ Two fields are **added by the reducer, never written by the author**:
 | `isNew` | `cumulativeKnowledge` | the item's module was unlocked during this page session |
 
 One optional escape hatch is honored by the drawer: an item with `discovered: false` is filtered
-out of `visibleItems`. It is **not used** by `vecteurs-2nde`.
+out of `visibleItems`. It is **not used** by any 4AM lesson.
 
 ### The categories
 
-Defined once and exported from `components/KnowledgeMap.jsx`. **Do not invent new categories** —
+Defined once and exported from `apps/web/src/lessons/common/knowledge/KnowledgeMap.jsx`. **Do not invent new categories** —
 the drawer, the print view and the snapshot all iterate this exact array:
 
 ```js
@@ -274,8 +279,11 @@ makes the cumulative reveal visible.
 an overlay on the « بطاقتك » strip (`ProgressionStrip` in `KnowledgeMap.jsx`,
 `knowledgeMastery.js` → `moduleMasteryOverlay`): each module chip carries one dot per Learning
 Point its config declares in `teachesLearningPointIds`, coloured with `MASTERY_STATES`, titled
-with the label + reason. A `gap` point whose module is completed adds a small « راجع » link to
-that module. The profile is fetched only when the lesson's modules declare taught points; the
+with the label + reason. A module chip with at least one `gap` point adds a small « راجع » link to
+that module when the module is in the map's `unlockedModules` (`useLessonKnowledge()` —
+`KnowledgeMap.jsx` passes it as `completedModules` to `moduleMasteryOverlay`): the modules stored
+as completed **plus** those unlocked live on this page, including every module once the final
+test's synthesis calls `unlockAll`. The profile is fetched only when the lesson's modules declare taught points; the
 overlay is `data-km-noprint` and never reaches the A4 print. The map computes no mastery.
 
 **Adding a category** means placing it in a stratum in `STRATA`; a category listed nowhere simply
@@ -308,7 +316,7 @@ maps to `[]` — both are handled.
 Modules that contribute nothing in the reference lesson: module 0 (prerequisite diagnostic — it
 tests prior knowledge, it does not teach) and module 8 (the final assessment — it evaluates).
 
-### A real example (module 1 of `vecteurs-2nde`)
+### A real example (module 1 of `vecteurs-2nde` — historical, lesson deleted 2026-09-25; the shape is unchanged, see any 4AM `knowledge.jsx`)
 
 ```jsx
 1: [
@@ -362,7 +370,7 @@ later, edit that one item — do not re-declare it under a later module.
 
 ### Visuals
 
-Figures used by `knowledge.jsx` live in `components/knowledgeVisuals.jsx` and are self-contained
+Figures used by `knowledge.jsx` live in `apps/web/src/lessons/common/knowledge/knowledgeVisuals.jsx` and are self-contained
 SVG components: `MiniPlane` (compact coordinate plane with points/arrows), `RightTriangle`
 (Pythagoras), `ChaslesArrow` (A → B → C). They take student-space coordinates (y upward) and
 convert internally. They are plain SVG on purpose: they render identically on screen and in print.
@@ -386,7 +394,7 @@ produces broken output — never bulk-edit these strings with regex tooling.
 
 ### The reducer
 
-`components/knowledgeState.js` is **pure**: it reads no storage, no context, no React state.
+`apps/web/src/lessons/common/knowledge/knowledgeState.js` is **pure**: it reads no storage, no context, no React state.
 
 ```js
 cumulativeKnowledge(lessonKnowledge, unlocked, newModules = []) → item[]
@@ -502,8 +510,8 @@ Now:
 ### How a module wires it
 
 ```jsx
-// modules/Module04EnchainerLesDeplacements.jsx
-import KnowledgeSnapshot from '../components/KnowledgeSnapshot';
+// modules/Module01AlMaktaba.jsx (qasim-adad-tabii)
+import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 
 <ContentModule
   …
@@ -551,7 +559,8 @@ recapitulation placed mid-lesson).
 ### The removed formalization module
 
 Because every module now ends on the current map and the assessment ends on the complete map, a
-separate « À retenir » module is redundant. `vecteurs-2nde` **has none**. Its `lesson.config.js`
+separate « À retenir » module is redundant. The 4AM lessons **have none** (as `vecteurs-2nde`,
+historical, had none). Its `lesson.config.js`
 declares:
 
 ```js
@@ -606,8 +615,10 @@ notation from a later module is now a real spoiler on screen, not just a theoret
 
 ### Mounting
 
-The drawer is mounted **once per lesson page** by `LessonKnowledgeProvider`, which `routes.jsx`
-wraps around every route element (lesson index and every module):
+The drawer is mounted **once per lesson page** by the knowledge provider, which `LessonPageFrame`
+(`apps/web/src/lessons/common/lessonRuntime.jsx`, used by `buildLessonRoutes`) wraps around every
+route element (lesson index and every module) as `<LazyLessonKnowledgeProvider load={loadKnowledge}>`.
+*(Historical — the snippet below is the French-era per-lesson `routes.jsx` form.)*
 
 ```jsx
 function withSuspense(Component) {
@@ -1093,8 +1104,10 @@ is allowed; removing it requires renumbering the following modules (`number`, `p
 
 ### Step 4 — Wrap the routes
 
-In `routes.jsx`, wrap the element of every route (index + modules) in `<LessonKnowledgeProvider>`.
-This both supplies the state and mounts the drawer:
+In a 4AM lesson there is nothing to wrap: `routes.jsx` passes
+`loadKnowledge: () => import('./knowledge')` to `buildLessonRoutes`, and `LessonPageFrame`
+(`common/lessonRuntime.jsx`) mounts the provider and the drawer around every page.
+*(Historical — the French-era lessons wrapped each route by hand, as below.)*
 
 ```jsx
 <LessonKnowledgeProvider
@@ -1275,25 +1288,16 @@ What the reference implementation is checked by, and what a migrated lesson shou
 | Reducer unit tests | `npx vitest run --root apps/web <lessonDir>` | 9 tests in `knowledgeState.test.js` |
 | Lesson contract | `node scripts/validate-lessons.mjs` | no new error; `knowledgeMap: true` waives `formalization` |
 | Build | `npm run build` | passes |
-| Knowledge-map e2e | `node apps/web/e2e/lesson-kit/2nde-vecteurs-carte.mjs` (vite on :5231) | 64/64 |
-| Lesson e2e | `node apps/web/e2e/lesson-kit/2nde-vecteurs.mjs` | 70/70 |
-| **Sizing** (shared, all lessons) | `node apps/web/e2e/lesson-kit/km-layout.mjs` | 96/96 |
-| **Hierarchy / reveal / print** (shared) | `node apps/web/e2e/lesson-kit/km-structure.mjs` | 16/16 |
+| Knowledge unit tests (shared) | `npx vitest run --root apps/web src/lessons/common/knowledge` | `knowledgeState`, `knowledgeMastery`, `finalSynthesis`, `ConceptVisual` tests |
+| Knowledge dependency contract | `npm run audit:knowledge:gate` | exit 0 |
+| Unit e2e | `node apps/web/e2e/lesson-kit/4am-aadad-tabiiya-natiqa.mjs` | unit page, opening lab, no horizontal scroll (it does **not** assert the map) |
 
-`km-layout.mjs` and `km-structure.mjs` test the **shared** component, not one lesson: run them
-after any change to `common/knowledge/`. They mock `/auth/me` to exercise the student shell, whose
-sidebar inset is where sizing bugs actually appear.
-
-Every migrated lesson ships its own `*-carte.mjs` copy; see
-the migration notes (deleted on 2026-09-25 with the French lessons; in git history) for the per-lesson counts.
-
-`2nde-vecteurs-carte.mjs` is the template to copy. It asserts, at every stage: the map is empty at
-lesson start; module 1 completed live updates both snapshot and drawer without navigation; for each
-seeded module the snapshot set equals the drawer set equals the expected cumulative set; no future
-item leaks; only the current module's items are detailed and flagged « nouveau »; navigation mode
-renders KaTeX in item detail; the print view lists exactly the current items and nothing later;
-the boss synthèse renders the complete map inline and moves the drawer to the same state; and the
-mobile panel fits the viewport with the right edge flush and the top under the header.
+No current e2e suite asserts the map's progression, sizing or print view. *(Historical: the
+French-era suites `2nde-vecteurs-carte.mjs` (the per-lesson template), `2nde-vecteurs.mjs`,
+`km-layout.mjs` (sizing, 96 checks) and `km-structure.mjs` (hierarchy / reveal / print, 16 checks)
+were deleted on 2026-09-25 with the French lessons; read them in git history. The invariants they
+asserted — empty map at lesson start, live update on module completion, no future item leaking,
+print lists exactly the current items, complete map at the boss synthèse — remain the contract.)*
 
 ---
 
@@ -1330,18 +1334,16 @@ migrating:
 | `knowledgeVisuals.jsx` | shared SVG figures |
 | `index.js` | the public entry point — import from here |
 
-**The lesson (reference integration)** —
-`apps/web/src/lessons/lycee/seconde/geometrie/vecteurs-2nde/`
+**The lesson (reference integration)** — any lesson of
+`apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/`
 
 | File | Role |
 | --- | --- |
 | `knowledge.jsx` | `LESSON_KNOWLEDGE.modules[n]` — the only place knowledge text is written |
-| `components/KnowledgeMap.jsx` | one-line **re-export** of `common/knowledge/KnowledgeMap` (legacy import path) |
-| `components/knowledgeVisuals.jsx` | lesson figures: `MiniPlane`, `RightTriangle`, `ChaslesArrow` |
-| `routes.jsx` | wraps every route element in the provider |
+| `routes.jsx` | passes `loadKnowledge: () => import('./knowledge')` to `buildLessonRoutes` (`../_unit/lessonRoutes.jsx`), whose `LessonPageFrame` (`common/lessonRuntime.jsx`) mounts the provider |
 | `lesson.config.js` | `knowledgeMap: true` |
-| `modules/Module0[1-7]*.jsx` | `footer={<KnowledgeSnapshot moduleNumber={N} />}` |
-| `modules/Module08MissionFinale.jsx` | `synthese={<KnowledgeSnapshot variant="complete" complete />}` |
+| `modules/Module0*.jsx` | `footer={<KnowledgeSnapshot moduleNumber={N} />}` |
+| `modules/Module0*Itqan.jsx` | `synthese={<KnowledgeSnapshot complete variant="complete" />}` |
 
 **Platform files it depends on**
 
@@ -1357,6 +1359,4 @@ migrating:
 | `apps/web/src/lessons/common/kit/BossFinal.jsx` | renders the `synthese` prop |
 | `apps/web/src/lessons/common/components/MathText.jsx` | KaTeX renderer |
 | `scripts/validate-lessons.mjs` | honors `knowledgeMap: true` |
-| `apps/web/e2e/lesson-kit/2nde-vecteurs-carte.mjs` | the progression/print/responsive e2e template |
-| `apps/web/e2e/lesson-kit/km-layout.mjs` | sizing invariants: drawer/expanded × 6 shell-breakpoint combinations (96 checks) |
-| `apps/web/e2e/lesson-kit/km-structure.mjs` | hierarchy, progressive reveal, both modes, detail view, print (16 checks) |
+| `apps/web/src/lessons/common/lessonRuntime.jsx` | `LessonPageFrame` — mounts `LazyLessonKnowledgeProvider` around every lesson page |

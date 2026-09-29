@@ -19,7 +19,7 @@ import PremiumLessonLocked from './PremiumLessonLocked';
  * ModuleLayout — shared layout wrapper for every lesson module.
  *
  * Props:
- *   coursePath    — base URL of the lesson (e.g. /courses/college/3e/fonctions-...)
+ *   coursePath    — base URL of the lesson (e.g. /courses/moyen/4am/ansab_al_aadad_wal_hisab/qasim-adad-tabii)
  *   courseTitle   — lesson title for breadcrumb
  *   unitTitle     — الوحدة, the textbook unit (a GROUP OF LESSONS) shown first
  *                   in the breadcrumb « الوحدة / الدرس / المحور »
@@ -118,20 +118,24 @@ export default function ModuleLayout({
   const chrome = useLessonChromeLayout();
   const { t } = useTranslation('lesson');
 
-  const progressPct = Math.round((moduleNumber / totalModules) * 100);
   const isLastModule = moduleNumber === (lastModuleNumber ?? totalModules);
 
   const { markModuleVisited, markModuleCompleted, isModuleCompleted } = useProgress(lessonId || 'unknown');
 
   // `stage` keeps evaluation modules reachable from the start — the final
   // challenge is an alternative path, not just the last module.
-  // Le premier module de la leçon. Quand la leçon ne le déclare pas (la
-  // plupart des 137 leçons héritées), on retombe sur 0 dès qu'un module 0
-  // existe dans le parcours — `moduleNumber === 0` est lui-même la preuve
-  // que la numérotation commence à zéro.
+  // Le premier module de la leçon (MODULE_CTX.firstModuleNumber, que toutes
+  // les leçons 4AM fournissent). En son absence, on retombe sur 0 dès qu'un
+  // module 0 est affiché — `moduleNumber === 0` est lui-même la preuve que
+  // la numérotation commence à zéro.
   const firstModule = Number.isFinite(Number(firstModuleNumber))
     ? Number(firstModuleNumber)
     : (Number(moduleNumber) === 0 ? 0 : 1);
+  // La POSITION du module dans la leçon, pas son numéro : une leçon qui
+  // ouvre sur « أستعدّ » (module 0) affichait « 0 / 5 » puis plafonnait à
+  // « 4 / 5 » (80 %) sur son dernier module.
+  const modulePosition = Number(moduleNumber) - firstModule + 1;
+  const progressPct = Math.round((modulePosition / totalModules) * 100);
   // CE QUI EST FAIT RESTE OUVERT (même règle que getModuleStatus) : un module
   // déjà terminé ne se referme jamais, même si son prédécesseur ne l'est pas.
   // Sans cela, revenir sur un module fini affichait « أتمِم المحور 00 » et
@@ -199,11 +203,20 @@ export default function ModuleLayout({
     priority: 1,
   }, presenting);
 
-  const handleNextClick = (e) => {
-    e.preventDefault();
-    if (lessonId && hasModuleNumber) {
+  // Quitter un module n'est pas le terminer. « التالي » est toujours offert
+  // quand le module ne bloque pas (أستعدّ, le défi final) : il n'écrivait
+  // pourtant la complétion SANS regarder `isCompleted` — sauter le
+  // diagnostic le marquait « fait » — ni `presenting`/`unlocked`, que l'effet
+  // ci-dessus respecte. Une seule règle d'écriture, la même partout.
+  const commitCompletion = () => {
+    if (lessonId && hasModuleNumber && isCompleted && unlocked && !presenting) {
       markModuleCompleted(String(moduleNumber));
     }
+  };
+
+  const handleNextClick = (e) => {
+    e.preventDefault();
+    commitCompletion();
     if (onNextClick) onNextClick();
     if (nextLink) navigate(nextLink);
   };
@@ -375,7 +388,7 @@ export default function ModuleLayout({
             <div className="flex items-center gap-2">
               <span className="text-xs font-mono text-blue-600 font-bold">
                 {t('nav.module')}{' '}
-                <span dir="ltr">{moduleNumber} / {totalModules}</span>
+                <span dir="ltr">{modulePosition} / {totalModules}</span>
               </span>
               <div
                 className="w-16 sm:w-24 h-2 bg-slate-200 rounded-full overflow-hidden"
@@ -383,7 +396,7 @@ export default function ModuleLayout({
                 aria-valuenow={progressPct}
                 aria-valuemin={0}
                 aria-valuemax={100}
-                aria-label={`Progression : ${progressPct}%`}
+                aria-label={t('nav.progressAria', { pct: progressPct })}
               >
                 <motion.div
                   initial={{ width: 0 }}
@@ -437,11 +450,7 @@ export default function ModuleLayout({
             isCompleted ? (
               <Link
                 to={coursePath}
-                onClick={() => {
-                  if (lessonId && hasModuleNumber) {
-                    markModuleCompleted(String(moduleNumber));
-                  }
-                }}
+                onClick={commitCompletion}
                 className="flex items-center gap-2 px-6 py-2.5 min-h-[44px] rounded-xl font-mono text-xs font-bold shadow-md transition-all focus-visible:ring-2 focus-visible:ring-emerald-400 focus:outline-none bg-emerald-600 hover:bg-emerald-700 text-white"
               >
                 {t('nav.finish')} <CheckCircle size={16} aria-hidden="true" />

@@ -31,7 +31,7 @@ export default function Module04Itqan() {
           options: ['2 ؛ 7', '1 ؛ 2 ؛ 4 ؛ 8 ؛ 7 ؛ 14 ؛ 28 ؛ 56', '8 ؛ 7'], correct: 1, cols: 1,
           explain: <span><MathText>{'$56 = 1 \\times 56 = 2 \\times 28 = 4 \\times 14 = 7 \\times 8$'}</MathText>: ثمانية قواسم.</span>,
           assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_qawasim-adad-tabii_P1'] } },
-        { id: 'E4', skill: 'tariqa', requires: ['tariqa-qawasim'], prompt: <Q source={src('method-divisors', 11, 'طرائق')}>للبحث عن قواسم العدد <MathText>{'$105$'}</MathText>، نختبر قابلية قسمته على الأعداد ...</Q>,
+        { id: 'E4', skill: 'tariqa', requires: ['tariqa-qawasim'], prompt: <Q source={src('method-divisors', 11, 'طرائق')}>للبحث عن قواسم العدد <MathText>{'$105$'}</MathText>، أقلّ ما يكفي هو أن نختبر قابلية قسمته على الأعداد ...</Q>,
           options: ['من 1 إلى 10، لأن 10² ≤ 105 < 11²', 'من 1 إلى 105', 'من 1 إلى 52', 'الأعداد الأولية فقط'], correct: 0, cols: 1,
           explain: <span>كل قاسم أكبر من 10 هو الناتج في قسمة ذات باقٍ معدوم على عدد أصغر من 10 أو يساويه.</span>,
           assessment: { enabled: true, type: 'assessment', learningPointIds: ['4am_qawasim-adad-tabii_P3'] } },

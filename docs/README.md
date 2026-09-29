@@ -22,6 +22,7 @@ to read them.
 | If you are about to… | Read |
 |---|---|
 | Create or modify a lesson, module, manipulation or exercise | **[`lessons/LESSON_DEVELOPMENT_GUIDE.md`](./lessons/LESSON_DEVELOPMENT_GUIDE.md)** — the single entry point |
+| **Generate a new lesson** | [`lessons/LESSON_DEVELOPMENT_GUIDE.md`](./lessons/LESSON_DEVELOPMENT_GUIDE.md) **§14 — the reference architecture, frozen for generation on 2026-09-29**: the real structure, the generation contract (input, required output, what to reuse, what is prohibited) and the validation a generated lesson must pass |
 | Understand the whole system | [`architecture/ARCHITECTURE.md`](./architecture/ARCHITECTURE.md) |
 | Work on Classroom Mode (وضع القسم) | [`architecture/CLASSROOM_MODE.md`](./architecture/CLASSROOM_MODE.md) |
 | Work on a manipulation | [`architecture/MANIPULATION_CONTRACT.md`](./architecture/MANIPULATION_CONTRACT.md) |
@@ -85,6 +86,11 @@ may describe it, but they defer to this one.
   « سلسلة التفوق رقم 01 » sheet (25 items in the practice bank, 1 not
   integrated with its reason). Recipe: `EXERCISE_CONTRACT.md` § « Non-textbook
   sources — worksheets ».
+- [`reports/LESSON_ARCHITECTURE_AUDIT_2026-09-29.md`](./reports/LESSON_ARCHITECTURE_AUDIT_2026-09-29.md)
+  — the end-to-end audit of the nine lessons, the shared lesson engine and the
+  lesson docs that froze the reference architecture (31 defects fixed, the
+  doc↔code matrix, test results). **Historical**: the contract it produced is
+  the guide's §14.
 - [`reports/QUESTION_ANSWER_AUDIT_2026-09-24.md`](./reports/QUESTION_ANSWER_AUDIT_2026-09-24.md)
   — audit of every answer key and judge (practice, final tests, modules,
   registry, Math Lab). The rules it established live in `EXERCISE_CONTRACT.md`
@@ -117,6 +123,7 @@ contract.
 | `reports/` | Point-in-time audits. Several predate the Algerian takeover and describe the French product or a two-table backend. Cross-check every number against the code. |
 | `architecture/EXERCISE_ENGINE_INTEGRATION_AUDIT.md` | Superseded by `EXERCISE_ENGINE_REFERENCE_IMPLEMENTATION.md`. |
 | `architecture/EXERCISE_ENGINE_ARCHITECTURE.md` | Target design. Largely implemented, but some paths in it are illustrative, not real. |
+| `architecture/LESSON_DESIGN_PLAYBOOK.md`, `architecture/INTERACTION_PEDAGOGY.md` | Still listed as authoritative for pedagogy, but written for the French lessons: their component tables and precedents are labelled historical (2026-09-29). Where they disagree with the guide or `LESSON_CONTRACT.md`, those win. |
 | `architecture/DIAGNOSTIC_6E.md` | Scoped to a French grade; the diagnostic flow it documents is still mounted. |
 | `architecture/EXERCISE_ENGINE_REFERENCE_IMPLEMENTATION.md` | Its reference lesson (`fonction-affine-2nde`) and labs (`TankLab`, `RateProbes`) were deleted on 2026-09-25; the engine it describes is live. |
 | `experiments/JSXGRAPH_PILOT.md` | Concluded: rejected, removed from the codebase. |

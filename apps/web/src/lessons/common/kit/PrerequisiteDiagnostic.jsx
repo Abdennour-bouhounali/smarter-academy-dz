@@ -9,6 +9,7 @@ import { usePrerequisiteDiagnostic } from '../hooks/usePrerequisiteDiagnostic';
 import { Feedback, ChoiceGrid, ValidateButton, MissionBrief } from '../components/LessonUI';
 import TestPresentation, { useTestPresentation } from './TestPresentation';
 import { revealAll, revealOne } from './testPresentation';
+import { diagnosticAdviceLevel } from './diagnosticLevel';
 
 /**
  * Lesson kit — moteur du module 0 « Mission de départ » (diagnostic des
@@ -125,7 +126,7 @@ function DiagnosticResult({ score, maxScore, skills, skillScores, levels, onCont
   // Les deux sont acceptés : c'est ce qui permet au repli d'être traduit sans
   // imposer i18n aux leçons qui écrivent leur ton elles-mêmes.
   const text = (meta, field) => meta[field] ?? (meta[`${field}Key`] ? t(meta[`${field}Key`]) : '');
-  const level = score < 5 ? 'fragile' : score <= 7 ? 'progres' : 'pret';
+  const level = diagnosticAdviceLevel(score, maxScore);
   const isPerfect = score === maxScore;
   const meta = levels[level];
 
@@ -261,7 +262,7 @@ export default function PrerequisiteDiagnostic({
   function handleSubmit() {
     if (submitted) return;
     setSubmitted(true);
-    const adviceLevel = score < 5 ? 'fragile' : score <= 7 ? 'progres' : 'pret';
+    const adviceLevel = diagnosticAdviceLevel(score, maxScore);
     saveResult({ score, maxScore, skills: skillScores, adviceLevel, answers });
     awardXP({ moduleId: 'L00', exerciseId: 'diagnostic', amount: xpAmount });
   }

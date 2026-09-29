@@ -59,13 +59,43 @@ mastering a Learning Point, and vice versa.
 `smarter_lesson_{id}` remains the synchronous read path and the offline
 cache. For authenticated students, every module write schedules a debounced
 push (`progressQueue.js`, last-snapshot-wins per lesson) and the server's
-merged answer is folded back into storage; on login,
-`useLessonProgressSync` hydrates storage from
-`GET /students/me/lesson-progress` before any lesson page opens. Anonymous
-visitors stay purely local.
+merged answer is folded back into storage. On login and app start,
+`useLessonProgressSync` (mounted once in `App.jsx`) hydrates storage from
+`GET /students/me/lesson-progress` — **asynchronously**: a lesson page opened
+before it lands reads the local cache first, and `useProgress` re-reads
+storage when `LESSON_PROGRESS_SYNCED_EVENT` fires (2026-09-29; before, a
+direct link on a fresh device showed 0 % and locked modules until a remount).
+The same hook then flushes the parked progress snapshots AND the parked
+final-test evidence (`flushEvidenceQueue`), and again on every `online` event.
+Anonymous visitors stay purely local: a snapshot parked while anonymous lives
+under the `u_anon_` storage prefix and is not carried over at login.
 
-**Known follow-up:** XP (`smarter_global_xp`) is still client-side only — it
-has no server table yet and is lost across devices.
+**A flush never loses a newer snapshot** (2026-09-29). Both queues re-read
+storage before writing it back and remove only what the flush actually sent
+and settled; a snapshot or an answer parked during the `await` (debounce,
+`online`, a concurrent flush) survives. Before, the flush rewrote the queue
+from its initial copy and could erase the completion of a lesson's last
+module. Locked by `progressQueue.test.js` and `evidenceQueue.test.js`.
+
+**Module completion is written by `ModuleLayout` only, under one rule**:
+`isCompleted && unlocked && !presenting` — for the effect, « التالي » and
+« إنهاء » alike (`LESSON_CONTRACT.md` « What a module IS »). Leaving a
+non-blocking module (« أستعدّ », the final test) with « التالي » does not
+complete it.
+
+**Known gap — a closed module rejects the whole snapshot.** The server refuses
+(422) a snapshot that ADDS a module the administrator has closed, and the
+client drops a 422 for good. If a module is closed between a student's
+offline completion and the sync, every later snapshot of that lesson carries
+it again and is refused, so the lesson's later progress never reaches the
+server (storage keeps it). The refusal is a tested publication contract
+(`PublicationAccessMatrixTest`); resolving the conflict is an owner decision,
+not yet made.
+
+**XP** (`smarter_global_xp`) is client-side only — per device, no server
+table, not migrated from the anonymous prefix at login. It is shown in the
+module header and « مساري ». No other feature awards XP (the daily challenge
+has its own score).
 
 ### Module counts come from the lesson registry
 
@@ -168,8 +198,11 @@ Only a **student** does. A teacher (or an admin) opens the same lessons,
 modules and **parts** with `freeNavigation` (no sequential lock, at either
 level: `utils/moduleGate.js` for modules, `utils/stepUnlock.js` for the steps
 inside one and for the « التالي » gesture) and `tracksProgress = false`
-(`features/learning/learningViewer.js`): `useProgress`, the progress sync, the
-evidence queue and the final-test hook are silent for them. Opening a part out
+(`features/learning/learningViewer.js`): `useProgress`, the progress sync and
+the evidence queue are silent for them, and the final-test hook sends nothing
+to the server (it keeps a LOCAL copy of the reader's attempt, like a visitor's;
+`usePrerequisiteDiagnostic` likewise stores the diagnostic result locally for
+anyone — local-only, never synced). Opening a part out
 of order therefore records nothing — a teacher reading part 7 never marks
 parts 1–6 as done, for themselves or for any student. Server side the
 `learner` middleware refuses `PUT /lessons/{code}/progress`,

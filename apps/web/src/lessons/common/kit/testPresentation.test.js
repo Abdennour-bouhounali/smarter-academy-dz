@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
+  optionOrder,
   QUESTION_STATE, questionState, testQuestionStates, revealAll, revealOne,
   allRevealed, clampQuestion, resolveTestNavigation, revealedTally,
 } from './testPresentation';
@@ -184,5 +185,24 @@ describe('revealedTally', () => {
   it('un test silencieux n’annonce aucun résultat', () => {
     const states = testQuestionStates(QUESTIONS, { answers: { q1: 0 }, revealed: {}, isCorrect });
     expect(revealedTally(states)).toEqual({ revealed: 0, correct: 0, total: 3, answered: 1 });
+  });
+});
+
+describe('optionOrder — ordre d’affichage stable, jamais la clé', () => {
+  it('est une permutation de 0..n−1', () => {
+    for (const n of [0, 1, 2, 3, 4, 6]) {
+      const o = optionOrder('q-x', n);
+      expect([...o].sort((x, y) => x - y)).toEqual(Array.from({ length: n }, (_, i) => i));
+    }
+  });
+  it('est déterministe pour un même id', () => {
+    expect(optionOrder('4am_qasim_E1', 4)).toEqual(optionOrder('4am_qasim_E1', 4));
+  });
+  it('déplace la première option hors de la tête pour une bonne part des questions', () => {
+    const ids = Array.from({ length: 200 }, (_, i) => `ep-${i}`);
+    const stillFirst = ids.filter((id) => optionOrder(id, 4)[0] === 0).length;
+    // ~1/4 attendu ; large marge pour rester un test de propriété, pas de valeur.
+    expect(stillFirst).toBeGreaterThan(20);
+    expect(stillFirst).toBeLessThan(90);
   });
 });

@@ -1,12 +1,13 @@
 # Exercise Contract
 
 > **Read § 0 first (2026-09-20).** This document was written for the French-era
-> lessons and canonicalised `useAdaptiveExercise`'s result shape. **That hook is
-> now dead code** — it, `useSimpleExercise`, `ExerciseValidator`,
-> `AdaptiveFeedback`, `GuidedSolution` and `QuizQuestion` reference only each
-> other and are imported by no live page. The rest of this document is still
-> correct about the **non-blocking invariant** and about what a validator should
-> return, and § 0 describes the two systems that actually run.
+> lessons and canonicalised `useAdaptiveExercise`'s result shape. **That hook,
+> `useSimpleExercise`, `ExerciseValidator`, `GuidedSolution` and `QuizQuestion`
+> were dead code and were DELETED on 2026-09-29** (no importer anywhere;
+> `AdaptiveFeedback` remains, unused by the 4AM lessons). The passages below that
+> name them are history. The rest of this document is still correct about the
+> **non-blocking invariant** and about what a validator should return, and § 0
+> describes the two systems that actually run.
 
 ---
 
@@ -124,7 +125,7 @@ analytics all use `App\Domain\Progress\Support\OutcomeStats`.
 
 ---
 
-Three exercise patterns exist today with no shared contract (`docs/reports/ARCHITECTURE_FOUNDATION_AUDIT.md` §6). This document canonicalizes the strongest one — `useAdaptiveExercise`'s result shape — rather than inventing a fourth. It's based on the actual hook contract in `apps/web/src/lessons/common/hooks/useAdaptiveExercise.js`, corrected during the cleanup phase so every consumer now genuinely honors it.
+*(Historical paragraph.)* Three exercise patterns once existed with no shared contract (`docs/reports/ARCHITECTURE_FOUNDATION_AUDIT.md` §6); this document canonicalised the strongest one — the result shape of the since-deleted `useAdaptiveExercise` hook. The shape itself remains the rule for any validator.
 
 ## The canonical Exercise Result
 
@@ -141,7 +142,7 @@ Three exercise patterns exist today with no shared contract (`docs/reports/ARCHI
 }
 ```
 
-Any pure validation function intended for use with `useAdaptiveExercise` must return this shape. This is not a new invention — it's what the hook has always expected (`useAdaptiveExercise.js`'s own JSDoc); the cleanup phase found and fixed three modules that violated it by returning a bare boolean instead.
+Any pure validation function must return this shape (never a bare boolean). It says nothing about progression: the kit's question components call `onAnswered(isCorrect)` unconditionally.
 
 ## Non-blocking progression — HARD INVARIANT
 
@@ -183,31 +184,60 @@ Full rule: `LESSON_CONTRACT.md` § Progression non bloquante.
 
 ## Answer validation boundary
 
+Two paths exist, one per exercise system (§0). Neither lets the client decide
+anything that counts for mastery.
+
 ```
-Student Input (raw string/index/value, component-local useState)
-     │
-     ▼
-Normalize   (numberFormat.js: parseDec/parseFr — French/English decimal & integer parsing)
-     │
-     ▼
-Validate    (pure function → Exercise Result, see below)
-     │
-     ▼
-useAdaptiveExercise.submitAnswer()  (orchestration: attempts counter, hint-level state,
-     │                                status transitions — NOT pure, lives in the hook)
-     ▼
-AdaptiveFeedback  (rendering only)
-     │
-     ▼
-useProgress().markModuleCompleted() / .awardXP()   (persistence — NOT pure, localStorage)
+IN-LESSON (formative, no evidence)              PRACTICE BANK (evidence)
+Student input — component-local state           Student input — PracticeSession
+     │                                               │
+     ▼                                               ▼
+Normalise + parse                               evaluateAnswer (packages/core/practice/
+  NumericQuestion  → parseFr (integers)           answerEvaluator.js) — client preview only
+  TextbookExercise → parseDec (numeric)              │
+  FractionQuestion → Rational.parse                  ▼
+  IntegerSetQuestion → parseIntegerSet          SERVER judge (apps/api/…/Practice/Support/
+     │                                            AnswerEvaluator.php) — the authority; kept
+     ▼                                            equivalent to the JS by the shared fixture
+verdict → Feedback (correction always shown)      packages/core/practice/fixtures/answers.json
+     │                                               │
+     ▼                                               ▼
+onAnswered(isCorrect) — the step is done         evidence → versioned mastery engine
+whatever the verdict (non-blocking)
 ```
 
-**This phase's concrete extraction** (`packages/core/validation/` (imported as `@smarter-academy/core`)): two pure functions formalizing the two patterns already duplicated across the exercise-bearing modules —
+The final test (`BossFinal`) is a third, choice-only path: the client sends the
+picked index (`{ picked }`), the server judges it against the assessment-item
+registry (Mastery V2, `LEARNING_ARCHITECTURE.md`).
 
-- `validateNumericAnswer(studentInput, expectedValue, options?)` — wraps the already-proven `parseDec` (numeric parsing) + tolerance comparison + `compareMathExpressions` (algebraic fallback) pattern that's currently hand-duplicated inline in 13+ modules (per the cleanup-phase audit). Returns `{ isCorrect }`, matching the Exercise Result contract exactly, so it drops directly into any `useAdaptiveExercise({ validate: ... })` call.
-- `validateChoiceAnswer(selectedValue, correctValue)` — formalizes the equality check `QuizQuestion`/`ChoiceGrid` already do inline, for use anywhere a multiple-choice exercise wants a validator matching the same contract.
+`packages/core/validation/` (`validateNumericAnswer`, `validateChoiceAnswer`)
+still exists and is tested, but no live lesson calls it: its consumers were the
+French-era modules and the `useAdaptiveExercise` hook, deleted on 2026-09-25 and
+2026-09-29 respectively.
 
-**Migrated as the representative example (per the phase brief's incremental-extraction instruction):** `Module02CalculHypotenuse.jsx`'s `validateAnswer` now calls `validateNumericAnswer` instead of duplicating the parse+tolerance+compareMathExpressions logic inline. The other 12+ sites identified in the cleanup audit are **not** migrated in this phase — each needs the same per-site malformed-input spot-check the cleanup phase deferred, and mass-migrating them now would be exactly the "major architectural rewrite because it looks cleaner" the phase brief prohibits.
+### Student input normalisation — one rule for every parser (2026-09-29)
+
+The interface is Arabic: an Arabic keyboard types « ١٢ », and a writing
+convention is never a mathematical error. Every parser of student input
+therefore goes through `toLatinDigits` (`packages/core/numberFormat.js`), and
+its PHP mirror `Rational::latinDigits`.
+
+| Input | Integer (`parseFr`) | Numeric (`parseDec`) | Fraction (`Rational.parse`) | Integer set (`parseIntegerSet`) |
+|---|---|---|---|---|
+| Arabic-Indic ٠–٩, Persian ۰–۹ | accepted | accepted | accepted | accepted |
+| `.` | only as a well-formed thousands separator (`4.582`); `81.0`, `1.2` → not a number | decimal point | decimal point | only a TRAILING dot is dropped; `1.5` stays a syntax error |
+| `,` / Arabic `٫` | `,` → not an integer | decimal separator | decimal separator | `,` `،` `؛` `;` are separators |
+| spaces, thin/nbsp | ignored | ignored | ignored | separators |
+| `0x12`, `5e1` | not a number | not a number | syntax error | syntax error |
+| `{…}`, `\{…\}`, « و » | — | — | — | accepted as set notation / separator |
+| `∕` (U+2215) | — | — | read as `/` | — |
+
+Before this rule, `parseFr` deleted every dot (« 81.0 » accepted as 810, « 810.0 »
+refused as 8100), refused « ٨١٠ », `Rational.parse` refused « ٣/٤ » as a syntax
+error (ending the one-attempt question), and `TextbookExercise` used `Number()`
+(accepting `0x12`). Changing a practice parser is a CONTRACT change on both
+sides: add fixture cases produced by executing the JS evaluator (never written
+by hand) and run `AnswerEvaluatorFixtureTest` in PHP.
 
 ## Exercise types the contract must support (not force into one component)
 
@@ -289,6 +319,18 @@ trusts the configured key:
 3. **Lesson keys** — `validate-lessons.mjs --strict` checks, in live `moyen/`
    lessons, that every assessed option object and every `<TapQuestion>` has an
    explicit `correct` index inside its option range (no silent default to 0).
+
+4. **Option order in the final test** (2026-09-29) — authors put the right
+   answer first (36 of the unit's 45 final-test keys were index 0, so always
+   clicking the first option scored ≈ 80 % on the only source of mastery
+   evidence). `BossFinal` now shows every question's options in a stable,
+   per-question DISPLAY order (`optionOrder(id, n)` in
+   `lessons/common/kit/testPresentation.js`, seeded by the question id: the same
+   order on the student page and on the board). The picked index, the stored
+   attempt, the evidence and the registry `correct` all stay in the AUTHOR's
+   index space — write `correct` as the index in your `options` array, as
+   before. `keepOrder: true` on a question keeps the written order (a scale, a
+   « صحيح / خاطئ »).
 
 Writing rules the audit enforced: a distractor must be **false**, not merely
 "not the textbook's argument" (a second valid proof is a second right answer);

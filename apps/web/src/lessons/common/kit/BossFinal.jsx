@@ -13,7 +13,7 @@ import {
   Feedback, ChoiceGrid, ValidateButton, MissionBrief, TimerToggle, TimerDisplay,
 } from '../components/LessonUI';
 import TestPresentation, { useTestPresentation } from './TestPresentation';
-import { revealAll, revealOne } from './testPresentation';
+import { revealAll, revealOne, optionOrder } from './testPresentation';
 import LessonLearningPointsStatus from '../components/LessonLearningPointsStatus';
 
 /**
@@ -61,6 +61,7 @@ function Epreuve({ epreuve, index, total, pick, onPick }) {
 
       <ChoiceGrid
         options={epreuve.options}
+        order={displayOrderOf(epreuve)}
         selected={pick}
         onSelect={onPick}
         cols={epreuve.cols || 2}
@@ -83,6 +84,14 @@ function Epreuve({ epreuve, index, total, pick, onPick }) {
  * déclarent `correct` explicitement.
  */
 const correctIndexOf = (ep) => (typeof ep.correct === 'number' ? ep.correct : 0);
+
+/**
+ * L'ordre d'affichage des options (testPresentation.optionOrder) : les
+ * auteurs placent la bonne réponse en tête ; on ne la montre pas en tête.
+ * `keepOrder: true` sur une épreuve garde l'ordre écrit (une échelle, un
+ * « صحيح / خاطئ »). L'indice choisi reste celui de l'auteur.
+ */
+const displayOrderOf = (ep) => (ep.keepOrder ? undefined : optionOrder(ep.id, ep.options.length));
 
 /** Le libellé d'une option, `optionLabel` quand l'épreuve en fournit un. */
 const optionLabelOf = (ep, i) => (ep.optionLabel ? ep.optionLabel(i) : ep.options[i]);
@@ -373,7 +382,13 @@ export default function BossFinal({
   const isEpreuveCorrect = useCallback((ep, pick) => pick === correctIndexOf(ep), []);
 
   const badgesGagnes = badges.filter((b) => b.test(misses));
-  const masterBadge = bossDone && badgesGagnes.length === badges.length;
+  // 🏆 et « أتقنت … » exigent un essai SANS FAUTE, pas seulement les badges :
+  // une leçon ne déclare souvent qu'un badge sur une seule compétence, et
+  // quatre défis sur neuf affichaient « أتقنت » avec deux réponses fausses sur
+  // quatre (audit du 2026-09-29). Toute réponse fausse est comptée dans
+  // `misses`, sous sa compétence — ou sous `undefined` si elle n'en a pas.
+  const perfectAttempt = Object.values(misses).every((n) => !n);
+  const masterBadge = bossDone && perfectAttempt && badgesGagnes.length === badges.length;
 
   // Les phases مراجعة / النتائج s'ouvrent à l'élève une fois le test soumis :
   // on ne lit pas la correction avant d'avoir répondu. En NAVIGATION LIBRE
@@ -415,6 +430,7 @@ export default function BossFinal({
               {ep.extra && <div className="rounded-xl border border-slate-200 bg-white p-3">{ep.extra}</div>}
               <ChoiceGrid
                 options={ep.options}
+                order={displayOrderOf(ep)}
                 selected={bossAnswers[ep.id] ?? null}
                 onSelect={(idx) => setBossAnswers((a) => ({ ...a, [ep.id]: idx }))}
                 revealed={isRevealed}

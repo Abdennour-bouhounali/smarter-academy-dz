@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { RefreshCw } from 'lucide-react';
-import { getLessonById } from '@smarter-academy/core';
+import { getLessonById, getLessonPath } from '@smarter-academy/core';
 import { useLearningProfile } from '../hooks/useLearningProfile';
 import { AuthContext } from '../../../context/AuthContext';
 import { fetchLessonRecommendations } from '../../../services/learningEvidenceService';
@@ -74,6 +74,8 @@ export default function LessonLearningPointsStatus({ lessonId, refreshToken = 0,
   const learningPoints = catalogueLesson?.learningPoints ?? [];
   const nextSteps = buildNextSteps(recommendations, {
     modulePath: (n) => getModulePath(lessonId, n),
+    // Le catalogue (core) connaît le chemin de toute leçon ; `null` si inconnue.
+    lessonPath: (code) => getLessonPath(code),
     // Pas de lien vers la pratique pour qui n'y a pas de route (enseignant, admin).
     practicePath: tracksProgress && isPracticeActive(lessonId) ? practiceHubPath(lessonId) : null,
   });

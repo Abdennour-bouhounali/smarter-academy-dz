@@ -100,15 +100,17 @@ export async function flushEvidenceQueue(token, submit = submitLearningEvidence,
     return { flushed: 0, remaining: live.length, expired };
   }
 
-  const stillQueued = [];
+  const sent = new Set();
+  const failed = new Map();
   let flushed = 0;
 
   for (const entry of live) {
     try {
       await submit(token, entry.lessonCode, entry.evidence);
+      sent.add(entryKey(entry));
       flushed += 1;
     } catch (error) {
-      stillQueued.push({
+      failed.set(entryKey(entry), {
         ...entry,
         retries: entry.retries + 1,
         lastError: {
@@ -119,7 +121,23 @@ export async function flushEvidenceQueue(token, submit = submitLearningEvidence,
     }
   }
 
+  // La file est RELUE ici, pas réécrite depuis la copie du début : pendant
+  // les `await`, une autre réponse a pu y être parquée (ou un autre flush l'a
+  // vidée). On n'ôte que ce qui vient d'être accepté, on met à jour ce qui a
+  // échoué, et tout le reste — ajouté entre-temps — est conservé.
+  const stillQueued = [];
+  for (const entry of readQueue()) {
+    const normalized = normalize(entry, nowIso);
+    const key = entryKey(normalized);
+    if (sent.has(key) || isExpired(normalized, nowMs)) continue;
+    stillQueued.push(failed.get(key) ?? normalized);
+  }
   writeQueue(stillQueued);
 
   return { flushed, remaining: stillQueued.length, expired };
+}
+
+/** Une réponse est identifiée par sa leçon et sa preuve (attemptId + question). */
+function entryKey(entry) {
+  return JSON.stringify([entry.lessonCode, entry.evidence]);
 }

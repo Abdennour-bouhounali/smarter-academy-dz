@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useStepSequence } from './useStepSequence';
 import { resolveManipulationLevels } from './levels';
 import { useWorkspaceLevel } from './workspaceContext';
@@ -74,6 +74,13 @@ export function useManipulation({
   const stopPlaying = useCallback(() => {
     if (playTimer.current) { clearInterval(playTimer.current); playTimer.current = null; }
     setPlaying(false);
+  }, []);
+
+  // Le rejeu du mode classe ne survit pas au démontage (changement de page
+  // pendant « شغّل ») : sans cela l'intervalle continuait d'appeler un
+  // `autoStep` sur un composant démonté.
+  useEffect(() => () => {
+    if (playTimer.current) { clearInterval(playTimer.current); playTimer.current = null; }
   }, []);
 
   const reset = useCallback(() => {

@@ -9,10 +9,10 @@
  * Jamais bloquant — ce sont des suggestions.
  *
  * @param {object[]} recommendations  triées par le serveur, la plus urgente d'abord
- * @param {{modulePath?: (number: number) => string|null, practicePath?: string|null, max?: number}} [options]
+ * @param {{modulePath?: (number: number) => string|null, lessonPath?: (lessonCode: string) => string|null, practicePath?: string|null, max?: number}} [options]
  * @returns {Array<{key: string, kind: string, labelKey: string, params: object, to: string|null, learningPoint: string}>}
  */
-export function buildNextSteps(recommendations, { modulePath = () => null, practicePath = null, max = 3 } = {}) {
+export function buildNextSteps(recommendations, { modulePath = () => null, lessonPath = () => null, practicePath = null, max = 3 } = {}) {
   const out = [];
   const seen = new Set();
 
@@ -22,7 +22,23 @@ export function buildNextSteps(recommendations, { modulePath = () => null, pract
     const lpCode = rec?.learningPoint?.code ?? '';
     let step = null;
 
-    switch (rec?.kind) {
+    // Un prérequis FAIBLE se rattrape dans SA leçon, pas dans un module de
+    // celle-ci : le serveur le nomme (`prerequisites[]`, avec `lessonCode`).
+    // Auparavant la ligne renvoyait au module qui enseigne le point COURANT,
+    // si bien que la remédiation ignorait le prérequis détecté.
+    const weakPrerequisite = rec?.kind === 'prerequisite' ? (rec.prerequisites ?? [])[0] : null;
+
+    switch (weakPrerequisite ? 'weak-prerequisite' : rec?.kind) {
+      case 'weak-prerequisite': {
+        const title = weakPrerequisite.title ?? weakPrerequisite.code ?? lpTitle;
+        step = {
+          labelKey: 'boss.nextReviewLearningPoint',
+          params: { title },
+          to: weakPrerequisite.lessonCode ? (lessonPath(weakPrerequisite.lessonCode) ?? null) : null,
+          dedupe: `lp:${weakPrerequisite.code ?? title}`,
+        };
+        break;
+      }
       case 'reteach':
       case 'prerequisite': {
         const mod = (rec.modules ?? []).find((m) => Number.isFinite(Number(m?.number)));

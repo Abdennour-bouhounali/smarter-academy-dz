@@ -125,18 +125,16 @@ async function settled(page) {
     const text = (await moduleBtn.textContent()).trim();
     check('P : le bouton d’un محور dit « وضع القسم » et jamais « الوحدة »',
       (await moduleBtn.count()) === 1 && text === 'وضع القسم' && !text.includes('الوحدة'), text);
-    check('P : ce bouton est flottant, à gauche, avec les autres repères',
-      await moduleBtn.evaluate((el) => {
-        const cs = getComputedStyle(el);
-        return cs.position === 'fixed' && parseFloat(cs.left) < 60;
-      }));
+    check('P : ce bouton vit dans la rangée de repères du محور, à côté de « المختبر » — pas dans la colonne flottante',
+      await moduleBtn.evaluate((el) => getComputedStyle(el).position !== 'fixed'
+        && !!el.parentElement.querySelector('[data-ml-overlay-trigger]')));
   }
   await ctx.close();
 }
 {
   const { ctx, page } = await openAs(`${LESSON}/awazzif`, { completed: ['0', '1', '2'] });
   // Les étapes 2 et 3 sont verrouillées tant que l'exercice 1 n'est pas fait : un seul exercice est rendu.
-  check('P : présentateur — ⛶ عرض التمرين sur l’exercice rendu du module 3 (les étapes verrouillées ne rendent pas le leur)', (await page.locator('[data-classroom-enter="exercise"]').count()) === 1);
+  check('P : présentateur — ⛶ عرض التمرين sur l’exercice rendu du module 3 (l’admin lit en navigation libre : les 3 étapes sont ouvertes)', (await page.locator('[data-classroom-enter="exercise"]').count()) === 3);
   await ctx.close();
 }
 
@@ -318,7 +316,7 @@ async function settled(page) {
   await page.waitForSelector('[data-classroom-active="true"]', { timeout: 5000 });
   await settle(page, 700);
   const f = await fits(page);
-  check('S : en portée MODULE, aucun saut de محور (il n’y a pas de leçon autour)', f.prevModule === null && f.nextModule === null && f.next, JSON.stringify(f));
+  check('S : depuis un محور la séance est de portée LEÇON — les deux sauts de محور sont offerts', f.scope === 'lesson' && f.prevModule !== null && f.nextModule !== null && f.next, JSON.stringify(f));
   await exit(page);
   await settle(page, 300);
   await ctx.close();
@@ -335,18 +333,20 @@ async function settled(page) {
   // SOUS la carte des connaissances, qui est elle-même sous le cahier. Les
   // trois partagent le bord physique gauche et ne se recouvrent jamais.
   {
+    await page.waitForSelector('[data-classroom-enter="lesson"]', { timeout: 10000 });
+    await page.waitForSelector('[data-km-trigger]', { timeout: 10000 });
+    await page.waitForSelector('.sa-nb-lesson-trigger', { timeout: 10000 });
     const col = await page.evaluate(() => {
       const box = (sel) => { const e = document.querySelector(sel); if (!e) return null; const b = e.getBoundingClientRect(); return { x: Math.round(b.x), top: Math.round(b.top), bottom: Math.round(b.bottom), gapBottom: Math.round(window.innerHeight - b.bottom) }; };
       return { enter: box('[data-classroom-enter="lesson"]'), kmap: box('[data-km-trigger]'), nb: box('.sa-nb-lesson-trigger'), ctrlk: box('#command-palette-trigger') };
     });
-    check('M : « وضع القسم » est SOUS « بطاقتي », qui est sous « كرّاسي » — même bord, aucun recouvrement',
+    check('M : « وضع القسم » est dans la rangée du haut, hors colonne ; « بطاقتي » est SOUS « كرّاسي », même bord, aucun recouvrement',
       col.enter && col.kmap && col.nb
-      && col.enter.top >= col.kmap.bottom && col.kmap.top >= col.nb.bottom
-      && Math.abs(col.enter.x - col.kmap.x) < 3 && Math.abs(col.kmap.x - col.nb.x) < 3,
+      && col.enter.bottom <= col.nb.top
+      && col.kmap.top >= col.nb.bottom && Math.abs(col.kmap.x - col.nb.x) < 3,
       JSON.stringify(col));
-    // La pastille est posée DANS L'ANGLE : autant d'écart au bas qu'à gauche.
-    check('M : « وضع القسم » est au ras du coin — écart au bas = écart à gauche',
-      col.enter && Math.abs(col.enter.x - col.enter.gapBottom) <= 2, JSON.stringify(col.enter));
+    check('M : « بطاقتي » est au ras du coin — écart au bas = écart à gauche',
+      col.kmap && Math.abs(col.kmap.x - col.kmap.gapBottom) <= 2, JSON.stringify(col.kmap));
     // Le coin ne peut l'être que parce que la pastille « Ctrl+K » a été
     // retirée : sous RTL elle tombait exactement là (`end-6`).
     check('M : plus de pastille « Ctrl+K » pour disputer le coin', col.ctrlk === null);
@@ -375,7 +375,7 @@ async function settled(page) {
       !(await page.locator('.sa-nb-lesson-trigger').first().isVisible().catch(() => false))
       && !(await page.locator('[data-km-trigger]').first().isVisible().catch(() => false)));
   }
-  check('M : unités du محور ouvert = المهمة + 3 exercices, on entre à la première', f.units === '4' && f.current === '0' && f.next, JSON.stringify(f));
+  check('M : unités du محور ouvert = المهمة + 3 exercices + الخلاصة (navigation libre), on entre à la première', f.units === '5' && f.current === '0' && f.next, JSON.stringify(f));
   // LA raison du changement : en portée leçon, la séance connaît ses voisins.
   check('M : le saut « المحور » est offert — ce qu’une séance de portée module ne donnait pas',
     f.nextModule !== null || f.prevModule !== null, `${f.prevModule} | ${f.nextModule}`);
@@ -452,6 +452,7 @@ for (const vp of [{ width: 1024, height: 768 }, { width: 390, height: 844 }]) {
   await settle(page, 900);
   let f = await fits(page);
   const small = await page.evaluate(() => [...document.querySelectorAll('[data-classroom-active="true"] [data-classroom-toolbar] button, [data-classroom-active="true"] [data-classroom-nav] button')]
+    .filter((b) => b.getClientRects().length > 0)
     .filter((b) => b.getBoundingClientRect().height < 44 || b.getBoundingClientRect().width < 44).length);
   check(`V ${vp.width}×${vp.height} : module présenté — aucun débordement horizontal, commandes ≥ 44 px`, f.active && f.pageX && f.rootX && f.contentX && small === 0, `${JSON.stringify(f)} small=${small}`);
   await next(page); await settle(page, 900);

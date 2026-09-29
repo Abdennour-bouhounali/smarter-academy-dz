@@ -16,6 +16,7 @@
  * Fonctions pures : aucun accès réseau, aucun état, aucun React. Le contenu
  * de la question entre, une évaluation sort.
  */
+import { toLatinDigits } from '../numberFormat.js';
 import { Rational, rationalEquals, normalizeNumeric } from './rational.js';
 import { parseAffineAnswer, affineEquals, affineToString } from './affineCanonical.js';
 import { parseInterval, intervalEquals, intervalToString } from './intervalCompare.js';
@@ -49,12 +50,18 @@ export const SUPPORTED_ANSWER_TYPES = Object.freeze([
  * sont acceptés : l'interface DZ est en arabe, et refuser « ١، ٢ » serait
  * traiter une convention d'écriture comme une erreur mathématique.
  */
-const ARABIC_INDIC_ZERO = 0x0660;
+// Les écritures d'ensemble que l'élève a sous les yeux sont acceptées aussi :
+// les accolades (les corrections de la leçon écrivent « \{8 ; 12 ; 24\} »),
+// la conjonction « و » (le manuel écrit « 1 و 60 ») et un point final.
+// Un point AU MILIEU reste une erreur : « 1.5 » n'est pas l'ensemble {1, 5}.
 export function normalizeIntegerSetInput(raw) {
-  const s = String(raw ?? '')
-    .replace(/[\u0660-\u0669]/g, (ch) => String(ch.charCodeAt(0) - ARABIC_INDIC_ZERO))
-    .replace(/[\u06F0-\u06F9]/g, (ch) => String(ch.charCodeAt(0) - 0x06f0))
+  const s = toLatinDigits(raw)
+    .replace(/\\[{}]/g, ' ')
+    .replace(/[{}]/g, ' ')
+    .replace(/و/g, ' ')
     .replace(/[،؛;,\n]/g, ' ')
+    .trim()
+    .replace(/\.$/, '')
     .trim();
   return s === '' ? [] : s.split(/\s+/);
 }

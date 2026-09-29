@@ -118,6 +118,7 @@ export default function Module01AlMaktaba() {
                 options={['26 كتابًا في كل رفّ: تبقى 4 كتب خارج الرفوف', '28 كتابًا في كل رفّ: 15 رفًّا ولا يبقى شيء', 'الكيفيتان متكافئتان', 'لا يمكن ترتيب 420 كتابًا بالتساوي']}
                 correct={1}
                 cols={1}
+                requires={['qisma-iqlidiya']}
                 explain={<span><MathText>{'$420 = 26 \\times 16 + 4$'}</MathText> يبقى 4 كتب؛ أما <MathText>{'$420 = 28 \\times 15 + 0$'}</MathText> فلا يبقى شيء.</span>}
                 onAnswered={() => setQ1(true)}
               />

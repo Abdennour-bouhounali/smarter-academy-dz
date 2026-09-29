@@ -14,7 +14,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qawasim-adad-tabii/modules/Module01AlAdad60.jsx",
-        "line": 43,
+        "line": 81,
         "step": 2,
         "variant": "rappel"
       }
@@ -27,7 +27,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qawasim-adad-tabii/modules/Module01AlAdad60.jsx",
-        "line": 35,
+        "line": 73,
         "step": 1,
         "variant": "new"
       }
@@ -64,7 +64,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qawasim-adad-tabii/modules/Module01AlAdad60.jsx",
-      "line": 45,
+      "line": 83,
       "requires": [
         "qasim-rappel"
       ],

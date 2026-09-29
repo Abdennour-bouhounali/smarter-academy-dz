@@ -55,6 +55,14 @@ const COLOR_MAP = {
     hoverBorder: 'hover:border-blue-400',
     hoverText: 'group-hover:text-blue-600',
   },
+  // Les deux « أستعدّ » de l'unité 1 déclarent `teal` : absent, il retombait
+  // en silence sur `slate`.
+  teal: {
+    bg: 'bg-teal-100',
+    text: 'text-teal-700',
+    hoverBorder: 'hover:border-teal-400',
+    hoverText: 'group-hover:text-teal-600',
+  },
   sky: {
     bg: 'bg-sky-100',
     text: 'text-sky-700',

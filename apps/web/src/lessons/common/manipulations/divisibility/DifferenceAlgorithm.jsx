@@ -64,7 +64,10 @@ export default function DifferenceAlgorithm({
 
   // La contrainte de la configuration — une seule définition, lue par le
   // laboratoire libre / le mode classe ET par « أكمل الفروق ».
-  const validateNumbers = (x) => (divisibility.differenceSteps(x.a, x.b).steps.length > 30 ? t('manipulation.diff.tooManySteps') : '');
+  // a = b : la seule différence est 0, le PGCD n'est jamais une tuile.
+  const validateNumbers = (x) => (
+    x.a === x.b ? t('manipulation.diff.equalNumbers')
+      : divisibility.differenceSteps(x.a, x.b).steps.length > 30 ? t('manipulation.diff.tooManySteps') : '');
 
   const pair = L.currentPair(lab);
   const finished = L.isDifferencesFinished(lab);
@@ -111,7 +114,10 @@ export default function DifferenceAlgorithm({
             return (
               <li key={i} className="grid gap-2 md:grid-cols-2">
                 <EquationDisplay tex={differenceStepTex(s)} tone={s.diff === 0 ? 'result' : i === shown.length - 1 ? 'active' : 'neutral'} size="sm" />
-                <EquationDisplay tex={isLast ? `\\mathrm{PGCD}(${a}\\ ;\\ ${b}) = ${lab.gcd}` : pgcdEqualityTex(s.big, s.small, nextBig, nextSmall)} tone="muted" size="sm" />
+                {/* La dernière ligne ne dit le PGCD qu'une fois que l'élève l'a posé
+                    dans sa case : sinon la chaîne donne la réponse avant le geste
+                    (« أكمل الفروق » y mène en un clic). Audit du 2026-09-29. */}
+                <EquationDisplay tex={isLast ? `\\mathrm{PGCD}(${a}\\ ;\\ ${b}) = ${lab.pgcdPlaced ? lab.gcd : '\\,?'}` : pgcdEqualityTex(s.big, s.small, nextBig, nextSmall)} tone="muted" size="sm" />
               </li>
             );
           })}

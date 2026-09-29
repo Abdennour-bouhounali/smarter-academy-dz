@@ -15,6 +15,9 @@ code that no longer exists.
   for what, and which ones are historical.
 - `docs/lessons/LESSON_DEVELOPMENT_GUIDE.md` — the entry point before creating
   or modifying a lesson, a module, a manipulation or an exercise.
+  Its §14 is the lesson reference architecture, **frozen for generation on
+  2026-09-29**: a generated lesson implements that contract and reuses that
+  architecture — never a parallel one.
 - The contract that governs the area you touch (`docs/architecture/*.md`).
 - `docs/architecture/BUNDLE_BOUNDARIES.md` before adding a provider, a route,
   a heavy dependency, an `import.meta.glob` or an i18n namespace — it says

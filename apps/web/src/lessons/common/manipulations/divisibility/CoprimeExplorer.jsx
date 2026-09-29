@@ -123,10 +123,10 @@ export default function CoprimeExplorer({
           )}
           {!inGroups && lab.shared.length > 0 && (
             <EquationDisplay
-              tex={`\\text{communs} = \\{${lab.shared.join(' ; ')}\\}`}
+              tex={`\\{${lab.shared.join(' ; ')}\\}`}
               tone={L.allShared(lab) ? (coprime ? 'ok' : 'result') : 'neutral'}
               size="sm"
-              note={L.allShared(lab) && coprime ? t('manipulation.coprime.onlyOne') : undefined}
+              note={L.allShared(lab) && coprime ? t('manipulation.coprime.onlyOne') : t('manipulation.commonDivisorsLabel')}
             />
           )}
         </div>
@@ -147,7 +147,7 @@ export default function CoprimeExplorer({
           formal={(
             <div className="space-y-2">
               <EquationDisplay tex={`\\mathrm{PGCD}(${a}\\ ;\\ ${b}) = ${lab.g}`} tone="result" size="lg"
-                note={coprime ? t('manipulation.coprime') : t('manipulation.notCoprime')} />
+                note={coprime ? t('manipulation.coprimeVerdict') : t('manipulation.notCoprime')} />
               {!coprime && <p className="text-sm text-slate-700">{t('manipulation.coprime.commonNotOne', { list: extra.join(' ، ') })}</p>}
             </div>
           )}

@@ -92,12 +92,23 @@ final class Rational
      * les points-virgules, pas « \; »), `$` de tête et de queue retirés,
      * virgule décimale → point.
      */
+    /** Chiffres arabo-indiens (U+0660) et persans (U+06F0) → ASCII — miroir de `toLatinDigits` (numberFormat.js). */
+    public static function latinDigits(string $s): string
+    {
+        $s = preg_replace_callback('/[\x{0660}-\x{0669}]/u', static fn ($m) => (string) (mb_ord($m[0]) - 0x0660), $s);
+
+        return preg_replace_callback('/[\x{06F0}-\x{06F9}]/u', static fn ($m) => (string) (mb_ord($m[0]) - 0x06F0), $s);
+    }
+
     public static function normalizeNumeric(mixed $raw): string
     {
         $s = self::jsString($raw);
         if (! mb_check_encoding($s, 'UTF-8')) {
             return $s;
         }
+        // Miroir de `toLatinDigits` + ٫ (U+066B) → « . » et ∕ (U+2215) → « / » (JS, 2026-09-29).
+        $s = self::latinDigits($s);
+        $s = str_replace(["\u{066B}", "\u{2215}"], ['.', '/'], $s);
         $s = preg_replace('/[\x{2212}\x{2012}\x{2013}\x{2014}\x{2015}]/u', '-', $s);
         $s = preg_replace('/['.self::JS_WS.'\x{202F}\x{00A0}\x{2009}]/u', '', $s);
         $s = preg_replace('/\\\\left|\\\\right|\\\\,|;|\\\\!|\\\\ /u', '', $s);
