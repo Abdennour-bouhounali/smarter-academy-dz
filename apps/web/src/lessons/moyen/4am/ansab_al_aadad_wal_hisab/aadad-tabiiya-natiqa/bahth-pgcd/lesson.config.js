@@ -31,6 +31,8 @@ export const LESSON_CONFIG = {
   ],
   teachingScope: { include: ['الخاصيتان وخوارزميتا الكتاب', 'مقارنة عدد الخطوات (765 و 135)'], exclude: ['التحليل إلى عوامل أولية', 'المضاعف المشترك الأصغر (غير وارد في البرنامج)'] },
   knowledgeMap: true,
+  // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
+  knowledgeMapMode: 'progressive',
   priorKnowledge: ['khassiya-1', 'khassiya-2', 'pgcd-taarif', 'nataij-mubashira'],
   resources: [
     // Module 1 — workspace à deux niveaux sur les différences successives,

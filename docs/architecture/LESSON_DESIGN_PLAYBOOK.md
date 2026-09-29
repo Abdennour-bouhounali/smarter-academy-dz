@@ -667,7 +667,9 @@ surface them as explicit options; record the answers in the spec.
 1. Catalogue entry (`status: 'coming_soon'`) — everything downstream reads LP ids from it.
 2. Utils module + isolated verification of the pure math.
 3. `lesson.config.js` + `knowledge.jsx` + `content/` + the one-line `moduleContext.js` and
-   `routes.jsx` (LESSON_DEVELOPMENT_GUIDE §3).
+   `routes.jsx` (LESSON_DEVELOPMENT_GUIDE §3) — and `knowledgeGraph.js`, the progressive Knowledge
+   Map, designed **with** the lesson (its `reveals` is the lesson's progression; its guidance is
+   drawn from the exercises and questions written here): `KNOWLEDGE_MAP.md` A.10, A.13, A.14.
 4. **Signature interaction** and its module — highest risk first; validate density caps and
    reduced motion here.
 5. Core discovery modules (trigger + discoveries).

@@ -32,6 +32,8 @@ export const LESSON_CONFIG = {
     exclude: ['طرق حساب PGCD بغير حصر القواسم (الدرسان 5 و 6)'],
   },
   knowledgeMap: true,
+  // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
+  knowledgeMapMode: 'progressive',
   priorKnowledge: ['tariqa-qawasim'],
   resources: [
     // Module 1 — workspace à deux niveaux. Même objectif, deux échelles :

@@ -98,6 +98,9 @@ lessons/moyen/4am/<chapter>/<unit>/<lesson>/
 ├── routes.jsx           import.meta.glob of modules/ + buildLessonRoutes(...)
 ├── moduleContext.js     one line: buildModuleContext(LESSON_CONFIG, LESSON_BASE_PATH)
 ├── knowledge.jsx        LESSON_KNOWLEDGE — the single source of the lesson's knowledge
+├── knowledgeGraph.js    KNOWLEDGE_GRAPH — the progressive map's structure, relationships and
+│                        guidance (re-exported by knowledge.jsx; KNOWLEDGE_MAP.md Part A).
+│                        Every lesson has one since 2026-09-29; required for new lessons (§14.2)
 ├── content/
 │   ├── textbook.js      the textbook's own words, each block with its `source`
 │   └── exercises.js     the textbook's exercises attached to this lesson
@@ -350,6 +353,20 @@ taught; a question declares what it needs with `requires={[...]}`. `requires`
 has no runtime effect: it is the contract
 `npm run audit:knowledge` checks, so that nothing is ever demanded before it is
 taught. See `KNOWLEDGE_DEPENDENCY.md`.
+
+**The Knowledge Map (approved architecture, 2026-09-29)** — the lesson's
+knowledge is shown as a **progressive interactive learning map**: a Mind Map
+(« الخريطة ») the learner discovers node by node along labelled relationships,
+and its linear numbered reading (« المعارف مفصّلة »). Both read `knowledge.jsx`
+(the mathematics) and `knowledgeGraph.js` (structure, relationships, and the
+guidance layer — تذكّر · تحقّق · خطأ شائع · انتبه · نصيحة · خلاصة — taken from
+the lesson's own exercises, questions and « أستعدّ », never invented). A node
+is locked until the brick or completed module that establishes its item; the
+map adds no progress and no mastery of its own. The model, types, authoring
+rules and quality checklist are **`KNOWLEDGE_MAP.md` Part A**; the reference
+implementation is `qasim-adad-tabii`, and all nine lessons of the unit carry the
+map since the migration of 2026-09-29 (A.15 records what each one needed — read
+it before authoring a graph: it lists the traps the tests now catch).
 
 **Textbook content** — `content/textbook.js` holds the textbook's own words.
 Every block carries a `source`, built with the `src(elementId, page, section,
@@ -960,6 +977,13 @@ pattern, or a reusable component — update this guide and the relevant contract
 
 ## 14. LESSON REFERENCE ARCHITECTURE — FROZEN FOR GENERATION (2026-09-29)
 
+> **Amended 2026-09-29 (owner-approved):** the Knowledge Map row of §14.2 now
+> requires the progressive map (`knowledgeGraph.js` + `knowledgeMapMode`) and
+> §14.3 adds its checklist — `KNOWLEDGE_MAP.md` Part A. Everything else in §14
+> is unchanged. **Same day, later:** the eight other lessons were migrated to the
+> map and its blockers resolved (gate in `validate-lessons.mjs`, per-lesson
+> invariants in `lessonGraphs.test.js`) — `KNOWLEDGE_MAP.md` A.15.
+
 The architecture below was audited end to end on 2026-09-29 (all nine lessons,
 every shared component, every gate, the server judge and the browser suites;
 record: [`../reports/LESSON_ARCHITECTURE_AUDIT_2026-09-29.md`](../reports/LESSON_ARCHITECTURE_AUDIT_2026-09-29.md)).
@@ -985,7 +1009,8 @@ A lesson  = lesson.config.js + index.jsx + routes.jsx + moduleContext.js + knowl
 A module  = one stage (prerequisite_check → trigger → discovery → manipulation →
             formalization → practice_lab → evaluation), numbers contiguous from 0 or 1
 Knowledge = knowledge.jsx items, laid by <KnowledgeBrick> where taught, mapped by the Knowledge Map,
-            demanded by `requires` (audited), closed by <KnowledgeSnapshot complete> in the final test
+            demanded by `requires` (audited), closed by <KnowledgeSnapshot complete> in the final test;
+            structured by knowledgeGraph.js (progressive map — every lesson, KNOWLEDGE_MAP.md Part A)
 Evidence  = ONLY the evaluation module's assessed questions → { picked } → server registry judge
             → versioned mastery engine (Learning Point states). Everything else is formative.
 Progress  = useProgress (localStorage cache) → progressQueue → PUT /progress (union merge)
@@ -1012,7 +1037,7 @@ for every element the lesson cites. Mastery criteria are the server's
 | Steps | `done` on ANSWERED, never on correct (`check:non-blocking`); a step may wait on `onFinished` only per §6; never pass `locked` |
 | Questions | kit components only (`TapQuestion`, `BatchChoiceQuestion`, `NumericQuestion`, `TextbookExercise` for the textbook's exercises); explicit `correct`; every distractor FALSE; `requires` on every question; the parsers of §5, never a custom one |
 | Manipulation | a type from the closed registry (10 types), two levels in one `ManipulationWorkspace`, the lesson's world as a `theme` (§6); a new type only by the recipe of MANIPULATION_CONTRACT §7ter |
-| Knowledge | `knowledge.jsx` with a plain-text `summary` per item; a brick at the point of teaching; `knowledgeMap: true`; every content module's footer `<KnowledgeSnapshot moduleNumber={N} />`; the final test's `synthese={<KnowledgeSnapshot complete variant="complete" />}` |
+| Knowledge | `knowledge.jsx` with a plain-text `summary` per item; a brick at the point of teaching; `knowledgeMap: true`; every content module's footer `<KnowledgeSnapshot moduleNumber={N} />`; the final test's `synthese={<KnowledgeSnapshot complete variant="complete" />}`; **and** the progressive map from the start (owner decision, 2026-09-29): a `knowledgeGraph.js` exporting `KNOWLEDGE_GRAPH`, re-exported by `knowledge.jsx`, and `knowledgeMapMode: 'progressive'` — every item carried by a `notebook` node, labelled relationships, guidance only where the lesson's own exercises / questions / « أستعدّ » support it, authored per `KNOWLEDGE_MAP.md` A.10 (rules 1–16) and passing A.14. Enforced: `validate-lessons.mjs` refuses a lesson with a map but no mode / graph / re-export, and `lessonGraphs.test.js` runs the A.14 invariants on every lesson without any per-lesson code |
 | Final test | only in the `evaluation` module; every question assessed with ONE primary LP of this lesson; every LP covered; 4–6 questions; timer ≈ 1 min per question + 1; `badges`, `completion`, `skills` as in the reference lessons |
 | Textbook | every pedagogical block carries a `source` (`src()` / `addition()`); `check:textbook` maps each extracted element to exactly one destination |
 | Practice | a separate bank under `content/practice/**` with provenance, oracle entries for constructed answers (§11) |
@@ -1041,6 +1066,7 @@ evidence, a raster image under `lessons/`, a `tier` anywhere in the lesson.
 | Runtime | the browser suites of §11 against the dev server (all green on 2026-09-29: 27/27, 183/183, 73/73, 47/47, 9/9) + the new lesson loaded at 320 / 414 / 820 / 1440 px with no console error, no failed request, no horizontal overflow |
 | Mathematics | every key recomputed; every distractor false; parsers exercised with Arabic digits |
 | Interaction | the manipulation by drag, tap and keyboard; a deliberately wrong run still progresses; reload keeps progress |
+| Knowledge Map | the checklist of `KNOWLEDGE_MAP.md` A.14 — core items all carried, relationships labelled, guidance grounded in the lesson (automated: each aid quotes the lesson word for word; relevance reviewed by a human), mistakes with wrong / why / right, the map not overloaded, ① first in « المعارف مفصّلة », every equality inside `$…$` and arithmetically true, mathematics never truncated or mirrored, locked until taught, no evaluation answer in the map; browser QA `node apps/web/e2e/knowledge-map.mjs` |
 | Documentation | a new reusable pattern is documented here and in its contract in the same task |
 
 ### 14.4 Known open items (do not block generation)

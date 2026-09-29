@@ -275,6 +275,18 @@ The CSS that makes it correct (`index.css`):
 keeps it out of the surrounding Arabic bidi run. Both are required — one
 without the other still renders wrongly in a mixed sentence.
 
+**A Latin word glued to a formula joins its island (2026-09-29).** The
+textbook writes `PGCD$(a ; b)$`, `PGCD $(a ; b)$` and chains like
+`PGCD$(a ; b) = $ PGCD$(b ; a - b)$`. With one island per `$…$`, the RTL
+paragraph ordered the Latin word and each island right to left: the student
+read « (b ; a−b)PGCD(a ; b) = PGCD » (16 strings in five lessons, in modules,
+knowledge bodies and the map). `mathSegments` (exported by `MathText.jsx`,
+tested in `MathText.test.js`) now builds ONE island from a formula, the Latin
+word glued before it (at most one space), and the following formulas while
+only spaces or such a word separate them. Arabic text or punctuation between
+two formulas (« $a$ و $b$ », « $a$ ، $b$ ») still separates two islands —
+nothing changes for them.
+
 ### Numeric pairs need the same isolation
 
 In an RTL page, `{score} / {max}` renders reversed: `10/11` reads as
@@ -390,6 +402,24 @@ Number formatting inside a chart (and anywhere else) uses `ar-DZ`, never
 Solving one does not solve the other. Verify both independently, then together.
 
 ---
+
+### The Knowledge Map (2026-09-29)
+
+The progressive map follows this section without exception
+(`KNOWLEDGE_MAP.md` A.11): only its **lane positions** mirror under RTL —
+arrows keep flowing downward and notation is never mirrored; relation labels
+are DOM text (Cairo, browser bidi), never SVG `<text>`; a **mathematical
+subtitle is never truncated** — it is scaled to fit (`FittedMath`), because
+« 11 × 13 + 0 » without « 143 = » is a false equality; an Arabic subtitle may
+end in « … ». In the linear « المعارف مفصّلة », a line that starts with a math
+island shows that island at the reading-start (right) edge, internally LTR —
+this is correct, not a reversal.
+
+Every equality a map node shows is written **inside `$…$`** (`KNOWLEDGE_MAP.md`
+A.10 rule 12): « 252 − 140 = 112 » in plain text after Arabic displays as
+« 112 = 140 − 252 ». `lessonGraphs.test.js` refuses a digit equality outside a
+math island unless a Latin letter anchors it (« PGCD(155 ; 141) = 1 » is safe);
+a quoted lesson string that breaks the rule is left out of the map.
 
 ## 5. Arabic plurals
 

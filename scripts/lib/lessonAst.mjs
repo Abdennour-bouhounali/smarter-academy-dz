@@ -175,6 +175,9 @@ export function parseLessonConfig(lessonDir) {
   // `knowledgeMap: true` — the lesson's formalisation is the cumulative
   // Knowledge Map instead of a dedicated « À retenir » module.
   const knowledgeMap = literalValue(propOf(configNode, 'knowledgeMap')) === true;
+  // `knowledgeMapMode: 'progressive'` — the map is the progressive graph
+  // (knowledgeGraph.js), docs/architecture/KNOWLEDGE_MAP.md Part A.
+  const knowledgeMapMode = literalValue(propOf(configNode, 'knowledgeMapMode')) ?? null;
 
   const priorNode = propOf(configNode, 'priorKnowledge');
   let priorKnowledge;
@@ -258,6 +261,7 @@ export function parseLessonConfig(lessonDir) {
     estimatedDurationMin: typeof estimatedDurationMin === 'number' ? estimatedDurationMin : null,
     modules,
     knowledgeMap,
+    knowledgeMapMode,
     kind,
     unit: typeof unit === 'string' ? unit : null,
     resources,

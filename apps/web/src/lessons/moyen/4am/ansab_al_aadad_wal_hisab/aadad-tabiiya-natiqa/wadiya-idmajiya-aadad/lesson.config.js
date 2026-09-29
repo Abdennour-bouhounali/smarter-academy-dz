@@ -25,6 +25,8 @@ export const LESSON_CONFIG = {
   skills: ['حل وضعية إدماجية بتعبئة قابلية القسمة والقواسم والقاسم المشترك الأكبر'],
   teachingScope: { include: ['أؤكّد تعلّماتي: 9 أسئلة', 'أدمج تعلّماتي: الوضعية وتحليلها في ثلاث مراحل'], exclude: ['أي مفهوم جديد'] },
   knowledgeMap: true,
+  // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
+  knowledgeMapMode: 'progressive',
   priorKnowledge: ['qawaid-qisma', 'khassiya-1', 'qawasim-mushtaraka'],
   resources: [
     { kind: 'situation', code: 'situation-qasr-al-rayas', module: 1, title: 'وضعية: ترميم واجهة قصر الرياس', learningPointIds: ['4am_wadiya-idmajiya-aadad_P1'], sourceElementIds: ['situation'] },

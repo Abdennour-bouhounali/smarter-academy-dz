@@ -165,6 +165,14 @@ every module route), so it was enough to tell it the right scope.
 | `1.5rem` | « 🧠 بطاقتي » (`KnowledgeMap`) — same gap as `left`, in the angle |
 | `5.5rem` | « 📓 كرّاسي » (`LessonNotebookAnchor`; the exercise player's `NotebookButton` is the same pill at the same height) |
 
+**Below 1024 px (fixed 2026-09-29):** the student and teacher spaces show an `h-16` bottom nav
+that used to cover « بطاقتي ». Both pills now add `--sa-bottom-nav` (4rem below `lg` when the
+workspace shell is on the page, 0 otherwise — `index.css`): « بطاقتي » at `1.5rem + 4rem`,
+« كرّاسي » at `5.5rem + 4rem`; the exercise player keeps its own below-`lg` height (`8.5rem`, over
+its sticky « السؤال التالي » bar). Desktop is unchanged. See `KNOWLEDGE_MAP.md` « The trigger button »;
+asserted by `e2e/notebook-lesson.mjs` (« les déclencheurs cahier/carte ne se recouvrent pas ») and
+`e2e/knowledge-map.mjs` (the map opens at 820 and 390 px).
+
 Both presentation entry and the Math Lab left this column for the marker row:
 it is `sticky` (always reachable without scrolling) and **in the flow**, so it
 never covers the lesson — which a growing stack of floating pills did.

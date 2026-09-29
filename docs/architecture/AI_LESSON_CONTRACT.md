@@ -155,6 +155,55 @@ location: a scaffolded, hint-laden, retry-until-correct sequence is practice
 even if it sits in a "Boss Final" module. A live assessment module to read:
 `apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module04Itqan.jsx`.
 
+## Knowledge map — generated WITH the lesson (2026-09-29)
+
+The lesson's Knowledge Map is the **progressive interactive learning map**
+(`KNOWLEDGE_MAP.md` Part A): a Mind Map discovered node by node and its linear
+numbered reading, both built from `knowledge.jsx` and `knowledgeGraph.js`. A
+generator produces the graph **as part of the lesson**, never as a
+post-processing step: its `reveals` is the lesson's progression, and its
+guidance comes from the lesson's own material.
+
+What to generate: the core nodes carrying every `knowledge.jsx` item
+(`notebook: true`), labelled relationships, examples attached to what they
+illustrate, and — only where the lesson supports them — common mistakes,
+warnings, checks, tips, a reminder and a concise takeaway (A.13).
+
+Where guidance may come from — and nowhere else:
+
+| Guidance | Source in the generated lesson |
+|---|---|
+| خطأ شائع (wrong / why / right) | a question's distractor and its `explain`, an exercise's `commonError`, a module's correction (« العكس: … ») |
+| تحقّق | the lesson's worked cases (an activity's computations, a method it teaches) |
+| تذكّر | `priorKnowledge` as diagnosed by « أستعدّ », an exercise's `method` |
+| انتبه | a condition written in a definition (`b ≠ 0`), a subtle distinction the lesson makes |
+| نصيحة | a strategy the lesson itself teaches, within its `teachingScope` |
+| خلاصة | the lesson's own definitions and remarks, assembled |
+
+Absolute rules for the map (`KNOWLEDGE_MAP.md` A.10):
+
+1. **Never invent knowledge or guidance to fill the map.** No generic advice
+   (« انتبه أثناء الحساب »). No source in the lesson → no node.
+2. **Import texts from `content/*.js`**; never retype a definition or an example.
+3. **Gate every node** with `requires` = the item that establishes it: the map
+   never shows what the lesson has not taught.
+4. **Label every relationship** with why the two ideas connect; attach guidance
+   to the idea it explains, never to the root by default.
+5. **Keep the core dominant**: guidance stays fewer than half the nodes.
+6. The map is **not a mastery system**: mastery stays per Learning Point
+   (Mastery V2). Do not add a mastery field to a node.
+
+7. **Write every equality inside `$…$`** and compute the worked arithmetic from
+   the textbook's numbers; **never put an evaluation's answer in the map**
+   (every node is visible once its teaching module is done).
+8. A **خطأ شائع needs the lesson's own « لماذا؟ »**; without one, a distractor's
+   rule is at most a انتبه.
+
+Gate: the checklist of `KNOWLEDGE_MAP.md` A.14, automated for every lesson by
+`progressive/lessonGraphs.test.js` (no per-lesson test to write) and
+`validate-lessons.mjs` (mode, graph file, re-export). A.10 rules 11–16 and the
+A.15 migration record list the traps the migrated lessons hit — read them first.
+
 ## Question metadata
 
 ```js

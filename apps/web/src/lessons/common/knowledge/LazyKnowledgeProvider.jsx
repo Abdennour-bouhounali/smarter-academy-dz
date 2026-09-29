@@ -43,10 +43,12 @@ export function makeLazyKnowledgeProvider(load) {
   const Inner = lazy(async () => {
     const mod = await load();
     const knowledge = mod.LESSON_KNOWLEDGE;
+    // Carte PROGRESSIVE : chaque leçon l'exporte (knowledge.jsx → knowledgeGraph.js).
+    const graph = mod.KNOWLEDGE_GRAPH ?? null;
     return {
       default: function LoadedKnowledgeProvider({ children, ...props }) {
         return (
-          <LessonKnowledgeProvider {...props} knowledge={knowledge}>
+          <LessonKnowledgeProvider {...props} knowledge={knowledge} graph={graph}>
             {children}
           </LessonKnowledgeProvider>
         );

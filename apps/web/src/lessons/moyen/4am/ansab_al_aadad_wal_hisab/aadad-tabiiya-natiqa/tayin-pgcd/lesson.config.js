@@ -28,6 +28,8 @@ export const LESSON_CONFIG = {
   ],
   teachingScope: { include: ['تعيين PGCD بحصر القواسم (42 و 60)', 'النتائج المباشرة الأربع'], exclude: ['الفروق المتتابعة وخوارزمية إقليدس (الدرس 6)'] },
   knowledgeMap: true,
+  // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
+  knowledgeMapMode: 'progressive',
   priorKnowledge: ['pgcd-taarif', 'tariqa-qawasim'],
   resources: [
     // Module 1 — workspace à deux niveaux. La MÉTHODE est la même (حصر :

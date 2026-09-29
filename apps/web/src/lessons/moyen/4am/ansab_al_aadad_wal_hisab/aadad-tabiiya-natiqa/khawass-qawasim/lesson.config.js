@@ -33,6 +33,8 @@ export const LESSON_CONFIG = {
     exclude: ['القاسم المشترك الأكبر (الدرس 4)', 'خوارزميات البحث عن PGCD (الدرس 6) — تُبرَّر لاحقًا بهذه الخواص'],
   },
   knowledgeMap: true,
+  // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
+  knowledgeMapMode: 'progressive',
   priorKnowledge: ['qasim-jidaa', 'qisma-iqlidiya'],
   resources: [
     // Module 1 — workspace à deux niveaux. La propriété est la même ; ce qui

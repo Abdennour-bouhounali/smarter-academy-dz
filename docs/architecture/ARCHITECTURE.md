@@ -87,6 +87,7 @@ src/
         ├── moduleContext.js    one line: buildModuleContext(...) from ../_unit/
         ├── routes.jsx           buildLessonRoutes(...) from ../_unit/
         ├── knowledge.jsx        the lesson's knowledge (Knowledge Map)
+        ├── knowledgeGraph.js    progressive map structure + guidance (KNOWLEDGE_MAP.md Part A; every lesson)
         ├── index.jsx            thin wrapper rendering <LessonIndex>
         └── modules/Module*.jsx  one component per module
 ```

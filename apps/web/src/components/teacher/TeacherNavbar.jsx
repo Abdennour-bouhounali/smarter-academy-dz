@@ -5,17 +5,25 @@ import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../../context/AuthContext';
 import { teacherNavLinks } from '../../data/teacherNavigation';
 import { getDisplayName, getInitials } from '../../utils/userDisplay';
+import { useWorkspaceLayout } from '../../context/WorkspaceLayoutContext';
+import SidebarToggle from '../common/SidebarToggle';
 
 /**
  * La navigation de l'espace enseignant — le patron de StudentNavbar (barre
  * latérale sur grand écran, barre d'onglets basse sur mobile), en livrée
  * sarcelle pour qu'on voie d'un coup d'œil qu'on n'est pas dans l'espace
  * élève. Toutes les chaînes viennent du catalogue arabe.
+ *
+ * BARRE REPLIABLE (w-64 → w-20), comme l'espace élève : même état dérivé
+ * (`sidebarCollapsed`, WorkspaceLayoutContext), même bascule
+ * (SidebarToggle). Comprimée, les icônes gardent leur zone de clic de 44 px
+ * et chaque destination garde son nom en `title` + `aria-label`.
  */
 export default function TeacherNavbar() {
   const { t } = useTranslation('nav');
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+  const { sidebarCollapsed } = useWorkspaceLayout();
 
   const handleLogout = async () => {
     await logout();
@@ -27,13 +35,20 @@ export default function TeacherNavbar() {
 
   return (
     <>
-      <aside className="hidden lg:flex lg:flex-col fixed top-0 start-0 bottom-0 w-64 bg-white border-e border-slate-200 z-40">
-        <div className="flex items-center h-16 border-b border-slate-100 flex-shrink-0 gap-2.5 px-6">
+      <aside
+        className={`sa-workspace-sidebar hidden lg:flex lg:flex-col fixed top-0 start-0 bottom-0 bg-white border-e border-slate-200 z-40 ${sidebarCollapsed ? 'w-20' : 'w-64'}`}
+        data-sidebar-collapsed={sidebarCollapsed ? 'true' : undefined}
+      >
+        <SidebarToggle accent="teal" />
+
+        <div className={`flex items-center h-16 border-b border-slate-100 flex-shrink-0 ${sidebarCollapsed ? 'justify-center px-0' : 'gap-2.5 px-6'}`}>
           <img src="/smarter-academy-logo.webp" alt="Smarter Academy" className="h-9 w-auto rounded-lg object-contain flex-shrink-0" />
-          <div className="flex flex-col leading-none">
-            <span className="font-space font-bold text-slate-900 text-sm">Smarter Academy</span>
-            <span className="font-mono-jetbrains text-[10px] text-teal-700 font-semibold tracking-wider uppercase mt-0.5">{t('teacherSpace')}</span>
-          </div>
+          {!sidebarCollapsed && (
+            <div className="flex flex-col leading-none">
+              <span className="font-space font-bold text-slate-900 text-sm">Smarter Academy</span>
+              <span className="font-mono-jetbrains text-[10px] text-teal-700 font-semibold tracking-wider uppercase mt-0.5">{t('teacherSpace')}</span>
+            </div>
+          )}
         </div>
 
         <nav className="flex-1 px-3 py-5 space-y-1 overflow-y-auto">
@@ -45,27 +60,38 @@ export default function TeacherNavbar() {
               title={t(link.labelKey)}
               aria-label={t(link.labelKey)}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-inter text-sm font-medium transition-all duration-150 min-h-[44px] ${
+                `flex items-center rounded-xl font-inter text-sm font-medium transition-all duration-150 min-h-[44px] py-2.5 ${
+                  sidebarCollapsed ? 'justify-center px-0' : 'gap-3 px-3.5'
+                } ${
                   isActive ? 'text-white shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 }`
               }
               style={({ isActive }) => (isActive ? { background: gradient } : {})}
             >
               <link.icon size={18} className="flex-shrink-0" />
-              {t(link.labelKey)}
+              {!sidebarCollapsed && t(link.labelKey)}
             </NavLink>
           ))}
         </nav>
 
-        <div className="py-3 border-t border-slate-100 flex flex-shrink-0 px-3 items-center gap-1">
-          <Link to="/enseignant/profil" className="flex-1 min-w-0 flex items-center gap-3 px-2 py-1.5 rounded-xl hover:bg-slate-50 min-h-[44px]" aria-label={t('profile')}>
+        <div className={`py-3 border-t border-slate-100 flex flex-shrink-0 ${
+          sidebarCollapsed ? 'px-0 flex-col items-center gap-2' : 'px-3 items-center gap-1'
+        }`}>
+          <Link
+            to="/enseignant/profil"
+            className={`flex items-center rounded-xl hover:bg-slate-50 min-h-[44px] ${sidebarCollapsed ? 'justify-center w-11' : 'flex-1 min-w-0 gap-3 px-2 py-1.5'}`}
+            aria-label={t('profile')}
+            title={sidebarCollapsed ? getDisplayName(user) : t('profile')}
+          >
             <div className="w-9 h-9 rounded-full flex items-center justify-center text-white font-space font-bold text-xs flex-shrink-0" style={{ background: gradient }}>
               {initials}
             </div>
-            <div className="min-w-0 flex-1 text-start">
-              <p className="font-space font-semibold text-slate-800 text-xs truncate">{getDisplayName(user)}</p>
-              <p className="font-inter text-slate-400 text-[11px] truncate" dir="ltr">{user?.email}</p>
-            </div>
+            {!sidebarCollapsed && (
+              <div className="min-w-0 flex-1 text-start">
+                <p className="font-space font-semibold text-slate-800 text-xs truncate">{getDisplayName(user)}</p>
+                <p className="font-inter text-slate-400 text-[11px] truncate" dir="ltr">{user?.email}</p>
+              </div>
+            )}
           </Link>
           <button
             onClick={handleLogout}

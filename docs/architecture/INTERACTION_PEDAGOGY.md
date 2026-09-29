@@ -1482,6 +1482,16 @@ Give an important diagram the room it needs (`visualSize` on a knowledge item:
 `transform: scale()` — the `viewBox` scales geometry, labels and strokes
 together, so a scaled figure stays sharp.
 
+## 28ter. The Knowledge Map is discovered, not handed over (2026-09-29)
+
+The lesson's Knowledge Map applies this document's principles to the
+lesson's knowledge itself: it is **discovered progressively** — the root,
+then each labelled relationship leads to the next idea, with one « التالي »
+node showing the next step — and it only shows what the lesson has taught.
+Its guidance (common mistakes, warnings, checks, reminders) comes from the
+lesson's own questions and exercises, next to the idea each one serves. The
+contract is `KNOWLEDGE_MAP.md` Part A.
+
 ## 29. Quality checklist
 
 Run before declaring a lesson complete. Every answer must be **yes**.

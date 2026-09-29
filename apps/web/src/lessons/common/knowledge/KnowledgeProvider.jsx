@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useProgress } from '../hooks/useProgress';
 import { useWorkspaceLayout } from '../../../context/WorkspaceLayoutContext';
+import { useLearningViewer } from '../../../features/learning/learningViewer';
 import { cumulativeKnowledge, findKnowledgeItem, knowledgeModuleNumbers, toModuleSet } from './knowledgeState';
 import { lazy, Suspense } from 'react';
 // `KnowledgeMap` tire framer-motion et les visuels de concept. C'est un
@@ -51,8 +52,18 @@ const KnowledgeContext = createContext(null);
 // il partait à l'impression de la carte de connaissances. La leçon fournit sa
 // matière et sa classe (voir routes.jsx) ; sans elles, KnowledgeMap retombe
 // sur un libellé arabe neutre.
-export function LessonKnowledgeProvider({ lessonId, knowledge, printTitle, printSubject, children }) {
+//
+// `graph` : le KNOWLEDGE_GRAPH de la leçon (carte progressive — KNOWLEDGE_MAP.md
+// Part A). La carte ne l'utilise que si la leçon déclare
+// `knowledgeMapMode: 'progressive'` ; absent ou invalide, elle dérive un graphe
+// de repli des items (graphModel `resolveGraph`).
+export function LessonKnowledgeProvider({ lessonId, knowledge, graph = null, printTitle, printSubject, children }) {
   const { completedModules } = useProgress(lessonId);
+  // Un enseignant (ou un admin) PRÉPARE la leçon, il ne la parcourt pas : il
+  // n'a pas de progression (tracksProgress = false) et lit donc la carte
+  // COMPLÈTE d'emblée — la même règle que `freeNavigation` pour les verrous.
+  // Aucun rôle testé ici ; rien n'est écrit.
+  const { freeNavigation } = useLearningViewer();
   const [liveUnlocked, setLiveUnlocked] = useState([]);
   const [liveItems, setLiveItems] = useState([]);
   const [open, setOpen] = useState(false);
@@ -92,15 +103,17 @@ export function LessonKnowledgeProvider({ lessonId, knowledge, printTitle, print
   }, [knowledge]);
 
   const value = useMemo(() => {
-    const stored = toModuleSet(completedModules);
+    const stored = toModuleSet(freeNavigation ? knowledgeModuleNumbers(knowledge) : completedModules);
     const newModules = liveUnlocked.filter((n) => !stored.has(n));
     const unlocked = [...stored, ...liveUnlocked];
     const items = cumulativeKnowledge(knowledge, unlocked, newModules, liveItems);
     return {
       lessonId,
       knowledge,
+      graph,
       items,
       unlockedModules: toModuleSet(unlocked),
+      freeNavigation,
       newModules,
       liveItems,
       unlockModule,
@@ -111,7 +124,7 @@ export function LessonKnowledgeProvider({ lessonId, knowledge, printTitle, print
       openMap: () => setOpen(true),
       closeMap: () => setOpen(false),
     };
-  }, [lessonId, knowledge, completedModules, liveUnlocked, liveItems, unlockModule, unlockItem, getItem, unlockAll, open]);
+  }, [lessonId, knowledge, graph, freeNavigation, completedModules, liveUnlocked, liveItems, unlockModule, unlockItem, getItem, unlockAll, open]);
 
   return (
     <KnowledgeContext.Provider value={value}>
@@ -130,7 +143,7 @@ export function LessonKnowledgeProvider({ lessonId, knowledge, printTitle, print
 }
 
 const FALLBACK = {
-  lessonId: null, knowledge: null, items: [], unlockedModules: new Set(), newModules: [], liveItems: [],
+  lessonId: null, knowledge: null, graph: null, items: [], unlockedModules: new Set(), freeNavigation: false, newModules: [], liveItems: [],
   unlockModule: () => {}, unlockItem: () => {}, getItem: () => null,
   unlockAll: () => {}, isOpen: false, openMap: () => {}, closeMap: () => {},
 };

@@ -21,6 +21,7 @@ to read them.
 
 | If you are about to… | Read |
 |---|---|
+| Author or generate a lesson's **Knowledge Map** (the progressive map, its guidance layer, its quality checklist) | [`architecture/KNOWLEDGE_MAP.md`](./architecture/KNOWLEDGE_MAP.md) **Part A** |
 | Create or modify a lesson, module, manipulation or exercise | **[`lessons/LESSON_DEVELOPMENT_GUIDE.md`](./lessons/LESSON_DEVELOPMENT_GUIDE.md)** — the single entry point |
 | **Generate a new lesson** | [`lessons/LESSON_DEVELOPMENT_GUIDE.md`](./lessons/LESSON_DEVELOPMENT_GUIDE.md) **§14 — the reference architecture, frozen for generation on 2026-09-29**: the real structure, the generation contract (input, required output, what to reuse, what is prohibited) and the validation a generated lesson must pass |
 | Understand the whole system | [`architecture/ARCHITECTURE.md`](./architecture/ARCHITECTURE.md) |
@@ -58,7 +59,7 @@ may describe it, but they defer to this one.
 | What the entry bundle may contain, lazy boundaries (lesson runtime, Math Lab overlay, notebook window, on-demand i18n namespaces), prefetch points, measured before/after | [`architecture/BUNDLE_BOUNDARIES.md`](./architecture/BUNDLE_BOUNDARIES.md) |
 | Question metadata, evidence, assessment rules for generated lessons | [`architecture/AI_LESSON_CONTRACT.md`](./architecture/AI_LESSON_CONTRACT.md) |
 | Knowledge before demand (`priorKnowledge`, `KnowledgeBrick`, `requires`) | [`architecture/KNOWLEDGE_DEPENDENCY.md`](./architecture/KNOWLEDGE_DEPENDENCY.md) |
-| The cumulative Knowledge Map and `knowledge.jsx` | [`architecture/KNOWLEDGE_MAP.md`](./architecture/KNOWLEDGE_MAP.md) |
+| The Knowledge Map: **the approved progressive interactive learning map** (Mind Map « الخريطة » + linear « المعارف مفصّلة », one model; semantic knowledge types incl. خطأ شائع / انتبه / تحقّق / تذكّر / نصيحة / خلاصة; learning-synchronised reveal; data model `knowledgeGraph.js`; authoring rules, quality checklist, migration and generation — Part A; on all nine lessons since the 2026-09-29 migration, reference `qasim-adad-tabii`), the cumulative engine and `knowledge.jsx`, the column / drawer / full-screen panel | [`architecture/KNOWLEDGE_MAP.md`](./architecture/KNOWLEDGE_MAP.md) |
 | Completion vs mastery, progress storage and sync | [`architecture/PROGRESS_MODEL.md`](./architecture/PROGRESS_MODEL.md) |
 | Curriculum sync, evidence flow, **the mastery model (Mastery V2: versioned engine, server-side evaluation, assessment-item registry, repetition & minimum-evidence rules, replay, outcome taxonomy, decisions D1–D10)** | [`architecture/LEARNING_ARCHITECTURE.md`](./architecture/LEARNING_ARCHITECTURE.md) |
 | The student notebook (كرّاسي) — including the teacher's **read-only** access to the notebook of a student in their قسم (since 2026-09-24) | [`architecture/NOTEBOOK.md`](./architecture/NOTEBOOK.md) |

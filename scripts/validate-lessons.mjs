@@ -129,7 +129,7 @@ const warnings = [];
 const migratedCoverage = new Map(); // lesson code -> Set of covered LP ids
 
 for (const lessonDir of findLessonDirs(lessonsRoot)) {
-  const { id: code, modules, knowledgeMap, priorKnowledge, kind, unit, resources } = parseLessonConfig(lessonDir);
+  const { id: code, modules, knowledgeMap, knowledgeMapMode, priorKnowledge, kind, unit, resources } = parseLessonConfig(lessonDir);
   const rel = relative(repoRoot, lessonDir);
   if (!code) {
     errors.push(`${rel}: lesson.config.js has no parseable literal LESSON_CONFIG.id`);
@@ -152,6 +152,25 @@ for (const lessonDir of findLessonDirs(lessonsRoot)) {
   const configPath = `${rel}/lesson.config.js`;
   if (priorKnowledge === 'INVALID') {
     errors.push(`${configPath}: priorKnowledge must be a literal array of concept id strings`);
+  }
+
+  // ── Carte des connaissances PROGRESSIVE (KNOWLEDGE_MAP.md Part A) ──────────
+  // Une leçon qui a une carte a SA carte progressive : le drapeau littéral, un
+  // knowledgeGraph.js, et sa réexportation par knowledge.jsx (c'est par là que
+  // LazyKnowledgeProvider la reçoit). Les invariants du graphe lui-même —
+  // validité, items portés, aides, disposition — sont vérifiés par
+  // apps/web/src/lessons/common/knowledge/progressive/lessonGraphs.test.js.
+  if (knowledgeMap) {
+    if (knowledgeMapMode !== 'progressive') {
+      errors.push(`${configPath}: knowledgeMap: true requires knowledgeMapMode: 'progressive' (got ${JSON.stringify(knowledgeMapMode)}) — docs/architecture/KNOWLEDGE_MAP.md A.13`);
+    }
+    if (!existsSync(join(lessonDir, 'knowledgeGraph.js'))) {
+      errors.push(`${rel}: knowledgeMap: true requires a knowledgeGraph.js exporting KNOWLEDGE_GRAPH — docs/architecture/KNOWLEDGE_MAP.md A.9`);
+    } else if (!/export\s*\{\s*KNOWLEDGE_GRAPH\s*\}\s*from\s*'\.\/knowledgeGraph'/.test(readFileSync(join(lessonDir, 'knowledge.jsx'), 'utf-8'))) {
+      errors.push(`${rel}/knowledge.jsx: must re-export the graph — export { KNOWLEDGE_GRAPH } from './knowledgeGraph';`);
+    }
+  } else if (knowledgeMapMode === 'progressive') {
+    errors.push(`${configPath}: knowledgeMapMode: 'progressive' without knowledgeMap: true`);
   }
 
   // ── Nature de la leçon et rattachement à l'unité (phase 8) ─────────────────

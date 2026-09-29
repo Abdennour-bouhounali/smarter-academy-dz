@@ -579,8 +579,9 @@
   left: 1.5rem;
   /* L'étage au-dessus de « بطاقتي », qui est au ras du coin (1.5rem). La
      colonne ne compte plus que deux pastilles depuis que « وضع القسم » est
-     remonté dans la rangée de repères du محور. */
-  bottom: 5.5rem;
+     remonté dans la rangée de repères du محور. Sous `lg`, la pile monte
+     au-dessus de la barre de navigation du bas (`--sa-bottom-nav`, index.css). */
+  bottom: calc(5.5rem + var(--sa-bottom-nav, 0px));
   z-index: 40;
   display: inline-flex;
   align-items: center;

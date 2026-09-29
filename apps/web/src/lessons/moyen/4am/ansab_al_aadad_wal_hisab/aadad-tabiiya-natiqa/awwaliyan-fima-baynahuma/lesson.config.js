@@ -28,6 +28,8 @@ export const LESSON_CONFIG = {
   ],
   teachingScope: { include: ['تعريف الكتاب ومثاله (22 و 15)', 'الإثبات والنفي'], exclude: ['الأعداد الأولية (موضوع رسمي آخر)', 'الكسور غير القابلة للاختزال (الدرس 8)'] },
   knowledgeMap: true,
+  // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
+  knowledgeMapMode: 'progressive',
   priorKnowledge: ['pgcd-taarif', 'khwarizmiyat-iqlidus', 'qawaid-qisma'],
   resources: [
     // Module 1 — workspace à deux niveaux, sur les couples du manuel :

@@ -37,7 +37,11 @@ system requires:
   continuously through its cumulative Knowledge Map (every module's « À
   retenir » is the current map, the final synthèse is the complete map) and
   needs no `formalization` module — reference: every lesson of the 4AM unit
-  (all nine declare `knowledgeMap: true`), see `KNOWLEDGE_MAP.md`. There is no `results` stage — the results / learning-profile
+  (all nine declare `knowledgeMap: true`), see `KNOWLEDGE_MAP.md`. A lesson that also
+  declares `knowledgeMapMode: 'progressive'` and exports a `KNOWLEDGE_GRAPH` shows the
+  approved **progressive interactive learning map** (`KNOWLEDGE_MAP.md` Part A — all nine
+  lessons since 2026-09-29, required for every lesson with a map by `validate-lessons.mjs`); the flag changes the map's
+  presentation, never the stages, the locking or the progress. There is no `results` stage — the results / learning-profile
   screen is the completion view of the `evaluation` module.
 - **A built lesson's modules fit in 90 minutes** (`MAX_LESSON_MINUTES`,
   enforced by `validate-lessons.mjs` on the sum of module `estimatedMin`, and

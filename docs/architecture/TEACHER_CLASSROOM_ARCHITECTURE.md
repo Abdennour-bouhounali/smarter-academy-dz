@@ -753,7 +753,13 @@ both branches.
 
 Routes under `/enseignant` (`ProtectedRoute allowedRoles={['teacher']}`,
 `TeacherLayout` + `TeacherNavbar`, pattern of the student shell, no grade
-gate; `data/teacherNavigation.js`):
+gate; `data/teacherNavigation.js`). Since 2026-09-29 it is the SAME workspace
+shell as the student's: `<main class="sa-workspace-main">` with the sidebar /
+gutter variables, a sidebar that folds to icons with the shared
+`SidebarToggle`, and the knowledge map's fixed-width column that makes room
+for the lesson instead of covering it (`KNOWLEDGE_MAP.md` « The column »).
+One side effect, intended: teacher pages get the student pages' 16 px top
+padding on desktop (`.sa-workspace-main .sa-page`):
 
 ```text
 /enseignant                      TeacherHome          usage tiles (UsageMeter, N / M in dir="ltr"), classes, next steps
@@ -922,6 +928,12 @@ usesWorkspaceShell   StudentLayout  MainLayout     TeacherLayout  MainLayout
   follows from that single call. `BossFinal` reads the same reader to open
   its مراجعة / النتائج phases: preparing a test means reading its correction
   without sitting it.
+- **Knowledge map (2026-09-29).** A `freeNavigation` reader sees the lesson's
+  **complete** knowledge map from the start — every module of
+  `LESSON_KNOWLEDGE` counts as unlocked in `LessonKnowledgeProvider`, nothing
+  is written. A محور's closing « للتذكّر » snapshot still shows only modules
+  `≤ n` (what a student holds there); the final synthesis shows everything.
+  Contract: `KNOWLEDGE_MAP.md` « The progression ».
 
   The pedagogical truth is kept separate from the navigation right:
   `allDone` still means "this module is complete" (it drives the progress

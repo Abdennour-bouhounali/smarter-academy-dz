@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import ReactDOM from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -16,6 +16,30 @@ import { getLessonConfig, getModulePath } from '../../registry';
 import { useLearningProfile } from '../hooks/useLearningProfile';
 import { MASTERY_STATES, masteryTooltip } from '../components/LearningPointMastery';
 import { moduleMasteryOverlay } from './knowledgeMastery';
+import { resolveGraph } from './progressive/graphModel';
+
+// CARTE PROGRESSIVE — la carte de connaissances de toutes les leçons
+// (KNOWLEDGE_MAP.md, Part A). Chargée à part, à l'ouverture de la carte.
+const ProgressiveKnowledgeMap = lazy(() => import('./progressive/ProgressiveKnowledgeMap'));
+// Sa lecture linéaire « المعارف مفصّلة » (écran ET impression).
+const LinearKnowledgeView = lazy(() => import('./progressive/LinearKnowledgeView'));
+
+/**
+ * Le graphe que la carte affiche, ou null (carte par strates). La leçon le
+ * demande par `knowledgeMapMode: 'progressive'` ; son KNOWLEDGE_GRAPH s'il
+ * est valide, sinon le REPLI dérivé de ses items (graphFromKnowledge) — une
+ * leçon en cours de migration n'affiche jamais une carte vide.
+ */
+function useProgressiveGraph() {
+  const { t } = useTranslation('lesson');
+  const { lessonId, graph, knowledge } = useLessonKnowledge();
+  const progressive = Boolean(lessonId) && getLessonConfig(lessonId)?.knowledgeMapMode === 'progressive';
+  const sequenceLabel = t('map.progressive.fallbackSequence');
+  return React.useMemo(
+    () => (progressive ? resolveGraph(graph, knowledge, { sequenceLabel }) : null),
+    [progressive, graph, knowledge, sequenceLabel],
+  );
+}
 
 /*
  * RTL (ar-DZ — src/locale.js) : le panneau vit sur le bord de FIN de la zone
@@ -774,8 +798,7 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
   // Mode colonne : la coquille a DÉJÀ rétréci le contenu et réservé une
   // gouttière à droite. La carte n'a donc rien à pousser — elle se pose dans
   // la place qu'on lui a faite (cf. WorkspaceLayoutContext).
-  const { isPrior, priorAvailable, setPrior, maCarteWidth,
-          setPriorWidth, priorWidthBounds, setMapExpanded } = useWorkspaceLayout();
+  const { isPrior, priorAvailable, setPrior, maCarteWidth, setMapExpanded } = useWorkspaceLayout();
 
   // La coquille doit savoir que le plein écran est actif pour LIBÉRER la
   // gouttière de la colonne : sans cela le rectangle de la leçon reste amputé
@@ -854,6 +877,19 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
   // Items déjà réduits par la progression (KnowledgeProvider) ; le drapeau
   // `discovered` reste honoré pour un masquage ponctuel.
   const visibleItems = items.filter(item => item.discovered !== false);
+  const progressiveGraph = useProgressiveGraph();
+  // Le sélecteur « عمود / ملء الشاشة » : segments lisibles, cibles ≥ 44 px au
+  // toucher, icône active en indigo. En plein écran, la colonne reste
+  // mémorisée dessous (`isPrior`) ; le sélecteur ne marque pourtant qu'UNE
+  // option — celle qu'on voit (l'ancien les marquait toutes les deux).
+  const columnActive = isPrior && !expanded;
+  const viewButtonClass = (active) => [
+    'min-h-[44px] min-w-[44px] sm:min-h-[36px] sm:min-w-0 inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 rounded-xl text-xs font-bold transition-all',
+    'focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400',
+    active ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200' : 'text-slate-500 hover:text-slate-900 hover:bg-white/70',
+  ].join(' ');
+  const viewIconClass = (active) => `w-4 h-4 shrink-0 ${active ? 'text-indigo-600' : ''}`;
+  const ICON_BTN = 'inline-flex items-center justify-center w-11 h-11 sm:w-9 sm:h-9 rounded-xl text-slate-400 hover:bg-slate-100 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400';
 
   // Reset minimized state when opened
   useEffect(() => {
@@ -921,16 +957,9 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
     if (!isDragging) return;
     e.preventDefault();
 
-    // MODE COLONNE — la carte est collée au bord de la FENÊTRE (c'est la
-    // coquille qui lui réserve la place), et la largeur qu'on ajuste est celle
-    // de la gouttière. Les bornes viennent du contexte : elles garantissent
-    // qu'il reste toujours MIN_CONTENT_WIDTH à la leçon, donc que le contenu
-    // ne peut jamais finir caché derrière la carte.
-    if (isPrior) {
-      const next = IS_RTL ? e.clientX : window.innerWidth - e.clientX;
-      setPriorWidth(Math.min(Math.max(next, priorWidthBounds.min), priorWidthBounds.max));
-      return;
-    }
+    // MODE COLONNE : pas de poignée — la largeur est FIXE, calculée par la
+    // coquille pour l'écran (WorkspaceLayoutContext.columnWidthFor).
+    if (isPrior) return;
 
     // Le bord droit du tiroir est celui du viewport de la leçon : la largeur
     // est la distance du pointeur à CE bord, pas au bord de la fenêtre.
@@ -951,7 +980,7 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
     if (newWidth > maxWidth) newWidth = maxWidth;
 
     setWidth(newWidth);
-  }, [isDragging, vpRight, vpWidth, isPrior, setPriorWidth, priorWidthBounds.min, priorWidthBounds.max]);
+  }, [isDragging, vpRight, vpWidth, isPrior]);
 
   const handlePointerUp = useCallback((e) => {
     setIsDragging(false);
@@ -1030,7 +1059,9 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
                 est donc sa gauche en LTR et sa droite en RTL. Exprimé
                 physiquement parce que l'auto-centrage (`translate-x`, moitié de
                 largeur) est physique lui aussi et doit basculer avec. */}
-            {!expanded && <div
+            {/* Tiroir seulement : en mode COLONNE la largeur est fixe (la
+                meilleure pour l'écran), et en plein écran il n'y a rien à régler. */}
+            {!expanded && !isPrior && <div
               onPointerDown={handlePointerDown}
               onPointerMove={handlePointerMove}
               onPointerUp={handlePointerUp}
@@ -1076,9 +1107,10 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
                     L'état courant est mis en évidence ; c'est un vrai groupe
                     radio pour les lecteurs d'écran. */}
                 <div
-                  className="flex items-center gap-0.5 p-0.5 rounded-lg bg-slate-100/80"
+                  className="flex items-center gap-1 p-1 rounded-2xl bg-slate-100 ring-1 ring-inset ring-slate-200/70"
                   role="radiogroup"
                   aria-label={t('map.mapDisplay')}
+                  data-km-switch="polished"
                 >
                   {/* ── COLONNE ────────────────────────────────────────────
                       La troisième présentation, et la seule qui change la
@@ -1090,15 +1122,12 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
                     <button
                       onClick={() => { onExpandedChange?.(false); setPrior(true); }}
                       role="radio"
-                      aria-checked={isPrior}
+                      aria-checked={columnActive}
                       title={t('map.columnHint')}
                       data-km-view="prior"
-                      className={[
-                        'flex items-center gap-1 px-1.5 sm:px-2 py-1 rounded-md text-[11px] font-bold transition-colors',
-                        isPrior ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800',
-                      ].join(' ')}
+                      className={viewButtonClass(columnActive)}
                     >
-                      <Columns2 className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                      <Columns2 className={viewIconClass(columnActive)} aria-hidden="true" />
                       <span className="hidden sm:inline">{t('map.column')}</span>
                     </button>
                   )}
@@ -1109,12 +1138,9 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
                     title={t('map.fullScreenHint')}
                     data-km-view="expanded"
                     data-km-expand="true"
-                    className={[
-                      'flex items-center gap-1 px-1.5 sm:px-2 py-1 rounded-md text-[11px] font-bold transition-colors',
-                      expanded ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800',
-                    ].join(' ')}
+                    className={viewButtonClass(expanded)}
                   >
-                    <Expand className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                    <Expand className={viewIconClass(expanded)} aria-hidden="true" />
                     <span className="hidden sm:inline">{t('map.fullScreen')}</span>
                   </button>
                 </div>
@@ -1123,7 +1149,7 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
                     ne ressemble plus à celle du plein écran. */}
                 {!expanded && !isPrior && <button
                   onClick={() => setMinimized(m => !m)}
-                  className="p-1.5 rounded-lg hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-700"
+                  className={`${ICON_BTN} hover:text-slate-700`}
                   aria-label={minimized ? t('map.expandMap') : t('map.collapseMap')}
                   aria-expanded={!minimized}
                   data-km-minimize="true"
@@ -1133,7 +1159,7 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
                 </button>}
                 <button
                   onClick={onClose}
-                  className="p-1.5 rounded-lg hover:bg-slate-100 transition-colors text-slate-400 hover:text-rose-500"
+                  className={`${ICON_BTN} hover:text-rose-500`}
                   aria-label={t('map.closeMap')}
                 >
                   <X className="w-4 h-4" />
@@ -1158,7 +1184,7 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
                     ].join(' ')}
                   >
                     <Compass className="w-3.5 h-3.5 shrink-0" />
-                    <span className="truncate">{t('map.navigation')}</span>
+                    <span className="truncate">{progressiveGraph ? t('map.progressive.tabMap') : t('map.navigation')}</span>
                   </button>
                   <button
                     onClick={() => handleModeChange('complete')}
@@ -1170,7 +1196,7 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
                     ].join(' ')}
                   >
                     <FileText className="w-3.5 h-3.5 shrink-0" />
-                    <span className="truncate">{t('map.fullView')}</span>
+                    <span className="truncate">{progressiveGraph ? t('map.progressive.tabDetails') : t('map.fullView')}</span>
                   </button>
                 </div>
 
@@ -1191,6 +1217,16 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
                       <p className="text-sm font-bold text-slate-800">{t('map.emptyMap')}</p>
                       <p className="text-xs text-slate-500 max-w-[26ch]">{t('map.emptyMapHint')}</p>
                     </div>
+                  ) : mode === 'navigation' && progressiveGraph ? (
+                    <Suspense fallback={null}>
+                      <ProgressiveKnowledgeMap
+                        graph={progressiveGraph}
+                        items={visibleItems}
+                        selectedId={selectedItem?.graphNodeId ?? null}
+                        onSelect={(id) => setSelectedItem(id ? { graphNodeId: id } : null)}
+                        footer={<ProgressionStrip steps={progressionByModule(visibleItems)} />}
+                      />
+                    </Suspense>
                   ) : mode === 'navigation' ? (
                     <NavigationView
                       items={visibleItems}
@@ -1198,6 +1234,10 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
                       onSelectItem={setSelectedItem}
                       columns={contentColumns}
                     />
+                  ) : progressiveGraph ? (
+                    <Suspense fallback={null}>
+                      <LinearKnowledgeView graph={progressiveGraph} items={visibleItems} />
+                    </Suspense>
                   ) : (
                     <CompleteView items={visibleItems} columns={Math.min(contentColumns, 2)} />
                   )}
@@ -1206,7 +1246,13 @@ export default function KnowledgeMap({ items = [], isOpen, onClose, mode, onMode
 
                 {/* ── Print View ── */}
                 <div className="hidden sa-print-view w-full bg-white">
-                  <PrintView items={visibleItems} printTitle={printTitle} printSubject={printSubject} />
+                  {progressiveGraph ? (
+                    <Suspense fallback={null}>
+                      <LinearKnowledgeView graph={progressiveGraph} items={visibleItems} variant="print" printTitle={printTitle} printSubject={printSubject} />
+                    </Suspense>
+                  ) : (
+                    <PrintView items={visibleItems} printTitle={printTitle} printSubject={printSubject} />
+                  )}
                 </div>
               </>
             )}
@@ -1268,8 +1314,9 @@ export function KnowledgeMapTrigger({ items = [], open: openProp, onOpenChange, 
       <motion.button
         onClick={() => setOpen(o => !o)}
         className={[
-          // La hauteur tient compte de la barre basse mobile de l'espace
-          // élève (h-16) — sinon le déclencheur est recouvert.
+          // La hauteur tient compte de la barre basse mobile des espaces
+          // élève et enseignant (h-16, sous `lg`) — sinon le déclencheur est
+          // recouvert : `--sa-bottom-nav` (index.css) vaut alors 4rem.
           // Côté : PHYSIQUEMENT à gauche, dans les deux directions — et c'est
           // volontairement une valeur physique, pas `start-6`.
           //
@@ -1290,7 +1337,7 @@ export function KnowledgeMapTrigger({ items = [], open: openProp, onOpenChange, 
           // déclencheur « ⛶ عرض » du mode classe ; celui-ci est remonté dans
           // la rangée de repères du محور, et la carte a pris sa place. La
           // pile complète est documentée dans classroom.css.
-          'fixed bottom-6 left-6 z-40',
+          'fixed bottom-[calc(1.5rem+var(--sa-bottom-nav,0px))] left-6 z-40',
           'flex items-center gap-2 px-4 py-3 rounded-2xl',
           'font-bold text-sm shadow-lg shadow-slate-900/20',
           'transition-colors duration-200',

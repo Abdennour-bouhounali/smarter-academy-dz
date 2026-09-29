@@ -30,6 +30,8 @@ export const LESSON_CONFIG = {
   ],
   teachingScope: { include: ['اختزال خطوة بخطوة، والاختزال بـ PGCD في خطوة واحدة', 'الكسر غير القابل للاختزال ≡ بسط ومقام أوليان فيما بينهما'], exclude: ['التحليل إلى عوامل أولية', 'العمليات على الكسور كموضوع مستقل (مكتسب سابق)'] },
   knowledgeMap: true,
+  // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
+  knowledgeMapMode: 'progressive',
   // Acquis des années antérieures (أستعدّ 7–10) et du درس 7.
   priorKnowledge: ['al-aadad-al-natiqa', 'awwaliyan-taarif', 'khwarizmiyat-iqlidus'],
   resources: [

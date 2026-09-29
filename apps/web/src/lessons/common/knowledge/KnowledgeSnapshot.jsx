@@ -49,7 +49,13 @@ import { useLessonKnowledge } from './KnowledgeProvider';
  */
 export default function KnowledgeSnapshot({ moduleNumber, unlock = true, complete = false, variant = 'compact', children }) {
   const { t } = useTranslation('lesson');
-  const { items, unlockModule, unlockAll, openMap } = useLessonKnowledge();
+  const { items: mapItems, unlockModule, unlockAll, openMap, freeNavigation } = useLessonKnowledge();
+  // L'enseignant voit la carte complète (KnowledgeProvider) ; l'« À retenir »
+  // d'un محور doit pourtant lui montrer ce qu'un ÉLÈVE a à CE point de la
+  // leçon — jamais les محاور suivants.
+  const items = freeNavigation && !complete && moduleNumber != null
+    ? mapItems.filter((i) => i.module <= moduleNumber)
+    : mapItems;
 
   useEffect(() => {
     if (complete) unlockAll();

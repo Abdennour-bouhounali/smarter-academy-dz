@@ -1,5 +1,9 @@
 import React from 'react';
 import MathText from '../../../../../common/components/MathText';
+
+// La carte progressive de la leçon (structure, relations, aides) — KNOWLEDGE_MAP.md, Part A.
+export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
+
 /** Rappels seulement : une synthèse n'introduit rien (LESSON_CONTRACT : le test final ne doit rien introduire de neuf). */
 export const LESSON_KNOWLEDGE = {
   modules: {

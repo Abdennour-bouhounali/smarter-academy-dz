@@ -35,6 +35,8 @@ export const LESSON_CONFIG = {
     exclude: ['تعيين كل قواسم عدد (الدرس 2)', 'خواص القواسم (الدرس 3)', 'القاسم المشترك الأكبر (الدرس 4)'],
   },
   knowledgeMap: true,
+  // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
+  knowledgeMapMode: 'progressive',
   // Les acquis des années antérieures que « أستعدّ » (p. 7) diagnostique.
   priorKnowledge: ['qisma-iqlidiya', 'qawaid-qabiliyat-al-qisma'],
   resources: [

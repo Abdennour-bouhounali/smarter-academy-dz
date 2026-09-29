@@ -1,6 +1,10 @@
 import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import { KNOWLEDGE, PROOF } from './content/textbook';
+
+// La carte progressive de la leçon (structure, relations, aides) — KNOWLEDGE_MAP.md, Part A.
+export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
+
 const [p1, p2] = KNOWLEDGE.properties;
 
 export const LESSON_KNOWLEDGE = {

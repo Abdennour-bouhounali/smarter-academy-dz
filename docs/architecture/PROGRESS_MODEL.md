@@ -149,12 +149,18 @@ read as either. Its answers DO produce ordinary practice evidence. See
 | **Unit** | module, lesson, chapter | Learning Point (and counts of Learning Points per lesson/unit) |
 | **Source** | `student_lesson_progress` (+ `smarter_lesson_{id}` cache) | `student_learning_point_progress`, derived from `learning_evidence` by the mastery engine |
 | **Written by** | `PUT /lessons/{code}/progress` | `ProgressEngine` only (final test + practice engine) |
-| **Read by** | lesson index %, unit %, « أنهيت مسار الدرس ✓ », Knowledge Map visibility | coloured dots/pills, «للعمل الآن», practice hub, teacher class × LP, recommendations |
+| **Read by** | lesson index %, unit %, « أنهيت مسار الدرس ✓ », Knowledge Map visibility (incl. the progressive map's **locked** nodes) | coloured dots/pills, «للعمل الآن», practice hub, teacher class × LP, recommendations |
 | **Code names** | `calculateCompletionPercentage`, `getModuleMastery` (a historical name — it returns module COMPLETION, 100/0, and drives unlocking only) | `status`, `status_reason`, `confidence`, evidence counters |
 
 **A student can complete a lesson without mastering its Learning Points, and
 master a Learning Point without completing the lesson** (the final test is
 always open) — `RepeatedAttemptsFlowTest::test_completion_and_mastery_are_independent`.
+
+**The progressive Knowledge Map adds neither** (`KNOWLEDGE_MAP.md` A.4): a node
+is locked until completion (or a brick) establishes its item — a COMPLETION
+read; mastery appears only as the Learning Point dots on its « بطاقتك » strip;
+its « available / discovered » states are exploration UI kept in
+`sessionStorage`, never progress, never evidence.
 
 **Aggregation above the Learning Point is a COUNT, never a score.** A lesson
 or unit shows « 3 / 4 متحكَّم فيها » and the four-status distribution; there is

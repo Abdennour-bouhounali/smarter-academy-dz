@@ -428,6 +428,19 @@ svg [role="slider"]:focus-visible {
   }
 }
 
+/* La barre de navigation du BAS (élève et enseignant, sous `lg`, h-16) occupe
+   les 4rem du bas de l'écran. Les pastilles flottantes de la leçon
+   (« 🧠 بطاقتي », « 📓 كرّاسي ») se posent AU-DESSUS : sans ce décalage, la
+   barre recouvrait « بطاقتي » et avalait ses clics — la carte était
+   inaccessible sur téléphone et tablette. `:has` parce que les pastilles
+   vivent dans un portail (hors de <main>) ; la coquille visiteur n'a ni
+   barre ni décalage. */
+@media (max-width: 1023px) {
+  body:has(.sa-workspace-main) {
+    --sa-bottom-nav: 4rem;
+  }
+}
+
 /* Pendant un redimensionnement à la poignée, la gouttière doit suivre le
    pointeur À L'IMAGE PRÈS : une transition de 300ms ferait traîner le contenu
    derrière la carte. On la coupe le temps du geste (le panneau pose le
@@ -529,6 +542,20 @@ html[data-sa-resizing] .sa-workspace-main {
      pages. Le mobile garde son décalage : là, une barre fixe existe. */
   .sa-workspace-main .sa-page {
     padding-top: 16px;
+  }
+
+  /* MODE COLONNE DE « MA CARTE » — la leçon partage l'écran avec la carte
+     (WorkspaceLayoutContext) : ses 60 px de marge latérale, pensés pour un
+     écran entier, mangeraient 120 px d'une zone déjà réduite. Ils tombent à
+     une marge fluide de 20 à 32 px, le temps que la colonne est ouverte —
+     élève comme enseignant (les deux coquilles posent l'attribut). La
+     transition suit celle de la gouttière : un seul mouvement. */
+  .sa-workspace-main[data-workspace-prior] .sa-page {
+    padding-left: clamp(20px, 2vw, 32px);
+    padding-right: clamp(20px, 2vw, 32px);
+  }
+  .sa-workspace-main .sa-page {
+    transition: padding 300ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 }
 

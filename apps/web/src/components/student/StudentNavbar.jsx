@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { LogOut, Crown, ShieldCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { ChevronBack, ChevronForward } from '../common/DirectionalIcons';
+import SidebarToggle from '../common/SidebarToggle';
 import { AuthContext } from '../../context/AuthContext';
 import { studentNavLinks } from '../../data/studentNavigation';
 import { getAllGrades } from '@smarter-academy/core';
@@ -35,15 +35,14 @@ import { usePremiumStatus } from '../../hooks/usePremiumStatus';
  *   le repli MANUEL   — l'élève veut plus de place, carte ou pas
  *   le mode COLONNE   — « Ma carte » a besoin de la place, et l'emporte
  *
- * D'où un bouton désactivé pendant le mode colonne : rouvrir la barre y
- * casserait la mise en page à trois colonnes. Il le DIT (libellé explicatif)
- * au lieu de proposer une action sans effet.
+ * En mode colonne, la barre est comprimée par défaut mais peut être rouverte :
+ * la colonne se recalcule à côté d'elle (voir SidebarToggle).
  */
 export default function StudentNavbar() {
   const { t } = useTranslation('nav');
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { sidebarCollapsed, sidebarToggleLocked, toggleSidebar } = useWorkspaceLayout();
+  const { sidebarCollapsed } = useWorkspaceLayout();
   const { isPremium, hasSubscription, canSeeUpgrade } = usePremiumStatus();
 
   const grade = user?.grade ? getAllGrades().find((g) => g.id === user.grade) : null;
@@ -65,45 +64,9 @@ export default function StudentNavbar() {
         className={`sa-workspace-sidebar hidden lg:flex lg:flex-col fixed top-0 start-0 bottom-0 bg-white border-e border-slate-200 z-40 ${sidebarCollapsed ? 'w-20' : 'w-64'}`}
         data-sidebar-collapsed={sidebarCollapsed ? 'true' : undefined}
       >
-        {/* ── Bascule ouvrir / réduire ───────────────────────────────────────
-            Posée SUR le bord droit (moitié dehors, moitié dedans) : c'est la
-            frontière qu'elle déplace, donc l'endroit où on la cherche. Discrète
-            au repos, elle se colore au survol et au focus clavier.
-
-            `lg:` uniquement — sous ce point de rupture la barre n'existe pas,
-            la navigation est la barre d'onglets basse, et rien ici ne s'affiche
-            (l'`aside` entier est `hidden lg:flex`). */}
-        <button
-          type="button"
-          onClick={toggleSidebar}
-          disabled={sidebarToggleLocked}
-          aria-label={sidebarToggleLocked
-            ? t('sidebarLockedByMap')
-            : sidebarCollapsed ? t('sidebarExpand') : t('sidebarCollapse')}
-          aria-expanded={!sidebarCollapsed}
-          title={sidebarToggleLocked
-            ? t('sidebarLockedByMapHint')
-            : sidebarCollapsed ? t('sidebarExpand') : t('sidebarCollapse')}
-          data-sidebar-toggle="true"
-          className={[
-            'absolute top-20 -end-3 z-50 w-6 h-6 rounded-full',
-            'flex items-center justify-center',
-            'bg-white border border-slate-200 text-slate-400 shadow-sm',
-            'transition-colors duration-150',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400',
-            sidebarToggleLocked
-              ? 'opacity-40 cursor-not-allowed'
-              : 'hover:text-slate-700 hover:border-slate-300 cursor-pointer',
-          ].join(' ')}
-        >
-          {/* The rail is anchored to the inline-START edge: collapsing moves it
-              toward START, expanding away from it. The chevron names the
-              ACTION's direction, and DirectionalIcons maps that to the right
-              glyph for the platform direction. */}
-          {sidebarCollapsed
-            ? <ChevronForward className="w-3.5 h-3.5" aria-hidden="true" />
-            : <ChevronBack className="w-3.5 h-3.5" aria-hidden="true" />}
-        </button>
+        {/* Bascule ouvrir / réduire — partagée avec l'espace enseignant
+            (components/common/SidebarToggle.jsx : position, taille, états). */}
+        <SidebarToggle accent="blue" />
 
         {/* L'EN-TÊTE EST UNE MARQUE, PAS UNE PORTE.
             C'était un lien vers « / », c'est-à-dire vers le site vitrine :

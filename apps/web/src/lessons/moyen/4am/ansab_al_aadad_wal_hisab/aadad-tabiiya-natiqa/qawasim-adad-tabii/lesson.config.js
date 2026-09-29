@@ -33,6 +33,8 @@ export const LESSON_CONFIG = {
     exclude: ['التحليل إلى عوامل أولية (موضوع رسمي آخر)', 'القواسم المشتركة (الدرس 4)'],
   },
   knowledgeMap: true,
+  // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
+  knowledgeMapMode: 'progressive',
   // Acquis du درس 1 (rappelés par une brique « rappel ») et des années antérieures.
   priorKnowledge: ['qasim-jidaa', 'qawaid-qabiliyat-al-qisma'],
   resources: [
