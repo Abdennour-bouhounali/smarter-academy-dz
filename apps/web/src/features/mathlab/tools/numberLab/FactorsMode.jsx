@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { LabPanel } from '../../shared/LabKit.jsx';
 import ValueInput from './ValueInput.jsx';
 import SendToMenu from './SendToMenu.jsx';
 import {
@@ -49,104 +50,105 @@ export default function FactorsMode({ state, onChange, onSend, compact }) {
 
       <h3 className="sa-ml-nb__heading">{t('tools.numberLab.factors.heading', { value: formatNumber(value) })}</h3>
 
-      {/* §26 : le rectangle qui change de forme. */}
+      {/* §26 : le rectangle qui change de forme — « d'un seul regard » (MATH_LAB §3.5) :
+          le rectangle à gauche, À CÔTÉ son écriture, ses flèches et tous les couples. */}
       <section className="sa-ml-nb__panel">
-        <header className="sa-ml-nb__panel-head">
-          <h4>{t('tools.numberLab.factors.rectangle')}</h4>
-          <div className="sa-ml-nb__controls">
-            <button
-              type="button" className="sa-ml-nb__mini"
-              onClick={() => onChange({ pairIndex: Math.max(0, index - 1) })}
-              disabled={index === 0}
-              aria-label={t('tools.numberLab.factors.previousPair')}
-            >
-              <ChevronRight size={15} aria-hidden="true" />
-            </button>
-            <span className="sa-ml-nb__count">
-              {t('tools.numberLab.factors.pairCount', { index: index + 1, total: pairs.length })}
-            </span>
-            <button
-              type="button" className="sa-ml-nb__mini"
-              onClick={() => onChange({ pairIndex: Math.min(pairs.length - 1, index + 1) })}
-              disabled={index >= pairs.length - 1}
-              aria-label={t('tools.numberLab.factors.nextPair')}
-            >
-              <ChevronLeft size={15} aria-hidden="true" />
-            </button>
+        <h4>{t('tools.numberLab.factors.rectangle')}</h4>
+        <div className="sa-ml-nb__duo sa-ml-nb__duo--factors" dir="ltr">
+          <div className="sa-ml-nb__duo-figure" dir="rtl">
+            <Rectangle rows={pair[0]} cols={pair[1]} value={value} compact={compact} />
           </div>
-        </header>
+          <div className="sa-ml-nb__duo-board sa-ml-nb__factor-side" dir="rtl">
+            <div className="sa-ml-nb__controls">
+              <button
+                type="button" className="sa-ml-nb__mini"
+                onClick={() => onChange({ pairIndex: Math.max(0, index - 1) })}
+                disabled={index === 0}
+                aria-label={t('tools.numberLab.factors.previousPair')}
+                title={t('tools.numberLab.factors.previousPair')}
+              >
+                <ChevronRight size={15} aria-hidden="true" />
+              </button>
+              <span className="sa-ml-nb__count">
+                {t('tools.numberLab.factors.pairCount', { index: index + 1, total: pairs.length })}
+              </span>
+              <button
+                type="button" className="sa-ml-nb__mini"
+                onClick={() => onChange({ pairIndex: Math.min(pairs.length - 1, index + 1) })}
+                disabled={index >= pairs.length - 1}
+                aria-label={t('tools.numberLab.factors.nextPair')}
+                title={t('tools.numberLab.factors.nextPair')}
+              >
+                <ChevronLeft size={15} aria-hidden="true" />
+              </button>
+            </div>
 
-        <p className="sa-ml-nb__formula sa-ml-nb__formula--big" dir="ltr">
-          {t('tools.numberLab.factors.pairLabel', { a: pair[0], b: pair[1], value })}
-        </p>
+            <p className="sa-ml-nb__formula sa-ml-nb__formula--big" dir="ltr">
+              {t('tools.numberLab.factors.pairLabel', { a: pair[0], b: pair[1], value })}
+            </p>
 
-        <Rectangle rows={pair[0]} cols={pair[1]} value={value} compact={compact} />
+            {/* §25 : tous les couples, cliquables. */}
+            <span className="sa-ml-nb__label">{t('tools.numberLab.factors.pairs')}</span>
+            <ul className="sa-ml-nb__chiplist" dir="ltr">
+              {pairs.map(([x, y], i) => (
+                <li key={`${x}x${y}`}>
+                  <button
+                    type="button"
+                    className={`sa-ml-nb__chip${i === index ? ' is-current' : ''}`}
+                    onClick={() => onChange({ pairIndex: i })}
+                  >
+                    {x} × {y}
+                  </button>
+                </li>
+              ))}
+            </ul>
 
-        <p className="sa-ml-nb__muted">
-          {t('tools.numberLab.factors.rectangleHint', { value: formatNumber(value) })}
-        </p>
-        {prime && <p className="sa-ml-nb__callout">{t('tools.numberLab.factors.primeNote', { value })}</p>}
-        {pair[0] === pair[1] && (
-          <p className="sa-ml-nb__callout">{t('tools.numberLab.factors.square', { a: pair[0] })}</p>
-        )}
+            <p className="sa-ml-nb__muted">
+              {t('tools.numberLab.factors.rectangleHint', { value: formatNumber(value) })}
+            </p>
+            {prime && <p className="sa-ml-nb__callout">{t('tools.numberLab.factors.primeNote', { value })}</p>}
+            {pair[0] === pair[1] && (
+              <p className="sa-ml-nb__callout">{t('tools.numberLab.factors.square', { a: pair[0] })}</p>
+            )}
+          </div>
+        </div>
       </section>
 
-      {/* §25 : tous les couples, cliquables. */}
-      <section className="sa-ml-nb__panel">
-        <h4>{t('tools.numberLab.factors.pairs')}</h4>
+      {/* Les listes : ce qui n'est pas le rectangle se replie (MATH_LAB §3.5). */}
+      <LabPanel
+        id="numberLab.factors.divisors"
+        title={t('tools.numberLab.factors.divisors')}
+        actions={<span className="sa-ml-nb__count">{t('tools.numberLab.factors.divisorCount', { count: divisorList.length })}</span>}
+      >
         <ul className="sa-ml-nb__chiplist" dir="ltr">
-          {pairs.map(([a, b], i) => (
-            <li key={`${a}x${b}`}>
-              <button
-                type="button"
-                className={`sa-ml-nb__chip${i === index ? ' is-current' : ''}`}
-                onClick={() => onChange({ pairIndex: i })}
-              >
-                {a} × {b}
-              </button>
+          {divisorList.slice(0, 48).map((d) => (
+            <li key={d}>
+              <button type="button" className="sa-ml-nb__chip" onClick={() => onChange({ value: d, pairIndex: 0 })}>{d}</button>
             </li>
           ))}
         </ul>
-      </section>
+      </LabPanel>
 
-      <div className="sa-ml-nb__cards">
-        <section className="sa-ml-nb__card sa-ml-nb__card--wide">
-          <h4>
-            {t('tools.numberLab.factors.divisors')}
-            <span className="sa-ml-nb__count">{t('tools.numberLab.factors.divisorCount', { count: divisorList.length })}</span>
-          </h4>
-          <ul className="sa-ml-nb__chiplist" dir="ltr">
-            {divisorList.slice(0, 48).map((d) => (
-              <li key={d}>
-                <button type="button" className="sa-ml-nb__chip" onClick={() => onChange({ value: d, pairIndex: 0 })}>{d}</button>
-              </li>
-            ))}
-          </ul>
-        </section>
+      <LabPanel id="numberLab.factors.multiples" title={t('tools.numberLab.factors.multiples')}>
+        <ul className="sa-ml-nb__chiplist" dir="ltr">
+          {multipleList.map((m) => (
+            <li key={m}>
+              <button type="button" className="sa-ml-nb__chip" onClick={() => onChange({ value: m, pairIndex: 0 })}>{m}</button>
+            </li>
+          ))}
+        </ul>
+      </LabPanel>
 
-        <section className="sa-ml-nb__card sa-ml-nb__card--wide">
-          <h4>{t('tools.numberLab.factors.multiples')}</h4>
-          <ul className="sa-ml-nb__chiplist" dir="ltr">
-            {multipleList.map((m) => (
-              <li key={m}>
-                <button type="button" className="sa-ml-nb__chip" onClick={() => onChange({ value: m, pairIndex: 0 })}>{m}</button>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {factors && (
-          <section className="sa-ml-nb__card sa-ml-nb__card--wide">
-            <h4>{t('tools.numberLab.factors.primeFactors')}</h4>
-            <p className="sa-ml-nb__formula" dir="ltr">
-              {formatNumber(value)} = {factorizationToText(factors)}
-            </p>
-            <button type="button" className="sa-ml-nb__link" onClick={() => onSend('primes', value)}>
-              {t('tools.numberLab.primes.tree')}
-            </button>
-          </section>
-        )}
-      </div>
+      {factors && (
+        <LabPanel id="numberLab.factors.primeFactors" title={t('tools.numberLab.factors.primeFactors')}>
+          <p className="sa-ml-nb__formula" dir="ltr">
+            {formatNumber(value)} = {factorizationToText(factors)}
+          </p>
+          <button type="button" className="sa-ml-nb__link" onClick={() => onSend('primes', value)}>
+            {t('tools.numberLab.primes.tree')}
+          </button>
+        </LabPanel>
+      )}
     </div>
   );
 }

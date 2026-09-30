@@ -1907,3 +1907,7 @@
   .sa-ml-nb__divtable { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 10px; }
   .sa-ml-nb__divtable > .sa-ml-nb__divrow:has([aria-expanded='true']) { grid-column: 1 / -1; }
 }
+
+.sa-ml-nb__duo--factors .sa-ml-nb__duo-figure { position: static; align-items: center; }
+.sa-ml-nb__factor-side { display: flex; flex-direction: column; gap: 8px; }
+.sa-ml-nb__factor-side .sa-ml-nb__formula { margin: 0; }

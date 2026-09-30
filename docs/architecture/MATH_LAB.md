@@ -500,6 +500,7 @@ Other instruments, audited tab by tab at 1280 × 800:
 | analysis (§5m) | each lab's main readout comes first (derivation, variation-table build); « النقطة A » and « المماس » moved after it | `analysis.<lab>.point`, `analysis.derivative.tangent`, `analysis.study.readings` |
 | trigonometry (§5g) | « حلّ المثلث خطوة بخطوة » sits right under the ratio cards; sign table, `tan = sin/cos`, `sin²+cos²=1` are panels | `trigonometry.inspector.signs`, `.tan`, `.identity` |
 | conics (§5k) | derivation already under the equation field; comparison table and before/after are panels | `conics.inspector.compare`, `.reference` |
+| numberLab (§5l) | `FactorsMode`: the rectangle stands beside its pair controls, formula and pair list; divisors/multiples/prime-factorisation moved into panels | `numberLab.factors.divisors`, `.multiples`, `.primeFactors` |
 | sequences, transformations, measurement, vectors, function grapher, 3D geometry | already compliant (plane beside its readout / steps) | — |
 
 Checklist for a new tool or tab (also §3.2): at 1280 × 800, with the default
