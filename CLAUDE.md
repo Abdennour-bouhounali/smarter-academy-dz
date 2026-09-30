@@ -136,3 +136,9 @@ anything outside `lessons/`.
 ```bash
 python3 scripts/og-card.py "عنوان الدرس" --eyebrow "الرياضيات · 4 متوسط" -o card.png
 ```
+
+The **site-wide** card is `apps/web/public/og-image.png` (1200×630), served
+at `https://smarter-academy.com/og-image.png` and named by static `og:*` /
+`twitter:*` tags in `apps/web/index.html`. Keep those tags static HTML with an
+absolute URL — share crawlers never run React — and keep the PNG under
+~300 KB (it is 256-colour for that reason): WhatsApp drops heavier previews.

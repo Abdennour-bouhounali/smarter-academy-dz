@@ -1,8 +1,8 @@
 <!doctype html>
 <!-- lang/dir are the Algerian platform's fixed foundation (ar-DZ, RTL) — see
-     src/locale.js. SEO/OG metadata below still names the French domain and
-     is French-language: real Algerian domain/copy is a Phase 13 (SEO/Public
-     Surface) concern, marked here rather than silently left wrong. -->
+     src/locale.js. SEO/OG metadata below targets smarter-academy.com in
+     Arabic; the full SEO copy/keywords pass is still Phase 13 (SEO/Public
+     Surface). -->
 <html lang="ar" dir="rtl">
 
 <head>
@@ -28,24 +28,31 @@
   <meta name="author" content="Smarter Academy" />
   <meta name="robots" content="index, follow" />
 
-  <!-- Open Graph / Facebook / WhatsApp Meta Tags -->
+  <!-- Open Graph / Facebook / WhatsApp Meta Tags
+       Static on purpose: crawlers (WhatsApp, Facebook, LinkedIn, Telegram)
+       read this HTML without running React, so these tags must never move
+       into JS. The image URL must stay ABSOLUTE and public — the file is
+       public/og-image.png, which Vite copies to dist/og-image.png (1200×630,
+       256-colour PNG kept under ~300 KB: WhatsApp drops heavier previews). -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Smarter Academy — تعلّم الرياضيات بالفهم، لا بالحفظ" />
+  <meta property="og:url" content="https://smarter-academy.com/" />
+  <meta property="og:title" content="Smarter Academy" />
   <meta property="og:description"
-    content="منصة تفاعلية لفهم واكتشاف وإتقان الرياضيات." />
+    content="تعلّم الرياضيات من خلال التجربة والمناولة والملاحظة، ثم افهمها وأتقنها." />
   <meta property="og:locale" content="ar_DZ" />
   <meta property="og:site_name" content="Smarter Academy DZ" />
-  <meta property="og:image" content="https://smarter-academy.com/og/smarter-academy.png" />
+  <meta property="og:image" content="https://smarter-academy.com/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
+  <meta property="og:image:type" content="image/png" />
   <meta property="og:image:alt" content="Smarter Academy" />
 
   <!-- Twitter Card Meta Tags -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Smarter Academy — تعلّم الرياضيات بالفهم، لا بالحفظ" />
+  <meta name="twitter:title" content="Smarter Academy" />
   <meta name="twitter:description"
-    content="منصة تفاعلية لفهم واكتشاف وإتقان الرياضيات." />
-  <meta name="twitter:image" content="https://smarter-academy.com/og/smarter-academy.png" />
+    content="تعلّم الرياضيات من خلال التجربة والمناولة والملاحظة، ثم افهمها وأتقنها." />
+  <meta name="twitter:image" content="https://smarter-academy.com/og-image.png" />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
