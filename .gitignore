@@ -46,3 +46,7 @@ _*_files/
 *.log
 scripts/__pycache__/
 apps/api/database/curriculum-sync/
+
+# PDFs are never versioned (official books, exercise sheets, etc.)
+*.pdf
+*.PDF
