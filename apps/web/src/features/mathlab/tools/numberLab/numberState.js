@@ -4,7 +4,8 @@
  *     data = {
  *       mode:    'explorer' | 'place' | 'line' | 'fractions' | 'decimals' |
  *                'percent' | 'proportion' | 'divisibility' | 'primes' |
- *                'factors' | 'gcdLcm' | 'rounding' | 'operations',
+ *                'factors' | 'gcdLcm' | 'rounding' | 'operations' |
+ *                'division' | 'powers' | 'order',
  *       explorer:     { value },
  *       place:        { value, decimals },
  *       line:         { view, points, denominator, snap },
@@ -15,9 +16,12 @@
  *       divisibility: { value },
  *       primes:       { limit, cursor, factorTree },
  *       factors:      { value, pairIndex },
- *       gcdLcm:       { a, b, method },
+ *       gcdLcm:       { a, b, method },   // method : 'differences' (défaut des NOUVEAUX documents) | 'euclid' | 'factors' | 'lists'
  *       rounding:     { value, power },
  *       operations:   { a, b, operation },
+ *       division:     { a, b },                       // القسمة الإقليدية (2026-09-30)
+ *       powers:       { tab, base, exponent, rule, ruleBase, m, n, scientific, root },
+ *       order:        { expression },                 // أولويات العمليات — le TEXTE tapé, jamais ses pas
  *       practice:     { level, solved, attempts, hintsUsed },
  *       notes:        string[]      // ce que l'élève a gardé (§55)
  *     }
@@ -40,19 +44,35 @@
 import { makeFrac, simplify, MAX_DENOMINATOR } from './fraction.js';
 import { MAX_EXPLORABLE, MAX_GRID, roundTo } from './numberTheory.js';
 import { frameValues } from './numberValue.js';
+import { DIVISION_MAX } from './euclideanDivision.js';
+import { MAX_BASE, MAX_EXPONENT as MAX_POWER_EXPONENT, MAX_ROOT, POWER_RULES } from './powers.js';
+import { MAX_EXPRESSION_LENGTH } from './orderOfOperations.js';
 
 export const NUMBER_LAB_SCHEMA_VERSION = 1;
 
-/** Les treize modes de §3, dans l'ordre où l'accueil les propose. */
+/**
+ * Les seize modes. Les treize de §3, puis les trois du 2026-09-30 (القسمة
+ * الإقليدية، القوى والجذور، أولويات العمليات). L'ORDRE D'AFFICHAGE et les
+ * groupes de la barre vivent dans `modeCatalog.js` ; cette liste n'est que
+ * l'ensemble des modes valides.
+ */
 export const MODES = Object.freeze([
   'explorer', 'place', 'line', 'fractions', 'decimals', 'percent', 'proportion',
   'divisibility', 'primes', 'factors', 'gcdLcm', 'rounding', 'operations',
+  'division', 'powers', 'order',
 ]);
 
 export const FRACTION_OPERATIONS = Object.freeze(['add', 'subtract', 'multiply', 'divide', 'compare']);
 export const FRACTION_MODELS = Object.freeze(['bar', 'circle', 'line']);
 export const ARITHMETIC_OPERATIONS = Object.freeze(['add', 'subtract', 'multiply', 'divide']);
-export const GCD_METHODS = Object.freeze(['euclid', 'factors', 'lists']);
+/**
+ * `differences` en TÊTE : c'est la méthode par défaut d'un NOUVEAU document
+ * (demande du propriétaire, 2026-09-30). Un document existant garde la
+ * méthode qu'il a enregistrée — `euclid` rouvre `euclid`.
+ */
+export const GCD_METHODS = Object.freeze(['differences', 'euclid', 'factors', 'lists']);
+export const POWER_TABS = Object.freeze(['power', 'rules', 'scientific', 'roots']);
+export const MAX_SCIENTIFIC_TEXT = 32;
 export const PERCENT_TABS = Object.freeze(['of', 'change', 'reverse']);
 export const DECIMAL_DIRECTIONS = Object.freeze(['toFraction', 'toDecimal']);
 
@@ -137,9 +157,14 @@ const DEFAULTS = Object.freeze({
   divisibility: { value: DEFAULT_VALUE },
   primes: { limit: 100, cursor: 0, factorTree: null },
   factors: { value: 24, pairIndex: 0 },
-  gcdLcm: { a: 84, b: 36, method: 'euclid' },
+  gcdLcm: { a: 84, b: 36, method: 'differences' },
   rounding: { value: 7.846, power: -1 },
   operations: { a: 24, b: 6, operation: 'divide' },
+  division: { a: 38, b: 7 },
+  powers: {
+    tab: 'power', base: 2, exponent: 5, rule: 'product', ruleBase: 2, m: 3, n: 2, scientific: '0,00045', root: 72,
+  },
+  order: { expression: '2 × (3 + 4)^2 − 10' },
   practice: { level: 1, solved: 0, attempts: 0, hintsUsed: 0 },
 });
 
@@ -160,6 +185,9 @@ export function createNumberLabData(seed = null) {
     gcdLcm: { ...DEFAULTS.gcdLcm },
     rounding: { ...DEFAULTS.rounding },
     operations: { ...DEFAULTS.operations },
+    division: { ...DEFAULTS.division },
+    powers: { ...DEFAULTS.powers },
+    order: { ...DEFAULTS.order },
     practice: { ...DEFAULTS.practice },
     notes: [],
   };
@@ -190,7 +218,13 @@ export function applySeed(data, seed) {
   if (Number.isFinite(seed.a) && Number.isFinite(seed.b)) {
     next.gcdLcm = { ...next.gcdLcm, a: Math.abs(readInteger(seed.a, 84)) || 84, b: Math.abs(readInteger(seed.b, 36)) || 36 };
     next.operations = { ...next.operations, a: readNumber(seed.a, 24), b: readNumber(seed.b, 6) };
+    next.division = {
+      a: Math.abs(readInteger(seed.a, 38, -DIVISION_MAX, DIVISION_MAX)),
+      b: Math.abs(readInteger(seed.b, 7, -DIVISION_MAX, DIVISION_MAX)) || 7,
+    };
   }
+  const expression = readExpression(seed.expression, null);
+  if (expression) next.order = { expression };
   const left = readFrac(seed.fraction ?? seed.left, null);
   if (left) next.fractions = { ...next.fractions, left };
   const right = readFrac(seed.right, null);
@@ -285,6 +319,12 @@ export function normalizeNumberLabData(raw) {
       b: readNumber(source.operations?.b, base.operations.b, -1e6, 1e6),
       operation: readEnum(source.operations?.operation, ARITHMETIC_OPERATIONS, base.operations.operation),
     },
+    division: {
+      a: readInteger(source.division?.a, base.division.a, 0, DIVISION_MAX),
+      b: readInteger(source.division?.b, base.division.b, 1, DIVISION_MAX),
+    },
+    powers: normalizePowers(source.powers, base.powers),
+    order: { expression: readExpression(source.order?.expression, base.order.expression) },
     practice: {
       level: readInteger(practice.level, base.practice.level, 1, MAX_PRACTICE_LEVEL),
       solved: readInteger(practice.solved, 0, 0, 1e6),
@@ -294,6 +334,40 @@ export function normalizeNumberLabData(raw) {
     notes: Array.isArray(source.notes)
       ? source.notes.filter((n) => typeof n === 'string' && n.trim()).slice(0, MAX_NOTES).map((n) => n.slice(0, 200))
       : [],
+  };
+}
+
+/**
+ * Le TEXTE d'une expression (أولويات العمليات). On garde ce que l'élève a
+ * tapé, même mal formé : l'écran lui dit où est l'erreur, il ne la corrige
+ * pas en silence. Seule la longueur est bornée.
+ */
+export function readExpression(raw, fallback) {
+  if (typeof raw !== 'string') return fallback;
+  const text = raw.replace(/[\r\n\t]/g, ' ').slice(0, MAX_EXPRESSION_LENGTH);
+
+  return text.trim() ? text : fallback;
+}
+
+/** Le sous-état « القوى والجذور », relu champ par champ. */
+function normalizePowers(raw, base) {
+  const source = isPlainObject(raw) ? raw : {};
+  const ruleBase = readInteger(source.ruleBase, base.ruleBase, -20, 20);
+  const scientific = typeof source.scientific === 'string' && source.scientific.trim()
+    ? source.scientific.slice(0, MAX_SCIENTIFIC_TEXT)
+    : base.scientific;
+
+  return {
+    tab: readEnum(source.tab, POWER_TABS, base.tab),
+    base: readInteger(source.base, base.base, -MAX_BASE, MAX_BASE),
+    exponent: readInteger(source.exponent, base.exponent, -MAX_POWER_EXPONENT, MAX_POWER_EXPONENT),
+    rule: readEnum(source.rule, POWER_RULES, base.rule),
+    // 0 n'a pas de règle des puissances (0⁰, 0⁻¹) : on revient à 2.
+    ruleBase: ruleBase === 0 ? base.ruleBase : ruleBase,
+    m: readInteger(source.m, base.m, -12, 12),
+    n: readInteger(source.n, base.n, -12, 12),
+    scientific,
+    root: readInteger(source.root, base.root, 0, MAX_ROOT),
   };
 }
 
@@ -381,6 +455,8 @@ export function sendTo(data, mode, value) {
     }
     case 'operations':
       return { ...data, mode, operations: { ...data.operations, a: readNumber(value, data.operations.a, -1e6, 1e6) } };
+    case 'division':
+      return { ...data, mode, division: { ...data.division, a: Math.min(DIVISION_MAX, Math.abs(integer)) } };
     default:
       return { ...data, mode };
   }

@@ -11,10 +11,15 @@ describe('un document neuf', () => {
     expect(data.explorer.value).toBe(360);
   });
 
-  it('a les treize modes de §3, chacun avec ses propres nombres', () => {
+  it('a les seize modes, chacun avec ses propres nombres', () => {
     const data = S.createNumberLabData();
     for (const mode of S.MODES) expect(data[mode], mode).toBeTruthy();
-    expect(S.MODES).toHaveLength(13);
+    expect(S.MODES).toHaveLength(16);
+  });
+
+  it('ouvre le PGCD sur les FUVĀRIQ (défaut des nouveaux documents, 2026-09-30)', () => {
+    expect(S.createNumberLabData().gcdLcm.method).toBe('differences');
+    expect(S.GCD_METHODS[0]).toBe('differences');
   });
 
   it('ne garde AUCUN état transitoire (§43)', () => {
@@ -195,5 +200,89 @@ describe('l’instrument lui-même', () => {
     expect(numberLabTool.schemaVersion).toBe(S.NUMBER_LAB_SCHEMA_VERSION);
     expect(typeof numberLabTool.summarize).toBe('function');
     expect(typeof numberLabTool.load).toBe('function');
+  });
+});
+
+describe('les modes du 2026-09-30 et les documents V1', () => {
+  // Un document V1 tel qu'enregistré AVANT les nouveaux modes : treize sous-états.
+  const v1 = () => {
+    const doc = JSON.parse(JSON.stringify(S.createNumberLabData()));
+    delete doc.division; delete doc.powers; delete doc.order;
+    doc.gcdLcm = { a: 120, b: 45, method: 'euclid' };
+    doc.mode = 'gcdLcm';
+
+    return doc;
+  };
+
+  it('un document V1 en « euclid » rouvre en « euclid », avec ses nombres et son mode', () => {
+    const data = S.normalizeNumberLabData(v1());
+    expect(data.gcdLcm).toEqual({ a: 120, b: 45, method: 'euclid' });
+    expect(data.mode).toBe('gcdLcm');
+  });
+
+  it('les méthodes « factors » et « lists » sont gardées aussi', () => {
+    for (const method of ['factors', 'lists']) {
+      expect(S.normalizeNumberLabData({ gcdLcm: { a: 4, b: 6, method } }).gcdLcm.method).toBe(method);
+    }
+  });
+
+  it('un document V1 reçoit les sous-états neufs par défaut, sans rien perdre', () => {
+    const data = S.normalizeNumberLabData(v1());
+    expect(data.division).toEqual({ a: 38, b: 7 });
+    expect(data.powers.tab).toBe('power');
+    expect(data.order.expression).toBe('2 × (3 + 4)^2 − 10');
+  });
+
+  it('la division refuse b = 0 et un a négatif au relu', () => {
+    const data = S.normalizeNumberLabData({ division: { a: -5, b: 0 } });
+    expect(data.division.a).toBeGreaterThanOrEqual(0);
+    expect(data.division.b).toBeGreaterThanOrEqual(1);
+  });
+
+  it('les puissances sont bornées, et un ruleBase nul revient à 2', () => {
+    const data = S.normalizeNumberLabData({
+      powers: { tab: 'x', base: 1e9, exponent: -999, rule: '??', ruleBase: 0, m: 99, n: -99, scientific: 42, root: -3 },
+    });
+    expect(data.powers).toMatchObject({ tab: 'power', base: 1000, exponent: -30, rule: 'product', ruleBase: 2, m: 12, n: -12, scientific: '0,00045', root: 0 });
+  });
+
+  it('une expression est gardée TELLE QUELLE (même fausse), mais bornée', () => {
+    expect(S.normalizeNumberLabData({ order: { expression: '3 + (' } }).order.expression).toBe('3 + (');
+    expect(S.normalizeNumberLabData({ order: { expression: 'x'.repeat(500) } }).order.expression).toHaveLength(120);
+    expect(S.normalizeNumberLabData({ order: { expression: 7 } }).order.expression).toBe('2 × (3 + 4)^2 − 10');
+  });
+
+  it.each([null, 'x', { division: 'x' }, { powers: [] }, { order: null }, { powers: { scientific: '' } }])(
+    'un sous-état neuf abîmé (%#) ne casse rien',
+    (raw) => {
+      expect(() => S.normalizeNumberLabData(raw)).not.toThrow();
+      expect(S.normalizeNumberLabData(S.normalizeNumberLabData(raw))).toEqual(S.normalizeNumberLabData(raw));
+    },
+  );
+
+  it('envoyer à la division pose le dividende', () => {
+    const data = S.sendTo(S.createNumberLabData(), 'division', 360);
+    expect(data.mode).toBe('division');
+    expect(data.division).toEqual({ a: 360, b: 7 });
+  });
+
+  it('une amorce de leçon peut poser une expression', () => {
+    expect(S.createNumberLabData({ mode: 'order', expression: '3 + 4 × 5' })).toMatchObject({ mode: 'order', order: { expression: '3 + 4 × 5' } });
+  });
+
+  it('le PIRE cas avec les modes neufs tient toujours sous 20 KB', () => {
+    let data = S.createNumberLabData();
+    let tree = { n: 2 };
+    for (let i = 0; i < 20; i += 1) tree = { n: 2 ** (i + 2), left: tree, right: { n: 2 } };
+    data = { ...data, primes: { ...data.primes, limit: 10000, factorTree: S.normalizeTree(tree) } };
+    data = S.patchMode(data, 'order', { expression: '[(1234567 + 7654321) × 999] ÷ 3/4 − '.repeat(5) });
+    data = S.patchMode(data, 'powers', { scientific: '0,'.padEnd(40, '9'), base: -999, exponent: -30 });
+    data = S.patchMode(data, 'division', { a: 10_000_000, b: 9_999_999 });
+    data = S.patchMode(data, 'proportion', {
+      rows: Array.from({ length: S.MAX_ROWS }, (_, i) => ({ x: -123456.789, y: 987654.321 - i })),
+    });
+    for (let i = 0; i < S.MAX_NOTES; i += 1) data = S.addNote(data, 'ن'.repeat(200) + i);
+    const bytes = new TextEncoder().encode(JSON.stringify(S.serializeNumberLabData(data))).length;
+    expect(bytes, `${bytes} octets`).toBeLessThan(20_000);
   });
 });

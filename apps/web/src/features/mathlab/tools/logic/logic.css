@@ -497,6 +497,30 @@
 .sa-ml-lg__treeNode.is-placed { border-color: var(--lg-true); background: var(--lg-true-soft); }
 .sa-ml-lg__treeJoin { text-align: center; color: var(--lg-muted); font-size: 0.9rem; }
 
+/* Le déroulé de l'arbre (2026-09-30) : le rang courant en orange, la conclusion en vert. */
+.sa-ml-lg__treeRank.is-current { padding: 0.3rem; border-radius: 0.6rem; box-shadow: 0 0 0 2px #f36d21; }
+.sa-ml-lg__treeRank.is-conclusion .sa-ml-lg__treeNode { border-color: var(--lg-true); background: var(--lg-true-soft); font-weight: 700; }
+.sa-ml-lg__treeRole {
+  margin-inline-end: 0.35rem;
+  padding: 0 0.35rem;
+  border-radius: 0.35rem;
+  background: #f1f5f9;
+  color: var(--lg-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+/* Un exemple de récurrence, pas à pas : الحالة الأولى → الانتقال → الخلاصة. */
+.sa-ml-lg__caseSteps { margin: 0.5rem 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+.sa-ml-lg__caseStep {
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--lg-border);
+  border-radius: 0.6rem;
+  background: var(--lg-surface);
+}
+.sa-ml-lg__caseStep.is-current { border-color: #f36d21; box-shadow: 0 0 0 2px rgba(243, 109, 33, 0.18); }
+.sa-ml-lg__caseStepLine { margin: 0; font-size: 0.86rem; line-height: 1.7; }
+
 /* ── Messages ──────────────────────────────────────────────────────────── */
 
 .sa-ml-lg__message {
@@ -842,4 +866,82 @@
 @media (max-width: 40rem) {
   .sa-ml-lg__input--term { inline-size: 100%; flex-basis: 100%; }
   .sa-ml-lg__propose { align-items: stretch; }
+}
+
+/* ── « D'un seul regard » (MATH_LAB §3.5) ─────────────────────────────────
+ * 1. Le pupitre (cycle, تمارين، كرّاسي، قاموس الرموز) n'occupe une colonne
+ *    que lorsqu'il contient quelque chose à lire : les exercices ou le
+ *    lexique ouverts (`--side`). Sinon, c'est une barre compacte au-dessus
+ *    de la scène.
+ * 2. La scène range ses cartes en DEUX colonnes dès qu'elle en a la place :
+ *    l'énoncé en tête (sur toute la largeur quand il y a au moins trois
+ *    cartes), puis la figure À CÔTÉ de ce qui l'explique — jamais trois
+ *    écrans plus bas. */
+@media (min-width: 900px) {
+  .sa-ml-lg__body:not(.sa-ml-lg__body--side) { flex-direction: column; }
+
+  .sa-ml-lg__body:not(.sa-ml-lg__body--side) > .sa-ml-lg__panel {
+    order: -1;
+    inline-size: auto;
+    max-height: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    padding: 0.45rem 1rem;
+    border-inline-start: none;
+    border-block-end: 1px solid var(--lg-border);
+  }
+
+  .sa-ml-lg__body:not(.sa-ml-lg__body--side) > .sa-ml-lg__panel > .sa-ml-lg__lead {
+    flex: 1 1 16rem;
+    margin: 0;
+    font-size: 0.82rem;
+  }
+
+  .sa-ml-lg__body:not(.sa-ml-lg__body--side) > .sa-ml-lg__panel > .sa-ml-lg__actions { margin: 0; }
+
+  .sa-ml-lg__body:not(.sa-ml-lg__body--side) > .sa-ml-lg__panel > [data-ml-lg-dictionary] {
+    padding: 0;
+    border: none;
+    background: transparent;
+  }
+
+  .sa-ml-lg__body--side > .sa-ml-lg__panel { inline-size: 20rem; }
+  /* Le repli est une affaire de téléphone : au-delà, le pupitre est toujours là. */
+  .sa-ml-lg__body--side > .sa-ml-lg__panel[hidden] { display: block; }
+}
+
+.sa-ml-lg__body { container-type: inline-size; container-name: lg-body; }
+
+@container lg-body (min-width: 760px) {
+  .sa-ml-lg__body:not(.sa-ml-lg__body--side) > .sa-ml-lg__stage {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
+    align-items: start;
+  }
+}
+
+@container lg-body (min-width: 1100px) {
+  .sa-ml-lg__body--side > .sa-ml-lg__stage {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
+    align-items: start;
+  }
+}
+
+/* Au moins trois cartes : l'énoncé (la première) couvre les deux colonnes.
+   Sans effet hors grille. */
+.sa-ml-lg__stage > :first-child:nth-last-child(n + 3),
+.sa-ml-lg__stage > .sa-ml-lg__card--wide { grid-column: 1 / -1; }
+
+/* بناء البرهان : l'énoncé À CÔTÉ du tableau (cartes + preuve empilées), la
+   شجرة البرهان dessous sur toute la largeur. */
+.sa-ml-lg__stage:has(> .sa-ml-lg__proof) > :first-child { grid-column: auto; }
+.sa-ml-lg__stage:has(> .sa-ml-lg__proof) > :last-child:not(.sa-ml-lg__proof) { grid-column: 1 / -1; }
+
+@container lg-body (min-width: 760px) {
+  .sa-ml-lg__body:not(.sa-ml-lg__body--side) > .sa-ml-lg__stage > .sa-ml-lg__proof { flex-direction: column; align-items: stretch; }
 }

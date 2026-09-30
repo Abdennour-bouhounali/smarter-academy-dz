@@ -202,6 +202,12 @@ export function createPracticeState() {
     hintsUsed: 0,
     solved: 0,
     seen: 0,
+    // La révélation : 'answer' (après une réponse juste, entière) ou
+    // 'request' (« اكشف », pas à pas) ; `revealPending` demande de poser la
+    // suite dans l'espace, `revealPosed` dit qu'elle l'a été.
+    revealMode: null,
+    revealPending: false,
+    revealPosed: false,
   };
 }
 

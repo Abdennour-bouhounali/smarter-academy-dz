@@ -7,6 +7,7 @@ import {
 import { fracToText } from './fraction.js';
 import { formatNumber } from './numberValue.js';
 import { MAX_ROWS } from './numberState.js';
+import { LabPanel } from '../../shared/LabKit.jsx';
 
 /**
  * §17 à §19 — LA TANĀSUBIYYA : le tableau, le graphique, le rapport.
@@ -122,50 +123,55 @@ export default function ProportionMode({ state, onChange, compact }) {
       </div>
 
       {/* Le verdict, et la case fautive DÉSIGNÉE. */}
-      <section className={`sa-ml-nb__panel sa-ml-nb__panel--${analysis.proportional ? 'increase' : 'decrease'}`}>
-        <h4 className="sa-ml-nb__change-head">
-          {analysis.proportional ? <Check size={18} aria-hidden="true" /> : <X size={18} aria-hidden="true" />}
-          {analysis.proportional
-            ? t('tools.numberLab.proportion.isProportional')
-            : t('tools.numberLab.proportion.isNotProportional')}
-        </h4>
-        {analysis.proportional ? (
-          <>
-            <p className="sa-ml-nb__formula sa-ml-nb__formula--big" dir="ltr">
-              y = {formatNumber(analysis.coefficient, 6)} × x
-            </p>
-            <p className="sa-ml-nb__muted">
-              {t('tools.numberLab.proportion.coefficientHint', { value: formatNumber(analysis.coefficient, 6) })}
-              {analysis.coefficientFraction && ` (${fracToText(analysis.coefficientFraction)})`}
-            </p>
-          </>
-        ) : (
-          analysis.failures.map((index) => (
-            <p key={index} className="sa-ml-nb__muted">
-              {rows[index]?.x === 0
-                ? t('tools.numberLab.proportion.zeroHint')
-                : t('tools.numberLab.proportion.failureHint', {
-                  index: index + 1,
-                  ratio: formatNumber(analysis.ratios[index], 6),
-                  expected: formatNumber(analysis.ratios.find((r, i) => r !== null && !analysis.failures.includes(i)) ?? 0, 6),
-                })}
-            </p>
-          ))
-        )}
-      </section>
-
-      {/* §18 : le graphique — l'alignement AVEC l'origine est la signature. */}
-      <ProportionGraph
-        rows={rows}
-        proportional={analysis.proportional}
-        coefficient={analysis.coefficient}
-        onDrag={(index, y) => setCell(index, 'y', y)}
-        compact={compact}
-      />
+      {/* « D'un seul regard » (MATH_LAB §3.5) : le graphique et son verdict CÔTE À CÔTE. */}
+      <div className="sa-ml-nb__duo sa-ml-nb__duo--proportion" dir="ltr">
+        <div className="sa-ml-nb__duo-figure" dir="rtl">
+          {/* §18 : le graphique — l'alignement AVEC l'origine est la signature. */}
+          <ProportionGraph
+            rows={rows}
+            proportional={analysis.proportional}
+            coefficient={analysis.coefficient}
+            onDrag={(index, y) => setCell(index, 'y', y)}
+            compact={compact}
+          />
+        </div>
+        <div className="sa-ml-nb__duo-board" dir="rtl">
+          <section className={`sa-ml-nb__panel sa-ml-nb__panel--${analysis.proportional ? 'increase' : 'decrease'}`}>
+            <h4 className="sa-ml-nb__change-head">
+              {analysis.proportional ? <Check size={18} aria-hidden="true" /> : <X size={18} aria-hidden="true" />}
+              {analysis.proportional
+                ? t('tools.numberLab.proportion.isProportional')
+                : t('tools.numberLab.proportion.isNotProportional')}
+            </h4>
+            {analysis.proportional ? (
+              <>
+                <p className="sa-ml-nb__formula sa-ml-nb__formula--big" dir="ltr">
+                  y = {formatNumber(analysis.coefficient, 6)} × x
+                </p>
+                <p className="sa-ml-nb__muted">
+                  {t('tools.numberLab.proportion.coefficientHint', { value: formatNumber(analysis.coefficient, 6) })}
+                  {analysis.coefficientFraction && ` (${fracToText(analysis.coefficientFraction)})`}
+                </p>
+              </>
+            ) : (
+              analysis.failures.map((index) => (
+                <p key={index} className="sa-ml-nb__muted">
+                  {rows[index]?.x === 0
+                    ? t('tools.numberLab.proportion.zeroHint')
+                    : t('tools.numberLab.proportion.failureHint', {
+                      index: index + 1,
+                      ratio: formatNumber(analysis.ratios[index], 6),
+                      expected: formatNumber(analysis.ratios.find((r, i) => r !== null && !analysis.failures.includes(i)) ?? 0, 6),
+                    })}
+                </p>
+              ))
+            )}
+          </section>
+        </div>
+      </div>
 
       {/* §19 : le rapport et le partage. */}
-      <section className="sa-ml-nb__panel">
-        <h4>{t('tools.numberLab.proportion.ratioExplorer')}</h4>
+      <LabPanel id="numberLab.proportion.ratio" title={t('tools.numberLab.proportion.ratioExplorer')}>
         <div className="sa-ml-nb__row sa-ml-nb__row--wrap">
           <label className="sa-ml-nb__field">
             <span className="sa-ml-nb__label">a</span>
@@ -200,7 +206,7 @@ export default function ProportionMode({ state, onChange, compact }) {
             </p>
             {share.parts && (
               <>
-                <div className="sa-ml-nb__ratio-bars">
+                <div className="sa-ml-nb__ratio-bars" dir="ltr">
                   <span
                     className="sa-ml-nb__ratio-bar sa-ml-nb__ratio-bar--a"
                     style={{ flexGrow: ratioA || 0.001 }}
@@ -214,15 +220,15 @@ export default function ProportionMode({ state, onChange, compact }) {
                     {formatNumber(share.parts[1], 4)}
                   </span>
                 </div>
-                <p className="sa-ml-nb__muted" dir="ltr">
-                  {t('tools.numberLab.proportion.unitValue')} : {formatNumber(share.unit, 6)}
+                <p className="sa-ml-nb__muted">
+                  {t('tools.numberLab.proportion.unitValue')} : <bdi dir="ltr">{formatNumber(share.unit, 6)}</bdi>
                 </p>
               </>
             )}
           </>
         )}
         <p className="sa-ml-nb__muted">{t('tools.numberLab.proportion.scaleHint')}</p>
-      </section>
+      </LabPanel>
     </div>
   );
 }

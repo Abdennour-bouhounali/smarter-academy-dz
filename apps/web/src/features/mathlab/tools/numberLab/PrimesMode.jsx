@@ -7,6 +7,15 @@ import {
   factorizationProduct, MAX_GRID,
 } from './numberTheory.js';
 import { formatNumber } from './numberValue.js';
+import StepPlayer from '../../shared/StepPlayer.jsx';
+import useStepReveal from '../../shared/useStepReveal.js';
+import MathBoard from '../../shared/mathBoard/MathBoard.jsx';
+import useBoardPractice from '../../shared/mathBoard/useBoardPractice.js';
+import { boardProgress } from '../../shared/mathBoard/frames.js';
+import {
+  collectLeaves, nodeAt, replaceAt, treeLevels, firstCompositeLeafPath, TREE_PRESETS,
+} from './factorTree.js';
+import { factorTreeFrames, treeAtCursor } from './factorTreeFrames.js';
 
 /**
  * §22 à §24 — LE GHIRBĀL et L'ARBRE.
@@ -176,15 +185,46 @@ export default function PrimesMode({ state, onChange, compact, reducedMotion }) 
  * poliment un couple faux. Quand toutes les feuilles sont premières, la
  * décomposition s'écrit toute seule — et on VÉRIFIE que son produit fait bien
  * le nombre de départ, parce que §24 le demande.
+ *
+ * « فكّكه تلقائيًّا » ne pose PLUS l'arbre entier d'un coup : il ouvre un
+ * DÉROULÉ (lecteur partagé + MathBoard, frames de `factorTreeFrames.js`) qui
+ * fend une feuille par étape — [60] ÷ [2] ↓ 30, puis 30, puis 15 — l'arbre
+ * dessiné poussant quand le quotient tombe ; la décomposition (puissances
+ * regroupées) est le DERNIER pas. L'arbre complet n'entre dans le document
+ * qu'une fois ce pas atteint. Le déroulé part de l'arbre tel que l'élève l'a
+ * laissé : on peut commencer à la main et laisser la machine finir.
  */
 function FactorTree({ tree, onChange, compact }) {
   const { t } = useTranslation('mathlab');
   const [picking, setPicking] = useState(null);
   const [error, setError] = useState(null);
+  // Le déroulé automatique en cours : état d'INTERFACE (jamais enregistré).
+  const [auto, setAuto] = useState(null);
 
-  const leaves = useMemo(() => collectLeaves(tree), [tree]);
-  const complete = tree && leaves.length > 0 && leaves.every((leaf) => isPrime(leaf.n));
-  const factors = complete ? primeFactorization(tree.n) : null;
+  const autoRun = useMemo(() => (auto ? factorTreeFrames(auto.start) : null), [auto]);
+  const frames = autoRun?.frames ?? [];
+  const player = useStepReveal(frames.length, { resetKey: auto?.id ?? null });
+  const practice = useBoardPractice(frames, player, auto?.id ?? null);
+  const shown = auto ? treeAtCursor(auto.start, autoRun.stages, frames, player.cursor) : tree;
+
+  const leaves = useMemo(() => collectLeaves(shown), [shown]);
+  const complete = shown && leaves.length > 0 && leaves.every((leaf) => isPrime(leaf.n));
+  const factors = complete ? primeFactorization(shown.n) : null;
+  const levels = useMemo(() => treeLevels(shown), [shown]);
+  const finalTree = autoRun?.stages.length ? autoRun.stages[autoRun.stages.length - 1].tree : null;
+  const autoDone = Boolean(auto) && player.done;
+
+  // Le dernier pas atteint : l'arbre complet entre dans le document.
+  useEffect(() => {
+    if (autoDone && finalTree && JSON.stringify(finalTree) !== JSON.stringify(tree)) onChange(finalTree);
+  }, [autoDone]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Le document a changé AILLEURS (annuler, autre document) : le déroulé n'a plus d'objet.
+  useEffect(() => {
+    if (!auto) return;
+    const json = JSON.stringify(tree);
+    if (json !== JSON.stringify(auto.start) && json !== JSON.stringify(finalTree)) setAuto(null);
+  }, [tree]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /** Fendre un nœud : on remplace la feuille `path` par deux fils. */
   const split = useCallback((path, a, b) => {
@@ -199,13 +239,15 @@ function FactorTree({ tree, onChange, compact }) {
     setPicking(null);
   }, [tree, onChange, t]);
 
-  /** §24 : le faire faire par la machine, pour qui veut juste voir le résultat. */
-  const autoSplit = useCallback(() => {
-    if (!tree) return;
-    onChange(buildFullTree(tree.n));
+  /** §24 : la machine fend, UNE feuille par étape, à partir de l'arbre courant. */
+  const startAuto = useCallback((start) => {
+    setAuto({ id: `${Date.now()}-${JSON.stringify(start)}`, start });
     setPicking(null);
     setError(null);
-  }, [tree, onChange]);
+    player.start();
+  }, [player]);
+
+  const canAuto = Boolean(tree) && firstCompositeLeafPath(tree) !== null;
 
   if (!tree) {
     return (
@@ -224,37 +266,92 @@ function FactorTree({ tree, onChange, compact }) {
             {t('tools.numberLab.primes.treeStart', { value: 360 })}
           </button>
         </div>
+        {/* Les nombres du manuel, et l'arbre construit pas à pas (60 → 2 × 30 → …). */}
+        <div className="sa-ml-nb__row sa-ml-nb__row--wrap" data-ml-nb-tree-presets>
+          <span className="sa-ml-nb__label">{t('tools.numberLab.primes.treePresets')}</span>
+          {TREE_PRESETS.map((preset) => (
+            <button
+              key={preset}
+              type="button"
+              className="sa-ml-kit-chip"
+              onClick={() => onChange({ n: preset })}
+              data-ml-nb-tree-preset={preset}
+            >
+              <bdi dir="ltr">{preset}</bdi>
+            </button>
+          ))}
+          <button
+            type="button"
+            className="sa-ml-nb__button sa-ml-nb__button--ghost"
+            onClick={() => { onChange({ n: 60 }); startAuto({ n: 60 }); }}
+            data-ml-nb-tree-auto
+          >
+            <Wand2 size={14} aria-hidden="true" />
+            {t('tools.numberLab.primes.treeAuto')}
+          </button>
+        </div>
       </section>
     );
   }
 
   const pairs = picking ? factorPairs(nodeAt(tree, picking)?.n ?? 0).filter(([a]) => a > 1) : [];
+  // Pendant un déroulé, l'arbre se regarde : on ne fend pas à la main.
+  const onPick = auto ? null : (path) => { setPicking(path); setError(null); };
 
   return (
-    <section className="sa-ml-nb__section">
+    <section className="sa-ml-nb__section" data-ml-nb-tree={auto ? 'auto' : 'manual'}>
       <header className="sa-ml-nb__panel-head">
         <h3 className="sa-ml-nb__heading">{t('tools.numberLab.primes.tree')}</h3>
         <div className="sa-ml-nb__controls">
-          <button type="button" className="sa-ml-nb__button sa-ml-nb__button--ghost" onClick={autoSplit}>
+          <button
+            type="button"
+            className="sa-ml-nb__button sa-ml-nb__button--ghost"
+            onClick={() => startAuto(tree)}
+            disabled={!canAuto}
+            data-ml-nb-tree-autosplit
+          >
             <Wand2 size={14} aria-hidden="true" />
             {t('tools.numberLab.primes.autoSplit')}
           </button>
-          <button type="button" className="sa-ml-nb__button sa-ml-nb__button--ghost" onClick={() => { onChange(null); setPicking(null); }}>
+          <button type="button" className="sa-ml-nb__button sa-ml-nb__button--ghost" onClick={() => { onChange(null); setPicking(null); setAuto(null); }}>
             <RotateCcw size={14} aria-hidden="true" />
             {t('tools.numberLab.primes.treeReset')}
           </button>
         </div>
       </header>
-      <p className="sa-ml-nb__hint">{t('tools.numberLab.primes.treeHint')}</p>
+      <p className="sa-ml-nb__hint">{t(auto ? 'tools.numberLab.steps.tree.autoHint' : 'tools.numberLab.primes.treeHint')}</p>
+
+      {auto && <StepPlayer player={player} {...practice.player} sticky progress={boardProgress(frames, player.cursor)} dataAttr="data-ml-nb-step" />}
 
       <div className={`sa-ml-nb__tree${compact ? ' is-compact' : ''}`}>
-        <TreeNode node={tree} path={[]} onPick={(path) => { setPicking(path); setError(null); }} picking={picking} />
+        <TreeNode node={shown} path={[]} onPick={onPick} picking={picking} />
       </div>
+
+      {auto && (
+        <MathBoard
+          {...practice.board}
+          frames={frames}
+          cursor={player.cursor}
+          problem={`${auto.start.n} = \\ ?`}
+          dataAttr="data-ml-nb-tree-frame"
+        />
+      )}
 
       {error && <p className="sa-ml-nb__error" role="alert">{error}</p>}
 
+      {/* La lecture de l'arbre, niveau par niveau (construction À LA MAIN) : 60 = 2 × 30 = 2 × 2 × 15 = … */}
+      {!auto && levels.length > 1 && (
+        <div className="sa-ml-nb__panel" data-ml-nb-tree-levels>
+          <h4>{t('tools.numberLab.primes.treeLevels')}</h4>
+          <p className="sa-ml-nb__muted">{t('tools.numberLab.primes.treeLevelsHint')}</p>
+          <p className="sa-ml-nb__formula" dir="ltr">
+            {levels.map((level) => level.join(' × ')).join(' = ')}
+          </p>
+        </div>
+      )}
+
       {/* Le choix du couple : c'est ici que l'élève DÉCIDE. */}
-      {picking && (
+      {picking && !auto && (
         <div className="sa-ml-nb__panel">
           <h4>{t('tools.numberLab.primes.splitPrompt', { value: nodeAt(tree, picking)?.n })}</h4>
           {pairs.length === 0 ? (
@@ -273,16 +370,17 @@ function FactorTree({ tree, onChange, compact }) {
         </div>
       )}
 
-      {/* §23 : la décomposition, et sa VÉRIFICATION. */}
-      {complete && factors && (
-        <div className="sa-ml-nb__panel sa-ml-nb__panel--result">
+      {/* §23 : la décomposition, et sa VÉRIFICATION — à la main quand l'arbre est fini,
+          en automatique seulement au DERNIER pas. */}
+      {complete && factors && (!auto || autoDone) && (
+        <div className="sa-ml-nb__panel sa-ml-nb__panel--result" data-ml-nb-tree-result>
           <h4>{t('tools.numberLab.primes.treeResult')}</h4>
           <p className="sa-ml-nb__formula sa-ml-nb__formula--big" dir="ltr">
-            {formatNumber(tree.n)} = {factorizationToText(factors)}
+            {formatNumber(shown.n)} = {factorizationToText(factors)}
           </p>
           <p className="sa-ml-nb__muted" dir="ltr">
             {t('tools.numberLab.primes.treeVerify', {
-              product: factorizationProduct(factors), value: tree.n,
+              product: factorizationProduct(factors), value: shown.n,
             })}
           </p>
           <p className="sa-ml-nb__callout">{t('tools.numberLab.primes.differentTrees')}</p>
@@ -303,9 +401,9 @@ function TreeNode({ node, path, onPick, picking }) {
     <div className="sa-ml-nb__tree-node">
       <button
         type="button"
-        className={`sa-ml-nb__tree-value${prime ? ' is-prime' : ''}${leaf && !prime ? ' is-splittable' : ''}${isPicking ? ' is-picking' : ''}`}
-        onClick={leaf && !prime ? () => onPick(path) : undefined}
-        disabled={!leaf || prime}
+        className={`sa-ml-nb__tree-value${prime ? ' is-prime' : ''}${leaf && !prime && onPick ? ' is-splittable' : ''}${isPicking ? ' is-picking' : ''}`}
+        onClick={leaf && !prime && onPick ? () => onPick(path) : undefined}
+        disabled={!leaf || prime || !onPick}
         aria-label={prime
           ? t('tools.numberLab.primes.leafLabel', { value: node.n })
           : t('tools.numberLab.primes.nodeLabel', { value: node.n })}
@@ -321,36 +419,4 @@ function TreeNode({ node, path, onPick, picking }) {
       )}
     </div>
   );
-}
-
-/* ── Les fonctions d'arbre : pures, hors du rendu ───────────────────────── */
-
-function collectLeaves(node, out = []) {
-  if (!node) return out;
-  if (!node.left || !node.right) { out.push(node); return out; }
-  collectLeaves(node.left, out);
-  collectLeaves(node.right, out);
-
-  return out;
-}
-
-function nodeAt(node, path) {
-  return path.reduce((current, key) => current?.[key] ?? null, node);
-}
-
-function replaceAt(node, path, replacement) {
-  if (path.length === 0) return replacement;
-  const [head, ...rest] = path;
-
-  return { ...node, [head]: replaceAt(node[head], rest, replacement) };
-}
-
-/** L'arbre complet, fendu au plus petit facteur premier à chaque pas. */
-function buildFullTree(n) {
-  if (!Number.isInteger(n) || n < 2 || isPrime(n)) return { n };
-  const factors = primeFactorization(n);
-  if (!factors?.length) return { n };
-  const p = factors[0].p;
-
-  return { n, left: { n: p }, right: buildFullTree(n / p) };
 }

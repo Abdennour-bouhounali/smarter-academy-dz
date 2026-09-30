@@ -35,6 +35,7 @@
  * Les documents créés sont supprimés à la fin.
  */
 import { chromium } from 'playwright';
+import { playToEnd } from './_stepPlayer.mjs';
 import { mkdirSync } from 'node:fs';
 
 const BASE = process.env.QA_BASE || 'http://localhost:5173';
@@ -53,6 +54,7 @@ const pageErrors = [];
 const consoleErrors = [];
 const EXPECTED_HTTP = /status of (401|404)/;
 const created = new Set();
+
 
 async function api(token, method, path, body) {
   const res = await fetch(`${API}${path}`, {
@@ -184,9 +186,9 @@ async function lineMap(page, index = 0) {
   record('§61 : aucun bruit de virgule flottante (0,30000000004…)',
     !/\d,\d{0,3}0{6,}\d/.test(explorer) && !/\d\.\d{10,}/.test(explorer));
 
-  // Les 13 modes sont là, dans une seule page.
+  // Les 16 modes sont là, dans une seule page (13 + division, puissances, ordre — 2026-09-30).
   const chips = await page.locator('[data-ml-nb-modechip]').count();
-  record('§3 : treize modes dans UN laboratoire (pas treize routes)', chips === 13, `${chips} modes`);
+  record('§3 : seize modes dans UN laboratoire (pas seize routes)', chips === 16, `${chips} modes`);
 
   await context.close();
 }
@@ -473,6 +475,23 @@ async function lineMap(page, index = 0) {
   await page.waitForSelector('[data-ml-nb]', { timeout: 15000 });
 
   await goMode(page, 'gcdLcm');
+  // Un document neuf ouvre sur les différences successives (la méthode du manuel) :
+  // le PGCD n'est dit qu'à la dernière étape.
+  record('PGCD : un document neuf ouvre sur les الفوارق المتتالية',
+    await page.locator('[data-ml-nb-differences]').count() > 0);
+  // Le déroulé pas à pas (MATH_LAB §3.4.1) : rien avant « ابدأ الحل », puis un pas par clic.
+  record('PGCD : le résultat n’est PAS affiché avant le déroulé',
+    await page.locator('[data-ml-nb-diff-result]').count() === 0);
+  const firstFrames = await playToEnd(page, 'data-ml-nb-step');
+  record('PGCD : le déroulé avance un pas par clic', firstFrames > 3, `${firstFrames} clics`);
+  record('PGCD : le dernier pas conclut PGCD(84 ; 36) = 12',
+    (await page.locator('[data-ml-nb-diff-result]').first().innerText().catch(() => '')).includes('12'));
+  // Puis Euclide, la méthode de comparaison — déroulée elle aussi, puis la PPCM.
+  await page.locator('select[data-ml-nb-gcd-method]').first().selectOption('euclid');
+  await page.waitForTimeout(400);
+  await playToEnd(page, 'data-ml-nb-step');
+  await playToEnd(page, 'data-ml-nb-ppcm-step');
+  await page.waitForTimeout(300);
   const text = await stageText(page);
   record('§27 : PGCD(84 ; 36) = 12', text.includes('12'), text.slice(0, 90));
   record('§30 : PPCM(84 ; 36) = 252', text.includes('252'));

@@ -24,6 +24,7 @@
  * Les documents créés sont supprimés à la fin.
  */
 import { chromium } from 'playwright';
+import { playToEnd } from './_stepPlayer.mjs';
 import { mkdirSync } from 'node:fs';
 
 const BASE = process.env.QA_BASE || 'http://localhost:5173';
@@ -248,7 +249,9 @@ record('§24 — et il ne donne PAS la règle',
 
 const storyBtn = page.locator('.sa-ml-ms__ghostBtn').filter({ hasText: /كيف ظهرت/ }).first();
 await storyBtn.click();
-await page.waitForTimeout(400);
+await page.waitForTimeout(300);
+await playToEnd(page, 'data-ml-ms-story-step');
+await page.waitForTimeout(200);
 const steps = await page.locator('.sa-ml-ms__storySteps li').count();
 record('§22 — le récit montre des ÉTAPES, pas une formule', steps >= 5, `${steps} étapes`);
 await shot('07-recit');

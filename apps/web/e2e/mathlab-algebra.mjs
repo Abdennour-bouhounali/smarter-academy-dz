@@ -32,6 +32,7 @@
  * Les documents créés sont supprimés à la fin.
  */
 import { chromium } from 'playwright';
+import { playToEnd } from './_stepPlayer.mjs';
 import { mkdirSync } from 'node:fs';
 
 const BASE = process.env.QA_BASE || 'http://localhost:5173';
@@ -123,7 +124,7 @@ async function clickSuggestion(page, label) {
 /** Applique une opération par la saisie (le chemin « manipulation libre »). */
 async function applyTyped(page, kindLabel, value) {
   await page.locator('.sa-ml-alg__kind', { hasText: kindLabel }).first().click();
-  await page.fill('#sa-ml-alg-value', value);
+  await page.fill('#sa-ml-alg-value-eq', value);
   await page.locator('.sa-ml-alg__apply').click();
   await sleep(150);
 }
@@ -230,12 +231,15 @@ let createdDocId = null;
   record('historique — une opération après un retour coupe la branche', branched.length === 3, branched.join(' | '));
 
   // La solution : secondaire, puis la vérification.
-  const showButton = page.locator('.sa-ml-alg__ghost').first();
-  if (await showButton.count() > 0) { await showButton.click(); await sleep(150); }
-  const verifyButton = page.locator('.sa-ml-alg__ghost', { hasText: 'التحقق' }).first();
+  // « حلّ خطوة بخطوة » déroule la solution (MATH_LAB §5e.10), puis « التحقق » se déroule aussi.
+  await page.locator('[data-ml-alg-solve]').first().click();
+  await sleep(150);
+  await playToEnd(page, 'data-ml-alg-step');
+  const verifyButton = page.locator('[data-ml-alg-verify]').first();
   if (await verifyButton.count() > 0) {
     await verifyButton.click();
     await sleep(200);
+    await playToEnd(page, 'data-ml-alg-verify-step');
     const verification = await page.locator('[data-ml-verification]').innerText().catch(() => '');
     record('التحقق — la substitution est montrée', verification.length > 0, verification.replace(/\s+/g, ' ').slice(0, 80));
   } else {
@@ -277,10 +281,15 @@ if (createdDocId) {
   await sleep(600);
 
   await setEquation(page, '2x + 3 = 2x + 5');
+  record('cas particulier — rien n’est dit avant le déroulé', await page.locator('[data-ml-solution]').count() === 0);
+  await page.locator('[data-ml-alg-solve]').first().click();
+  await playToEnd(page, 'data-ml-alg-step');
   let verdict = await page.locator('[data-ml-solution]').innerText().catch(() => '');
   record('cas particulier — « لا يوجد حل »', verdict.includes('لا يوجد حل'), verdict.replace(/\s+/g, ' '));
 
   await setEquation(page, '2x + 3 = 2x + 3');
+  await page.locator('[data-ml-alg-solve]').first().click();
+  await playToEnd(page, 'data-ml-alg-step');
   verdict = await page.locator('[data-ml-solution]').innerText().catch(() => '');
   record('cas particulier — « عدد لا نهائي من الحلول »', verdict.includes('لا نهائي'), verdict.replace(/\s+/g, ' '));
 
@@ -337,7 +346,7 @@ if (createdDocId) {
   await page.fill('[data-ml-equation-input]', 'x^2 = 4');
   await page.locator('.sa-ml-alg__explore').click();
   await sleep(250);
-  const error = await page.locator('#sa-ml-alg-input-error').innerText().catch(() => '');
+  const error = await page.locator('#sa-ml-alg-input-error-eq').innerText().catch(() => '');
   record('saisie invalide — refus motivé, pas de plantage', error.length > 0, error.replace(/\s+/g, ' '));
   record('saisie invalide — l’équation précédente reste affichée',
     (await currentEquation(page)).includes('3'), await currentEquation(page));
@@ -345,7 +354,7 @@ if (createdDocId) {
   // Le générateur, aux quatre niveaux.
   let generated = 0;
   for (const level of ['1', '2', '3', '4']) {
-    await page.selectOption('#sa-ml-alg-level', level);
+    await page.selectOption('#sa-ml-alg-level-eq', level);
     await page.locator('.sa-ml-alg__new').click();
     await sleep(250);
     const text = await currentEquation(page);
@@ -416,7 +425,7 @@ if (createdDocId) {
   record('RTL — la pile de polices contient Cairo', /Cairo/i.test(String(font)), String(font));
 
   // L'état mathématique doit exister en TEXTE (§34).
-  const srText = await page.locator('.sa-ml-alg__sr').last().innerText().catch(() => '');
+  const srText = await page.locator('[data-ml-alg-state="eq"]').innerText().catch(() => '');
   record('accessibilité — l’état est lisible en texte', srText.includes('المعادلة'), srText.replace(/\s+/g, ' ').slice(0, 70));
 
   await page.screenshot({ path: `${OUT}/05-rtl.png` });

@@ -1,6 +1,9 @@
 import { useTranslation } from 'react-i18next';
+import { Footprints } from 'lucide-react';
 import VariationTable from './VariationTable.jsx';
-import { buildVariationTable } from './variationTable.js';
+import { buildVariationTable, buildVariationSteps, tableRowsAt } from './variationTable.js';
+import StepPlayer from '../../shared/StepPlayer.jsx';
+import { StepList, LabPanel } from '../../shared/LabKit.jsx';
 import {
   formatValue, formatApproximate, formatMaybeExact, formatPoint, formatLimit,
   formatInterval, formatLine, formatApproach,
@@ -25,7 +28,7 @@ import {
  *
  * Toute notation mathématique est enfermée dans `dir="ltr"` (§2, §39).
  */
-export default function AnalysisInspector({ data, scene, onHighlight }) {
+export default function AnalysisInspector({ data, scene, onHighlight, steppers = null }) {
   const { t } = useTranslation('mathlab');
 
   if (!scene || scene.error) {
@@ -36,21 +39,32 @@ export default function AnalysisInspector({ data, scene, onHighlight }) {
 
   return (
     <div className="sa-ml-an__inspector" data-ml-an-inspector={lab}>
-      <PointReadout scene={scene} t={t} />
-
+      {/* « D'un seul regard » (§3.5) : la lecture PROPRE au laboratoire vient
+          en tête, à côté du plan — la dérivation, le tableau de variations,
+          les tables d'approche. La lecture du point A (et, en dérivée, la
+          tangente) est secondaire : un LabPanel que l'élève peut masquer. */}
       {(lab === 'secant') && <SecantReadout data={data} scene={scene} t={t} />}
-      {(lab === 'tangent' || lab === 'derivative') && <TangentReadout scene={scene} t={t} />}
-      {lab === 'derivative' && <DerivativeReadout scene={scene} t={t} />}
+      {lab === 'tangent' && <TangentReadout scene={scene} t={t} />}
+      {lab === 'derivative' && <DerivativeReadout scene={scene} stepper={steppers?.derivative ?? null} t={t} />}
       {lab === 'limit' && <LimitReadout data={data} scene={scene} t={t} />}
       {lab === 'integral' && <IntegralReadout data={data} scene={scene} t={t} />}
-      {lab === 'study' && <StudyReadout scene={scene} onHighlight={onHighlight} data={data} t={t} />}
+      {lab === 'study' && <StudyReadout scene={scene} onHighlight={onHighlight} data={data} player={steppers?.study ?? null} t={t} />}
       {lab === 'transform' && <TransformReadout data={data} scene={scene} t={t} />}
+
+      {lab === 'derivative' && (
+        <LabPanel id="analysis.derivative.tangent" title={t('tools.analysis.tangent.title')} className="sa-ml-an__panelblock">
+          <TangentReadout scene={scene} t={t} bare />
+        </LabPanel>
+      )}
+      <LabPanel id={`analysis.${lab}.point`} title={t('tools.analysis.point.title')} className="sa-ml-an__panelblock">
+        <PointReadout scene={scene} t={t} bare />
+      </LabPanel>
     </div>
   );
 }
 
 /** §6 : A(a ; f(a)) — la lecture la plus simple, et la plus fondatrice. */
-function PointReadout({ scene, t }) {
+function PointReadout({ scene, t, bare = false }) {
   if (!scene.pointA) {
     return (
       <Row label={t('tools.analysis.point.title')}>
@@ -61,7 +75,7 @@ function PointReadout({ scene, t }) {
 
   return (
     <section className="sa-ml-an__group">
-      <h3 className="sa-ml-an__grouptitle">{t('tools.analysis.point.title')}</h3>
+      {!bare && <h3 className="sa-ml-an__grouptitle">{t('tools.analysis.point.title')}</h3>}
       <Row label="A"><MathText>{formatPoint(scene.pointA.x, scene.pointA.y)}</MathText></Row>
       <p className="sa-ml-an__hint">{t('tools.analysis.point.hint')}</p>
     </section>
@@ -108,12 +122,12 @@ function SecantReadout({ data, scene, t }) {
 }
 
 /** §8, §10 : la tangente, sa pente, et ce qu'elle dit du sens de variation. */
-function TangentReadout({ scene, t }) {
+function TangentReadout({ scene, t, bare = false }) {
   const info = scene.tangentInfo;
 
   return (
     <section className="sa-ml-an__group">
-      <h3 className="sa-ml-an__grouptitle">{t('tools.analysis.tangent.title')}</h3>
+      {!bare && <h3 className="sa-ml-an__grouptitle">{t('tools.analysis.tangent.title')}</h3>}
       {!info?.ok ? (
         <p className="sa-ml-an__warn" data-ml-an-tangent-refused={info?.reason}>
           {t(`tools.analysis.tangent.${info?.reason === 'corner' ? 'corner' : 'undefined'}`)}
@@ -142,24 +156,74 @@ function TangentReadout({ scene, t }) {
   );
 }
 
-/** §9, §17, §18 : f′ écrite, f″ si on sait, et les points critiques CLASSÉS. */
-function DerivativeReadout({ scene, t }) {
+/**
+ * §9, §17, §18 : f′ écrite, f″ si on sait, et les points critiques CLASSÉS.
+ *
+ * f′(x) ne s'affiche plus d'un bloc (exigence 2026-09-30) : « اشتقّ خطوة
+ * بخطوة » déroule `derivativeSteps.js` — la structure, la règle nommée, les
+ * morceaux dérivés, la règle remplie — et la dérivée simplifiée est le
+ * DERNIER pas. La ligne « f′(x) = … » et f″ n'existent qu'une fois ce pas
+ * atteint. Les points critiques et la courbe de f′ restent VIVANTS : ce
+ * sont des lectures du graphe, qui suivent la fonction et la fenêtre.
+ *
+ * `stepper` : `{ player, steps }` — le lecteur vit dans AnalysisTool pour
+ * survivre à un changement d'onglet (l'inspecteur se démonte).
+ */
+function DerivativeReadout({ scene, stepper, t }) {
   const { primary, extrema } = scene;
+  const steps = stepper?.steps?.ok ? stepper.steps.steps : null;
+  const player = stepper?.player ?? null;
+  // Sans lecteur (rendu isolé, test), l'inspecteur se comporte comme avant.
+  const done = !steps || !player || player.done;
 
   return (
-    <section className="sa-ml-an__group">
+    <section className="sa-ml-an__group" data-ml-an-derivation={primary.derivativeSource ? (done ? 'done' : 'steps') : 'measured'}>
       <h3 className="sa-ml-an__grouptitle">{t('tools.analysis.derivative.title')}</h3>
       {primary.derivativeSource ? (
         <>
-          <Row label={t('tools.analysis.derivative.expression')} stacked>
-            <MathText strong>{primary.derivativeSource}</MathText>
-          </Row>
+          {steps && player && (
+            <>
+              {!player.started && (
+                <button
+                  type="button"
+                  className="sa-ml-an__action sa-ml-an__action--primary"
+                  onClick={player.start}
+                  data-ml-an-derive
+                >
+                  <Footprints size={16} aria-hidden="true" />
+                  <span>{t('tools.analysis.derivativeSteps.action')}</span>
+                </button>
+              )}
+              {player.started && (
+                <>
+                  <StepPlayer player={player} sticky title={t('tools.analysis.derivativeSteps.title')} dataAttr="data-ml-an-dstep" />
+                  <StepList
+                    steps={steps.map((step) => ({
+                      text: t(`tools.analysis.derivativeSteps.steps.${step.textKey}`, step.params),
+                      operation: step.ruleKey ? t(`tools.analysis.derivativeSteps.rules.${step.ruleKey}`) : null,
+                      operationLatex: step.formula ?? null,
+                      latex: step.latex,
+                      tone: step.tone ?? null,
+                    }))}
+                    revealUpTo={player.cursor - 1}
+                    label={t('tools.analysis.derivativeSteps.title')}
+                    dataAttr="data-ml-an-dsteps"
+                  />
+                </>
+              )}
+            </>
+          )}
+          {done && (
+            <Row label={t('tools.analysis.derivative.expression')} stacked>
+              <MathText strong>{primary.derivativeSource}</MathText>
+            </Row>
+          )}
           <p className="sa-ml-an__note">{t('tools.analysis.derivative.symbolic')}</p>
         </>
       ) : (
         <p className="sa-ml-an__note">{t('tools.analysis.derivative.unavailable')}</p>
       )}
-      {primary.secondDerivativeSource && (
+      {done && primary.secondDerivativeSource && (
         <Row label={t('tools.analysis.derivative.secondExpression')} stacked>
           <MathText>{primary.secondDerivativeSource}</MathText>
         </Row>
@@ -337,8 +401,22 @@ function IntegralReadout({ data, scene, t }) {
  * Chaque ligne est un BOUTON qui allume sa couche sur le graphe : cliquer
  * « الجذور » met les racines en évidence sur la courbe. C'est l'exigence
  * explicite de §16 — « connect every result to the graph ».
+ *
+ * Le جدول التغيّرات, lui, se CONSTRUIT (exigence 2026-09-30) : « أنشئ جدول
+ * التغيّرات خطوة بخطوة » déroule les six pas du manuel (variationTable.js ›
+ * buildVariationSteps) et la grille ne rend que les lignes atteintes. La
+ * ligne « اتّجاه التغيّر » de la liste, qui ÉNONCE en mots les flèches du
+ * tableau, attend que le tableau soit complet ; les racines, les extrema,
+ * les asymptotes et les discontinuités restent des lectures VIVES du graphe
+ * (les extrema sont aussi dans la lecture vive au-dessus des onglets).
  */
-function StudyReadout({ scene, data, onHighlight, t }) {
+function StudyReadout({ scene, data, onHighlight, player, t }) {
+  const table = buildVariationTable(scene, scene.view);
+  const construction = buildVariationSteps(scene, table);
+  const building = Boolean(player && construction.ok);
+  const tableDone = !building || player.done;
+  const rowsShown = building ? tableRowsAt(player.cursor) : 4;
+
   const rows = [
     {
       key: 'roots',
@@ -357,11 +435,14 @@ function StudyReadout({ scene, data, onHighlight, t }) {
     {
       key: 'increasing',
       label: t('tools.analysis.study.variation'),
-      content: Array.isArray(scene.variation) && scene.variation.length > 0
-        ? scene.variation
-          .map((interval) => `${formatInterval(interval.from, interval.to)} ${t(`tools.analysis.study.${interval.direction}`)}`)
-          .join(' · ')
-        : '—',
+      pending: !tableDone,
+      content: !tableDone
+        ? t('tools.analysis.variationSteps.pending')
+        : Array.isArray(scene.variation) && scene.variation.length > 0
+          ? scene.variation
+            .map((interval) => `${formatInterval(interval.from, interval.to)} ${t(`tools.analysis.study.${interval.direction}`)}`)
+            .join(' · ')
+          : '—',
     },
     {
       key: 'asymptotes',
@@ -381,21 +462,44 @@ function StudyReadout({ scene, data, onHighlight, t }) {
     <section className="sa-ml-an__group">
       <h3 className="sa-ml-an__grouptitle">{t('tools.analysis.study.title')}</h3>
 
-      {Array.isArray(scene.domain) && scene.domain.length > 0 && (
+      {/* Sans construction possible (fenêtre trop étroite…), la lecture
+          d'avant : l'ensemble de définition et la note du tableau. */}
+      {!building && Array.isArray(scene.domain) && scene.domain.length > 0 && (
         <Row label={t('tools.analysis.study.domain')}>
           <MathText>{scene.domain.map((piece) => formatInterval(piece.from, piece.to)).join(' ∪ ')}</MathText>
         </Row>
       )}
 
-      {/* جدول التغيّرات : la synthèse du manuel, au-dessus du détail ligne
-          à ligne. C'est la forme sous laquelle un élève algérien REND une
-          étude de fonction. */}
-      <VariationTable
-        table={buildVariationTable(scene, scene.view)}
-        functionName="f"
-        derivativeSource={scene.primary?.derivativeSource ?? null}
-      />
+      {building && !player.started && (
+        <button
+          type="button"
+          className="sa-ml-an__action sa-ml-an__action--primary"
+          onClick={player.start}
+          data-ml-an-vbuild
+        >
+          <Footprints size={16} aria-hidden="true" />
+          <span>{t('tools.analysis.variationSteps.action')}</span>
+        </button>
+      )}
+      {building && player.started && (
+        <>
+          <StepPlayer player={player} sticky title={t('tools.analysis.variationSteps.title')} dataAttr="data-ml-an-vstep" />
+          <VariationStepList steps={construction.steps} cursor={player.cursor} t={t} />
+        </>
+      )}
 
+      {/* جدول التغيّرات : la synthèse du manuel. C'est la forme sous laquelle
+          un élève algérien REND une étude de fonction — et il la construit. */}
+      {(!building || rowsShown > 0) && (
+        <VariationTable
+          table={table}
+          functionName="f"
+          derivativeSource={scene.primary?.derivativeSource ?? null}
+          rows={rowsShown}
+        />
+      )}
+
+      <LabPanel id="analysis.study.readings" title={t('tools.analysis.study.readings')} className="sa-ml-an__panelblock">
       <ul className="sa-ml-an__studylist">
         {rows.map((row) => (
           <li key={row.key}>
@@ -407,14 +511,84 @@ function StudyReadout({ scene, data, onHighlight, t }) {
               data-ml-an-study={row.key}
             >
               <span className="sa-ml-an__studylabel">{row.label}</span>
-              <span className="sa-ml-an__studyvalue" dir="ltr">{row.content}</span>
+              <span className="sa-ml-an__studyvalue" dir={row.pending ? 'rtl' : 'ltr'}>{row.content}</span>
             </button>
           </li>
         ))}
       </ul>
       <p className="sa-ml-an__note">{t('tools.analysis.study.windowNote')}</p>
+      </LabPanel>
     </section>
   );
+}
+
+/**
+ * Les pas de la construction du tableau, jusqu'au pas courant SEULEMENT.
+ * Le texte arabe ne porte aucune formule : la notation est dans un îlot LTR.
+ */
+function VariationStepList({ steps, cursor, t }) {
+  const shown = steps.slice(0, cursor);
+
+  return (
+    <ol className="sa-ml-kit-steps" aria-label={t('tools.analysis.variationSteps.title')} data-ml-an-vsteps={shown.length}>
+      {shown.map((step, index) => (
+        <li
+          key={step.kind}
+          className={`sa-ml-kit-steps__item${index === shown.length - 1 ? ' is-current' : ''}${step.tone ? ` sa-ml-kit-steps__item--${step.tone}` : ''}`}
+          data-ml-an-vstage={step.kind}
+        >
+          <span className="sa-ml-kit-steps__index" aria-hidden="true">{index + 1}</span>
+          <div className="sa-ml-kit-steps__content">
+            <p className="sa-ml-kit-steps__text">{t(`tools.analysis.variationSteps.steps.${step.textKey}`)}</p>
+            <VariationStepDetail step={step} t={t} />
+          </div>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+function VariationStepDetail({ step, t }) {
+  switch (step.kind) {
+    case 'domain':
+      return (
+        <p className="sa-ml-kit-steps__math">
+          <MathText>
+            {step.domain.length > 0 ? step.domain.map((piece) => formatInterval(piece.from, piece.to)).join(' ∪ ') : '—'}
+          </MathText>
+        </p>
+      );
+    case 'derivative':
+      return step.derivativeSource ? (
+        <p className="sa-ml-kit-steps__math"><MathText>f′(x) = {step.derivativeSource}</MathText></p>
+      ) : (
+        <p className="sa-ml-kit-steps__note">{t('tools.analysis.variationSteps.measured')}</p>
+      );
+    case 'zeros':
+      return (
+        <>
+          {step.zeros.length > 0 ? (
+            <p className="sa-ml-kit-steps__math">
+              <MathText>
+                f′(x) = 0 ⇔ {step.zeros.length === 1
+                  ? `x = ${formatValue(step.zeros[0], 2)}`
+                  : `x ∈ {${step.zeros.map((x) => formatValue(x, 2)).join(' ; ')}}`}
+              </MathText>
+            </p>
+          ) : (
+            <p className="sa-ml-kit-steps__note">{t('tools.analysis.variationSteps.noZero')}</p>
+          )}
+          {step.breaks.length > 0 && (
+            <p className="sa-ml-kit-steps__note">
+              {t('tools.analysis.variationSteps.breaksAt')}{' '}
+              <bdi dir="ltr"><MathText>{step.breaks.map((x) => `x = ${formatValue(x, 2)}`).join(' ; ')}</MathText></bdi>
+            </p>
+          )}
+        </>
+      );
+    default:
+      return null;
+  }
 }
 
 function formatAsymptotes(asymptotes, t) {

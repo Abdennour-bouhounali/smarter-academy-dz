@@ -187,7 +187,7 @@
   direction: ltr;
   text-align: start;
   line-height: 1.8;
-  overflow-x: auto;
+  overflow: visible;
 }
 
 .sa-ml-nb__formula--big { font-size: 1.24rem; font-weight: 600; }
@@ -805,7 +805,7 @@
 .sa-ml-nb__columns {
   display: flex;
   gap: 8px;
-  overflow-x: auto;
+  overflow: visible;
   padding: 4px 2px 10px;
   direction: ltr;
 }
@@ -879,7 +879,7 @@
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.94rem;
   direction: ltr;
-  overflow-x: auto;
+  overflow: visible;
 }
 
 .sa-ml-nb__total-label { color: var(--nb-muted); margin-inline-end: 8px; font-family: 'Cairo', sans-serif; }
@@ -937,7 +937,7 @@
   display: flex;
   gap: 4px;
   border-bottom: 1px solid #e2e8f0;
-  overflow-x: auto;
+  overflow: visible;
 }
 
 .sa-ml-nb__tab {
@@ -1054,7 +1054,7 @@
 
 /* ── Tableaux ─────────────────────────────────────────────────────────── */
 
-.sa-ml-nb__table-wrap { overflow-x: auto; }
+.sa-ml-nb__table-wrap { overflow: visible; }
 
 .sa-ml-nb__table {
   border-collapse: collapse;
@@ -1229,8 +1229,8 @@
   gap: 3px;
   margin: 10px 0;
   direction: ltr;
-  max-height: 46vh;
-  overflow-y: auto;
+  /* max-height retiré : pas de défilement interne */
+  overflow: visible;
 }
 
 .sa-ml-nb__sieve.is-dense { grid-template-columns: repeat(auto-fill, minmax(26px, 1fr)); }
@@ -1261,7 +1261,7 @@
 
 /* ── L'arbre de facteurs (§24) ────────────────────────────────────────── */
 
-.sa-ml-nb__tree { overflow-x: auto; padding: 12px 0; direction: ltr; }
+.sa-ml-nb__tree { overflow: visible; padding: 12px 0; direction: ltr; }
 .sa-ml-nb__tree-node { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 
 .sa-ml-nb__tree-children {
@@ -1564,4 +1564,346 @@
 
 @media (prefers-reduced-motion: reduce) {
   .sa-ml-nb__euclid-group { transition: none; }
+}
+
+/* ══ 2026-09-30 — barre groupée, فوارق متتالية, القسمة الإقليدية, القوى والجذور, أولويات العمليات ══
+   Palette de la plateforme pour ce qui est neuf : vert #008443 (le geste,
+   ce qui reste), orange #F36D21 (ce qui VIENT de se passer : la pièce
+   soustraite, le reste d'une division, le nombre qu'on vient de calculer). */
+
+.sa-ml-nb { --nb-green: #008443; --nb-accent: #f36d21; --nb-accent-soft: #fdeee4; --nb-green-soft: #e6f4ec; }
+
+/* La barre partagée remplace la rangée de puces : elle garde le focus visible. */
+.sa-ml-nb .sa-ml-kit-nav__tab:focus-visible { outline: 2px solid var(--nb-green); outline-offset: 2px; }
+
+/* Une île LTR dans une phrase arabe : une formule ne s'y retourne jamais. */
+.sa-ml-nb__ltr {
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-family: 'JetBrains Mono', 'Inter', monospace;
+  white-space: nowrap;
+}
+
+.sa-ml-nb__math-line { direction: ltr; text-align: start; overflow: visible; padding: 2px 0; max-width: 100%; }
+.sa-ml-nb__math-line--big { font-size: 1.15rem; }
+.sa-ml-nb__field--wide { flex: 1 1 100%; }
+.sa-ml-nb__input--expression { flex: 1 1 auto; min-width: 0; width: 100%; font-size: 1rem; }
+
+/* ── PGCD بالفوارق المتتالية ─────────────────────────────────────────── */
+.sa-ml-nb__diff-now { display: flex; flex-wrap: wrap; gap: 8px; }
+.sa-ml-nb__diff-cell {
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 8px 12px; border: 1px solid var(--nb-line); border-radius: 10px; background: #fff;
+  min-width: 0;
+}
+.sa-ml-nb__diff-cell.is-accent { border-color: var(--nb-accent); background: var(--nb-accent-soft); }
+.sa-ml-nb__ribbons { margin: 6px 0; }
+.sa-ml-nb__ribbons svg { display: block; max-width: 640px; height: auto; }
+.sa-ml-nb__ribbon.is-big, .sa-ml-nb__ribbon.is-rest { fill: var(--nb-green); }
+.sa-ml-nb__ribbon.is-small { fill: #9ccfb3; }
+.sa-ml-nb__ribbon.is-cut { fill: var(--nb-accent); opacity: 0.45; }
+.sa-ml-nb__ribbon.is-cut.is-animated { animation: sa-ml-nb-cut 700ms ease-out forwards; }
+@keyframes sa-ml-nb-cut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0.45; transform: translateY(-5px); }
+}
+.sa-ml-nb__ribbon-value { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; fill: #1a1a1a; }
+.sa-ml-nb__ribbon-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 0.8rem; color: #334155; margin-top: 4px; }
+.sa-ml-nb__ribbon-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.sa-ml-nb__swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; }
+.sa-ml-nb__swatch.is-small { background: #9ccfb3; }
+.sa-ml-nb__swatch.is-cut { background: var(--nb-accent); }
+.sa-ml-nb__swatch.is-rest { background: var(--nb-green); }
+.sa-ml-nb__diff-result {
+  padding: 10px 12px; border-radius: 10px; background: var(--nb-green-soft); border: 1px solid #b7dcc7;
+  color: #065f46; font-weight: 700;
+}
+.sa-ml-nb__diff-result p { margin: 0 0 4px; }
+.sa-ml-nb__diff-table tr.is-current td { background: var(--nb-accent-soft); font-weight: 700; }
+.sa-ml-nb__compare { list-style: none; margin: 8px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.sa-ml-nb__compare li {
+  display: flex; flex-direction: column; gap: 2px; padding: 8px 12px;
+  border: 1px solid var(--nb-line); border-radius: 10px; background: #fff;
+}
+.sa-ml-nb__compare-steps { margin: 6px 0; padding-inline-start: 20px; }
+.sa-ml-nb__compare-steps li { margin: 3px 0; }
+.sa-ml-nb__step-note { margin-inline-start: 8px; font-size: 0.8rem; color: var(--nb-muted); }
+.sa-ml-nb__ppcm-ways { margin: 6px 0 0; padding-inline-start: 20px; line-height: 1.8; }
+.sa-ml-nb__ppcm-ways .sa-ml-nb__link { margin-inline-start: 8px; }
+
+/* ── القسمة الإقليدية ────────────────────────────────────────────────── */
+.sa-ml-nb__division-result { display: flex; flex-direction: column; gap: 6px; }
+.sa-ml-nb__division-terms { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; }
+.sa-ml-nb__division-terms div { padding: 6px 12px; border: 1px solid var(--nb-line); border-radius: 10px; background: #fff; }
+.sa-ml-nb__division-terms dt { font-size: 0.78rem; color: var(--nb-muted); }
+.sa-ml-nb__division-terms dd { margin: 0; font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--nb-green); font-size: 1.1rem; }
+.sa-ml-nb__division-terms dd.is-remainder { color: var(--nb-accent); }
+.sa-ml-nb__blocks { display: flex; flex-wrap: wrap; gap: 6px; direction: ltr; }
+.sa-ml-nb__block-group { display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 3px; border-radius: 6px; border: 1px dashed #b7dcc7; max-width: 100%; }
+.sa-ml-nb__block { width: 12px; height: 12px; border-radius: 2px; background: var(--nb-green); }
+.sa-ml-nb__block-group.is-tone1 .sa-ml-nb__block { background: #5fb487; }
+.sa-ml-nb__block-group.is-remainder { border-color: var(--nb-accent); border-style: solid; }
+.sa-ml-nb__block-group.is-remainder .sa-ml-nb__block { background: var(--nb-accent); }
+.sa-ml-nb__division-drawing svg { display: block; max-width: 640px; height: auto; }
+.sa-ml-nb__bar-group { stroke: #fff; stroke-width: 0.5; }
+.sa-ml-nb__bar-group.is-tone0 { fill: var(--nb-green); }
+.sa-ml-nb__bar-group.is-tone1 { fill: #5fb487; }
+.sa-ml-nb__bar-group.is-remainder { fill: var(--nb-accent); }
+
+/* ── القوى والجذور ───────────────────────────────────────────────────── */
+.sa-ml-nb__tens { list-style: none; margin: 4px 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.sa-ml-nb__root-steps { list-style: none; margin: 4px 0; padding: 0; }
+.sa-ml-nb__square-grid {
+  display: grid; gap: 2px; width: min(100%, 260px); aspect-ratio: 1 / 1; direction: ltr;
+}
+.sa-ml-nb__square-grid span { background: var(--nb-green); border-radius: 2px; }
+.sa-ml-nb__approx { margin: 6px 0 0; }
+
+/* ── أولويات العمليات ───────────────────────────────────────────────── */
+.sa-ml-nb__order-lines { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.sa-ml-nb__order-line { padding: 8px 12px; border: 1px solid var(--nb-line); border-radius: 10px; background: #fff; min-width: 0; }
+.sa-ml-nb__order-line.is-current { border-color: var(--nb-accent); box-shadow: 0 0 0 1px var(--nb-accent) inset; }
+.sa-ml-nb__order-line.is-initial { background: #f8fafc; }
+.sa-ml-nb__order-rule { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 0.88rem; color: #1a1a1a; }
+.sa-ml-nb__order-index {
+  display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px;
+  border-radius: 50%; background: var(--nb-green); color: #fff; font-size: 0.75rem; font-family: 'JetBrains Mono', monospace;
+}
+.sa-ml-nb__order-line.is-current .sa-ml-nb__order-index { background: var(--nb-accent); }
+.sa-ml-nb__order-result { padding: 10px 12px; border-radius: 10px; background: var(--nb-green-soft); border: 1px solid #b7dcc7; margin-top: 8px; }
+.sa-ml-nb__rules-list { margin: 0; padding-inline-start: 20px; line-height: 1.8; }
+.sa-ml-nb__error-caret mark { background: var(--nb-accent-soft); color: #9a3412; outline: 1px solid var(--nb-accent); border-radius: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sa-ml-nb__ribbon.is-cut.is-animated { animation: none; }
+}
+
+/* ── Les déroulés pas à pas (2026-09-30) ─────────────────────────────────
+   Le tableau (MathBoard) et les dessins qui suivent le curseur du lecteur
+   partagé. Un dessin « en vrac » (is-loose) est l'énoncé : gris neutre,
+   aucune couleur qui dirait déjà q ou r. */
+.sa-ml-nb__board { margin: 10px 0; min-width: 0; }
+.sa-ml-nb__block-group.is-loose { border-color: #cbd5e1; }
+.sa-ml-nb__block-group.is-loose .sa-ml-nb__block { background: #94a3b8; }
+.sa-ml-nb__bar-group.is-loose { fill: #cbd5e1; }
+.sa-ml-nb__division-after { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.sa-ml-nb__block-group { transition: border-color 0.25s ease; }
+.sa-ml-nb__block { transition: background-color 0.25s ease; }
+@media (prefers-reduced-motion: reduce) {
+  .sa-ml-nb__block-group, .sa-ml-nb__block { transition: none; }
+}
+
+/* Pas de barre de défilement DANS un élément (demande de la propriétaire,
+   2026-09-30) : formules, résultats, tableaux, arbres passent à la ligne ou
+   s'étendent ; seule la scène — l'écran de l'outil — défile. */
+
+/* ── « توحيد المقامات » : les deux formes redécoupées par le PPCM ─────────── */
+
+.sa-ml-nb__grid-cut {
+  stroke: #f36d21;
+  stroke-width: 1.4;
+  stroke-dasharray: 4 3;
+  pointer-events: none;
+  animation: sa-ml-nb-cut 0.6s ease both;
+}
+
+@keyframes sa-ml-nb-cut { from { opacity: 0; } to { opacity: 1; } }
+
+.sa-ml-nb__common {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 12px 0 0;
+  padding: 14px;
+  border: 1px solid #f9c9ad;
+  border-radius: 14px;
+  background: #fffaf6;
+  animation: sa-ml-nb-cut 0.35s ease both;
+}
+
+.sa-ml-nb__common-title { display: flex; flex-direction: column; gap: 4px; font-size: 0.88rem; color: #334155; line-height: 1.7; }
+.sa-ml-nb__common-title strong { color: #c2410c; font-size: 0.95rem; }
+
+.sa-ml-nb__common-shapes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.sa-ml-nb__common-shape {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+}
+
+.sa-ml-nb__common-note { margin: 0; font-size: 0.82rem; color: #475569; text-align: center; }
+.sa-ml-nb__common-formula { font-family: 'JetBrains Mono', 'Inter', sans-serif; font-weight: 700; color: #c2410c; unicode-bidi: isolate; }
+
+.sa-ml-nb__common-multiples { display: flex; flex-direction: column; gap: 6px; }
+
+.sa-ml-nb__common-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-family: 'JetBrains Mono', 'Inter', sans-serif;
+  font-size: 0.85rem;
+}
+
+.sa-ml-nb__common-label { min-width: 7.5rem; font-family: 'Cairo', 'Inter', sans-serif; font-weight: 700; color: #64748b; }
+
+.sa-ml-nb__common-multiple {
+  min-width: 2rem;
+  padding: 2px 6px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  text-align: center;
+}
+
+.sa-ml-nb__common-multiple.is-common {
+  background: #e6f4ec;
+  color: #006b36;
+  font-weight: 700;
+  outline: 2px solid #008443;
+}
+
+.sa-ml-nb__common-conclusion { margin: 0; font-size: 0.88rem; font-weight: 700; color: #006b36; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sa-ml-nb__grid-cut, .sa-ml-nb__common { animation: none; }
+}
+
+/* ── Les fractions « d'un seul regard » (MATH_LAB §3.5) ─────────────────────
+   Une ligne, lue de gauche à droite : [a] + [b] = [résultat], trois colonnes
+   égales ; dans chaque carte, la forme et, À CÔTÉ, son nom, couper / regrouper
+   et ses valeurs. Les formes et le calcul tiennent dans le même regard. */
+
+.sa-ml-nb__fraction-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: stretch;
+  gap: 10px;
+}
+
+.sa-ml-nb__fraction-row.is-compare { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
+
+.sa-ml-nb__fraction-row .sa-ml-nb__fraction-operator { grid-area: auto; align-self: center; font-size: 1.6rem; }
+.sa-ml-nb__fraction-row > * { grid-area: auto; }
+
+.sa-ml-nb__fraction-row .sa-ml-nb__fraction-card {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 10px;
+}
+
+.sa-ml-nb__fraction-row .sa-ml-nb__shape { flex: 1 1 auto; min-width: 0; }
+.sa-ml-nb__fraction-row .sa-ml-nb__shape--circle { flex: 0 0 auto; }
+.sa-ml-nb__fraction-row .sa-ml-nb__shape--bar svg,
+.sa-ml-nb__fraction-row .sa-ml-nb__shape--line svg { width: 100%; }
+
+.sa-ml-nb__fraction-side {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: 0;
+}
+
+.sa-ml-nb__fraction-name {
+  font-family: 'JetBrains Mono', 'Inter', monospace;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.sa-ml-nb__fraction-name--primary { color: var(--nb-primary); }
+.sa-ml-nb__fraction-name--secondary { color: var(--nb-secondary); }
+
+.sa-ml-nb__fraction-row .sa-ml-nb__fraction-actions { display: inline-flex; gap: 4px; }
+.sa-ml-nb__fraction-row .sa-ml-nb__fraction-actions .sa-ml-nb__tiny { min-width: 32px; min-height: 32px; justify-content: center; }
+
+.sa-ml-nb__fraction-row .sa-ml-nb__facts {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 2px 8px;
+  margin: 0;
+  font-size: 0.72rem;
+}
+
+.sa-ml-nb__fraction-row .sa-ml-nb__facts > div { display: contents; }
+.sa-ml-nb__fraction-row .sa-ml-nb__facts dt { color: var(--nb-muted); }
+.sa-ml-nb__fraction-row .sa-ml-nb__facts dd { margin: 0; font-family: 'JetBrains Mono', 'Inter', monospace; white-space: nowrap; }
+.sa-ml-nb__fraction-row .sa-ml-nb__facts dt { font-family: 'Cairo', 'Inter', sans-serif; white-space: nowrap; }
+
+.sa-ml-nb__fraction-card--result { background: #f0fdfa; border-color: #a7f3d0; }
+.sa-ml-nb__fraction-card--result .sa-ml-nb__fraction-raw { font-size: 1.2rem; font-weight: 800; color: var(--nb-result); font-family: 'JetBrains Mono', 'Inter', monospace; }
+.sa-ml-nb__fraction-card--result .sa-ml-nb__fraction-reduced { font-size: 0.95rem; color: var(--nb-result); font-family: 'JetBrains Mono', 'Inter', monospace; }
+
+.sa-ml-nb__fraction-card--pending {
+  justify-content: center;
+  border-style: dashed;
+  background: #f8fafc;
+}
+
+.sa-ml-nb__fraction-unknown { font-size: 2rem; font-weight: 800; color: #cbd5e1; font-family: 'JetBrains Mono', 'Inter', monospace; }
+
+.sa-ml-nb__row--between { justify-content: space-between; align-items: center; }
+
+/* Écran étroit : les cartes s'empilent, mais chacune GARDE sa forme et ses
+   informations côte à côte — c'est là qu'on gagne la hauteur. */
+@media (max-width: 760px) {
+  .sa-ml-nb__fraction-row,
+  .sa-ml-nb__fraction-row.is-compare { grid-template-columns: minmax(0, 1fr); }
+  .sa-ml-nb__fraction-row .sa-ml-nb__fraction-operator { justify-self: center; font-size: 1.3rem; line-height: 1; }
+}
+
+/* « D'un seul regard » (MATH_LAB §3.5) — la place laissée SOUS un tableau en
+   cours (pour amener le pas courant au centre) passe à la FIN du mode : sinon
+   ce qui suit le tableau (vérification, lectures) tombait 340 px plus bas. */
+.sa-ml-nb .sa-ml-board.is-running { padding-block-end: 0; }
+.sa-ml-nb__mode:has(.sa-ml-board.is-running) { padding-block-end: min(38vh, 340px); }
+
+/* LE DUO « figure | tableau » : le dessin à GAUCHE, le calcul qui le fait
+   avancer à DROITE, dans le même regard (lecture de gauche à droite, comme
+   au tableau). La figure reste collée en haut pendant que le tableau
+   s'allonge. Sous 900 px : la figure au-dessus, le tableau dessous. */
+.sa-ml-nb__duo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.sa-ml-nb__duo > * { min-width: 0; }
+.sa-ml-nb__duo-figure { position: sticky; top: 52px; display: flex; flex-direction: column; gap: 8px; z-index: 1; }
+.sa-ml-nb__duo-board { direction: rtl; }
+
+@media (max-width: 900px) {
+  .sa-ml-nb__duo { grid-template-columns: minmax(0, 1fr); }
+  .sa-ml-nb__duo-figure { position: static; }
+}
+
+/* Les en-têtes arabes d'un tableau ne prennent jamais la police à chasse fixe
+   (elle espace les lettres arabes et les rend illisibles). */
+.sa-ml-nb__table thead th { font-family: 'Cairo', 'Inter', sans-serif; }
+
+.sa-ml-nb__line-readout { gap: 6px 16px; flex-wrap: wrap; }
+.sa-ml-nb__line-readout .sa-ml-nb__formula { margin: 0; }
+.sa-ml-nb__line-distance { margin: 0; font-family: 'Cairo', 'Inter', sans-serif; }
+.sa-ml-nb__representations .sa-ml-nb__card--rep { direction: rtl; padding: 10px 12px; }
+.sa-ml-nb__representations .sa-ml-nb__card--rep h4 { margin: 0; }
+
+/* Les critères en DEUX colonnes (la liste tient dans le regard) ; la ligne
+   ouverte prend toute la largeur, sa raison juste sous elle. */
+@media (min-width: 760px) {
+  .sa-ml-nb__divtable { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 10px; }
+  .sa-ml-nb__divtable > .sa-ml-nb__divrow:has([aria-expanded='true']) { grid-column: 1 / -1; }
 }

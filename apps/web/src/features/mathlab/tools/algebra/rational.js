@@ -45,7 +45,8 @@ export function makeRational(numerator, denominator = 1) {
   const d = denominator * sign;
   const g = gcd(n, d) || 1;
 
-  return { n: n / g, d: d / g };
+  // `|| 0` : jamais de −0 (0 × −1), qui ne serait pas `equals` à un 0 stocké.
+  return { n: n / g || 0, d: d / g };
 }
 
 export const ZERO = Object.freeze({ n: 0, d: 1 });

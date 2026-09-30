@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import NumberLineStage from './NumberLineStage.jsx';
 import ValueInput from './ValueInput.jsx';
+import { LabPanel } from '../../shared/LabKit.jsx';
 import {
   fracToNumber, fracToText, compareFrac, comparisonSign, simplify, fracToDecimal,
 } from './fraction.js';
@@ -93,25 +94,32 @@ export default function LineMode({ state, onChange, compact }) {
           to: Math.max(...values),
           label: formatNumber(comparison.distance, 4),
         }] : []}
-        height={compact ? 150 : 178}
+        height={compact ? 140 : 156}
       />
 
-      {/* §45 : la comparaison et la distance. */}
+      {/* §45 : la comparaison (LTR) et la distance (phrase arabe + île LTR), sous le dessin. */}
       {comparison && (
-        <p className="sa-ml-nb__formula sa-ml-nb__formula--big" dir="ltr">
-          {fracToText(points[0])} {comparison.sign} {fracToText(points[1])}
-          <span className="sa-ml-nb__muted">
-            {' — '}{t('tools.numberLab.line.distance')} : {comparison.difference ? fracToText(simplify({ n: Math.abs(comparison.difference.n), d: comparison.difference.d })) : formatNumber(comparison.distance, 4)}
-          </span>
-        </p>
+        <div className="sa-ml-nb__row sa-ml-nb__row--between sa-ml-nb__line-readout">
+          <p className="sa-ml-nb__formula sa-ml-nb__formula--big" dir="ltr" data-ml-nb-line-compare>
+            {fracToText(points[0])} {comparison.sign} {fracToText(points[1])}
+          </p>
+          <p className="sa-ml-nb__muted sa-ml-nb__line-distance">
+            {t('tools.numberLab.line.distance')}{' : '}
+            <bdi dir="ltr" className="sa-ml-nb__ltr">
+              {comparison.difference ? fracToText(simplify({ n: Math.abs(comparison.difference.n), d: comparison.difference.d })) : formatNumber(comparison.distance, 4)}
+            </bdi>
+          </p>
+        </div>
       )}
 
-      {/* §46, §47 : LA MÊME VALEUR, quatre écritures — pour chaque point. */}
-      <div className="sa-ml-nb__representations">
-        {points.map((frac, index) => (
-          <RepresentationCard key={index} frac={frac} index={index} />
-        ))}
-      </div>
+      {/* §46, §47 : LA MÊME VALEUR, quatre écritures — repliable (MATH_LAB §3.5). */}
+      <LabPanel id="numberLab.line.values" title={t('tools.numberLab.line.valuesTitle')}>
+        <div className="sa-ml-nb__representations" dir="ltr">
+          {points.map((frac, index) => (
+            <RepresentationCard key={index} frac={frac} index={index} />
+          ))}
+        </div>
+      </LabPanel>
     </div>
   );
 }
@@ -131,7 +139,7 @@ function RepresentationCard({ frac, index }) {
   return (
     <section className={`sa-ml-nb__card sa-ml-nb__card--rep is-${index === 0 ? 'primary' : 'secondary'}`}>
       <h4>{t('tools.numberLab.line.pointLabel', { index: index + 1, value: '' })}</h4>
-      <dl className="sa-ml-nb__facts sa-ml-nb__facts--stack" dir="ltr">
+      <dl className="sa-ml-nb__facts" dir="ltr">
         <div>
           <dt>{t('tools.numberLab.modes.fractions')}</dt>
           <dd className="sa-ml-nb__rep-value">{fracToText(frac)}</dd>

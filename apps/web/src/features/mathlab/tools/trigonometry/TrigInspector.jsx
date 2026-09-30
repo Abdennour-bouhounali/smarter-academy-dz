@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { LabPanel } from '../../shared/LabKit.jsx';
 import { AlertCircle } from 'lucide-react';
 import {
   formatDegrees, formatRadians, formatRatio, formatSign, formatLength,
@@ -20,7 +21,7 @@ import { quadrantSigns, normalizeDegrees } from './trigMath.js';
  * l'élève lirait le couple à l'envers. Les LIBELLÉS, eux, suivent la page.
  */
 export default function TrigInspector({
-  state, valueMode, unit, highlight, identityPanel, tanPanel, onHighlight,
+  state, valueMode, unit, highlight, identityPanel, tanPanel, onHighlight, children = null,
 }) {
   const { t } = useTranslation('mathlab');
   const { degrees, normalized, sin, cos, tan, point, signs, identity, quadrant, axis } = state;
@@ -110,7 +111,13 @@ export default function TrigInspector({
         </span>
       </div>
 
+      {/* « D'un seul regard » (§3.5) : ce que l'élève a déclenché (la
+          résolution du triangle) vient JUSTE sous les rapports, à côté du
+          dessin ; les tables de référence suivent, dans des LabPanel. */}
+      {children}
+
       {/* ── La table des signes, avec la ligne courante (§20) ─────────── */}
+      <LabPanel id="trigonometry.inspector.signs" title={t('tools.trigonometry.signTableCaption')} className="sa-ml-trig__labpanel">
       <table className="sa-ml-trig__signtable" data-ml-trig-signtable>
         <caption className="sa-ml-trig__caption">{t('tools.trigonometry.signTableCaption')}</caption>
         <thead>
@@ -148,11 +155,12 @@ export default function TrigInspector({
           })}
         </tbody>
       </table>
+      </LabPanel>
 
       {/* ── tan = sin / cos (§23) ────────────────────────────────────── */}
       {tanPanel && (
+        <LabPanel id="trigonometry.inspector.tan" title={<bdi dir="ltr">tan(θ) = sin(θ) / cos(θ)</bdi>} className="sa-ml-trig__labpanel">
         <div className="sa-ml-trig__tanpanel" data-ml-trig-tanpanel>
-          <h3 className="sa-ml-trig__subheading" dir="ltr">tan(θ) = sin(θ) / cos(θ)</h3>
           <div className="sa-ml-trig__tanline" dir="ltr">
             <span className="sa-ml-trig__formula-frac">
               <span className="sa-ml-trig__formula-num">{sinReading.text}</span>
@@ -176,12 +184,13 @@ export default function TrigInspector({
             </p>
           )}
         </div>
+        </LabPanel>
       )}
 
       {/* ── sin²θ + cos²θ = 1, EN BARRE (§22) ─────────────────────────── */}
       {identityPanel && identity && (
+        <LabPanel id="trigonometry.inspector.identity" title={<bdi dir="ltr">sin²(θ) + cos²(θ) = 1</bdi>} className="sa-ml-trig__labpanel">
         <div className="sa-ml-trig__identity" data-ml-trig-identity>
-          <h3 className="sa-ml-trig__subheading" dir="ltr">sin²(θ) + cos²(θ) = 1</h3>
           {/* La balance de §22 : deux parts qui se compensent exactement. */}
           <div
             className="sa-ml-trig__bar"
@@ -217,6 +226,7 @@ export default function TrigInspector({
             </div>
           </dl>
         </div>
+        </LabPanel>
       )}
     </section>
   );

@@ -94,10 +94,15 @@ export function gcdByDefinition(a, b) {
  * étape a une différence NULLE (manuel : « و 13 − 13 = 0 »). Le PGCD est la
  * dernière différence non nulle.
  *
- * @returns {{steps: Array<{big:number, small:number, diff:number}>, gcd:number}}
+ * `maxSteps` borne la trace (1000 et 1 en demandent 1000). Une trace COUPÉE
+ * n'a pas atteint le fruit nul : elle rend `complete: false` et `gcd: null`
+ * — sa dernière différence non nulle n'est PAS le PGCD, et le dire serait
+ * faux (défaut corrigé le 2026-09-30).
+ *
+ * @returns {{steps: Array<{big:number, small:number, diff:number}>, gcd:number|null, complete:boolean}}
  */
 export function differenceSteps(a, b, { maxSteps = 10_000 } = {}) {
-  if (!isPositiveNatural(a) || !isPositiveNatural(b)) return { steps: [], gcd: null };
+  if (!isPositiveNatural(a) || !isPositiveNatural(b)) return { steps: [], gcd: null, complete: false };
   let big = Math.max(a, b);
   let small = Math.min(a, b);
   const steps = [];
@@ -110,7 +115,8 @@ export function differenceSteps(a, b, { maxSteps = 10_000 } = {}) {
     big = Math.max(small, diff);
     small = Math.min(small, diff);
   }
-  return { steps, gcd: lastNonZero ?? big };
+  const complete = steps.length > 0 && steps[steps.length - 1].diff === 0;
+  return { steps, gcd: complete ? (lastNonZero ?? big) : null, complete };
 }
 
 /** Le nombre d'étapes de la méthode des différences (le manuel demande « ثمان خطوات » pour 765 et 135). */

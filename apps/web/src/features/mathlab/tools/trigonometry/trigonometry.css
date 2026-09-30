@@ -1200,3 +1200,27 @@
     transition: none;
   }
 }
+
+/* ── « حلّ المثلث خطوة بخطوة » — le raisonnement déroulé (StepPlayer + StepList) ── */
+
+.sa-ml-trig__solve {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0 0 0.9rem;
+}
+
+.sa-ml-trig__solve .sa-ml-kit-steps__math {
+  overflow-x: auto;
+  text-align: left;
+}
+
+/* ── « D'un seul regard » (MATH_LAB §3.5) : les tables de référence sont des
+   LabPanel — le titre du panneau remplace la légende et le sous-titre. ── */
+.sa-ml-trig__labpanel { margin-bottom: 0.7rem; }
+.sa-ml-trig__labpanel .sa-ml-trig__caption {
+  position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+.sa-ml-trig__labpanel .sa-ml-trig__tanpanel,
+.sa-ml-trig__labpanel .sa-ml-trig__identity { margin: 0; padding: 0; background: transparent; }
+.sa-ml-trig__labpanel .sa-ml-trig__signtable { margin: 0; }

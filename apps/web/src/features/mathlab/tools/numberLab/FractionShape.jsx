@@ -9,6 +9,11 @@ import { fracToText, fracToNumber } from './fraction.js';
  * met au dénominateur commun, les parts nouvellement découpées s'éclairent
  * pour qu'on voie d'où viennent les douzièmes.
  *
+ * `grid` (« توحيد المقامات ») : le nombre de parts FINES par unité — le PPCM des
+ * dénominateurs. Les coupes de la fraction restent en trait plein ; les
+ * nouvelles coupes, en pointillé orange, montrent que chaque part se divise
+ * EXACTEMENT en `grid / d` parts fines (le PPCM « tombe juste » sur les deux).
+ *
  * `onSplit` fait de la barre un objet MANIPULABLE (§9) : cliquer une part la
  * coupe en deux, et l'élève voit `1/2 = 2/4` sans qu'on le lui dise.
  */
@@ -25,6 +30,7 @@ export default function FractionShape({
   width = 320,
   label = null,
   showLabel = true,
+  grid = null,
 }) {
   const { t } = useTranslation('mathlab');
   if (!frac || frac.d <= 0) return null;
@@ -60,6 +66,20 @@ export default function FractionShape({
               />
             );
           })}
+          {fineCuts(grid, total).map((k) => {
+            const angle = (k / grid) * Math.PI * 2 - Math.PI / 2;
+
+            return (
+              <line
+                key={`g-${k}`}
+                x1={80}
+                y1={80}
+                x2={80 + CIRCLE_R * Math.cos(angle)}
+                y2={80 + CIRCLE_R * Math.sin(angle)}
+                className="sa-ml-nb__grid-cut"
+              />
+            );
+          })}
         </svg>
         {showLabel && <figcaption className="sa-ml-nb__shape-caption">{text}</figcaption>}
       </figure>
@@ -79,6 +99,11 @@ export default function FractionShape({
 
             return <line key={index} x1={x} x2={x} y1={28} y2={40} className="sa-ml-nb__tick sa-ml-nb__tick--minor" />;
           })}
+          {grid && Array.from({ length: units }, (_, unit) => fineCuts(grid, total).map((k) => {
+            const x = 12 + ((unit + k / grid) / units) * (width - 24);
+
+            return <line key={`g-${unit}-${k}`} x1={x} x2={x} y1={30} y2={38} className="sa-ml-nb__grid-cut" />;
+          }))}
           {Array.from({ length: units + 1 }, (_, index) => {
             const x = 12 + (index / units) * (width - 24);
 
@@ -127,10 +152,30 @@ export default function FractionShape({
             </rect>
           );
         })}
+        {grid && Array.from({ length: units }, (_, unit) => fineCuts(grid, total).map((k) => {
+          const x = 2 + ((unit + k / grid) / units) * (width - 4);
+
+          return <line key={`g-${unit}-${k}`} x1={x} x2={x} y1={8} y2={BAR_HEIGHT - 8} className="sa-ml-nb__grid-cut" />;
+        }))}
       </svg>
       {showLabel && <figcaption className="sa-ml-nb__shape-caption">{text}</figcaption>}
     </figure>
   );
+}
+
+/**
+ * Les coupes FINES qui ne sont pas déjà des coupes de la fraction : k/grid pour
+ * k = 1 … grid − 1, sauf là où k/grid est un multiple de 1/d. Vide si `grid`
+ * n'est pas un multiple de `d` (il ne tomberait pas juste — ce n'est pas un
+ * dénominateur commun) ou s'il est trop grand pour être dessiné lisiblement.
+ */
+export function fineCuts(grid, d) {
+  if (!grid || !d || grid % d !== 0 || grid > 120) return [];
+  const step = grid / d;
+  const cuts = [];
+  for (let k = 1; k < grid; k += 1) if (k % step !== 0) cuts.push(k);
+
+  return cuts;
 }
 
 /** Un secteur de disque : le chemin SVG d'une part de tarte. */

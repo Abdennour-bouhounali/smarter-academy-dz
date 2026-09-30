@@ -16,7 +16,7 @@ import { MODES } from './numberState.js';
  */
 
 /** Les modes qui savent RECEVOIR un nombre entier (numberState.sendTo). */
-const RECEIVERS = Object.freeze(['explorer', 'place', 'line', 'divisibility', 'primes', 'factors', 'rounding', 'operations']);
+const RECEIVERS = Object.freeze(['explorer', 'place', 'line', 'divisibility', 'primes', 'factors', 'rounding', 'operations', 'division']);
 
 export default function SendToMenu({ value, onSend, exclude = null, label = null }) {
   const { t } = useTranslation('mathlab');

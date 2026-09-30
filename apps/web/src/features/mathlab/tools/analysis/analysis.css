@@ -1124,3 +1124,9 @@
 /* Le champ remplace un `<input>` dans une `<label>` : le libellé reste
    au-dessus, le champ prend la largeur. */
 .sa-ml-an__field > .sa-ml-an__mathfield { margin-block-start: 2px; }
+
+/* ── « D'un seul regard » (§3.5) : les lectures secondaires se masquent ── */
+
+.sa-ml-an__panelblock { margin-top: 8px; }
+.sa-ml-an__panelblock .sa-ml-an__group { padding: 0; border-bottom: none; }
+.sa-ml-an__panelblock .sa-ml-an__studylist { margin-top: 0; }

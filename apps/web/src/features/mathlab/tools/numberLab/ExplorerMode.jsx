@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { LabPanel } from '../../shared/LabKit.jsx';
 import NumberLineStage from './NumberLineStage.jsx';
 import ValueInput from './ValueInput.jsx';
 import SendToMenu from './SendToMenu.jsx';
@@ -61,14 +62,16 @@ export default function ExplorerMode({ value, onChangeValue, onSend, compact }) 
 
       <h3 className="sa-ml-nb__heading">{t('tools.numberLab.explorer.heading', { value: formatNumber(value) })}</h3>
 
-      {/* §4 : sa place sur la droite, tout de suite. */}
-      <NumberLineStage
-        view={view}
-        points={[{ value, tone: 'primary', draggable: false }]}
-        marks={[{ value: 0, tone: 'muted' }]}
-        height={compact ? 108 : 124}
-        ticksTarget={compact ? 6 : 10}
-      />
+      {/* §4 : sa place sur la droite — repliable (MATH_LAB §3.5). */}
+      <LabPanel id="numberLab.explorer.line" title={t('tools.numberLab.line.heading')}>
+        <NumberLineStage
+          view={view}
+          points={[{ value, tone: 'primary', draggable: false }]}
+          marks={[{ value: 0, tone: 'muted' }]}
+          height={compact ? 100 : 108}
+          ticksTarget={compact ? 6 : 10}
+        />
+      </LabPanel>
 
       <div className="sa-ml-nb__cards">
         {/* §4 : l'écriture développée. */}
@@ -93,10 +96,11 @@ export default function ExplorerMode({ value, onChangeValue, onSend, compact }) 
             <p className="sa-ml-nb__verdict is-prime">{t('tools.numberLab.explorer.isPrime')}</p>
           ) : (
             <p className="sa-ml-nb__verdict">
-              {t('tools.numberLab.explorer.isComposite', {
-                value: formatNumber(facts.absolute),
-                factor: facts.factors ? factorizationToText(facts.factors) : '—',
-              })}
+              {t('tools.numberLab.explorer.isCompositeLabel')}{' '}
+              {/* La formule isolée en LTR : sinon « 360 = 2³ × … » se lit à l'envers. */}
+              <bdi dir="ltr" className="sa-ml-nb__ltr">
+                {formatNumber(facts.absolute)} = {facts.factors ? factorizationToText(facts.factors) : '—'}
+              </bdi>
             </p>
           )}
           {facts.factors && facts.factors.length > 0 && (

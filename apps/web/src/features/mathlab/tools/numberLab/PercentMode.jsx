@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrendingUp, TrendingDown, Minus as MinusIcon } from 'lucide-react';
+import { LabPanel } from '../../shared/LabKit.jsx';
 import ValueInput from './ValueInput.jsx';
 import {
   percentageOf, percentageLadder, percentageChange, applyChange, inverseChange,
@@ -135,8 +136,7 @@ export default function PercentMode({ state, onChange, compact }) {
               </dl>
 
               {/* §15 : l'échelle — la proportionnalité d'un coup d'œil. */}
-              <section className="sa-ml-nb__panel">
-                <h4>{t('tools.numberLab.percent.ladder')}</h4>
+              <LabPanel id="numberLab.percent.ladder" title={t('tools.numberLab.percent.ladder')}>
                 <p className="sa-ml-nb__muted">{t('tools.numberLab.percent.ladderHint')}</p>
                 <ul className="sa-ml-nb__ladder" dir="ltr">
                   {ladder.map((stop) => (
@@ -153,7 +153,7 @@ export default function PercentMode({ state, onChange, compact }) {
                     </li>
                   ))}
                 </ul>
-              </section>
+              </LabPanel>
             </div>
           </div>
         </>

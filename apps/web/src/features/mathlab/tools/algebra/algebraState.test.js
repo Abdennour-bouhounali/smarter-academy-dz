@@ -84,7 +84,7 @@ describe('algebraState — document', () => {
   });
 
   it('porte une version de schéma', () => {
-    expect(ALGEBRA_SCHEMA_VERSION).toBe(1);
+    expect(ALGEBRA_SCHEMA_VERSION).toBe(2);
   });
 
   it('refuse proprement une opération qui déborde, sans abîmer le document', () => {

@@ -23,7 +23,7 @@ const KINDS = [
   { kind: 'divide', icon: Divide, labelKey: 'tools.algebra.divide' },
 ];
 
-export default function OperationControls({ suggestions, onApply, disabled, error }) {
+export default function OperationControls({ suggestions, onApply, disabled, error, idPrefix = 'eq' }) {
   const { t } = useTranslation('mathlab');
   const [kind, setKind] = useState('subtract');
   const [value, setValue] = useState('');
@@ -36,8 +36,8 @@ export default function OperationControls({ suggestions, onApply, disabled, erro
   }, [kind, value, onApply]);
 
   return (
-    <section className="sa-ml-alg__section" aria-labelledby="sa-ml-alg-ops">
-      <h3 className="sa-ml-alg__heading" id="sa-ml-alg-ops">{t('tools.algebra.operationsHeading')}</h3>
+    <section className="sa-ml-alg__section" aria-labelledby={`sa-ml-alg-ops-${idPrefix}`}>
+      <h3 className="sa-ml-alg__heading" id={`sa-ml-alg-ops-${idPrefix}`}>{t('tools.algebra.operationsHeading')}</h3>
 
       {suggestions.length > 0 && (
         <div className="sa-ml-alg__suggestions">
@@ -83,9 +83,9 @@ export default function OperationControls({ suggestions, onApply, disabled, erro
         </div>
 
         <div className="sa-ml-alg__value-row">
-          <label className="sa-ml-alg__value-label" htmlFor="sa-ml-alg-value">{t('tools.algebra.valueLabel')}</label>
+          <label className="sa-ml-alg__value-label" htmlFor={`sa-ml-alg-value-${idPrefix}`}>{t('tools.algebra.valueLabel')}</label>
           <input
-            id="sa-ml-alg-value"
+            id={`sa-ml-alg-value-${idPrefix}`}
             className="sa-ml-alg__value"
             type="text"
             inputMode="text"

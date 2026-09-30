@@ -884,9 +884,16 @@
 
 .sa-ml-ms__storyBody { margin-top: 8px; }
 
+.sa-ml-ms__storyBody {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Le récit pas à pas (`sa-ml-kit-steps`) : l'étape courante en orange, la règle en dernier. */
 .sa-ml-ms__storySteps {
   margin: 0;
-  padding-inline-start: 20px;
+  padding: 0;
   font-family: 'Cairo', system-ui, sans-serif;
   font-size: 0.83rem;
   line-height: 1.85;
@@ -896,6 +903,16 @@
 /* Le BADGE d'étape de la découverte. Il s'appelle `__phase` et non
    `__stage` : `__stage` est la SCÈNE (l'objet dessiné), et deux notions
    sous un même nom de classe ont déjà trompé la QA une fois. */
+.sa-ml-ms__storyRule {
+  margin: 4px 0 0;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: start;
+  unicode-bidi: isolate;
+}
+
 .sa-ml-ms__phase,
 .sa-ml-ms__phase--exploring,
 .sa-ml-ms__phase--conjecturing,

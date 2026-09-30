@@ -5,6 +5,9 @@ import { Statement, Notation } from './LogicPieces.jsx';
 import InductionStairs from './InductionStairs.jsx';
 import StairsClimb from './StairsClimb.jsx';
 import RecurrenceClimb from './RecurrenceClimb.jsx';
+import useStepReveal from '../../shared/useStepReveal.js';
+import StepPlayer from '../../shared/StepPlayer.jsx';
+import { inductionCaseSteps } from './proofReveal.js';
 import { INDUCTIONS, INDUCTION_CASES, findPreset } from './presets.js';
 import { validateStep, availableSteps, isComplete } from './proofMath.js';
 import { setInduction, placeInductionStep, undoInductionStep, resetInduction } from './logicState.js';
@@ -39,6 +42,14 @@ export default function InductionArea({ data, onChange, announce }) {
   const [hasStep, setHasStep] = useState(true);
   const [openCase, setOpenCase] = useState(null);
   const [refused, setRefused] = useState(null);
+
+  // Un exemple s'ouvre sur son raisonnement pas à pas (exigence 2026-09-30) :
+  // الحالة الأولى → الانتقال → الخلاصة ; l'escalier et le verdict sont le dernier pas.
+  const caseSteps = useMemo(
+    () => inductionCaseSteps(INDUCTION_CASES.find((item) => item.id === openCase)),
+    [openCase],
+  );
+  const casePlayer = useStepReveal(caseSteps.length, { resetKey: openCase });
 
   const placed = state.placed;
   const complete = isComplete(proof, placed);
@@ -153,7 +164,11 @@ export default function InductionArea({ data, onChange, announce }) {
                   type="button"
                   className={`sa-ml-lg__step${item.works ? '' : ' is-contradiction'}`}
                   aria-expanded={open}
-                  onClick={() => setOpenCase(open ? null : item.id)}
+                  onClick={() => {
+                    setOpenCase(open ? null : item.id);
+                    // Ouvrir un exemple, c'est demander son raisonnement : le premier pas vient avec.
+                    if (!open) casePlayer.start();
+                  }}
                   data-ml-lg-induction-case={item.id}
                   data-ml-lg-case-works={String(item.works)}
                 >
@@ -166,38 +181,58 @@ export default function InductionArea({ data, onChange, announce }) {
                 </button>
 
                 {open && (
-                  <div className="sa-ml-lg__caseBody" data-ml-lg-case-detail={item.id}>
-                    <InductionStairs
-                      hasBase={item.baseHolds}
-                      hasStep={item.stepHolds}
-                      breakAt={item.breakAt ?? 3}
-                      caption={t(`tools.logic.induction.cases.${item.id}.claim`)}
-                    />
+                  <div className="sa-ml-lg__caseBody" data-ml-lg-case-detail={item.id} data-ml-lg-case-shown={casePlayer.cursor}>
+                    <StepPlayer player={casePlayer} sticky title={t('tools.logic.induction.caseSteps.title')} dataAttr="data-ml-lg-case-step" />
+                    <ol className="sa-ml-lg__caseSteps">
+                      {caseSteps.slice(0, casePlayer.cursor).map((step, index) => {
+                        const current = index === casePlayer.cursor - 1;
+                        const label = {
+                          base: t('tools.logic.induction.baseLabel'),
+                          heredity: t('tools.logic.induction.stepLabel'),
+                          conclusion: t('tools.logic.induction.caseSteps.conclusion'),
+                        }[step.kind];
 
-                    <ul className="sa-ml-lg__chips">
-                      <li className={`sa-ml-lg__chip ${item.baseHolds ? 'sa-ml-lg__chip--true' : 'sa-ml-lg__chip--false'}`}>
-                        {t('tools.logic.induction.baseLabel')}
-                        {' '}
-                        {item.baseHolds ? '✓' : '✗'}
-                      </li>
-                      <li className={`sa-ml-lg__chip ${item.stepHolds ? 'sa-ml-lg__chip--true' : 'sa-ml-lg__chip--false'}`}>
-                        {t('tools.logic.induction.stepLabel')}
-                        {' '}
-                        {item.stepHolds ? '✓' : '✗'}
-                      </li>
-                    </ul>
-
-                    <p className={`sa-ml-lg__message sa-ml-lg__message--${item.works ? 'ok' : 'no'}`}>
-                      {t(`tools.logic.induction.cases.${item.id}.why`)}
-                    </p>
-
-                    {item.checkAt && (
-                      <p className="sa-ml-lg__note">
-                        {t('tools.logic.induction.checkAt')}
-                        {': '}
-                        <Notation>{item.checkAt}</Notation>
-                      </p>
-                    )}
+                        return (
+                          <li
+                            key={step.kind}
+                            className={`sa-ml-lg__caseStep${current ? ' is-current' : ''}${step.kind === 'conclusion' ? ' is-conclusion' : ''}`}
+                            data-ml-lg-case-step-kind={step.kind}
+                          >
+                            {step.kind !== 'conclusion' ? (
+                              <p className="sa-ml-lg__caseStepLine">
+                                <span className={`sa-ml-lg__chip ${step.holds ? 'sa-ml-lg__chip--true' : 'sa-ml-lg__chip--false'}`}>
+                                  {label}
+                                  {' '}
+                                  {step.holds ? '✓' : '✗'}
+                                </span>
+                                {' '}
+                                <span>{t(`tools.logic.induction.caseSteps.${step.kind}.${step.holds ? 'holds' : 'fails'}`)}</span>
+                              </p>
+                            ) : (
+                              <>
+                                <p className="sa-ml-lg__caseStepLine"><strong>{label}</strong></p>
+                                <InductionStairs
+                                  hasBase={item.baseHolds}
+                                  hasStep={item.stepHolds}
+                                  breakAt={item.breakAt ?? 3}
+                                  caption={t(`tools.logic.induction.cases.${item.id}.claim`)}
+                                />
+                                <p className={`sa-ml-lg__message sa-ml-lg__message--${item.works ? 'ok' : 'no'}`}>
+                                  {t(`tools.logic.induction.cases.${item.id}.why`)}
+                                </p>
+                                {item.checkAt && (
+                                  <p className="sa-ml-lg__note">
+                                    {t('tools.logic.induction.checkAt')}
+                                    {': '}
+                                    <Notation>{item.checkAt}</Notation>
+                                  </p>
+                                )}
+                              </>
+                            )}
+                          </li>
+                        );
+                      })}
+                    </ol>
                   </div>
                 )}
               </li>

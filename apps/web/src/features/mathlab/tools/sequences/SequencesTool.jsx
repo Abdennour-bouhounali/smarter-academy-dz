@@ -264,6 +264,9 @@ export default function SequencesTool({ initialData, onChange, onReady }) {
       attempts: 0,
       hintsUsed: 0,
       verdict: null,
+      revealMode: null,
+      revealPending: false,
+      revealPosed: false,
       seen: current.seen + 1,
     }));
 
@@ -314,8 +317,10 @@ export default function SequencesTool({ initialData, onChange, onReady }) {
       const solved = verdict.correct && current.phase === 'predict' ? current.solved + 1 : current.solved;
       // Une réponse fausse ne ferme RIEN : on note le verdict et on en reste là.
       const next = { ...current, verdict, attempts: current.attempts + 1, solved };
-      if (verdict.correct) {
+      if (verdict.correct && current.phase !== 'reveal') {
+        // L'élève a PRODUIT la réponse : la révélation est entière et immédiate.
         next.phase = 'reveal';
+        next.revealMode = 'answer';
         next.revealPending = true;
       }
 
@@ -330,8 +335,22 @@ export default function SequencesTool({ initialData, onChange, onReady }) {
     }));
   }, []);
 
+  /**
+   * « اكشف » DEMANDÉ : la solution se déroule pas à pas dans le panneau
+   * (exigence 2026-09-30). La suite n'est posée dans l'espace — curseur sur
+   * le terme demandé, tableau allumé — qu'au DERNIER pas (`completeReveal`) :
+   * sinon le tableau donnerait la réponse avant la fin du déroulé.
+   */
   const revealPractice = useCallback(() => {
-    setPractice((current) => ({ ...current, phase: 'reveal', revealPending: true }));
+    setPractice((current) => ({ ...current, phase: 'reveal', revealMode: 'request', revealPending: false }));
+  }, []);
+
+  const completeReveal = useCallback(() => {
+    setPractice((current) => (
+      current.phase === 'reveal' && current.revealMode === 'request' && !current.revealPending && !current.revealPosed
+        ? { ...current, revealPending: true, revealPosed: true }
+        : current
+    ));
   }, []);
 
   /**
@@ -632,6 +651,7 @@ export default function SequencesTool({ initialData, onChange, onReady }) {
               onSubmit={submitPractice}
               onHint={hintPractice}
               onReveal={revealPractice}
+              onRevealDone={completeReveal}
               onNext={nextChallenge}
               onClose={closePractice}
             />

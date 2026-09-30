@@ -18,9 +18,13 @@ import { DICTIONARY_GROUPS, entriesOfGroup } from './dictionary.js';
  * Ce n'est pas un état du document — un dictionnaire ouvert n'est pas un
  * travail — donc il vit en `useState` et ne voyage pas jusqu'au serveur.
  */
-export default function DictionaryPanel() {
+export default function DictionaryPanel({ open: controlledOpen, onToggle } = {}) {
   const { t } = useTranslation('mathlab');
-  const [open, setOpen] = useState(false);
+  const [ownOpen, setOwnOpen] = useState(false);
+  // Contrôlable par le parent (LogicLabTool élargit le pupitre quand le
+  // lexique s'ouvre — §3.5) ; autonome sinon.
+  const open = controlledOpen ?? ownOpen;
+  const setOpen = onToggle ? (update) => onToggle(typeof update === 'function' ? update(open) : update) : setOwnOpen;
 
   return (
     <section className="sa-ml-lg__card" data-ml-lg-dictionary>

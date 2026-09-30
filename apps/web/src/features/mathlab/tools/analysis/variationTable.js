@@ -308,3 +308,69 @@ function boundaryLimit(fn, x, side, view, source) {
 }
 
 
+
+/* ══════════════════════════════════════════════════════════════════════════
+ * LA CONSTRUCTION PAS À PAS du tableau — comme l'élève la fait sur sa copie.
+ *
+ * Exigence de la propriétaire (2026-09-30) : le جدول التغيّرات n'apparaît plus
+ * complet d'un bloc. Il se construit dans l'ordre du manuel, et le tableau
+ * complet est le DERNIER pas :
+ *
+ *   1. domain      مجموعة التعريف (celle qu'on observe dans la fenêtre)
+ *   2. derivative  f′(x), écrite (règles) ou mesurée
+ *   3. zeros       f′(x) = 0 → les colonnes x (+ les pôles, les bornes) ; la ligne x et les « 0 »
+ *   4. sign        le signe de f′ sur chaque intervalle
+ *   5. arrows      les flèches ↗ ↘ (le sens de variation)
+ *   6. values      les images aux colonnes (extrema, bornes ou ±∞) — le tableau COMPLET
+ *
+ * `tableRows` dit combien de lignes du tableau un pas fait exister :
+ * 0 (pas encore de tableau), 1 (x + les zéros et barres de f′), 2 (+ signes),
+ * 3 (+ flèches), 4 (+ valeurs = complet). `VariationTable` ne rend QUE ces
+ * lignes : une case future n'est pas dans le DOM.
+ *
+ * Aucune mathématique nouvelle : chaque pas lit la scène et le tableau déjà
+ * calculés. La liste est donc de longueur FIXE — elle ne dépend que de ce que
+ * le tableau existe — et un glissement de fenêtre ou de paramètre garde le
+ * pas où l'élève en est, le contenu suivant la nouvelle lecture.
+ * ══════════════════════════════════════════════════════════════════════════ */
+
+export const VARIATION_STAGES = Object.freeze(['domain', 'derivative', 'zeros', 'sign', 'arrows', 'values']);
+
+/** Les lignes du tableau qu'un pas (1-indexé, `cursor`) fait exister. */
+export function tableRowsAt(cursor) {
+  return Math.max(0, Math.min(4, cursor - 2));
+}
+
+/**
+ * @param {object} scene  la scène résolue (buildScene)
+ * @param {object} table  buildVariationTable(scene, view)
+ * @returns {{ok: false} | {ok: true, steps: Array<{kind, textKey, tableRows, tone?, ...}>}}
+ */
+export function buildVariationSteps(scene, table) {
+  if (!scene || scene.error || !table?.ok) return { ok: false, steps: [] };
+
+  const zeros = table.columns.filter((column) => column.kind === CRITICAL).map((column) => column.x);
+  const breaks = table.columns.filter((column) => column.kind === BREAK).map((column) => column.x);
+
+  const steps = [
+    {
+      kind: 'domain',
+      domain: Array.isArray(scene.domain) ? scene.domain.map((piece) => ({ from: piece.from, to: piece.to })) : [],
+    },
+    {
+      kind: 'derivative',
+      derivativeSource: scene.primary?.derivativeSource ?? null,
+      exact: Boolean(scene.primary?.derivativeExact),
+    },
+    { kind: 'zeros', zeros, breaks },
+    { kind: 'sign', signs: table.intervals.map((interval) => interval.sign) },
+    { kind: 'arrows', directions: table.intervals.map((interval) => interval.direction) },
+    {
+      kind: 'values',
+      tone: 'result',
+      values: table.columns.map((column) => (column.infinite ? column.infinite * Infinity : column.value)),
+    },
+  ].map((step, index) => ({ ...step, textKey: step.kind, tableRows: tableRowsAt(index + 1) }));
+
+  return { ok: true, steps };
+}

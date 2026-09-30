@@ -1,12 +1,15 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Undo2, RotateCcw, Shuffle } from 'lucide-react';
+import useStepReveal from '../../shared/useStepReveal.js';
+import StepPlayer from '../../shared/StepPlayer.jsx';
 import { Statement } from './LogicPieces.jsx';
 import { DIRECT_PROOFS, findPreset } from './presets.js';
 import {
   validateStep, availableSteps, isComplete, firstOrderError, makeGapChallenge,
-  checkGapAnswer, proofLayers, stepIds,
+  checkGapAnswer, stepIds,
 } from './proofMath.js';
+import { treeReveal, visibleTreeRanks } from './proofReveal.js';
 import {
   PROOF_MODES, setProof, setProofMode, placeStep, undoStep, resetProof, nextGap,
 } from './logicState.js';
@@ -255,7 +258,13 @@ export default function ProofArea({ data, onChange, announce }) {
         </section>
       )}
 
-      <ProofTree proof={proof} placed={placed} stepText={stepText} />
+      <ProofTree
+        proof={proof}
+        placed={state.mode === 'gap' ? [] : placed}
+        complete={state.mode !== 'gap' && complete}
+        resetKey={`${proof.id}|${state.mode}|${state.gapSeed}`}
+        stepText={stepText}
+      />
     </>
   );
 }
@@ -329,34 +338,65 @@ function GapMode({ gap, proof, stepText, answer, onAnswer, onNext }) {
 
 /**
  * §32 — L'ARBRE. Les rangs viennent du graphe : une conclusion qui dépend de
- * deux branches apparaît APRÈS elles et les réunit. Les étapes déjà posées
- * sont marquées, de sorte que l'arbre sert aussi de carte d'avancement.
+ * deux branches apparaît APRÈS elles et les réunit.
+ *
+ * ── L'arbre ne donne pas la preuve d'un bloc (exigence 2026-09-30) ───────
+ * Il était dessiné en entier dès l'ouverture — l'ordre des modes « رتّب »
+ * et la carte retirée du mode « الناقصة » s'y lisaient avant que l'élève
+ * ait rien fait. Désormais il montre :
+ *   - les étapes que l'élève a POSÉES (sa construction — la carte d'avancement) ;
+ *   - et, sur demande, le reste rang par rang (`useStepReveal`, un pas = un
+ *     rang du graphe, chaque nœud avec son rôle : معطى, قاعدة, استنتاج, النتيجة) ;
+ *     le dernier rang est la conclusion.
+ * Une preuve que l'élève a achevée s'affiche entière : il l'a produite.
+ * Un rang futur n'est pas dans le DOM.
  */
-function ProofTree({ proof, placed, stepText }) {
+function ProofTree({ proof, placed, complete, resetKey, stepText }) {
   const { t } = useTranslation('mathlab');
-  const layers = useMemo(() => proofLayers(proof), [proof]);
+  const layers = useMemo(() => treeReveal(proof), [proof]);
+  const player = useStepReveal(layers.length, { resetKey });
+  const ranks = visibleTreeRanks(layers, { revealed: complete ? layers.length : player.cursor, placed });
+  const lastRank = layers.length - 1;
 
   return (
-    <section className="sa-ml-lg__card" data-ml-lg-proof-tree>
+    <section className="sa-ml-lg__card" data-ml-lg-proof-tree data-ml-lg-tree-shown={ranks.length}>
       <h3 className="sa-ml-lg__sectionTitle">{t('tools.logic.proof.treeHeading')}</h3>
-      <div className="sa-ml-lg__tree">
-        {layers.map((rank, index) => (
-          <div key={index}>
-            <div className="sa-ml-lg__treeRank" data-ml-lg-tree-rank={index}>
-              {rank.map((step) => (
-                <span
-                  key={step.id}
-                  className={`sa-ml-lg__treeNode${placed.includes(step.id) ? ' is-placed' : ''}`}
-                  data-ml-lg-tree-node={step.id}
+      {!complete && (
+        <StepPlayer player={player} sticky title={t('tools.logic.proof.treeSteps')} dataAttr="data-ml-lg-tree-step" />
+      )}
+      {ranks.length === 0 ? (
+        <p className="sa-ml-lg__note" data-ml-lg-tree-empty>{t('tools.logic.proof.treeEmpty')}</p>
+      ) : (
+        <div className="sa-ml-lg__tree">
+          {ranks.map(({ index, steps }, position) => {
+            const current = !complete && index === player.cursor - 1;
+            const conclusion = index === lastRank && (complete || player.done);
+
+            return (
+              <div key={index}>
+                <div
+                  className={`sa-ml-lg__treeRank${current ? ' is-current' : ''}${conclusion ? ' is-conclusion' : ''}`}
+                  data-ml-lg-tree-rank={index}
                 >
-                  {stepText(step.id)}
-                </span>
-              ))}
-            </div>
-            {index < layers.length - 1 && <div className="sa-ml-lg__treeJoin" aria-hidden="true">↓</div>}
-          </div>
-        ))}
-      </div>
+                  {steps.map((step) => (
+                    <span
+                      key={step.id}
+                      className={`sa-ml-lg__treeNode${placed.includes(step.id) ? ' is-placed' : ''}`}
+                      data-ml-lg-tree-node={step.id}
+                    >
+                      {step.role && (
+                        <span className="sa-ml-lg__treeRole">{t(`tools.logic.proof.roles.${step.role}`)}</span>
+                      )}
+                      {stepText(step.id)}
+                    </span>
+                  ))}
+                </div>
+                {position < ranks.length - 1 && <div className="sa-ml-lg__treeJoin" aria-hidden="true">↓</div>}
+              </div>
+            );
+          })}
+        </div>
+      )}
       <p className="sa-ml-lg__note">{t('tools.logic.proof.treeHint')}</p>
     </section>
   );

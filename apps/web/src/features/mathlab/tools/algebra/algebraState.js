@@ -1,6 +1,13 @@
 /**
  * L'ÉTAT du مختبر الجبر — logique pure, sans React.
  *
+ * V2 (2026-09-30) : le laboratoire a six SECTIONS (المعادلات، المتراجحات،
+ * الأنظمة، تبسيط التعابير، التحليل إلى عوامل، الدوال). Le niveau SUPÉRIEUR du
+ * document reste exactement le format V1 ci-dessous — c'est la section
+ * « المعادلات » — pour qu'un document enregistré avant V2 se rouvre tel quel.
+ * Chaque nouvelle section a son sous-objet (`inequalities`, `systems`,
+ * `simplify`, `factor`, `functions`) et `section` dit laquelle est affichée.
+ *
  *     data = {
  *       source:  '2x + 3 = 11',     // la saisie d'origine, telle qu'écrite
  *       steps:   [ { equation, operation | null, flipped } , … ],
@@ -25,8 +32,26 @@
 
 import * as R from './rational.js';
 import { parseEquation, isRelation, sameEquation, equationToText } from './equation.js';
+import { DEFAULT_SYSTEM } from './systems.js';
+import { FUNCTION_FAMILIES, DEFAULT_FUNCTION, normalizeCoefficient } from './functions.js';
 
-export const ALGEBRA_SCHEMA_VERSION = 1;
+export const ALGEBRA_SCHEMA_VERSION = 2;
+
+export const ALGEBRA_SECTIONS = Object.freeze(['equations', 'inequalities', 'systems', 'simplify', 'factor', 'functions']);
+export const SYSTEM_METHODS = Object.freeze(['substitution', 'elimination', 'graphical']);
+
+/** La متراجحة d'ouverture de sa section : un coefficient négatif, pour que le sens se retourne. */
+export const DEFAULT_INEQUALITY_SOURCE = '-2x + 3 < 9';
+export const DEFAULT_SIMPLIFY_SOURCE = '(x + 2)(x - 3)';
+export const DEFAULT_FACTOR_SOURCE = 'x^2 + 5x + 6';
+
+/** Le chemin des متراجحات est plus court : deux chemins doivent tenir ensemble sous le plafond. */
+export const MAX_INEQUALITY_STEPS = 30;
+
+/** Le document sérialisé reste SOUS ce budget (le serveur refuse au-delà de 20 000 octets). */
+export const SIZE_BUDGET = 18_000;
+
+const MAX_TEXT = 200;
 
 /** Un exercice de quatrième tient en quelques pas ; au-delà, on oublie les plus anciens. */
 export const MAX_STEPS = 60;
@@ -82,7 +107,9 @@ function normalizeOperation(raw) {
   if (!value) return null;
   if ((raw.kind === 'multiply' || raw.kind === 'divide') && R.isZero(value)) return null;
 
-  return { kind: raw.kind, value };
+  const term = raw.term === 'x' && (raw.kind === 'add' || raw.kind === 'subtract') ? { term: 'x' } : {};
+
+  return { kind: raw.kind, value, ...term };
 }
 
 function normalizeNumberLine(raw) {
@@ -109,16 +136,16 @@ export function normalizeParameters(raw) {
 }
 
 /**
- * N'importe quel `data` → l'état V1 complet et sûr. Un pas illisible
+ * Un CHEMIN (saisie, pas, curseur…) stocké → sûr. Un pas illisible
  * interrompt la relecture : on garde le chemin jusqu'à lui, jamais un
  * historique troué qui ne raconterait plus rien.
  */
-export function normalizeAlgebraData(raw) {
+export function normalizePath(raw, { defaultSource = DEFAULT_SOURCE, maxSteps = MAX_STEPS } = {}) {
   const source = isPlainObject(raw) ? raw : {};
   const steps = [];
 
   if (Array.isArray(source.steps)) {
-    for (const rawStep of source.steps.slice(0, MAX_STEPS)) {
+    for (const rawStep of source.steps.slice(0, maxSteps)) {
       const equation = normalizeEquation(rawStep?.equation);
       if (!equation) break;
       const operation = steps.length === 0 ? null : normalizeOperation(rawStep?.operation);
@@ -127,21 +154,76 @@ export function normalizeAlgebraData(raw) {
     }
   }
 
+  const typed = typeof source.source === 'string' && source.source.trim() ? source.source : null;
+  const fromDefault = steps.length === 0 && !typed;
   if (steps.length === 0) {
-    const parsed = parseEquation(typeof source.source === 'string' && source.source.trim() ? source.source : DEFAULT_SOURCE);
-    const fallback = parsed.ok ? parsed.equation : parseEquation(DEFAULT_SOURCE).equation;
+    const parsed = parseEquation(typed ?? defaultSource);
+    const fallback = parsed.ok ? parsed.equation : parseEquation(defaultSource).equation;
     steps.push({ equation: fallback, operation: null, flipped: false });
   }
 
   const cursor = Number.isInteger(source.cursor) ? Math.max(0, Math.min(steps.length - 1, source.cursor)) : steps.length - 1;
 
   return {
-    source: typeof source.source === 'string' && source.source.trim() ? source.source.slice(0, 200) : equationToText(steps[0].equation),
+    source: typed ? typed.slice(0, MAX_TEXT) : (fromDefault ? defaultSource : equationToText(steps[0].equation)),
     steps,
     cursor,
     showSolution: source.showSolution === true,
-    parameters: normalizeParameters(source.parameters),
     numberLine: normalizeNumberLine(source.numberLine),
+  };
+}
+
+function readText(value, fallback, max = MAX_TEXT) {
+  return typeof value === 'string' && value.trim() ? value.slice(0, max) : fallback;
+}
+
+export function normalizeSystems(raw) {
+  const source = isPlainObject(raw) ? raw : {};
+
+  return {
+    first: readText(source.first, DEFAULT_SYSTEM.first, 120),
+    second: readText(source.second, DEFAULT_SYSTEM.second, 120),
+    method: SYSTEM_METHODS.includes(source.method) ? source.method : 'substitution',
+  };
+}
+
+export function normalizeFunctions(raw) {
+  const source = isPlainObject(raw) ? raw : {};
+  const family = FUNCTION_FAMILIES.includes(source.family) ? source.family : DEFAULT_FUNCTION.family;
+  let a = normalizeCoefficient(source.a, 'a', DEFAULT_FUNCTION.a);
+  if (family === 'quadratic' && a === 0) a = 1;
+  const tableStart = Number.isFinite(source.tableStart) ? Math.max(-50, Math.min(50, Math.round(source.tableStart * 2) / 2)) : -3;
+  const rawStep = Number.isFinite(source.tableStep) ? Math.round(source.tableStep * 2) / 2 : 1;
+  const tableStep = rawStep === 0 ? 1 : Math.max(-10, Math.min(10, rawStep));
+
+  return {
+    family,
+    a,
+    b: normalizeCoefficient(source.b, 'b', DEFAULT_FUNCTION.b),
+    c: normalizeCoefficient(source.c, 'c', DEFAULT_FUNCTION.c),
+    tableStart,
+    tableStep,
+  };
+}
+
+/**
+ * N'importe quel `data` → l'état V2 complet et sûr. Un document V1 (sans
+ * `section`) s'ouvre sur « المعادلات », son chemin intact ; les autres
+ * sections prennent leurs valeurs d'ouverture. Ne jette jamais.
+ */
+export function normalizeAlgebraData(raw) {
+  const source = isPlainObject(raw) ? raw : {};
+  const path = normalizePath(source);
+
+  return {
+    ...path,
+    parameters: normalizeParameters(source.parameters),
+    section: ALGEBRA_SECTIONS.includes(source.section) ? source.section : 'equations',
+    inequalities: normalizePath(source.inequalities, { defaultSource: DEFAULT_INEQUALITY_SOURCE, maxSteps: MAX_INEQUALITY_STEPS }),
+    systems: normalizeSystems(source.systems),
+    simplify: { source: readText(source.simplify?.source, DEFAULT_SIMPLIFY_SOURCE) },
+    factor: { source: readText(source.factor?.source, DEFAULT_FACTOR_SOURCE) },
+    functions: normalizeFunctions(source.functions),
   };
 }
 
@@ -159,6 +241,7 @@ export function createAlgebraData(seed = undefined) {
     source,
     showSolution: false,
     parameters: isPlainObject(seed) && seed.parameters === true ? { a: 2, b: 3, c: 11 } : null,
+    section: isPlainObject(seed) && ALGEBRA_SECTIONS.includes(seed.section) ? seed.section : 'equations',
   });
 }
 
@@ -187,11 +270,11 @@ export function redo(data) {
  * repris la main à cet endroit). Un pas qui ne change rien — ajouter 0,
  * multiplier par 1 — n'est pas empilé : l'historique ne raconterait rien.
  */
-export function pushStep(data, equation, operation, flipped = false) {
+export function pushStep(data, equation, operation, flipped = false, maxSteps = MAX_STEPS) {
   const kept = data.steps.slice(0, data.cursor + 1);
   if (sameEquation(kept[kept.length - 1]?.equation, equation)) return data;
   const steps = [...kept, { equation, operation, flipped }];
-  const overflow = Math.max(0, steps.length - MAX_STEPS);
+  const overflow = Math.max(0, steps.length - maxSteps);
   const trimmed = steps.slice(overflow);
 
   return { ...data, steps: trimmed, cursor: trimmed.length - 1 };
@@ -211,3 +294,67 @@ export function resetTo(data, equation, source) {
     showSolution: false,
   };
 }
+
+// ── V2 : les sections ─────────────────────────────────────────────────────
+
+/** Le sous-objet d'une section-CHEMIN : le niveau supérieur pour les معادلات. */
+export function pathOf(data, section) {
+  return section === 'inequalities' ? data.inequalities : data;
+}
+
+/** Applique `updater` au chemin d'une section, sans toucher aux autres. */
+export function updatePath(data, section, updater) {
+  if (section === 'inequalities') {
+    const next = updater(data.inequalities);
+
+    return next === data.inequalities ? data : { ...data, inequalities: next };
+  }
+
+  return updater(data);
+}
+
+export function setSection(data, section) {
+  if (!ALGEBRA_SECTIONS.includes(section) || data.section === section) return data;
+
+  return { ...data, section };
+}
+
+/** Remplace (fusionne) le sous-objet d'une section non-chemin. */
+export function updateSection(data, key, patch) {
+  return { ...data, [key]: { ...data[key], ...patch } };
+}
+
+function byteLength(value) {
+  const text = JSON.stringify(value);
+
+  return typeof TextEncoder !== 'undefined' ? new TextEncoder().encode(text).length : text.length;
+}
+
+function dropOldest(path) {
+  if (path.steps.length <= 1) return path;
+  const steps = path.steps.slice(1);
+  steps[0] = { ...steps[0], operation: null, flipped: false };
+
+  return { ...path, steps, cursor: Math.max(0, path.cursor - 1) };
+}
+
+/**
+ * Garde le document sérialisé sous SIZE_BUDGET : au besoin, oublie les pas
+ * les plus anciens du chemin le plus long (comme MAX_STEPS le fait déjà). Un
+ * travail n'est jamais refusé par le serveur pour sa taille.
+ */
+export function enforceSizeBudget(data) {
+  let current = data;
+  for (let guard = 0; guard < 200 && byteLength(current) > SIZE_BUDGET; guard += 1) {
+    const eq = current.steps.length;
+    const ineq = current.inequalities?.steps?.length ?? 0;
+    if (eq <= 1 && ineq <= 1) break;
+    current = eq >= ineq
+      ? { ...current, ...dropOldest(current) }
+      : { ...current, inequalities: dropOldest(current.inequalities) };
+  }
+
+  return current;
+}
+
+export { byteLength as serializedBytes };

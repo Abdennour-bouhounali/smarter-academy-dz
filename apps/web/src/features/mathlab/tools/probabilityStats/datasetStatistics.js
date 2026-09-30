@@ -68,15 +68,7 @@ export function parseValue(token) {
  * @returns {{values: number[], invalid: {text: string, position: number}[], truncated: boolean}}
  */
 export function parseDataset(text) {
-  const source = typeof text === 'string' ? text : '';
-  const byComma = splitTokens(source, /[,;\n\r\t]+/);
-  // L'autre lecture ne coupe PAS aux virgules : elles y sont décimales.
-  const bySpace = splitTokens(source, /[;\s]+/);
-  const hasExplicitSeparator = /[;\n\r\t]/.test(source);
-  const commaBreaksAToken = byComma.some((token) => Number.isNaN(parseValue(token)))
-    && bySpace.length > 0
-    && bySpace.every((token) => !Number.isNaN(parseValue(token)));
-  const tokens = hasExplicitSeparator || commaBreaksAToken ? bySpace : byComma;
+  const tokens = tokenizeDataset(text);
 
   const values = [];
   const invalid = [];
@@ -95,13 +87,42 @@ export function parseDataset(text) {
   return { values, invalid, truncated };
 }
 
+/**
+ * Les JETONS de la saisie, dans l'ordre, valides ou non — la lecture que
+ * `parseDataset` juge ensuite (les deux règles de la virgule ci-dessus).
+ * L'éditeur en pastilles travaille sur ces jetons : il peut ainsi retirer
+ * ou corriger un jeton fautif sans jamais l'avaler en silence.
+ */
+export function tokenizeDataset(text) {
+  const source = typeof text === 'string' ? text : '';
+  const byComma = splitTokens(source, /[,;\n\r\t]+/);
+  // L'autre lecture ne coupe PAS aux virgules : elles y sont décimales.
+  const bySpace = splitTokens(source, /[;\s]+/);
+  const hasExplicitSeparator = /[;\n\r\t]/.test(source);
+  const commaBreaksAToken = byComma.some((token) => Number.isNaN(parseValue(token)))
+    && bySpace.length > 0
+    && bySpace.every((token) => !Number.isNaN(parseValue(token)));
+
+  return hasExplicitSeparator || commaBreaksAToken ? bySpace : byComma;
+}
+
+/**
+ * Des jetons → le texte de la saisie. Le point-virgule est un séparateur
+ * EXPLICITE : relu par `tokenizeDataset`, chaque jeton revient tel quel, et
+ * une virgule qu'il contient reste décimale (« 12,5 »).
+ */
+export function tokensToText(tokens) {
+  return tokens.map((token) => String(token).trim()).filter((token) => token !== '').join(' ; ');
+}
+
 function splitTokens(text, separator) {
   return text.split(separator).map((token) => token.trim()).filter((token) => token !== '');
 }
 
 /**
- * Le RÉSUMÉ d'une série : ce que la V1 calcule, et rien de plus (ni écart
- * type, ni quartiles, ni boîte — § 22). Les valeurs viennent de statsUtils ;
+ * Le RÉSUMÉ court d'une série (n, min, max, étendue, moyenne, médiane) —
+ * les indicateurs complets (quartiles, mode, variance, écart type) sont
+ * dans `descriptiveStats.describeDataset`. Les valeurs viennent de statsUtils ;
  * une série vide rend `null` partout plutôt que NaN, pour que l'affichage
  * n'ait qu'un cas à traiter.
  */

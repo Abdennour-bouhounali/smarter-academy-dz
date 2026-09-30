@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { buildVariationTable } from './variationTable.js';
+import { buildVariationTable, buildVariationSteps, tableRowsAt, VARIATION_STAGES } from './variationTable.js';
 import { buildScene } from './buildScene.js';
 import { createAnalysisData, setSource, setLab } from './analysisState.js';
 import { layersForLab } from './layers.js';
@@ -152,5 +152,54 @@ describe('جدول التغيّرات', () => {
       expect(column.x).toBeGreaterThanOrEqual(view.xMin - 1e-6);
       expect(column.x).toBeLessThanOrEqual(view.xMax + 1e-6);
     }
+  });
+});
+
+describe('la construction pas à pas du جدول التغيّرات', () => {
+  const VIEW = { xMin: -1, xMax: 5, yMin: -3, yMax: 6 };
+  const sceneFor = (source, view = VIEW) => {
+    let data = setSource(createAnalysisData(), 'f', source);
+    data = { ...setLab(data, 'study'), layers: layersForLab('study', data.layers) };
+
+    return buildScene(data, view, { withDomain: true });
+  };
+
+  it('six pas dans l’ordre du manuel ; le tableau complet est le DERNIER', () => {
+    const scene = sceneFor('x^2-4x+3');
+    const table = buildVariationTable(scene, VIEW);
+    const result = buildVariationSteps(scene, table);
+    expect(result.ok).toBe(true);
+    expect(result.steps.map((step) => step.kind)).toEqual([...VARIATION_STAGES]);
+    expect(result.steps.map((step) => step.tableRows)).toEqual([0, 0, 1, 2, 3, 4]);
+    expect(result.steps[0].tableRows).not.toBe(4);
+    expect(result.steps.at(-1)).toMatchObject({ kind: 'values', tone: 'result', tableRows: 4 });
+    expect(result.steps.filter((step) => step.tone === 'result')).toHaveLength(1);
+  });
+
+  it('chaque pas porte ce que le tableau dit à cette ligne', () => {
+    const scene = sceneFor('x^2-4x+3');
+    const table = buildVariationTable(scene, VIEW);
+    const [domain, derivative, zeros, sign, arrows, values] = buildVariationSteps(scene, table).steps;
+    expect(domain.domain.length).toBeGreaterThan(0);
+    expect(derivative.derivativeSource).toBe('2x - 4');
+    expect(zeros.zeros).toHaveLength(1);
+    expect(zeros.zeros[0]).toBeCloseTo(2, 5);
+    expect(sign.signs).toEqual([-1, 1]);
+    expect(arrows.directions).toEqual(['decreasing', 'increasing']);
+    expect(values.values[1]).toBeCloseTo(-1, 5);
+  });
+
+  it('1/x : le pôle est une colonne de la ligne x, pas un zéro de f′', () => {
+    const view = { xMin: -4, xMax: 4, yMin: -5, yMax: 5 };
+    const scene = sceneFor('\\frac{1}{x}', view);
+    const zeros = buildVariationSteps(scene, buildVariationTable(scene, view)).steps[2];
+    expect(zeros.zeros).toEqual([]);
+    expect(zeros.breaks).toHaveLength(1);
+  });
+
+  it('pas de tableau, pas de construction ; les lignes suivent le curseur', () => {
+    expect(buildVariationSteps(null, null).ok).toBe(false);
+    expect(buildVariationSteps(sceneFor('x^2'), { ok: false }).ok).toBe(false);
+    expect([0, 1, 2, 3, 4, 5, 6, 9].map(tableRowsAt)).toEqual([0, 0, 0, 1, 2, 3, 4, 4]);
   });
 });

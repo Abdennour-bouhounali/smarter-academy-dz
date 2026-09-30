@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { AreaChart, BarChart3, Dices, Network } from 'lucide-react';
 import './probabilityStats.css';
+import LabSectionNav from '../../shared/LabSectionNav.jsx';
 import { formatValue } from '../functionGrapher/grapherFormat.js';
 import {
-  EXAMPLE_DATASET, normalizeProbabilityStatsData, toStoredData,
+  DEFAULT_NORMAL, EXAMPLE_DATASET, MODES, normalizeProbabilityStatsData, toStoredData,
 } from './probabilityState.js';
+import { createDefaultTree } from './probabilityTree.js';
 import {
   getExperiment, normalizeRange, theoreticalFraction,
 } from './experiments.js';
@@ -13,14 +15,14 @@ import {
   ANIMATION_BATCH, ANIMATION_SLOW_THRESHOLD, comparisonRows, createSimulation, freshSeed,
   matchesExperiment, runBatch,
 } from './simulationEngine.js';
-import { distributionOf, parseDataset, summarize } from './datasetStatistics.js';
 import ExperimentControls from './ExperimentControls.jsx';
-import DatasetEditor from './DatasetEditor.jsx';
-import StatisticsSummary from './StatisticsSummary.jsx';
+import SectionFrame from './SectionFrame.jsx';
+import DatasetSection from './DatasetSection.jsx';
+import TreeSection from './TreeSection.jsx';
+import NormalSection from './NormalSection.jsx';
 import TheoreticalComparison from './TheoreticalComparison.jsx';
 import FrequencyBars from './FrequencyBars.jsx';
 import ConvergenceChart from './ConvergenceChart.jsx';
-import DistributionChart from './DistributionChart.jsx';
 import DiceViewer from './DiceViewer.jsx';
 import { useCompactCharts, useReducedMotion } from './useMediaQuery.js';
 
@@ -50,7 +52,6 @@ export default function ProbabilityStatsTool({ initialData, onChange, onReady })
   const { t } = useTranslation('mathlab');
   const [data, setData] = useState(() => normalizeProbabilityStatsData(initialData));
   const [running, setRunning] = useState(false);
-  const [panelCollapsed, setPanelCollapsed] = useState(false);
   // La saisie de la série vit à part : elle suit la frappe, l'état du
   // document ne la reçoit qu'au calme revenu.
   const [datasetDraft, setDatasetDraft] = useState(() => normalizeProbabilityStatsData(initialData).dataset);
@@ -121,7 +122,11 @@ export default function ProbabilityStatsTool({ initialData, onChange, onReady })
         setRunning(false);
         setPhase('idle');
         setDatasetDraft(EXAMPLE_DATASET);
-        commit((current) => ({ ...current, simulation: null, dataset: EXAMPLE_DATASET }));
+        clearTimeout(datasetTimerRef.current);
+        // Toutes les sections repartent de leur état neuf ; la section ouverte reste ouverte.
+        commit((current) => ({
+          ...current, simulation: null, dataset: EXAMPLE_DATASET, chart: null, tree: createDefaultTree(), normal: { ...DEFAULT_NORMAL },
+        }));
       },
     });
 
@@ -262,7 +267,30 @@ export default function ProbabilityStatsTool({ initialData, onChange, onReady })
     }, DATASET_DEBOUNCE_MS);
   }, [commit]);
 
+  /** Une modification par pastille ou par exemple : un geste fini, appliqué sans attendre. */
+  const replaceDataset = useCallback((text) => {
+    clearTimeout(datasetTimerRef.current);
+    setDatasetDraft(text);
+    commit((current) => (current.dataset === text ? current : { ...current, dataset: text }));
+  }, [commit]);
+
+  const changeChart = useCallback((chart) => commit((current) => (current.chart === chart ? current : { ...current, chart })), [commit]);
+
+  // ── L'arbre et la loi normale : des transitions pures (probabilityTree.js) ──
+  const changeTree = useCallback((updater) => commit((current) => {
+    const tree = updater(current.tree);
+
+    return tree === current.tree ? current : { ...current, tree };
+  }), [commit]);
+
+  const changeNormal = useCallback((patch) => commit((current) => {
+    const normal = { ...current.normal, ...patch };
+
+    return Object.keys(patch).every((key) => current.normal[key] === normal[key]) ? current : { ...current, normal };
+  }), [commit]);
+
   const changeMode = useCallback((mode) => {
+    if (!MODES.includes(mode)) return;
     stopAnimation();
     commit((current) => (current.mode === mode ? current : { ...current, mode }));
   }, [commit, stopAnimation]);
@@ -283,10 +311,6 @@ export default function ProbabilityStatsTool({ initialData, onChange, onReady })
     [simulation, data.experiment, data.range.min, data.range.max],
   );
 
-  const parsed = useMemo(() => parseDataset(datasetDraft), [datasetDraft]);
-  const summary = useMemo(() => summarize(parsed.values), [parsed.values]);
-  const distribution = useMemo(() => distributionOf(parsed.values), [parsed.values]);
-
   /** L'étiquette d'une issue : « وجه » / « ظهر » pour la pièce, le nombre sinon. */
   const labelFor = useCallback(
     (row) => (data.experiment === 'coin' ? t(`tools.probabilityStats.coin.${row.key}`) : row.key),
@@ -305,125 +329,92 @@ export default function ProbabilityStatsTool({ initialData, onChange, onReady })
     [data.experiment, data.range.min, data.range.max],
   );
 
+  const sections = useMemo(() => [
+    { id: 'experiment', icon: Dices, label: t('tools.probabilityStats.sections.experiment.label'), description: t('tools.probabilityStats.sections.experiment.description') },
+    { id: 'dataset', icon: BarChart3, label: t('tools.probabilityStats.sections.dataset.label'), description: t('tools.probabilityStats.sections.dataset.description') },
+    { id: 'tree', icon: Network, label: t('tools.probabilityStats.sections.tree.label'), description: t('tools.probabilityStats.sections.tree.description') },
+    { id: 'normal', icon: AreaChart, label: t('tools.probabilityStats.sections.normal.label'), description: t('tools.probabilityStats.sections.normal.description') },
+  ], [t]);
+
   const trackedIndex = experimentSpec.trackedIndex(params);
   const trackedRow = rows[trackedIndex] ?? null;
-  const isExperiment = data.mode === 'experiment';
   const physical = experimentSpec.physical;
   const experimentName = t(`tools.probabilityStats.experiments.${data.experiment}`);
   const runLabel = data.draws === 1
     ? t(`tools.probabilityStats.runLabels.${data.experiment}`)
     : `${t(`tools.probabilityStats.runLabels.${data.experiment}`)} · ${t('tools.probabilityStats.runMany', { count: data.draws })}`;
+  const sectionTitle = sections.find((section) => section.id === data.mode)?.label;
 
-  return (
-    <div className="sa-ml-ps" role="region" aria-label={t('tools.probabilityStats.name')} data-ml-ps>
-      <aside className={`sa-ml-ps__panel ${panelCollapsed ? 'sa-ml-ps__panel--collapsed' : ''}`} aria-label={t('tools.probabilityStats.panelLabel')} data-ml-ps-panel>
-        <div className="sa-ml-ps__panel-head">
-          <div className="sa-ml-ps__modes" role="group" aria-label={t('tools.probabilityStats.modeLabel')}>
-            {['experiment', 'dataset'].map((mode) => (
-              <button
-                key={mode}
-                type="button"
-                className={`sa-ml-ps__mode ${data.mode === mode ? 'sa-ml-ps__mode--on' : ''}`}
-                onClick={() => changeMode(mode)}
-                aria-pressed={data.mode === mode}
-                data-ml-ps-mode={mode}
-              >
-                {t(`tools.probabilityStats.modes.${mode}`)}
-              </button>
-            ))}
-          </div>
-          <button
-            type="button"
-            className="sa-ml-btn sa-ml-btn--icon sa-ml-ps__collapse"
-            onClick={() => setPanelCollapsed((c) => !c)}
-            aria-expanded={!panelCollapsed}
-            aria-label={panelCollapsed ? t('tools.probabilityStats.panelShow') : t('tools.probabilityStats.panelHide')}
-            title={panelCollapsed ? t('tools.probabilityStats.panelShow') : t('tools.probabilityStats.panelHide')}
-            data-ml-ps-panel-toggle
-          >
-            {panelCollapsed ? <ChevronUp size={18} aria-hidden="true" /> : <ChevronDown size={18} aria-hidden="true" />}
-          </button>
-        </div>
-
-        <div className="sa-ml-ps__panel-body">
-          {isExperiment ? (
-            <>
-              <ExperimentControls
-                experiment={data.experiment}
-                range={data.range}
-                draws={data.draws}
-                runLabel={runLabel}
-                running={running}
-                hasData={Boolean(simulation)}
-                onChangeExperiment={changeExperiment}
-                onChangeRange={changeRange}
-                onChangeDraws={changeDraws}
-                onRun={run}
-                onStop={stopAnimation}
-                onReset={reset}
-              />
-              <section className="sa-ml-ps__section" aria-labelledby="ml-ps-options">
-                <h3 id="ml-ps-options" className="sa-ml-ps__heading">{t('tools.probabilityStats.optionsHeading')}</h3>
-                <div className="sa-ml-ps__options">
+  let content;
+  if (data.mode === 'dataset') {
+    content = (
+      <DatasetSection
+        title={sectionTitle}
+        draft={datasetDraft}
+        chart={data.chart}
+        settings={data.settings}
+        compact={compact}
+        onType={changeDataset}
+        onReplace={replaceDataset}
+        onChart={changeChart}
+        onToggle={toggleSetting}
+      />
+    );
+  } else if (data.mode === 'tree') {
+    content = <TreeSection title={sectionTitle} tree={data.tree} compact={compact} onChange={changeTree} />;
+  } else if (data.mode === 'normal') {
+    content = <NormalSection title={sectionTitle} normal={data.normal} compact={compact} reducedMotion={reducedMotion} onChange={changeNormal} />;
+  } else {
+    content = (
+      <SectionFrame
+        title={sectionTitle}
+        panel={(
+          <>
+            <ExperimentControls
+              experiment={data.experiment}
+              range={data.range}
+              draws={data.draws}
+              runLabel={runLabel}
+              running={running}
+              hasData={Boolean(simulation)}
+              onChangeExperiment={changeExperiment}
+              onChangeRange={changeRange}
+              onChangeDraws={changeDraws}
+              onRun={run}
+              onStop={stopAnimation}
+              onReset={reset}
+            />
+            <section className="sa-ml-ps__section" aria-labelledby="ml-ps-options">
+              <h3 id="ml-ps-options" className="sa-ml-ps__heading">{t('tools.probabilityStats.optionsHeading')}</h3>
+              <div className="sa-ml-ps__options">
+                <label className="sa-ml-ps__toggle">
+                  <input
+                    type="checkbox"
+                    checked={data.settings.compare}
+                    onChange={() => toggleSetting('compare')}
+                    data-ml-ps-option="compare"
+                  />
+                  <span>{t('tools.probabilityStats.compare')}</span>
+                </label>
+                {physical && (
                   <label className="sa-ml-ps__toggle">
                     <input
                       type="checkbox"
-                      checked={data.settings.compare}
-                      onChange={() => toggleSetting('compare')}
-                      data-ml-ps-option="compare"
+                      checked={data.settings.watchRolls}
+                      onChange={() => toggleSetting('watchRolls')}
+                      data-ml-ps-option="watchRolls"
                     />
-                    <span>{t('tools.probabilityStats.compare')}</span>
+                    <span>{t('tools.probabilityStats.watchRolls', { max: WATCH_MAX })}</span>
                   </label>
-                  {physical && (
-                    <label className="sa-ml-ps__toggle">
-                      <input
-                        type="checkbox"
-                        checked={data.settings.watchRolls}
-                        onChange={() => toggleSetting('watchRolls')}
-                        data-ml-ps-option="watchRolls"
-                      />
-                      <span>{t('tools.probabilityStats.watchRolls', { max: WATCH_MAX })}</span>
-                    </label>
-                  )}
-                </div>
-                {physical && reducedMotion && (
-                  <p className="sa-ml-ps__hint" data-ml-ps-reduced-motion>{t('tools.probabilityStats.reducedMotion')}</p>
                 )}
-              </section>
-            </>
-          ) : (
-            <>
-              <DatasetEditor
-                text={datasetDraft}
-                invalid={parsed.invalid}
-                truncated={parsed.truncated}
-                count={parsed.values.length}
-                onChange={changeDataset}
-              />
-              <section className="sa-ml-ps__section" aria-labelledby="ml-ps-stats-heading">
-                <h3 id="ml-ps-stats-heading" className="sa-ml-ps__heading">{t('tools.probabilityStats.statsHeading')}</h3>
-                <StatisticsSummary summary={summary} />
-              </section>
-              <section className="sa-ml-ps__section" aria-labelledby="ml-ps-markers">
-                <h3 id="ml-ps-markers" className="sa-ml-ps__heading">{t('tools.probabilityStats.optionsHeading')}</h3>
-                <div className="sa-ml-ps__options">
-                  <label className="sa-ml-ps__toggle">
-                    <input type="checkbox" checked={data.settings.showMean} onChange={() => toggleSetting('showMean')} data-ml-ps-option="showMean" />
-                    <span>{t('tools.probabilityStats.showMean')}</span>
-                  </label>
-                  <label className="sa-ml-ps__toggle">
-                    <input type="checkbox" checked={data.settings.showMedian} onChange={() => toggleSetting('showMedian')} data-ml-ps-option="showMedian" />
-                    <span>{t('tools.probabilityStats.showMedian')}</span>
-                  </label>
-                </div>
-              </section>
-            </>
-          )}
-        </div>
-      </aside>
-
-      <div className="sa-ml-ps__stage" data-ml-ps-stage>
-        {isExperiment ? (
+              </div>
+              {physical && reducedMotion && (
+                <p className="sa-ml-ps__hint" data-ml-ps-reduced-motion>{t('tools.probabilityStats.reducedMotion')}</p>
+              )}
+            </section>
+          </>
+        )}
+        stage={(
           <ExperimentStage
             rows={rows}
             simulation={simulation}
@@ -441,16 +432,21 @@ export default function ProbabilityStatsTool({ initialData, onChange, onReady })
             draws={data.draws}
             labelForPart={labelForPart}
           />
-        ) : (
-          <DatasetStage
-            distribution={distribution}
-            summary={summary}
-            showMean={data.settings.showMean}
-            showMedian={data.settings.showMedian}
-            compact={compact}
-          />
         )}
-      </div>
+      />
+    );
+  }
+
+  return (
+    <div className="sa-ml-ps" role="region" aria-label={t('tools.probabilityStats.name')} data-ml-ps data-ml-ps-section={data.mode}>
+      <LabSectionNav
+        sections={sections}
+        active={data.mode}
+        onChange={changeMode}
+        label={t('tools.probabilityStats.modeLabel')}
+        dataAttr="data-ml-ps-mode"
+      />
+      {content}
     </div>
   );
 }
@@ -467,7 +463,7 @@ function ExperimentStage({
   const idleParts = last?.parts ?? (physical?.count === 2 ? [1, 1] : [1]);
 
   return (
-    <div className="sa-ml-ps__scroll">
+    <>
       <h2 className="sa-ml-ps__stage-title">{experimentName}</h2>
 
       {physical && (
@@ -542,7 +538,7 @@ function ExperimentStage({
       {rows.length > 0 && total > 0 && (
         <TheoreticalComparison rows={rows} labelFor={labelFor} fractionFor={fractionFor} total={total} />
       )}
-    </div>
+    </>
   );
 }
 
@@ -566,34 +562,5 @@ function ResultText({ experiment, parts, labelForPart }) {
       <span>{experiment === 'coin' ? '🪙' : '🎲'} {t('tools.probabilityStats.resultLabel')}:</span>
       <span className="sa-ml-ps__result-value">{labelForPart(parts[0])}</span>
     </>
-  );
-}
-
-/** La scène d'une série saisie : la distribution, et les repères. */
-function DatasetStage({ distribution, summary, showMean, showMedian, compact }) {
-  const { t } = useTranslation('mathlab');
-
-  return (
-    <div className="sa-ml-ps__scroll">
-      <h2 className="sa-ml-ps__stage-title">{t('tools.probabilityStats.datasetHeading')}</h2>
-      <DistributionChart
-        distribution={distribution}
-        summary={summary}
-        showMean={showMean}
-        showMedian={showMedian}
-        title={t('tools.probabilityStats.distributionLabel', { count: summary.n })}
-        emptyMessage={t('tools.probabilityStats.datasetEmpty')}
-        compact={compact}
-      />
-      {summary.n > 0 && (
-        <p className="sa-ml-ps__prompt" data-ml-ps-dataset-reading>
-          {t('tools.probabilityStats.datasetReading', {
-            n: summary.n,
-            mean: formatValue(summary.mean, 2),
-            median: formatValue(summary.median, 2),
-          })}
-        </p>
-      )}
-    </div>
   );
 }

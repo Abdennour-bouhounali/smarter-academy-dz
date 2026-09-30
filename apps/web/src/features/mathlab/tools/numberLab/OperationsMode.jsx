@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { LabPanel } from '../../shared/LabKit.jsx';
+import MathText from '../../../../lessons/common/components/MathText.jsx';
 import NumberLineStage from './NumberLineStage.jsx';
 import ValueInput from './ValueInput.jsx';
 import { roundTo } from './numberTheory.js';
@@ -21,7 +23,7 @@ import { formatNumber, frameValues } from './numberValue.js';
  * §44 : la valeur absolue est une DISTANCE à zéro, et elle est dessinée comme
  * telle.
  */
-export default function OperationsMode({ state, onChange, compact }) {
+export default function OperationsMode({ state, onChange, compact, onGoMode = null }) {
   const { t } = useTranslation('mathlab');
   const { a, b, operation } = state;
   const [divisionView, setDivisionView] = useState('sharing');
@@ -164,20 +166,23 @@ export default function OperationsMode({ state, onChange, compact }) {
             )}
           </div>
 
-          <p className="sa-ml-nb__formula" dir="ltr">
-            {remainder === 0
-              ? t('tools.numberLab.operations.exactDivision')
-              : t('tools.numberLab.operations.withRemainder', { a, b, quotient, remainder })}
+          {/* Une phrase arabe reste RTL ; seule la formule est une île LTR (MathText). */}
+          {remainder === 0
+            ? <p className="sa-ml-nb__verdict is-prime">{t('tools.numberLab.operations.exactDivision')}</p>
+            : <p className="sa-ml-nb__formula" dir="ltr">{t('tools.numberLab.operations.withRemainder', { a, b, quotient, remainder })}</p>}
+          <p className="sa-ml-nb__muted">
+            <MathText>{t('tools.numberLab.operations.inverseHint', { b, quotient, product: b * quotient })}</MathText>
           </p>
-          <p className="sa-ml-nb__muted" dir="ltr">
-            {t('tools.numberLab.operations.inverseHint', { b, quotient, product: b * quotient })}
-          </p>
+          {onGoMode && (
+            <button type="button" className="sa-ml-nb__link" onClick={() => onGoMode('division')} data-ml-nb-go-division>
+              {t('tools.numberLab.operations.divisionLink')}
+            </button>
+          )}
         </>
       )}
 
       {/* §44 : la valeur absolue, une distance à zéro. */}
-      <section className="sa-ml-nb__panel">
-        <h4>{t('tools.numberLab.operations.absoluteValue')}</h4>
+      <LabPanel id="numberLab.operations.absolute" title={t('tools.numberLab.operations.absoluteValue')}>
         <p className="sa-ml-nb__formula" dir="ltr">
           {t('tools.numberLab.operations.absoluteFormula', {
             value: formatNumber(a), result: formatNumber(Math.abs(a)),
@@ -191,11 +196,10 @@ export default function OperationsMode({ state, onChange, compact }) {
           brackets={[{ from: Math.min(0, a), to: Math.max(0, a), label: formatNumber(Math.abs(a)) }]}
           height={compact ? 120 : 132}
         />
-      </section>
+      </LabPanel>
 
       {/* §41 : les signes, essayés plutôt que récités. */}
-      <section className="sa-ml-nb__panel">
-        <h4>{t('tools.numberLab.operations.signs')}</h4>
+      <LabPanel id="numberLab.operations.signs" title={t('tools.numberLab.operations.signs')}>
         <p className="sa-ml-nb__muted">{t('tools.numberLab.operations.signHint')}</p>
         <table className="sa-ml-nb__table" dir="ltr">
           <tbody>
@@ -211,7 +215,7 @@ export default function OperationsMode({ state, onChange, compact }) {
             ))}
           </tbody>
         </table>
-      </section>
+      </LabPanel>
     </div>
   );
 }

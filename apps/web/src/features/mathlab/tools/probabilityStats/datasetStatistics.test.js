@@ -178,7 +178,7 @@ describe('l’état du document', () => {
     expect(data.simulation).toBeNull();
     expect(data.dataset).toBe(EXAMPLE_DATASET);
     expect(data.settings).toEqual({ compare: true, showMean: true, showMedian: true, watchRolls: true });
-    expect(PROBABILITY_STATS_SCHEMA_VERSION).toBe(1);
+    expect(PROBABILITY_STATS_SCHEMA_VERSION).toBe(2);
   });
 
   it('redresse n’importe quel document en un état sûr', () => {

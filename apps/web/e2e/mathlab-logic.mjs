@@ -35,6 +35,7 @@
  * Les documents créés sont supprimés à la fin.
  */
 import { chromium } from 'playwright';
+import { playToEnd } from './_stepPlayer.mjs';
 import { mkdirSync } from 'node:fs';
 
 const BASE = process.env.QA_BASE || 'http://localhost:5173';
@@ -451,6 +452,7 @@ async function goArea(page, area) {
   // La preuve par CAS réunit deux branches au même rang (§31, §32).
   await page.selectOption('[data-ml-lg-proof-select]', 'squarePlusNEven');
   await page.waitForTimeout(400);
+  await playToEnd(page, 'data-ml-lg-tree-step');
   const rankCounts = await page.locator('[data-ml-lg-tree-rank]').evaluateAll(
     (nodes) => nodes.map((node) => node.querySelectorAll('[data-ml-lg-tree-node]').length),
   );
@@ -737,6 +739,7 @@ async function goArea(page, area) {
 
   await page.click('[data-ml-lg-induction-case="brokenStep"]');
   await page.waitForTimeout(350);
+  await playToEnd(page, 'data-ml-lg-case-step');
   const why = await textOf(page, '[data-ml-lg-case-detail="brokenStep"]');
   record('§28 : « 2ⁿ > n² » explique que deux vérifications ne suffisent pas',
     why.includes('n = 2') || why.includes('‏2²'), why.slice(0, 70));
@@ -746,6 +749,7 @@ async function goArea(page, area) {
 
   await page.click('[data-ml-lg-induction-case="noBase"]');
   await page.waitForTimeout(300);
+  await playToEnd(page, 'data-ml-lg-case-step');
   const noBaseWhy = await textOf(page, '[data-ml-lg-case-detail="noBase"]');
   record('§28 : « n = n+1 » dit que le pas SEUL ne prouve rien',
     noBaseWhy.includes('نقطة انطلاق') || noBaseWhy.includes('1 ≠ 2'), noBaseWhy.slice(0, 70));

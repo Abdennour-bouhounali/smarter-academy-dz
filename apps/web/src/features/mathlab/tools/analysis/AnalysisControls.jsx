@@ -354,7 +354,7 @@ function ExpressionField({ id, value, color, onCommit, label, t }) {
   );
 }
 
-/** Les fonctions prêtes (§37), programme d'abord, lycée derrière. */
+/** Les fonctions prêtes (§37), rangées par cycle : المتوسط puis الثانوي. */
 function Presets({ current, onPreset, t }) {
   const programme = PRESETS.filter((preset) => preset.level === 'programme');
   const beyond = PRESETS.filter((preset) => preset.level === 'beyond');
@@ -368,15 +368,14 @@ function Presets({ current, onPreset, t }) {
           <PresetChip key={preset.id} preset={preset} current={current} onPreset={onPreset} t={t} />
         ))}
       </div>
-      <details className="sa-ml-an__details">
-        <summary className="sa-ml-an__summary">{t('tools.analysis.presets.beyond')}</summary>
-        <p className="sa-ml-an__note">{t('tools.analysis.presets.beyondHint')}</p>
-        <div className="sa-ml-an__chips">
-          {beyond.map((preset) => (
-            <PresetChip key={preset.id} preset={preset} current={current} onPreset={onPreset} t={t} />
-          ))}
-        </div>
-      </details>
+      {/* Le Lab sert le collège ET le lycée (propriétaire, 2026-09-30) : les deux
+          groupes sont ouverts, rangés par cycle, aucun n'est « hors programme ». */}
+      <p className="sa-ml-an__grouplabel">{t('tools.analysis.presets.beyond')}</p>
+      <div className="sa-ml-an__chips">
+        {beyond.map((preset) => (
+          <PresetChip key={preset.id} preset={preset} current={current} onPreset={onPreset} t={t} />
+        ))}
+      </div>
     </section>
   );
 }

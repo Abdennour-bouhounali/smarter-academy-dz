@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Lightbulb, Check, Circle, FlaskConical, BookOpen, Sparkles,
 } from 'lucide-react';
 import { formatValue } from '../functionGrapher/grapherFormat.js';
 import { isDefinitionOf } from './investigations.js';
+import { buildStorySteps } from './storySteps.js';
+import StepPlayer from '../../shared/StepPlayer.jsx';
+import useStepReveal from '../../shared/useStepReveal.js';
 
 /**
  * Ce que l'instrument RÉPOND à une règle proposée (§7, §20, §21, §24, §25).
@@ -19,6 +22,12 @@ import { isDefinitionOf } from './investigations.js';
  *   4. l'EXPLICATION géométrique, une fois la règle trouvée : pourquoi elle
  *      DOIT valoir, ce qu'aucun tableau de mesures ne dira jamais (§21).
  *
+ * « كيف ظهرت هذه القاعدة؟ » (§22) se DÉROULE (exigence du 2026-09-30) :
+ * `buildStorySteps` + le lecteur partagé, une étape du chemin à la fois ; la
+ * dernière est la règle — celle de l'élève s'il l'a trouvée, sinon « à toi ».
+ * Ouvrir le récit en montre la première étape ; les suivantes ne sont pas
+ * dans le DOM avant d'être atteintes.
+ *
  * Le mot « démontré » n'apparaît nulle part. « صمدت » (elle a tenu) oui.
  */
 export default function DiscoveryPanel({
@@ -28,6 +37,18 @@ export default function DiscoveryPanel({
   const [storyOpen, setStoryOpen] = useState(false);
   const stage = record.stage;
   const check = evidence.check;
+  const found = stage === 'found' || stage === 'explained';
+  const story = useMemo(
+    () => buildStorySteps(investigation, { found, rule: record.rule }),
+    [investigation, found, record.rule],
+  );
+  // Une autre enquête (ou la découverte qui change la fin du récit) → retour à l'énoncé.
+  const storyPlayer = useStepReveal(story.steps.length, { resetKey: `${investigation.id}:${found}` });
+
+  const toggleStory = () => {
+    if (!storyOpen) storyPlayer.start();
+    setStoryOpen((open) => !open);
+  };
 
   return (
     <section className="sa-ml-ms__panelSection" aria-labelledby="sa-ml-ms-disc">
@@ -215,21 +236,39 @@ export default function DiscoveryPanel({
         <button
           type="button"
           className="sa-ml-ms__ghostBtn"
-          onClick={() => setStoryOpen((open) => !open)}
+          onClick={toggleStory}
           aria-expanded={storyOpen}
+          data-ml-ms-story-open
         >
           <BookOpen size={15} aria-hidden="true" />
           {t('tools.measurement.story.open')}
         </button>
         {storyOpen && (
-          <div className="sa-ml-ms__storyBody">
+          <div className="sa-ml-ms__storyBody" data-ml-ms-story>
             <p className="sa-ml-ms__note">{t('tools.measurement.story.intro')}</p>
-            <ol className="sa-ml-ms__storySteps">
-              {[1, 2, 3, 4, 5, 6, 7].map((step) => (
-                <li key={step}>
-                  {t(`tools.measurement.story.${investigation.id}.${step}`, {
-                    defaultValue: t(`tools.measurement.story.generic.${step}`),
-                  })}
+            <StepPlayer player={storyPlayer} sticky dataAttr="data-ml-ms-story-step" title={t('tools.measurement.story.heading')} />
+            <ol className="sa-ml-kit-steps sa-ml-ms__storySteps" data-ml-ms-story-steps={storyPlayer.cursor}>
+              {story.steps.slice(0, storyPlayer.cursor).map((step, index) => (
+                <li
+                  // L'indice EST l'identité d'une étape : le récit ne se réordonne jamais.
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={index}
+                  className={`sa-ml-kit-steps__item${index === storyPlayer.cursor - 1 ? ' is-current' : ''}${step.kind === 'result' ? ' sa-ml-kit-steps__item--result' : ''}`}
+                >
+                  <span className="sa-ml-kit-steps__index" aria-hidden="true">{index + 1}</span>
+                  <div className="sa-ml-kit-steps__content">
+                    <p className="sa-ml-kit-steps__text">
+                      {t(`tools.measurement.${step.textKey}`, {
+                        defaultValue: t(`tools.measurement.${step.fallbackKey}`),
+                      })}
+                    </p>
+                    {step.noteKey && (
+                      <p className="sa-ml-kit-steps__note">{t(`tools.measurement.${step.noteKey}`)}</p>
+                    )}
+                    {step.rule && (
+                      <p className="sa-ml-ms__storyRule" dir="ltr" data-ml-ms-story-rule>{step.rule}</p>
+                    )}
+                  </div>
                 </li>
               ))}
             </ol>

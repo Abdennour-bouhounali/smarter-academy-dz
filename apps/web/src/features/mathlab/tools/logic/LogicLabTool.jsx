@@ -46,7 +46,12 @@ import './logic.css';
 export default function LogicLabTool({ initialData, onChange, onReady }) {
   const { t } = useTranslation('mathlab');
   const [data, setData] = useState(() => normalizeLogicData(initialData));
-  const [panelOpen, setPanelOpen] = useState(true);
+  // Sur téléphone, le pupitre s'ouvre REPLIÉ : la scène garde la hauteur
+  // (§3.5 — la figure et sa lecture dans le même regard). Un bouton le rouvre.
+  const [panelOpen, setPanelOpen] = useState(() => {
+    try { return !window.matchMedia('(max-width: 899px)').matches; } catch { return true; }
+  });
+  const [dictionaryOpen, setDictionaryOpen] = useState(false);
   const [challengeSeed, setChallengeSeed] = useState(() => Math.floor(Math.random() * 100000) + 1);
   const [announcement, setAnnouncement] = useState('');
   const onChangeRef = useRef(onChange);
@@ -160,7 +165,10 @@ export default function LogicLabTool({ initialData, onChange, onReady }) {
         ))}
       </nav>
 
-      <div className="sa-ml-lg__body">
+      {/* « D'un seul regard » (§3.5) : sans exercices ni lexique ouverts, le
+          pupitre n'est qu'une barre au-dessus de la scène — la scène prend
+          toute la largeur et ses cartes se rangent en deux colonnes. */}
+      <div className={`sa-ml-lg__body${data.practice.open || dictionaryOpen ? ' sa-ml-lg__body--side' : ''}`}>
         <main className="sa-ml-lg__stage" data-ml-lg-stage>
           <Area
             data={data}
@@ -204,7 +212,7 @@ export default function LogicLabTool({ initialData, onChange, onReady }) {
           </div>
 
           {/* « قاموس الرموز » : comment se lit ce qui n'est pas en arabe. */}
-          <DictionaryPanel />
+          <DictionaryPanel open={dictionaryOpen} onToggle={setDictionaryOpen} />
 
           {data.practice.open && (
             <PracticePanel

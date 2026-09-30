@@ -125,14 +125,16 @@ export function parseEquation(source, variable = 'x') {
  * Applique la même opération AUX DEUX MEMBRES — c'est toute la leçon.
  *
  * @param {object} equation
- * @param {{kind: 'add'|'subtract'|'multiply'|'divide', value: object}} operation  value : un rationnel
+ * @param {{kind: 'add'|'subtract'|'multiply'|'divide', value: object, term?: 'x'}} operation  value : un rationnel ;
+ *   `term: 'x'` (add/subtract seulement) : l'opération porte sur `value·x`, pas sur une constante
  * @returns {{ok: true, equation: object, flipped: boolean} | {ok: false, error: {code: string}}}
  */
 export function applyOperation(equation, operation) {
   const { kind, value } = operation;
   try {
     if (kind === 'add' || kind === 'subtract') {
-      const term = { a: R.ZERO, b: value };
+      // `term: 'x'` : on ajoute / retranche `value·x` (ramener les x d'un seul côté).
+      const term = operation.term === 'x' ? { a: value, b: R.ZERO } : { a: R.ZERO, b: value };
       const apply = kind === 'add' ? addForms : subtractForms;
 
       return {

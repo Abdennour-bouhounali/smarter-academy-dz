@@ -1,5 +1,7 @@
 import { fracToText, simplify } from './fraction.js';
 import { primeFactorization, factorizationToText, gcd, lcm } from './numberTheory.js';
+import { powerOf, scientificNotation, simplifySqrt } from './powers.js';
+import { evaluateStepByStep } from './orderOfOperations.js';
 
 /**
  * Le RÉSUMÉ d'un document du مختبر الأعداد (§5i.2 de MATH_LAB.md).
@@ -171,6 +173,49 @@ function describe(mode, data) {
       const written = `${trim(a)} ${OPERATION_SIGNS[data.operations?.operation] ?? '+'} ${trim(b)}`;
 
       return { kind: 'equation', text: [written], detail: { first: written, current: written } };
+    }
+
+    case 'division': {
+      const a = int(data.division?.a);
+      const b = int(data.division?.b);
+      if (a === null || b === null || b <= 0 || a < 0) return null;
+      const q = Math.floor(a / b);
+      const written = `${a} = ${b} × ${q} + ${a - b * q}`;
+
+      return { kind: 'equation', text: [written], detail: { first: `${a} ÷ ${b}`, current: written } };
+    }
+
+    case 'powers': {
+      const p = data.powers ?? {};
+      let written = null;
+      if (p.tab === 'roots' && int(p.root) !== null) {
+        const r = simplifySqrt(p.root);
+        written = r.error ? `√${p.root}` : (r.perfect ? `√${r.n} = ${r.outer}` : r.simplified ? `√${r.n} = ${r.outer}√${r.inner}` : `√${r.n}`);
+      } else if (p.tab === 'scientific' && typeof p.scientific === 'string') {
+        const s = scientificNotation(p.scientific);
+        written = s.error ? p.scientific.slice(0, 32) : `${s.sign < 0 ? '−' : ''}${s.mantissa} × 10^${s.exponent}`;
+      } else if (p.tab === 'rules' && typeof p.rule === 'string') {
+        written = `${p.ruleBase}^${p.m} · ${p.ruleBase}^${p.n}`;
+      } else if (int(p.base) !== null && int(p.exponent) !== null) {
+        const r = powerOf(p.base, p.exponent);
+        written = r.error ? `${p.base}^${p.exponent}` : `${p.base}^${p.exponent} = ${r.text}`;
+      }
+      if (!written) return null;
+
+      return { kind: 'equation', text: [written], detail: { first: written, current: written } };
+    }
+
+    case 'order': {
+      const expression = typeof data.order?.expression === 'string' ? data.order.expression.trim().slice(0, 60) : '';
+      if (!expression) return null;
+      const run = evaluateStepByStep(expression);
+      const result = run.ok ? run.result.fraction : null;
+
+      return {
+        kind: 'equation',
+        text: [expression, result],
+        detail: { first: expression, current: result ? `${expression} = ${result}` : expression },
+      };
     }
 
     default:

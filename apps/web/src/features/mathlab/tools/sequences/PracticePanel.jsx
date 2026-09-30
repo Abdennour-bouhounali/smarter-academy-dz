@@ -1,7 +1,11 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Lightbulb, Eye, Check, ChevronRight, X } from 'lucide-react';
+import MathText from '../../../../lessons/common/components/MathText.jsx';
+import useStepReveal from '../../shared/useStepReveal.js';
+import StepPlayer from '../../shared/StepPlayer.jsx';
 import { explainTerms } from './practice.js';
+import { buildRevealSteps } from './revealSteps.js';
 import { formatTerm, termName } from './sequenceFormat.js';
 
 /**
@@ -22,24 +26,44 @@ import { formatTerm, termName } from './sequenceFormat.js';
  * avec l'état réel de la suite. À la révélation, on affiche donc les VRAIS
  * termes — 2, 5, 8, 11, 14 — calculés par le moteur, le terme attendu mis en
  * évidence. L'élève voit où son calcul a bifurqué au lieu de lire un verdict.
+ *
+ * ── Deux révélations, pas une (exigence 2026-09-30) ──────────────────────
+ * Après une réponse JUSTE (`revealMode: 'answer'`), l'élève a produit la
+ * réponse : les termes s'affichent d'un coup, comme avant. Quand il la
+ * DEMANDE (« اكشف », `revealMode: 'request'`), la solution se découvre pas à
+ * pas (`buildRevealSteps` + `useStepReveal`) : u₀, puis u₁ = u₀ + r = …, et la
+ * réponse n'est que le DERNIER pas. Les pas futurs ne sont pas dans le DOM.
+ * `onRevealDone` prévient l'outil quand le dernier pas est montré : c'est
+ * seulement alors qu'il pose la suite dans l'espace de travail (sinon le
+ * tableau et le curseur donneraient la réponse avant la fin du déroulé).
  */
 export default function PracticePanel({
-  practice, onAnswer, onSubmit, onHint, onReveal, onNext, onClose,
+  practice, onAnswer, onSubmit, onHint, onReveal, onRevealDone, onNext, onClose,
 }) {
   const { t } = useTranslation('mathlab');
   const { challenge, phase, answer, verdict, hintsUsed } = practice;
+  const revealed = phase === 'reveal';
+  const onRequest = revealed && practice.revealMode === 'request';
 
+  const steps = useMemo(() => buildRevealSteps(challenge), [challenge]);
+  // La liste complète des termes : après une réponse juste — ou, filet, pour
+  // un défi dont on ne sait pas dérouler les pas.
   const explanation = useMemo(
-    () => (phase === 'reveal' && challenge ? explainTerms(challenge) : null),
-    [phase, challenge],
+    () => (revealed && challenge && (!onRequest || steps.length === 0) ? explainTerms(challenge) : null),
+    [revealed, onRequest, challenge, steps.length],
   );
+  const player = useStepReveal(steps.length, { resetKey: challenge });
+
+  // Le dernier pas est montré : l'outil peut poser la suite dans l'espace.
+  useEffect(() => {
+    if (onRequest && player.done) onRevealDone?.();
+  }, [onRequest, player.done, onRevealDone]);
 
   if (!challenge) return null;
 
   const hintKey = hintsUsed > 0
     ? challenge.hintKeys[Math.min(hintsUsed - 1, challenge.hintKeys.length - 1)]
     : null;
-  const revealed = phase === 'reveal';
 
   return (
     <section className="sa-ml-seq__practice" data-ml-seq-practice data-ml-seq-practice-phase={phase}>
@@ -123,7 +147,15 @@ export default function PracticePanel({
         </p>
       )}
 
-      {/* La révélation : les VRAIS termes, et le terme attendu mis en avant (§29). */}
+      {/* La révélation DEMANDÉE : pas à pas, la réponse en dernier. */}
+      {onRequest && steps.length > 0 && (
+        <div className="sa-ml-seq__explain sa-ml-seq__explain--steps" data-ml-seq-practice-explain data-ml-seq-practice-mode="steps">
+          <StepPlayer player={player} sticky title={t('tools.sequences.practice.steps.title')} dataAttr="data-ml-seq-reveal-step" />
+          <RevealSteps steps={steps} cursor={player.cursor} done={player.done} t={t} />
+        </div>
+      )}
+
+      {/* La révélation après une réponse juste : les VRAIS termes, et le terme attendu mis en avant (§29). */}
       {revealed && explanation && (
         <div className="sa-ml-seq__explain" data-ml-seq-practice-explain>
           <p className="sa-ml-seq__explaintext">{t(challenge.explainKey, challenge.explainParams)}</p>
@@ -214,7 +246,7 @@ export default function PracticePanel({
           <button
             type="button"
             className="sa-ml-seq__btn"
-            onClick={onReveal}
+            onClick={() => { onReveal(); player.start(); }}
             data-ml-seq-practice-reveal
           >
             <Eye size={16} aria-hidden="true" />
@@ -236,4 +268,63 @@ export default function PracticePanel({
       <p className="sa-ml-seq__note">{t('tools.sequences.practice.retryFreely')}</p>
     </section>
   );
+}
+
+/**
+ * Les pas montrés — `steps.slice(0, cursor)`, jamais plus. Chaque pas qui
+ * établit un terme porte sa pastille « u₅ = 17 » (`data-ml-seq-explain-term`),
+ * celle du terme demandé mise en avant ; la réponse (`data-ml-seq-practice-expected`)
+ * n'existe qu'au dernier pas.
+ */
+function RevealSteps({ steps, cursor, done, t }) {
+  const shown = steps.slice(0, cursor);
+  if (shown.length === 0) return null;
+
+  return (
+    <ol className="sa-ml-kit-steps sa-ml-seq__revealsteps" data-ml-seq-reveal-steps={shown.length}>
+      {shown.map((step, index) => {
+        const isAnswer = step.kind === 'answer';
+        const current = index === shown.length - 1 && !(done && isAnswer);
+
+        return (
+          <li
+            // L'indice EST l'identité d'un pas : la liste ne se réordonne jamais.
+            // eslint-disable-next-line react/no-array-index-key
+            key={index}
+            className={`sa-ml-kit-steps__item${current ? ' is-current' : ''}${step.tone ? ` sa-ml-kit-steps__item--${step.tone}` : ''}`}
+            data-ml-seq-reveal-kind={step.kind}
+            {...(isAnswer ? { 'data-ml-seq-practice-expected': '' } : {})}
+          >
+            <span className="sa-ml-kit-steps__index" aria-hidden="true">{index + 1}</span>
+            <div className="sa-ml-kit-steps__content">
+              <p className="sa-ml-kit-steps__text">
+                {step.choice
+                  ? t(`tools.sequences.practice.steps.${step.textKey}`, { label: t(`tools.sequences.trend.${step.choice}`) })
+                  : t(`tools.sequences.practice.steps.${step.textKey}`, step.params ?? {})}
+              </p>
+              {step.latex && (
+                <div className="sa-ml-kit-steps__math" dir="ltr">
+                  <MathText>{`$${step.latex}$`}</MathText>
+                </div>
+              )}
+              {Number.isFinite(step.n) && !isAnswer && (
+                <span
+                  className={`sa-ml-seq__explainterm sa-ml-seq__num${step.target ? ' sa-ml-seq__explainterm--target' : ''}${step.far ? ' sa-ml-seq__explainterm--far' : ''}`}
+                  dir="ltr"
+                  data-ml-seq-explain-term={step.n}
+                >
+                  {`${termName(step.n)} ${isRounded(step.value) ? '≈' : '='} ${formatTerm(step.value)}`}
+                </span>
+              )}
+            </div>
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
+/** `formatTerm` garde quatre décimales : au-delà, l'égalité affichée est une approximation. */
+function isRounded(value) {
+  return Number.isFinite(value) && Math.abs(Math.round(value * 1e4) / 1e4 - value) > 1e-12;
 }

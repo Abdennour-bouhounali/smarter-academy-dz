@@ -43,6 +43,8 @@ import { summarizeNumberLab } from './summarize.js';
 export const numberLabTool = defineMathLabTool({
   id: 'numberLab',
   slug: 'nombres',
+  // Le nom long de la route, celui qu'on donne à un enseignant : même instrument.
+  aliases: ['nombres-calcul'],
   labelKey: 'tools.numberLab.name',
   descriptionKey: 'tools.numberLab.description',
   newLabelKey: 'tools.numberLab.new',

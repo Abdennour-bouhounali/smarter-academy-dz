@@ -10,6 +10,9 @@ import AnalysisInspector from './AnalysisInspector.jsx';
 import PracticePanel from './PracticePanel.jsx';
 import LiveReadout from './LiveReadout.jsx';
 import { buildScene } from './buildScene.js';
+import { buildDerivativeSteps } from './derivativeSteps.js';
+import { VARIATION_STAGES } from './variationTable.js';
+import useStepReveal from '../../shared/useStepReveal.js';
 import { layersForLab } from './layers.js';
 import {
   normalizeAnalysisData, createAnalysisData, clearAnalysisData,
@@ -165,6 +168,24 @@ export default function AnalysisTool({ initialData, onChange, onReady }) {
 
     return buildScene(data, view, { withDomain: data.lab === 'study' });
   }, [data, view]);
+
+  /**
+   * LES DÉROULÉS PAS À PAS (exigence 2026-09-30) : f′(x) écrite, et la
+   * construction du جدول التغيّرات. Les lecteurs vivent ICI et non dans
+   * l'inspecteur : l'inspecteur se démonte quand l'élève passe à الضبط, et
+   * revenir à القراءة ne doit pas le renvoyer au début.
+   *
+   * La question, c'est la FONCTION : changer f ramène à l'énoncé. Tirer un
+   * curseur de paramètre ou déplacer la fenêtre garde le pas atteint — le
+   * contenu suit la nouvelle lecture (le tableau est une lecture de la
+   * fenêtre, et un curseur tiré ne doit pas effacer le travail à chaque pixel).
+   */
+  const primarySource = data.functions?.[0]?.source ?? '';
+  const derivativeSteps = useMemo(() => buildDerivativeSteps(primarySource), [primarySource]);
+  const derivativePlayer = useStepReveal(derivativeSteps.ok ? derivativeSteps.steps.length : 0, { resetKey: primarySource });
+  const studyReady = data.lab === 'study' && Boolean(scene) && !scene.error;
+  const studyPlayer = useStepReveal(studyReady ? VARIATION_STAGES.length : 0, { resetKey: primarySource });
+  const steppers = { derivative: { player: derivativePlayer, steps: derivativeSteps }, study: studyPlayer };
 
   const handleViewportChange = useCallback((next) => commit((current) => setView(current, next)), [commit]);
 
@@ -415,7 +436,7 @@ export default function AnalysisTool({ initialData, onChange, onReady }) {
               />
             )}
             {tab === 'inspector' && (
-              <AnalysisInspector data={data} scene={scene} onHighlight={(key) => commit((current) => toggleLayer(current, key))} />
+              <AnalysisInspector data={data} scene={scene} steppers={steppers} onHighlight={(key) => commit((current) => toggleLayer(current, key))} />
             )}
             {tab === 'practice' && (
               <PracticePanel

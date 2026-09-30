@@ -28,7 +28,7 @@ const TRACK = 92;
  * x de gauche à droite et contredirait la courbe. Seuls les libellés de
  * ligne (« اتجاه التغيّر ») suivent la page.
  */
-export default function VariationTable({ table, functionName = 'f', derivativeSource = null }) {
+export default function VariationTable({ table, functionName = 'f', derivativeSource = null, rows = 4 }) {
   const { t } = useTranslation('mathlab');
 
   if (!table?.ok) {
@@ -39,6 +39,15 @@ export default function VariationTable({ table, functionName = 'f', derivativeSo
     );
   }
 
+  /**
+   * `rows` : la CONSTRUCTION pas à pas (variationTable.js › buildVariationSteps).
+   * 1 = la ligne x et les zéros / barres de f′, 2 = + les signes, 3 = + les
+   * flèches, 4 = + les valeurs (le tableau complet). Une ligne future n'est
+   * pas rendue du tout ; la phrase du lecteur d'écran, qui DIT le tableau,
+   * n'existe qu'une fois le tableau complet.
+   */
+  if (rows < 1) return null;
+  const complete = rows >= 4;
   const { columns, intervals } = table;
   /**
    * La grille : un LIBELLÉ de ligne, puis colonne / intervalle / colonne…
@@ -58,7 +67,11 @@ export default function VariationTable({ table, functionName = 'f', derivativeSo
   const gapOf = (index) => index * 2 + 3;
 
   return (
-    <figure className="sa-ml-an__vartable" data-ml-an-vartable="ok">
+    <figure
+      className="sa-ml-an__vartable"
+      data-ml-an-vartable={complete ? 'ok' : 'building'}
+      data-ml-an-varrows={Math.min(rows, 4)}
+    >
       <figcaption className="sa-ml-an__vartitle">{t('tools.analysis.variationTable.title')}</figcaption>
 
       <div className="sa-ml-an__varscroll">
@@ -89,25 +102,28 @@ export default function VariationTable({ table, functionName = 'f', derivativeSo
                 : column.derivativeZero ? '0' : ''}
             </div>
           ))}
-          {intervals.map((interval, index) => (
+          {rows >= 2 && intervals.map((interval, index) => (
             <SignCell key={`s-${index}`} interval={interval} column={gapOf(index)} row={ROW_D} t={t} />
           ))}
 
           {/* ── Ligne f(x) : les valeurs à leur HAUTEUR, les flèches entre ── */}
-          <div className="sa-ml-an__varrowlabel" style={{ gridRow: ROW_F, gridColumn: 1 }} dir="ltr">
-            {functionName}(x)
-          </div>
-          {columns.map((column, index) => (
+          {rows >= 3 && (
+            <div className="sa-ml-an__varrowlabel" style={{ gridRow: ROW_F, gridColumn: 1 }} dir="ltr">
+              {functionName}(x)
+            </div>
+          )}
+          {complete && columns.map((column, index) => (
             <ValueCell key={`v-${index}`} column={column} gridColumn={colOf(index)} row={ROW_F} t={t} />
           ))}
-          {intervals.map((interval, index) => (
+          {rows >= 3 && intervals.map((interval, index) => (
             <ArrowCell key={`a-${index}`} interval={interval} column={gapOf(index)} row={ROW_F} t={t} />
           ))}
         </div>
       </div>
 
-      {/* Ce que le tableau DIT, en une phrase, pour un lecteur d'écran. */}
-      <p className="sa-ml-an__sr">{describe(table, functionName, t)}</p>
+      {/* Ce que le tableau DIT, en une phrase, pour un lecteur d'écran —
+          seulement quand il est complet : avant, elle donnerait la réponse. */}
+      {complete && <p className="sa-ml-an__sr">{describe(table, functionName, t)}</p>}
     </figure>
   );
 }

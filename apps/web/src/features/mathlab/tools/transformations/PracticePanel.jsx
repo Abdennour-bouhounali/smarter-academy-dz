@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Check, X, RefreshCw, Play, Puzzle } from 'lucide-react';
+import { Check, X, RefreshCw, Play, Puzzle, ListOrdered } from 'lucide-react';
 import { formatValue } from '../functionGrapher/grapherFormat.js';
 import { VERTEX_NAMES } from './transformState.js';
 import { PUZZLES, describeChallengeStep } from './practice.js';
+import { buildRevealSteps } from './practiceSteps.js';
+import StepPlayer from '../../shared/StepPlayer.jsx';
+import useStepReveal from '../../shared/useStepReveal.js';
+import { StepList } from '../../shared/LabKit.jsx';
 
 /**
  * PRÉDIRE → TRANSFORMER → VÉRIFIER (§38 – §40) et les PUZZLES (§42).
@@ -16,6 +20,15 @@ import { PUZZLES, describeChallengeStep } from './practice.js';
  *   2. On n'entraîne pas sans avoir montré. Chaque vérification anime la
  *      transformation sur le plan — c'est la figure qui explique, pas le
  *      texte.
+ *
+ * « أرني » ne pose plus A′ d'un bloc (exigence du 2026-09-30) : il DÉROULE
+ * le calcul (`buildRevealSteps` : règle → substitution → image, par
+ * transformation) avec le lecteur partagé. Tant que le dernier pas n'est pas
+ * atteint, il n'y a ni verdict, ni A′, ni image sur le plan, et la réponse
+ * est gelée ; au dernier pas, `onReveal` pose le verdict et l'animation
+ * confirme sur la figure. Après une réponse de l'élève, le même déroulé est
+ * proposé (« شاهد الحلّ خطوة بخطوة ») — la réponse est déjà donnée, il
+ * explique d'où elle vient.
  */
 export default function PracticePanel({
   challenge, verdict, score, onNew, onSubmit, onReveal,
@@ -24,6 +37,22 @@ export default function PracticePanel({
   const { t } = useTranslation('mathlab');
   const [x, setX] = useState('');
   const [y, setY] = useState('');
+  // La question dont le déroulé est ouvert (null : aucun). Une nouvelle question le referme d'elle-même.
+  const [solvingFor, setSolvingFor] = useState(null);
+  const solving = Boolean(challenge) && solvingFor === challenge;
+  const solution = useMemo(() => buildRevealSteps(challenge), [challenge]);
+  const player = useStepReveal(solution.steps.length, { resetKey: challenge });
+  const locked = Boolean(verdict) || solving;
+
+  // Le DERNIER pas est atteint : alors seulement la réponse est posée (verdict + animation).
+  useEffect(() => {
+    if (solving && player.done && !verdict && solution.steps.length > 0) onReveal();
+  }, [solving, player.done, verdict, solution.steps.length, onReveal]);
+
+  const startSolution = () => {
+    setSolvingFor(challenge);
+    player.start();
+  };
 
   const submitTyped = (event) => {
     event.preventDefault();
@@ -128,7 +157,7 @@ export default function PracticePanel({
                     type="button"
                     className="sa-ml-btn sa-ml-tr__choice"
                     onClick={() => onSubmit(choice)}
-                    disabled={Boolean(verdict)}
+                    disabled={locked}
                     data-ml-choice={index}
                     dir="ltr"
                   >
@@ -144,7 +173,7 @@ export default function PracticePanel({
                   <input
                     type="text" inputMode="decimal" dir="ltr" value={x}
                     onChange={(event) => setX(event.target.value)}
-                    disabled={Boolean(verdict)}
+                    disabled={locked}
                     data-ml-answer-x
                     aria-label={t('tools.transformations.practice.answerX')}
                   />
@@ -154,15 +183,28 @@ export default function PracticePanel({
                   <input
                     type="text" inputMode="decimal" dir="ltr" value={y}
                     onChange={(event) => setY(event.target.value)}
-                    disabled={Boolean(verdict)}
+                    disabled={locked}
                     data-ml-answer-y
                     aria-label={t('tools.transformations.practice.answerY')}
                   />
                 </label>
-                <button type="submit" className="sa-ml-btn sa-ml-tr__primary" disabled={Boolean(verdict)} data-ml-answer-submit>
+                <button type="submit" className="sa-ml-btn sa-ml-tr__primary" disabled={locked} data-ml-answer-submit>
                   {t('tools.transformations.practice.check')}
                 </button>
               </form>
+            )}
+
+            {/* Le déroulé : le lecteur EN HAUT, puis les pas montrés — un pas futur n'est pas dans le DOM. */}
+            {solving && (
+              <div className="sa-ml-tr__solution" data-ml-tr-solution>
+                <h4 className="sa-ml-tr__solutiontitle">{t('tools.transformations.practice.solution.heading')}</h4>
+                <StepPlayer player={player} sticky dataAttr="data-ml-tr-step" />
+                <StepList
+                  steps={solution.steps.map((step) => solutionStep(step, t))}
+                  revealUpTo={player.cursor - 1}
+                  dataAttr="data-ml-tr-steps"
+                />
+              </div>
             )}
 
             {verdict && (
@@ -185,9 +227,15 @@ export default function PracticePanel({
             )}
 
             <div className="sa-ml-tr__practiceactions">
-              <button type="button" className="sa-ml-btn" onClick={onReveal} disabled={Boolean(verdict)} data-ml-practice-reveal>
+              <button type="button" className="sa-ml-btn" onClick={startSolution} disabled={locked} data-ml-practice-reveal>
                 {t('tools.transformations.practice.reveal')}
               </button>
+              {verdict && !solving && solution.steps.length > 0 && (
+                <button type="button" className="sa-ml-btn" onClick={startSolution} data-ml-practice-steps>
+                  <ListOrdered size={15} aria-hidden="true" />
+                  <span>{t('tools.transformations.practice.solution.show')}</span>
+                </button>
+              )}
               <button type="button" className="sa-ml-btn" onClick={newChallenge} data-ml-practice-next>
                 <RefreshCw size={15} aria-hidden="true" />
                 <span>{t('tools.transformations.practice.next')}</span>
@@ -198,6 +246,21 @@ export default function PracticePanel({
       </section>
     </div>
   );
+}
+
+/** Un pas de `buildRevealSteps`, habillé pour `StepList` : la phrase arabe (notations isolées) + le LaTeX. */
+function solutionStep(step, t) {
+  // Les notations (A(3 ; 2), A₁, 1 من 2) sont isolées en LTR ; la phrase arabe du pas, non.
+  const params = isolateParams(step.params);
+  if (step.describe) {
+    params.transformation = t(`tools.transformations.practice.stepText.${step.describe.key}`, isolateParams(step.describe.params));
+  }
+
+  return {
+    text: t(`tools.transformations.${step.textKey}`, params),
+    latex: step.latex,
+    tone: step.kind === 'result' ? 'result' : undefined,
+  };
 }
 
 /**

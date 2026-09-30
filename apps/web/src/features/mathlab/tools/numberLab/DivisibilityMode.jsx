@@ -1,11 +1,13 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Check, X, FlaskConical } from 'lucide-react';
+import { LabPanel } from '../../shared/LabKit.jsx';
 import ValueInput from './ValueInput.jsx';
 import SendToMenu from './SendToMenu.jsx';
 import { divisibilityTable, digitSum, digitSumChain, DIVISIBILITY_RULES } from './numberTheory.js';
 import { runExperiment } from './practice.js';
 import { formatNumber } from './numberValue.js';
+import { divisibilityReason } from './divisibilityReasons.js';
 
 /**
  * §20, §21 — QĀBILIYYAT AL-QISMA : le verdict ET sa raison.
@@ -32,6 +34,10 @@ export default function DivisibilityMode({ value, onChange, onSend, onSaveNote }
 
   const table = useMemo(() => divisibilityTable(value, DIVISIBILITY_RULES), [value]);
   const chain = useMemo(() => digitSumChain(value), [value]);
+  const context = useMemo(() => ({
+    div2: table.find((row) => row.by === 2)?.divisible,
+    div3: table.find((row) => row.by === 3)?.divisible,
+  }), [table]);
 
   return (
     <div className="sa-ml-nb__mode sa-ml-nb__mode--divisibility">
@@ -54,6 +60,7 @@ export default function DivisibilityMode({ value, onChange, onSend, onSaveNote }
       <ul className="sa-ml-nb__divtable">
         {table.map((row) => {
           const open = openRule === row.by;
+          const reason = divisibilityReason(row, value, context);
 
           return (
             <li key={row.by} className={`sa-ml-nb__divrow${row.divisible ? ' is-yes' : ' is-no'}`}>
@@ -76,13 +83,19 @@ export default function DivisibilityMode({ value, onChange, onSend, onSaveNote }
                   {/* §20 : LA RAISON, avec les chiffres de CE nombre. */}
                   <p className="sa-ml-nb__reason">
                     <span className="sa-ml-nb__reason-label">{t('tools.numberLab.divisibility.because')}</span>
-                    {t(`tools.numberLab.divisibility.rules.${row.rule}`, {
-                      evidence: row.evidenceText ?? formatNumber(value),
-                      sum: row.evidence ?? '',
-                      value: formatNumber(value),
-                      by: row.by,
-                    })}
+                    {reason
+                      ? t(reason.key, reason.params)
+                      : t(`tools.numberLab.divisibility.rules.${row.rule}`, {
+                        evidence: row.evidenceText ?? formatNumber(value),
+                        sum: row.evidence ?? '',
+                        value: formatNumber(value),
+                        by: row.by,
+                      })}
                   </p>
+                  {/* La formule À PART, isolée en LTR : dans la phrase, bidi la retournerait. */}
+                  {reason?.formula && (
+                    <p className="sa-ml-nb__formula" dir="ltr" data-ml-nb-div-formula>{reason.formula}</p>
+                  )}
 
                   {/* La division elle-même, avec ou sans reste. */}
                   <p className="sa-ml-nb__formula" dir="ltr">
@@ -112,16 +125,16 @@ export default function DivisibilityMode({ value, onChange, onSend, onSaveNote }
       </ul>
 
       {/* §21 : la somme des chiffres qui redescend. */}
-      <section className="sa-ml-nb__panel">
-        <h4>{t('tools.numberLab.explorer.digitSum')}</h4>
+      <LabPanel id="numberLab.divisibility.digitSum" title={t('tools.numberLab.explorer.digitSum')}>
         <p className="sa-ml-nb__formula" dir="ltr">{chain.join(' → ')}</p>
         <p className="sa-ml-nb__muted">{t('tools.numberLab.divisibility.chainHint', { chain: chain.join(' → ') })}</p>
-      </section>
+      </LabPanel>
 
       {/* §21 : l'expérience — on montre, on ne dit pas. */}
-      <section className="sa-ml-nb__panel">
-        <header className="sa-ml-nb__panel-head">
-          <h4>{t('tools.numberLab.divisibility.experimentDigitSum')}</h4>
+      <LabPanel
+        id="numberLab.divisibility.experiment"
+        title={t('tools.numberLab.divisibility.experimentDigitSum')}
+        actions={(
           <button
             type="button"
             className="sa-ml-nb__button sa-ml-nb__button--ghost"
@@ -130,8 +143,8 @@ export default function DivisibilityMode({ value, onChange, onSend, onSaveNote }
             <FlaskConical size={14} aria-hidden="true" />
             {experiment ? t('tools.numberLab.practice.experiments.again') : t('tools.numberLab.practice.experiments.run')}
           </button>
-        </header>
-
+        )}
+      >
         {experiment && (
           <>
             <table className="sa-ml-nb__table" dir="ltr">
@@ -169,7 +182,7 @@ export default function DivisibilityMode({ value, onChange, onSend, onSaveNote }
             )}
           </>
         )}
-      </section>
+      </LabPanel>
     </div>
   );
 }

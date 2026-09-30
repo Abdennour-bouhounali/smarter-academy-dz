@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import * as C from './conicMath.js';
 import * as I from './intersections.js';
+import IntersectionSolvePanel from './IntersectionSolvePanel.jsx';
 import { formatCanonical, formatLine } from './conicParser.js';
 import { isConicObject, isLineObject, MAX_CONICS, MAX_LINES } from './conicState.js';
 import { formatValue } from '../functionGrapher/grapherFormat.js';
@@ -68,7 +69,9 @@ function ConicControls({
     if (!result) return null;
     const tone = result.count === 0 ? 'outside' : result.count === 1 ? 'on' : 'inside';
 
-    return { count: result.count, classification: result.classification, tone };
+    return {
+      count: result.count, classification: result.classification, tone, target,
+    };
   })();
 
   return (
@@ -396,6 +399,8 @@ function ConicControls({
               {t(`tools.conics.lineParameters.intersections.${lineReport.classification}`, { n: lineReport.count })}
             </p>
           )}
+          {/* Le compte reste vivant ; la RÉSOLUTION se déroule sur demande, pas à pas. */}
+          {lineReport && <IntersectionSolvePanel conic={lineReport.target} line={selected} t={t} />}
         </section>
       )}
 

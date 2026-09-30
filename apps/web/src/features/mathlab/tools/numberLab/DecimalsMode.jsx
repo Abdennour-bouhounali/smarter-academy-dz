@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeftRight } from 'lucide-react';
+import { LabPanel } from '../../shared/LabKit.jsx';
 import FractionShape from './FractionShape.jsx';
 import ValueInput from './ValueInput.jsx';
 import {
@@ -92,7 +93,8 @@ export default function DecimalsMode({ state, onChange, compact }) {
             )}
           </div>
 
-          <div className="sa-ml-nb__shapes-row">
+          {/* Même sens que la chaîne au-dessus (LTR) : 75/100 à gauche, 3/4 à droite. */}
+          <div className="sa-ml-nb__shapes-row" dir="ltr">
             <FractionShape frac={parsed.literal} model="bar" tone="secondary" width={compact ? 260 : 340} />
             {parsed.factor > 1 && (
               <FractionShape frac={parsed.simplified} model="bar" tone="primary" width={compact ? 260 : 340} />
@@ -100,8 +102,10 @@ export default function DecimalsMode({ state, onChange, compact }) {
           </div>
 
           {/* §13 : pourquoi ça tombe juste, ou pas. */}
-          <section className="sa-ml-nb__panel">
-            <h4>{decimal?.exact ? t('tools.numberLab.decimals.exact') : t('tools.numberLab.decimals.repeating', { period: decimal?.period })}</h4>
+          <LabPanel
+            id="numberLab.decimals.why"
+            title={decimal?.exact ? t('tools.numberLab.decimals.exact') : t('tools.numberLab.decimals.repeating', { period: decimal?.period })}
+          >
             <p className="sa-ml-nb__muted">
               {onlyTwosAndFives
                 ? t('tools.numberLab.decimals.whyExact', { denominator: parsed.simplified.d })
@@ -121,7 +125,7 @@ export default function DecimalsMode({ state, onChange, compact }) {
                 <dd>{Number.isFinite(percent) ? formatPercent(percent) : '—'}</dd>
               </div>
             </dl>
-          </section>
+          </LabPanel>
         </>
       )}
     </div>

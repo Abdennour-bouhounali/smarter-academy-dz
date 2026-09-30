@@ -35,6 +35,7 @@
  * Les documents créés sont supprimés à la fin.
  */
 import { chromium } from 'playwright';
+import { playToEnd } from './_stepPlayer.mjs';
 import { mkdirSync } from 'node:fs';
 
 const BASE = process.env.QA_BASE || 'http://localhost:5173';
@@ -545,7 +546,9 @@ record('§28 : les indices sont PROGRESSIFS (le second diffère du premier)', hi
 
 // La révélation montre les VRAIS termes (§29).
 await page.locator('[data-ml-seq-practice-reveal]').first().click();
-await sleep(700);
+await sleep(300);
+await playToEnd(page, 'data-ml-seq-reveal-step');
+await sleep(300);
 const explainTerms = await countOf(page, '[data-ml-seq-explain-term]');
 record('§29 : la révélation montre les VRAIS termes calculés, pas un verdict',
   explainTerms > 1, `${explainTerms} termes`);

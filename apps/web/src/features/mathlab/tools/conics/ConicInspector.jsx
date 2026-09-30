@@ -6,6 +6,9 @@ import {
 } from './conicParser.js';
 import { comparisonRows } from './sceneAnalysis.js';
 import { formatValue } from '../functionGrapher/grapherFormat.js';
+import { buildCanonicalFrames } from './canonicalSteps.js';
+import ConicDerivation from './ConicDerivation.jsx';
+import { LabPanel } from '../../shared/LabKit.jsx';
 
 /**
  * L'INSPECTEUR (§7, §8, §9, §21, §28, §30, §31, §32, §33, §44).
@@ -40,6 +43,12 @@ function ConicInspector({
   const editingLine = selected?.kind === 'line';
   const [draft, setDraft] = useState(null);
   const [error, setError] = useState(null);
+  /**
+   * Le passage développée → canonique d'une équation TAPÉE (`canonicalSteps.js`).
+   * Il ne vit que tant que la conique est celle que cette équation a produite :
+   * dès qu'on la tire, le champ redevient miroir et le déroulé n'a plus d'objet.
+   */
+  const [derivation, setDerivation] = useState(null);
   const inputRef = useRef(null);
 
   const canonical = editingLine ? formatLine(selected) : (conic ? formatCanonical(conic) : '');
@@ -57,11 +66,18 @@ function ConicInspector({
     const result = editingLine ? parseLineEquation(text) : parseConicEquation(text);
     if (!result.ok) {
       setError(result);
+      setDerivation(null);
 
       return;
     }
     setError(null);
     setDraft(null);
+    if (editingLine) {
+      setDerivation(null);
+    } else {
+      const built = buildCanonicalFrames(text, result);
+      setDerivation(built.ok ? { ...built, source: text, canonical: formatCanonical(result.conic) } : null);
+    }
     if (editingLine) onApplyLine(selected.id, result.line);
     else onApplyEquation(result.conic);
   };
@@ -134,6 +150,11 @@ function ConicInspector({
           {t(editingLine ? 'tools.conics.equation.hintLine' : 'tools.conics.equation.hint')}
         </p>
       </section>
+
+      {/* ── §30 — le passage développée → canonique, pas à pas ───────── */}
+      {!editingLine && derivation && derivation.canonical === canonical && (
+        <ConicDerivation derivation={derivation} t={t} />
+      )}
 
       {/* ── §31 — LES ÉLÉMENTS REMARQUABLES, extraits ────────────────── */}
       {!editingLine && conic && degeneracy === null && features && (
@@ -230,8 +251,7 @@ function ConicInspector({
 
       {/* ── §21 — LE TABLEAU COMPARATIF, avec les VRAIES valeurs ─────── */}
       {conic && features && (
-        <section className="sa-ml-cn__section">
-          <h3 className="sa-ml-cn__h3">{t('tools.conics.compare.title')}</h3>
+        <LabPanel id="conics.inspector.compare" title={t('tools.conics.compare.title')} className="sa-ml-cn__labpanel">
           <div className="sa-ml-cn__tablewrap">
             <table className="sa-ml-cn__table" data-ml-cn-compare>
               <caption className="sa-ml-cn__sr">{t('tools.conics.compare.caption')}</caption>
@@ -263,13 +283,12 @@ function ConicInspector({
               </tbody>
             </table>
           </div>
-        </section>
+        </LabPanel>
       )}
 
       {/* ── §44 — AVANT / APRÈS ──────────────────────────────────────── */}
       {reference && conic && (
-        <section className="sa-ml-cn__section">
-          <h3 className="sa-ml-cn__h3">{t('tools.conics.reference.title')}</h3>
+        <LabPanel id="conics.inspector.reference" title={t('tools.conics.reference.title')} className="sa-ml-cn__labpanel">
           <div className="sa-ml-cn__beforeafter" data-ml-cn-beforeafter>
             <div>
               <span className="sa-ml-cn__hint">{t('tools.conics.reference.before')}</span>
@@ -280,7 +299,7 @@ function ConicInspector({
               <p dir="ltr" className="sa-ml-cn__mono">{canonical}</p>
             </div>
           </div>
-        </section>
+        </LabPanel>
       )}
     </div>
   );

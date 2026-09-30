@@ -4,6 +4,7 @@ import { PanelBottomClose, PanelBottomOpen, X } from 'lucide-react';
 import './trigonometry.css';
 import UnitCircleStage from './UnitCircleStage.jsx';
 import TriangleStage from './TriangleStage.jsx';
+import TriangleSolvePanel from './TriangleSolvePanel.jsx';
 import TrigInspector from './TrigInspector.jsx';
 import TrigControls from './TrigControls.jsx';
 import PracticePanel from './PracticePanel.jsx';
@@ -470,7 +471,11 @@ export default function TrigonometryTool({ initialData, onChange, onReady }) {
             identityPanel={data.mode === 'circle'}
             tanPanel
             onHighlight={(ratio) => commit((current) => setHighlight(current, ratio))}
-          />
+          >
+            {/* « حلّ المثلث خطوة بخطوة » — le dessin reste vivant, le raisonnement
+                se déroule, juste sous les rapports (§3.5). */}
+            {data.mode === 'triangle' && <TriangleSolvePanel triangle={data.triangle} />}
+          </TrigInspector>
 
           <TrigControls
             data={data}

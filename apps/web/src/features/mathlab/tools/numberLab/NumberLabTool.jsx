@@ -20,9 +20,14 @@ import FactorsMode from './FactorsMode.jsx';
 import GcdLcmMode from './GcdLcmMode.jsx';
 import RoundingMode from './RoundingMode.jsx';
 import OperationsMode from './OperationsMode.jsx';
+import DivisionMode from './DivisionMode.jsx';
+import PowersMode from './PowersMode.jsx';
+import OrderMode from './OrderMode.jsx';
 import PracticePanel from './PracticePanel.jsx';
+import LabSectionNav from '../../shared/LabSectionNav.jsx';
+import { MODE_SECTIONS, MODE_GROUPS } from './modeCatalog.js';
 import {
-  MODES, createNumberLabData, normalizeNumberLabData, serializeNumberLabData,
+  createNumberLabData, normalizeNumberLabData, serializeNumberLabData,
   setMode, patchMode, sendTo, addNote, removeNote, recordAttempt, setPracticeLevel,
 } from './numberState.js';
 
@@ -238,38 +243,54 @@ export default function NumberLabTool({ initialData, title, onChange, onReady })
             onChange={(u) => patch('gcdLcm', u)}
             compact={compact}
             onSaveNote={saveNote}
+            reducedMotion={reducedMotion}
           />
         );
+      case 'division':
+        return <DivisionMode state={data.division} onChange={(u) => patch('division', u)} compact={compact} />;
+      case 'powers':
+        return <PowersMode state={data.powers} onChange={(u) => patch('powers', u)} />;
+      case 'order':
+        return <OrderMode state={data.order} onChange={(u) => patch('order', u)} />;
       case 'rounding':
         return <RoundingMode state={data.rounding} onChange={(u) => patch('rounding', u)} compact={compact} />;
       case 'operations':
-        return <OperationsMode state={data.operations} onChange={(u) => patch('operations', u)} compact={compact} />;
+        return (
+          <OperationsMode
+            state={data.operations}
+            onChange={(u) => patch('operations', u)}
+            compact={compact}
+            onGoMode={changeMode}
+          />
+        );
       default:
         return null;
     }
-  }, [data, patch, send, compact, reducedMotion, saveNote]);
+  }, [data, patch, send, compact, reducedMotion, saveNote, changeMode]);
+
+  /** La barre : seize modes rangés en trois familles (modeCatalog.js), chacun décrit. */
+  const sections = useMemo(() => MODE_SECTIONS.map((section) => ({
+    ...section,
+    label: t(`tools.numberLab.modesShort.${section.id}`),
+    description: t(`tools.numberLab.modeDescriptions.${section.id}`),
+  })), [t]);
+  const groupLabels = useMemo(
+    () => Object.fromEntries(MODE_GROUPS.map((group) => [group, t(`tools.numberLab.modeGroups.${group}`)])),
+    [t],
+  );
 
   return (
     <div className="sa-ml-nb" data-ml-nb data-ml-nb-mode={data.mode}>
-      {/* §3 : la barre des modes — treize portes, un seul laboratoire. */}
-      <nav className="sa-ml-nb__modes" aria-label={t('tools.numberLab.modesLabel')}>
-        <ul className="sa-ml-nb__modes-list">
-          {MODES.map((mode) => (
-            <li key={mode}>
-              <button
-                type="button"
-                className={`sa-ml-nb__mode-chip${data.mode === mode ? ' is-active' : ''}`}
-                data-ml-nb-modechip={mode}
-                onClick={() => changeMode(mode)}
-                aria-current={data.mode === mode ? 'true' : undefined}
-                title={t(`tools.numberLab.modes.${mode}`)}
-              >
-                {t(`tools.numberLab.modesShort.${mode}`)}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      {/* §3 : la barre des modes — seize portes, trois familles, un seul laboratoire.
+          `data-ml-nb-modechip` reste l'attribut des e2e existants. */}
+      <LabSectionNav
+        sections={sections}
+        active={data.mode}
+        onChange={changeMode}
+        label={t('tools.numberLab.modesLabel')}
+        dataAttr="data-ml-nb-modechip"
+        groupLabels={groupLabels}
+      />
 
       <div className="sa-ml-nb__body">
         <main className="sa-ml-nb__stage" data-ml-nb-stage>

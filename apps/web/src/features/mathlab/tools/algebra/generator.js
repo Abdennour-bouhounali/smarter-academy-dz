@@ -9,6 +9,12 @@
  *   niveau 2   a·x = b          le coefficient, une division
  *   niveau 3   a·x + b = c      les deux — le cœur du chapitre
  *   niveau 4   a·x + b = c·x + d   l'inconnue des deux côtés
+ *   niveau 5   a(x + b) = c   ou   a(x + b) = c·x + d   des parenthèses à développer
+ *   niveau 6   x/p ± x/q = r   des fractions à réduire au même dénominateur
+ *
+ * Les niveaux 5 et 6 rendent une SAISIE (`source`) avec ses parenthèses ou
+ * ses fractions : c'est elle que le laboratoire montre développée
+ * (« نشر وتبسيط كل طرف ») avant le travail sur la balance.
  *
  * Les garde-fous, tous délibérés :
  *   — la solution est un ENTIER de [−10, 10] : l'élève doit pouvoir
@@ -28,9 +34,14 @@
 
 import * as R from './rational.js';
 import { makeLinear } from './linearForm.js';
-import { equationToText } from './equation.js';
+import { equationToText, parseEquation } from './equation.js';
+import { lcmInt } from './polynomial.js';
 
-export const LEVELS = Object.freeze([1, 2, 3, 4]);
+export const LEVELS = Object.freeze([1, 2, 3, 4, 5, 6]);
+
+/** Les niveaux d'une متراجحة : les quatre premiers, le sens tiré au hasard. */
+export const INEQUALITY_LEVELS = Object.freeze([1, 2, 3, 4]);
+export const INEQUALITY_RELATIONS = Object.freeze(['<', '>', '<=', '>=']);
 export const DEFAULT_LEVEL = 3;
 
 const SOLUTION_MIN = -10;
@@ -74,6 +85,7 @@ export function generateEquation(options = {}) {
   const random = typeof options.random === 'function' ? options.random : Math.random;
   const relation = options.relation ?? '=';
   const x = pickSolution(random);
+  if (level === 5 || level === 6) return generateWritten(level, x, random, relation);
 
   let left;
   let right;
@@ -110,4 +122,61 @@ export function generateEquation(options = {}) {
   const equation = { left, right, relation };
 
   return { equation, source: equationToText(equation), level, solution: x };
+}
+
+const REL_TEXT = { '=': '=', '<': '<', '>': '>', '<=': '<=', '>=': '>=' };
+
+/** `3(x - 2)` : un coefficient devant une parenthèse, écrit comme au tableau. */
+function bracket(a, b) {
+  const head = a === 1 ? '' : (a === -1 ? '-' : String(a));
+
+  return `${head}(x ${b < 0 ? '-' : '+'} ${Math.abs(b)})`;
+}
+
+function linearText(c, d) {
+  const head = c === 1 ? 'x' : (c === -1 ? '-x' : `${c}x`);
+  if (d === 0) return head;
+
+  return `${head} ${d < 0 ? '-' : '+'} ${Math.abs(d)}`;
+}
+
+/** Les niveaux « écrits » : la saisie d'abord, l'équation réduite ensuite (par l'analyseur). */
+function generateWritten(level, solution, random, relation) {
+  let source;
+  let x = solution;
+  const rel = REL_TEXT[relation] ?? '=';
+  if (level === 5) {
+    const a = pickCoefficient(random, { allowOne: false });
+    const b = pickCoefficient(random, { allowOne: true });
+    if (random() < 0.5) {
+      source = `${bracket(a, b)} ${rel} ${a * (x + b)}`;
+    } else {
+      let c = pickCoefficient(random, { allowOne: true });
+      if (c === a) c = a === COEFFICIENT_MAX ? a - 1 : a + 1;
+      const d = a * (x + b) - c * x;
+      source = `${bracket(a, b)} ${rel} ${linearText(c, d)}`;
+    }
+  } else {
+    // Des dénominateurs dont le PPCM reste ≤ 10 : la solution garde la borne [−10, 10] des autres niveaux.
+    const pairs = [[2, 3], [3, 2], [2, 4], [4, 2], [2, 5], [5, 2], [2, 6], [3, 6], [6, 3]];
+    const [p, q] = pairs[Math.floor(random() * pairs.length)];
+    const minus = random() < 0.35;
+    const common = lcmInt(p, q);
+    const k = pickInt(random, 1, Math.max(1, Math.floor(SOLUTION_MAX / common))) * (random() < 0.3 ? -1 : 1);
+    x = k * common;
+    const r = minus ? x / p - x / q : x / p + x / q;
+    source = `x/${p} ${minus ? '-' : '+'} x/${q} ${rel} ${r}`;
+  }
+  const parsed = parseEquation(source);
+
+  return { equation: parsed.equation, source, level, solution: x };
+}
+
+/** Une متراجحة d'un niveau 1–4, le sens tiré au hasard. */
+export function generateInequality(options = {}) {
+  const random = typeof options.random === 'function' ? options.random : Math.random;
+  const level = INEQUALITY_LEVELS.includes(options.level) ? options.level : DEFAULT_LEVEL;
+  const relation = INEQUALITY_RELATIONS[Math.floor(random() * INEQUALITY_RELATIONS.length)];
+
+  return generateEquation({ level, relation, random });
 }

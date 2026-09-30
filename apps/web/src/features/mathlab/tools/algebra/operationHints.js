@@ -38,12 +38,15 @@ function shortText(value) {
 
 const SYMBOL = { add: '+', subtract: '−', multiply: '×', divide: '÷' };
 
-function hint(kind, value) {
+function hint(kind, value, term = null) {
+  const x = term === 'x' ? (R.equals(value, R.ONE) ? 'x' : `${shortText(value)}x`) : null;
+
   return {
     kind,
     value,
+    ...(term ? { term } : {}),
     text: value.d === 1 ? String(value.n) : `${value.n}/${value.d}`,
-    label: `${SYMBOL[kind]} ${shortText(value)}`,
+    label: `${SYMBOL[kind]} ${x ?? shortText(value)}`,
   };
 }
 
@@ -59,7 +62,8 @@ export function suggestOperations(equation) {
   // 1. L'inconnue des deux côtés : la ramener à gauche.
   if (!R.isZero(equation.right.a)) {
     const kind = R.isNegative(equation.right.a) ? 'add' : 'subtract';
-    hints.push(hint(kind, R.isNegative(equation.right.a) ? R.negate(equation.right.a) : equation.right.a));
+    // C'est un TERME en x qu'on déplace (`− 2x`), pas le nombre 2.
+    hints.push(hint(kind, R.isNegative(equation.right.a) ? R.negate(equation.right.a) : equation.right.a, 'x'));
   }
 
   // 2. La constante à gauche : la faire disparaître.

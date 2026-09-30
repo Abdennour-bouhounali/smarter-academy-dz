@@ -70,6 +70,23 @@ Should the list fill again, an announced instrument exists only as a name
 and an icon in `PLANNED_MATH_LAB_TOOLS`, rendered as a disabled « قريبًا »
 chip on the home page: no route, no component, no placeholder screen.
 
+### 1.1 Audience — collège AND lycée (owner, 2026-09-30)
+
+The Math Lab is used by **every** student of المتوسط and الثانوي, not only by
+4AM. Consequences, binding on every instrument:
+
+- **No content is labelled « خارج البرنامج » or « خارج برنامج الرابعة متوسط »**, and
+  none is hidden behind such a label: the normal law, the discriminant Δ,
+  exponential / logarithm functions, the unit circle, sequences… are
+  first-class content for the lycée student who opens them.
+- Where a tool groups examples, it groups them **by cycle** (« المتوسط » ·
+  « الثانوي ») or by difficulty (مبتدئ · متوسط · متقدّم), both visible.
+- A tool may still choose a sensible **default opening view** (the triangle
+  before the unit circle, the rate of change before the derivative); the older
+  rule that beyond-4AM material must wait « one click away » (§5f.10, §5g.1,
+  §5h, §5m.1) now describes those defaults only — it is no longer a
+  restriction, and the sections that cite it are historical on that point.
+
 ## 2. Information architecture and routes
 
 All under the authenticated student shell (`StudentLayout`, `ProtectedRoute
@@ -78,10 +95,12 @@ allowedRoles={['student']}`), French route slugs like the rest of `/espace`:
 | Route | Page | Role |
 |---|---|---|
 | `/espace/atelier` | `MathLabHome` | the instruments, the announced ones, and « أعمالي » — the personal **workspace** (§5i) |
-| `/espace/atelier/:toolSlug` | `MathLabToolPage` | a **new** document in that instrument (`tableau`, `grapheur`, `geometrie-3d`, `probabilites-statistiques`, `algebre`, `vecteurs`, `trigonometrie`, `suites`, `transformations`, `coniques`, `nombres`, `logique`, `mesure`) |
+| `/espace/atelier/:toolSlug` | `MathLabToolPage` | a **new** document in that instrument (`tableau`, `grapheur`, `geometrie-3d`, `probabilites-statistiques`, `algebre`, `vecteurs`, `trigonometrie`, `suites`, `transformations`, `coniques`, `nombres` (alias `nombres-calcul`), `logique`, `mesure`) |
 | `/espace/atelier/:toolSlug/:documentId` | `MathLabToolPage` | a saved document |
 
-`toolSlug` is resolved against the registry (`getMathLabToolBySlug`); an
+`toolSlug` is resolved against the registry (`getMathLabToolBySlug`), which
+also accepts a tool's `aliases` (§3.1) — `/enseignant/atelier/nombres-calcul`
+opens the number lab; links and saves keep using the canonical `slug`. An
 unknown slug redirects to the Lab home of the current workspace. A document
 that is not the student's (or does not exist) renders « هذا العمل غير موجود أو
 ليس لك » — the API answers 404 either way, never 403.
@@ -157,6 +176,8 @@ features/mathlab/
                            ExplorerMode.jsx · PlaceValueMode.jsx · LineMode.jsx · FractionsMode.jsx · DecimalsMode.jsx ·
                            PercentMode.jsx · ProportionMode.jsx · DivisibilityMode.jsx · PrimesMode.jsx · FactorsMode.jsx ·
                            GcdLcmMode.jsx · RoundingMode.jsx · OperationsMode.jsx · PracticePanel.jsx · numberLab.css
+    shared/             LabSectionNav.jsx (the section bar of a multi-tool lab) · LabKit.jsx (LabDisclosure ·
+                           ExamplePicker · StepList · LabMessage) · labKit.css — see §3.4
     symbolic/           index.js (the ONLY door to Nerdamer) · symbolicEngine.js ·
                            symbolicSyntax.js (AST → Nerdamer, never a regex)
     └── analysis/       index.js (definition) · AnalysisTool.jsx · AnalysisPlane.jsx · SceneLayer.jsx ·
@@ -218,6 +239,7 @@ A tool is a frozen object validated at module load by `defineMathLabTool`
 | `schemaVersion` | version of the tool's `data` format; the tool must reopen every version it has published |
 | `createInitialData(seed?)` | the state of a new document, empty or built from a lesson seed |
 | `load()` | lazy `import()` of the component — heavy engines never load on other pages |
+| `aliases` | **optional** — other URL segments that open the same instrument (`['nombres-calcul']` for `numberLab`). Validated like `slug`; `toolRegistry.test.js` fails if a segment or alias would open two instruments. The canonical `slug` stays the one links and saves are built from. |
 | `summarize(data)` | **optional**, pure. The tool's own summary of its state — a few hundred bytes that let « أعمالي » draw a real preview and search the content **without loading the instrument** (§5i.2). A tool without it is not at fault: its card falls back to its icon. |
 
 The component receives `MathLabToolProps`: `initialData` (read once),
@@ -248,7 +270,8 @@ key fallback in `MathLabShell.jsx`).
    no `summarize`, if its summary exceeds the server's 2 KB, or if it throws
    on a malformed state.
 
-6. Nothing for access: its feature key `math_lab.tool.<id>` derives from
+6. **Layout**: it obeys « d'un seul regard » (§3.5) — objects and their operation in one sight, information beside figures, secondary blocks in `LabPanel`s.
+7. Nothing for access: its feature key `math_lab.tool.<id>` derives from
    `MathLabTools` and is **open to both tiers** until the admin closes it in
    « الوصول والحدود » (`ACCESS_AND_LIMITS.md` §11). Never gate a tool in
    code; to ship it premium, a migration inserts its policy row.
@@ -297,6 +320,192 @@ Per instrument:
 **Testing rule:** a practice test must recompute the expected answer itself —
 `checkAnswer(ch, ch.expected)` proves nothing. Each fix above carries a test
 of that kind.
+
+### 3.4 The lab kit — sections, examples, explanations (`features/mathlab/shared/`)
+
+Three instruments grew into **laboratories that hold several tools** —
+مختبر الجبر (§5e), الاحتمالات والإحصاء (§5d), مختبر الأعداد والحساب (§5l).
+A section is **not** a route and **not** a separate document: the instrument
+keeps one document whose state holds one sub-state per section, and the
+section bar only changes what is displayed (the §5l.2 rule, generalised).
+They share one small kit rather than three copies:
+
+| Piece | What it is | Rule it carries |
+|---|---|---|
+| `LabSectionNav` | the section bar: a WAI-ARIA `tablist` of icon + name chips, optional **groups** (`group`, `groupLabels`), the active section's one-line description under it | arrows follow the reading direction (← advances in Arabic), Home/End jump; an icon is never alone; `dataAttr` keeps a tool's existing e2e attribute (`data-ml-nb-modechip`) |
+| `LabDisclosure` | a folded « لماذا؟ » / « القاعدة » / « الخطوة التالية » / « ملاحظة » block | **explore first, understand on demand**: closed at opening, never a wall of text |
+| `ExamplePicker` | curated examples by level (مبتدئ / متوسط / متقدّم) + optional « مثال عشوائي » | examples are chosen, not random noise; the random one is built to fall out exactly |
+| `StepList` | a step-by-step derivation: LaTeX (via `MathText`, LTR-isolated) + one Arabic sentence per step, the current step ringed in orange | formulas never sit as plain text inside an Arabic sentence (bidi would reorder them into false mathematics) |
+| `LabMessage` | a refusal or information line (`role="alert"` for errors) | the student never reads `NaN`, `Infinity`, a parser code or a stack trace |
+
+#### 3.4.1 Progressive solutions — the step player and the board (2026-09-30)
+
+**Rule (owner, standing):** in the Math Lab a calculation, transformation,
+derivation, algorithm or worked solution is **never revealed at once**. The
+tool computes the whole solution with its own engine (the only source of
+mathematical truth), models it as a sequence of **real mathematical states**,
+and the student discovers it **one state at a time**; the final result is the
+**last** step. A future step is **not in the DOM** in any form — not faded,
+not hidden by CSS. Live manipulation (sliders, dragging, a readout while
+manipulating, running an experiment) is not a solution and stays live.
+
+| Piece | Role |
+|---|---|
+| `shared/stepPlayerModel.js` | the pure state machine: `ready` (the problem alone) → `stepping` / `playing` / `paused` → `completed`; `{ cursor, total, mode, speed, playing, key, autostart }`. `begin` (the tool's action button) shows the FIRST step, never the end; a new question (`key` or `total` change) returns to `ready`, except in the same gesture as `begin`. Switching mode or speed **keeps** the current step. Unit-tested (`stepPlayerModel.test.js`). |
+| `shared/useStepReveal.js` | the hook: `useStepReveal(total, { resetKey })` → `{ cursor, total, phase, done, start, next, previous, pause, resume, restart, revealAll, setMode, setSpeed }`. The cursor is **interface state**, never serialised: a reopened document shows the problem, not the answer. Mode and speed are a per-browser preference (`localStorage › sa-ml-step-player`, guarded). |
+| `shared/StepPlayer.jsx` | the controls, as a **small icon toolbar** (owner, 2026-09-30: « smaller, draggable, it must not hide content »): three modes — « خطوة بخطوة » (‹ السابقة · › التالية), « عرض تلقائي » (▶ / ❚❚ and one speed button cycling بطيء / عادي / سريع = 2 000 / 1 200 / 700 ms) and « تدرّب بنفسك » (below) — ↺ restart, compact progress `2/5` (the full sentence « الخطوة 2 من 5 » is the `aria-live` text). With `sticky` the toolbar **floats** (`position: fixed`): it opens at the top-right of the tool's scrolling area (the start edge in Arabic), is dragged by its ⋮⋮ grip (pointer, touch, or arrow keys; Home / double-click put it back), and can be **reduced** to its buttons alone (no mode, speed or progress). Position and reduced state are a per-browser preference (`localStorage › sa-ml-step-dock`). Only one toolbar floats at a time — the solution the student last started or touched (`shared/floatingDock.js`); the others stay as the same compact pill in place. At the beginning the forward button pulses (a halo, never a movement). « عرض الحل كاملاً » exists **only in the teacher workspace**. Every button is an icon with its Arabic name (`aria-label` + `title`). |
+| `shared/mathBoard/useBoardPractice.js` + `frames.js › makeTask` | **« تدرّب بنفسك »** — the student performs the step instead of watching it (owner, 2026-09-30): a frame may carry a `task` `{ targets, operator, kind }`; `binaryOperationFrames` and `bothSidesFrames` attach the real gesture by default (pick the two operands then the operator; pick the term to remove then the operation applied to both sides). In practice mode such a frame renders as an exercise — its tokens become buttons, nothing of the expected gesture is shown (no tones, arrows or operation chip), an operator palette `+ − × ÷` appears after a correct pick, then the student **types the result himself** (« 2 × 3 = ؟ », or « 2x + 3 − 3 = 9 − 3 ← ؟ » for a both-sides step): `locateAnswer` reads the expected number from the following frames of the same step (the first `result` mark, else the first numeric `result` token), `checkAnswer` compares exact rationals (`0,5` = `1/2`, `12/2` = `6`), non-numeric results are not asked, `task.answer` overrides or disables (`false`); a correct result makes the solution jump straight to the frame where that result lands. Since the toolbar floats and drags, it may cover content — the student moves or reduces it (owner, 2026-09-30); a wrong choice gets one Arabic sentence and a retry, two errors outline the answer in green, « أرني » in the toolbar shows it. A correct answer displays the frame's own designation, then the solution moves on by itself. Frames without a task behave as in « خطوة بخطوة ». `validateFrames` checks that task targets exist and that operators are in the palette. |
+| `shared/LabKit.jsx › StepList` | text-level steps `{ latex, text, operation, operationLatex, tone }` rendered up to `revealUpTo`; `operation` is the orange « what changed » chip. |
+| `shared/mathBoard/frames.js` | **visible transformations**. A solution is a list of FRAMES (micro-states) grouped by logical `step`: tokens `tok(id, latex, tone)` with tones `selected` → `operation` (orange) → `result` (green) / `warning` / `muted`, and marks `under` (↓ «−3» under each side), `link` (an arc from one token to another carrying the operator: [2] ⌒× [3]) and `result` (↓ 6 under a pair). Builders stage what the engine computed: `bothSidesFrames` (designate the term → the operation falls under BOTH sides → it is written into the expression → simplified, with `< \to >` on a reversed relation), `binaryOperationFrames` (designate → link → result), `resultFrame`, `stateFrame`; `boardProgress` counts logical steps; `validateFrames` checks every mark targets a present token and that the last frame is a result. |
+| `shared/mathBoard/MathBoard.jsx` | the board: the problem, the **settled** lines (✓), and **only the current frame** — each token rendered by KaTeX on its own so it can be measured; the arrows are an SVG layer computed from the real token boxes (fonts loaded, width of the screen), re-measured on resize. LTR notation, Arabic sentences follow the page; the canvas scrolls inside itself, never the page. |
+
+**Following the solution (owner, 2026-09-30).** At every new step the current
+frame (`MathBoard`) or step (`StepList` in a reveal) is scrolled to the
+**centre of the screen** (`scrollIntoView({ block: 'center' })`, smooth unless
+reduced motion); a running board keeps `min(38vh, 340px)` of room under it so
+the stage can actually scroll that far. **Mathematics reads left to right,
+always**: in practice mode the result row is `dir="ltr"` — « 84 − 36 = [ ؟ ] » —
+the box comes after the equal sign, and both-sides context reads
+`2x + 3 − 3 = 9 − 3 → [ ؟ ]`. On screens under 480 px the floating toolbar
+wraps onto two rows and re-fits itself whenever its size changes.
+
+Motion: a new frame fades in, a designated token pulses once, arrows draw
+themselves, a result lands. `prefers-reduced-motion` removes the animations
+and **keeps** the step-by-step reveal (reduced motion never means « show
+everything »). Screen-reader announcements never state a result before its
+last step. Strings: `mathlab.json › kit.stepper.*`.
+
+Adopting it in a tool: generate frames (or steps) in a pure `*Frames.js` /
+`*Steps.js` module from the engine's output, test it with `validateFrames`
+and the exact expected sequence, drive `useStepReveal(frames.length, { resetKey })`
+with `resetKey` = everything that defines the question (input, method), wire
+`const practice = useBoardPractice(frames, player, resetKey)`, render
+`<StepPlayer sticky progress={boardProgress(frames, cursor)} {...practice.player} />`
+and `<MathBoard frames cursor problem {...practice.board} />`, and make the
+tool's action button call `player.start()`. Inner elements never scroll: long
+formulas wrap, and only the tool's screen (its stage — on a phone, the whole
+tool) scrolls.
+
+#### 3.4.2 Where the Math Lab reveals progressively — the audit of the other instruments (2026-09-30)
+
+The three laboratories are covered in §5d.11, §5e.10 and §5l.12. The other instruments:
+
+
+Rule (§3.4): a derivation, algorithm or worked solution triggered by the student is never shown at once. A pure
+generator in the tool folder produces REAL states (last = result); `useStepReveal(total, { resetKey })` drives a
+sticky `<StepPlayer>` placed ABOVE the steps and a `StepList` (or the tool's own rendering sliced by `cursor`).
+Future steps are not in the DOM; verdicts/results/sr sentences render only when `player.done`. Live manipulation
+("reading while manipulating") and explanations that follow the student's own answer are unchanged.
+
+#### Audit
+| Tool | Place | Before | Decision |
+|---|---|---|---|
+| analysis | f′(x) written in derivative lab | at once | progressive (`derivativeSteps.js`) |
+| analysis | جدول التغيّرات (study lab) | at once | progressive, row by row (`VARIATION_STAGES`) |
+| analysis | study-list « اتّجاه التغيّر » row | at once | waits for the table |
+| analysis | tangent/secant/limit tables/integral/LiveReadout/critical points/roots/asymptotes | live | stays live |
+| analysis | practice explanation, prediction reveal | after student's answer | unchanged |
+| sequences | practice « اكشف » (terms + answer) + workspace jump to target | at once | progressive; workspace commit deferred to last step |
+| sequences | reveal after a correct answer; inspector, probe, table, cobweb, play | — | unchanged / live |
+| logic | ProofTree (drew the whole proof, leaking « رتّب » order and the gap) | at once | progressive by rank; full when student completes |
+| logic | induction examples (base, heredity, verdict) | at once on open | progressive (3 steps) |
+| logic | truth tables, toggles, student-built proofs, stairs, practice « كشف » (one sentence) | live / own work | unchanged |
+| trigonometry | solving the right triangle (no derivation existed) | — | new progressive « حلّ المثلث خطوة بخطوة » |
+| trigonometry | drawing labels, unit circle, practice reveal (lookup), exactValues | live | unchanged |
+| conics | expanded → canonical (never shown) | — | new progressive completing-the-square on MathBoard |
+| conics | line ∩ conic algebra (never shown) | — | new progressive solution (closed disclosure); points/count stay live |
+| conics | equation field mirror, practice | live / after answer | unchanged |
+| transformations | practice « أرني » (A′ set at once) | at once | progressive: rule → substitution → image per transformation |
+| transformations | stack, drags, inspector (matrix, invariants), puzzles | live | unchanged |
+| measurement | « كيف ظهرت هذه القاعدة؟ » (7 stages) | at once | progressive; last step = student's own rule (never the hidden solution) |
+| measurement | rule builder, table, counterexamples, hints, post-discovery explanation | own work | unchanged |
+| vectors, functionGrapher, geometry3d | readouts follow drag/slider | live | stays live |
+| whiteboard | free drawing | — | not applicable |
+
+#### Per tool
+- **§5m analysis** — `derivativeSteps.js` walks the grapher AST (reuses `differentiate`/`printLatex`), top level + one rule
+  level; last step === `derivativeSource`; f′/f″ rows only when done; `x^x` keeps the "measured" note. Variation table:
+  `VariationTable rows` 1–4, `data-ml-an-vartable` = `building` → `ok`. Players live in `AnalysisTool` (tab switch keeps
+  the step); resetKey = function source. Hooks `data-ml-an-derive`, `-dstep-*`, `-vbuild`, `-vstep-*`, `-varrows`.
+- **§5h sequences** — `revealSteps.js › buildRevealSteps(challenge)`: substituted terms (`u_1 = 2u_0 − 1 = 2×3 − 1 = 5`),
+  far-term formula beyond 5, fixed-point for limits, differences/ratios, behaviour; last = `expected`. `revealMode`
+  request|answer; workspace commit on `player.done`. Hooks `data-ml-seq-reveal-step-*`.
+- **§5n logic** — `proofReveal.js`: tree ranks (`data-ml-lg-tree-step-*`), induction case steps (`data-ml-lg-case-step-*`).
+- **§5g trigonometry** — `triangleSolveSteps.js`: ratio → equation → substitute → isolate → compute (exact at
+  30/45/60°), or inverse ratio + Pythagoras, then 90° − θ; last = solved triangle. resetKey `given|v1|v2`.
+- **§5k conics** — `canonicalSteps.js` builds MathBoard frames (`binaryOperationFrames` for `(p/2)²`,
+  `bothSidesFrames` to move constants), `progress={boardProgress}`; expanded input only. `intersectionSteps.js`:
+  system → substitution → trinomial → Δ → roots → points.
+- **§5j transformations** — `practiceSteps.js`: images computed by `applySteps`; verdict + plane animation only at the end.
+- **§5o measurement** — `storySteps.js`; last step shows the student's rule once found, `story.ruleAwaits` before.
+
+#### e2e flows to update
+- `mathlab-analysis.mjs` ~321–323 (`2x - 4`): click `[data-ml-an-derive]`, then next until `data-ml-an-dstep-player="completed"`.
+- `mathlab-analysis.mjs` ~466–505 (variation table, 3 functions): `[data-ml-an-vbuild]` + 5× `[data-ml-an-vstep-next]` each time.
+- `mathlab-sequences.mjs` ~547–553: advance `[data-ml-seq-reveal-step-next]` to completion before counting terms.
+- `mathlab-logic.mjs` ~452–459 (tree ranks): `[data-ml-lg-tree-step-start]` + next to completion; ~737–750: 2× `[data-ml-lg-case-step-next]`.
+- `mathlab-measurement.mjs` ~252–253: advance `[data-ml-ms-story-step-next]` before counting `.sa-ml-ms__storySteps li`.
+- trigonometry, conics, transformations: no existing check affected.
+
+Strings: `mathlab.json › kit.*`. Palette tokens `--sa-kit-*` in `labKit.css`:
+green `#008443` for the gesture and the active section, orange `#F36D21` for
+what just happened, ink `#1A1A1A`, slate `#64748B` — light surfaces only.
+A fourth lab that needs sections reuses this kit; it does not build a bar.
+
+The QA runner `apps/web/e2e/mathlab-labs-sections.mjs [shots]` opens every
+section of the three laboratories on the **teacher** routes
+(`/enseignant/atelier/<slug>`, `qa-prof@smarter.dz`) at 1280 and 390 px and
+fails on horizontal overflow, a visible `NaN` / `Infinity` / `undefined` /
+raw i18n key, or a page error.
+
+### 3.5 « D'un seul regard » — the layout rule (owner, 2026-09-30 — binding on every tool, tab and future tool)
+
+**The student must see the objects AND the operation on them in the same
+sight, without scrolling up and down.** A tool or tab is not done while its
+figure and the calculation that explains it live a screen apart.
+
+1. **Operands and result on ONE row.** When a tab shows an operation on drawn
+   objects, the operands and the result sit side by side, in **equal
+   columns**, read **left to right** as on the board: `[a] + [b] = [result]`
+   (fractions: `numberLab/FractionsMode.jsx › .sa-ml-nb__fraction-row`). The
+   result column exists from the start (a dashed « ؟ » card) so the row never
+   jumps when the result arrives at the last step.
+2. **Information BESIDE the figure, never under it.** A figure's name, its
+   buttons and its values stand next to it (`FractionCard`: the shape, then a
+   side column with name, icon buttons, compact values). Buttons are icons with
+   an Arabic `aria-label` + `title`; labels are short.
+3. **The derivation next to what it explains.** The step-by-step solution sits
+   directly under the row it computes — not below unrelated panels (number
+   lines, equivalents, tables come after).
+4. **Too much content → the student chooses what to see.** Any block that is
+   not the object or its derivation is a `LabPanel` (`shared/LabKit.jsx`): a
+   titled panel with an eye button « إخفاء / إظهار », open by default, its state
+   remembered per browser under a stable id (`sa-ml-panel:<tool>.<tab>.<block>`).
+   Small repeated details (a card's values) get one toggle for the whole tab
+   (« إخفاء القيم »).
+5. **Maths reads left to right.** Rows of mathematical objects are `dir="ltr"`
+   even on the Arabic page (the first operand is leftmost); Arabic text inside
+   them is `dir="rtl"`.
+6. **Phones.** Under ~760 px the columns stack, but each card keeps its figure
+   and its information side by side — that is where the height is saved.
+7. **The floating step toolbar is always draggable** (§3.4.1); it may cover
+   content, the student moves or reduces it.
+
+**Applied so far (2026-09-30).** Reference: the fractions tab of the number lab.
+Other instruments, audited tab by tab at 1280 × 800:
+
+| Instrument | What changed | `LabPanel` ids |
+|---|---|---|
+| logic (§5n) | the side column is a slim strip above the stage until exercises or the dictionary are opened (then a 20 rem column, `.sa-ml-lg__body--side`); the stage lays its cards in **two columns** (container query) — figure beside the prediction, the statement spanning both; proof building: statement beside the cards, the proof tree full width below; on phones the pupitre starts folded; `DictionaryPanel` is controllable (`open` / `onToggle`) | — |
+| analysis (§5m) | each lab's main readout comes first (derivation, variation-table build); « النقطة A » and « المماس » moved after it | `analysis.<lab>.point`, `analysis.derivative.tangent`, `analysis.study.readings` |
+| trigonometry (§5g) | « حلّ المثلث خطوة بخطوة » sits right under the ratio cards; sign table, `tan = sin/cos`, `sin²+cos²=1` are panels | `trigonometry.inspector.signs`, `.tan`, `.identity` |
+| conics (§5k) | derivation already under the equation field; comparison table and before/after are panels | `conics.inspector.compare`, `.reference` |
+| sequences, transformations, measurement, vectors, function grapher, 3D geometry | already compliant (plane beside its readout / steps) | — |
+
+Checklist for a new tool or tab (also §3.2): at 1280 × 800, with the default
+example, the figure(s) and the first step of the derivation are visible
+without scrolling; every secondary block is a `LabPanel`; no row of
+mathematics is RTL.
 
 ## 4. Document model and persistence
 
@@ -1228,6 +1437,8 @@ Sample sizes: chips `1 · 10 · 100 · 1 000 · 10 000 · 100 000` plus a free f
 
 ### 5d.6 State format (`probabilityState.js`, `PROBABILITY_STATS_SCHEMA_VERSION = 1`)
 
+> V1 shape; V2 only adds fields (`chart`, `tree`, `normal`, `mode ∈ tree|normal`) — §5d.10.
+
 ```js
 data = {
   mode:       'experiment' | 'dataset',
@@ -1251,6 +1462,8 @@ data = {
 - One React render per batch (never per draw); the dataset is reparsed only after 250 ms of calm; `useMemo` on rows, summary and distribution. Timers and the animation frame are released on unmount.
 
 ### 5d.8 Extension points and limits
+
+> **Superseded in part by V2 (§5d.10):** standard deviation, box plots, probability trees, conditional probability and the normal law are now built as sections of this instrument; the list below is the V1 decision record.
 
 Prepared, not built: a biased coin / loaded die (`probabilities(params)` already takes parameters), more sample sizes, several tracked outcomes (one `trackedIndex` today), a seed control (the seed is stored; exposing it is a UI decision), PNG export. **Not in V1, by decision** (§22 of the brief): normal, binomial or Poisson laws, confidence intervals, regression, correlation, box plots, standard deviation, probability trees, conditional probability, combinatorics, tests. Future features are further modes of this instrument on the same pattern (an experiment entry, a chart, a panel block), **not** separate instruments.
 
@@ -1349,6 +1562,259 @@ dice, no rolling off the table); the random-integer experiment has no
 object; the exported document does not carry the pose (only the face); no
 sound; the coin's word is a canvas texture, so it is not selectable text.
 
+### 5d.10 V2 (2026-09-30) — four sections under one roof
+
+The instrument became a laboratory with a section bar (`shared/LabSectionNav`,
+`dataAttr="data-ml-ps-mode"`, one tab per section, lucide icon + Arabic
+description). **One document, one route**: a section only changes what is
+shown; every section keeps its own values in `data`. The lab still opens on
+**التجارب العشوائية** (a new document is unchanged and creates nothing until
+the first run or edit). The normal law is beyond 4AM and is never the opening
+view. Each section renders through `SectionFrame.jsx` (panel on the start
+edge ≥ 768 px, stage first on phones, collapsible panel with
+`data-ml-ps-panel-toggle`, one scrolling stage).
+
+| Section (`data.mode`) | Component | Pure modules |
+|---|---|---|
+| التجارب العشوائية `experiment` | `ProbabilityStatsTool` (unchanged behaviour, §5d.2–5d.9) | experiments, simulationEngine, dieOrientation |
+| الإحصاء الوصفي `dataset` | `DatasetSection.jsx` | `descriptiveStats.js`, `statsFormulas.js`, `datasetStatistics.js`, `datasetPresets.js` |
+| شجرة الاحتمالات `tree` | `TreeSection.jsx` (+ `TreeDiagram`, `TreeEditor`) | `probabilityTree.js`, `treeFormulas.js`, `treeLayout.js`, `treePresets.js` |
+| التوزيع الطبيعي `normal` | `NormalSection.jsx` (+ `NormalCurve`) | `normalDistribution.js`, `normalFormulas.js`, `normalPresets.js` |
+
+Layering is the repo's: pure modules (no React, colocated vitest) → state
+transitions → components (no maths) → CSS (`probabilityStats.css`). Formulas
+are built as LaTeX by the pure modules and rendered by `MathText` (LTR
+island) — never as raw text inside an Arabic sentence.
+
+#### Descriptive statistics (`descriptiveStats.js`)
+
+- **One statistics core.** `describeDataset` assembles n, min, max, range,
+  mean, median, Q1, Q3, IQR, variance, σ from `lessons/common/stats/statsUtils.js`
+  (quartile = value of rank ⌈kn/4⌉, **population** variance, divisor n). No
+  second median or quartile exists in the lab. Empty series → `null`
+  everywhere; one value → variance 0.
+- **Mode(s)** (`modesOf`): one value, several (bimodal), or `none` when every
+  distinct value has the same count («لا يوجد منوال»).
+- **Tables**: `valueRows` (value, count, frequency, cumulative count
+  التكرار المجمّع الصاعد, pie angle 360°×f) and `classRows` (the histogram's
+  classes, last one closed). `tableGrouping` uses classes for the histogram or
+  more than 15 distinct values.
+- **Chart choice** (`data.chart`: `null` = automatic V1 behaviour, or
+  `bars | histogram | pie | box | cumulative`). `chartAvailability` refuses a
+  chart **with a reason**, shown under the picker: bars > 15 distinct values,
+  histogram of a single value, pie > 8 distinct values
+  (`MAX_PIE_SECTORS`). `resolveChart` falls back to the automatic chart and
+  says so (`data-ml-ps-chart-fallback`) — never a silently wrong drawing.
+- **Cumulative frequencies**: a *polygon* over classes (with the median
+  estimated where it crosses n/2, `cumulativeCrossing`), a *staircase* for a
+  discrete series (joining points would invent individuals).
+- Charts (all inline SVG, `direction: ltr`, compact 440-unit viewBox on
+  phones): `DistributionChart` (bars / histogram, mean & median markers),
+  `PieChart` (value written in or beside each sector + DOM legend with % and
+  angle), `BoxPlot` (five named marks, staggered when close; optional mean
+  diamond), `CumulativeChart`.
+- **Linked views**: one key per table row (`v:<value>` / `c:<index>`);
+  hovering or focusing a table row, a sorted-strip value or a chip highlights
+  the matching bar/sector/point and vice versa.
+- **Sorted strip** (`SortedStrip`, ≤ 80 values): ranks with Q₁, Me, Q₃ tags
+  (`sortedMarks`).
+- **Editing**: the textarea (as-typed storage, 250 ms debounce, invalid tokens
+  named) plus chips (`DatasetChips`) built on `tokenizeDataset` — invalid
+  tokens appear red and can be fixed or removed; every chip edit rewrites the
+  text through `tokensToText` (`;` separator, so a decimal comma survives).
+  Example series by level (`ExamplePicker`).
+- **«كيف تُحسب المؤشّرات؟»**: six closed `LabDisclosure`s (mean, median,
+  mode, quartiles/IQR, range, variance/σ) with formula → substitution →
+  result (`statsFormulas.js`; term-by-term substitution only up to 8 values).
+
+#### Probability tree (`probabilityTree.js`)
+
+- Model: `{ stages: 1…3, branches: [{ id, label, p, children }], presetId, query }`,
+  ≤ 4 branches per node (≤ 64 leaves), all leaves at depth `stages`.
+  Branches and nodes are addressed by index paths (`[0, 1]`; node `[]` = root).
+- `p` keeps the **typed text**; `parseProbability` reads it **exactly** into
+  a rational (`algebra/rational.js`, imported read-only): fraction `3/8`,
+  decimal `0,25`/`0.25`, percent `25 %`, Arabic-Indic digits, `٫`, `٪`.
+  Errors are codes: `empty`, `syntax`, `zeroDenominator`, `range`.
+- Labels: `normalizeLabel` strips formula-breaking characters; the complement
+  of a one-letter event is stored with a combining macron (`Ā`) and becomes
+  `\bar{A}` in LaTeX (`\bar A`, `\overline{A}`, «ليس A» are normalised to it).
+  A label used at several stages gets a stage index in formulas (`R_{1}`, `R_{2}`).
+- **Validation** (`validateTree`): per-branch issues (probability, empty label)
+  and per-node issues (`sumNotOne` with the exact sum, `duplicateLabel`,
+  `incomplete`). **Consistent choice: nothing is computed until the tree is
+  valid** — leaves show «—», calculations say «غير محسوبة», offending nodes
+  carry a drawn «!» marker.
+- Calculations: path product (`pathResult`, also for a prefix), event
+  probability by total probability over prefixes (`eventProbability`),
+  conditional/inverse probability `P_B(A) = P(A∩B)/P(B)` (`conditionalProbability`,
+  `zeroGiven` refuses a division by 0), independence **derived** per stage
+  (`independenceOf`: every node of the previous stage has the same
+  label → probability children).
+- Operations (pure, return the same tree when refused): `addBranch` (copies a
+  sibling's subtree shape), `deleteBranch` (min 1 per node), `duplicateBranch`
+  (clones the subtree, fresh ids, free label), `setProbability`, `setLabel`,
+  `autoCompleteNode` (last branch = 1 − others, in the siblings' writing style;
+  `autoCompletePreview` enables the button honestly), `addStage`/`removeStage`,
+  `setQuery`. A query that no longer fits the tree is dropped.
+- Formulas (`treeFormulas.js`): `P(A ∩ B) = P(A) × P_A(B)` then the
+  substitution with the factors **as typed**, then fraction + decimal (≈ when
+  rounded) + %. The rule disclosure recalls `P_A(B) = P(B|A)`.
+- Drawing (`treeLayout.js` + `TreeDiagram.jsx`): left → right, one row per leaf,
+  nodes are label pills, probabilities written on branches, path products at
+  the leaves. Pills and branches are keyboard/click targets (select the group
+  to edit + highlight the path); new branches grow in, the highlighted path
+  flows; reduced motion stops both. The SVG is `role="group"`; the paths
+  table is the textual representation.
+- Presets: two coins (independent), loaded tetrahedral die, urn without
+  replacement 3R/2B (dependent), three children, three free throws
+  (dependent, 3 stages), medical test (Bayes, `P_T(M) = 19/118`).
+
+#### Normal distribution (`normalDistribution.js`)
+
+- Φ: Taylor series for |z| ≤ 7, tail continued fraction beyond (Marsaglia
+  2004); absolute error < 1e−7 (tested against reference values, symmetry,
+  monotonicity, Φ(±40) finite).
+- `normalQuery` → `P(X ≤ x) = Φ(z)`, `P(X ≥ x) = 1 − Φ(z)`,
+  `P(a ≤ X ≤ b) = Φ(z_b) − Φ(z_a)`; refuses with codes `sigma` (σ ≤ 0),
+  `order` (a > b), `finite`. The state never stores an invalid σ or a > b:
+  fields keep a draft and name the problem (`data-ml-ps-normal-error`).
+- Curve sampled once per (μ, σ, scale) (`sampleCurve`, ±4σ); shaded region
+  with exact edges (`regionPoints`), hatched as well as tinted; μ, μ ± kσ
+  ticks; X scale ↔ standard Z scale. Steps: z formula → substitution → Φ →
+  result (4 decimals + %). The 68–95–99.7 rule is **computed** (`empiricalRule`).
+
+#### State (`PROBABILITY_STATS_SCHEMA_VERSION = 2`)
+
+```js
+data = {
+  mode: 'experiment' | 'dataset' | 'tree' | 'normal',
+  experiment, range, draws, simulation, dataset, settings,   // V1, unchanged
+  chart: null | 'bars' | 'histogram' | 'pie' | 'box' | 'cumulative',
+  tree:  { stages, branches: [{ id, label, p, children }], presetId, query },
+  normal: { mu, sigma, x, a, b, query: 'le' | 'ge' | 'between', scale: 'x' | 'z' },
+}
+```
+
+V2 only **adds**: a V1 document reopens identically (tested field by field)
+and receives the defaults (`chart: null`, the default A/Ā-B/B̄ tree, N(0,1)).
+`normalizeTree` never throws: an inconsistent tree (uneven depths, empty
+node, > 3 stages) is replaced by the default; ids are regenerated when
+missing or duplicated; labels ≤ 24 chars, probability texts ≤ 16. The tree
+**query** (path / event / conditional) is stored — reopening shows the same
+calculation; the edited node and hover highlights are transient. A maximal
+64-leaf tree with the longest labels plus a 100 000-draw simulation
+serialises well under half of the 60 KB server cap (tested). « مسح الكل »
+resets every section (simulation, example series, default tree, N(0,1)) and
+keeps the open section. `summarize` returns kind `chart` for every section:
+leaf probabilities of a valid tree (empty plateau when invalid), a 17-bar
+bell for the normal law.
+
+#### Stable e2e selectors
+
+Section bar `data-ml-ps-mode="experiment|dataset|tree|normal"` (tabs:
+`aria-selected`, no longer `aria-pressed`), root `data-ml-ps-section`.
+Dataset: `data-ml-ps-dataset-example`, `data-ml-ps-chips`, `data-ml-ps-chip`,
+`data-ml-ps-chip-remove`, `data-ml-ps-chip-edit`, `data-ml-ps-chip-new`,
+`data-ml-ps-chip-add`, `data-ml-ps-chart-type`, `data-ml-ps-chart-reason`,
+`data-ml-ps-chart-kind`, `data-ml-ps-pie`, `data-ml-ps-sector`, `data-ml-ps-box`,
+`data-ml-ps-box-mark`, `data-ml-ps-cumulative`, `data-ml-ps-strip`,
+`data-ml-ps-strip-rank`, `data-ml-ps-freq-table`, `data-ml-ps-freq-row`,
+`data-ml-ps-stat-value="mode|q1|q3|iqr|variance|sd"`, `data-ml-ps-explain-*`.
+Tree: `data-ml-ps-tree-example`, `-diagram`, `-node`, `-branch`, `-p`,
+`-leaf`, `-issue`, `-valid`, `-independent`, `-steps`, `-calculation`,
+`-table`, `-row`, `-node-select`, `-editor`, `-label`, `-p-input`,
+`-complement`, `-duplicate`, `-delete`, `-add-branch`, `-autocomplete`,
+`-add-stage`, `-remove-stage`, `-reset`, `-stages`, `-query`, `-event-stage`,
+`-event-label`, `-branch-error`, `-node-error`. Normal:
+`data-ml-ps-normal-example`, `-query`, `-param`, `-slider`, `-field`,
+`-error`, `-scale`, `-curve`, `-area`, `-bound`, `-tick`, `-probability`
+(6-decimal value), `-steps`.
+
+#### Limits
+
+No exact-fraction display for the dataset statistics (decimals only); the
+tree is limited to 3 stages × 4 branches; event queries are "label L at stage
+s" (no unions of events); the box plot marks no outliers; no PNG export; the
+normal law has no inverse query (x from a probability).
+
+### 5d.11 Progressive solutions in the Probability & Statistics Lab (2026-09-30)
+
+The owner's rule applies: a calculation is never shown at once. It is built on the
+shared board (`shared/mathBoard/MathBoard.jsx`, frames from `shared/mathBoard/frames.js`),
+revealed frame by frame by `useStepReveal` + `<StepPlayer sticky progress={boardProgress(...)}>`
+(« خطوة بخطوة » / « عرض تلقائي », بطيء/عادي/سريع). The final result is the last frame; future
+frames are not in the DOM. **Live manipulation is never gated**: sliders, fields, the tree
+editor, the dataset editor, the charts, the summary grid and the experiments stay live.
+
+| Section | Progressive (board) | Stays live | Reset to the statement when |
+|---|---|---|---|
+| شجرة الاحتمالات | path / event / conditional calculation (`treeFrames.js`) | the tree (draw + edit), independence line, rules fold | the branches or the query change |
+| التوزيع الطبيعي | z → Φ → answer (`normalFrames.js`) | μ, σ, x/a/b sliders + fields, query type, the curve | μ, σ, x, a, b or the query type change (NOT the X/Z axis — a view, the area is invariant) |
+| الإحصاء الوصفي | each « كيف تُحسب؟ » fold: mean, median, quartiles, range, variance, σ (`statsFrames.js`) | dataset, chips, chart, sorted strip, summary grid, frequency table, mode fold | the series changes |
+| التجارب العشوائية | — | everything (a live experiment) | — |
+
+**Tree.** Frames: product rule → each factor read on its branch (the symbol is designated,
+its value drops under it, the branch lights up) → `[3/5] ⌒× [2/4] ↓ 6/20` → result
+(fraction = decimal = %). Event (total probability): the formula → one product per contributing
+path (that path lights up, cumulatively; `6/20 ↓ = 3/10` when it simplifies) → `[3/10] ⌒+ [1/10] ↓ 2/5`
+→ result. Conditional/Bayes: definition → numerator paths → denominator paths (a path already
+computed in the numerator is reused, not recomputed) → `[P(T∩G)] ⌒÷ [P(G)] ↓` → result. Every frame
+carries `lit` / `soft` / `leaves`; `treeHighlight(board, cursor)` (treeFormulas.js) turns them
+into what the diagram lights. Before the first frame the question's branches are shown `soft`.
+Clicking a branch on the diagram IS the action: it sets the path query and starts the journey
+(first frame = the formula). An invalid tree, or P(G) = 0, has nothing to reveal: the formula is
+shown as a plain `StepList` with the « غير محسوبة » message, no player.
+
+**Leaf labels and the paths table.** A leaf's « P = … » and its row in the paths table are written
+only when a frame computes that product (`P = ?` / « لم يُحسب بعد » before). A journey carried to its
+last frame leaves its products written (like on a blackboard) until the branches change — so the
+tree fills in as the student computes, and the table never pre-empts a path query.
+
+**Normal.** Standardisation is posed: `z = (x − μ) ÷ σ`, each letter designated with its value
+dropping under it, then `[x] ⌒− [μ]`, then `[x−μ] ⌒÷ [σ] ↓ z`; the rule (`P = Φ(z)`, `1 − Φ(z)`,
+`Φ(z_b) − Φ(z_a)`); the Φ reading; the complement/difference; the result with a one-sentence
+interpretation (numbers as `$…$` islands). The curve follows: a bound's `(z = …)` appears at
+the frame that computes it, the shaded area at the rule frame (`normalReveal(frames, cursor)`).
+The result banner shows « P(X ≤ x) = ? » until the last frame; its
+`data-ml-ps-normal-probability` is `pending` until then (so neither the text, the attribute nor
+the `aria-live` announcement gives the answer early).
+
+**Descriptive statistics.** Decision: the summary grid stays — it is the live readout of the
+series the student edits; the derivation is what teaches where each number comes from. Each fold
+mounts its own sticky player + board: mean (all values designated ↓ sum, `⌒÷ n`), median (sorted
+series with `≤`, rank `(n+1)/2` or `n/2 ; n/2+1`, the value(s) designated `x_r` in the series,
+even: `⌒+` then `⌒÷ 2`), quartiles (`⌈n/4⌉`, `⌈3n/4⌉`, read, `Q3 − Q1`), range (min/max designated,
+`⌒−`), variance (x̄, each deviation ↓, each square ↓, their sum ↓, `⌒÷ n`; above 8 values the sum of
+squares as one block), σ (`√V`). Above 12 values the sorted series is written by its ends and the
+ranks read as `x_r`. Variance and σ are now two folds.
+
+**Hooks.** Added: `data-ml-ps-tree-step-*`, `data-ml-ps-normal-step-*`, `data-ml-ps-explain-step-*`
+(player), `data-ml-ps-tree-board`, `data-ml-ps-normal-board`, `data-ml-ps-explain-board`,
+`data-ml-ps-explain-derivation`, `data-ml-ps-explain-sd`, `data-ml-ps-tree-leaf-state`
+(`written|pending|none`), `data-ml-ps-tree-row-pending`, `data-ml-ps-tree-table-hint`. Changed:
+`data-ml-ps-normal-probability` is `pending` before the last frame; `data-ml-ps-normal-area` and
+the `(z = …)` bound labels are absent before their frame; `data-ml-ps-tree-steps` /
+`data-ml-ps-normal-steps` / `data-ml-ps-formula` are gone (tree steps remain only for a
+non-computable tree). `e2e/mathlab-probability.mjs` uses none of these.
+
+**Tests.** `boardFrames.test.js` (exact frame sequences, `validateFrames`, highlight / reveal
+progression, every preset × query, every i18n key); `treeFormulas.test.js`;
+`sections.render.test.jsx` mocks `useStepReveal` to assert that before the first frame no final
+number is in the DOM and after the last one it is.
+
+**« تدرّب بنفسك » (practice mode).** Every board is wired through
+`useBoardPractice(frames, player, resetKey)` (tree, normal, each statistics fold). Tasks = the
+real gesture: every posed operation keeps `binaryOperationFrames`' default task (pick both
+operands, choose ×/+/÷/−): tree path factors ×, event path products +, Bayes numerator ÷
+denominator; normal [x] − [μ], [x−μ] ÷ [σ], [1] − [Φ]; mean [sum] ÷ [n], median +/÷, IQR, range,
+variance ÷. Added pick tasks (`tools.probabilityStats.practice.*`): read a factor = pick the symbol of
+the branch lit on the tree (`readBranch`); normal substitution = pick the symbol whose value is v
+(`substitute`); a sum of data values = pick all terms then + (`sumAll`, off for the symbolic
+x₁ + … + xₙ of a long series); median/quartiles = pick the value of rank r in the sorted series
+(`readRank(s)`); range = pick min and max (`extremes`). No task on rule, Φ-reading, deviation/square
+or result frames (nothing to perform).
+
 ## 5e. مختبر الجبر — Algebra & Equation Lab V1
 
 > *Touch the equation and feel it stay true.* A student meets `2x + 3 = 11`
@@ -1439,6 +1905,8 @@ a double relation (`1 < x < 5` is not V1).
 
 ### 5e.5 State format (`algebraState.js`, `ALGEBRA_SCHEMA_VERSION = 1`)
 
+> V1 shape, still the **top level** of a V2 document (the equations section). The V2 additions are in §5e.9.
+
 ```js
 data = {
   source:       '2x + 3 = 11',                        // la saisie, telle qu'écrite
@@ -1507,6 +1975,8 @@ it is changing them:
 
 ### 5e.8 Extension points and limits
 
+> **Superseded in part by V2 (§5e.9):** quadratics (factorisation, functions) and 2×2 systems are now sections of this lab; the V1 record below still describes the equations section.
+
 Prepared, not built: MathLive input (the parser already reads its LaTeX —
 only the field would change); several unknowns (`toLinearForm` takes the
 variable as a parameter); an inequality generator (`generateEquation` takes
@@ -1514,6 +1984,159 @@ variable as a parameter); an inequality generator (`generateEquation` takes
 quadratics, systems, matrices, complex numbers, symbolic differentiation or
 integration, CAS-level simplification, an AI tutor. `x²` and `3/x` are
 refused with a clear Arabic sentence rather than silently mishandled.
+
+### 5e.9 V2 — the complete algebra laboratory (2026-09-30)
+
+The lab is now six **sections** under the shared section bar
+(`shared/LabSectionNav.jsx`, `data-ml-alg-tab`). It is still **one document, one route**
+(`/espace/atelier/algebre`, `/enseignant/atelier/algebre`); switching sections loses nothing.
+
+| Section | Opens on | What it teaches |
+|---|---|---|
+| المعادلات | `2x + 3 = 11` | The V1 balance, **unchanged in behaviour** (§5e.6 still holds), plus the intermediate line, the « نشر وتبسيط كل طرف » step, levels 5–6 and examples |
+| المتراجحات | `-2x + 3 < 9` | Same engine and component, its **own path**; number line always visible; sign-flip banner; solution set in interval notation and in words |
+| الأنظمة | `x + y = 10 ; x - y = 2` | 2×2 linear systems: substitution, elimination, graphical |
+| تبسيط التعابير | `(x + 2)(x - 3)` | Expansion and collecting like terms, step by step |
+| التحليل إلى عوامل | `x^2 + 5x + 6` | Common factor, identities, sum–product, ac-method; discriminant one click away |
+| الدوال | `f(x) = 2x + 1` | Linear / affine / quadratic, sliders + numeric fields, key points, slope triangle, table |
+
+#### Engines (pure, no React, all unit-tested)
+
+| Module | Role |
+|---|---|
+| `polynomial.js` | Multivariate polynomials over exact rationals (`[{coef:{n,d}, mono:{x:2}}]`), always reduced and sorted like the textbook (degree desc, then letter by letter). Guards: `MAX_DEGREE = 6`, `MAX_TERMS = 80`, rational.js `LIMIT` → `AlgebraError(code)`. Also univariate division, gcd, content, `simplifySqrt`, LaTeX writers (`joinPieces`, `polyLatex`, `latexToText`). |
+| `astLatex.js` | Prints the parser AST back as **what the student typed** (parentheses restored from the structure, `\times` before numbers/fractions, decimal comma). |
+| `simplify.js` | `simplifyExpression(source)` → steps. Expansion runs in **passes**: each pass expands the innermost expandable nodes (product with a flat sum, power, `−( … )`, division by a constant) and emits a line with products **written but not computed** (`x \times x + x \times (-3) + …`), then the computed line. Then grouping (one colour per like-term family, `FAMILY_COLORS`) and the result. `2(x+1)^2` therefore shows the identity *before* the distribution by 2. Rules cited per line (`distributive`, `doubleDistributive`, `squareSum`, `squareDiff`, `diffSquares`, `minusBracket`, `power`, `divideConstant`, `groupLikeTerms`…). Algebraic fractions only **at the root and in one letter**: simplified by the polynomial gcd with the restriction `x \neq …` from the rational roots of the original denominator; otherwise « irreducible ». |
+| `factor.js` | `factorExpression(source)`: expand first if needed → common factor (content + lowest power, `factorMinus` for −1) → for the degree-2 factor: difference of squares, perfect square, sum–product (monic; candidate pairs listed, the matching one flagged), ac-method (split + grouping) → else Δ: `irreducibleReal` / `irreducibleRational` (roots in radical form). Degree > 2: only `A x^{2m} − B`, then each quadratic factor. **Every factorisation is re-expanded and compared** (`verification.holds`; a mismatch throws `internal`, never displayed as true). `discriminant` = the secondary « طريقة المميّز » disclosure. |
+| `quadratic.js` | Exact roots (rational, double, none, or `\frac{P \pm Q\sqrt{m}}{D}`), vertex. Float `approx` only for drawing. |
+| `systems.js` | `parseLinearEquation` (x, y; `nonLinear`, `notEquation`, `noUnknown`), `classifySystem` (determinant; unique / none / infinite), `substitutionSteps` (isolates a ±1 coefficient first), `eliminationSteps` (clears fractions, lcm multipliers, add or subtract), `verifyInEquation`, `frameSystem`. Tested: on 500 random systems both methods end on `classifySystem`'s pair. |
+| `functions.js` | `makeFunction`, `analyseFunction` (intercept, roots, vertex, opening, monotony), `valueTable`, `frameFunction`. Coefficients are multiples of 0.5 read as exact rationals. |
+| `equationDisplay.js` | `operationLatex(equation, op, flipped)` — the unsimplified line with the operation in orange `#F36D21` on **both** sides (`\frac{2x+4}{2}`, `3 \times (2x+4)`; the flipped relation is already written flipped); `solutionSet(verdict)` — `]-\infty ; -3[` (French/Algerian brackets) + a words key; `equationExpansion(source)` — the per-side simplification steps, or `null` when there is nothing instructive (`x/3 = 5`). |
+| `generator.js` | Levels 5 `a(x + b) = c` / `a(x + b) = cx + d` and 6 `x/p ± x/q = r` return a **typed source** (built from the solution; integer solution in [−10, 10]); `generateInequality` (levels 1–4, random sense). |
+
+#### State format (`algebraState.js`, `ALGEBRA_SCHEMA_VERSION = 2`)
+
+```js
+data = {
+  // V1 top level, unchanged = the المعادلات section
+  source, steps, cursor, showSolution, parameters, numberLine,
+  // V2
+  section:      'equations' | 'inequalities' | 'systems' | 'simplify' | 'factor' | 'functions',
+  inequalities: { source, steps, cursor, showSolution, numberLine },   // its own path, ≤ 30 steps
+  systems:      { first, second, method: 'substitution' | 'elimination' | 'graphical' },
+  simplify:     { source },
+  factor:       { source },
+  functions:    { family: 'linear' | 'affine' | 'quadratic', a, b, c, tableStart, tableStep },
+}
+```
+
+A V1 document (no `section`) reopens **identically** on المعادلات (tested). `normalizeAlgebraData`
+never throws; `normalizePath` is the shared reader for both paths. Only inputs are stored —
+every result (steps, factorisation, verdict, key points) is recomputed. Transient UI state
+(drafts, revealed system steps, open disclosures, plane viewport, animations) is never stored.
+`enforceSizeBudget` (called on every commit) keeps the serialized document ≤ `SIZE_BUDGET =
+18 000` bytes under the server's 20 KB by dropping the oldest steps of the longer path (a
+pathological worst case is tested).
+
+`summarize.js` follows the active section: `equation` kind for paths, systems (equations → pair),
+simplify and factor (input → result); `curve` kind with `polylines` for functions.
+
+#### Rules the code enforces (additions to §5e.6)
+
+1. The answer is still never the opening screen: the inequality bound waits for isolation or
+   « إظهار الحل »; system steps are revealed one by one (« الخطوة التالية ») and the pair
+   appears only at the end; the discriminant sits in a closed disclosure.
+2. No fake number: none/infinite systems, Δ < 0, irrational roots, degree > 2 and every
+   refused input have their own Arabic sentence (`exprErrors.*`, `factor.status.*`,
+   `systems.verdict.*`). Never NaN, Infinity, raw codes or stack traces (render test checks).
+3. One grammar: everything goes through `expressionParser.js` ASTs; no string rewriting.
+4. One plane: systems and functions reuse `vectors/VectorPlane.jsx` via `AlgebraPlane.jsx`
+   (mafs light-theme block copied into `algebra.css`). A new object (system, family, example)
+   remounts the plane on its framed viewport (`frameKey`); slider moves never re-frame. Lines,
+   points and curves are raw SVG with **inline styles** (mafs' `.MafsView path` rule).
+5. Arabic: every formula inside a sentence is a `$…$` island rendered by `MathText`
+   (`useRuleText.jsx`); tables, coordinates and inputs are LTR with Latin digits.
+
+#### e2e selectors
+
+`data-ml-alg-section` (root, active section), `data-ml-alg-tab=<id>`, `data-ml-alg-mode=<id>`
+(section body), `data-ml-alg-example=<id>`, `data-ml-alg-rule`; paths: `data-ml-equation-input`,
+`data-ml-current-equation`, `data-ml-alg-intermediate`, `data-ml-alg-history-intermediate`,
+`data-ml-alg-expansion`, `data-ml-alg-flip`, `data-ml-alg-solution-set`, `data-ml-alg-interval`,
+`data-ml-alg-show-solution`, `data-ml-alg-verify`, `data-ml-alg-generate`, `data-ml-alg-level`;
+systems: `data-ml-alg-system-input=first|second`, `data-ml-alg-system-run`,
+`data-ml-alg-method=<m>`, `data-ml-alg-next-step`, `data-ml-alg-all-steps`,
+`data-ml-alg-system-verdict=unique|none|infinite`, `data-ml-alg-system-verify`,
+`data-ml-alg-intersection`, `data-ml-alg-line`, `data-ml-alg-plane`; simplify:
+`data-ml-alg-simplify-input|run|result`, `data-ml-alg-restriction`; factor:
+`data-ml-alg-factor-input|run`, `data-ml-alg-factor-status`, `data-ml-alg-candidate=match|no`,
+`data-ml-alg-factor-verify`, `data-ml-alg-discriminant=open|closed`; functions:
+`data-ml-alg-family=<f>`, `data-ml-alg-coef=<k>`, `data-ml-alg-coef-number=<k>`,
+`data-ml-alg-facts`, `data-ml-alg-fact=<id>`, `data-ml-alg-table`, `data-ml-alg-slope-triangle`,
+`data-ml-alg-intercept`, `data-ml-alg-root`, `data-ml-alg-vertex`.
+
+#### Limits (by decision)
+
+Factorisation stops at degree 2 (plus common factor and `A x^{2m} − B`); algebraic fractions
+only at the root and in one letter; systems are 2×2 in x, y; no draggable points on the
+function plane yet; MathLive input still not used (§5e.8).
+
+### 5e.10 Progressive, visible solutions (2026-09-30)
+
+Owner rule: the answer is never on screen all at once. Each section's action button
+starts a **walkthrough**. The walkthrough is fully computed by the pure engines and then
+shown on the shared board (`shared/mathBoard`) one **frame** at a time, with its
+**result as the last frame**. Future frames are not in the DOM. The player
+(`useStepReveal(frames.length, { resetKey })` + `<StepPlayer sticky progress={boardProgress(…)}
+dataAttr="data-ml-alg-step">`) is pinned to the top of the scrolling stage.
+Changing the input, the method or the example resets to the problem statement.
+Picking an example only loads the problem; the action button starts the walkthrough.
+Screen-reader announcements never contain the answer (`tools.algebra.stepsReady`).
+
+Layers (the maths stays in the engines, and the frames only present it):
+
+| Module | Role |
+|---|---|
+| `walkthrough.js` | From the CURRENT equation, it repeats `suggestOperations()[0]` → `applyOperation` until the solved form (at most 8 steps). Each step is `{before, equation, operation, flipped, intermediateLatex, resultLatex, explanationKey}`. The `final` step is `solved` (with the interval `set` for an inequality), `none` or `infinite`, never a fake number. |
+| `equationFrames.js` | Equation/inequality steps become `bothSidesFrames`: highlight the term, show ↓op under both sides, write the op into the expression, simplify (changes in green). `flipped` gives the relation token a `warning` tone, adds the mark `< \to >` and the sentence « عند القسمة على عدد سالب… ». `expansionFrames` handles « نشر وتبسيط كل طرف ». `verificationFrames` covers substitution → evaluation → verdict (for an inequality: a sample value, then the boundary). |
+| `systemsFrames.js` | Elimination: the ±y terms are highlighted → ↓0 → `(x + y) + (x − y) = 10 + 2` → `2x = 12` → ÷2 → `x = 6` → `6 + y = 10` (the 6 replaces x in green) → −6 → `y = 4` → `(6 ; 4)`. Substitution: isolate → substitute → expand → solve → back-substitute. Graphical: frames carry `draw` (1 = line (1), 2 = both lines, 3 = the point, 4 = its label). The plane draws only what `draw` allows. Single-unknown equations reuse `walkthrough` + `operationFrames`. |
+| `simplifyFrames.js` | For each `simplify.js` pass: highlight the product, draw the `×` arc from the factor to the bracket, write the products (orange), compute each one with ↓ under it, highlight like terms, group them, show ↓ each family's sum, then the result. For a fraction, the restriction appears only with the final frame. |
+| `factorFrames.js` | Sum–product / ac: the b and c terms are highlighted, the candidates are listed (failing ones struck out), then `[p] ⌒× [q] ↓ c` (the constant turns green) and `[p] ⌒+ [q] ↓ b`. The factors are then built one at a time, and the factorisation is the last frame. `A = B = C` chains unfold one member at a time. |
+| `boardTokens.js` | Splits engine LaTeX into tokens at the top level (`splitTerms`, `splitProduct`, `splitEquality`, `diffRows`, `formTokens`). It never computes. |
+
+Engine changes: `applyOperation` accepts `{ term: 'x' }` for add/subtract, which moves `c·x`
+across. `suggestOperations`' first hint now moves the x-term (`− 2x`); before, it subtracted
+the number `c`, which was a bug. `algebraState` keeps `term` when it serialises. The steps of
+`systems.js` carry `data` (structured equations), and the group step of `simplify.js` carries
+`data` (terms and families).
+
+Per section:
+- **المعادلات / المتراجحات**: the balance stays free to manipulate. « حلّ خطوة بخطوة »
+  (`data-ml-alg-solve`, which also keeps `data-ml-alg-show-solution`) opens the board. The
+  balance follows the current frame. The verdict (`data-ml-solution`), the number-line bound and
+  the set appear only once the student has isolated x, has no unknown left, or has reached the
+  last frame. Nothing is committed to the document; `showSolution` is no longer read. « التحقق »
+  plays on its own board (`data-ml-alg-verify-step-*`, `data-ml-verification-holds` stays `pending` until done).
+- **الأنظمة / تبسيط / تحليل**: the panel buttons « حلّ / بسّط / حلّل خطوة بخطوة » load the input and start the walkthrough.
+  The verdict, the verification by substitution or expansion, and the مميّز disclosure appear only after the last frame.
+- **الدوال**: stays live. It is manipulation with sliders, not a derivation (decision: no player).
+
+Tests: `walkthrough.test.js` (exact sequences, flips, none/infinite, 2 000 generated equations),
+`systems.test.js` (exact elimination and substitution frame lines), `framesContent.test.js`
+(simplify `3x + 2(x + 4) − x` and factor `x² + 5x + 6` frame by frame),
+`sections.render.test.jsx` (no answer before the first frame; every frame of every example
+renders without a missing i18n key; the result appears only in the last frame).
+
+**« تدرّب بنفسك » (practice mode).** Every algebra board is wired with `useBoardPractice(frames, player, resetKey)`: the solve board of المعادلات/المتراجحات and its verification board, الأنظمة, تبسيط and تحليل. A frame that carries a `task` is where the student performs the next real transformation.
+- Equations and inequalities use the `bothSidesFrames` defaults. `2x + 3 = 9`: pick `+ 3` then `−`, then pick `2x` then `÷`.
+- Simplify: pick the factor and the bracket, then `×` (a `−( … )` or a square is pick-only). Then pick every like term, then `+`.
+- Factor: pick b and c (a and c for the ac method), then pick the right pair in the candidate list. Then `[p] [q]` with `×`, then `[p] [q]` with `+`.
+- Systems, elimination: pick the two terms in the eliminated unknown, then `+` or `−`. Aligning the coefficients is pick-only, and so is picking the unknown to replace with its value.
+- Systems, substitution: the isolate move, then pick the term to substitute and the unknown to back-substitute.
+- Multiplying to clear fractions has no task (`task: false`), because the factor is a choice of number, not a designation.
+- Graphical and verification frames have no task; they play as in manual mode.
+
+Prompts live in `tools.algebra.practice.*`. The exact tasks of the acceptance examples are tested in `practiceTasks.test.js`.
 
 ## 5f. مختبر الأشعة — Vectors & Coordinate Geometry Lab V1
 
@@ -2762,6 +3385,8 @@ as such (§5o).
 
 ### 5l.2 Thirteen modes, one laboratory
 
+> Sixteen since 2026-09-30 (Euclidean division, powers & roots, order of operations), grouped in three families under the shared section bar — §5l.11.
+
 | Mode | id | What it does |
 |---|---|---|
 | استكشاف عدد | `explorer` | decomposition, place values, factorisation, divisors, parity, prime neighbours — all at once |
@@ -2922,6 +3547,247 @@ interface says which one it met rather than freezing.
 Not in V1: no CAS, no symbolic algebra, no scientific calculator, no square
 roots beyond the approximation presets, no analytics (the Math Lab has none),
 no PNG export.
+
+### 5l.11 The 2026-09-30 upgrade — sixteen modes, successive differences first
+
+#### §5l.2 update: sixteen modes in three families
+
+The lab now has **sixteen** modes. Three were added: `division`
+(القسمة الإقليدية), `powers` (القوى والجذور) and `order` (أولويات العمليات).
+`MODES` (`numberState.js`) is only the *set* of valid modes; the display
+order, the groups and the icons live in `modeCatalog.js`:
+
+| Group (`modeGroups.*`) | Modes, in bar order |
+|---|---|
+| العدد (`number`) | explorer, place, line, rounding |
+| الحساب (`calculation`) | operations, **order**, **powers**, fractions, decimals, percent, proportion |
+| الحساب في ℕ (`arithmetic`) | **division**, divisibility, factors, primes, gcdLcm |
+
+The bare chip bar was replaced by the shared `shared/LabSectionNav.jsx`
+(WAI-ARIA tablist, lucide icon + short label, group labels, the active
+mode's `modeDescriptions.*` under the bar). It is passed
+`dataAttr="data-ml-nb-modechip"`, so existing selectors keep working; the
+chips now expose `role="tab"`/`aria-selected` instead of `aria-current`.
+`numberLabExtras.test.js` fails if a mode is missing from the catalogue, has
+no group/icon, or lacks its label/description strings.
+
+| New mode | id | What it does |
+|---|---|---|
+| القسمة الإقليدية | `division` | `a = b × q + r`, `0 ≤ r < b`, drawn as q packs of b + the r remainder units |
+| القوى والجذور | `powers` | powers (expanded, 0 and negative exponents), the three rules verified, powers of ten, scientific notation, simplified square roots |
+| أولويات العمليات | `order` | a typed expression reduced one operation at a time, in school order |
+
+#### §5l.7bis PGCD بالفوارق المتتالية — the default PGCD experience
+
+`gcdLcm.method` gained `'differences'`, now **first** in `GCD_METHODS` and the
+default of every **new** document. Stored documents keep their method
+(`euclid`, `factors`, `lists` reopen unchanged; no schema bump — the change
+is additive, `NUMBER_LAB_SCHEMA_VERSION` stays 1).
+
+`DifferencesPanel.jsx` shows the algorithm, never a precomputed PGCD: the
+PGCD appears only as the LAST step of the run (in every method since §5l.12):
+
+    48 − 18 = 30 ; 30 − 18 = 12 ; 18 − 12 = 6 ; 12 − 6 = 6 ; 6 − 6 = 0 → PGCD(48 ; 18) = 6
+
+- Controls: the shared step player (§3.4.1) — « خطوة بخطوة » / « عرض تلقائي »,
+  each subtraction staged on the board as [a] ⌒− [b] ↓ difference (§5l.12);
+  examples by level + « مثال عشوائي » (`randomDifferencePair`: 4–14 subtractions, PGCD > 1). a and b
+  are typed in the mode's shared inputs (`readPositiveInteger`: positive
+  integers ≤ 10⁶, Arabic reason for every refusal).
+- Visual: two ribbons **to scale** (the larger number = full width); the
+  subtracted piece is orange and animates away, the rest (= the difference)
+  is green. A ribbon too thin to see is widened *and the page says so*.
+  The step table (رقم الخطوة | الزوج | الطرح | الزوج الجديد) is the textual
+  equivalent; each step is announced in `aria-live`. The cursor is transient
+  UI state (`useStepReveal`, §3.4.1), never stored; a new (a, b) returns to the problem.
+- « لماذا؟ »: `PGCD(a ; b) = PGCD(b ; a − b)` and why the run terminates.
+- « طريقة القسمة الإقليدية »: step counts of both methods with correct Arabic
+  agreement (i18next plural keys `_zero/_one/_two/_few/_many/_other`:
+  « خطوتان », « 8 خطوات », « 3 قسمات »), each Euclid division annotated with
+  the number of subtractions it groups, and a button to switch method.
+- **Long runs never freeze.** The total number of subtractions is known
+  without running them: it is Σq of the Euclid divisions (each `a = b × q + r`
+  replaces exactly q subtractions of b — tested exhaustively for a, b ≤ 60).
+  At most `DISPLAY_CAP` = 200 steps are traced; 1000 and 1 says « العدد
+  اللازم: 1000، ونعرض منها أوّل 200 فقط » and suggests Euclid.
+
+**Core fix** (`packages/core/arithmetic/divisibility.js`): `differenceSteps`
+used to return the last non-zero difference of an *unfinished* run as the
+`gcd` when `maxSteps` cut it short — a wrong PGCD. It now returns
+`complete: boolean`, and `gcd: null` whenever the zero difference was not
+reached; complete runs are unchanged. Lesson call sites
+(`manipulations/logic/algorithms.js`, `DifferenceAlgorithm.jsx`) use the
+default cap (10 000) on textbook numbers, so they always get complete runs.
+
+PPCM is now explained in every method (`data-ml-nb-ppcm`): by multiples
+lists, by prime factors, and `PPCM = a × b ÷ PGCD`, with links to the
+`lists`/`factors` methods; `PGCD × PPCM = a × b` stays measured (§31).
+
+#### §5l.5 engine additions (pure, tested)
+
+| Module | Owns |
+|---|---|
+| `bigRational.js` | exact BigInt rationals (reduced), `pow` with digit bound, exact decimal expansion (`exact` flag), LaTeX, digit grouping — never `1e+21`, `Infinity`, `NaN` |
+| `differences.js` | wrapper around the core trace: cap, Σq count, comparison with Euclid, ribbon geometry, input validation, examples |
+| `euclideanDivision.js` | `euclideanDivision` (with `r < b` check), `divisionLayout` (blocks ≤ 120 units, bars above, packs merged above 200), validation (`zeroDivisor` refused with a reason) |
+| `powers.js` | `powerOf` (bases ±1000, exponents ±30, ≤ 60 digits), `applyPowerRule` (both sides computed and compared), `powerOfTen`, `scientificNotation` (read from the digits, never a float), `simplifySqrt` (factorisation; `√72 = √(36 × 2) = 6√2`), `approxSqrt` (BigInt isqrt, truncated to 0,001) |
+| `orderOfOperations.js` | tokenizer + recursive-descent parser that **keeps parenthesis groups**, and the step-by-step evaluator |
+| `divisibilityReasons.js` | the sentence key + params + separate LTR formula for each divisibility rule (2, 3, 4, 5, 6, 8, 9, 10, 11, 25) |
+| `factorTree.js` | tree helpers moved out of `PrimesMode.jsx`, `treeLevels` (60 = 2 × 30 = 2 × 2 × 15 = 2 × 2 × 3 × 5) |
+
+**Division drawing honesty.** `divisionLayout` returns contiguous intervals of
+[0, a]; `layoutUnitCount(layout) === a` is asserted for small, boundary and
+huge cases. A remainder too thin to see is widened and captioned.
+
+**Order of operations.** Accepted: integers, decimals (`0,5`/`0.5`),
+fractions `3/4` (two integers glued around `/`, not touching a power —
+`2^3/4` reads `(2^3) ÷ 4`), `+ − × ÷ * / : ·`, `^`, `²`, `³`, `( )`, `[ ]`,
+unary minus (`−3² = −9`, `(−3)² = 9`), implicit `2(3 + 4)`, Arabic-Indic
+digits. Each step: innermost (leftmost) group first; within it powers, then
+× ÷ left to right, then + − left to right (`20 − 12 ÷ 4 × 2 = 14`). A step
+carries the whole rewritten expression with the new number in
+`\textcolor{#F36D21}{…}`, the Arabic rule (« نبدأ بما بين القوسين — … »,
+« القوى أوّلًا »…) and the operation performed. Parse errors return
+`{ code, pos }` (the input is shown with the faulty character marked);
+evaluation errors (division by zero, 0⁰, non-integer or > 20 exponent,
+> 60 digits) keep the steps already done. Limits: 120 characters,
+40 operations, 15-digit literals. Results: exact fraction + decimal (marked
+« قيمة مقرّبة » when it does not terminate).
+
+#### §5l.10 document additions
+
+    division: { a, b }                          // 0 ≤ a ≤ 10⁷, 1 ≤ b ≤ 10⁷
+    powers:   { tab, base, exponent, rule, ruleBase, m, n, scientific, root }
+    order:    { expression }                    // the typed TEXT, ≤ 120 chars, kept even if malformed
+
+Steps, cursors and autoplay are never stored. A V1 document without these
+sub-states opens on their defaults. The worst-case size test now includes
+the new sub-states (still well under the 20 KB server cap). `summarize.js`
+describes the three new modes (`38 = 7 × 5 + 3`, `√72 = 6√2`,
+`2 × (3 + 4)^2 − 10` → `88`) and never throws. « أرسِل إلى » can now send a
+number to `division` (as the dividend).
+
+#### Arabic correctness fixed in this lab
+
+- Numeral–noun agreement: `gcdLcm.squareCount` got plural forms; strings
+  such as « {{a}} سطرًا », « {{b}} مجموعات », « {{count}} عددًا أوّليًّا »,
+  « له {{count}} قاسمًا » were rephrased (« عددها {{b}} », « عدد قواسمه: … »).
+- Bidi: the divisibility reasons and the explorer's « عدد مركّب » no longer
+  embed a raw formula in the Arabic sentence; the formula is a separate
+  LTR island (`<bdi dir="ltr">` / `.sa-ml-nb__ltr` / MathText).
+- `خوارزمية أقليدس` → `خوارزمية إقليدس` (textbook spelling).
+
+#### Stable selectors (e2e)
+
+`data-ml-nb-modechip`, `data-ml-nb-mode` (unchanged); differences:
+`data-ml-nb-differences`, `-diff-cursor`, `-diff-next/-play/-all/-reset`,
+`-diff-now`, `-ribbons`, `-diff-table`, `-diff-result`, `-diff-why`,
+`-diff-compare`, `-compare-differences`/`-compare-divisions`, `-go-euclid`,
+`-diff-example`, `-gcd-a`/`-gcd-b`/`-gcd-method`, `-ppcm`; division:
+`data-ml-nb-division`, `-division-a/-b`, `-division-result` (`data-q`,
+`data-r`), `-division-drawing="blocks|bars"`, `-block-group`,
+`-block-remainder`; powers: `data-ml-nb-powers-tab`, `-powers-tabchip`,
+`-power-base/-exponent`, `-power-result`, `-scientific-input/-result`,
+`-root-input/-result/-grid/-approx`; order: `data-ml-nb-order-input`,
+`-order-compute`, `-order-steps`, `-order-cursor`, `-order-next/-all/-reset`,
+`-order-step`, `-order-result`, `-order-error`; tree:
+`data-ml-nb-tree-presets`, `-tree-preset`, `-tree-auto`, `-tree-levels`.
+
+### 5l.12 Progressive solutions (2026-09-30) — nothing is shown at once
+
+Owner rule: a derivation triggered in the lab is **revealed step by step**; the
+final answer is itself the **last** step, and future steps are not in the DOM
+(no fading, no CSS hiding). The lab no longer has its own stepper:
+`useStepper.js` is **deleted**; every derivation uses the shared player
+(`shared/useStepReveal.js` + `shared/StepPlayer.jsx`, `dataAttr="data-ml-nb-step"`,
+`sticky` at the top of the panel) — « خطوة بخطوة » / « عرض تلقائي », speeds,
+pause/resume, replay; the student-facing « كل الخطوات » is gone (only the
+teacher's « عرض الحل كاملاً » inside the player). Changing a, b, the method, the
+expression or the example resets to the problem statement (`resetKey`); the
+cursor is never stored, so a reopened document shows the statement. The only
+action buttons that start a journey are the player's « ابدأ الحل » and
+« احسب » in أولويات العمليات (`player.start()`).
+
+**Visible transformations (MathBoard).** Where the operation itself is the
+lesson, the steps are *frames* (`shared/mathBoard/frames.js`) rendered by
+`MathBoard`: operands designated → arc carrying the operator → result falling
+under them → line settled. Pure generators, tested with `validateFrames` and
+exact sequences (`stepSolutions.test.js`):
+
+| Mode | Generator | Frames |
+|---|---|---|
+| PGCD بالفوارق | `gcdFrames.differencesFrames` | per subtraction `(48 ; 18)` → ⌒− → ↓30, settled `48 − 18 = 30 ⇒ (30 ; 18)`; last `PGCD(48 ; 18) = 6` (none if the run is capped) |
+| إقليدس | `gcdFrames.euclidFrames` | `[84] ÷ [36]` → ↓ `q = 2, r = 12`, settled `84 = 2 × 36 + 12`; last `PGCD = 12` |
+| القسمة الإقليدية | `divisionFrames.divisionFrames` | `38 = 7 × ? + ?` → q (`7 × 5 = 35`) → `38 − 35 ↓ 3` → `38 = 7 × 5 + 3` → `0 ≤ 3 < 7` (result) |
+| شجرة العوامل (auto) | `factorTreeFrames.factorTreeFrames` | one split per step `[60] ÷ [2] ↓ 30` …; last `60 = 2^2 × 3 × 5` |
+| أولويات العمليات | `orderFrames.orderFrames` | the priority sub-expression designated inside the whole expression → operator arc → value → integrated (`= 2 × 7^2 − 10`); last `expr = 88` |
+| الجذر التربيعي | `rootFrames.rootFrames` | `√72 ↓ 72 = 36 × 2` → `√36 × √2` → `√36 ↓ 6` → `6√2`; perfect squares and irreducible roots too |
+
+Drawings follow the cursor, never ahead of it: the ribbons are uncut while a
+pair is designated and cut when its difference falls (`differencesDrawing`);
+Euclid's squares are laid when their division falls (`euclidDrawnCount`), the
+PGCD square is coloured only at the last step; the Euclidean-division cubes
+are loose (grey) → grouped by b → remainder orange (`divisionDrawStage`, and
+the `aria-label` follows); the factor tree grows when a quotient falls
+(`treeAtCursor`) and enters the document only at the last step. The auto
+build starts from the tree as the student left it; manual splitting is
+unchanged (and disabled while an automatic run is shown).
+`evaluateStepByStep` steps gained `beforeLatex`, `plainLatex`, `target`
+(operands/operator) for this; `splitAtHighlight` refuses an unsafe cut (target
+inside an exponent) and shows that step in one piece.
+
+**Formula-by-formula derivations (StepList)** — `solutionSteps.js`, each ending
+with a `tone: 'result'` step: PGCD by prime factors (table rows follow the
+cursor) and by divisor lists; **PPCM** `= a × b / PGCD` (its panel stays locked
+until the PGCD is reached; the relation `PGCD × PPCM = a × b` is checked only
+after the PPCM; the first common multiple lights up only then); `a^n` factor
+by factor (`2^5 = 2×2×2×2×2 = 4×2×2×2 = … = 32`), negative exponents; a power
+rule (rule → why → combined exponents → result, verification after);
+scientific notation (mantissa → shift → result); fraction operations
+(`1/3 + 1/4`: PPCM of denominators → conversion — the bars subdivide at that
+step — → numerators → `7/12`, reduced if possible; × ; ÷ by the reciprocal;
+comparison by cross products — the `<`/`>` sign and the result bar appear at
+the last step). No PGCD/PPCM header line any more.
+
+**Stays live, by design:** place-value regrouping, number line, operations,
+sliders, fraction cutting/merging and the five representations, the sieve
+(already its own stepped animation), divisibility verdicts per rule (a
+readout: each reason opens on demand), the factors rectangle and divisor
+lists, the explorer cards, the powers-of-ten table.
+
+Hooks: removed `data-ml-nb-diff-next/-play/-all/-reset`, `data-ml-nb-diff-now`,
+`data-ml-nb-order-next/-all/-reset`; player hooks are `data-ml-nb-step-*`
+(`-start`, `-next`, `-mode`, …; PPCM: `data-ml-nb-ppcm-step-*`).
+`data-ml-nb-diff-result` (value = PGCD), `data-ml-nb-division-result`
+(+`data-q/-r`), `data-ml-nb-power-result`, `data-ml-nb-scientific-result`,
+`data-ml-nb-root-result`, `data-ml-nb-order-result` now exist only at the
+last step. New: `data-ml-nb-ppcm-locked`, `data-ml-nb-relation-check`,
+`data-ml-nb-division-stage`, `data-ml-nb-tree-autosplit`, `data-ml-nb-*-frame`.
+
+**« تدرّب بنفسك » (practice mode, 2026-09-30).** Every numberLab board spreads
+`useBoardPractice(frames, player, resetKey)` (reset key = the question: a|b, the
+expression, the tree run, √n). Each step with a real gesture is an exercise set
+with `makeTask` (prompts `tools.numberLab.practice.board.*`): differences — tap the
+pair, then −; Euclid — dividend and divisor, then ÷; Euclidean division — a and b,
+then ÷, and the remainder `38` / `35`, then −; factor tree — the number and its
+smallest prime, then ÷; order of operations — the two operands of the priority
+operation, then its operator (a power is tapped whole); √ — the root that can be
+extracted (`√36`). Steps with no gesture (counting groups, writing the equality,
+putting a value back, results) simply advance. Solved exercises are interface
+state, never stored in the document. Tested in `stepSolutions.test.js` (exact
+targets and operators) through `validateFrames`.
+
+**« توحيد المقامات » — the common denominator, drawn (2026-09-30).** For a sum or a
+difference with different denominators, the PPCM step (« توحيد المقامات: … المضاعف
+المشترك الأصغر للمقامين ») shows `CommonDenominatorFigure.jsx`: both fractions in the
+model the student chose (bar, disc or number line), left to right in the order of
+the operation, each with its own cuts in solid lines and the PPCM cuts in dashed
+orange (`FractionShape › grid`, `fineCuts`) — every third splits into exactly 4
+twelfths, every quarter into exactly 3 — with « كلّ جزء يُقسم إلى 4 أجزاء: 3 × 4 = 12 »
+(the formula isolated LTR, never inside the Arabic sentence), then the multiples of
+each denominator up to the PPCM (`commonDenominatorStory.js`, long lists shortened
+with « … ») with the first common one ringed: the smallest number of parts that fits
+both divisions. Above 120 parts the cuts are not drawn and the page says so.
 
 ## 5i. « أعمالي » — the personal workspace
 

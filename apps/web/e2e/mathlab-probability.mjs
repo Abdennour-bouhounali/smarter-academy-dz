@@ -444,7 +444,7 @@ try {
   await page.reload({ waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-ps-dataset]', { timeout: 30000 });
   await sleep(400);
-  record('rechargement : le mode « série », la saisie et la moyenne 20 reviennent', (await page.getAttribute('[data-ml-ps-mode="dataset"]', 'aria-pressed')) === 'true' && (await page.inputValue('[data-ml-ps-dataset]')) === '10, 20, 30' && (await stat(page, 'mean')) === 20);
+  record('rechargement : le mode « série », la saisie et la moyenne 20 reviennent', (await page.getAttribute('[data-ml-ps-mode="dataset"]', 'aria-selected')) === 'true' && (await page.inputValue('[data-ml-ps-dataset]')) === '10, 20, 30' && (await stat(page, 'mean')) === 20);
   await page.click('[data-ml-ps-mode="experiment"]');
   await sleep(300);
   record('rechargement : l’expérience (entiers 6–9) et ses 100 tirages reviennent', (await page.inputValue('[data-ml-ps-experiment]')) === 'random' && (await total(page)) === 100 && (await page.inputValue('[data-ml-ps-bound="ml-ps-min"]')) === '6');
@@ -458,7 +458,7 @@ try {
 
   // ── Mسح الكل ──────────────────────────────────────────────────────────
   await openTool(page, `/espace/atelier/probabilites-statistiques/${docId}`);
-  record('réouverture : le mode « expérience » a été enregistré', (await page.getAttribute('[data-ml-ps-mode="experiment"]', 'aria-pressed')) === 'true' && (await total(page)) === 100);
+  record('réouverture : le mode « expérience » a été enregistré', (await page.getAttribute('[data-ml-ps-mode="experiment"]', 'aria-selected')) === 'true' && (await total(page)) === 100);
   await page.click('[data-ml-clear]');
   await page.waitForSelector('[role="alertdialog"]', { timeout: 5000 });
   const dialogText = await page.locator('[role="alertdialog"]').innerText();

@@ -110,6 +110,34 @@ describe('خوارزمية الفروق المتتابعة — activité 6أ, ط
     for (const [a, b] of [[21, 14], [45, 18], [252, 140], [936, 845], [5858, 6767]]) {
       expect(differenceSteps(a, b).gcd).toBe(gcdByDefinition(a, b));
     }
+  });  it('48 et 18 : 48 − 18 = 30 ; 30 − 18 = 12 ; 18 − 12 = 6 ; 12 − 6 = 6 ; 6 − 6 = 0', () => {
+    const r = differenceSteps(48, 18);
+    expect(r.steps.map((s) => [s.big, s.small, s.diff])).toEqual([
+      [48, 18, 30], [30, 18, 12], [18, 12, 6], [12, 6, 6], [6, 6, 0],
+    ]);
+    expect(r).toMatchObject({ gcd: 6, complete: true });
+  });
+  it('deux nombres égaux : une seule étape, a − a = 0, PGCD = a', () => {
+    expect(differenceSteps(13, 13)).toEqual({ steps: [{ big: 13, small: 13, diff: 0 }], gcd: 13, complete: true });
+  });
+  it('1 et n : n étapes, PGCD = 1', () => {
+    const r = differenceSteps(1, 7);
+    expect(r.steps).toHaveLength(7);
+    expect(r).toMatchObject({ gcd: 1, complete: true });
+  });
+  it('une trace COUPÉE par maxSteps ne ment pas : complete = false, gcd = null', () => {
+    const r = differenceSteps(1000, 1, { maxSteps: 200 });
+    expect(r.steps).toHaveLength(200);
+    expect(r.complete).toBe(false);
+    expect(r.gcd).toBeNull();
+    // Coupée juste au fruit nul : complète.
+    expect(differenceSteps(1000, 1, { maxSteps: 1000 })).toMatchObject({ gcd: 1, complete: true });
+    expect(differenceSteps(1000, 1, { maxSteps: 999 })).toMatchObject({ gcd: null, complete: false });
+  });
+  it('entrées invalides : pas de trace, pas de PGCD', () => {
+    for (const [a, b] of [[0, 5], [5, 0], [-3, 4], [2.5, 1], [NaN, 1]]) {
+      expect(differenceSteps(a, b)).toEqual({ steps: [], gcd: null, complete: false });
+    }
   });
 });
 

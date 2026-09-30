@@ -38,6 +38,9 @@ describe('registre des instruments', () => {
     expect(getMathLabToolBySlug('probabilites-statistiques')?.id).toBe('probabilityStats');
     expect(getMathLabTool('algebra')?.slug).toBe('algebre');
     expect(getMathLabToolBySlug('algebre')?.id).toBe('algebra');
+    // Un alias ouvre le même instrument ; le segment canonique ne change pas.
+    expect(getMathLabToolBySlug('nombres-calcul')?.id).toBe('numberLab');
+    expect(getMathLabToolBySlug('nombres')?.id).toBe('numberLab');
     expect(getMathLabTool('vectors')?.slug).toBe('vecteurs');
     expect(getMathLabToolBySlug('vecteurs')?.id).toBe('vectors');
     expect(getMathLabTool('trigonometry')?.slug).toBe('trigonometrie');
@@ -200,6 +203,18 @@ describe('les mots de « أعمالي »', () => {
     for (const base of ['work.count', 'work.bulk.selected']) {
       for (const form of ['one', 'two', 'few', 'many', 'other']) {
         expect(typeof lookup(`${base}_${form}`), `${base}_${form}`).toBe('string');
+      }
+    }
+  });
+});
+
+describe('segments d\'URL', () => {
+  it('aucun segment ni alias n\'ouvre deux instruments', () => {
+    const seen = new Map();
+    for (const tool of MATH_LAB_TOOLS) {
+      for (const segment of [tool.slug, ...(tool.aliases ?? [])]) {
+        expect(seen.has(segment), `« ${segment} » est pris par ${seen.get(segment)} et ${tool.id}`).toBe(false);
+        seen.set(segment, tool.id);
       }
     }
   });

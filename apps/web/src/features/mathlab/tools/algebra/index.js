@@ -19,6 +19,11 @@ import { summarizeAlgebra } from './summarize.js';
  * vit dans des modules purs (rational.js, linearForm.js, equation.js) testés
  * à part ; le composant ne fait que les appeler. Chargé PARESSEUSEMENT par
  * `load`. Documenté dans docs/architecture/MATH_LAB.md §5e.
+ *
+ * V2 (schéma 2) : six sections sous une même barre — المعادلات (la balance
+ * V1, intacte), المتراجحات, الأنظمة, تبسيط التعابير, التحليل إلى عوامل, الدوال —
+ * sur des moteurs purs (polynomial.js, simplify.js, factor.js, systems.js,
+ * functions.js). Un document V1 se rouvre tel quel sur « المعادلات ».
  */
 export const algebraTool = defineMathLabTool({
   id: 'algebra',

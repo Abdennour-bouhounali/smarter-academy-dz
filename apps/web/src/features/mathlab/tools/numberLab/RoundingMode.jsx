@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { LabPanel } from '../../shared/LabKit.jsx';
 import NumberLineStage from './NumberLineStage.jsx';
 import ValueInput from './ValueInput.jsx';
 import { roundingDetail, truncateTo, approximationError } from './numberTheory.js';
@@ -119,20 +120,18 @@ export default function RoundingMode({ state, onChange, compact }) {
       </div>
 
       {/* §33 : la troncature, à côté — c'est la confusion classique. */}
-      <section className="sa-ml-nb__panel">
-        <h4>{t('tools.numberLab.rounding.truncation')}</h4>
+      <LabPanel id="numberLab.rounding.truncation" title={t('tools.numberLab.rounding.truncation')}>
         <p className="sa-ml-nb__muted">
           {t('tools.numberLab.rounding.truncationHint', {
             truncated: formatNumber(truncated, 6),
             rounded: formatNumber(detail.rounded, 6),
           })}
         </p>
-      </section>
+      </LabPanel>
 
       {/* §33, §34 : l'erreur, comme une distance. */}
       {error && (
-        <section className="sa-ml-nb__panel sa-ml-nb__panel--result">
-          <h4>{t('tools.numberLab.rounding.approximation')}</h4>
+        <LabPanel id="numberLab.rounding.error" title={t('tools.numberLab.rounding.approximation')} className="sa-ml-nb__panel--result">
           <dl className="sa-ml-nb__facts" dir="ltr">
             <div>
               <dt>{t('tools.numberLab.rounding.exactValue')}</dt>
@@ -170,7 +169,7 @@ export default function RoundingMode({ state, onChange, compact }) {
               </button>
             ))}
           </div>
-        </section>
+        </LabPanel>
       )}
     </div>
   );

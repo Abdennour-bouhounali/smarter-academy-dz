@@ -3,14 +3,21 @@
  * sans React.
  *
  *     data = {
- *       mode:       'experiment' | 'dataset',
+ *       mode:       'experiment' | 'dataset' | 'tree' | 'normal',   // la section ouverte
  *       experiment: 'coin' | 'die' | 'twoDice' | 'random',
  *       range:      { min, max },          // les bornes du générateur d'entiers
  *       draws:      number,                // combien de tirages au prochain lancer
- *       simulation: { experimentId, seed, total, counts, drawn, trajectory } | null,
+ *       simulation: { experimentId, seed, total, counts, drawn, trajectory, last } | null,
  *       dataset:    string,                // la série TELLE QUE SAISIE
+ *       chart:      null | 'bars' | 'histogram' | 'pie' | 'box' | 'cumulative',  // null = automatique (V1)
  *       settings:   { compare, showMean, showMedian, watchRolls },
+ *       tree:       { stages, branches, presetId, query },            // probabilityTree.js
+ *       normal:     { mu, sigma, x, a, b, query, scale },              // normalDistribution.js
  *     }
+ *
+ * V2 (2026-09-30) n'a fait qu'AJOUTER : `mode` accepte deux sections de
+ * plus, et `chart`, `tree`, `normal` prennent leur valeur par défaut quand
+ * un document V1 ne les porte pas — il se rouvre donc à l'identique.
  *
  * `dataset` garde le TEXTE, pas les nombres : une saisie fautive doit se
  * retrouver telle quelle au rechargement, pour que l'élève voie ce qu'il a
@@ -28,10 +35,13 @@ import {
 } from './experiments.js';
 import { fromStoredSimulation, toStoredSimulation } from './simulationEngine.js';
 import { MAX_DATASET_VALUES } from './datasetStatistics.js';
+import { CHART_TYPES } from './descriptiveStats.js';
+import { normalizeTree, toStoredTree } from './probabilityTree.js';
+import { NORMAL_VALUE_BOUND, QUERY_TYPES, SCALES } from './normalDistribution.js';
 
-export const PROBABILITY_STATS_SCHEMA_VERSION = 1;
+export const PROBABILITY_STATS_SCHEMA_VERSION = 2;
 
-export const MODES = Object.freeze(['experiment', 'dataset']);
+export const MODES = Object.freeze(['experiment', 'dataset', 'tree', 'normal']);
 export const DEFAULT_MODE = 'experiment';
 
 /** Assez long pour porter MAX_DATASET_VALUES nombres, assez court pour borner le document. */
@@ -40,13 +50,39 @@ const MAX_DATASET_TEXT = MAX_DATASET_VALUES * 12;
 /** La série d'exemple d'un laboratoire neuf : sept valeurs, une médiane lisible, une moyenne qui n'est pas ronde. */
 export const EXAMPLE_DATASET = '12 ; 15 ; 14 ; 18 ; 10 ; 12 ; 16';
 
+/** La loi normale d'un document neuf : la loi centrée réduite, P(X ≤ 1). */
+export const DEFAULT_NORMAL = Object.freeze({ mu: 0, sigma: 1, x: 1, a: -1, b: 1, query: 'le', scale: 'x' });
+
+function boundedNumber(value, fallback) {
+  return typeof value === 'number' && Number.isFinite(value) && Math.abs(value) <= NORMAL_VALUE_BOUND ? value : fallback;
+}
+
+/** Des paramètres de loi normale sûrs : σ > 0 toujours, a ≤ b toujours (échangés sinon), requête et échelle connues. */
+export function normalizeNormal(raw) {
+  const source = raw && typeof raw === 'object' ? raw : {};
+  const sigma = boundedNumber(source.sigma, DEFAULT_NORMAL.sigma);
+  let a = boundedNumber(source.a, DEFAULT_NORMAL.a);
+  let b = boundedNumber(source.b, DEFAULT_NORMAL.b);
+  if (a > b) [a, b] = [b, a];
+
+  return {
+    mu: boundedNumber(source.mu, DEFAULT_NORMAL.mu),
+    sigma: sigma > 0 ? sigma : DEFAULT_NORMAL.sigma,
+    x: boundedNumber(source.x, DEFAULT_NORMAL.x),
+    a,
+    b,
+    query: QUERY_TYPES.includes(source.query) ? source.query : DEFAULT_NORMAL.query,
+    scale: SCALES.includes(source.scale) ? source.scale : DEFAULT_NORMAL.scale,
+  };
+}
+
 function clampDraws(value) {
   const n = typeof value === 'number' && Number.isFinite(value) ? Math.floor(value) : DEFAULT_DRAWS;
 
   return Math.min(MAX_DRAWS, Math.max(1, n));
 }
 
-/** N'importe quel `data` (document, amorce, version antérieure) → l'état V1 complet et sûr. */
+/** N'importe quel `data` (document, amorce, V1, V2) → l'état V2 complet et sûr. Ne lève jamais. */
 export function normalizeProbabilityStatsData(raw) {
   const source = raw && typeof raw === 'object' ? raw : {};
   const mode = MODES.includes(source.mode) ? source.mode : DEFAULT_MODE;
@@ -70,6 +106,9 @@ export function normalizeProbabilityStatsData(raw) {
       // Regarder chaque lancer (jusqu'à WATCH_MAX) plutôt qu'un lot : le geste par défaut.
       watchRolls: settings.watchRolls !== false,
     },
+    chart: CHART_TYPES.includes(source.chart) ? source.chart : null,
+    tree: normalizeTree(source.tree),
+    normal: normalizeNormal(source.normal),
   };
 }
 
@@ -105,5 +144,8 @@ export function toStoredData(data) {
     simulation: toStoredSimulation(data.simulation),
     dataset: data.dataset,
     settings: { ...data.settings },
+    chart: data.chart ?? null,
+    tree: toStoredTree(data.tree),
+    normal: { ...data.normal },
   };
 }

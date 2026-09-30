@@ -939,3 +939,25 @@
 }
 
 .sa-ml-cn--compact .sa-ml-cn__question { font-size: 0.86rem; }
+
+/* ── §30 — le passage développée → canonique (StepPlayer + MathBoard) ── */
+
+.sa-ml-cn__derivation {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sa-ml-cn__solve {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sa-ml-cn__solve .sa-ml-kit-steps__math {
+  overflow-x: auto;
+  text-align: left;
+}
+
+/* « D'un seul regard » (MATH_LAB §3.5) : tableau comparatif et avant/après se masquent. */
+.sa-ml-cn__labpanel { margin-block: 10px; }

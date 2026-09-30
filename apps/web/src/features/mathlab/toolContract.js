@@ -14,6 +14,10 @@
  *   `tool` en base : le registre SERVEUR (App\Domain\MathLab\MathLabTools)
  *   doit le connaître, sinon la sauvegarde est refusée.
  * @property {string} slug
+ * @property {string[]} [aliases]
+ *   Autres segments d'URL qui ouvrent le MÊME instrument (un nom plus parlant
+ *   donné après coup — `nombres-calcul` pour `nombres`). Le segment canonique
+ *   reste `slug` : c'est lui que construisent les liens et l'enregistrement.
  *   Le segment d'URL, en français comme le reste des routes de l'espace
  *   ('tableau' → /espace/atelier/tableau).
  * @property {string} labelKey
@@ -145,6 +149,11 @@ export function defineMathLabTool(definition) {
   }
   if (!/^[a-z][a-z0-9-]*$/.test(definition.slug)) {
     throw new Error(`[mathlab] segment d'URL invalide « ${definition.slug} » pour « ${definition.id} »`);
+  }
+  if (definition.aliases !== undefined) {
+    if (!Array.isArray(definition.aliases) || definition.aliases.some((alias) => typeof alias !== 'string' || !/^[a-z][a-z0-9-]*$/.test(alias) || alias === definition.slug)) {
+      throw new Error(`[mathlab] alias d'URL invalides pour « ${definition.id} »`);
+    }
   }
   if (!Number.isInteger(definition.schemaVersion) || definition.schemaVersion < 1) {
     throw new Error(`[mathlab] schemaVersion doit être un entier ≥ 1 pour « ${definition.id} »`);

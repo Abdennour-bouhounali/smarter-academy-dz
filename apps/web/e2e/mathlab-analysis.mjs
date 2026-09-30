@@ -28,6 +28,7 @@
  * Les documents créés sont supprimés à la fin.
  */
 import { chromium } from 'playwright';
+import { playToEnd } from './_stepPlayer.mjs';
 import { mkdirSync } from 'node:fs';
 
 const BASE = process.env.QA_BASE || 'http://localhost:5173';
@@ -319,6 +320,9 @@ async function typeMath(page, id, text) {
 
   await setFunction(page, 'x^2-4x+3');
   await openTab(page, 'inspector');
+  // La dérivation se DÉROULE (MATH_LAB §3.4.2) : rien d'écrit avant, f′ au dernier pas.
+  await page.locator('[data-ml-an-derive]').first().click();
+  await playToEnd(page, 'data-ml-an-dstep');
   const body = await textOf(page, '[data-ml-an-inspector]');
   record('§9 : f′(x) est ÉCRITE, pas seulement tracée', body.includes('2x - 4'), body.slice(0, 80));
   record('§35 : la dérivée symbolique est annoncée comme exacte',
@@ -463,6 +467,16 @@ async function typeMath(page, id, text) {
 
   // ── جدول التغيّرات : la synthèse sous la forme du manuel ────────────────
   {
+    // Le tableau se CONSTRUIT ligne par ligne (MATH_LAB §3.4.2).
+    const buildTable = async () => {
+      const build = page.locator('[data-ml-an-vbuild]').first();
+      if (await build.count()) await build.click();
+      await playToEnd(page, 'data-ml-an-vstep');
+      await page.waitForTimeout(200);
+    };
+    record('جدول التغيّرات : rien avant la construction',
+      (await page.locator('[data-ml-an-vararrow]').count()) === 0);
+    await buildTable();
     const state = await page.locator('[data-ml-an-vartable]').getAttribute('data-ml-an-vartable').catch(() => null);
     record('جدول التغيّرات : le tableau de variations est construit', state === 'ok', `state=${state}`);
 
@@ -486,6 +500,7 @@ async function typeMath(page, id, text) {
     await setFunction(page, 'x^3');
     await openTab(page, 'inspector');
     await page.waitForTimeout(400);
+    await buildTable();
     const cubic = await readTable();
     record('جدول التغيّرات : x³ monte des deux côtés de f′ = 0 (§17)',
       JSON.stringify(cubic.arrows) === JSON.stringify(['increasing', 'increasing'])
@@ -496,6 +511,7 @@ async function typeMath(page, id, text) {
     await setFunction(page, '\\frac{1}{x}');
     await openTab(page, 'inspector');
     await page.waitForTimeout(400);
+    await buildTable();
     const inverse = await readTable();
     record('جدول التغيّرات : le pôle de 1/x coupe le tableau UNE fois',
       inverse.bars === 1, `${inverse.bars} barre(s)`);

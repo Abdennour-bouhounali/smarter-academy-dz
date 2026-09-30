@@ -56,7 +56,10 @@ export function getMathLabTool(id) {
   return MATH_LAB_TOOLS.find((tool) => tool.id === id) ?? null;
 }
 
-/** L'instrument derrière un segment d'URL (/espace/atelier/<slug>). */
+/**
+ * L'instrument derrière un segment d'URL (/espace/atelier/<slug>) — son
+ * segment canonique ou l'un de ses alias (`nombres-calcul` ouvre `nombres`).
+ */
 export function getMathLabToolBySlug(slug) {
-  return MATH_LAB_TOOLS.find((tool) => tool.slug === slug) ?? null;
+  return MATH_LAB_TOOLS.find((tool) => tool.slug === slug || tool.aliases?.includes(slug)) ?? null;
 }

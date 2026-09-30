@@ -20,6 +20,7 @@ const PAD = { top: 26, right: 16, bottom: 48, left: 46 };
 
 export default function DistributionChart({
   distribution, summary, showMean, showMedian, title, emptyMessage, compact = false,
+  highlight = null, onHighlight = null,
 }) {
   const { t } = useTranslation('mathlab');
   const VIEW_WIDTH = compact ? 440 : 720;
@@ -97,8 +98,19 @@ export default function DistributionChart({
         // isolée porte son nom sous le CENTRE de son bâton.
         const labelX = isHistogram ? left : left + barWidth / 2;
 
+        // La même clé que la ligne du tableau (descriptiveStats.valueRows / classRows) :
+        // survoler l'un éclaire l'autre.
+        const key = isHistogram ? `c:${index}` : `v:${bin.from}`;
+
         return (
-          <g key={`${bin.from}-${index}`} data-ml-ps-bin={index}>
+          <g
+            key={`${bin.from}-${index}`}
+            data-ml-ps-bin={index}
+            data-ml-ps-bin-key={key}
+            className={highlight === key ? 'is-highlighted' : undefined}
+            onMouseEnter={onHighlight ? () => onHighlight(key) : undefined}
+            onMouseLeave={onHighlight ? () => onHighlight(null) : undefined}
+          >
             <rect
               x={left}
               y={top}
@@ -132,7 +144,7 @@ export default function DistributionChart({
       {medianX !== null && (
         <g data-ml-ps-median-line>
           <line x1={medianX} y1={PAD.top - 6} x2={medianX} y2={PAD.top + plotHeight} className="sa-ml-ps__median-line" />
-          <text x={medianX} y={PAD.top - 12} textAnchor="middle" className="sa-ml-ps__marker-label sa-ml-ps__marker-label--median">
+          <text x={medianX} y={PAD.top - 2} textAnchor="middle" className="sa-ml-ps__marker-label sa-ml-ps__marker-label--median">
             Me = {formatValue(summary.median, 2)}
           </text>
         </g>
@@ -146,7 +158,9 @@ export default function DistributionChart({
         </g>
       )}
 
-      <text x={PAD.left} y={14} className="sa-ml-ps__chart-legend">
+      {/* Une phrase arabe dans un SVG LTR : son propre sens, ancrée à droite,
+          une ligne AU-DESSUS de l'étiquette « Me = … » qu'elle recouvrait. */}
+      <text x={VIEW_WIDTH - PAD.right} y={10} direction="rtl" textAnchor="start" className="sa-ml-ps__chart-legend">
         {t(isHistogram ? 'tools.probabilityStats.histogramLegend' : 'tools.probabilityStats.barsLegend')}
       </text>
     </svg>
