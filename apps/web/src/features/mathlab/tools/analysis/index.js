@@ -56,6 +56,9 @@ export const analysisTool = defineMathLabTool({
   // vignette seraient indiscernables sur l'accueil.
   icon: Spline,
   schemaVersion: ANALYSIS_SCHEMA_VERSION,
+  // مخبر الثانوي seulement : limites, dérivée, intégrale et étude de
+  // fonction ; les fonctions affines du collège sont au جبر et au راسم (§5m.1).
+  scopes: ['secondaire'],
   createInitialData: createAnalysisData,
   summarize: summarizeAnalysis,
   load: () => import('./AnalysisTool.jsx'),

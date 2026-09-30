@@ -10,6 +10,9 @@ import MathLabToolPicker from './MathLabToolPicker.jsx';
 import FeatureLockedPanel from '../../../components/access/FeatureLockedPanel';
 import { useFeatureAccess } from '../../../hooks/useFeatureAccess';
 import { featureState, isToolVisible, toolFeatureKey } from '../../access/featureAccess';
+import {
+  isLabScope, readRememberedLabScope, rememberLabScope, resolveToolScope, toolCapabilities,
+} from '../labScope';
 import './mathLabOverlay.css';
 
 // Un composant paresseux par instrument, créé UNE fois — `lazy()` appelé au
@@ -52,7 +55,14 @@ function lazyToolComponent(tool) {
  */
 export default function MathLabOverlay() {
   const { t } = useTranslation('mathlab');
-  const { tool: toolId, close, pick, backToPicker } = useMathLabOverlay();
+  const { tool: toolId, close, pick, backToPicker, scope: requestedScope, setScope } = useMathLabOverlay();
+  // Le مخبر du calque : celui de la leçon, sinon le dernier choisi, sinon
+  // le collège — la plateforme est d'abord celle de 4AM.
+  const labScope = isLabScope(requestedScope) ? requestedScope : (readRememberedLabScope() ?? 'moyen');
+  const chooseLab = useCallback((next) => {
+    rememberLabScope(next);
+    setScope(next);
+  }, [setScope]);
   const rootRef = useRef(null);
   const { supported, isFullscreen, request, exit } = useFullscreen(rootRef);
   // Le repli applicatif : demandé, mais refusé (ou pas d'API).
@@ -154,6 +164,7 @@ export default function MathLabOverlay() {
   }, []);
 
   const title = isPicking ? t('overlay.pickTitle') : t(tool?.labelKey ?? 'title');
+  const openScope = tool ? resolveToolScope(tool, { requested: labScope }) : null;
 
   return (
     <div
@@ -184,6 +195,11 @@ export default function MathLabOverlay() {
         <h2 className="sa-mlo__title sa-mlo__title--lead">
           {tool?.icon && <tool.icon size={18} className="text-blue-500 flex-shrink-0" aria-hidden="true" />}
           <span className="sa-mlo__titletext">{title}</span>
+          {openScope && (
+            <span className={`sa-ml-scope-badge sa-ml-scope-badge--${openScope}`} data-ml-scope-badge={openScope}>
+              {t(`labs.${openScope}.short`)}
+            </span>
+          )}
         </h2>
 
         <div className="sa-mlo__actions">
@@ -214,7 +230,9 @@ export default function MathLabOverlay() {
       </header>
 
       <div className="sa-mlo__body">
-        {isPicking ? <OverlayPicker onPick={pick} /> : <ToolHost tool={tool} />}
+        {isPicking
+          ? <OverlayPicker onPick={pick} scope={labScope} onScope={chooseLab} />
+          : <ToolHost tool={tool} scope={labScope} />}
       </div>
     </div>
   );
@@ -232,15 +250,15 @@ export default function MathLabOverlay() {
  * Le sélecteur, filtré par « الوصول والحدود » comme l'accueil : un instrument
  * coupé n'est pas proposé, un instrument fermé au palier porte son cadenas.
  */
-function OverlayPicker({ onPick }) {
+function OverlayPicker({ onPick, scope, onScope }) {
   const { summary } = useFeatureAccess();
   const tools = MATH_LAB_TOOLS.filter((tool) => isToolVisible(summary, tool.id));
   const lockedIds = tools.filter((tool) => !featureState(summary, toolFeatureKey(tool.id)).allowed).map((tool) => tool.id);
 
-  return <MathLabToolPicker tools={tools} lockedIds={lockedIds} onPick={onPick} />;
+  return <MathLabToolPicker tools={tools} lockedIds={lockedIds} onPick={onPick} scope={scope} onScope={onScope} />;
 }
 
-function ToolHost({ tool }) {
+function ToolHost({ tool, scope }) {
   const { summary } = useFeatureAccess();
   const access = featureState(summary, toolFeatureKey(tool.id));
   // Dans le calque, rien n'est enregistré : cette porte est de l'interface
@@ -250,10 +268,14 @@ function ToolHost({ tool }) {
     return <div className="sa-page py-8"><FeatureLockedPanel reason={access.reason} /></div>;
   }
 
-  return <ToolHostOpen tool={tool} />;
+  // Le مخبر où l'instrument s'ouvre : celui du sélecteur, s'il y existe
+  // (راسم الدوال au collège), le sien sinon (التحليل : le ثانوي).
+  const toolScope = resolveToolScope(tool, { requested: scope });
+
+  return <ToolHostOpen key={`${tool.id}:${toolScope ?? 'common'}`} tool={tool} scope={toolScope} />;
 }
 
-function ToolHostOpen({ tool }) {
+function ToolHostOpen({ tool, scope }) {
   const { t } = useTranslation('mathlab');
   const ToolComponent = useMemo(() => lazyToolComponent(tool), [tool]);
   // L'état de départ est figé à la PREMIÈRE ouverture de cet instrument :
@@ -261,8 +283,9 @@ function ToolHostOpen({ tool }) {
   // l'état courant à chaque rendu n'apporterait rien. On le garde néanmoins
   // ici pour que le composant reste monté d'un rendu à l'autre (bascule
   // plein écran) sans repartir d'une scène vierge.
+  const capabilities = useMemo(() => toolCapabilities(tool, scope), [tool, scope]);
   const initial = useRef(null);
-  if (initial.current === null) initial.current = tool.createInitialData();
+  if (initial.current === null) initial.current = tool.createInitialData(undefined, { scope, capabilities });
 
   return (
     <Suspense
@@ -278,6 +301,8 @@ function ToolHostOpen({ tool }) {
         title={t(tool.defaultTitleKey)}
         onChange={NOOP}
         onReady={NOOP}
+        scope={scope}
+        capabilities={capabilities}
       />
     </Suspense>
   );

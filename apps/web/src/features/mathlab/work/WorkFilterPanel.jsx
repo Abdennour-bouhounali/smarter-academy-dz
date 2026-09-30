@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { Star } from 'lucide-react';
 import { MATH_LAB_TOOLS } from '../toolRegistry';
-import { WORK_PERIODS, DEFAULT_WORK_FILTERS } from './workFilters';
+import { WORK_LABS, WORK_PERIODS, DEFAULT_WORK_FILTERS } from './workFilters';
+import { isLabScope, toolInScope } from '../labScope';
 
 /**
  * Les filtres de « أعمالي ». Le MÊME panneau sert la colonne de bureau et la
@@ -12,15 +13,43 @@ import { WORK_PERIODS, DEFAULT_WORK_FILTERS } from './workFilters';
  * nombre de travaux qu'il contient : un filtre qui ne donnerait rien se voit
  * avant d'être cliqué.
  *
- * @param {Record<string, number>} counts  combien de travaux par instrument
+ * Le premier filtre est le مخبر (labScope.js) : l'architecture du مختبر
+ * elle-même. Un مخبر choisi, seuls ses instruments restent proposés — et
+ * celui qu'on avait déjà coché, pour pouvoir le décocher.
+ *
+ * @param {Record<string, number>} counts     combien de travaux par instrument
+ * @param {Record<string, number>} labCounts  combien de travaux par مخبر
  */
-export default function WorkFilterPanel({ filters, counts = {}, total = 0, onChange, onReset }) {
+export default function WorkFilterPanel({ filters, counts = {}, labCounts = {}, total = 0, onChange, onReset }) {
   const { t } = useTranslation('mathlab');
   const f = (key, opts) => t(`work.filters.${key}`, opts);
   const set = (patch) => onChange?.({ ...filters, ...patch });
+  const lab = isLabScope(filters.lab) ? filters.lab : null;
+  const tools = lab
+    ? MATH_LAB_TOOLS.filter((tool) => toolInScope(tool, lab) || tool.id === filters.tool)
+    : MATH_LAB_TOOLS;
 
   return (
     <div className="sa-mlw-filters" data-ml-work-filters>
+      <fieldset className="sa-mlw-fieldset">
+        <legend>{f('labLegend')}</legend>
+        <div className="sa-mlw-chips">
+          {WORK_LABS.map((value) => (
+            <button
+              key={value}
+              type="button"
+              className="sa-mlw-chip"
+              aria-pressed={(filters.lab ?? 'all') === value}
+              onClick={() => set({ lab: value })}
+              data-ml-work-lab={value}
+            >
+              {f(`labs.${value}`)}
+              <span className="sa-mlw-chip__count">{value === 'all' ? total : (labCounts[value] ?? 0)}</span>
+            </button>
+          ))}
+        </div>
+      </fieldset>
+
       <fieldset className="sa-mlw-fieldset">
         <legend>{f('toolLegend')}</legend>
         <div className="sa-mlw-chips">
@@ -33,7 +62,7 @@ export default function WorkFilterPanel({ filters, counts = {}, total = 0, onCha
           >
             {f('allTools')} <span className="sa-mlw-chip__count">{total}</span>
           </button>
-          {MATH_LAB_TOOLS.map((tool) => {
+          {tools.map((tool) => {
             const Icon = tool.icon;
 
             return (

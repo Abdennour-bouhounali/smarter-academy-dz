@@ -35,8 +35,10 @@ const AXIS_CHOICES = ['xAxis', 'yAxis', 'origin', 'diagonal', 'antidiagonal', 'h
  */
 export default function StepStack({
   steps, activeStepId, onSelect, onAdd, onUpdate, onRemove, onToggle, onMove, onAnimate, maxSteps,
-  vertexCount,
+  vertexCount, kinds = ['translation', 'rotation', 'reflection', 'dilation'],
 }) {
+  // Un seul pas (le collège, scope.js) : « ajouter » REMPLACE — le bouton reste actif.
+  const single = maxSteps <= 1;
   const { t } = useTranslation('mathlab');
 
   return (
@@ -147,7 +149,7 @@ export default function StepStack({
       <p className="sa-ml-tr__stacknode" data-ml-node="image">{t('tools.transformations.stack.image')}</p>
 
       <div className="sa-ml-tr__addrow" role="group" aria-label={t('tools.transformations.stack.add')}>
-        {['translation', 'rotation', 'reflection', 'dilation'].map((kind) => {
+        {kinds.map((kind) => {
           const Icon = KIND_ICONS[kind];
 
           return (
@@ -156,7 +158,7 @@ export default function StepStack({
               type="button"
               className="sa-ml-btn sa-ml-tr__addbtn"
               onClick={() => onAdd(kind)}
-              disabled={steps.length >= maxSteps}
+              disabled={!single && steps.length >= maxSteps}
               data-ml-add-step={kind}
             >
               <Icon size={15} aria-hidden="true" />

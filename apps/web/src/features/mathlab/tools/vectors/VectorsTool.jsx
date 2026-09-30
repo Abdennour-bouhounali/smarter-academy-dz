@@ -20,6 +20,7 @@ import {
 import { removeObjects } from './vectorScene.js';
 import { getExperiment } from './experiments.js';
 import { useCompactCharts } from '../probabilityStats/useMediaQuery.js';
+import { clampToFeatures, vectorsFeatures } from './scope.js';
 
 /** Le délai entre un changement et sa remise à la coquille (qui attend encore avant d'enregistrer). */
 const SERIALIZE_MS = 300;
@@ -38,11 +39,13 @@ const SERIALIZE_MS = 300;
  *     scène courante (`replaceScene`) : « تراجع » défait le geste entier ;
  *   - un ACTE (créer, combiner, supprimer) empile un pas (`pushScene`).
  */
-export default function VectorsTool({ initialData, onChange, onReady }) {
+export default function VectorsTool({ initialData, onChange, onReady, capabilities = null }) {
   const { t } = useTranslation('mathlab');
-  const [data, setData] = useState(() => (initialData && Object.keys(initialData).length
+  // Le مخبر (scope.js) : au collège, ni k·u, ni v = k·u, ni produit scalaire.
+  const features = useMemo(() => vectorsFeatures(capabilities), [capabilities]);
+  const [data, setData] = useState(() => clampToFeatures(initialData && Object.keys(initialData).length
     ? normalizeVectorsData(initialData)
-    : createVectorsData()));
+    : createVectorsData(), features));
   const [panelOpen, setPanelOpen] = useState(true);
   const [announcement, setAnnouncement] = useState('');
   const compact = useCompactCharts();
@@ -278,13 +281,14 @@ export default function VectorsTool({ initialData, onChange, onReady }) {
   }, [commit]);
 
   const setAnalysis = useCallback((analysis) => {
+    if (!features.analysis.includes(analysis)) return;
     commit((current) => ({ ...current, settings: { ...current.settings, analysis } }));
-  }, [commit]);
+  }, [commit, features]);
 
   /** Une expérience (§27) : une scène toute gréée, empilée comme un acte — donc annulable. */
   const openExperiment = useCallback((id) => {
     const experiment = getExperiment(id);
-    if (!experiment) return;
+    if (!experiment || !features.experiments.some((entry) => entry.id === id)) return;
     const built = experiment.build();
     commit((current) => {
       const next = pushScene(current, built.scene);
@@ -298,7 +302,7 @@ export default function VectorsTool({ initialData, onChange, onReady }) {
       };
     });
     setAnnouncement(t('tools.vectors.announceExperiment', { name: t(experiment.labelKey) }));
-  }, [commit, t]);
+  }, [commit, t, features]);
 
   const changeViewport = useCallback((viewport) => {
     commit((current) => ({ ...current, viewport }));
@@ -442,6 +446,7 @@ export default function VectorsTool({ initialData, onChange, onReady }) {
             points={selectedPoints}
             relations={relations}
             settings={data.settings}
+            showFactor={features.factor}
             onRemoveVector={removeVector}
             onRemovePoint={removePoint}
             onScalarChange={changeScalar}
@@ -469,6 +474,7 @@ export default function VectorsTool({ initialData, onChange, onReady }) {
             onExperiment={openExperiment}
             onExplorerComponent={changeExplorerComponent}
             onToggleExplorer={toggleExplorer}
+            features={features}
           />
         </div>
       </div>

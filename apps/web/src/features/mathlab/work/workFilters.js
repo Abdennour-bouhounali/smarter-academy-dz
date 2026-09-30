@@ -20,7 +20,10 @@ export const WORK_SORTS = Object.freeze(['updated', 'created', 'oldest', 'titleA
 /** Les fenêtres de temps. `all` ne filtre rien. */
 export const WORK_PERIODS = Object.freeze(['all', 'today', 'week', 'month']);
 
-export const DEFAULT_WORK_FILTERS = Object.freeze({ tool: 'all', period: 'all', favorite: false });
+/** Les مخابر (labScope.js). `all` ne filtre rien. */
+export const WORK_LABS = Object.freeze(['all', 'moyen', 'secondaire']);
+
+export const DEFAULT_WORK_FILTERS = Object.freeze({ lab: 'all', tool: 'all', period: 'all', favorite: false });
 
 /**
  * Normalise un texte arabe ou français pour une recherche INDULGENTE.
@@ -103,14 +106,20 @@ function timeOf(work) {
  * changer le tri ne touche pas aux filtres, et chercher ne les efface pas.
  *
  * @param {object[]} works
- * @param {{q?: string, filters?: object, sort?: string, toolLabel?: Function, now?: number}} options
+ * `labOf(work)` rend le مخبر d'un travail (labScope.workLabScope) ; sans
+ * lui, seul le résumé est lu.
+ *
+ * @param {{q?: string, filters?: object, sort?: string, toolLabel?: Function, labOf?: Function, now?: number}} options
  */
-export function selectWorks(works, { q = '', filters = DEFAULT_WORK_FILTERS, sort = 'updated', toolLabel, now = Date.now() } = {}) {
+export function selectWorks(works, { q = '', filters = DEFAULT_WORK_FILTERS, sort = 'updated', toolLabel, labOf, now = Date.now() } = {}) {
   const needle = normalizeSearchText(q);
   const since = periodStart(filters?.period, now);
   const wantedTool = filters?.tool && filters.tool !== 'all' ? filters.tool : null;
+  const wantedLab = filters?.lab && filters.lab !== 'all' ? filters.lab : null;
+  const readLab = labOf ?? ((work) => work?.summary?.scope ?? null);
 
   const kept = (Array.isArray(works) ? works : []).filter((work) => {
+    if (wantedLab && readLab(work) !== wantedLab) return false;
     if (wantedTool && work?.tool !== wantedTool) return false;
     if (filters?.favorite && work?.isFavorite !== true) return false;
     if (since != null && timeOf(work) < since) return false;
@@ -152,6 +161,7 @@ function createdOf(work) {
 /** Combien de filtres sont actifs — la pastille du bouton « الفلاتر ». */
 export function activeWorkFilterCount(filters) {
   let count = 0;
+  if (filters?.lab && filters.lab !== 'all') count += 1;
   if (filters?.tool && filters.tool !== 'all') count += 1;
   if (filters?.period && filters.period !== 'all') count += 1;
   if (filters?.favorite) count += 1;

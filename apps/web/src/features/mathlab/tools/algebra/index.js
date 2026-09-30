@@ -1,6 +1,7 @@
 import { Sigma } from 'lucide-react';
 import { defineMathLabTool } from '../../toolContract.js';
 import { ALGEBRA_SCHEMA_VERSION, createAlgebraData } from './algebraState.js';
+import { ALGEBRA_CAPABILITIES, ALGEBRA_SCOPES } from './scope.js';
 import { summarizeAlgebra } from './summarize.js';
 
 /**
@@ -34,6 +35,9 @@ export const algebraTool = defineMathLabTool({
   defaultTitleKey: 'tools.algebra.defaultTitle',
   icon: Sigma,
   schemaVersion: ALGEBRA_SCHEMA_VERSION,
+  // Les deux مخابر — au collège : facteur commun et identités, fonctions affines (scope.js).
+  scopes: ALGEBRA_SCOPES,
+  capabilities: ALGEBRA_CAPABILITIES,
   createInitialData: createAlgebraData,
   summarize: summarizeAlgebra,
   load: () => import('./AlgebraTool.jsx'),

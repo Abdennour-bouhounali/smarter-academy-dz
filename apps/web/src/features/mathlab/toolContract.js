@@ -1,3 +1,5 @@
+import { scopeDeclarationError } from './labScope.js';
+
 /**
  * Le CONTRAT d'un instrument du مختبر الرياضيات (Math Lab).
  *
@@ -30,9 +32,21 @@
  * @property {number} schemaVersion
  *   La version du FORMAT de `data`. L'outil doit savoir rouvrir toute
  *   version antérieure qu'il a publiée ; le serveur ne l'interprète pas.
- * @property {(seed?: unknown) => object} createInitialData
+ * @property {(seed?: unknown, context?: {scope: 'moyen'|'secondaire'|null, capabilities: object|null}) => object} createInitialData
  *   L'état d'un document neuf — vide, ou construit depuis l'amorce qu'une
- *   leçon transmet (openMathLab.js).
+ *   leçon transmet (openMathLab.js). Le second argument dit dans quel مخبر il
+ *   naît : un instrument partagé peut y choisir un exemple d'ouverture à la
+ *   portée de ce مخبر (le جبر n'ouvre pas le collège sur `x² + 5x + 6`).
+ * @property {'common' | Array<'moyen'|'secondaire'>} scopes
+ *   OBLIGATOIRE. Où l'instrument apparaît : `'common'` pour un outil de tous,
+ *   hors مخبر (la سبّورة) ; sinon la liste des مخابر — مخبر المتوسط
+ *   (`moyen`), مخبر الثانوي (`secondaire`) — dans l'ordre de préférence.
+ *   Voir labScope.js et MATH_LAB.md §2.1.
+ * @property {{moyen?: object|null, secondaire?: object|null}} [capabilities]
+ *   Ce que l'instrument EXPOSE dans chaque مخبر — ses sections, ses options.
+ *   La forme appartient à l'outil (déclarée dans `tools/<nom>/scope.js`) ;
+ *   un مخبر absent ou `null` veut dire « tout ». Un seul instrument, un seul
+ *   composant, une seule route : c'est ce qu'il montre qui change.
  * @property {() => Promise<{default: import('react').ComponentType<MathLabToolProps>}>} load
  *   L'import PARESSEUX du composant : un instrument lourd (la سبّورة embarque
  *   Excalidraw) ne pèse sur aucune autre page.
@@ -81,6 +95,12 @@
  * @property {{files: MathLabAttachment[], loadBlob: (file: MathLabAttachment) => Promise<Blob>}} [attachments]
  *   Les FICHIERS du document (serveur), pour un outil qui déclare la
  *   capacité `attachments` : la liste à jour, et de quoi lire les octets.
+ * @property {'moyen'|'secondaire'|null} [scope]
+ *   Le مخبر où l'instrument est ouvert (null pour un instrument commun).
+ * @property {object|null} [capabilities]
+ *   `tool.capabilities[scope]` — ce que l'instrument doit montrer ici. `null`
+ *   = tout. L'outil FILTRE ses sections avec, et ramène un état enregistré
+ *   hors de portée (un ancien document) sur ce que le مخبر montre.
  * @property {(notice: {tone: 'success'|'error', key: string, params?: object} | null) => void} [onNotice]
  *   Un mot pour l'élève, affiché par la coquille sous la barre (clé i18n du
  *   namespace `mathlab`).
@@ -129,7 +149,7 @@
  *   Le fichier vient d'être supprimé : ce qui le montrait disparaît.
  */
 
-const REQUIRED = ['id', 'slug', 'labelKey', 'descriptionKey', 'newLabelKey', 'defaultTitleKey', 'icon', 'schemaVersion', 'createInitialData', 'load'];
+const REQUIRED = ['id', 'slug', 'labelKey', 'descriptionKey', 'newLabelKey', 'defaultTitleKey', 'icon', 'schemaVersion', 'createInitialData', 'load', 'scopes'];
 
 /**
  * Valide et fige la définition d'un instrument. Une définition incomplète
@@ -164,6 +184,8 @@ export function defineMathLabTool(definition) {
   if (definition.summarize !== undefined && typeof definition.summarize !== 'function') {
     throw new Error(`[mathlab] summarize doit être une fonction pour « ${definition.id} »`);
   }
+  const scopeError = scopeDeclarationError(definition);
+  if (scopeError) throw new Error(`[mathlab] « ${definition.id} » : ${scopeError}`);
 
   return Object.freeze({ ...definition });
 }

@@ -11,6 +11,8 @@
  * — ouvrir la سبّورة et repartir ne laisse aucune ligne vide.
  */
 
+import { withLabScope } from './labScope.js';
+
 export const MATH_LAB_BASE_PATH = '/espace/atelier';
 
 /** Le segment du مختبر dans un espace de travail : `/espace/atelier`, `/enseignant/atelier`. */
@@ -33,26 +35,30 @@ export const MATH_LAB_AUTOSAVE_MS = 2500;
  *
  * @param {{slug: string}} tool
  * @param {number | string | null} [documentId]
+ * @param {string} [root]    la racine du مختبر dans l'espace du lecteur
+ * @param {string|null} [scope]  le مخبر (`?lab=`), pour un instrument partagé
  */
-export function mathLabToolPath(tool, documentId = null, root = MATH_LAB_BASE_PATH) {
+export function mathLabToolPath(tool, documentId = null, root = MATH_LAB_BASE_PATH, scope = null) {
   const base = `${root}/${tool.slug}`;
 
-  return documentId == null ? base : `${base}/${documentId}`;
+  return withLabScope(documentId == null ? base : `${base}/${documentId}`, scope);
 }
 
 /**
  * Un document neuf, jamais enregistré.
  *
  * @param {import('./toolContract.js').MathLabTool} tool
- * @param {{title: string, seed?: unknown}} options
+ * @param {{title: string, seed?: unknown, scope?: string|null, capabilities?: object|null}} options
+ *   `scope` / `capabilities` : le مخبر où il naît (labScope.js) — l'instrument
+ *   peut y choisir un état d'ouverture à sa portée.
  */
-export function newMathLabDocument(tool, { title, seed }) {
+export function newMathLabDocument(tool, { title, seed, scope = null, capabilities = null }) {
   return {
     id: null,
     tool: tool.id,
     title,
     schemaVersion: tool.schemaVersion,
-    data: tool.createInitialData(seed),
+    data: tool.createInitialData(seed, { scope, capabilities }),
     createdAt: null,
     updatedAt: null,
   };

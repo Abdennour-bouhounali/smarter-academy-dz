@@ -23,6 +23,7 @@ import { MAX_PRACTICE_LEVEL } from './logicState.js';
  */
 export default function PracticePanel({
   challenge, level, solved, seen, onLevel, onCheck, onHint, onNext, onClose, onShowInLab,
+  maxLevel = MAX_PRACTICE_LEVEL,
 }) {
   const { t } = useTranslation('mathlab');
   const [answer, setAnswer] = useState('');
@@ -89,7 +90,7 @@ export default function PracticePanel({
           onChange={(event) => onLevel?.(Number(event.target.value))}
           data-ml-lg-practice-level
         >
-          {Array.from({ length: MAX_PRACTICE_LEVEL }, (_, i) => i + 1).map((value) => (
+          {Array.from({ length: maxLevel }, (_, i) => i + 1).map((value) => (
             <option key={value} value={value}>{`${value} — ${t(`tools.logic.practice.levels.${value}`)}`}</option>
           ))}
         </select>

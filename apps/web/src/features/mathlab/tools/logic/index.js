@@ -1,6 +1,7 @@
 import { GitBranch } from 'lucide-react';
 import { defineMathLabTool } from '../../toolContract.js';
 import { LOGIC_SCHEMA_VERSION, createLogicData } from './logicState.js';
+import { LOGIC_CAPABILITIES, LOGIC_SCOPES } from './scope.js';
 import { summarizeLogic } from './summarize.js';
 
 /**
@@ -44,6 +45,9 @@ export const logicTool = defineMathLabTool({
   defaultTitleKey: 'tools.logic.defaultTitle',
   icon: GitBranch,
   schemaVersion: LOGIC_SCHEMA_VERSION,
+  // Les deux مخابر — au collège : énoncé, réciproque, contre-exemple, erreurs (scope.js).
+  scopes: LOGIC_SCOPES,
+  capabilities: LOGIC_CAPABILITIES,
   createInitialData: createLogicData,
   summarize: summarizeLogic,
   load: () => import('./LogicLabTool.jsx'),

@@ -22,7 +22,10 @@ import { quadrantSigns, normalizeDegrees } from './trigMath.js';
  */
 export default function TrigInspector({
   state, valueMode, unit, highlight, identityPanel, tanPanel, onHighlight, children = null,
+  readings = null,
 }) {
+  // Le مخبر (scope.js) : au collège, ni radians, ni point du cercle, ni quadrant.
+  const show = { radians: true, point: true, quadrant: true, signTable: true, ...(readings ?? {}) };
   const { t } = useTranslation('mathlab');
   const { degrees, normalized, sin, cos, tan, point, signs, identity, quadrant, axis } = state;
 
@@ -38,9 +41,11 @@ export default function TrigInspector({
         <span className="sa-ml-trig__theta-main" dir="ltr">
           {unit === 'rad' ? formatRadians(degrees) : formatDegrees(degrees, 1)}
         </span>
+        {show.radians && (
         <span className="sa-ml-trig__theta-alt" dir="ltr">
           {unit === 'rad' ? formatDegrees(degrees, 1) : formatRadians(degrees)}
         </span>
+        )}
       </div>
 
       {/* L'angle équivalent, seulement quand il diffère (§14, §15). */}
@@ -57,12 +62,14 @@ export default function TrigInspector({
       )}
 
       {/* ── Le point (§31) ───────────────────────────────────────────── */}
+      {show.point && (
       <div className="sa-ml-trig__row">
         <span className="sa-ml-trig__row-label">{t('tools.trigonometry.point')}</span>
         <span className="sa-ml-trig__row-value" dir="ltr" data-ml-trig-point>
           {`(${cosReading.text} ; ${sinReading.text})`}
         </span>
       </div>
+      )}
 
       {/* ── Les trois rapports, cliquables : SOH-CAH-TOA (§10) ────────── */}
       <div className="sa-ml-trig__ratios" role="group" aria-label={t('tools.trigonometry.ratiosHeading')}>
@@ -96,6 +103,7 @@ export default function TrigInspector({
       </div>
 
       {/* ── Le quadrant et ses signes (§5, §20) ──────────────────────── */}
+      {show.quadrant && (
       <div className="sa-ml-trig__quadbox" data-ml-trig-quadrant-readout>
         <span className="sa-ml-trig__row-label">{t('tools.trigonometry.quadrantLabel')}</span>
         <strong className="sa-ml-trig__quadname">{t(quadrantKey({ quadrant, axis }))}</strong>
@@ -110,6 +118,7 @@ export default function TrigInspector({
           ))}
         </span>
       </div>
+      )}
 
       {/* « D'un seul regard » (§3.5) : ce que l'élève a déclenché (la
           résolution du triangle) vient JUSTE sous les rapports, à côté du
@@ -117,6 +126,7 @@ export default function TrigInspector({
       {children}
 
       {/* ── La table des signes, avec la ligne courante (§20) ─────────── */}
+      {show.signTable && (
       <LabPanel id="trigonometry.inspector.signs" title={t('tools.trigonometry.signTableCaption')} className="sa-ml-trig__labpanel">
       <table className="sa-ml-trig__signtable" data-ml-trig-signtable>
         <caption className="sa-ml-trig__caption">{t('tools.trigonometry.signTableCaption')}</caption>
@@ -156,6 +166,7 @@ export default function TrigInspector({
         </tbody>
       </table>
       </LabPanel>
+      )}
 
       {/* ── tan = sin / cos (§23) ────────────────────────────────────── */}
       {tanPanel && (

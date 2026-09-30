@@ -38,7 +38,10 @@ describe('document du مختبر', () => {
     expect(source).toMatch(/mathLabBasePath\(useWorkspaceBase\(\)\)/);
     // …et l'adresse réécrite l'utilise : `mathLabToolPath(tool, id)` à deux
     // arguments retomberait sur `/espace/atelier`.
-    expect(source).toMatch(/navigate\(mathLabToolPath\(tool, saved\.id, labRoot\)/);
+    expect(source).toMatch(/navigate\(mathLabToolPath\(tool, saved\.id, labRoot[,)]/);
+    // …et garde le مخبر (`?lab=`) : un document né dans مخبر المتوسط n'est
+    // pas renvoyé sans lui (labScope.js).
+    expect(source).toMatch(/navigate\(mathLabToolPath\(tool, saved\.id, labRoot, doc\.scope\)/);
   });
 
   it('la racine suit l’espace de travail, `/espace` par défaut', () => {

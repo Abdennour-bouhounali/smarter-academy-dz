@@ -45,6 +45,10 @@ export const measurementTool = defineMathLabTool({
   defaultTitleKey: 'tools.measurement.defaultTitle',
   icon: Ruler,
   schemaVersion: MEASUREMENT_SCHEMA_VERSION,
+  // Les deux مخابر : aires, volumes, π, Pythagore et la somme des angles
+  // s'initialisent au collège et se RÉUTILISENT au lycée (programme 2025 :
+  // initialisée → réutilisée → approfondie). Rien n'y est à retirer.
+  scopes: ['moyen', 'secondaire'],
   createInitialData: createMeasurementData,
   summarize: summarizeMeasurement,
   load: () => import('./MeasurementTool.jsx'),

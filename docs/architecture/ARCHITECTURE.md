@@ -17,7 +17,9 @@
 > - `ProtectedRoute` guards two areas, `/admin` and `/espace` — not one.
 > - The student space also carries the **Math Lab** (`features/mathlab/`,
 >   `/espace/atelier`, table `math_lab_documents`): a standalone workspace of
->   instruments outside the lesson engine. See `MATH_LAB.md`.
+>   instruments outside the lesson engine — السبّورة for everyone, then مخبر
+  المتوسط and مخبر الثانوي (`?lab=`), one registry with per-lab capabilities.
+  See `MATH_LAB.md` §2.1.
 > - The `admin` Gate guards the whole `/api/v1/admin/*` group, alongside the
 >   `account.active` and `email.verified` middlewares; it is no longer there
 >   just for `GET /contact`.

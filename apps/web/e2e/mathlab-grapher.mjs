@@ -133,7 +133,7 @@ async function drag(page, from, to, steps = 12) {
   await page.mouse.up();
 }
 
-async function openGrapher(page, path = '/espace/atelier/grapheur') {
+async function openGrapher(page, path = '/espace/atelier/grapheur?lab=secondaire') {
   await page.goto(`${BASE}${path}`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-grapher] [data-ml-plane] svg', { timeout: 30000 });
 }
@@ -146,12 +146,13 @@ try {
   record('connexion élève', !!authState);
 
   // ── 1. L'accueil ─────────────────────────────────────────────────────
-  await page.goto(`${BASE}/espace/atelier`, { waitUntil: 'networkidle' });
+  // Le راسم vit dans les deux مخابر ; ce scénario (المماس compris) est celui
+  // du ثانوي — au collège, المماس n'existe pas (mathlab-labs-scope.mjs).
+  await page.goto(`${BASE}/espace/atelier?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-home]', { timeout: 20000 });
-  record('accueil : la carte « راسم الدوال »', await page.locator('[data-ml-tool-card="functionGrapher"]').count() === 1 && (await page.locator('[data-ml-tool-card="functionGrapher"]').innerText()).includes('راسم الدوال'));
-  record('accueil : « الدوال والمنحنيات » n’est plus annoncé', !(await page.locator('[data-ml-planned]').innerText()).includes('الدوال والمنحنيات'));
+  record('مخبر الثانوي : la carte « راسم الدوال »', await page.locator('[data-ml-tool-card="functionGrapher"]').count() === 1 && (await page.locator('[data-ml-tool-card="functionGrapher"]').innerText()).includes('راسم الدوال'));
   await page.click('[data-ml-tool-card="functionGrapher"]');
-  await page.waitForURL(/\/espace\/atelier\/grapheur$/, { timeout: 15000 });
+  await page.waitForURL(/\/espace\/atelier\/grapheur\?lab=secondaire$/, { timeout: 15000 });
   await page.waitForSelector('[data-ml-grapher] [data-ml-plane] svg', { timeout: 30000 });
 
   // ── 2. Première visite ───────────────────────────────────────────────
@@ -172,7 +173,7 @@ try {
   await page.keyboard.type('2x+3');
   await sleep(400);
   record('saisie : « 2x+3 » tapé dans MathLive', (await fieldValue(page, 'f')) === '2x+3', await fieldValue(page, 'f'));
-  await page.waitForURL(/\/espace\/atelier\/grapheur\/\d+$/, { timeout: 12000 });
+  await page.waitForURL(/\/espace\/atelier\/grapheur\/\d+(?:\?lab=\w+)?$/, { timeout: 12000 });
   const docId = docIdOf(page.url());
   created.add(docId);
   record('persistance : le document naît au premier changement, URL réécrite', docId != null);
@@ -488,7 +489,7 @@ try {
 try {
   const anon = await browser.newContext({ viewport: { width: 1280, height: 800 }, locale: 'ar-DZ' });
   const p = await anon.newPage();
-  await p.goto(`${BASE}/espace/atelier/grapheur`, { waitUntil: 'networkidle' });
+  await p.goto(`${BASE}/espace/atelier/grapheur?lab=secondaire`, { waitUntil: 'networkidle' });
   record('sécurité : visiteur → connexion', /\/login/.test(p.url()));
   await anon.close();
 } catch (e) {
@@ -528,7 +529,7 @@ for (const [label, width, height, touch] of [['tablette', 1024, 768, true], ['mo
     await p.touchscreen.tap(target.x, target.y);
     await sleep(300);
     record(`${label} : un tap sur f pose A`, (await p.locator('[data-ml-point]').count()) === 1);
-    await p.waitForURL(/\/espace\/atelier\/grapheur\/\d+$/, { timeout: 12000 });
+    await p.waitForURL(/\/espace\/atelier\/grapheur\/\d+(?:\?lab=\w+)?$/, { timeout: 12000 });
     const id = docIdOf(p.url());
     created.add(id);
     await waitSaved(p);

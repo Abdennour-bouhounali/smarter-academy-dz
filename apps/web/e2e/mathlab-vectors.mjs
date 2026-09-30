@@ -127,15 +127,15 @@ const page = await context.newPage();
 attach(page);
 
 // ── L'accueil du مختبر ────────────────────────────────────────────────────
-await page.goto(`${BASE}/espace/atelier`, { waitUntil: 'networkidle' });
+await page.goto(`${BASE}/espace/atelier?lab=secondaire`, { waitUntil: 'networkidle' });
 await sleep(400);
-const card = page.locator('a[href*="/atelier/vecteurs"], [data-ml-tool-card="vectors"]').first();
+const card = page.locator('a[href*="/atelier/vecteurs?lab=secondaire"], [data-ml-tool-card="vectors"]').first();
 record('accueil : la carte du مختبر الأشعة est ouvrable', await card.count() > 0);
 const stillAnnounced = await page.locator('text=الأشعة').locator('xpath=ancestor::*[contains(@class,"disabled") or @aria-disabled="true"]').count();
 record('accueil : « الأشعة » n’est plus annoncé « قريبًا »', stillAnnounced === 0);
 
 // ── La première visite ────────────────────────────────────────────────────
-await page.goto(`${BASE}/espace/atelier/vecteurs`, { waitUntil: 'networkidle' });
+await page.goto(`${BASE}/espace/atelier/vecteurs?lab=secondaire`, { waitUntil: 'networkidle' });
 await page.waitForSelector('[data-ml-vectors]', { timeout: 20000 });
 await sleep(800);
 await page.screenshot({ path: `${OUT}/01-ouverture.png` });
@@ -355,7 +355,7 @@ for (const [label, viewport] of [['tablette', { width: 834, height: 1112 }], ['m
   const c = await authedContext({ viewport, hasTouch: true, isMobile: label === 'mobile' });
   const p2 = await c.newPage();
   attach(p2);
-  await p2.goto(`${BASE}/espace/atelier/vecteurs`, { waitUntil: 'networkidle' });
+  await p2.goto(`${BASE}/espace/atelier/vecteurs?lab=secondaire`, { waitUntil: 'networkidle' });
   await p2.waitForSelector('[data-ml-vectors]', { timeout: 20000 });
   await sleep(800);
 
@@ -399,7 +399,7 @@ for (const [label, viewport] of [['tablette', { width: 834, height: 1112 }], ['m
 // ── Le visiteur non connecté ──────────────────────────────────────────────
 const anon = await browser.newContext();
 const anonPage = await anon.newPage();
-await anonPage.goto(`${BASE}/espace/atelier/vecteurs`, { waitUntil: 'networkidle' });
+await anonPage.goto(`${BASE}/espace/atelier/vecteurs?lab=secondaire`, { waitUntil: 'networkidle' });
 await sleep(600);
 record('sécurité : un visiteur non connecté est renvoyé vers /login',
   /\/login/.test(anonPage.url()), anonPage.url());

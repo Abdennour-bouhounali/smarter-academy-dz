@@ -1,6 +1,7 @@
 import { MoveUpRight } from 'lucide-react';
 import { defineMathLabTool } from '../../toolContract.js';
 import { VECTORS_SCHEMA_VERSION, createVectorsData } from './vectorState.js';
+import { VECTORS_CAPABILITIES, VECTORS_SCOPES } from './scope.js';
 import { summarizeVectors } from './summarize.js';
 
 /**
@@ -34,6 +35,9 @@ export const vectorsTool = defineMathLabTool({
   defaultTitleKey: 'tools.vectors.defaultTitle',
   icon: MoveUpRight,
   schemaVersion: VECTORS_SCHEMA_VERSION,
+  // Les deux مخابر — au collège : somme, opposé, انسحاب ; sans k·u ni produit scalaire (scope.js).
+  scopes: VECTORS_SCOPES,
+  capabilities: VECTORS_CAPABILITIES,
   createInitialData: createVectorsData,
   summarize: summarizeVectors,
   load: () => import('./VectorsTool.jsx'),

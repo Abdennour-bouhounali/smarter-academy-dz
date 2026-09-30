@@ -21,8 +21,13 @@ import { IMPLICATION_FORMS, setImplication, setImplicationForm, setImplicationX,
  *   coïncide colonne pour colonne, la réciproque non. Rien n'est affirmé ;
  *   tout se lit.
  */
-export default function ImplicationArea({ data, onChange }) {
+export default function ImplicationArea({ data, onChange, features = null }) {
   const { t } = useTranslation('mathlab');
+  // Le مخبر (scope.js) : au collège, la propriété et sa réciproque seulement,
+  // sans diagramme d'ensembles ni table de vérité.
+  const forms = features?.implicationForms ?? IMPLICATION_FORMS;
+  const showSets = features?.implicationSets !== false;
+  const showTable = features?.implicationTable !== false;
   const state = data.implication;
   const preset = findPreset(IMPLICATIONS, state.id);
   const domain = preset.domain;
@@ -65,7 +70,7 @@ export default function ImplicationArea({ data, onChange }) {
         </Notation>
 
         <div className="sa-ml-lg__actions" role="group" aria-label={t('tools.logic.implication.formLabel')}>
-          {IMPLICATION_FORMS.map((form) => (
+          {forms.map((form) => (
             <button
               key={form}
               type="button"
@@ -160,6 +165,7 @@ export default function ImplicationArea({ data, onChange }) {
       </section>
 
       {/* ── §14 — l'implication comme inclusion ─────────────────────────── */}
+      {showSets && (
       <section className="sa-ml-lg__card" data-ml-lg-impl-sets>
         <div className="sa-ml-lg__actions">
           <button
@@ -190,8 +196,10 @@ export default function ImplicationArea({ data, onChange }) {
           </>
         )}
       </section>
+      )}
 
       {/* ── §15, §16 — les quatre formes, colonne contre colonne ────────── */}
+      {showTable && (
       <section className="sa-ml-lg__card" data-ml-lg-impl-table>
         <h3 className="sa-ml-lg__sectionTitle">{t('tools.logic.connectors.tableCaption')}</h3>
         <TruthTable
@@ -202,6 +210,7 @@ export default function ImplicationArea({ data, onChange }) {
         />
         <p className="sa-ml-lg__tableNote">{t('tools.logic.implication.contrapositiveSame')}</p>
       </section>
+      )}
     </>
   );
 }

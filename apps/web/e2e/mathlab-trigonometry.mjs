@@ -137,17 +137,19 @@ const page = await context.newPage();
 attach(page);
 
 // ── L'accueil ─────────────────────────────────────────────────────────────
-await page.goto(`${BASE}/espace/atelier`, { waitUntil: 'networkidle' });
+await page.goto(`${BASE}/espace/atelier?lab=secondaire`, { waitUntil: 'networkidle' });
 await sleep(500);
-const card = page.locator('a[href*="/atelier/trigonometrie"]').first();
+const card = page.locator('a[href*="/atelier/trigonometrie?lab=secondaire"]').first();
 record('accueil : la carte du مختبر المثلثات est ouvrable', await card.count() > 0);
-const plannedChips = await page.locator('text=الدائرة المثلثية').count();
+// La description de مخبر الثانوي NOMME la دائرة المثلثية (c'est son contenu) :
+// ce qu'on cherche est une PUCE « قريبًا », donc dans la liste des annoncés.
+const plannedChips = await page.locator('[data-ml-planned]').filter({ hasText: 'الدائرة المثلثية' }).count();
 record('accueil : plus de puce « قريبًا » pour la trigonométrie', plannedChips === 0,
   plannedChips ? `${plannedChips} occurrence(s) de l’ancien nom` : '');
 await page.screenshot({ path: `${OUT}/00-accueil.png` });
 
 // ── La première visite : le TRIANGLE (§9, programme 4AM) ──────────────────
-await page.goto(`${BASE}/espace/atelier/trigonometrie`, { waitUntil: 'networkidle' });
+await page.goto(`${BASE}/espace/atelier/trigonometrie?lab=secondaire`, { waitUntil: 'networkidle' });
 await page.waitForSelector('[data-ml-trigonometry]', { timeout: 20000 });
 await sleep(900);
 await page.screenshot({ path: `${OUT}/01-ouverture.png` });
@@ -530,7 +532,7 @@ record('a11y : la ligne courante est annoncée, pas seulement colorée (§37)',
 const reducedContext = await authedContext({ viewport: { width: 1360, height: 900 }, reducedMotion: 'reduce' });
 const reducedPage = await reducedContext.newPage();
 attach(reducedPage);
-await reducedPage.goto(`${BASE}/espace/atelier/trigonometrie`, { waitUntil: 'networkidle' });
+await reducedPage.goto(`${BASE}/espace/atelier/trigonometrie?lab=secondaire`, { waitUntil: 'networkidle' });
 await reducedPage.waitForSelector('[data-ml-trigonometry]', { timeout: 20000 });
 await sleep(800);
 record('mouvement réduit : la note explicative est affichée (§38)',
@@ -554,7 +556,7 @@ for (const [name, viewport] of [
   const c = await authedContext({ viewport, hasTouch: true, isMobile: name !== 'tablette' });
   const p = await c.newPage();
   attach(p);
-  await p.goto(`${BASE}/espace/atelier/trigonometrie`, { waitUntil: 'networkidle' });
+  await p.goto(`${BASE}/espace/atelier/trigonometrie?lab=secondaire`, { waitUntil: 'networkidle' });
   await p.waitForSelector('[data-ml-trigonometry]', { timeout: 20000 });
   await sleep(900);
   await p.screenshot({ path: `${OUT}/19-${name}.png`, fullPage: false });
@@ -603,7 +605,7 @@ for (const [name, viewport] of [
 // ── Le visiteur ───────────────────────────────────────────────────────────
 const anon = await browser.newContext();
 const anonPage = await anon.newPage();
-await anonPage.goto(`${BASE}/espace/atelier/trigonometrie`, { waitUntil: 'networkidle' });
+await anonPage.goto(`${BASE}/espace/atelier/trigonometrie?lab=secondaire`, { waitUntil: 'networkidle' });
 await sleep(700);
 record('visiteur : redirigé vers la connexion', /\/login/.test(anonPage.url()), anonPage.url());
 await anon.close();

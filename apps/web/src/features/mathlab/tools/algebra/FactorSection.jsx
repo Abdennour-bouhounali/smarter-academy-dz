@@ -11,6 +11,7 @@ import { boardProgress } from '../../shared/mathBoard/frames.js';
 import { factorExpression } from './factor.js';
 import { factorFrames } from './factorFrames.js';
 import { FACTOR_EXAMPLES } from './examples.js';
+import { isBeyondMoyenFactorization } from './scope.js';
 
 const math = (value) => `$${value}$`;
 
@@ -26,15 +27,25 @@ const math = (value) => `$${value}$`;
  * s'écrivent — la factorisation au DERNIER frame. La vérification par
  * développement et le مميّز n'apparaissent qu'ensuite. « حلّل خطوة بخطوة »
  * charge la saisie ET démarre ; un exemple ne fait que poser l'énoncé.
+ *
+ * `features` (scope.js) : dans مخبر المتوسط, seuls le facteur commun et les
+ * identités remarquables sont déroulés. Une expression qui exige « مجموع
+ * وجداء », la méthode « ac » ou le مميّز n'est pas déroulée : une phrase dit
+ * que ces méthodes sont celles du ثانوي. Le pli du مميّز n'existe pas.
  */
-export default function FactorSection({ value, onChange, announce }) {
+export default function FactorSection({ value, onChange, announce, features = null }) {
   const { t } = useTranslation('mathlab');
+  const examples = features?.examples ?? FACTOR_EXAMPLES;
+  const moyenOnly = features?.methods === 'moyen';
+  const showDiscriminant = features?.discriminant !== false;
+  const rules = features?.rules ?? ['commonFactorRule', 'diffSquares', 'perfectSquareSum', 'perfectSquareDiff', 'sumProductRule'];
   const [draft, setDraft] = useState(value.source);
   const [exampleId, setExampleId] = useState(null);
   const [error, setError] = useState(null);
 
   const result = useMemo(() => factorExpression(value.source), [value.source]);
-  const frames = useMemo(() => (result.ok ? factorFrames(result) : []), [result]);
+  const beyondLab = moyenOnly && isBeyondMoyenFactorization(result);
+  const frames = useMemo(() => (result.ok && !beyondLab ? factorFrames(result) : []), [result, beyondLab]);
   // Le raisonnement se DÉROULE geste par geste ; la vérification et la
   // méthode du مميّز n'arrivent qu'après le dernier frame.
   const player = useStepReveal(frames.length, { resetKey: value.source });
@@ -64,19 +75,24 @@ export default function FactorSection({ value, onChange, announce }) {
   }, [draft, run, player]);
 
   const pick = useCallback((id) => {
-    const example = FACTOR_EXAMPLES.find((item) => item.id === id);
+    const example = examples.find((item) => item.id === id);
     if (!example) return;
     setDraft(example.source);
     // Un exemple POSE l'énoncé ; seul le bouton d'action démarre le déroulé.
     if (run(example.source)) setExampleId(id);
     player.rewind();
-  }, [run, player]);
+  }, [run, player, examples]);
 
 
   return (
     <div className="sa-ml-alg__body" data-ml-alg-mode="factor">
       <div className="sa-ml-alg__stage sa-ml-alg__stage--steps">
-        {result.ok ? (
+        {result.ok && beyondLab && (
+          <div className="sa-ml-alg__work" data-ml-alg-factor data-ml-alg-factor-status="beyondLab">
+            <LabMessage tone="info">{t('tools.algebra.factor.beyondLab')}</LabMessage>
+          </div>
+        )}
+        {result.ok && !beyondLab && (
           <div className="sa-ml-alg__work" data-ml-alg-factor data-ml-alg-factor-status={result.status}>
             <StepPlayer player={player} sticky progress={boardProgress(frames, player.cursor)} dataAttr="data-ml-alg-step" {...practice.player} />
             <MathBoard frames={frames} cursor={player.cursor} problem={result.original} label={t('tools.algebra.boardLabel')} dataAttr="data-ml-alg-board" {...practice.board} />
@@ -98,7 +114,7 @@ export default function FactorSection({ value, onChange, announce }) {
               </div>
             )}
 
-            {finished && result.discriminant && (
+            {finished && showDiscriminant && result.discriminant && (
               <LabDisclosure kind="note" title={t('tools.algebra.factor.discriminantTitle')} dataAttr="data-ml-alg-discriminant">
                 <p className="sa-ml-alg__prose">
                   <MathText>{t('tools.algebra.factor.discriminantIntro', { trinomial: math(result.discriminant.trinomial) })}</MathText>
@@ -115,7 +131,8 @@ export default function FactorSection({ value, onChange, announce }) {
               </LabDisclosure>
             )}
           </div>
-        ) : (
+        )}
+        {!result.ok && (
           <LabMessage tone="error">{t(`tools.algebra.exprErrors.${result.error.code}`, { defaultValue: t('tools.algebra.exprErrors.syntax'), symbol: result.error.symbol ?? '' })}</LabMessage>
         )}
       </div>
@@ -136,7 +153,7 @@ export default function FactorSection({ value, onChange, announce }) {
                 spellCheck="false"
                 value={draft}
                 onChange={(event) => { setDraft(event.target.value); setError(null); }}
-                placeholder="x^2 + 5x + 6"
+                placeholder={features?.placeholder ?? 'x^2 + 5x + 6'}
                 aria-invalid={error ? 'true' : undefined}
                 aria-describedby={error ? 'sa-ml-alg-factor-error' : undefined}
                 data-ml-alg-factor-input
@@ -147,19 +164,19 @@ export default function FactorSection({ value, onChange, announce }) {
               </button>
             </form>
             {error && <LabMessage tone="error" id="sa-ml-alg-factor-error">{error}</LabMessage>}
-            <p className="sa-ml-alg__hint">{t('tools.algebra.factor.hint')}</p>
-            <ExamplePicker examples={FACTOR_EXAMPLES} onPick={pick} activeId={exampleId} dataAttr="data-ml-alg-example" />
+            <p className="sa-ml-alg__hint">{t(moyenOnly ? 'tools.algebra.factor.hintMoyen' : 'tools.algebra.factor.hint')}</p>
+            <ExamplePicker examples={examples} onPick={pick} activeId={exampleId} dataAttr="data-ml-alg-example" />
           </section>
 
           <LabDisclosure kind="rule" dataAttr="data-ml-alg-rule">
             <ul className="sa-ml-alg__rules">
-              {['commonFactorRule', 'diffSquares', 'perfectSquareSum', 'perfectSquareDiff', 'sumProductRule'].map((rule) => (
+              {rules.map((rule) => (
                 <li key={rule}><MathText>{t(`tools.algebra.rules.${rule}`)}</MathText></li>
               ))}
             </ul>
           </LabDisclosure>
           <LabDisclosure kind="why">
-            <p className="sa-ml-alg__prose">{t('tools.algebra.factor.why')}</p>
+            <p className="sa-ml-alg__prose">{t(moyenOnly ? 'tools.algebra.factor.whyMoyen' : 'tools.algebra.factor.why')}</p>
           </LabDisclosure>
         </div>
       </div>

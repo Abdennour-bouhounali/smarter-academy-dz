@@ -3,6 +3,7 @@ import {
   Triangle, Square, Minus, Dot, Hexagon, Plus, Trash2, Undo2, Redo2,
 } from 'lucide-react';
 import { PRESETS, EXPERIMENTS, MAX_PATTERN_COPIES } from './practice.js';
+import { displayToggles } from './scope.js';
 
 /**
  * LES COMMANDES : créer une figure (§4, §33), poser un préréglage (§35),
@@ -15,9 +16,16 @@ import { PRESETS, EXPERIMENTS, MAX_PATTERN_COPIES } from './practice.js';
 export default function TransformControls({
   settings, onSettingChange, onAddFigure, onClearFigures, figureCount, maxFigures,
   onPreset, onExperiment, activeExperiment,
-  pattern, onPatternChange, canUndo, canRedo, onUndo, onRedo,
+  pattern, onPatternChange, canUndo, canRedo, onUndo, onRedo, features = null,
 }) {
   const { t } = useTranslation('mathlab');
+  // Le مخبر (scope.js) : ses préréglages, ses expériences, ses réglages.
+  const presets = features?.presets ?? PRESETS;
+  const experiments = features?.experiments ?? EXPERIMENTS;
+  const toggles = features ? displayToggles(features) : [
+    'grid', 'snap', 'showOriginal', 'showIntermediate', 'trails',
+    'showMeasures', 'showAngles', 'labels', 'showInvariants', 'showMatrix',
+  ];
 
   return (
     <div className="sa-ml-tr__controls" data-ml-controls>
@@ -79,7 +87,7 @@ export default function TransformControls({
       <section className="sa-ml-tr__panelsection">
         <h3 className="sa-ml-tr__paneltitle">{t('tools.transformations.presets.title')}</h3>
         <div className="sa-ml-tr__presets">
-          {PRESETS.map((preset) => (
+          {presets.map((preset) => (
             <button
               key={preset.id}
               type="button"
@@ -97,7 +105,7 @@ export default function TransformControls({
       <section className="sa-ml-tr__panelsection">
         <h3 className="sa-ml-tr__paneltitle">{t('tools.transformations.experiments.title')}</h3>
         <ul className="sa-ml-tr__experiments">
-          {EXPERIMENTS.map((experiment) => (
+          {experiments.map((experiment) => (
             <li key={experiment.id}>
               <button
                 type="button"
@@ -140,10 +148,7 @@ export default function TransformControls({
       <section className="sa-ml-tr__panelsection">
         <h3 className="sa-ml-tr__paneltitle">{t('tools.transformations.display.title')}</h3>
         <ul className="sa-ml-tr__toggles">
-          {[
-            'grid', 'snap', 'showOriginal', 'showIntermediate', 'trails',
-            'showMeasures', 'showAngles', 'labels', 'showInvariants', 'showMatrix',
-          ].map((key) => (
+          {toggles.map((key) => (
             <li key={key}>
               <label className="sa-ml-tr__toggle">
                 <input

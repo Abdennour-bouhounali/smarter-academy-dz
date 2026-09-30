@@ -25,6 +25,7 @@ import FrequencyBars from './FrequencyBars.jsx';
 import ConvergenceChart from './ConvergenceChart.jsx';
 import DiceViewer from './DiceViewer.jsx';
 import { useCompactCharts, useReducedMotion } from './useMediaQuery.js';
+import { clampToFeatures, probabilityFeatures } from './scope.js';
 
 /** Le délai entre un changement et sa remise à la coquille (qui attend encore avant d'enregistrer). */
 const SERIALIZE_MS = 300;
@@ -48,9 +49,11 @@ export const WATCH_MAX = 10;
  * Les calculs ne connaissent ni React ni le DOM ; les graphiques ne
  * calculent rien. C'est la même séparation que le grapheur.
  */
-export default function ProbabilityStatsTool({ initialData, onChange, onReady }) {
+export default function ProbabilityStatsTool({ initialData, onChange, onReady, capabilities = null }) {
   const { t } = useTranslation('mathlab');
-  const [data, setData] = useState(() => normalizeProbabilityStatsData(initialData));
+  // Le مخبر (scope.js) : ce que l'instrument montre — tout, au ثانوي.
+  const features = useMemo(() => probabilityFeatures(capabilities), [capabilities]);
+  const [data, setData] = useState(() => clampToFeatures(normalizeProbabilityStatsData(initialData), features));
   const [running, setRunning] = useState(false);
   // La saisie de la série vit à part : elle suit la frappe, l'état du
   // document ne la reçoit qu'au calme revenu.
@@ -274,7 +277,10 @@ export default function ProbabilityStatsTool({ initialData, onChange, onReady })
     commit((current) => (current.dataset === text ? current : { ...current, dataset: text }));
   }, [commit]);
 
-  const changeChart = useCallback((chart) => commit((current) => (current.chart === chart ? current : { ...current, chart })), [commit]);
+  const changeChart = useCallback((chart) => {
+    if (chart !== null && !features.charts.includes(chart)) return;
+    commit((current) => (current.chart === chart ? current : { ...current, chart }));
+  }, [commit, features]);
 
   // ── L'arbre et la loi normale : des transitions pures (probabilityTree.js) ──
   const changeTree = useCallback((updater) => commit((current) => {
@@ -290,10 +296,10 @@ export default function ProbabilityStatsTool({ initialData, onChange, onReady })
   }), [commit]);
 
   const changeMode = useCallback((mode) => {
-    if (!MODES.includes(mode)) return;
+    if (!MODES.includes(mode) || !features.sections.includes(mode)) return;
     stopAnimation();
     commit((current) => (current.mode === mode ? current : { ...current, mode }));
-  }, [commit, stopAnimation]);
+  }, [commit, stopAnimation, features]);
 
   const toggleSetting = useCallback((key) => commit((current) => ({
     ...current, settings: { ...current.settings, [key]: !current.settings[key] },
@@ -334,7 +340,7 @@ export default function ProbabilityStatsTool({ initialData, onChange, onReady })
     { id: 'dataset', icon: BarChart3, label: t('tools.probabilityStats.sections.dataset.label'), description: t('tools.probabilityStats.sections.dataset.description') },
     { id: 'tree', icon: Network, label: t('tools.probabilityStats.sections.tree.label'), description: t('tools.probabilityStats.sections.tree.description') },
     { id: 'normal', icon: AreaChart, label: t('tools.probabilityStats.sections.normal.label'), description: t('tools.probabilityStats.sections.normal.description') },
-  ], [t]);
+  ].filter((section) => features.sections.includes(section.id)), [t, features]);
 
   const trackedIndex = experimentSpec.trackedIndex(params);
   const trackedRow = rows[trackedIndex] ?? null;
@@ -358,6 +364,7 @@ export default function ProbabilityStatsTool({ initialData, onChange, onReady })
         onReplace={replaceDataset}
         onChart={changeChart}
         onToggle={toggleSetting}
+        features={features}
       />
     );
   } else if (data.mode === 'tree') {

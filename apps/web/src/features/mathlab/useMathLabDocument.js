@@ -7,6 +7,10 @@ import {
 } from './mathLabDocument';
 import { useWorkspaceBase } from '../learning/learningViewer';
 import { summarizeDocument } from './toolContract';
+import {
+  attachLabScope, attachScopeToSummary, readRememberedLabScope, resolveToolScope, storedLabScope, stripLabScope,
+  toolCapabilities,
+} from './labScope';
 import { refusalFromError } from '../access/featureAccess';
 import { refreshFeatureAccess, reportRefusal } from '../../hooks/useFeatureAccess';
 
@@ -31,9 +35,17 @@ import { refreshFeatureAccess, reportRefusal } from '../../hooks/useFeatureAcces
  *
  * @param {import('./toolContract.js').MathLabTool} tool
  * @param {number | null} documentId      l'identifiant de l'URL, ou null pour un document neuf
- * @param {{launch: object | null, defaultTitle: string}} options
+ * ── Le مخبر ───────────────────────────────────────────────────────────────
+ * Un instrument partagé s'ouvre dans مخبر المتوسط ou مخبر الثانوي
+ * (labScope.js). Le crochet le RÉSOUT au chargement — le مخبر enregistré dans
+ * le document d'abord, puis celui de l'URL (`requestedScope`), puis le
+ * dernier choisi — et le rend (`scope`). L'outil ne voit jamais la clé
+ * `labScope` de son état : elle est retirée à la lecture et remise à l'envoi,
+ * avec le résumé de « أعمالي ».
+ *
+ * @param {{launch: object | null, defaultTitle: string, requestedScope?: string|null}} options
  */
-export function useMathLabDocument(tool, documentId, { launch, defaultTitle }) {
+export function useMathLabDocument(tool, documentId, { launch, defaultTitle, requestedScope = null }) {
   const { token } = useContext(AuthContext);
   const navigate = useNavigate();
   /**
@@ -53,7 +65,7 @@ export function useMathLabDocument(tool, documentId, { launch, defaultTitle }) {
    */
   const labRoot = mathLabBasePath(useWorkspaceBase());
 
-  const [load, setLoad] = useState({ status: 'loading', document: null, files: [], quota: null, loadKey: null, error: null });
+  const [load, setLoad] = useState({ status: 'loading', document: null, files: [], quota: null, loadKey: null, error: null, scope: null });
   const [title, setTitleState] = useState('');
   const [saveState, setSaveState] = useState('clean'); // clean | dirty | saving | saved | error
   const [lastSavedAt, setLastSavedAt] = useState(null);
@@ -92,10 +104,10 @@ export function useMathLabDocument(tool, documentId, { launch, defaultTitle }) {
           tool: doc.tool,
           title: cleanTitle(doc.title, defaultTitle),
           schemaVersion: doc.schemaVersion,
-          data: doc.data,
+          data: attachLabScope(doc.data, doc.scope),
           // Le RÉSUMÉ part avec l'état, jamais séparément : « أعمالي » dessine
           // ainsi un aperçu juste dès la première sauvegarde.
-          summary: summarizeDocument(tool, doc.data),
+          summary: attachScopeToSummary(summarizeDocument(tool, doc.data), doc.scope),
         });
         const saved = fromApiDocument(document);
         docRef.current = { ...docRef.current, id: saved.id, createdAt: saved.createdAt, updatedAt: saved.updatedAt };
@@ -105,15 +117,15 @@ export function useMathLabDocument(tool, documentId, { launch, defaultTitle }) {
           setLoad((s) => ({ ...s, document: docRef.current }));
           // L'adresse dit maintenant QUEL document — sans recharger, sans
           // démonter l'outil (l'effet de chargement reconnaît l'identifiant).
-          navigate(mathLabToolPath(tool, saved.id, labRoot), { replace: true });
+          navigate(mathLabToolPath(tool, saved.id, labRoot, doc.scope), { replace: true });
         }
       } else {
         const patch = {};
         if (pending.title) patch.title = cleanTitle(doc.title, defaultTitle);
         if (pending.data) {
-          patch.data = doc.data;
+          patch.data = attachLabScope(doc.data, doc.scope);
           patch.schemaVersion = doc.schemaVersion;
-          patch.summary = summarizeDocument(tool, doc.data);
+          patch.summary = attachScopeToSummary(summarizeDocument(tool, doc.data), doc.scope);
         }
         const { document } = await updateMathLabDocument(token, doc.id, patch);
         docRef.current = { ...docRef.current, updatedAt: document?.updatedAt ?? docRef.current.updatedAt };
@@ -144,10 +156,20 @@ export function useMathLabDocument(tool, documentId, { launch, defaultTitle }) {
   }, [token, tool, defaultTitle, navigate, schedule, labRoot]);
   flushRef.current = flush;
 
+  // Le مخبر demandé ne compte que pour un document NEUF : un document
+  // enregistré garde le sien, et changer l'URL ne le rouvre pas.
+  const newDocumentScope = documentId == null ? requestedScope : null;
+
   // ── Chargement ──────────────────────────────────────────────────────────
   useEffect(() => {
     // L'identifiant qu'on vient de créer nous-mêmes : rien à recharger.
     if (documentId != null && docRef.current?.id === documentId) return undefined;
+    // Un document neuf déjà ouvert dans ce مخبر : l'URL vient seulement de
+    // recevoir son `?lab=` (MathLabToolPage la complète) — rien à rouvrir.
+    if (documentId == null && docRef.current && !isPersisted(docRef.current)
+      && docRef.current.scope === resolveToolScope(tool, { requested: requestedScope, remembered: readRememberedLabScope() })) {
+      return undefined;
+    }
 
     const seq = ++loadSeqRef.current;
     clearTimeout(timerRef.current);
@@ -159,34 +181,46 @@ export function useMathLabDocument(tool, documentId, { launch, defaultTitle }) {
 
     if (documentId == null) {
       const seedTitle = launch?.title ? cleanTitle(launch.title, defaultTitle) : defaultTitle;
-      const doc = newMathLabDocument(tool, { title: seedTitle, seed: launch?.seed });
+      const scope = resolveToolScope(tool, { requested: requestedScope, remembered: readRememberedLabScope() });
+      const doc = {
+        ...newMathLabDocument(tool, { title: seedTitle, seed: launch?.seed, scope, capabilities: toolCapabilities(tool, scope) }),
+        scope,
+      };
       docRef.current = doc;
       setTitleState(doc.title);
-      setLoad({ status: 'ready', document: doc, files: [], quota: null, loadKey: `new-${seq}`, error: null });
+      setLoad({ status: 'ready', document: doc, files: [], quota: null, loadKey: `new-${seq}`, error: null, scope });
 
       return undefined;
     }
 
     docRef.current = null;
-    setLoad({ status: 'loading', document: null, files: [], quota: null, loadKey: null, error: null });
+    setLoad({ status: 'loading', document: null, files: [], quota: null, loadKey: null, error: null, scope: null });
     fetchMathLabDocument(token, documentId)
       .then(({ document, files, quota }) => {
         if (seq !== loadSeqRef.current) return;
-        const doc = fromApiDocument(document);
+        const raw = fromApiDocument(document);
+        // Un travail appartient au مخبر où il est né ; un document plus
+        // ancien que les مخابر prend celui de l'URL, ou le dernier choisi.
+        const scope = resolveToolScope(tool, {
+          stored: storedLabScope(raw.data),
+          requested: requestedScope,
+          remembered: readRememberedLabScope(),
+        });
+        const doc = { ...raw, data: stripLabScope(raw.data), scope };
         docRef.current = doc;
         setTitleState(doc.title);
         // Les fichiers et les quotas viennent avec le document : un seul appel.
-        setLoad({ status: 'ready', document: doc, files: files ?? [], quota: quota ?? null, loadKey: `doc-${documentId}-${seq}`, error: null });
+        setLoad({ status: 'ready', document: doc, files: files ?? [], quota: quota ?? null, loadKey: `doc-${documentId}-${seq}`, error: null, scope });
       })
       .catch((error) => {
         if (seq !== loadSeqRef.current) return;
-        setLoad({ status: 'error', document: null, files: [], quota: null, loadKey: null, error });
+        setLoad({ status: 'error', document: null, files: [], quota: null, loadKey: null, error, scope: null });
       });
 
     return undefined;
     // `launch` et `defaultTitle` ne rouvrent pas le document : ils ne comptent qu'à l'ouverture.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tool, documentId, token]);
+  }, [tool, documentId, token, newDocumentScope]);
 
   // ── Départ ──────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -252,6 +286,8 @@ export function useMathLabDocument(tool, documentId, { launch, defaultTitle }) {
     files: load.files,
     quota: load.quota,
     loadKey: load.loadKey,
+    // Le مخبر résolu (null pour un instrument commun, ou pendant le chargement).
+    scope: load.scope,
     ensurePersisted,
     error: load.error,
     title,

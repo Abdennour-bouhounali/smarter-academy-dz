@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import { Lock, PencilRuler } from 'lucide-react';
+import { Lock, PencilRuler, Users } from 'lucide-react';
 import { ArrowForward } from '../../../components/common/DirectionalIcons';
+import { LAB_SCOPES, commonTools, isCommonTool, toolCapabilities, toolsForScope } from '../labScope';
+import { LAB_META } from '../home/labMeta';
 import '../mathlab.css';
 
 /**
@@ -28,10 +30,16 @@ import '../mathlab.css';
  * un instrument de plus apparaît ici sans que ce fichier change. Les
  * instruments seulement ANNONCÉS n'y sont pas — on ne propose pas dans une
  * leçon une porte qui n'ouvre sur rien.
+ *
+ * ── Les مخابر (MATH_LAB.md §2.1) ─────────────────────────────────────────
+ * Comme l'accueil : la سبّورة d'abord, commune à tous, puis les instruments
+ * du مخبر choisi — celui de la leçon à l'ouverture (`scope`), et deux
+ * onglets pour passer à l'autre sans quitter le calque (`onScope`).
  */
-export default function MathLabToolPicker({ tools, onPick, lockedIds = [] }) {
+export default function MathLabToolPicker({ tools, onPick, lockedIds = [], scope = 'moyen', onScope = null }) {
   const { t } = useTranslation('mathlab');
   const { t: ta } = useTranslation('access');
+  const shown = [...commonTools(tools), ...toolsForScope(tools, scope)];
 
   return (
     <div className="sa-page py-8 sm:py-10" data-ml-overlay-picker>
@@ -43,9 +51,33 @@ export default function MathLabToolPicker({ tools, onPick, lockedIds = [] }) {
         <p className="font-inter text-slate-500 text-sm mt-1">{t('overlay.pickHint')}</p>
       </div>
 
+      {onScope && (
+        <div className="sa-ml-picker-labs" role="group" aria-label={t('labs.pickLabel')} data-ml-overlay-labs>
+          {LAB_SCOPES.map((lab) => {
+            const Icon = LAB_META[lab].icon;
+
+            return (
+              <button
+                key={lab}
+                type="button"
+                className={`sa-ml-labswitch__item sa-ml-labswitch__item--${lab} sa-ml-picker-labs__item`}
+                aria-pressed={lab === scope}
+                onClick={() => onScope(lab)}
+                data-ml-overlay-lab={lab}
+              >
+                <Icon size={15} aria-hidden="true" />
+                {t(`labs.${lab}.name`)}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
       <div className="sa-ml-cards">
-        {tools.map((tool) => {
+        {shown.map((tool) => {
           const Icon = tool.icon;
+          const common = isCommonTool(tool);
+          const descriptionKey = toolCapabilities(tool, scope)?.descriptionKey ?? tool.descriptionKey;
 
           return (
             <button
@@ -53,6 +85,7 @@ export default function MathLabToolPicker({ tools, onPick, lockedIds = [] }) {
               type="button"
               onClick={() => onPick(tool.id)}
               data-ml-overlay-tool={tool.id}
+              data-ml-overlay-tool-scope={common ? 'common' : scope}
               data-ml-tool-locked={lockedIds.includes(tool.id) ? 'true' : undefined}
               className="group flex flex-col gap-3 rounded-2xl border-2 border-slate-200 bg-white p-5 text-start transition-colors hover:border-blue-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
             >
@@ -67,8 +100,13 @@ export default function MathLabToolPicker({ tools, onPick, lockedIds = [] }) {
                 )}
               </span>
               <span className="min-w-0">
-                <span className="block font-space font-bold text-lg text-slate-900">{t(tool.labelKey)}</span>
-                <span className="block font-inter text-sm text-slate-500 mt-1">{t(tool.descriptionKey)}</span>
+                <span className="flex flex-wrap items-center gap-2">
+                  <span className="font-space font-bold text-lg text-slate-900">{t(tool.labelKey)}</span>
+                  {common && (
+                    <span className="sa-ml-common-badge"><Users size={12} aria-hidden="true" /> {t('labs.commonBadge')}</span>
+                  )}
+                </span>
+                <span className="block font-inter text-sm text-slate-500 mt-1">{t(descriptionKey)}</span>
               </span>
               <span className="mt-auto inline-flex items-center gap-1.5 font-mono-jetbrains text-xs font-bold text-blue-600 group-hover:text-blue-700">
                 {t(tool.newLabelKey)}

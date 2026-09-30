@@ -66,7 +66,7 @@ try {
       const errors = [];
       page.on('pageerror', (e) => errors.push(e.message));
       page.on('console', (message) => { if (message.type() === 'error') errors.push(`console: ${message.text()}`); });
-      await page.goto(`${BASE}/enseignant/atelier/${route.slug}`, { waitUntil: 'networkidle' });
+      await page.goto(`${BASE}/enseignant/atelier/${route.slug}?lab=secondaire`, { waitUntil: 'networkidle' });
 
       const tabs = page.locator('.sa-ml-kit-nav [role="tab"]');
       await tabs.first().waitFor({ timeout: 20000 });

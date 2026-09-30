@@ -44,6 +44,8 @@ export const SYSTEM_METHODS = Object.freeze(['substitution', 'elimination', 'gra
 export const DEFAULT_INEQUALITY_SOURCE = '-2x + 3 < 9';
 export const DEFAULT_SIMPLIFY_SOURCE = '(x + 2)(x - 3)';
 export const DEFAULT_FACTOR_SOURCE = 'x^2 + 5x + 6';
+/** La factorisation d'ouverture de مخبر المتوسط (scope.js). */
+export const MOYEN_FACTOR_SOURCE = 'x^2 + 6x + 9';
 
 /** Le chemin des متراجحات est plus court : deux chemins doivent tenir ensemble sous le plafond. */
 export const MAX_INEQUALITY_STEPS = 30;
@@ -232,7 +234,7 @@ export function normalizeAlgebraData(raw) {
  * `{ equation: '3x - 5 = 16' }` ; une saisie illisible retombe sur
  * l'équation par défaut plutôt que d'ouvrir un document vide.
  */
-export function createAlgebraData(seed = undefined) {
+export function createAlgebraData(seed = undefined, context = {}) {
   const wanted = isPlainObject(seed) && typeof seed.equation === 'string' ? seed.equation : DEFAULT_SOURCE;
   const parsed = parseEquation(wanted);
   const source = parsed.ok ? wanted : DEFAULT_SOURCE;
@@ -242,6 +244,9 @@ export function createAlgebraData(seed = undefined) {
     showSolution: false,
     parameters: isPlainObject(seed) && seed.parameters === true ? { a: 2, b: 3, c: 11 } : null,
     section: isPlainObject(seed) && ALGEBRA_SECTIONS.includes(seed.section) ? seed.section : 'equations',
+    // Le مخبر choisit la factorisation d'ouverture : une identité remarquable
+    // au collège, pas un trinôme à « مجموع وجداء » (scope.js).
+    factor: { source: context?.capabilities?.factor?.methods === 'moyen' ? MOYEN_FACTOR_SOURCE : DEFAULT_FACTOR_SOURCE },
   });
 }
 

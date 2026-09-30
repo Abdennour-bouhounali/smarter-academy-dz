@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { getMathLabTool } from '../toolRegistry';
 import { mathLabToolPath } from '../mathLabDocument';
+import { workLabScope } from '../labScope';
 import WorkPreview from './WorkPreview';
 import { timeAgo } from '../../practice/notebook/space/noteMeta';
 
@@ -44,6 +45,8 @@ export default function WorkCard({ work, view = 'grid', selected = false, select
   const toolName = tool ? t(tool.labelKey) : work.tool;
   const title = work.title || t('untitled');
   const to = tool ? mathLabToolPath(tool, work.id, labRoot) : null;
+  // Le مخبر où le travail est né (son résumé), ou celui de son instrument.
+  const lab = workLabScope(work, tool);
   const titleId = `mlw-${work.id}-title`;
 
   // Le menu se ferme au clic ailleurs et à Échap — sans piéger le focus,
@@ -111,6 +114,11 @@ export default function WorkCard({ work, view = 'grid', selected = false, select
 
         <p className="sa-mlw-meta">
           <span className="sa-mlw-tool"><Icon size={13} aria-hidden="true" /> {toolName}</span>
+          {lab && (
+            <span className={`sa-ml-scope-badge sa-ml-scope-badge--${lab}`} data-ml-work-lab-badge={lab}>
+              {t(`labs.${lab}.short`)}
+            </span>
+          )}
           {work.updatedAt && (
             <time dateTime={work.updatedAt} title={work.updatedAt} className="sa-mlw-time">
               {c('modified', { when: timeAgo(work.updatedAt) })}

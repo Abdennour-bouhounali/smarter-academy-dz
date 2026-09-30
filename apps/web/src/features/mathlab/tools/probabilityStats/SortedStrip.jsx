@@ -11,15 +11,16 @@ const MAX_STRIP = 80;
  * statsUtils, montrée plutôt que récitée. Survoler ou focaliser une valeur
  * éclaire sa ligne du tableau et sa barre.
  */
-export default function SortedStrip({ sortedValues, rowKeyOf, highlight, onHighlight }) {
+export default function SortedStrip({ sortedValues, rowKeyOf, highlight, onHighlight, quartiles = true }) {
   const { t } = useTranslation('mathlab');
   const n = sortedValues.length;
   if (n === 0) return null;
   const marks = sortedMarks(n);
   const tagsOf = (rank) => [
-    rank === marks.q1 && 'Q₁',
+    // `quartiles` : faux au collège (scope.js) — la médiane seule est marquée.
+    quartiles && rank === marks.q1 && 'Q₁',
     marks.median.includes(rank) && 'Me',
-    rank === marks.q3 && 'Q₃',
+    quartiles && rank === marks.q3 && 'Q₃',
   ].filter(Boolean);
 
   return (

@@ -33,7 +33,13 @@ const FIELDS = { linear: ['a'], affine: ['a', 'b'], quadratic: ['a', 'b', 'c'] }
  * dessiner. Un curseur ne recadre pas le plan : seul un changement de
  * famille ou un exemple le fait.
  */
-export default function FunctionsSection({ value, onChange }) {
+/**
+ * `features` : les familles et exemples du مخبر (scope.js) — linéaire et
+ * affine seulement au collège.
+ */
+export default function FunctionsSection({ value, onChange, features = null }) {
+  const families = features?.families ?? FUNCTION_FAMILIES;
+  const examples = features?.examples ?? FUNCTION_EXAMPLES;
   const { t } = useTranslation('mathlab');
   const [frameVersion, setFrameVersion] = useState(0);
   const [exampleId, setExampleId] = useState(null);
@@ -63,12 +69,12 @@ export default function FunctionsSection({ value, onChange }) {
   }, [onChange, value]);
 
   const pick = useCallback((id) => {
-    const example = FUNCTION_EXAMPLES.find((item) => item.id === id);
+    const example = examples.find((item) => item.id === id);
     if (!example) return;
     onChange(example.value);
     setExampleId(id);
     setFrameVersion((v) => v + 1);
-  }, [onChange]);
+  }, [onChange, examples]);
 
   const a = R.toNumber(fn.a);
   const b = R.toNumber(fn.b);
@@ -138,7 +144,7 @@ export default function FunctionsSection({ value, onChange }) {
           <section className="sa-ml-alg__section">
             <h3 className="sa-ml-alg__heading">{t('tools.algebra.functions.heading')}</h3>
             <div className="sa-ml-alg__methods" role="group" aria-label={t('tools.algebra.functions.familyLabel')}>
-              {FUNCTION_FAMILIES.map((family) => (
+              {families.map((family) => (
                 <button
                   key={family}
                   type="button"
@@ -222,7 +228,7 @@ export default function FunctionsSection({ value, onChange }) {
               />
             </div>
 
-            <ExamplePicker examples={FUNCTION_EXAMPLES} onPick={pick} activeId={exampleId} dataAttr="data-ml-alg-example" />
+            <ExamplePicker examples={examples} onPick={pick} activeId={exampleId} dataAttr="data-ml-alg-example" />
           </section>
 
           <LabDisclosure kind="rule" dataAttr="data-ml-alg-rule">

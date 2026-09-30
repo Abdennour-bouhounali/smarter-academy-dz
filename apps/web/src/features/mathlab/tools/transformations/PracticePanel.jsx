@@ -32,7 +32,7 @@ import { StepList } from '../../shared/LabKit.jsx';
  */
 export default function PracticePanel({
   challenge, verdict, score, onNew, onSubmit, onReveal,
-  puzzleId, puzzleSolved, onPuzzle, onExitPuzzle,
+  puzzleId, puzzleSolved, onPuzzle, onExitPuzzle, puzzles = PUZZLES,
 }) {
   const { t } = useTranslation('mathlab');
   const [x, setX] = useState('');
@@ -95,7 +95,7 @@ export default function PracticePanel({
           </div>
         ) : (
           <ul className="sa-ml-tr__puzzlelist">
-            {PUZZLES.map((puzzle) => (
+            {puzzles.map((puzzle) => (
               <li key={puzzle.id}>
                 <button
                   type="button"

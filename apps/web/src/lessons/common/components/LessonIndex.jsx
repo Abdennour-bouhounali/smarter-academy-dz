@@ -356,7 +356,7 @@ export default function LessonIndex({ config, basePath }) {
                   instrument SUR la leçon, pour tout le monde. */}
               <div className="flex flex-wrap items-center gap-2">
                 <ClassroomEntryButton scope="lesson" title={config.title} />
-                <MathLabEntryButton />
+                <MathLabEntryButton scope={config.level} />
               </div>
 
               {config.skills && (

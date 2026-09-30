@@ -11,6 +11,7 @@ import {
 import ConfirmDialog from '../../practice/notebook/space/ConfirmDialog';
 import { MATH_LAB_TOOLS, getMathLabTool } from '../toolRegistry';
 import { mathLabToolPath, fromApiDocument } from '../mathLabDocument';
+import { commonTools, isLabScope, toolsForScope, workLabScope } from '../labScope';
 import WorkCard from './WorkCard';
 import FeatureLockedPanel from '../../../components/access/FeatureLockedPanel';
 import { refusalFromError } from '../../access/featureAccess';
@@ -43,7 +44,12 @@ const VIEW_STORAGE_KEY = 'sa.mathlab.work.view';
  * met la liste à jour LOCALEMENT après coup : rien ne saute sous les doigts,
  * et on ne recharge pas cinquante travaux pour en avoir renommé un.
  */
-export default function MyWorkSpace({ labRoot }) {
+/**
+ * `initialLab` : le مخبر dont l'accueil montre l'atelier (`moyen`,
+ * `secondaire`) — le filtre « المخبر » part posé dessus, et se retire comme
+ * tout autre filtre. `all` sur l'accueil du مختبر.
+ */
+export default function MyWorkSpace({ labRoot, initialLab = 'all' }) {
   const { t } = useTranslation('mathlab');
   const { t: tc } = useTranslation('common');
   const w = useCallback((key, opts) => t(`work.${key}`, opts), [t]);
@@ -52,7 +58,7 @@ export default function MyWorkSpace({ labRoot }) {
   const [state, setState] = useState({ status: 'loading', works: [] });
   const [q, setQ] = useState('');
   const [sort, setSort] = useState('updated');
-  const [filters, setFilters] = useState(DEFAULT_WORK_FILTERS);
+  const [filters, setFilters] = useState(() => ({ ...DEFAULT_WORK_FILTERS, lab: isLabScope(initialLab) ? initialLab : 'all' }));
   const [view, setView] = useState(() => readStoredView());
   const [selected, setSelected] = useState(() => new Set());
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -89,18 +95,26 @@ export default function MyWorkSpace({ labRoot }) {
     return tool ? t(tool.labelKey) : id ?? '';
   }, [t]);
 
+  /** Le مخبر d'un travail : son résumé, ou l'instrument s'il n'en a qu'un (labScope.js). */
+  const labOf = useCallback((work) => workLabScope(work, getMathLabTool(work?.tool)), []);
+
   const visible = useMemo(
-    () => selectWorks(state.works, { q, filters, sort, toolLabel }),
-    [state.works, q, filters, sort, toolLabel],
+    () => selectWorks(state.works, { q, filters, sort, toolLabel, labOf }),
+    [state.works, q, filters, sort, toolLabel, labOf],
   );
 
-  /** Combien de travaux par instrument — les pastilles des filtres. */
+  /** Combien de travaux par instrument et par مخبر — les pastilles des filtres. */
   const counts = useMemo(() => {
     const byTool = {};
-    for (const work of state.works) byTool[work.tool] = (byTool[work.tool] ?? 0) + 1;
+    const byLab = {};
+    for (const work of state.works) {
+      byTool[work.tool] = (byTool[work.tool] ?? 0) + 1;
+      const lab = labOf(work);
+      if (lab) byLab[lab] = (byLab[lab] ?? 0) + 1;
+    }
 
-    return byTool;
-  }, [state.works]);
+    return { byTool, byLab };
+  }, [state.works, labOf]);
 
   // La sélection ne survit pas à un autre jeu de résultats : cocher trois
   // cartes puis filtrer ne doit jamais supprimer ce qu'on ne voit plus.
@@ -255,7 +269,7 @@ export default function MyWorkSpace({ labRoot }) {
   }
 
   // Aucun travail du tout : ce n'est pas un écran vide, c'est une invitation.
-  if (state.works.length === 0) return <EmptyWorkspace labRoot={labRoot} />;
+  if (state.works.length === 0) return <EmptyWorkspace labRoot={labRoot} scope={isLabScope(initialLab) ? initialLab : null} />;
 
   return (
     <div className="sa-mlw" data-ml-work-space>
@@ -316,6 +330,11 @@ export default function MyWorkSpace({ labRoot }) {
       {activeFilters > 0 && (
         <div className="sa-mlw-active" data-ml-work-active-filters>
           <span className="sa-mlw-active__label">{w('filters.active')}</span>
+          {filters.lab !== 'all' && (
+            <button type="button" className="sa-mlw-pill" onClick={() => setFilters((f) => ({ ...f, lab: 'all' }))} data-ml-work-lab-pill={filters.lab}>
+              {w(`filters.labs.${filters.lab}`)} <X size={13} aria-hidden="true" />
+            </button>
+          )}
           {filters.tool !== 'all' && (
             <button type="button" className="sa-mlw-pill" onClick={() => setFilters((f) => ({ ...f, tool: 'all' }))}>
               {toolLabel(filters.tool)} <X size={13} aria-hidden="true" />
@@ -347,7 +366,7 @@ export default function MyWorkSpace({ labRoot }) {
         <aside className="sa-mlw-aside">
           <div className="sa-mlw-aside__inner">
             <h3 className="sa-mlw-aside__title"><SlidersHorizontal size={16} aria-hidden="true" /> {w('filters.title')}</h3>
-            <WorkFilterPanel filters={filters} counts={counts} total={state.works.length} onChange={setFilters} onReset={setFilters} />
+            <WorkFilterPanel filters={filters} counts={counts.byTool} labCounts={counts.byLab} total={state.works.length} onChange={setFilters} onReset={setFilters} />
           </div>
         </aside>
 
@@ -385,7 +404,7 @@ export default function MyWorkSpace({ labRoot }) {
                 <X size={20} aria-hidden="true" />
               </button>
             </div>
-            <WorkFilterPanel filters={filters} counts={counts} total={state.works.length} onChange={setFilters} onReset={setFilters} />
+            <WorkFilterPanel filters={filters} counts={counts.byTool} labCounts={counts.byLab} total={state.works.length} onChange={setFilters} onReset={setFilters} />
             <button type="button" className="sa-mlw-btn sa-mlw-btn--primary w-full mt-4" onClick={() => setSheetOpen(false)}>{tc('close')}</button>
           </div>
         </>
@@ -430,19 +449,21 @@ export default function MyWorkSpace({ labRoot }) {
 }
 
 /** Aucun travail : on montre par où commencer, pas un vide (§24). */
-function EmptyWorkspace({ labRoot }) {
+function EmptyWorkspace({ labRoot, scope = null }) {
   const { t } = useTranslation('mathlab');
+  // Dans un مخبر, on propose ses instruments (et la سبّورة), ouverts dans ce مخبر.
+  const suggestions = scope ? [...commonTools(MATH_LAB_TOOLS), ...toolsForScope(MATH_LAB_TOOLS, scope)].slice(0, 4) : MATH_LAB_TOOLS.slice(0, 4);
 
   return (
     <div className="sa-mlw-empty" data-ml-docs-empty>
       <p className="sa-mlw-empty__title">{t('work.empty.title')}</p>
       <p className="sa-mlw-empty__body">{t('work.empty.body')}</p>
       <div className="sa-mlw-empty__tools">
-        {MATH_LAB_TOOLS.slice(0, 4).map((tool) => {
+        {suggestions.map((tool) => {
           const Icon = tool.icon;
 
           return (
-            <Link key={tool.id} to={mathLabToolPath(tool, null, labRoot)} className="sa-mlw-btn sa-mlw-btn--ghost" data-ml-work-empty-tool={tool.id}>
+            <Link key={tool.id} to={mathLabToolPath(tool, null, labRoot, toolsForScope([tool], scope).length ? scope : null)} className="sa-mlw-btn sa-mlw-btn--ghost" data-ml-work-empty-tool={tool.id}>
               <Icon size={16} aria-hidden="true" /> {t(tool.labelKey)}
             </Link>
           );

@@ -18,13 +18,14 @@ import {
   currentScene, pushScene, replaceScene, undo, redo, canUndo, canRedo, resolveData,
   addFigure, removeFigure, moveVertex, moveFigure, addStep, updateStep, removeStep,
   toggleStep, moveStep, setSteps, emptyScene, defaultScene,
-  MAX_FIGURES, MAX_STEPS, DEFAULT_TRANSFORM_VIEWPORT, VERTEX_NAMES,
+  MAX_FIGURES, DEFAULT_TRANSFORM_VIEWPORT, VERTEX_NAMES,
 } from './transformState.js';
 import {
   generateChallenge, checkAnswer, getPuzzle, puzzleTarget, isPuzzleSolved,
   getExperiment, patternCopies, isImageHidden, maskImages, practiceFrame,
 } from './practice.js';
 import { useCompactCharts } from '../probabilityStats/useMediaQuery.js';
+import { clampToFeatures, transformationsFeatures } from './scope.js';
 
 /** Le délai entre un changement et sa remise à la coquille (qui attend encore avant d'enregistrer). */
 const SERIALIZE_MS = 300;
@@ -48,11 +49,13 @@ const ANIMATION_MS = 1400;
  * champ dans `data` : ils ne peuvent donc pas y arriver par accident, et
  * rouvrir un document ne rejoue pas une animation à moitié faite.
  */
-export default function TransformationsTool({ initialData, onChange, onReady }) {
+export default function TransformationsTool({ initialData, onChange, onReady, capabilities = null }) {
   const { t } = useTranslation('mathlab');
-  const [data, setData] = useState(() => (initialData && Object.keys(initialData).length
+  // Le مخبر (scope.js) : au collège, une transformation à la fois, sans composition ni matrice.
+  const features = useMemo(() => transformationsFeatures(capabilities), [capabilities]);
+  const [data, setData] = useState(() => clampToFeatures(initialData && Object.keys(initialData).length
     ? normalizeTransformationsData(initialData)
-    : createTransformationsData()));
+    : createTransformationsData(), features));
 
   // ── L'état d'INTERFACE : jamais sérialisé ──────────────────────────────
   const [panelOpen, setPanelOpen] = useState(true);
@@ -301,14 +304,30 @@ export default function TransformationsTool({ initialData, onChange, onReady }) 
     commit((current) => ({ ...current, settings: { ...current.settings, [key]: value } }));
   }, [commit]);
 
+  /**
+   * Ajouter un pas. Là où le مخبر n'en permet qu'UN (le collège : pas de
+   * composition), le nouveau REMPLACE l'ancien — sinon un préréglage choisi
+   * ne ferait rien.
+   */
+  const addOrReplaceStep = useCallback((kind, overrides) => {
+    if (!features.kinds.includes(kind)) return;
+    pushSceneChange((active) => {
+      const room = active.steps.length < features.maxSteps
+        ? active
+        : setSteps(active, active.steps.slice(0, Math.max(0, features.maxSteps - 1)));
+
+      return addStep(room, kind, overrides);
+    });
+  }, [pushSceneChange, features]);
+
   const handlePreset = useCallback((preset) => {
-    pushSceneChange((active) => addStep(active, preset.step.kind, preset.step));
+    addOrReplaceStep(preset.step.kind, preset.step);
     setTab('stack');
-  }, [pushSceneChange]);
+  }, [addOrReplaceStep]);
 
   const handleExperiment = useCallback((id) => {
     const experiment = getExperiment(id);
-    if (!experiment) return;
+    if (!experiment || !features.experiments.some((entry) => entry.id === id)) return;
     // La scène de l'expérience est construite EN UNE FOIS, puis poussée :
     // un seul pas d'historique, donc un seul « تراجع » pour revenir.
     const prepared = setSteps(
@@ -321,18 +340,18 @@ export default function TransformationsTool({ initialData, onChange, onReady }) 
       settings: { ...current.settings, showOriginal: true, showMeasures: true, showInvariants: true },
     }));
     setAnnouncement(t(`tools.transformations.${experiment.promptKey}`));
-  }, [installScene, commit, t]);
+  }, [installScene, commit, t, features]);
 
   // ── §38 : l'entraînement ────────────────────────────────────────────
   const handleNewChallenge = useCallback(() => {
-    const next = generateChallenge();
+    const next = generateChallenge(Math.random, { kinds: features.challenges, stepKinds: features.kinds });
     setChallenge(next);
     setVerdict(null);
     // La scène MONTRE la question : le point et la pile demandée — mais pas
     // l'image, masquée tant qu'il n'y a pas de verdict (`isImageHidden`).
     const prepared = setSteps(addFigure(emptyScene(), 'point', [next.point]), next.steps);
     installScene(prepared, { mode: 'practice', puzzle: null }, practiceFrame(next, false, DEFAULT_TRANSFORM_VIEWPORT));
-  }, [installScene]);
+  }, [installScene, features]);
 
   const handleSubmitAnswer = useCallback((given) => {
     if (!challenge || verdict) return;
@@ -366,12 +385,12 @@ export default function TransformationsTool({ initialData, onChange, onReady }) 
   // ── §42 : les puzzles ───────────────────────────────────────────────
   const handlePuzzle = useCallback((id) => {
     const puzzle = getPuzzle(id);
-    if (!puzzle) return;
+    if (!puzzle || !features.puzzles.some((entry) => entry.id === id)) return;
     const prepared = addFigure(emptyScene(), 'triangle', puzzle.figure);
     installScene(prepared, { mode: 'puzzle', puzzle: { id, solved: false } });
     setChallenge(null);
     setVerdict(null);
-  }, [installScene]);
+  }, [installScene, features]);
 
   const handleExitPuzzle = useCallback(() => {
     commit((current) => ({ ...current, mode: 'free', puzzle: null }));
@@ -618,10 +637,11 @@ export default function TransformationsTool({ initialData, onChange, onReady }) 
                 <StepStack
                   steps={scene.steps}
                   activeStepId={effectiveStepId}
-                  maxSteps={MAX_STEPS}
+                  maxSteps={features.maxSteps}
+                  kinds={features.kinds}
                   vertexCount={firstFigure?.figure.vertices.length ?? 0}
                   onSelect={(id) => setActiveStepId((current) => (current === id ? null : id))}
-                  onAdd={(kind) => { pushSceneChange((active) => addStep(active, kind)); }}
+                  onAdd={(kind) => addOrReplaceStep(kind)}
                   onUpdate={(id, patch) => commit((current) => replaceScene(current, updateStep(currentScene(current), id, patch)))}
                   onRemove={(id) => pushSceneChange((active) => removeStep(active, id))}
                   onToggle={(id) => pushSceneChange((active) => toggleStep(active, id))}
@@ -637,6 +657,7 @@ export default function TransformationsTool({ initialData, onChange, onReady }) 
                   maxFigures={MAX_FIGURES}
                   onPreset={handlePreset}
                   onExperiment={handleExperiment}
+                  features={features}
                   activeExperiment={null}
                   pattern={pattern}
                   onPatternChange={setPattern}
@@ -669,6 +690,7 @@ export default function TransformationsTool({ initialData, onChange, onReady }) 
                 puzzleSolved={data.puzzle?.solved ?? false}
                 onPuzzle={handlePuzzle}
                 onExitPuzzle={handleExitPuzzle}
+                puzzles={features.puzzles}
               />
             )}
           </div>

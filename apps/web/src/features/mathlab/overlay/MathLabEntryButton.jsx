@@ -34,7 +34,12 @@ import { preloadMathLabOverlay, useMathLabOverlay } from './MathLabOverlayProvid
  * explication. La rangée de repères fait partie de ce que la présentation
  * rend, donc le bouton suit sans rien à portaliser.
  */
-export default function MathLabEntryButton({ className = '' }) {
+/**
+ * `scope` : le cycle de la leçon (`levelId` du catalogue — « moyen » pour
+ * 4AM). Le sélecteur s'ouvre sur le مخبر correspondant (labScope.js) ; un
+ * identifiant qui n'est pas un مخبر est ignoré par le calque.
+ */
+export default function MathLabEntryButton({ className = '', scope = null }) {
   // Namespace `lesson`, pas `mathlab` : ce bouton est rendu sur CHAQUE page
   // de leçon, alors que `mathlab` (≈ 250 Ko) est chargé à la demande. Le lire
   // ici suspendrait la leçon entière le temps de télécharger le vocabulaire
@@ -50,7 +55,7 @@ export default function MathLabEntryButton({ className = '' }) {
   return (
     <button
       type="button"
-      onClick={() => open()}
+      onClick={() => open(undefined, { scope })}
       // Le calque est un lot à part : on le demande dès que l'intention se
       // devine (survol, focus clavier, doigt posé), pas au clic.
       onPointerEnter={preloadMathLabOverlay}

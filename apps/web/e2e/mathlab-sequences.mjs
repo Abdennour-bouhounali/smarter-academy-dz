@@ -159,7 +159,7 @@ const context = await authedContext({ viewport: { width: 1360, height: 900 } });
 const page = await context.newPage();
 attach(page);
 
-await page.goto(`${BASE}/espace/atelier`, { waitUntil: 'networkidle' });
+await page.goto(`${BASE}/espace/atelier?lab=secondaire`, { waitUntil: 'networkidle' });
 const card = page.locator('a[href*="/atelier/suites"]').first();
 record('accueil : la carte du مختبر المتتاليات est là', await card.count() > 0);
 await page.screenshot({ path: `${OUT}/00-accueil.png`, fullPage: true });

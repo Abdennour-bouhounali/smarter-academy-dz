@@ -60,6 +60,17 @@ export const GRAPHER_KEYBOARD_LAYOUT = Object.freeze({
   ],
 });
 
+/**
+ * Le clavier de مخبر المتوسط : le même, sans sin, cos, tan, ln, log ni e —
+ * le collège ne trace que des droites (scope.js). Les rangées gardent leur
+ * forme : un élève qui passe d'un مخبر à l'autre retrouve ses touches.
+ */
+const BEYOND_MOYEN = new Set(['\\sin', '\\cos', '\\tan', '\\ln', '\\log', 'e^{x}', 'e']);
+export const MOYEN_KEYBOARD_LAYOUT = Object.freeze({
+  ...GRAPHER_KEYBOARD_LAYOUT,
+  rows: GRAPHER_KEYBOARD_LAYOUT.rows.map((row) => row.filter((key) => !BEYOND_MOYEN.has(key.latex))),
+});
+
 export function ensureMathLive() {
   if (configured || typeof window === 'undefined') return;
   configured = true;
@@ -69,12 +80,15 @@ export function ensureMathLive() {
   MathfieldElement.keypressSound = null;
 }
 
-/** Le clavier virtuel est GLOBAL : on le remplace à l'ouverture du grapheur, on rend l'ancien à la fermeture. */
-export function installGrapherKeyboard() {
+/**
+ * Le clavier virtuel est GLOBAL : on le remplace à l'ouverture du grapheur, on rend l'ancien à la fermeture.
+ * @param {'full'|'moyen'} [variant]  celui du مخبر (scope.js)
+ */
+export function installGrapherKeyboard(variant = 'full') {
   const keyboard = typeof window !== 'undefined' ? window.mathVirtualKeyboard : null;
   if (!keyboard) return () => {};
   const previous = keyboard.layouts;
-  keyboard.layouts = [GRAPHER_KEYBOARD_LAYOUT];
+  keyboard.layouts = [variant === 'moyen' ? MOYEN_KEYBOARD_LAYOUT : GRAPHER_KEYBOARD_LAYOUT];
 
   return () => {
     try {

@@ -114,7 +114,7 @@ const waitRunDone = async (page, timeout = 25000) => {
   await sleep(200);
 };
 
-async function openTool(page, path = '/espace/atelier/probabilites-statistiques') {
+async function openTool(page, path = '/espace/atelier/probabilites-statistiques?lab=secondaire') {
   await page.goto(`${BASE}${path}`, { waitUntil: 'networkidle' });
   // Le pupitre existe dans les deux modes ; le bouton « أطلق » seulement en mode expérience.
   await page.waitForSelector('[data-ml-ps] [data-ml-ps-panel]', { timeout: 30000 });
@@ -155,13 +155,13 @@ attach(page);
 let docId = null;
 try {
   // ── Accueil et première visite ────────────────────────────────────────
-  await page.goto(`${BASE}/espace/atelier`, { waitUntil: 'networkidle' });
+  // Le scénario parcourt les quatre sections : c'est le ثانوي (au collège,
+  // ni arbre ni loi normale — mathlab-labs-scope.mjs).
+  await page.goto(`${BASE}/espace/atelier?lab=secondaire`, { waitUntil: 'networkidle' });
   const card = page.locator('[data-ml-tool-card="probabilityStats"]');
-  record('accueil : la carte « الاحتمالات والإحصاء »', (await card.count()) === 1 && (await card.innerText()).includes('الاحتمالات والإحصاء'));
-  const plannedText = await page.locator('[data-ml-planned]').innerText().catch(() => '');
-  record('accueil : ni « الإحصاء » ni « الاحتمالات » ne restent annoncés « قريبًا »', !plannedText.includes('الإحصاء') && !plannedText.includes('الاحتمالات'));
+  record('مخبر الثانوي : la carte « الاحتمالات والإحصاء »', (await card.count()) === 1 && (await card.innerText()).includes('الاحتمالات والإحصاء'));
   await card.click();
-  await page.waitForURL(/\/espace\/atelier\/probabilites-statistiques$/, { timeout: 15000 });
+  await page.waitForURL(/\/espace\/atelier\/probabilites-statistiques\?lab=secondaire$/, { timeout: 15000 });
   await page.waitForSelector('[data-ml-ps-run]', { timeout: 30000 });
   await sleep(400);
   record('première visite : la pièce, 100 tirages prêts, aucun tirage', (await page.inputValue('[data-ml-ps-experiment]')) === 'coin' && (await page.getAttribute('[data-ml-ps-draws="100"]', 'aria-pressed')) === 'true' && (await page.locator('[data-ml-ps-chart-empty]').count()) === 1);
@@ -180,7 +180,7 @@ try {
   record('pièce : les effectifs somment à 10', c10.length === 2 && c10[0] + c10[1] === 10, c10.join('+'));
   record('pièce : le trait théorique à 50 % est dessiné', (await page.locator('[data-ml-ps-theoretical]').count()) === 2);
   record('pièce : « وجه … مقابل 50 % »', (await page.locator('[data-ml-ps-tracked]').innerText()).includes('50'));
-  await page.waitForURL(/\/probabilites-statistiques\/\d+$/, { timeout: 12000 });
+  await page.waitForURL(/\/probabilites-statistiques\/\d+(?:\?lab=\w+)?$/, { timeout: 12000 });
   docId = docIdOf(page.url());
   created.add(docId);
   record('persistance : le document naît au premier lancer', docId !== null);
@@ -495,7 +495,7 @@ try {
       record('mouvement réduit : l’outil le dit', (await p.locator('[data-ml-ps-reduced-motion]').count()) === 1);
       const roll = await rollOnce(p);
       record('mouvement réduit : le résultat est là en moins de 400 ms, compté, et le dé le montre', roll.ms < 400 && roll.parts === roll.top && (await total(p)) === 1, `${roll.ms} ms`);
-      await p.waitForURL(/\/probabilites-statistiques\/\d+$/, { timeout: 12000 });
+      await p.waitForURL(/\/probabilites-statistiques\/\d+(?:\?lab=\w+)?$/, { timeout: 12000 });
       created.add(docIdOf(p.url()));
     } catch (e) {
       record('mouvement réduit : scénario interrompu', false, String(e).slice(0, 300));
@@ -507,7 +507,7 @@ try {
   // ── Un visiteur ───────────────────────────────────────────────────────
   const anon = await browser.newContext({ viewport: { width: 1280, height: 800 }, locale: 'ar-DZ' });
   const anonPage = await anon.newPage();
-  await anonPage.goto(`${BASE}/espace/atelier/probabilites-statistiques`, { waitUntil: 'networkidle' });
+  await anonPage.goto(`${BASE}/espace/atelier/probabilites-statistiques?lab=secondaire`, { waitUntil: 'networkidle' });
   record('visiteur : envoyé à /login', /\/login/.test(anonPage.url()));
   await anon.close();
 } catch (e) {
@@ -536,7 +536,7 @@ for (const [label, width, height] of [['tablette', 1024, 768], ['mobile', 390, 8
     const chip = await p.locator('[data-ml-ps-draws="100"]').boundingBox();
     const run = await p.locator('[data-ml-ps-run]').boundingBox();
     record(`${label} : pastilles ≥ 36 px, bouton ≥ 44 px`, chip.height >= 36 && run.height >= 44, `${chip.height}/${run.height}`);
-    await p.waitForURL(/\/probabilites-statistiques\/\d+$/, { timeout: 12000 });
+    await p.waitForURL(/\/probabilites-statistiques\/\d+(?:\?lab=\w+)?$/, { timeout: 12000 });
     created.add(docIdOf(p.url()));
     await p.screenshot({ path: `${OUT}/11-${label}.png` });
     if (width < 700) {

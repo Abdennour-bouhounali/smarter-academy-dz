@@ -21,7 +21,7 @@ import './mathlab.css';
  * sinon. Un instrument qui n'exporte pas d'image n'a simplement pas ce bouton.
  */
 export default function MathLabShell({
-  tool, title, onTitleChange, saveState, isPersisted, onSave, toolApi, children,
+  tool, scope = null, labHome: labHomeProp = null, title, onTitleChange, saveState, isPersisted, onSave, toolApi, children,
   attachments = null, filesOpen = false, onToggleFiles = null, notice = null, onNoticeDismiss = null, banner = null,
 }) {
   const { t } = useTranslation('mathlab');
@@ -33,7 +33,10 @@ export default function MathLabShell({
   const [exportError, setExportError] = useState(false);
   const Icon = tool.icon;
   const toolName = t(tool.labelKey);
-  const labHome = mathLabBasePath(useWorkspaceBase());
+  const workspaceLabHome = mathLabBasePath(useWorkspaceBase());
+  // « Retour » ramène au مخبر où l'instrument est ouvert (MathLabToolPage),
+  // à l'accueil du مختبر pour la سبّورة.
+  const labHome = labHomeProp ?? workspaceLabHome;
 
   useEffect(() => {
     setGridOn(Boolean(toolApi?.isGridEnabled?.()));
@@ -104,6 +107,11 @@ export default function MathLabShell({
         <span className="sa-ml-toolname" title={toolName}>
           <Icon size={18} className="text-blue-500 flex-shrink-0" aria-hidden="true" />
           <span className="sa-ml-toolname__label">{toolName}</span>
+          {scope && (
+            <span className={`sa-ml-scope-badge sa-ml-scope-badge--${scope}`} data-ml-scope-badge={scope} title={t(`labs.${scope}.name`)}>
+              {t(`labs.${scope}.short`)}
+            </span>
+          )}
         </span>
 
         <input

@@ -1,6 +1,8 @@
 # Le مختبر الرياضيات (Math Lab)
 
-> **Authoritative** for the Math Lab: its information architecture, the tool
+> **Authoritative** for the Math Lab: its information architecture — the
+> shared السبّورة and the two labs مخبر المتوسط / مخبر الثانوي, with one
+> registry and curriculum-aware capabilities per instrument (§2.1) — the tool
 > contract and registry, the document model and persistence, the whiteboard
 > (السبّورة) V1 and its geometry desk (أدوات الهندسة — instruments that
 > constrain the ordinary pen, §5.8), the function grapher (راسم الدوال) V1 with its optional
@@ -70,22 +72,33 @@ Should the list fill again, an announced instrument exists only as a name
 and an icon in `PLANNED_MATH_LAB_TOOLS`, rendered as a disabled « قريبًا »
 chip on the home page: no route, no component, no placeholder screen.
 
-### 1.1 Audience — collège AND lycée (owner, 2026-09-30)
+### 1.1 Audience — collège AND lycée, in two labs (owner, 2026-09-30)
 
 The Math Lab is used by **every** student of المتوسط and الثانوي, not only by
-4AM. Consequences, binding on every instrument:
+4AM. Since 2026-09-30 the cycle boundary is **structural**: the Lab home offers
+the common السبّورة, then two labs — **مخبر المتوسط** (1AM → 4AM) and **مخبر
+الثانوي** (1AS → 3AS, Bac content) — and each shared instrument exposes the
+capabilities of the lab it is opened in (§2.1). The split follows the
+concepts each cycle actually teaches (the 2025 curriculum's *initialisée →
+réutilisée → approfondie*), not « easy vs advanced tools »: a shared
+instrument's lycée capabilities **extend** its college ones and never remove
+from them. Two instruments were assigned to a single cycle by the owner
+(2026-09-30): الهندسة ثلاثية الأبعاد to مخبر المتوسط, الاحتمالات والإحصاء to
+مخبر الثانوي.
 
-- **No content is labelled « خارج البرنامج » or « خارج برنامج الرابعة متوسط »**, and
-  none is hidden behind such a label: the normal law, the discriminant Δ,
-  exponential / logarithm functions, the unit circle, sequences… are
-  first-class content for the lycée student who opens them.
-- Where a tool groups examples, it groups them **by cycle** (« المتوسط » ·
-  « الثانوي ») or by difficulty (مبتدئ · متوسط · متقدّم), both visible.
-- A tool may still choose a sensible **default opening view** (the triangle
-  before the unit circle, the rate of change before the derivative); the older
-  rule that beyond-4AM material must wait « one click away » (§5f.10, §5g.1,
-  §5h, §5m.1) now describes those defaults only — it is no longer a
-  restriction, and the sections that cite it are historical on that point.
+Consequences, binding on every instrument:
+
+- **No content is labelled « خارج البرنامج »** inside an instrument. What a
+  cycle does not teach is simply not offered in its lab; the lycée lab shows
+  it as first-class content. The one explicit sentence of this kind is a
+  pointer, not a label: in مخبر المتوسط, a factorisation that needs « مجموع
+  وجداء » or Δ says those methods are in مخبر الثانوي (§2.1).
+- Where a tool groups examples, it groups them **by cycle** or by difficulty
+  (مبتدئ · متوسط · متقدّم).
+- The older « one click away » rules (§5f.10, §5g.1, §5h, §5m.1, §5j.1, §5k.1)
+  are historical: which features exist is now decided per lab by the
+  instrument's `capabilities` (§2.1); within a lab, a tool still chooses a
+  sensible default opening view.
 
 ## 2. Information architecture and routes
 
@@ -94,9 +107,10 @@ allowedRoles={['student']}`), French route slugs like the rest of `/espace`:
 
 | Route | Page | Role |
 |---|---|---|
-| `/espace/atelier` | `MathLabHome` | the instruments, the announced ones, and « أعمالي » — the personal **workspace** (§5i) |
-| `/espace/atelier/:toolSlug` | `MathLabToolPage` | a **new** document in that instrument (`tableau`, `grapheur`, `geometrie-3d`, `probabilites-statistiques`, `algebre`, `vecteurs`, `trigonometrie`, `suites`, `transformations`, `coniques`, `nombres` (alias `nombres-calcul`), `logique`, `mesure`) |
-| `/espace/atelier/:toolSlug/:documentId` | `MathLabToolPage` | a saved document |
+| `/espace/atelier` | `MathLabHome` (landing) | السبّورة (common, on top), the two lab choices, the announced instruments (none today), and « أعمالي » — the personal **workspace** (§5i) |
+| `/espace/atelier?lab=moyen` · `?lab=secondaire` | `MathLabHome` (lab view) | one lab: its instruments, a lab switch, السبّورة still at hand, « أعمالي » pre-filtered on that lab (§2.1) |
+| `/espace/atelier/:toolSlug[?lab=]` | `MathLabToolPage` | a **new** document in that instrument, in that lab (`tableau`, `grapheur`, `geometrie-3d`, `probabilites-statistiques`, `algebre`, `vecteurs`, `trigonometrie`, `suites`, `transformations`, `coniques`, `nombres` (alias `nombres-calcul`), `logique`, `mesure`) |
+| `/espace/atelier/:toolSlug/:documentId[?lab=]` | `MathLabToolPage` | a saved document (it keeps the lab it was born in) |
 
 `toolSlug` is resolved against the registry (`getMathLabToolBySlug`), which
 also accepts a tool's `aliases` (§3.1) — `/enseignant/atelier/nombres-calcul`
@@ -118,19 +132,132 @@ sidebar and mobile bottom tab bar), after « استكشاف ». Access follows t
 student space: any authenticated, verified student; no premium gate (the Lab
 is not lesson content). Visitors are sent to `/login` by `ProtectedRoute`.
 
+### 2.1 السبّورة + مخبر المتوسط + مخبر الثانوي — one registry, scope-aware capabilities (owner, 2026-09-30)
+
+```
+                      المختبر  (/…/atelier)
+        ┌──────────────────┼──────────────────┐
+   السبّورة (common)   مخبر المتوسط          مخبر الثانوي
+                       ?lab=moyen           ?lab=secondaire
+                            │                    │
+                 the SAME instruments, the SAME components, the SAME routes
+                 restricted capabilities      expanded capabilities
+```
+
+**Not two labs of code.** There is one `MATH_LAB_TOOLS` registry, one
+implementation per instrument, one route family. A lab is a **query
+parameter** (`?lab=moyen|secondaire`, `LAB_SCOPE_PARAM`) read by the existing
+pages — no route was added, none changed. What differs between labs is what an
+instrument *exposes*, declared by the instrument itself.
+
+**Pure logic:** `features/mathlab/labScope.js` (`LAB_SCOPES`, `resolveToolScope`,
+`toolsForScope`, `toolCapabilities`, `attachLabScope`/`stripLabScope`,
+`workLabScope`, `scopeDeclarationError`…), tested in `labScope.test.js`.
+
+#### Declaring an instrument's labs (tool contract, §3.1)
+
+- `scopes` — **required**. `'common'` (only السبّورة: on top of the home, in
+  no lab, no badge) or the list of labs, in preference order.
+- `capabilities` — optional, `{ moyen?, secondaire? }`. The shape belongs to
+  the instrument and is declared in **`tools/<name>/scope.js`**, next to a
+  `xxxFeatures(capabilities)` resolver (null → everything) and usually a
+  `clampToFeatures(data, features)` that brings a stored state back inside
+  what the lab shows **without deleting anything** (a section, a mode, a flag
+  is switched; the student's objects are kept). A capabilities object may
+  carry `descriptionKey`: the card's description in that lab.
+- `createInitialData(seed, { scope, capabilities })` — a new document may
+  open on something within its lab (the grapher opens on `2x+1` in المتوسط,
+  `x²` in الثانوي; the algebra factor section on `x² + 6x + 9` vs
+  `x² + 5x + 6`).
+- The component receives `scope` and `capabilities` props; it filters its
+  section bar, buttons, examples and generators with them, and guards every
+  transition (a hidden section cannot be reached by a stale click or a
+  « show in lab » jump).
+
+#### The classification (asserted by `labScope.test.js`)
+
+| Instrument | مخبر المتوسط | مخبر الثانوي |
+|---|---|---|
+| السبّورة `whiteboard` | common — on top of the home, for everyone | |
+| راسم الدوال `functionGrapher` | lines only: linear/affine examples, keyboard without sin/cos/tan/ln/log/e, **no المماس** (a stored tangent opens switched off), opens on `2x+1` | everything (tangent, f′, transcendental examples) |
+| الهندسة ثلاثية الأبعاد `geometry3d` | ✅ (the five solids) — **this lab only** (owner, 2026-09-30) | — |
+| الاحتمالات والإحصاء `probabilityStats` | — | ✅ all four sections, every chart and indicator — **this lab only** (owner, 2026-09-30). Its `scope.js` keeps the filtering mechanism (sections, charts, indicators, explanation folds, `clampToFeatures`), tested with a restricted fixture, ready if it ever joins a lab with fewer capabilities. |
+| مختبر الجبر `algebra` | six sections; factorisation by common factor and remarkable identities only (a trinomial that needs « مجموع وجداء », the ac-method or Δ shows `factor.beyondLab` instead of a walkthrough; no Δ fold); functions linear/affine; no rational-fraction example | everything |
+| مختبر الأشعة `vectors` | components, distance, sum (tip-to-tail, parallelogram), opposite, انسحاب — **no** k·u, no `v = k·u` factor, no analysis selector (parallel/collinear/perpendicular/dot) | everything |
+| مختبر المثلثات `trigonometry` | right triangle in degrees, 30°/45°/60°, presets `triangle`/`sohcahtoa`, tan panel — **no** circle, radians, rotation, quadrant, sign table, symmetries, inverses, comparison, experiments | everything |
+| مختبر التحويلات `transformations` | axial and central symmetry, translation, rotation, **homothety** — ONE transformation at a time (adding replaces), no matrix, no intermediate figures, no order experiment, no two-step puzzle, single-step practice | composition stack (6), matrix, every experiment/puzzle |
+| مختبر الأعداد والحساب `numberLab` | all sixteen modes | all sixteen modes (the lycée extends; the mode-filter machinery and its context stay ready for a lycée-only mode) |
+| مختبر المنطق والبرهان `logic` | limited: statements, implication (direct + converse only, no set diagram, no truth table), counterexample, fallacies; practice levels 1–3 on those families | all eleven areas, four forms, four levels |
+| مختبر القياس `measurement` | ✅ | ✅ (initialised in collège, reused in lycée) |
+| مختبر المتتاليات `sequences` · مختبر المقاطع المخروطية `conics` · مختبر التحليل والدوال `analysis` | — | ✅ |
+
+`labCapabilities.test.js` checks, per instrument, that the college never
+receives a lycée feature (generators drawn hundreds of times) and that the
+lycée has everything; `labScope.render.test.jsx` renders each shared
+component in both labs and checks the DOM hooks.
+
+#### Which lab a tool opens in (`resolveToolScope`)
+
+1. a common tool has none; a single-lab tool is always in its lab;
+2. a **saved document keeps the lab it was born in** (`data.labScope`) — even
+   if the URL asks for the other one;
+3. otherwise the URL's `?lab=`; 4. otherwise the lab last chosen in this
+   browser (`localStorage › sa-ml-lab`, a preference only); 5. otherwise the
+   tool's first lab (المتوسط for a shared tool).
+
+`MathLabToolPage` then rewrites the URL with the resolved `?lab=` (replace,
+no remount), so the address, the shell's lab badge (`data-ml-scope-badge`) and
+« retour » (`labHomePath`) always agree. The document's birth URL keeps it too
+(`mathLabToolPath(tool, id, root, scope)`).
+
+#### Persistence: the shell owns `data.labScope`
+
+`useMathLabDocument` **strips** `labScope` from the state before the tool sees
+it and **re-attaches** it on every POST/PATCH; it also adds `scope` to the
+summary (`summary.scope`) so « أعمالي » can badge and filter without loading
+any state. Tools never read or write that key. No server change, no
+migration: `data` and `summary` stay opaque to the server. A document written
+before the labs has no `labScope`; it opens in the lab from the URL or the
+last chosen one, and is stamped on its next save. Its objects are never
+deleted — a lab only hides the tools to make more of them.
+
+#### The pages
+
+- **Landing** (`LabLanding`): header, السبّورة as a wide card with the
+  « مشتركة » badge, then « اختر مخبرك » — two `LabChoiceCard`s (icon School /
+  GraduationCap, green / violet, never colour alone: name, grades line,
+  description, the row of instrument icons, the count with Arabic plurals
+  `labs.toolCount_*`, « ادخل المخبر »), then « أعمالي ».
+- **Lab** (`LabHome`, keyed by scope): « ← المختبر », eyebrow with the grades,
+  the lab's name as `h1`, a two-tab `LabSwitch` (`aria-current`), the lab's
+  instruments (each `ToolCard` links with `?lab=` and shows the lab's
+  description), السبّورة « للجميع », and « أعمالي » with its lab filter preset.
+- Strings: `mathlab.json › labs.*`; per-lab tool descriptions
+  `tools.<id>.descriptionMoyen`; colours `--sa-ml-moyen*` / `--sa-ml-secondaire*`
+  in `mathlab.css`.
+
+#### Adding or moving a capability
+
+Change the instrument's `scope.js` (and its `clampToFeatures` if a stored
+state could fall outside), then the classification tests. Never gate by lab
+anywhere else — not in a page, not in the shell, not in CSS. Access tiers
+(« الوصول والحدود ») are orthogonal: a lab decides what is *shown*, the access
+summary decides what is *open*.
+
 ## 3. The foundation (`apps/web/src/features/mathlab/`)
 
 ```
 features/mathlab/
 ├── toolContract.js        the MathLabTool contract + defineMathLabTool() validator
 ├── toolRegistry.js        MATH_LAB_TOOLS (built) · PLANNED_MATH_LAB_TOOLS (announced) · lookups
-├── mathLabDocument.js     pure document helpers: paths, new/from-API document, title cleaning
+├── mathLabDocument.js     pure document helpers: paths (with `?lab=`), new/from-API document, title cleaning
+├── labScope.js            the two labs (§2.1): scopes, resolution, capabilities, data.labScope, work lab
 ├── useMathLabDocument.js  load · autosave · title · save state (one document, any tool)
 ├── MathLabShell.jsx       the shared frame: back · tool name · title · save status · actions
 ├── MathLabToolPage.jsx    route element: slug → tool → lazy component → shell
 ├── openMathLab.js         the lesson → Lab integration point (buildMathLabLaunch / readMathLabLaunch)
 ├── mathlab.css            shell + home styles (.sa-ml-*)
-├── home/                  MathLabHome · ToolCard
+├── home/                  MathLabHome (landing + lab view) · ToolCard · LabChoiceCard · labMeta
 ├── work/                  « أعمالي » — the workspace (§5i): MyWorkSpace · WorkCard · WorkPreview ·
 │                          WorkFilterPanel · NewWorkMenu · RenameDialog · workFilters.js · mathlabWork.css
 └── tools/
@@ -176,6 +303,7 @@ features/mathlab/
                            ExplorerMode.jsx · PlaceValueMode.jsx · LineMode.jsx · FractionsMode.jsx · DecimalsMode.jsx ·
                            PercentMode.jsx · ProportionMode.jsx · DivisibilityMode.jsx · PrimesMode.jsx · FactorsMode.jsx ·
                            GcdLcmMode.jsx · RoundingMode.jsx · OperationsMode.jsx · PracticePanel.jsx · numberLab.css
+    <every shared tool>/scope.js   its lab capabilities + features resolver + clampToFeatures (§2.1)
     shared/             LabSectionNav.jsx (the section bar of a multi-tool lab) · LabKit.jsx (LabDisclosure ·
                            ExamplePicker · StepList · LabMessage) · labKit.css — see §3.4
     symbolic/           index.js (the ONLY door to Nerdamer) · symbolicEngine.js ·
@@ -240,11 +368,15 @@ A tool is a frozen object validated at module load by `defineMathLabTool`
 | `createInitialData(seed?)` | the state of a new document, empty or built from a lesson seed |
 | `load()` | lazy `import()` of the component — heavy engines never load on other pages |
 | `aliases` | **optional** — other URL segments that open the same instrument (`['nombres-calcul']` for `numberLab`). Validated like `slug`; `toolRegistry.test.js` fails if a segment or alias would open two instruments. The canonical `slug` stays the one links and saves are built from. |
+| `scopes` | **required** — `'common'` or the labs it appears in (`['moyen', 'secondaire']`), §2.1. Validated by `scopeDeclarationError`. |
+| `capabilities` | optional — `{ moyen?, secondaire? }`, what it exposes in each lab (shape owned by the tool, declared in `tools/<name>/scope.js`; `null` = everything; may carry `descriptionKey`). |
 | `summarize(data)` | **optional**, pure. The tool's own summary of its state — a few hundred bytes that let « أعمالي » draw a real preview and search the content **without loading the instrument** (§5i.2). A tool without it is not at fault: its card falls back to its icon. |
 
-The component receives `MathLabToolProps`: `initialData` (read once),
-`title`, `onChange(data)` (the new serialised state — plain JSON), and
-`onReady(api | null)`. The `api` exposes **optional** shell actions —
+The component receives `MathLabToolProps`: `initialData` (read once, without
+the shell's `labScope` key), `title`, `onChange(data)` (the new serialised
+state — plain JSON), `onReady(api | null)`, and `scope` / `capabilities` — the
+lab it is open in and what to show there (§2.1). `createInitialData(seed,
+{ scope, capabilities })` receives the same context. The `api` exposes **optional** shell actions —
 `clear()`, `exportPng(): Promise<Blob>`, `isGridEnabled()`, `toggleGrid():
 boolean` — and the shell renders only the buttons that exist. A tool that
 cannot export an image simply has no export button.
@@ -259,6 +391,9 @@ key fallback in `MathLabShell.jsx`).
 1. `tools/<name>/index.js` exporting `defineMathLabTool({...})`, with the
    component in its own file behind `load: () => import('./…Tool.jsx')`.
 2. One line in `MATH_LAB_TOOLS` (and remove it from `PLANNED_MATH_LAB_TOOLS`).
+   Declare its `scopes` (required) and, if its features differ by cycle,
+   `capabilities` from a `tools/<name>/scope.js`; add it to the
+   classification table of §2.1 and of `labScope.test.js` (§2.1).
 3. Its `id` and byte limit in the **server** registry
    `apps/api/app/Domain/MathLab/MathLabTools.php`.
 4. Its strings under `tools.<id>` in `mathlab.json` (optionally
@@ -520,7 +655,8 @@ One table for every instrument — `math_lab_documents`:
 | `schema_version` | the tool's format version, stored, never interpreted |
 | `data` (json) | the tool's serialised state — **opaque to the server** |
 | `data_bytes` | measured on every write; refused above `MathLabTools::maxBytes` (whiteboard: 2 MB, function grapher: 100 KB, 3D geometry: 20 KB, probability & statistics: 60 KB, algebra: 20 KB, vectors: 120 KB — `MAX_HISTORY × scene`, §5f.5 — trigonometry: 8 KB, §5g.8 — sequences: 8 KB, §5h.8 — transformations: 60 KB, §5j.9 — conics: 60 KB, §5k.9 — numberLab: 20 KB, §5l.10 — analysis: 8 KB, §5m.7 — logic: 8 KB, §5n.10 — measurement: 40 KB, §5o.8) |
-| `summary` (json, nullable) | the **tool's own summary** of `data` (§5i.2), sent with every save, returned **in the list**. Opaque to the server like `data`; above `MathLabDocumentService::MAX_SUMMARY_BYTES` (2 KB) it is stored as `null` rather than refusing the save — a thumbnail never costs a student their work. `null` on every document written before this column existed. |
+| `data.labScope` | reserved for the **shell** (§2.1): `moyen` / `secondaire` for a shared tool, absent otherwise. Stripped before the tool sees its state, re-attached at every save. |
+| `summary` (json, nullable) | the **tool's own summary** of `data` (§5i.2), plus `scope` added by the shell (§2.1), sent with every save, returned **in the list**. Opaque to the server like `data`; above `MathLabDocumentService::MAX_SUMMARY_BYTES` (2 KB) it is stored as `null` rather than refusing the save — a thumbnail never costs a student their work. `null` on every document written before this column existed. |
 | `is_favorite` (bool) | the student's star (§5i.5). `false` by default, so no existing row is invalidated. |
 
 API (`routes/api.php`, inside the `auth:sanctum` + `account.active` +
@@ -3881,6 +4017,11 @@ Tidying gestures live in a single `⋮` menu — open, rename, duplicate,
 favourite, delete — never five buttons per card. The star is the one action
 promoted out of the menu, because it is the one a student repeats.
 
+The card also carries the **lab badge** (`data-ml-work-lab-badge`, « المتوسط »
+/ « الثانوي ») from `workLabScope(work, tool)`: the summary's `scope`, else the
+instrument's only lab (an older analysis work is still « الثانوي »), else none
+(السبّورة, an older work of a shared tool) — §2.1.
+
 A document whose tool has left the registry stays **visible** but does not
 open, and says why (« هذه الأداة لم تعد متوفّرة »). A student's work is never
 silently hidden because an instrument was retired.
@@ -3900,10 +4041,17 @@ put in its summary — which is why « 2x + 3 » finds an algebra document and
 
 ### 5i.5 Filters, sorting, selection
 
-Filters: by instrument (from the **registry**, each chip carrying its count),
-by period (`today` / `week` / `month`, the last two being 7 and 30 rolling
+Filters: by **lab** first (`lab`: كل المخابر / مخبر المتوسط / مخبر الثانوي,
+counted with `workLabScope`; once a lab is chosen, only its instruments stay
+as chips; on a lab page the workspace opens with that lab pre-filtered —
+`MyWorkSpace initialLab` — a removable pill like any other), by instrument
+(from the **registry**, each chip carrying its count), by period (`today` / `week` / `month`, the last two being 7 and 30 rolling
 days — « recently », not « since Sunday »), and favourites. Active filters
 are always visible as removable pills, with « مسح الكل » past the first.
+
+« + عمل جديد » (`NewWorkMenu`) is grouped like the home: « للجميع »
+(السبّورة), then each lab and its instruments, every link opening the tool IN
+that lab (`?lab=`); on a lab page, only السبّورة and that lab.
 
 Sorting: recently modified (default), recently created, oldest, name أ→ي and
 ي→أ. Search, filters and sort **combine and never reset one another**.
@@ -5009,10 +5157,20 @@ features/mathlab/overlay/
 ├── MathLabToolPicker.jsx       the chooser — the Lab HOME's own design (same eyebrow,
 │                               title, `.sa-ml-cards` grid and ToolCard look), rendered
 │                               in the layer; buttons, not links, so nothing navigates
-├── MathLabEntryButton.jsx      the pill
+├── MathLabEntryButton.jsx      the pill — `scope` = the lesson's cycle (`levelId` / `config.level`)
 ├── overlayState.js             PURE decisions (+ .test.js): escapeAction, fullscreenAction, nextTool
 └── mathLabOverlay.css          `sa-mlo-*`
 ```
+
+**The two labs in the layer (§2.1).** `open(PICKER, { scope })` stores the
+lesson's cycle in the provider as a plain string (the provider stays light —
+`labScope.js` is only imported by the lazily-loaded layer). The picker shows
+السبّورة first (« مشتركة »), then the chosen lab's instruments with their
+lab description, and two tabs (`data-ml-overlay-lab`, `aria-pressed`) to
+switch labs without leaving the lesson. An opened instrument resolves its
+lab like the page does, receives `scope` / `capabilities`, is created with
+`createInitialData(undefined, { scope, capabilities })`, and the layer's bar
+shows its lab badge. A 4AM lesson therefore opens the grapher without المماس.
 
 **Why a layer and not a route.** Closing must return the student to the same
 module, the same scroll, the same typed answer, the same reached step. A
@@ -5140,7 +5298,11 @@ another instrument. Each tool documents its own seed shape:
 
 | What | Where |
 |---|---|
-| Registry ↔ server ids, contract, labels | `features/mathlab/toolRegistry.test.js` |
+| Registry ↔ server ids, contract, labels, the required `scopes` declaration | `features/mathlab/toolRegistry.test.js` |
+| The two labs (§2.1): the exact classification of the fourteen instruments, lab resolution order, `?lab=` paths, `data.labScope` strip/attach, summary scope, per-lab opening state, « أعمالي » lab filter, lab strings and plurals | `features/mathlab/labScope.test.js` |
+| Per-lab capabilities of every shared instrument: the college never receives a lycée feature (grapher tangent/keyboard/presets; the statistics filtering mechanism on a restricted fixture; algebra Δ, sum–product, second degree; vectors k·u and analyses; trigonometry circle/radians/panels, 300 drawn exercises; transformations composition and matrix, 400 drawn exercises; logic areas, forms and 900 drawn exercises), the lycée has everything, stored states clamped without data loss | `features/mathlab/labCapabilities.test.js` |
+| The same components rendered in both labs: absent/present DOM hooks per lab | `features/mathlab/labScope.render.test.jsx` |
+| Browser, the two labs: landing order (السبّورة → two choices → أعمالي), exact tool sets per lab, `?lab=` links, switch and back, every shared tool opened in both labs with absent/present hooks, single-lab tools redirected to their lab, a document born in المتوسط reopening there without `?lab=` and even when asked for الثانوي, `data.labScope` and `summary.scope` on the server, « أعمالي » badge / filter / grouped « عمل جديد », teacher routes, the lesson overlay opening on the lesson's lab, 1280 and 390 px without overflow — **141 checks** | `apps/web/e2e/mathlab-labs-scope.mjs` (Vite 5173, API 8000, QA student + QA teacher; the free QA student's document quota is exhausted, so persistence runs on the teacher) |
 | Document helpers, launch helper, whiteboard state, whiteboard import validation, file policy (incl. server parity, size boundary, board/account/combined/multi-select plans) | `mathLabDocument.test.js`, `openMathLab.test.js`, `tools/whiteboard/whiteboardState.test.js`, `tools/whiteboard/whiteboardImport.test.js`, `attachments/attachmentPolicy.test.js` |
 | Grapher: parser and evaluator (the whole subset, every error code, parameters), sampler (poles, domain edges, steep lines, clamping), viewport maths, grid step, number format, state normalisation and seeds | `tools/functionGrapher/*.test.js` (104 tests) |
 | Derivative maths: `derivativeAt` against closed forms, refusals (edge, pole, corner), no false corners on curved functions, tangent, `constrainAlongCurve`, f′ sampled with cuts | `tools/functionGrapher/numericalDerivative.test.js` |

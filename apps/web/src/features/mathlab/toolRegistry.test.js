@@ -137,6 +137,7 @@ describe('defineMathLabTool', () => {
   const valid = {
     id: 'demo', slug: 'demo', labelKey: 'a', descriptionKey: 'b', newLabelKey: 'c', defaultTitleKey: 'd',
     icon: () => null, schemaVersion: 1, createInitialData: () => ({}), load: () => Promise.resolve({ default: () => null }),
+    scopes: 'common',
   };
 
   it('refuse une définition incomplète, au chargement et non au premier clic', () => {
@@ -145,6 +146,18 @@ describe('defineMathLabTool', () => {
     expect(() => defineMathLabTool({ ...valid, slug: 'Tableau' })).toThrow(/URL/);
     expect(() => defineMathLabTool({ ...valid, schemaVersion: 0 })).toThrow(/schemaVersion/);
     expect(() => defineMathLabTool({ ...valid, summarize: 'pas une fonction' })).toThrow(/summarize/);
+  });
+
+  it('exige que l’instrument dise dans quel مخبر il vit (labScope.js)', () => {
+    expect(() => defineMathLabTool({ ...valid, scopes: undefined })).toThrow(/scopes/);
+    expect(() => defineMathLabTool({ ...valid, scopes: [] })).toThrow(/scopes/);
+    expect(() => defineMathLabTool({ ...valid, scopes: ['college'] })).toThrow(/scopes/);
+    expect(() => defineMathLabTool({ ...valid, scopes: ['moyen', 'moyen'] })).toThrow(/scopes/);
+    // Un instrument commun n'a pas de capacités à déclarer…
+    expect(() => defineMathLabTool({ ...valid, capabilities: { moyen: null } })).toThrow(/commun/);
+    // …et un instrument ne déclare de capacités QUE pour ses مخابر.
+    expect(() => defineMathLabTool({ ...valid, scopes: ['moyen'], capabilities: { secondaire: null } })).toThrow(/secondaire/);
+    expect(() => defineMathLabTool({ ...valid, scopes: ['moyen', 'secondaire'], capabilities: { moyen: { tangent: false }, secondaire: null } })).not.toThrow();
   });
 
   it('`summarize` reste FACULTATIF : un instrument sans résumé se définit encore', () => {

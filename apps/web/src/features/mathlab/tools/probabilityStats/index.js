@@ -1,6 +1,7 @@
 import { Dice5 } from 'lucide-react';
 import { defineMathLabTool } from '../../toolContract.js';
 import { PROBABILITY_STATS_SCHEMA_VERSION, createProbabilityStatsData } from './probabilityState.js';
+import { PROBABILITY_CAPABILITIES, PROBABILITY_SCOPES } from './scope.js';
 import { summarizeProbabilityStats } from './summarize.js';
 
 /**
@@ -27,6 +28,9 @@ export const probabilityStatsTool = defineMathLabTool({
   defaultTitleKey: 'tools.probabilityStats.defaultTitle',
   icon: Dice5,
   schemaVersion: PROBABILITY_STATS_SCHEMA_VERSION,
+  // مخبر الثانوي seulement, toutes sections (scope.js).
+  scopes: PROBABILITY_SCOPES,
+  capabilities: PROBABILITY_CAPABILITIES,
   createInitialData: createProbabilityStatsData,
   summarize: summarizeProbabilityStats,
   load: () => import('./ProbabilityStatsTool.jsx'),

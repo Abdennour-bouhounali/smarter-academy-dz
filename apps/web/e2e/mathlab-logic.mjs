@@ -133,8 +133,8 @@ async function goArea(page, area) {
   const page = await context.newPage();
   wire(page);
 
-  await page.goto(`${BASE}/espace/atelier`, { waitUntil: 'networkidle' });
-  const card = page.locator('a[href*="/atelier/logique"]').first();
+  await page.goto(`${BASE}/espace/atelier?lab=secondaire`, { waitUntil: 'networkidle' });
+  const card = page.locator('a[href*="/atelier/logique?lab=secondaire"]').first();
   record('accueil : la carte de l’instrument est présente', await card.count() > 0);
   await shot(page, '01-home');
 
@@ -186,7 +186,7 @@ async function goArea(page, area) {
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/logique`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/logique?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-lg-root]', { timeout: 15000 });
 
   await goArea(page, 'statements');
@@ -257,7 +257,7 @@ async function goArea(page, area) {
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/logique`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/logique?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-lg-root]', { timeout: 15000 });
 
   await goArea(page, 'implication');
@@ -335,7 +335,7 @@ async function goArea(page, area) {
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/logique`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/logique?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-lg-root]', { timeout: 15000 });
 
   await goArea(page, 'quantifiers');
@@ -398,7 +398,7 @@ async function goArea(page, area) {
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/logique`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/logique?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-lg-root]', { timeout: 15000 });
 
   await goArea(page, 'proof');
@@ -493,7 +493,7 @@ async function goArea(page, area) {
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/logique`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/logique?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-lg-root]', { timeout: 15000 });
 
   await goArea(page, 'induction');
@@ -778,7 +778,7 @@ async function goArea(page, area) {
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/logique`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/logique?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-lg-root]', { timeout: 15000 });
 
   await page.click('[data-ml-lg-practice-toggle]');
@@ -891,7 +891,7 @@ async function goArea(page, area) {
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/logique`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/logique?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-lg-root]', { timeout: 15000 });
 
   // §2 : la page est RTL, la notation est LTR — direction CALCULÉE, pas l'attribut.

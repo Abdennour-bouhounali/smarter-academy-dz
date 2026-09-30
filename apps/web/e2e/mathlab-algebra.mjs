@@ -141,7 +141,7 @@ async function setEquation(page, text) {
   const page = await context.newPage();
   attach(page);
 
-  await page.goto(`${BASE}/espace/atelier`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier?lab=secondaire`, { waitUntil: 'networkidle' });
   const card = page.locator('a, button').filter({ hasText: 'مختبر الجبر' }).first();
   const cardVisible = await card.count() > 0;
   record('accueil — la carte « مختبر الجبر » est présente', cardVisible);
@@ -152,7 +152,7 @@ async function setEquation(page, text) {
     !plannedText.join(' ').includes('الجبر'),
     plannedText.join(' ').includes('الجبر') ? 'encore annoncée' : '');
 
-  await page.goto(`${BASE}/espace/atelier/algebre`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/algebre?lab=secondaire`, { waitUntil: 'networkidle' });
   await sleep(600);
 
   const equation = await currentEquation(page);
@@ -185,7 +185,7 @@ let createdDocId = null;
   const context = await authedContext({ viewport: { width: 1440, height: 900 } });
   const page = await context.newPage();
   attach(page);
-  await page.goto(`${BASE}/espace/atelier/algebre`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/algebre?lab=secondaire`, { waitUntil: 'networkidle' });
   await sleep(600);
 
   // Le chemin canonique du cahier des charges : 2x + 3 = 11 → −3 → ÷2 → x = 4.
@@ -277,7 +277,7 @@ if (createdDocId) {
   const context = await authedContext({ viewport: { width: 1440, height: 900 } });
   const page = await context.newPage();
   attach(page);
-  await page.goto(`${BASE}/espace/atelier/algebre`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/algebre?lab=secondaire`, { waitUntil: 'networkidle' });
   await sleep(600);
 
   await setEquation(page, '2x + 3 = 2x + 5');
@@ -329,7 +329,7 @@ if (createdDocId) {
   const context = await authedContext({ viewport: { width: 1440, height: 900 } });
   const page = await context.newPage();
   attach(page);
-  await page.goto(`${BASE}/espace/atelier/algebre`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/algebre?lab=secondaire`, { waitUntil: 'networkidle' });
   await sleep(600);
 
   await setEquation(page, 'x/3 = 5');
@@ -385,7 +385,7 @@ if (createdDocId) {
   const context = await authedContext({ viewport: { width: 1440, height: 900 } });
   const page = await context.newPage();
   attach(page);
-  await page.goto(`${BASE}/espace/atelier/algebre`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/algebre?lab=secondaire`, { waitUntil: 'networkidle' });
   await sleep(700);
 
   const htmlDir = await page.evaluate(() => document.documentElement.getAttribute('dir'));
@@ -437,7 +437,7 @@ for (const [label, viewport] of [['tablette', { width: 834, height: 1112 }], ['m
   const context = await authedContext({ viewport, hasTouch: true, isMobile: label === 'mobile' });
   const page = await context.newPage();
   attach(page);
-  await page.goto(`${BASE}/espace/atelier/algebre`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/algebre?lab=secondaire`, { waitUntil: 'networkidle' });
   await sleep(800);
 
   const overflow = await page.evaluate(() => ({
@@ -487,7 +487,7 @@ for (const [label, viewport] of [['tablette', { width: 834, height: 1112 }], ['m
   attach(page);
   // La redirection part avant la fin du chargement : `networkidle` n'arrive
   // jamais de façon fiable ici, on attend l'URL.
-  await page.goto(`${BASE}/espace/atelier/algebre`, { waitUntil: 'domcontentloaded' });
+  await page.goto(`${BASE}/espace/atelier/algebre?lab=secondaire`, { waitUntil: 'domcontentloaded' });
   await page.waitForURL((url) => !/\/espace\/atelier\/algebre/.test(url.toString()), { timeout: 15000 }).catch(() => {});
   record('visiteur non connecté — renvoyé hors de l’atelier', !/\/espace\/atelier\/algebre/.test(page.url()), page.url());
   await context.close();

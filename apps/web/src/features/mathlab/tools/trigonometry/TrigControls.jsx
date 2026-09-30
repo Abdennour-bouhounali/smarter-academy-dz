@@ -26,9 +26,16 @@ export default function TrigControls({
   data, state, playing, reducedMotion, speed, direction,
   onAngle, onNudge, onNormalize, onUnit, onValueMode, onRadius, onMode,
   onLayer, onPreset, onExperiment, onInverse, onSymmetry, onCompare,
-  onTriangleValue, onPlayToggle, onSpeed, onDirection, onPractice,
+  onTriangleValue, onPlayToggle, onSpeed, onDirection, onPractice, features = null,
 }) {
   const { t } = useTranslation('mathlab');
+  // Le مخبر (scope.js) : au collège, un seul mode (le triangle), une seule
+  // unité (le degré), trois angles remarquables, et pas de panneau du cercle.
+  const modes = features?.modes ?? ['triangle', 'circle'];
+  const units = features?.units ?? ['deg', 'rad'];
+  const specialAngles = features?.specialAngles ?? SPECIAL_DEGREES;
+  const presets = features?.presets ?? PRESETS;
+  const panels = { rotation: true, layers: true, symmetry: true, inverse: true, compare: true, experiments: true, ...(features?.panels ?? {}) };
   const [typed, setTyped] = useState(null);
 
   /** La saisie : on ne pousse la valeur que si elle est LISIBLE (§40). */
@@ -56,8 +63,9 @@ export default function TrigControls({
     <div className="sa-ml-trig__controls">
       {/* ── L'ANGLE (§4) ──────────────────────────────────────────────── */}
       <Section id="angle" title={t('tools.trigonometry.sections.angle')} defaultOpen>
+        {units.length > 1 && (
         <div className="sa-ml-trig__unitswitch" role="group" aria-label={t('tools.trigonometry.unitLabel')}>
-          {['deg', 'rad'].map((unit) => (
+          {units.map((unit) => (
             <button
               key={unit}
               type="button"
@@ -70,6 +78,7 @@ export default function TrigControls({
             </button>
           ))}
         </div>
+        )}
 
         <label className="sa-ml-trig__field">
           <span className="sa-ml-trig__field-label">{t('tools.trigonometry.angleValue')}</span>
@@ -120,6 +129,7 @@ export default function TrigControls({
         </div>
 
         {/* La rotation continue (§4) — arrêtée par défaut sous mouvement réduit (§38). */}
+        {panels.rotation && (
         <div className="sa-ml-trig__playbar" role="group" aria-label={t('tools.trigonometry.rotation')}>
           <button
             type="button"
@@ -165,7 +175,8 @@ export default function TrigControls({
             <ChevronsLeft size={16} aria-hidden="true" />
           </button>
         </div>
-        {reducedMotion && (
+        )}
+        {panels.rotation && reducedMotion && (
           <p className="sa-ml-trig__note" data-ml-trig-reducednote>{t('tools.trigonometry.reducedMotionNote')}</p>
         )}
 
@@ -201,7 +212,7 @@ export default function TrigControls({
       {/* ── LES ANGLES REMARQUABLES (§6) ──────────────────────────────── */}
       <Section id="special" title={t('tools.trigonometry.sections.special')} defaultOpen>
         <div className="sa-ml-trig__chips" role="group" aria-label={t('tools.trigonometry.sections.special')}>
-          {SPECIAL_DEGREES.map((degrees) => (
+          {specialAngles.map((degrees) => (
             <button
               key={degrees}
               type="button"
@@ -218,8 +229,9 @@ export default function TrigControls({
 
       {/* ── LE MODE (§9) ──────────────────────────────────────────────── */}
       <Section id="mode" title={t('tools.trigonometry.sections.mode')} defaultOpen>
+        {modes.length > 1 && (
         <div className="sa-ml-trig__unitswitch" role="group" aria-label={t('tools.trigonometry.sections.mode')}>
-          {['triangle', 'circle'].map((mode) => (
+          {modes.map((mode) => (
             <button
               key={mode}
               type="button"
@@ -232,6 +244,7 @@ export default function TrigControls({
             </button>
           ))}
         </div>
+        )}
 
         {data.mode === 'triangle' ? (
           <TriangleControls triangle={data.triangle} state={state} onTriangleValue={onTriangleValue} t={t} />
@@ -264,7 +277,7 @@ export default function TrigControls({
       {/* ── LES PRÉRÉGLAGES (§27) ─────────────────────────────────────── */}
       <Section id="presets" title={t('tools.trigonometry.sections.presets')}>
         <div className="sa-ml-trig__chips">
-          {PRESETS.map((preset) => (
+          {presets.map((preset) => (
             <button
               key={preset.id}
               type="button"
@@ -280,6 +293,7 @@ export default function TrigControls({
       </Section>
 
       {/* ── LES COUCHES (§30) ─────────────────────────────────────────── */}
+      {panels.layers && (
       <Section id="layers" title={t('tools.trigonometry.sections.layers')}>
         {LAYER_GROUPS.map((group) => (
           <fieldset key={group.id} className="sa-ml-trig__layergroup">
@@ -298,8 +312,10 @@ export default function TrigControls({
           </fieldset>
         ))}
       </Section>
+      )}
 
       {/* ── LES SYMÉTRIES (§21) ───────────────────────────────────────── */}
+      {panels.symmetry && (
       <Section id="symmetry" title={t('tools.trigonometry.sections.symmetry')}>
         <div className="sa-ml-trig__chips">
           {['negate', 'supplement', 'opposite', 'complement'].map((kind) => (
@@ -318,8 +334,10 @@ export default function TrigControls({
         </div>
         {data.symmetry && <SymmetryReadout data={data} t={t} />}
       </Section>
+      )}
 
       {/* ── LES RÉCIPROQUES (§24) ─────────────────────────────────────── */}
+      {panels.inverse && (
       <Section id="inverse" title={t('tools.trigonometry.sections.inverse')}>
         <div className="sa-ml-trig__chips">
           {['sin', 'cos', 'tan'].map((ratio) => (
@@ -340,8 +358,10 @@ export default function TrigControls({
           <InverseReadout inverse={data.inverse} onInverse={onInverse} onAngle={onAngle} t={t} />
         )}
       </Section>
+      )}
 
       {/* ── LA COMPARAISON DE DEUX ANGLES (§33, §34) ──────────────────── */}
+      {panels.compare && (
       <Section id="compare" title={t('tools.trigonometry.sections.compare')}>
         <label className="sa-ml-trig__check">
           <input
@@ -356,8 +376,10 @@ export default function TrigControls({
           <CompareReadout data={data} state={state} onCompare={onCompare} t={t} />
         )}
       </Section>
+      )}
 
       {/* ── LES EXPÉRIENCES (§26, §29) ────────────────────────────────── */}
+      {panels.experiments && (
       <Section id="experiments" title={t('tools.trigonometry.sections.experiments')}>
         <p className="sa-ml-trig__hint">{t('tools.trigonometry.experimentsHint')}</p>
         <div className="sa-ml-trig__chips">
@@ -374,6 +396,7 @@ export default function TrigControls({
           ))}
         </div>
       </Section>
+      )}
 
       {/* ── L'ENTRAÎNEMENT (§25) ──────────────────────────────────────── */}
       <Section id="practice" title={t('tools.trigonometry.sections.practice')}>

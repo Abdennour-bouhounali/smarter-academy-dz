@@ -4,12 +4,12 @@ import { GraduationCap, NotebookPen } from 'lucide-react';
 import { useNotebook } from '../../../practice/notebook/NotebookProvider';
 import { escapeHtml } from '../../../practice/notebook/noteContent';
 import {
-  AREAS, normalizeLogicData, clearLogicData, setArea,
+  normalizeLogicData, clearLogicData, setArea,
   togglePractice, setPracticeLevel, recordSolved, recordSeen, recordHint,
   setStatement, setImplication, setImplicationForm, setEquivalence,
   setCounterexampleChallenge, setCondition, setQuantifier, setNegationQuantifier, setProof, setFallacy,
 } from './logicState.js';
-import { generateChallenge, kindsForLevel } from './practice.js';
+import { generateChallenge } from './practice.js';
 import StatementsArea from './StatementsArea.jsx';
 import ConnectorsArea from './ConnectorsArea.jsx';
 import ImplicationArea from './ImplicationArea.jsx';
@@ -24,6 +24,7 @@ import FallacyArea from './FallacyArea.jsx';
 import PracticePanel from './PracticePanel.jsx';
 import DictionaryPanel from './DictionaryPanel.jsx';
 import './logic.css';
+import { clampToFeatures, logicFeatures, practiceKindsFor } from './scope.js';
 
 /**
  * مختبر المنطق والبرهان — le composant de l'instrument.
@@ -43,9 +44,12 @@ import './logic.css';
  * the previous render » a déjà fait tomber un instrument entier
  * (MATH_LAB.md §4.1, 2026-09-22).
  */
-export default function LogicLabTool({ initialData, onChange, onReady }) {
+export default function LogicLabTool({ initialData, onChange, onReady, capabilities = null }) {
   const { t } = useTranslation('mathlab');
-  const [data, setData] = useState(() => normalizeLogicData(initialData));
+  // Le مخبر (scope.js) : au collège, l'énoncé, la réciproque, le contre-exemple
+  // et les erreurs de raisonnement — ni quantificateurs, ni tables, ni preuves.
+  const features = useMemo(() => logicFeatures(capabilities), [capabilities]);
+  const [data, setData] = useState(() => clampToFeatures(normalizeLogicData(initialData), features));
   // Sur téléphone, le pupitre s'ouvre REPLIÉ : la scène garde la hauteur
   // (§3.5 — la figure et sa lecture dans le même regard). Un bouton le rouvre.
   const [panelOpen, setPanelOpen] = useState(() => {
@@ -85,8 +89,8 @@ export default function LogicLabTool({ initialData, onChange, onReady }) {
 
   /* ── L'entraînement (§38) : une question tirée de la graine ─────────── */
   const challenge = useMemo(
-    () => (data.practice.open ? generateChallenge(challengeSeed, kindsForLevel(data.practice.level)) : null),
-    [data.practice.open, data.practice.level, challengeSeed],
+    () => (data.practice.open ? generateChallenge(challengeSeed, practiceKindsFor(data.practice.level, features)) : null),
+    [data.practice.open, data.practice.level, challengeSeed, features],
   );
 
   // Une question VUE est comptée une fois, quand elle apparaît.
@@ -101,14 +105,14 @@ export default function LogicLabTool({ initialData, onChange, onReady }) {
 
   /** §37 — « اعرضه في المختبر » : ouvrir l'aire qui MONTRE la réponse. */
   const showInLab = useCallback((target) => {
-    if (!target) return;
+    if (!target || !features.areas.includes(target.area)) return;
     commit((current) => {
       let next = setArea(current, target.area);
       switch (target.area) {
         case 'statements': next = setStatement(next, target.id); break;
         case 'implication':
           next = setImplication(next, target.id);
-          if (target.form) next = setImplicationForm(next, target.form);
+          if (target.form && features.implicationForms.includes(target.form)) next = setImplicationForm(next, target.form);
           break;
         case 'equivalence': next = setEquivalence(next, target.id); break;
         case 'counterexample': next = setCounterexampleChallenge(next, target.id); break;
@@ -123,7 +127,7 @@ export default function LogicLabTool({ initialData, onChange, onReady }) {
       return next;
     });
     announce(t('tools.logic.announce.areaChanged', { area: t(`tools.logic.areas.${target.area}`) }));
-  }, [commit, announce, t]);
+  }, [commit, announce, t, features]);
 
   /* ── Le cahier de l'élève (§41) : celui de la plateforme, pas un second ── */
   const notebook = useNotebook();
@@ -148,7 +152,7 @@ export default function LogicLabTool({ initialData, onChange, onReady }) {
     <div className="sa-ml-lg" data-ml-lg-root data-ml-lg-current-area={data.area}>
       {/* ── Les dix aires ─────────────────────────────────────────────── */}
       <nav className="sa-ml-lg__areas" aria-label={t('tools.logic.areasLabel')}>
-        {AREAS.map((area) => (
+        {features.areas.map((area) => (
           <button
             key={area}
             type="button"
@@ -174,7 +178,8 @@ export default function LogicLabTool({ initialData, onChange, onReady }) {
             data={data}
             onChange={commit}
             announce={announce}
-            onGoToProof={() => commit((current) => setArea(current, 'proof'))}
+            onGoToProof={features.areas.includes('proof') ? () => commit((current) => setArea(current, 'proof')) : null}
+            features={features}
           />
         </main>
 
@@ -218,6 +223,7 @@ export default function LogicLabTool({ initialData, onChange, onReady }) {
             <PracticePanel
               challenge={challenge}
               level={data.practice.level}
+              maxLevel={features.practiceLevels}
               solved={data.practice.solved}
               seen={data.practice.seen}
               onLevel={(level) => { commit((c) => setPracticeLevel(c, level)); setChallengeSeed((s) => s + 1); }}

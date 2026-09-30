@@ -49,24 +49,31 @@ function Derivation({ kind, values, stats, seriesKey }) {
  * avec les nombres de LA série, opération par opération, le résultat en
  * dernier. L'élève qui a déjà lu x̄ dans la grille voit ici d'où il vient.
  */
-export default function StatisticsExplanations({ values, stats }) {
+export default function StatisticsExplanations({ values, stats, shown = null }) {
   const { t } = useTranslation('mathlab');
   const seriesKey = useMemo(() => values.join(';'), [values]);
   if (stats.n === 0) return null;
   const k = (key) => `tools.probabilityStats.explain.${key}`;
   const derivation = (kind) => <Derivation kind={kind} values={values} stats={stats} seriesKey={seriesKey} />;
+  // `shown` : les plis de ce مخبر (scope.js) — au collège, ni quartiles ni variance.
+  const show = (kind) => !shown || shown.includes(kind);
 
   return (
     <section className="sa-ml-ps__explanations" aria-labelledby="ml-ps-explain-heading" data-ml-ps-explanations>
       <h3 id="ml-ps-explain-heading" className="sa-ml-ps__heading">{t(k('heading'))}</h3>
+      {show('mean') && (
       <LabDisclosure kind="rule" title={t(k('meanTitle'))} dataAttr="data-ml-ps-explain-mean">
         <p>{t(k('meanWhy'))}</p>
         {derivation('mean')}
       </LabDisclosure>
+      )}
+      {show('median') && (
       <LabDisclosure kind="rule" title={t(k('medianTitle'))} dataAttr="data-ml-ps-explain-median">
         <p>{t(k(stats.n % 2 === 1 ? 'medianWhyOdd' : 'medianWhyEven'))}</p>
         {derivation('median')}
       </LabDisclosure>
+      )}
+      {show('mode') && (
       <LabDisclosure kind="rule" title={t(k('modeTitle'))} dataAttr="data-ml-ps-explain-mode">
         <p>{t(k('modeWhy'))}</p>
         <p>
@@ -75,25 +82,34 @@ export default function StatisticsExplanations({ values, stats }) {
           {stats.modes.kind === 'values' && stats.modes.values.length === 1 && t(k('modeOne'), { count: stats.modes.count })}
         </p>
       </LabDisclosure>
+      )}
+      {show('quartiles') && (
       <LabDisclosure kind="rule" title={t(k('quartilesTitle'))} dataAttr="data-ml-ps-explain-quartiles">
         <p>{t(k('quartilesWhy'))}</p>
         {derivation('quartiles')}
         <p className="sa-ml-ps__hint">{t(k('quartilesConvention'))}</p>
       </LabDisclosure>
+      )}
+      {show('range') && (
       <LabDisclosure kind="rule" title={t(k('rangeTitle'))} dataAttr="data-ml-ps-explain-range">
         <p>{t(k('rangeWhy'))}</p>
         {derivation('range')}
       </LabDisclosure>
+      )}
+      {show('variance') && (
       <LabDisclosure kind="rule" title={t(k('varianceOnlyTitle'))} dataAttr="data-ml-ps-explain-variance">
         <p>{t(k('varianceWhy'))}</p>
         {derivation('variance')}
         <p className="sa-ml-ps__hint">{t(k('population'))}</p>
         {stats.n > MAX_SUBSTITUTION_TERMS && <p className="sa-ml-ps__hint">{t(k('tooLongToWrite'))}</p>}
       </LabDisclosure>
+      )}
+      {show('sd') && (
       <LabDisclosure kind="rule" title={t(k('sdTitle'))} dataAttr="data-ml-ps-explain-sd">
         <p>{t(k('sdWhy'))}</p>
         {derivation('sd')}
       </LabDisclosure>
+      )}
     </section>
   );
 }

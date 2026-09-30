@@ -33,7 +33,7 @@ import StatisticsExplanations from './StatisticsExplanations.jsx';
  * qu'après 250 ms de calme (dans l'outil).
  */
 export default function DatasetSection({
-  title, draft, chart, settings, compact, onType, onReplace, onChart, onToggle,
+  title, draft, chart, settings, compact, onType, onReplace, onChart, onToggle, features = null,
 }) {
   const { t } = useTranslation('mathlab');
   const [highlight, setHighlight] = useState(null);
@@ -43,7 +43,13 @@ export default function DatasetSection({
   const stats = useMemo(() => describeDataset(values), [values]);
   const sortedValues = useMemo(() => sorted(values), [values]);
   const availability = useMemo(() => chartAvailability(values), [values]);
-  const resolved = useMemo(() => resolveChart(chart, values), [chart, values]);
+  // Un graphique que le مخبر ne montre pas (la boîte au collège) n'est
+  // jamais dessiné : on revient au choix automatique, toujours permis.
+  const allowedCharts = features?.charts ?? null;
+  const resolved = useMemo(
+    () => resolveChart(allowedCharts && chart !== null && !allowedCharts.includes(chart) ? null : chart, values),
+    [chart, values, allowedCharts],
+  );
   const grouping = tableGrouping(resolved.chart, values);
   const rows = useMemo(() => (grouping === 'classes' ? classRows(values) : valueRows(values)), [grouping, values]);
   const distribution = useMemo(() => {
@@ -101,7 +107,7 @@ export default function DatasetSection({
         onChange={onType}
       />
       <DatasetChips text={draft} onReplace={onReplace} onHighlightValue={highlightValue} />
-      <ChartTypePicker active={stats.n > 0 ? resolved.chart : null} availability={availability} fallback={resolved.fallback} onChange={onChart} />
+      <ChartTypePicker active={stats.n > 0 ? resolved.chart : null} availability={availability} fallback={resolved.fallback} onChange={onChart} types={allowedCharts ?? undefined} />
       <section className="sa-ml-ps__section" aria-labelledby="ml-ps-markers">
         <h3 id="ml-ps-markers" className="sa-ml-ps__heading">{t('tools.probabilityStats.optionsHeading')}</h3>
         <div className="sa-ml-ps__options">
@@ -131,10 +137,10 @@ export default function DatasetSection({
           })}
         </p>
       )}
-      <SortedStrip sortedValues={sortedValues} rowKeyOf={rowKeyOf} highlight={highlight} onHighlight={setHighlight} />
+      <SortedStrip sortedValues={sortedValues} rowKeyOf={rowKeyOf} highlight={highlight} onHighlight={setHighlight} quartiles={!features || features.stats.includes('q1')} />
       <section className="sa-ml-ps__section" aria-labelledby="ml-ps-stats-heading">
         <h3 id="ml-ps-stats-heading" className="sa-ml-ps__heading">{t('tools.probabilityStats.statsHeading')}</h3>
-        <StatisticsSummary stats={stats} />
+        <StatisticsSummary stats={stats} shown={features?.stats} />
       </section>
       <FrequencyTable
         rows={rows}
@@ -144,7 +150,7 @@ export default function DatasetSection({
         highlight={highlight}
         onHighlight={setHighlight}
       />
-      <StatisticsExplanations values={values} stats={stats} />
+      <StatisticsExplanations values={values} stats={stats} shown={features?.explanations} />
     </>
   );
 

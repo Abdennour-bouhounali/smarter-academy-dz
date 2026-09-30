@@ -222,15 +222,15 @@ try {
   // Une carte par instrument LIVRÉ — le nombre suit le registre, il n'est
   // plus écrit ici : l'assertion « exactement trois » datait du jour où le
   // مختبر en avait trois, et elle a vieilli à chaque instrument livré.
-  {
-    const cards = await page.locator('[data-ml-tool-card]').count();
-    const named = await Promise.all(['whiteboard', 'functionGrapher', 'geometry3d']
-      .map((id) => page.locator(`[data-ml-tool-card="${id}"]`).count()));
-    record('accueil : une carte par instrument livré, dont السبّورة, راسم الدوال et الهندسة ثلاثية الأبعاد',
-      cards >= 3 && named.every((n) => n === 1), `${cards} cartes`);
+  // Depuis les مخابر (MATH_LAB.md §2.1) : l'accueil montre la سبّورة, commune,
+  // puis deux choix ; les autres instruments sont dans chaque مخبر.
+  // (mathlab-labs-scope.mjs vérifie cette architecture en détail.)
+  record('accueil : la سبّورة, commune, en tête', await page.locator('[data-ml-common-tools] [data-ml-tool-card="whiteboard"]').count() === 1);
+  record('accueil : deux choix — مخبر المتوسط, مخبر الثانوي', await page.locator('[data-ml-lab-choice]').count() === 2);
+  // PLANNED_MATH_LAB_TOOLS est vide depuis l'instrument القياس : rien d'annoncé.
+  if (await page.locator('[data-ml-planned]').count() > 0) {
+    record('accueil : aucun lien vers un instrument annoncé', await page.locator('[data-ml-planned] a').count() === 0);
   }
-  record('accueil : instruments annoncés désactivés, marqués قريبًا', await page.locator('[data-ml-planned] li[aria-disabled="true"]').count() >= 1 && (await page.locator('[data-ml-planned]').innerText()).includes('قريبًا'));
-  record('accueil : aucun lien vers un instrument annoncé', await page.locator('[data-ml-planned] a').count() === 0);
   await page.screenshot({ path: `${OUT}/01-home-desktop.png`, fullPage: true });
 
   // ── 2. Ouvrir la سبّورة ──────────────────────────────────────────────
@@ -256,7 +256,7 @@ try {
 
   await tool(page, 'freedraw');
   await drag(page, P(0.2, 0.3), P(0.35, 0.45), 20);
-  await page.waitForURL(/\/espace\/atelier\/tableau\/\d+$/, { timeout: 12000 });
+  await page.waitForURL(/\/espace\/atelier\/tableau\/\d+(?:\?lab=\w+)?$/, { timeout: 12000 });
   const docId = docIdOf(page.url());
   created.add(docId);
   record('persistance : le document naît au premier trait, URL réécrite', docId != null);
@@ -411,7 +411,7 @@ try {
   await waitSaved(page);
   let doc = (await api(TOKEN, 'GET', `/math-lab/documents/${docId}`)).data.document;
   const image = doc.data.elements.find((e) => e.type === 'image');
-  record('fichiers : l’image posée sur la سبّورة référence le fichier, sans base64', !!image && /^sa-\d+$/.test(image.fileId) && Object.keys(doc.data.files ?? {}).length === 0);
+  record('fichiers : l’image posée sur la سبّورة référence le fichier, sans base64', !!image && /^sa-\d+(?:\?lab=\w+)?$/.test(image.fileId) && Object.keys(doc.data.files ?? {}).length === 0);
   await page.screenshot({ path: `${OUT}/09-files-placed.png` });
 
   const [dl] = await Promise.all([
@@ -546,7 +546,7 @@ for (const [label, width, height, touch] of [
     const closeBox = await p.locator('[data-ml-files-close]').boundingBox();
     record(`${label} : panneau, « إضافة », « إغلاق » dans l’écran`, inside(panel, width, height) && inside(addBox, width, height) && inside(closeBox, width, height) && addBox.height >= 44 && closeBox.height >= 44);
     const outcome = await addFiles(p, [FILE_PNG, FILE_PDF]);
-    await p.waitForURL(/\/espace\/atelier\/tableau\/\d+$/, { timeout: 15000 });
+    await p.waitForURL(/\/espace\/atelier\/tableau\/\d+(?:\?lab=\w+)?$/, { timeout: 15000 });
     const newId = docIdOf(p.url());
     created.add(newId);
     record(`${label} : deux fichiers sur une سبّورة neuve → document créé, 2 / 3`, outcome === 'success' && (await filesCount(p)) === 2 && (await boardCounter(p)) === '2/3');

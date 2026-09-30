@@ -42,6 +42,9 @@ export const conicsTool = defineMathLabTool({
   defaultTitleKey: 'tools.conics.defaultTitle',
   icon: Circle,
   schemaVersion: CONICS_SCHEMA_VERSION,
+  // مخبر الثانوي seulement : l'équation d'une conique — cercle compris — est
+  // du lycée ; le collège mesure des distances au مختبر الأشعة (§5k.1).
+  scopes: ['secondaire'],
   createInitialData: createConicsData,
   summarize: summarizeConics,
   load: () => import('./ConicsTool.jsx'),

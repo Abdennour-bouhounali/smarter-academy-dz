@@ -134,8 +134,8 @@ const textOf = async (page, selector) => (await page.locator(selector).first().t
   const page = await context.newPage();
   wire(page);
 
-  await page.goto(`${BASE}/espace/atelier`, { waitUntil: 'networkidle' });
-  const card = page.locator('a[href*="/atelier/transformations"]').first();
+  await page.goto(`${BASE}/espace/atelier?lab=secondaire`, { waitUntil: 'networkidle' });
+  const card = page.locator('a[href*="/atelier/transformations?lab=secondaire"]').first();
   record('accueil : la carte de l’instrument est présente et ouvrable', await card.count() > 0);
   const soonChips = await page.locator('text=قريبًا').count();
   record('accueil : « الهندسة » n’est plus annoncé « قريبًا »',
@@ -172,7 +172,7 @@ const textOf = async (page, selector) => (await page.locator(selector).first().t
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/transformations`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/transformations?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-tr-plane]', { timeout: 15000 });
   await page.waitForTimeout(500);
 
@@ -228,7 +228,7 @@ const textOf = async (page, selector) => (await page.locator(selector).first().t
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/transformations`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/transformations?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-tr-plane]', { timeout: 15000 });
   await page.waitForTimeout(500);
 
@@ -304,7 +304,7 @@ const textOf = async (page, selector) => (await page.locator(selector).first().t
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/transformations`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/transformations?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-tr-plane]', { timeout: 15000 });
   await page.waitForTimeout(500);
 
@@ -360,7 +360,7 @@ const textOf = async (page, selector) => (await page.locator(selector).first().t
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/transformations`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/transformations?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-tr-plane]', { timeout: 15000 });
   await page.waitForTimeout(500);
 
@@ -439,7 +439,7 @@ const textOf = async (page, selector) => (await page.locator(selector).first().t
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/transformations`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/transformations?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-tr-plane]', { timeout: 15000 });
   await page.waitForTimeout(500);
 
@@ -477,7 +477,7 @@ const textOf = async (page, selector) => (await page.locator(selector).first().t
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/transformations`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/transformations?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-tr-plane]', { timeout: 15000 });
   await page.waitForTimeout(500);
 
@@ -537,7 +537,7 @@ const textOf = async (page, selector) => (await page.locator(selector).first().t
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/transformations`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/transformations?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-tr-plane]', { timeout: 15000 });
   await page.waitForTimeout(500);
 
@@ -581,7 +581,7 @@ for (const [name, viewport] of [
   const context = await authedContext({ viewport, hasTouch: name === 'mobile' || name === 'small' });
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/transformations`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/transformations?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-tr-plane]', { timeout: 15000 });
   await page.waitForTimeout(700);
 
@@ -623,7 +623,7 @@ for (const [name, viewport] of [
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/transformations`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/transformations?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-tr-plane]', { timeout: 15000 });
   await page.waitForTimeout(500);
 
@@ -672,7 +672,7 @@ for (const [name, viewport] of [
   const context = await authedContext({ reducedMotion: 'reduce' });
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/transformations`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/transformations?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-tr-plane]', { timeout: 15000 });
   await page.waitForTimeout(500);
 
@@ -693,7 +693,7 @@ for (const [name, viewport] of [
   const context = await authedContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/transformations`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/transformations?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-tr-plane]', { timeout: 15000 });
   await page.waitForTimeout(800);
 
@@ -721,7 +721,7 @@ for (const [name, viewport] of [
   const context = await browser.newContext({ locale: 'ar-DZ' });
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/transformations`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/transformations?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForTimeout(1200);
   record('un visiteur non connecté est renvoyé vers la connexion', /\/login/.test(page.url()), page.url());
   await context.close();

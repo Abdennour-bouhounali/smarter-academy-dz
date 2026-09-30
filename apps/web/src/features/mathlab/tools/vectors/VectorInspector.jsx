@@ -17,7 +17,7 @@ import { formatPair, formatNorm, formatAngle, formatFactor, formatValue, formatS
  * ARABIC_RTL_CONTRACT : on isole la formule, pas le texte.
  */
 export default function VectorInspector({
-  vectors, points, relations, settings, onRemoveVector, onRemovePoint, onScalarChange,
+  vectors, points, relations, settings, onRemoveVector, onRemovePoint, onScalarChange, showFactor = true,
 }) {
   const { t } = useTranslation('mathlab');
 
@@ -127,7 +127,8 @@ export default function VectorInspector({
             {relations.pair.parallel && (
               <li data-ml-relation="parallel">
                 {t('tools.vectors.relations.parallel')}
-                {relations.pair.factor !== null && (
+                {/* v = k·u : l'écriture du lycée (scope.js) — le collège lit « متوازيان ». */}
+                {showFactor && relations.pair.factor !== null && (
                   <span className="sa-ml-vec__factor" dir="ltr">
                     {` ${relations.pair.vName} = ${formatFactor(relations.pair.factor)} ${relations.pair.uName}`}
                   </span>

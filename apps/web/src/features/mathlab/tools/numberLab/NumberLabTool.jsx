@@ -30,6 +30,7 @@ import {
   createNumberLabData, normalizeNumberLabData, serializeNumberLabData,
   setMode, patchMode, sendTo, addNote, removeNote, recordAttempt, setPracticeLevel,
 } from './numberState.js';
+import { NumberLabModesContext, clampToModes, numberLabModes } from './scope.js';
 
 /** Le délai entre un changement et sa remise à la coquille (qui attend encore avant d'enregistrer). */
 const SERIALIZE_MS = 300;
@@ -57,11 +58,13 @@ const SERIALIZE_MS = 300;
  * Toute la mathématique est dans les modules purs ; ce composant ne fait que
  * les appeler — aucun calcul dans le JSX.
  */
-export default function NumberLabTool({ initialData, title, onChange, onReady }) {
+export default function NumberLabTool({ initialData, title, onChange, onReady, capabilities = null }) {
   const { t } = useTranslation('mathlab');
-  const [data, setData] = useState(() => (initialData && Object.keys(initialData).length
+  // Le مخبر (scope.js) : les modes qu'il montre — aujourd'hui les seize partout.
+  const modes = useMemo(() => numberLabModes(capabilities), [capabilities]);
+  const [data, setData] = useState(() => clampToModes(initialData && Object.keys(initialData).length
     ? normalizeNumberLabData(initialData)
-    : createNumberLabData()));
+    : createNumberLabData(), modes));
 
   // ── L'état d'INTERFACE : jamais sérialisé ──────────────────────────────
   const [practiceOpen, setPracticeOpen] = useState(false);
@@ -131,9 +134,10 @@ export default function NumberLabTool({ initialData, title, onChange, onReady })
   /* ── Les gestes ─────────────────────────────────────────────────────── */
 
   const changeMode = useCallback((mode) => {
+    if (!modes.includes(mode)) return;
     commit((current) => setMode(current, mode));
     setAnnouncement(t(`tools.numberLab.modes.${mode}`));
-  }, [commit, t]);
+  }, [commit, t, modes]);
 
   const patch = useCallback((mode, updates) => {
     commit((current) => patchMode(current, mode, updates));
@@ -141,11 +145,12 @@ export default function NumberLabTool({ initialData, title, onChange, onReady })
 
   /** §46 — le pont entre les modes. */
   const send = useCallback((mode, value) => {
+    if (!modes.includes(mode)) return;
     commit((current) => sendTo(current, mode, value));
     setAnnouncement(t('tools.numberLab.sent', {
       value: String(value), mode: t(`tools.numberLab.modes.${mode}`),
     }));
-  }, [commit, t]);
+  }, [commit, t, modes]);
 
   /** §55 — garder une découverte, ici puis dans le vrai كرّاس. */
   const saveNote = useCallback((text) => {
@@ -269,17 +274,18 @@ export default function NumberLabTool({ initialData, title, onChange, onReady })
   }, [data, patch, send, compact, reducedMotion, saveNote, changeMode]);
 
   /** La barre : seize modes rangés en trois familles (modeCatalog.js), chacun décrit. */
-  const sections = useMemo(() => MODE_SECTIONS.map((section) => ({
+  const sections = useMemo(() => MODE_SECTIONS.filter((section) => modes.includes(section.id)).map((section) => ({
     ...section,
     label: t(`tools.numberLab.modesShort.${section.id}`),
     description: t(`tools.numberLab.modeDescriptions.${section.id}`),
-  })), [t]);
+  })), [t, modes]);
   const groupLabels = useMemo(
     () => Object.fromEntries(MODE_GROUPS.map((group) => [group, t(`tools.numberLab.modeGroups.${group}`)])),
     [t],
   );
 
   return (
+    <NumberLabModesContext.Provider value={modes}>
     <div className="sa-ml-nb" data-ml-nb data-ml-nb-mode={data.mode}>
       {/* §3 : la barre des modes — seize portes, trois familles, un seul laboratoire.
           `data-ml-nb-modechip` reste l'attribut des e2e existants. */}
@@ -394,6 +400,7 @@ export default function NumberLabTool({ initialData, title, onChange, onReady })
 
       <p className="sa-ml-nb__sr" aria-live="polite">{announcement}</p>
     </div>
+    </NumberLabModesContext.Provider>
   );
 }
 

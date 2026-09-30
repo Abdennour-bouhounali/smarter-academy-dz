@@ -15,7 +15,7 @@ for (const vp of [{ width: 1280, height: 800, n: 'd' }, { width: 390, height: 84
   await ctx.addInitScript((tk) => { localStorage.setItem('token', tk); localStorage.removeItem('sa-ml-step-player'); localStorage.removeItem('sa-ml-step-dock'); }, token);
   const page = await ctx.newPage();
   const errs = []; page.on('pageerror', (e) => errs.push(e.message));
-  await page.goto('http://localhost:5173/enseignant/atelier/algebre', { waitUntil: 'networkidle' });
+  await page.goto('http://localhost:5173/enseignant/atelier/algebre?lab=secondaire', { waitUntil: 'networkidle' });
   await page.fill('[data-ml-equation-input]', '2x + 3 = 9'); await page.keyboard.press('Enter'); await page.waitForTimeout(300);
   await page.locator('[data-ml-alg-solve]').first().click(); await page.waitForTimeout(600);
   const bar = page.locator('.sa-ml-kit-player.is-floating').first();

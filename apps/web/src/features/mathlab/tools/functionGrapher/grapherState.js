@@ -209,12 +209,13 @@ export function normalizeTangent(raw, functions) {
 /**
  * L'état d'un document neuf.
  *
- * Sans amorce : l'exemple de première visite (`f(x) = x²`). Avec une amorce
+ * Sans amorce : l'exemple de première visite (`f(x) = x²` ; `2x + 1` dans
+ * مخبر المتوسط — `context.capabilities.firstExpression`, voir scope.js). Avec une amorce
  * de leçon (openMathLab.js) : `{ functions: [{ expression, name?, color?, visible?, domain? }],
  * viewport?, points?: [{ functionId | functionIndex, x }],
  * tangent?: { enabled, functionId | functionIndex, x, showDerivative?, showTriangle? } }`.
  */
-export function createFunctionGrapherData(seed = undefined) {
+export function createFunctionGrapherData(seed = undefined, context = {}) {
   if (seed && typeof seed === 'object' && Array.isArray(seed.functions)) {
     const data = normalizeGrapherData({ ...seed, points: [] });
     // Une amorce peut désigner une fonction par son rang plutôt que par un identifiant.
@@ -232,8 +233,11 @@ export function createFunctionGrapherData(seed = undefined) {
     return data;
   }
 
+  // Le مخبر choisit l'exemple d'ouverture : une droite au collège (scope.js).
+  const firstExpression = context?.capabilities?.firstExpression ?? FIRST_RUN_EXPRESSION;
+
   return normalizeGrapherData({
-    functions: [{ expression: FIRST_RUN_EXPRESSION }],
+    functions: [{ expression: firstExpression }],
     viewport: null,
     settings: { grid: true },
   });

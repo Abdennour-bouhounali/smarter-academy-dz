@@ -41,6 +41,9 @@ export const sequencesTool = defineMathLabTool({
   defaultTitleKey: 'tools.sequences.defaultTitle',
   icon: TrendingUp,
   schemaVersion: SEQUENCES_SCHEMA_VERSION,
+  // مخبر الثانوي seulement : les suites ne sont pas au programme du collège
+  // (§5h.1) — l'ancrage 4AM (les différences successives) vit au مختبر الأعداد.
+  scopes: ['secondaire'],
   createInitialData: createSequencesData,
   summarize: summarizeSequences,
   load: () => import('./SequencesTool.jsx'),

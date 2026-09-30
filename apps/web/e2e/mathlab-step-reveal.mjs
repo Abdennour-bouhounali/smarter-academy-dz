@@ -15,7 +15,7 @@ for (const vp of [{ width: 1280, height: 800, n: 'd' }, { width: 390, height: 84
   await ctx.addInitScript((tk) => { localStorage.setItem('token', tk); localStorage.removeItem('sa-ml-step-player'); }, token);
   const page = await ctx.newPage();
   const errs = []; page.on('pageerror', (e) => errs.push(e.message));
-  await page.goto('http://localhost:5173/enseignant/atelier/algebre', { waitUntil: 'networkidle' });
+  await page.goto('http://localhost:5173/enseignant/atelier/algebre?lab=secondaire', { waitUntil: 'networkidle' });
   const innerScrollers = () => page.evaluate(() => [...document.querySelectorAll('[data-ml-algebra] *, [data-ml-alg-section] *')].filter((e) => {
     const cs = getComputedStyle(e); const o = cs.overflowX + cs.overflowY;
     return /auto|scroll/.test(o) && (e.scrollWidth > e.clientWidth + 1 || e.scrollHeight > e.clientHeight + 1)

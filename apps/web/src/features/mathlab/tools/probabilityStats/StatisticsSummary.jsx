@@ -10,7 +10,7 @@ import { formatValue } from '../functionGrapher/grapherFormat.js';
  * Les symboles (n, x̄, Me, Q₁…) restent en LTR : une notation mathématique ne
  * se renverse pas parce que la page est en arabe (ARABIC_RTL_CONTRACT, § 25).
  */
-export default function StatisticsSummary({ stats }) {
+export default function StatisticsSummary({ stats, shown = null }) {
   const { t } = useTranslation('mathlab');
   const empty = stats.n === 0;
   let modeText = null;
@@ -30,7 +30,9 @@ export default function StatisticsSummary({ stats }) {
     { key: 'iqr', symbol: 'Q₃ − Q₁', value: stats.iqr },
     { key: 'variance', symbol: 'V', value: stats.variance, decimals: 4 },
     { key: 'sd', symbol: 'σ', value: stats.sd, decimals: 4 },
-  ];
+  // `shown` : les indicateurs de ce مخبر (scope.js) — ni quartiles ni
+  // variance au collège.
+  ].filter((entry) => !shown || shown.includes(entry.key));
 
   return (
     <dl className="sa-ml-ps__stats" aria-live="polite" data-ml-ps-summary>

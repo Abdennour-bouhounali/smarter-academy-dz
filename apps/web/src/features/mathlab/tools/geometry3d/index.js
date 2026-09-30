@@ -24,6 +24,9 @@ export const geometry3dTool = defineMathLabTool({
   defaultTitleKey: 'tools.geometry3d.defaultTitle',
   icon: Box,
   schemaVersion: GEOMETRY3D_SCHEMA_VERSION,
+  // مخبر المتوسط seulement (décision du propriétaire, 2026-09-30) : cube,
+  // pavé, sphère, cylindre et cône — la géométrie dans l'espace du collège.
+  scopes: ['moyen'],
   createInitialData: createGeometry3DData,
   summarize: summarizeGeometry3D,
   load: () => import('./Geometry3DTool.jsx'),

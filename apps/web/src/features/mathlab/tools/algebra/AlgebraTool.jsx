@@ -20,6 +20,7 @@ import SimplifySection from './SimplifySection.jsx';
 import FactorSection from './FactorSection.jsx';
 import SystemsSection from './SystemsSection.jsx';
 import FunctionsSection from './FunctionsSection.jsx';
+import { algebraFeatures, clampToFeatures } from './scope.js';
 
 /** Le délai entre un changement et sa remise à la coquille (qui attend encore avant d'enregistrer). */
 const SERIALIZE_MS = 300;
@@ -45,9 +46,11 @@ const ICONS = {
  * Toute la mathématique est dans les modules purs ; ce composant ne fait que
  * router l'état et remettre le document à la coquille.
  */
-export default function AlgebraTool({ initialData, onChange, onReady }) {
+export default function AlgebraTool({ initialData, onChange, onReady, capabilities = null }) {
   const { t } = useTranslation('mathlab');
-  const [data, setData] = useState(() => normalizeAlgebraData(initialData));
+  // Le مخبر (scope.js) : au collège, ni مميّز, ni « مجموع وجداء », ni second degré.
+  const features = useMemo(() => algebraFeatures(capabilities), [capabilities]);
+  const [data, setData] = useState(() => clampToFeatures(normalizeAlgebraData(initialData), features));
   const [announcement, setAnnouncement] = useState('');
   // « مسح الكل » remonte les sections : leurs brouillons et messages repartent de zéro.
   const [generation, setGeneration] = useState(0);
@@ -85,22 +88,24 @@ export default function AlgebraTool({ initialData, onChange, onReady }) {
   useEffect(() => {
     onReady?.({
       clear: () => {
-        commit(createAlgebraData());
+        commit(createAlgebraData(undefined, { capabilities }));
         setGeneration((value) => value + 1);
       },
     });
 
     return () => onReady?.(null);
-  }, [onReady, commit]);
+  }, [onReady, commit, capabilities]);
 
-  const sections = useMemo(() => ALGEBRA_SECTIONS.map((id) => ({
+  const sections = useMemo(() => features.sections.map((id) => ({
     id,
     icon: ICONS[id],
     label: t(`tools.algebra.sections.${id}.label`),
     description: t(`tools.algebra.sections.${id}.description`),
-  })), [t]);
+  })), [t, features]);
 
-  const changeSection = useCallback((id) => commit((current) => setSection(current, id)), [commit]);
+  const changeSection = useCallback((id) => {
+    if (features.sections.includes(id)) commit((current) => setSection(current, id));
+  }, [commit, features]);
 
   const commitEquations = useCallback((updater) => commit((current) => updatePath(current, 'equations', updater)), [commit]);
   const commitInequalities = useCallback((updater) => commit((current) => updatePath(current, 'inequalities', updater)), [commit]);
@@ -147,9 +152,9 @@ export default function AlgebraTool({ initialData, onChange, onReady }) {
         <PathSection key={key} mode="inequalities" path={data.inequalities} commitPath={commitInequalities} announce={setAnnouncement} />
       )}
       {section === 'systems' && <SystemsSection key={key} value={data.systems} onChange={patchSystems} announce={setAnnouncement} />}
-      {section === 'simplify' && <SimplifySection key={key} value={data.simplify} onChange={patchSimplify} announce={setAnnouncement} />}
-      {section === 'factor' && <FactorSection key={key} value={data.factor} onChange={patchFactor} announce={setAnnouncement} />}
-      {section === 'functions' && <FunctionsSection key={key} value={data.functions} onChange={patchFunctions} />}
+      {section === 'simplify' && <SimplifySection key={key} value={data.simplify} onChange={patchSimplify} announce={setAnnouncement} examples={features.simplify.examples} />}
+      {section === 'factor' && <FactorSection key={key} value={data.factor} onChange={patchFactor} announce={setAnnouncement} features={features.factor} />}
+      {section === 'functions' && <FunctionsSection key={key} value={data.functions} onChange={patchFunctions} features={features.functions} />}
 
       {/* Tout état mathématique a une forme TEXTUELLE (§34) */}
       <p className="sa-ml-alg__sr" role="status" aria-live="polite">{announcement}</p>

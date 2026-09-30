@@ -1,5 +1,5 @@
-import { Suspense, lazy, useCallback, useContext, useMemo, useState } from 'react';
-import { Link, Navigate, useLocation, useParams } from 'react-router-dom';
+import { Suspense, lazy, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Loader2 } from 'lucide-react';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
@@ -7,7 +7,8 @@ import { AuthContext } from '../../context/AuthContext';
 import { fetchMathLabFileBlob } from '../../services/mathLabService';
 import { useMathLabAttachments } from './attachments/useMathLabAttachments';
 import { getMathLabToolBySlug } from './toolRegistry';
-import { mathLabBasePath, parseDocumentId } from './mathLabDocument';
+import { mathLabBasePath, mathLabToolPath, parseDocumentId } from './mathLabDocument';
+import { labHomePath, readLabScopeParam, rememberLabScope, toolCapabilities } from './labScope';
 import { useWorkspaceBase } from '../learning/learningViewer';
 import { readMathLabLaunch } from './openMathLab';
 import { useMathLabDocument } from './useMathLabDocument';
@@ -71,16 +72,33 @@ function ToolGate({ tool, documentId, labHome }) {
 function ToolPage({ tool, documentId }) {
   const { t } = useTranslation('mathlab');
   const location = useLocation();
+  const navigate = useNavigate();
   const toolName = t(tool.labelKey);
   // L'accueil du مختبر dépend de l'espace (élève ou enseignant) : il se lit
   // ICI, au corps du composant. Appeler le hook dans le JSX d'une branche
   // d'erreur changerait le NOMBRE de hooks d'un rendu à l'autre — React
   // lève alors « Rendered more hooks than during the previous render ».
-  const labHome = mathLabBasePath(useWorkspaceBase());
+  const labRoot = mathLabBasePath(useWorkspaceBase());
   useDocumentMeta(`${toolName} — ${t('title')}`);
 
   const launch = useMemo(() => readMathLabLaunch(location.state, tool.id), [location.state, tool.id]);
-  const model = useMathLabDocument(tool, documentId, { launch, defaultTitle: t(tool.defaultTitleKey) });
+  const requestedScope = readLabScopeParam(location.search);
+  const model = useMathLabDocument(tool, documentId, { launch, defaultTitle: t(tool.defaultTitleKey), requestedScope });
+  // Le مخبر où l'instrument est ouvert (labScope.js) : ce qu'il montre, et où
+  // ramène « retour ». Null pour la سبّورة, commune à tous.
+  const scope = model.scope;
+  const capabilities = useMemo(() => toolCapabilities(tool, scope), [tool, scope]);
+  const labHome = labHomePath(labRoot, scope);
+
+  // L'URL dit toujours dans quel مخبر on est : un document rouvert depuis
+  // « أعمالي » (sans `?lab=`) ou un lien nu reçoit le sien. Sans recharger :
+  // le crochet reconnaît le document déjà ouvert.
+  useEffect(() => {
+    if (model.status !== 'ready' || !scope) return;
+    rememberLabScope(scope);
+    if (requestedScope === scope) return;
+    navigate(`${mathLabToolPath(tool, model.document?.id ?? null, labRoot, scope)}${location.hash}`, { replace: true, state: location.state });
+  }, [model.status, model.document?.id, scope, requestedScope, tool, labRoot, navigate, location.hash, location.state]);
   const [toolApi, setToolApi] = useState(null);
   const ToolComponent = lazyToolComponent(tool);
 
@@ -105,6 +123,8 @@ function ToolPage({ tool, documentId }) {
   return (
     <MathLabShell
       tool={tool}
+      scope={scope}
+      labHome={labHome}
       title={model.title}
       onTitleChange={model.updateTitle}
       saveState={model.saveState}
@@ -149,6 +169,8 @@ function ToolPage({ tool, documentId }) {
             title={model.title}
             onChange={model.updateData}
             onReady={setToolApi}
+            scope={scope}
+            capabilities={capabilities}
             attachments={toolAttachments}
             onNotice={setNotice}
           />

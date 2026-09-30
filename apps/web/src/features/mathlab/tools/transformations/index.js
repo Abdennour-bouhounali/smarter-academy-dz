@@ -1,6 +1,7 @@
 import { FlipHorizontal2 } from 'lucide-react';
 import { defineMathLabTool } from '../../toolContract.js';
 import { TRANSFORMATIONS_SCHEMA_VERSION, createTransformationsData } from './transformState.js';
+import { TRANSFORMATIONS_CAPABILITIES, TRANSFORMATIONS_SCOPES } from './scope.js';
 import { summarizeTransformations } from './summarize.js';
 
 /**
@@ -42,6 +43,9 @@ export const transformationsTool = defineMathLabTool({
   defaultTitleKey: 'tools.transformations.defaultTitle',
   icon: FlipHorizontal2,
   schemaVersion: TRANSFORMATIONS_SCHEMA_VERSION,
+  // Les deux مخابر — au collège : une transformation à la fois, sans composition ni matrice (scope.js).
+  scopes: TRANSFORMATIONS_SCOPES,
+  capabilities: TRANSFORMATIONS_CAPABILITIES,
   createInitialData: createTransformationsData,
   summarize: summarizeTransformations,
   load: () => import('./TransformationsTool.jsx'),

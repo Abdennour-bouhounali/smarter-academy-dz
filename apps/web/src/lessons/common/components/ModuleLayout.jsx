@@ -361,8 +361,9 @@ export default function ModuleLayout({
                 leçon sans la quitter. Ici, avec les autres repères du
                 module : toujours atteignable (la rangée est `sticky`) et
                 jamais devant le contenu, contrairement à une pastille
-                flottante. Voir MathLabEntryButton. */}
-            <MathLabEntryButton />
+                flottante. Voir MathLabEntryButton. Il s'ouvre sur le مخبر
+                de la leçon (`levelId` : « moyen » pour une leçon de 4AM). */}
+            <MathLabEntryButton scope={levelId} />
 
             {/* 🎓 وضع القسم — le point d'entrée du mode classe, visible du
                 seul présentateur (canPresentClassroom). DANS la rangée de

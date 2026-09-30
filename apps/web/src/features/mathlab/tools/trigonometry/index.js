@@ -1,6 +1,7 @@
 import { Circle } from 'lucide-react';
 import { defineMathLabTool } from '../../toolContract.js';
 import { TRIGONOMETRY_SCHEMA_VERSION, createTrigonometryData } from './trigState.js';
+import { TRIGONOMETRY_CAPABILITIES, TRIGONOMETRY_SCOPES } from './scope.js';
 import { summarizeTrigonometry } from './summarize.js';
 
 /**
@@ -37,6 +38,9 @@ export const trigonometryTool = defineMathLabTool({
   defaultTitleKey: 'tools.trigonometry.defaultTitle',
   icon: Circle,
   schemaVersion: TRIGONOMETRY_SCHEMA_VERSION,
+  // Les deux مخابر — au collège : le triangle rectangle en degrés, sans cercle (scope.js).
+  scopes: TRIGONOMETRY_SCOPES,
+  capabilities: TRIGONOMETRY_CAPABILITIES,
   createInitialData: createTrigonometryData,
   summarize: summarizeTrigonometry,
   load: () => import('./TrigonometryTool.jsx'),

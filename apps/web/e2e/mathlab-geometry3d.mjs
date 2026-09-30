@@ -157,12 +157,11 @@ attach(page);
 let docId = null;
 try {
   // ── Accueil et première visite ────────────────────────────────────────
-  await page.goto(`${BASE}/espace/atelier`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier?lab=moyen`, { waitUntil: 'networkidle' });
   const card = page.locator('[data-ml-tool-card="geometry3d"]');
-  record('accueil : la carte « الهندسة ثلاثية الأبعاد »', (await card.count()) === 1 && (await card.innerText()).includes('الهندسة ثلاثية الأبعاد'));
-  record('accueil : l’instrument n’est plus « قريبًا »', (await page.locator('.sa-ml-planned').filter({ hasText: 'الهندسة' }).count()) === 0 || !(await page.locator('body').innerText()).includes('الهندسة ثلاثية الأبعاد\nقريبًا'));
+  record('مخبر المتوسط : la carte « الهندسة ثلاثية الأبعاد »', (await card.count()) === 1 && (await card.innerText()).includes('الهندسة ثلاثية الأبعاد'));
   await card.click();
-  await page.waitForURL(/\/espace\/atelier\/geometrie-3d$/, { timeout: 15000 });
+  await page.waitForURL(/\/espace\/atelier\/geometrie-3d\?lab=moyen$/, { timeout: 15000 });
   await page.waitForSelector('[data-ml-g3d-canvas]', { timeout: 30000 });
   await sleep(600);
   record('première visite : un cube d’arête 2, sans document', (await page.inputValue('[data-ml-g3d-shape-select]')) === 'cube' && (await page.inputValue('[data-ml-g3d-number="side"]')) === '2' && docIdOf(page.url()) === null);
@@ -201,7 +200,7 @@ try {
   const closeEnough = home.every((t, i) => { const a = px(t); const b = px(afterReset[i]); return Math.abs(a[0] - b[0]) < 1.5 && Math.abs(a[1] - b[1]) < 1.5; });
   record('vue : réinitialiser retrouve la vue par défaut', closeEnough, `${home[0]} → ${afterReset[0]}`);
   record('vue : réinitialiser ne touche ni au solide ni aux dimensions', (await page.inputValue('[data-ml-g3d-number="side"]')) === '2' && (await volume(page)) === 8);
-  await page.waitForURL(/\/espace\/atelier\/geometrie-3d\/\d+$/, { timeout: 12000 });
+  await page.waitForURL(/\/espace\/atelier\/geometrie-3d\/\d+(?:\?lab=\w+)?$/, { timeout: 12000 });
   docId = docIdOf(page.url());
   created.add(docId);
   await waitSaved(page);
@@ -327,7 +326,7 @@ try {
   record('RTL : la police Cairo sur le panneau', (await page.locator('[data-ml-g3d-info-shape]').evaluate((e) => getComputedStyle(e).fontFamily)).includes('Cairo'));
 
   // ── Les autres instruments toujours là ────────────────────────────────
-  await page.goto(`${BASE}/espace/atelier/grapheur`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/grapheur?lab=secondaire`, { waitUntil: 'networkidle' });
   record('régression : le grapheur s’ouvre', (await page.waitForSelector('[data-ml-grapher] [data-ml-plane] svg', { timeout: 30000 }).then(() => true).catch(() => false)));
   await page.goto(`${BASE}/espace/atelier/tableau`, { waitUntil: 'networkidle' });
   record('régression : la سبّورة s’ouvre', (await page.waitForSelector('.excalidraw', { timeout: 30000 }).then(() => true).catch(() => false)));
@@ -375,7 +374,7 @@ for (const [label, width, height] of [['tablette', 1024, 768], ['mobile', 390, 8
     ]);
     await sleep(700);
     record(`${label} : le pincement zoome`, moved(mid, await labelPositions(p)));
-    await p.waitForURL(/\/espace\/atelier\/geometrie-3d\/\d+$/, { timeout: 12000 });
+    await p.waitForURL(/\/espace\/atelier\/geometrie-3d\/\d+(?:\?lab=\w+)?$/, { timeout: 12000 });
     created.add(docIdOf(p.url()));
     if (width < 700) {
       record('mobile : le panneau se replie', (await p.locator('[data-ml-g3d-panel-toggle]').isVisible()));

@@ -22,7 +22,7 @@ import { SIMPLIFY_EXAMPLES } from './examples.js';
  * « بسّط خطوة بخطوة » charge la saisie ET démarre le déroulé ; un exemple
  * ne fait que poser l'énoncé (le bouton d'action démarre).
  */
-export default function SimplifySection({ value, onChange, announce }) {
+export default function SimplifySection({ value, onChange, announce, examples = SIMPLIFY_EXAMPLES }) {
   const { t } = useTranslation('mathlab');
   const [draft, setDraft] = useState(value.source);
   const [exampleId, setExampleId] = useState(null);
@@ -59,13 +59,13 @@ export default function SimplifySection({ value, onChange, announce }) {
   }, [draft, run, player]);
 
   const pick = useCallback((id) => {
-    const example = SIMPLIFY_EXAMPLES.find((item) => item.id === id);
+    const example = examples.find((item) => item.id === id);
     if (!example) return;
     setDraft(example.source);
     // Un exemple POSE l'énoncé ; seul le bouton d'action démarre le déroulé.
     if (run(example.source)) setExampleId(id);
     player.rewind();
-  }, [run, player]);
+  }, [run, player, examples]);
 
   return (
     <div className="sa-ml-alg__body" data-ml-alg-mode="simplify">
@@ -130,7 +130,7 @@ export default function SimplifySection({ value, onChange, announce }) {
             </form>
             {error && <LabMessage tone="error" id="sa-ml-alg-simplify-error">{error}</LabMessage>}
             <p className="sa-ml-alg__hint">{t('tools.algebra.simplify.hint')}</p>
-            <ExamplePicker examples={SIMPLIFY_EXAMPLES} onPick={pick} activeId={exampleId} dataAttr="data-ml-alg-example" />
+            <ExamplePicker examples={examples} onPick={pick} activeId={exampleId} dataAttr="data-ml-alg-example" />
           </section>
 
           <LabDisclosure kind="rule" dataAttr="data-ml-alg-rule">

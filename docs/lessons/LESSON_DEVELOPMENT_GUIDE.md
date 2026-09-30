@@ -1136,7 +1136,11 @@ generated lesson would inherit if it follows 14.2:
 The Math Lab (مختبر الرياضيات, `/espace/atelier`) is a standalone workspace,
 **not** part of a lesson. Every lesson page already carries the generic
 « 🧪 المختبر » button (`MathLabEntryButton`, mounted by `LessonIndex` and
-`ModuleLayout`), which opens the Lab OVER the lesson without seeding it. What
+`ModuleLayout`), which opens the Lab OVER the lesson without seeding it — on
+the lab of the lesson's cycle (`<MathLabEntryButton scope={levelId} />`:
+مخبر المتوسط for a 4AM lesson, so its instruments show only college
+capabilities; `MATH_LAB.md` §2.1). A lesson passes its `levelId`; it never
+chooses tools or capabilities itself. What
 is **not** built is a *seeded*, per-activity button: do **not** add
 « استكشف في المختبر » buttons to lessons as part of ordinary lesson work — that
 flow is `Planned`. When it is implemented, the only API to use is

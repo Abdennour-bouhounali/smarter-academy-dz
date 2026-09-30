@@ -25,10 +25,10 @@ const randomInt = (random, min, max) => min + Math.floor(random() * (max - min +
 const pick = (random, list) => list[Math.floor(random() * list.length)];
 
 /** Les pas que le générateur sait proposer : simples, à coefficients entiers, lisibles. */
-function randomStep(random, { allowDilation = true } = {}) {
-  const kinds = allowDilation
+function randomStep(random, { allowDilation = true, stepKinds = null } = {}) {
+  const kinds = (allowDilation
     ? ['translation', 'rotation', 'reflection', 'dilation']
-    : ['translation', 'rotation', 'reflection'];
+    : ['translation', 'rotation', 'reflection']).filter((kind) => !stepKinds || stepKinds.includes(kind));
   switch (pick(random, kinds)) {
     case 'rotation':
       return { kind: 'rotation', enabled: true, angle: pick(random, [90, 180, 270]), center: { type: 'origin' } };
@@ -55,9 +55,15 @@ function randomStep(random, { allowDilation = true } = {}) {
  * positions proposées. L'interface n'en calcule aucune.
  */
 export function generateChallenge(random = Math.random, options = {}) {
-  const kind = options.kind && CHALLENGE_KINDS.includes(options.kind)
+  // `kinds` / `stepKinds` : ce que le مخبر pose (scope.js) — au collège, une
+  // seule transformation, jamais de تحاكي.
+  const kinds = Array.isArray(options.kinds) && options.kinds.length
+    ? CHALLENGE_KINDS.filter((entry) => options.kinds.includes(entry))
+    : CHALLENGE_KINDS;
+  const stepKinds = Array.isArray(options.stepKinds) && options.stepKinds.length ? options.stepKinds : null;
+  const kind = options.kind && kinds.includes(options.kind)
     ? options.kind
-    : pick(random, CHALLENGE_KINDS);
+    : pick(random, kinds);
 
   // Une question dont la réponse est le point LUI-MÊME (انسحاب nul, point
   // sur l'axe, centre de rotation…) ne demande rien : on la retire. Le
@@ -67,8 +73,8 @@ export function generateChallenge(random = Math.random, options = {}) {
     const point = { x: randomInt(random, -5, 5), y: randomInt(random, -5, 5) };
     const steps = kind === 'multiStep'
       // Deux pas : assez pour que l'ordre compte, assez peu pour rester suivable.
-      ? [randomStep(random, { allowDilation: false }), randomStep(random, { allowDilation: false })]
-      : [randomStep(random)];
+      ? [randomStep(random, { allowDilation: false, stepKinds }), randomStep(random, { allowDilation: false, stepKinds })]
+      : [randomStep(random, { stepKinds })];
     const answer = applySteps(point, steps);
     if (!M.samePoint(answer, point)) return finishChallenge(random, kind, point, steps);
   }

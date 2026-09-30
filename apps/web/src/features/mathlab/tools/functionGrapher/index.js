@@ -1,6 +1,7 @@
 import { LineChart } from 'lucide-react';
 import { defineMathLabTool } from '../../toolContract.js';
 import { FUNCTION_GRAPHER_SCHEMA_VERSION, createFunctionGrapherData } from './grapherState.js';
+import { GRAPHER_CAPABILITIES, GRAPHER_SCOPES } from './scope.js';
 import { summarizeFunctionGrapher } from './summarize.js';
 
 /**
@@ -22,6 +23,9 @@ export const functionGrapherTool = defineMathLabTool({
   defaultTitleKey: 'tools.functionGrapher.defaultTitle',
   icon: LineChart,
   schemaVersion: FUNCTION_GRAPHER_SCHEMA_VERSION,
+  // Les deux مخابر — sans المماس ni fonctions transcendantes au collège (scope.js).
+  scopes: GRAPHER_SCOPES,
+  capabilities: GRAPHER_CAPABILITIES,
   createInitialData: createFunctionGrapherData,
   summarize: summarizeFunctionGrapher,
   load: () => import('./FunctionGrapherTool.jsx'),

@@ -143,7 +143,7 @@ async function selectKind(page, kind) {
   const page = await context.newPage();
   wire(page);
 
-  await page.goto(`${BASE}/espace/atelier`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier?lab=secondaire`, { waitUntil: 'networkidle' });
   const card = page.locator('a[href*="/atelier/coniques"]').first();
   record('accueil : la carte de l’instrument est présente', await card.count() > 0);
   await shot(page, '01-home');

@@ -1,6 +1,7 @@
 import { Hash } from 'lucide-react';
 import { defineMathLabTool } from '../../toolContract.js';
 import { NUMBER_LAB_SCHEMA_VERSION, createNumberLabData } from './numberState.js';
+import { NUMBER_LAB_CAPABILITIES, NUMBER_LAB_SCOPES } from './scope.js';
 import { summarizeNumberLab } from './summarize.js';
 
 /**
@@ -51,6 +52,9 @@ export const numberLabTool = defineMathLabTool({
   defaultTitleKey: 'tools.numberLab.defaultTitle',
   icon: Hash,
   schemaVersion: NUMBER_LAB_SCHEMA_VERSION,
+  // Les deux مخابر, les seize modes dans chacun (scope.js).
+  scopes: NUMBER_LAB_SCOPES,
+  capabilities: NUMBER_LAB_CAPABILITIES,
   createInitialData: createNumberLabData,
   summarize: summarizeNumberLab,
   load: () => import('./NumberLabTool.jsx'),

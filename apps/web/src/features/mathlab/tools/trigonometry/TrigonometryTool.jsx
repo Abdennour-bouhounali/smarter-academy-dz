@@ -18,6 +18,7 @@ import {
 import { getExperiment } from './presets.js';
 import { generateChallenge, checkAnswer, revealTarget, kindsForMode } from './practice.js';
 import { useCompactCharts } from '../probabilityStats/useMediaQuery.js';
+import { clampToFeatures, trigonometryFeatures } from './scope.js';
 
 /** Le délai entre un changement et sa remise à la coquille (qui attend encore avant d'enregistrer). */
 const SERIALIZE_MS = 300;
@@ -45,11 +46,14 @@ const SERIALIZE_MS = 300;
  * Ce n'est pas une convention : l'animation n'a AUCUN champ dans `data`, et
  * ne peut donc pas y arriver par accident (§43).
  */
-export default function TrigonometryTool({ initialData, onChange, onReady }) {
+export default function TrigonometryTool({ initialData, onChange, onReady, capabilities = null }) {
   const { t } = useTranslation('mathlab');
-  const [data, setData] = useState(() => (initialData && Object.keys(initialData).length
+  // Le مخبر (scope.js) : au collège, le triangle rectangle en degrés — ni
+  // cercle, ni radians, ni quadrants.
+  const features = useMemo(() => trigonometryFeatures(capabilities), [capabilities]);
+  const [data, setData] = useState(() => clampToFeatures(initialData && Object.keys(initialData).length
     ? normalizeTrigonometryData(initialData)
-    : createTrigonometryData()));
+    : createTrigonometryData(), features));
 
   // ── L'état d'INTERFACE : jamais sérialisé (§42, §43) ──────────────────
   const [panelOpen, setPanelOpen] = useState(true);
@@ -245,19 +249,20 @@ export default function TrigonometryTool({ initialData, onChange, onReady }) {
   }, [commit]);
 
   const openPreset = useCallback((id) => {
+    if (!features.presets.some((preset) => preset.id === id)) return;
     commit((current) => applyPreset(current, id));
     setExperiment(null);
     setAnnouncement(t('tools.trigonometry.announcePreset'));
-  }, [commit, t]);
+  }, [commit, t, features]);
 
   /** Une expérience (§26) : un préréglage, un angle de départ, une question — puis le silence. */
   const openExperiment = useCallback((id) => {
     const found = getExperiment(id);
-    if (!found) return;
+    if (!found || !features.panels.experiments) return;
     commit((current) => setAngle(applyPreset(current, found.preset), found.startAngle));
     setExperiment({ id, step: 0 });
     setAnnouncement(t('tools.trigonometry.announceExperiment', { name: t(found.labelKey) }));
-  }, [commit, t]);
+  }, [commit, t, features]);
 
   // ── L'entraînement (§25) ──────────────────────────────────────────────
 
@@ -312,7 +317,8 @@ export default function TrigonometryTool({ initialData, onChange, onReady }) {
     commit((current) => {
       const target = revealTarget(current.practice.challenge);
       let next = { ...current, practice: { ...current.practice, phase: 'reveal' } };
-      if (target?.mode === 'circle') {
+      // Au collège, le cercle n'existe pas : une réponse se montre sur le triangle.
+      if (target?.mode === 'circle' && features.modes.includes('circle')) {
         next = setAngle(setMode(next, 'circle'), target.angle);
       } else if (target?.mode === 'triangle') {
         next = setMode(next, 'triangle');
@@ -324,7 +330,7 @@ export default function TrigonometryTool({ initialData, onChange, onReady }) {
       return next;
     });
     setPlaying(false);
-  }, [commit]);
+  }, [commit, features]);
 
   const hintPractice = useCallback(() => {
     commit((current) => ({
@@ -467,6 +473,7 @@ export default function TrigonometryTool({ initialData, onChange, onReady }) {
             state={state}
             valueMode={data.valueMode}
             unit={data.unit}
+            readings={features.readings}
             highlight={data.highlight}
             identityPanel={data.mode === 'circle'}
             tanPanel
@@ -489,10 +496,10 @@ export default function TrigonometryTool({ initialData, onChange, onReady }) {
               ? changeAngle(shownAngle + delta)
               : commit((current) => nudgeAngle(current, delta)))}
             onNormalize={() => commit(normalizeAngle)}
-            onUnit={(unit) => commit((current) => setUnit(current, unit))}
+            onUnit={(unit) => features.units.includes(unit) && commit((current) => setUnit(current, unit))}
             onValueMode={(mode) => commit((current) => setValueMode(current, mode))}
             onRadius={(radius) => commit((current) => setRadius(current, radius))}
-            onMode={(mode) => commit((current) => setMode(current, mode))}
+            onMode={(mode) => features.modes.includes(mode) && commit((current) => setMode(current, mode))}
             onLayer={(key) => commit((current) => toggleLayer(current, key))}
             onPreset={openPreset}
             onExperiment={openExperiment}
@@ -504,6 +511,7 @@ export default function TrigonometryTool({ initialData, onChange, onReady }) {
             onSpeed={setSpeed}
             onDirection={setDirection}
             onPractice={startPractice}
+            features={features}
           />
         </div>
       </div>

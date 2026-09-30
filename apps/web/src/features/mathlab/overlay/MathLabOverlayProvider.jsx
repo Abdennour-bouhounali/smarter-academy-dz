@@ -97,16 +97,22 @@ const MathLabOverlayContext = createContext(null);
 export function MathLabOverlayProvider({ children }) {
   // `null` fermé · PICKER le sélecteur · sinon l'id de l'instrument.
   const [tool, setTool] = useState(null);
+  // Le مخبر proposé par le sélecteur (MATH_LAB.md §2.1) : celui de la leçon
+  // qui ouvre le calque, ou null — le calque retombe alors sur le dernier
+  // choisi. Une simple chaîne ici : la logique des مخابر (labScope.js) vit
+  // dans le calque, chargé à la demande.
+  const [scope, setScope] = useState(null);
   const openerRef = useRef(null);
   // Où poser le calque : dans la racine de la séance s'il y en a une, dans
   // <body> sinon. Résolu à l'OUVERTURE (voir `open`), pas à chaque rendu.
   const [portalTarget, setPortalTarget] = useState(null);
 
-  const open = useCallback((toolId = PICKER) => {
+  const open = useCallback((toolId = PICKER, options = {}) => {
     // L'élément qui avait le focus au moment de l'ouverture : c'est à lui
     // que le focus revient à la fermeture, quand il est encore là.
     openerRef.current = typeof document !== 'undefined' ? document.activeElement : null;
     setPortalTarget(presentationRoot());
+    setScope(typeof options?.scope === 'string' ? options.scope : null);
     setTool(toolId);
   }, []);
 
@@ -130,8 +136,8 @@ export function MathLabOverlayProvider({ children }) {
   const backToPicker = useCallback(() => setTool(PICKER), []);
 
   const value = useMemo(
-    () => ({ tool, isOpen: tool !== null, isPicking: tool === PICKER, open, close, pick, backToPicker }),
-    [tool, open, close, pick, backToPicker],
+    () => ({ tool, scope, setScope, isOpen: tool !== null, isPicking: tool === PICKER, open, close, pick, backToPicker }),
+    [tool, scope, open, close, pick, backToPicker],
   );
 
   const overlay = tool !== null ? (

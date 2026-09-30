@@ -152,8 +152,8 @@ async function lineMap(page, index = 0) {
   const page = await context.newPage();
   wire(page);
 
-  await page.goto(`${BASE}/espace/atelier`, { waitUntil: 'networkidle' });
-  const card = page.locator('a[href*="/atelier/nombres"]').first();
+  await page.goto(`${BASE}/espace/atelier?lab=secondaire`, { waitUntil: 'networkidle' });
+  const card = page.locator('a[href*="/atelier/nombres?lab=secondaire"]').first();
   record('accueil : la carte de l’instrument est présente', await card.count() > 0);
 
   // « المستقيم المدرّج » ne doit plus figurer parmi les chips ANNONCÉS
@@ -200,7 +200,7 @@ async function lineMap(page, index = 0) {
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/nombres`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/nombres?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-nb]', { timeout: 15000 });
 
   await goMode(page, 'place');
@@ -238,7 +238,7 @@ async function lineMap(page, index = 0) {
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/nombres`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/nombres?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-nb]', { timeout: 15000 });
 
   await goMode(page, 'line');
@@ -286,7 +286,7 @@ async function lineMap(page, index = 0) {
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/nombres`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/nombres?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-nb]', { timeout: 15000 });
 
   await goMode(page, 'fractions');
@@ -322,7 +322,7 @@ async function lineMap(page, index = 0) {
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/nombres`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/nombres?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-nb]', { timeout: 15000 });
 
   await goMode(page, 'percent');
@@ -361,7 +361,7 @@ async function lineMap(page, index = 0) {
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/nombres`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/nombres?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-nb]', { timeout: 15000 });
 
   await goMode(page, 'proportion');
@@ -390,7 +390,7 @@ async function lineMap(page, index = 0) {
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/nombres`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/nombres?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-nb]', { timeout: 15000 });
 
   await goMode(page, 'divisibility');
@@ -418,7 +418,7 @@ async function lineMap(page, index = 0) {
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/nombres`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/nombres?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-nb]', { timeout: 15000 });
 
   await goMode(page, 'primes');
@@ -471,7 +471,7 @@ async function lineMap(page, index = 0) {
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/nombres`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/nombres?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-nb]', { timeout: 15000 });
 
   await goMode(page, 'gcdLcm');
@@ -513,7 +513,7 @@ async function lineMap(page, index = 0) {
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/nombres`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/nombres?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-nb]', { timeout: 15000 });
 
   await goMode(page, 'rounding');
@@ -547,7 +547,7 @@ async function lineMap(page, index = 0) {
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/nombres`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/nombres?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-nb]', { timeout: 15000 });
 
   await page.locator('.sa-ml-nb__footer .sa-ml-nb__button').first().click();
@@ -615,7 +615,7 @@ async function lineMap(page, index = 0) {
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/nombres`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/nombres?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-nb]', { timeout: 15000 });
 
   // Régler un état reconnaissable.
@@ -666,7 +666,7 @@ async function lineMap(page, index = 0) {
   const context = await authedContext();
   const page = await context.newPage();
   wire(page);
-  await page.goto(`${BASE}/espace/atelier/nombres`, { waitUntil: 'networkidle' });
+  await page.goto(`${BASE}/espace/atelier/nombres?lab=secondaire`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-ml-nb]', { timeout: 15000 });
   await page.waitForTimeout(500);
 

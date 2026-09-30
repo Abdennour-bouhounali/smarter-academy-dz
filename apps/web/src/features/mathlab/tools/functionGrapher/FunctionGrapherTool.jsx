@@ -9,6 +9,7 @@ import { DEFAULT_VIEWPORT, sameViewport } from './viewport.js';
 import { derivativeAt, derivativeFunction, tangentAt, constrainAlongCurve } from './numericalDerivative.js';
 import TangentOverlay from './TangentOverlay.jsx';
 import { installGrapherKeyboard } from './mathliveSetup.js';
+import { grapherFeatures } from './scope.js';
 import { exportGrapherPng } from './exportGrapherPng.js';
 import CoordinatePlane from './CoordinatePlane.jsx';
 import FunctionPanel from './FunctionPanel.jsx';
@@ -35,10 +36,22 @@ const SERIALIZE_MS = 300;
  * pente mesurée (numericalDerivative.js), et en option la courbe de f′ —
  * une fonction VIRTUELLE ajoutée au plan, jamais au document — avec le
  * point B = (a ; f′(a)). Éteint, le grapheur est exactement celui d'avant.
+ *
+ * ── Le مخبر (scope.js) ───────────────────────────────────────────────────
+ * Dans مخبر المتوسط, le mode tangente n'existe pas (ni panneau, ni calque,
+ * ni état : un document qui l'avait allumé s'ouvre éteint), les exemples
+ * sont des droites et le clavier n'a ni sin ni ln.
  */
-export default function FunctionGrapherTool({ initialData, onChange, onReady }) {
+export default function FunctionGrapherTool({ initialData, onChange, onReady, capabilities = null }) {
   const { t } = useTranslation('mathlab');
-  const [data, setData] = useState(() => normalizeGrapherData(initialData));
+  const features = useMemo(() => grapherFeatures(capabilities), [capabilities]);
+  const [data, setData] = useState(() => {
+    const normalized = normalizeGrapherData(initialData);
+
+    return features.tangent || !normalized.tangent.enabled
+      ? normalized
+      : { ...normalized, tangent: { ...normalized.tangent, enabled: false } };
+  });
   const [focusId, setFocusId] = useState(null);
   // L'invitation « اسحب النقطة » du mode tangente, jusqu'au premier geste sur A.
   const [tangentTouched, setTangentTouched] = useState(false);
@@ -105,7 +118,7 @@ export default function FunctionGrapherTool({ initialData, onChange, onReady }) 
 
   // Le clavier virtuel du grapheur, le temps de l'ouverture ; et ce qui attendait d'être remis part au démontage.
   useEffect(() => {
-    const restore = installGrapherKeyboard();
+    const restore = installGrapherKeyboard(features.keyboard);
 
     return () => {
       restore();
@@ -114,6 +127,8 @@ export default function FunctionGrapherTool({ initialData, onChange, onReady }) 
         onChangeRef.current?.(dataRef.current);
       }
     };
+    // Le مخبر ne change pas pendant la vie de l'outil (la page le remonte).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ── Les fonctions ──────────────────────────────────────────────────────
@@ -244,7 +259,7 @@ export default function FunctionGrapherTool({ initialData, onChange, onReady }) 
     ? <TangentOverlay tangent={tangentLine} step={step} showTriangle={data.tangent.showTriangle} showDerivative={data.tangent.showDerivative} derivativeColor={derivativeColor} />
     : null), [tangentOn, studied, tangentLine, data.tangent.showTriangle, data.tangent.showDerivative, derivativeColor]);
 
-  const tangentProps = data.functions.length > 0 || tangentOn ? {
+  const tangentProps = features.tangent && (data.functions.length > 0 || tangentOn) ? {
     tangent: data.tangent,
     functions: data.functions,
     studied,
@@ -270,6 +285,7 @@ export default function FunctionGrapherTool({ initialData, onChange, onReady }) 
         onRemove={removeFunction}
         onAdd={() => addFunction('')}
         onPickPreset={(expression) => addFunction(expression)}
+        presets={features.presets}
         onChangePointX={movePoint}
         onRemovePoint={removePoint}
         tangentProps={tangentProps}

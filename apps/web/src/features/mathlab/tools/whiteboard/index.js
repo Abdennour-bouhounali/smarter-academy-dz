@@ -21,6 +21,8 @@ export const whiteboardTool = defineMathLabTool({
   defaultTitleKey: 'tools.whiteboard.defaultTitle',
   icon: Presentation,
   schemaVersion: WHITEBOARD_SCHEMA_VERSION,
+  // Commune à tous, hors des مخابر : en tête de l'accueil (MATH_LAB.md §2.1).
+  scopes: 'common',
   createInitialData: createWhiteboardData,
   summarize: summarizeWhiteboard,
   load: () => import('./WhiteboardTool.jsx'),

@@ -9,15 +9,16 @@ const ICONS = { bars: BarChart3, histogram: BarChartBig, pie: PieChart, box: Can
  * DÉSACTIVÉ avec sa raison écrite dessous (descriptiveStats.chartAvailability) —
  * jamais dessiné faux en silence.
  */
-export default function ChartTypePicker({ active, availability, fallback, onChange }) {
+export default function ChartTypePicker({ active, availability, fallback, onChange, types = CHART_TYPES }) {
   const { t } = useTranslation('mathlab');
-  const refused = CHART_TYPES.filter((type) => !availability[type].available && availability[type].reason !== 'empty');
+  // `types` : ceux que le مخبر montre (scope.js) — la boîte n'existe pas au collège.
+  const refused = types.filter((type) => !availability[type].available && availability[type].reason !== 'empty');
 
   return (
     <section className="sa-ml-ps__section" aria-labelledby="ml-ps-chart-heading">
       <h3 id="ml-ps-chart-heading" className="sa-ml-ps__heading">{t('tools.probabilityStats.charts.heading')}</h3>
       <div className="sa-ml-ps__chart-types" role="group" aria-labelledby="ml-ps-chart-heading">
-        {CHART_TYPES.map((type) => {
+        {types.map((type) => {
           const Icon = ICONS[type];
           const { available, reason } = availability[type];
 

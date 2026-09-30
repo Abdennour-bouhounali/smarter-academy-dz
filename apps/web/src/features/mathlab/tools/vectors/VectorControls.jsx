@@ -20,8 +20,12 @@ export default function VectorControls({
   selection, counts, limits, settings, experiment, explorer, explorerVector,
   onAddPoint, onAddVector, onCreateAB, onCombine, onScale, onMidpoint, onTranslate,
   onMakePolygon, onTranslatePolygon, onToggleSetting, onAnalysis, onExperiment,
-  onExplorerComponent, onToggleExplorer,
+  onExplorerComponent, onToggleExplorer, features = null,
 }) {
+  // Le مخبر (scope.js) : sans k·u ni analyse avancée au collège.
+  const canScale = features?.scale !== false;
+  const analysisKinds = features?.analysis ?? ANALYSIS_KINDS;
+  const experiments = features?.experiments ?? EXPERIMENTS;
   const { t } = useTranslation('mathlab');
   const twoPoints = selection.points.length === 2;
   const threePoints = selection.points.length === 3;
@@ -69,10 +73,12 @@ export default function VectorControls({
             <Minus size={15} aria-hidden="true" />
             {t('tools.vectors.difference')}
           </button>
+          {canScale && (
           <button type="button" className="sa-ml-btn sa-ml-vec__action" onClick={onScale} disabled={!oneVector || !vectorRoom} data-ml-scale>
             <XIcon size={15} aria-hidden="true" />
             {t('tools.vectors.scale')}
           </button>
+          )}
         </div>
       </section>
 
@@ -154,6 +160,7 @@ export default function VectorControls({
             <span>{t('tools.vectors.snap')}</span>
           </label>
         </div>
+        {analysisKinds.length > 1 && (
         <label className="sa-ml-vec__field">
           <span className="sa-ml-vec__fieldlabel">{t('tools.vectors.analysisLabel')}</span>
           <select
@@ -162,11 +169,12 @@ export default function VectorControls({
             onChange={(event) => onAnalysis(event.target.value)}
             data-ml-analysis
           >
-            {ANALYSIS_KINDS.map((kind) => (
+            {analysisKinds.map((kind) => (
               <option key={kind} value={kind}>{t(`tools.vectors.analysisKinds.${kind}`)}</option>
             ))}
           </select>
         </label>
+        )}
       </section>
 
       {/* ── Les expériences (§27) ─────────────────────────────────────── */}
@@ -176,7 +184,7 @@ export default function VectorControls({
           {t('tools.vectors.experimentsHeading')}
         </h3>
         <div className="sa-ml-vec__chips" role="group" aria-label={t('tools.vectors.experimentsHeading')}>
-          {EXPERIMENTS.map((entry) => (
+          {experiments.map((entry) => (
             <button
               key={entry.id}
               type="button"

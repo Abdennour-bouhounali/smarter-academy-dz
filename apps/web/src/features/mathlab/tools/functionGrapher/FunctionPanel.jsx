@@ -16,7 +16,7 @@ import TangentPanel from './TangentPanel.jsx';
  */
 export default function FunctionPanel({
   data, compiledById, focusId, onChangeExpression, onChangeColor, onToggle, onRemove, onAdd, onPickPreset,
-  onChangePointX, onRemovePoint, tangentProps,
+  onChangePointX, onRemovePoint, tangentProps, presets = FUNCTION_PRESETS,
 }) {
   const { t } = useTranslation('mathlab');
   const [collapsed, setCollapsed] = useState(false);
@@ -83,7 +83,7 @@ export default function FunctionPanel({
 
         <div className="sa-ml-grapher__presets" role="group" aria-label={t('tools.functionGrapher.examples')} data-ml-presets>
           <span className="sa-ml-grapher__presets-label">{t('tools.functionGrapher.examples')}</span>
-          {FUNCTION_PRESETS.map((preset) => (
+          {presets.map((preset) => (
             <button
               key={preset.expression}
               type="button"
@@ -127,6 +127,11 @@ const PRESET_LABELS = {
   '\\left|x\\right|': '|x|',
   '\\sqrt{x}': '√x',
   '\\sin(x)': 'sin(x)',
+  // Ceux de مخبر المتوسط (scope.js).
+  '2x': '2x',
+  '-x+3': '−x + 3',
+  '\\frac{1}{2}x-1': '½x − 1',
+  '3': '3',
 };
 
 function PresetLabel({ expression }) {

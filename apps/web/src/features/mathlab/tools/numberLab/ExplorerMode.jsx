@@ -9,6 +9,7 @@ import {
   nextPrime, previousPrime, digitSum, digitsOf,
 } from './numberTheory.js';
 import { formatNumber, frameValues } from './numberValue.js';
+import { useModeAvailable } from './scope.js';
 
 /**
  * §4 — L'EXPLORATEUR : tout ce qu'un nombre a à dire, d'un coup.
@@ -22,6 +23,8 @@ import { formatNumber, frameValues } from './numberValue.js';
  * c'est le point de départ des douze autres modes (§46).
  */
 export default function ExplorerMode({ value, onChangeValue, onSend, compact }) {
+  // La numération de position n'est pas au مخبر الثانوي (scope.js).
+  const placeOpen = useModeAvailable('place');
   const { t } = useTranslation('mathlab');
 
   const facts = useMemo(() => {
@@ -82,9 +85,11 @@ export default function ExplorerMode({ value, onChangeValue, onSend, compact }) 
               ? `${formatNumber(value)} = ${facts.decomposition.map((p) => formatNumber(p.value)).join(' + ')}`
               : formatNumber(value)}
           </p>
+          {placeOpen && (
           <button type="button" className="sa-ml-nb__link" onClick={() => onSend('place', value)}>
             {t('tools.numberLab.modes.place')}
           </button>
+          )}
         </section>
 
         {/* §4 : premier ou composé — et POURQUOI. */}
