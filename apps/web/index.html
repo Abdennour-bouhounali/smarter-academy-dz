@@ -7,7 +7,15 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <!-- Favicons / home-screen icons: the emblem (star + figure + book) cropped
+       from public/smarter-academy-logo.webp — the wordmark is unreadable at
+       16–48 px. favicon.ico holds 16/32/48 for legacy browsers. -->
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#01255f" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Primary Title & Meta Tags -->
@@ -27,12 +35,17 @@
     content="منصة تفاعلية لفهم واكتشاف وإتقان الرياضيات." />
   <meta property="og:locale" content="ar_DZ" />
   <meta property="og:site_name" content="Smarter Academy DZ" />
+  <meta property="og:image" content="https://smarter-academy.com/og/smarter-academy.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Smarter Academy" />
 
   <!-- Twitter Card Meta Tags -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Smarter Academy — تعلّم الرياضيات بالفهم، لا بالحفظ" />
   <meta name="twitter:description"
     content="منصة تفاعلية لفهم واكتشاف وإتقان الرياضيات." />
+  <meta name="twitter:image" content="https://smarter-academy.com/og/smarter-academy.png" />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -79,6 +92,7 @@
       "name": "Smarter Academy DZ",
       "description": "منصة تعليمية تفاعلية للرياضيات.",
       "email": "abdennour.bouhounali@gmail.com",
+      "logo": "https://smarter-academy.com/smarter-academy-logo.webp",
       "areaServed": {
         "@type": "Country",
         "name": "Algeria"
