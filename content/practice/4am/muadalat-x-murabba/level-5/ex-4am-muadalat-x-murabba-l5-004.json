@@ -1,0 +1,121 @@
+{
+  "metadata": {
+    "title": "تدريب — قرص",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مساحة قرص",
+      "نصف قطر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P2",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "مساحة قرص نصف قطره $r$ هي $\\pi r^2$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قرص مساحته $49\\pi\\ \\mathrm{cm}^2$. ما هو نصف قطره $r$ (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
+        {
+          "value": "24.5",
+          "id": "MISC-HALL-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب المعادلة $\\pi r^2 = 49\\pi$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم الطرفين على $\\pi$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نصف القطر موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$r^2 = 49$ و $r > 0$: $r = 7$.",
+        "incorrect": "$\\pi r^2 = 49\\pi$ يعني $r^2 = 49$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "قرص مساحته $20\\pi\\ \\mathrm{cm}^2$. ما هو نصف قطره $r$ (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "transfer",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$r = 10$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-QISMA"
+        },
+        {
+          "id": "B",
+          "content": "$r = \\sqrt{20}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$r = 20$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$r = -\\sqrt{20}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقسم الطرفين على $\\pi$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حل المعادلة $r^2 = 20$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نصف القطر طول، فهو موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$r^2 = 20$ ، و $r > 0$: $r = \\sqrt{20}$.",
+        "incorrect": "$10^2 = 100$ وليس 20، والطول موجب."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l5-004",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 5
+}

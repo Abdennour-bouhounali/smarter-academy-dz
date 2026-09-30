@@ -1,0 +1,81 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l3-003",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — تبسيط عبارة بثلاثة جذور",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تبسيط",
+      "خاصية توزيعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P2",
+      "modelledOn": "ex-26"
+    }
+  },
+  "statement": {
+    "content": "بسّط العبارة $A = \\sqrt{75} - 2\\sqrt{12} + \\sqrt{27}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بسّط العبارة $A = \\sqrt{75} - 2\\sqrt{12} + \\sqrt{27}$.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$6\\sqrt{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUAMIL-MANSI"
+        },
+        {
+          "id": "B",
+          "content": "$4\\sqrt{3}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$3\\sqrt{10}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        },
+        {
+          "id": "D",
+          "content": "$12\\sqrt{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجذور الثلاثة تُكتب بدلالة $\\sqrt{3}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$75 = 25 \\times 3$ ، $12 = 4 \\times 3$ ، $27 = 9 \\times 3$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب كل جذر مبسّط في معامله، ثم اجمع المعاملات بإشاراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = 5\\sqrt{3} - 2 \\times 2\\sqrt{3} + 3\\sqrt{3} = (5 - 4 + 3)\\sqrt{3}$.",
+        "incorrect": "راجع المعامل 2 أمام $\\sqrt{12}$ وإشارة كل حدّ."
+      }
+    }
+  ]
+}

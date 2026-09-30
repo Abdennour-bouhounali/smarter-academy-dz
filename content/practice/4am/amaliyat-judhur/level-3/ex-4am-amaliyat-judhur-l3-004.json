@@ -1,0 +1,104 @@
+{
+  "metadata": {
+    "title": "تدريب — جداء عبارتين من الشكل a√b",
+    "estimatedMinutes": 5,
+    "tags": [
+      "جداء جذرين",
+      "إخراج عامل من تحت الجذر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P1",
+      "modelledOn": "ex-17"
+    }
+  },
+  "statement": {
+    "content": "احسب كل جداء (النتيجة عدد طبيعي)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$2\\sqrt{3} \\times 5\\sqrt{3}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "30",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "رتّب الجداء: الأعداد معًا والجذور معًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2\\sqrt{3} \\times 5\\sqrt{3} = (2 \\times 5) \\times (\\sqrt{3} \\times \\sqrt{3})$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "كم يساوي $(\\sqrt{3})^2$ ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$2\\sqrt{3} \\times 5\\sqrt{3} = 10 \\times (\\sqrt{3})^2 = 10 \\times 3 = 30$",
+        "incorrect": "$(\\sqrt{a})^2 = a$ وليس $a^2$ ."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "90",
+          "id": "MISC-TARBI-JIDHR"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "$3\\sqrt{2} \\times 4\\sqrt{8}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "48",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "رتّب الجداء: الأعداد معًا والجذور معًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{2} \\times \\sqrt{8} = \\sqrt{16}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب $3 \\times 4$ في الجذر الذي وجدته."
+        }
+      ],
+      "feedback": {
+        "correct": "$3\\sqrt{2} \\times 4\\sqrt{8} = 12 \\times \\sqrt{16} = 12 \\times 4 = 48$",
+        "incorrect": "لا تنسَ ضرب المعاملين 3 و 4."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "4",
+          "id": "MISC-MUAMIL-MANSI"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l3-004",
+  "lessonCode": "amaliyat-judhur",
+  "level": 3
+}

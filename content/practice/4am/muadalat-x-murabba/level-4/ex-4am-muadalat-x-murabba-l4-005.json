@@ -1,0 +1,81 @@
+{
+  "metadata": {
+    "title": "تدريب — أبرّر",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تبرير",
+      "لا حل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P1",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "نريد تبرير أن المعادلة $x^2 + 1 = 0$ لا تقبل أي حل."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لماذا لا تقبل المعادلة $x^2 + 1 = 0$ أي حل؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لأن 1 ليس مربع أي عدد",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "لأن $x^2 \\geq 0$ فإن $x^2 + 1 \\geq 1$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "لأن $(-1)^2 = -1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-SALIB"
+        },
+        {
+          "id": "D",
+          "content": "لأن $x^2 + 1 = 0$ يعني $x = -\\dfrac{1}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما أصغر قيمة ممكنة لـ $x^2$؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذا أضفنا 1 إلى عدد موجب، ماذا نحصل؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل يمكن أن يساوي هذا المجموع 0؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2$ موجب دائما، فـ $x^2 + 1$ لا يقل عن 1 ولا يساوي 0.",
+        "incorrect": "$1 = 1^2$، و $(-1)^2 = 1$."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l4-005",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 4
+}

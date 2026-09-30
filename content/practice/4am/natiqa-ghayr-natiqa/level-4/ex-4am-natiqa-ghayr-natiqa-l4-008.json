@@ -1,0 +1,75 @@
+{
+  "metadata": {
+    "title": "تدريب — كتب ياسين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تحليل خطأ",
+      "قيمة مقرّبة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P3",
+      "modelledOn": "ex-9"
+    }
+  },
+  "statement": {
+    "content": "كتب ياسين: «$2{,}6^2 = 6{,}76$ و $2{,}7^2 = 7{,}29$ ، إذن القيمة المقرّبة إلى الجزء من 10 بالزيادة للعدد $\\sqrt{7}$ هي 2,6»."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما رأيك؟",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "ياسين مخطئ: $2{,}6 < \\sqrt{7} < 2{,}7$ ، فـ 2,6 قيمة بالنقصان والقيمة بالزيادة 2,7",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "ياسين محق",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAQRIB-NAQS-ZIYADA"
+        },
+        {
+          "id": "C",
+          "content": "ياسين مخطئ: القيمة بالزيادة هي 3,5",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حساب المربعين صحيح: ما الحصر الذي يعطيانه للعدد $\\sqrt{7}$؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أيّ الطرفين أكبر من $\\sqrt{7}$؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بالزيادة: الطرف الأكبر من العدد؛ بالنقصان: الطرف الأصغر."
+        }
+      ],
+      "feedback": {
+        "correct": "من $6{,}76 < 7 < 7{,}29$ نستنتج $2{,}6 < \\sqrt{7} < 2{,}7$ : الطرف الأكبر هو القيمة بالزيادة.",
+        "incorrect": "راجع معنى «بالنقصان» و«بالزيادة»."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l4-008",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 4
+}

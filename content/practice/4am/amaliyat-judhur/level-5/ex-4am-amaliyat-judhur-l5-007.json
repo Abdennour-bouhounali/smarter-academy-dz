@@ -1,0 +1,144 @@
+{
+  "metadata": {
+    "title": "تدريب — عبارات بحواصل قسمة",
+    "estimatedMinutes": 8,
+    "tags": [
+      "حاصل قسمة جذرين",
+      "جداء جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P2",
+      "modelledOn": "ex-21"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العددين $A = \\dfrac{\\sqrt{98}}{\\sqrt{2}}$ و $B = \\dfrac{\\sqrt{0{,}5}}{\\sqrt{4{,}5}}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $A$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب $A$ جذرًا واحدًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $98 \\div 2$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خذ جذر الناتج."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = \\sqrt{49} = 7$",
+        "incorrect": "لا تتوقف عند القسمة: بقي الجذر."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "49",
+          "id": "MISC-QISMA-JIDHR"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $B$ (كسرًا غير قابل للاختزال).",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "1/3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب $B$ جذرًا واحدًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{0{,}5}{4{,}5} = \\dfrac{5}{45}$ ، اختزله."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خذ جذر البسط والمقام."
+        }
+      ],
+      "feedback": {
+        "correct": "$B = \\sqrt{\\dfrac{5}{45}} = \\sqrt{\\dfrac{1}{9}} = \\dfrac{1}{3}$",
+        "incorrect": "اختزل الكسر تحت الجذر ثم خذ الجذر."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "1/9",
+          "id": "MISC-QISMA-JIDHR"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "احسب $A \\times B$ (كسرًا غير قابل للاختزال).",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "7/3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل قيمتي $A$ و $B$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب عددًا طبيعيًا في كسر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق أن الكسر غير قابل للاختزال."
+        }
+      ],
+      "feedback": {
+        "correct": "$A \\times B = 7 \\times \\dfrac{1}{3} = \\dfrac{7}{3}$",
+        "incorrect": "احسب $A$ و $B$ بدقّة أولًا."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l5-007",
+  "lessonCode": "amaliyat-judhur",
+  "level": 5
+}

@@ -1,0 +1,83 @@
+{
+  "metadata": {
+    "title": "تدريب — معادلة بعدد عشري",
+    "estimatedMinutes": 2,
+    "tags": [
+      "وضعية إدماجية",
+      "معادلة",
+      "عدد عشري"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": "qcm"
+    }
+  },
+  "statement": {
+    "content": "نعتبر المعادلة $x^2 - 0{,}49 = 0$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعادلة $x^2 - 0{,}49 = 0$ ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "تقبل حلين هما $0{,}7$ و $-0{,}7$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "تقبل حلا واحدا هو $0{,}7$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "تقبل حلين هما $0{,}07$ و $-0{,}07$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-FASILA"
+        },
+        {
+          "id": "D",
+          "content": "لا تقبل أي حل",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-SALIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب المعادلة على الشكل $x^2 = a$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما إشارة $a$؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن العدد الموجب الذي مربعه 0,49."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 = 0{,}49$ و $0{,}49 > 0$: حلّان $0{,}7$ و $-0{,}7$ لأنّ $0{,}7^2 = 0{,}49$.",
+        "incorrect": "انتبه إلى موضع الفاصلة وإلى الحل السالب."
+      },
+      "cognitiveDemand": "recall"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l1-010",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 1
+}

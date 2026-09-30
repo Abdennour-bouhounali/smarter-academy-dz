@@ -1,0 +1,83 @@
+{
+  "metadata": {
+    "title": "تدريب — معادلة وأبسط كتابة",
+    "estimatedMinutes": 2,
+    "tags": [
+      "وضعية إدماجية",
+      "معادلة",
+      "أبسط كتابة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "نعتبر المعادلة $x^2 = 20$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلول المعادلة $x^2 = 20$ هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2\\sqrt{5}$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$10$ و $-10$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-QISMA"
+        },
+        {
+          "id": "C",
+          "content": "$4\\sqrt{5}$ و $-4\\sqrt{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        },
+        {
+          "id": "D",
+          "content": "$2\\sqrt{5}$ و $-2\\sqrt{5}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما إشارة 20؟ كم حلا للمعادلة إذن؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحلان هما الجذر التربيعي للعدد 20 ومعاكسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $20 = 4 \\times 5$ لتبسيط الجذر."
+        }
+      ],
+      "feedback": {
+        "correct": "$20 > 0$: الحلان $\\sqrt{20}$ و $-\\sqrt{20}$، و $\\sqrt{20} = \\sqrt{4 \\times 5} = 2\\sqrt{5}$.",
+        "incorrect": "تحقّق بتربيع كل حل: يجب أن تحصل على 20."
+      },
+      "cognitiveDemand": "recall"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l1-005",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 1
+}

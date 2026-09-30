@@ -1,0 +1,153 @@
+{
+  "metadata": {
+    "title": "تدريب — جذر مجموع ومجموع جذرين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مجموع جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P3",
+      "modelledOn": "act-4c"
+    }
+  },
+  "statement": {
+    "content": "نقارن العددين $\\sqrt{144 + 25}$ و $\\sqrt{144} + \\sqrt{25}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $\\sqrt{144 + 25}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "13",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجذر يشمل المجموع كله."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $144 + 25$ أولًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما العدد الموجب الذي مربعه هذا المجموع؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{144 + 25} = \\sqrt{169} = 13$",
+        "incorrect": "اجمع ما تحت الجذر أولًا."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "17",
+          "id": "MISC-JIDHR-JAMA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $\\sqrt{144} + \\sqrt{25}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "17",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هنا جذران منفصلان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب كل جذر وحده."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع النتيجتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{144} + \\sqrt{25} = 12 + 5 = 17$",
+        "incorrect": "احسب $\\sqrt{144}$ و $\\sqrt{25}$ ثم اجمع."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "13",
+          "id": "MISC-JIDHR-JAMA"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "اختر المقارنة الصحيحة.",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sqrt{144 + 25} = \\sqrt{144} + \\sqrt{25}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\sqrt{144 + 25} < \\sqrt{144} + \\sqrt{25}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\sqrt{144 + 25} > \\sqrt{144} + \\sqrt{25}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل العددين اللذين حسبتهما."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أيّهما أكبر؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الجذر لا يتوزّع على الجمع."
+        }
+      ],
+      "feedback": {
+        "correct": "$13 < 17$ : جذر المجموع أصغر من مجموع الجذرين.",
+        "incorrect": "قارن القيمتين العدديتين للطرفين."
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l2-006",
+  "lessonCode": "amaliyat-judhur",
+  "level": 2
+}

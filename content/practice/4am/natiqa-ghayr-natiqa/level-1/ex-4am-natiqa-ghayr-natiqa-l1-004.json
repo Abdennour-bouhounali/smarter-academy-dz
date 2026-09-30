@@ -1,0 +1,80 @@
+{
+  "metadata": {
+    "title": "تدريب — جذر غير ناطق",
+    "estimatedMinutes": 2,
+    "tags": [
+      "عدد غير ناطق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P3",
+      "modelledOn": "act-2"
+    }
+  },
+  "statement": {
+    "content": "الأعداد المقترحة جذور تربيعية لأعداد موجبة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ عدد من الأعداد الآتية ليس عددًا ناطقًا؟",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sqrt{1{,}44}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-TABII-FAQAT"
+        },
+        {
+          "id": "B",
+          "content": "$\\sqrt{0{,}36}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-TABII-FAQAT"
+        },
+        {
+          "id": "C",
+          "content": "$\\sqrt{\\dfrac{4}{25}}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-TABII-FAQAT"
+        },
+        {
+          "id": "D",
+          "content": "$\\sqrt{11}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عدد عشري أو كسر قد يكون مربعًا لعدد ناطق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $1{,}2^2$ و $0{,}6^2$ و $\\left(\\dfrac{2}{5}\\right)^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن العدد الذي تحت الجذر ولا يمكن أن يكون مربعًا لأي عدد ناطق."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{1{,}44} = 1{,}2$ و $\\sqrt{0{,}36} = 0{,}6$ و $\\sqrt{\\dfrac{4}{25}} = \\dfrac{2}{5}$ ناطقة؛ أما 11 فليس مربعًا لعدد ناطق.",
+        "incorrect": "جذر عدد عشري أو كسر قد يكون ناطقًا: جرّب تربيع أعداد عشرية وكسور بسيطة."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l1-004",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 1
+}

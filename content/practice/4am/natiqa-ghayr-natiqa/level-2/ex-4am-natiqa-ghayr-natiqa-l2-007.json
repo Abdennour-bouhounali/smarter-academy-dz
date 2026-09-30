@@ -1,0 +1,75 @@
+{
+  "metadata": {
+    "title": "تدريب — تصنيف جذر كسر",
+    "estimatedMinutes": 2,
+    "tags": [
+      "تصنيف",
+      "كسر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P1",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "نريد تصنيف العدد $\\sqrt{\\dfrac{36}{49}}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "اختر الجواب الصحيح.",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "عدد ناطق، ويساوي $\\dfrac{6}{7}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "ليس عددًا ناطقًا لأنه جذر كسر",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-TABII-FAQAT"
+        },
+        {
+          "id": "C",
+          "content": "عدد ناطق، ويساوي $\\dfrac{18}{49}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هل $\\dfrac{36}{49}$ مربع لعدد ناطق؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ابحث عن عدد مربعه 36 وعن عدد مربعه 49."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ربّع الكسر الذي تقترحه وقارنه بالعدد تحت الجذر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\left(\\dfrac{6}{7}\\right)^2 = \\dfrac{36}{49}$ إذن $\\sqrt{\\dfrac{36}{49}} = \\dfrac{6}{7}$ عدد ناطق.",
+        "incorrect": "جذر الكسر قد يكون ناطقًا: جرّب تربيع كسر بسيط."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l2-007",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 2
+}

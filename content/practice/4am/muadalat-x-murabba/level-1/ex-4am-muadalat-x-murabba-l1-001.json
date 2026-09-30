@@ -1,0 +1,109 @@
+{
+  "metadata": {
+    "title": "نشاط 3 — مربعا عددين متعاكسين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نشاط",
+      "مربع عدد",
+      "عددان متعاكسان"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-3",
+      "page": 20,
+      "section": "أنشطة",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من النشاط 3 (الكتاب ص 20): جدول القيم $x$ و $x^2$ للأعداد $-\\dfrac{3}{2}$ ، $-1$ ، $0$ ، $1$ ، $\\dfrac{3}{2}$ ، $2$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب مربع العدد $-\\dfrac{3}{2}$.",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "9/4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مربع عدد هو جداء هذا العدد في نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\left(-\\dfrac{3}{2}\\right)^2 = \\left(-\\dfrac{3}{2}\\right) \\times \\left(-\\dfrac{3}{2}\\right)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء عددين سالبين عدد موجب: اضرب البسطين ثم المقامين."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\left(-\\dfrac{3}{2}\\right)^2 = \\dfrac{9}{4}$، وهو أيضًا مربع $\\dfrac{3}{2}$.",
+        "incorrect": "انتبه إلى الإشارة: جداء عددين سالبين موجب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ماذا تلاحظ على مربعي عددين متعاكسين $b$ و $-b$؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "مربعاهما متساويان",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "مربعاهما متعاكسان",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "مربع $-b$ سالب دائمًا",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن في الجدول مربعي $-1$ و $1$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $(-b)^2 = (-b) \\times (-b)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء عددين سالبين عدد موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$(-b)^2 = (-b) \\times (-b) = b \\times b = b^2$: لعددين متعاكسين نفس المربع.",
+        "incorrect": "احسب مربعي $-\\dfrac{3}{2}$ و $\\dfrac{3}{2}$ وقارن."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l1-001",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 1
+}

@@ -1,0 +1,100 @@
+{
+  "metadata": {
+    "title": "تدريب — مربع جداء وحاصل قسمة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "معادلة",
+      "مربع جداء"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P2",
+      "modelledOn": "method-equation"
+    }
+  },
+  "statement": {
+    "content": "نكتب المعادلة على الشكل $x^2 = a$ ثم نحل."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هو الحل الموجب للمعادلة $(2x)^2 = 36$؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$(2x)^2 = 2^2 \\times x^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تصبح المعادلة $4x^2 = 36$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على 4 ثم ابحث عن الجذر."
+        }
+      ],
+      "feedback": {
+        "correct": "$4x^2 = 36$ ، $x^2 = 9$ ، إذن $x = 3$ أو $x = -3$.",
+        "incorrect": "$(2x)^2 = 4x^2$ وليس $2x^2$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو الحل السالب للمعادلة $\\left(\\dfrac{x}{3}\\right)^2 = 1$؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح نسبي",
+      "expectedAnswer": "-3",
+      "misconceptionSignatures": [
+        {
+          "value": "3",
+          "id": "MISC-HALL-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\left(\\dfrac{x}{3}\\right)^2 = \\dfrac{x^2}{9}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب الطرفين في 9."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خذ الحل السالب."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{x^2}{9} = 1$ ، $x^2 = 9$ ، والحلان 3 و $-3$.",
+        "incorrect": "مربع حاصل قسمة هو مربع البسط على مربع المقام."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l3-010",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 3
+}

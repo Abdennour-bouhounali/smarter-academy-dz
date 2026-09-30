@@ -1,0 +1,133 @@
+{
+  "metadata": {
+    "title": "تدريب — وتر مثلث قائم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية إدماجية",
+      "فيثاغورس",
+      "عدد غير ناطق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "مثلث $ABC$ قائم في $A$ حيث $AB = 1\\,cm$ و $AC = 3\\,cm$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "طول الوتر $BC$ (بالسنتيمتر) هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        },
+        {
+          "id": "B",
+          "content": "$10$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$2\\sqrt{5}$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$\\sqrt{10}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل خاصية فيثاغورس."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$BC^2 = AB^2 + AC^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الطول هو العدد الموجب الذي مربعه $BC^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$BC^2 = 1 + 9 = 10$، إذن $BC = \\sqrt{10}$.",
+        "incorrect": "احسب $BC^2$ أولًا ثم خذ جذره التربيعي."
+      },
+      "cognitiveDemand": "recall"
+    },
+    {
+      "id": "q2",
+      "statement": "هل العدد $BC$ ناطق؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا، لأنّ 10 ليس مربعًا لعدد ناطق",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نعم، لأنّ جذر كل عدد طبيعي عدد ناطق",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-KULL-JIDHR"
+        },
+        {
+          "id": "C",
+          "content": "نعم، لأنّ الحاسبة تعطي له قيمة عشرية",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HASIBA-MUDBUTA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هل 10 من المربعات التامة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المربعات التامة القريبة: 9 و 16."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "متى يكون جذر عدد ناطقًا؟"
+        }
+      ],
+      "feedback": {
+        "correct": "10 محصور بين المربعين التامين 9 و 16، فليس مربعًا لعدد ناطق: $\\sqrt{10}$ غير ناطق.",
+        "incorrect": "القيمة التي تعرضها الحاسبة مقرّبة فقط."
+      },
+      "cognitiveDemand": "recall"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l1-009",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 1
+}

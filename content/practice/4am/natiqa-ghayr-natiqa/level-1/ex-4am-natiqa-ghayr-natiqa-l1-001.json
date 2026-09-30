@@ -1,0 +1,119 @@
+{
+  "metadata": {
+    "title": "نشاط 2 — صنفان من الجذور",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نشاط",
+      "عدد ناطق"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-2",
+      "page": 20,
+      "section": "أنشطة",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 20): الصنف الأول: $\\sqrt{100}$ ، $\\sqrt{9}$ ، $\\sqrt{\\dfrac{16}{9}}$ ، $\\sqrt{0{,}25}$. الصنف الثاني: $\\sqrt{7}$ ، $\\sqrt{13}$ ، $\\sqrt{\\dfrac{25}{13}}$ ، $\\sqrt{6}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "إلى أي الصنفين ينتمي العدد $\\sqrt{169}$؟",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الصنف الأول: $\\sqrt{169}$ عدد ناطق",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الصنف الثاني: لا يوجد عدد ناطق مربعه 169",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن عدد طبيعي مربعه 169."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "جرّب مربعات الأعداد بين 10 و 15."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا وجدت عددًا ناطقًا مربعه 169، فجذره عدد ناطق."
+        }
+      ],
+      "feedback": {
+        "correct": "$13^2 = 169$ إذن $\\sqrt{169} = 13$: عدد ناطق، مثل $\\sqrt{100} = 10$.",
+        "incorrect": "ابحث عن عدد مربعه 169."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو معيار التصنيف؟",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الصنف الأول: العدد تحت الجذر مربع لعدد ناطق؛ الصنف الثاني: ليس مربعًا لعدد ناطق",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الصنف الأول: الأعداد تحت الجذر أعداد طبيعية؛ الصنف الثاني: ليست أعدادًا طبيعية",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-TABII-FAQAT"
+        },
+        {
+          "id": "C",
+          "content": "الصنف الأول: الأعداد تحت الجذر أصغر من أعداد الصنف الثاني",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في الصنف الأول $\\dfrac{16}{9}$، وفي الصنف الثاني 7: هل يكفي أن يكون العدد طبيعيًا؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن أيضًا 100 و 7: هل الحجم هو المعيار؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب جذور الصنف الأول: هل هي أعداد ناطقة؟"
+        }
+      ],
+      "feedback": {
+        "correct": "جذور الصنف الأول ناطقة: $\\sqrt{100} = 10$ ، $\\sqrt{9} = 3$ ، $\\sqrt{\\dfrac{16}{9}} = \\dfrac{4}{3}$ ، $\\sqrt{0{,}25} = 0{,}5$.",
+        "incorrect": "اختبر كل معيار على كل الأعداد: $\\dfrac{16}{9}$ ليس طبيعيًا و 100 أكبر من 7."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l1-001",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 1
+}

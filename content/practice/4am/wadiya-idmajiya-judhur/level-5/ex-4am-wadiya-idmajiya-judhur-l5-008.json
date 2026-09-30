@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "title": "تدريب — سلّم على جدار",
+    "estimatedMinutes": 6,
+    "tags": [
+      "وضعية إدماجية",
+      "فيثاغورس",
+      "مدوّر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "سلّم طوله $5\\,m$ مسنود إلى جدار عمودي على الأرض، وقاعدته على بعد $1\\,m$ من الجدار."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "القيمة المضبوطة للارتفاع الذي يبلغه السلّم على الجدار (بالمتر) هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-TARH"
+        },
+        {
+          "id": "B",
+          "content": "$\\sqrt{26}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$2\\sqrt{6}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$4\\sqrt{6}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "السلّم هو وتر المثلث القائم."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مربع الارتفاع $5^2 - 1^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بسّط $\\sqrt{24}$."
+        }
+      ],
+      "feedback": {
+        "correct": "مربع الارتفاع $25 - 1 = 24$، والارتفاع $\\sqrt{24} = 2\\sqrt{6}$.",
+        "incorrect": "الجذر لا يتوزّع على الطرح: احسب $25 - 1$ أولًا."
+      },
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q2",
+      "statement": "أعط هذا الارتفاع مدوّرًا إلى 1cm (بالسنتيمتر).",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي (بالسنتيمتر)",
+      "expectedAnswer": "490",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب القيمة المضبوطة بالحاسبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حوّل إلى سنتيمتر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر في النهاية."
+        }
+      ],
+      "feedback": {
+        "correct": "$2\\sqrt{6} \\approx 4{,}899\\,m$، أي $490\\,cm$.",
+        "incorrect": "احسب القيمة المضبوطة ثم حوّل ودوّر."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "400",
+          "id": "MISC-JIDHR-TARH"
+        }
+      ],
+      "cognitiveDemand": "transfer"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l5-008",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 5
+}

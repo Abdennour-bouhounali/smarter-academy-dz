@@ -1,0 +1,160 @@
+{
+  "metadata": {
+    "title": "تمرين 17 — جداء جذرين",
+    "estimatedMinutes": 6,
+    "tags": [
+      "جداء جذرين"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-17",
+      "page": 27,
+      "section": "أوظّف تعلّماتي",
+      "number": 17
+    }
+  },
+  "statement": {
+    "content": "احسب ما يلي:"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\sqrt{2} \\times \\sqrt{50}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\sqrt{a} \\times \\sqrt{b} = \\sqrt{a \\times b}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $2 \\times 50$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خذ جذر الجداء."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{2 \\times 50} = \\sqrt{100} = 10$",
+        "incorrect": "اضرب العددين تحت جذر واحد، ولا تجمعهما."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$\\sqrt{32} \\times \\sqrt{2}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع الجذرين في جذر واحد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $32 \\times 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هذا الجداء مربّع تام."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{32 \\times 2} = \\sqrt{64} = 8$",
+        "incorrect": "اكتب $\\sqrt{32 \\times 2}$ ثم احسب."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "$\\sqrt{3} \\times \\sqrt{48}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "12",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع الجذرين في جذر واحد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $3 \\times 48$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما العدد الموجب الذي مربعه هذا الجداء؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{3 \\times 48} = \\sqrt{144} = 12$",
+        "incorrect": "لا تتوقف عند $3 \\times 48$: بقي الجذر."
+      }
+    },
+    {
+      "id": "q4",
+      "statement": "$\\sqrt{125} \\times \\sqrt{5}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "25",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع الجذرين في جذر واحد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $125 \\times 5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن العدد الذي مربعه هذا الجداء."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{125 \\times 5} = \\sqrt{625} = 25$",
+        "incorrect": "اضرب ثم خذ الجذر."
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l3-001",
+  "lessonCode": "amaliyat-judhur",
+  "level": 3
+}

@@ -4,6 +4,7 @@ import { useWorkspaceLayout } from '../../../context/WorkspaceLayoutContext';
 import { useLearningViewer } from '../../../features/learning/learningViewer';
 import { cumulativeKnowledge, findKnowledgeItem, knowledgeModuleNumbers, toModuleSet } from './knowledgeState';
 import { lazy, Suspense } from 'react';
+import { isolateOutsideMath } from '../../../utils/bidi';
 // `KnowledgeMap` tire framer-motion et les visuels de concept. C'est un
 // TIROIR : il ne s'ouvre que sur clic, et son déclencheur flotte au-dessus de
 // la page. Le charger avec le provider plaçait framer-motion dans le lot
@@ -57,7 +58,33 @@ const KnowledgeContext = createContext(null);
 // Part A). La carte ne l'utilise que si la leçon déclare
 // `knowledgeMapMode: 'progressive'` ; absent ou invalide, elle dérive un graphe
 // de repli des items (graphModel `resolveGraph`).
-export function LessonKnowledgeProvider({ lessonId, knowledge, graph = null, printTitle, printSubject, children }) {
+function isolateKnowledgeText(k) {
+  if (!k?.modules) return k;
+  const modules = Object.fromEntries(Object.entries(k.modules).map(([n, items]) => [n, (items ?? []).map((it) => ({
+    ...it,
+    ...(typeof it.title === 'string' ? { title: isolateOutsideMath(it.title) } : {}),
+    ...(typeof it.summary === 'string' ? { summary: isolateOutsideMath(it.summary) } : {}),
+  }))]));
+  return { ...k, modules };
+}
+
+function isolateGraphText(g) {
+  if (!g?.nodes) return g;
+  return {
+    ...g,
+    nodes: g.nodes.map((n) => ({
+      ...n,
+      ...(typeof n.title === 'string' ? { title: isolateOutsideMath(n.title) } : {}),
+      ...(typeof n.subtitle === 'string' ? { subtitle: isolateOutsideMath(n.subtitle) } : {}),
+    })),
+  };
+}
+
+export function LessonKnowledgeProvider({ lessonId, knowledge: rawKnowledge, graph: rawGraph = null, printTitle, printSubject, children }) {
+  // Titres et résumés sont du texte BRUT rendu par cinq composants : on les
+  // isole une fois ici (« √a » ne s'affiche plus « a√ », utils/bidi.js).
+  const knowledge = useMemo(() => isolateKnowledgeText(rawKnowledge), [rawKnowledge]);
+  const graph = useMemo(() => isolateGraphText(rawGraph), [rawGraph]);
   const { completedModules } = useProgress(lessonId);
   // Un enseignant (ou un admin) PRÉPARE la leçon, il ne la parcourt pas : il
   // n'a pas de progression (tracksProgress = false) et lit donc la carte

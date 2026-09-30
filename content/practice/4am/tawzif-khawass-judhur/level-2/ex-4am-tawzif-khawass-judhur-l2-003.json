@@ -1,0 +1,98 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l2-003",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — تفكيك جذر",
+    "estimatedMinutes": 3,
+    "tags": [
+      "a√b",
+      "أكبر مربع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P1",
+      "modelledOn": "ex-18"
+    }
+  },
+  "statement": {
+    "content": "نكتب $\\sqrt{98}$ على الشكل $a\\sqrt{b}$ حيث $a$ و $b$ عددان طبيعيان و $b$ أصغر ما يمكن."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نكتب $\\sqrt{98} = a\\sqrt{b}$ حيث $b$ أصغر ما يمكن. ما قيمة $a$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-JIDHR-MURABBA-MANSI",
+          "value": "49"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن أكبر مربع تامّ يقسم 98."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "98 عدد زوجي: $98 = 2 \\times 49$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما هو العدد الموجب الذي مربعه 49؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{98} = \\sqrt{7^2 \\times 2}$.",
+        "incorrect": "المعامل هو جذر المربع الذي أخرجناه."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نكتب $\\sqrt{98} = a\\sqrt{b}$ حيث $a$ و $b$ طبيعيان و $b$ أصغر ما يمكن. ما قيمة $b$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$b$ هو ما يبقى بعد إخراج أكبر مربع يقسم 98."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أكبر مربع يقسم 98 هو 49."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $98 \\div 49$."
+        }
+      ],
+      "feedback": {
+        "correct": "$98 = 49 \\times 2$ و 2 لا يقبل القسمة على مربع غير 1.",
+        "incorrect": "يجب أن يكون المربع المُخرَج أكبر مربع يقسم 98."
+      }
+    }
+  ]
+}

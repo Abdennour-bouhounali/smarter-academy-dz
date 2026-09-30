@@ -1,0 +1,106 @@
+{
+  "metadata": {
+    "title": "تدريب — حساب بحاصل قسمة جذرين",
+    "estimatedMinutes": 5,
+    "tags": [
+      "حاصل قسمة جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P2",
+      "modelledOn": "ex-21"
+    }
+  },
+  "statement": {
+    "content": "احسب كل عدد مما يلي."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\dfrac{\\sqrt{50}}{\\sqrt{2}} - \\dfrac{\\sqrt{27}}{\\sqrt{3}}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب كل حاصل قسمة وحده."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب كل حاصل قسمة تحت جذر واحد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح النتيجتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{25} - \\sqrt{9} = 5 - 3 = 2$",
+        "incorrect": "$\\dfrac{\\sqrt{50}}{\\sqrt{2}} = \\sqrt{\\dfrac{50}{2}}$ ، أكمل."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "16",
+          "id": "MISC-QISMA-JIDHR"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "$\\dfrac{\\sqrt{8}}{\\sqrt{50}}$ (اكتب النتيجة كسرًا غير قابل للاختزال)",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "2/5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب حاصل القسمة تحت جذر واحد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختزل $\\dfrac{8}{50}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "البسط والمقام بعد الاختزال مربّعان تامّان."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{\\dfrac{8}{50}} = \\sqrt{\\dfrac{4}{25}} = \\dfrac{2}{5}$",
+        "incorrect": "اختزل ما تحت الجذر ثم خذ الجذر."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "4/25",
+          "id": "MISC-QISMA-JIDHR"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l3-010",
+  "lessonCode": "amaliyat-judhur",
+  "level": 3
+}

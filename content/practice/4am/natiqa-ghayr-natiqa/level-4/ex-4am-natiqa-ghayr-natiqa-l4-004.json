@@ -1,0 +1,75 @@
+{
+  "metadata": {
+    "title": "تدريب — كتبت سارة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تحليل خطأ",
+      "عدد عشري"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P1",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "كتبت سارة: «$\\sqrt{0{,}9} = 0{,}3$ ، إذن $\\sqrt{0{,}9}$ عدد ناطق»."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أين الخطأ؟",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$0{,}3^2 = 0{,}09$ وليس 0,9؛ و $0{,}9 = \\dfrac{9}{10}$ ليس مربعًا لعدد ناطق، فـ $\\sqrt{0{,}9}$ ليس ناطقًا",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا يوجد خطأ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-FASILA"
+        },
+        {
+          "id": "C",
+          "content": "الخطأ في التصنيف فقط: جذر عدد عشري ليس ناطقًا أبدًا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-TABII-FAQAT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من المساواة بتربيع 0,3."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب 0,9 على شكل كسر مختزل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد أن تصحّح الحساب، طبّق المعيار: هل 0,9 مربع لعدد ناطق؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}3^2 = 0{,}09 \\neq 0{,}9$ ، و $\\dfrac{9}{10}$ ليس مربعًا لعدد ناطق (10 ليس مربعًا تامًا): $\\sqrt{0{,}9}$ غير ناطق.",
+        "incorrect": "قارن $\\sqrt{0{,}09}$ و $\\sqrt{0{,}9}$ : موضع الفاصلة يغيّر كل شيء."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l4-004",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 4
+}

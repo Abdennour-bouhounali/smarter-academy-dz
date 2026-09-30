@@ -1,0 +1,68 @@
+{
+  "metadata": {
+    "title": "تدريب — ضلع مربع مساحته كسر",
+    "estimatedMinutes": 2,
+    "tags": [
+      "مساحة",
+      "كسر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P2",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "مربع مساحته $\\dfrac{9}{16}$ $m^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب طول ضلعه (بـ $m$).",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "3/4",
+      "misconceptionSignatures": [
+        {
+          "value": "9/32",
+          "id": "MISC-JIDHR-NISF"
+        },
+        {
+          "value": "9/8",
+          "id": "MISC-JIDHR-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طول ضلع المربع هو الجذر التربيعي لمساحته."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ابحث عن كسر مربعه $\\dfrac{9}{16}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق: مساحة المربع هي مربع طول ضلعه."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\left(\\dfrac{3}{4}\\right)^2 = \\dfrac{9}{16}$ إذن طول الضلع $\\dfrac{3}{4}$ $m$ .",
+        "incorrect": "الجذر ليس نصف العدد: ربّع الكسر الذي كتبته."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l2-008",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 2
+}

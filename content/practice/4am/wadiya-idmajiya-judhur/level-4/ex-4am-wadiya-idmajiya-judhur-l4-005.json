@@ -1,0 +1,134 @@
+{
+  "metadata": {
+    "title": "تدريب — كتابتان للعدد نفسه",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية إدماجية",
+      "نسبة مقامها ناطق",
+      "تبرير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "قالت سارة: «$\\dfrac{2}{\\sqrt{5}}$ و $\\dfrac{2\\sqrt{5}}{5}$ هما العدد نفسه»."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل سارة على حق؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا، لأنّ $\\sqrt{5} \\times \\sqrt{5} = 25$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-FI-JIDHR"
+        },
+        {
+          "id": "B",
+          "content": "نعم، لأنّنا نضرب البسط والمقام في $\\sqrt{5}$ و $\\sqrt{5} \\times \\sqrt{5} = 5$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "لا، لأنّ ضرب البسط وحده في $\\sqrt{5}$ يغيّر العدد",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAST-DUN-DARB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما الذي نفعله لنجعل المقام عددًا ناطقًا؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ضرب البسط والمقام في العدد نفسه لا يغيّر النسبة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $\\sqrt{5} \\times \\sqrt{5}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{2}{\\sqrt{5}} = \\dfrac{2 \\times \\sqrt{5}}{\\sqrt{5} \\times \\sqrt{5}} = \\dfrac{2\\sqrt{5}}{5}$.",
+        "incorrect": "اضرب البسط والمقام معًا في $\\sqrt{5}$."
+      },
+      "cognitiveDemand": "reason"
+    },
+    {
+      "id": "q2",
+      "statement": "العدد $\\dfrac{3}{\\sqrt{12}}$ يساوي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{3\\sqrt{12}}{144}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-FI-JIDHR"
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{2}{\\sqrt{3}}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQLUB"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{1}{4}$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$\\dfrac{\\sqrt{3}}{2}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بسّط $\\sqrt{12}$ أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{3}{2\\sqrt{3}}$: اضرب البسط والمقام في $\\sqrt{3}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بسّط الناتج."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3}{\\sqrt{12}} = \\dfrac{3}{2\\sqrt{3}} = \\dfrac{3\\sqrt{3}}{6} = \\dfrac{\\sqrt{3}}{2}$.",
+        "incorrect": "بسّط الجذر، ثم اجعل المقام ناطقًا، ثم اختزل."
+      },
+      "cognitiveDemand": "reason"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l4-005",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 4
+}

@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "title": "تدريب — حقلان وحقل واحد",
+    "estimatedMinutes": 8,
+    "tags": [
+      "مجموع جذرين",
+      "فرق جذرين",
+      "إخراج عامل من تحت الجذر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P3",
+      "modelledOn": "act-4c"
+    }
+  },
+  "statement": {
+    "content": "يملك فلاح حقلين مربّعين مساحتاهما $400\\,m^2$ و $225\\,m^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "يريد حقلًا مربّعًا واحدًا مساحته مجموع المساحتين. ما طول ضلعه بـ $m$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "25",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب المساحة الكلية أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الضلع هو الجذر التربيعي للمساحة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الضلع $\\sqrt{400 + 225}$ ، وليس مجموع الضلعين."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{400 + 225} = \\sqrt{625} = 25\\,m$",
+        "incorrect": "اجمع المساحتين ثم خذ الجذر."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "35",
+          "id": "MISC-JIDHR-JAMA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "باع الحقل الصغير وأراد حقلًا مربّعًا مساحته فرق المساحتين. القيمة المضبوطة لطول ضلعه بـ $m$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-TARH"
+        },
+        {
+          "id": "B",
+          "content": "$5\\sqrt{7}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$25\\sqrt{7}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        },
+        {
+          "id": "D",
+          "content": "$7\\sqrt{5}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب فرق المساحتين أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الضلع $\\sqrt{400 - 225}$ ، وليس $20 - 15$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$175 = 25 \\times 7$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{400 - 225} = \\sqrt{175} = \\sqrt{5^2 \\times 7}$ ؛ أما $\\sqrt{400} - \\sqrt{225} = 5$ فليس الضلع.",
+        "incorrect": "الجذر لا يتوزّع على الطرح: اطرح تحت الجذر أولًا."
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l5-009",
+  "lessonCode": "amaliyat-judhur",
+  "level": 5
+}

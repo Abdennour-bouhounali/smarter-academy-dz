@@ -94,6 +94,28 @@ export const LEVELS = Object.freeze({
     beginner: { numbers: { n: 28, d: 42 }, ...T('know-6') },
     advanced: { numbers: { n: 595, d: 560 }, ...T('method-reduce') },
   },
+  // ── Unité 2 (2026-09-30). `scale` est la graduation la plus fine de la
+  // règle (1/scale) : c'est elle qui porte la demande du niveau avancé.
+  // 36 : le côté tombe juste sur une graduation entière (نشاط 1، س 3) ;
+  // 5 : l'aire du carré construit sur BC (نشاط 1) — aucun décimal jusqu'au
+  // millième, il faut encadrer à chaque graduation.
+  'square-root-side': {
+    beginner: { numbers: { num: 36, den: 1, scale: 10 }, ...T('act-1') },
+    advanced: { numbers: { num: 5, den: 1, scale: 1000 }, ...T('act-1') },
+  },
+  // 9 au pas de 1/2 (مراد و عمر) ; 25 au pas de 0,1 avec 3, 0,04, 0 et −9 :
+  // la liste de l'activité 3, dont √3 qu'aucune graduation n'atteint.
+  'square-fold': {
+    beginner: { numbers: { a: 9, scale: 2 }, targets: [9, 0, -9], ...T('act-3') },
+    advanced: { numbers: { a: 25, scale: 10 }, targets: [25, 3, 0.04, 0, -9], ...T('act-3') },
+  },
+  // 28 = 2² × 7 (معارف 4 : √28 = 2√7), deux pavages seulement ; 288 (تمرين
+  // 18) : six pavages possibles, il faut trouver celui dont la dalle est la
+  // plus petite.
+  'square-tiling': {
+    beginner: { numbers: { n: 28 }, ...T('know-4') },
+    advanced: { numbers: { n: 288 }, ...T('ex-18') },
+  },
 });
 
 export { MANIPULATION_LEVEL_IDS };

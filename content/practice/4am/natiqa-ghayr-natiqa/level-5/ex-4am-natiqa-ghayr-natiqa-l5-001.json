@@ -1,0 +1,76 @@
+{
+  "metadata": {
+    "title": "تمرين 31 — عدد عشري و √2",
+    "estimatedMinutes": 4,
+    "tags": [
+      "عدد غير ناطق",
+      "حاسبة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-31",
+      "page": 29,
+      "section": "أتعمّق",
+      "number": 31
+    }
+  },
+  "statement": {
+    "content": "يعطى $x = 1{,}414\\,213\\,562\\,373\\,095$ و $y = \\sqrt{2}$ . استعمل حاسبة لتعيين $x - y$. هل $x = y$؟ علّل."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل $x = y$؟",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا: $x$ عدد عشري فهو ناطق، و $\\sqrt{2}$ ليس عددًا ناطقًا",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نعم: الحاسبة قد تعرض 0 للفرق $x - y$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HASIBA-MUDBUTA"
+        },
+        {
+          "id": "C",
+          "content": "نعم: $\\sqrt{2}$ عدد عشري له خمسة عشر رقمًا بعد الفاصلة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HASIBA-MUDBUTA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هل 2 مربع لعدد ناطق؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ماذا تقول «معارف» عن جذر عدد ليس مربعًا لعدد ناطق؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل يمكن لعدد غير ناطق أن يساوي عددًا عشريًا؟"
+        }
+      ],
+      "feedback": {
+        "correct": "2 ليس مربعًا لعدد ناطق، إذن $\\sqrt{2}$ ليس عددًا ناطقًا ولا يساوي أي عدد عشري: $x \\neq y$.",
+        "incorrect": "شاشة الحاسبة لا تعرض إلا عددًا محدودًا من الأرقام."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l5-001",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 5
+}

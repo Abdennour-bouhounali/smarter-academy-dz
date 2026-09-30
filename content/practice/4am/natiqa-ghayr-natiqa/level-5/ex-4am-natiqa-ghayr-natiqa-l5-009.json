@@ -1,0 +1,113 @@
+{
+  "metadata": {
+    "title": "تدريب — ممر قطري في بستان",
+    "estimatedMinutes": 6,
+    "tags": [
+      "فيثاغورس",
+      "مدوّر",
+      "مسألة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P3",
+      "modelledOn": "ex-25"
+    }
+  },
+  "statement": {
+    "content": "بستان مستطيل الشكل طوله 8 $m$ وعرضه 4 $m$ . نريد إنشاء ممر مستقيم على أحد قطريه."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب مربع طول القطر (بـ $m^2$).",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "80",
+      "misconceptionSignatures": [
+        {
+          "value": "24",
+          "id": "MISC-MURABBA-DIF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "القطر وتر مثلث قائم ضلعاه القائمان طول البستان وعرضه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "طبّق خاصية فيثاغورس."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع مربعي الضلعين القائمين."
+        }
+      ],
+      "feedback": {
+        "correct": "مربع القطر يساوي مجموع مربعي الطول والعرض.",
+        "incorrect": "مربع الوتر مجموع مربعي الضلعين القائمين، لا مجموع الضلعين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "أعط المدوّر إلى الجزء من 10 لطول الممر (بـ $m$).",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري برقم واحد بعد الفاصلة",
+      "expectedAnswer": "8.9",
+      "misconceptionSignatures": [
+        {
+          "value": "40",
+          "id": "MISC-JIDHR-NISF"
+        },
+        {
+          "value": "12",
+          "id": "MISC-JIDHR-JAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طول الممر هو الجذر التربيعي للعدد الذي وجدته، وهو ليس مربعًا لعدد ناطق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل الحاسبة واقرأ الرقم الثاني بعد الفاصلة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إن كان 5 أو أكثر نأخذ القيمة بالزيادة، وإلا بالنقصان."
+        }
+      ],
+      "feedback": {
+        "correct": "الحاسبة تعرض $\\sqrt{80} = 8{,}944...$ : الرقم الثاني 4، فنأخذ القيمة بالنقصان.",
+        "incorrect": "خذ جذر مربع القطر، ثم دوّر بالنظر إلى الرقم الثاني بعد الفاصلة."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l5-009",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 5
+}

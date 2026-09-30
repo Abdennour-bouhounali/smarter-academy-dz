@@ -1,0 +1,80 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l4-008",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — هل هذه الأعداد متساوية؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "a√b",
+      "تعليل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P1",
+      "modelledOn": "ex-18"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الأعداد $\\sqrt{200}$ ، $5\\sqrt{8}$ و $2\\sqrt{50}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل الأعداد $\\sqrt{200}$ ، $5\\sqrt{8}$ و $2\\sqrt{50}$ متساوية؟ اختر الإجابة مع تعليلها.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا، لأنّ معاملاتها وجذورها مختلفة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-B-LAYSA-ASGHAR"
+        },
+        {
+          "id": "B",
+          "content": "لا: $5\\sqrt{8} = 20\\sqrt{2}$ بينما $\\sqrt{200} = 10\\sqrt{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        },
+        {
+          "id": "C",
+          "content": "نعم: كل واحد منها يُكتب على الشكل $10\\sqrt{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "فقط $\\sqrt{200}$ و $2\\sqrt{50}$ متساويان",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لا نقارن الكتابات كما هي: نبسّطها أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب كل عدد على الشكل $a\\sqrt{2}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\sqrt{8} = 2\\sqrt{2}$ و $\\sqrt{50} = 5\\sqrt{2}$ و $200 = 100 \\times 2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{200} = \\sqrt{100 \\times 2}$ ، $5\\sqrt{8} = 5 \\times 2\\sqrt{2}$ ، $2\\sqrt{50} = 2 \\times 5\\sqrt{2}$.",
+        "incorrect": "اكتب كل عدد بأبسط شكل $a\\sqrt{b}$ ثم قارن."
+      }
+    }
+  ]
+}

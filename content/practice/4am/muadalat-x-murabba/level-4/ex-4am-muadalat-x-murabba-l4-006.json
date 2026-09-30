@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "title": "تدريب — خاصية الحلين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تبرير",
+      "عددان متعاكسان"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P1",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "للمعادلة $x^2 = 20$ حلان نسمّيهما $s$ و $t$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "للمعادلة $x^2 = 20$ حلان $s$ و $t$. أي عبارة صحيحة؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$s = 2t$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$s + t = 0$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$s + t = 20$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$s = t$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما هما حلا المعادلة $x^2 = a$ حين $a > 0$؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحلان عددان متعاكسان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما مجموع عدد ومعاكسه؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$s = \\sqrt{20}$ و $t = -\\sqrt{20}$ متعاكسان، فمجموعهما 0.",
+        "incorrect": "الحلان مختلفان ومتعاكسان."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "للمعادلة $x^2 = 20$ حلان $s$ و $t$. احسب الجداء $s \\times t$.",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح نسبي",
+      "expectedAnswer": "-20",
+      "misconceptionSignatures": [
+        {
+          "value": "20",
+          "id": "MISC-TARBI-JIDHR"
+        },
+        {
+          "value": "400",
+          "id": "MISC-TARBI-JIDHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب الحلين بدلالة $\\sqrt{20}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "جداء عدد موجب في عدد سالب سالب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\sqrt{20} \\times \\sqrt{20} = (\\sqrt{20})^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$s \\times t = \\sqrt{20} \\times (-\\sqrt{20}) = -(\\sqrt{20})^2$.",
+        "incorrect": "انتبه إلى الإشارة و $(\\sqrt{a})^2 = a$."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l4-006",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 4
+}

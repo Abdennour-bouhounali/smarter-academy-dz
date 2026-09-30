@@ -1,0 +1,64 @@
+{
+  "metadata": {
+    "title": "تدريب — ضلع مربع معلوم المساحة",
+    "estimatedMinutes": 2,
+    "tags": [
+      "مساحة",
+      "مربع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidhr-tarbii_P1",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "مساحة مربع تساوي $81\\ \\mathrm{cm^2}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما طول ضلع هذا المربع (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي (بالسنتيمتر)",
+      "expectedAnswer": "9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مساحة مربع طول ضلعه $c$ هي $c^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "طول الضلع عدد موجب مربعه 81."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "طول الضلع هو الجذر التربيعي للمساحة."
+        }
+      ],
+      "feedback": {
+        "correct": "$9^2 = 81$ و 9 موجب، إذن طول الضلع $\\sqrt{81} = 9$ cm.",
+        "incorrect": "المساحة ليست ضعف الضلع: ابحث عن العدد الموجب الذي مربعه 81."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "40.5",
+          "id": "MISC-JIDHR-NISF"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l1-010",
+  "lessonCode": "jidhr-tarbii",
+  "level": 1
+}

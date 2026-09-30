@@ -109,9 +109,13 @@ for (const gradeDir of existsSync(SOURCES) ? readdirSync(SOURCES) : []) {
         for (const id of ids) cite(lesson, id, isEvaluation ? 'evaluation' : 'other');
       }
     }
+    // Les leçons de CETTE unité : la pratique d'une autre unité cite les ids
+    // de SON extraction (act-3, ex-11… existent dans les deux manuels).
+    const unitLessonCodes = new Set(unitLessonsDir ? readdirSync(unitLessonsDir).filter((d) => !d.startsWith('_')) : []);
     for (const f of walk(practiceDir)) {
       if (!f.endsWith('.json')) continue;
       const data = JSON.parse(readFileSync(f, 'utf8'));
+      if (!unitLessonCodes.has(data.lessonCode)) continue;
       // Une fiche d'exercices (worksheet) n'est PAS le manuel : ses éléments
       // sont vérifiés à part, contre docs/sources/…/worksheet-<id>.json.
       if (data.metadata?.source?.type === 'worksheet') continue;

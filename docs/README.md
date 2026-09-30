@@ -7,9 +7,12 @@
 > found it (root `CLAUDE.md`, Documentation Synchronization Rule).
 
 The platform is Arabic-first (ar-DZ, RTL) and follows the Algerian curriculum.
-The live content is the 4AM textbook unit 1 under
-`apps/web/src/lessons/moyen/4am/` — the unit « الأعداد الطبيعيّة والأعداد
-النّاطقة », and it is the **only** lesson content in the repository. The
+The live content is two 4AM textbook units under
+`apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/` — unit 1 « الأعداد
+الطبيعيّة والأعداد النّاطقة » (`aadad-tabiiya-natiqa/`, 9 lessons) and unit 2
+« الحساب على الجذور » (`hisab-judhur/`, 5 lessons + a synthesis, 2026-09-30; textbook
+extraction `docs/sources/4am/unit2/extraction.json`) — the **only** lesson
+content in the repository. The
 French-era lessons (`lessons/college/`, `lessons/lycee/`), their practice
 content, specs, e2e scripts, French-only engines and the French reference
 catalogue were **deleted on 2026-09-25**. Architecture documents still use
@@ -40,7 +43,7 @@ to read them.
 | Work on the classroom pointer / spotlight in وضع القسم | [`architecture/CLASSROOM_MODE.md`](./architecture/CLASSROOM_MODE.md) §6quater |
 | Work on the Daily Math Challenge (« التحدّي اليومي »): question selection, server timing, scoring, streak, class ranking, teacher tab / display mode, admin scale | [`architecture/DAILY_CHALLENGE.md`](./architecture/DAILY_CHALLENGE.md) |
 | Make a lesson free or premium, or understand why one is locked | [`architecture/ADMIN_PANEL_ARCHITECTURE.md`](./architecture/ADMIN_PANEL_ARCHITECTURE.md) « Le palier du contenu » — `lessons.tier` is the single source of truth, the admin decides, new lessons are created free, no sync or deploy ever overwrites it |
-| Deploy, or know what production contains | [`deployment/DZ_FIRST_DEPLOYMENT.md`](./deployment/DZ_FIRST_DEPLOYMENT.md) « Le curriculum : synchronisé par le pipeline » (current scope: the unit « الأعداد الطبيعيّة والأعداد النّاطقة ») |
+| Deploy, or know what production contains | [`deployment/DZ_FIRST_DEPLOYMENT.md`](./deployment/DZ_FIRST_DEPLOYMENT.md) « Le curriculum : synchronisé par le pipeline » (production scope: the unit « الأعداد الطبيعيّة والأعداد النّاطقة »; unit 2 « الحساب على الجذور » enters at the next deploy) |
 
 ## Authoritative documents (one owner per contract)
 

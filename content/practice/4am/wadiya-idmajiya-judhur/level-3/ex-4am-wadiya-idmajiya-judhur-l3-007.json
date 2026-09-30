@@ -1,0 +1,116 @@
+{
+  "metadata": {
+    "title": "تدريب — فيثاغورس بالجذور",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية إدماجية",
+      "فيثاغورس",
+      "مربع الجذر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "في كل حالة المثلث قائم، والطولان المعطيان طولا الضلعين القائمين (بالسنتيمتر)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الضلعان القائمان $\\sqrt{5}$ و $\\sqrt{11}$. ما طول الوتر؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالسنتيمتر)",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مربع الوتر يساوي مجموع مربعي الضلعين القائمين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(\\sqrt{5})^2 = 5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خذ الجذر التربيعي للمجموع."
+        }
+      ],
+      "feedback": {
+        "correct": "مربع الوتر $5 + 11 = 16$، والوتر $\\sqrt{16} = 4$.",
+        "incorrect": "ربّع كل ضلع قبل الجمع، ثم خذ الجذر."
+      },
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "الضلعان القائمان $2$ و $2\\sqrt{2}$. طول الوتر هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2\\sqrt{3}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$2 + 2\\sqrt{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        },
+        {
+          "id": "C",
+          "content": "$\\sqrt{8}$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$12$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $(2\\sqrt{2})^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع المربعين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بسّط جذر المجموع."
+        }
+      ],
+      "feedback": {
+        "correct": "مربع الوتر $4 + 8 = 12$، والوتر $\\sqrt{12} = 2\\sqrt{3}$.",
+        "incorrect": "الوتر ليس مجموع الضلعين: استعمل خاصية فيثاغورس."
+      },
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l3-007",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 3
+}

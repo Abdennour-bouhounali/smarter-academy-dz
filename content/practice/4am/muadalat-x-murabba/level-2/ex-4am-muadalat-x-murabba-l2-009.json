@@ -1,0 +1,110 @@
+{
+  "metadata": {
+    "title": "تدريب — قسمة على معامل",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معادلة",
+      "معامل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P2",
+      "modelledOn": "now-23-2"
+    }
+  },
+  "statement": {
+    "content": "نعزل $x^2$ بقسمة الطرفين على معامله."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هو الحل الموجب للمعادلة $4x^2 = 36$؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "value": "4.5",
+          "id": "MISC-HALL-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقسم الطرفين على 4."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تصبح المعادلة من الشكل $x^2 = a$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن العدد الموجب الذي مربعه $a$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 = 9$ ، إذن $x = 3$ أو $x = -3$.",
+        "incorrect": "$4x^2 = 36$ يعني $x^2 = 36 \\div 4$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو الحل السالب للمعادلة $5x^2 = 80$؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح نسبي",
+      "expectedAnswer": "-4",
+      "misconceptionSignatures": [
+        {
+          "value": "4",
+          "id": "MISC-HALL-WAHID"
+        },
+        {
+          "value": "-8",
+          "id": "MISC-HALL-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقسم الطرفين على 5."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $80 \\div 5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحل السالب هو معاكس الحل الموجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 = 16$ ، والحلان 4 و $-4$.",
+        "incorrect": "اعزل $x^2$ ثم خذ الحل السالب."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l2-009",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 2
+}

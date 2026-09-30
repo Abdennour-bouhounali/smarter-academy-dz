@@ -3,8 +3,10 @@
 Arabic-first, RTL mathematics platform for the Algerian curriculum (المتوسط,
 starting with 4AM). Lesson content lives in `apps/web/src/lessons/moyen/`;
 shared engine in `apps/web/src/lessons/common/`; pure logic in `packages/core`;
-API in `apps/api` (Laravel). The only lesson content in the repository is the
-unit « الأعداد الطبيعيّة والأعداد النّاطقة » (9 lessons, 4AM); the French-era
+API in `apps/api` (Laravel). The only lesson content in the repository is two
+4AM textbook units of ميدان أنساب الأعداد والحساب: « الأعداد الطبيعيّة والأعداد
+النّاطقة » (9 lessons) and, since 2026-09-30, « الحساب على الجذور » (5 lessons + its synthesis,
+`…/hisab-judhur/`); the French-era
 lessons (`lessons/college/`, `lessons/lycee/`) and the French reference
 catalogue were **deleted on 2026-09-25** — older docs that cite them describe
 code that no longer exists.

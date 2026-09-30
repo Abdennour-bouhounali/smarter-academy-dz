@@ -1,0 +1,82 @@
+{
+  "metadata": {
+    "title": "تدريب — مربع سالب؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تحليل خطأ",
+      "لا حل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P1",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "كتبت سارة: «المعادلة $x^2 = -36$ حلها $-6$ لأن $(-6)^2 = -36$»."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كتبت سارة: «المعادلة $x^2 = -36$ حلها $-6$ لأن $(-6)^2 = -36$». ما رأيك؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "سارة محقة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-SALIB"
+        },
+        {
+          "id": "B",
+          "content": "للمعادلة حلان هما 6 و $-6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-SALIB"
+        },
+        {
+          "id": "C",
+          "content": "$(-6)^2 = 36$، والمعادلة لا تقبل أي حل",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "حل المعادلة هو $-18$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $(-6)^2$ بعناية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما إشارة مربع أي عدد؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن إشارة $x^2$ بإشارة $-36$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(-6)^2 = (-6) \\times (-6) = 36 \\neq -36$، ولا يوجد عدد مربعه سالب.",
+        "incorrect": "جداء عددين سالبين موجب."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l4-004",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 4
+}

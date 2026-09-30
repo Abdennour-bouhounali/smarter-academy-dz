@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l4-009",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — عبارة بثلاثة جذور",
+    "estimatedMinutes": 5,
+    "tags": [
+      "تبسيط",
+      "a√b"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P2",
+      "modelledOn": "ex-27"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العدد $A = 3\\sqrt{28} - 2\\sqrt{63} + \\sqrt{700}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نعتبر $A = 3\\sqrt{28} - 2\\sqrt{63} + \\sqrt{700}$. نكتب $A = k\\sqrt{7}$. ما قيمة العدد الصحيح $k$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "10",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUAMIL-MANSI",
+          "value": "9"
+        },
+        {
+          "id": "MISC-ISHARA",
+          "value": "22"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجذور الثلاثة تُكتب بدلالة $\\sqrt{7}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$28 = 4 \\times 7$ ، $63 = 9 \\times 7$ ، $700 = 100 \\times 7$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب كل جذر مبسّط في معامله، ثم اجمع المعاملات بإشاراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = 3 \\times 2\\sqrt{7} - 2 \\times 3\\sqrt{7} + 10\\sqrt{7} = (6 - 6 + 10)\\sqrt{7}$.",
+        "incorrect": "راجع المعاملين 3 و 2 أمام الجذرين الأولين وإشارة كل حدّ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نعتبر $A = 3\\sqrt{28} - 2\\sqrt{63} + \\sqrt{700}$. نكتب $A = \\sqrt{n}$. ما قيمة العدد الطبيعي $n$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "700",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUAMIL-DUN-TARBI",
+          "value": "70"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ بكتابة $A$ على الشكل $k\\sqrt{7}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم أدخل المعامل $k$ تحت الجذر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$k\\sqrt{7} = \\sqrt{k^2 \\times 7}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = 10\\sqrt{7} = \\sqrt{10^2 \\times 7}$.",
+        "incorrect": "بعد التبسيط، يدخل المعامل تحت الجذر مربّعًا."
+      }
+    }
+  ]
+}

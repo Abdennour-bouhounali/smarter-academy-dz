@@ -1,0 +1,137 @@
+{
+  "metadata": {
+    "title": "تدريب — أكتب معادلة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مسألة عكسية",
+      "كتابة معادلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P1",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "نكتب معادلات من الشكل $x^2 = a$ بمعرفة حلولها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أي معادلة حلّاها $\\sqrt{10}$ و $-\\sqrt{10}$؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 = 100$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARBI-JIDHR"
+        },
+        {
+          "id": "B",
+          "content": "$x^2 = \\sqrt{10}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$x^2 = 10$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$x^2 = -10$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-SALIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب مربع أحد الحلين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(\\sqrt{a})^2 = a$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقق أن الحل الآخر يعطي نفس المربع."
+        }
+      ],
+      "feedback": {
+        "correct": "$(\\sqrt{10})^2 = (-\\sqrt{10})^2 = 10$.",
+        "incorrect": "$(\\sqrt{10})^2$ ليس 100."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "أي قيمة للعدد $a$ تجعل المعادلة $x^2 = a$ لا تقبل أي حل؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$a = 0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-SIFR"
+        },
+        {
+          "id": "B",
+          "content": "$a = 0{,}01$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$a = 1$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$a = -0{,}01$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "متى لا تقبل المعادلة $x^2 = a$ أي حل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مربع أي عدد موجب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن القيمة السالبة تماما."
+        }
+      ],
+      "feedback": {
+        "correct": "$-0{,}01 < 0$: لا يوجد عدد مربعه سالب.",
+        "incorrect": "إذا كان $a = 0$ فللمعادلة حل هو 0."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l3-004",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 3
+}

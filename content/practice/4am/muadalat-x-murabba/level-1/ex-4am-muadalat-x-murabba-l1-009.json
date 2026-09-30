@@ -1,0 +1,121 @@
+{
+  "metadata": {
+    "title": "تدريب — عزل x²",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معادلة",
+      "عزل المربع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P2",
+      "modelledOn": "now-23-2"
+    }
+  },
+  "statement": {
+    "content": "نعزل $x^2$ في طرف ثم نطبّق خاصية حلول المعادلة $x^2 = a$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هو الحل الموجب للمعادلة $x^2 - 81 = 0$؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "9",
+      "misconceptionSignatures": [
+        {
+          "value": "81",
+          "id": "MISC-HALL-QISMA"
+        },
+        {
+          "value": "40.5",
+          "id": "MISC-HALL-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انقل $-81$ إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تصبح المعادلة من الشكل $x^2 = a$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن العدد الموجب الذي مربعه $a$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 = 81$ ، إذن $x = 9$ أو $x = -9$.",
+        "incorrect": "بعد عزل $x^2$ نبحث عن العدد الذي مربعه 81."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "المعادلة $x^2 + 4 = 0$ ...",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x = 2$ أو $x = -2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-SALIB"
+        },
+        {
+          "id": "B",
+          "content": "$x = -2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-SALIB"
+        },
+        {
+          "id": "C",
+          "content": "لا تقبل أي حل",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اعزل $x^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما إشارة العدد الذي يساويه $x^2$؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل يمكن أن يكون مربع عدد سالبًا؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 = -4$ و $-4 < 0$: لا حل.",
+        "incorrect": "احسب $(-2)^2 + 4$: هل يساوي 0؟"
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l1-009",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 1
+}

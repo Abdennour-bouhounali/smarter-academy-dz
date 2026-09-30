@@ -8,18 +8,22 @@ const here = dirname(fileURLToPath(import.meta.url));
 const webRoot = resolve(here, '../../../..');
 const read = (p) => readFileSync(resolve(webRoot, p), 'utf8');
 
-const UNIT = 'src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa';
+// Toutes les unités du ميدان (unité 1 : 9 leçons ; unité 2 « الحساب على الجذور » : 6, 2026-09-30).
+const CHAPTER = 'src/lessons/moyen/4am/ansab_al_aadad_wal_hisab';
+const UNITS = readdirSync(resolve(webRoot, CHAPTER)).map((u) => `${CHAPTER}/${u}`);
 
-/** Les modules d'évaluation de l'unité : ceux qui passent un `synthese`. */
+/** Les modules d'évaluation de toutes les unités : ceux qui passent un `synthese`. */
 function evaluationModules() {
-  const unitDir = resolve(webRoot, UNIT);
   const out = [];
-  for (const lesson of readdirSync(unitDir)) {
-    const modulesDir = join(unitDir, lesson, 'modules');
-    if (!existsSync(modulesDir)) continue;
-    for (const file of readdirSync(modulesDir)) {
-      const rel = `${UNIT}/${lesson}/modules/${file}`;
-      if (read(rel).includes('synthese=')) out.push([lesson, rel]);
+  for (const UNIT of UNITS) {
+    const unitDir = resolve(webRoot, UNIT);
+    for (const lesson of readdirSync(unitDir)) {
+      const modulesDir = join(unitDir, lesson, 'modules');
+      if (!existsSync(modulesDir)) continue;
+      for (const file of readdirSync(modulesDir)) {
+        const rel = `${UNIT}/${lesson}/modules/${file}`;
+        if (read(rel).includes('synthese=')) out.push([lesson, rel]);
+      }
     }
   }
   return out;
@@ -41,8 +45,8 @@ function evaluationModules() {
 describe('synthèse finale — الحوصلة', () => {
   const modules = evaluationModules();
 
-  it('l’unité a bien neuf modules d’évaluation', () => {
-    expect(modules.length).toBe(9);
+  it('les unités ont bien 9 + 6 modules d’évaluation', () => {
+    expect(modules.length).toBe(15);
   });
 
   it.each(modules)('%s : la synthèse lit la carte, elle n’est pas vide', (_lesson, rel) => {

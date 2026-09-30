@@ -1,0 +1,121 @@
+{
+  "metadata": {
+    "title": "تدريب — متى يتوزّع الجذر؟",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مجموع جذرين",
+      "فرق جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P3",
+      "modelledOn": "know-4"
+    }
+  },
+  "statement": {
+    "content": "$a$ و $b$ عددان موجبان."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "واحدة فقط من المساواات التالية صحيحة. ما هي؟",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sqrt{9 + 16} = \\sqrt{9} + \\sqrt{16}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\sqrt{49 - 9} = \\sqrt{49} - \\sqrt{9}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-TARH"
+        },
+        {
+          "id": "C",
+          "content": "$\\sqrt{4 + 4} = \\sqrt{4} + \\sqrt{4}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        },
+        {
+          "id": "D",
+          "content": "$\\sqrt{9 + 0} = \\sqrt{9} + \\sqrt{0}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب الطرفين في كل مساواة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تذكّر: $\\sqrt{a + b} \\neq \\sqrt{a} + \\sqrt{b}$ عندما يكون $a$ و $b$ موجبين تمامًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن حالة أحد العددين فيها ليس موجبًا تمامًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{9 + 0} = 3 = \\sqrt{9} + \\sqrt{0}$ لأن $\\sqrt{0} = 0$ ؛ في الحالات الأخرى العددان موجبان تمامًا.",
+        "incorrect": "احسب كل طرف عدديًا: $\\sqrt{8}$ مثلًا ليس 4 لأن $4^2 = 16$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "من أجل $a = 64$ و $b = 36$ ، احسب $\\sqrt{a} + \\sqrt{b} - \\sqrt{a + b}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب كل حد وحده."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{a + b} = \\sqrt{100}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع الجذرين ثم اطرح جذر المجموع."
+        }
+      ],
+      "feedback": {
+        "correct": "$8 + 6 - 10 = 4$ : الفرق ليس معدومًا، إذن $\\sqrt{a + b} \\neq \\sqrt{a} + \\sqrt{b}$ .",
+        "incorrect": "$\\sqrt{64 + 36}$ هو جذر 100، لا $8 + 6$ ."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "0",
+          "id": "MISC-JIDHR-JAMA"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l3-006",
+  "lessonCode": "amaliyat-judhur",
+  "level": 3
+}

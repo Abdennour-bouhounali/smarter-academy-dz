@@ -1,0 +1,68 @@
+{
+  "metadata": {
+    "title": "تدريب — عدّ الجذور الناطقة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تصنيف",
+      "عدد عشري"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P1",
+      "modelledOn": "act-2"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الأعداد: $\\sqrt{0{,}16}$ ، $\\sqrt{1{,}6}$ ، $\\sqrt{16}$ ، $\\sqrt{160}$ ، $\\sqrt{1600}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم عددًا ناطقًا من بين هذه الأعداد الخمسة؟",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "value": "5",
+          "id": "MISC-NATIQ-KULL-JIDHR"
+        },
+        {
+          "value": "2",
+          "id": "MISC-NATIQ-TABII-FAQAT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لكل عدد تحت الجذر: هل هو مربع لعدد ناطق؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $0{,}4^2$ و $4^2$ و $40^2$ ، ثم اكتب 1,6 كسرًا مختزلًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انتقال الفاصلة بمرتبة واحدة لا يحافظ على كون العدد مربعًا، أما بمرتبتين فيحافظ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{0{,}16} = 0{,}4$ و $\\sqrt{16} = 4$ و $\\sqrt{1600} = 40$ ناطقة؛ أما $1{,}6 = \\dfrac{8}{5}$ و 160 فليسا مربعين لعددين ناطقين.",
+        "incorrect": "اختبر كل عدد بالتربيع، ولا تكتفِ بظهور الرقمين 1 و 6."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l3-007",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 3
+}

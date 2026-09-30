@@ -4,6 +4,7 @@ import { Feedback } from '../components/LessonUI';
 import { CATEGORIES, useLessonKnowledge } from '../knowledge';
 import ConceptVisual from '../knowledge/ConceptVisual';
 import AddToNotebookButton from '../../../features/practice/notebook/AddToNotebookButton';
+import { bidi } from '../../../utils/bidi';
 
 /**
  * KnowledgeBrick — pose UNE connaissance à l'instant où l'élève en a besoin.
@@ -102,8 +103,8 @@ export default function KnowledgeBrick({
         {lead && <p className={`text-sm leading-relaxed ${style.lead}`}>{lead}</p>}
 
         <div className="space-y-1.5">
-          <h4 id={titleId} className={`font-space font-bold text-lg leading-snug ${style.title}`}>{item.title}</h4>
-          {item.summary && <p className="text-sm leading-relaxed text-slate-600">{item.summary}</p>}
+          <h4 id={titleId} className={`font-space font-bold text-lg leading-snug ${bidi(style.title)}`}>{bidi(item.title)}</h4>
+          {item.summary && <p className="text-sm leading-relaxed text-slate-600">{bidi(item.summary)}</p>}
         </div>
 
         {!compact && item.visual && (

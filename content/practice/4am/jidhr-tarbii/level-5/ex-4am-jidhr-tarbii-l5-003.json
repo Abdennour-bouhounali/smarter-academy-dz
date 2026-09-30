@@ -1,0 +1,99 @@
+{
+  "metadata": {
+    "title": "تدريب — خزان ماء قاعدته مربعة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "وضعية",
+      "حجم",
+      "مساحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidhr-tarbii_P1",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "يريد فلاح بناء خزان ماء على شكل متوازي مستطيلات قاعدته مربعة، سعته $45\\ \\mathrm{m^3}$ وارتفاعه $1{,}25$ m."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما مساحة قاعدة الخزان (بالمتر المربع)؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "36",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حجم متوازي المستطيلات = مساحة القاعدة × الارتفاع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مساحة القاعدة = الحجم ÷ الارتفاع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $45 \\div 1{,}25$."
+        }
+      ],
+      "feedback": {
+        "correct": "مساحة القاعدة $45 \\div 1{,}25 = 36\\ \\mathrm{m^2}$.",
+        "incorrect": "اقسم الحجم على الارتفاع."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما طول ضلع قاعدة الخزان (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي (بالمتر)",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "القاعدة مربع مساحته محسوبة في السؤال الأول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "طول الضلع عدد موجب مربعه مساحة القاعدة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "طول الضلع هو الجذر التربيعي لمساحة القاعدة."
+        }
+      ],
+      "feedback": {
+        "correct": "مساحة القاعدة $36\\ \\mathrm{m^2}$، وطول الضلع $\\sqrt{36} = 6$ m.",
+        "incorrect": "طول ضلع مربع هو الجذر التربيعي لمساحته، لا نصفها."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "18",
+          "id": "MISC-JIDHR-NISF"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l5-003",
+  "lessonCode": "jidhr-tarbii",
+  "level": 5
+}

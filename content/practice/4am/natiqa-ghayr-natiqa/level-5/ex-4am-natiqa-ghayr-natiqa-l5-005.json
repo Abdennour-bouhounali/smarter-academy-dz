@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "title": "تدريب — أوتار مثلثات قائمة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "فيثاغورس",
+      "تصنيف"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "مثلث $ABC$ قائم في $A$ حيث $AB = 5$ $cm$ و $AC = 12$ $cm$ ، ومثلث $EFG$ قائم في $E$ حيث $EF = 4$ $cm$ و $EG = 6$ $cm$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "طول الوتر $BC$ :",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "عدد ناطق، ويساوي 13 $cm$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "عدد ناطق، ويساوي 17 $cm$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        },
+        {
+          "id": "C",
+          "content": "ليس عددًا ناطقًا لأنه جذر تربيعي لعدد",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طبّق خاصية فيثاغورس في المثلث $ABC$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $BC^2$ ثم اسأل: هل هو مربع لعدد ناطق؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الجذر لا يتوزّع على الجمع."
+        }
+      ],
+      "feedback": {
+        "correct": "$BC^2 = 5^2 + 12^2 = 169 = 13^2$ إذن $BC = 13$ $cm$ : عدد ناطق.",
+        "incorrect": "احسب $BC^2$ بخاصية فيثاغورس، ثم ابحث عن عدد مربعه يساويه."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "طول الوتر $FG$ :",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "ليس عددًا ناطقًا، ويساوي $\\sqrt{52}$ $cm$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "عدد ناطق، ويساوي 10 $cm$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        },
+        {
+          "id": "C",
+          "content": "عدد ناطق، ويساوي 26 $cm$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طبّق خاصية فيثاغورس في المثلث $EFG$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $FG^2$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل العدد الذي وجدته مربع لعدد ناطق؟ قارنه بـ $7^2$ و $8^2$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$FG^2 = 4^2 + 6^2 = 52$ ، و $49 < 52 < 64$ : 52 ليس مربعًا لعدد ناطق، فـ $FG = \\sqrt{52}$ ليس ناطقًا.",
+        "incorrect": "احسب مربع الوتر أولًا، ثم طبّق المعيار."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l5-005",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 5
+}

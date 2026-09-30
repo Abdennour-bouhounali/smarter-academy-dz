@@ -8,6 +8,7 @@ import SelectionCheckbox from '../../../components/admin/ui/SelectionCheckbox';
 import { fetchClassLessons, setClassLessonStatus, bulkSetClassLessonStatus } from '../../../services/teacher/classGroupService';
 import { flattenCurriculum, idsNeeding, applyBulkOutcome, countByStatus } from './lessonSelection';
 import { Loading, ErrorBox, btnSecondary } from '../../../pages/teacher/teacherUi';
+import { bidi } from '../../../utils/bidi';
 
 /**
  * Les leçons de la classe : afficher / masquer, une par une ou en lot.
@@ -107,13 +108,13 @@ export default function LessonsTab({ classGroup, entitlements }) {
 
       {curriculum.chapters.map((chapter) => (
         <section key={chapter.code} className="glass-card p-4 sm:p-5">
-          <h3 className="font-space font-bold text-slate-900 mb-3">{chapter.title}</h3>
+          <h3 className="font-space font-bold text-slate-900 mb-3">{bidi(chapter.title)}</h3>
           <ul className="divide-y divide-slate-100">
             {chapter.lessons.map((row) => (
               <li key={row.id} className="flex items-center gap-3 py-2.5" data-lesson-row={row.code}>
                 {canBulk && <SelectionCheckbox checked={selection.isSelected(row.id)} onChange={() => selection.toggle(row.id)} label={t('common.selectRow', { title: row.title })} />}
                 <div className="min-w-0 flex-1">
-                  <p className="font-inter text-sm font-semibold text-slate-800 truncate">{row.title}</p>
+                  <p className="font-inter text-sm font-semibold text-slate-800 truncate">{bidi(row.title)}</p>
                   <p className="text-[11px] text-slate-400 flex flex-wrap gap-2">
                     {row.publicationStatus !== 'published' && <span className="text-amber-700" title={t('lessons.notPublishedHint')}>{t('lessons.notPublished')}</span>}
                     {row.tier === 'premium' && <span>{t('lessons.premium')}</span>}

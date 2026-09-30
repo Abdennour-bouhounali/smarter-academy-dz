@@ -13,6 +13,7 @@ import { ArrowForward } from '../components/common/DirectionalIcons';
 import { usePrefetchLessonRuntime } from '../lessons/common/lessonRuntimeLoader';
 import { useLearningViewer } from '../features/learning/learningViewer';
 import { LessonModuleChips, TeacherLessonActions } from '../components/teacher/TeacherLessonActions';
+import { bidi } from '../utils/bidi';
 
 /**
  * La page d'une UNITÉ du manuel (الوحدة) — le niveau entre le ميدان et le درس.
@@ -70,8 +71,8 @@ function LessonBlock({ lesson, index, mastery, t }) {
           </span>
           <div>
             <div className="text-[11px] font-mono uppercase tracking-wider text-slate-500">{isSynthesis ? t('unit.synthesisTag') : t('unit.lessonTag', { n: index })}</div>
-            <h3 className="text-lg font-bold text-slate-900">{lesson.title}</h3>
-            <p className="mt-1 text-sm text-slate-600">{lesson.description}</p>
+            <h3 className="text-lg font-bold text-slate-900">{bidi(lesson.title)}</h3>
+            <p className="mt-1 text-sm text-slate-600">{bidi(lesson.description)}</p>
           </div>
         </div>
         <div className="flex flex-col items-end gap-1 text-xs text-slate-500">
@@ -96,7 +97,7 @@ function LessonBlock({ lesson, index, mastery, t }) {
               return (
                 <li key={lp.id} className="flex items-start gap-2 text-sm text-slate-700" title={tooltip}>
                   <span className={`mt-1.5 inline-block h-2.5 w-2.5 shrink-0 rounded-full ${MASTERY_DOT[state]}`} aria-label={tooltip} data-mastery-state={state} />
-                  <span>{lp.title}</span>
+                  <span>{bidi(lp.title)}</span>
                 </li>
               );
             })}
@@ -108,7 +109,7 @@ function LessonBlock({ lesson, index, mastery, t }) {
               <h4 className="mb-1 flex items-center gap-1.5 text-sm font-bold text-slate-800"><Compass className="h-4 w-4" aria-hidden="true" /> {t('unit.prerequisites')}</h4>
               <ul className="flex flex-wrap gap-1.5">
                 {prereqLessons.map((p) => (
-                  <li key={p.id}><Link to={p.path} className="rounded-full border border-indigo-200 bg-indigo-50 px-2.5 py-0.5 text-xs text-indigo-800 hover:border-indigo-400">{p.title}</Link></li>
+                  <li key={p.id}><Link to={p.path} className="rounded-full border border-indigo-200 bg-indigo-50 px-2.5 py-0.5 text-xs text-indigo-800 hover:border-indigo-400">{bidi(p.title)}</Link></li>
                 ))}
                 {(lesson.prerequisites ?? []).map((txt) => (
                   <li key={txt} className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-0.5 text-xs text-slate-600">{txt}</li>
@@ -121,8 +122,8 @@ function LessonBlock({ lesson, index, mastery, t }) {
             <div>
               <h4 className="mb-1 flex items-center gap-1.5 text-sm font-bold text-slate-800"><Wand2 className="h-4 w-4" aria-hidden="true" /> {t('unit.manipulationsAndMethods')}</h4>
               <ul className="flex flex-wrap gap-1.5">
-                {manipulations.map((r) => <li key={r.code} className="rounded-full bg-violet-100 px-2.5 py-0.5 text-xs text-violet-800">🧪 {r.title}</li>)}
-                {methods.map((r) => <li key={r.code} className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs text-emerald-800">📐 {r.title}</li>)}
+                {manipulations.map((r) => <li key={r.code} className="rounded-full bg-violet-100 px-2.5 py-0.5 text-xs text-violet-800">🧪 {bidi(r.title)}</li>)}
+                {methods.map((r) => <li key={r.code} className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs text-emerald-800">📐 {bidi(r.title)}</li>)}
               </ul>
             </div>
           )}
@@ -179,7 +180,7 @@ export default function UnitPage() {
           <Link to="/courses" className="hover:text-blue-600">{t('unit.home')}</Link><span>/</span>
           <Link to={`/courses?level=${levelId}&grade=${gradeId}`} className="hover:text-blue-600">{unit.gradeName}</Link><span>/</span>
           <Link to={`/courses?level=${levelId}&grade=${gradeId}&chapter=${chapterId}`} className="hover:text-blue-600">{unit.chapterTitle}</Link><span>/</span>
-          <span className="font-semibold text-slate-900">{unit.title}</span>
+          <span className="font-semibold text-slate-900">{bidi(unit.title)}</span>
         </nav>
 
         <section className="space-y-5 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8" data-unit={unit.id}>
@@ -188,7 +189,7 @@ export default function UnitPage() {
               <div className="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">
                 <Layers className="h-3.5 w-3.5" aria-hidden="true" /> {t('unit.unitNumber', { n: unit.number })}
               </div>
-              <h1 className="text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl">{unit.title}</h1>
+              <h1 className="text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl">{bidi(unit.title)}</h1>
               {unit.subtitle && <p className="max-w-2xl text-slate-600">{unit.subtitle}</p>}
               {unit.textbook && <p className="flex items-center gap-1.5 text-xs text-slate-500"><BookOpen className="h-3.5 w-3.5" aria-hidden="true" /> {t('unit.textbookRef', { title: unit.textbook.title, unit: unit.textbook.unit, pages: formatTextbookPages(unit.textbook.pages) })}</p>}
             </div>

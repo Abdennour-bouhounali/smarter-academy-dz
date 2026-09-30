@@ -1,0 +1,129 @@
+{
+  "metadata": {
+    "title": "تمرين 9 — قيم مقرّبة إلى الجزء من 10",
+    "estimatedMinutes": 5,
+    "tags": [
+      "قيمة مقرّبة",
+      "بالنقصان",
+      "بالزيادة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-9",
+      "page": 26,
+      "section": "أوظّف تعلّماتي",
+      "number": 9
+    }
+  },
+  "statement": {
+    "content": "عين القيمة المقربة إلى الجزء من 10 بالنقصان والقيمة المقربة إلى الجزء من 10 بالزيادة لكل عدد مما يلي: $\\sqrt{43}$ ، $\\sqrt{8}$ ، $13 - \\sqrt{7}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "القيمة المقرّبة إلى الجزء من 10 بالنقصان للعدد $\\sqrt{43}$:",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري برقم واحد بعد الفاصلة",
+      "expectedAnswer": "6.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن عددين عشريين متتاليين برقم واحد بعد الفاصلة يحصران $\\sqrt{43}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن 43 بمربعات أعداد عشرية برقم واحد بعد الفاصلة بين 6 و 7."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بالنقصان: العدد الأصغر من الحصر."
+        }
+      ],
+      "feedback": {
+        "correct": "$6{,}5^2 = 42{,}25 < 43 < 43{,}56 = 6{,}6^2$ إذن $6{,}5 < \\sqrt{43} < 6{,}6$.",
+        "incorrect": "القيمة بالنقصان هي الحدّ الأصغر في الحصر."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "القيمة المقرّبة إلى الجزء من 10 بالزيادة للعدد $\\sqrt{8}$:",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري برقم واحد بعد الفاصلة",
+      "expectedAnswer": "2.9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن عددين عشريين متتاليين برقم واحد بعد الفاصلة يحصران $\\sqrt{8}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن 8 بمربعات الأعداد 2,7 ، 2,8 ، 3."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بالزيادة: العدد الأكبر من الحصر."
+        }
+      ],
+      "feedback": {
+        "correct": "$2{,}8^2 = 7{,}84 < 8 < 8{,}41 = 2{,}9^2$ إذن $2{,}8 < \\sqrt{8} < 2{,}9$.",
+        "incorrect": "القيمة بالزيادة هي الحدّ الأكبر في الحصر."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "القيمة المقرّبة إلى الجزء من 10 بالنقصان للعدد $13 - \\sqrt{7}$:",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري برقم واحد بعد الفاصلة",
+      "expectedAnswer": "10.3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احصر $\\sqrt{7}$ أولًا إلى الجزء من 10."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذا كان $a < \\sqrt{7} < b$ فإن $13 - b < 13 - \\sqrt{7} < 13 - a$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انتبه: الطرح يعكس ترتيب الحدّين."
+        }
+      ],
+      "feedback": {
+        "correct": "$2{,}6 < \\sqrt{7} < 2{,}7$ إذن $10{,}3 < 13 - \\sqrt{7} < 10{,}4$.",
+        "incorrect": "الطرح يعكس الترتيب: احصر $\\sqrt{7}$ ثم اطرح من 13."
+      },
+      "difficulty": 4
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l3-001",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 3
+}

@@ -327,9 +327,30 @@ soit ce qui précède (`isModuleClosed`). Après un import, publier
 
 ## L'unité 4AM — le câblage réel d'une leçon algérienne (2026-09-20)
 
-Les leçons de l'unité 1 (`lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/`)
-ne recopient plus `routes.jsx` ni `moduleContext.js` : trois fabriques
-partagées vivent dans `_unit/` et sont la manière actuelle de monter une leçon.
+Les leçons d'une unité (`lessons/moyen/4am/ansab_al_aadad_wal_hisab/<unité>/` :
+`aadad-tabiiya-natiqa/` et, depuis le 2026-09-30, `hisab-judhur/`) ne recopient
+plus `routes.jsx` ni `moduleContext.js` : trois fabriques partagées vivent dans
+le `_unit/` de chaque unité et sont la manière actuelle de monter une leçon.
+
+**Les fabriques sont COMMUNES à toutes les unités (2026-09-30).** Leur code vit
+une seule fois dans `lessons/common/unit/` — `buildModuleContext.js`
+(`createModuleContextBuilder(unitMeta)`), `buildLessonRoutes.jsx`
+(`createLessonRoutesBuilder({ printSubject })`) et `prepQuestion.jsx` (la forme
+« أستعدّ ») — et le `_unit/` d'une unité ne fait que les lier à ses constantes,
+en une ligne chacun :
+
+```js
+// _unit/moduleContext.js
+export const buildModuleContext = createModuleContextBuilder(UNIT_META);   // import * as UNIT_META from './unitMeta'
+// _unit/lessonRoutes.jsx
+export const buildLessonRoutes = createLessonRoutesBuilder({ printSubject: PRINT_SUBJECT });
+// _unit/prepDiagnostic.jsx
+export { YES_NO, prepQuestion } from '../../../../../common/unit/prepQuestion';
+```
+
+Une nouvelle unité écrit donc son `unitMeta.js` et ces trois lignes, jamais une
+seconde fabrique. Les leçons, elles, importent toujours `../_unit/…` : rien n'a
+changé pour elles.
 
 **`_unit/unitMeta.js`** — les constantes de l'unité (`UNIT_ID`, `UNIT_TITLE`,
 `CHAPTER_ID`, `CHAPTER_TITLE`, `LEVEL_ID`, `GRADE_ID`, `LEVEL_LABEL`,

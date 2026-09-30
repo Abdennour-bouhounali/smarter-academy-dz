@@ -1,0 +1,68 @@
+{
+  "metadata": {
+    "title": "تدريب — مدوّر جذر عدد عشري",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مدوّر",
+      "حاسبة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P3",
+      "modelledOn": "ex-35"
+    }
+  },
+  "statement": {
+    "content": "العدد $\\sqrt{0{,}5}$ ليس ناطقًا لأن $0{,}5 = \\dfrac{1}{2}$ ليس مربعًا لعدد ناطق."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "استعمل حاسبة لإعطاء المدوّر إلى الجزء من 100 للعدد $\\sqrt{0{,}5}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري برقمين بعد الفاصلة",
+      "expectedAnswer": "0.71",
+      "misconceptionSignatures": [
+        {
+          "value": "0.25",
+          "id": "MISC-JIDHR-NISF"
+        },
+        {
+          "value": "0.07",
+          "id": "MISC-JIDHR-FASILA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجذر هنا أكبر من العدد 0,5 لأنه أصغر من 1."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقرأ على الحاسبة الرقم الثالث بعد الفاصلة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إن كان 5 أو أكثر نأخذ القيمة بالزيادة، وإلا بالنقصان."
+        }
+      ],
+      "feedback": {
+        "correct": "الحاسبة تعرض $0{,}7071...$ : الرقم الثالث 7، إذن المدوّر إلى الجزء من 100 هو القيمة بالزيادة.",
+        "incorrect": "التدوير ليس اقتطاعًا: انظر إلى الرقم الثالث بعد الفاصلة."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l3-010",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 3
+}

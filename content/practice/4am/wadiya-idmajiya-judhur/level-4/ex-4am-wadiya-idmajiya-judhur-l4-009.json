@@ -1,0 +1,133 @@
+{
+  "metadata": {
+    "title": "تدريب — العدد الذهبي",
+    "estimatedMinutes": 5,
+    "tags": [
+      "وضعية إدماجية",
+      "العدد الذهبي",
+      "متطابقات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "نعتبر العدد $\\varphi = \\dfrac{1 + \\sqrt{5}}{2}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\varphi^2 = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{6}{4}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HADD-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{1 + 5}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HADD-2AB"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{3 + \\sqrt{5}}{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$\\dfrac{6 + \\sqrt{5}}{4}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HADD-2AB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ربّع البسط وربّع المقام."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(1 + \\sqrt{5})^2 = 1 + 2\\sqrt{5} + 5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اختزل على 2."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\varphi^2 = \\dfrac{6 + 2\\sqrt{5}}{4} = \\dfrac{3 + \\sqrt{5}}{2}$.",
+        "incorrect": "لا تنس الحد المضاعف عند تربيع البسط."
+      },
+      "cognitiveDemand": "reason"
+    },
+    {
+      "id": "q2",
+      "statement": "أيّ مساواة صحيحة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\varphi^2 = \\varphi + 1$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\varphi^2 = 2\\varphi$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$\\varphi^2 = \\varphi - 1$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $\\varphi + 1$ بتوحيد المقامات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$1 = \\dfrac{2}{2}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن بنتيجة السؤال السابق."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\varphi + 1 = \\dfrac{1 + \\sqrt{5} + 2}{2} = \\dfrac{3 + \\sqrt{5}}{2} = \\varphi^2$.",
+        "incorrect": "وحّد المقامات ثم قارن."
+      },
+      "cognitiveDemand": "reason"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l4-009",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 4
+}

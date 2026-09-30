@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l1-007",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — معامل الجذر بعد التبسيط",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تبسيط",
+      "خاصية توزيعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P2",
+      "modelledOn": "method-simplify"
+    }
+  },
+  "statement": {
+    "content": "كل عبارة تُكتب على الشكل $k\\sqrt{b}$ حيث $k$ عدد صحيح."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نكتب $3\\sqrt{2} + 5\\sqrt{2} - \\sqrt{2} = k\\sqrt{2}$. ما قيمة $k$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUAMIL-MANSI",
+          "value": "8"
+        },
+        {
+          "id": "MISC-ISHARA",
+          "value": "9"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العبارة $\\sqrt{2}$ تعني $1 \\times \\sqrt{2}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نطبق الخاصية التوزيعية: $(3 + 5 - 1)\\sqrt{2}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب مجموع المعاملات بإشاراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$3\\sqrt{2} + 5\\sqrt{2} - \\sqrt{2} = (3 + 5 - 1)\\sqrt{2}$.",
+        "incorrect": "لا تنسَ المعامل 1 أمام $\\sqrt{2}$ الأخير."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نكتب $2\\sqrt{7} - 6\\sqrt{7} + \\sqrt{7} = k\\sqrt{7}$. ما قيمة $k$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "-3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-ISHARA",
+          "value": "9"
+        },
+        {
+          "id": "MISC-MUAMIL-MANSI",
+          "value": "-4"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحدود الثلاثة تحتوي على $\\sqrt{7}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المعاملات هي 2 و $-6$ و 1."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المعاملات بإشاراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$(2 - 6 + 1)\\sqrt{7}$.",
+        "incorrect": "راجع إشارة كل معامل: الحدّ $-6\\sqrt{7}$ مطروح."
+      }
+    }
+  ]
+}

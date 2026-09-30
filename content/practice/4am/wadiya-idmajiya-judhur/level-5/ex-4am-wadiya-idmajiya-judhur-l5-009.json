@@ -1,0 +1,181 @@
+{
+  "metadata": {
+    "title": "تدريب — مربّعان متجاوران",
+    "estimatedMinutes": 6,
+    "tags": [
+      "وضعية إدماجية",
+      "جمع جذور",
+      "جذر مجموع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "مربّعان مساحتاهما $18\\,cm^2$ و $32\\,cm^2$ موضوعان جنبًا إلى جنب على مستقيم واحد."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الطول الكلّي لضلعيهما معًا (بالسنتيمتر) هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sqrt{50}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        },
+        {
+          "id": "B",
+          "content": "$25$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-NISF"
+        },
+        {
+          "id": "C",
+          "content": "$12\\sqrt{2}$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$7\\sqrt{2}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب ضلع كل مربّع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{18} = 3\\sqrt{2}$، ثم بسّط $\\sqrt{32}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع بالخاصية التوزيعية."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{18} + \\sqrt{32} = 3\\sqrt{2} + 4\\sqrt{2} = 7\\sqrt{2}$.",
+        "incorrect": "جذر المجموع ليس مجموع الجذرين."
+      },
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q2",
+      "statement": "ضلع مربّع وحيد مساحته مجموع المساحتين هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$5\\sqrt{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$7\\sqrt{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        },
+        {
+          "id": "C",
+          "content": "$25$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-NISF"
+        },
+        {
+          "id": "D",
+          "content": "$25\\sqrt{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب مجموع المساحتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الضلع جذر المساحة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$50 = 25 \\times 2$."
+        }
+      ],
+      "feedback": {
+        "correct": "المساحة $50$، والضلع $\\sqrt{50} = 5\\sqrt{2}$، وهو أصغر من $7\\sqrt{2}$.",
+        "incorrect": "جذر مجموع المساحتين لا يساوي مجموع الضلعين."
+      },
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q3",
+      "statement": "احسب $(7\\sqrt{2})^2$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "98",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$(a\\sqrt{b})^2 = a^2 b$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ربّع 7."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب في 2."
+        }
+      ],
+      "feedback": {
+        "correct": "$(7\\sqrt{2})^2 = 49 \\times 2 = 98$، وهو يختلف عن مجموع المساحتين 50.",
+        "incorrect": "ربّع العامل أيضًا."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "14",
+          "id": "MISC-MUAMIL-DUN-TARBI"
+        }
+      ],
+      "cognitiveDemand": "transfer"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l5-009",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 5
+}

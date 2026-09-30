@@ -1,0 +1,82 @@
+{
+  "metadata": {
+    "title": "تدريب — مقام غير ناطق",
+    "estimatedMinutes": 2,
+    "tags": [
+      "وضعية إدماجية",
+      "نسبة",
+      "جذر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "نريد كتابة العدد $\\dfrac{6}{\\sqrt{3}}$ على شكل لا يظهر فيه جذر في المقام."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد $\\dfrac{6}{\\sqrt{3}}$ يساوي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$6\\sqrt{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAST-DUN-DARB"
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{6}{3}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$2\\sqrt{3}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$\\dfrac{\\sqrt{3}}{6}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب البسط والمقام في العدد نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما هو $\\sqrt{3} \\times \\sqrt{3}$؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد الضرب بسّط النسبة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{6}{\\sqrt{3}} = \\dfrac{6\\sqrt{3}}{3} = 2\\sqrt{3}$.",
+        "incorrect": "اضرب البسط والمقام معًا في $\\sqrt{3}$، ثم بسّط."
+      },
+      "cognitiveDemand": "recall"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l1-008",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 1
+}

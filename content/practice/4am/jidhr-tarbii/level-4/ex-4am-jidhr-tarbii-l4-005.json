@@ -1,0 +1,81 @@
+{
+  "metadata": {
+    "title": "تدريب — علّل بالتعريف",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تعليل",
+      "تعريف"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidhr-tarbii_P1",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "نريد تعليل المساواة $\\sqrt{0{,}49} = 0{,}7$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أي تعليل صحيح؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لأن $0{,}49 \\div 2 = 0{,}7$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-NISF"
+        },
+        {
+          "id": "B",
+          "content": "لأن $0{,}07^2 = 0{,}49$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-FASILA"
+        },
+        {
+          "id": "C",
+          "content": "لأن $\\sqrt{0{,}49}$ يساوي $0{,}7$ أو $-0{,}7$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-SALIB"
+        },
+        {
+          "id": "D",
+          "content": "لأن 0,7 عدد موجب و $0{,}7^2 = 0{,}49$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التعريف فيه شرطان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحقّق من كل حساب مكتوب في الاقتراحات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "التعليل الصحيح يذكر الشرطين معًا."
+        }
+      ],
+      "feedback": {
+        "correct": "حسب التعريف: 0,7 موجب ومربعه 0,49، فهو الجذر التربيعي للعدد 0,49.",
+        "incorrect": "بعض الاقتراحات فيها حساب خاطئ، وبعضها ينسى أن الجذر التربيعي موجب."
+      }
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l4-005",
+  "lessonCode": "jidhr-tarbii",
+  "level": 4
+}

@@ -1,0 +1,222 @@
+{
+  "metadata": {
+    "title": "معارف 4 — الخاصيتان والملاحظات",
+    "estimatedMinutes": 6,
+    "tags": [
+      "جداء جذرين",
+      "حاصل قسمة جذرين",
+      "مجموع جذرين"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-4",
+      "page": 24,
+      "section": "معارف",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "اختر الإجابة الصحيحة في كل حالة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$a$ و $b$ عددان موجبان حيث $a \\geq b$. متى تكون المساواة $\\sqrt{a + b} = \\sqrt{a} + \\sqrt{b}$ صحيحة؟",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "دائمًا",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "فقط إذا كان $a = b$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "فقط إذا كان $a = 0$ أو $b = 0$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "جرّب $a = 16$ و $b = 9$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ربّع الطرفين: ماذا يزيد في $(\\sqrt{a} + \\sqrt{b})^2$؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(\\sqrt{a} + \\sqrt{b})^2 = a + b + 2\\sqrt{a}\\sqrt{b}$."
+        }
+      ],
+      "feedback": {
+        "correct": "بالتربيع: $a + b = a + b + 2\\sqrt{a}\\sqrt{b}$ ، أي $\\sqrt{a}\\sqrt{b} = 0$.",
+        "incorrect": "مثال: $a = b = 1$ يعطي $\\sqrt{2}$ و $2$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العدد $\\sqrt{(-9) \\times (-4)}$ ...",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا معنى له",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "يساوي $6$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "يساوي $-6$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما إشارة $(-9) \\times (-4)$؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الجذر التربيعي لعدد موجب موجود."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب الجداء أولًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$(-9) \\times (-4) = 36$ و $\\sqrt{36} = 6$ ، مع أن $\\sqrt{-9}$ لا معنى له.",
+        "incorrect": "الجداء موجب: احسبه ثم خذ الجذر."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "العدد $\\sqrt{63}$ يُكتب:",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$9\\sqrt{7}$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$3\\sqrt{7}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$7\\sqrt{3}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$63 = 9 \\times 7$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{a^2 b} = a\\sqrt{b}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما جذر 9؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{63} = \\sqrt{3^2 \\times 7} = 3\\sqrt{7}$",
+        "incorrect": "يخرج من تحت الجذر جذر المربّع، لا المربّع نفسه."
+      }
+    },
+    {
+      "id": "q4",
+      "statement": "العدد $\\sqrt{\\dfrac{7}{36}}$ يساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{7}{6}$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{\\sqrt{7}}{36}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{\\sqrt{7}}{6}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\sqrt{\\dfrac{a}{b}} = \\dfrac{\\sqrt{a}}{\\sqrt{b}}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "البسط 7 ليس مربّعًا تامًّا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب جذر المقام فقط، واترك $\\sqrt{7}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{\\dfrac{7}{36}} = \\dfrac{\\sqrt{7}}{\\sqrt{36}} = \\dfrac{\\sqrt{7}}{6}$",
+        "incorrect": "الجذر يُطبَّق على البسط وعلى المقام."
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l5-001",
+  "lessonCode": "amaliyat-judhur",
+  "level": 5
+}

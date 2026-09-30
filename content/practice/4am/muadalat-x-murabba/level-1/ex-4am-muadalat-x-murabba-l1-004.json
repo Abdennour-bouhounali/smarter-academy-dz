@@ -1,0 +1,80 @@
+{
+  "metadata": {
+    "title": "تدريب — معادلة بلا حل",
+    "estimatedMinutes": 2,
+    "tags": [
+      "إشارة a",
+      "لا حل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P1",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "إليك أربع معادلات من الشكل $x^2 = a$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أي معادلة من المعادلات التالية لا تقبل أي حل؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "recall",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 = 0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-SIFR"
+        },
+        {
+          "id": "B",
+          "content": "$x^2 = 7$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$x^2 = -7$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$x^2 = 0{,}7$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن إشارة العدد $a$ في كل معادلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مربع أي عدد هو عدد موجب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعادلة التي طرفها الثاني سالب لا يمكن أن تتحقق."
+        }
+      ],
+      "feedback": {
+        "correct": "$-7 < 0$ ومربع أي عدد موجب: $x^2 = -7$ لا تقبل أي حل.",
+        "incorrect": "المعادلة $x^2 = 0$ تقبل الحل 0، والمعادلة $x^2 = 7$ تقبل حلين."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l1-004",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 1
+}

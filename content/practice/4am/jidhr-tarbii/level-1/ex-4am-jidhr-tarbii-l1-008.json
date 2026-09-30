@@ -1,0 +1,74 @@
+{
+  "metadata": {
+    "title": "تدريب — جذر عدد سالب",
+    "estimatedMinutes": 2,
+    "tags": [
+      "تعريف",
+      "عدد سالب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidhr-tarbii_P1",
+      "modelledOn": "ex-4"
+    }
+  },
+  "statement": {
+    "content": "مربع أي عدد (موجب أو سالب) عدد موجب."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد $\\sqrt{-9}$:",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "يساوي 3",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "يساوي $-3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-SALIB"
+        },
+        {
+          "id": "C",
+          "content": "لا معنى له، لأنه لا يوجد عدد مربعه $-9$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق: ما مربع 3؟ وما مربع $-3$؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل يمكن أن يكون مربع عدد سالبًا؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "التعريف يخص الأعداد الموجبة $a$ فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "$3^2 = 9$ و $(-3)^2 = 9$: لا يوجد عدد مربعه $-9$، فالرمز $\\sqrt{-9}$ لا معنى له.",
+        "incorrect": "مربع العدد $-3$ يساوي 9 وليس $-9$."
+      }
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l1-008",
+  "lessonCode": "jidhr-tarbii",
+  "level": 1
+}

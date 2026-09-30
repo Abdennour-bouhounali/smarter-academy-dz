@@ -1,0 +1,106 @@
+{
+  "metadata": {
+    "title": "تدريب — مقارنة كتابات حاصل القسمة",
+    "estimatedMinutes": 6,
+    "tags": [
+      "حاصل قسمة جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P2",
+      "modelledOn": "know-4"
+    }
+  },
+  "statement": {
+    "content": "نقارن الأعداد $\\sqrt{\\dfrac{50}{2}}$ و $\\dfrac{\\sqrt{50}}{2}$ و $\\dfrac{\\sqrt{50}}{\\sqrt{2}}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "اختر المقارنة الصحيحة.",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sqrt{\\dfrac{50}{2}} = \\dfrac{\\sqrt{50}}{2}$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$\\sqrt{\\dfrac{50}{2}} > \\dfrac{\\sqrt{50}}{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\sqrt{\\dfrac{50}{2}} < \\dfrac{\\sqrt{50}}{2}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $\\sqrt{\\dfrac{50}{2}}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في $\\dfrac{\\sqrt{50}}{2}$ المقام 2 ليس تحت الجذر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن مربّعي العددين: $\\dfrac{50}{2}$ و $\\dfrac{50}{4}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{\\dfrac{50}{2}} = 5$ و $\\left(\\dfrac{\\sqrt{50}}{2}\\right)^2 = \\dfrac{50}{4} < 25$ .",
+        "incorrect": "المقام 2 خارج الجذر يختلف عن المقام $\\sqrt{2}$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $\\sqrt{\\dfrac{50}{2}} - \\dfrac{\\sqrt{50}}{\\sqrt{2}}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "0",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب كل حد وحده."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{\\sqrt{50}}{\\sqrt{2}} = \\sqrt{\\dfrac{50}{2}}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ماذا تلاحظ عن الحدّين؟"
+        }
+      ],
+      "feedback": {
+        "correct": "الحدّان متساويان ($\\dfrac{\\sqrt{a}}{\\sqrt{b}} = \\sqrt{\\dfrac{a}{b}}$) إذن الفرق معدوم.",
+        "incorrect": "طبّق خاصية حاصل قسمة جذرين على الحد الثاني."
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l4-010",
+  "lessonCode": "amaliyat-judhur",
+  "level": 4
+}

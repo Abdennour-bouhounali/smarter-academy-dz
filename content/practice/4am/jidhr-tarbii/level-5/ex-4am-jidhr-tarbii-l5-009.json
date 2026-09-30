@@ -1,0 +1,109 @@
+{
+  "metadata": {
+    "title": "تدريب — عبارة من شهادة التعليم المتوسط",
+    "estimatedMinutes": 6,
+    "tags": [
+      "إشارة",
+      "جذر المربع",
+      "تحضير الشهادة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidhr-tarbii_P3",
+      "modelledOn": "now-23-1"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $E = \\sqrt{(\\sqrt{3} - 2)^2} + \\sqrt{(\\sqrt{3} + 1)^2}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما إشارة العدد $\\sqrt{3} - 2$؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "موجب، لأن $\\sqrt{3}$ موجب",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "سالب، لأن $(\\sqrt{3})^2 = 3 < 4 = 2^2$ فالعدد $\\sqrt{3}$ أصغر من 2",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "معدوم، لأن $\\sqrt{3} = 2$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن $\\sqrt{3}$ بالعدد 2."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن مربعيهما: $(\\sqrt{3})^2$ و $2^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عددان موجبان: الأكبر مربعه أكبر."
+        }
+      ],
+      "feedback": {
+        "correct": "$3 < 4$ إذن $\\sqrt{3} < 2$ و $\\sqrt{3} - 2$ سالب.",
+        "incorrect": "كون $\\sqrt{3}$ موجبًا لا يكفي: قارنه بالعدد 2."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $E$.",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب كل جذر دون الرمز مستعملًا الإشارة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{(\\sqrt{3} - 2)^2} = 2 - \\sqrt{3}$ لأن $\\sqrt{3} - 2$ سالب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\sqrt{3} + 1$ موجب؛ اجمع الحدين: $\\sqrt{3}$ يختفي."
+        }
+      ],
+      "feedback": {
+        "correct": "$E = (2 - \\sqrt{3}) + (\\sqrt{3} + 1) = 3$.",
+        "incorrect": "حدّد إشارة كل عدد داخل المربع قبل حذف الجذر."
+      }
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l5-009",
+  "lessonCode": "jidhr-tarbii",
+  "level": 5
+}

@@ -1,0 +1,136 @@
+{
+  "metadata": {
+    "title": "تدريب — هل هي القيمة المضبوطة؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "القيمة المضبوطة",
+      "الحاسبة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidhr-tarbii_P2",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "تعرض الحاسبة للعدد $\\sqrt{3}$ القيمة 1,732050808. كتب سمير: «$\\sqrt{3} = 1{,}732$»، ثم حسب $1{,}732^2 = 2{,}999824$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما رأيك في كتابة سمير؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "صحيحة، لأن الحاسبة تعرض 1,732 في بدايتها",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HASIBA-MUDBUTA"
+        },
+        {
+          "id": "B",
+          "content": "خاطئة: $1{,}732^2 \\neq 3$، فالعدد 1,732 قيمة مقرّبة للعدد $\\sqrt{3}$ فقط",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "صحيحة، لأن الفرق بين 2,999824 و 3 صغير جدًا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HASIBA-MUDBUTA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "متى يكون عدد موجب هو $\\sqrt{3}$ بالضبط؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن $1{,}732^2$ بالعدد 3."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "فرق صغير يبقى فرقًا."
+        }
+      ],
+      "feedback": {
+        "correct": "مربع 1,732 هو 2,999824 وليس 3: الكتابة الصحيحة $\\sqrt{3} \\approx 1{,}732$.",
+        "incorrect": "القيمة المضبوطة مربعها 3 تمامًا، مهما كان الفرق صغيرًا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "تحسب نسرين $(\\sqrt{3})^2$. ما النتيجة المضبوطة؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_jidhr-tarbii_P3",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "2,999824",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HASIBA-MUDBUTA"
+        },
+        {
+          "id": "B",
+          "content": "9",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARBI-JIDHR"
+        },
+        {
+          "id": "C",
+          "content": "3",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "1,5",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لا تستعمل القيمة المقرّبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{3}$ هو العدد الموجب الذي مربعه 3."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "طبّق الخاصية $(\\sqrt{a})^2 = a$."
+        }
+      ],
+      "feedback": {
+        "correct": "حسب التعريف $(\\sqrt{3})^2 = 3$ تمامًا، دون حاسبة.",
+        "incorrect": "استعمال قيمة مقرّبة يعطي نتيجة مقرّبة لا مضبوطة."
+      }
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l3-010",
+  "lessonCode": "jidhr-tarbii",
+  "level": 3
+}

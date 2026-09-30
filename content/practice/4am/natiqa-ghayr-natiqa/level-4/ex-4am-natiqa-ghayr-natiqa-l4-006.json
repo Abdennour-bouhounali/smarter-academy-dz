@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "title": "تدريب — قطر مستطيل",
+    "estimatedMinutes": 5,
+    "tags": [
+      "فيثاغورس",
+      "قيمة مقرّبة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P3",
+      "modelledOn": "ex-25"
+    }
+  },
+  "statement": {
+    "content": "مستطيل $ABCD$ طوله $AB = 3$ $cm$ وعرضه $BC = 1$ $cm$ . نسمّي $d$ طول قطره $AC$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل $d$ عدد ناطق؟",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا: $d^2 = 10$ و 10 ليس مربعًا لعدد ناطق",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نعم: $d^2 = 10$ و 10 عدد طبيعي",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-KULL-JIDHR"
+        },
+        {
+          "id": "C",
+          "content": "نعم: $d = 3 + 1 = 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلث $ABC$ قائم في $B$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "طبّق خاصية فيثاغورس لحساب $d^2$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم طبّق المعيار على العدد $d^2$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$d^2 = 3^2 + 1^2 = 10$ ، و 10 ليس مربعًا لعدد ناطق، إذن $d = \\sqrt{10}$ ليس ناطقًا.",
+        "incorrect": "احسب $d^2$ بخاصية فيثاغورس، ولا تجمع الطولين مباشرة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "أعط القيمة المقرّبة إلى الجزء من 100 بالنقصان للطول $d$ (بـ $cm$).",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري برقمين بعد الفاصلة",
+      "expectedAnswer": "3.16",
+      "misconceptionSignatures": [
+        {
+          "value": "3.17",
+          "id": "MISC-TAQRIB-NAQS-ZIYADA"
+        },
+        {
+          "value": "5",
+          "id": "MISC-JIDHR-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "القيمة بالنقصان أصغر من $d$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $d$ بالحاسبة واقرأ الرقمين الأولين بعد الفاصلة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق: مربع القيمة بالنقصان أصغر من $d^2$، ومربع التي تليها أكبر منه."
+        }
+      ],
+      "feedback": {
+        "correct": "$3{,}16^2 = 9{,}9856 < 10 < 10{,}0489 = 3{,}17^2$ : القيمة بالنقصان هي الطرف الأصغر.",
+        "incorrect": "بالنقصان يعني الطرف الأصغر من الحصر."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l4-006",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 4
+}

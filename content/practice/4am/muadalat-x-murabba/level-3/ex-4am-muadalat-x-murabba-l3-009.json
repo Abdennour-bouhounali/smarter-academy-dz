@@ -1,0 +1,131 @@
+{
+  "metadata": {
+    "title": "تدريب — إشارة بعد العزل",
+    "estimatedMinutes": 4,
+    "tags": [
+      "معادلة",
+      "إشارة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P2",
+      "modelledOn": "ex-13"
+    }
+  },
+  "statement": {
+    "content": "نعزل $x^2$ ثم ننظر إلى إشارة الطرف الثاني."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعادلة $x^2 + 9 = 2$ ...",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x = \\sqrt{7}$ أو $x = -\\sqrt{7}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-SALIB"
+        },
+        {
+          "id": "B",
+          "content": "$x = \\sqrt{11}$ أو $x = -\\sqrt{11}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "لا تقبل أي حل",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اطرح 9 من الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $2 - 9$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما إشارة الطرف الثاني؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 = -7$ ، و $-7 < 0$: لا حل.",
+        "incorrect": "$2 - 9 = -7$ وليس 7 أو 11."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلول المعادلة $5 - 2x^2 = -13$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x = 2$ أو $x = -2$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$x = 3$ أو $x = -3$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "لا تقبل أي حل",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$x = 3$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انقل الحدود لتعزل $2x^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2x^2 = 5 + 13$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على 2 ثم طبّق الخاصية."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x^2 = 18$ ، $x^2 = 9$ ، إذن $x = 3$ أو $x = -3$.",
+        "incorrect": "انتبه إلى الإشارات عند نقل $-13$ و $-2x^2$."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l3-009",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 3
+}

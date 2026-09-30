@@ -1,0 +1,134 @@
+{
+  "metadata": {
+    "title": "تدريب — أبسط كتابة: أين الخطأ؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية إدماجية",
+      "تحليل خطأ",
+      "أبسط كتابة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "كتب يونس: $\\sqrt{72} = \\sqrt{4 \\times 18} = 2\\sqrt{18}$، وقال: «هذه أبسط كتابة»."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما رأيك في كلام يونس؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "كلامه صحيح: 18 لا يُبسَّط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-B-LAYSA-ASGHAR"
+        },
+        {
+          "id": "B",
+          "content": "المساواة صحيحة لكنها ليست أبسط كتابة، لأنّ 18 يقبل القسمة على المربع التام 9",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "المساواة خاطئة، لأنّ $\\sqrt{4 \\times 18} = 4\\sqrt{18}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هل تحت الجذر $\\sqrt{18}$ مربع تام آخر؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما هو أكبر مربع تام يقسم 72؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$72 = 36 \\times 2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$2\\sqrt{18} = 2 \\times 3\\sqrt{2} = 6\\sqrt{2}$: أكبر مربع يقسم 72 هو 36.",
+        "incorrect": "ابحث عن أكبر مربع تام يقسم العدد."
+      },
+      "cognitiveDemand": "reason"
+    },
+    {
+      "id": "q2",
+      "statement": "أبسط كتابة للعدد $\\sqrt{72}$ هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$6\\sqrt{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$3\\sqrt{8}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-B-LAYSA-ASGHAR"
+        },
+        {
+          "id": "C",
+          "content": "$36\\sqrt{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        },
+        {
+          "id": "D",
+          "content": "$8\\sqrt{3}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استخرج أكبر مربع تام يقسم 72."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب 72 جداء مربع تام في أصغر عدد ممكن."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استعمل $\\sqrt{a^2 b} = a\\sqrt{b}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{72} = \\sqrt{36 \\times 2} = 6\\sqrt{2}$.",
+        "incorrect": "العدد تحت الجذر يجب أن يكون أصغر ما يمكن."
+      },
+      "cognitiveDemand": "reason"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l4-002",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 4
+}

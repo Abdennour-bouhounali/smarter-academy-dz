@@ -1,0 +1,58 @@
+{
+  "metadata": {
+    "title": "تمرين 26 — تبسيط A",
+    "estimatedMinutes": 4,
+    "tags": [
+      "الخاصية التوزيعية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-26",
+      "page": 27,
+      "section": "أوظّف تعلّماتي",
+      "number": 26
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 27): $A = 2\\sqrt{12} - 4\\sqrt{3} + \\sqrt{75} - \\sqrt{147}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نكتب A على الشكل $k\\sqrt{3}$. ما قيمة العدد الصحيح $k$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "-2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$12 = 2^2 \\times 3$ ، $75 = 5^2 \\times 3$ و $147 = 7^2 \\times 3$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2\\sqrt{12} = 2 \\times 2\\sqrt{3}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المعاملات بالخاصية التوزيعية: $(4 - 4 + 5 - 7)\\sqrt{3}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = 4\\sqrt{3} - 4\\sqrt{3} + 5\\sqrt{3} - 7\\sqrt{3}$.",
+        "incorrect": "اكتب كل جذر بدلالة $\\sqrt{3}$ دون نسيان المعامل 2 أمام $\\sqrt{12}$."
+      }
+    }
+  ],
+  "id": "ex-4am-tawzif-khawass-judhur-l3-002",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 3
+}

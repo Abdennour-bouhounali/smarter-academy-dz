@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "title": "معارف — الجذر التربيعي لعدد موجب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تعريف",
+      "الرمز √"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-1",
+      "page": 22,
+      "section": "معارف",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 22): $a$ عدد موجب. الجذر التربيعي للعدد $a$ هو العدد الموجب الذي مربعه يساوي $a$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\sqrt{\\dfrac{25}{9}}$ يساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{5}{3}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{25}{3}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$-\\dfrac{5}{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-SALIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجذر التربيعي عدد موجب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ربّع كل اقتراح."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أي عدد موجب مربعه $\\dfrac{25}{9}$؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{5}{3}$ عدد موجب و $\\left(\\dfrac{5}{3}\\right)^2 = \\dfrac{25}{9}$.",
+        "incorrect": "تحقّق من الشرطين: موجب، ومربعه يساوي العدد تحت الرمز."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "كيف نقرأ $\\sqrt{7}$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "مربع العدد 7",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "الجذر التربيعي للعدد 7",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "نصف العدد 7",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الرمز $\\sqrt{\\;}$ له اسم في الكتاب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مربع العدد 7 يُكتب $7^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقرأ تعريف الرمز في معارف."
+        }
+      ],
+      "feedback": {
+        "correct": "نرمز للجذر التربيعي للعدد $a$ بالرمز $\\sqrt{a}$ ونقرأ «الجذر التربيعي لـ $a$».",
+        "incorrect": "الرمز $\\sqrt{\\;}$ ليس رمز المربع."
+      }
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l2-002",
+  "lessonCode": "jidhr-tarbii",
+  "level": 2
+}

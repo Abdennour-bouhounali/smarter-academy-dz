@@ -1,0 +1,100 @@
+{
+  "metadata": {
+    "title": "تدريب — خزان قاعدته مربعة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حجم",
+      "خزان"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P2",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "خزان ماء على شكل متوازي مستطيلات، قاعدته مربعة طول ضلعها $c$ (بالمتر) وارتفاعه $2\\ \\mathrm{m}$، وسعته $32\\ \\mathrm{m}^3$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "خزان على شكل متوازي مستطيلات قاعدته مربعة وارتفاعه $2\\ \\mathrm{m}$ وسعته $32\\ \\mathrm{m}^3$. ما مساحة قاعدته (بالمتر المربع)؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "16",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحجم = مساحة القاعدة × الارتفاع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $c^2 \\times 2 = 32$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الحجم على الارتفاع."
+        }
+      ],
+      "feedback": {
+        "correct": "$c^2 = 32 \\div 2$.",
+        "incorrect": "مساحة القاعدة = الحجم ÷ الارتفاع."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "خزان على شكل متوازي مستطيلات قاعدته مربعة وارتفاعه $2\\ \\mathrm{m}$ وسعته $32\\ \\mathrm{m}^3$. ما طول ضلع قاعدته (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "value": "8",
+          "id": "MISC-HALL-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولا مساحة القاعدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مساحة المربع $c^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حل $c^2 = a$ واحتفظ بالحل الموجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$2c^2 = 32$ ، $c^2 = 16$ ، و $c > 0$: $c = 4$.",
+        "incorrect": "الضلع هو العدد الموجب الذي مربعه مساحة القاعدة."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l5-005",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 5
+}

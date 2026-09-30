@@ -1,0 +1,107 @@
+{
+  "metadata": {
+    "title": "تدريب — جداء جذرين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جداء جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P1",
+      "modelledOn": "act-4a"
+    }
+  },
+  "statement": {
+    "content": "$a$ و $b$ عددان موجبان: $\\sqrt{a} \\times \\sqrt{b} = \\sqrt{a \\times b}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد $\\sqrt{5} \\times \\sqrt{3}$ يساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sqrt{8}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-JAMA"
+        },
+        {
+          "id": "B",
+          "content": "$15$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$\\sqrt{15}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "جداء جذرين تربيعيين لعددين موجبين يُكتب جذرًا واحدًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ماذا نضع تحت الجذر الواحد: جداء العددين أم مجموعهما؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بالتربيع: مربّع $\\sqrt{5} \\times \\sqrt{3}$ هو $5 \\times 3$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{5} \\times \\sqrt{3} = \\sqrt{5 \\times 3} = \\sqrt{15}$",
+        "incorrect": "جداء جذرين هو جذر الجداء، لا جذر المجموع، ولا يختفي الجذر."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $\\sqrt{2} \\times \\sqrt{18}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\sqrt{2}$ و $\\sqrt{18}$ ليسا عددين ناطقين، لكن جداءهما قد يكون كذلك."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب الجداء تحت جذر واحد: $\\sqrt{2 \\times 18}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل $2 \\times 18$ مربّع تام؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{2} \\times \\sqrt{18} = \\sqrt{36} = 6$",
+        "incorrect": "اضرب العددين تحت جذر واحد ثم احسب الجذر."
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l1-003",
+  "lessonCode": "amaliyat-judhur",
+  "level": 1
+}

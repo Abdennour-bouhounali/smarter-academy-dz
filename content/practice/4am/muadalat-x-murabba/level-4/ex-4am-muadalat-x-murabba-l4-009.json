@@ -1,0 +1,121 @@
+{
+  "metadata": {
+    "title": "تدريب — أين الخطأ في الحل؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تحليل خطأ",
+      "معادلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P2",
+      "modelledOn": "method-equation"
+    }
+  },
+  "statement": {
+    "content": "حل ياسين المعادلة $3x^2 + 5 = 32$ كما يلي: $3x^2 = 37$ ، ثم $x^2 = \\dfrac{37}{3}$ ، ثم $x = \\sqrt{\\dfrac{37}{3}}$ أو $x = -\\sqrt{\\dfrac{37}{3}}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حل ياسين المعادلة $3x^2 + 5 = 32$ فكتب: $3x^2 = 37$ ، ثم $x^2 = \\dfrac{37}{3}$ ، ثم $x = \\sqrt{\\dfrac{37}{3}}$ أو $x = -\\sqrt{\\dfrac{37}{3}}$. أين الخطأ؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "في الخطوة الأولى: $3x^2 = 32 - 5$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "في الخطوة الأخيرة: يوجد حل واحد فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "في الخطوة الثانية: $x^2 = 37 \\times 3$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "لا يوجد أي خطأ",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقق من كل خطوة على حدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عند نقل $+5$ إلى الطرف الثاني، ما العملية المناسبة؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل نضيف 5 أم نطرحها؟"
+        }
+      ],
+      "feedback": {
+        "correct": "نطرح 5 من الطرفين: $3x^2 = 27$، والخطوتان الأخيرتان صحيحتا الطريقة.",
+        "incorrect": "الحلان المتعاكسان صحيحان في الطريقة؛ ابحث في نقل العدد 5."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو الحل الموجب للمعادلة $3x^2 + 5 = 32$؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "value": "4.5",
+          "id": "MISC-HALL-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اطرح 5 من الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم على 3."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن العدد الموجب الذي مربعه ما حصلت عليه."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x^2 = 27$ ، $x^2 = 9$ ، إذن $x = 3$ أو $x = -3$.",
+        "incorrect": "اعزل $x^2$ بعناية ثم ابحث عن $x$."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l4-009",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 4
+}

@@ -1,0 +1,103 @@
+{
+  "metadata": {
+    "title": "تدريب — إيجاد عدد من حاصل قسمة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "حاصل قسمة جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P2",
+      "modelledOn": "act-4b"
+    }
+  },
+  "statement": {
+    "content": "في كل حالة $x$ عدد موجب تمامًا مجهول."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أوجد $x$ علمًا أن $\\dfrac{\\sqrt{x}}{\\sqrt{5}} = 3$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "45",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب الطرف الأول جذرًا واحدًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{\\dfrac{x}{5}} = 3$ : ما العدد الذي جذره 3؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حُلّ المعادلة $\\dfrac{x}{5} = 9$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{x}{5} = 9$ إذن $x = 45$ ؛ تحقّق: $\\dfrac{\\sqrt{45}}{\\sqrt{5}} = \\sqrt{9}$ .",
+        "incorrect": "عوّض قيمتك وتحقّق من حاصل القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "15",
+          "id": "MISC-QISMA-JIDHR"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "أوجد $x$ علمًا أن $\\dfrac{\\sqrt{72}}{\\sqrt{x}} = 6$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب الطرف الأول جذرًا واحدًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{\\dfrac{72}{x}} = 6$ : فكم يساوي $\\dfrac{72}{x}$ ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حُلّ المعادلة الناتجة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{72}{x} = 36$ إذن $x = 2$ ؛ تحقّق: $\\sqrt{\\dfrac{72}{2}} = \\sqrt{36}$ .",
+        "incorrect": "عوّض قيمتك وتحقّق من حاصل القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "12",
+          "id": "MISC-QISMA-JIDHR"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l3-007",
+  "lessonCode": "amaliyat-judhur",
+  "level": 3
+}

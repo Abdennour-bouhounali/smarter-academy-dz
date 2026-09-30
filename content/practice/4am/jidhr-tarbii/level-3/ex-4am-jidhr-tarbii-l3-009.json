@@ -1,0 +1,68 @@
+{
+  "metadata": {
+    "title": "تدريب — مجموع جذرين عشريين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "كتابة عشرية",
+      "الفاصلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidhr-tarbii_P2",
+      "modelledOn": "ex-3"
+    }
+  },
+  "statement": {
+    "content": "احسب ثم اكتب النتيجة كتابة عشرية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\sqrt{0{,}0009} + \\sqrt{0{,}04} = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "0.23",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب كل جذر على حدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انتبه إلى عدد الأرقام بعد الفاصلة في كل عدد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق من كل جذر بتربيعه، ثم اجمع."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{0{,}0009} = 0{,}03$ و $\\sqrt{0{,}04} = 0{,}2$، والمجموع 0,23.",
+        "incorrect": "ربّع كل جذر حسبته: هل تحصل على العدد المكتوب تحت الرمز؟"
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "0.023",
+          "id": "MISC-JIDHR-FASILA"
+        },
+        {
+          "value": "0.32",
+          "id": "MISC-JIDHR-FASILA"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l3-009",
+  "lessonCode": "jidhr-tarbii",
+  "level": 3
+}

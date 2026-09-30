@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "title": "تدريب — سياج حديقة",
+    "estimatedMinutes": 6,
+    "tags": [
+      "وضعية إدماجية",
+      "وضعية",
+      "محيط",
+      "معطى مشوِّش"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "حديقة مربّعة الشكل مساحتها $72\\,m^2$، تقع على بعد $300\\,m$ من المنزل. نريد إحاطتها بسياج."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أبسط كتابة لطول ضلع الحديقة (بالمتر) هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$36$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-NISF"
+        },
+        {
+          "id": "B",
+          "content": "$6\\sqrt{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$2\\sqrt{18}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-B-LAYSA-ASGHAR"
+        },
+        {
+          "id": "D",
+          "content": "$3\\sqrt{8}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-B-LAYSA-ASGHAR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الضلع هو الجذر التربيعي للمساحة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما هو أكبر مربع تام يقسم 72؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المطلوب أبسط كتابة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{72} = \\sqrt{36 \\times 2} = 6\\sqrt{2}$.",
+        "incorrect": "اكتب العدد تحت الجذر أصغر ما يمكن."
+      },
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q2",
+      "statement": "أعط طول السياج (بالمتر) مدوّرًا إلى $0{,}01$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري برقمين بعد الفاصلة",
+      "expectedAnswer": "33.94",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طول السياج هو محيط الحديقة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "القيمة المضبوطة للمحيط أربعة أضعاف الضلع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بُعد الحديقة عن المنزل لا يدخل في الحساب؛ دوّر في النهاية."
+        }
+      ],
+      "feedback": {
+        "correct": "المحيط $4 \\times 6\\sqrt{2} = 24\\sqrt{2} \\approx 33{,}941\\,m$، أي $33{,}94\\,m$.",
+        "incorrect": "المحيط أربعة أضعاف الضلع، والمسافة إلى المنزل معطى مشوِّش."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "333.94",
+          "id": "MISC-WADIYA-MUSHAWWISH"
+        }
+      ],
+      "cognitiveDemand": "transfer"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l5-003",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 5
+}

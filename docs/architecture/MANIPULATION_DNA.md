@@ -382,6 +382,7 @@ as a substitute for causality: every motion must show a mathematical change.
 | A prediction step before a lab (explicit) | **Implemented** at the متقدم level of lesson 3 only; elsewhere the textbook's own numbers serve as orientation |
 | Standalone labs whose second level duplicates another lab (audit, defect k) | **Not yet implemented**, except the معارف 143 worked example (`levels={false}`) |
 | Dormant class-mode code (next step, replay, solution) | Untested, never shown to students (unchanged) |
+| Unit 2 « الحساب على الجذور »: three new labs designed from this DNA (see below) | **Implemented 2026-09-30** |
 
 **Lessons 2–9, what the hand now does (2026-09-30).** The instrument is chosen per concept
 (§6, §12). Lessons 4, 5 and 7 share the reserve **on purpose**: coprime is the PGCD = 1 case of
@@ -397,3 +398,14 @@ common divisors, so the student recognises the instrument.
 | 7 coprime-explorer | add bags one at a time up to 17 / confront the smaller number's divisors | «only 1» only after 2…17 all failed; lists conclude only with complete evidence, or one common > 1 | the insight after two tries, one-chip completion, the silent «تحقّق», the dead `c1` gate |
 | 8 fraction-reduction | carry a number of portions (2…12, **not only the good ones**) | non-common numbers refused with the reason; the student **declares** irreducibility (judged); a non-greatest divisor in one step shows what it would give | only-valid chips, the forced second step, the gold PGCD, the announced «غير قابل للاختزال», the hard-coded «2 vs 1» conjecture |
 | 9 InfoSorter | sort the data cards (carry, now `useDragInteraction`) | — | the legacy second drag engine and the `motion.button layout` that broke drags |
+
+**Unit 2, what the hand does (2026-09-30).** Three new instruments, one per concept, all on the
+stretch engine but each holding a different variable (`MANIPULATION_CONTRACT.md` §2quater):
+
+| Lesson | Gesture (engine) | What resists / what the student decides |
+|---|---|---|
+| L1 `square-root-side` refine | stretch the side of a square on a graduated ruler (stretch) | for 5, every graduation gives too small or too big; the ×10 zoom opens only after the student brackets the side by hand — no decimal is ever « equal » |
+| L2 `square-root-side` graduation | choose the graduation 1/g, then stretch | a card resists every graduation tried; the student classifies the roots by whether one graduation lands exactly |
+| L3 `square-fold` | move x; its arrow lands on the line of squares (stretch) | the negative half is hatched and pinning there is refused; x² = 9 stays open until −3 is pinned too |
+| L4 / L5 `square-tiling` | stretch k, the tiles per side of a square of area n (stretch) | k² ∤ n refuses the tiling with n ÷ k² read exactly; L5: only the largest k gives a tile that cannot be tiled again |
+

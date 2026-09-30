@@ -1,0 +1,81 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l2-004",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — أبسط كتابة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "a√b",
+      "أكبر مربع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P1",
+      "modelledOn": "ex-18"
+    }
+  },
+  "statement": {
+    "content": "اكتب $\\sqrt{180}$ على الشكل $a\\sqrt{b}$ حيث $a$ و $b$ عددان طبيعيان و $b$ أصغر ما يمكن."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "اكتب $\\sqrt{180}$ على الشكل $a\\sqrt{b}$ حيث $b$ أصغر ما يمكن.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3\\sqrt{20}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-B-LAYSA-ASGHAR"
+        },
+        {
+          "id": "B",
+          "content": "$36\\sqrt{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        },
+        {
+          "id": "C",
+          "content": "$6\\sqrt{5}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$2\\sqrt{45}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-B-LAYSA-ASGHAR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن أكبر مربع تامّ يقسم 180."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "جرّب 36: هل يقسم 180؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد إخراج المربع، تأكّد أن العدد الباقي تحت الجذر لا يقبل التبسيط."
+        }
+      ],
+      "feedback": {
+        "correct": "$180 = 36 \\times 5 = 6^2 \\times 5$.",
+        "incorrect": "إذا كان العدد تحت الجذر يقبل القسمة على 4 أو 9 فالكتابة ليست أبسط شكل."
+      }
+    }
+  ]
+}

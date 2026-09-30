@@ -1,0 +1,181 @@
+{
+  "metadata": {
+    "title": "تدريب — تمرين على نمط شهادة التعليم المتوسط",
+    "estimatedMinutes": 7,
+    "tags": [
+      "وضعية إدماجية",
+      "شهادة التعليم المتوسط",
+      "حساب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": "qcm"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العددين $A = \\sqrt{45} - \\sqrt{20} + \\sqrt{5}$ و $B = \\dfrac{10}{\\sqrt{5}}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أبسط كتابة للعدد $A$ هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sqrt{30}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        },
+        {
+          "id": "B",
+          "content": "$2\\sqrt{5}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$6\\sqrt{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-ISHARA"
+        },
+        {
+          "id": "D",
+          "content": "$\\sqrt{5}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب كل جذر على الشكل $a\\sqrt{5}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$45 = 9 \\times 5$ و $20 = 4 \\times 5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المعاملات بإشاراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = 3\\sqrt{5} - 2\\sqrt{5} + \\sqrt{5} = 2\\sqrt{5}$.",
+        "incorrect": "بسّط كل جذر ثم اجمع المعاملات بإشاراتها."
+      },
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q2",
+      "statement": "اكتب $B$ على شكل نسبة مقامها عدد ناطق، ثم بسّطها: $B = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$10\\sqrt{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAST-DUN-DARB"
+        },
+        {
+          "id": "B",
+          "content": "$2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-FI-JIDHR"
+        },
+        {
+          "id": "C",
+          "content": "$2\\sqrt{5}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$\\dfrac{\\sqrt{5}}{10}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب البسط والمقام في $\\sqrt{5}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{5} \\times \\sqrt{5} = 5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اختزل على 5."
+        }
+      ],
+      "feedback": {
+        "correct": "$B = \\dfrac{10\\sqrt{5}}{5} = 2\\sqrt{5}$، أي $A = B$.",
+        "incorrect": "اضرب البسط والمقام معًا ثم اختزل."
+      },
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q3",
+      "statement": "احسب $A \\times B$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "20",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل أبسط كتابة لكل من $A$ و $B$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(2\\sqrt{5}) \\times (2\\sqrt{5}) = 4 \\times (\\sqrt{5})^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(\\sqrt{5})^2 = 5$."
+        }
+      ],
+      "feedback": {
+        "correct": "$A \\times B = 2\\sqrt{5} \\times 2\\sqrt{5} = 4 \\times 5 = 20$.",
+        "incorrect": "اضرب العاملين ثم الجذرين."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "100",
+          "id": "MISC-JIDHR-FI-JIDHR"
+        }
+      ],
+      "cognitiveDemand": "transfer"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l5-007",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 5
+}

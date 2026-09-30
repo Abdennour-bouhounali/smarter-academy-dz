@@ -1,0 +1,74 @@
+{
+  "metadata": {
+    "title": "تدريب — جذران متجاوران",
+    "estimatedMinutes": 2,
+    "tags": [
+      "تصنيف"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P1",
+      "modelledOn": "act-2"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العددين $\\sqrt{25}$ و $\\sqrt{26}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ماذا تقول عن هذين العددين؟",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sqrt{25}$ عدد ناطق، و $\\sqrt{26}$ ليس عددًا ناطقًا",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "كلاهما عدد ناطق لأن 25 و 26 عددان طبيعيان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-KULL-JIDHR"
+        },
+        {
+          "id": "C",
+          "content": "كلاهما عدد ناطق: $\\sqrt{25} = 12{,}5$ و $\\sqrt{26} = 13$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هل 25 مربع لعدد ناطق؟ وهل 26 كذلك؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الجذر التربيعي ليس نصف العدد: تحقّق بالتربيع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "طبّق المعيار على كل عدد وحده."
+        }
+      ],
+      "feedback": {
+        "correct": "$5^2 = 25$ إذن $\\sqrt{25} = 5$ ناطق؛ و 26 ليس مربعًا لعدد ناطق فـ $\\sqrt{26}$ ليس ناطقًا.",
+        "incorrect": "كون العدد طبيعيًا لا يكفي: يجب أن يكون مربعًا لعدد ناطق."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l1-008",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 1
+}

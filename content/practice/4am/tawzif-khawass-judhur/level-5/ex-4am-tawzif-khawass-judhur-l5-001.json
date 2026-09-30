@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "title": "تمرينا 23 و 24 — نسب وجذور",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مقام ناطق"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-24",
+      "page": 27,
+      "section": "أوظّف تعلّماتي",
+      "number": 24
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 27): نسب مقامها جذر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عيّن العدد $a$ حيث $\\dfrac{\\sqrt{8}}{a} = \\dfrac{-3\\sqrt{15}}{\\sqrt{3}}$.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$a = \\dfrac{2\\sqrt{10}}{15}$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$a = -\\dfrac{2\\sqrt{10}}{15}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$a = -\\dfrac{3\\sqrt{10}}{4}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{\\sqrt{15}}{\\sqrt{3}} = \\sqrt{5}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذن $\\dfrac{\\sqrt{8}}{a} = -3\\sqrt{5}$ ، ومنه $a = \\dfrac{\\sqrt{8}}{-3\\sqrt{5}}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب البسط والمقام في $\\sqrt{5}$، واكتب $\\sqrt{8} = 2\\sqrt{2}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{2\\sqrt{2}}{-3\\sqrt{5}} = -\\dfrac{2\\sqrt{10}}{15}$.",
+        "incorrect": "احتفظ بإشارة الناقص، ولا تقلب النسبة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "اكتب $\\dfrac{2\\sqrt{3} - 6}{\\sqrt{6}}$ على شكل نسبة مقامها عدد ناطق، ثم بسّط.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sqrt{2} - \\sqrt{6}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$2\\sqrt{2} - \\sqrt{6}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$\\sqrt{2} - 6$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب البسط كله والمقام في $\\sqrt{6}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2\\sqrt{3} \\times \\sqrt{6} = 2\\sqrt{18} = 6\\sqrt{2}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم كل حدّ من البسط على 6."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{6\\sqrt{2} - 6\\sqrt{6}}{6} = \\sqrt{2} - \\sqrt{6}$.",
+        "incorrect": "كل حدّ من البسط يُضرب في $\\sqrt{6}$."
+      }
+    }
+  ],
+  "id": "ex-4am-tawzif-khawass-judhur-l5-001",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 5
+}

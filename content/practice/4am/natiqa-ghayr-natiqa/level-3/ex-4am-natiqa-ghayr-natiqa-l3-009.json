@@ -1,0 +1,68 @@
+{
+  "metadata": {
+    "title": "تدريب — ضلع مربع مساحته 40",
+    "estimatedMinutes": 3,
+    "tags": [
+      "قيمة مقرّبة",
+      "مساحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P3",
+      "modelledOn": "ex-10"
+    }
+  },
+  "statement": {
+    "content": "مربع مساحته 40 $cm^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أعط القيمة المقرّبة إلى الجزء من 10 بالزيادة لطول ضلعه (بـ $cm$).",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري برقم واحد بعد الفاصلة",
+      "expectedAnswer": "6.4",
+      "misconceptionSignatures": [
+        {
+          "value": "6.3",
+          "id": "MISC-TAQRIB-NAQS-ZIYADA"
+        },
+        {
+          "value": "20",
+          "id": "MISC-JIDHR-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طول الضلع هو $\\sqrt{40}$، وهو ليس ناطقًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احصر $\\sqrt{40}$ أولًا بين عددين طبيعيين متتاليين، ثم بين عددين برقم واحد بعد الفاصلة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "القيمة بالزيادة هي الطرف الأكبر من الحصر."
+        }
+      ],
+      "feedback": {
+        "correct": "$6{,}3^2 = 39{,}69 < 40 < 40{,}96 = 6{,}4^2$ : القيمة بالزيادة هي الطرف الأكبر.",
+        "incorrect": "بالزيادة يعني العدد الأكبر من $\\sqrt{40}$ في الحصر."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l3-009",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 3
+}

@@ -1,0 +1,103 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l2-005",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — المعامل أمام الجذر",
+    "estimatedMinutes": 3,
+    "tags": [
+      "a√b"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P1",
+      "modelledOn": "ex-18"
+    }
+  },
+  "statement": {
+    "content": "كل عدد يُكتب على الشكل $a\\sqrt{b}$ حيث $a$ و $b$ عددان طبيعيان و $b$ أصغر ما يمكن."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نكتب $\\sqrt{500} = a\\sqrt{5}$. ما قيمة $a$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "10",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-JIDHR-MURABBA-MANSI",
+          "value": "100"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب 500 على شكل جداء مربع تامّ في 5."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$500 \\div 5$ مربع تامّ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خذ الجذر التربيعي لهذا المربع."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{500} = \\sqrt{100 \\times 5} = \\sqrt{100} \\times \\sqrt{5}$.",
+        "incorrect": "المعامل هو جذر المربع، وليس المربع نفسه."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نكتب $\\sqrt{363} = a\\sqrt{3}$. ما قيمة $a$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "11",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-JIDHR-MURABBA-MANSI",
+          "value": "121"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب 363 على شكل جداء مربع تامّ في 3."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $363 \\div 3$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حاصل القسمة مربع تامّ: ما جذره؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$363 = 121 \\times 3 = 11^2 \\times 3$.",
+        "incorrect": "المعامل هو جذر المربع، وليس المربع نفسه."
+      }
+    }
+  ]
+}

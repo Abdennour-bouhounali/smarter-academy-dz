@@ -1,0 +1,81 @@
+{
+  "metadata": {
+    "title": "تدريب — فخ الفاصلة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "عدد غير ناطق",
+      "عدد عشري"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P3",
+      "modelledOn": "act-2"
+    }
+  },
+  "statement": {
+    "content": "الأعداد المقترحة جذور تربيعية لأعداد عشرية أو كسرية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ عدد من الأعداد الآتية ليس عددًا ناطقًا؟",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sqrt{0{,}04}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-TABII-FAQAT"
+        },
+        {
+          "id": "B",
+          "content": "$\\sqrt{0{,}4}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\sqrt{\\dfrac{4}{9}}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-TABII-FAQAT"
+        },
+        {
+          "id": "D",
+          "content": "$\\sqrt{0{,}0004}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-TABII-FAQAT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب كل عدد عشري على شكل كسر عشري."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $0{,}2^2$ و $0{,}02^2$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل يوجد عدد عشري برقم واحد أو برقمين بعد الفاصلة مربعه 0,4؟ اكتب 0,4 كسرًا مختزلًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}04 = 0{,}2^2$ و $0{,}0004 = 0{,}02^2$ و $\\dfrac{4}{9} = \\left(\\dfrac{2}{3}\\right)^2$؛ أما $0{,}4 = \\dfrac{2}{5}$ فليس مربعًا لعدد ناطق.",
+        "incorrect": "لا تحكم من الأرقام وحدها: $0{,}2^2 = 0{,}04$ وليس 0,4."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l3-004",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 3
+}

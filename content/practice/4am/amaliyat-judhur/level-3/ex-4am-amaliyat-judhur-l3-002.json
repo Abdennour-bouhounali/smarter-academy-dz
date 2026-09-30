@@ -1,0 +1,172 @@
+{
+  "metadata": {
+    "title": "تمرين 20 — جذر حاصل قسمة",
+    "estimatedMinutes": 6,
+    "tags": [
+      "حاصل قسمة جذرين"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-20",
+      "page": 27,
+      "section": "أوظّف تعلّماتي",
+      "number": 20
+    }
+  },
+  "statement": {
+    "content": "اكتب كل عدد مما يلي على شكل كسر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\sqrt{\\dfrac{49}{16}}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "7/4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\sqrt{\\dfrac{a}{b}} = \\dfrac{\\sqrt{a}}{\\sqrt{b}}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب جذر البسط وجذر المقام."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب الكسر غير القابل للاختزال."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{\\sqrt{49}}{\\sqrt{16}} = \\dfrac{7}{4}$",
+        "incorrect": "خذ جذر البسط والمقام معًا."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$\\sqrt{\\dfrac{36}{81}}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "2/3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب جذر البسط وجذر المقام."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قد يكون الكسر الناتج قابلًا للاختزال."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اختزل حتى يصبح غير قابل للاختزال."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{\\sqrt{36}}{\\sqrt{81}} = \\dfrac{6}{9} = \\dfrac{2}{3}$",
+        "incorrect": "بعد الجذرين، اختزل الكسر."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "$\\sqrt{\\dfrac{12100}{900}}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "11/3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "يمكنك أن تختزل أولًا ما تحت الجذر، أو تحسب الجذرين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$12100 = 110^2$ و $900 = 30^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اختزل الكسر الناتج."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{\\sqrt{12100}}{\\sqrt{900}} = \\dfrac{110}{30} = \\dfrac{11}{3}$",
+        "incorrect": "تحقّق من جذر 12100 بالتربيع."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      }
+    },
+    {
+      "id": "q4",
+      "statement": "$\\sqrt{\\dfrac{4900}{32400}}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "7/18",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب جذر البسط وجذر المقام."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$32400 = 180^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اختزل الكسر الناتج."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{\\sqrt{4900}}{\\sqrt{32400}} = \\dfrac{70}{180} = \\dfrac{7}{18}$",
+        "incorrect": "لا تنسَ جذر المقام."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l3-002",
+  "lessonCode": "amaliyat-judhur",
+  "level": 3
+}

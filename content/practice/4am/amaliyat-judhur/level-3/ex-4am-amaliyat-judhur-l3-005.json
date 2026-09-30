@@ -1,0 +1,112 @@
+{
+  "metadata": {
+    "title": "تدريب — جذر عدد كسري",
+    "estimatedMinutes": 5,
+    "tags": [
+      "حاصل قسمة جذرين",
+      "مجموع جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P2",
+      "modelledOn": "ex-33"
+    }
+  },
+  "statement": {
+    "content": "اكتب كل عدد على شكل كسر غير قابل للاختزال."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\sqrt{1 + \\dfrac{9}{16}}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "5/4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجذر يشمل المجموع كله: لا تحسب جذر كل حد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $1 + \\dfrac{9}{16}$ كسرًا واحدًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم استعمل $\\sqrt{\\dfrac{a}{b}} = \\dfrac{\\sqrt{a}}{\\sqrt{b}}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{1 + \\dfrac{9}{16}} = \\sqrt{\\dfrac{25}{16}} = \\dfrac{5}{4}$ ، وليس $1 + \\dfrac{3}{4}$ .",
+        "incorrect": "اجمع أولًا تحت الجذر، ثم خذ جذر البسط والمقام."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "7/4",
+          "id": "MISC-JIDHR-JAMA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "$\\sqrt{2 + \\dfrac{1}{4}}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "3/2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجذر يشمل المجموع كله."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $2 + \\dfrac{1}{4}$ كسرًا واحدًا مقامه 4."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "البسط والمقام يصبحان مربّعين تامّين."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{2 + \\dfrac{1}{4}} = \\sqrt{\\dfrac{9}{4}} = \\dfrac{3}{2}$",
+        "incorrect": "اكتب المجموع كسرًا واحدًا قبل الجذر."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l3-005",
+  "lessonCode": "amaliyat-judhur",
+  "level": 3
+}

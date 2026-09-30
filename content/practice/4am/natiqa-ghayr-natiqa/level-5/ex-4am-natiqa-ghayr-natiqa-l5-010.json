@@ -1,0 +1,71 @@
+{
+  "metadata": {
+    "title": "تدريب — قطع أرض مربعة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تصنيف",
+      "مسألة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P1",
+      "modelledOn": "act-2"
+    }
+  },
+  "statement": {
+    "content": "ثلاث قطع أرض مربعة الشكل مساحاتها 225 $m^2$ و 250 $m^2$ و 256 $m^2$ . يريد المسّاح أن يكتب طول ضلع كل قطعة بقيمته المضبوطة على شكل عدد ناطق."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "اكتب مساحات القطع التي يكون طول ضلعها عددًا ناطقًا.",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        225,
+        256
+      ],
+      "misconceptionSignatures": [
+        {
+          "value": [
+            225,
+            250,
+            256
+          ],
+          "id": "MISC-NATIQ-KULL-JIDHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طول الضلع هو الجذر التربيعي للمساحة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل كل مساحة مربع لعدد طبيعي؟ جرّب الأعداد من 14 إلى 17."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المساحة التي ليست مربعًا لعدد ناطق تعطي طولًا غير ناطق."
+        }
+      ],
+      "feedback": {
+        "correct": "$225 = 15^2$ و $256 = 16^2$ ، أما 250 فمحصور بين $15^2$ و $16^2$ وليس مربعًا لعدد ناطق.",
+        "incorrect": "تحقّق من كل مساحة بمقارنتها بمربعات الأعداد المتتالية."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l5-010",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 5
+}

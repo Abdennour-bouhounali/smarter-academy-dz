@@ -174,6 +174,13 @@ import bahthPgcdRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-
 import awwaliyanFimaBaynahumaRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/awwaliyan-fima-baynahuma/routes';
 import ikhtizalKasrRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/ikhtizal-kasr/routes';
 import wadiyaIdmajiyaAadadRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/routes';
+// Unité 2 « الحساب على الجذور » (2026-09-30).
+import jidhrTarbiiRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/jidhr-tarbii/routes';
+import natiqaGhayrNatiqaRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/natiqa-ghayr-natiqa/routes';
+import muadalatXMurabbaRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/muadalat-x-murabba/routes';
+import amaliyatJudhurRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/amaliyat-judhur/routes';
+import tawzifKhawassJudhurRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/tawzif-khawass-judhur/routes';
+import wadiyaIdmajiyaJudhurRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/wadiya-idmajiya-judhur/routes';
 
 export default function App() {
   return (
@@ -418,6 +425,12 @@ export default function App() {
             {awwaliyanFimaBaynahumaRoutes()}
             {ikhtizalKasrRoutes()}
             {wadiyaIdmajiyaAadadRoutes()}
+            {jidhrTarbiiRoutes()}
+            {natiqaGhayrNatiqaRoutes()}
+            {muadalatXMurabbaRoutes()}
+            {amaliyatJudhurRoutes()}
+            {tawzifKhawassJudhurRoutes()}
+            {wadiyaIdmajiyaJudhurRoutes()}
 
             {/* ── SURFACE DE QA — jamais en production ────────────────
                 Le moteur de leçon n'a jamais été rendu sous RTL, faute de

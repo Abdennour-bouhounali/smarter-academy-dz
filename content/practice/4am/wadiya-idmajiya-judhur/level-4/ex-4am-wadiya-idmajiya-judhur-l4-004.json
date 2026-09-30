@@ -1,0 +1,133 @@
+{
+  "metadata": {
+    "title": "تدريب — مثلث أضلاعه جذور",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية إدماجية",
+      "فيثاغورس العكسية",
+      "مربع الجذر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "مثلث $ABC$ حيث $AB = \\sqrt{3}\\,cm$ و $AC = \\sqrt{6}\\,cm$ و $BC = 3\\,cm$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل المثلث $ABC$ قائم؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، قائم في $A$، لأنّ $AB^2 + AC^2 = 3 + 6 = 9 = BC^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا، لأنّ $\\sqrt{3} + \\sqrt{6} \\neq 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        },
+        {
+          "id": "C",
+          "content": "لا، لأنّ $AB^2 + AC^2 = 9 + 36 = 45$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARBI-JIDHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب مربع كل ضلع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(\\sqrt{a})^2 = a$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن مربع أطول ضلع بمجموع مربعي الضلعين الآخرين."
+        }
+      ],
+      "feedback": {
+        "correct": "$AB^2 + AC^2 = 3 + 6 = 9 = BC^2$: حسب الخاصية العكسية لفيثاغورس، المثلث قائم في $A$.",
+        "incorrect": "نقارن المربعات، لا الأطوال نفسها."
+      },
+      "cognitiveDemand": "reason"
+    },
+    {
+      "id": "q2",
+      "statement": "مساحة المثلث $ABC$ (بالسنتيمتر المربع) هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{\\sqrt{9}}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-JAMA"
+        },
+        {
+          "id": "B",
+          "content": "$3\\sqrt{2}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{3\\sqrt{2}}{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$\\dfrac{9}{2}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلث قائم في $A$: الضلعان القائمان هما القاعدة والارتفاع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المساحة $\\dfrac{AB \\times AC}{2}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\sqrt{3} \\times \\sqrt{6} = \\sqrt{18}$، ثم بسّط."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{\\sqrt{3} \\times \\sqrt{6}}{2} = \\dfrac{\\sqrt{18}}{2} = \\dfrac{3\\sqrt{2}}{2}$.",
+        "incorrect": "جداء جذرين هو جذر الجداء، ولا تنس القسمة على 2."
+      },
+      "cognitiveDemand": "reason"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l4-004",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 4
+}

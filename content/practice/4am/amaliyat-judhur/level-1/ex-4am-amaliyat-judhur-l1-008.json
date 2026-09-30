@@ -1,0 +1,148 @@
+{
+  "metadata": {
+    "title": "تدريب — جذر فرق",
+    "estimatedMinutes": 4,
+    "tags": [
+      "فرق جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P3",
+      "modelledOn": "act-4c"
+    }
+  },
+  "statement": {
+    "content": "نقارن العددين $\\sqrt{25 - 16}$ و $\\sqrt{25} - \\sqrt{16}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $\\sqrt{25 - 16}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجذر هنا يشمل الفرق كله."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب ما تحت الجذر أولًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم خذ الجذر التربيعي للنتيجة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{25 - 16} = \\sqrt{9} = 3$",
+        "incorrect": "اطرح أولًا ما تحت الجذر."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "1",
+          "id": "MISC-JIDHR-TARH"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $\\sqrt{25} - \\sqrt{16}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هنا جذران منفصلان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $\\sqrt{25}$ ثم $\\sqrt{16}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح النتيجتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{25} - \\sqrt{16} = 5 - 4 = 1$",
+        "incorrect": "احسب كل جذر وحده ثم اطرح."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "3",
+          "id": "MISC-JIDHR-TARH"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "هل المساواة $\\sqrt{25 - 16} = \\sqrt{25} - \\sqrt{16}$ صحيحة؟",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "صحيح",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-TARH"
+        },
+        {
+          "id": "B",
+          "content": "خطأ",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب الطرفين كلًّا على حدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن العددين اللذين تحصل عليهما."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل يتوزّع الجذر التربيعي على الطرح؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{25 - 16} = 3$ و $\\sqrt{25} - \\sqrt{16} = 1$ : الجذر لا يتوزّع على الطرح.",
+        "incorrect": "احسب الطرفين: هل هما متساويان؟"
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l1-008",
+  "lessonCode": "amaliyat-judhur",
+  "level": 1
+}

@@ -1,0 +1,140 @@
+{
+  "metadata": {
+    "title": "تدريب — إطار صورة",
+    "estimatedMinutes": 7,
+    "tags": [
+      "وضعية إدماجية",
+      "متطابقات",
+      "مساحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "صورة مربّعة الشكل مساحتها $50\\,cm^2$، نحيطها بإطار عرضه $2\\,cm$ من كل جهة، فنحصل على مربّع أكبر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "طول ضلع الصورة (بالسنتيمتر) هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$5\\sqrt{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$25$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-NISF"
+        },
+        {
+          "id": "C",
+          "content": "$25\\sqrt{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        },
+        {
+          "id": "D",
+          "content": "$2\\sqrt{5}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الضلع هو الجذر التربيعي للمساحة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$50 = 25 \\times 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استعمل $\\sqrt{a^2 b} = a\\sqrt{b}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{50} = 5\\sqrt{2}$.",
+        "incorrect": "الضلع جذر المساحة."
+      },
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q2",
+      "statement": "مساحة المربّع الكبير (الصورة مع الإطار) بالسنتيمتر المربع هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$66$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HADD-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$66 + 40\\sqrt{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$54$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HADD-2AB"
+        },
+        {
+          "id": "D",
+          "content": "$66 + 20\\sqrt{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HADD-2AB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ضلع المربّع الكبير $5\\sqrt{2} + 4$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل $(a + b)^2 = a^2 + 2ab + b^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(5\\sqrt{2})^2 = 50$ و $2 \\times 5\\sqrt{2} \\times 4 = 40\\sqrt{2}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(5\\sqrt{2} + 4)^2 = 50 + 40\\sqrt{2} + 16 = 66 + 40\\sqrt{2}$.",
+        "incorrect": "الإطار من الجهتين: أضف 4 للضلع، ولا تنس الحد المضاعف."
+      },
+      "cognitiveDemand": "transfer"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l5-006",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 5
+}

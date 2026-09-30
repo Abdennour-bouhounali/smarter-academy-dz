@@ -1,0 +1,118 @@
+{
+  "metadata": {
+    "title": "تدريب — ما تعرضه الحاسبة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية إدماجية",
+      "قيمة مقرّبة",
+      "مدوّر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "تعرض الحاسبة للعدد $\\sqrt{2}$ القيمة $1{,}414213562$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد $1{,}414213562$ هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "القيمة المضبوطة للعدد $\\sqrt{2}$، لأنّ الحاسبة لا تخطئ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HASIBA-MUDBUTA"
+        },
+        {
+          "id": "B",
+          "content": "القيمة المضبوطة للعدد $\\sqrt{2}$، لأنّ $\\sqrt{2}$ عدد عشري",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HASIBA-MUDBUTA"
+        },
+        {
+          "id": "C",
+          "content": "قيمة مقرّبة للعدد $\\sqrt{2}$، لأنّ مربعه لا يساوي 2 تمامًا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "آخر رقم لهذا العدد العشري هو 2: ما هو آخر رقم لمربعه؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل يمكن أن يساوي مربع هذا العدد 2 تمامًا؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العدد $\\sqrt{2}$ غير ناطق."
+        }
+      ],
+      "feedback": {
+        "correct": "مربع عدد عشري آخر رقمه 2 ينتهي بالرقم 4، فلا يساوي 2: القيمة مقرّبة، و $\\sqrt{2}$ عدد غير ناطق.",
+        "incorrect": "الحاسبة تعرض عددًا محدودًا من الأرقام فقط."
+      },
+      "cognitiveDemand": "recall"
+    },
+    {
+      "id": "q2",
+      "statement": "باستعمال $\\sqrt{50} = 5\\sqrt{2}$، أعط المدوّر إلى الجزء من عشرة للعدد $\\sqrt{50}$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري برقم واحد بعد الفاصلة",
+      "expectedAnswer": "7.1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب القيمة المقرّبة للعدد $\\sqrt{2}$ في 5."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى رقم الأجزاء من مئة لتدوّر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان رقم الأجزاء من مئة أصغر من 5 نحتفظ برقم الأجزاء من عشرة."
+        }
+      ],
+      "feedback": {
+        "correct": "$5 \\times 1{,}414213562 \\approx 7{,}071$، والمدوّر إلى الجزء من عشرة هو 7,1.",
+        "incorrect": "احسب $5 \\times 1{,}414\\ldots$ أولًا، ثم دوّر النتيجة النهائية."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "7",
+          "id": "MISC-WADIYA-TADWIR-MUBAKKIR"
+        }
+      ],
+      "cognitiveDemand": "recall"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l1-006",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 1
+}

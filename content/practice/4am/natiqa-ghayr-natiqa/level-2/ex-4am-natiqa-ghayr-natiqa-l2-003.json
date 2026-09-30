@@ -1,0 +1,111 @@
+{
+  "metadata": {
+    "title": "تدريب — جذور أعداد عشرية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "عدد عشري"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P2",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "الأعداد 1,21 و 2,25 مربعان لعددين عشريين."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $\\sqrt{1{,}21}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "1.1",
+      "misconceptionSignatures": [
+        {
+          "value": "0.11",
+          "id": "MISC-JIDHR-FASILA"
+        },
+        {
+          "value": "11",
+          "id": "MISC-JIDHR-FASILA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد الطبيعي الذي مربعه 121 يساعدك."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الجذر أكبر من 1 لأن 1,21 أكبر من 1."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ربّع العدد الذي تقترحه لتتأكّد من موضع الفاصلة."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}1^2 = 1{,}21$ إذن $\\sqrt{1{,}21} = 1{,}1$ .",
+        "incorrect": "تحقّق من موضع الفاصلة بالتربيع."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $\\sqrt{2{,}25}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "1.5",
+      "misconceptionSignatures": [
+        {
+          "value": "0.15",
+          "id": "MISC-JIDHR-FASILA"
+        },
+        {
+          "value": "1.125",
+          "id": "MISC-JIDHR-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد الطبيعي الذي مربعه 225 يساعدك."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الجذر محصور بين 1 و 2 لأن $1 < 2{,}25 < 4$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ربّع العدد الذي تقترحه لتتأكّد."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}5^2 = 2{,}25$ إذن $\\sqrt{2{,}25} = 1{,}5$ .",
+        "incorrect": "الجذر بين 1 و 2: تحقّق بالتربيع."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l2-003",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 2
+}

@@ -1,0 +1,91 @@
+{
+  "metadata": {
+    "title": "تدريب — إيجاد عدد تحت الجذر",
+    "estimatedMinutes": 5,
+    "tags": [
+      "جداء جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P1",
+      "modelledOn": "act-4a"
+    }
+  },
+  "statement": {
+    "content": "في كل حالة $a$ عدد موجب مجهول."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أوجد العدد $a$ علمًا أن $\\sqrt{a} \\times \\sqrt{3} = 6$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "12",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب الطرف الأول جذرًا واحدًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{3a} = 6$ : ما العدد الذي جذره 6؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حُلّ المعادلة $3a = 36$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{3a} = 6$ إذن $3a = 36$ ومنه $a = 12$ ؛ تحقّق: $\\sqrt{12} \\times \\sqrt{3} = \\sqrt{36}$ .",
+        "incorrect": "عوّض قيمتك وتحقّق: هل الجداء يساوي 6؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "أوجد العدد $a$ علمًا أن $\\sqrt{5} \\times \\sqrt{a} = 10$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "20",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب الطرف الأول جذرًا واحدًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{5a}$ يساوي 10: فكم يساوي $5a$ ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على 5."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{5a} = 10$ إذن $5a = 100$ ومنه $a = 20$ .",
+        "incorrect": "عوّض قيمتك وتحقّق من الجداء."
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l3-003",
+  "lessonCode": "amaliyat-judhur",
+  "level": 3
+}

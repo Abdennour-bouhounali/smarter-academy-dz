@@ -1,0 +1,101 @@
+{
+  "metadata": {
+    "title": "تدريب — زربية طولها ضعف عرضها",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية إدماجية",
+      "وضعية",
+      "معادلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "زربية مستطيلة الشكل مساحتها $50\\,m^2$، وطولها ضعف عرضها، وسعرها 15000DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هو عرض الزربية (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالمتر)",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمِّ العرض $\\ell$ واكتب الطول بدلالته."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عبّر عن المساحة بدلالة $\\ell$ واكتب المعادلة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "السعر لا يدخل في الحساب؛ خذ الحل الموجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$2\\ell \\times \\ell = 50$ يعني $\\ell^2 = 25$، والعرض موجب: $\\ell = 5\\,m$.",
+        "incorrect": "المساحة $2\\ell^2$، لا $\\ell^2$؛ والسعر معطى مشوِّش."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "12.5",
+          "id": "MISC-HALL-QISMA"
+        }
+      ],
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو طول الزربية (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالمتر)",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطول ضعف العرض."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب العرض أولًا من المساحة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب العرض في 2."
+        }
+      ],
+      "feedback": {
+        "correct": "الطول $2 \\times 5 = 10\\,m$، ونتحقق: $10 \\times 5 = 50$.",
+        "incorrect": "تحقّق: جداء الطول في العرض يجب أن يساوي 50."
+      },
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l3-002",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 3
+}

@@ -1,0 +1,136 @@
+{
+  "metadata": {
+    "title": "نشاط 4 — مجموع جذرين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مجموع جذرين"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-4c",
+      "page": 21,
+      "section": "أنشطة",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "احسب كلا من العددين $\\sqrt{16 + 9}$ و $\\sqrt{16} + \\sqrt{9}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $\\sqrt{16 + 9}$.",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ بما تحت الجذر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $16 + 9$ أولًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم خذ الجذر التربيعي للنتيجة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{16 + 9} = \\sqrt{25} = 5$",
+        "incorrect": "الجذر يُطبَّق على المجموع كله، بعد الجمع."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $\\sqrt{16} + \\sqrt{9}$.",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هنا جذران منفصلان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $\\sqrt{16}$ ثم $\\sqrt{9}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع النتيجتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{16} + \\sqrt{9} = 4 + 3 = 7$",
+        "incorrect": "احسب كل جذر وحده ثم اجمع."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "المساواة $\\sqrt{16 + 9} = \\sqrt{16} + \\sqrt{9}$ صحيحة.",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "صحيح",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "خطأ",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب الطرفين كلًّا على حدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن العددين اللذين تحصل عليهما."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل الجذر التربيعي يتوزّع على الجمع؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{16 + 9} = 5$ و $\\sqrt{16} + \\sqrt{9} = 7$: الجذر لا يتوزّع على الجمع.",
+        "incorrect": "احسب الطرفين: هل هما متساويان؟"
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l2-002",
+  "lessonCode": "amaliyat-judhur",
+  "level": 2
+}

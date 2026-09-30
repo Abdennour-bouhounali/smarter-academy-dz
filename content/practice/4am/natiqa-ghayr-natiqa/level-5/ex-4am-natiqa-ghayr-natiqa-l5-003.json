@@ -1,0 +1,106 @@
+{
+  "metadata": {
+    "title": "تدريب — تبليط قاعة مربعة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مساحة",
+      "مسألة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P2",
+      "modelledOn": "ex-10"
+    }
+  },
+  "statement": {
+    "content": "قاعة مربعة الشكل مساحتها 20,25 $m^2$ . نريد تبليطها ببلاطات مربعة طول ضلع كل منها 0,5 $m$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب طول ضلع القاعة (بـ $m$).",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "4.5",
+      "misconceptionSignatures": [
+        {
+          "value": "10.125",
+          "id": "MISC-JIDHR-NISF"
+        },
+        {
+          "value": "0.45",
+          "id": "MISC-JIDHR-FASILA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طول ضلع المربع هو الجذر التربيعي لمساحته."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "فكّر في العدد الطبيعي الذي مربعه 2025."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ضع الفاصلة ثم تحقّق بالتربيع."
+        }
+      ],
+      "feedback": {
+        "correct": "$4{,}5^2 = 20{,}25$ إذن طول الضلع 4,5 $m$ : القيمة مضبوطة لأن 20,25 مربع لعدد ناطق.",
+        "incorrect": "تحقّق بتربيع العدد الذي كتبته."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "كم بلاطة نضع على طول ضلع واحد من القاعة؟",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل طول الضلع الذي وجدته."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كم مرة يحوي طول الضلع العدد 0,5؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم طول الضلع على طول ضلع البلاطة."
+        }
+      ],
+      "feedback": {
+        "correct": "نقسم طول ضلع القاعة على 0,5 فنجد عدد البلاطات على الضلع.",
+        "incorrect": "اقسم طول ضلع القاعة، لا مساحتها، على 0,5."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l5-003",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 5
+}

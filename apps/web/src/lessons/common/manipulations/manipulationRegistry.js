@@ -22,6 +22,10 @@ export const MANIPULATION_COMPONENTS = {
   'euclidean-algorithm': lazy(() => import('./divisibility/EuclidAlgorithm')),
   'coprime-explorer': lazy(() => import('./divisibility/CoprimeExplorer')),
   'fraction-reduction': lazy(() => import('./divisibility/FractionReduction')),
+  // Unité 2 « الحساب على الجذور » (2026-09-30).
+  'square-root-side': lazy(() => import('./roots/SquareRootSide')),
+  'square-fold': lazy(() => import('./roots/SquareFold')),
+  'square-tiling': lazy(() => import('./roots/SquareTiling')),
 };
 
 export const REGISTERED_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_COMPONENTS));

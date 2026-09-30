@@ -1,0 +1,81 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l2-007",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — فرق جذرين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تبسيط",
+      "خاصية توزيعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P2",
+      "modelledOn": "ex-26"
+    }
+  },
+  "statement": {
+    "content": "بسّط العبارة $A = 2\\sqrt{20} - \\sqrt{45}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بسّط العبارة $A = 2\\sqrt{20} - \\sqrt{45}$.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-\\sqrt{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUAMIL-MANSI"
+        },
+        {
+          "id": "B",
+          "content": "$\\sqrt{35}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-TARH"
+        },
+        {
+          "id": "C",
+          "content": "$\\sqrt{5}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$7\\sqrt{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب $\\sqrt{20}$ و $\\sqrt{45}$ على الشكل $a\\sqrt{b}$ ، ستجد نفس الجذر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "لا تنسَ ضرب $\\sqrt{20}$ المبسّط في المعامل 2."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم احسب فرق المعاملين."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = 2 \\times 2\\sqrt{5} - 3\\sqrt{5} = (4 - 3)\\sqrt{5}$.",
+        "incorrect": "راجع: $2\\sqrt{20} = 2 \\times 2\\sqrt{5}$، والجذر لا يتوزّع على الطرح."
+      }
+    }
+  ]
+}

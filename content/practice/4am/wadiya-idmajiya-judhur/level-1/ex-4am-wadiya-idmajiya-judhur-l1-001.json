@@ -1,0 +1,128 @@
+{
+  "metadata": {
+    "title": "تدريب — حديقة مربّعة",
+    "estimatedMinutes": 2,
+    "tags": [
+      "وضعية إدماجية",
+      "جذر تربيعي",
+      "معادلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "حديقة مربّعة الشكل مساحتها $49\\,m^2$. نرمز بـ $c$ لطول ضلعها (بالمتر)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هو طول ضلع الحديقة $c$ (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالمتر)",
+      "expectedAnswer": "7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مساحة المربع هي $c \\times c = c^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ابحث عن العدد الموجب الذي مربعه 49."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الطول عدد موجب: هو الجذر التربيعي للمساحة."
+        }
+      ],
+      "feedback": {
+        "correct": "$c^2 = 49$ و $c > 0$، إذن $c = \\sqrt{49} = 7$.",
+        "incorrect": "الضلع هو العدد الموجب الذي مربعه يساوي المساحة، وليس نصفها."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "24.5",
+          "id": "MISC-JIDHR-NISF"
+        },
+        {
+          "value": "-7",
+          "id": "MISC-JIDHR-SALIB"
+        }
+      ],
+      "cognitiveDemand": "recall"
+    },
+    {
+      "id": "q2",
+      "statement": "المعادلة $x^2 = 49$ ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "تقبل حلين هما $7$ و $-7$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "تقبل حلا واحدا هو 7",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "تقبل حلين هما $24{,}5$ و $-24{,}5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-QISMA"
+        },
+        {
+          "id": "D",
+          "content": "لا تقبل أي حل",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-SALIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما إشارة العدد 49؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "لعددين متعاكسين نفس المربع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا كان $a > 0$ فكم حلا للمعادلة $x^2 = a$؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$49 > 0$: حلّان متعاكسان، لأنّ $7^2 = (-7)^2 = 49$. الطول يأخذ الحل الموجب وحده.",
+        "incorrect": "لا تنس أنّ للعدد السالب المعاكس المربعَ نفسه."
+      },
+      "cognitiveDemand": "recall"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l1-001",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 1
+}

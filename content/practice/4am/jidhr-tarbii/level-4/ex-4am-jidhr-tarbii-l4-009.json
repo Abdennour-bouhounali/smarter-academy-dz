@@ -1,0 +1,98 @@
+{
+  "metadata": {
+    "title": "تدريب — من الجذر إلى جذر آخر",
+    "estimatedMinutes": 3,
+    "tags": [
+      "عكسي",
+      "تعريف"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidhr-tarbii_P1",
+      "modelledOn": "ex-1"
+    }
+  },
+  "statement": {
+    "content": "$x$ عدد موجب حيث $\\sqrt{x} = 6$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما قيمة $x$؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "36",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\sqrt{x}$ هو العدد الموجب الذي مربعه $x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذن $x$ هو مربع 6."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $6 \\times 6$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 6^2 = 36$.",
+        "incorrect": "العدد $x$ هو مربع 6، لا ضعفه ولا نصفه."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "12",
+          "id": "MISC-MURABBA-DIF"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $\\sqrt{x + 13}$.",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولًا $x$، ثم $x + 13$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على مربع تام."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن العدد الموجب الذي مربعه $x + 13$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + 13 = 49$ و $\\sqrt{49} = 7$.",
+        "incorrect": "احسب المجموع تحت الرمز أولًا ثم جذره."
+      }
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l4-009",
+  "lessonCode": "jidhr-tarbii",
+  "level": 4
+}

@@ -1,0 +1,80 @@
+{
+  "metadata": {
+    "title": "تدريب — أين الخطأ؟ جذر مربع عدد سالب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تحليل خطأ",
+      "إشارة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidhr-tarbii_P3",
+      "modelledOn": "ex-8"
+    }
+  },
+  "statement": {
+    "content": "كتب أمين: $\\sqrt{(-7)^2} = -7$، لأن «الجذر يلغي المربع»."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أين الخطأ؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا خطأ: الجذر يلغي المربع دائمًا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "الخطأ في المربع: $(-7)^2 = -49$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "الخاصية $\\sqrt{a^2} = a$ تشترط $a$ موجبًا؛ والصحيح $\\sqrt{(-7)^2} = \\sqrt{49} = 7$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "الصحيح $\\sqrt{(-7)^2} = 49$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARBI-JIDHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما إشارة الجذر التربيعي دائمًا؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $(-7)^2$ أولًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "راجع شرط الخاصية $\\sqrt{a^2} = a$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(-7)^2 = 49$ والجذر التربيعي للعدد 49 هو 7 الموجب.",
+        "incorrect": "الجذر التربيعي لا يكون سالبًا أبدًا: راجع شرط الخاصية."
+      }
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l4-003",
+  "lessonCode": "jidhr-tarbii",
+  "level": 4
+}

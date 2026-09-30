@@ -1,0 +1,108 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l4-006",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — مربع فرق",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متطابقات",
+      "نشر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P2",
+      "modelledOn": "ex-29"
+    }
+  },
+  "statement": {
+    "content": "ننشر $(2\\sqrt{3} - 1)^2$ ونكتبه على الشكل $a + b\\sqrt{3}$ حيث $a$ و $b$ عددان صحيحان."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ننشر $(2\\sqrt{3} - 1)^2 = a + b\\sqrt{3}$. ما قيمة $a$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "13",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUAMIL-DUN-TARBI",
+          "value": "7"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل المتطابقة $(x - y)^2 = x^2 - 2xy + y^2$ مع $x = 2\\sqrt{3}$ و $y = 1$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $x^2 = (2\\sqrt{3})^2 = 2^2 \\times (\\sqrt{3})^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$a$ هو مجموع $x^2$ و $y^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(2\\sqrt{3})^2 = 4 \\times 3 = 12$ ، إذن $a = 12 + 1$.",
+        "incorrect": "في $(2\\sqrt{3})^2$ نربّع المعامل 2 أيضًا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ننشر $(2\\sqrt{3} - 1)^2 = a + b\\sqrt{3}$. ما قيمة $b$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "-4",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-HADD-2AB",
+          "value": "0"
+        },
+        {
+          "id": "MISC-ISHARA",
+          "value": "4"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل المتطابقة $(x - y)^2 = x^2 - 2xy + y^2$ مع $x = 2\\sqrt{3}$ و $y = 1$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحدّ الذي يحتوي على الجذر هو $-2xy$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $-2 \\times 2\\sqrt{3} \\times 1$ مع إشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$-2 \\times 2\\sqrt{3} \\times 1 = -4\\sqrt{3}$.",
+        "incorrect": "لا تنسَ الحدّ $-2xy$ ولا إشارته."
+      }
+    }
+  ]
+}

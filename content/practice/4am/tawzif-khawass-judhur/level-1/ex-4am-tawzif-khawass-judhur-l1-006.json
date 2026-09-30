@@ -1,0 +1,130 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l1-006",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — جمع جذور متشابهة",
+    "estimatedMinutes": 2,
+    "tags": [
+      "تبسيط",
+      "خاصية توزيعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P2",
+      "modelledOn": "method-simplify"
+    }
+  },
+  "statement": {
+    "content": "بسّط كل عبارة باستعمال الخاصية التوزيعية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بسّط $5\\sqrt{3} + 2\\sqrt{3}$.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$7\\sqrt{3}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$7\\sqrt{6}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        },
+        {
+          "id": "C",
+          "content": "$10\\sqrt{3}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحدّان يحتويان على نفس الجذر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x\\sqrt{b} + y\\sqrt{b} = (x + y)\\sqrt{b}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المعاملين فقط، ويبقى الجذر كما هو."
+        }
+      ],
+      "feedback": {
+        "correct": "$5\\sqrt{3} + 2\\sqrt{3} = (5 + 2)\\sqrt{3}$.",
+        "incorrect": "الجذر لا يتغيّر عند الجمع: نجمع المعاملات فقط، ولا نضربها."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بسّط $4\\sqrt{5} - 9\\sqrt{5}$.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$5\\sqrt{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$-5\\sqrt{5}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$13\\sqrt{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-ISHARA"
+        },
+        {
+          "id": "D",
+          "content": "$-5$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحدّان يحتويان على نفس الجذر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حلّل: $(4 - 9)\\sqrt{5}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $4 - 9$ مع الانتباه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$4\\sqrt{5} - 9\\sqrt{5} = (4 - 9)\\sqrt{5}$.",
+        "incorrect": "انتبه إلى الإشارة: $4 - 9$ عدد سالب."
+      }
+    }
+  ]
+}

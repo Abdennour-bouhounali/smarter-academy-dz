@@ -1,0 +1,103 @@
+{
+  "metadata": {
+    "title": "تدريب — جذر جداء أعداد عشرية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جداء جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P1",
+      "modelledOn": "ex-16"
+    }
+  },
+  "statement": {
+    "content": "استعمل $\\sqrt{a \\times b} = \\sqrt{a} \\times \\sqrt{b}$ ($a$ و $b$ موجبان)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $\\sqrt{0{,}09 \\times 100}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالفاصلة إن لزم)",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب الجذر جداءً لجذرين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما العدد الموجب الذي مربعه $0{,}09$ ؟ تحقّق بالتربيع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب هذا العدد في $\\sqrt{100}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{0{,}09} \\times \\sqrt{100} = 0{,}3 \\times 10 = 3$",
+        "incorrect": "تحقّق من $\\sqrt{0{,}09}$ : مربّع $0{,}03$ هو $0{,}0009$ ."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "0.3",
+          "id": "MISC-JIDHR-FASILA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $\\sqrt{49 \\times 0{,}04}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالفاصلة إن لزم)",
+      "expectedAnswer": "1.4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب الجذر جداءً لجذرين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{49}$ عدد طبيعي، و $0{,}04$ مربّع عدد عشري."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب الجذرين وانتبه إلى موضع الفاصلة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{49} \\times \\sqrt{0{,}04} = 7 \\times 0{,}2 = 1{,}4$",
+        "incorrect": "مربّع $0{,}02$ هو $0{,}0004$ لا $0{,}04$ : راجع الفاصلة."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "0.14",
+          "id": "MISC-JIDHR-FASILA"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l1-006",
+  "lessonCode": "amaliyat-judhur",
+  "level": 1
+}

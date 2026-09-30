@@ -1,0 +1,116 @@
+{
+  "metadata": {
+    "title": "تدريب — جذر كسر — أين الخطأ؟",
+    "estimatedMinutes": 6,
+    "tags": [
+      "حاصل قسمة جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P2",
+      "modelledOn": "ex-20"
+    }
+  },
+  "statement": {
+    "content": "كتبت مريم: $\\sqrt{\\dfrac{64}{0{,}16}} = \\dfrac{8}{0{,}16} = 50$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما رأيك في ما كتبته مريم؟",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا خطأ في حسابها",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "نسيت جذر المقام؛ والصحيح $\\dfrac{8}{0{,}4} = 20$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "نسيت جذر المقام؛ والصحيح $\\dfrac{8}{0{,}04} = 200$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-FASILA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\sqrt{\\dfrac{a}{b}} = \\dfrac{\\sqrt{a}}{\\sqrt{b}}$ : الجذر يشمل البسط والمقام."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما العدد الموجب الذي مربعه $0{,}16$ ؟ تحقّق بالتربيع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب حاصل القسمة الصحيح."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{0{,}16} = 0{,}4$ إذن $\\sqrt{\\dfrac{64}{0{,}16}} = \\dfrac{8}{0{,}4} = 20$ .",
+        "incorrect": "مربّع $0{,}04$ هو $0{,}0016$ ، راجع جذر المقام."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $\\sqrt{\\dfrac{0{,}36}{0{,}0049}}$ (اكتب النتيجة كسرًا غير قابل للاختزال)",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "60/7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب جذر البسط وجذر المقام."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما العدد الموجب الذي مربعه $0{,}0049$ ؟ تحقّق بالتربيع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب حاصل القسمة كسرًا بأعداد طبيعية."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{\\sqrt{0{,}36}}{\\sqrt{0{,}0049}} = \\dfrac{0{,}6}{0{,}07} = \\dfrac{60}{7}$",
+        "incorrect": "تحقّق من موضع الفاصلة في كل جذر."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "6/7",
+          "id": "MISC-JIDHR-FASILA"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l4-008",
+  "lessonCode": "amaliyat-judhur",
+  "level": 4
+}

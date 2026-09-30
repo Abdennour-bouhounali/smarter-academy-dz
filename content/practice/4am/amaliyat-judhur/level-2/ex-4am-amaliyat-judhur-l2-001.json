@@ -1,0 +1,160 @@
+{
+  "metadata": {
+    "title": "تمرين 15 — جذر جداء",
+    "estimatedMinutes": 5,
+    "tags": [
+      "جداء جذرين"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-15",
+      "page": 26,
+      "section": "أوظّف تعلّماتي",
+      "number": 15
+    }
+  },
+  "statement": {
+    "content": "احسب ما يلي:"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\sqrt{9 \\times 81}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "27",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\sqrt{9 \\times 81} = \\sqrt{9} \\times \\sqrt{81}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب جذر كل عامل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب الجذرين."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{9} \\times \\sqrt{81} = 3 \\times 9 = 27$",
+        "incorrect": "خذ جذر العاملين معًا، لا جذر أحدهما فقط."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$\\sqrt{121 \\times 100}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "110",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب الجذر جداءً لجذرين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما العدد الموجب الذي مربعه 121؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب في $\\sqrt{100}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{121} \\times \\sqrt{100} = 11 \\times 10 = 110$",
+        "incorrect": "تحقّق: $\\sqrt{121} = 11$ لأن $11^2 = 121$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "$\\sqrt{16 \\times 900}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "120",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب الجذر جداءً لجذرين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$900 = 30^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب $\\sqrt{16}$ في $\\sqrt{900}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{16} \\times \\sqrt{900} = 4 \\times 30 = 120$",
+        "incorrect": "$\\sqrt{900}$ ليس 300: ربّع 300 لترى."
+      }
+    },
+    {
+      "id": "q4",
+      "statement": "$\\sqrt{1{,}44 \\times 0{,}25}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالفاصلة إن لزم)",
+      "expectedAnswer": "0.6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب الجذر جداءً لجذرين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما العدد الموجب الذي مربعه $1{,}44$؟ وما العدد الموجب الذي مربعه $0{,}25$؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب الجذرين وانتبه إلى الفاصلة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{1{,}44} \\times \\sqrt{0{,}25} = 1{,}2 \\times 0{,}5 = 0{,}6$",
+        "incorrect": "$1{,}44 \\times 0{,}25 = 0{,}36$ ليس هو الجواب: بقي الجذر."
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l2-001",
+  "lessonCode": "amaliyat-judhur",
+  "level": 2
+}

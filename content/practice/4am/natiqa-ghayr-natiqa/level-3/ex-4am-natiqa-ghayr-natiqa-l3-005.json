@@ -1,0 +1,64 @@
+{
+  "metadata": {
+    "title": "تدريب — اختزال قبل الحساب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "كسر",
+      "اختزال"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P2",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العدد $\\sqrt{\\dfrac{8}{18}}$ . لا 8 ولا 18 مربع لعدد طبيعي."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $\\sqrt{\\dfrac{8}{18}}$ واكتبه على شكل كسر غير قابل للاختزال.",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "2/3",
+      "misconceptionSignatures": [
+        {
+          "value": "4/9",
+          "id": "MISC-JIDHR-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هل الكسر $\\dfrac{8}{18}$ قابل للاختزال؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختزل الكسر أولًا ثم انظر إلى بسطه ومقامه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد الاختزال ابحث عن كسر مربعه يساوي الكسر المختزل."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{8}{18} = \\dfrac{4}{9} = \\left(\\dfrac{2}{3}\\right)^2$ إذن $\\sqrt{\\dfrac{8}{18}} = \\dfrac{2}{3}$ : عدد ناطق.",
+        "incorrect": "اختزل الكسر قبل أن تحكم عليه."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l3-005",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 3
+}

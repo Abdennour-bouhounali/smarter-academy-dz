@@ -1,0 +1,100 @@
+{
+  "metadata": {
+    "title": "تدريب — معادلات بخطوتين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معادلة",
+      "عزل المربع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P2",
+      "modelledOn": "ex-13"
+    }
+  },
+  "statement": {
+    "content": "نعزل $x^2$ بخطوتين ثم نحل."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هو الحل الموجب للمعادلة $3x^2 - 12 = 0$؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انقل $-12$ ثم اقسم على 3."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على $x^2 = a$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما العدد الموجب الذي مربعه $a$؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$3x^2 = 12$ ، $x^2 = 4$ ، إذن $x = 2$ أو $x = -2$.",
+        "incorrect": "بعد إيجاد $x^2$ لا تنسَ أن تبحث عن $x$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو الحل السالب للمعادلة $7 - x^2 = 3$؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح نسبي",
+      "expectedAnswer": "-2",
+      "misconceptionSignatures": [
+        {
+          "value": "2",
+          "id": "MISC-HALL-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انقل $x^2$ إلى الطرف الذي يجعله موجبا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$7 - 3 = x^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحلان متعاكسان."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 = 4$ ، والحلان 2 و $-2$.",
+        "incorrect": "المطلوب قيمة $x$ السالبة وليس $x^2$."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l3-007",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 3
+}

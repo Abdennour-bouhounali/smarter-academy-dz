@@ -1,0 +1,81 @@
+{
+  "metadata": {
+    "title": "تدريب — القيمة المضبوطة لضلع مربع",
+    "estimatedMinutes": 2,
+    "tags": [
+      "قيمة مضبوطة",
+      "حاسبة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P3",
+      "modelledOn": "ict-sqrt2"
+    }
+  },
+  "statement": {
+    "content": "مربع مساحته 7 $cm^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هي القيمة المضبوطة لطول ضلعه (بـ $cm$)؟",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sqrt{7}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "2,645751311",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HASIBA-MUDBUTA"
+        },
+        {
+          "id": "C",
+          "content": "3,5",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-NISF"
+        },
+        {
+          "id": "D",
+          "content": "2,65",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HASIBA-MUDBUTA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طول الضلع هو العدد الموجب الذي مربعه 7."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل 7 مربع لعدد ناطق؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العدد العشري الذي تعرضه الحاسبة ناطق: هل يمكن أن يكون مربعه 7 بالضبط؟"
+        }
+      ],
+      "feedback": {
+        "correct": "7 ليس مربعًا لعدد ناطق، فطول الضلع ليس ناطقًا: قيمته المضبوطة $\\sqrt{7}$، والأعداد العشرية قيم مقرّبة.",
+        "incorrect": "ما تعرضه الحاسبة لجذر غير ناطق قيمة مقرّبة فقط."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l2-009",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 2
+}

@@ -1,0 +1,106 @@
+{
+  "metadata": {
+    "title": "تدريب — لوحة الشطرنج",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مساحة",
+      "مسألة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P2",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "لوحة شطرنج مربعة الشكل مساحتها 0,2025 $m^2$ ، مقسّمة إلى $8 \\times 8$ خانة مربعة متقايسة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب طول ضلع اللوحة (بـ $m$).",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "0.45",
+      "misconceptionSignatures": [
+        {
+          "value": "0.045",
+          "id": "MISC-JIDHR-FASILA"
+        },
+        {
+          "value": "4.5",
+          "id": "MISC-JIDHR-FASILA"
+        },
+        {
+          "value": "0.10125",
+          "id": "MISC-JIDHR-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طول الضلع هو الجذر التربيعي للمساحة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "فكّر في العدد الطبيعي الذي مربعه 2025."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ضع الفاصلة بحيث يعطي تربيع العدد 0,2025 بالضبط."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}45^2 = 0{,}2025$ : المساحة مربع لعدد ناطق، فطول الضلع قيمة مضبوطة.",
+        "incorrect": "تحقّق من موضع الفاصلة بالتربيع."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب طول ضلع خانة واحدة (بـ $cm$).",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "5.625",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "على ضلع اللوحة 8 خانات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حوّل طول ضلع اللوحة إلى $cm$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم طول ضلع اللوحة بالـ $cm$ على 8."
+        }
+      ],
+      "feedback": {
+        "correct": "ضلع اللوحة 45 $cm$ يحوي 8 خانات، فنقسم 45 على 8.",
+        "incorrect": "اقسم طول الضلع، لا المساحة، على 8، وانتبه إلى الوحدة."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l5-008",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 5
+}

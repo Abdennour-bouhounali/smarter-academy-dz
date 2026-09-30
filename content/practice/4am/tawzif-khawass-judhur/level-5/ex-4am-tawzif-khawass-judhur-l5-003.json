@@ -1,0 +1,103 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l5-003",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — قطر مستطيل",
+    "estimatedMinutes": 5,
+    "tags": [
+      "هندسة",
+      "فيثاغورس",
+      "a√b"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P1",
+      "modelledOn": "ex-34"
+    }
+  },
+  "statement": {
+    "content": "ABCD مستطيل حيث $AB = 6\\,cm$ و $BC = 3\\,cm$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ABCD مستطيل حيث $AB = 6\\,cm$ و $BC = 3\\,cm$. نكتب $AC = a\\sqrt{5}\\,cm$. ما قيمة $a$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-JIDHR-MURABBA-MANSI",
+          "value": "9"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلث ABC قائم في B."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حسب خاصية فيثاغورس: $AC^2 = AB^2 + BC^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $AC^2$ ثم اكتب جذره على الشكل $a\\sqrt{5}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$AC^2 = 36 + 9 = 45$ و $\\sqrt{45} = \\sqrt{9 \\times 5}$.",
+        "incorrect": "احسب مربع القطر بخاصية فيثاغورس ثم بسّط جذره."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ABCD مستطيل حيث $AB = 6\\,cm$ و $BC = 3\\,cm$. نكتب محيط المثلث ABC على الشكل $m + a\\sqrt{5}$ (بالسنتيمتر). ما قيمة $m$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "محيط المثلث ABC هو $AB + BC + AC$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الضلعان $AB$ و $BC$ طولاهما عددان طبيعيان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب الوتر $AC$ بخاصية فيثاغورس واكتبه على الشكل $a\\sqrt{5}$ : $m$ هو مجموع الحدّين الخاليين من الجذر."
+        }
+      ],
+      "feedback": {
+        "correct": "المحيط $= 6 + 3 + 3\\sqrt{5}$.",
+        "incorrect": "لا نجمع عددًا طبيعيًا مع جذر: $m$ هو مجموع الطولين الطبيعيين فقط."
+      }
+    }
+  ]
+}

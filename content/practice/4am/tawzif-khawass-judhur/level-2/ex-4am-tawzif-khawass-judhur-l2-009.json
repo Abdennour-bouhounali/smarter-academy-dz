@@ -1,0 +1,80 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l2-009",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — مقام فيه معامل",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مقام ناطق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P3",
+      "modelledOn": "method-rationalize"
+    }
+  },
+  "statement": {
+    "content": "اكتب $\\dfrac{\\sqrt{5}}{3\\sqrt{2}}$ على شكل نسبة مقامها عدد ناطق."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "اكتب $\\dfrac{\\sqrt{5}}{3\\sqrt{2}}$ على شكل نسبة مقامها عدد ناطق.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{\\sqrt{10}}{12}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-FI-JIDHR"
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{\\sqrt{5}}{6}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQAM-DUN-BAST"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{\\sqrt{10}}{6}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$\\dfrac{\\sqrt{10}}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUAMIL-MANSI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجذر غير الناطق في المقام هو $\\sqrt{2}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب البسط والمقام في $\\sqrt{2}$ فقط."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في المقام: $3\\sqrt{2} \\times \\sqrt{2} = 3 \\times (\\sqrt{2})^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{\\sqrt{5} \\times \\sqrt{2}}{3\\sqrt{2} \\times \\sqrt{2}} = \\dfrac{\\sqrt{10}}{3 \\times 2}$.",
+        "incorrect": "اضرب البسط أيضًا، ولا تنسَ المعامل 3 في المقام."
+      }
+    }
+  ]
+}

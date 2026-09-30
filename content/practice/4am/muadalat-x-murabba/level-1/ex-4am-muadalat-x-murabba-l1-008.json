@@ -1,0 +1,81 @@
+{
+  "metadata": {
+    "title": "تدريب — حلا معادلة",
+    "estimatedMinutes": 2,
+    "tags": [
+      "حل معادلة",
+      "جذر تربيعي"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P1",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "نعتبر المعادلة $x^2 = 11$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلول المعادلة $x^2 = 11$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x = \\sqrt{11}$ أو $x = -\\sqrt{11}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x = \\sqrt{11}$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$x = \\dfrac{11}{2}$ أو $x = -\\dfrac{11}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-QISMA"
+        },
+        {
+          "id": "D",
+          "content": "لا تقبل أي حل",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما إشارة العدد 11؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العدد 11 موجب: كم حلا للمعادلة؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $11 = (\\sqrt{11})^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$11 > 0$: الحلّان هما $\\sqrt{11}$ و $-\\sqrt{11}$.",
+        "incorrect": "العدد 11 ليس مربعا تاما، لكن للمعادلة حلان مع ذلك."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l1-008",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 1
+}

@@ -1,0 +1,93 @@
+{
+  "metadata": {
+    "title": "تمرين 19 — إدخال المعامل تحت الجذر",
+    "estimatedMinutes": 3,
+    "tags": [
+      "a√b",
+      "√n"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-19",
+      "page": 27,
+      "section": "أوظّف تعلّماتي",
+      "number": 19
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 27): اكتب العدد على الشكل $\\sqrt{n}$ حيث $n$ عدد طبيعي."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "اكتب $4\\sqrt{3}$ على الشكل $\\sqrt{n}$. ما هو $n$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "48",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب المعامل 4 على شكل جذر: $4 = \\sqrt{16}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{16} \\times \\sqrt{3} = \\sqrt{16 \\times 3}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب الجداء تحت الجذر."
+        }
+      ],
+      "feedback": {
+        "correct": "$4\\sqrt{3} = \\sqrt{4^2 \\times 3} = \\sqrt{16 \\times 3}$.",
+        "incorrect": "ندخل المعامل تحت الجذر بتربيعه."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "اكتب $2\\sqrt{7}$ على الشكل $\\sqrt{n}$. ما هو $n$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "28",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب المعامل 2 على شكل جذر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2 = \\sqrt{4}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\sqrt{4} \\times \\sqrt{7} = \\sqrt{4 \\times 7}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$2\\sqrt{7} = \\sqrt{2^2 \\times 7} = \\sqrt{4 \\times 7}$.",
+        "incorrect": "ندخل المعامل تحت الجذر بتربيعه."
+      }
+    }
+  ],
+  "id": "ex-4am-tawzif-khawass-judhur-l1-002",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 1
+}

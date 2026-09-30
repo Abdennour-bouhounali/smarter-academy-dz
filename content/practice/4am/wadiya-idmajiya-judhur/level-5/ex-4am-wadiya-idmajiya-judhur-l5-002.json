@@ -1,0 +1,153 @@
+{
+  "metadata": {
+    "title": "تدريب — خزان الفلاح",
+    "estimatedMinutes": 6,
+    "tags": [
+      "وضعية إدماجية",
+      "وضعية",
+      "حجم",
+      "مدوّر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "أراد فلاح بناء خزان ماء على شكل متوازي مستطيلات قاعدته مربّعة، ارتفاعه $1{,}5\\,m$ وسعته $12\\,m^3$. ثمن المتر المكعب من الخرسانة 9000DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هي مساحة قاعدة الخزان (بالمتر المربع)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالمتر المربع)",
+      "expectedAnswer": "8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "السعة = مساحة القاعدة × الارتفاع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم السعة على الارتفاع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثمن الخرسانة لا يدخل في هذا الحساب."
+        }
+      ],
+      "feedback": {
+        "correct": "مساحة القاعدة $12 \\div 1{,}5 = 8\\,m^2$.",
+        "incorrect": "اقسم السعة على الارتفاع."
+      },
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q2",
+      "statement": "القيمة المضبوطة لطول ضلع القاعدة (بالمتر) هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-NISF"
+        },
+        {
+          "id": "B",
+          "content": "$2\\sqrt{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$4\\sqrt{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        },
+        {
+          "id": "D",
+          "content": "$2\\sqrt{3}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الضلع هو الجذر التربيعي لمساحة القاعدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $8 = 4 \\times 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استعمل $\\sqrt{a^2 b} = a\\sqrt{b}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{8} = \\sqrt{4 \\times 2} = 2\\sqrt{2}$.",
+        "incorrect": "الضلع جذر المساحة، لا نصفها."
+      },
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q3",
+      "statement": "أعط طول ضلع القاعدة مدوّرًا إلى 1cm (بالسنتيمتر).",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي (بالسنتيمتر)",
+      "expectedAnswer": "283",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب القيمة المضبوطة بالحاسبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حوّل المتر إلى سنتيمتر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر إلى الوحدة في النهاية."
+        }
+      ],
+      "feedback": {
+        "correct": "$2\\sqrt{2} \\approx 2{,}828\\,m$، أي $283\\,cm$ مدوّرًا إلى 1cm.",
+        "incorrect": "حوّل إلى السنتيمتر ثم دوّر إلى الوحدة."
+      },
+      "cognitiveDemand": "transfer"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l5-002",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 5
+}

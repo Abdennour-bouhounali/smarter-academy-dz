@@ -1,0 +1,93 @@
+{
+  "metadata": {
+    "title": "تمرين 4 — عدد طبيعي",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خاصية",
+      "جذر المربع"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-4",
+      "page": 26,
+      "section": "أوظّف تعلّماتي",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 26): اكتب كل عدد من الأعداد التالية على شكل عدد طبيعي."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\sqrt{(-1)^2} = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولًا $(-1)^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الجذر التربيعي عدد موجب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما هو $\\sqrt{1}$ ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$(-1)^2 = 1$ و $\\sqrt{1} = 1$.",
+        "incorrect": "الجذر التربيعي لا يكون سالبًا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$\\sqrt{-(-49)} = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولًا $-(-49)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العدد تحت الرمز موجب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أي عدد موجب مربعه 49؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$-(-49) = 49$ و $\\sqrt{49} = 7$.",
+        "incorrect": "بسّط العدد تحت الرمز قبل حساب الجذر."
+      }
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l3-002",
+  "lessonCode": "jidhr-tarbii",
+  "level": 3
+}

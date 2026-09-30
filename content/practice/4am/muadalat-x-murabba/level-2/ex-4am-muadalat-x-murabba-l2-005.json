@@ -1,0 +1,133 @@
+{
+  "metadata": {
+    "title": "تدريب — الحالات الثلاث",
+    "estimatedMinutes": 3,
+    "tags": [
+      "عدد الحلول",
+      "الصفر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P1",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "حدّد حلول كل معادلة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعادلة $x^2 = 0$ ...",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "recall",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "تقبل حلين متعاكسين",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-SIFR"
+        },
+        {
+          "id": "B",
+          "content": "تقبل حلا واحدا هو 0",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "لا تقبل أي حل",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-SIFR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما العدد الذي مربعه 0؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل يوجد عدد آخر غير 0 مربعه 0؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "معاكس 0 هو 0 نفسه."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 = 0$ يعني $x = 0$، وهو حل وحيد.",
+        "incorrect": "مربع أي عدد غير معدوم موجب تماما."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلول المعادلة $x^2 = 0{,}5$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x = 0{,}25$ أو $x = -0{,}25$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-QISMA"
+        },
+        {
+          "id": "B",
+          "content": "$x = \\sqrt{0{,}5}$ أو $x = -\\sqrt{0{,}5}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x = \\sqrt{0{,}5}$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-WAHID"
+        },
+        {
+          "id": "D",
+          "content": "لا تقبل أي حل",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما إشارة $0{,}5$؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $0{,}25^2$: هل يساوي $0{,}5$؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $0{,}5 = (\\sqrt{0{,}5})^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}5 > 0$: الحلان $\\sqrt{0{,}5}$ و $-\\sqrt{0{,}5}$.",
+        "incorrect": "$0{,}25^2 = 0{,}0625$ وليس $0{,}5$."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l2-005",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 2
+}

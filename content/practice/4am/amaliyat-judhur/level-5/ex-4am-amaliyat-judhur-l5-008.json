@@ -1,0 +1,141 @@
+{
+  "metadata": {
+    "title": "تدريب — مكعّب ووجهه",
+    "estimatedMinutes": 8,
+    "tags": [
+      "جداء جذرين",
+      "مجموع جذرين",
+      "إخراج عامل من تحت الجذر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "مكعّب مساحة كل وجه من وجوهه $12\\,cm^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "القيمة المضبوطة لطول حرف المكعّب بـ $cm$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4\\sqrt{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        },
+        {
+          "id": "B",
+          "content": "$6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-NISF"
+        },
+        {
+          "id": "C",
+          "content": "$2\\sqrt{3}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$3\\sqrt{2}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كل وجه مربّع: الحرف هو الجذر التربيعي لمساحته."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$12 = 4 \\times 3$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\sqrt{a^2 b} = a\\sqrt{b}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "الحرف $= \\sqrt{12} = \\sqrt{2^2 \\times 3} = 2\\sqrt{3}\\,cm$",
+        "incorrect": "الجذر ليس نصف العدد، ويخرج جذرُ المربّع من تحت الجذر."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "القيمة المضبوطة لطول قطر وجه من وجوه المكعّب بـ $cm$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4\\sqrt{6}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        },
+        {
+          "id": "B",
+          "content": "$6\\sqrt{2}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$2\\sqrt{6}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$\\sqrt{12} + \\sqrt{12}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قطر الوجه وتر مثلث قائم ضلعاه حرفان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مربّع القطر $= 12 + 12$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$24 = 4 \\times 6$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "القطر $= \\sqrt{12 + 12} = \\sqrt{24} = \\sqrt{2^2 \\times 6}$ ، و $\\sqrt{12} + \\sqrt{12} \\neq \\sqrt{24}$ .",
+        "incorrect": "الجذر لا يتوزّع على الجمع: اجمع تحت الجذر أولًا."
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l5-008",
+  "lessonCode": "amaliyat-judhur",
+  "level": 5
+}

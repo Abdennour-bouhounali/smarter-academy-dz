@@ -1,0 +1,135 @@
+{
+  "metadata": {
+    "title": "تدريب — زربية طولها أربعة أضعاف عرضها",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية إدماجية",
+      "وضعية",
+      "نسبة مقامها ناطق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "زربية مستطيلة الشكل مساحتها $18\\,m^2$، وطولها أربعة أضعاف عرضها $\\ell$ (بالمتر)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعادلة التي تترجم المساحة هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$5\\ell = 18$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$16\\ell^2 = 18$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$\\ell^2 = 18$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$4\\ell^2 = 18$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب الطول بدلالة $\\ell$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المساحة جداء الطول في العرض."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$4\\ell \\times \\ell = ?$"
+        }
+      ],
+      "feedback": {
+        "correct": "$L = 4\\ell$ والمساحة $4\\ell \\times \\ell = 4\\ell^2 = 18$.",
+        "incorrect": "المساحة جداء البعدين، لا مجموعهما."
+      },
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "القيمة المضبوطة للعرض $\\ell$ (بالمتر) هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{3\\sqrt{2}}{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{9}{4}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{3}{2}$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$\\dfrac{2\\sqrt{3}}{3}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقسم على 4: $\\ell^2 = \\dfrac{9}{2}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العرض موجب: $\\ell = \\dfrac{\\sqrt{9}}{\\sqrt{2}}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجعل المقام عددًا ناطقًا بالضرب في $\\sqrt{2}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\ell^2 = \\dfrac{9}{2}$، $\\ell = \\dfrac{3}{\\sqrt{2}} = \\dfrac{3\\sqrt{2}}{2}$.",
+        "incorrect": "لا تنس أخذ الجذر، ثم اضرب البسط والمقام في $\\sqrt{2}$."
+      },
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l3-003",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 3
+}

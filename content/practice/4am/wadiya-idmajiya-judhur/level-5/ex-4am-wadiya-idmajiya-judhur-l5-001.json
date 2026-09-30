@@ -1,0 +1,175 @@
+{
+  "metadata": {
+    "title": "تدريب — قطرا المكعّب",
+    "estimatedMinutes": 7,
+    "tags": [
+      "وضعية إدماجية",
+      "مكعّب",
+      "فيثاغورس",
+      "مدوّر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "مكعّب طول حرفه $3\\,cm$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "طول قطر وجه من أوجهه (بالسنتيمتر) هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        },
+        {
+          "id": "B",
+          "content": "$9\\sqrt{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        },
+        {
+          "id": "C",
+          "content": "$18$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$3\\sqrt{2}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الوجه مربع، وقطره وتر مثلث قائم."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مربع القطر $3^2 + 3^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بسّط الجذر."
+        }
+      ],
+      "feedback": {
+        "correct": "مربع قطر الوجه $9 + 9 = 18$، والقطر $\\sqrt{18} = 3\\sqrt{2}$.",
+        "incorrect": "استعمل فيثاغورس، ثم خذ الجذر وبسّطه."
+      },
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q2",
+      "statement": "طول قطر المكعّب (بالسنتيمتر) هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3\\sqrt{3}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$3 + 3\\sqrt{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        },
+        {
+          "id": "C",
+          "content": "$9\\sqrt{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        },
+        {
+          "id": "D",
+          "content": "$3\\sqrt{2}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قطر المكعّب وتر مثلث قائم ضلعاه القائمان حرف وقطر وجه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مربع القطر $(3\\sqrt{2})^2 + 3^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$27 = 9 \\times 3$."
+        }
+      ],
+      "feedback": {
+        "correct": "مربع القطر $18 + 9 = 27$، والقطر $\\sqrt{27} = 3\\sqrt{3}$.",
+        "incorrect": "ربّع قطر الوجه قبل الجمع."
+      },
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q3",
+      "statement": "أعط المدوّر إلى الجزء من عشرة لطول قطر المكعّب (بالسنتيمتر).",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري برقم واحد بعد الفاصلة",
+      "expectedAnswer": "5.2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب القيمة المضبوطة بالحاسبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى رقم الأجزاء من مئة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر في النهاية."
+        }
+      ],
+      "feedback": {
+        "correct": "$3\\sqrt{3} \\approx 5{,}196$، والمدوّر إلى الجزء من عشرة 5,2.",
+        "incorrect": "دوّر القيمة النهائية لا القيم الوسيطة."
+      },
+      "cognitiveDemand": "transfer"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l5-001",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 5
+}

@@ -1,0 +1,75 @@
+{
+  "metadata": {
+    "title": "تدريب — معيار التصنيف",
+    "estimatedMinutes": 2,
+    "tags": [
+      "تصنيف",
+      "تبرير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P1",
+      "modelledOn": "act-2"
+    }
+  },
+  "statement": {
+    "content": "في نشاط الكتاب وُضع العدد $\\sqrt{\\dfrac{25}{13}}$ في صنف الأعداد غير الناطقة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما التبرير الصحيح؟",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لأنه لا يوجد عدد ناطق مربعه $\\dfrac{25}{13}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لأن $\\dfrac{25}{13}$ ليس عددًا طبيعيًا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-TABII-FAQAT"
+        },
+        {
+          "id": "C",
+          "content": "لأن $\\sqrt{\\dfrac{25}{13}} = \\dfrac{25}{26}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تذكّر نص «معارف»: متى يكون $\\sqrt{a}$ ناطقًا؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في الصنف الأول $\\sqrt{\\dfrac{16}{9}}$ وهو ليس عددًا طبيعيًا تحت الجذر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن التبرير الذي يطبّق المعيار نفسه على كل الأعداد."
+        }
+      ],
+      "feedback": {
+        "correct": "المعيار: $\\sqrt{a}$ ناطق إذا كان $a$ مربعًا لعدد ناطق فقط، و $\\dfrac{25}{13}$ ليس كذلك.",
+        "incorrect": "الكسر $\\dfrac{16}{9}$ ليس طبيعيًا وجذره ناطق: المعيار ليس «طبيعي أو غير طبيعي»."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l2-010",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 2
+}

@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "title": "تدريب — عبارة بالجذور ومربعها",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية إدماجية",
+      "أبسط كتابة",
+      "خاصية توزيعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": "qcm"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العدد $A = \\sqrt{75} - 2\\sqrt{12} + \\sqrt{27}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أبسط كتابة للعدد $A$ هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2\\sqrt{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUAMIL-MANSI"
+        },
+        {
+          "id": "B",
+          "content": "$\\sqrt{90}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        },
+        {
+          "id": "C",
+          "content": "$6\\sqrt{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-ISHARA"
+        },
+        {
+          "id": "D",
+          "content": "$4\\sqrt{3}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب كل جذر على الشكل $a\\sqrt{3}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$75 = 25 \\times 3$ و $12 = 4 \\times 3$ و $27 = 9 \\times 3$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انتبه إلى المعامل 2 وإلى إشارة الطرح."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = 5\\sqrt{3} - 2 \\times 2\\sqrt{3} + 3\\sqrt{3} = (5 - 4 + 3)\\sqrt{3} = 4\\sqrt{3}$.",
+        "incorrect": "اضرب المعامل 2 في $2\\sqrt{3}$ قبل الجمع."
+      },
+      "cognitiveDemand": "reason"
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $A^2$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "48",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل أبسط كتابة للعدد $A$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(a\\sqrt{b})^2 = a^2 b$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ربّع العامل وربّع الجذر."
+        }
+      ],
+      "feedback": {
+        "correct": "$A^2 = (4\\sqrt{3})^2 = 16 \\times 3 = 48$.",
+        "incorrect": "ربّع العامل أيضًا."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "12",
+          "id": "MISC-MUAMIL-DUN-TARBI"
+        }
+      ],
+      "cognitiveDemand": "reason"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l4-006",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 4
+}

@@ -1,0 +1,117 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l1-009",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — في أيّ عدد نضرب؟",
+    "estimatedMinutes": 2,
+    "tags": [
+      "مقام ناطق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P3",
+      "modelledOn": "method-rationalize"
+    }
+  },
+  "statement": {
+    "content": "نريد كتابة $\\dfrac{7}{\\sqrt{3}}$ على شكل نسبة مقامها عدد ناطق."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "في أيّ عدد نضرب البسط والمقام للنسبة $\\dfrac{7}{\\sqrt{3}}$ ليصبح مقامها عددًا ناطقًا؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "3",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$\\sqrt{3}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\sqrt{7}$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "7",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد غير الناطق هنا هو المقام."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما العدد الذي إذا ضُرب في مقام النسبة أعطى عددًا طبيعيًا؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تذكّر أن $(\\sqrt{a})^2 = a$ من أجل كل عدد موجب $a$."
+        }
+      ],
+      "feedback": {
+        "correct": "الطريقة: نضرب البسط والمقام في نفس الجذر الموجود في المقام.",
+        "incorrect": "بعد الضرب في هذا العدد يجب أن يختفي الجذر من المقام."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $\\sqrt{3} \\times \\sqrt{3}$.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-JIDHR-FI-JIDHR",
+          "value": "9"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد $\\sqrt{3}$ هو العدد الموجب الذي مربعه 3."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{3} \\times \\sqrt{3} = (\\sqrt{3})^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استعمل تعريف الجذر التربيعي."
+        }
+      ],
+      "feedback": {
+        "correct": "$(\\sqrt{3})^2 = 3$ بتعريف الجذر التربيعي.",
+        "incorrect": "جداء جذر في نفسه يعطي العدد الذي تحت الجذر، لا مربعه."
+      }
+    }
+  ]
+}

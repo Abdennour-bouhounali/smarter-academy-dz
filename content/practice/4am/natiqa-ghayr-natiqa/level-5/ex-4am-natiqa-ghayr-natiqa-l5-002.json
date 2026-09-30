@@ -1,0 +1,59 @@
+{
+  "metadata": {
+    "title": "تمرين 35 — كسر فيه جذر",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مدوّر",
+      "حاسبة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-35",
+      "page": 29,
+      "section": "أتعمّق",
+      "number": 35
+    }
+  },
+  "statement": {
+    "content": "استعمل حاسبة لإعطاء المدوّر إلى الجزء من 100 للعدد $\\dfrac{15}{3 + \\sqrt{2}}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المدوّر إلى الجزء من 100 للعدد $\\dfrac{15}{3 + \\sqrt{2}}$:",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري برقمين بعد الفاصلة",
+      "expectedAnswer": "3.4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب المقام $3 + \\sqrt{2}$ أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم اقسم 15 على المقام كله، لا على 3 وحده."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انظر إلى الرقم الثالث بعد الفاصلة لتدوّر."
+        }
+      ],
+      "feedback": {
+        "correct": "الحاسبة تعرض $\\dfrac{15}{3 + \\sqrt{2}} = 3{,}398...$: الرقم الثالث 8، إذن المدوّر 3,40.",
+        "incorrect": "اقسم 15 على المقام $3 + \\sqrt{2}$ كله، ثم دوّر."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l5-002",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 5
+}

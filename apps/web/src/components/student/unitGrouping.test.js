@@ -17,9 +17,13 @@ describe('groupLessonsByUnit', () => {
 
   it("sous un ميدان du manuel : les unités, puis les leçons hors unité — sans doublon", () => {
     const groups = groupLessonsByUnit([chapter1], chapter1.lessons);
-    expect(groups.units.map((u) => u.id)).toEqual(['aadad-tabiiya-natiqa']);
-    const unit = getUnitById('aadad-tabiiya-natiqa');
-    const unitIds = new Set([...unit.lessons.map((l) => l.id), unit.synthesis.id]);
+    // Les deux unités du manuel, dans l'ordre du manuel (la seconde, « الحساب
+    // على الجذور », n'a pas de synthèse sur la plateforme).
+    expect(groups.units.map((u) => u.id)).toEqual(['aadad-tabiiya-natiqa', 'hisab-judhur']);
+    const unitIds = new Set(groups.units.flatMap((u) => {
+      const unit = getUnitById(u.id);
+      return [...unit.lessons.map((l) => l.id), ...(unit.synthesis ? [unit.synthesis.id] : [])];
+    }));
     expect(groups.rest.some((l) => unitIds.has(l.id))).toBe(false);
     expect(groups.rest.length + unitIds.size).toBe(chapter1.lessons.length);
   });

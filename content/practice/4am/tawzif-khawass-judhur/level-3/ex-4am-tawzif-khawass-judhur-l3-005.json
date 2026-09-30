@@ -1,0 +1,118 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l3-005",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — مقارنة أعداد من الشكل a√b",
+    "estimatedMinutes": 4,
+    "tags": [
+      "a√b",
+      "مقارنة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P1",
+      "modelledOn": "ex-19"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الأعداد $3\\sqrt{5}$ ، $2\\sqrt{11}$ ، $4\\sqrt{3}$ و $5\\sqrt{2}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نكتب $4\\sqrt{3} = \\sqrt{n}$. ما قيمة العدد الطبيعي $n$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "48",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUAMIL-DUN-TARBI",
+          "value": "12"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أدخل المعامل 4 تحت الجذر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$4 = \\sqrt{16}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\sqrt{16} \\times \\sqrt{3} = \\sqrt{16 \\times 3}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$4\\sqrt{3} = \\sqrt{4^2 \\times 3}$.",
+        "incorrect": "المعامل يدخل تحت الجذر مربّعًا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو أكبر الأعداد $3\\sqrt{5}$ ، $2\\sqrt{11}$ ، $4\\sqrt{3}$ و $5\\sqrt{2}$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4\\sqrt{3}$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$3\\sqrt{5}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$5\\sqrt{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$2\\sqrt{11}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المعاملات والجذور مختلفة: المقارنة المباشرة صعبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب كل عدد على الشكل $\\sqrt{n}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الجذران لعددين موجبين مرتّبان مثل العددين."
+        }
+      ],
+      "feedback": {
+        "correct": "$3\\sqrt{5} = \\sqrt{45}$ ، $2\\sqrt{11} = \\sqrt{44}$ ، $4\\sqrt{3} = \\sqrt{48}$ و $5\\sqrt{2} = \\sqrt{50}$.",
+        "incorrect": "لا تقارن المعاملات وحدها: أدخل كل معامل تحت الجذر مربّعًا ثم قارن."
+      }
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "metadata": {
+    "title": "تدريب — عبارات حرفية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حساب حرفي",
+      "جذر المربع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidhr-tarbii_P3",
+      "modelledOn": "method-compute"
+    }
+  },
+  "statement": {
+    "content": "$x$ عدد موجب و $y$ عدد كيفي."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\sqrt{(3x)^2} + (\\sqrt{x})^2$ يساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3x + x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARBI-JIDHR"
+        },
+        {
+          "id": "B",
+          "content": "$4x$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$9x^2 + x$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$3x^2$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$3x$ عدد موجب لأن $x$ موجب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "طبّق خاصية على كل حد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\sqrt{(3x)^2} = 3x$ و $(\\sqrt{x})^2 = x$؛ اجمع."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{(3x)^2} = 3x$ لأن $3x \\geq 0$، و $(\\sqrt{x})^2 = x$، والمجموع $4x$.",
+        "incorrect": "مربع $\\sqrt{x}$ هو $x$، والجذر التربيعي لمربع عدد موجب هو العدد نفسه."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $\\sqrt{9y^4} + 2 - 3y^2$.",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب $9y^4$ على شكل مربع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$9y^4 = (3y^2)^2$، وما إشارة $3y^2$؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$3y^2$ موجب مهما كان $y$، فاستعمل $\\sqrt{a^2} = a$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{9y^4} = \\sqrt{(3y^2)^2} = 3y^2$، إذن العبارة تساوي 2 مهما كان $y$.",
+        "incorrect": "اكتب العدد تحت الرمز على شكل مربع عدد موجب."
+      }
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l4-008",
+  "lessonCode": "jidhr-tarbii",
+  "level": 4
+}

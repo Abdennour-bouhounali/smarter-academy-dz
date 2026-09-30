@@ -318,6 +318,27 @@ outside `$…$`), the practice header title (`PracticeSession.jsx`) and the
 notebook title (`noteContent.js`). Any new surface that prints content text
 **without** RichText/MathText must pass it through `isolateMathRuns`.
 
+**Algebraic runs, and every lesson surface (2026-09-30).** «√a» in an Arabic
+sentence rendered «a√»: the radical is a NEUTRAL character, so between the
+Arabic before it and the Latin letter after it, it takes the sentence's RTL
+direction and lands to the right of «a» (same for «−√a», «(√a)² = a», «−9»).
+`isolateMathRuns` now has a second pass that isolates any run of Latin
+mathematical characters (short letters, digits, √, ², ³, parentheses,
+operators incl. ≈ and ≠) containing a radical, a power, an operator between
+two terms, or a leading minus; a Latin word of four letters or more (PGCD,
+GeoGebra) is never taken for a formula. Two helpers wrap it for React:
+`isolateOutsideMath(text)` never touches a `$…$` island, and `bidi(value)`
+isolates a string and leaves a React node alone. They are applied, once, at
+the choke points: `MathText`'s plain segments; the knowledge provider (item
+`title`/`summary`, graph node `title`/`subtitle`); `ChoiceGrid` string
+options; `StepCard` / `MissionBrief` titles; `ModuleLayout` (module title,
+subtitle, breadcrumb, step list); `LessonIndex` (title, description, skills,
+module titles and descriptions, learning points, prerequisites, resources);
+and the catalogue surfaces (`LessonCard`, `UnitPage`, `NextStepHero`, the
+progression tree, practice hub/summary, the teacher's lesson memo, learning
+points and overview tabs). Lesson data stays clean: no invisible character is
+ever written into a lesson or the catalogue.
+
 ### The student's own answer is isolated, not typeset (2026-09-24)
 
 When the practice player shows back what the student typed (question history,

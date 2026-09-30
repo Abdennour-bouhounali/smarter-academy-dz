@@ -1,0 +1,114 @@
+{
+  "metadata": {
+    "title": "نشاط 2 — ناطق أم غير ناطق؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نشاط",
+      "عدد غير ناطق"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-2",
+      "page": 20,
+      "section": "أنشطة",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 20): الأعداد $\\sqrt{100}$ ، $\\sqrt{9}$ ، $\\sqrt{\\dfrac{16}{9}}$ ، $\\sqrt{0{,}25}$ ، $\\sqrt{7}$ ، $\\sqrt{13}$ ، $\\sqrt{\\dfrac{25}{13}}$ ، $\\sqrt{6}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $\\sqrt{\\dfrac{16}{9}}$ واكتبه على شكل كسر.",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "4/3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{16}{9}$ مربع لعدد ناطق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما العدد الموجب الذي مربعه 16؟ وما الذي مربعه 9؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مربع الكسر هو مربع البسط على مربع المقام."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\left(\\dfrac{4}{3}\\right)^2 = \\dfrac{16}{9}$ إذن $\\sqrt{\\dfrac{16}{9}} = \\dfrac{4}{3}$.",
+        "incorrect": "خذ جذر البسط وجذر المقام."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "أي عدد من الأعداد الآتية ليس عددًا ناطقًا؟",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sqrt{13}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\sqrt{100}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$\\sqrt{0{,}25}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-TABII-FAQAT"
+        },
+        {
+          "id": "D",
+          "content": "$\\sqrt{9}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لكل عدد: هل العدد تحت الجذر مربع لعدد ناطق؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$10^2$ و $0{,}5^2$ و $3^2$: ماذا تساوي؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا يوجد عدد ناطق مربعه أحد هذه الأعداد: أيها؟"
+        }
+      ],
+      "feedback": {
+        "correct": "لا يوجد عدد ناطق مربعه 13، إذن $\\sqrt{13}$ ليس عددًا ناطقًا؛ أما $\\sqrt{100} = 10$ ، $\\sqrt{0{,}25} = 0{,}5$ ، $\\sqrt{9} = 3$.",
+        "incorrect": "احسب مربعات 10 و 0,5 و 3."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l2-001",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 2
+}

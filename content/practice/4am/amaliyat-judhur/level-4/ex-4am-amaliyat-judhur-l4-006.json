@@ -1,0 +1,120 @@
+{
+  "metadata": {
+    "title": "تدريب — جداء ومربّع عبارات بجذور",
+    "estimatedMinutes": 6,
+    "tags": [
+      "جداء جذرين",
+      "إخراج عامل من تحت الجذر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P1",
+      "modelledOn": "know-4"
+    }
+  },
+  "statement": {
+    "content": "استعمل خواص الجذور التربيعية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد $C = \\sqrt{18} \\times \\sqrt{6}$ يُكتب:",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$36\\sqrt{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        },
+        {
+          "id": "B",
+          "content": "$\\sqrt{24}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-JAMA"
+        },
+        {
+          "id": "C",
+          "content": "$3\\sqrt{6}$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$6\\sqrt{3}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب الجداء تحت جذر واحد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$18 \\times 6 = 108$ ، ابحث عن أكبر مربّع تام يقسم 108."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$108 = 36 \\times 3$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$C = \\sqrt{108} = \\sqrt{6^2 \\times 3} = 6\\sqrt{3}$",
+        "incorrect": "اضرب تحت الجذر، ثم أخرج جذر المربّع لا المربّع نفسه."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $D = (3\\sqrt{2})^2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "18",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$(a \\times b)^2 = a^2 \\times b^2$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(3\\sqrt{2})^2 = 3^2 \\times (\\sqrt{2})^2$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(\\sqrt{2})^2 = 2$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$D = 9 \\times 2 = 18$",
+        "incorrect": "ربّع العامل 3 أيضًا، و $(\\sqrt{2})^2 = 2$ ."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "36",
+          "id": "MISC-TARBI-JIDHR"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l4-006",
+  "lessonCode": "amaliyat-judhur",
+  "level": 4
+}

@@ -1,0 +1,121 @@
+{
+  "metadata": {
+    "title": "تدريب — معادلة بوسيط",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وسيط",
+      "عدد الحلول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P1",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "في كل معادلة، $a$ عدد معلوم."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "تقبل المعادلة $x^2 = a - 3$ حلا واحدا فقط. ما قيمة $a$؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح نسبي",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "value": "0",
+          "id": "MISC-HALL-SIFR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "متى تقبل المعادلة $x^2 = b$ حلا واحدا؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "يجب أن يكون الطرف الثاني معدوما."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حل المعادلة $a - 3 = 0$."
+        }
+      ],
+      "feedback": {
+        "correct": "حل واحد يعني $a - 3 = 0$.",
+        "incorrect": "الحل الوحيد يكون عندما يكون الطرف الثاني صفرا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "المعادلة $x^2 = 5 - a$ لا تقبل أي حل عندما:",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$a < 5$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$a = 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-SIFR"
+        },
+        {
+          "id": "C",
+          "content": "$a > 5$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$a > 0$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "متى لا تقبل المعادلة $x^2 = b$ أي حل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "يجب أن يكون $5 - a < 0$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جرّب مثلا $a = 6$ ثم $a = 4$."
+        }
+      ],
+      "feedback": {
+        "correct": "$5 - a < 0$ يعني $a > 5$.",
+        "incorrect": "جرّب $a = 1$: $x^2 = 4$ تقبل حلين."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l3-006",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 3
+}

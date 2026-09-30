@@ -1,0 +1,98 @@
+{
+  "metadata": {
+    "title": "تدريب — التدوير ليس اقتطاعًا",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مدوّر",
+      "حاسبة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P3",
+      "modelledOn": "ex-35"
+    }
+  },
+  "statement": {
+    "content": "العدد $\\sqrt{42}$ ليس عددًا ناطقًا. استعمل حاسبة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أعط المدوّر إلى الجزء من 10 للعدد $\\sqrt{42}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري برقم واحد بعد الفاصلة",
+      "expectedAnswer": "6.5",
+      "misconceptionSignatures": [
+        {
+          "value": "21",
+          "id": "MISC-JIDHR-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ على الحاسبة الرقم الثاني بعد الفاصلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المدوّر إلى الجزء من 10 يُحدّد بالرقم الثاني بعد الفاصلة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إن كان 5 أو أكثر نأخذ القيمة بالزيادة، وإلا بالنقصان."
+        }
+      ],
+      "feedback": {
+        "correct": "الحاسبة تعرض $6{,}4807...$ : الرقم الثاني بعد الفاصلة 8، إذن المدوّر إلى الجزء من 10 هو القيمة بالزيادة.",
+        "incorrect": "لا تكتفِ بحذف الأرقام: انظر إلى الرقم الذي يلي الرقم المطلوب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "أعط المدوّر إلى الجزء من 100 للعدد $\\sqrt{42}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري برقمين بعد الفاصلة",
+      "expectedAnswer": "6.48",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ الرقم الثالث بعد الفاصلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارنه بالعدد 5."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المدوّر هو القيمة بالنقصان أو بالزيادة، حسب ذلك الرقم."
+        }
+      ],
+      "feedback": {
+        "correct": "الحاسبة تعرض $6{,}4807...$ : الرقم الثالث 0، إذن المدوّر إلى الجزء من 100 هو القيمة بالنقصان.",
+        "incorrect": "انظر إلى الرقم الثالث بعد الفاصلة."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l4-009",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 4
+}

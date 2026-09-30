@@ -1,0 +1,114 @@
+{
+  "metadata": {
+    "title": "تدريب — حلول مربعات تامة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "حل معادلة",
+      "مربع تام"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P1",
+      "modelledOn": "ex-11"
+    }
+  },
+  "statement": {
+    "content": "حل كل معادلة من الشكل $x^2 = a$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هو الحل الموجب للمعادلة $x^2 = 144$؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "12",
+      "misconceptionSignatures": [
+        {
+          "value": "72",
+          "id": "MISC-HALL-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن عدد موجب مربعه 144."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$10^2 = 100$ و $13^2 = 169$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جرّب الأعداد الطبيعية بين 10 و 13."
+        }
+      ],
+      "feedback": {
+        "correct": "$12^2 = 144$: الحلان هما 12 و $-12$.",
+        "incorrect": "حل $x^2 = a$ ليس $a \\div 2$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو الحل السالب للمعادلة $x^2 = 0{,}09$؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري (بالفاصلة)",
+      "expectedAnswer": "-0.3",
+      "misconceptionSignatures": [
+        {
+          "value": "0.3",
+          "id": "MISC-HALL-WAHID"
+        },
+        {
+          "value": "-0.03",
+          "id": "MISC-JIDHR-FASILA"
+        },
+        {
+          "value": "0.03",
+          "id": "MISC-JIDHR-FASILA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب $0{,}09$ على شكل كسر عشري."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$0{,}09 = \\dfrac{9}{100}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن جذر البسط وجذر المقام، ثم خذ المعاكس."
+        }
+      ],
+      "feedback": {
+        "correct": "$(-0{,}3)^2 = 0{,}09$: الحلان $0{,}3$ و $-0{,}3$.",
+        "incorrect": "انتبه إلى موضع الفاصلة، والمطلوب الحل السالب."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l2-003",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 2
+}

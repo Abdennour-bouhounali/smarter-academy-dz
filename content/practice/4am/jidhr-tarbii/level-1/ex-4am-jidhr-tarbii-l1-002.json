@@ -1,0 +1,127 @@
+{
+  "metadata": {
+    "title": "نشاط 1 — أعط الناتج ذهنيا",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نشاط",
+      "الرمز √"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-1",
+      "page": 20,
+      "section": "أنشطة",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 20): أكتب، باستعمال الرمز $\\sqrt{\\;}$، الجذر التربيعي لكل من الأعداد 36، 81، 0,49، أعط الناتج ذهنيا."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\sqrt{36} = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\sqrt{36}$ هو العدد الموجب الذي مربعه 36."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "فكّر في جدول الضرب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أي عدد مضروب في نفسه يعطي 36؟"
+        }
+      ],
+      "feedback": {
+        "correct": "6 عدد موجب و $6^2 = 36$.",
+        "incorrect": "ابحث عن العدد الموجب الذي مربعه 36، لا عن نصف 36."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$\\sqrt{81} = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\sqrt{81}$ هو العدد الموجب الذي مربعه 81."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "فكّر في جدول الضرب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أي عدد مضروب في نفسه يعطي 81؟"
+        }
+      ],
+      "feedback": {
+        "correct": "9 عدد موجب و $9^2 = 81$.",
+        "incorrect": "ابحث عن العدد الموجب الذي مربعه 81."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "$\\sqrt{0{,}49} = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "0.7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث أولًا عن الجذر التربيعي للعدد 49."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مربع عدد برقم واحد بعد الفاصلة له رقمان بعد الفاصلة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بتربيع جوابك."
+        }
+      ],
+      "feedback": {
+        "correct": "0,7 عدد موجب و $0{,}7^2 = 0{,}49$.",
+        "incorrect": "ربّع جوابك: هل تحصل على 0,49 بالضبط؟"
+      }
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l1-002",
+  "lessonCode": "jidhr-tarbii",
+  "level": 1
+}

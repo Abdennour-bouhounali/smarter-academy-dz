@@ -17,6 +17,7 @@ import {
 } from '../../features/teacher/lessonMemo/MemoSections';
 import MemoNotes from '../../features/teacher/lessonMemo/MemoNotes';
 import '../../features/teacher/lessonMemo/memo.css';
+import { bidi } from '../../utils/bidi';
 
 /**
  * « مذكرة الدرس » — /enseignant/cours/:lessonId/memoire.
@@ -124,7 +125,7 @@ function LessonMemo() {
           </button>
           <div className="min-w-0 flex-1">
             <p className="text-[11px] font-extrabold text-teal-700">{t('title')}</p>
-            <p className="truncate text-sm font-bold text-slate-900">{lesson.title}</p>
+            <p className="truncate text-sm font-bold text-slate-900">{bidi(lesson.title)}</p>
           </div>
           <a href="#memo-notes" className="inline-flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-xl border-2 border-amber-200 bg-amber-50 px-3 text-sm font-bold text-amber-900 hover:border-amber-300" title={t('notes.title')}>
             <NotebookPen className="h-4 w-4" aria-hidden="true" /> <span className="hidden md:inline">{t('notesJump')}</span>

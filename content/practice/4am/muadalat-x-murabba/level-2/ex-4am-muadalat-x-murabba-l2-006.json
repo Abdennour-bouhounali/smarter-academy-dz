@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "title": "تدريب — الحل الآخر",
+    "estimatedMinutes": 3,
+    "tags": [
+      "عددان متعاكسان",
+      "جذر تربيعي"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P1",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "العدد $\\sqrt{13}$ حل للمعادلة $x^2 = 13$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد $\\sqrt{13}$ حل للمعادلة $x^2 = 13$. ما هو الحل الآخر؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-13$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "لا يوجد حل آخر",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$-\\sqrt{13}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$\\sqrt{-13}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-SALIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد 13 موجب: كم حلا للمعادلة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "لعددين متعاكسين نفس المربع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما معاكس $\\sqrt{13}$؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$(-\\sqrt{13})^2 = 13$: الحلان $\\sqrt{13}$ و $-\\sqrt{13}$.",
+        "incorrect": "$\\sqrt{-13}$ لا معنى له، و $(-13)^2 = 169$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $(-\\sqrt{13})^2$.",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح نسبي",
+      "expectedAnswer": "13",
+      "misconceptionSignatures": [
+        {
+          "value": "-13",
+          "id": "MISC-JIDHR-SALIB"
+        },
+        {
+          "value": "169",
+          "id": "MISC-TARBI-JIDHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$(-\\sqrt{13})^2 = (-\\sqrt{13}) \\times (-\\sqrt{13})$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "جداء عددين سالبين موجب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تذكّر أن $(\\sqrt{a})^2 = a$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(-\\sqrt{13})^2 = (\\sqrt{13})^2 = 13$.",
+        "incorrect": "$(\\sqrt{a})^2 = a$ وليس $a^2$، والنتيجة موجبة."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l2-006",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 2
+}

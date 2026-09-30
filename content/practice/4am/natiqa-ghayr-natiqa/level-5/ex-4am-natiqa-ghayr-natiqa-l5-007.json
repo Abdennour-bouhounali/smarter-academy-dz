@@ -1,0 +1,119 @@
+{
+  "metadata": {
+    "title": "تدريب — قال أحمد",
+    "estimatedMinutes": 5,
+    "tags": [
+      "حاسبة",
+      "تبرير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P1",
+      "modelledOn": "ict-sqrt2"
+    }
+  },
+  "statement": {
+    "content": "تعرض الحاسبة للعدد $\\sqrt{3}$ القيمة 1,732050808. قال أحمد: «إذن $\\sqrt{3}$ عدد عشري، فهو عدد ناطق»."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما رأيك في قول أحمد؟",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "أحمد مخطئ: 3 ليس مربعًا لعدد ناطق فـ $\\sqrt{3}$ ليس ناطقًا، والحاسبة تعرض قيمة مقرّبة فقط",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "أحمد محق: ما تعرضه الحاسبة هو القيمة المضبوطة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HASIBA-MUDBUTA"
+        },
+        {
+          "id": "C",
+          "content": "أحمد محق: جذر كل عدد طبيعي عدد ناطق",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-KULL-JIDHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طبّق معيار «معارف» على العدد 3."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل يوجد عدد ناطق مربعه 3؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تذكّر نشاط $\\sqrt{2}$: الحاسبة تخزّن أرقامًا أكثر مما تعرض."
+        }
+      ],
+      "feedback": {
+        "correct": "3 ليس مربعًا لعدد ناطق، إذن $\\sqrt{3}$ ليس ناطقًا ولا يساوي أي عدد عشري.",
+        "incorrect": "العدد العشري ناطق دائمًا؛ اسأل: هل 3 مربع لعدد ناطق؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "لتتأكّد، احسب بدون حاسبة $1{,}732^2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "2.999824",
+      "misconceptionSignatures": [
+        {
+          "value": "3.464",
+          "id": "MISC-MURABBA-DIF"
+        },
+        {
+          "value": "3",
+          "id": "MISC-HASIBA-MUDBUTA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$1{,}732^2 = 1{,}732 \\times 1{,}732$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $1732 \\times 1732$ ثم ضع الفاصلة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عدد الأرقام بعد الفاصلة في الجداء هو مجموع عددها في العاملين."
+        }
+      ],
+      "feedback": {
+        "correct": "نجد عددًا أصغر من 3 بقليل: 1,732 قيمة مقرّبة بالنقصان للعدد $\\sqrt{3}$ .",
+        "incorrect": "أعد الضرب رقمًا رقمًا، ثم تحقّق من موضع الفاصلة."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l5-007",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 5
+}

@@ -118,5 +118,226 @@
       "4am_ikhtizal-kasr_P3",
       "4am_ikhtizal-kasr_P2"
     ]
+  },
+  "MISC-MURABBA-DIF": {
+    "label": "الخلط بين مربع العدد وضعفه",
+    "explanation": "مربع العدد هو جداءه في نفسه: $4^2 = 4 \\times 4 = 16$، وليس $2 \\times 4 = 8$.",
+    "relatedLearningPoints": [
+      "4am_jidhr-tarbii_P1"
+    ]
+  },
+  "MISC-JIDHR-NISF": {
+    "label": "الجذر التربيعي نصف العدد",
+    "explanation": "$\\sqrt{a}$ هو العدد الموجب الذي مربعه $a$، وليس $a \\div 2$: $\\sqrt{36} = 6$ لأن $6^2 = 36$، أما $18^2 = 324$.",
+    "relatedLearningPoints": [
+      "4am_jidhr-tarbii_P1"
+    ]
+  },
+  "MISC-JIDHR-SALIB": {
+    "label": "الجذر التربيعي قد يكون سالبًا",
+    "explanation": "الجذر التربيعي عدد موجب دائمًا: $\\sqrt{36} = 6$ وليس $-6$، رغم أنّ $(-6)^2 = 36$.",
+    "relatedLearningPoints": [
+      "4am_jidhr-tarbii_P1"
+    ]
+  },
+  "MISC-JIDHR-MURABBA-ISHARA": {
+    "label": "$\\sqrt{x^2} = x$ حتى لو كان $x$ سالبًا",
+    "explanation": "$\\sqrt{x^2} = x$ فقط إذا كان $x \\geq 0$؛ مثلًا $\\sqrt{(-3{,}5)^2} = 3{,}5$ و $\\sqrt{(3 - \\pi)^2} = \\pi - 3$.",
+    "relatedLearningPoints": [
+      "4am_jidhr-tarbii_P3"
+    ]
+  },
+  "MISC-TARBI-JIDHR": {
+    "label": "$(\\sqrt{a})^2 = a^2$ أو $\\sqrt{a}$",
+    "explanation": "$\\sqrt{a}$ هو العدد الذي مربعه $a$، إذن $(\\sqrt{a})^2 = a$ بالضبط.",
+    "relatedLearningPoints": [
+      "4am_jidhr-tarbii_P3",
+      "4am_tawzif-khawass-judhur_P3"
+    ]
+  },
+  "MISC-JIDHR-FASILA": {
+    "label": "خطأ في موضع الفاصلة عند جذر عدد عشري",
+    "explanation": "$\\sqrt{0{,}04} = 0{,}2$ لأن $0{,}2^2 = 0{,}04$؛ أما $0{,}02^2 = 0{,}0004$.",
+    "relatedLearningPoints": [
+      "4am_jidhr-tarbii_P2"
+    ]
+  },
+  "MISC-HASIBA-MUDBUTA": {
+    "label": "ما تعرضه الحاسبة هو القيمة المضبوطة",
+    "explanation": "الحاسبة تعرض قيمة مقرّبة: $2{,}236067978^2 \\neq 5$. القيمة المضبوطة نرمز لها $\\sqrt{5}$.",
+    "relatedLearningPoints": [
+      "4am_jidhr-tarbii_P1",
+      "4am_natiqa-ghayr-natiqa_P3"
+    ]
+  },
+  "MISC-NATIQ-TABII-FAQAT": {
+    "label": "جذر الكسر أو العدد العشري ليس ناطقًا أبدًا",
+    "explanation": "$\\sqrt{\\dfrac{16}{9}} = \\dfrac{4}{3}$ و $\\sqrt{0{,}25} = 0{,}5$ عددان ناطقان: المعيار أن يكون العدد مربعًا لعدد ناطق.",
+    "relatedLearningPoints": [
+      "4am_natiqa-ghayr-natiqa_P2"
+    ]
+  },
+  "MISC-NATIQ-KULL-JIDHR": {
+    "label": "جذر كل عدد طبيعي عدد ناطق",
+    "explanation": "$\\sqrt{7}$ و $\\sqrt{13}$ ليسا ناطقين: 7 و 13 ليسا مربعين لأي عدد ناطق.",
+    "relatedLearningPoints": [
+      "4am_natiqa-ghayr-natiqa_P3"
+    ]
+  },
+  "MISC-TAQRIB-NAQS-ZIYADA": {
+    "label": "الخلط بين القيمة المقربة بالنقصان وبالزيادة",
+    "explanation": "بالنقصان: القيمة الأصغر من العدد ($6{,}5 < \\sqrt{43}$)؛ بالزيادة: القيمة الأكبر منه ($\\sqrt{43} < 6{,}6$).",
+    "relatedLearningPoints": [
+      "4am_natiqa-ghayr-natiqa_P1"
+    ]
+  },
+  "MISC-HALL-WAHID": {
+    "label": "نسيان الحل السالب للمعادلة $x^2 = a$",
+    "explanation": "إذا كان $a > 0$ فللمعادلة حلّان متعاكسان: $x^2 = 9$ حلّاها $3$ و $-3$.",
+    "relatedLearningPoints": [
+      "4am_muadalat-x-murabba_P1"
+    ]
+  },
+  "MISC-HALL-SALIB": {
+    "label": "المعادلة $x^2 = a$ مع $a < 0$ لها حلول",
+    "explanation": "مربع أي عدد موجب أو معدوم: $x^2 = -9$ لا تقبل أي حل.",
+    "relatedLearningPoints": [
+      "4am_muadalat-x-murabba_P1"
+    ]
+  },
+  "MISC-HALL-SIFR": {
+    "label": "المعادلة $x^2 = 0$ لها حلّان أو لا حل لها",
+    "explanation": "$x^2 = 0$ تقبل حلًّا واحدًا هو 0.",
+    "relatedLearningPoints": [
+      "4am_muadalat-x-murabba_P1"
+    ]
+  },
+  "MISC-HALL-QISMA": {
+    "label": "حل $x^2 = a$ بقسمة $a$ على 2",
+    "explanation": "$x^2 = a$ يعني $x = \\sqrt{a}$ أو $x = -\\sqrt{a}$، وليس $x = a \\div 2$.",
+    "relatedLearningPoints": [
+      "4am_muadalat-x-murabba_P2"
+    ]
+  },
+  "MISC-JIDHR-JAMA": {
+    "label": "$\\sqrt{a + b} = \\sqrt{a} + \\sqrt{b}$",
+    "explanation": "$\\sqrt{16 + 9} = \\sqrt{25} = 5$ بينما $\\sqrt{16} + \\sqrt{9} = 7$: الجذر لا يتوزّع على الجمع.",
+    "relatedLearningPoints": [
+      "4am_amaliyat-judhur_P3"
+    ]
+  },
+  "MISC-JIDHR-TARH": {
+    "label": "$\\sqrt{a - b} = \\sqrt{a} - \\sqrt{b}$",
+    "explanation": "$\\sqrt{100 - 36} = 8$ بينما $\\sqrt{100} - \\sqrt{36} = 4$: الجذر لا يتوزّع على الطرح.",
+    "relatedLearningPoints": [
+      "4am_amaliyat-judhur_P3"
+    ]
+  },
+  "MISC-JIDAA-JAMA": {
+    "label": "$\\sqrt{a} \\times \\sqrt{b} = \\sqrt{a + b}$",
+    "explanation": "جداء جذرين هو جذر الجداء: $\\sqrt{a} \\times \\sqrt{b} = \\sqrt{a \\times b}$.",
+    "relatedLearningPoints": [
+      "4am_amaliyat-judhur_P1"
+    ]
+  },
+  "MISC-QISMA-JIDHR": {
+    "label": "$\\dfrac{\\sqrt{a}}{\\sqrt{b}} = \\sqrt{a - b}$ أو $\\dfrac{a}{b}$",
+    "explanation": "حاصل قسمة جذرين هو جذر حاصل القسمة: $\\dfrac{\\sqrt{a}}{\\sqrt{b}} = \\sqrt{\\dfrac{a}{b}}$.",
+    "relatedLearningPoints": [
+      "4am_amaliyat-judhur_P2"
+    ]
+  },
+  "MISC-JIDHR-MURABBA-MANSI": {
+    "label": "إخراج العامل المربّع دون أخذ جذره",
+    "explanation": "$\\sqrt{a^2 b} = a\\sqrt{b}$ وليس $a^2\\sqrt{b}$: $\\sqrt{18} = \\sqrt{9 \\times 2} = 3\\sqrt{2}$.",
+    "relatedLearningPoints": [
+      "4am_amaliyat-judhur_P1",
+      "4am_tawzif-khawass-judhur_P1"
+    ]
+  },
+  "MISC-B-LAYSA-ASGHAR": {
+    "label": "كتابة $a\\sqrt{b}$ مع $b$ ليس أصغر ما يمكن",
+    "explanation": "نبحث عن أكبر مربع يقسم $n$: $\\sqrt{288} = 12\\sqrt{2}$، أما $2\\sqrt{72}$ فالعدد 72 يقبل التبسيط.",
+    "relatedLearningPoints": [
+      "4am_tawzif-khawass-judhur_P1"
+    ]
+  },
+  "MISC-MUAMIL-DUN-TARBI": {
+    "label": "إدخال عامل تحت الجذر دون تربيعه",
+    "explanation": "$a\\sqrt{b} = \\sqrt{a^2 b}$: $4\\sqrt{3} = \\sqrt{48}$ وليس $\\sqrt{12}$.",
+    "relatedLearningPoints": [
+      "4am_tawzif-khawass-judhur_P1"
+    ]
+  },
+  "MISC-ISHARA": {
+    "label": "خطأ في الإشارة عند جمع حدود من الشكل $x\\sqrt{b}$",
+    "explanation": "$(2 - 9 + 10 - 7)\\sqrt{2} = -4\\sqrt{2}$: نجمع المعاملات بإشاراتها.",
+    "relatedLearningPoints": [
+      "4am_tawzif-khawass-judhur_P2"
+    ]
+  },
+  "MISC-MUAMIL-MANSI": {
+    "label": "نسيان المعامل أمام الجذر",
+    "explanation": "$3\\sqrt{18} = 3 \\times 3\\sqrt{2} = 9\\sqrt{2}$: يُضرب المعامل في الناتج.",
+    "relatedLearningPoints": [
+      "4am_tawzif-khawass-judhur_P2"
+    ]
+  },
+  "MISC-HADD-2AB": {
+    "label": "$(x + y)^2 = x^2 + y^2$",
+    "explanation": "$(\\sqrt{5} + \\sqrt{3})^2 = 5 + 2\\sqrt{15} + 3$: لا ننسى الحد $2xy$.",
+    "relatedLearningPoints": [
+      "4am_tawzif-khawass-judhur_P2"
+    ]
+  },
+  "MISC-MAQAM-DUN-BAST": {
+    "label": "ضرب المقام وحده في $\\sqrt{b}$",
+    "explanation": "لتبقى النسبة مساوية نضرب البسط والمقام معًا في $\\sqrt{b}$: $\\dfrac{2}{\\sqrt{11}} = \\dfrac{2\\sqrt{11}}{11}$.",
+    "relatedLearningPoints": [
+      "4am_tawzif-khawass-judhur_P3"
+    ]
+  },
+  "MISC-BAST-DUN-DARB": {
+    "label": "ضرب البسط وحده في $\\sqrt{b}$",
+    "explanation": "ضرب البسط وحده يغيّر النسبة؛ نضرب البسط والمقام في العدد نفسه.",
+    "relatedLearningPoints": [
+      "4am_tawzif-khawass-judhur_P3"
+    ]
+  },
+  "MISC-JIDHR-FI-JIDHR": {
+    "label": "$\\sqrt{b} \\times \\sqrt{b} = b^2$ أو $\\sqrt{b}$",
+    "explanation": "$\\sqrt{b} \\times \\sqrt{b} = (\\sqrt{b})^2 = b$.",
+    "relatedLearningPoints": [
+      "4am_tawzif-khawass-judhur_P3"
+    ]
+  },
+  "MISC-MAQLUB": {
+    "label": "قلب النسبة عند إزالة الجذر من المقام",
+    "explanation": "$\\dfrac{a}{\\sqrt{b}} = \\dfrac{a\\sqrt{b}}{b}$، لا $\\dfrac{b}{a\\sqrt{b}}$.",
+    "relatedLearningPoints": [
+      "4am_tawzif-khawass-judhur_P3"
+    ]
+  },
+  "MISC-WADIYA-TADWIR-MUBAKKIR": {
+    "label": "التدوير قبل نهاية الحساب",
+    "explanation": "ندوّر النتيجة النهائية فقط: $\\ell = \\sqrt{12} \\approx 3{,}464\\,m$ ثم $L = 2\\ell \\approx 6{,}93\\,m$؛ التدوير المبكر يعطي 692 بدل 693.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-judhur_P1"
+    ]
+  },
+  "MISC-WADIYA-MUSHAWWISH": {
+    "label": "استعمال معطى مشوِّش في الحساب",
+    "explanation": "ثمن الزربية 12000DA لا يدخل في حساب بعديها: المساحة والعلاقة $L = 2\\ell$ تكفيان.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-judhur_P1"
+    ]
+  },
+  "MISC-JIDHR-MURABBA-KHALT": {
+    "label": "الخلط بين الجذر التربيعي للعدد ومربّعه",
+    "explanation": "$\\sqrt{49} = 7$ لأن $7^2 = 49$؛ أما $49^2 = 2401$ فهو مربع العدد 49 وليس جذره.",
+    "relatedLearningPoints": [
+      "4am_jidhr-tarbii_P1",
+      "4am_jidhr-tarbii_P2"
+    ]
   }
 }

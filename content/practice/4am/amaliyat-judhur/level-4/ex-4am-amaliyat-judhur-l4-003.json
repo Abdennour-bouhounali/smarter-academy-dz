@@ -1,0 +1,107 @@
+{
+  "metadata": {
+    "title": "تدريب — جداء جذرين — أين الخطأ؟",
+    "estimatedMinutes": 6,
+    "tags": [
+      "جداء جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P1",
+      "modelledOn": "know-4"
+    }
+  },
+  "statement": {
+    "content": "كتبت سارة: $\\sqrt{8} \\times \\sqrt{2} = \\sqrt{10}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما رأيك في ما كتبته سارة؟",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "خطأ؛ الصحيح: $\\sqrt{8} \\times \\sqrt{2} = \\sqrt{16} = 4$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "خطأ؛ الصحيح: $\\sqrt{8} \\times \\sqrt{2} = 16$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "صحيح، لأن جداء جذرين هو جذر مجموعهما",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-JAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ربّع الطرفين: هل يعطيان العدد نفسه؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(\\sqrt{8} \\times \\sqrt{2})^2 = 8 \\times 2$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء جذرين هو جذر الجداء، ثم يبقى حساب الجذر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{8} \\times \\sqrt{2} = \\sqrt{8 \\times 2} = \\sqrt{16} = 4$ ، أما $\\sqrt{10}$ فمربّعه 10.",
+        "incorrect": "قارن مربّع كل طرف: 16 من جهة و 10 من جهة أخرى."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $A = (\\sqrt{5} + \\sqrt{20}) \\times \\sqrt{5}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر باستعمال الخاصية التوزيعية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$A = \\sqrt{5} \\times \\sqrt{5} + \\sqrt{20} \\times \\sqrt{5}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب كل جداء تحت جذر واحد."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = \\sqrt{25} + \\sqrt{100} = 5 + 10 = 15$",
+        "incorrect": "انشر أولًا، ثم احسب كل جداء على حدة."
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l4-003",
+  "lessonCode": "amaliyat-judhur",
+  "level": 4
+}

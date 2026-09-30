@@ -1,0 +1,75 @@
+{
+  "metadata": {
+    "title": "تدريب — كتب أمين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تحليل خطأ",
+      "حاسبة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P1",
+      "modelledOn": "ict-sqrt2"
+    }
+  },
+  "statement": {
+    "content": "كتب أمين: «العدد $\\sqrt{\\dfrac{1}{9}}$ ليس عددًا ناطقًا، لأن الحاسبة تعرض له 0,333333333 وأرقامه لا تنتهي»."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما رأيك؟",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "أمين مخطئ: $\\left(\\dfrac{1}{3}\\right)^2 = \\dfrac{1}{9}$ ، فـ $\\sqrt{\\dfrac{1}{9}} = \\dfrac{1}{3}$ عدد ناطق",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "أمين محق: جذر الكسر ليس عددًا ناطقًا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-TABII-FAQAT"
+        },
+        {
+          "id": "C",
+          "content": "أمين محق: 0,333333333 هي القيمة المضبوطة للعدد $\\sqrt{\\dfrac{1}{9}}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HASIBA-MUDBUTA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المعيار ليس ما تعرضه الحاسبة، بل: هل $\\dfrac{1}{9}$ مربع لعدد ناطق؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ابحث عن كسر مربعه $\\dfrac{1}{9}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العدد الناطق هو ما يُكتب $\\dfrac{a}{b}$ بعددين صحيحين، حتى لو لم تنتهِ كتابته العشرية."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\left(\\dfrac{1}{3}\\right)^2 = \\dfrac{1}{9}$ : الجذر ناطق، والحاسبة تعرض فقط قيمة مقرّبة للكسر $\\dfrac{1}{3}$.",
+        "incorrect": "العدد الناطق يُكتب على شكل كسر؛ كتابته العشرية قد لا تنتهي."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l4-003",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 4
+}

@@ -1,0 +1,122 @@
+{
+  "metadata": {
+    "title": "تدريب — من الحلول إلى المعادلة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مسألة عكسية",
+      "مربع عدد"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P1",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "نعرف حلول معادلة من الشكل $x^2 = a$ ونبحث عن $a$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلا المعادلة $x^2 = a$ هما $\\dfrac{5}{3}$ و $-\\dfrac{5}{3}$. ما قيمة $a$؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "25/9",
+      "misconceptionSignatures": [
+        {
+          "value": "10/3",
+          "id": "MISC-MURABBA-DIF"
+        },
+        {
+          "value": "-25/9",
+          "id": "MISC-JIDHR-SALIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كل حل يحقّق المعادلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بأحد الحلين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مربع كسر هو مربع بسطه على مربع مقامه."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\left(\\dfrac{5}{3}\\right)^2 = \\dfrac{25}{9}$.",
+        "incorrect": "المربع ليس الضعف، وهو موجب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العدد $-0{,}4$ حل للمعادلة $x^2 = a$. ما قيمة $a$؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري (بالفاصلة)",
+      "expectedAnswer": "0.16",
+      "misconceptionSignatures": [
+        {
+          "value": "-0.16",
+          "id": "MISC-JIDHR-SALIB"
+        },
+        {
+          "value": "-0.8",
+          "id": "MISC-MURABBA-DIF"
+        },
+        {
+          "value": "0.8",
+          "id": "MISC-MURABBA-DIF"
+        },
+        {
+          "value": "1.6",
+          "id": "MISC-JIDHR-FASILA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالحل المعطى."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب مربع $-0{,}4$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء عددين سالبين موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = (-0{,}4)^2 = 0{,}16$.",
+        "incorrect": "المربع ليس الضعف، وانتبه إلى الإشارة وموضع الفاصلة."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l3-003",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 3
+}

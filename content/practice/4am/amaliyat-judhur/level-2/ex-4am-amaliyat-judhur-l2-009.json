@@ -1,0 +1,113 @@
+{
+  "metadata": {
+    "title": "تدريب — جذر فرق — أين الخطأ؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "فرق جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P3",
+      "modelledOn": "know-4"
+    }
+  },
+  "statement": {
+    "content": "كتب أمين: $\\sqrt{169 - 25} = \\sqrt{169} - \\sqrt{25} = 13 - 5 = 8$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب القيمة الصحيحة للعدد $\\sqrt{169 - 25}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "12",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجذر يشمل الفرق كله."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $169 - 25$ أولًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما العدد الموجب الذي مربعه هذا الفرق؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{169 - 25} = \\sqrt{144} = 12$",
+        "incorrect": "اطرح ما تحت الجذر أولًا، ثم خذ الجذر."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "8",
+          "id": "MISC-JIDHR-TARH"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "أين أخطأ أمين؟",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "في المساواة الأولى: الجذر لا يتوزّع على الطرح",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "في الحساب: $13 - 5$ لا يساوي 8",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "لم يخطئ، حسابه صحيح",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-TARH"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من كل مساواة في سطر أمين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن نتيجته بالقيمة التي حسبتها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل $\\sqrt{a - b} = \\sqrt{a} - \\sqrt{b}$ خاصية صحيحة؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{169 - 25} = 12$ لكن $\\sqrt{169} - \\sqrt{25} = 8$ : المساواة الأولى خاطئة.",
+        "incorrect": "الطرح $13 - 5$ صحيح؛ ابحث في المساواة الأولى."
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l2-009",
+  "lessonCode": "amaliyat-judhur",
+  "level": 2
+}

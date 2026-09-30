@@ -1,0 +1,145 @@
+{
+  "metadata": {
+    "title": "تمرين 30 — العددان A و B",
+    "estimatedMinutes": 5,
+    "tags": [
+      "متطابقات",
+      "مقام ناطق"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-30",
+      "page": 27,
+      "section": "أوظّف تعلّماتي",
+      "number": 30
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 27): نعتبر العددين A و B حيث $A = 7 + \\sqrt{32}$ و $B = 7 - 4\\sqrt{2}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $A + B$.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "14",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\sqrt{32} = 4\\sqrt{2}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$A = 7 + 4\\sqrt{2}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحدّان $4\\sqrt{2}$ و $-4\\sqrt{2}$ متعاكسان."
+        }
+      ],
+      "feedback": {
+        "correct": "$A + B = 7 + 4\\sqrt{2} + 7 - 4\\sqrt{2}$.",
+        "incorrect": "اكتب أولًا $\\sqrt{32}$ بدلالة $\\sqrt{2}$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $A \\times B$.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "17",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$A = 7 + 4\\sqrt{2}$ و $B = 7 - 4\\sqrt{2}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل $(a + b)(a - b) = a^2 - b^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(4\\sqrt{2})^2 = 16 \\times 2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$A \\times B = 7^2 - (4\\sqrt{2})^2 = 49 - 32$.",
+        "incorrect": "$(4\\sqrt{2})^2 = 32$ لا 16."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "اكتب $\\dfrac{A}{B}$ على شكل نسبة مقامها عدد ناطق.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{81}{17}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HADD-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{81 + 56\\sqrt{2}}{17}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{7 + 4\\sqrt{2}}{17}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQAM-DUN-BAST"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$A \\times B$ عدد ناطق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب البسط والمقام في $A = 7 + 4\\sqrt{2}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انشر $(7 + 4\\sqrt{2})^2$ بالمتطابقة $(a + b)^2 = a^2 + 2ab + b^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{A}{B} = \\dfrac{(7 + 4\\sqrt{2})^2}{17} = \\dfrac{49 + 56\\sqrt{2} + 32}{17}$.",
+        "incorrect": "لا تنس الحدّ $2ab = 56\\sqrt{2}$، واضرب البسط أيضًا."
+      },
+      "difficulty": 5
+    }
+  ],
+  "id": "ex-4am-tawzif-khawass-judhur-l4-002",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 4
+}

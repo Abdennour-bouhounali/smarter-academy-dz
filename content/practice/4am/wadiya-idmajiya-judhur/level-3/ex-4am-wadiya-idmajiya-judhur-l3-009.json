@@ -1,0 +1,101 @@
+{
+  "metadata": {
+    "title": "تدريب — جداء شهير بالجذور",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية إدماجية",
+      "متطابقات",
+      "مربع الجذر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "احسب دون استعمال الحاسبة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$(\\sqrt{3} + 1)(\\sqrt{3} - 1) = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هذا جداء من الشكل $(a + b)(a - b)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(a + b)(a - b) = a^2 - b^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(\\sqrt{3})^2 = 3$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(\\sqrt{3})^2 - 1^2 = 3 - 1 = 2$.",
+        "incorrect": "استعمل المتطابقة $(a + b)(a - b) = a^2 - b^2$."
+      },
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "$(2\\sqrt{2})^2 - (\\sqrt{5})^2 = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب كل مربع على حدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(2\\sqrt{2})^2 = 2^2 \\times 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(\\sqrt{5})^2 = 5$."
+        }
+      ],
+      "feedback": {
+        "correct": "$8 - 5 = 3$.",
+        "incorrect": "ربّع العامل 2 أيضًا."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "-1",
+          "id": "MISC-MUAMIL-DUN-TARBI"
+        }
+      ],
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l3-009",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 3
+}

@@ -1,4 +1,66 @@
 {
+  "amaliyat-judhur": {
+    "1": [
+      "ex-4am-amaliyat-judhur-l1-001",
+      "ex-4am-amaliyat-judhur-l1-002",
+      "ex-4am-amaliyat-judhur-l1-003",
+      "ex-4am-amaliyat-judhur-l1-004",
+      "ex-4am-amaliyat-judhur-l1-005",
+      "ex-4am-amaliyat-judhur-l1-006",
+      "ex-4am-amaliyat-judhur-l1-007",
+      "ex-4am-amaliyat-judhur-l1-008",
+      "ex-4am-amaliyat-judhur-l1-009",
+      "ex-4am-amaliyat-judhur-l1-010"
+    ],
+    "2": [
+      "ex-4am-amaliyat-judhur-l2-001",
+      "ex-4am-amaliyat-judhur-l2-002",
+      "ex-4am-amaliyat-judhur-l2-003",
+      "ex-4am-amaliyat-judhur-l2-004",
+      "ex-4am-amaliyat-judhur-l2-005",
+      "ex-4am-amaliyat-judhur-l2-006",
+      "ex-4am-amaliyat-judhur-l2-007",
+      "ex-4am-amaliyat-judhur-l2-008",
+      "ex-4am-amaliyat-judhur-l2-009",
+      "ex-4am-amaliyat-judhur-l2-010"
+    ],
+    "3": [
+      "ex-4am-amaliyat-judhur-l3-001",
+      "ex-4am-amaliyat-judhur-l3-002",
+      "ex-4am-amaliyat-judhur-l3-003",
+      "ex-4am-amaliyat-judhur-l3-004",
+      "ex-4am-amaliyat-judhur-l3-005",
+      "ex-4am-amaliyat-judhur-l3-006",
+      "ex-4am-amaliyat-judhur-l3-007",
+      "ex-4am-amaliyat-judhur-l3-008",
+      "ex-4am-amaliyat-judhur-l3-009",
+      "ex-4am-amaliyat-judhur-l3-010"
+    ],
+    "4": [
+      "ex-4am-amaliyat-judhur-l4-001",
+      "ex-4am-amaliyat-judhur-l4-002",
+      "ex-4am-amaliyat-judhur-l4-003",
+      "ex-4am-amaliyat-judhur-l4-004",
+      "ex-4am-amaliyat-judhur-l4-005",
+      "ex-4am-amaliyat-judhur-l4-006",
+      "ex-4am-amaliyat-judhur-l4-007",
+      "ex-4am-amaliyat-judhur-l4-008",
+      "ex-4am-amaliyat-judhur-l4-009",
+      "ex-4am-amaliyat-judhur-l4-010"
+    ],
+    "5": [
+      "ex-4am-amaliyat-judhur-l5-001",
+      "ex-4am-amaliyat-judhur-l5-002",
+      "ex-4am-amaliyat-judhur-l5-003",
+      "ex-4am-amaliyat-judhur-l5-004",
+      "ex-4am-amaliyat-judhur-l5-005",
+      "ex-4am-amaliyat-judhur-l5-006",
+      "ex-4am-amaliyat-judhur-l5-007",
+      "ex-4am-amaliyat-judhur-l5-008",
+      "ex-4am-amaliyat-judhur-l5-009",
+      "ex-4am-amaliyat-judhur-l5-010"
+    ]
+  },
   "awwaliyan-fima-baynahuma": {
     "1": [
       "ex-4am-awwaliyan-fima-baynahuma-l1-001"
@@ -70,6 +132,68 @@
       "ex-4am-ikhtizal-kasr-l5-004"
     ]
   },
+  "jidhr-tarbii": {
+    "1": [
+      "ex-4am-jidhr-tarbii-l1-001",
+      "ex-4am-jidhr-tarbii-l1-002",
+      "ex-4am-jidhr-tarbii-l1-003",
+      "ex-4am-jidhr-tarbii-l1-004",
+      "ex-4am-jidhr-tarbii-l1-005",
+      "ex-4am-jidhr-tarbii-l1-006",
+      "ex-4am-jidhr-tarbii-l1-007",
+      "ex-4am-jidhr-tarbii-l1-008",
+      "ex-4am-jidhr-tarbii-l1-009",
+      "ex-4am-jidhr-tarbii-l1-010"
+    ],
+    "2": [
+      "ex-4am-jidhr-tarbii-l2-001",
+      "ex-4am-jidhr-tarbii-l2-002",
+      "ex-4am-jidhr-tarbii-l2-003",
+      "ex-4am-jidhr-tarbii-l2-004",
+      "ex-4am-jidhr-tarbii-l2-005",
+      "ex-4am-jidhr-tarbii-l2-006",
+      "ex-4am-jidhr-tarbii-l2-007",
+      "ex-4am-jidhr-tarbii-l2-008",
+      "ex-4am-jidhr-tarbii-l2-009",
+      "ex-4am-jidhr-tarbii-l2-010"
+    ],
+    "3": [
+      "ex-4am-jidhr-tarbii-l3-001",
+      "ex-4am-jidhr-tarbii-l3-002",
+      "ex-4am-jidhr-tarbii-l3-003",
+      "ex-4am-jidhr-tarbii-l3-004",
+      "ex-4am-jidhr-tarbii-l3-005",
+      "ex-4am-jidhr-tarbii-l3-006",
+      "ex-4am-jidhr-tarbii-l3-007",
+      "ex-4am-jidhr-tarbii-l3-008",
+      "ex-4am-jidhr-tarbii-l3-009",
+      "ex-4am-jidhr-tarbii-l3-010"
+    ],
+    "4": [
+      "ex-4am-jidhr-tarbii-l4-001",
+      "ex-4am-jidhr-tarbii-l4-002",
+      "ex-4am-jidhr-tarbii-l4-003",
+      "ex-4am-jidhr-tarbii-l4-004",
+      "ex-4am-jidhr-tarbii-l4-005",
+      "ex-4am-jidhr-tarbii-l4-006",
+      "ex-4am-jidhr-tarbii-l4-007",
+      "ex-4am-jidhr-tarbii-l4-008",
+      "ex-4am-jidhr-tarbii-l4-009",
+      "ex-4am-jidhr-tarbii-l4-010"
+    ],
+    "5": [
+      "ex-4am-jidhr-tarbii-l5-001",
+      "ex-4am-jidhr-tarbii-l5-002",
+      "ex-4am-jidhr-tarbii-l5-003",
+      "ex-4am-jidhr-tarbii-l5-004",
+      "ex-4am-jidhr-tarbii-l5-005",
+      "ex-4am-jidhr-tarbii-l5-006",
+      "ex-4am-jidhr-tarbii-l5-007",
+      "ex-4am-jidhr-tarbii-l5-008",
+      "ex-4am-jidhr-tarbii-l5-009",
+      "ex-4am-jidhr-tarbii-l5-010"
+    ]
+  },
   "khawass-qawasim": {
     "1": [
       "ex-4am-khawass-qawasim-l1-001"
@@ -89,6 +213,130 @@
     "5": [
       "ex-4am-khawass-qawasim-l5-001",
       "ex-4am-khawass-qawasim-l5-002"
+    ]
+  },
+  "muadalat-x-murabba": {
+    "1": [
+      "ex-4am-muadalat-x-murabba-l1-001",
+      "ex-4am-muadalat-x-murabba-l1-002",
+      "ex-4am-muadalat-x-murabba-l1-003",
+      "ex-4am-muadalat-x-murabba-l1-004",
+      "ex-4am-muadalat-x-murabba-l1-005",
+      "ex-4am-muadalat-x-murabba-l1-006",
+      "ex-4am-muadalat-x-murabba-l1-007",
+      "ex-4am-muadalat-x-murabba-l1-008",
+      "ex-4am-muadalat-x-murabba-l1-009",
+      "ex-4am-muadalat-x-murabba-l1-010"
+    ],
+    "2": [
+      "ex-4am-muadalat-x-murabba-l2-001",
+      "ex-4am-muadalat-x-murabba-l2-002",
+      "ex-4am-muadalat-x-murabba-l2-003",
+      "ex-4am-muadalat-x-murabba-l2-004",
+      "ex-4am-muadalat-x-murabba-l2-005",
+      "ex-4am-muadalat-x-murabba-l2-006",
+      "ex-4am-muadalat-x-murabba-l2-007",
+      "ex-4am-muadalat-x-murabba-l2-008",
+      "ex-4am-muadalat-x-murabba-l2-009",
+      "ex-4am-muadalat-x-murabba-l2-010"
+    ],
+    "3": [
+      "ex-4am-muadalat-x-murabba-l3-001",
+      "ex-4am-muadalat-x-murabba-l3-002",
+      "ex-4am-muadalat-x-murabba-l3-003",
+      "ex-4am-muadalat-x-murabba-l3-004",
+      "ex-4am-muadalat-x-murabba-l3-005",
+      "ex-4am-muadalat-x-murabba-l3-006",
+      "ex-4am-muadalat-x-murabba-l3-007",
+      "ex-4am-muadalat-x-murabba-l3-008",
+      "ex-4am-muadalat-x-murabba-l3-009",
+      "ex-4am-muadalat-x-murabba-l3-010"
+    ],
+    "4": [
+      "ex-4am-muadalat-x-murabba-l4-001",
+      "ex-4am-muadalat-x-murabba-l4-002",
+      "ex-4am-muadalat-x-murabba-l4-003",
+      "ex-4am-muadalat-x-murabba-l4-004",
+      "ex-4am-muadalat-x-murabba-l4-005",
+      "ex-4am-muadalat-x-murabba-l4-006",
+      "ex-4am-muadalat-x-murabba-l4-007",
+      "ex-4am-muadalat-x-murabba-l4-008",
+      "ex-4am-muadalat-x-murabba-l4-009",
+      "ex-4am-muadalat-x-murabba-l4-010"
+    ],
+    "5": [
+      "ex-4am-muadalat-x-murabba-l5-001",
+      "ex-4am-muadalat-x-murabba-l5-002",
+      "ex-4am-muadalat-x-murabba-l5-003",
+      "ex-4am-muadalat-x-murabba-l5-004",
+      "ex-4am-muadalat-x-murabba-l5-005",
+      "ex-4am-muadalat-x-murabba-l5-006",
+      "ex-4am-muadalat-x-murabba-l5-007",
+      "ex-4am-muadalat-x-murabba-l5-008",
+      "ex-4am-muadalat-x-murabba-l5-009",
+      "ex-4am-muadalat-x-murabba-l5-010"
+    ]
+  },
+  "natiqa-ghayr-natiqa": {
+    "1": [
+      "ex-4am-natiqa-ghayr-natiqa-l1-001",
+      "ex-4am-natiqa-ghayr-natiqa-l1-002",
+      "ex-4am-natiqa-ghayr-natiqa-l1-003",
+      "ex-4am-natiqa-ghayr-natiqa-l1-004",
+      "ex-4am-natiqa-ghayr-natiqa-l1-005",
+      "ex-4am-natiqa-ghayr-natiqa-l1-006",
+      "ex-4am-natiqa-ghayr-natiqa-l1-007",
+      "ex-4am-natiqa-ghayr-natiqa-l1-008",
+      "ex-4am-natiqa-ghayr-natiqa-l1-009",
+      "ex-4am-natiqa-ghayr-natiqa-l1-010"
+    ],
+    "2": [
+      "ex-4am-natiqa-ghayr-natiqa-l2-001",
+      "ex-4am-natiqa-ghayr-natiqa-l2-002",
+      "ex-4am-natiqa-ghayr-natiqa-l2-003",
+      "ex-4am-natiqa-ghayr-natiqa-l2-004",
+      "ex-4am-natiqa-ghayr-natiqa-l2-005",
+      "ex-4am-natiqa-ghayr-natiqa-l2-006",
+      "ex-4am-natiqa-ghayr-natiqa-l2-007",
+      "ex-4am-natiqa-ghayr-natiqa-l2-008",
+      "ex-4am-natiqa-ghayr-natiqa-l2-009",
+      "ex-4am-natiqa-ghayr-natiqa-l2-010"
+    ],
+    "3": [
+      "ex-4am-natiqa-ghayr-natiqa-l3-001",
+      "ex-4am-natiqa-ghayr-natiqa-l3-002",
+      "ex-4am-natiqa-ghayr-natiqa-l3-003",
+      "ex-4am-natiqa-ghayr-natiqa-l3-004",
+      "ex-4am-natiqa-ghayr-natiqa-l3-005",
+      "ex-4am-natiqa-ghayr-natiqa-l3-006",
+      "ex-4am-natiqa-ghayr-natiqa-l3-007",
+      "ex-4am-natiqa-ghayr-natiqa-l3-008",
+      "ex-4am-natiqa-ghayr-natiqa-l3-009",
+      "ex-4am-natiqa-ghayr-natiqa-l3-010"
+    ],
+    "4": [
+      "ex-4am-natiqa-ghayr-natiqa-l4-001",
+      "ex-4am-natiqa-ghayr-natiqa-l4-002",
+      "ex-4am-natiqa-ghayr-natiqa-l4-003",
+      "ex-4am-natiqa-ghayr-natiqa-l4-004",
+      "ex-4am-natiqa-ghayr-natiqa-l4-005",
+      "ex-4am-natiqa-ghayr-natiqa-l4-006",
+      "ex-4am-natiqa-ghayr-natiqa-l4-007",
+      "ex-4am-natiqa-ghayr-natiqa-l4-008",
+      "ex-4am-natiqa-ghayr-natiqa-l4-009",
+      "ex-4am-natiqa-ghayr-natiqa-l4-010"
+    ],
+    "5": [
+      "ex-4am-natiqa-ghayr-natiqa-l5-001",
+      "ex-4am-natiqa-ghayr-natiqa-l5-002",
+      "ex-4am-natiqa-ghayr-natiqa-l5-003",
+      "ex-4am-natiqa-ghayr-natiqa-l5-004",
+      "ex-4am-natiqa-ghayr-natiqa-l5-005",
+      "ex-4am-natiqa-ghayr-natiqa-l5-006",
+      "ex-4am-natiqa-ghayr-natiqa-l5-007",
+      "ex-4am-natiqa-ghayr-natiqa-l5-008",
+      "ex-4am-natiqa-ghayr-natiqa-l5-009",
+      "ex-4am-natiqa-ghayr-natiqa-l5-010"
     ]
   },
   "qasim-adad-tabii": {
@@ -152,6 +400,68 @@
       "ex-4am-qawasim-adad-tabii-l5-002"
     ]
   },
+  "tawzif-khawass-judhur": {
+    "1": [
+      "ex-4am-tawzif-khawass-judhur-l1-001",
+      "ex-4am-tawzif-khawass-judhur-l1-002",
+      "ex-4am-tawzif-khawass-judhur-l1-003",
+      "ex-4am-tawzif-khawass-judhur-l1-004",
+      "ex-4am-tawzif-khawass-judhur-l1-005",
+      "ex-4am-tawzif-khawass-judhur-l1-006",
+      "ex-4am-tawzif-khawass-judhur-l1-007",
+      "ex-4am-tawzif-khawass-judhur-l1-008",
+      "ex-4am-tawzif-khawass-judhur-l1-009",
+      "ex-4am-tawzif-khawass-judhur-l1-010"
+    ],
+    "2": [
+      "ex-4am-tawzif-khawass-judhur-l2-001",
+      "ex-4am-tawzif-khawass-judhur-l2-002",
+      "ex-4am-tawzif-khawass-judhur-l2-003",
+      "ex-4am-tawzif-khawass-judhur-l2-004",
+      "ex-4am-tawzif-khawass-judhur-l2-005",
+      "ex-4am-tawzif-khawass-judhur-l2-006",
+      "ex-4am-tawzif-khawass-judhur-l2-007",
+      "ex-4am-tawzif-khawass-judhur-l2-008",
+      "ex-4am-tawzif-khawass-judhur-l2-009",
+      "ex-4am-tawzif-khawass-judhur-l2-010"
+    ],
+    "3": [
+      "ex-4am-tawzif-khawass-judhur-l3-001",
+      "ex-4am-tawzif-khawass-judhur-l3-002",
+      "ex-4am-tawzif-khawass-judhur-l3-003",
+      "ex-4am-tawzif-khawass-judhur-l3-004",
+      "ex-4am-tawzif-khawass-judhur-l3-005",
+      "ex-4am-tawzif-khawass-judhur-l3-006",
+      "ex-4am-tawzif-khawass-judhur-l3-007",
+      "ex-4am-tawzif-khawass-judhur-l3-008",
+      "ex-4am-tawzif-khawass-judhur-l3-009",
+      "ex-4am-tawzif-khawass-judhur-l3-010"
+    ],
+    "4": [
+      "ex-4am-tawzif-khawass-judhur-l4-001",
+      "ex-4am-tawzif-khawass-judhur-l4-002",
+      "ex-4am-tawzif-khawass-judhur-l4-003",
+      "ex-4am-tawzif-khawass-judhur-l4-004",
+      "ex-4am-tawzif-khawass-judhur-l4-005",
+      "ex-4am-tawzif-khawass-judhur-l4-006",
+      "ex-4am-tawzif-khawass-judhur-l4-007",
+      "ex-4am-tawzif-khawass-judhur-l4-008",
+      "ex-4am-tawzif-khawass-judhur-l4-009",
+      "ex-4am-tawzif-khawass-judhur-l4-010"
+    ],
+    "5": [
+      "ex-4am-tawzif-khawass-judhur-l5-001",
+      "ex-4am-tawzif-khawass-judhur-l5-002",
+      "ex-4am-tawzif-khawass-judhur-l5-003",
+      "ex-4am-tawzif-khawass-judhur-l5-004",
+      "ex-4am-tawzif-khawass-judhur-l5-005",
+      "ex-4am-tawzif-khawass-judhur-l5-006",
+      "ex-4am-tawzif-khawass-judhur-l5-007",
+      "ex-4am-tawzif-khawass-judhur-l5-008",
+      "ex-4am-tawzif-khawass-judhur-l5-009",
+      "ex-4am-tawzif-khawass-judhur-l5-010"
+    ]
+  },
   "tayin-pgcd": {
     "1": [
       "ex-4am-tayin-pgcd-l1-001"
@@ -190,6 +500,68 @@
     "5": [
       "ex-4am-wadiya-idmajiya-aadad-l5-001",
       "ex-4am-wadiya-idmajiya-aadad-l5-002"
+    ]
+  },
+  "wadiya-idmajiya-judhur": {
+    "1": [
+      "ex-4am-wadiya-idmajiya-judhur-l1-001",
+      "ex-4am-wadiya-idmajiya-judhur-l1-002",
+      "ex-4am-wadiya-idmajiya-judhur-l1-003",
+      "ex-4am-wadiya-idmajiya-judhur-l1-004",
+      "ex-4am-wadiya-idmajiya-judhur-l1-005",
+      "ex-4am-wadiya-idmajiya-judhur-l1-006",
+      "ex-4am-wadiya-idmajiya-judhur-l1-007",
+      "ex-4am-wadiya-idmajiya-judhur-l1-008",
+      "ex-4am-wadiya-idmajiya-judhur-l1-009",
+      "ex-4am-wadiya-idmajiya-judhur-l1-010"
+    ],
+    "2": [
+      "ex-4am-wadiya-idmajiya-judhur-l2-001",
+      "ex-4am-wadiya-idmajiya-judhur-l2-002",
+      "ex-4am-wadiya-idmajiya-judhur-l2-003",
+      "ex-4am-wadiya-idmajiya-judhur-l2-004",
+      "ex-4am-wadiya-idmajiya-judhur-l2-005",
+      "ex-4am-wadiya-idmajiya-judhur-l2-006",
+      "ex-4am-wadiya-idmajiya-judhur-l2-007",
+      "ex-4am-wadiya-idmajiya-judhur-l2-008",
+      "ex-4am-wadiya-idmajiya-judhur-l2-009",
+      "ex-4am-wadiya-idmajiya-judhur-l2-010"
+    ],
+    "3": [
+      "ex-4am-wadiya-idmajiya-judhur-l3-001",
+      "ex-4am-wadiya-idmajiya-judhur-l3-002",
+      "ex-4am-wadiya-idmajiya-judhur-l3-003",
+      "ex-4am-wadiya-idmajiya-judhur-l3-004",
+      "ex-4am-wadiya-idmajiya-judhur-l3-005",
+      "ex-4am-wadiya-idmajiya-judhur-l3-006",
+      "ex-4am-wadiya-idmajiya-judhur-l3-007",
+      "ex-4am-wadiya-idmajiya-judhur-l3-008",
+      "ex-4am-wadiya-idmajiya-judhur-l3-009",
+      "ex-4am-wadiya-idmajiya-judhur-l3-010"
+    ],
+    "4": [
+      "ex-4am-wadiya-idmajiya-judhur-l4-001",
+      "ex-4am-wadiya-idmajiya-judhur-l4-002",
+      "ex-4am-wadiya-idmajiya-judhur-l4-003",
+      "ex-4am-wadiya-idmajiya-judhur-l4-004",
+      "ex-4am-wadiya-idmajiya-judhur-l4-005",
+      "ex-4am-wadiya-idmajiya-judhur-l4-006",
+      "ex-4am-wadiya-idmajiya-judhur-l4-007",
+      "ex-4am-wadiya-idmajiya-judhur-l4-008",
+      "ex-4am-wadiya-idmajiya-judhur-l4-009",
+      "ex-4am-wadiya-idmajiya-judhur-l4-010"
+    ],
+    "5": [
+      "ex-4am-wadiya-idmajiya-judhur-l5-001",
+      "ex-4am-wadiya-idmajiya-judhur-l5-002",
+      "ex-4am-wadiya-idmajiya-judhur-l5-003",
+      "ex-4am-wadiya-idmajiya-judhur-l5-004",
+      "ex-4am-wadiya-idmajiya-judhur-l5-005",
+      "ex-4am-wadiya-idmajiya-judhur-l5-006",
+      "ex-4am-wadiya-idmajiya-judhur-l5-007",
+      "ex-4am-wadiya-idmajiya-judhur-l5-008",
+      "ex-4am-wadiya-idmajiya-judhur-l5-009",
+      "ex-4am-wadiya-idmajiya-judhur-l5-010"
     ]
   }
 }

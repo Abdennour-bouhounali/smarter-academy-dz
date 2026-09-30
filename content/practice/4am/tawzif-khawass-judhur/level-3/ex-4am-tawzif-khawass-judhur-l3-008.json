@@ -1,0 +1,72 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l3-008",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — الحدّ المجهول",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تبسيط",
+      "مسألة عكسية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P2",
+      "modelledOn": "ex-27"
+    }
+  },
+  "statement": {
+    "content": "$x$ عدد طبيعي حيث $\\sqrt{50} + \\sqrt{x} = 8\\sqrt{2}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$x$ عدد طبيعي حيث $\\sqrt{50} + \\sqrt{x} = 8\\sqrt{2}$. ما قيمة $x$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "18",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUAMIL-DUN-TARBI",
+          "value": "6"
+        },
+        {
+          "id": "MISC-JIDHR-TARH",
+          "value": "14"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب $\\sqrt{50}$ على الشكل $a\\sqrt{2}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذن $\\sqrt{x} = 8\\sqrt{2} - \\sqrt{50}$ : احسب هذا الفرق بالخاصية التوزيعية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم أدخل المعامل تحت الجذر مربّعًا لتجد $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{x} = 8\\sqrt{2} - 5\\sqrt{2} = 3\\sqrt{2} = \\sqrt{3^2 \\times 2}$.",
+        "incorrect": "بعد إيجاد $\\sqrt{x} = k\\sqrt{2}$ ، تذكّر أن $x = k^2 \\times 2$."
+      }
+    }
+  ]
+}

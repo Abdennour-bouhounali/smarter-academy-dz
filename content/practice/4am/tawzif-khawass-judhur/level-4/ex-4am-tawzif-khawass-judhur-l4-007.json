@@ -1,0 +1,122 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l4-007",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — مقام من الشكل √a − b",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مقام ناطق",
+      "متطابقات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P3",
+      "modelledOn": "ex-30"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العدد $\\dfrac{1}{\\sqrt{5} - 2}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $(\\sqrt{5} - 2)(\\sqrt{5} + 2)$.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "1",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-JIDHR-FI-JIDHR",
+          "value": "21"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العبارة من الشكل $(x - y)(x + y)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(x - y)(x + y) = x^2 - y^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $(\\sqrt{5})^2 - 2^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(\\sqrt{5} - 2)(\\sqrt{5} + 2) = 5 - 4$.",
+        "incorrect": "استعمل $(x - y)(x + y) = x^2 - y^2$ مع $(\\sqrt{5})^2 = 5$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "اكتب $\\dfrac{1}{\\sqrt{5} - 2}$ دون جذر في المقام.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sqrt{5} - 2$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$\\sqrt{5} + 2$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{\\sqrt{5}}{5} - \\dfrac{1}{2}$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$\\dfrac{\\sqrt{5} + 2}{9}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نبحث عن عدد نضرب فيه البسط والمقام ليصبح المقام ناطقًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل المتطابقة $(x - y)(x + y) = x^2 - y^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب البسط والمقام في العدد الذي يجعل المقام من الشكل $x^2 - y^2$ ثم بسّط."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{1}{\\sqrt{5} - 2} = \\dfrac{\\sqrt{5} + 2}{(\\sqrt{5} - 2)(\\sqrt{5} + 2)} = \\dfrac{\\sqrt{5} + 2}{5 - 4}$.",
+        "incorrect": "لا يمكن توزيع مقلوب مجموع؛ اضرب البسط والمقام في نفس العدد."
+      }
+    }
+  ]
+}

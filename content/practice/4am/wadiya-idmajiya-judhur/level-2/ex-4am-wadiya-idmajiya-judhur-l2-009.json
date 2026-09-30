@@ -1,0 +1,111 @@
+{
+  "metadata": {
+    "title": "تدريب — حساب بالخاصيتين",
+    "estimatedMinutes": 2,
+    "tags": [
+      "وضعية إدماجية",
+      "مربع الجذر",
+      "جذر المربع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": "qcm"
+    }
+  },
+  "statement": {
+    "content": "احسب دون استعمال الحاسبة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$(\\sqrt{7})^2 + \\sqrt{49} = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "14",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب كل حد على حدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مربع الجذر التربيعي لعدد موجب يساوي هذا العدد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما هو العدد الموجب الذي مربعه 49؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$(\\sqrt{7})^2 = 7$ و $\\sqrt{49} = 7$، والمجموع 14.",
+        "incorrect": "احسب $(\\sqrt{7})^2$ و $\\sqrt{49}$ كلًّا على حدة."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "56",
+          "id": "MISC-TARBI-JIDHR"
+        }
+      ],
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "$\\sqrt{(-5)^2} \\times \\sqrt{0{,}04} = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $\\sqrt{(-5)^2}$ أولًا: الجذر التربيعي موجب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما هو العدد الموجب الذي مربعه 0,04؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب النتيجتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{(-5)^2} = 5$ و $\\sqrt{0{,}04} = 0{,}2$، والجداء $5 \\times 0{,}2 = 1$.",
+        "incorrect": "انتبه إلى إشارة الجذر وإلى موضع الفاصلة."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "-1",
+          "id": "MISC-JIDHR-MURABBA-ISHARA"
+        },
+        {
+          "value": "0.1",
+          "id": "MISC-JIDHR-FASILA"
+        }
+      ],
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l2-009",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 2
+}

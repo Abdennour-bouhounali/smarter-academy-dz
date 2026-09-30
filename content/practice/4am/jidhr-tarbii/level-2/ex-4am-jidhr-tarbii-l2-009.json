@@ -1,0 +1,81 @@
+{
+  "metadata": {
+    "title": "تدريب — تحقّق من جذر",
+    "estimatedMinutes": 2,
+    "tags": [
+      "تعريف",
+      "تحقق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidhr-tarbii_P1",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "كتب يوسف: $\\sqrt{0{,}9} = 0{,}3$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل ما كتبه يوسف صحيح؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، لأن $0{,}3^2 = 0{,}9$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-FASILA"
+        },
+        {
+          "id": "B",
+          "content": "نعم، لأن $0{,}3 \\times 3 = 0{,}9$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-DIF"
+        },
+        {
+          "id": "C",
+          "content": "لا، لأن $0{,}3^2 = 0{,}09$ وهو لا يساوي 0,9",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "لا، لأن $\\sqrt{0{,}9} = 0{,}45$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "للتحقق من جذر تربيعي نربّع النتيجة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $0{,}3 \\times 0{,}3$ بدقة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن الناتج بالعدد 0,9."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}3^2 = 0{,}09 \\neq 0{,}9$، إذن 0,3 ليس الجذر التربيعي للعدد 0,9 بل للعدد 0,09.",
+        "incorrect": "مربع 0,3 هو $0{,}3 \\times 0{,}3$: انتبه إلى عدد الأرقام بعد الفاصلة."
+      }
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l2-009",
+  "lessonCode": "jidhr-tarbii",
+  "level": 2
+}

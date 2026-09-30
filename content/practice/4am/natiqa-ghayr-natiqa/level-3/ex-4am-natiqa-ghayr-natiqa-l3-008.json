@@ -1,0 +1,75 @@
+{
+  "metadata": {
+    "title": "تدريب — عددان متشابهان",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تصنيف",
+      "عدد عشري"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P1",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العددين $A = \\sqrt{12{,}25}$ و $B = \\sqrt{1{,}225}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ عبارة صحيحة؟",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$A$ عدد ناطق و $B$ ليس عددًا ناطقًا",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$A$ و $B$ عددان ناطقان لأن $B = 0{,}35$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-FASILA"
+        },
+        {
+          "id": "C",
+          "content": "$A$ و $B$ ليسا ناطقين لأنهما جذرا عددين عشريين",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-TABII-FAQAT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $3{,}5^2$ و $0{,}35^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب 1,225 على شكل كسر مختزل: $\\dfrac{1225}{1000}$ ثم اختزل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "طبّق المعيار على كل عدد: هل هو مربع لعدد ناطق؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$3{,}5^2 = 12{,}25$ فـ $A = 3{,}5$ ناطق؛ و $1{,}225 = \\dfrac{49}{40}$ ليس مربعًا لعدد ناطق، و $0{,}35^2 = 0{,}1225$ .",
+        "incorrect": "تحقّق من موضع الفاصلة بتربيع العدد الذي تقترحه."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l3-008",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 3
+}

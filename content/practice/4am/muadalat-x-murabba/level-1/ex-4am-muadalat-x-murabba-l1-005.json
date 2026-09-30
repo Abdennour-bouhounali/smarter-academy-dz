@@ -1,0 +1,82 @@
+{
+  "metadata": {
+    "title": "تدريب — حل وحيد",
+    "estimatedMinutes": 2,
+    "tags": [
+      "عدد الحلول",
+      "الصفر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P1",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "إليك أربع معادلات من الشكل $x^2 = a$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أي معادلة من المعادلات التالية تقبل حلا واحدا فقط؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "recall",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 = 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$x^2 = -1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-SALIB"
+        },
+        {
+          "id": "C",
+          "content": "$x^2 = 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-WAHID"
+        },
+        {
+          "id": "D",
+          "content": "$x^2 = 0$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى الحالات الثلاث: $a > 0$ ، $a = 0$ ، $a < 0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذا كان $a > 0$ فللمعادلة حلّان متعاكسان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما العدد الذي يساوي معاكسه؟"
+        }
+      ],
+      "feedback": {
+        "correct": "العدد الوحيد الذي مربعه 0 هو 0: المعادلة $x^2 = 0$ تقبل حلا واحدا.",
+        "incorrect": "$x^2 = 1$ تقبل 1 و $-1$، و $x^2 = -1$ لا تقبل أي حل."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l1-005",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 1
+}

@@ -68,7 +68,7 @@ describe('la porte de palier côté élève', () => {
     // (lot paresseux, docs/architecture/BUNDLE_BOUNDARIES.md) : la fabrique
     // rend LessonPageFrame pour chaque page, et LessonPageFrame pose la porte
     // AUTOUR du <Suspense> qui charge le code de la page.
-    const routes = read('src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/_unit/lessonRoutes.jsx');
+    const routes = read('src/lessons/common/unit/buildLessonRoutes.jsx');
     expect(routes).toContain('<LessonPageFrame');
     expect(routes).toMatch(/const withSuspense = \(Component, module = null\) => \(\s*<Suspense[^>]*>\s*<LessonPageFrame/);
     const frame = read('src/lessons/common/lessonRuntime.jsx');

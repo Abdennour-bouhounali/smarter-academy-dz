@@ -1,0 +1,92 @@
+{
+  "metadata": {
+    "title": "نشاط 4 — حاصل قسمة جذرين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حاصل قسمة جذرين"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-4b",
+      "page": 21,
+      "section": "أنشطة",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من جدول النشاط 4 (الكتاب ص 21): حاصل قسمة جذرين تربيعيين."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $\\dfrac{\\sqrt{36}}{\\sqrt{4}}$.",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب البسط $\\sqrt{36}$ والمقام $\\sqrt{4}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الجذر التربيعي هو العدد الموجب الذي مربعه العدد تحت الجذر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم النتيجتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{\\sqrt{36}}{\\sqrt{4}} = \\dfrac{6}{2} = 3$ ، وهو أيضًا $\\sqrt{9}$.",
+        "incorrect": "لا تقسم 36 على 4 ثم تتوقف: الجذران أولًا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $\\sqrt{\\dfrac{25}{100}}$.",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالفاصلة إن لزم)",
+      "expectedAnswer": "0.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\sqrt{\\dfrac{a}{b}} = \\dfrac{\\sqrt{a}}{\\sqrt{b}}$ من أجل $a$ و $b$ موجبين و $b \\neq 0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $\\sqrt{25}$ و $\\sqrt{100}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب حاصل القسمة كسرًا أو عددًا عشريًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{\\dfrac{25}{100}} = \\dfrac{\\sqrt{25}}{\\sqrt{100}} = \\dfrac{5}{10} = 0{,}5$",
+        "incorrect": "الجذر التربيعي لـ $0{,}25$ ليس $0{,}25$ ولا $0{,}05$: تحقّق بالتربيع."
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l1-002",
+  "lessonCode": "amaliyat-judhur",
+  "level": 1
+}

@@ -1,0 +1,95 @@
+{
+  "metadata": {
+    "title": "تدريب — أين الخطأ؟ جذر كسر",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية إدماجية",
+      "تحليل خطأ",
+      "حاصل قسمة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": "qcm"
+    }
+  },
+  "statement": {
+    "content": "كتبت ريم: $\\sqrt{\\dfrac{16}{9}} = \\dfrac{16}{3}$ و $\\dfrac{\\sqrt{98}}{\\sqrt{2}} = \\sqrt{96}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هي القيمة الصحيحة للعدد $\\sqrt{\\dfrac{16}{9}}$؟ (اكتبه على شكل كسر)",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر $\\dfrac{a}{b}$",
+      "expectedAnswer": "4/3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "جذر حاصل قسمة هو حاصل قسمة الجذرين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما هو $\\sqrt{16}$؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خذ جذر البسط وجذر المقام معًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{\\dfrac{16}{9}} = \\dfrac{\\sqrt{16}}{\\sqrt{9}} = \\dfrac{4}{3}$: نسيت ريم جذر البسط.",
+        "incorrect": "خذ جذر البسط وجذر المقام معًا."
+      },
+      "cognitiveDemand": "reason"
+    },
+    {
+      "id": "q2",
+      "statement": "ما هي القيمة الصحيحة للعدد $\\dfrac{\\sqrt{98}}{\\sqrt{2}}$؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حاصل قسمة جذرين هو جذر حاصل القسمة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $98 \\div 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل الناتج مربع تام؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{\\sqrt{98}}{\\sqrt{2}} = \\sqrt{49} = 7$: طرحت ريم بدل أن تقسم.",
+        "incorrect": "حاصل قسمة جذرين هو جذر حاصل القسمة، لا جذر الفرق."
+      },
+      "cognitiveDemand": "reason"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l4-010",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 4
+}

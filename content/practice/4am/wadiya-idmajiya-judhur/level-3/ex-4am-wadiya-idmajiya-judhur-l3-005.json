@@ -1,0 +1,111 @@
+{
+  "metadata": {
+    "title": "تدريب — من الجذر إلى العدد",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية إدماجية",
+      "عكس",
+      "مربع الجذر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "في كل حالة أوجد العدد الموجب المجهول."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$a$ عدد موجب حيث $\\sqrt{a} = 3\\sqrt{5}$. ما هو $a$؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "45",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ربّع طرفي المساواة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(\\sqrt{a})^2 = a$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(3\\sqrt{5})^2 = 3^2 \\times 5$."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = (3\\sqrt{5})^2 = 9 \\times 5 = 45$.",
+        "incorrect": "عند تربيع $3\\sqrt{5}$ ربّع العامل 3 أيضًا."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "15",
+          "id": "MISC-MUAMIL-DUN-TARBI"
+        }
+      ],
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "$b$ عدد موجب حيث $\\sqrt{b} = 0{,}3$. ما هو $b$؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "0.09",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ربّع طرفي المساواة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما هو $0{,}3 \\times 0{,}3$؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انتبه إلى عدد الأرقام بعد الفاصلة."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = 0{,}3^2 = 0{,}09$.",
+        "incorrect": "مربع عدد عشري برقم واحد بعد الفاصلة له رقمان بعدها."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "0.9",
+          "id": "MISC-JIDHR-FASILA"
+        },
+        {
+          "value": "0.6",
+          "id": "MISC-MURABBA-DIF"
+        }
+      ],
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l3-005",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 3
+}

@@ -22,6 +22,7 @@ import ReportButton from '../../../features/reports/ReportButton';
 import { useContentAvailability } from '../../../context/ContentAvailabilityContext';
 import { useClassroomMode, useClassroomStage, ClassroomEntryButton, ClassroomFrame } from '../classroom';
 import MathLabEntryButton from '../../../features/mathlab/overlay/MathLabEntryButton';
+import { bidi } from '../../../utils/bidi';
 
 /**
  * Static color map — replaces dynamic `bg-${color}-100` patterns.
@@ -190,7 +191,7 @@ export default function LessonIndex({ config, basePath }) {
             const path = m.slug ? `${basePath}/${m.slug}` : getModulePath(config.id, m.number);
             const label = t('index.softGateModuleLink', { number: String(m.number).padStart(2, '0'), title: m.title });
             return path
-              ? <Link key={m.id ?? m.number} to={path} className="font-bold underline underline-offset-2 hover:text-amber-700">{label}</Link>
+              ? <Link key={m.id ?? m.number} to={path} className="font-bold underline underline-offset-2 hover:text-amber-700">{bidi(label)}</Link>
               : <span key={m.id ?? m.number} className="font-bold">{label}</span>;
           })}
         </div>
@@ -221,8 +222,8 @@ export default function LessonIndex({ config, basePath }) {
               <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 font-mono text-xs font-semibold text-blue-700">
                 {config.emoji} {config.chapterTitle || config.chapter}
               </div>
-              <h1 className="font-space text-4xl font-extrabold leading-tight text-slate-900">{config.title}</h1>
-              {config.description && <p className="text-lg leading-relaxed text-slate-700">{config.description}</p>}
+              <h1 className="font-space text-4xl font-extrabold leading-tight text-slate-900">{bidi(config.title)}</h1>
+              {config.description && <p className="text-lg leading-relaxed text-slate-700">{bidi(config.description)}</p>}
               {config.skills && (
                 <div className="space-y-2">
                   <h2 className="text-base font-bold text-slate-800">{t('classroom.lessonSkills')}</h2>
@@ -230,7 +231,7 @@ export default function LessonIndex({ config, basePath }) {
                     {config.skills.map((skill, i) => (
                       <li key={i} className="flex items-start gap-2 text-base text-slate-700">
                         <span className="mt-0.5 text-blue-400">▸</span>
-                        <span>{skill}</span>
+                        <span>{bidi(skill)}</span>
                       </li>
                     ))}
                   </ul>
@@ -246,8 +247,8 @@ export default function LessonIndex({ config, basePath }) {
                       {String(module.number).padStart(2, '0')}
                     </span>
                     <div className="min-w-0">
-                      <div className="font-space font-bold text-slate-900">{module.title}</div>
-                      <div className="text-sm text-slate-500">{module.desc}</div>
+                      <div className="font-space font-bold text-slate-900">{bidi(module.title)}</div>
+                      <div className="text-sm text-slate-500">{bidi(module.desc)}</div>
                     </div>
                   </li>
                 ))}
@@ -269,10 +270,10 @@ export default function LessonIndex({ config, basePath }) {
           <nav className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500 mb-8">
             <Link to="/courses" className="hover:text-blue-600">{t('index.home')}</Link>
             <span>/</span>
-            <span className="text-slate-900 font-semibold">{config.title}</span>
+            <span className="text-slate-900 font-semibold">{bidi(config.title)}</span>
           </nav>
           <div className="mx-auto max-w-lg rounded-2xl border border-teal-200 bg-teal-50/50 p-8 text-center shadow-xs" data-hidden-by-teacher>
-            <h1 className="font-space text-xl font-bold text-slate-800 mb-2">{config.title}</h1>
+            <h1 className="font-space text-xl font-bold text-slate-800 mb-2">{bidi(config.title)}</h1>
             <p className="font-inter text-sm leading-relaxed text-slate-600 mb-6">
               {t('hiddenByTeacherHint', { ns: 'access' })}
             </p>
@@ -294,7 +295,7 @@ export default function LessonIndex({ config, basePath }) {
             <nav className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500 mb-8">
               <Link to="/courses" className="hover:text-blue-600">{t('index.home')}</Link>
               <span>/</span>
-              <span className="text-slate-900 font-semibold">{config.title}</span>
+              <span className="text-slate-900 font-semibold">{bidi(config.title)}</span>
             </nav>
           )}
         />
@@ -327,7 +328,7 @@ export default function LessonIndex({ config, basePath }) {
             <Link to={`/courses?level=${config.level}&grade=${config.grade}&chapter=${config.chapter}`} className="hover:text-blue-600">{config.chapterTitle || config.chapter}</Link>
             <span>/</span>
             {unit && (<><Link to={unit.path} className="hover:text-blue-600">{unit.title}</Link><span>/</span></>)}
-            <span className="text-slate-900 font-semibold">{config.title}</span>
+            <span className="text-slate-900 font-semibold">{bidi(config.title)}</span>
           </nav>
 
           <ReportButton
@@ -343,11 +344,11 @@ export default function LessonIndex({ config, basePath }) {
 
             <div className="space-y-3">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 font-mono text-xs font-semibold">
-                {config.emoji} {config.chapter} • {totalModules} modules • ~{config.estimatedDurationMin} min
+                {config.emoji} {config.chapterTitle ?? config.chapter} • <span dir="ltr">{totalModules}</span> {t('index.modulesLabel', { count: totalModules })} • ~{t('index.durationMin', { count: config.estimatedDurationMin })}
               </div>
 
               <h1 className="text-3xl sm:text-4xl font-space font-extrabold text-slate-900 leading-tight">
-                {config.title}
+                {bidi(config.title)}
               </h1>
 
               {/* Deux portes, deux publics, à ne pas confondre :
@@ -364,7 +365,7 @@ export default function LessonIndex({ config, basePath }) {
                   {config.skills.slice(0, 3).map((skill, i) => (
                     <li key={i} className="flex items-start gap-2">
                       <span className="text-blue-400 mt-0.5">▸</span>
-                      <span>{skill}</span>
+                      <span>{bidi(skill)}</span>
                     </li>
                   ))}
                   {config.skills.length > 3 && (
@@ -422,7 +423,7 @@ export default function LessonIndex({ config, basePath }) {
                   if (profileStatus === 'anonymous') {
                     return (
                       <li key={lp.id} className="flex items-start gap-2 text-sm text-slate-700">
-                        <span>{lp.title}</span>
+                        <span>{bidi(lp.title)}</span>
                       </li>
                     );
                   }
@@ -436,7 +437,7 @@ export default function LessonIndex({ config, basePath }) {
                           aria-label={pending ? ts('mastery.loadingDot') : ts('mastery.errorDot')}
                           data-mastery-state={pending ? 'loading' : 'error'}
                         />
-                        <span>{lp.title}</span>
+                        <span>{bidi(lp.title)}</span>
                       </li>
                     );
                   }
@@ -448,7 +449,7 @@ export default function LessonIndex({ config, basePath }) {
                   return (
                     <li key={lp.id} className="flex items-start gap-2 text-sm text-slate-700" title={tooltip}>
                       <span className={`mt-1.5 inline-block h-2.5 w-2.5 shrink-0 rounded-full ${MASTERY_DOT[state]}`} role="img" aria-label={tooltip} data-mastery-state={state} />
-                      <span>{lp.title}</span>
+                      <span>{bidi(lp.title)}</span>
                     </li>
                   );
                 })}
@@ -459,7 +460,7 @@ export default function LessonIndex({ config, basePath }) {
                 <div className="rounded-2xl border border-slate-200 bg-white p-5">
                   <h2 className="mb-2 text-sm font-bold text-slate-800">{ts('unit.prerequisites')}</h2>
                   <ul className="flex flex-wrap gap-1.5">
-                    {prereqLessons.map((p) => <li key={p.id}><Link to={p.path} className="rounded-full border border-indigo-200 bg-indigo-50 px-2.5 py-0.5 text-xs text-indigo-800 hover:border-indigo-400">{p.title}</Link></li>)}
+                    {prereqLessons.map((p) => <li key={p.id}><Link to={p.path} className="rounded-full border border-indigo-200 bg-indigo-50 px-2.5 py-0.5 text-xs text-indigo-800 hover:border-indigo-400">{bidi(p.title)}</Link></li>)}
                     {(catalogueLesson.prerequisites ?? []).map((txt) => <li key={txt} className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-0.5 text-xs text-slate-600">{txt}</li>)}
                   </ul>
                   <p className="mt-1 text-[11px] text-slate-500">{ts('unit.prerequisitesNote')}</p>
@@ -471,7 +472,7 @@ export default function LessonIndex({ config, basePath }) {
                   <ul className="space-y-1">
                     {config.resources.map((r) => {
                       const target = config.modules.find((m) => m.number === r.module);
-                      const label = `${r.kind === 'manipulation' ? '🧪' : r.kind === 'method' ? '📐' : '🏛️'} ${r.title}`;
+                      const label = `${r.kind === 'manipulation' ? '🧪' : r.kind === 'method' ? '📐' : '🏛️'} ${bidi(r.title)}`;
                       return (
                         <li key={r.code} className="text-sm text-slate-700">
                           {target ? <Link to={`${basePath}/${target.slug}`} className="hover:text-blue-700">{label}</Link> : label}
@@ -537,7 +538,7 @@ export default function LessonIndex({ config, basePath }) {
                       </div>
                       <div>
                         <div className="flex items-center gap-2 flex-wrap">
-                          <h3 className="font-space font-bold text-slate-500">{module.title}</h3>
+                          <h3 className="font-space font-bold text-slate-500">{bidi(module.title)}</h3>
                           <span className="text-[10px] font-mono text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
                             {t('index.locked')}
                           </span>
@@ -586,12 +587,12 @@ export default function LessonIndex({ config, basePath }) {
                               {t('index.startingMission')}
                             </span>
                             <span className="text-[10px] font-mono text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
-                              ~{module.estimatedMin} min
+                              ~{t('index.durationMin', { count: module.estimatedMin })}
                             </span>
                             {inProgressBadge}
                           </div>
-                          <h3 className="font-space font-bold text-slate-900 mt-0.5">{module.title}</h3>
-                          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">{module.desc}</p>
+                          <h3 className="font-space font-bold text-slate-900 mt-0.5">{bidi(module.title)}</h3>
+                          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">{bidi(module.desc)}</p>
                         </div>
                       </div>
                       <span className="px-3 py-1 rounded-full bg-teal-100 text-teal-700 font-mono text-xs font-semibold hidden sm:inline-block shrink-0">
@@ -626,17 +627,17 @@ export default function LessonIndex({ config, basePath }) {
                         <div>
                           <div className="flex items-center gap-2 flex-wrap">
                             <h3 className={`font-space font-bold text-slate-900 ${getColor(module.color, 'hoverText')} transition-colors`}>
-                              {module.title}
+                              {bidi(module.title)}
                             </h3>
                             <span className="text-[10px] font-mono text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
-                              ~{module.estimatedMin} min
+                              ~{t('index.durationMin', { count: module.estimatedMin })}
                             </span>
                             {'★'.repeat(module.difficulty).padEnd(5, '☆').split('').map((s, i) => (
                               <span key={i} className={s === '★' ? 'text-amber-400 text-xs' : 'text-slate-200 text-xs'}>{s}</span>
                             ))}
                             {inProgressBadge}
                           </div>
-                          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">{module.desc}</p>
+                          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">{bidi(module.desc)}</p>
                         </div>
                       </div>
                       <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-600 font-mono text-xs font-semibold hidden sm:inline-block shrink-0">
@@ -663,12 +664,12 @@ export default function LessonIndex({ config, basePath }) {
                             MISSION ({String(module.number).padStart(2, '0')})
                           </span>
                           <span className="text-[10px] font-mono text-slate-500 bg-slate-800 px-2 py-0.5 rounded-full">
-                            ~{module.estimatedMin} min
+                            ~{t('index.durationMin', { count: module.estimatedMin })}
                           </span>
                           {inProgressBadge}
                         </div>
-                        <h3 className="font-bold text-white group-hover:text-amber-300 transition-colors">{module.title}</h3>
-                        <p className="text-xs text-slate-400 mt-0.5">{module.desc}</p>
+                        <h3 className="font-bold text-white group-hover:text-amber-300 transition-colors">{bidi(module.title)}</h3>
+                        <p className="text-xs text-slate-400 mt-0.5">{bidi(module.desc)}</p>
                       </div>
                       <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full shrink-0 ${isDone ? 'bg-emerald-500/20 text-emerald-400' : 'text-slate-400 bg-slate-800'}`}>
                         {isDone ? t('index.completed') : t('index.toDo')}
@@ -696,14 +697,14 @@ export default function LessonIndex({ config, basePath }) {
                         <div>
                           <div className="flex items-center gap-2">
                             <h3 className="font-space font-bold text-slate-900 group-hover:text-slate-700">
-                              {module.title}
+                              {bidi(module.title)}
                             </h3>
                             <span className="text-[10px] font-mono text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
-                              ~{module.estimatedMin} min
+                              ~{t('index.durationMin', { count: module.estimatedMin })}
                             </span>
                             {inProgressBadge}
                           </div>
-                          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">{module.desc}</p>
+                          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">{bidi(module.desc)}</p>
                         </div>
                       </div>
                       <span className={`px-3 py-1 rounded-full font-mono text-xs font-bold shrink-0 hidden sm:inline-block

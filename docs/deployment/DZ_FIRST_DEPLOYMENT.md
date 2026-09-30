@@ -383,6 +383,14 @@ historique, il est conservé et archivé par la synchronisation. Une unité suiv
 normal : écrite dans le catalogue, livrée, synchronisée — ses leçons naissent
 gratuites, l'administrateur décide ensuite.
 
+**Unité 2 (2026-09-30).** L'unité « الحساب على الجذور » (`hisab-judhur`, cinq
+leçons : `jidhr-tarbii`, `natiqa-ghayr-natiqa`, `muadalat-x-murabba`,
+`amaliyat-judhur`, `tawzif-khawass-judhur`, et la synthèse `wadiya-idmajiya-judhur`) est entrée dans le catalogue ; elle
+arrive en production par ce chemin normal au prochain déploiement qui la porte
+(synchronisation du curriculum ET import du registre des épreuves). Tant que ce
+déploiement n'a pas eu lieu, le périmètre ci-dessus reste celui de la
+production.
+
 ### Rattraper une base en retard
 
 Les fichiers `docs/deployment/*.sql` restent valides et restent la façon de

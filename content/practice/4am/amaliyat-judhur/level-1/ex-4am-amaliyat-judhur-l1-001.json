@@ -1,0 +1,92 @@
+{
+  "metadata": {
+    "title": "نشاط 4 — جداء جذرين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جداء جذرين"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-4a",
+      "page": 21,
+      "section": "أنشطة",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من جدول النشاط 4 (الكتاب ص 21): $a$ و $b$ عددان موجبان."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من أجل $a = 4$ و $b = 36$ ، احسب $\\sqrt{a} \\times \\sqrt{b}$.",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "12",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ بحساب $\\sqrt{4}$ ثم $\\sqrt{36}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الجذر التربيعي لعدد موجب هو العدد الموجب الذي مربعه هذا العدد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب الجذرين اللذين وجدتهما."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{4} \\times \\sqrt{36} = 2 \\times 6 = 12$ ، وهو أيضًا $\\sqrt{144}$.",
+        "incorrect": "احسب كل جذر وحده: ما العدد الموجب الذي مربعه 36؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "من أجل $a = 0{,}16$ و $b = 49$ ، احسب $\\sqrt{a \\times b}$.",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالفاصلة إن لزم)",
+      "expectedAnswer": "2.8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\sqrt{a \\times b} = \\sqrt{a} \\times \\sqrt{b}$ من أجل عددين موجبين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما العدد الموجب الذي مربعه $0{,}16$؟ تحقّق بالتربيع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب هذا العدد في $\\sqrt{49}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{0{,}16 \\times 49} = \\sqrt{0{,}16} \\times \\sqrt{49} = 0{,}4 \\times 7 = 2{,}8$",
+        "incorrect": "انتبه: $\\sqrt{0{,}16}$ ليس $0{,}08$ ، تحقّق بتربيع العدد."
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l1-001",
+  "lessonCode": "amaliyat-judhur",
+  "level": 1
+}

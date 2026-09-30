@@ -34,8 +34,10 @@
     "",
     "PORTÉE PUBLIÉE (décision du propriétaire, 2026-09-21) — CE CATALOGUE NE",
     "CONTIENT QUE LES LEÇONS RÉELLEMENT CONSTRUITES : les neuf leçons de",
-    "l'unité « الأعداد الطبيعيّة والأعداد النّاطقة » (ميدان أنساب الأعداد",
-    "والحساب). Les 27 sujets officiels non encore construits ont été RETIRÉS",
+    "l'unité « الأعداد الطبيعيّة والأعداد النّاطقة » et, depuis le 2026-09-30, les",
+    "cinq leçons de l'unité « الحساب على الجذور » et sa synthèse « أدمج تعلّماتي » (ميدان أنساب الأعداد والحساب,",
+    "sujets hisab_judhur et nataqat_maqam). Les 25",
+    "sujets officiels non encore construits ont été RETIRÉS",
     "du catalogue ; ils n'apparaissent donc plus nulle part — ni en « قريبًا »",
     "sur la page du ميدان, ni dans l'arbre de progression, ni dans l'API, ni",
     "en base (voir la procédure d'import/prune du LESSON_DEVELOPMENT_GUIDE).",
@@ -509,14 +511,296 @@
       "difficulty": "صعب",
       "status": "available",
       "icon": "🏛️"
+    },
+    {
+      "code": "jidhr-tarbii",
+      "sourceTopicId": "hisab_judhur",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "hisab-judhur",
+      "order": 9,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "الجذر التربيعي لعدد موجب",
+      "description": "تعريف الجذر التربيعي لعدد موجب a بأنه العدد الموجب الذي مربعه a، واستعمال الرمز √a، وتطبيق الخاصيتين (√a)² = a و √(a²) = a.",
+      "prerequisites": [
+        "حساب مربع عدد موجب أو سالب (مثل 4² = 16 و (−5)² = 25)",
+        "حساب أطوال أضلاع في مثلث قائم باستعمال خاصية فيثاغورس",
+        "استخدام اللمسة √ على الآلة الحاسبة لاستخراج القيم المضبوطة والمقربة"
+      ],
+      "prerequisiteLessonCodes": [],
+      "pointsToLearn": [
+        "التعرف على مفهوم الجذر التربيعي لعدد موجب a كعدد موجب مربعه يساوي a",
+        "إتقان استعمال الرمز √a والتعبير عنه لغوياً ورياضياً",
+        "تطبيق الخاصيتين الأساسيتين لتبسيط العبارات: (√a)² = a و √(a²) = a (حيث a ≥ 0)"
+      ],
+      "pointPrerequisites": {
+        "P2": [
+          "4am_jidhr-tarbii_P1"
+        ],
+        "P3": [
+          "4am_jidhr-tarbii_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 2,
+        "activity": 1,
+        "pages": {
+          "activity": 20,
+          "knowledge": 22,
+          "method": 23,
+          "exercises": 26
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "سهل",
+      "status": "available",
+      "icon": "√"
+    },
+    {
+      "code": "natiqa-ghayr-natiqa",
+      "sourceTopicId": "hisab_judhur",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "hisab-judhur",
+      "order": 10,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "الأعداد الناطقة والأعداد غير الناطقة",
+      "description": "التمييز بين العدد الناطق والعدد غير الناطق من خلال جذره التربيعي: جذر مربع عدد ناطق عدد ناطق، وجذر عدد ليس مربعًا لعدد ناطق عدد غير ناطق.",
+      "prerequisites": [
+        "مفهوم العدد الناطق (الكتابة الكسرية a/b) والأعداد العشرية والطبيعية",
+        "التمييز بين القيم المضبوطة والقيم المقربة للأعداد"
+      ],
+      "prerequisiteLessonCodes": [
+        "jidhr-tarbii"
+      ],
+      "pointsToLearn": [
+        "التمييز بين العدد الناطق والعدد غير الناطق بناءً على قيمة جذره التربيعي",
+        "التعرف على المربعات التامة (مثل 1، 4، 9، 16، 25، 36، 81) التي جذورها أعداد ناطقة",
+        "إدراك أن جذور الأعداد التي ليست مربعات تامة (مثل √2، √3، √7) هي أعداد غير ناطقة"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_jidhr-tarbii_P1"
+        ],
+        "P2": [
+          "4am_jidhr-tarbii_P2"
+        ],
+        "P3": [
+          "4am_natiqa-ghayr-natiqa_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 2,
+        "activity": 2,
+        "pages": {
+          "activity": 20,
+          "knowledge": 22,
+          "exercises": 26
+        }
+      },
+      "durationMinutes": 45,
+      "difficulty": "سهل",
+      "status": "available",
+      "icon": "🔍"
+    },
+    {
+      "code": "muadalat-x-murabba",
+      "sourceTopicId": "hisab_judhur",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "hisab-judhur",
+      "order": 11,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "حل المعادلة من الشكل x² = a",
+      "description": "تحديد عدد حلول المعادلة x² = a بحسب إشارة العدد a (حلان متعاكسان √a و −√a، أو حل واحد هو 0، أو لا حل)، وحل معادلات تؤول إلى هذا الشكل.",
+      "prerequisites": [
+        "قواعد وعمليات حل المعادلات من الدرجة الأولى بمجهول واحد",
+        "مفهوم المعاكس والإشارة (خاصية أن مربع أي عدد هو دائماً عدد غير سالب x² ≥ 0)"
+      ],
+      "prerequisiteLessonCodes": [
+        "jidhr-tarbii"
+      ],
+      "pointsToLearn": [
+        "تحديد وتفسير عدد حلول المعادلة x² = a بحسب إشارة العدد a: إذا كان a > 0 تقبل حلين متعاكسين هما √a و −√a، إذا كان a = 0 تقبل حلاً واحداً هو 0، إذا كان a < 0 لا تقبل أي حل",
+        "حل معادلات متنوعة تؤول في خطوات حلها إلى الشكل x² = a"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_jidhr-tarbii_P1",
+          "4am_jidhr-tarbii_P3"
+        ],
+        "P2": [
+          "4am_muadalat-x-murabba_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 2,
+        "activity": 3,
+        "pages": {
+          "activity": 20,
+          "knowledge": 22,
+          "method": 23,
+          "exercises": 26,
+          "situation": 28
+        }
+      },
+      "durationMinutes": 55,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "⚖️"
+    },
+    {
+      "code": "amaliyat-judhur",
+      "sourceTopicId": "hisab_judhur",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "hisab-judhur",
+      "order": 12,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "العمليات على الجذور التربيعية (الجداء والقسمة)",
+      "description": "قاعدتا جداء جذرين وحاصل قسمتهما: √a × √b = √(a × b) و √a ÷ √b = √(a ÷ b)، وبرهانهما بالتربيع، وعدم صحة المساواة في الجمع والطرح.",
+      "prerequisites": [
+        "خواص القوى للكسور والجداءات: (ab)² = a²b² و (a/b)² = a²/b²",
+        "قواعد تبسيط وحساب الكسور والأعداد الموجبة"
+      ],
+      "prerequisiteLessonCodes": [
+        "jidhr-tarbii"
+      ],
+      "pointsToLearn": [
+        "تطبيق قاعدة جداء جذرين تربيعيين: √a × √b = √(a × b) لعددين موجبين a و b",
+        "تطبيق قاعدة حاصل قسمة جذرين تربيعيين: √a / √b = √(a / b) (حيث b > 0)",
+        "الاستيعاب والدليل على عدم صحة توزيع الجذر على الجمع والطرح (√(a + b) ≠ √a + √b)"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_jidhr-tarbii_P3"
+        ],
+        "P2": [
+          "4am_jidhr-tarbii_P3"
+        ],
+        "P3": [
+          "4am_jidhr-tarbii_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 2,
+        "activity": 4,
+        "pages": {
+          "activity": 21,
+          "knowledge": 24,
+          "exercises": 27
+        }
+      },
+      "durationMinutes": 60,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "✖️"
+    },
+    {
+      "code": "tawzif-khawass-judhur",
+      "sourceTopicId": "nataqat_maqam",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "hisab-judhur",
+      "order": 13,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "توظيف خواص الجذور التربيعية",
+      "description": "كتابة جذر على الشكل a√b حيث b أصغر ما يمكن، وتبسيط مجموع جذور بالخاصية التوزيعية، وكتابة نسبة مقامها عدد غير ناطق على شكل نسبة مقامها عدد ناطق.",
+      "prerequisites": [
+        "الخاصية التوزيعية للضرب على الجمع والطرح ونشر وتبسيط العبارات الجبرية",
+        "تفكيك الأعداد الطبيعية إلى جداء عوامل يتضمن مربعات تامة (مثلاً 18 = 9 × 2 = 3² × 2)"
+      ],
+      "prerequisiteLessonCodes": [
+        "amaliyat-judhur"
+      ],
+      "pointsToLearn": [
+        "كتابة عبارات تتضمن جذوراً على الشكل a√b حيث b أصغر عدد طبيعي ممكن",
+        "تبسيط عبارات تتضمن الجمع والطرح باستعمال الخاصية التوزيعية: x√b + y√b = (x + y)√b",
+        "تحويل نسبة مقامها عدد غير ناطق إلى نسبة مقامها عدد ناطق بضرب البسط والمقام في الجذر المناسب"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_amaliyat-judhur_P1"
+        ],
+        "P2": [
+          "4am_tawzif-khawass-judhur_P1"
+        ],
+        "P3": [
+          "4am_amaliyat-judhur_P1",
+          "4am_jidhr-tarbii_P3"
+        ]
+      },
+      "textbookRef": {
+        "unit": 2,
+        "pages": {
+          "method": 25,
+          "exercises": 27,
+          "deepen": 29
+        }
+      },
+      "durationMinutes": 70,
+      "difficulty": "صعب",
+      "status": "available",
+      "icon": "🧱"
+    },
+    {
+      "code": "wadiya-idmajiya-judhur",
+      "sourceTopicId": "hisab_judhur",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "hisab-judhur",
+      "order": 14,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — الحساب على الجذور",
+      "description": "وضعية إدماجية (زربية وادي سوف: مساحتها 24m² وطولها ضعف عرضها) تُعبّئ الجذر التربيعي وحل معادلة من الشكل x² = a والحساب على الجذور، يسبقها اختبار «أؤكّد تعلّماتي» الذي يعيد كل سؤال إلى درسه.",
+      "prerequisites": [],
+      "prerequisiteLessonCodes": [
+        "jidhr-tarbii",
+        "muadalat-x-murabba",
+        "tawzif-khawass-judhur"
+      ],
+      "pointsToLearn": [
+        "حل وضعية إدماجية بتوظيف الجذر التربيعي وحل معادلة من الشكل x² = a والحساب على الجذور"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_jidhr-tarbii_P1",
+          "4am_muadalat-x-murabba_P2",
+          "4am_tawzif-khawass-judhur_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 2,
+        "pages": {
+          "qcm": 28,
+          "situation": 28
+        }
+      },
+      "durationMinutes": 45,
+      "difficulty": "صعب",
+      "status": "available",
+      "icon": "🧶"
     }
   ],
   "publishedScope": {
     "rule": "catalogue_lists_built_lessons_only",
     "decidedOn": "2026-09-21",
     "unitIds": [
-      "aadad-tabiiya-natiqa"
+      "aadad-tabiiya-natiqa",
+      "hisab-judhur"
     ],
-    "removedTopicCount": 27
+    "removedTopicCount": 25
   }
 }

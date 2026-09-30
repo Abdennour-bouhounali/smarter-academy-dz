@@ -1,0 +1,104 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l3-004",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — من a√b إلى a",
+    "estimatedMinutes": 3,
+    "tags": [
+      "a√b",
+      "مسألة عكسية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P1",
+      "modelledOn": "ex-19"
+    }
+  },
+  "statement": {
+    "content": "في كل سؤال، عيّن العدد المجهول."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$a$ عدد طبيعي حيث $a\\sqrt{3} = \\sqrt{192}$. ما قيمة $a$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "8",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-JIDHR-MURABBA-MANSI",
+          "value": "64"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب $\\sqrt{192}$ على الشكل $a\\sqrt{3}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $192 \\div 3$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حاصل القسمة مربع تامّ: خذ جذره."
+        }
+      ],
+      "feedback": {
+        "correct": "$192 = 64 \\times 3$ إذن $\\sqrt{192} = 8\\sqrt{3}$.",
+        "incorrect": "قارن بين مربعي الطرفين: $(a\\sqrt{3})^2 = 3a^2$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$n$ عدد طبيعي حيث $\\sqrt{n} = 6\\sqrt{2}$. ما قيمة $n$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "72",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUAMIL-DUN-TARBI",
+          "value": "12"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أدخل المعامل 6 تحت الجذر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$6 = \\sqrt{36}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\sqrt{36} \\times \\sqrt{2} = \\sqrt{36 \\times 2}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$6\\sqrt{2} = \\sqrt{6^2 \\times 2}$.",
+        "incorrect": "المعامل يدخل تحت الجذر مربّعًا."
+      }
+    }
+  ]
+}

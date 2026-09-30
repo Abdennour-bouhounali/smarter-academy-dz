@@ -1,0 +1,149 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l5-007",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — مكعّب",
+    "estimatedMinutes": 6,
+    "tags": [
+      "هندسة",
+      "فيثاغورس",
+      "a√b"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P1",
+      "modelledOn": "ex-32"
+    }
+  },
+  "statement": {
+    "content": "مكعّب ABCDEFGH طول حرفه $2\\sqrt{2}\\,cm$. المثلث ABC قائم في B، والمثلث ACG قائم في C."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مكعّب ABCDEFGH طول حرفه $2\\sqrt{2}\\,cm$. احسب طول قطر الوجه $AC$ بالسنتيمتر.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUAMIL-DUN-TARBI",
+          "value": "8"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلث ABC قائم في B و $AB = BC = 2\\sqrt{2}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$AC^2 = AB^2 + BC^2$ و $(2\\sqrt{2})^2 = 2^2 \\times 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $AC^2$ ثم خذ جذره."
+        }
+      ],
+      "feedback": {
+        "correct": "$AC^2 = 8 + 8 = 16$.",
+        "incorrect": "في $(2\\sqrt{2})^2$ نربّع المعامل 2 أيضًا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "مكعّب ABCDEFGH طول حرفه $2\\sqrt{2}\\,cm$ ، والمثلث ACG قائم في C. نكتب $AG = a\\sqrt{b}$ حيث $b$ أصغر ما يمكن. ما قيمة $a$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-JIDHR-MURABBA-MANSI",
+          "value": "4"
+        },
+        {
+          "id": "MISC-B-LAYSA-ASGHAR",
+          "value": "1"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلث ACG قائم في C : $AG^2 = AC^2 + CG^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مربع قطر الوجه هو $8 + 8$ ، و $CG^2 = 8$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $\\sqrt{AG^2}$ على الشكل $a\\sqrt{b}$ مع أكبر مربع يقسم $AG^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$AG^2 = 16 + 8 = 24$ و $\\sqrt{24} = \\sqrt{4 \\times 6} = 2\\sqrt{6}$.",
+        "incorrect": "ابحث عن أكبر مربع يقسم $AG^2$، ومعامله هو جذر هذا المربع."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "مكعّب ABCDEFGH طول حرفه $2\\sqrt{2}\\,cm$ ، والمثلث ACG قائم في C. نكتب $AG = a\\sqrt{b}$ حيث $a$ و $b$ طبيعيان و $b$ أصغر ما يمكن. ما قيمة $b$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-B-LAYSA-ASGHAR",
+          "value": "24"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $AG^2$ بخاصية فيثاغورس في المثلث ACG."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مربع قطر الوجه هو $8 + 8$ ، و $CG^2 = 8$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أخرج أكبر مربع يقسم $AG^2$ من تحت الجذر: ما يبقى هو $b$."
+        }
+      ],
+      "feedback": {
+        "correct": "$AG^2 = 24 = 4 \\times 6$ و 6 لا يقبل القسمة على مربع غير 1.",
+        "incorrect": "يجب أن يبقى تحت الجذر عدد لا يقبل القسمة على أي مربع أكبر من 1."
+      }
+    }
+  ]
+}

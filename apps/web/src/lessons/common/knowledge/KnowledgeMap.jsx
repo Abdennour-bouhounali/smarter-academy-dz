@@ -17,6 +17,7 @@ import { useLearningProfile } from '../hooks/useLearningProfile';
 import { MASTERY_STATES, masteryTooltip } from '../components/LearningPointMastery';
 import { moduleMasteryOverlay } from './knowledgeMastery';
 import { resolveGraph } from './progressive/graphModel';
+import { bidi } from '../../../utils/bidi';
 
 // CARTE PROGRESSIVE — la carte de connaissances de toutes les leçons
 // (KNOWLEDGE_MAP.md, Part A). Chargée à part, à l'ouverture de la carte.
@@ -368,7 +369,7 @@ function StripBase({ steps, overlay }) {
           <React.Fragment key={s.module}>
             {i > 0 && <span className="text-slate-200 text-[10px]" aria-hidden="true">→</span>}
             <span className="inline-flex items-center gap-1 text-[10px] font-mono text-slate-500 bg-slate-50 border border-slate-100 rounded px-1.5 py-0.5">
-              M{s.module}<span className="text-slate-300"> +{s.count}</span>
+              {t('map.stepChip', { module: s.module })}<span className="text-slate-300" dir="ltr"> +{s.count}</span>
               {mastery && (
                 <span className="inline-flex items-center gap-0.5 ms-0.5" data-km-noprint="true" data-km-mastery={s.module} aria-label={t('map.masteryOverlayAria', { module: s.module })}>
                   {mastery.dots.map((d) => {

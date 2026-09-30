@@ -1,0 +1,62 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l4-010",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — مجموع نسبتين",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مقام ناطق",
+      "تبسيط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P3",
+      "modelledOn": "now-25-2"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العدد $A = \\dfrac{1}{\\sqrt{2}} + \\dfrac{1}{\\sqrt{8}}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نعتبر $A = \\dfrac{1}{\\sqrt{2}} + \\dfrac{1}{\\sqrt{8}}$. نكتب $A = \\dfrac{p\\sqrt{2}}{4}$. ما قيمة العدد الطبيعي $p$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجعل مقام كل نسبة ناطقًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{8} = 2\\sqrt{2}$ ؛ اضرب بسط ومقام كل نسبة في $\\sqrt{2}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "وحّد المقامين على 4 ثم اجمع."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{1}{\\sqrt{2}} = \\dfrac{\\sqrt{2}}{2} = \\dfrac{2\\sqrt{2}}{4}$ و $\\dfrac{1}{\\sqrt{8}} = \\dfrac{1}{2\\sqrt{2}} = \\dfrac{\\sqrt{2}}{4}$.",
+        "incorrect": "اجعل كل مقام ناطقًا أولًا ثم وحّد المقامات؛ لا نجمع المقامات."
+      }
+    }
+  ]
+}

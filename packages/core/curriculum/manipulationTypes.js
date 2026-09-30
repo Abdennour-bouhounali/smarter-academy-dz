@@ -91,6 +91,36 @@ export const MANIPULATION_TYPES = Object.freeze({
     // 9240/7560 dessinait 16 800 objets et un dépôt prenait 4 s (audit 2026-09-29).
     controls: { reset: true, nextStep: true, toggleExplanation: true, changeNumbers: { n: [1, 600], d: [2, 600] } },
   },
+
+  // ── Unité 2 « الحساب على الجذور » (2026-09-30) ──────────────────────────
+  'square-root-side': {
+    // L'élève ÉTIRE le côté d'un carré sur une règle graduée : le carré se
+    // dessine, son aire se lit exactement, et se compare à l'aire visée.
+    // Mode `refine` (leçon 1) : on resserre l'encadrement (1 → 0,1 → 0,01 →
+    // 0,001) — pour 36 le côté tombe juste, pour 5 JAMAIS : √5 existe (c'est
+    // BC) mais aucun décimal n'en est l'écriture. Mode `graduation` (leçon 2) :
+    // l'élève choisit la graduation 1/g — le côté tombe sur une graduation
+    // exactement quand l'aire est le carré d'un rationnel. Chaque position
+    // est un essai : MANUEL (§6bis).
+    shows: '√a هو العدد الموجب الذي مربّعه a: ضلع المربّع الذي مساحته a — ناطق إذا وقع على تدريجة، وغير ناطق إذا لم يقع على أي تدريجة',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: { num: [1, 400], den: [1, 100] } },
+  },
+  'square-fold': {
+    // L'élève DÉPLACE x sur la droite graduée ; une flèche porte x vers x²
+    // sur la droite des carrés, dont la moitié négative est hachurée : aucun
+    // carré n'y arrive (résistance). x et −x arrivent au même point.
+    // Épingler un x comme solution est une RÉPONSE : MANUEL (§6bis).
+    shows: 'المعادلة x² = a: حلّان متعاكسان √a و −√a إذا كان a > 0، حل واحد 0 إذا كان a = 0، ولا حل إذا كان a < 0',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'square-tiling': {
+    // L'élève ÉTIRE k, le nombre de dalles par côté d'un carré d'aire n :
+    // n = k² × b et le côté vaut k√b. Une dalle d'aire non entière est
+    // refusée (k² ne divise pas n). Le plus grand k donne b le plus petit.
+    // Chaque k est un essai : MANUEL (§6bis).
+    shows: '√(k² × b) = √(k²) × √b = k√b: مربّع مساحته n مبلّط بـ k × k بلاطة مساحة كل منها b — وأكبر k يعطي أصغر b',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: { n: [2, 999] } },
+  },
 });
 
 export const MANIPULATION_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_TYPES));

@@ -1,0 +1,160 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l5-006",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — من امتحان شهادة التعليم المتوسط — عددان",
+    "estimatedMinutes": 6,
+    "tags": [
+      "تبسيط",
+      "مقام ناطق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P2",
+      "modelledOn": "ex-37"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العددين $A = \\sqrt{48} - 2\\sqrt{27} + \\sqrt{75}$ و $B = \\dfrac{6}{\\sqrt{3}}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نعتبر $A = \\sqrt{48} - 2\\sqrt{27} + \\sqrt{75}$. نكتب $A = k\\sqrt{3}$. ما قيمة العدد الصحيح $k$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUAMIL-MANSI",
+          "value": "6"
+        },
+        {
+          "id": "MISC-ISHARA",
+          "value": "15"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجذور الثلاثة تُكتب بدلالة $\\sqrt{3}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$48 = 16 \\times 3$ ، $27 = 9 \\times 3$ ، $75 = 25 \\times 3$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب كل جذر مبسّط في معامله، ثم اجمع المعاملات بإشاراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = 4\\sqrt{3} - 2 \\times 3\\sqrt{3} + 5\\sqrt{3} = (4 - 6 + 5)\\sqrt{3}$.",
+        "incorrect": "راجع المعامل 2 أمام $\\sqrt{27}$ وإشارة كل حدّ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نعتبر $B = \\dfrac{6}{\\sqrt{3}}$. نكتب $B = m\\sqrt{3}$. ما قيمة $m$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-BAST-DUN-DARB",
+          "value": "6"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المقام عدد غير ناطق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب البسط والمقام في $\\sqrt{3}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد الضرب، اختزل على 3."
+        }
+      ],
+      "feedback": {
+        "correct": "$B = \\dfrac{6\\sqrt{3}}{3}$.",
+        "incorrect": "اضرب البسط والمقام معًا في $\\sqrt{3}$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "نعتبر $A = \\sqrt{48} - 2\\sqrt{27} + \\sqrt{75}$ و $B = \\dfrac{6}{\\sqrt{3}}$. احسب $A \\times B$.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_tawzif-khawass-judhur_P3",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "18",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-JIDHR-FI-JIDHR",
+          "value": "54"
+        },
+        {
+          "id": "MISC-MUAMIL-MANSI",
+          "value": "6"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب $A$ و $B$ على الشكل $k\\sqrt{3}$ أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الجداء يصبح من الشكل $k\\sqrt{3} \\times m\\sqrt{3}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\sqrt{3} \\times \\sqrt{3} = 3$."
+        }
+      ],
+      "feedback": {
+        "correct": "$A \\times B = 3\\sqrt{3} \\times 2\\sqrt{3} = 6 \\times 3$.",
+        "incorrect": "بسّط $A$ و $B$ أولًا، ثم تذكّر أن جداء جذر في نفسه يعطي العدد الذي تحته."
+      }
+    }
+  ]
+}

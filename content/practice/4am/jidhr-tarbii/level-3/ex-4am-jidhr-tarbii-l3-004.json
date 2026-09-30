@@ -1,0 +1,104 @@
+{
+  "metadata": {
+    "title": "تدريب — أحسب ما تحت الرمز أولًا",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترتيب العمليات",
+      "الرمز √"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidhr-tarbii_P2",
+      "modelledOn": "ex-4"
+    }
+  },
+  "statement": {
+    "content": "احسب كل عدد، مبتدئًا بالعدد المكتوب تحت الرمز $\\sqrt{\\;}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\sqrt{6^2 + 8^2} = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولًا $6^2 + 8^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على مربع تام."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن العدد الموجب الذي مربعه هذا المجموع."
+        }
+      ],
+      "feedback": {
+        "correct": "$6^2 + 8^2 = 36 + 64 = 100$ و $\\sqrt{100} = 10$.",
+        "incorrect": "لا نأخذ جذر كل حد على حدة: نحسب المجموع كاملًا أولًا."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "14",
+          "id": "MISC-JIDHR-JAMA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "$\\sqrt{13^2 - 12^2} = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولًا $13^2 - 12^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$13^2 = 169$ و $12^2 = 144$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن العدد الموجب الذي مربعه الفرق."
+        }
+      ],
+      "feedback": {
+        "correct": "$169 - 144 = 25$ و $\\sqrt{25} = 5$.",
+        "incorrect": "احسب الفرق تحت الرمز أولًا، ثم جذره."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "1",
+          "id": "MISC-JIDHR-TARH"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l3-004",
+  "lessonCode": "jidhr-tarbii",
+  "level": 3
+}

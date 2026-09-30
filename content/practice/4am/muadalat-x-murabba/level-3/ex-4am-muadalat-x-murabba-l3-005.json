@@ -1,0 +1,114 @@
+{
+  "metadata": {
+    "title": "تدريب — أصنّف معادلات",
+    "estimatedMinutes": 4,
+    "tags": [
+      "عدد الحلول",
+      "تصنيف"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P1",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "نعتبر المعادلات الخمس: $x^2 = 4$ ، $x^2 = 0$ ، $x^2 = -4$ ، $x^2 = 0{,}4$ ، $x^2 = -0{,}04$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من بين المعادلات $x^2 = 4$ ، $x^2 = 0$ ، $x^2 = -4$ ، $x^2 = 0{,}4$ ، $x^2 = -0{,}04$، كم معادلة تقبل حلين؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
+        {
+          "value": "3",
+          "id": "MISC-HALL-SIFR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صنّف المعادلات حسب إشارة الطرف الثاني."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المعادلة تقبل حلين إذا كان $a > 0$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عدّ الأعداد الموجبة تماما."
+        }
+      ],
+      "feedback": {
+        "correct": "$4 > 0$ و $0{,}4 > 0$: معادلتان فقط.",
+        "incorrect": "$x^2 = 0$ تقبل حلا واحدا، والطرف الثاني السالب لا يعطي حلا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما مجموع عدد حلول المعادلات الخمس $x^2 = 4$ ، $x^2 = 0$ ، $x^2 = -4$ ، $x^2 = 0{,}4$ ، $x^2 = -0{,}04$؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
+        {
+          "value": "10",
+          "id": "MISC-HALL-SALIB"
+        },
+        {
+          "value": "4",
+          "id": "MISC-HALL-SIFR"
+        },
+        {
+          "value": "6",
+          "id": "MISC-HALL-SIFR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد عدد حلول كل معادلة على حدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حلان إذا $a > 0$، حل واحد إذا $a = 0$، لا حل إذا $a < 0$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع الأعداد الخمسة."
+        }
+      ],
+      "feedback": {
+        "correct": "$2 + 1 + 0 + 2 + 0$.",
+        "incorrect": "راجع حالة $a = 0$ وحالة $a < 0$."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l3-005",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 3
+}

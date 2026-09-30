@@ -1,0 +1,134 @@
+{
+  "metadata": {
+    "title": "تدريب — حاصل قسمة جذرين",
+    "estimatedMinutes": 5,
+    "tags": [
+      "حاصل قسمة جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P2",
+      "modelledOn": "ex-21"
+    }
+  },
+  "statement": {
+    "content": "احسب كل حاصل قسمة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\dfrac{\\sqrt{300}}{\\sqrt{3}}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب حاصل القسمة تحت جذر واحد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $300 \\div 3$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خذ جذر الناتج."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{\\dfrac{300}{3}} = \\sqrt{100} = 10$",
+        "incorrect": "لا تتوقف عند القسمة: بقي الجذر."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "100",
+          "id": "MISC-QISMA-JIDHR"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "$\\dfrac{\\sqrt{1{,}6}}{\\sqrt{0{,}1}}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب حاصل القسمة تحت جذر واحد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $1{,}6 \\div 0{,}1$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خذ جذر الناتج."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{\\dfrac{1{,}6}{0{,}1}} = \\sqrt{16} = 4$",
+        "incorrect": "القسمة على $0{,}1$ تضرب العدد في 10."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "$\\sqrt{\\dfrac{0{,}49}{0{,}25}}$ (اكتب النتيجة كسرًا غير قابل للاختزال)",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "7/5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\sqrt{\\dfrac{a}{b}} = \\dfrac{\\sqrt{a}}{\\sqrt{b}}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $\\sqrt{0{,}49}$ و $\\sqrt{0{,}25}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب حاصل قسمتهما كسرًا بأعداد طبيعية."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{\\sqrt{0{,}49}}{\\sqrt{0{,}25}} = \\dfrac{0{,}7}{0{,}5} = \\dfrac{7}{5}$",
+        "incorrect": "تحقّق من كل جذر بالتربيع ثم اختزل."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l2-004",
+  "lessonCode": "amaliyat-judhur",
+  "level": 2
+}

@@ -1,0 +1,78 @@
+{
+  "metadata": {
+    "title": "تدريب — أي عدد ليس له جذر تربيعي؟",
+    "estimatedMinutes": 2,
+    "tags": [
+      "تعريف",
+      "عدد سالب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidhr-tarbii_P1",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "الجذر التربيعي معرّف للأعداد الموجبة فقط."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أي كتابة من الكتابات التالية لا معنى لها؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sqrt{0}$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$\\sqrt{(-4)^2}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$\\sqrt{-(-2)}$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$\\sqrt{-4^2}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب العدد المكتوب تحت الرمز في كل حالة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انتبه: $(-4)^2$ و $-4^2$ ليسا العدد نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن الكتابة التي يكون فيها العدد تحت الرمز سالبًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$-4^2 = -16$ سالب فلا معنى للرمز؛ أما $(-4)^2 = 16$ و $-(-2) = 2$ و 0 فأعداد موجبة.",
+        "incorrect": "في $-4^2$ يُربَّع 4 فقط ثم نأخذ المعاكس."
+      }
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l3-008",
+  "lessonCode": "jidhr-tarbii",
+  "level": 3
+}

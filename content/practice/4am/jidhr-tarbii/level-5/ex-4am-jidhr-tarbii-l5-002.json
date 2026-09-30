@@ -1,0 +1,59 @@
+{
+  "metadata": {
+    "title": "دوري الآن — حساب بالعدد π",
+    "estimatedMinutes": 3,
+    "tags": [
+      "دوري الآن",
+      "إشارة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "now-23-1",
+      "page": 23,
+      "section": "دوري الآن",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 23): احسب $\\sqrt{(3{,}301 - \\pi)^2} + \\sqrt{(3{,}141 - \\pi)^2}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الناتج:",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "0.16",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\pi \\approx 3{,}14159$: قارن كلًا من 3,301 و 3,141 بالعدد $\\pi$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$3{,}301 - \\pi$ موجب و $3{,}141 - \\pi$ سالب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب كل جذر دون الرمز ثم اجمع: $\\pi$ يختفي."
+        }
+      ],
+      "feedback": {
+        "correct": "$(3{,}301 - \\pi) + (\\pi - 3{,}141) = 3{,}301 - 3{,}141 = 0{,}16$.",
+        "incorrect": "حدّد إشارة كل عدد داخل المربع قبل حذف الجذر."
+      }
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l5-002",
+  "lessonCode": "jidhr-tarbii",
+  "level": 5
+}

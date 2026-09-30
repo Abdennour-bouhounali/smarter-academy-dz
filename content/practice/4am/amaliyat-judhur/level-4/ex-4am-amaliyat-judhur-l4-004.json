@@ -1,0 +1,112 @@
+{
+  "metadata": {
+    "title": "تدريب — تبرير: جذر المجموع",
+    "estimatedMinutes": 6,
+    "tags": [
+      "مجموع جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P3",
+      "modelledOn": "know-4"
+    }
+  },
+  "statement": {
+    "content": "نريد إثبات أن المساواة $\\sqrt{a + b} = \\sqrt{a} + \\sqrt{b}$ ليست صحيحة من أجل كل عددين موجبين $a$ و $b$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما الذي يكفي لإثبات ذلك؟",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "مثال واحد تكون فيه المساواة صحيحة، مثل $a = 9$ و $b = 0$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "ملاحظة أن $\\sqrt{a}$ و $\\sqrt{b}$ عددان موجبان",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "مثال واحد تكون فيه المساواة خاطئة، مثل $a = 9$ و $b = 16$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لإثبات أن خاصية ليست صحيحة دائمًا، ماذا نحتاج؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مثال تكون فيه صحيحة لا يثبت أنها صحيحة دائمًا، ولا أنها خاطئة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جرّب $a = 9$ و $b = 16$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "مثال مضاد واحد يكفي: $\\sqrt{9 + 16} = 5$ و $\\sqrt{9} + \\sqrt{16} = 7$ .",
+        "incorrect": "حالة صحيحة واحدة لا تنفي المساواة؛ نحتاج حالة خاطئة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "من أجل $a = 9$ و $b = 16$ ، احسب $(\\sqrt{a} + \\sqrt{b})^2 - (a + b)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "24",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $\\sqrt{a} + \\sqrt{b}$ أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ربّع النتيجة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح $a + b$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$(3 + 4)^2 - 25 = 49 - 25 = 24$ : الفرق ليس معدومًا، لذلك $\\sqrt{a} + \\sqrt{b} \\neq \\sqrt{a + b}$ .",
+        "incorrect": "$(\\sqrt{9} + \\sqrt{16})^2 = 7^2$ ، أكمل."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "0",
+          "id": "MISC-HADD-2AB"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l4-004",
+  "lessonCode": "amaliyat-judhur",
+  "level": 4
+}

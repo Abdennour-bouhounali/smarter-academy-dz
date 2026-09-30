@@ -1,0 +1,74 @@
+{
+  "metadata": {
+    "title": "تدريب — هل الجذر التربيعي يكون سالبًا؟",
+    "estimatedMinutes": 2,
+    "tags": [
+      "تعريف",
+      "إشارة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidhr-tarbii_P1",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "نعلم أنّ $(-4)^2 = 16$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل العدد $-4$ هو الجذر التربيعي للعدد 16؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، لأن مربعه يساوي 16",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-SALIB"
+        },
+        {
+          "id": "B",
+          "content": "لا، لأن الجذر التربيعي عدد موجب، والجذر التربيعي للعدد 16 هو 4",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "لا، لأن $(-4)^2 = -16$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أعد قراءة التعريف كاملًا: ما الشرطان؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الشرط الأول يخص إشارة العدد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل $-4$ عدد موجب؟"
+        }
+      ],
+      "feedback": {
+        "correct": "مربع $-4$ يساوي 16 فعلًا، لكن الجذر التربيعي عدد موجب: $\\sqrt{16} = 4$.",
+        "incorrect": "لا يكفي أن يكون المربع 16: يجب أيضًا أن يكون العدد موجبًا. وتذكّر أنّ مربع عدد سالب موجب."
+      }
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l1-005",
+  "lessonCode": "jidhr-tarbii",
+  "level": 1
+}

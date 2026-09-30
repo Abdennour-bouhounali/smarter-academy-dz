@@ -1,0 +1,172 @@
+{
+  "metadata": {
+    "title": "تمرين 21 — حاصل قسمة جذرين",
+    "estimatedMinutes": 7,
+    "tags": [
+      "حاصل قسمة جذرين"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-21",
+      "page": 27,
+      "section": "أوظّف تعلّماتي",
+      "number": 21
+    }
+  },
+  "statement": {
+    "content": "بسّط كل عدد مما يلي واعط النتيجة على شكل كسر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\dfrac{\\sqrt{2}}{\\sqrt{18}}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "1/3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{\\sqrt{a}}{\\sqrt{b}} = \\sqrt{\\dfrac{a}{b}}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختزل $\\dfrac{2}{18}$ تحت الجذر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم احسب الجذر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{\\dfrac{2}{18}} = \\sqrt{\\dfrac{1}{9}} = \\dfrac{1}{3}$",
+        "incorrect": "بعد الاختزال بقي الجذر."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$\\dfrac{\\sqrt{3}}{\\sqrt{48}}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "1/4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع الجذرين في جذر واحد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختزل $\\dfrac{3}{48}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب جذر الكسر المختزل."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{\\dfrac{3}{48}} = \\sqrt{\\dfrac{1}{16}} = \\dfrac{1}{4}$",
+        "incorrect": "اختزل ثم خذ الجذر."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "$\\dfrac{\\sqrt{6875}}{\\sqrt{1100}}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "5/2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع الجذرين في جذر واحد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختزل $\\dfrac{6875}{1100}$: البسط والمقام يقبلان القسمة على 25."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ستجد كسرًا بسطه ومقامه مربّعان تامّان."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{\\dfrac{6875}{1100}} = \\sqrt{\\dfrac{25}{4}} = \\dfrac{5}{2}$",
+        "incorrect": "اختزل حتى النهاية قبل الجذر."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      }
+    },
+    {
+      "id": "q4",
+      "statement": "$\\dfrac{\\sqrt{7}}{\\sqrt{448}}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "1/8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع الجذرين في جذر واحد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كم مرة يوجد 7 في 448؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب جذر الكسر المختزل."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{\\dfrac{7}{448}} = \\sqrt{\\dfrac{1}{64}} = \\dfrac{1}{8}$",
+        "incorrect": "$448 = 7 \\times 64$."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l4-001",
+  "lessonCode": "amaliyat-judhur",
+  "level": 4
+}

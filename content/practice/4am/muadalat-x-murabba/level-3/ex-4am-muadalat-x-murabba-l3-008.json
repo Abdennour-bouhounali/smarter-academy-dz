@@ -1,0 +1,104 @@
+{
+  "metadata": {
+    "title": "تدريب — كسر وصفر",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معادلة",
+      "كسر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P2",
+      "modelledOn": "ex-13"
+    }
+  },
+  "statement": {
+    "content": "نعزل $x^2$ ثم نطبّق خاصية حلول المعادلة $x^2 = a$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هو الحل الموجب للمعادلة $\\dfrac{x^2}{2} = 8$؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب الطرفين في 2."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على $x^2 = a$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما العدد الموجب الذي مربعه $a$؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 = 16$ ، إذن $x = 4$ أو $x = -4$.",
+        "incorrect": "$\\dfrac{x^2}{2} = 8$ يعني $x^2 = 8 \\times 2$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "كم حلا تقبل المعادلة $2x^2 + 7 = 7$؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "1",
+      "misconceptionSignatures": [
+        {
+          "value": "2",
+          "id": "MISC-HALL-SIFR"
+        },
+        {
+          "value": "0",
+          "id": "MISC-HALL-SIFR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اطرح 7 من الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم اقسم على 2."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما عدد حلول $x^2 = 0$؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$2x^2 = 0$ ، $x^2 = 0$ ، الحل الوحيد هو 0.",
+        "incorrect": "$x^2 = 0$ ليست معادلة بلا حل."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l3-008",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 3
+}

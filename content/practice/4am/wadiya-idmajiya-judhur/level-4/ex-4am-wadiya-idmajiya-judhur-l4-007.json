@@ -1,0 +1,167 @@
+{
+  "metadata": {
+    "title": "تدريب — معادلات: كم حلا؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية إدماجية",
+      "معادلة",
+      "عدد الحلول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": "qcm"
+    }
+  },
+  "statement": {
+    "content": "حل المعادلات التالية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلول المعادلة $2x^2 - 1 = 17$ هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3$ و $-3$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\sqrt{8}$ و $-\\sqrt{8}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$9$ و $-9$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$3$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انقل $-1$ إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم على 2 لتحصل على $x^2 = a$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما إشارة $a$؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$2x^2 = 18$، $x^2 = 9$، والحلان $3$ و $-3$.",
+        "incorrect": "انقل الحد الثابت بإشارته الصحيحة، ثم اقسم."
+      },
+      "cognitiveDemand": "reason"
+    },
+    {
+      "id": "q2",
+      "statement": "كم حلا للمعادلة $5 - x^2 = 5$؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اعزل $x^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على $x^2 = 0$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "كم عددًا مربعه 0؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 = 0$ تقبل حلًّا واحدًا هو 0.",
+        "incorrect": "مربع عدد غير معدوم ليس معدومًا."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "2",
+          "id": "MISC-HALL-SIFR"
+        },
+        {
+          "value": "0",
+          "id": "MISC-HALL-SIFR"
+        }
+      ],
+      "cognitiveDemand": "reason"
+    },
+    {
+      "id": "q3",
+      "statement": "كم حلا للمعادلة $3x^2 + 12 = 0$؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "0",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اعزل $x^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما إشارة العدد الذي يساويه $x^2$؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل يمكن أن يكون مربع عدد سالبًا؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 = -4$ و $-4 < 0$: لا تقبل أي حل.",
+        "incorrect": "مربع أي عدد موجب."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "2",
+          "id": "MISC-HALL-SALIB"
+        }
+      ],
+      "cognitiveDemand": "reason"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l4-007",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 4
+}

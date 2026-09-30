@@ -1,0 +1,68 @@
+{
+  "metadata": {
+    "title": "تدريب — عبارة بعدة خطوات",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حساب",
+      "خاصية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidhr-tarbii_P3",
+      "modelledOn": "method-compute"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $A = 3(\\sqrt{2})^2 - \\sqrt{(-4)^2} + (\\sqrt{0{,}5})^2$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $A$.",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "2.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب كل حد على حدة قبل الجمع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل $(\\sqrt{a})^2 = a$ للحدين الأول والثالث."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\sqrt{(-4)^2}$ عدد موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = 3 \\times 2 - 4 + 0{,}5 = 2{,}5$.",
+        "incorrect": "راجع إشارة $\\sqrt{(-4)^2}$ وقيمة مربع الجذر."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "10.5",
+          "id": "MISC-JIDHR-MURABBA-ISHARA"
+        },
+        {
+          "value": "8.25",
+          "id": "MISC-TARBI-JIDHR"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l4-007",
+  "lessonCode": "jidhr-tarbii",
+  "level": 4
+}

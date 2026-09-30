@@ -1,0 +1,118 @@
+{
+  "metadata": {
+    "title": "تدريب — مثلث قائم متساوي الساقين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية إدماجية",
+      "فيثاغورس",
+      "مدوّر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "مثلث قائم ومتساوي الساقين، طول كل ساق $5\\,cm$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "طول الوتر (بالسنتيمتر) هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$10$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        },
+        {
+          "id": "B",
+          "content": "$25\\sqrt{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        },
+        {
+          "id": "C",
+          "content": "$50$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARBI-JIDHR"
+        },
+        {
+          "id": "D",
+          "content": "$5\\sqrt{2}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل خاصية فيثاغورس."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مربع الوتر يساوي مجموع مربعي الساقين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $50 = 25 \\times 2$."
+        }
+      ],
+      "feedback": {
+        "correct": "مربع الوتر $25 + 25 = 50$، والوتر $\\sqrt{50} = 5\\sqrt{2}$.",
+        "incorrect": "احسب مربع الوتر، ثم جذره التربيعي، ثم بسّط."
+      },
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "أعط المدوّر إلى الجزء من عشرة لطول الوتر (بالسنتيمتر).",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري برقم واحد بعد الفاصلة",
+      "expectedAnswer": "7.1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل الحاسبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى رقم الأجزاء من مئة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر في النهاية فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "$5\\sqrt{2} \\approx 7{,}07$، والمدوّر إلى الجزء من عشرة 7,1.",
+        "incorrect": "احسب القيمة المضبوطة بالحاسبة ثم دوّر."
+      },
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l2-008",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 2
+}

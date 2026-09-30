@@ -1,0 +1,104 @@
+{
+  "metadata": {
+    "title": "تدريب — مربع الجذر التربيعي",
+    "estimatedMinutes": 2,
+    "tags": [
+      "خاصية",
+      "مربع الجذر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidhr-tarbii_P3",
+      "modelledOn": "ex-7"
+    }
+  },
+  "statement": {
+    "content": "$a$ عدد موجب: $(\\sqrt{a})^2 = a$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$(\\sqrt{2{,}7})^2 = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "2.7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد تحت الرمز موجب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "لا حاجة إلى حساب الجذر نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "طبّق الخاصية المذكورة في النص."
+        }
+      ],
+      "feedback": {
+        "correct": "حسب الخاصية: $(\\sqrt{2{,}7})^2 = 2{,}7$.",
+        "incorrect": "مربع $\\sqrt{a}$ هو $a$ نفسه، وليس $a^2$."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "7.29",
+          "id": "MISC-TARBI-JIDHR"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "$\\left(\\sqrt{\\dfrac{3}{11}}\\right)^2 = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "3/11",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد تحت الرمز كسر موجب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "لا تربّع البسط والمقام."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "طبّق الخاصية المذكورة في النص."
+        }
+      ],
+      "feedback": {
+        "correct": "حسب الخاصية: $\\left(\\sqrt{\\dfrac{3}{11}}\\right)^2 = \\dfrac{3}{11}$.",
+        "incorrect": "مربع الجذر التربيعي لعدد موجب هو العدد نفسه."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "9/121",
+          "id": "MISC-TARBI-JIDHR"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l2-006",
+  "lessonCode": "jidhr-tarbii",
+  "level": 2
+}

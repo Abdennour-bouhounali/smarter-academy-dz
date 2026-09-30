@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "title": "تمرين 13 — حل معادلات",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تمرين",
+      "معادلة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-13",
+      "page": 26,
+      "section": "أوظّف تعلّماتي",
+      "number": 13
+    }
+  },
+  "statement": {
+    "content": "من التمرين 13 (الكتاب ص 26): حل كل معادلة مما يلي."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هو الحل الموجب للمعادلة $1 - 9x^2 = 0$؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "1/3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اعزل $x^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$9x^2 = 1$ ثم اقسم على 9."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن كسر موجب مربعه $\\dfrac{1}{9}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 = \\dfrac{1}{9}$، و $\\left(\\dfrac{1}{3}\\right)^2 = \\dfrac{1}{9}$: الحلان $\\dfrac{1}{3}$ و $-\\dfrac{1}{3}$.",
+        "incorrect": "بعد عزل $x^2$ لا تتوقف: المطلوب $x$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "المعادلة $3 + x^2 = 0$ ...",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x = \\sqrt{3}$ أو $x = -\\sqrt{3}$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$x = -\\sqrt{3}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "لا تقبل أي حل",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اعزل $x^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x^2 = -3$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما إشارة $-3$؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 = -3$ و $-3 < 0$: لا تقبل أي حل.",
+        "incorrect": "انتبه إلى الإشارة عند نقل 3."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l4-002",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 4
+}

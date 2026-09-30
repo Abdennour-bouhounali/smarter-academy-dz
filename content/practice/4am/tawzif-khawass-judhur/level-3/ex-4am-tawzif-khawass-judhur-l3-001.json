@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "title": "دوري الآن 1 — العدد B",
+    "estimatedMinutes": 4,
+    "tags": [
+      "a + b√c"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "now-25-1",
+      "page": 25,
+      "section": "دوري الآن",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 25): $B = \\sqrt{250} - \\sqrt{490} + 2\\sqrt{81}$ ، ونكتب B على الشكل $a + b\\sqrt{c}$ حيث $a$ و $b$ عددان صحيحان و $c$ عدد طبيعي أصغر ما يمكن."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما قيمة $a$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "18",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أيّ حدّ في B عدد ناطق؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{81}$ عدد طبيعي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $2 \\times \\sqrt{81}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$2\\sqrt{81} = 2 \\times 9$ هو الحدّ الناطق في B.",
+        "incorrect": "$\\sqrt{81} = 9$، ثم اضرب في 2."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما قيمة $b$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "-2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$250 = 25 \\times 10$ و $490 = 49 \\times 10$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{250} = 5\\sqrt{10}$ و $\\sqrt{490} = 7\\sqrt{10}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$5\\sqrt{10} - 7\\sqrt{10} = (5 - 7)\\sqrt{10}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{250} - \\sqrt{490} = 5\\sqrt{10} - 7\\sqrt{10}$.",
+        "incorrect": "انتبه إلى الإشارة: نطرح $7\\sqrt{10}$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "ما قيمة $c$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن أكبر مربع يقسم 250."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$250 = 5^2 \\times 10$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما يبقى تحت الجذر بعد إخراج المربع هو $c$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{250} = 5\\sqrt{10}$ و $\\sqrt{490} = 7\\sqrt{10}$: الجذر المشترك $\\sqrt{10}$.",
+        "incorrect": "أكبر مربع يقسم 250 هو 25."
+      }
+    }
+  ],
+  "id": "ex-4am-tawzif-khawass-judhur-l3-001",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 3
+}

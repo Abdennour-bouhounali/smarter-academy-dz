@@ -1,0 +1,103 @@
+{
+  "metadata": {
+    "title": "تدريب — حاصل قسمة جذرين على شكل كسر",
+    "estimatedMinutes": 5,
+    "tags": [
+      "حاصل قسمة جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P2",
+      "modelledOn": "ex-21"
+    }
+  },
+  "statement": {
+    "content": "اكتب كل عدد على شكل كسر غير قابل للاختزال."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\dfrac{\\sqrt{12}}{\\sqrt{27}}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "2/3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب حاصل القسمة تحت جذر واحد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختزل $\\dfrac{12}{27}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "البسط والمقام بعد الاختزال مربّعان تامّان."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{\\dfrac{12}{27}} = \\sqrt{\\dfrac{4}{9}} = \\dfrac{2}{3}$",
+        "incorrect": "اختزل ما تحت الجذر ثم خذ الجذر."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "4/9",
+          "id": "MISC-QISMA-JIDHR"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "$\\dfrac{\\sqrt{200}}{\\sqrt{18}}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "10/3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع الجذرين في جذر واحد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختزل $\\dfrac{200}{18}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب جذر البسط وجذر المقام."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{\\dfrac{200}{18}} = \\sqrt{\\dfrac{100}{9}} = \\dfrac{10}{3}$",
+        "incorrect": "اختزل حتى يظهر مربّعان تامّان."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l2-010",
+  "lessonCode": "amaliyat-judhur",
+  "level": 2
+}

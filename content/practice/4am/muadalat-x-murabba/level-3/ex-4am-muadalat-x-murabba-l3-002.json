@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "title": "تمرين 12 — حل معادلات",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تمرين",
+      "معادلة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-12",
+      "page": 26,
+      "section": "أوظّف تعلّماتي",
+      "number": 12
+    }
+  },
+  "statement": {
+    "content": "من التمرين 12 (الكتاب ص 26): حل كل معادلة مما يلي."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعادلة $x^2 = (-1)^2$ ...",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "تقبل حلا واحدا هو $-1$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$x = 1$ أو $x = -1$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "لا تقبل أي حل",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولًا $(-1)^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المعادلة هي إذن $x^2 = 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما إشارة العدد 1؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$(-1)^2 = 1$، فالمعادلة $x^2 = 1$ تقبل حلين 1 و $-1$.",
+        "incorrect": "لا تنس الحل الموجب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو الحل الموجب للمعادلة $x^2 = \\dfrac{1}{4}$؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "1/2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن كسر موجب مربعه $\\dfrac{1}{4}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$4 = 2^2$ و $1 = 1^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$x^2 = \\left(\\sqrt{\\dfrac{1}{4}}\\right)^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\left(\\dfrac{1}{2}\\right)^2 = \\dfrac{1}{4}$: الحلان $\\dfrac{1}{2}$ و $-\\dfrac{1}{2}$.",
+        "incorrect": "المطلوب جذر $\\dfrac{1}{4}$، لا نصفه."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l3-002",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 3
+}

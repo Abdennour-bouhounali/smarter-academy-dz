@@ -1,0 +1,116 @@
+{
+  "metadata": {
+    "title": "تدريب — صحيح أم خطأ",
+    "estimatedMinutes": 2,
+    "tags": [
+      "مربع عدد",
+      "حل معادلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P1",
+      "modelledOn": "prep"
+    }
+  },
+  "statement": {
+    "content": "أصحيح أم خاطئ؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مربع أي عدد هو عدد موجب.",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "recall",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "صحيح",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "خطأ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-SALIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "جرّب عددا موجبا ثم عددا سالبا ثم 0."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب مثلا $(-3)^2$ و $3^2$ و $0^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء عددين لهما نفس الإشارة موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 = x \\times x$ جداء عددين لهما نفس الإشارة، فهو موجب دائما.",
+        "incorrect": "احسب $(-3)^2$: هل النتيجة سالبة؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العدد $-5$ حل للمعادلة $x^2 = 25$.",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "recall",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "صحيح",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "خطأ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد حل للمعادلة إذا حقّقها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بـ $-5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $(-5)^2$ وقارن بـ 25."
+        }
+      ],
+      "feedback": {
+        "correct": "$(-5)^2 = 25$: العدد $-5$ حل، كما أن 5 حل.",
+        "incorrect": "لا تنسَ أن العدد السالب قد يكون حلا: احسب $(-5)^2$."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l1-007",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 1
+}

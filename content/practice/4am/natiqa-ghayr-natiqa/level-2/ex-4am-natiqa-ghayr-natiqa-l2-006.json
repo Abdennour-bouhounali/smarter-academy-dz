@@ -1,0 +1,74 @@
+{
+  "metadata": {
+    "title": "تدريب — قيمة مقرّبة بالزيادة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "قيمة مقرّبة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P3",
+      "modelledOn": "ex-9"
+    }
+  },
+  "statement": {
+    "content": "نريد قيمة مقرّبة للعدد غير الناطق $\\sqrt{20}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "القيمة المقرّبة إلى الجزء من 10 بالزيادة للعدد $\\sqrt{20}$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "4,4",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAQRIB-NAQS-ZIYADA"
+        },
+        {
+          "id": "B",
+          "content": "4,5",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "10",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "القيمة بالزيادة أكبر من $\\sqrt{20}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب مربعات أعداد عشرية برقم واحد بعد الفاصلة محصورة بين 4 و 5."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حدّد العددين المتتاليين برقم واحد بعد الفاصلة اللذين يحصران $\\sqrt{20}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$4{,}4^2 = 19{,}36 < 20 < 20{,}25 = 4{,}5^2$ : القيمة بالزيادة هي الطرف الأكبر.",
+        "incorrect": "بالزيادة يعني أكبر من العدد، وبالنقصان أصغر منه."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l2-006",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 2
+}

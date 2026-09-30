@@ -1,0 +1,113 @@
+{
+  "metadata": {
+    "title": "تدريب — جذر مربع فرق فيه جذر",
+    "estimatedMinutes": 4,
+    "tags": [
+      "إشارة",
+      "جذر المربع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidhr-tarbii_P3",
+      "modelledOn": "method-compute"
+    }
+  },
+  "statement": {
+    "content": "نعلم أنّ $(\\sqrt{5})^2 = 5$ و $2^2 = 4$، و $(\\sqrt{10})^2 = 10$ و $4^2 = 16$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\sqrt{(2 - \\sqrt{5})^2}$ يساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2 - \\sqrt{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$\\sqrt{5} - 2$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$2 + \\sqrt{5}$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$(2 - \\sqrt{5})^2$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن $\\sqrt{5}$ بالعدد 2 باستعمال مربعيهما."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما إشارة $2 - \\sqrt{5}$؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(2 - \\sqrt{5})^2$ هو أيضًا مربع معاكس $2 - \\sqrt{5}$: خذ العدد الموجب منهما."
+        }
+      ],
+      "feedback": {
+        "correct": "$5 > 4$ إذن $\\sqrt{5} > 2$ و $2 - \\sqrt{5}$ سالب؛ العدد الموجب الذي مربعه $(2 - \\sqrt{5})^2$ هو $\\sqrt{5} - 2$.",
+        "incorrect": "الخاصية $\\sqrt{a^2} = a$ لا تُطبَّق إلا إذا كان $a$ موجبًا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$\\sqrt{(4 - \\sqrt{10})^2} + \\sqrt{10} = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما إشارة $4 - \\sqrt{10}$؟ قارن المربعين 16 و 10."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذا كان العدد داخل المربع موجبًا فالجذر يساويه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب الجذر دون الرمز ثم اجمع: $\\sqrt{10}$ يختفي."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{10} < 4$، إذن $\\sqrt{(4 - \\sqrt{10})^2} = 4 - \\sqrt{10}$ والمجموع 4.",
+        "incorrect": "حدّد إشارة العدد داخل المربع قبل حذف الجذر."
+      }
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l4-004",
+  "lessonCode": "jidhr-tarbii",
+  "level": 4
+}

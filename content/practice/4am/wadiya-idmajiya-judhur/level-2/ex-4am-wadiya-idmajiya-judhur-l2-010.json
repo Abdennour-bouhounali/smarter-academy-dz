@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "title": "تدريب — مقارنة عددين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية إدماجية",
+      "مقارنة",
+      "إدخال عامل تحت الجذر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "قارن بين العددين في كل حالة دون استعمال الحاسبة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قارن بين $2\\sqrt{7}$ و $5$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2\\sqrt{7} < 5$، لأنّ $2\\sqrt{7} = \\sqrt{14}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUAMIL-DUN-TARBI"
+        },
+        {
+          "id": "B",
+          "content": "$2\\sqrt{7} > 5$، لأنّ $2\\sqrt{7} = \\sqrt{28}$ و $5 = \\sqrt{25}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$2\\sqrt{7} = 5$، لأنّ $2 + 7 = 9$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب كل عدد على شكل جذر تربيعي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "لإدخال عامل تحت الجذر نربّعه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "من بين جذرين، الأكبر هو جذر العدد الأكبر."
+        }
+      ],
+      "feedback": {
+        "correct": "$2\\sqrt{7} = \\sqrt{4 \\times 7} = \\sqrt{28}$ و $\\sqrt{28} > \\sqrt{25} = 5$.",
+        "incorrect": "العامل يدخل تحت الجذر بمربعه."
+      },
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "قارن بين $3\\sqrt{2}$ و $2\\sqrt{3}$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3\\sqrt{2} < 2\\sqrt{3}$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$3\\sqrt{2} = 2\\sqrt{3}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$3\\sqrt{2} > 2\\sqrt{3}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ربّع كل عدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(a\\sqrt{b})^2 = a^2 b$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن المربعين: العددان موجبان."
+        }
+      ],
+      "feedback": {
+        "correct": "$(3\\sqrt{2})^2 = 18$ و $(2\\sqrt{3})^2 = 12$، إذن $3\\sqrt{2} > 2\\sqrt{3}$.",
+        "incorrect": "قارن مربعي العددين الموجبين."
+      },
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l2-010",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 2
+}

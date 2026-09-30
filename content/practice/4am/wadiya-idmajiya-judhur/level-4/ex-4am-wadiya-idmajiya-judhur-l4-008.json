@@ -1,0 +1,175 @@
+{
+  "metadata": {
+    "title": "تدريب — مربّع ومستطيل: أيّهما أطول محيطًا؟",
+    "estimatedMinutes": 5,
+    "tags": [
+      "وضعية إدماجية",
+      "مساحة",
+      "مقارنة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "مستطيل بعداه $3\\sqrt{2}\\,m$ و $2\\sqrt{2}\\,m$، ومربّع له نفس مساحته."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هي مساحة المستطيل (بالمتر المربع)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالمتر المربع)",
+      "expectedAnswer": "12",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب البعدين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{2} \\times \\sqrt{2} = 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$3 \\times 2 \\times 2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$3\\sqrt{2} \\times 2\\sqrt{2} = 6 \\times 2 = 12\\,m^2$.",
+        "incorrect": "اضرب العاملين ثم الجذرين."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "24",
+          "id": "MISC-JIDHR-FI-JIDHR"
+        }
+      ],
+      "cognitiveDemand": "reason"
+    },
+    {
+      "id": "q2",
+      "statement": "ضلع المربّع (بالمتر) هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-NISF"
+        },
+        {
+          "id": "B",
+          "content": "$5\\sqrt{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        },
+        {
+          "id": "C",
+          "content": "$2\\sqrt{3}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$4\\sqrt{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الضلع هو الجذر التربيعي للمساحة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بسّط الجذر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$12 = 4 \\times 3$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{12} = 2\\sqrt{3}$.",
+        "incorrect": "الضلع جذر المساحة، لا نصفها."
+      },
+      "cognitiveDemand": "reason"
+    },
+    {
+      "id": "q3",
+      "statement": "أيّ الشكلين محيطه أكبر؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "المستطيل: $10\\sqrt{2} = \\sqrt{200}$ و $8\\sqrt{3} = \\sqrt{192}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "المربّع: $8\\sqrt{3} = \\sqrt{192}$ و $10\\sqrt{2} = \\sqrt{100}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUAMIL-DUN-TARBI"
+        },
+        {
+          "id": "C",
+          "content": "لهما المحيط نفسه لأنّ لهما المساحة نفسها",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "محيط المستطيل $2(3\\sqrt{2} + 2\\sqrt{2})$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "محيط المربّع أربعة أضعاف ضلعه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن بإدخال العامل تحت الجذر."
+        }
+      ],
+      "feedback": {
+        "correct": "المستطيل $10\\sqrt{2} = \\sqrt{200}$ والمربّع $8\\sqrt{3} = \\sqrt{192}$: محيط المستطيل أكبر.",
+        "incorrect": "مساحتان متساويتان لا تعنيان محيطين متساويين."
+      },
+      "cognitiveDemand": "reason"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l4-008",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 4
+}

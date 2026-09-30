@@ -1,0 +1,99 @@
+{
+  "metadata": {
+    "title": "تدريب — قاعة مربعة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "مساحة",
+      "محيط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidhr-tarbii_P1",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "قاعة مطالعة أرضيتها مربعة الشكل مساحتها $20{,}25\\ \\mathrm{m^2}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما طول ضلع القاعة (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "4.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طول الضلع عدد موجب مربعه 20,25."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العدد بين 4 و 5 لأن $4^2 = 16$ و $5^2 = 25$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جرّب عددًا برقم واحد بعد الفاصلة ينتهي بـ 5."
+        }
+      ],
+      "feedback": {
+        "correct": "$4{,}5^2 = 20{,}25$، إذن طول الضلع $\\sqrt{20{,}25} = 4{,}5$ m.",
+        "incorrect": "ربّع جوابك وقارنه بالمساحة 20,25."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "10.125",
+          "id": "MISC-JIDHR-NISF"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "يريد المسؤول تزيين حواف الأرضية بشريط. ما طول الشريط اللازم (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي (بالمتر)",
+      "expectedAnswer": "18",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الشريط يدور حول الأرضية: المطلوب هو المحيط."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "محيط المربع = 4 × طول الضلع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب طول الضلع أولًا من المساحة."
+        }
+      ],
+      "feedback": {
+        "correct": "المحيط $4 \\times 4{,}5 = 18$ m.",
+        "incorrect": "المحيط هو 4 أضعاف الضلع، والضلع هو الجذر التربيعي للمساحة."
+      }
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l5-007",
+  "lessonCode": "jidhr-tarbii",
+  "level": 5
+}

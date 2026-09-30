@@ -1,0 +1,118 @@
+{
+  "metadata": {
+    "title": "تدريب — مستطيل بأبعاد جذرية",
+    "estimatedMinutes": 7,
+    "tags": [
+      "جداء جذرين",
+      "مجموع جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "ABCD مستطيل طوله $AB = \\sqrt{45}\\,m$ وعرضه $BC = \\sqrt{5}\\,m$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب مساحة المستطيل ABCD بـ $m^2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مساحة المستطيل = الطول × العرض."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{45} \\times \\sqrt{5} = \\sqrt{45 \\times 5}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل $45 \\times 5$ مربّع تام؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{45} \\times \\sqrt{5} = \\sqrt{225} = 15\\,m^2$",
+        "incorrect": "اضرب البعدين تحت جذر واحد."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "القيمة المضبوطة لطول القطر AC بـ $m$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sqrt{45} + \\sqrt{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        },
+        {
+          "id": "B",
+          "content": "$25\\sqrt{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        },
+        {
+          "id": "C",
+          "content": "$5\\sqrt{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$50$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلث ABC قائم في B."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خاصية فيثاغورس: $AC^2 = AB^2 + BC^2$ ، و $(\\sqrt{45})^2 = 45$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$AC = \\sqrt{45 + 5}$ ، ثم أخرج مربّعًا من تحت الجذر."
+        }
+      ],
+      "feedback": {
+        "correct": "$AC = \\sqrt{45 + 5} = \\sqrt{50} = \\sqrt{5^2 \\times 2}$ ؛ و $\\sqrt{45} + \\sqrt{5} \\neq \\sqrt{50}$ .",
+        "incorrect": "الجذر لا يتوزّع على الجمع، ولا تنسَ أخذ الجذر في النهاية."
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l5-003",
+  "lessonCode": "amaliyat-judhur",
+  "level": 5
+}

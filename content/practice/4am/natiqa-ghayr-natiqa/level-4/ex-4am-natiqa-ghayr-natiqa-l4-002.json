@@ -1,0 +1,127 @@
+{
+  "metadata": {
+    "title": "تمرين 35 — المدوّر إلى الجزء من 100",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مدوّر",
+      "حاسبة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-35",
+      "page": 29,
+      "section": "أتعمّق",
+      "number": 35
+    }
+  },
+  "statement": {
+    "content": "استعمل حاسبة لإعطاء المدوّر إلى الجزء من 100 لكل عدد من الأعداد الآتية: $\\sqrt{7} + 3$ ، $\\sqrt{54}$ ، $\\sqrt{7} + \\sqrt{11}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المدوّر إلى الجزء من 100 للعدد $\\sqrt{54}$:",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري برقمين بعد الفاصلة",
+      "expectedAnswer": "7.35",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $\\sqrt{54}$ بالحاسبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الرقم الثالث بعد الفاصلة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إن كان 5 أو أكثر نأخذ القيمة بالزيادة، وإلا بالنقصان."
+        }
+      ],
+      "feedback": {
+        "correct": "الحاسبة تعرض $\\sqrt{54} = 7{,}348...$: الرقم الثالث 8، إذن المدوّر 7,35.",
+        "incorrect": "التدوير غير الاقتطاع: انظر إلى الرقم الثالث بعد الفاصلة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "المدوّر إلى الجزء من 100 للعدد $\\sqrt{7} + 3$:",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري برقمين بعد الفاصلة",
+      "expectedAnswer": "5.65",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $\\sqrt{7}$ بالحاسبة ثم أضف 3."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الرقم الثالث بعد الفاصلة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إن كان 5 أو أكثر نأخذ القيمة بالزيادة."
+        }
+      ],
+      "feedback": {
+        "correct": "الحاسبة تعرض $\\sqrt{7} + 3 = 5{,}645...$: الرقم الثالث 5، إذن المدوّر 5,65.",
+        "incorrect": "لا تحسب جذر المجموع: أضف 3 بعد حساب $\\sqrt{7}$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "المدوّر إلى الجزء من 100 للعدد $\\sqrt{7} + \\sqrt{11}$:",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري برقمين بعد الفاصلة",
+      "expectedAnswer": "5.96",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب كل جذر وحده بالحاسبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع الجذرين، لا العددين تحت الجذر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انظر إلى الرقم الثالث بعد الفاصلة."
+        }
+      ],
+      "feedback": {
+        "correct": "الحاسبة تعرض $\\sqrt{7} + \\sqrt{11} = 5{,}962...$ إذن المدوّر 5,96 (وليس $\\sqrt{18}$).",
+        "incorrect": "$\\sqrt{7} + \\sqrt{11}$ لا يساوي $\\sqrt{18}$."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l4-002",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 4
+}

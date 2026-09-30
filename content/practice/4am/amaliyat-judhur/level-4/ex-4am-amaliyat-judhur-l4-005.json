@@ -1,0 +1,99 @@
+{
+  "metadata": {
+    "title": "تدريب — جداء وحاصل قسمة",
+    "estimatedMinutes": 6,
+    "tags": [
+      "جداء جذرين",
+      "حاصل قسمة جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P2",
+      "modelledOn": "ex-21"
+    }
+  },
+  "statement": {
+    "content": "احسب كل عدد مما يلي."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$A = \\sqrt{\\dfrac{7}{2}} \\times \\sqrt{\\dfrac{8}{7}}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب الجداء تحت جذر واحد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $\\dfrac{7}{2} \\times \\dfrac{8}{7}$ واختزل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خذ جذر الناتج."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = \\sqrt{\\dfrac{7 \\times 8}{2 \\times 7}} = \\sqrt{4} = 2$",
+        "incorrect": "اضرب الكسرين تحت جذر واحد ثم اختزل."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$B = \\dfrac{\\sqrt{24}}{\\sqrt{6}} + \\sqrt{\\dfrac{49}{4}}$ (اكتب النتيجة كسرًا غير قابل للاختزال)",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "11/2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب كل حد وحده."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{\\sqrt{24}}{\\sqrt{6}} = \\sqrt{\\dfrac{24}{6}}$ و $\\sqrt{\\dfrac{49}{4}} = \\dfrac{\\sqrt{49}}{\\sqrt{4}}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع عددًا طبيعيًا وكسرًا بتوحيد المقامين."
+        }
+      ],
+      "feedback": {
+        "correct": "$B = \\sqrt{4} + \\dfrac{7}{2} = 2 + \\dfrac{7}{2} = \\dfrac{11}{2}$",
+        "incorrect": "احسب الحدّين كلًّا على حدة ثم اجمع."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l4-005",
+  "lessonCode": "amaliyat-judhur",
+  "level": 4
+}

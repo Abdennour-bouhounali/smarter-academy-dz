@@ -1,0 +1,153 @@
+{
+  "metadata": {
+    "title": "تدريب — غرفة وزربية مربّعة",
+    "estimatedMinutes": 7,
+    "tags": [
+      "وضعية إدماجية",
+      "وضعية",
+      "معادلة",
+      "مقارنة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "أرضية غرفة مستطيلة الشكل مساحتها $27\\,m^2$ وطولها ثلاثة أضعاف عرضها. نريد وضع زربية مربّعة مساحتها $8\\,m^2$ في هذه الغرفة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هو عرض الغرفة (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالمتر)",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمِّ العرض $\\ell$ واكتب الطول بدلالته."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المساحة $3\\ell^2 = 27$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اعزل $\\ell^2$ وخذ الحل الموجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$3\\ell^2 = 27$، $\\ell^2 = 9$، والعرض $3\\,m$.",
+        "incorrect": "المساحة $3\\ell^2$، والعرض موجب."
+      },
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو طول الغرفة (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالمتر)",
+      "expectedAnswer": "9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطول ثلاثة أضعاف العرض."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب العرض أولًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق: جداء البعدين 27."
+        }
+      ],
+      "feedback": {
+        "correct": "الطول $3 \\times 3 = 9\\,m$، و $9 \\times 3 = 27$.",
+        "incorrect": "اضرب العرض في 3 وتحقّق من المساحة."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "13.5",
+          "id": "MISC-HALL-QISMA"
+        }
+      ],
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q3",
+      "statement": "هل تتّسع الغرفة لهذه الزربية المربّعة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، لأنّ ضلع الزربية $2\\sqrt{2} = \\sqrt{8}$ أصغر من العرض $3 = \\sqrt{9}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا، لأنّ ضلع الزربية 4 أكبر من العرض 3",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-NISF"
+        },
+        {
+          "id": "C",
+          "content": "لا، لأنّ ضلع الزربية $\\sqrt{8}$ أكبر من 3",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب ضلع الزربية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن ضلع الزربية بعرض الغرفة، البُعد الأصغر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن $\\sqrt{8}$ و $\\sqrt{9}$."
+        }
+      ],
+      "feedback": {
+        "correct": "ضلع الزربية $\\sqrt{8} \\approx 2{,}83\\,m$ أصغر من $3\\,m$ ومن $9\\,m$: الغرفة تتّسع لها.",
+        "incorrect": "ضلع الزربية جذر مساحتها؛ قارنه بعرض الغرفة."
+      },
+      "cognitiveDemand": "transfer"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l5-004",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 5
+}

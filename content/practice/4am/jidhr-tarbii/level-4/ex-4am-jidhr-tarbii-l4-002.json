@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "title": "نشاط 1 — قول إيمان",
+    "estimatedMinutes": 3,
+    "tags": [
+      "القيمة المضبوطة",
+      "الحاسبة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-1",
+      "page": 20,
+      "section": "أنشطة",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "نشاط 1 (ص 20): الطول BC هو العدد الموجب الذي مربعه 5، والحاسبة تعرض القيمة 2,236067978. مربع هذه القيمة: $2{,}236067978^2 = 5{,}000000002237008484$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "تقول إيمان: «إنّ 2,236067978 ليست القيمة المضبوطة للعدد الذي مربعه 5». هل توافقها؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم: مربع 2,236067978 لا يساوي 5، فهي قيمة مقربة فقط",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا: الحاسبة تعطي دائمًا القيمة المضبوطة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HASIBA-MUDBUTA"
+        },
+        {
+          "id": "C",
+          "content": "لا: مربع 2,236067978 يساوي 5",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HASIBA-MUDBUTA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن مربع 2,236067978 بالعدد 5."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "القيمة المضبوطة مربعها 5 بالضبط."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحاسبة تعطي القيمة المضبوطة أو قيمة مقربة."
+        }
+      ],
+      "feedback": {
+        "correct": "مربعها $5{,}000000002237008484 \\neq 5$، لذا نرمز للقيمة المضبوطة بـ $\\sqrt{5}$.",
+        "incorrect": "اقرأ مربع العدد المعطى في نص التمرين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "كيف نكتب القيمة المضبوطة للعدد الموجب الذي مربعه 5؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$5^2$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$\\sqrt{5}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$2{,}236$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HASIBA-MUDBUTA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "للقيمة المضبوطة رمز في الكتاب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "2,236 قيمة مقربة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الرمز $\\sqrt{\\;}$ يقرأ «الجذر التربيعي»."
+        }
+      ],
+      "feedback": {
+        "correct": "نرمز بـ $\\sqrt{5}$ للقيمة المضبوطة للعدد الموجب الذي مربعه 5.",
+        "incorrect": "العدد $5^2$ هو 25، لا العدد الذي مربعه 5."
+      }
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l4-002",
+  "lessonCode": "jidhr-tarbii",
+  "level": 4
+}

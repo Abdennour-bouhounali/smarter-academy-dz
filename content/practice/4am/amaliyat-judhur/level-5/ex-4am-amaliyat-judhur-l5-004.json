@@ -1,0 +1,106 @@
+{
+  "metadata": {
+    "title": "تدريب — خزان بقاعدة مربّعة",
+    "estimatedMinutes": 7,
+    "tags": [
+      "حاصل قسمة جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P2",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "خزان ماء على شكل متوازي مستطيلات قاعدته مربّعة. مساحة القاعدة = الحجم ÷ الارتفاع، وطول ضلع القاعدة هو الجذر التربيعي لمساحتها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حجم الخزان $50\\,m^3$ وارتفاعه $8\\,m$ . احسب طول ضلع القاعدة بـ $m$ (كسرًا غير قابل للاختزال).",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "5/2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ضلع القاعدة $\\sqrt{\\dfrac{50}{8}}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اختزل $\\dfrac{50}{8}$ قبل الجذر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "البسط والمقام بعد الاختزال مربّعان تامّان."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{\\dfrac{50}{8}} = \\sqrt{\\dfrac{25}{4}} = \\dfrac{5}{2}\\,m$",
+        "incorrect": "اختزل ما تحت الجذر ثم خذ جذر البسط والمقام."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "25/4",
+          "id": "MISC-QISMA-JIDHR"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "خزان آخر حجمه $4{,}5\\,m^3$ وارتفاعه $0{,}5\\,m$ . احسب طول ضلع قاعدته بـ $m$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالفاصلة إن لزم)",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ضلع القاعدة $\\sqrt{\\dfrac{4{,}5}{0{,}5}}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $4{,}5 \\div 0{,}5$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خذ جذر الناتج."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{\\dfrac{4{,}5}{0{,}5}} = \\sqrt{9} = 3\\,m$",
+        "incorrect": "اقسم أولًا ثم خذ الجذر."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "9",
+          "id": "MISC-QISMA-JIDHR"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l5-004",
+  "lessonCode": "amaliyat-judhur",
+  "level": 5
+}

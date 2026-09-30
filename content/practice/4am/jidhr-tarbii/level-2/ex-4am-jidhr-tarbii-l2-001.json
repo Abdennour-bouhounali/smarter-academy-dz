@@ -1,0 +1,127 @@
+{
+  "metadata": {
+    "title": "تمرين 3 — كتابة عشرية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "كتابة عشرية",
+      "الرمز √"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-3",
+      "page": 26,
+      "section": "أوظّف تعلّماتي",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 26): اكتب كل عدد من الأعداد التالية كتابة عشرية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\sqrt{289} = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "17",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد بين 10 و 20 لأن $10^2 = 100$ و $20^2 = 400$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "رقم آحاد 289 هو 9: رقم آحاد الجذر 3 أو 7."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جرّب $13^2$ ثم العدد الآخر."
+        }
+      ],
+      "feedback": {
+        "correct": "17 عدد موجب و $17^2 = 289$.",
+        "incorrect": "ربّع جوابك وقارنه بـ 289."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$\\sqrt{1{,}44} = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "1.2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\sqrt{144}$ عدد طبيعي تعرفه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مربع عدد برقم واحد بعد الفاصلة له رقمان بعد الفاصلة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بتربيع جوابك."
+        }
+      ],
+      "feedback": {
+        "correct": "1,2 عدد موجب و $1{,}2^2 = 1{,}44$.",
+        "incorrect": "انتبه إلى موضع الفاصلة: ربّع جوابك."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "$\\sqrt{0{,}0001} = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "0.01",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في 0,0001 أربعة أرقام بعد الفاصلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الجذر التربيعي له نصف عدد الأرقام بعد الفاصلة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بتربيع جوابك."
+        }
+      ],
+      "feedback": {
+        "correct": "0,01 عدد موجب و $0{,}01^2 = 0{,}0001$.",
+        "incorrect": "ربّع جوابك: عدد الأرقام بعد الفاصلة يتضاعف."
+      }
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l2-001",
+  "lessonCode": "jidhr-tarbii",
+  "level": 2
+}

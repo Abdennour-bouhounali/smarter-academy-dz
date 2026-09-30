@@ -1,0 +1,160 @@
+{
+  "metadata": {
+    "title": "تمرين 33 — العدد الذهبي",
+    "estimatedMinutes": 8,
+    "tags": [
+      "حاصل قسمة جذرين",
+      "العدد الذهبي"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-33",
+      "page": 29,
+      "section": "أتعمّق",
+      "number": 33
+    }
+  },
+  "statement": {
+    "content": "AED مثلث قائم في A حيث $AD = 1$ و $AE = \\dfrac{1}{2}$ (الطولان بنفس الوحدة). B نقطة من نصف المستقيم [AE) حيث EB = ED."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $ED^2$.",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "5/4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلث قائم في A: ما هو الوتر؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خاصية فيثاغورس: $ED^2 = AD^2 + AE^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $\\left(\\dfrac{1}{2}\\right)^2$ ثم اجمع."
+        }
+      ],
+      "feedback": {
+        "correct": "$ED^2 = 1^2 + \\left(\\dfrac{1}{2}\\right)^2 = 1 + \\dfrac{1}{4} = \\dfrac{5}{4}$",
+        "incorrect": "مربع $\\dfrac{1}{2}$ هو $\\dfrac{1}{4}$."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "القيمة المضبوطة للطول ED هي:",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{3}{2}$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{5}{4}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{\\sqrt{5}}{2}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$ED^2 = 1 + \\dfrac{1}{4}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المجموع كسرًا واحدًا قبل الجذر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\sqrt{\\dfrac{a}{b}} = \\dfrac{\\sqrt{a}}{\\sqrt{b}}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$ED = \\sqrt{\\dfrac{5}{4}} = \\dfrac{\\sqrt{5}}{2}$ ، وليس $\\sqrt{1} + \\sqrt{\\dfrac{1}{4}}$.",
+        "incorrect": "الجذر لا يتوزّع على الجمع: $\\sqrt{1 + \\dfrac{1}{4}} \\neq 1 + \\dfrac{1}{2}$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "القيمة المضبوطة للطول AB هي:",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{1 + \\sqrt{5}}{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{\\sqrt{6}}{2}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$1 + \\dfrac{\\sqrt{5}}{2}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "B على نصف المستقيم [AE) بعد E."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$AB = AE + EB$ و $EB = ED$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع كسرين لهما نفس المقام 2."
+        }
+      ],
+      "feedback": {
+        "correct": "$AB = \\dfrac{1}{2} + \\dfrac{\\sqrt{5}}{2} = \\dfrac{1 + \\sqrt{5}}{2}$: العدد الذهبي.",
+        "incorrect": "ابدأ من A: $AB = AE + EB$."
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l5-002",
+  "lessonCode": "amaliyat-judhur",
+  "level": 5
+}

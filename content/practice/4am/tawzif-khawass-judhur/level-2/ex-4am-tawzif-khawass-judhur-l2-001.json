@@ -1,0 +1,91 @@
+{
+  "metadata": {
+    "title": "طرائق — تبسيط A",
+    "estimatedMinutes": 4,
+    "tags": [
+      "الخاصية التوزيعية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-simplify",
+      "page": 25,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 25): $A = \\sqrt{8} - 3\\sqrt{18} + 2\\sqrt{50} - 7\\sqrt{2}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نكتب $\\sqrt{18} = a\\sqrt{2}$. ما قيمة العدد الطبيعي $a$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$18 = 9 \\times 2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "9 مربع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\sqrt{9 \\times 2} = \\sqrt{9} \\times \\sqrt{2}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{18} = \\sqrt{3^2 \\times 2} = 3\\sqrt{2}$.",
+        "incorrect": "أكبر مربع يقسم 18 هو 9."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نكتب $A$ على الشكل $k\\sqrt{2}$. ما قيمة العدد الصحيح $k$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "-4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\sqrt{8} = 2\\sqrt{2}$ ، $\\sqrt{18} = 3\\sqrt{2}$ و $\\sqrt{50} = 5\\sqrt{2}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض في A: $2\\sqrt{2} - 3(3\\sqrt{2}) + 2(5\\sqrt{2}) - 7\\sqrt{2}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المعاملات بالخاصية التوزيعية: $(2 - 9 + 10 - 7)\\sqrt{2}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = (2 - 9 + 10 - 7)\\sqrt{2} = -4\\sqrt{2}$.",
+        "incorrect": "اكتب كل جذر بدلالة $\\sqrt{2}$ ثم اجمع المعاملات مع إشاراتها."
+      }
+    }
+  ],
+  "id": "ex-4am-tawzif-khawass-judhur-l2-001",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 2
+}

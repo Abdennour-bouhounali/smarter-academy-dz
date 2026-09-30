@@ -1,0 +1,113 @@
+{
+  "metadata": {
+    "title": "معارف 3 — خاصيتان",
+    "estimatedMinutes": 4,
+    "tags": [
+      "معارف",
+      "خاصية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-3",
+      "page": 22,
+      "section": "معارف",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من معارف 3 (الكتاب ص 22): المعادلات من الشكل $x^2 = a$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $\\left(-\\dfrac{2}{3}\\right)^2$.",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "4/9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مربع عدد هو جداء هذا العدد في نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\left(-\\dfrac{2}{3}\\right) \\times \\left(-\\dfrac{2}{3}\\right)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب البسطين ثم المقامين، والإشارة موجبة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\left(-\\dfrac{2}{3}\\right)^2 = \\left(-\\dfrac{2}{3}\\right) \\times \\left(-\\dfrac{2}{3}\\right) = \\dfrac{4}{9}$.",
+        "incorrect": "جداء عددين سالبين عدد موجب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "المعادلة $x^2 = 5$ ...",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "تقبل حلين هما $\\sqrt{5}$ و $-\\sqrt{5}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "تقبل حلا واحدا هو $\\sqrt{5}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "تقبل حلين هما $2{,}5$ و $-2{,}5$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "لا تقبل أي حل",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما إشارة العدد 5؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذا كان $a > 0$ فالمعادلة $x^2 = a$ تقبل حلين متعاكسين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(\\sqrt{5})^2 = 5$، وما مربع معاكسه؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$5 > 0$: حلّان متعاكسان $\\sqrt{5}$ و $-\\sqrt{5}$.",
+        "incorrect": "لا تنس الحل السالب، ولا تقسم على 2."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l2-002",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 2
+}

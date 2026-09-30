@@ -1,0 +1,114 @@
+{
+  "metadata": {
+    "title": "تدريب — قطعة أرض",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مساحة",
+      "مستطيل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P2",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "قطعة أرض مستطيلة الشكل، طولها ثلاثة أمثال عرضها، ومساحتها $75\\ \\mathrm{m}^2$. نسمّي $\\ell$ عرضها بالمتر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قطعة أرض مستطيلة طولها ثلاثة أمثال عرضها $\\ell$ ومساحتها $75\\ \\mathrm{m}^2$. أي معادلة يحققها $\\ell$؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "transfer",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3\\ell = 75$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$\\ell^2 = 75$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$\\ell^2 = 25$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$4\\ell = 75$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطول $3\\ell$ والعرض $\\ell$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المساحة = الطول × العرض."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$3\\ell \\times \\ell = 3\\ell^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$3\\ell^2 = 75$ يعني $\\ell^2 = 25$.",
+        "incorrect": "المساحة جداء الطول في العرض، والطول $3\\ell$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "قطعة أرض مستطيلة طولها ثلاثة أمثال عرضها ومساحتها $75\\ \\mathrm{m}^2$. ما محيطها (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "40",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب العرض أولا: $3\\ell^2 = 75$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العرض طول موجب، والطول ثلاثة أمثاله."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المحيط = 2 × (الطول + العرض)."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\ell = 5$ و $L = 15$ ، والمحيط $2 \\times (15 + 5)$.",
+        "incorrect": "المحيط ضعف مجموع البعدين."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l5-007",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 5
+}

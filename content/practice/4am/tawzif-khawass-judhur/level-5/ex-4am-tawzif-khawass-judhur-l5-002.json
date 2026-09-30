@@ -1,0 +1,127 @@
+{
+  "metadata": {
+    "title": "تمرين 36 — مثلث قائم",
+    "estimatedMinutes": 5,
+    "tags": [
+      "a + b√3",
+      "فيثاغورس"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-36",
+      "page": 29,
+      "section": "أتعمّق",
+      "number": 36
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 29): $x$ ، $y$ ، $z$ أطوال أضلاع مثلث حيث $x = \\sqrt{3 + \\sqrt{27}}$ ، $y = \\sqrt{-3 + \\sqrt{12}}$ و $z = \\sqrt{\\sqrt{75}}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نكتب $x^2 = 3 + b\\sqrt{3}$. ما قيمة $b$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x^2 = 3 + \\sqrt{27}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$27 = 9 \\times 3$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\sqrt{9 \\times 3} = \\sqrt{9} \\times \\sqrt{3}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 = 3 + \\sqrt{3^2 \\times 3} = 3 + 3\\sqrt{3}$.",
+        "incorrect": "أكبر مربع يقسم 27 هو 9."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نكتب $y^2 = -3 + b\\sqrt{3}$. ما قيمة $b$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$y^2 = -3 + \\sqrt{12}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$12 = 4 \\times 3$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\sqrt{4} = ?$"
+        }
+      ],
+      "feedback": {
+        "correct": "$y^2 = -3 + \\sqrt{2^2 \\times 3} = -3 + 2\\sqrt{3}$.",
+        "incorrect": "أكبر مربع يقسم 12 هو 4."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "نكتب $z^2 = a\\sqrt{3}$. ما قيمة العدد الطبيعي $a$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$z^2 = \\sqrt{75}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$75 = 25 \\times 3$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\sqrt{25} = ?$"
+        }
+      ],
+      "feedback": {
+        "correct": "$z^2 = \\sqrt{5^2 \\times 3} = 5\\sqrt{3}$ ، و $x^2 + y^2 = 5\\sqrt{3} = z^2$: المثلث قائم.",
+        "incorrect": "أكبر مربع يقسم 75 هو 25."
+      }
+    }
+  ],
+  "id": "ex-4am-tawzif-khawass-judhur-l5-002",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 5
+}

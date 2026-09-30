@@ -1,0 +1,97 @@
+{
+  "metadata": {
+    "title": "تدريب — جداء جذري عددين عشريين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جداء جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P1",
+      "modelledOn": "ex-16"
+    }
+  },
+  "statement": {
+    "content": "احسب كل جداء (النتيجة عدد ناطق)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\sqrt{0{,}2} \\times \\sqrt{0{,}8}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالفاصلة إن لزم)",
+      "expectedAnswer": "0.4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كلا العاملين ليس عددًا ناطقًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب الجداء تحت جذر واحد واحسب $0{,}2 \\times 0{,}8$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق من الجذر بالتربيع وانتبه إلى الفاصلة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{0{,}2 \\times 0{,}8} = \\sqrt{0{,}16} = 0{,}4$",
+        "incorrect": "تحقّق بالتربيع من الجذر الذي وجدته."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "0.04",
+          "id": "MISC-JIDHR-FASILA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "$\\sqrt{1{,}2} \\times \\sqrt{30}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب الجداء تحت جذر واحد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $1{,}2 \\times 30$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل الجداء مربّع تام؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{1{,}2 \\times 30} = \\sqrt{36} = 6$",
+        "incorrect": "اضرب العددين تحت جذر واحد ثم احسب."
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l2-008",
+  "lessonCode": "amaliyat-judhur",
+  "level": 2
+}

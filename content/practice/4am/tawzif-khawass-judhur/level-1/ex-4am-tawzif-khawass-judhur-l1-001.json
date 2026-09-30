@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "title": "تمرين 18 — أبسط كتابة لجذر",
+    "estimatedMinutes": 3,
+    "tags": [
+      "a√b",
+      "أكبر مربع"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-18",
+      "page": 27,
+      "section": "أوظّف تعلّماتي",
+      "number": 18
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 27): اكتب العدد على الشكل $a\\sqrt{b}$ حيث $a$ و $b$ عددان طبيعيان و $b$ أصغر ما يمكن."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "اكتب $\\sqrt{8}$ على الشكل $a\\sqrt{b}$ حيث $b$ أصغر ما يمكن.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4\\sqrt{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        },
+        {
+          "id": "B",
+          "content": "$2\\sqrt{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$2\\sqrt{4}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن مربع يقسم 8."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أكبر مربع يقسم 8 هو 4، و $8 = 4 \\times 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\sqrt{4 \\times 2} = \\sqrt{4} \\times \\sqrt{2}$: ما قيمة $\\sqrt{4}$؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{8} = \\sqrt{2^2 \\times 2} = 2\\sqrt{2}$.",
+        "incorrect": "المعامل $a$ هو جذر المربع، لا المربع نفسه."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "اكتب $\\sqrt{75}$ على الشكل $a\\sqrt{b}$ حيث $b$ أصغر ما يمكن.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$25\\sqrt{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        },
+        {
+          "id": "B",
+          "content": "$3\\sqrt{5}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$5\\sqrt{3}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "75 ينتهي بالرقم 5: جرّب القسمة على 25."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$75 = 25 \\times 3$ و 25 مربع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خذ جذر المربع خارج الجذر، واترك الباقي تحته."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{75} = \\sqrt{5^2 \\times 3} = 5\\sqrt{3}$.",
+        "incorrect": "أكبر مربع يقسم 75 هو 25."
+      }
+    }
+  ],
+  "id": "ex-4am-tawzif-khawass-judhur-l1-001",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 1
+}

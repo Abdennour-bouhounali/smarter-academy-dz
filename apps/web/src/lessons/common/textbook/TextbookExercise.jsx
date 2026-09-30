@@ -71,7 +71,7 @@ export default function TextbookExercise({ exercise, solved = false, onAnswered,
     case 'trueFalse':
       body = (
         <BatchChoiceQuestion
-          rows={q.rows.map((r, i) => ({ id: `r${i}`, label: <MathText>{r.text}</MathText>, options: [t('textbook.true'), t('textbook.false')], correct: r.answer ? 0 : 1, correction: r.why }))}
+          rows={q.rows.map((r, i) => ({ id: `r${i}`, label: <MathText>{r.text}</MathText>, options: [t('textbook.true'), t('textbook.false')], correct: r.answer ? 0 : 1, correction: r.why ? <MathText>{r.why}</MathText> : r.why }))}
           requires={requires} solved={solved}
           feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? t('textbook.allRight') : t('textbook.seeCorrections')}{explain && <> — {explain}</>}</Feedback>}
           onAnswered={(ok) => onAnswered?.(ok)} />
@@ -101,7 +101,7 @@ export default function TextbookExercise({ exercise, solved = false, onAnswered,
       body = (
         <BatchChoiceQuestion
           intro={q.prompt ? <p className="text-sm font-semibold text-slate-700"><MathText>{q.prompt}</MathText></p> : undefined}
-          rows={q.rows.map((r, i) => ({ id: `b${i}`, label: <MathText>{r.label}</MathText>, options: r.options, correct: r.correct, correction: r.correction }))}
+          rows={q.rows.map((r, i) => ({ id: `b${i}`, label: <MathText>{r.label}</MathText>, options: r.options.map((o) => (typeof o === 'string' ? <MathText key={o}>{o}</MathText> : o)), correct: r.correct, correction: typeof r.correction === 'string' ? <MathText>{r.correction}</MathText> : r.correction }))}
           requires={requires} solved={solved}
           feedback={({ allRight }) => <Feedback tone={allRight ? 'ok' : 'ko'}>{allRight ? t('textbook.allRight') : t('textbook.seeCorrections')}{explain && <> — {explain}</>}</Feedback>}
           onAnswered={(ok) => onAnswered?.(ok)} />

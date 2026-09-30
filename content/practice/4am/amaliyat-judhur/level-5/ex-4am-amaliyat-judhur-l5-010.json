@@ -1,0 +1,106 @@
+{
+  "metadata": {
+    "title": "تدريب — نسبة ومستطيل",
+    "estimatedMinutes": 7,
+    "tags": [
+      "حاصل قسمة جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P2",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "نستعمل خاصية حاصل قسمة جذرين في وضعيتين هندسيتين."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مربّعان مساحتاهما $45\\,cm^2$ و $20\\,cm^2$ . احسب نسبة ضلع الأول إلى ضلع الثاني (كسرًا غير قابل للاختزال).",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b",
+      "expectedAnswer": "3/2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "النسبة هي $\\dfrac{\\sqrt{45}}{\\sqrt{20}}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتبها جذرًا واحدًا واختزل $\\dfrac{45}{20}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "البسط والمقام بعد الاختزال مربّعان تامّان."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{\\sqrt{45}}{\\sqrt{20}} = \\sqrt{\\dfrac{9}{4}} = \\dfrac{3}{2}$",
+        "incorrect": "نسبة الضلعين هي جذر نسبة المساحتين، لا نسبة المساحتين."
+      },
+      "evaluationPolicy": {
+        "requiredForm": "irreducible"
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "9/4",
+          "id": "MISC-QISMA-JIDHR"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "مستطيل مساحته $\\sqrt{90}\\,cm^2$ وعرضه $\\sqrt{10}\\,cm$ . احسب طوله بـ $cm$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطول = المساحة ÷ العرض."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{\\sqrt{90}}{\\sqrt{10}} = \\sqrt{\\dfrac{90}{10}}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خذ جذر الناتج."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{\\sqrt{90}}{\\sqrt{10}} = \\sqrt{9} = 3\\,cm$",
+        "incorrect": "اقسم تحت جذر واحد ثم احسب الجذر."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "9",
+          "id": "MISC-QISMA-JIDHR"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l5-010",
+  "lessonCode": "amaliyat-judhur",
+  "level": 5
+}

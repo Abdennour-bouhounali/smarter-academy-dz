@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "title": "تدريب — مربّع مساحته الضعف",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية إدماجية",
+      "مساحة",
+      "أبسط كتابة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "مربّع طول ضلعه $2\\sqrt{6}\\,cm$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هي مساحة هذا المربّع (بالسنتيمتر المربع)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالسنتيمتر المربع)",
+      "expectedAnswer": "24",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مساحة المربع مربع ضلعه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(a\\sqrt{b})^2 = a^2 \\times b$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ربّع 2 وربّع $\\sqrt{6}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(2\\sqrt{6})^2 = 4 \\times 6 = 24\\,cm^2$.",
+        "incorrect": "ربّع العامل 2 أيضًا، لا الجذر وحده."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "12",
+          "id": "MISC-MUAMIL-DUN-TARBI"
+        }
+      ],
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "مربّع آخر مساحته ضعف مساحة الأوّل. طول ضلعه (بالسنتيمتر) هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4\\sqrt{6}$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$24$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-NISF"
+        },
+        {
+          "id": "C",
+          "content": "$4\\sqrt{3}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$16\\sqrt{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب مساحة المربّع الجديد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ضلعه هو الجذر التربيعي لمساحته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما هو أكبر مربع تام يقسم 48؟"
+        }
+      ],
+      "feedback": {
+        "correct": "المساحة $48$، والضلع $\\sqrt{48} = \\sqrt{16 \\times 3} = 4\\sqrt{3}$. مضاعفة الضلع تضاعف المساحة أربع مرات.",
+        "incorrect": "مضاعفة المساحة لا تعني مضاعفة الضلع."
+      },
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l3-001",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 3
+}

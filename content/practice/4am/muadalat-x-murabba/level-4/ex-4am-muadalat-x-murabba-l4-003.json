@@ -1,0 +1,81 @@
+{
+  "metadata": {
+    "title": "تدريب — أين الخطأ؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تحليل خطأ",
+      "عدد الحلول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P1",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "كتب أمين: «المعادلة $x^2 = 64$ تعني $x = 8$»."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كتب أمين: «المعادلة $x^2 = 64$ تعني $x = 8$». ما رأيك؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "أمين محق: الحل الوحيد هو 8",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "أمين نسي حلا: $x = 8$ أو $x = -8$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "الحل الصحيح هو 32",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-QISMA"
+        },
+        {
+          "id": "D",
+          "content": "الحل الصحيح هو $-8$ فقط",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هل 8 هو العدد الوحيد الذي مربعه 64؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $(-8)^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العدد 64 موجب: كم حلا للمعادلة؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$64 > 0$: للمعادلة حلان متعاكسان، و $(-8)^2 = 64$ أيضا.",
+        "incorrect": "لعددين متعاكسين نفس المربع."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l4-003",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 4
+}

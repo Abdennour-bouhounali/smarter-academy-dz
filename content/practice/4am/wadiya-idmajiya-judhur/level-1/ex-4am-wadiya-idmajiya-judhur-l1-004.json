@@ -1,0 +1,117 @@
+{
+  "metadata": {
+    "title": "تدريب — مستطيل ومربّع لهما المساحة نفسها",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية إدماجية",
+      "مساحة",
+      "أبسط كتابة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "مستطيل عرضه $3\\,m$ وطوله ضعف عرضه، ومربّع له نفس مساحة هذا المستطيل."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هي مساحة المستطيل (بالمتر المربع)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالمتر المربع)",
+      "expectedAnswer": "18",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب الطول أولًا: ضعف العرض."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مساحة المستطيل = الطول × العرض."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب الطول في العرض."
+        }
+      ],
+      "feedback": {
+        "correct": "الطول $2 \\times 3 = 6$، والمساحة $6 \\times 3 = 18\\,m^2$.",
+        "incorrect": "المساحة جداء الطول في العرض، لا مجموعهما."
+      },
+      "cognitiveDemand": "recall"
+    },
+    {
+      "id": "q2",
+      "statement": "طول ضلع المربّع (بالمتر) هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$9$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-NISF"
+        },
+        {
+          "id": "B",
+          "content": "$9\\sqrt{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        },
+        {
+          "id": "C",
+          "content": "$2\\sqrt{3}$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$3\\sqrt{2}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ضلع المربّع هو العدد الموجب الذي مربعه يساوي مساحته."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المساحة جداء مربّع تام في عدد آخر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استعمل $\\sqrt{a^2 b} = a\\sqrt{b}$."
+        }
+      ],
+      "feedback": {
+        "correct": "الضلع $\\sqrt{18} = \\sqrt{9 \\times 2} = 3\\sqrt{2}$، لأنّ $(3\\sqrt{2})^2 = 18$.",
+        "incorrect": "ربّع الجواب الذي اخترته: يجب أن تحصل على مساحة المستطيل."
+      },
+      "cognitiveDemand": "recall"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l1-004",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 1
+}

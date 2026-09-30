@@ -1,0 +1,138 @@
+{
+  "metadata": {
+    "title": "تدريب — معادلة من حلّيها",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية إدماجية",
+      "معادلة",
+      "مربع a√b"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": "qcm"
+    }
+  },
+  "statement": {
+    "content": "نبحث عن معادلة من الشكل $x^2 = a$ حلّاها معلومان."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعادلة التي حلّاها $2\\sqrt{3}$ و $-2\\sqrt{3}$ هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 = 12$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x^2 = 6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUAMIL-DUN-TARBI"
+        },
+        {
+          "id": "C",
+          "content": "$x^2 = 4\\sqrt{3}$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$x^2 = -12$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-SALIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب مربع الحل الموجب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(2\\sqrt{3})^2 = 2^2 \\times (\\sqrt{3})^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "للحل السالب نفس المربع."
+        }
+      ],
+      "feedback": {
+        "correct": "$(2\\sqrt{3})^2 = (-2\\sqrt{3})^2 = 4 \\times 3 = 12$.",
+        "incorrect": "ربّع العامل 2 أيضًا."
+      },
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "المعادلة التي حلّاها $\\dfrac{\\sqrt{5}}{2}$ و $-\\dfrac{\\sqrt{5}}{2}$ هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2x^2 = 5$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$4x^2 = 5$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x^2 = \\dfrac{5}{2}$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$x^2 = -\\dfrac{5}{4}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-SALIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب مربع الحل الموجب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\left(\\dfrac{a}{b}\\right)^2 = \\dfrac{a^2}{b^2}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب طرفي المعادلة في المقام."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\left(\\dfrac{\\sqrt{5}}{2}\\right)^2 = \\dfrac{5}{4}$، و $x^2 = \\dfrac{5}{4}$ تكافئ $4x^2 = 5$.",
+        "incorrect": "ربّع البسط والمقام معًا."
+      },
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l3-004",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 3
+}

@@ -1,0 +1,118 @@
+{
+  "metadata": {
+    "title": "تدريب — أين الخطأ؟ جذر مجموع",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية إدماجية",
+      "تحليل خطأ",
+      "جذر مجموع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "كتب أمين: $\\sqrt{16 + 9} = \\sqrt{16} + \\sqrt{9} = 4 + 3 = 7$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أين الخطأ في عمل أمين؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "في الحساب $\\sqrt{16} = 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        },
+        {
+          "id": "B",
+          "content": "في المساواة الأولى: الجذر التربيعي لا يتوزّع على الجمع",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "لا يوجد خطأ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $\\sqrt{16 + 9}$ مباشرة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن النتيجة بـ 7."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل $\\sqrt{a + b} = \\sqrt{a} + \\sqrt{b}$ خاصية صحيحة؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{16 + 9} = \\sqrt{25} = 5$ بينما $\\sqrt{16} + \\sqrt{9} = 7$: الجذر لا يتوزّع على الجمع.",
+        "incorrect": "احسب ما تحت الجذر أولًا."
+      },
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "ما هي القيمة الصحيحة للعدد $\\sqrt{16 + 9}$؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب المجموع تحت الجذر أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما هو العدد الموجب الذي مربعه هذا المجموع؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بالتربيع."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{16 + 9} = \\sqrt{25} = 5$.",
+        "incorrect": "اجمع أولًا ثم خذ الجذر."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "7",
+          "id": "MISC-JIDHR-JAMA"
+        }
+      ],
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l3-006",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 3
+}

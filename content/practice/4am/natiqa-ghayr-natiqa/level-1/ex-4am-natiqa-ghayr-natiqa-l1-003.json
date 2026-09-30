@@ -1,0 +1,81 @@
+{
+  "metadata": {
+    "title": "تدريب — جذر ناطق",
+    "estimatedMinutes": 2,
+    "tags": [
+      "مربع تام",
+      "عدد ناطق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P2",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "نعلم أنّه إذا كان $a$ مربعًا لعدد ناطق فإنّ $\\sqrt{a}$ عدد ناطق."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ عدد من الأعداد الآتية جذره التربيعي عدد ناطق؟",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "12",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-KULL-JIDHR"
+        },
+        {
+          "id": "B",
+          "content": "20",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-KULL-JIDHR"
+        },
+        {
+          "id": "C",
+          "content": "36",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "50",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-KULL-JIDHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن العدد الذي هو مربع لعدد طبيعي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب مربعات الأعداد من 1 إلى 8 وقارنها بالأعداد المقترحة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العدد الذي تجده في قائمة المربعات جذره ناطق، والباقي جذوره ليست ناطقة."
+        }
+      ],
+      "feedback": {
+        "correct": "$6^2 = 36$ إذن $\\sqrt{36} = 6$ عدد ناطق؛ أما 12 و 20 و 50 فليست مربعات لأعداد ناطقة.",
+        "incorrect": "ليس كل عدد طبيعي مربعًا: قارن كل عدد بقائمة المربعات $1، 4، 9، 16، 25، 36، 49، 64$."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l1-003",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 1
+}

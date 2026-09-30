@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "title": "تدريب — جذر مجموع",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مجموع جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P3",
+      "modelledOn": "act-4c"
+    }
+  },
+  "statement": {
+    "content": "لاحظ المساواة: $\\sqrt{36} + \\sqrt{64} = \\sqrt{100}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل المساواة $\\sqrt{36} + \\sqrt{64} = \\sqrt{100}$ صحيحة؟",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "صحيح",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        },
+        {
+          "id": "B",
+          "content": "خطأ",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب كل طرف وحده."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{36}$ و $\\sqrt{64}$ و $\\sqrt{100}$ أعداد طبيعية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن مجموع الجذرين بجذر المجموع."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{36} + \\sqrt{64} = 6 + 8 = 14$ بينما $\\sqrt{100} = 10$ : الجذر لا يتوزّع على الجمع.",
+        "incorrect": "احسب الطرفين عدديًا ثم قارن."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $\\sqrt{36 + 64}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في هذه الكتابة الجذر يشمل المجموع كله."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ابدأ بما تحت الجذر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع ثم خذ الجذر التربيعي."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{36 + 64} = \\sqrt{100} = 10$",
+        "incorrect": "اجمع أولًا ما تحت الجذر، لا الجذرين."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "14",
+          "id": "MISC-JIDHR-JAMA"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l1-005",
+  "lessonCode": "amaliyat-judhur",
+  "level": 1
+}

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2, XCircle, Lightbulb, Info, Timer as TimerIcon, Volume2, VolumeX, Flame, BookOpen } from 'lucide-react';
 import { useLessonChrome } from '../hooks/useLessonChrome';
+import { bidi, isolateOutsideMath } from '../../../utils/bidi';
 
 /**
  * Briques d'interface partagées par les leçons Smarter Academy.
@@ -119,7 +120,7 @@ export function ChoiceGrid({
             <span className="flex items-center gap-2">
               {isRight && <CheckCircle2 className="w-4 h-4 shrink-0" aria-hidden="true" />}
               {isWrongPick && <XCircle className="w-4 h-4 shrink-0" aria-hidden="true" />}
-              <span>{renderOption ? renderOption(opt) : opt}</span>
+              <span>{renderOption ? renderOption(opt) : (typeof opt === 'string' ? isolateOutsideMath(opt) : opt)}</span>
             </span>
           </button>
         );
@@ -176,7 +177,7 @@ export function StepCard({ num, title, subtitle, done, locked, children, tone = 
           {num}
         </span>
         <div className="text-sm text-slate-400">
-          {title} — <span className="font-mono text-xs">{t('step.finishPreviousStep')}</span>
+          {bidi(title)} — <span className="font-mono text-xs">{t('step.finishPreviousStep')}</span>
         </div>
       </div>
     );
@@ -196,8 +197,8 @@ export function StepCard({ num, title, subtitle, done, locked, children, tone = 
           {done ? '✓' : num}
         </span>
         <div>
-          <h3 className="font-space font-bold text-slate-800 leading-snug">{title}</h3>
-          {subtitle && <p className="text-xs sm:text-sm text-slate-500 mt-0.5 leading-relaxed">{subtitle}</p>}
+          <h3 className="font-space font-bold text-slate-800 leading-snug">{bidi(title)}</h3>
+          {subtitle && <p className="text-xs sm:text-sm text-slate-500 mt-0.5 leading-relaxed">{bidi(subtitle)}</p>}
         </div>
       </div>
       {children}
@@ -298,7 +299,7 @@ export function MissionBrief({ tag, title, headline, children, footer, visual, e
 
           {title && (
             <h2 className={`font-space text-base font-extrabold leading-snug sm:text-lg ${headline ? T.accent : 'text-slate-900'}`}>
-              {title}
+              {bidi(title)}
             </h2>
           )}
 

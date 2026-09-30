@@ -1,0 +1,120 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l1-004",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — أكبر مربع يقسم عددًا",
+    "estimatedMinutes": 3,
+    "tags": [
+      "a√b",
+      "أكبر مربع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P1",
+      "modelledOn": "method-simplify"
+    }
+  },
+  "statement": {
+    "content": "نريد كتابة $\\sqrt{72}$ على الشكل $a\\sqrt{b}$ حيث $a$ و $b$ عددان طبيعيان و $b$ أصغر ما يمكن."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هو أكبر مربع تامّ يقسم 72؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "9",
+          "isCorrect": false,
+          "misconceptionId": "MISC-B-LAYSA-ASGHAR"
+        },
+        {
+          "id": "B",
+          "content": "36",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "4",
+          "isCorrect": false,
+          "misconceptionId": "MISC-B-LAYSA-ASGHAR"
+        },
+        {
+          "id": "D",
+          "content": "8",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المربعات التامة التي تقسم 72 عديدة، والمطلوب أكبرها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "جرّب المربعات 4، 9، 16، 25، 36، 49 واحدًا واحدًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تأكّد أن حاصل القسمة لا يقبل بدوره القسمة على مربع أكبر من 1."
+        }
+      ],
+      "feedback": {
+        "correct": "$72 = 36 \\times 2$ و $36 = 6^2$، و 2 لا يقبل القسمة على أي مربع غير 1.",
+        "incorrect": "العدد 8 ليس مربعًا تامًّا، و 4 و 9 مربعان يقسمان 72 لكن يوجد أكبر منهما."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نكتب $\\sqrt{72} = a\\sqrt{2}$. ما قيمة العدد الطبيعي $a$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-JIDHR-MURABBA-MANSI",
+          "value": "36"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب 72 على شكل جداء مربع تامّ في 2."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$72 \\div 2$ يعطي مربعًا تامًّا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\sqrt{k^2 \\times 2} = k\\sqrt{2}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{72} = \\sqrt{6^2 \\times 2} = 6\\sqrt{2}$.",
+        "incorrect": "المعامل هو جذر المربع، وليس المربع نفسه."
+      }
+    }
+  ]
+}

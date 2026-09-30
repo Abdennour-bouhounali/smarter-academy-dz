@@ -1,0 +1,103 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l2-008",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — نسبة إلى k√b",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مقام ناطق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P3",
+      "modelledOn": "method-rationalize"
+    }
+  },
+  "statement": {
+    "content": "كل نسبة تُكتب على الشكل $k\\sqrt{b}$ حيث $k$ عدد طبيعي."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نكتب $\\dfrac{12}{\\sqrt{3}} = k\\sqrt{3}$. ما قيمة $k$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-BAST-DUN-DARB",
+          "value": "12"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المقام عدد غير ناطق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب البسط والمقام في $\\sqrt{3}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد الضرب، بسّط على 3."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{12}{\\sqrt{3}} = \\dfrac{12\\sqrt{3}}{3}$.",
+        "incorrect": "اضرب البسط والمقام معًا، ثم اختزل."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نكتب $\\dfrac{10}{\\sqrt{5}} = k\\sqrt{5}$. ما قيمة $k$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-BAST-DUN-DARB",
+          "value": "10"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المقام عدد غير ناطق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب البسط والمقام في $\\sqrt{5}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد الضرب، بسّط على 5."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{10}{\\sqrt{5}} = \\dfrac{10\\sqrt{5}}{5}$.",
+        "incorrect": "اضرب البسط والمقام معًا، ثم اختزل."
+      }
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+import React from 'react';
+import { PrerequisiteDiagnostic } from '../../../../../../common/kit';
+import { prepQuestion } from '../../_unit/prepDiagnostic';
+import { MODULE_CTX, getNavLinks } from '../moduleContext';
+import { PREP_ITEMS } from '../content/textbook';
+
+/**
+ * Module 0 — أستعدّ. Le manuel n'attribue aucun item de « أستعدّ » (p. 19) à
+ * ce درس : cinq affirmations de la plateforme, même forme (« أصحيح أم خاطئ؟
+ * برّر إجابتك »), étiquetées « عبارة إضافية من المنصّة ». Elles mesurent les
+ * trois acquis que la leçon suppose — le nombre rationnel (année antérieure),
+ * la définition de √a et valeur exacte / valeur approchée (الدرس 1) — et
+ * n'enseignent rien de la leçon. Jamais bloquant ; `id` et `requires` littéraux.
+ */
+export default function Module00Astaidd() {
+  return (
+    <PrerequisiteDiagnostic
+      ctx={MODULE_CTX}
+      navLinks={getNavLinks(0)}
+      moduleTitle="🎯 أستعدّ"
+      moduleSubtitle="أصحيح أم خاطئ؟ برّر إجابتك. تشخيص قصير لا يمنعك من متابعة الدرس."
+      estimatedTime="6 دقائق"
+      brief={{
+        tag: 'أستعدّ', title: 'خمس عبارات قبل الانطلاق', tone: 'teal',
+        body: <p>عبارات تتعلّق بما تعلّمته من قبل: العدد الناطق، والجذر التربيعي، والقيمة المضبوطة والقيمة المقرّبة. ليست اختبارًا: الغاية أن تعرف أنت ما ينبغي أن تراجعه.</p>,
+      }}
+      skills={{
+        natiq: { label: 'العدد الناطق', emoji: '➗' },
+        jidhr: { label: 'الجذر التربيعي لعدد موجب', emoji: '√' },
+        mudbuta: { label: 'القيمة المضبوطة والقيمة المقرّبة', emoji: '🧮' },
+      }}
+      levels={{
+        fragile: { emoji: '🌱', title: 'مكتسباتك لا تزال هشّة.', body: 'لا بأس: النشاط يبدأ بمسطرة تسحب عليها ضلع مربّع، ولا يفترض حسابًا صعبًا.', advice: 'راجع تعريف الجذر التربيعي في الدرس 1: العدد الموجب الذي مربعه a.', cta: 'أبدأ الدرس على كل حال', tone: 'from-emerald-500 to-teal-500' },
+        progres: { emoji: '👍', title: 'مكتسباتك في الطريق الصحيح.', body: 'بعض التردّدات الصغيرة ستُصحَّح أثناء الدرس.', advice: 'تذكّر أن كل عدد عشري عدد ناطق: يُكتب على شكل كسر.', cta: 'أبدأ النشاط 2', tone: 'from-teal-500 to-cyan-500' },
+        pret: { emoji: '🚀', title: 'أنت جاهز!', body: 'العدد الناطق والجذر التربيعي متحكَّم فيهما.', advice: 'حاول تصنيف الجذور في النشاط 2 قبل أن تقرأ المعيار.', cta: 'أنا جاهز!', tone: 'from-cyan-500 to-blue-500' },
+      }}
+      questions={[
+        { ...prepQuestion(PREP_ITEMS[0]), id: 'prep-1', requires: ['adad-natiq'] },
+        { ...prepQuestion(PREP_ITEMS[1]), id: 'prep-2', requires: ['adad-natiq'] },
+        { ...prepQuestion(PREP_ITEMS[2]), id: 'prep-3', requires: ['jidhr-taarif'] },
+        { ...prepQuestion(PREP_ITEMS[3]), id: 'prep-4', requires: ['jidhr-taarif'] },
+        { ...prepQuestion(PREP_ITEMS[4]), id: 'prep-5', requires: ['qima-mudbuta'] },
+      ]}
+    />
+  );
+}

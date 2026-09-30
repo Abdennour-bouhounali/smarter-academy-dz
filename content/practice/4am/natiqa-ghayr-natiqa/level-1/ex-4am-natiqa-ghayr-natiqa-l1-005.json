@@ -1,0 +1,75 @@
+{
+  "metadata": {
+    "title": "تدريب — تصنيف جذر عدد عشري",
+    "estimatedMinutes": 2,
+    "tags": [
+      "تصنيف",
+      "عدد عشري"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P1",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "نريد تصنيف العدد $\\sqrt{0{,}49}$ : عدد ناطق أم عدد غير ناطق؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "اختر التصنيف الصحيح مع تبريره.",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "ناطق، لأن $0{,}7^2 = 0{,}49$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "غير ناطق، لأن 0,49 عدد عشري وليس عددًا طبيعيًا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-TABII-FAQAT"
+        },
+        {
+          "id": "C",
+          "content": "ناطق، لأن $\\sqrt{0{,}49} = 0{,}07$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-FASILA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المعيار: هل 0,49 مربع لعدد ناطق؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "جرّب تربيع أعداد عشرية برقم واحد بعد الفاصلة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق من موضع الفاصلة بحساب مربع العدد الذي تقترحه."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}7^2 = 0{,}49$ و 0,7 عدد موجب، إذن $\\sqrt{0{,}49} = 0{,}7$ عدد ناطق.",
+        "incorrect": "تذكّر أن $0{,}07^2 = 0{,}0049$، وأن كون العدد عشريًا لا يمنع أن يكون جذره ناطقًا."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l1-005",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 1
+}

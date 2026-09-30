@@ -1,0 +1,180 @@
+{
+  "metadata": {
+    "title": "تدريب — مسألة على نمط الشهادة",
+    "estimatedMinutes": 6,
+    "tags": [
+      "شهادة التعليم المتوسط",
+      "نشر",
+      "معادلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P2",
+      "modelledOn": "ex-14"
+    }
+  },
+  "statement": {
+    "content": "لتكن العبارة $E = (2x + 1)^2 - 4x$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لتكن العبارة $E = (2x + 1)^2 - 4x$. انشر $E$ وبسّطها.",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$E = 4x^2 + 8x + 1$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$E = 4x^2 + 1$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$E = 2x^2 + 1$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$E = 4x^2 - 4x + 1$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$(a + b)^2 = a^2 + 2ab + b^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(2x + 1)^2 = 4x^2 + 4x + 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اطرح $4x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$4x^2 + 4x + 1 - 4x = 4x^2 + 1$.",
+        "incorrect": "$(2x)^2 = 4x^2$، والحد $2 \\times 2x \\times 1 = 4x$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "لتكن $E = (2x + 1)^2 - 4x$. ما هو الحل السالب للمعادلة $E = 10$؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b أو عدد عشري",
+      "expectedAnswer": "-3/2",
+      "misconceptionSignatures": [
+        {
+          "value": "3/2",
+          "id": "MISC-HALL-WAHID"
+        },
+        {
+          "value": "-9/8",
+          "id": "MISC-HALL-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $E$ وبسّطها أولا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تصبح المعادلة $4x^2 + 1 = 10$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اعزل $x^2$ ثم خذ الحل السالب."
+        }
+      ],
+      "feedback": {
+        "correct": "$4x^2 = 9$ ، $x^2 = \\dfrac{9}{4}$ ، والحلان $\\dfrac{3}{2}$ و $-\\dfrac{3}{2}$.",
+        "incorrect": "بعد التبسيط اعزل $x^2$ بعناية."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "لتكن $E = (2x + 1)^2 - 4x$. المعادلة $E = 0$ ...",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "secondary"
+        }
+      ],
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x = \\dfrac{1}{2}$ أو $x = -\\dfrac{1}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-SALIB"
+        },
+        {
+          "id": "B",
+          "content": "$x = -\\dfrac{1}{4}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "لا تقبل أي حل",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بسّط $E$ أولا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$4x^2 + 1 = 0$ يعني $x^2 = -\\dfrac{1}{4}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما إشارة الطرف الثاني؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 = -\\dfrac{1}{4} < 0$: لا حل.",
+        "incorrect": "احسب $4 \\times \\left(\\dfrac{1}{2}\\right)^2 + 1$."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l5-009",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 5
+}

@@ -1,0 +1,74 @@
+{
+  "metadata": {
+    "title": "تدريب — قوى العدد 2",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مربع تام"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P2",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "الأعداد 4 ، 8 ، 16 ، 32 ، 64 ، 128 نحصل عليها بضرب العدد السابق في 2."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "اكتب الأعداد، من بين هذه الأعداد، التي جذرها التربيعي عدد ناطق.",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        4,
+        16,
+        64
+      ],
+      "misconceptionSignatures": [
+        {
+          "value": [
+            4,
+            8,
+            16,
+            32,
+            64,
+            128
+          ],
+          "id": "MISC-NATIQ-KULL-JIDHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أي هذه الأعداد مربع لعدد طبيعي؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب مربعات الأعداد من 2 إلى 12."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تكتب إلا الأعداد التي تجدها في قائمة المربعات."
+        }
+      ],
+      "feedback": {
+        "correct": "$4 = 2^2$ و $16 = 4^2$ و $64 = 8^2$؛ أما 8 و 32 و 128 فليست مربعات لأعداد ناطقة.",
+        "incorrect": "تحقّق من كل عدد: هل يوجد عدد طبيعي مربعه يساويه؟"
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l1-010",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 1
+}

@@ -1,0 +1,179 @@
+{
+  "metadata": {
+    "title": "تدريب — زربية في قاعة مربّعة",
+    "estimatedMinutes": 7,
+    "tags": [
+      "وضعية إدماجية",
+      "وضعية",
+      "معادلة",
+      "مقارنة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "قاعة مربّعة الشكل مساحتها $20\\,m^2$. نريد أن نضع فيها زربية مستطيلة مساحتها $8\\,m^2$ وطولها ضعف عرضها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "القيمة المضبوطة لضلع القاعة (بالمتر) هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2\\sqrt{5}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$10$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-NISF"
+        },
+        {
+          "id": "C",
+          "content": "$4\\sqrt{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        },
+        {
+          "id": "D",
+          "content": "$5\\sqrt{2}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الضلع جذر المساحة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$20 = 4 \\times 5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استعمل $\\sqrt{a^2 b} = a\\sqrt{b}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{20} = 2\\sqrt{5}$.",
+        "incorrect": "الضلع جذر المساحة لا نصفها."
+      },
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو عرض الزربية (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالمتر)",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عبّر عن مساحة الزربية بدلالة عرضها $\\ell$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2\\ell^2 = 8$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خذ الحل الموجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$2\\ell^2 = 8$، $\\ell^2 = 4$، و $\\ell = 2\\,m$؛ والطول $4\\,m$.",
+        "incorrect": "المساحة $2\\ell^2$؛ والعرض موجب."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "4",
+          "id": "MISC-HALL-QISMA"
+        },
+        {
+          "value": "-2",
+          "id": "MISC-JIDHR-SALIB"
+        }
+      ],
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q3",
+      "statement": "هل يتّسع طول القاعة لطول الزربية؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، لأنّ $4 = \\sqrt{16}$ و $\\sqrt{16} < \\sqrt{20}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا، لأنّ $4 > 2\\sqrt{5}$ إذ $4 > 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUAMIL-MANSI"
+        },
+        {
+          "id": "C",
+          "content": "لا، لأنّ مساحة الزربية أكبر من نصف مساحة القاعة",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طول الزربية ضعف عرضها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب الطول على شكل جذر تربيعي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن $\\sqrt{16}$ بـ $\\sqrt{20}$."
+        }
+      ],
+      "feedback": {
+        "correct": "طول الزربية $4 = \\sqrt{16}$ أصغر من ضلع القاعة $\\sqrt{20} \\approx 4{,}47$: تتّسع لها.",
+        "incorrect": "قارن العددين بعد كتابتهما جذرين."
+      },
+      "cognitiveDemand": "transfer"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l5-010",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 5
+}

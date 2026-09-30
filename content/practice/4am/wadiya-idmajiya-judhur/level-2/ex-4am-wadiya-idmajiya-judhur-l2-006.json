@@ -1,0 +1,117 @@
+{
+  "metadata": {
+    "title": "تدريب — مستطيل بعداه جذران",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية إدماجية",
+      "جداء جذرين",
+      "محيط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "مستطيل طوله $\\sqrt{20}\\,cm$ وعرضه $\\sqrt{5}\\,cm$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هي مساحة هذا المستطيل (بالسنتيمتر المربع)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالسنتيمتر المربع)",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المساحة جداء الطول في العرض."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "جداء جذرين هو جذر الجداء."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل $20 \\times 5$ مربع تام؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{20} \\times \\sqrt{5} = \\sqrt{100} = 10\\,cm^2$.",
+        "incorrect": "اضرب ما تحت الجذرين ثم خذ الجذر."
+      },
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "محيط هذا المستطيل (بالسنتيمتر) هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$5\\sqrt{5}$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$3\\sqrt{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUAMIL-MANSI"
+        },
+        {
+          "id": "C",
+          "content": "$6\\sqrt{5}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$2\\sqrt{25}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المحيط ضعف مجموع البعدين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بسّط $\\sqrt{20}$ على الشكل $a\\sqrt{5}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع الحدود المتشابهة بالخاصية التوزيعية."
+        }
+      ],
+      "feedback": {
+        "correct": "$2(\\sqrt{20} + \\sqrt{5}) = 2(2\\sqrt{5} + \\sqrt{5}) = 6\\sqrt{5}$.",
+        "incorrect": "الجذر لا يتوزّع على الجمع، ولا تنس أن تضاعف المجموع."
+      },
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l2-006",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 2
+}

@@ -1,0 +1,127 @@
+{
+  "metadata": {
+    "title": "تدريب — قرص ومساحته",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية إدماجية",
+      "معادلة",
+      "أبسط كتابة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "نصف قطر قرص هو $r$ (بالسنتيمتر)، ومساحته $\\pi r^2$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "إذا كانت مساحة القرص $16\\pi\\,cm^2$، فما هو $r$ (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالسنتيمتر)",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب المعادلة $\\pi r^2 = 16\\pi$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم الطرفين على $\\pi$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نصف القطر طول، فهو موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$r^2 = 16$ و $r > 0$، إذن $r = 4\\,cm$.",
+        "incorrect": "بعد القسمة على $\\pi$ خذ الحل الموجب للمعادلة."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "8",
+          "id": "MISC-HALL-QISMA"
+        },
+        {
+          "value": "-4",
+          "id": "MISC-JIDHR-SALIB"
+        }
+      ],
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "إذا كانت مساحة القرص $12\\pi\\,cm^2$، فنصف قطره (بالسنتيمتر) هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-QISMA"
+        },
+        {
+          "id": "B",
+          "content": "$2\\sqrt{3}$ أو $-2\\sqrt{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-SALIB"
+        },
+        {
+          "id": "C",
+          "content": "$3\\sqrt{2}$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$2\\sqrt{3}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب المعادلة ثم اقسم على $\\pi$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على $r^2 = a$ مع $a > 0$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الطول يأخذ الحل الموجب، ثم بسّط الجذر."
+        }
+      ],
+      "feedback": {
+        "correct": "$r^2 = 12$ و $r > 0$: $r = \\sqrt{12} = 2\\sqrt{3}$. الطول لا يكون سالبًا.",
+        "incorrect": "نصف القطر طول: نحتفظ بالحل الموجب، ونبسّط الجذر."
+      },
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l2-007",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 2
+}

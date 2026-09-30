@@ -60,7 +60,8 @@ manipulations/
 │   ├── RibbonStrip.jsx                        a length drawn as a notched ribbon (the tailor's workshop)
 │   ├── DivisionRoles.jsx                      b · q · r named in the scene's words (partition vs quotition, §2ter)
 │   └── ContextScenes.jsx                      the landscape vignettes of each world, for `MissionBrief.visual`
-└── divisibility/               the 10 types of unit 1 (+ teamFormation.js, pure geometry)
+├── divisibility/               the 10 types of unit 1 (+ teamFormation.js, pure geometry)
+└── roots/                      the 3 types of unit 2 « الحساب على الجذور » (2026-09-30) — §2quater
 ```
 
 `divisibility/DivisorExplorerBooks.jsx` (`divisor-explorer-books`, Module 1 of
@@ -95,6 +96,33 @@ rectangles (`BookRectangle`), both coloured from `primitives/BookFigure.jsx`'s `
 so the student recognises the library from one module to the next instead of learning a
 second abstraction. (The palette was duplicated in the old standalone lab and locked by a
 test; the duplication and the test are gone since 2026-09-30.)
+
+## 2quater. The square-root laboratories (unit 2, 2026-09-30)
+
+Unit 2 « الحساب على الجذور » needed mathematics no unit-1 type touches, so three types were added by
+the §7ter recipe. All three use the **stretch** gesture (`useStretchInteraction`, `direction: 'ltr'`
+because a length and a number line read left to right), compare squares **in integers** through
+`packages/core/arithmetic/squareRoots.js` (never a float equality: a side is an integer `v` on a
+graduation `1/scale`, and `v² × den` is compared to `num × scale²`), and are **manual** (§6bis — each
+position is a trial or an answer). Pure logic: `logic/squareRootSide.js`, `logic/squareFold.js`,
+`logic/squareTiling.js`, tested in `logic/squareLabs.test.js` on the textbook's numbers (sweeps
+included). Strings: `lesson.json › manipulation.squareRoot | squareFold | squareTiling`; every formula
+in a string is a `$…$` island, and the components render hints, options, notes and explanations
+through `MathText`.
+
+| Type | The hand holds | Resistance | Discovery (contrast) | Lessons |
+|---|---|---|---|---|
+| `square-root-side` (`roots/SquareRootSide.jsx`) | the end of a square's side on a graduated ruler; the square grows on a unit grid beside the dashed target square | `refine`: « دقّق » (zoom the ruler ×10) opens only once the student has bracketed the side BY HAND at the current graduation; for 5 every graduation is too small or too big. `graduation`: a card « resists » after 3 graduations bracketed without a hit | `refine`: the side falls exactly (36 → 6) **or** the bracket reached 1/1000 with no hit (5) — the formal part names √5, shows `calculator`'s exact square (2,236067978² = 5,000000002…) and, with `figure="bc-square"`, the tilted square of area 9 − 4 × 1 = 5 on BC. `graduation`: one card exact **and** one resisting → « √a is rational ⇔ a is the square of a rational » | L1 (refine), L2 (graduation) |
+| `square-fold` (`roots/SquareFold.jsx`) | x on a number line; an arrow carries it to x² on the line of squares, whose negative half is hatched | pinning a solution for a < 0 is refused (« x² لا يكون سالبًا »); a wrong x is refused with its exact square; « لا حل » for a ≥ 0 is refused. For √3 the nearest graduation is accepted and **√3** (not 1,7) is pinned | a solved card with a > 0 (two pins), a = 0 (one) and a < 0 (« لا حل ») → the three cases of خاصية 2. Optional `table` fills the textbook's x ↦ x² table from the student's own positions | L3 |
+| `square-tiling` (`roots/SquareTiling.jsx`) | k, the number of square tiles per side of a square of area n | k² ∤ n: the tiling is dashed and refused with `n ÷ k²` read exactly (72 ÷ 25 = 2,88) | `product`: two valid tilings with k > 1 and one refusal → √(k² × b) = √(k²) × √b = k√b. `simplest`: the largest k and another valid k → the largest square dividing n gives the smallest b | L4 (product), L5 (simplest) |
+
+Props: see the component headers (the design sheet of `MANIPULATION_DNA.md` §7 is filled in each).
+`square-root-side` and `square-tiling` report each validated trial through `onTrial` (via
+`state.report`), so a module can list the student's own trials above a question (DNA §9).
+`square-tiling` `simplest` needs, besides the largest valid k, either another valid k > 1 or — for a
+number with a single non-trivial tiling (18, 8, 50) — a larger k tried and refused.
+`square-root-side` posed ALONE in `graduation` mode has no second level (its `levels.js` pair is a
+refine pair); in a workspace the lesson declares both levels as usual.
 
 ## 2bis. Drawn worlds — every lesson has its own, and the theme is data
 
@@ -702,7 +730,7 @@ Ten steps, in this order. Steps 1, 2 and 5 are enforced by tests that fail other
 10. **Write the design sheet** of `MANIPULATION_DNA.md` §7 in the header, next to the five
    questions — above all VARIABLE (what the finger controls), RESISTANCE and CONTRAST.
 
-**Reuse before you write.** The ten types are reused across the unit by changing props alone
+**Reuse before you write.** The ten types of unit 1 are reused across the unit by changing props alone
 (`factor-pairs` serves 24, 60, 48 and 105; `common-divisors` serves two lessons — 4 and 5 — with
 two themes). Write a new type
 only when the mathematical idea or the gesture genuinely differs. There is no standalone type
@@ -755,6 +783,15 @@ state.
 
 ## 10. Tests
 
+- `packages/core/arithmetic/squareRoots.test.js` — unit 2's exact arithmetic: perfect squares,
+  √ of a rational (rational ⇔ numerator and denominator squares), squares compared in integers
+  (no decimal up to 1/1000 squares to 5, swept), the calculator's 2,236067978² = 5,000000002237008484,
+  n = a² × b with b square-free, and every k² dividing n.
+- `logic/squareLabs.test.js` — the three unit-2 labs on the textbook's numbers: 36 exact / 5 bracketed
+  to 1/1000 with the zoom locked until the student brackets by hand; 16/9 on the thirds while 6, 7, 13
+  and 25/13 resist every graduation 1…12 (swept); x² = 9 needs −3 too, x² = 0 one pin, x² = −9 refuses
+  pins and accepts « لا حل », √3 pinned exactly; 28 = 2² × 7 (k = 3 refused), 144 always gives side 12,
+  288 needs k = 12; every tiling of 11 numbers swept.
 - `packages/core/arithmetic/equalGrouping.test.js` — the equal-sharing model behind the library
   and the pitch: partition vs quotition, and a remainder that is always a number of objects.
 - `divisibility/teamFormation.test.js` — the formation geometry, **swept over every reachable

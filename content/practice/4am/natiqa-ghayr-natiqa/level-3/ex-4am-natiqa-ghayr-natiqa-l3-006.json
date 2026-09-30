@@ -1,0 +1,61 @@
+{
+  "metadata": {
+    "title": "تدريب — المربعات بين 50 و 100",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مربع تام"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P2",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "نبحث عن الأعداد الطبيعية $n$ حيث $50 \\leq n \\leq 100$ ويكون $\\sqrt{n}$ عددًا ناطقًا."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "اكتب كل هذه الأعداد $n$ .",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        64,
+        81,
+        100
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\sqrt{n}$ ناطق عندما يكون $n$ مربعًا لعدد طبيعي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما هو أصغر عدد طبيعي مربعه أكبر من 50؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب مربعات الأعداد المتتالية ابتداءً منه حتى تتجاوز 100، ولا تنسَ الحدّين."
+        }
+      ],
+      "feedback": {
+        "correct": "المربعات بين 50 و 100 هي $8^2$ و $9^2$ و $10^2$ .",
+        "incorrect": "تحقّق من الحدّين: 100 داخل المجال."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l3-006",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 3
+}

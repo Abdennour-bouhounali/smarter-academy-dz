@@ -1,0 +1,114 @@
+{
+  "metadata": {
+    "title": "تدريب — حاصل قسمة جذرين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "حاصل قسمة جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P2",
+      "modelledOn": "act-4b"
+    }
+  },
+  "statement": {
+    "content": "$a$ و $b$ عددان موجبان حيث $b \\neq 0$ : $\\dfrac{\\sqrt{a}}{\\sqrt{b}} = \\sqrt{\\dfrac{a}{b}}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد $\\dfrac{\\sqrt{21}}{\\sqrt{7}}$ يساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-QISMA-JIDHR"
+        },
+        {
+          "id": "B",
+          "content": "$\\sqrt{3}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\sqrt{14}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-QISMA-JIDHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حاصل قسمة جذرين يُكتب جذرًا واحدًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ماذا نضع تحت الجذر: حاصل القسمة أم الفرق؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تنسَ أن الجذر يبقى بعد القسمة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{\\sqrt{21}}{\\sqrt{7}} = \\sqrt{\\dfrac{21}{7}} = \\sqrt{3}$",
+        "incorrect": "تحت الجذر نضع حاصل القسمة، ويبقى الجذر قائمًا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $\\dfrac{\\sqrt{45}}{\\sqrt{5}}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "البسط والمقام ليسا عددين ناطقين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب حاصل القسمة تحت جذر واحد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $45 \\div 5$ ثم جذر الناتج."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{\\sqrt{45}}{\\sqrt{5}} = \\sqrt{9} = 3$",
+        "incorrect": "اجمع الكسر تحت جذر واحد ثم احسب."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "9",
+          "id": "MISC-QISMA-JIDHR"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l1-004",
+  "lessonCode": "amaliyat-judhur",
+  "level": 1
+}

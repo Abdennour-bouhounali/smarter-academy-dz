@@ -1,0 +1,136 @@
+{
+  "metadata": {
+    "title": "تدريب — جداء جذرين على الشكل a√b",
+    "estimatedMinutes": 5,
+    "tags": [
+      "جداء جذرين",
+      "إخراج عامل من تحت الجذر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P1",
+      "modelledOn": "know-4"
+    }
+  },
+  "statement": {
+    "content": "اكتب كل جداء على الشكل $a\\sqrt{b}$ حيث $a$ و $b$ عددان طبيعيان."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\sqrt{12} \\times \\sqrt{15}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$36\\sqrt{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        },
+        {
+          "id": "B",
+          "content": "$6\\sqrt{5}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\sqrt{27}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-JAMA"
+        },
+        {
+          "id": "D",
+          "content": "$5\\sqrt{6}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب الجداء تحت جذر واحد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$12 \\times 15 = 180$ ، ابحث عن أكبر مربّع تام يقسم 180."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$180 = 36 \\times 5$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{12 \\times 15} = \\sqrt{180} = \\sqrt{6^2 \\times 5} = 6\\sqrt{5}$",
+        "incorrect": "اضرب تحت الجذر، ثم أخرج جذر المربّع."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$\\sqrt{6} \\times \\sqrt{10}$",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-JAMA"
+        },
+        {
+          "id": "B",
+          "content": "$15\\sqrt{2}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$2\\sqrt{15}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$4\\sqrt{15}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب الجداء تحت جذر واحد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$6 \\times 10 = 60$ ، ابحث عن مربّع تام يقسم 60."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$60 = 4 \\times 15$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{60} = \\sqrt{2^2 \\times 15} = 2\\sqrt{15}$",
+        "incorrect": "اضرب العددين (لا تجمعهما) ثم أخرج جذر المربّع."
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l3-008",
+  "lessonCode": "amaliyat-judhur",
+  "level": 3
+}

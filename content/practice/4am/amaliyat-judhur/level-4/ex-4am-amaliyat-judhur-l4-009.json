@@ -1,0 +1,112 @@
+{
+  "metadata": {
+    "title": "تدريب — جذر جداء عددين سالبين",
+    "estimatedMinutes": 6,
+    "tags": [
+      "جداء جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P1",
+      "modelledOn": "know-4"
+    }
+  },
+  "statement": {
+    "content": "$a$ و $b$ عددان سالبان تمامًا."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ العبارات التالية صحيحة؟",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sqrt{a \\times b}$ لا معنى له لأن $a$ و $b$ سالبان",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$\\sqrt{a \\times b} = \\sqrt{a} \\times \\sqrt{b}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$\\sqrt{a \\times b}$ موجود لأن $a \\times b$ موجب تمامًا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما إشارة جداء عددين سالبين؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل $\\sqrt{a}$ معرّف إذا كان $a$ سالبًا؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جرّب $a = -1$ و $b = -9$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$a \\times b > 0$ فالعدد $\\sqrt{a \\times b}$ موجود، أما $\\sqrt{a}$ و $\\sqrt{b}$ فلا معنى لهما.",
+        "incorrect": "الخاصية $\\sqrt{a} \\times \\sqrt{b} = \\sqrt{ab}$ تشترط $a$ و $b$ موجبين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "من أجل $a = -2$ و $b = -18$ ، احسب $\\sqrt{a \\times b}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب الجداء $a \\times b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انتبه لإشارة الجداء."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خذ الجذر التربيعي للناتج."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{(-2) \\times (-18)} = \\sqrt{36} = 6$",
+        "incorrect": "الجذر التربيعي عدد موجب."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "-6",
+          "id": "MISC-JIDHR-SALIB"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l4-009",
+  "lessonCode": "amaliyat-judhur",
+  "level": 4
+}

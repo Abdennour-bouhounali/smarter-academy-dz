@@ -1,0 +1,102 @@
+{
+  "metadata": {
+    "title": "تدريب — مثلث قائم ضلعاه جذران",
+    "estimatedMinutes": 5,
+    "tags": [
+      "فيثاغورس",
+      "مربع الجذر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidhr-tarbii_P3",
+      "modelledOn": "ict-construct"
+    }
+  },
+  "statement": {
+    "content": "ABC مثلث قائم في A حيث $AB = \\sqrt{5}$ cm و $AC = \\sqrt{11}$ cm."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $BC^2$.",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "16",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طبّق خاصية فيثاغورس."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$BC^2 = AB^2 + AC^2 = (\\sqrt{5})^2 + (\\sqrt{11})^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استعمل $(\\sqrt{a})^2 = a$ لكل حد."
+        }
+      ],
+      "feedback": {
+        "correct": "$BC^2 = 5 + 11 = 16$.",
+        "incorrect": "مربع $\\sqrt{a}$ هو $a$ وليس $a^2$."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "146",
+          "id": "MISC-TARBI-JIDHR"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "استنتج الطول $BC$ (بالسنتيمتر).",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي (بالسنتيمتر)",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$BC$ طول، فهو عدد موجب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل نتيجة السؤال الأول."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$BC$ هو العدد الموجب الذي مربعه $BC^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$BC^2 = 16$ و $BC$ موجب، إذن $BC = \\sqrt{16} = 4$ cm.",
+        "incorrect": "الطول هو الجذر التربيعي لـ $BC^2$، لا $BC^2$ نفسه."
+      }
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l5-006",
+  "lessonCode": "jidhr-tarbii",
+  "level": 5
+}

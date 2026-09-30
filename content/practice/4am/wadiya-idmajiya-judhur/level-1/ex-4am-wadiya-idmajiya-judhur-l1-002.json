@@ -1,0 +1,122 @@
+{
+  "metadata": {
+    "title": "تدريب — بلاطة مربّعة",
+    "estimatedMinutes": 2,
+    "tags": [
+      "وضعية إدماجية",
+      "جذر عدد عشري",
+      "عدد ناطق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "بلاطة مربّعة الشكل مساحتها $0{,}36\\,m^2$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هو طول ضلع البلاطة (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري (بالمتر)",
+      "expectedAnswer": "0.6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطول هو العدد الموجب الذي مربعه 0,36."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "فكّر في $6^2 = 36$، ثم انتبه إلى موضع الفاصلة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بتربيع العدد الذي وجدته."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}6^2 = 0{,}36$ و $0{,}6 > 0$، إذن $\\sqrt{0{,}36} = 0{,}6$.",
+        "incorrect": "ربّع العدد الذي اقترحته: يجب أن تحصل على 0,36 تمامًا."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "0.06",
+          "id": "MISC-JIDHR-FASILA"
+        },
+        {
+          "value": "0.18",
+          "id": "MISC-JIDHR-NISF"
+        }
+      ],
+      "cognitiveDemand": "recall"
+    },
+    {
+      "id": "q2",
+      "statement": "هل طول ضلع البلاطة عدد ناطق؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا، لأنّ جذر عدد عشري ليس ناطقًا أبدًا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-TABII-FAQAT"
+        },
+        {
+          "id": "B",
+          "content": "لا، لأنّ 0,36 ليس عددًا طبيعيًا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NATIQ-TABII-FAQAT"
+        },
+        {
+          "id": "C",
+          "content": "نعم، لأنّ 0,36 هو مربع العدد الناطق 0,6",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما هو المعيار الذي يجعل جذر عدد ناطقًا؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل 0,36 مربع لعدد ناطق؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العدد العشري عدد ناطق."
+        }
+      ],
+      "feedback": {
+        "correct": "جذر عدد هو عدد ناطق إذا كان هذا العدد مربعًا لعدد ناطق: $0{,}36 = 0{,}6^2$.",
+        "incorrect": "المعيار ليس أن يكون العدد طبيعيًا، بل أن يكون مربعًا لعدد ناطق."
+      },
+      "cognitiveDemand": "recall"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l1-002",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 1
+}

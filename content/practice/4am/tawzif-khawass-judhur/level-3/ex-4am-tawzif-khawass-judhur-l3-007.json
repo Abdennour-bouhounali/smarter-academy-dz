@@ -1,0 +1,80 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l3-007",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — مقام من الشكل a√b",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مقام ناطق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P3",
+      "modelledOn": "now-25-2"
+    }
+  },
+  "statement": {
+    "content": "اكتب $\\dfrac{2}{3\\sqrt{7}}$ على شكل نسبة مقامها عدد ناطق."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "اكتب $\\dfrac{2}{3\\sqrt{7}}$ على شكل نسبة مقامها عدد ناطق.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{2}{21}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQAM-DUN-BAST"
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{2\\sqrt{7}}{21}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{2\\sqrt{7}}{147}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-FI-JIDHR"
+        },
+        {
+          "id": "D",
+          "content": "$\\dfrac{2\\sqrt{7}}{7}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUAMIL-MANSI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجذر غير الناطق في المقام هو $\\sqrt{7}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب البسط والمقام في $\\sqrt{7}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في المقام: $3\\sqrt{7} \\times \\sqrt{7} = 3 \\times (\\sqrt{7})^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{2 \\times \\sqrt{7}}{3\\sqrt{7} \\times \\sqrt{7}} = \\dfrac{2\\sqrt{7}}{3 \\times 7}$.",
+        "incorrect": "اضرب البسط أيضًا، ولا تنسَ المعامل 3 في المقام."
+      }
+    }
+  ]
+}

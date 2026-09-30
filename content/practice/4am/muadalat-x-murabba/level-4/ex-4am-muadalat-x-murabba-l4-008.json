@@ -1,0 +1,133 @@
+{
+  "metadata": {
+    "title": "تدريب — حدود تختزل",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نشر",
+      "تبسيط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P2",
+      "modelledOn": "ex-14"
+    }
+  },
+  "statement": {
+    "content": "بعد النشر والتبسيط تختفي الحدود من الدرجة الأولى."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلول المعادلة $x(x + 4) = 4x + 10$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x = 5$ أو $x = -5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-QISMA"
+        },
+        {
+          "id": "B",
+          "content": "$x = \\sqrt{10}$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$x = \\sqrt{10}$ أو $x = -\\sqrt{10}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "لا تقبل أي حل",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $x(x + 4)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح $4x$ من الطرفين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "طبّق خاصية حلول $x^2 = a$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 4x = 4x + 10$ يعني $x^2 = 10$.",
+        "incorrect": "حل $x^2 = 10$ ليس $10 \\div 2$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "المعادلة $x(x - 2) + 2x + 9 = 0$ ...",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x = 3$ أو $x = -3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-SALIB"
+        },
+        {
+          "id": "B",
+          "content": "لا تقبل أي حل",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x = -3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-SALIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $x(x - 2)$ وبسّط."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحدان $-2x$ و $2x$ يختزلان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اعزل $x^2$ وانظر إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 9 = 0$ يعني $x^2 = -9$: لا حل.",
+        "incorrect": "احسب $3 \\times (3 - 2) + 6 + 9$: هل يساوي 0؟"
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l4-008",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 4
+}

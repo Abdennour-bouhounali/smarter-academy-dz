@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "title": "تمرين 8 — دون استعمال الرمز",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جذر المربع",
+      "إشارة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-8",
+      "page": 26,
+      "section": "أوظّف تعلّماتي",
+      "number": 8
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 26): اكتب الأعداد الآتية دون استعمال الرمز $\\sqrt{\\;}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\sqrt{(3 - \\pi)^2}$ يساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3 - \\pi$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$\\pi - 3$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(3 - \\pi)^2$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\pi$ أكبر من 3 وأصغر من 4: ما إشارة العدد $3 - \\pi$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الجذر التربيعي عدد موجب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(3 - \\pi)^2 = (\\pi - 3)^2$ : أي العددين موجب؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$3 - \\pi$ سالب، و $\\pi - 3$ موجب ومربعه $(3 - \\pi)^2$.",
+        "incorrect": "الخاصية $\\sqrt{a^2} = a$ تشترط أن يكون $a$ موجبًا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$\\sqrt{(\\pi - 5)^2}$ يساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\pi - 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$\\pi + 5$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$5 - \\pi$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما إشارة العدد $\\pi - 5$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الجذر التربيعي عدد موجب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(\\pi - 5)^2 = (5 - \\pi)^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\pi - 5$ سالب، و $5 - \\pi$ موجب ومربعه $(\\pi - 5)^2$.",
+        "incorrect": "حدّد إشارة العدد داخل المربع أولًا."
+      }
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l4-001",
+  "lessonCode": "jidhr-tarbii",
+  "level": 4
+}

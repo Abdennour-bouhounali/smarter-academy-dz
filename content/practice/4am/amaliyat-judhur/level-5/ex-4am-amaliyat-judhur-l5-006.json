@@ -1,0 +1,98 @@
+{
+  "metadata": {
+    "title": "تدريب — مربّع ضلعه a√b",
+    "estimatedMinutes": 7,
+    "tags": [
+      "جداء جذرين",
+      "إخراج عامل من تحت الجذر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "ABCD مربّع طول ضلعه $3\\sqrt{2}\\,cm$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب مساحة المربّع ABCD بـ $cm^2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "18",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مساحة المربّع = الضلع × الضلع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(3\\sqrt{2})^2 = 3^2 \\times (\\sqrt{2})^2$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(\\sqrt{2})^2 = 2$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$(3\\sqrt{2})^2 = 9 \\times 2 = 18\\,cm^2$",
+        "incorrect": "ربّع العامل 3 والجذر كليهما."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "36",
+          "id": "MISC-TARBI-JIDHR"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "احسب طول القطر AC بـ $cm$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلث ABC قائم في B."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$AC^2 = AB^2 + BC^2$ ، و $AB^2$ هو مساحة المربّع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$AC = \\sqrt{2 \\times 18}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$AC = \\sqrt{18 + 18} = \\sqrt{36} = 6\\,cm$ ؛ أو $3\\sqrt{2} \\times \\sqrt{2} = 3 \\times 2$ .",
+        "incorrect": "استعمل خاصية فيثاغورس، والجذر لا يتوزّع على الجمع."
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l5-006",
+  "lessonCode": "amaliyat-judhur",
+  "level": 5
+}

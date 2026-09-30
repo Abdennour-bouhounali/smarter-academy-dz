@@ -1,0 +1,98 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l2-010",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — نشر بالخاصية التوزيعية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نشر",
+      "خاصية توزيعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P2",
+      "modelledOn": "ex-28"
+    }
+  },
+  "statement": {
+    "content": "ننشر العبارة $\\sqrt{3}(\\sqrt{3} + 2)$ ونكتبها على الشكل $a + b\\sqrt{3}$ حيث $a$ و $b$ عددان صحيحان."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ننشر $\\sqrt{3}(\\sqrt{3} + 2) = a + b\\sqrt{3}$. ما قيمة $a$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-JIDHR-FI-JIDHR",
+          "value": "9"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "وزّع $\\sqrt{3}$ على الحدّين داخل القوسين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحدّ الأول هو $\\sqrt{3} \\times \\sqrt{3}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استعمل $(\\sqrt{a})^2 = a$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{3}(\\sqrt{3} + 2) = \\sqrt{3} \\times \\sqrt{3} + 2\\sqrt{3}$.",
+        "incorrect": "جداء جذر في نفسه يعطي العدد الذي تحته."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ننشر $\\sqrt{3}(\\sqrt{3} + 2) = a + b\\sqrt{3}$. ما قيمة $b$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "وزّع $\\sqrt{3}$ على الحدّين داخل القوسين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحدّ الثاني هو $\\sqrt{3} \\times 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "معامل $\\sqrt{3}$ في الناتج هو ما يُضرب فيه $\\sqrt{3}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{3}(\\sqrt{3} + 2) = 3 + 2\\sqrt{3}$.",
+        "incorrect": "انشر حدًّا حدًّا، ثم اجمع الحدود التي فيها $\\sqrt{3}$."
+      }
+    }
+  ]
+}

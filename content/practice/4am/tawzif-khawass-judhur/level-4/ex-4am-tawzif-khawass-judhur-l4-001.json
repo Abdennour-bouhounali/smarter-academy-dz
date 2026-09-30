@@ -1,0 +1,93 @@
+{
+  "metadata": {
+    "title": "طرائق تمرين 2 وتمرين 37 — جداء جذور",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جداء",
+      "عدد طبيعي"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-product",
+      "page": 25,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 25 و 29): جداءات جذور تعطي أعدادًا طبيعية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $A = \\sqrt{\\dfrac{50}{3}} \\times \\sqrt{2} \\times \\sqrt{12}$.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "20",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\sqrt{\\dfrac{50}{3}} = \\dfrac{\\sqrt{50}}{\\sqrt{3}}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{50} \\times \\sqrt{2} = \\sqrt{100}$ و $\\sqrt{12} = 2\\sqrt{3}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد التعويض يختفي $\\sqrt{3}$ من البسط والمقام."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = \\dfrac{10 \\times 2\\sqrt{3}}{\\sqrt{3}}$.",
+        "incorrect": "اجمع $\\sqrt{50} \\times \\sqrt{2}$ في جذر واحد، واكتب $\\sqrt{12} = 2\\sqrt{3}$."
+      },
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "من امتحان شهادة التعليم المتوسط: احسب $A = 3\\sqrt{8} \\times \\sqrt{2}$.",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "12",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\sqrt{8} \\times \\sqrt{2} = \\sqrt{16}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{16} = 4$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تنس المعامل 3."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = 3\\sqrt{16} = 3 \\times 4$.",
+        "incorrect": "ادمج الجذرين في جذر واحد، ثم اضرب في 3."
+      }
+    }
+  ],
+  "id": "ex-4am-tawzif-khawass-judhur-l4-001",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 4
+}

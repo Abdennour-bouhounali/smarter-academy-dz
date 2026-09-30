@@ -1,0 +1,104 @@
+{
+  "metadata": {
+    "title": "تدريب — مثلث قائم وجذر المجموع",
+    "estimatedMinutes": 7,
+    "tags": [
+      "مجموع جذرين",
+      "فرق جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P3",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "نستعمل خاصية فيثاغورس في مثلثين قائمين."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "EFG مثلث قائم في E حيث $EF = 9\\,cm$ و $EG = 12\\,cm$ . احسب $FG$ بـ $cm$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$FG^2 = EF^2 + EG^2$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$FG = \\sqrt{81 + 144}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب المجموع تحت الجذر أولًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$FG = \\sqrt{81 + 144} = \\sqrt{225} = 15\\,cm$ ، وليس $9 + 12$ .",
+        "incorrect": "اجمع المربّعين تحت الجذر، ثم خذ الجذر."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "21",
+          "id": "MISC-JIDHR-JAMA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "RST مثلث قائم في R وتره $ST = 25\\,cm$ و $RS = 7\\,cm$ . احسب $RT$ بـ $cm$ .",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "24",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$RT^2 = ST^2 - RS^2$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$RT = \\sqrt{625 - 49}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب الفرق تحت الجذر أولًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$RT = \\sqrt{625 - 49} = \\sqrt{576} = 24\\,cm$ ، وليس $25 - 7$ .",
+        "incorrect": "اطرح المربّعين تحت الجذر، ثم خذ الجذر."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "18",
+          "id": "MISC-JIDHR-TARH"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l5-005",
+  "lessonCode": "amaliyat-judhur",
+  "level": 5
+}

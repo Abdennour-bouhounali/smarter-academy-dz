@@ -1,0 +1,121 @@
+{
+  "metadata": {
+    "title": "تدريب — جذر كسر بسطه غير مربّع",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حاصل قسمة جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P2",
+      "modelledOn": "know-4"
+    }
+  },
+  "statement": {
+    "content": "استعمل $\\sqrt{\\dfrac{a}{b}} = \\dfrac{\\sqrt{a}}{\\sqrt{b}}$ ($a \\geq 0$ و $b > 0$)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد $\\sqrt{\\dfrac{5}{9}}$ يساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{5}{3}$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{\\sqrt{5}}{3}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{\\sqrt{5}}{9}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجذر يُطبَّق على البسط وعلى المقام."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "البسط 5 ليس مربّعًا تامًّا، والمقام 9 مربّع تام."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب جذر المقام فقط، واترك جذر البسط."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{\\dfrac{5}{9}} = \\dfrac{\\sqrt{5}}{\\sqrt{9}} = \\dfrac{\\sqrt{5}}{3}$",
+        "incorrect": "لا تحذف جذر البسط، ولا تنسَ جذر المقام."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العدد $\\sqrt{\\dfrac{11}{49}}$ يساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{\\sqrt{11}}{49}$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{11}{7}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{\\sqrt{11}}{7}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب الجذر حاصل قسمة جذرين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما جذر 49؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\sqrt{11}$ يبقى كما هو."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{\\dfrac{11}{49}} = \\dfrac{\\sqrt{11}}{\\sqrt{49}} = \\dfrac{\\sqrt{11}}{7}$",
+        "incorrect": "الجذر يشمل البسط والمقام معًا."
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l2-007",
+  "lessonCode": "amaliyat-judhur",
+  "level": 2
+}

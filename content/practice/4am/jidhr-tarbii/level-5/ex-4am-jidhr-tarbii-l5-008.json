@@ -1,0 +1,114 @@
+{
+  "metadata": {
+    "title": "تدريب — مربع معلوم القطر",
+    "estimatedMinutes": 5,
+    "tags": [
+      "فيثاغورس",
+      "مربع",
+      "وضعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidhr-tarbii_P1",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "ABCD مربع طول قطره $AC = 6$ cm."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "باستعمال خاصية فيثاغورس في المثلث ABC القائم في B، احسب مساحة المربع $AB^2$ (بالسنتيمتر المربع).",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "18",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$AB = BC$ لأن ABCD مربع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$AB^2 + BC^2 = AC^2$، أي $2 \\times AB^2 = 36$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم $AC^2$ على 2."
+        }
+      ],
+      "feedback": {
+        "correct": "$2AB^2 = 36$ إذن $AB^2 = 18\\ \\mathrm{cm^2}$.",
+        "incorrect": "اكتب خاصية فيثاغورس مع $AB = BC$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "طول ضلع المربع $AB$ (بالسنتيمتر) هو:",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "3",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "9",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-NISF"
+        },
+        {
+          "id": "C",
+          "content": "$\\sqrt{18}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "18",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$AB$ طول: عدد موجب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل قيمة $AB^2$ من السؤال الأول."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$AB$ هو العدد الموجب الذي مربعه $AB^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$AB^2 = 18$ و $AB$ موجب، إذن $AB = \\sqrt{18}$ cm (و $3^2 = 9 \\neq 18$).",
+        "incorrect": "الضلع ليس نصف القطر: ربّع اختيارك وقارنه بـ $AB^2$."
+      }
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l5-008",
+  "lessonCode": "jidhr-tarbii",
+  "level": 5
+}

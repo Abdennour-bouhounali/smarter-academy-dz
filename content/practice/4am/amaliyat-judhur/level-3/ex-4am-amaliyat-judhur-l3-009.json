@@ -1,0 +1,97 @@
+{
+  "metadata": {
+    "title": "تدريب — ضلع مربّع مساحته مجموع مساحتين",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مجموع جذرين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_amaliyat-judhur_P3",
+      "modelledOn": "act-4c"
+    }
+  },
+  "statement": {
+    "content": "مربّعان مساحتاهما $81\\,cm^2$ و $144\\,cm^2$ . نرسم مربّعًا ثالثًا مساحته مجموع المساحتين."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما طول ضلع المربّع الثالث بـ $cm$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولًا مساحة المربّع الثالث."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "طول الضلع هو الجذر التربيعي للمساحة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الضلع هو $\\sqrt{81 + 144}$ ، وليس مجموع الضلعين."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{81 + 144} = \\sqrt{225} = 15\\,cm$",
+        "incorrect": "اجمع المساحتين ثم خذ الجذر."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "21",
+          "id": "MISC-JIDHR-JAMA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "بكم $cm$ يزيد مجموع ضلعي المربّعين الأوّلين على ضلع المربّع الثالث؟",
+      "learningPoints": [
+        {
+          "code": "4am_amaliyat-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب ضلع كل مربّع من المربّعين الأوّلين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع الضلعين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح منه ضلع المربّع الثالث."
+        }
+      ],
+      "feedback": {
+        "correct": "$(9 + 12) - 15 = 6$ : مجموع الجذرين أكبر من جذر المجموع.",
+        "incorrect": "ضلعا المربّعين الأوّلين $\\sqrt{81}$ و $\\sqrt{144}$ ."
+      }
+    }
+  ],
+  "id": "ex-4am-amaliyat-judhur-l3-009",
+  "lessonCode": "amaliyat-judhur",
+  "level": 3
+}

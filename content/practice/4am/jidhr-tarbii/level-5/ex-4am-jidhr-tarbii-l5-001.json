@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "title": "طريقة — استعمال التعريف لإنجاز حساب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "طريقة",
+      "حساب"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-compute",
+      "page": 23,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 23): احسب ما يلي."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\sqrt{0{,}81} \\times \\sqrt{(-0{,}03)^2} = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "0.027",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$0{,}81 = 0{,}9^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(-0{,}03)^2 = (0{,}03)^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استعمل $\\sqrt{a^2} = a$ لعددين موجبين ثم اضرب."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{0{,}9^2} \\times \\sqrt{0{,}03^2} = 0{,}9 \\times 0{,}03 = 0{,}027$.",
+        "incorrect": "لا تنس أن الجذر التربيعي عدد موجب، ثم انتبه إلى الفاصلة في الجداء."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$\\sqrt{(1 - \\sqrt{2})^2} + 1$ يساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2 - \\sqrt{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$\\sqrt{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\sqrt{2} + 2$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\sqrt{2}$ أكبر من 1: ما إشارة $1 - \\sqrt{2}$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(1 - \\sqrt{2})^2 = (\\sqrt{2} - 1)^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\sqrt{(\\sqrt{2} - 1)^2} = \\sqrt{2} - 1$ لأنه موجب؛ ثم أضف 1."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{(1 - \\sqrt{2})^2} = \\sqrt{2} - 1$، إذن المجموع $(\\sqrt{2} - 1) + 1 = \\sqrt{2}$.",
+        "incorrect": "العدد $1 - \\sqrt{2}$ سالب: لا يساوي $\\sqrt{(1 - \\sqrt{2})^2}$."
+      }
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l5-001",
+  "lessonCode": "jidhr-tarbii",
+  "level": 5
+}

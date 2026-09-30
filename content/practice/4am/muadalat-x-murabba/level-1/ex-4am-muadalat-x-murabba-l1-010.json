@@ -1,0 +1,132 @@
+{
+  "metadata": {
+    "title": "تدريب — معادلة مكافئة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معادلة",
+      "عزل المربع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P2",
+      "modelledOn": "method-equation"
+    }
+  },
+  "statement": {
+    "content": "نعتبر المعادلة $x^2 - 6 = 0$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعادلة $x^2 - 6 = 0$ تكافئ المعادلة:",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 = -6$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$x^2 = 6$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x = 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-QISMA"
+        },
+        {
+          "id": "D",
+          "content": "$x^2 = 36$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARBI-JIDHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نضيف العدد نفسه إلى طرفي المعادلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما العدد الذي نضيفه لكي يبقى $x^2$ وحده؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أضف 6 إلى الطرفين."
+        }
+      ],
+      "feedback": {
+        "correct": "بإضافة 6 إلى الطرفين: $x^2 = 6$.",
+        "incorrect": "انتبه إلى الإشارة عند نقل $-6$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو الحل السالب للمعادلة $x^2 - 6 = 0$؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-QISMA"
+        },
+        {
+          "id": "B",
+          "content": "$-36$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$-\\sqrt{6}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اعزل $x^2$ أولا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحلّان عددان متعاكسان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب العدد الموجب على الشكل $(\\sqrt{a})^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 = 6 = (\\sqrt{6})^2$: الحلان $\\sqrt{6}$ و $-\\sqrt{6}$.",
+        "incorrect": "حل $x^2 = a$ ليس $a \\div 2$ ولا $a^2$."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l1-010",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 1
+}

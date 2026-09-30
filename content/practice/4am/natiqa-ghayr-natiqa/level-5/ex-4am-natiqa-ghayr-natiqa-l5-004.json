@@ -1,0 +1,103 @@
+{
+  "metadata": {
+    "title": "تدريب — سياج حديقة مربعة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "قيمة مقرّبة",
+      "محيط",
+      "مسألة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P3",
+      "modelledOn": "ex-10"
+    }
+  },
+  "statement": {
+    "content": "حديقة مربعة الشكل مساحتها 50 $m^2$ . يريد الفلاح شراء سياج يحيط بها، فيأخذ لكل ضلع القيمة المقرّبة إلى الجزء من 10 بالزيادة لطول الضلع حتى لا ينقصه السياج."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هي القيمة المقرّبة إلى الجزء من 10 بالزيادة لطول الضلع (بـ $m$)؟",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري برقم واحد بعد الفاصلة",
+      "expectedAnswer": "7.1",
+      "misconceptionSignatures": [
+        {
+          "value": "7",
+          "id": "MISC-TAQRIB-NAQS-ZIYADA"
+        },
+        {
+          "value": "25",
+          "id": "MISC-JIDHR-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طول الضلع $\\sqrt{50}$ ، و 50 ليس مربعًا لعدد ناطق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احصر $\\sqrt{50}$ بين 7 و 8 ثم بين عددين برقم واحد بعد الفاصلة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الطرف الأكبر هو القيمة بالزيادة."
+        }
+      ],
+      "feedback": {
+        "correct": "$7^2 = 49 < 50 < 50{,}41 = 7{,}1^2$ : القيمة بالزيادة هي الطرف الأكبر.",
+        "incorrect": "بالزيادة يعني العدد الأكبر من $\\sqrt{50}$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما طول السياج الذي يشتريه (بـ $m$)؟",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "28.4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "للمربع أربعة أضلاع متقايسة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل القيمة بالزيادة التي وجدتها لكل ضلع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب تلك القيمة في 4."
+        }
+      ],
+      "feedback": {
+        "correct": "طول السياج أربعة أضعاف القيمة بالزيادة لطول الضلع.",
+        "incorrect": "السياج يحيط بالحديقة: هو محيطها، لا مساحتها."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l5-004",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 5
+}

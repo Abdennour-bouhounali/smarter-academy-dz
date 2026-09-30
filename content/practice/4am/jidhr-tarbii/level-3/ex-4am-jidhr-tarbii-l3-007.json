@@ -1,0 +1,102 @@
+{
+  "metadata": {
+    "title": "تدريب — مساحة مربع ضلعه جذر",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مساحة",
+      "مربع الجذر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidhr-tarbii_P3",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "مربع طول ضلعه $\\sqrt{30}$ cm."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما مساحة هذا المربع (بالسنتيمتر المربع)؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "30",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مساحة مربع طول ضلعه $c$ هي $c^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المساحة هي $(\\sqrt{30})^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استعمل الخاصية $(\\sqrt{a})^2 = a$."
+        }
+      ],
+      "feedback": {
+        "correct": "المساحة $(\\sqrt{30})^2 = 30\\ \\mathrm{cm^2}$.",
+        "incorrect": "المساحة مربع الضلع، لا ضعفه، ومربع $\\sqrt{a}$ هو $a$."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "900",
+          "id": "MISC-TARBI-JIDHR"
+        },
+        {
+          "value": "60",
+          "id": "MISC-MURABBA-DIF"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما مساحة مربع طول ضلعه $2\\sqrt{30}$ cm؟ (بالسنتيمتر المربع)",
+      "learningPoints": [
+        {
+          "code": "4am_jidhr-tarbii_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "120",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المساحة هي $(2\\sqrt{30})^2 = 2\\sqrt{30} \\times 2\\sqrt{30}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "رتّب الجداء: $2 \\times 2 \\times \\sqrt{30} \\times \\sqrt{30}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\sqrt{30} \\times \\sqrt{30} = (\\sqrt{30})^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(2\\sqrt{30})^2 = 4 \\times 30 = 120\\ \\mathrm{cm^2}$.",
+        "incorrect": "عند تربيع $2\\sqrt{30}$ يُربَّع العامل 2 أيضًا."
+      }
+    }
+  ],
+  "id": "ex-4am-jidhr-tarbii-l3-007",
+  "lessonCode": "jidhr-tarbii",
+  "level": 3
+}

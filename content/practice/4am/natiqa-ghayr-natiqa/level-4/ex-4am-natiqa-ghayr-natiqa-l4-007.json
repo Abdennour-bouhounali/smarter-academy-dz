@@ -1,0 +1,62 @@
+{
+  "metadata": {
+    "title": "تدريب — متى يكون جذر الضعف ناطقًا؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مربع تام",
+      "بحث"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P2",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "$n$ عدد طبيعي حيث $1 \\leq n \\leq 20$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "اكتب كل قيم $n$ التي يكون من أجلها $\\sqrt{2n}$ عددًا ناطقًا.",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        2,
+        8,
+        18
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\sqrt{2n}$ ناطق عندما يكون $2n$ مربعًا لعدد طبيعي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المربعات الزوجية بين 2 و 40."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لكل مربع زوجي وجدته، احسب $n$ بقسمته على 2."
+        }
+      ],
+      "feedback": {
+        "correct": "المربعات الزوجية بين 2 و 40 هي 4 و 16 و 36، فتكون $n$ نصف كل منها.",
+        "incorrect": "انتبه: المطلوب أن يكون $2n$ مربعًا، وليس $n$ ."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l4-007",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 4
+}

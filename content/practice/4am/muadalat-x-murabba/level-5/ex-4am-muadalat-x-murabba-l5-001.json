@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "title": "تمرين 14 — أنشر ثم أحل",
+    "estimatedMinutes": 6,
+    "tags": [
+      "تمرين",
+      "نشر",
+      "معادلة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-14",
+      "page": 26,
+      "section": "أوظّف تعلّماتي",
+      "number": 14
+    }
+  },
+  "statement": {
+    "content": "من التمرين 14 (الكتاب ص 26): لتكن العبارة $A = (x - 7)(x + 4) + 3x + 21$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "انشر العبارة $A$ وبسّطها.",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$A = x^2 - 49$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$A = x^2 + 6x - 7$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$A = x^2 - 7$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $(x - 7)(x + 4)$ حدًّا حدًّا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(x - 7)(x + 4) = x^2 + 4x - 7x - 28$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع الحدود من الدرجة الأولى والأعداد."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 4x - 7x - 28 + 3x + 21 = x^2 - 7$.",
+        "incorrect": "راقب إشارة $-7 \\times 4$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "عيّن قيم $x$ التي تكون من أجلها $A = 0$.",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x = 7$ أو $x = -7$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$x = \\sqrt{7}$ أو $x = -\\sqrt{7}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x = \\sqrt{7}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل الشكل المبسّط للعبارة $A$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$A = 0$ يؤول إلى معادلة من الشكل $x^2 = a$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما إشارة العدد $a$؟ لا تنس الحلين."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 - 7 = 0$ يعني $x^2 = 7$، إذن $x = \\sqrt{7}$ أو $x = -\\sqrt{7}$.",
+        "incorrect": "الحلان عددان متعاكسان مربع كل منهما 7."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l5-001",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 5
+}

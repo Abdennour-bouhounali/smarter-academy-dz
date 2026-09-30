@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "title": "تدريب — خزان قاعدته مربّعة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية إدماجية",
+      "حجم",
+      "جذر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-judhur_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "خزان ماء على شكل متوازي مستطيلات قاعدته مربّعة وارتفاعه $2\\,m$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "إذا كانت سعته $18\\,m^3$، فما طول ضلع قاعدته (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالمتر)",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "السعة = مساحة القاعدة × الارتفاع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب مساحة القاعدة أولًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الضلع هو العدد الموجب الذي مربعه مساحة القاعدة."
+        }
+      ],
+      "feedback": {
+        "correct": "مساحة القاعدة $18 \\div 2 = 9\\,m^2$، والضلع $\\sqrt{9} = 3\\,m$.",
+        "incorrect": "اقسم السعة على الارتفاع، ثم خذ الجذر التربيعي."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "4.5",
+          "id": "MISC-JIDHR-NISF"
+        }
+      ],
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "إذا كانت سعته $24\\,m^3$، فالقيمة المضبوطة لطول ضلع قاعدته (بالمتر) هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2\\sqrt{6}$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-NISF"
+        },
+        {
+          "id": "C",
+          "content": "$2\\sqrt{3}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$4\\sqrt{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-MURABBA-MANSI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب مساحة القاعدة أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الضلع هو الجذر التربيعي لمساحة القاعدة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بسّط الجذر بإخراج أكبر مربع تام."
+        }
+      ],
+      "feedback": {
+        "correct": "مساحة القاعدة $24 \\div 2 = 12$، والضلع $\\sqrt{12} = \\sqrt{4 \\times 3} = 2\\sqrt{3}$.",
+        "incorrect": "لا تنس القسمة على الارتفاع قبل أخذ الجذر."
+      },
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-judhur-l2-002",
+  "lessonCode": "wadiya-idmajiya-judhur",
+  "level": 2
+}

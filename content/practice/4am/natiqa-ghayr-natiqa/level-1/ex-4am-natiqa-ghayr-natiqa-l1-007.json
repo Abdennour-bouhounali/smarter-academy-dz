@@ -1,0 +1,75 @@
+{
+  "metadata": {
+    "title": "تدريب — ما تعرضه الحاسبة",
+    "estimatedMinutes": 2,
+    "tags": [
+      "حاسبة",
+      "قيمة مقرّبة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P3",
+      "modelledOn": "ict-sqrt2"
+    }
+  },
+  "statement": {
+    "content": "عند استعمال اللمسة $\\sqrt{\\;}$ لحساب $\\sqrt{3}$ تعرض الحاسبة 1,732050808."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ عبارة صحيحة؟",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "1,732050808 قيمة مقرّبة للعدد $\\sqrt{3}$، لأن 3 ليس مربعًا لعدد ناطق",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "1,732050808 هي القيمة المضبوطة للعدد $\\sqrt{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HASIBA-MUDBUTA"
+        },
+        {
+          "id": "C",
+          "content": "$\\sqrt{3}$ عدد ناطق لأنه يساوي العدد العشري 1,732050808",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HASIBA-MUDBUTA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هل 3 مربع لعدد ناطق؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العدد العشري عدد ناطق: هل يمكن أن يساوي $\\sqrt{3}$؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "فكّر في عدد الأرقام التي تستطيع الحاسبة عرضها."
+        }
+      ],
+      "feedback": {
+        "correct": "3 ليس مربعًا لعدد ناطق، إذن $\\sqrt{3}$ ليس ناطقًا ولا يساوي أي عدد عشري: الحاسبة تعرض قيمة مقرّبة.",
+        "incorrect": "العدد العشري ناطق، و $\\sqrt{3}$ ليس ناطقًا: لا يمكن أن يتساويا."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l1-007",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 1
+}

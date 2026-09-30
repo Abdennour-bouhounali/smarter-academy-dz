@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l3-006",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — بسّط ثم اجعل المقام ناطقًا",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مقام ناطق",
+      "a√b"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P3",
+      "modelledOn": "now-25-2"
+    }
+  },
+  "statement": {
+    "content": "في كل سؤال، بسّط الجذر الموجود في المقام ثم اجعل المقام عددًا ناطقًا."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نكتب $\\dfrac{6}{\\sqrt{12}} = k\\sqrt{3}$. ما قيمة $k$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "1",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-BAST-DUN-DARB",
+          "value": "3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ بتبسيط $\\sqrt{12}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{12}$ يُكتب على الشكل $a\\sqrt{3}$ ؛ اختزل النسبة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اضرب البسط والمقام في $\\sqrt{3}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{6}{\\sqrt{12}} = \\dfrac{6}{2\\sqrt{3}} = \\dfrac{3}{\\sqrt{3}} = \\dfrac{3\\sqrt{3}}{3}$.",
+        "incorrect": "بسّط $\\sqrt{12}$ أولًا، ثم اضرب البسط والمقام في $\\sqrt{3}$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نكتب $\\dfrac{15}{\\sqrt{20}} = \\dfrac{p\\sqrt{5}}{2}$. ما قيمة العدد الطبيعي $p$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MAQAM-DUN-BAST",
+          "value": "15"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ بتبسيط $\\sqrt{20}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\sqrt{20} = 2\\sqrt{5}$ ؛ النسبة تصبح $\\dfrac{15}{2\\sqrt{5}}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب البسط والمقام في $\\sqrt{5}$ ثم اختزل."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{15}{2\\sqrt{5}} = \\dfrac{15\\sqrt{5}}{2 \\times 5} = \\dfrac{15\\sqrt{5}}{10}$ ، ثم نختزل على 5.",
+        "incorrect": "في المقام: $2\\sqrt{5} \\times \\sqrt{5} = 2 \\times 5$."
+      }
+    }
+  ]
+}

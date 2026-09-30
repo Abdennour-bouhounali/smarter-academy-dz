@@ -7,6 +7,7 @@ import { flattenCurriculum } from '../classGroupLessons/lessonSelection';
 import { Loading, ErrorBox, input } from '../../../pages/teacher/teacherUi';
 import { barSegments, sortLearningPoints, LP_STATUSES, LP_STATUS_BAR } from './lpBar';
 import LearningPointDrilldown from './LearningPointDrilldown';
+import { bidi } from '../../../utils/bidi';
 
 const ALL = '*';
 
@@ -64,7 +65,7 @@ export default function LearningPointsTab({ classGroup, focusCode = null, onFocu
           <span className="mb-1 block text-xs font-semibold text-slate-700">{t('learningPoints.pickLesson')}</span>
           <select value={lessonCode} onChange={(e) => pickLesson(e.target.value)} className={input} data-lp-lesson-picker>
             <option value={ALL}>{t('learningPoints.allLessons')}</option>
-            {visible.map((row) => <option key={row.code} value={row.code}>{row.title}</option>)}
+            {visible.map((row) => <option key={row.code} value={row.code}>{bidi(row.title)}</option>)}
           </select>
         </label>
         {!selected && (
@@ -94,7 +95,7 @@ export default function LearningPointsTab({ classGroup, focusCode = null, onFocu
                 <Legend />
                 {groups.filter((g) => g.rows.length > 0).map((g) => (
                   <section key={g.code} data-lp-lesson-group={g.code}>
-                    {g.title && <h3 className="mb-1.5 px-1 font-inter text-xs font-semibold text-teal-800">{g.title}</h3>}
+                    {g.title && <h3 className="mb-1.5 px-1 font-inter text-xs font-semibold text-teal-800">{bidi(g.title)}</h3>}
                     <ul className="glass-card divide-y divide-slate-100">
                       {g.rows.map((lp) => <LearningPointRow key={lp.code} lp={lp} onOpen={() => setSelected(lp.code)} />)}
                     </ul>
@@ -133,7 +134,7 @@ function LearningPointRow({ lp, onOpen }) {
     <li data-lp-row={lp.code}>
       <button type="button" onClick={onOpen} className="flex w-full flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3 text-start hover:bg-slate-50">
         <span className="min-w-0 flex-1 basis-56">
-          <span className="block truncate font-inter text-sm font-semibold text-slate-800">{lp.title}</span>
+          <span className="block truncate font-inter text-sm font-semibold text-slate-800">{bidi(lp.title)}</span>
           {(chips.length > 0 || (lp.difficultyScope && lp.difficultyScope !== 'none')) && (
             <span className="mt-1 flex flex-wrap gap-1.5">
               {lp.difficultyScope && lp.difficultyScope !== 'none' && (

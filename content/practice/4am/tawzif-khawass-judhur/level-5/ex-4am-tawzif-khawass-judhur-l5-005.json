@@ -1,0 +1,102 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l5-005",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — مستطيل مساحته معلومة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "هندسة",
+      "مقام ناطق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P3",
+      "modelledOn": "method-rationalize"
+    }
+  },
+  "statement": {
+    "content": "مستطيل مساحته $10\\,cm^2$ وطوله $\\sqrt{5}\\,cm$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مستطيل مساحته $10\\,cm^2$ وطوله $\\sqrt{5}\\,cm$. نكتب عرضه على الشكل $k\\sqrt{5}\\,cm$. ما قيمة $k$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-BAST-DUN-DARB",
+          "value": "10"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العرض $= \\dfrac{المساحة}{الطول}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العرض هو $\\dfrac{10}{\\sqrt{5}}$ : مقامه غير ناطق."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب البسط والمقام في $\\sqrt{5}$ ثم اختزل."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{10}{\\sqrt{5}} = \\dfrac{10\\sqrt{5}}{5}$.",
+        "incorrect": "اضرب البسط والمقام معًا في $\\sqrt{5}$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "مستطيل مساحته $10\\,cm^2$ وطوله $\\sqrt{5}\\,cm$. نكتب محيطه على الشكل $m\\sqrt{5}\\,cm$. ما قيمة $m$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_tawzif-khawass-judhur_P3",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المحيط $= 2 \\times (الطول + العرض)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب العرض على الشكل $k\\sqrt{5}$ أولًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم طبّق الخاصية التوزيعية."
+        }
+      ],
+      "feedback": {
+        "correct": "العرض $2\\sqrt{5}$ ، والمحيط $= 2(\\sqrt{5} + 2\\sqrt{5})$.",
+        "incorrect": "اكتب العرض دون جذر في المقام ثم اجمع الحدود المتشابهة."
+      }
+    }
+  ]
+}

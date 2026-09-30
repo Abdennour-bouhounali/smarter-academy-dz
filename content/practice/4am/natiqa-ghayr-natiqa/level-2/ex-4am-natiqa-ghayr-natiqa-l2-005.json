@@ -1,0 +1,67 @@
+{
+  "metadata": {
+    "title": "تدريب — قيمة مقرّبة بالنقصان",
+    "estimatedMinutes": 3,
+    "tags": [
+      "قيمة مقرّبة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_natiqa-ghayr-natiqa_P3",
+      "modelledOn": "ex-9"
+    }
+  },
+  "statement": {
+    "content": "العدد $\\sqrt{5}$ ليس عددًا ناطقًا، فنكتفي بقيم مقرّبة له."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أعط القيمة المقرّبة إلى الجزء من 10 بالنقصان للعدد $\\sqrt{5}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_natiqa-ghayr-natiqa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري برقم واحد بعد الفاصلة",
+      "expectedAnswer": "2.2",
+      "misconceptionSignatures": [
+        {
+          "value": "2.3",
+          "id": "MISC-TAQRIB-NAQS-ZIYADA"
+        },
+        {
+          "value": "2.5",
+          "id": "MISC-JIDHR-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "القيمة بالنقصان أصغر من $\\sqrt{5}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ربّع أعدادًا عشرية برقم واحد بعد الفاصلة محصورة بين 2 و 3، وقارن مربعاتها بالعدد 5."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خذ أكبر عدد برقم واحد بعد الفاصلة مربعه أصغر من 5."
+        }
+      ],
+      "feedback": {
+        "correct": "$2{,}2^2 = 4{,}84 < 5 < 5{,}29 = 2{,}3^2$ إذن $2{,}2 < \\sqrt{5} < 2{,}3$ : القيمة بالنقصان 2,2.",
+        "incorrect": "القيمة بالنقصان هي الطرف الأصغر من الحصر."
+      }
+    }
+  ],
+  "id": "ex-4am-natiqa-ghayr-natiqa-l2-005",
+  "lessonCode": "natiqa-ghayr-natiqa",
+  "level": 2
+}

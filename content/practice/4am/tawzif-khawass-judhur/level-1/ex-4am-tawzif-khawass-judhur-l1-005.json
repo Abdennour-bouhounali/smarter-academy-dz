@@ -1,0 +1,81 @@
+{
+  "id": "ex-4am-tawzif-khawass-judhur-l1-005",
+  "lessonCode": "tawzif-khawass-judhur",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — هل b أصغر ما يمكن؟",
+    "estimatedMinutes": 2,
+    "tags": [
+      "a√b",
+      "تعرّف"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tawzif-khawass-judhur_P1",
+      "modelledOn": "ex-18"
+    }
+  },
+  "statement": {
+    "content": "من بين الكتابات التالية، واحدة فقط على الشكل $a\\sqrt{b}$ حيث $b$ عدد طبيعي أصغر ما يمكن."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هي الكتابة التي يكون فيها $b$ أصغر ما يمكن؟",
+      "learningPoints": [
+        {
+          "code": "4am_tawzif-khawass-judhur_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2\\sqrt{12}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-B-LAYSA-ASGHAR"
+        },
+        {
+          "id": "B",
+          "content": "$5\\sqrt{18}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-B-LAYSA-ASGHAR"
+        },
+        {
+          "id": "C",
+          "content": "$3\\sqrt{7}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$4\\sqrt{8}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-B-LAYSA-ASGHAR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لكل كتابة، انظر إلى العدد تحت الجذر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل يقبل العدد تحت الجذر القسمة على مربع تامّ أكبر من 1؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جرّب القسمة على 4 ثم على 9."
+        }
+      ],
+      "feedback": {
+        "correct": "7 لا يقبل القسمة على أي مربع تامّ غير 1، أما $12 = 4 \\times 3$ و $18 = 9 \\times 2$ و $8 = 4 \\times 2$.",
+        "incorrect": "عدد تحت الجذر يقبل القسمة على 4 أو 9 ليس أصغر ما يمكن."
+      }
+    }
+  ]
+}

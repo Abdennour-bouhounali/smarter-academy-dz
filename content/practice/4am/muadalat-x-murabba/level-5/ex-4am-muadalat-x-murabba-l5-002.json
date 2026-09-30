@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "title": "تدريب — ضلع مربع",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مساحة",
+      "مربع",
+      "تقريب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadalat-x-murabba_P2",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "قطعة قماش مربعة الشكل مساحتها $50\\ \\mathrm{cm}^2$. نسمّي $c$ طول ضلعها بالسنتيمتر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قطعة قماش مربعة الشكل مساحتها $50\\ \\mathrm{cm}^2$. ما هو طول ضلعها $c$ (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "transfer",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$c = 25$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HALL-QISMA"
+        },
+        {
+          "id": "B",
+          "content": "$c = \\sqrt{50}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$c = -\\sqrt{50}$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$c = 2500$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARBI-JIDHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مساحة المربع هي $c^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حل المعادلة $c^2 = 50$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الطول عدد موجب: أي الحلين نحتفظ به؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$c^2 = 50$ ، والطول موجب: $c = \\sqrt{50}$ (الحل $-\\sqrt{50}$ مرفوض).",
+        "incorrect": "الطول لا يكون سالبا، و $25^2 \\neq 50$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "قطعة قماش مربعة الشكل مساحتها $50\\ \\mathrm{cm}^2$. ما هو المدوّر إلى الجزء من عشرة لطول ضلعها (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadalat-x-murabba_P2",
+          "role": "primary"
+        }
+      ],
+      "cognitiveDemand": "transfer",
+      "answerType": "rational",
+      "answerFormat": "عدد عشري (بالفاصلة)",
+      "expectedAnswer": "7.1",
+      "misconceptionSignatures": [
+        {
+          "value": "25",
+          "id": "MISC-HALL-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طول الضلع هو العدد الموجب الذي مربعه 50."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$7^2 = 49$ و $8^2 = 64$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن $7{,}05^2$ بـ 50 لتقرر التدوير."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{50} \\approx 7{,}07$، ومدوّره إلى الجزء من عشرة $7{,}1$.",
+        "incorrect": "المدوّر ليس القيمة بالنقصان: انظر إلى رقم الأجزاء من مئة."
+      }
+    }
+  ],
+  "id": "ex-4am-muadalat-x-murabba-l5-002",
+  "lessonCode": "muadalat-x-murabba",
+  "level": 5
+}
