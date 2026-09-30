@@ -60,7 +60,7 @@ export default function Module03KhwarizmiyatIqlidus() {
         />
       )}
       steps={[
-        { num: 1, title: '2) اشرح لماذا PGCD(765 ; 135) = PGCD(135 ; 90)', subtitle: 'أنهِ القسمات في المناولة أولًا', done: q1,
+        { num: 1, title: '2) اشرح لماذا PGCD(765 ; 135) = PGCD(135 ; 90)', subtitle: 'أنهِ القسمات في المناولة أولًا', done: e1 && q1,
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="khwarizmiyat-iqlidus" />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Sparkles } from 'lucide-react';
@@ -16,11 +16,16 @@ import { Sparkles } from 'lucide-react';
  * En mode classe, `state.answerHidden` masque la règle : la classe formule.
  * Une conjecture fausse reçoit une explication courte et se rejoue ; rien ne
  * bloque (invariant non bloquant).
+ *
+ * Le choix est OUBLIÉ quand la scène repart (`state.epoch`) : sinon la bonne
+ * réponse restait enfoncée, en vert, au-dessus d'une règle masquée — la
+ * conjecture était pré-remplie pour l'essai suivant (audit 2026-09-29).
  */
 export default function ManipulationDiscovery({ state, prompt, options, explain, formal, onFormalized }) {
   const { t } = useTranslation('lesson');
   const reduce = useReducedMotion();
   const [pick, setPick] = useState(null);
+  useEffect(() => { setPick(null); }, [state.epoch]);
   if (!state.isDiscovered) return null;
   const wrong = pick !== null && options && !options[pick]?.correct;
 

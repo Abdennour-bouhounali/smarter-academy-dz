@@ -70,6 +70,102 @@
   "memorisation": [],
   "questions": [
     {
+      "questionId": "prep-1",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/khawass-qawasim/modules/Module00Astaidd.jsx",
+      "line": 35,
+      "requires": [
+        "qasim-jidaa"
+      ],
+      "prerequisiteStatus": {
+        "qasim-jidaa": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-2",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/khawass-qawasim/modules/Module00Astaidd.jsx",
+      "line": 36,
+      "requires": [
+        "qasim-jidaa"
+      ],
+      "prerequisiteStatus": {
+        "qasim-jidaa": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-3",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/khawass-qawasim/modules/Module00Astaidd.jsx",
+      "line": 37,
+      "requires": [
+        "qasim-jidaa"
+      ],
+      "prerequisiteStatus": {
+        "qasim-jidaa": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-4",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/khawass-qawasim/modules/Module00Astaidd.jsx",
+      "line": 38,
+      "requires": [
+        "qisma-iqlidiya"
+      ],
+      "prerequisiteStatus": {
+        "qisma-iqlidiya": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-5",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/khawass-qawasim/modules/Module00Astaidd.jsx",
+      "line": 39,
+      "requires": [
+        "qisma-iqlidiya"
+      ],
+      "prerequisiteStatus": {
+        "qisma-iqlidiya": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-6",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/khawass-qawasim/modules/Module00Astaidd.jsx",
+      "line": 40,
+      "requires": [
+        "qisma-iqlidiya"
+      ],
+      "prerequisiteStatus": {
+        "qisma-iqlidiya": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
       "questionId": "M01-S2-Q1",
       "module": 1,
       "step": 2,
@@ -248,30 +344,5 @@
       "pedagogicallyValid": true
     }
   ],
-  "findings": [
-    {
-      "code": "W_PRIOR_NOT_DIAGNOSED",
-      "severity": "medium",
-      "message": "priorKnowledge declares 'qasim-jidaa' but no Module 0 question diagnoses it",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/khawass-qawasim/lesson.config.js",
-      "line": 0,
-      "module": null,
-      "step": null,
-      "term": null,
-      "questionId": null,
-      "position": -1
-    },
-    {
-      "code": "W_PRIOR_NOT_DIAGNOSED",
-      "severity": "medium",
-      "message": "priorKnowledge declares 'qisma-iqlidiya' but no Module 0 question diagnoses it",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/khawass-qawasim/lesson.config.js",
-      "line": 0,
-      "module": null,
-      "step": null,
-      "term": null,
-      "questionId": null,
-      "position": -1
-    }
-  ]
+  "findings": []
 }

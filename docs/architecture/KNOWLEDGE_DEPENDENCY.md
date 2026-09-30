@@ -104,11 +104,12 @@ priorKnowledge: ['abscisse', 'ordonnee', 'coordonnees', 'calcul-litteral'],
 
 Des ids de connaissances établies **soit** dans les années précédentes, **soit** dans une leçon
 antérieure de la même unité (ex. `qasim-adad-tabii` : `priorKnowledge: ['qisma-iqlidiya',
-'qawaid-qabiliyat-al-qisma']`). Seules 2 des 9 leçons 4AM ont un module 0 (`qasim-adad-tabii`,
-`ikhtizal-kasr`) ; quand il existe, il diagnostique ces prérequis — et **rien d'autre** : un
+'qawaid-qabiliyat-al-qisma']`). Les 9 leçons 4AM ont un module 0 depuis le 2026-09-30 ; il diagnostique ces prérequis — et **rien d'autre** : un
 diagnostic mesure les prérequis, il n'enseigne pas la matière de la leçon. Un `priorKnowledge`
 qu'aucune question de module 0 ne mesure lève `W_PRIOR_NOT_DIAGNOSED`, un avertissement `medium`
-(non bloquant, `high` seulement en `--strict`).
+(non bloquant, `high` seulement en `--strict`). L'audit lit les `questions` du module 0
+statiquement : un tableau construit par `.map()` lui est invisible, d'où des objets littéraux
+`{ ...prepQuestion(item), id, requires: [...] }` (LESSON_DEVELOPMENT_GUIDE §4).
 
 ### 2. `<KnowledgeBrick id>` — ce que la leçon établit
 

@@ -49,11 +49,14 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
     }
   });
 
-  it('les candidats proposés contiennent la taille de départ (livres)', () => {
+  it('la réglette des livres contient les marques du manuel, et le niveau avancé n’en propose pas d’autres', () => {
     for (const id of ['beginner', 'advanced']) {
       const lv = LEVELS['divisor-explorer-books'][id];
-      expect(lv.candidates).toContain(lv.initialCapacity);
+      expect(lv.range.min).toBeLessThan(lv.range.max);
+      for (const m of lv.marks) expect(m >= lv.range.min && m <= lv.range.max, `${id} ${m}`).toBe(true);
+      expect(lv.candidates, id).toBeUndefined();
     }
+    expect(LEVELS['divisor-explorer-books'].advanced.marks).toEqual([26, 28]);
   });
 
   it('levelMatching reconnaît un niveau par ses nombres', () => {

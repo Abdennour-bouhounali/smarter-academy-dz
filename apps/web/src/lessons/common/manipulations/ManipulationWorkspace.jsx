@@ -4,6 +4,7 @@ import { DEFAULT_MANIPULATION_LEVEL, resolveLevelId } from '@smarter-academy/cor
 import ManipulationLevelSelector from './ManipulationLevelSelector';
 import { availableLevels, activeLevel, panelKey } from './workspaceLevels';
 import { WorkspaceLevelContext } from './workspaceContext';
+import { ClassroomHidden } from '../classroom';
 
 /**
  * LE WORKSPACE — UN seul atelier, deux niveaux (§3 et §16 du brief).
@@ -83,7 +84,7 @@ export default function ManipulationWorkspace({
 
   return (
     <section
-      className={`space-y-3 rounded-3xl border-2 border-indigo-200 bg-white/60 p-3 sm:p-4 ${className}`}
+      className={`space-y-3 rounded-3xl border-2 border-indigo-200 bg-white/60 p-2 sm:p-4 ${className}`}
       data-manipulation-workspace
       data-level={active}
       aria-label={title ?? t('manipulation.level.title')}
@@ -93,7 +94,8 @@ export default function ManipulationWorkspace({
         {available.length > 1 && (
           <ManipulationLevelSelector levels={available} value={active} onChange={change} labelledBy={labelId} idPrefix={idPrefix} controlsPanels />
         )}
-        {lead && <p className="text-sm text-slate-700">{lead}</p>}
+        {/* Au projecteur, l'enseignant dit la consigne : la hauteur va aux laboratoires. */}
+        {lead && <ClassroomHidden><p className="text-sm text-slate-700">{lead}</p></ClassroomHidden>}
       </header>
 
       {available.map((id) => {

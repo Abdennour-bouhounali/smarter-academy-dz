@@ -1,4 +1,20 @@
-import { src } from '../../_unit/unitMeta.js';
+import { src, addition } from '../../_unit/unitMeta.js';
+
+/**
+ * « أستعدّ » (module 0) — le manuel n'a qu'un seul « أستعدّ » pour toute
+ * l'unité (p. 7, items 1–10 : leçons 1 et 8). Ces affirmations sont donc des
+ * AJOUTS DE LA PLATEFORME, déclarés comme tels (SourceTag « عبارة إضافية من المنصّة ») : même
+ * forme que le manuel (« أصحيح أم خاطئ؟ برّر إجابتك »), une ou plusieurs par
+ * acquis de `priorKnowledge`, jamais les nombres de l'activité qui suit.
+ */
+export const PREP_ITEMS = [
+  { n: 1, skill: 'khawass', text: '7 يقسم 91 و 35، إذن 7 يقسم الفرق $91 - 35 = 56$.', answer: true, why: 'قاسم مشترك لعددين يقسم فرقهما: $56 = 7 \\times 8$.' },
+  { n: 2, skill: 'khawass', text: 'إذا كان 5 يقسم المجموع $a + b$ فإنّ 5 يقسم $a$ ويقسم $b$.', answer: false, why: 'العكس غير صحيح: 5 يقسم $7 + 8 = 15$ لكنّه لا يقسم 7 ولا 8.' },
+  { n: 3, skill: 'khawass', text: '6 يقسم 84 و 36، و $84 = 36 \\times 2 + 12$، إذن 6 يقسم الباقي 12.', answer: true, why: 'قاسم مشترك لعددين يقسم باقي القسمة الإقليدية لأحدهما على الآخر.' },
+  { n: 4, skill: 'pgcd', text: 'PGCD$(15 ; 25) = 25$ لأنّ 25 أكبر العددين.', answer: false, why: '25 لا يقسم 15. القواسم المشتركة لـ 15 و 25 هي 1 و 5، إذن PGCD$(15 ; 25) = 5$.' },
+  { n: 5, skill: 'pgcd', text: 'PGCD$(36 ; 0) = 0$.', answer: false, why: 'كل عدد غير معدوم يقسم 0، فالقواسم المشتركة لـ 36 و 0 هي قواسم 36، وأكبرها 36: PGCD$(36 ; 0) = 36$.' },
+  { n: 6, skill: 'pgcd', text: 'PGCD$(40 ; 40) = 40$ و PGCD$(18 ; 12) = $ PGCD$(12 ; 18)$.', answer: true, why: 'PGCD$(a ; a) = a$ و PGCD$(a ; b) = $ PGCD$(b ; a)$.' },
+].map((it) => ({ ...it, source: addition('prerequisite_diagnostic') }));
 
 export const ACTIVITY_A = {
   source: src('act-6a', 9, 'أنشطة', 6), title: 'البحث عن القاسم المشترك الأكبر لعددين طبيعيين', subtitle: 'أ) باستعمال الفروق المتتابعة',

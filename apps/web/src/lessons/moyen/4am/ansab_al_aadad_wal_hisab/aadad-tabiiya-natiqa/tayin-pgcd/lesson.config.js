@@ -56,6 +56,9 @@ export const LESSON_CONFIG = {
     { kind: 'method', code: 'method-hasr', module: 1, title: 'طريقة: حصر القواسم ثم القواسم المشتركة ثم أكبرها', learningPointIds: ['4am_tayin-pgcd_P1'], sourceElementIds: ['act-5'] },
   ],
   modules: [
+    { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
+      title: 'أستعدّ', desc: 'أربع عبارات: صحيح أم خاطئ؟ قواسم عدد والقاسم المشترك الأكبر.',
+      stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 6, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: '42-wa-60', path: `${LESSON_BASE_PATH}/42-wa-60`,
       title: 'نشاط 5 — 42 و 60', desc: 'أوجد قواسم كل عدد، ثم القواسم المشتركة، ثم أكبرها.',
       stage: 'trigger', teachesLearningPointIds: ['4am_tayin-pgcd_P1'], color: 'indigo', style: 'featured', estimatedMin: 12, difficulty: 1, actionText: 'أعيّن' },

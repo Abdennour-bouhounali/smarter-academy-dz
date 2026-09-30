@@ -65,9 +65,17 @@ export function lastNonZeroDiff(state) {
   return nz.length ? nz[nz.length - 1].diff : state.steps[0]?.big ?? null;
 }
 
+/**
+ * La case PGCD REFUSE AVEC DES MATHÉMATIQUES, pas avec la règle à découvrir :
+ * « 56 لا يقسم 252 », jamais « ce n'est pas le dernier fruit non nul » (qui
+ * énonçait la découverte avant la conjecture — audit 2026-09-29). Parmi les
+ * fruits de la chaîne, seul le PGCD divise les deux rubans.
+ */
 export function canPlaceDifferencePgcd(state, value) {
   if (!isDifferencesFinished(state)) return 'notFinished';
-  if (value !== state.gcd) return 'notLastNonZero';
+  if (state.a % value !== 0) return 'notDividesA';
+  if (state.b % value !== 0) return 'notDividesB';
+  if (value !== state.gcd) return 'notGreatest';
   return true;
 }
 
@@ -82,7 +90,7 @@ export function canPlaceDifferencePgcd(state, value) {
  */
 export function initEuclid({ a, b }) {
   const { steps, gcd } = euclidSteps(a, b);
-  return { a, b, steps, gcd, index: 0, copies: 0, confirmed: 0, pgcdPlaced: false };
+  return { a, b, steps, gcd, index: 0, copies: 0, confirmed: 0, pgcdPlaced: false, overflowSeen: false };
 }
 
 export function currentDivision(state) {
@@ -102,7 +110,19 @@ export function addCopy(state) {
 }
 
 export function removeCopy(state) {
-  return state.copies > 0 ? { ...state, copies: state.copies - 1 } : state;
+  return state.copies > 0 ? { ...state, copies: state.copies - 1, overflowSeen: false } : state;
+}
+
+/**
+ * ESSAYER une copie de plus — le geste de l'élève. Si elle tient, elle se
+ * pose ; sinon la mathématique RÉSISTE : rien ne se pose, et `overflowSeen`
+ * retient que l'élève a vu qu'une copie de plus ne tient pas. C'est ce qui
+ * fait de q un quotient trouvé, pas annoncé : jusqu'au 2026-09-30 la scène
+ * affichait « توقّف » et grisait « + » d'elle-même.
+ */
+export function tryCopy(state) {
+  if (canAddCopy(state) === true) return addCopy(state);
+  return currentDivision(state) ? { ...state, overflowSeen: true } : state;
 }
 
 /** Le quotient est atteint quand aucune copie de plus ne tient. */
@@ -121,23 +141,27 @@ export function canCarryRemainder(state, value) {
   const s = currentDivision(state);
   if (!s) return 'finished';
   if (!quotientReached(state)) return 'quotientNotReached';
+  if (!state.overflowSeen) return 'tryOneMore';
   if (value !== s.r) return 'notRemainder';
   return true;
 }
 
 export function carryRemainder(state) {
   const s = currentDivision(state);
-  if (!s || !quotientReached(state)) return state;
-  return { ...state, index: state.index + 1, copies: 0, confirmed: state.confirmed + 1 };
+  if (!s || !quotientReached(state) || !state.overflowSeen) return state;
+  return { ...state, index: state.index + 1, copies: 0, confirmed: state.confirmed + 1, overflowSeen: false };
 }
 
 export function isEuclidFinished(state) {
   return state.index >= state.steps.length;
 }
 
+/** Comme la case des différences : un refus PAR LA DIVISIBILITÉ, jamais par la règle. */
 export function canPlaceEuclidPgcd(state, value) {
   if (!isEuclidFinished(state)) return 'notFinished';
-  if (value !== state.gcd) return 'notLastNonZero';
+  if (state.a % value !== 0) return 'notDividesA';
+  if (state.b % value !== 0) return 'notDividesB';
+  if (value !== state.gcd) return 'notGreatest';
   return true;
 }
 
@@ -145,6 +169,7 @@ export function canPlaceEuclidPgcd(state, value) {
 export function euclidAutoStep(state) {
   if (isEuclidFinished(state)) return state;
   if (!quotientReached(state)) return { ...state, copies: currentDivision(state).q };
+  if (!state.overflowSeen) return { ...state, overflowSeen: true };
   return carryRemainder(state);
 }
 
@@ -157,7 +182,7 @@ export function euclidAutoStep(state) {
  */
 export function euclidGestureStep(state) {
   if (isEuclidFinished(state)) return state;
-  if (!quotientReached(state)) return addCopy(state);
+  if (!quotientReached(state) || !state.overflowSeen) return tryCopy(state);
   return carryRemainder(state);
 }
 
@@ -173,7 +198,9 @@ export function remainingEuclidGestures(state) {
   let n = 0;
   for (let i = state.index; i < state.steps.length; i += 1) {
     const copies = i === state.index ? state.steps[i].q - state.copies : state.steps[i].q;
-    n += copies + 1;
+    // + 1 essai de la copie de trop (sauf s'il est déjà fait), + 1 report.
+    const tried = i === state.index && state.overflowSeen ? 0 : 1;
+    n += copies + tried + 1;
   }
   return n;
 }

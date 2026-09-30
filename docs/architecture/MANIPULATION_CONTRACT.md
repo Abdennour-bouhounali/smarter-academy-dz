@@ -3,6 +3,10 @@
 > One manipulation = one mathematical idea made **physical**. The student acts; the notation follows.
 > Scope: `apps/web/src/lessons/common/manipulations/`. Types are registered in
 > `packages/core/curriculum/manipulationTypes.js` (closed registry, no code from content).
+>
+> **Why** a manipulation is built this way — causality, interaction distance, resistance,
+> contrast, the design sheet, anti-template rules — is `MANIPULATION_DNA.md`, which sits
+> above this contract. This file says **how** it is built in code.
 
 ## 1. The five questions
 
@@ -41,7 +45,8 @@ manipulations/
 ├── workspaceContext.js         WorkspaceLevelContext — tells a manipulation it sits in a workspace
 ├── useManipulation.js          numbers · phase · hints · level · mode · epoch
 ├── useStepSequence.js          bounded step cursor
-├── useDragInteraction.js       pointer drag + magnet + reject + keyboard alternative
+├── useDragInteraction.js       CARRY gesture: pointer drag + magnet + reject + edge auto-scroll + keyboard/tap
+├── useStretchInteraction.js    STRETCH gesture: a magnitude that follows the finger (slider semantics, −/+)
 ├── levels.js                   the TWO levels per type { beginner, advanced } + resolveManipulationLevels (§7)
 ├── logic/                      PURE interaction logic per type (unit-tested, no React)
 ├── themeWords.js               the Arabic words of a theme (lesson.json) merged with a lesson's `context`
@@ -53,35 +58,43 @@ manipulations/
 │   ├── GroupingScene.jsx + groupingLayout.js  a and b objects in k identical groups, the rest apart
 │   ├── BrickWall.jsx + brickLayout.js         a length built in bricks of n (walls of lesson 3)
 │   ├── RibbonStrip.jsx                        a length drawn as a notched ribbon (the tailor's workshop)
+│   ├── DivisionRoles.jsx                      b · q · r named in the scene's words (partition vs quotition, §2ter)
 │   └── ContextScenes.jsx                      the landscape vignettes of each world, for `MissionBrief.visual`
 └── divisibility/               the 10 types of unit 1 (+ teamFormation.js, pure geometry)
 ```
 
 `divisibility/DivisorExplorerBooks.jsx` (`divisor-explorer-books`, Module 1 of
-`qasim-adad-tabii`) is the one **standalone** type: it ships its own styles and
-does not go through `ManipulationShell`. Its gesture is a **choice, not a
-drag**: the student taps a shelf size (`.be-choice`, `aria-pressed`) and the
-420 books redistribute. Because it bypasses the shell, it has no levels, free
-lab, hints, discovery phase or explanation panel, and its
-`MANIPULATION_TYPES.controls` entry is not consumed. It was adopted
-as delivered, complete visual game included; its contract with the module is
-only `onVerdict({ b, divides, quotient, remainder })`. It is also the first
-consumer of the platform **Classroom Mode** (`lessons/common/classroom/`,
-`docs/architecture/CLASSROOM_MODE.md`): the presentation shell owns fullscreen,
-the fallback overlay, scroll lock, Escape and the fitting engine; the lab only
-reads `useClassroomMode()` and solves its shelves grid for the offered area
-(`divisibility/booksClassroomLayout.js`).
+`qasim-adad-tabii`, متقدم, and the 143 worked example of معارف) is **the shelf the
+student stretches** (redesigned 2026-09-30, `MANIPULATION_DNA.md` §7). Until then it was a
+standalone component with 17 size buttons, its own styles, no hints and no discovery;
+it now goes through `ManipulationShell` like the other types. The student drags the
+**bookend** of a model shelf (`useStretchInteraction`, `role="slider"`; keyboard arrows,
+−/+ buttons or a tap on the ruler do the same). The shelf length **is** b, and every shelf
+takes it. The `total` books re-shelve **during** the gesture into q full shelves, and the r
+that remain lie in a **ghost shelf** whose b − r dashed slots show what is missing. The
+arithmetic and the geometry live in `logic/bookshelf.js`: `arrange` (core `groupBy`),
+`commit` (a trial is validated on release or after a keyboard pause), the discovery
+predicates, `counterExamples` and `bookcaseLayout`. Every book is drawn once, one spine per
+book, and shelves are laid out in columns that fit the width, with no inner scroll box.
+Props: `total`, `min`/`max` (the ruler), `marks` (the textbook's numbers, orientation only),
+`discovery="remainder" | "symmetry"`, `levels={false}` for a worked example (§7). Its
+contract with the module is `onVerdict({ b, divides, quotient, remainder })`, fired on each
+validated trial through `state.report`, and `onFinished` on the formal phase. It stays a
+consumer of the platform **Classroom Mode**: it is wrapped in `ClassroomPresentation
+scope="manipulation"`, the entry button sits in the shell header (`headerAction`), and the
+presentation layout puts the shelf and the bookcase side by side and sizes the book unit to a
+measured height budget (`CLASSROOM_MODE.md` § Manipulation). The old grid solver
+(`booksClassroomLayout.js`) was removed with the buttons.
 
 **Rule:** a type composes primitives and calls `logic/`. It never re-implements a gesture, a
 tile, a drop zone, or a piece of mathematics.
 
 **One unit, one set of objects.** Types that share a lesson's story draw the *same* objects:
-`divisor-explorer-books` arranges 420 books on shelves, and `factor-pairs` lays the same books out
-as rectangles (`BookRectangle`), so the student recognises the instrument from one module to the
-next instead of learning a second abstraction. The books lab keeps its own `Book` because it is
-welded to its `be-book*` classes, which the classroom layout engine and the e2e selectors read;
-the palette is therefore duplicated **on purpose** and locked by `primitives/bookPalette.test.js`,
-which fails if the two ever diverge.
+`divisor-explorer-books` shelves 420 books and `factor-pairs` lays the same books out as
+rectangles (`BookRectangle`), both coloured from `primitives/BookFigure.jsx`'s `BOOK_PALETTE`,
+so the student recognises the library from one module to the next instead of learning a
+second abstraction. (The palette was duplicated in the old standalone lab and locked by a
+test; the duplication and the test are gone since 2026-09-30.)
 
 ## 2bis. Drawn worlds — every lesson has its own, and the theme is data
 
@@ -92,14 +105,14 @@ notation that follows the gesture. That standard now holds across the unit. Each
 
 | Lesson | World (`theme`) | Drawn objects | The gesture | What the drawing *is* |
 |---|---|---|---|---|
-| 1 قاسم عدد طبيعي | `football` / `library` | players on a pitch / books on shelves | drag a player into a team / tap a shelf size | the remainder is a player left standing, a book left on the floor |
-| 2 قواسم عدد طبيعي | `library` | the same books, in rectangles | drag a column count onto the pile | a perfect rectangle ⇔ `n = d × e` |
-| 3 خواص القواسم | `construction` | two walls in bricks of length n (`BrickWall`) | carry wall b: join it, remove it, or measure wall a with it | sum, difference and remainder are still whole bricks ⇔ n divides them |
-| 4 القاسم المشترك الأكبر | `football` (مبتدئ) / `garden` (متقدم) | balls & shirts / red & white flowers in identical groups (`GroupingScene`) | drag a number of groups onto the table | the k that leave nothing outside are exactly the common divisors |
-| 5 تعيين PGCD | `school` (both levels; متقدم continues to the lists) | pens & notebooks in identical bags (8/12, then 42/60), then the divisor lists | groups first, then carry the common divisors to the middle and the greatest to PGCD | « commun » seen on objects, then read in the lists — which *are* the object of this lesson |
+| 1 قاسم عدد طبيعي | `football` / `library` | players on a pitch / books on shelves | drag a player into a team (partition) / **stretch the shelf** — drag its bookend (quotition) | the remainder is a player who fits in no team / the books in a ghost shelf that cannot be completed |
+| 2 قواسم عدد طبيعي | `library` | the same books, in a rectangle fitted in a square frame | **pull the row's edge** (stretch, `useStretchInteraction`): the n books re-form live | a perfect rectangle ⇔ `n = d × e`; past the square (√n) every perfect rectangle is an earlier one **turned** (`repeat` is geometric: d > q) |
+| 3 خواص القواسم | `construction` | two walls in bricks of length n (`BrickWall`) | carry wall b: join it, remove it, or measure wall a with it; at متقدم, **predict** «طوب كامل / يبقى جزء من طوبة» before each build (`predict`, `outcome`) | sum, difference and remainder are still whole bricks ⇔ n divides them |
+| 4 القاسم المشترك الأكبر | `football` (مبتدئ) / `garden` (متقدم) | balls & shirts / red & white flowers in identical groups (`GroupingScene`) | **add a group at a time**: drag an empty wrapper from the reserve (`GroupStock`) — or −/+ — and everything re-deals | the k that leave nothing outside are exactly the common divisors; « greatest » needs the next k seen failing |
+| 5 تعيين PGCD | `school` (مبتدئ, bags 8/12) / the lists (متقدم, 42/60, `startWith="lists"`) | pens & notebooks in identical bags, then the divisor lists | add bags one at a time (مبتدئ); carry the common divisors to the middle and the greatest to PGCD (متقدم) | the lists *are* the object of this lesson (its method, حصر) — the advanced level no longer reopens lesson 4's bags (2026-09-30) |
 | 6 البحث عن PGCD | `workshop` | two ribbons (`RibbonStrip`) | cut the short ribbon out of the long one (differences) / lay copies of it along (Euclid) | the greatest common length survives every cut and every remainder |
-| 7 أوليان فيما بينهما | `school` (مبتدئ) / lists (متقدم) | 17 pens and 18 notebooks in identical bags | try 2, 3, 4… bags — nothing works but 1 | coprime ⇔ no identical grouping beyond one bag ⇔ only 1 in the middle |
-| 8 اختزال كسر | `kitchen` | spoons of sugar and cups of flour, in portions | drag a common divisor onto the recipe | dividing both terms by k = k identical portions; the reduced fraction is one portion |
+| 7 أوليان فيما بينهما | `school` (مبتدئ) / lists (متقدم) | 17 pens and 18 notebooks in identical bags | add bags one at a time up to 17 — nothing works but 1 (the same `GroupStock` as lesson 4: coprime is the PGCD = 1 case) / confront every divisor of the smaller number with the other | coprime ⇔ every k from 2 to min(a, b) fails ⇔ every divisor of the smaller one was tested and only 1 is common; « not coprime » needs ONE common > 1 (the textbook's refutation of مريم) |
+| 8 اختزال كسر | `kitchen` | spoons of sugar and cups of flour, in portions | drag a number of portions (2 … 12, **not only the good ones**) onto the recipe; declare «لا يمكن الاختزال أكثر» yourself; then find the one-step number (no gold PGCD) | dividing both terms by k = k identical portions; the reduced fraction is one portion; a non-greatest common divisor in one step is refused by showing what it gives |
 
 Rules that make this reusable rather than eight one-offs:
 
@@ -154,20 +167,80 @@ GCD, a divisor list, or an algorithm trace itself. `logic/*.js` holds the *inter
 (what may be dropped where, when the discovery is ready); it is pure and unit-tested in
 `logic/logic.test.js` on the textbook's own numbers.
 
-## 4. Drag and drop
+## 2ter. Partition and quotition — name the roles
 
-`useDragInteraction` is the only gesture implementation.
+The same `a = b × q + r` is met with two readings in lesson 1: the teams fix the
+**number** of groups (b = teams, q = players per team), and the shelves fix the **size**
+of a group (b = books per shelf, q = shelves). A lab never switches reading silently.
+Under its equation, each division lab renders `primitives/DivisionRoles.jsx`, whose three
+chips say in the scene's words that **b is what you chose, q is what results, r < b**.
+The module places the two readings side by side before its question
+(`[data-division-bridge]`). See `MANIPULATION_DNA.md` §8.
+
+## 4. Gestures — carry and stretch
+
+Two gesture engines, and a type never re-implements either. A concept that needs a
+genuinely different gesture (rotate, cut, balance) gets a new engine documented here; it is
+not forced into one of these two (`MANIPULATION_DNA.md` §6, §12).
+
+### 4.1 Carry — `useDragInteraction`
 
 - Pointer Events, `setPointerCapture`, `touch-action: none` — no page scroll while dragging.
 - Below 6 px of movement the gesture is a **tap**: it picks up / puts down. Above, the object follows.
-- The nearest valid zone within 56 px is **magnetised**: it lights up and receives the drop.
+- **Magnet:** the nearest zone within 56 px **that would accept** the object is magnetised
+  (`data-drop-active`) and receives the drop. A zone that would refuse, or a disabled zone
+  (`data-drop-disabled`), is never magnetised. When the pointer is directly over a refusing
+  zone, the zone is marked `data-drop-invalid` (`DropZone` tints it rose) before release, and
+  the release gets the explained refusal. A **silent** refusal (`''`, a no-op such as putting
+  a player back on its own team) is not marked. Until 2026-09-29 the magnet lit refusing and
+  disabled zones.
 - Zones belong to ONE instance: each `useDragInteraction` tags its zones with its own id
   (`data-drop-owner`, `useId`) and only looks for its own (2026-09-29). Two manipulations on one
   step share zone names (`table`, `pgcd`…) and used to receive each other's drops.
 - A refused drop returns the object with a short shake and an **Arabic reason** (`accepts` returns
   the reason string). Never a silent red state.
+- **A drag always returns the object.** A drag that ends accepted, refused or outside any zone
+  leaves nothing "in hand". Only the **tap** path keeps the object held after a refused zone,
+  because the student just chose it and simply taps another zone.
+- **Edge auto-scroll:** while an object is carried, a pointer within 64 px of the top or bottom
+  of the viewport scrolls the page (instant scroll, up to 16 px per frame), and the target zone
+  is re-read after each step. Because of `touch-action: none` the finger cannot scroll the page
+  itself; without this, on a phone the bench and team 1 (more than a screen apart) could never
+  be joined by one drag (audit M1-F8; e2e block DS).
 - **Every drag has a non-drag alternative**: tap the object, then tap the zone. Keyboard: Enter/Space
   to pick up, Enter/Space on the zone to drop, Escape to release. This path is never removed.
+- **It is the only carry engine in the lesson tree.** `InfoSorter` (lesson 9's data sort) moved onto
+  it on 2026-09-30, and the legacy `manip6e/useDragDrop` was deleted. Never animate a draggable
+  source with framer-motion `layout` (it remounts the node mid-gesture; the capture is lost).
+
+### 4.1bis The group reserve — `primitives/GroupStock.jsx`
+
+The « distribute » gesture of `common-divisors` and `coprime-explorer`: the student drags an empty
+wrapper (`group:add`) from the reserve (`stock` zone) to the type's table, or brings one back
+(`group:remove` → `stock`); −/+ do the same. The type owns the logic (`addGroup` / `removeGroup` in
+`logic/commonDivisors.js`) and the zones' ids; the primitive draws the reserve, the buttons and the
+**trace** of tried numbers (read-only, `[data-tried-k][data-tried-mark]`). The theme words come
+from `lesson.json` `manipulation.themes.<id>.{stock, add, remove}`. It replaced the 1…24 numeral
+rail, on which the student could jump straight to the answer.
+
+### 4.2 Stretch — `useStretchInteraction`
+
+For a **magnitude** the student sets by pulling: a shelf length, and later a ribbon or a
+compass opening.
+
+- **Direct:** `toValue(clientX, clientY, trackRect)` reads the value under the pointer, so
+  the handle stays under the finger. The track (`trackProps`, `touch-action: none`) is the
+  whole width: touching it sets the value there.
+- **Live, then committed:** `onChange` fires for each integer the finger crosses, and the
+  consequence is drawn *during* the gesture. `onCommit` fires on release only: passing over a
+  value is not a trial.
+- **Slider semantics:** the handle is `role="slider"` with `aria-valuemin/max/now/text`.
+  Arrows move ±1 (in RTL, ← grows, because the magnitude pushes leftwards), Page ±5, and
+  Home/End jump to the ends. The **−/+ buttons** use `nudge(±1)`.
+- **Pause before commit:** key and button changes are shown at once but committed after
+  700 ms of stillness (`settleMs`) or on blur. Otherwise sweeping 10 → 26 with the arrows
+  would have counted sixteen trials and opened the discovery unseen.
+- DOM: `[data-stretch-track]`, `[data-stretch-handle]`, `[data-stretch-dragging]`.
 
 ## 5. Pedagogical flow
 
@@ -231,10 +304,10 @@ Audit of the ten types (2026-09-24):
 
 | Type | Decision | Why |
 |---|---|---|
-| `team-builder` | **AUTO** — `unlock: 'config'` — « أنشئ الفرق » | n players carried one by one into k teams; after the first sharing, carrying 20 more is repetition. The refusal rule stays the one the hand meets. |
+| `team-builder` | **AUTO** — `unlock: 'first-gesture'` — « أنشئ الفرق » | n players carried one by one into k teams; after the first sharing, carrying 20 more is repetition. The refusal rule stays the one the hand meets. `manualDone` = **one sharing carried to the end by hand** (the scene settled without the button). Until 2026-09-30 it was `'config'`, which opened the button before any gesture, so the discovery could be reached with zero players moved (audit M1-F6). The locked line is the type's own (`manipulation.teamBuilder.autoCompleteLocked`, via `auto.lockedLabel`). |
 | `pgcd-differences` | **AUTO** — `unlock: 'first-gesture'` — « أكمل الفروق » | up to 30 identical « carry the small ribbon onto the big » gestures. One cut by hand first; the PGCD box stays manual (recognising the last non-zero difference *is* the discovery). |
 | `euclidean-algorithm` | **AUTO** — `unlock: 'first-gesture'` — « أكمل القسمات » | q copies per division, repeated per line. The first division (copies + carry) by hand; the PGCD box stays manual. |
-| `divisor-explorer`, `divisor-explorer-books`, `factor-pairs` | MANUAL | one tap/drop per trial; each trial *is* an experiment, and the arrangement is already drawn by the lab. |
+| `divisor-explorer`, `divisor-explorer-books`, `factor-pairs` | MANUAL | one validated position/drop per trial; each trial *is* an experiment, and the arrangement is already drawn by the lab. |
 | `common-divisors`, `coprime-explorer` | MANUAL | choosing the number of groups and carrying the *common* divisors is the judgement being learned. |
 | `divisor-properties` | MANUAL | three distinct operations (join / remove / measure), then a proof — nothing repeats. |
 | `fraction-reduction` | MANUAL | each drop is a choice of divisor, and « which path is shorter » is counted in the student's own steps. |
@@ -346,7 +419,7 @@ from the textbook. The rationale of each pair is written next to it in `levels.j
 `ManipulationLevelSelector` is the **only** level UI. It is posed in exactly one place:
 
 - by `ManipulationWorkspace`, which switches panels (`controlsPanels` → `aria-controls`);
-- by `ManipulationShell` (in its header), or by `DivisorExplorerBooks` (which has no shell), when
+- by `ManipulationShell` (in its header), when
   the manipulation is **not** inside a workspace — there it switches numbers.
 
 A manipulation knows it is inside a workspace through `WorkspaceLevelContext`
@@ -377,9 +450,28 @@ calls `setNumbers()`, which resets the manipulation. Two consequences are enforc
   28/42. A new type must do the same — never call a lesson callback directly.
 
 `TeamBuilder`'s behaviour (`isAdvanced`: no proposed sizes) reads the live `state.level`, so it
-follows both the workspace and the standalone selector.
+follows both the workspace and the standalone selector. The shelf lab reads `range`/`marks` from
+the level preset (`LEVELS['divisor-explorer-books']`: 24 books on a 2–12 ruler / 420 on 10–60
+with the textbook marks 26 and 28).
 
 ### Persistence, progress, analytics
+
+### Reset, new numbers, worked examples
+
+- **« إعادة » starts the activity over** (`state.reset`, 2026-09-30). It restores the numbers of
+  the level on screen (the lesson's, or the other level's preset), closes the free lab, resets
+  phase/hints/explanation, and increments `state.resetCount`. A type that keeps a **memory of
+  trials** outside its scene (TeamBuilder's `tried`, the shelf's `tried`, the hand-sharing flag)
+  clears it on `resetCount`. Before this, a free-lab 0 survived « إعادة » (factor-pairs stayed
+  dead until reload), and the team-builder discovery reopened on an empty scene.
+- **`setNumbers` resets the scene, not the memory** (`epoch` changes, `resetCount` does not):
+  changing 15 → 16 is how the contrast is produced.
+- `ManipulationDiscovery` forgets the student's pick on every new scene (`epoch`), so a
+  conjecture is never pre-pressed for the next attempt.
+- **A worked example has one level.** `useManipulation({ withLevels: false })` — prop
+  `levels={false}` on `divisor-explorer-books` — poses no selector. Use it for a textbook
+  example read in معارف (the 143 lab), whose type preset would otherwise duplicate another
+  module's lab (audit M3-F1). A lab that is *explored* keeps its two levels.
 
 Levels are **presentation state only**. Nothing about a level is persisted (no column, no
 evidence field, no localStorage key), no "levels completed" figure exists, and levels feed
@@ -510,9 +602,11 @@ lists** + PGCD box). Found on 2026-09-24 in `qasim-mushtarak-akbar/baqat`: after
 reported « another manipulation of PGCD appeared ». The rules, owner-approved:
 
 1. **مبتدئ is one laboratory.** It ends on the gesture that carries the idea, not on a count of
-   tries. `common-divisors`: placing the **largest** number of groups that works
-   (`greatestGroupFound`: 6 for 12/18) opens the discovery (« ماذا يمثّل أكبر عدد وضعته؟ » →
-   PGCD). No lists at this level.
+   tries. `common-divisors`: placing the **largest** number of groups that works **and seeing the
+   next one fail** (`greatestGroupFound`: 6 then 7 for 12/18, since 2026-09-30 — one lucky drop of
+   the answer no longer counts) opens the discovery (« ماذا يمثّل أكبر عدد وضعته؟ » → PGCD). No
+   lists at this level. `coprime-explorer` follows the same rule: its groups level ends on the
+   groups (all k from 2 to min(a, b) tried, or a k > 1 that works), never on a chained list.
 2. **متقدم may chain a second laboratory, but the student opens it.** When the first lab is
    accomplished, a card says what was found and what comes next (`[data-common-next]`, «وجدت أكبر
    عدد ممكن…» + «إلى القائمتين ←»); the second lab offers a way back (`[data-common-back]`),
@@ -540,8 +634,10 @@ A manipulation is a learning instrument, not an assessment. Verified in code:
 - **`onFinished` is not completion — but it may open a step.** Every shell type fires `onFinished`
   (through `state.report`, so only the lesson's own level ticks the lesson) from an effect when the
   phase reaches `formal`. It never marks a MODULE done, never writes progress and never produces
-  evidence. What it may do, and what the unit does in exactly four places (verified 2026-09-29 —
-  qawasim M1 step 1, khawass M1 step 1, bahth M1 step 2, bahth M3 step 3), is make the step that
+  evidence. What it may do, and what the unit does in exactly seven places (verified 2026-09-30 —
+  qawasim M1 step 1, khawass M1 step 1, bahth M1 steps 1 and 2, bahth M3 steps 1 and 3, awwaliyan
+  M1 step 1; the three added on 2026-09-30 are the `d1`/`e1`/`c1` handlers that module comments
+  described as gates while they gated nothing), is make the step that
   *comments on the activity* wait until the activity's lab has been done; the other 4AM modules
   use it only to hide a hint line. This is allowed on two conditions, both true today:
   1. the formal phase is **always reachable** by the lesson's numbers — the discovery is reached by
@@ -558,13 +654,17 @@ A manipulation is a learning instrument, not an assessment. Verified in code:
 - **Mistakes cost nothing.** A refused drop keeps the object in hand and explains why in Arabic; a
   wrong conjecture is replayable. Attempt counters exist in three logic files (`teamBuilder`,
   `commonDivisors`, `coprime`) and are read by nothing.
+- **« الشرح » waits for the discovery.** `ManipulationControls` renders the explanation toggle
+  only in the `discover`/`formal` phases (or class mode). The panel and the registry's `shows`
+  line state the rule; until 2026-09-30 they were one click away from the first screen
+  (audit, defect e).
 - **The result is never shown before the gesture that finds it.** The difference and Euclid chains
   print `PGCD(a ; b) = ?` on their last row until the student has placed the PGCD in its box
   (2026-09-29: « أكمل الفروق / القسمات » used to reveal it in one click).
 
 ## 7ter. Creating a new manipulation
 
-Nine steps, in this order. Steps 1, 2 and 5 are enforced by tests that fail otherwise.
+Ten steps, in this order. Steps 1, 2 and 5 are enforced by tests that fail otherwise.
 
 1. **Declare the type** in `packages/core/curriculum/manipulationTypes.js`:
    `'my-type': { shows: '<the idea it makes visible, in Arabic>', controls: { reset, nextStep,
@@ -595,21 +695,27 @@ Nine steps, in this order. Steps 1, 2 and 5 are enforced by tests that fail othe
    render `<Manipulation type="my-type" … />` in the module's `intro` slot.
 8. **Extend the e2e** `manipulations.mjs` with the drag, the tap alternative, the keyboard path,
    reset, and the no-mode-toggle assertion.
-9. If the manipulation must **draw a real object**, extend parameterised inline SVG (see the `Book`
-   component) and put any exact geometry in a pure, unit-tested module (see
-   `booksClassroomLayout.js`). Never a raster image — root `CLAUDE.md`.
+9. If the manipulation must **draw a real object**, extend parameterised inline SVG (see
+   `primitives/BookFigure.jsx`, `PlayerFigure.jsx`) and put any exact geometry in a pure,
+   unit-tested module swept over its whole range (see `logic/bookshelf.js` →
+   `bookcaseLayout`, `teamFormation.js`). Never a raster image — root `CLAUDE.md`.
+10. **Write the design sheet** of `MANIPULATION_DNA.md` §7 in the header, next to the five
+   questions — above all VARIABLE (what the finger controls), RESISTANCE and CONTRAST.
 
 **Reuse before you write.** The ten types are reused across the unit by changing props alone
 (`factor-pairs` serves 24, 60, 48 and 105; `common-divisors` serves two lessons — 4 and 5 — with
 two themes). Write a new type
-only when the mathematical idea or the gesture genuinely differs; go standalone (no shell) only
-when the drawing itself carries the argument, and accept that you lose levels, hints, discovery and
-the free lab.
+only when the mathematical idea or the gesture genuinely differs. There is no standalone type
+any more (the books lab joined the shell on 2026-09-30): a drawing that carries the argument
+lives INSIDE the shell's stage, and keeps levels, hints, discovery and reset.
 
 ## 8. Arabic, RTL, mobile, motion
 
 Interface RTL in Cairo; every numeric block (`dir="ltr"`): tiles, bars, equations, divisions,
-chains. `PGCD` stays Latin, as in the textbook. Full RTL rules:
+chains. `PGCD` stays Latin, as in the textbook. Counted nouns (« 15 رفًّا », « 4 كتب »,
+« لاعب واحد ») go through i18next plural keys, never `{{n}} + a fixed plural`:
+`ARABIC_RTL_CONTRACT.md`, "Counting nouns". Done for `team-builder` and the shelf; the other
+seven types still carry the old strings (audit, defect g). Full RTL rules:
 `ARABIC_RTL_CONTRACT.md`. Touch targets ≥ 44 px for controls — the shell's buttons (`Btn` in
 `ManipulationTeacherMode.jsx`: إعادة, تلميح, auto-complete, الشرح…) and the free-lab toggle were 40
 and 36 px until 2026-09-29 and are 44 px now; note that
@@ -666,12 +772,33 @@ state.
 - `primitives/brickLayout.test.js` — walls in bricks of n: sum, difference and remainder are whole
   walls for every case of activity 3 and for 900/90/9; a wall that does not fall exactly keeps its
   partial brick; bricks cover the length with no gap or overlap.
+- `logic/bookshelf.test.js` — the shelf lab's REAL logic (2026-09-30): `arrange` on the whole
+  ruler (shelves × b + floor = a, floor < b), the exact lengths are the divisors, a trial is
+  memorised once, discovery needs 3 trials with contrast, the 11/13 symmetry, counter-examples
+  from the range, and `bookcaseLayout` **swept** over every b of 420 (10–60), 143 (5–30) and
+  24 (2–12) at five widths: every book drawn once, full shelves = q, ghost = r books + b − r
+  slots, nothing outside the width, no two shelves overlapping.
+- `logic/logic.test.js` additions of 2026-09-30 (lessons 2–8): factor-pairs « turned » is
+  order-independent, its ruler range and the rectangle geometry swept for 24/48/60/105;
+  divisor-properties prediction (`predictFirst`, `outcome`); common-divisors `addGroup` builds the
+  ✓/✗ pattern and « greatest » needs the next k; the PGCD boxes (differences, Euclid) refuse by
+  divisibility (`notDividesA/B`, `notGreatest`); Euclid's overflow must be *tried* (`tryCopy`,
+  `tryOneMore`); coprime lists need every divisor of the smaller number tested, and one common
+  > 1 refutes; fraction path A offers non-common numbers, the irreducibility claim is judged,
+  path B shows what a non-greatest divisor gives, and « equal paths » is right after a one-step
+  path A.
 - `logic/logic.test.js` — mathematics, allowed/refused actions, discovery conditions, final states,
-  on the textbook numbers (420/26/28, 60, 105, 18-12-3, 90/54, 42/60, 252/140, 765/135, 1938/836,
-  17/18, 27/36, 84/48, 595/560).
+  on the textbook numbers (60, 105, 18-12-3, 90/54, 42/60, 252/140, 765/135, 1938/836,
+  17/18, 27/36, 84/48, 595/560). Team-builder's refusal reasons and their numbers
+  (`rejectDetails`, the source of the refusal message) are asserted. The `divisor-explorer`
+  block tests only that registered-but-unused type's logic; it was titled « 420 livres » and
+  gave false assurance about the books lab until 2026-09-30.
 - `apps/web/e2e/lesson-kit/manipulations.mjs` — real pointer drags, the tap alternative, keyboard,
   reset, hints, levels, mobile at 320 px, reduced motion, the absence of any mode toggle, the
-  Classroom Mode blocks (C1–C3) on the books lab, and the **two-level workspace** blocks
+  Classroom Mode blocks (C1–C3) on the shelf lab, the shelf itself (L1: a real drag of the
+  bookend with the library following mid-gesture, keyboard, −/+, a tap on the ruler, the
+  extremes 10 and 60, the refuted conjecture, the formal rule with 28 × 15 = 15 × 28, reset;
+  L1m at 320 px), the **edge auto-scroll** drag from the bench to team 1 on a phone (DS), and the **two-level workspace** blocks
   (W1–W3): default level, both tabs, the inactive panel `hidden`, drag/tap/keyboard on the
   football lab, the explained refusal, `15 = 3 × 5` then `16 = 3 × 5 + 1` with one player drawn
   outside, discovery opening only after both cases, state surviving a level round trip, arrow-key
@@ -680,11 +807,13 @@ state.
   of 16 drawn flowers, 4 leftover flowers drawn on the tray, the coprime insight after 1/2/3
   bags, 4 portions of 33 in the recipe, three built zones with no partial brick, the scissors
   mark and 252 − 140 = 112.
-  Block **12** (2026-09-24, AC1–AC11) covers auto-completion: « أنشئ الفرق » ready on 15/3, a
-  mixed start (two players by hand stay put), 5,5,5 with no duplicate, no discovery triggered,
-  manual rearrangement afterwards, 20/4, 16/3 leaving one player drawn on the bench, a configuration
-  change and « إعادة » in mid-animation, reduced motion, 320 px, the locked → ready ribbons, and no
-  button on the choice-type manipulations. On 2026-09-24 the suite was 176/177 against the dev
+  Block **12** (2026-09-24, AC1–AC11; rewritten 2026-09-30) covers auto-completion: « أنشئ الفرق »
+  **locked** on load, then unlocked by one sharing done by hand, a mixed start on 20/4 (two
+  players by hand stay put), no duplicate, no discovery triggered, manual rearrangement
+  afterwards, 16/3 leaving one player drawn on a bench renamed « الباقي », a configuration change
+  in mid-animation, « إعادة » in mid-animation restoring 15/3 and re-locking, reduced motion,
+  320 px, the locked → ready ribbons of the PGCD machines, and no button on the choice-type
+  manipulations. **223/223 green on 2026-09-30** against the dev server (with `4am-aadad-tabiiya-natiqa.mjs` 29/29 and `classroom.mjs` 73/73), including the معارف 143 block (M3) and the blocks for the redesigned lessons 2–8 (L2 rectangle, chantier prediction + LTR equations, bouquets add/remove + « greatest » beyond, ribbons without pre-cut, Euclid's tried overflow, coprime proof, recipe decisions). On 2026-09-24 the suite was 176/177 against the dev
   server; the one failure, C3, was the Math Lab « المختبر » button in the Classroom toolbar (36 px
   wide under 640 px). Fixed 2026-09-29 (`MathLabEntryButton` `min-w-[44px]`); C3 now also ignores
   the pointer controls, which are `hidden` below `sm` on purpose.

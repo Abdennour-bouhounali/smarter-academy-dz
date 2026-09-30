@@ -1,4 +1,20 @@
-import { src, BASE } from '../../_unit/unitMeta.js';
+import { src, addition, BASE } from '../../_unit/unitMeta.js';
+
+/**
+ * « أستعدّ » (module 0) — le manuel n'a qu'un seul « أستعدّ » pour toute
+ * l'unité (p. 7, items 1–10 : leçons 1 et 8). Ces affirmations sont donc des
+ * AJOUTS DE LA PLATEFORME, déclarés comme tels (SourceTag « عبارة إضافية من المنصّة ») : même
+ * forme que le manuel (« أصحيح أم خاطئ؟ برّر إجابتك »), une ou plusieurs par
+ * acquis de `priorKnowledge`, jamais les nombres de l'activité qui suit.
+ */
+export const PREP_ITEMS = [
+  { n: 1, skill: 'qawaid', text: 'العدد 3560 يقبل القسمة على 10 لأنّ رقم آحاده 0.', answer: true, why: 'كل عدد رقم آحاده 0 مضاعف للعدد 10: $3560 = 10 \\times 356$.' },
+  { n: 2, skill: 'qawaid', text: 'العدد 1326 يقبل القسمة على 4 لأنّ رقم آحاده 6 زوجي.', answer: false, why: 'العدد المكوَّن من رقمي العشرات والآحاد 26 لا يقبل القسمة على 4: $1326 = 4 \\times 331 + 2$.' },
+  { n: 3, skill: 'khawass', text: '8 يقسم 40، إذن 8 يقسم كل مضاعف للعدد 40، مثل 1200.', answer: true, why: 'قاسم عدد يقسم كل مضاعف له: $1200 = 40 \\times 30 = 8 \\times 150$.' },
+  { n: 4, skill: 'khawass', text: '4 يقسم 8، إذن كل عدد يقبل القسمة على 4 يقبل القسمة على 8.', answer: false, why: 'العكس هو الصحيح: كل عدد يقبل القسمة على 8 يقبل القسمة على 4. أمّا 12 فيقبل القسمة على 4 ولا يقبل القسمة على 8.' },
+  { n: 5, skill: 'mushtaraka', text: 'القواسم المشتركة للعددين 8 و 10 هي 1 و 2.', answer: true, why: 'قواسم 8: 1 ، 2 ، 4 ، 8؛ قواسم 10: 1 ، 2 ، 5 ، 10.' },
+  { n: 6, skill: 'mushtaraka', text: 'القواسم المشتركة للعددين 12 و 20 هي 1 ، 2 ، 4 ، 12.', answer: false, why: '12 لا يقسم 20. قواسم 12: 1 ، 2 ، 3 ، 4 ، 6 ، 12؛ قواسم 20: 1 ، 2 ، 4 ، 5 ، 10 ، 20؛ المشتركة 1 ، 2 ، 4.' },
+].map((it) => ({ ...it, source: addition('prerequisite_diagnostic') }));
 
 export const SITUATION = {
   source: src('situation', 16, 'أدمج تعلّماتي'),

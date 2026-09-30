@@ -30,6 +30,9 @@ const { differenceStepTex, pgcdEqualityTex } = divisibility;
  *    change pas d'un maillon à l'autre.
  * E. À découvrir : la chaîne s'arrête au fruit nul, et le PGCD est le
  *    DERNIER FRUIT NON NUL — l'élève le porte lui-même dans la case PGCD.
+ *    La case refuse les autres fruits PAR LA DIVISIBILITÉ (« 56 لا يقسم
+ *    252 »), jamais en énonçant la règle ; les fruits y sont proposés rangés
+ *    par taille, pas dans l'ordre de la chaîne (2026-09-30).
  */
 export default function DifferenceAlgorithm({
   a: a0, b: b0, title, lead, mission, initialMode = 'student', allowModeSwitch = false, answerHiddenByDefault = false, showStepCount = true, onFinished,
@@ -57,7 +60,7 @@ export default function DifferenceAlgorithm({
       if (zoneId === 'pgcd') return L.canPlaceDifferencePgcd(lab, Number(sourceId.replace('diff:', '')));
       return 'invalid';
     },
-    onReject: (_s, _z, reason) => setReject(reason),
+    onReject: (sourceId, _z, reason) => setReject({ reason, v: Number(String(sourceId).replace('diff:', '')) }),
   });
 
   useEffect(() => { if (state.isFormal) state.report(onFinished, lab.gcd); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -163,28 +166,33 @@ export default function DifferenceAlgorithm({
               )}
             </div>
 
-            {/* LE GRAND RUBAN : la zone qui reçoit le petit. Sa longueur est
-                déjà découpée en « ce que le petit va couper » + « ce qui
-                restera » : la soustraction se voit avant le geste. */}
+            {/* LE GRAND RUBAN : la zone qui reçoit le petit. Il est ENTIER
+                avant le geste — jusqu'au 2026-09-30 il était déjà découpé et
+                chiffré (« 140 | 112 ») : la soustraction se lisait avant
+                d'être faite. Pendant qu'on porte le petit, seul son CONTOUR
+                se pose dessus, sans nombre ; la différence s'écrit après la
+                coupe, dans la chaîne. */}
             <DropZone drag={drag} id="big" label={t('manipulation.diff.ribbonBig')} disabled={finished} minHeight="min-h-[72px]" className="flex items-center gap-2 p-2">
               <span className="w-16 shrink-0 text-xs font-bold text-slate-600">{t('manipulation.diff.ribbonBig')}</span>
               <NumberTile value={pair.big} tone="dividend" size="sm" />
-              <RibbonStrip value={pair.big} scale={scale} tone="a" className="flex-1" cut={!finished && pair.big > pair.small}
-                segments={pair.small <= pair.big && pair.big > 0 ? [
-                  { value: pair.small, tone: 'b', label: t('manipulation.diff.cm', { n: pair.small }) },
-                  ...(pair.big - pair.small > 0 ? [{ value: pair.big - pair.small, tone: 'diff', label: t('manipulation.diff.cm', { n: pair.big - pair.small }) }] : []),
+              <RibbonStrip value={pair.big} scale={scale} tone="a" className="flex-1" cut={drag.held === 'num:small' && !finished && pair.big > pair.small}
+                segments={drag.held === 'num:small' && pair.small <= pair.big && pair.big > 0 ? [
+                  { value: pair.small, tone: 'ghost' },
+                  ...(pair.big - pair.small > 0 ? [{ value: pair.big - pair.small, tone: 'a' }] : []),
                 ] : undefined} />
               {!finished && !drag.held && <span className="hidden text-[11px] text-slate-400 sm:inline">{t('manipulation.diff.dropOnBig')}</span>}
             </DropZone>
-            {finished && <p className="text-xs font-bold text-emerald-800">{t('manipulation.diff.nothingLeft')}</p>}
+            {finished && <p className="text-xs font-bold text-emerald-800">{t('manipulation.diff.nothingLeft', { v: lab.gcd })}</p>}
           </div>
 
           {finished && (
             <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
               <div className="rounded-2xl border-2 border-slate-200 bg-white p-2">
                 <div className="mb-1 text-[11px] font-bold text-slate-700">{t('manipulation.diff.piecesTitle')}</div>
+                {/* Les fruits dans l'ordre de grandeur, pas dans celui de la
+                    chaîne : « le dernier » ne se lit pas à sa place. */}
                 <div dir="ltr" className="flex flex-wrap gap-1.5">
-                  {nonZero.map((v) => <NumberTile key={v} value={v} drag={drag} id={`diff:${v}`} label={`${v}`} tone="quotient" size="sm" />)}
+                  {[...nonZero].sort((x, y) => y - x).map((v) => <NumberTile key={v} value={v} drag={drag} id={`diff:${v}`} label={`${v}`} tone="quotient" size="sm" />)}
                   <NumberTile value={0} tone="dim" size="sm" />
                 </div>
               </div>
@@ -195,7 +203,7 @@ export default function DifferenceAlgorithm({
             </div>
           )}
 
-          {reject && <p role="status" className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800">{t(`manipulation.diff.reject.${reject}`)}</p>}
+          {reject && <p role="status" className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800">{t(`manipulation.diff.reject.${reject.reason}`, { v: reject.v, a, b })}</p>}
         </div>
       </ManipulationStage>
       <DragGhost ghost={drag.ghost}>{heldLabel !== null && <NumberTile value={heldLabel} tone="divisor" />}</DragGhost>

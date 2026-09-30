@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
@@ -10,6 +10,7 @@ import DraggableObject from '../primitives/DraggableObject';
 import DragGhost from '../primitives/DragGhost';
 import NumberTile from '../primitives/NumberTile';
 import EquationDisplay from '../primitives/EquationDisplay';
+import DivisionRoles from '../primitives/DivisionRoles';
 import PlayerFigure, { FootballIcon } from '../primitives/PlayerFigure';
 import PitchBackdrop from '../primitives/PitchBackdrop';
 import * as L from '../logic/teamBuilder';
@@ -38,7 +39,10 @@ import { formationPositions, playerScale } from './teamFormation';
  * (`experience: { type: 'platform_context', reason: … }`).
  *
  * « أنشئ الفرق » (MANIPULATION_CONTRACT §6bis). Le premier partage se fait
- * à la main : c'est lui qui montre ce que « à parts égales » veut dire. Pour
+ * à la main — et c'est APPLIQUÉ (`unlock: 'first-gesture'`, `manualDone` =
+ * une répartition menée jusqu'au bout sans le bouton ; jusqu'au 2026-09-29
+ * le bouton s'ouvrait avant tout geste). C'est ce premier partage qui montre
+ * ce que « à parts égales » veut dire. Pour
  * les suivants (20 en 4, 18 en 5…), porter vingt joueurs ne serait plus que
  * de la répétition : le bouton les répartit, joueur par joueur, avec la même
  * règle `canPlace` que le geste — les joueurs déjà placés restent où l'élève
@@ -49,6 +53,17 @@ import { formationPositions, playerScale } from './teamFormation';
  * équipe reçoit une raison en arabe — et comprend, par le geste, que
  * « partager » veut dire « à parts égales ». C'est la même exigence qui rend
  * le seizième joueur physiquement impossible à placer.
+ *
+ * CE QUE L'ÉCRAN NE DIT PAS D'AVANCE. Le badge d'une équipe compte ses
+ * joueurs (« 3 »), il n'annonce pas la part visée (« 3/5 ») : q est ce que le
+ * partage PRODUIT, pas une consigne. Le banc s'appelle « في الانتظار » tant
+ * que des joueurs peuvent encore entrer, et « خارج الفرق — الباقي » quand plus
+ * rien ne bouge : une même zone, deux sens, et l'écran nomme celui du moment.
+ *
+ * PARTITION. Ici b est le NOMBRE de groupes que l'élève fixe, q la taille qui
+ * en résulte ; aux rayons (divisor-explorer-books) c'est l'inverse. Les rôles
+ * sont nommés sous l'égalité (`DivisionRoles`) pour que le passage d'un
+ * laboratoire à l'autre ne soit jamais silencieux.
  */
 export default function TeamBuilder({
   total: total0 = 15,
@@ -81,6 +96,10 @@ export default function TeamBuilder({
   // ouvre la découverte : le garder dans `lab` l'effacerait à l'instant même
   // où il devient intéressant.
   const [tried, setTried] = useState({});
+  // « أنشئ الفرق » s'ouvre après UNE répartition menée à la main jusqu'au
+  // bout. `autoUsed` dit si le bouton a servi dans la configuration en cours.
+  const [handShared, setHandShared] = useState(false);
+  const autoUsed = useRef(false);
 
   // Nouveaux nombres (palier, mode classe, « إعادة ») : la scène repart.
   //
@@ -97,6 +116,15 @@ export default function TeamBuilder({
     setLabSignature(signature);
     setLab(L.init({ total, groups }));
     setReject(null);
+    autoUsed.current = false;
+  }
+  // « إعادة » efface AUSSI la mémoire : sinon la découverte se rouvrait sur une
+  // scène vide (audit 2026-09-29, M1-F3). Changer de nombres, lui, la garde.
+  const [memoryKey, setMemoryKey] = useState(state.resetCount);
+  if (memoryKey !== state.resetCount) {
+    setMemoryKey(state.resetCount);
+    setTried({});
+    setHandShared(false);
   }
 
   // `lab` peut décrire l'instant d'avant tant que l'ajustement ci-dessus
@@ -112,6 +140,7 @@ export default function TeamBuilder({
     if (!settled) return;
     const key = `${total}:${groups}`;
     setTried((prev) => (key in prev ? prev : { ...prev, [key]: v.exact }));
+    if (!autoUsed.current) setHandShared(true);
     state.report(onVerdict, { total, groups, perGroup: v.perGroup, leftOver: v.leftOver, exact: v.exact });
   }, [settled, v.exact, total, groups]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -124,7 +153,7 @@ export default function TeamBuilder({
   // REMET la phase à « جرّب ». Or c'est justement ce changement de nombres
   // qui produit le contraste. Sans réaffirmer la découverte après la remise
   // à zéro, elle serait annulée à l'instant même où elle est méritée.
-  const contrastSeen = Object.values(tried).includes(true) && Object.values(tried).includes(false);
+  const contrastSeen = L.discoveryReady(tried);
   useEffect(() => { if (contrastSeen) state.discover(); }, [contrastSeen, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => { if (state.isFormal) state.report(onFinished, v); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -145,6 +174,10 @@ export default function TeamBuilder({
     },
     accepts: (sourceId, zoneId) => {
       const playerId = Number(sourceId.replace('player:', ''));
+      // Le reposer dans SA propre équipe : un geste sans effet (un petit
+      // glisser qui retombe sur place), pas une erreur — refus MUET, comme
+      // pour le banc ci-dessous (audit 2026-09-29, M1-F2).
+      if (zoneId !== 'bench' && L.teamOf(lab, playerId) === Number(zoneId.replace('team:', ''))) return '';
       if (zoneId === 'bench') {
         // Le banc ne REND un joueur que s'il est dans une équipe. Un joueur
         // déjà sur le banc « posé » sur le banc est un geste SANS EFFET —
@@ -160,17 +193,21 @@ export default function TeamBuilder({
     onReject: (sourceId, zoneId, reason) => {
       // Un refus sans raison est volontairement muet (geste sans effet).
       if (!reason) { setReject(null); return; }
-      // On capture l'ÉTAT DU GESTE REFUSÉ : quelle équipe visée, combien elle
-      // contient, combien contient la plus petite. Le message nomme alors des
-      // nombres que l'élève voit à l'écran, au lieu d'une règle abstraite.
-      const t = Number(String(zoneId).replace('team:', ''));
-      const here = Number.isInteger(t) && lab.teams[t] ? lab.teams[t].length : 0;
-      const min = Math.min(...lab.teams.map((team) => team.length));
-      setReject({ reason, here, min });
+      // Les nombres du refus viennent de la LOGIQUE (`rejectDetails`), qui les
+      // calcule comme `canPlace` les voit : après le départ du joueur de son
+      // équipe. Le message nomme des nombres que l'élève voit à l'écran.
+      const playerId = Number(sourceId.replace('player:', ''));
+      const team = Number(String(zoneId).replace('team:', ''));
+      setReject({ reason, ...L.rejectDetails(lab, playerId, team) });
     },
   });
 
   const heldPlayer = drag.held ? Number(drag.held.replace('player:', '')) : null;
+  // Le banc change de SENS quand plus rien ne bouge : d'abord ceux qui
+  // attendent, ensuite — s'il en reste — le reste de la division.
+  const benchName = settled && !v.exact
+    ? t('manipulation.teamBuilder.benchLeftover')
+    : t('manipulation.teamBuilder.benchZone');
 
   // Les effectifs et les nombres d'équipes PROPOSÉS. Au niveau débutant, on
   // offre quelques nombres d'équipes dont certains tombent juste et d'autres
@@ -193,7 +230,10 @@ export default function TeamBuilder({
   const setGroupsTo = (k) => state.setNumbers({ ...state.numbers, groups: k });
   const setTotalTo = (n) => state.setNumbers({ ...state.numbers, total: n });
 
-  const equality = `${total} = ${groups} \\times ${v.perGroup}${v.leftOver > 0 ? ` + ${v.leftOver}` : ''}`;
+  // « + 0 » écrit aussi quand tout tombe juste : c'est la forme du manuel
+  // (420 = 28 × 15 + 0), et le r = 0 que la découverte va nommer.
+  const equality = `${total} = ${groups} \\times ${v.perGroup} + ${v.leftOver}`;
+  const players = (n) => t('manipulation.teamBuilder.players', { count: n });
 
   // La COMPOSITION : calculée pour l'effectif visé par équipe, donc stable
   // pendant que l'élève remplit — un joueur déjà posé ne bouge pas quand le
@@ -204,8 +244,11 @@ export default function TeamBuilder({
   return (
     <ManipulationShell
       type="team-builder"
-      title={title ?? t('manipulation.teamBuilder.title', { total, groups })}
-      mission={mission ?? t('manipulation.teamBuilder.mission', { groups })}
+      title={title ?? t('manipulation.teamBuilder.title', {
+        players: t('manipulation.teamBuilder.playersIn', { count: total }),
+        teams: t('manipulation.teamBuilder.teamsIn', { count: groups }),
+      })}
+      mission={mission ?? t('manipulation.teamBuilder.mission')}
       lead={lead}
       state={state}
       numberFields={[
@@ -234,10 +277,12 @@ export default function TeamBuilder({
         // exactement comme après le dernier geste manuel.
         autoComplete: {
           label: t('manipulation.teamBuilder.autoComplete'),
+          lockedLabel: t('manipulation.teamBuilder.autoCompleteLocked'),
           ready: !stale && !validateNumbers({ total, groups }),
+          manualDone: handShared,
           remaining: stale ? 0 : L.remainingMoves(lab),
-          step: () => setLab(L.autoStep),
-          finish: () => setLab(L.fill),
+          step: () => { autoUsed.current = true; setLab(L.autoStep); },
+          finish: () => { autoUsed.current = true; setLab(L.fill); },
         },
       }}
       representation={settled && (
@@ -246,12 +291,17 @@ export default function TeamBuilder({
             tex={equality}
             tone={v.exact ? 'ok' : 'result'}
             note={v.exact
-              ? t('manipulation.teamBuilder.allPlaying', { perGroup: v.perGroup })
-              : t('manipulation.teamBuilder.leftOutNote', { count: v.leftOver, perGroup: v.perGroup })}
+              ? t('manipulation.teamBuilder.allPlaying', { players: players(v.perGroup) })
+              : t('manipulation.teamBuilder.leftOutNote', { players: players(v.perGroup), left: players(v.leftOver) })}
           />
+          <DivisionRoles roles={[
+            { key: 'b', text: t('manipulation.teamBuilder.roleB', { b: groups }) },
+            { key: 'q', text: t('manipulation.teamBuilder.roleQ', { q: v.perGroup }) },
+            { key: 'r', text: t('manipulation.teamBuilder.roleR', { r: v.leftOver, b: groups }) },
+          ]} />
           {!v.exact && (
             <p className="rounded-xl border-2 border-amber-300 bg-amber-50 px-3 py-2 text-sm font-bold text-amber-900">
-              {t('manipulation.teamBuilder.fixHint', { add: v.fix.add, remove: v.fix.remove, groups })}
+              {t('manipulation.teamBuilder.fixHint', { up: total + v.fix.add, down: total - v.fix.remove })}
             </p>
           )}
         </div>
@@ -261,8 +311,8 @@ export default function TeamBuilder({
           state={state}
           prompt={t('manipulation.teamBuilder.discoverPrompt')}
           options={[
-            { text: t('manipulation.teamBuilder.opt1'), correct: true },
             { text: t('manipulation.teamBuilder.opt2'), why: t('manipulation.teamBuilder.why2') },
+            { text: t('manipulation.teamBuilder.opt1'), correct: true },
             { text: t('manipulation.teamBuilder.opt3'), why: t('manipulation.teamBuilder.why3') },
           ]}
           formal={(
@@ -286,7 +336,7 @@ export default function TeamBuilder({
                   {teamOptions.map((k) => (
                     <NumberTile
                       key={k} value={k} size="sm" onClick={() => setGroupsTo(k)}
-                      label={t('manipulation.teamBuilder.makeTeams', { count: k })}
+                      label={t('manipulation.teamBuilder.makeTeams', { teams: t('manipulation.teamBuilder.teamsIn', { count: k }) })}
                       tone={k === groups ? 'common' : 'neutral'}
                     />
                   ))}
@@ -300,7 +350,7 @@ export default function TeamBuilder({
                   {squadOptions.map((n) => (
                     <NumberTile
                       key={n} value={n} size="sm" onClick={() => setTotalTo(n)}
-                      label={t('manipulation.teamBuilder.makeSquad', { count: n })}
+                      label={t('manipulation.teamBuilder.makeSquad', { players: players(n) })}
                       tone={n === total ? 'common' : 'neutral'}
                     />
                   ))}
@@ -325,13 +375,13 @@ export default function TeamBuilder({
             data-team-pitch
           >
             {lab.teams.map((team, i) => {
-              const full = team.length >= v.perGroup;
+              const full = settled;
               return (
                 <DropZone
                   key={i}
                   drag={drag}
                   id={`team:${i}`}
-                  label={t('manipulation.teamBuilder.teamZone', { n: i + 1 })}
+                  label={t('manipulation.teamBuilder.teamZone', { n: i + 1, players: players(team.length) })}
                   tone={full ? 'emerald' : 'indigo'}
                   minHeight="min-h-0"
                   className="relative p-2"
@@ -342,8 +392,11 @@ export default function TeamBuilder({
                     <span className="text-[11px] font-extrabold text-slate-800">
                       {t('manipulation.teamBuilder.teamName', { n: i + 1 })}
                     </span>
-                    <span dir="ltr" className={`rounded-full px-1.5 font-mono text-[11px] font-bold ${full ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-800'}`}>
-                      {team.length}/{v.perGroup}
+                    {/* Le COMPTE, pas la cible : « 3 », jamais « 3/5 » — q se
+                        découvre, il ne s'annonce pas. Vert quand l'équipe ne
+                        peut plus rien recevoir (la scène est stabilisée). */}
+                    <span dir="ltr" data-team-count className={`rounded-full px-1.5 font-mono text-[11px] font-bold ${settled ? (v.exact ? 'bg-emerald-600 text-white' : 'bg-amber-500 text-white') : 'bg-slate-200 text-slate-800'}`}>
+                      {team.length}
                     </span>
                   </div>
 
@@ -384,7 +437,7 @@ export default function TeamBuilder({
           <DropZone
             drag={drag}
             id="bench"
-            label={t('manipulation.teamBuilder.benchZone')}
+            label={`${benchName}: ${players(lab.bench.length)}`}
             tone={settled && !v.exact ? 'amber' : 'slate'}
             minHeight="min-h-[86px]"
             className="border-dashed bg-[repeating-linear-gradient(45deg,#F8FAFC_0_8px,#F1F5F9_8px_16px)] p-2"
@@ -393,7 +446,7 @@ export default function TeamBuilder({
             <div className="mb-1 flex items-center justify-between gap-2">
               <span className="flex items-center gap-1.5 text-[11px] font-extrabold text-slate-700">
                 <FootballIcon size={14} />
-                {t('manipulation.teamBuilder.benchZone')}
+                {benchName}
               </span>
               <span dir="ltr" className="font-mono text-[11px] font-bold text-slate-600">{lab.bench.length}</span>
             </div>
@@ -402,7 +455,7 @@ export default function TeamBuilder({
                 <DraggableObject
                   key={p} drag={drag} id={`player:${p}`}
                   label={t('manipulation.teamBuilder.playerOnBench', { n: p + 1 })}
-                  className="rounded-lg"
+                  className="flex min-w-[44px] justify-center rounded-lg"
                 >
                   <PlayerFigure
                     index={p} team={null} size={34}
@@ -420,7 +473,7 @@ export default function TeamBuilder({
           {reject && (
             <p role="status" className="rounded-lg border-2 border-rose-300 bg-rose-50 px-3 py-2 text-sm font-bold text-rose-900">
               {t(`manipulation.teamBuilder.reject.${reject.reason}`, {
-                perGroup: v.perGroup, here: reject.here, min: reject.min,
+                players: players(reject.perGroup), here: players(reject.here), min: players(reject.min),
               })}
             </p>
           )}

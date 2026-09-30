@@ -1,4 +1,20 @@
-import { src } from '../../_unit/unitMeta.js';
+import { src, addition } from '../../_unit/unitMeta.js';
+
+/**
+ * « أستعدّ » (module 0) — le manuel n'a qu'un seul « أستعدّ » pour toute
+ * l'unité (p. 7, items 1–10 : leçons 1 et 8). Ces affirmations sont donc des
+ * AJOUTS DE LA PLATEFORME, déclarés comme tels (SourceTag « عبارة إضافية من المنصّة ») : même
+ * forme que le manuel (« أصحيح أم خاطئ؟ برّر إجابتك »), une ou plusieurs par
+ * acquis de `priorKnowledge`, jamais les nombres de l'activité qui suit.
+ */
+export const PREP_ITEMS = [
+  { n: 1, skill: 'jidaa', text: 'العدد 12 يقسم 84 لأنّ $84 = 12 \\times 7$.', answer: true, why: 'نجد عددًا طبيعيًا $q = 7$ حيث $84 = 12 \\times q$.' },
+  { n: 2, skill: 'jidaa', text: 'العدد 4 يقسم 30 لأنّ 30 عدد زوجي.', answer: false, why: '$30 = 4 \\times 7 + 2$: الباقي غير معدوم. كون العدد زوجيًا يعني فقط أنّ 2 يقسمه.' },
+  { n: 3, skill: 'jidaa', text: 'العدد 5 يقسم $5 \\times 23$.', answer: true, why: '$5 \\times 23 = 5 \\times q$ مع $q = 23$: هذه هي الكتابة $a = b \\times q$ نفسها.' },
+  { n: 4, skill: 'qisma', text: 'المساواة $100 = 7 \\times 13 + 9$ تعبّر عن القسمة الإقليدية للعدد 100 على 7.', answer: false, why: 'المساواة صحيحة لكنّ الباقي 9 ليس أصغر من 7؛ القسمة الإقليدية: $100 = 7 \\times 14 + 2$.' },
+  { n: 5, skill: 'qisma', text: 'المساواة $100 = 7 \\times 14 + 2$ تعبّر أيضًا عن القسمة الإقليدية للعدد 100 على 14.', answer: true, why: 'الباقي 2 أصغر من 14: حاصل قسمة 100 على 14 هو 7 والباقي 2.' },
+  { n: 6, skill: 'qisma', text: 'باقي القسمة الإقليدية للعدد 250 على 25 هو 10.', answer: false, why: '$250 = 25 \\times 10 + 0$: حاصل القسمة 10 والباقي معدوم.' },
+].map((it) => ({ ...it, source: addition('prerequisite_diagnostic') }));
 
 export const ACTIVITY = {
   source: src('act-3', 8, 'أنشطة', 3),

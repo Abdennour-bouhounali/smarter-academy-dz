@@ -28,8 +28,12 @@ const { reductionStepTex, euclidStepTex } = divisibility;
  * B. Idée : diviser les deux termes par un diviseur commun ne change pas le
  *    kasr (une part garde les mêmes proportions que la recette entière) ; on
  *    s'arrête quand il n'y a plus de diviseur commun > 1.
- * C. Un jeton qui ne divise qu'un seul terme est refusé AVEC la raison —
- *    l'erreur classique, expliquée au moment où elle se produit.
+ * C. Le rail offre 2 … 12, pas seulement les bons nombres : un nombre qui ne
+ *    divise qu'un seul terme est refusé AVEC la raison — l'erreur classique,
+ *    possible et expliquée au moment où elle se produit. L'élève DÉCIDE de
+ *    s'arrêter (« لا يمكن الاختزال أكثر ») ; l'affirmation est jugée. Au
+ *    chemin ب, aucun nombre n'est doré : un diviseur commun qui n'est pas le
+ *    plus grand est refusé en montrant ce qu'il donnerait (2026-09-30).
  * D. Émerge : la chaîne 84/48 → 21/12 → 7/4, puis, à côté, la même chose en
  *    UNE division par le PGCD.
  * E. À découvrir : « أي الطريقين أوفر؟ » — l'utilité du PGCD, comptée en
@@ -51,7 +55,7 @@ export default function FractionReduction({
       setReject(null);
       const k = Number(sourceId.replace(/^[kp]:/, ''));
       if (zoneId === 'fraction') { setLab((s) => L.reduceA(s, k)); return; }
-      if (zoneId === 'pgcd') setLab((s) => { const next = L.reduceB(s, k); if (L.discoveryReady(next)) state.discover(); return next; });
+      if (zoneId === 'pgcd') setLab((s) => L.reduceB(s, k));
     },
     accepts: (sourceId, zoneId) => {
       const k = Number(sourceId.replace(/^[kp]:/, ''));
@@ -62,10 +66,19 @@ export default function FractionReduction({
     onReject: (sourceId, _z, reason) => setReject({ reason, k: Number(sourceId.replace(/^[kp]:/, '')) }),
   });
 
+  const ready = L.discoveryReady(lab);
+  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  const claim = () => {
+    const ok = L.canClaimIrreducible(lab);
+    if (ok !== true) { setReject({ reason: ok }); return; }
+    setReject(null);
+    setLab(L.claimIrreducible);
+  };
+
   useEffect(() => { if (state.isFormal) state.report(onFinished, lab.final); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const cur = L.currentA(lab);
-  const candidates = L.candidatesA(lab);
+  const rail = L.railA(lab);
   const chain = L.chainA(lab);
   const finishedA = L.pathAFinished(lab);
   // La SCÈNE montre la dernière répartition : la recette d'avant, en k parts,
@@ -74,8 +87,10 @@ export default function FractionReduction({
   const prev = chain.length > 1 ? chain[chain.length - 2] : null;
   const words = themeWords(t, theme);
   const heldValue = drag.held ? Number(drag.held.replace(/^[kp]:/, '')) : null;
-  // Le chemin du manuel (سمير : ÷4 puis ÷3) sert de guide au mode classe.
-  const classPath = path ?? candidates;
+  // Le chemin du manuel (سمير : ÷4 puis ÷3) guide le mode classe — sur les
+  // nombres de la leçon SEULEMENT (il fuyait sur 595/560 : 12 proposé, refusé).
+  const classPath = state.isAuthoredLevel ? path : undefined;
+  const cmp = L.pathComparison(lab);
 
   return (
     <ManipulationShell
@@ -91,20 +106,20 @@ export default function FractionReduction({
       controller={{
         autoStep: () => {
           if (!L.pathAFinished(lab)) {
-            const k = (path ?? []).find((x, i) => i === lab.pathA.length) ?? L.candidatesA(lab)[0];
-            if (k === undefined) return false;
+            const k = (classPath ?? []).find((x, i) => i === lab.pathA.length) ?? L.candidatesA(lab)[0];
+            if (k === undefined) { setLab(L.claimIrreducible); return true; }
             setLab((s) => L.reduceA(s, k));
             return true;
           }
-          if (lab.pathB === null) { setLab((s) => { const x = L.reduceB(s, s.gcd); state.discover(); return x; }); return true; }
+          if (lab.pathB === null) { setLab((s) => L.reduceB(s, s.gcd)); return true; }
           return false;
         },
         canAutoStep: () => !L.pathAFinished(lab) || lab.pathB === null,
         showSolution: () => {
           setLab((s) => {
             let x = s; let guard = 0;
-            while (!L.pathAFinished(x) && guard++ < 20) x = L.reduceA(x, L.candidatesA(x)[0]);
-            return L.reduceB(x, x.gcd);
+            while (L.candidatesA(x).length && guard++ < 20) x = L.reduceA(x, L.candidatesA(x)[0]);
+            return L.reduceB(L.claimIrreducible(x), x.gcd);
           });
           state.discover(); state.formalize();
         },
@@ -135,16 +150,20 @@ export default function FractionReduction({
         <ManipulationDiscovery
           state={state}
           prompt={t('manipulation.reduce.discoverPrompt')}
-          options={[
+          options={cmp.equal ? [
+            { text: t('manipulation.reduce.opt1'), why: t('manipulation.reduce.why1Equal') },
+            { text: t('manipulation.reduce.opt3'), correct: true },
+            { text: t('manipulation.reduce.opt2'), why: t('manipulation.reduce.why3', { stepsA: t('manipulation.reduce.steps', { count: cmp.stepsA }) }) },
+          ] : [
+            { text: t('manipulation.reduce.opt2'), why: t('manipulation.reduce.why2', { stepsA: t('manipulation.reduce.steps', { count: cmp.stepsA }) }) },
             { text: t('manipulation.reduce.opt1'), correct: true },
-            { text: t('manipulation.reduce.opt2'), why: t('manipulation.reduce.why2', { stepsA: lab.pathA.length }) },
-            { text: t('manipulation.reduce.opt3'), why: t('manipulation.reduce.why3') },
+            { text: t('manipulation.reduce.opt3'), why: t('manipulation.reduce.why3', { stepsA: t('manipulation.reduce.steps', { count: cmp.stepsA }) }) },
           ]}
           formal={(
             <div className="space-y-2">
               <EquationDisplay tex={reductionStepTex(n, d, lab.gcd)} tone="result" />
               <p className="font-mono text-xs text-slate-600" dir="auto">
-                {t('manipulation.reduce.pathA')}: {t('manipulation.reduce.stepsUsed', { count: lab.pathA.length })} · {t('manipulation.reduce.pathB')}: {t('manipulation.reduce.stepsUsed', { count: 1 })}
+                {t('manipulation.reduce.pathA')}: {t('manipulation.reduce.steps', { count: lab.pathA.length })} · {t('manipulation.reduce.pathB')}: {t('manipulation.reduce.steps', { count: 1 })}
               </p>
             </div>
           )}
@@ -156,15 +175,21 @@ export default function FractionReduction({
         <div className="space-y-3">
           <div className="space-y-1.5">
             <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <span className="text-sm font-bold text-slate-800">{t('manipulation.reduce.chooseCommonDivisor', { n: cur.n, d: cur.d })}</span>
+              <span className="text-sm font-bold text-slate-800">{t('manipulation.reduce.chooseParts')}</span>
               <span className="text-[11px] text-slate-500">{t('manipulation.dragHint')}</span>
             </div>
+            {/* Tous les nombres 2 … 12, PAS seulement les bons ; aucun n'est désigné. */}
             <div dir="ltr" className="flex flex-wrap gap-1.5" role="group">
-              {(finishedA ? [lab.gcd, ...classPath.filter((k) => k !== lab.gcd).slice(0, 3)] : candidates).map((k) => (
-                <DivisorChip key={k} value={k} drag={drag} id={finishedA ? `p:${k}` : `k:${k}`} label={`${k}`} state={finishedA && k === lab.gcd ? 'pgcd' : 'idle'} />
+              {(finishedA ? L.railB(lab) : rail).map((k) => (
+                <DivisorChip key={k} value={k} drag={lab.pathB === null ? drag : undefined} id={finishedA ? `p:${k}` : `k:${k}`} label={`${k}`} state="idle" />
               ))}
-              {!finishedA && candidates.length === 0 && <span className="text-xs text-emerald-700">{t('manipulation.irreducible')}</span>}
             </div>
+            {!finishedA && lab.pathA.length > 0 && (
+              <button type="button" onClick={claim} data-claim-irreducible
+                className="min-h-[44px] rounded-xl border-2 border-emerald-600 bg-white px-3 py-1.5 text-sm font-bold text-emerald-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500">
+                {t('manipulation.reduce.claim')}
+              </button>
+            )}
           </div>
 
           <DropZone drag={drag} id="fraction" label={t('manipulation.reduce.fractionZone')} hint={lab.pathA.length === 0 ? t('manipulation.reduce.dropDivisor') : undefined} minHeight="min-h-[150px]" className="p-3" disabled={finishedA} data-recipe>
@@ -176,7 +201,7 @@ export default function FractionReduction({
                     <span className="h-0.5 w-full rounded bg-slate-800" aria-hidden="true" />
                     <NumberTile value={cur.d} tone="divisor" size="sm" />
                   </span>
-                  <span>{t('manipulation.reduce.recipe', { n: cur.n, d: cur.d, itemsA: words.itemsA, itemsB: words.itemsB })}</span>
+                  <span>{t('manipulation.reduce.recipe', { n: cur.n, d: cur.d, itemA: words.itemA, itemB: words.itemB })}</span>
                 </span>
                 {prev && <span className="text-amber-800">{t('manipulation.reduce.portionsHint', { k: last.k })}</span>}
               </div>
@@ -185,11 +210,11 @@ export default function FractionReduction({
                   ariaLabel={`${prev.n}/${prev.d} ÷ ${last.k} = ${cur.n}/${cur.d}`} />
               ) : (
                 <GroupingScene a={cur.n} b={cur.d} k={null} theme={theme} words={words}
-                  ariaLabel={t('manipulation.reduce.wholeRecipe', { n: cur.n, d: cur.d, itemsA: words.itemsA, itemsB: words.itemsB })} />
+                  ariaLabel={t('manipulation.reduce.wholeRecipe', { n: cur.n, d: cur.d, itemA: words.itemA, itemB: words.itemB })} />
               )}
               {prev && (
                 <p className="text-xs font-bold text-emerald-800" data-recipe-portion>
-                  {t('manipulation.reduce.onePortion', { n: cur.n, d: cur.d, itemsA: words.itemsA, itemsB: words.itemsB })}
+                  {t('manipulation.reduce.onePortion', { n: cur.n, d: cur.d, itemA: words.itemA, itemB: words.itemB })} <bdi dir="ltr" className="font-mono">{cur.n}/{cur.d}</bdi>
                 </p>
               )}
             </div>
@@ -202,7 +227,7 @@ export default function FractionReduction({
             </DropZone>
           )}
 
-          {reject && <p role="status" className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800">{t(`manipulation.reduce.reject.${reject.reason}`, { k: reject.k })}</p>}
+          {reject && <p role="status" className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800">{t(`manipulation.reduce.reject.${reject.reason}`, { k: reject.k, n2: reject.k ? n / reject.k : '', d2: reject.k ? d / reject.k : '' })}</p>}
         </div>
       </ManipulationStage>
       <DragGhost ghost={drag.ghost}>{heldValue !== null && <NumberTile value={heldValue} tone="divisor" />}</DragGhost>

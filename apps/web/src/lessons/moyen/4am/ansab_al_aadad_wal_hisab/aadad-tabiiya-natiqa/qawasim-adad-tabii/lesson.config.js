@@ -62,6 +62,9 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_qawasim-adad-tabii_P3', '4am_qawasim-adad-tabii_P4'], sourceElementIds: ['method-divisors'] },
   ],
   modules: [
+    { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
+      title: 'أستعدّ', desc: 'ست عبارات: صحيح أم خاطئ؟ معنى «قاسم» وقواعد قابلية القسمة.',
+      stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 6, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'al-adad-60', path: `${LESSON_BASE_PATH}/al-adad-60`,
       title: 'نشاط 2 — قواسم العدد 60', desc: 'اكتب 60 على شكل جداء عاملين بكل الأشكال الممكنة، واستنتج قواسمه.',
       stage: 'trigger', teachesLearningPointIds: ['4am_qawasim-adad-tabii_P1', '4am_qawasim-adad-tabii_P2'],

@@ -1,4 +1,20 @@
-import { src } from '../../_unit/unitMeta.js';
+import { src, addition } from '../../_unit/unitMeta.js';
+
+/**
+ * « أستعدّ » (module 0) — le manuel n'a qu'un seul « أستعدّ » pour toute
+ * l'unité (p. 7, items 1–10 : leçons 1 et 8). Ces affirmations sont donc des
+ * AJOUTS DE LA PLATEFORME, déclarés comme tels (SourceTag « عبارة إضافية من المنصّة ») : même
+ * forme que le manuel (« أصحيح أم خاطئ؟ برّر إجابتك »), une ou plusieurs par
+ * acquis de `priorKnowledge`, jamais les nombres de l'activité qui suit.
+ */
+export const PREP_ITEMS = [
+  { n: 1, skill: 'jidaa', text: 'العدد 7 قاسم للعدد 91 لأنّ $91 = 7 \\times 13$.', answer: true, why: 'نجد عددًا طبيعيًا $q = 13$ حيث $91 = 7 \\times q$.' },
+  { n: 2, skill: 'jidaa', text: 'العدد 6 قاسم للعدد 45.', answer: false, why: '$45 = 6 \\times 7 + 3$: الباقي 3 غير معدوم، فلا يوجد عدد طبيعي $q$ حيث $45 = 6 \\times q$.' },
+  { n: 3, skill: 'jidaa', text: 'من المساواة $96 = 8 \\times 12$ نستنتج أنّ 8 و 12 قاسمان للعدد 96.', answer: true, why: '$96 = 8 \\times 12$ تعني أنّ 8 يقسم 96، و $96 = 12 \\times 8$ تعني أنّ 12 يقسم 96.' },
+  { n: 4, skill: 'qawaid', text: 'العدد 2745 يقبل القسمة على 3 لأنّ مجموع أرقامه يقبل القسمة على 3.', answer: true, why: '$2 + 7 + 4 + 5 = 18$ و 18 يقبل القسمة على 3.' },
+  { n: 5, skill: 'qawaid', text: 'العدد 318 يقبل القسمة على 4 لأنّ رقم آحاده زوجي.', answer: false, why: 'قاعدة القسمة على 4 تُقرأ من العدد المكوَّن من رقمي العشرات والآحاد: 18 لا يقبل القسمة على 4، و $318 = 4 \\times 79 + 2$.' },
+  { n: 6, skill: 'qawaid', text: 'العدد 1350 يقبل القسمة على 9 وعلى 5.', answer: true, why: '$1 + 3 + 5 + 0 = 9$ ورقم آحاده 0.' },
+].map((it) => ({ ...it, source: addition('prerequisite_diagnostic') }));
 
 export const ACTIVITY = {
   source: src('act-2', 8, 'أنشطة', 2),

@@ -257,7 +257,7 @@ The recurring module roles in the 4AM unit, by their Arabic names:
 
 | Module | Stage | What it is |
 |---|---|---|
-| `Module00Astaidd` — أستعدّ | `prerequisite_check` | OPTIONAL (2 of 9 lessons). Diagnoses `priorKnowledge` from previous years only — never the lesson's own material. Never gates, never persists evidence; its result is stored locally and read by nothing but its own results screen, so its copy must not promise that the lesson adapts. Advice tiers are computed on the score ratio (`kit/diagnosticLevel.js`). « التالي » without submitting does not complete it. |
+| `Module00Astaidd` — أستعدّ | `prerequisite_check` | Every lesson of the unit opens on it (9 of 9 since 2026-09-30; guarded by `_unit/prepDiagnostic.test.js`). Diagnoses the lesson's `priorKnowledge` — previous years or earlier lessons of the unit — and never the lesson's own material; every `priorKnowledge` id is measured by at least one question. Built as described under « The « أستعدّ » pattern » below. Never gates, never persists evidence; its result is stored locally and read by nothing but its own results screen, so its copy must not promise that the lesson adapts. Advice tiers are computed on the score ratio (`kit/diagnosticLevel.js`). « التالي » without submitting does not complete it. |
 | `Module01…` — the activity | `trigger` | the textbook activity, opening on the signature manipulation in the `intro` slot |
 | `Module02Maarif` — معارف | `discovery` | the textbook's definitions, each laid by a `KnowledgeBrick` at the moment it is needed |
 | `Module0xAwazzif` — أوظّف تعلّماتي | `practice_lab` | the textbook's exercises via `TextbookExercise` |
@@ -272,6 +272,20 @@ defects:
   `<CompleteView />` on its own — it takes its `items` as a prop, so rendering
   it bare produces an empty final screen, which is what nine modules did until
   2026-09-20.
+- **The « أستعدّ » pattern (2026-09-30).** The textbook has ONE « أستعدّ »
+  for the whole unit (p. 7, items 1–10 → lessons 1 and 8). A lesson without
+  textbook items gets platform statements in the same form — « أصحيح أم خاطئ؟
+  برّر إجابتك », with a justification (`why`) for each one. Both answers occur,
+  and none uses the numbers of the activity that follows. They live in
+  `content/textbook.js` as `PREP_ITEMS` with `source:
+  addition('prerequisite_diagnostic')`; `SourceTag` labels them « عبارة
+  إضافية من المنصّة » (`textbook.additionReason.<reason>`, falling back to
+  « مثال تفاعلي إضافي »). The module writes its questions as **literal
+  objects**, `{ ...prepQuestion(PREP_ITEMS[0]), id: 'prep-1', requires:
+  ['qasim-jidaa'] }` (`_unit/prepDiagnostic.jsx`). Never build them with
+  `PREP_ITEMS.map(…)`: the knowledge audit cannot read a mapped array, and
+  then reports `W_PRIOR_NOT_DIAGNOSED` for a lesson that diagnoses everything.
+  Formulas follow the RTL rules — `PGCD$(a ; b) = n$`, one island.
 - **A module numbered `0` is a real module** (« أستعدّ »). Anything deciding
   "do I have a module number?" must call `isValidModuleNumber` from
   `@smarter-academy/core`, never `if (moduleNumber)` — zero is falsy, and that
@@ -371,7 +385,9 @@ it before authoring a graph: it lists the traps the tests now catch).
 **Textbook content** — `content/textbook.js` holds the textbook's own words.
 Every block carries a `source`, built with the `src(elementId, page, section,
 number)` helper from `_unit/unitMeta.js`; anything the platform adds carries
-`addition(reason)` and renders as « مثال تفاعلي إضافي ». Render them with
+`addition(reason)` and renders as « مثال تفاعلي إضافي », or as the reason's own
+label when `textbook.additionReason.<reason>` exists (« عبارة إضافية من المنصّة »
+for `prerequisite_diagnostic`). Render them with
 `TextbookBox` (`kind`: definition, example, …), `SourceTag` and `MethodSteps`
 from `lessons/common/textbook`. `npm run check:textbook` fails if an extracted
 element has anything other than exactly one destination.
@@ -380,8 +396,24 @@ element has anything other than exactly one destination.
 
 ## 6. Manipulations
 
-Read [`MANIPULATION_CONTRACT.md`](../architecture/MANIPULATION_CONTRACT.md)
-before touching one. In short:
+Read [`MANIPULATION_DNA.md`](../architecture/MANIPULATION_DNA.md) **before designing
+one** (why), then [`MANIPULATION_CONTRACT.md`](../architecture/MANIPULATION_CONTRACT.md)
+before touching one (how). In short:
+
+- **Design from the mathematics, not from a widget.** Fill the DNA's design sheet
+  (§7) in the component header first. Name the VARIABLE the finger controls, the
+  RESISTANCE (how the mathematics refuses), the CONTRAST that opens the discovery
+  and what stays INVARIANT. If a button could replace the gesture without loss, the
+  lab is not causal yet. Never copy another lesson's lab with new colours: the
+  platform must not converge toward one manipulation style (DNA §12).
+- **Two readings of one division are never switched silently.** When b means
+  "number of groups" in one lab and "size of a group" in another, render
+  `DivisionRoles` under the equation and put both readings side by side before
+  the question (DNA §8; reference: `qasim-adad-tabii` module 1).
+- **Orientation is not an answer** (DNA §9). Question options must not carry the
+  evidence (« … تبقى 4 كتب »); list the student's **own** trials above the question
+  instead (`[data-activity-evidence]`, module 1 of the reference lesson). A
+  knowledge-brick lead must not state the next question's answer.
 
 - A manipulation is a **tactile laboratory**: the student moves a real object
   and the notation appears as a consequence. Never an animated explanation,
@@ -473,7 +505,8 @@ before touching one. In short:
   the short ribbon a 12th time), the type may offer a student button that
   completes the rest — « أنشئ الفرق », « أكمل الفروق », « أكمل القسمات ». It
   is declared in the registry (`controls.autoComplete: { unlock: 'config' |
-  'first-gesture' }`) and implemented as `controller.autoComplete` on the
+  'first-gesture' }` — all three types use `'first-gesture'` since 2026-09-30:
+  one full example by hand first) and implemented as `controller.autoComplete` on the
   type's **own** pure logic, so it reaches exactly the state the hand would.
   It never removes the manual gesture, never fires without a click, never
   triggers the discovery, and is **never** added where each gesture is a
@@ -716,7 +749,7 @@ references, not templates: read them for the pattern, never copy-and-modify.
 | Lesson | Read it for |
 |---|---|
 | **`qasim-adad-tabii`** | the complete canonical shape: module 0 diagnostic, a `trigger` module opening on a concrete manipulation, a `معارف` module laying knowledge bricks, practice, evaluation. The best first read. |
-| **`qasim-adad-tabii` module 1** | the **two-level workspace** reference (مبتدئ = the football pitch, متقدم = the 420 drawn books), the concrete-object rule, the only standalone manipulation, and the Classroom Mode reference for a component that solves its own layout for the offered area. |
+| **`qasim-adad-tabii` module 1** | the **manipulation quality reference** (redesigned 2026-09-30, `MANIPULATION_DNA.md`): the **two-level workspace** (مبتدئ = the football pitch, partition, carry gesture; متقدم = the 420 books on a shelf the student **stretches**, quotition, stretch gesture); the refusal-as-definition and the ghost shelf as resistance; contrast-gated discovery; `DivisionRoles` and the two-readings bridge; the student's own trials listed above the question. A quality bar, **not a visual template**. Module 2 is the worked-example pattern (`levels={false}`, `discovery="symmetry"`). |
 | **`team-builder`** | a platform context replacing a textbook one, declared and traceable: equal teams on a real drawn pitch, where the remainder is a player left standing outside. Pure model in `packages/core/arithmetic/equalGrouping.js`, formation geometry swept by `teamFormation.test.js`. |
 | **`bahth-pgcd`** | two manipulations in one lesson (successive differences, then Euclid), and the longest module sequence in the unit. |
 | **`ikhtizal-kasr`** | a manipulation with two comparable paths (divide repeatedly vs divide once by the GCD), and the `Module00Astaidd` prerequisite diagnostic. |
@@ -1033,7 +1066,7 @@ for every element the lesson cites. Mastery criteria are the server's
 |---|---|
 | Files | exactly the layout of §3; `index.jsx`, `routes.jsx`, `moduleContext.js` are the one-line factories |
 | `lesson.config.js` | static literals only; `id` = catalogue code; `kind`; `unit`; stages in journey order with the required set per kind (§3); `teachesLearningPointIds` on every learning module covering every LP; `estimatedDurationMin` = Σ `estimatedMin` ≤ 90; `color` a `COLOR_MAP` key; `resources[]` for every workspace manipulation (both levels, same `objective`, `autonomy` on advanced, `experience` with reason and theme) |
-| Module shape | `ContentModule` for content, `PrerequisiteDiagnostic` for an optional « أستعدّ » (previous-year prerequisites only), `BossFinal` for « إختبار أولي » — never a hand-rolled module shell, test UI, fullscreen, toolbar or progress write |
+| Module shape | `ContentModule` for content, `PrerequisiteDiagnostic` for « أستعدّ » (module 0, `priorKnowledge` only, questions as literal objects with `requires` — §4 « The « أستعدّ » pattern »), `BossFinal` for « إختبار أولي » — never a hand-rolled module shell, test UI, fullscreen, toolbar or progress write |
 | Steps | `done` on ANSWERED, never on correct (`check:non-blocking`); a step may wait on `onFinished` only per §6; never pass `locked` |
 | Questions | kit components only (`TapQuestion`, `BatchChoiceQuestion`, `NumericQuestion`, `TextbookExercise` for the textbook's exercises); explicit `correct`; every distractor FALSE; `requires` on every question; the parsers of §5, never a custom one |
 | Manipulation | a type from the closed registry (10 types), two levels in one `ManipulationWorkspace`, the lesson's world as a `theme` (§6); a new type only by the recipe of MANIPULATION_CONTRACT §7ter |
@@ -1077,10 +1110,22 @@ generated lesson would inherit if it follows 14.2:
 - A module closed by the admin between a student's offline completion and the
   sync makes that lesson's later snapshots 422 (PROGRESS_MODEL « Known gap »).
 - `priorKnowledge` mixes previous-year knowledge and earlier lessons of the
-  unit; only 2 lessons have a « أستعدّ ». `W_PRIOR_NOT_DIAGNOSED` is a warning.
+  unit. Since 2026-09-30 all 9 lessons have a « أستعدّ » that diagnoses every
+  declared id (the audit reports no `W_PRIOR_NOT_DIAGNOSED`); 39 of the 49
+  statements are platform additions, because the textbook has only 10.
 - The weak-prerequisite recommendation links to the prerequisite's lesson
   (2026-09-29) but the diagnostic result itself drives nothing.
-- Four textbook-activity steps wait on their lab's `onFinished` (allowed, §6).
+- Seven textbook-activity steps wait on their lab's `onFinished` (allowed, §6; the list is in
+  MANIPULATION_CONTRACT §7bis).
+  The reference lesson's module 1 does **not** wait (its default level is the
+  platform's football warm-up by owner decision); its step 1 lists the
+  student's own trials instead. This is a documented exception to « the
+  default level serves the module's task ».
+- Lessons 2–9's manipulations were redesigned against `MANIPULATION_DNA.md` on
+  2026-09-30 at the owner's request (see its §15 for what changed per lesson). Still
+  open from the audit's Part II: dormant class-mode code (untested), the standalone
+  labs' second level (defect k) except the معارف 143 worked example, and
+  `NumberTile size="sm"` at 40 px on the list chips.
 - The textbook's own erratum « رتبة عشرات الآلاف (مشكّل من أربعة أرقام) »
   (wadiya analysis) is kept verbatim: textbook words are never edited.
 - `docs/reports/QUESTION_ANSWER_AUDIT_2026-09-24.md` « Flagged » items that are

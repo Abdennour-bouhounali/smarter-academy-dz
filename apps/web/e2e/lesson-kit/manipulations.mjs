@@ -60,6 +60,12 @@ async function dragTo(page, source, target) {
 
 const phaseOf = (manip) => manip.getAttribute('data-phase');  // sur le Locator, jamais sur un ElementHandle figé
 const tile = (manip, v) => manip.locator(`[data-drag-source="${v}"]`).first();
+/** Ajouter `n` groupes (common-divisors) par le bouton « + » — le chemin sans glisser. */
+async function addGroups(manip, n) {
+  const plus = manip.locator('[data-group-stock]').locator('xpath=..').getByRole('button').last();
+  for (let i = 0; i < n; i += 1) await plus.click();
+  await manip.page().waitForTimeout(250);
+}
 
 /**
  * Choisir un NIVEAU dans l'atelier à deux niveaux (مبتدئ / متقدم).
@@ -98,81 +104,189 @@ async function visibleManip(page, type) {
   return loose;
 }
 
-/* ── 1 · 4 — divisor-explorer-books : la bibliothèque illustrée du module 1 ──
-   Composant autonome (pas de ManipulationShell) : les 420 livres sont des
-   objets illustrés. CHOISIR une taille de rayon EST l'expérience : rayons,
-   livres restés au sol et égalité apparaissent aussitôt, sans autre bouton. */
+/* ── 1 · 4 — divisor-explorer-books : LE RAYON QU'ON ÉTIRE (module 1, متقدم) ──
+   Depuis le 2026-09-30 l'élève ne touche plus un nombre parmi dix-sept : il
+   TIRE le serre-livres d'un rayon (role=slider). Tous les rayons suivent, les
+   420 livres se rangent PENDANT le geste, ce qui ne remplit pas un rayon reste
+   au sol dans un rayon fantôme. L'essai est validé au relâchement (ou après
+   une pause au clavier) ; la découverte demande trois essais et le contraste. */
+
+/** Poser le rayon sur `v` au CLAVIER (Début, puis ← en RTL) et attendre que l'essai soit validé. */
+async function setShelf(page, m, v) {
+  const h = m.locator('[data-stretch-handle]');
+  await h.focus();
+  await page.keyboard.press('Home');
+  const min = Number(await h.getAttribute('aria-valuemin'));
+  for (let i = min; i < v; i += 1) await page.keyboard.press('ArrowLeft');
+  await page.waitForTimeout(900);
+}
+
+/** L'abscisse (viewport) d'un repère de la réglette. */
+async function markX(m, v) {
+  const b = await m.locator(`[data-shelf-mark="${v}"] path`).boundingBox();
+  return b.x + b.width / 2;
+}
+
+const shelfState = async (m) => ({
+  cap: await m.locator('[data-bookcase]').getAttribute('data-capacity'),
+  shelves: await m.locator('[data-shelf]').count(),
+  floor: await m.locator('[data-floor-book]').count(),
+  books: await m.locator('[data-book]').count(),
+});
+
 {
   const { ctx, page } = await open(`${CH}/qasim-adad-tabii/al-maktaba`);
   await pickLevel(page, 'advanced');
   const m = await visibleManip(page, 'divisor-explorer-books');
   await m.waitFor();
-  // Le badge « ✓ » des tailles essayées est un ::after : il entre dans le NOM accessible, d'où le texte plutôt que le rôle.
-  const size = (v) => m.locator('.be-choice', { hasText: new RegExp(`^${v}$`) });
+  const handle = m.locator('[data-stretch-handle]');
 
-  check('L1 : le laboratoire est utilisable dès l’entrée (tailles + mission)', await size(26).isVisible() && await size(28).isVisible() && await m.locator('.be-mission').isVisible());
-  check('L1 : avant tout choix, aucun rayon ni égalité (rien n’est révélé d’avance)', (await m.locator('.be-shelf').count()) === 0 && (await m.locator('.be-equation').count()) === 0);
-  check('L1 : avant tout choix, aucune taille n’est cochée', (await m.locator('.be-choice.tested').count()) === 0);
-  check('L1 : aucun bouton « رتّب الكتب » — le choix suffit', (await m.getByRole('button', { name: /رتّب الكتب/ }).count()) === 0);
+  let st = await shelfState(m);
+  check('L1 : avant le geste, les 420 livres sont DESSINÉS au sol — aucun rayon, aucune égalité', st.floor === 420 && st.shelves === 0 && (await m.locator('[data-manipulation-representation]').count()) === 0, JSON.stringify(st));
+  check('L1 : le geste est le serre-livres (role=slider, 10 → 60), plus aucune taille-bouton', (await handle.getAttribute('role')) === 'slider'
+    && (await handle.getAttribute('aria-valuemin')) === '10' && (await handle.getAttribute('aria-valuemax')) === '60' && (await m.locator('.be-choice').count()) === 0);
+  check('L1 : les deux propositions du manuel (26, 28) sont des REPÈRES sur la réglette', (await m.locator('[data-shelf-mark]').count()) === 2);
+  check('L1 : « الشرح » n’existe pas avant la découverte', (await m.getByRole('button', { name: 'إظهار الشرح' }).count()) === 0);
 
-  await size(26).scrollIntoViewIfNeeded();
-  await page.waitForTimeout(120);
+  // UN VRAI GLISSER : la bibliothèque suit PENDANT le geste, l'égalité vient au relâchement.
+  await m.locator('[data-model-shelf]').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(150);
   const scrollBefore = await page.evaluate(() => window.scrollY);
-  await size(26).click();
-  await page.waitForTimeout(300);
-  check('L1 : choisir 26 le marque comme taille courante', (await size(26).getAttribute('aria-pressed')) === 'true');
-  const eq26 = await m.locator('.be-equation').textContent();
-  check('L1 : choisir 26 écrit aussitôt 420 = 26 × 16 + 4', eq26.includes('26') && eq26.includes('16') && eq26.includes('4'));
-  check('L1 : 16 rayons pleins sont dessinés', (await m.locator('.be-shelf').count()) === 16);
-  check('L1 : il reste 4 livres — ils sont DESSINÉS hors des rayons', (await m.locator('.be-floor .be-book').count()) === 4);
-  check('L1 : la page n’a pas défilé pendant le geste', (await page.evaluate(() => window.scrollY)) === scrollBefore);
-  check('L1 : 26 porte un badge ✕ rouge (reste 4), pas un ✓', (await m.locator('.be-choice.tested-no', { hasText: /^26$/ }).count()) === 1 && (await m.locator('.be-choice.tested-ok', { hasText: /^26$/ }).count()) === 0);
-
-  await size(28).click();
-  await page.waitForTimeout(300);
-  const eq28 = await m.locator('.be-equation').textContent();
-  check('L1 : 28 range tout — l’égalité 420 = 28 × 15 + 0 émerge', eq28.includes('28') && eq28.includes('15') && eq28.includes('0'));
-  check('L1 : « لا يبقى شيء » est affiché quand le reste est nul', (await m.locator('.be-pill.ok').count()) === 1);
-  check('L1 : 28 porte un badge ✓ vert (diviseur)', (await m.locator('.be-choice.tested-ok', { hasText: /^28$/ }).count()) === 1);
-  check('L1 : le sol est vide quand le reste est nul', (await m.locator('.be-floor--empty').count()) === 1 && (await m.locator('.be-floor .be-book').count()) === 0);
-
-  // Un second exemple à reste non nul : 25 laisse 20 livres.
-  await size(25).click();
-  await page.waitForTimeout(300);
-  check('L1 : 25 laisse 20 livres au sol — 420 = 25 × 16 + 20', (await m.locator('.be-floor .be-book').count()) === 20 && (await m.locator('.be-equation').textContent()).includes('20'));
-
-  // Aucun rayon n'est tronqué : 420 livres par 10 font 42 rayons, tous dessinés.
-  await size(10).click();
-  await page.waitForTimeout(300);
-  check('L1 : 10 par rayon dessine les 42 rayons, pas 16', (await m.locator('.be-shelf').count()) === 42);
-  check('L1 : le compteur de rayons dit 42', (await m.locator('.be-status').textContent()).includes('42'));
-
-  // Chaque rayon dessine TOUS ses livres : 60 par rayon → 7 rayons de 60, 420 livres visibles.
-  await size(60).click();
-  await page.waitForTimeout(300);
-  check('L1 : 60 par rayon dessine 60 livres sur chaque rayon (pas 28)', (await m.locator('.be-shelf').count()) === 7 && (await m.locator('.be-shelf').first().locator('.be-book').count()) === 60 && (await m.locator('.be-shelf .be-book').count()) === 420 && (await m.locator('.be-slot').count()) === 0);
-  await size(35).click();
-  await page.waitForTimeout(300);
-  check('L1 : 35 par rayon → 12 rayons de 35', (await m.locator('.be-shelf').count()) === 12 && (await m.locator('.be-shelf').last().locator('.be-book').count()) === 35);
-
-  // Le clavier suffit : Entrée sur une taille.
-  await size(26).focus();
-  await page.keyboard.press('Enter');
+  const hb = await handle.boundingBox();
+  const y = hb.y + hb.height / 2;
+  await page.mouse.move(hb.x + hb.width / 2, y);
+  await page.mouse.down();
+  const x26 = await markX(m, 26);
+  const x28 = await markX(m, 28);
+  await page.mouse.move(x26, y, { steps: 8 });
+  await page.waitForTimeout(120);
+  st = await shelfState(m);
+  check('L1 : PENDANT le glisser, 26 par rayon → 16 rayons, 4 livres dans le rayon fantôme', st.cap === '26' && st.shelves === 16 && st.floor === 4, JSON.stringify(st));
+  check('L1 : pendant le glisser, l’égalité n’est pas encore écrite', (await m.locator('[data-manipulation-representation]').count()) === 0);
+  check('L1 : le rayon fantôme montre les 22 places vides', (await m.locator('[data-empty-slot]').count()) === 22);
+  await page.mouse.move(x28, y, { steps: 3 });
+  await page.mouse.up();
   await page.waitForTimeout(250);
-  check('L1 : Entrée sur une taille l’essaie aussi', (await size(26).getAttribute('aria-pressed')) === 'true' && (await m.locator('.be-floor .be-book').count()) === 4);
+  st = await shelfState(m);
+  check('L1 : relâché sur 28 → 15 rayons, sol vide, les 420 livres sur les rayons', st.cap === '28' && st.shelves === 15 && st.floor === 0 && st.books === 420, JSON.stringify(st));
+  const eq28 = ((await m.locator('[data-manipulation-representation]').textContent()) ?? '').replace(/\s+/g, '');
+  check('L1 : au relâchement, 420 = 28 × 15 + 0 émerge', eq28.includes('420=28×15+0'), eq28.slice(0, 60));
+  check('L1 : les rôles sont nommés — b choisi, q produit, r < b', (await m.locator('[data-division-role]').count()) === 3);
+  check('L1 : la page n’a pas défilé pendant le geste', (await page.evaluate(() => window.scrollY)) === scrollBefore);
+  check('L1 : le sol vide est dit en mots, sans « رائع »', (await m.locator('[data-floor-note="empty"]').count()) === 1 && !((await m.textContent()) ?? '').includes('رائع'));
 
-  // MODE CLASSE (وضع القسم) — plateforme, pas bouton local : un VISITEUR ne
-  // voit AUCUNE commande de présentation (commandes enseignant, brief §4).
+  // LE CLAVIER : deux flèches → 26, validé après la pause.
+  await handle.focus();
+  await page.keyboard.press('ArrowRight');
+  await page.keyboard.press('ArrowRight');
+  await page.waitForTimeout(900);
+  st = await shelfState(m);
+  check('L1 : au clavier (→ →), 26 : 16 rayons et 4 livres au sol', st.cap === '26' && st.shelves === 16 && st.floor === 4, JSON.stringify(st));
+  const eq26 = ((await m.locator('[data-manipulation-representation]').textContent()) ?? '').replace(/\s+/g, '');
+  check('L1 : 420 = 26 × 16 + 4', eq26.includes('420=26×16+4'), eq26.slice(0, 60));
+  check('L1 : la résistance est dite : il manque 22 livres pour un rayon de plus', ((await m.locator('[data-floor-note="ghost"]').textContent()) ?? '').includes('22'));
+  check('L1 : deux essais (28, 26) ne suffisent pas à la découverte', (await phaseOf(m)) === 'act');
+
+  // LE BOUTON + (sans glisser), et la découverte après le TROISIÈME essai.
+  await m.getByRole('button', { name: 'رفّ أطول بكتاب' }).click();
+  await page.waitForTimeout(100);
+  check('L1 : « + » allonge le rayon aussitôt (27)', (await shelfState(m)).cap === '27');
+  check('L1 : … mais l’essai n’est validé qu’après la pause', (await phaseOf(m)) === 'act');
+  await page.waitForTimeout(900);
+  check('L1 : trois essais dont un juste et un avec reste → « اكتشف »', (await phaseOf(m)) === 'discover' && (await m.locator('[data-manipulation-discovery]').count()) === 1);
+  check('L1 : « الشرح » apparaît avec la découverte', (await m.getByRole('button', { name: 'إظهار الشرح' }).count()) === 1);
+
+  // LES EXTRÊMES : aucun rayon tronqué, aucun livre perdu.
+  await handle.focus();
+  await page.keyboard.press('Home');
+  await page.waitForTimeout(250);
+  st = await shelfState(m);
+  check('L1 : 10 par rayon → les 42 rayons sont dessinés, 420 livres', st.shelves === 42 && st.books === 420, JSON.stringify(st));
+  await page.keyboard.press('End');
+  await page.waitForTimeout(250);
+  st = await shelfState(m);
+  check('L1 : 60 par rayon → 7 rayons de 60', st.shelves === 7 && (await m.locator('[data-shelf]').first().locator('[data-book]').count()) === 60, JSON.stringify(st));
+  check('L1 : aucun débordement horizontal', await noHorizontalScroll(page));
+
+  // LA CONJECTURE : une fausse se réfute par un essai réel, la bonne écrit la règle.
+  await m.locator('[data-manipulation-discovery] button', { hasText: 'زوجيًّا' }).click();
+  await page.waitForTimeout(150);
+  check('L1 : « b pair » est réfuté par 26 (pair, 4 au sol)', /26/.test((await m.locator('[data-manipulation-discovery] [role="status"]').textContent()) ?? ''));
+  await m.locator('[data-manipulation-discovery] button', { hasText: 'معدومًا' }).click();
+  await page.waitForTimeout(250);
+  const formal = ((await m.locator('[data-manipulation-formal]').textContent()) ?? '').replace(/\s+/g, '');
+  check('L1 : la règle s’écrit, et le quotient aussi est un قاسم : 420 = 28 × 15 = 15 × 28', (await phaseOf(m)) === 'formal' && formal.includes('28×15=15×28'), formal.slice(0, 120));
+
+  // « إعادة » recommence TOUT : rayon vide, mémoire effacée, découverte fermée.
+  await m.getByRole('button', { name: 'إعادة' }).click();
+  await page.waitForTimeout(250);
+  st = await shelfState(m);
+  check('L1 : « إعادة » rend les 420 livres au sol et referme la découverte', st.floor === 420 && st.shelves === 0 && (await phaseOf(m)) === 'act'
+    && (await m.locator('[data-manipulation-discovery]').count()) === 0, JSON.stringify(st));
+
+  // Toucher la réglette y pose le rayon (cible de toute la largeur).
+  await m.locator('[data-model-shelf]').scrollIntoViewIfNeeded();
+  const track = await m.locator('[data-model-shelf]').boundingBox();
+  await page.mouse.click(await markX(m, 26), track.y + track.height / 2);
+  await page.waitForTimeout(250);
+  check('L1 : toucher la réglette pose le rayon là (26)', (await shelfState(m)).cap === '26');
+
   check('L1 : un visiteur ne voit pas « عرض المناولة »', (await m.locator('[data-classroom-enter]').count()) === 0
     && (await page.locator('[data-classroom-scope="manipulation"][data-classroom-active="false"]').count()) === 1);
+  await ctx.close();
+}
 
-  await m.getByRole('button', { name: /جرّب 28/ }).click();
-  await page.waitForTimeout(250);
-  check('L1 : « جرّب 28 » bascule sur 28', (await size(28).getAttribute('aria-pressed')) === 'true');
+/* Le rayon sur un téléphone (320 px) : rien ne déborde, la poignée et −/+ sont des cibles. */
+{
+  const { ctx, page } = await open(`${CH}/qasim-adad-tabii/al-maktaba`, { mobile: true });
+  await pickLevel(page, 'advanced');
+  const m = await visibleManip(page, 'divisor-explorer-books');
+  await m.waitFor();
+  const h = await m.locator('[data-stretch-handle]').boundingBox();
+  const plus = await m.getByRole('button', { name: 'رفّ أطول بكتاب' }).boundingBox();
+  check('L1m (320 px) : la poignée et « + » font au moins 44 px', h.width >= 44 && h.height >= 44 && plus.width >= 44 && plus.height >= 44, `${JSON.stringify(h)} ${JSON.stringify(plus)}`);
+  await m.getByRole('button', { name: 'رفّ أطول بكتاب' }).tap();
+  await page.waitForTimeout(900);
+  const st = await shelfState(m);
+  check('L1m (320 px) : « + » au doigt pose le premier rayon (10 → 42 rayons)', st.cap === '10' && st.shelves === 42, JSON.stringify(st));
+  const bc = await m.locator('[data-bookcase]').boundingBox();
+  check('L1m (320 px) : la bibliothèque entière tient dans la largeur, et sous la poignée', bc.x >= 0 && bc.x + bc.width <= 321 && bc.y - (h.y + h.height) < 200, JSON.stringify(bc));
+  check('L1m (320 px) : aucun débordement horizontal', await noHorizontalScroll(page));
+  await ctx.close();
+}
 
-  await m.getByRole('button', { name: /ابدأ من جديد/ }).click();
+/* معارف — l'EXEMPLE TRAVAILLÉ 143 / 11 : un seul niveau, et sa propre découverte
+   (11 PUIS 13 vident le sol → le quotient aussi est un قاسم). Jusqu'au
+   2026-09-30, ce laboratoire n'avait aucun test (audit M3-F4) et son « متقدم »
+   rejouait les 420 livres du module 1 (M3-F1). */
+{
+  const { ctx, page } = await open(`${CH}/qasim-adad-tabii/maarif`, { completed: ['0', '1'], lesson: 'qasim-adad-tabii' });
+  const m = page.locator('[data-manipulation="divisor-explorer-books"]').first();
+  await m.waitFor();
+  check('M3 : l’exemple travaillé n’a PAS de sélecteur de niveau', (await m.locator('[data-manipulation-levels-selector]').count()) === 0
+    && (await m.locator('[role="tablist"]').count()) === 0);
+  const handle = m.locator('[data-stretch-handle]');
+  check('M3 : la réglette va de 5 à 30, repères 11 et 13', (await handle.getAttribute('aria-valuemin')) === '5' && (await handle.getAttribute('aria-valuemax')) === '30'
+    && (await m.locator('[data-shelf-mark]').count()) === 2);
+  await setShelf(page, m, 11);
+  let st = await shelfState(m);
+  check('M3 : 11 par rayon → 13 rayons, sol vide', st.cap === '11' && st.shelves === 13 && st.floor === 0, JSON.stringify(st));
+  await handle.focus();
+  await page.keyboard.press('ArrowLeft');
+  await page.waitForTimeout(900);
+  st = await shelfState(m);
+  check('M3 : 12 par rayon → 11 rayons, 11 livres au sol', st.cap === '12' && st.shelves === 11 && st.floor === 11, JSON.stringify(st));
+  check('M3 : 11 puis 12 n’ouvrent pas la symétrie', (await phaseOf(m)) === 'act');
+  await page.keyboard.press('ArrowLeft');
+  await page.waitForTimeout(900);
+  check('M3 : 13 par rayon → 11 rayons, sol vide — la symétrie s’ouvre', (await shelfState(m)).shelves === 11 && (await phaseOf(m)) === 'discover');
+  await m.locator('[data-manipulation-discovery] button', { hasText: 'فقط' }).click();
+  await page.waitForTimeout(150);
+  check('M3 : « 13 n’est qu’un quotient » est réfuté par le sol vide', /13/.test((await m.locator('[data-manipulation-discovery] [role="status"]').textContent()) ?? ''));
+  await m.locator('[data-manipulation-discovery] button', { hasText: 'كلاهما' }).click();
   await page.waitForTimeout(250);
-  check('L1 : « ابدأ من جديد » efface rayons, égalité et badges', (await m.locator('.be-equation').count()) === 0 && (await m.locator('.be-shelf').count()) === 0 && (await m.locator('.be-choice.tested').count()) === 0);
+  const formal = ((await m.locator('[data-manipulation-formal]').textContent()) ?? '').replace(/\s+/g, '');
+  check('M3 : la règle écrit 143 = 11 × 13 = 13 × 11', (await phaseOf(m)) === 'formal' && formal.includes('143=11×13=13×11'), formal.slice(0, 80));
   await ctx.close();
 }
 
@@ -204,17 +318,15 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
   await pickLevel(page, 'advanced');
   const root = page.locator('[data-classroom-scope="manipulation"]').first();
   const m = page.locator('[data-manipulation="divisor-explorer-books"]').first();
-  const size = (v) => m.locator('.be-choice', { hasText: new RegExp(`^${v}$`) });
   check('C1 : un administrateur ouvre la leçon (coquille visiteur, pas de renvoi vers /admin)', page.url().includes('/al-maktaba') && (await m.count()) === 1);
   const enter = root.locator('[data-classroom-enter]');
   check('C1 : « عرض المناولة » est visible, nommé et hors de la présentation', await enter.isVisible()
     && (await enter.textContent()).includes('عرض المناولة') && (await enter.getAttribute('aria-label')) === 'الدخول إلى وضع القسم');
   check('C1 : aucun toggle وضع التلميذ/القسم dans le module (règle du propriétaire)', (await page.getByRole('button', { name: 'وضع التلميذ' }).count()) === 0);
 
-  // L'état AVANT : 26 essayé (4 au sol) — il doit survivre à l'entrée et à la sortie.
-  await size(26).click();
-  await page.waitForTimeout(250);
-  const choiceBefore = (await size(28).boundingBox()).height;
+  // L'état AVANT : 26 (4 au sol) — il doit survivre à l'entrée et à la sortie.
+  await setShelf(page, m, 26);
+  const bookBefore = (await m.locator('[data-shelf] [data-book]').first().boundingBox()).width;
   const bodyOverflowBefore = await page.evaluate(() => document.body.style.overflow);
 
   await enter.click();
@@ -224,8 +336,6 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
     && await page.evaluate(() => document.fullscreenElement?.getAttribute('data-classroom-scope') === 'manipulation'));
   check('C1 : la barre d’outils est là — titre, échelle', (await root.locator('[data-classroom-toolbar]').count()) === 1
     && (await root.getByRole('button', { name: 'تكبير العرض' }).count()) === 1);
-  // La SORTIE vit désormais EN HAUT, dans la barre d'outils, avec les
-  // commandes de la séance : la barre du bas ne porte que les pas du contenu.
   check('C1 : « خروج » est en haut, dans la barre d’outils', (await root.locator('[data-classroom-toolbar] [data-classroom-exit]').count()) === 1
     && (await root.getByRole('button', { name: 'الخروج من وضع القسم' }).count()) === 1);
   check('C1 : pas de navigation السابق/التالي pour une manipulation seule (aucun bouton mort)',
@@ -233,27 +343,20 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
     && (await root.locator('[data-classroom-nav] [data-classroom-nav-module]').count()) === 0);
   check('C1 : le bouton d’entrée a disparu pendant la présentation', (await root.locator('[data-classroom-enter]').count()) === 0);
   check('C1 : html et body sont verrouillés (overflow hidden)', await page.evaluate(() => document.documentElement.style.overflow === 'hidden' && document.body.style.overflow === 'hidden'));
-  check('C1 : l’état de la manipulation est intact — 26 toujours choisi, 4 livres au sol', (await size(26).getAttribute('aria-pressed')) === 'true' && (await m.locator('.be-floor .be-book').count()) === 4 && (await m.locator('.be-shelf').count()) === 16);
+  let st = await shelfState(m);
+  check('C1 : l’état de la manipulation est intact — 26, 16 rayons, 4 livres au sol', st.cap === '26' && st.shelves === 16 && st.floor === 4, JSON.stringify(st));
+  check('C1 : la bibliothèque prend sa mise en page de classe', (await m.locator('[data-bookshelf]').getAttribute('data-presentation')) === 'true');
 
-  // Le seuil est de 5 px, et non de 8 : depuis que « خروج » vit dans la
-  // barre du BAS, une manipulation présentée seule porte une petite barre de
-  // navigation qu'elle n'avait pas, et le moteur d'ajustement lui rend une
-  // échelle un peu plus basse (0,92 → 0,86 ici). Ce qui compte est vérifié
-  // juste en dessous et reste large : le livre d'un rayon fait 31 px et
-  // celui du sol 40 px, pour des minimums de 15 et 22. Ce que ce test garde,
-  // c'est que la projection AGRANDIT — pas un nombre de pixels précis.
-  let choiceAfter = 0;
-  for (let i = 0; i < 20 && choiceAfter <= choiceBefore + 5; i += 1) { await page.waitForTimeout(100); choiceAfter = (await size(28).boundingBox())?.height ?? 0; }
-  check('C1 : en présentation les tailles sont plus grandes (projection)', choiceAfter > choiceBefore + 5, `${choiceBefore} → ${choiceAfter}`);
-  const shelfBook = await m.locator('.be-shelf .be-book').first().boundingBox();
-  const floorBook = await m.locator('.be-floor .be-book').first().boundingBox();
-  check('C1 : les livres des rayons restent des livres (≥ 15 px de large) et les livres au sol sont plus grands (≥ 22 px)',
-    shelfBook.width >= 15 && floorBook.width >= 22 && floorBook.width > shelfBook.width, `rayon ${shelfBook.width} · sol ${floorBook.width}`);
-  check('C1 : un rayon = une rangée de 26 livres (aucun retour à la ligne)', await page.evaluate(() => {
-    const books = [...document.querySelector('.be-shelf .be-shelf__books').querySelectorAll('.be-book')];
-    const tops = new Set(books.map((b) => Math.round(b.getBoundingClientRect().top)));
-    return books.length === 26 && tops.size === 1;
-  }));
+  // Au projecteur la HAUTEUR manque : la bibliothèque se pose À CÔTÉ du rayon
+  // (et sa taille de livre suit le budget mesuré, elle ne grandit pas d'office).
+  await page.waitForTimeout(600);
+  const side = await page.evaluate(() => {
+    const shelf = document.querySelector('[data-classroom-active="true"] [data-model-shelf]').getBoundingClientRect();
+    const bc = document.querySelector('[data-classroom-active="true"] [data-bookcase]').getBoundingClientRect();
+    return { sameBand: bc.top < shelf.bottom, apart: bc.right <= shelf.left + 1 };
+  });
+  check('C1 : en présentation, la bibliothèque est À CÔTÉ du rayon (la hauteur est comptée)', side.sameBand && side.apart, JSON.stringify(side));
+  void bookBefore;
 
   const fits = async () => page.evaluate(() => {
     const r = document.querySelector('[data-classroom-active="true"]');
@@ -263,51 +366,39 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
   });
   await page.waitForTimeout(500);
   let f = await fits();
-  check('C1 : 26 par rayon — 16 rayons + 4 au sol tiennent à l’écran 1366×768 sans défilement', f.pageX && f.rootX && f.contentY && f.contentX, JSON.stringify(f));
-  check('C1 : 420 = 26 × 16 + 4 est écrit', (await m.locator('.be-equation').textContent()).replace(/\s/g, '').includes('26×16+4'));
+  check('C1 : 26 par rayon — le rayon et la bibliothèque tiennent à l’écran 1366×768, sans aucun défilement', f.pageX && f.rootX && f.contentX && f.contentY, JSON.stringify(f));
+  const eq = ((await m.locator('[data-manipulation-representation]').textContent()) ?? '').replace(/\s/g, '');
+  check('C1 : 420 = 26 × 16 + 4 est écrit', eq.includes('26×16+4'), eq.slice(0, 40));
 
-  await size(28).click();
-  await page.waitForTimeout(500);
-  f = await fits();
-  check('C1 : 28 par rayon — 15 rayons, sol vide, 420 = 28 × 15 + 0', (await m.locator('.be-shelf').count()) === 15 && (await m.locator('.be-floor--empty').count()) === 1
-    && (await m.locator('.be-equation').textContent()).replace(/\s/g, '').includes('28×15+0') && f.contentY && f.contentX);
-
-  // 10 par rayon : 42 rayons — le moteur réduit l'échelle plutôt que de faire défiler la page.
-  await size(10).click();
+  // 10 par rayon : 42 rayons, tous dessinés.
+  await m.locator('[data-stretch-handle]').focus();
+  await page.keyboard.press('Home');
   await page.waitForTimeout(900);
   f = await fits();
-  check('C1 : 42 rayons — la grille des rayons défile EN INTERNE (jamais la page), l’échelle reste lisible (≥ 0,8)', (await m.getAttribute('data-shelves-fit')) === 'false'
-    && await page.evaluate(() => { const g = document.querySelector('.be-shelves'); return g.scrollHeight > g.clientHeight + 1; }) && parseFloat(f.scale) >= 0.8, `scale=${f.scale}`);
-  check('C1 : 42 rayons — aucun défilement de page ni débordement horizontal, le contenu tient', f.pageX && f.rootX && f.contentX && f.contentY, JSON.stringify(f));
-  check('C1 : 42 rayons — les 420 livres sont tous dessinés', (await m.locator('.be-shelf .be-book').count()) === 420);
+  st = await shelfState(m);
+  check('C1 : 42 rayons — les 420 livres sont tous dessinés, et tout tient sans défilement', st.shelves === 42 && st.books === 420 && f.pageX && f.rootX && f.contentX && f.contentY, `${JSON.stringify(st)} ${JSON.stringify(f)}`);
 
   // Échelle à la main : + puis −.
-  await size(28).click();
-  await page.waitForTimeout(600);
-  const before125 = (await size(28).boundingBox()).height;
   const scale100 = parseFloat((await fits()).scale);
   await root.getByRole('button', { name: 'تكبير العرض' }).click();
   await root.getByRole('button', { name: 'تكبير العرض' }).click();
   await page.waitForTimeout(600);
-  const at125 = (await size(28).boundingBox()).height;
   const f125 = await fits();
-  check('C1 : « + » agrandit la présentation (100 % → 125 %, bornée par le moteur si l’écran ne suit pas)', at125 >= before125 && parseFloat(f125.scale) >= scale100, `${before125} → ${at125} · scale ${scale100} → ${f125.scale}`);
-  check('C1 : à 125 % le contenu tient encore (le moteur ajuste)', f125.contentY && f125.contentX, JSON.stringify(f125));
+  check('C1 : « + » agrandit la présentation (bornée par le moteur si l’écran ne suit pas)', parseFloat(f125.scale) >= scale100, `scale ${scale100} → ${f125.scale}`);
+  check('C1 : à 125 % rien ne déborde horizontalement', f125.pageX && f125.contentX, JSON.stringify(f125));
   await root.getByRole('button', { name: 'تصغير العرض' }).click();
   await root.getByRole('button', { name: 'تصغير العرض' }).click();
   await page.waitForTimeout(400);
 
-  // Échap synthétique ne quitte pas le plein écran natif en headless : on sort par le bouton.
   await root.getByRole('button', { name: 'الخروج من وضع القسم' }).click();
   await page.waitForTimeout(500);
-  check('C1 : « خروج » rend la page — état conservé (28 choisi, 15 rayons)', (await root.getAttribute('data-classroom-active')) === 'false'
-    && (await size(28).getAttribute('aria-pressed')) === 'true' && (await m.locator('.be-shelf').count()) === 15);
+  st = await shelfState(m);
+  check('C1 : « خروج » rend la page — état conservé (10, 42 rayons)', (await root.getAttribute('data-classroom-active')) === 'false' && st.cap === '10' && st.shelves === 42, JSON.stringify(st));
   check('C1 : plus de plein écran natif, verrou de défilement restauré', await page.evaluate(() => !document.fullscreenElement)
     && (await page.evaluate(() => document.body.style.overflow)) === bodyOverflowBefore
     && (await page.evaluate(() => document.documentElement.style.overflow)) === '');
   check('C1 : le bouton d’entrée est revenu et a le focus', (await root.locator('[data-classroom-enter]').count()) === 1
     && await page.evaluate(() => document.activeElement?.hasAttribute('data-classroom-enter')));
-  check('C1 : les tailles sont revenues à la taille de la leçon', Math.abs((await size(28).boundingBox()).height - choiceBefore) < 3);
   await ctx.close();
 }
 
@@ -317,19 +408,20 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
   await pickLevel(page, 'advanced');
   const root = page.locator('[data-classroom-scope="manipulation"]').first();
   const m = page.locator('[data-manipulation="divisor-explorer-books"]').first();
-  await m.locator('.be-choice', { hasText: /^26$/ }).click();
+  await setShelf(page, m, 26);
   await root.locator('[data-classroom-enter]').click();
   await page.waitForTimeout(400);
   check('C2 : sans API, la présentation s’ouvre quand même (repli)', (await root.getAttribute('data-classroom-active')) === 'true' && (await root.getAttribute('data-classroom-native')) === 'false');
   const box = await root.boundingBox();
   check('C2 : le repli couvre tout l’écran', box && box.x <= 1 && box.y <= 1 && box.width >= 1364 && box.height >= 766, JSON.stringify(box));
   check('C2 : rien ne déborde, la page ne défile pas', await page.evaluate(() => document.body.style.overflow === 'hidden' && document.scrollingElement.scrollWidth <= window.innerWidth + 1));
-  await m.locator('.be-choice', { hasText: /^25$/ }).click();
-  await page.waitForTimeout(300);
-  check('C2 : le jeu reste jouable — 25 laisse 20 livres', (await m.locator('.be-floor .be-book').count()) === 20);
+  await m.locator('[data-stretch-handle]').focus();
+  await page.keyboard.press('ArrowRight');
+  await page.waitForTimeout(900);
+  check('C2 : le laboratoire reste jouable — 25 laisse 20 livres', (await m.locator('[data-floor-book]').count()) === 20);
   await page.keyboard.press('Escape');
   await page.waitForTimeout(300);
-  check('C2 : Échap ferme le repli, l’état reste (20 au sol)', (await root.getAttribute('data-classroom-active')) === 'false' && (await m.locator('.be-floor .be-book').count()) === 20
+  check('C2 : Échap ferme le repli, l’état reste (20 au sol)', (await root.getAttribute('data-classroom-active')) === 'false' && (await m.locator('[data-floor-book]').count()) === 20
     && (await page.evaluate(() => document.body.style.overflow)) === '');
 
   // Changement de route en pleine présentation : tout est rendu.
@@ -356,7 +448,7 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
     const root = page.locator('[data-classroom-scope="manipulation"]').first();
     await pickLevel(page, 'advanced');
     const m = page.locator('[data-manipulation="divisor-explorer-books"]').first();
-    await m.locator('.be-choice', { hasText: /^26$/ }).click();
+    await setShelf(page, m, 26);
     await root.locator('[data-classroom-enter]').click();
     await page.waitForTimeout(900);
     const f = await page.evaluate(() => {
@@ -374,29 +466,49 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
   }
 }
 
-/* ── 2 — l'alternative sans glisser + clavier (factor-pairs) ─────────────── */
+/* ── 2 — factor-pairs : LE RECTANGLE QUI SE COUCHE (2026-09-30) ─────────────
+   L'élève tire le bord du rang : les 60 livres se rangent en rectangle
+   PENDANT le geste ; au-delà du carré, un rectangle parfait est un rectangle
+   déjà vu, couché. Plus de rail de nombres, plus de tuiles grisées d'avance. */
 {
   const { ctx, page } = await open(`${CH}/qawasim-adad-tabii/al-adad-60`);
   await pickLevel(page, 'advanced');
   const m = await visibleManip(page, 'factor-pairs');
   await m.waitFor();
-  const board = m.locator('[data-drop-zone="board"]');
+  const h = m.locator('[data-stretch-handle]');
+  const rect = () => m.locator('[data-rectangle]');
+  check('L2 : plus de rail de tuiles-nombres ; le geste est le bord du rang (slider)', (await m.locator('[data-drag-source^="cols:"]').count()) === 0
+    && (await h.getAttribute('role')) === 'slider');
+  check('L2 : rien ne marque √60 d’avance (aucune tuile grisée, réglette 1 → 14)', (await h.getAttribute('aria-valuemax')) === '14');
 
-  // Chemin TAP : toucher l'objet, puis la zone.
-  await tile(m, 'cols:4').click();
-  check('L2 : toucher une tuile la prend (aria-pressed)', (await tile(m, 'cols:4').getAttribute('aria-pressed')) === 'true');
-  await board.click();
-  await page.waitForTimeout(200);
-  check('L2 : toucher la zone y pose la tuile — 60 = 4 × 15', (await m.locator('[data-manipulation-representation]').textContent()).includes('15'));
+  // Un VRAI glisser : du départ jusqu'à 4 par rang.
+  await m.locator('[data-width-ruler]').scrollIntoViewIfNeeded();
+  const r = await m.locator('[data-width-ruler]').boundingBox();
+  const y = r.y + 30;
+  // x du rang d = bord droit − EDGE − d × mu ; on lit mu sur deux positions de la poignée.
+  await h.focus(); await page.keyboard.press('Home'); await page.waitForTimeout(900);
+  const x1 = (await h.boundingBox()).x; await page.keyboard.press('ArrowLeft'); await page.waitForTimeout(900);
+  const x2 = (await h.boundingBox()).x; const mu = x1 - x2;
+  await page.mouse.move(x2 + 22, y); await page.mouse.down();
+  await page.mouse.move(x2 + 22 - 2 * mu, y, { steps: 6 });
+  await page.mouse.up(); await page.waitForTimeout(300);
+  check('L2 : glisser jusqu’à 4 → 4 × 15, rectangle parfait', (await rect().getAttribute('data-cols')) === '4' && (await rect().getAttribute('data-rest')) === '0'
+    && ((await m.locator('[data-manipulation-representation]').textContent()) ?? '').replace(/\s/g, '').includes('60=4×15'));
 
-  // Chemin CLAVIER : Entrée sur l'objet, Entrée sur la zone.
-  await tile(m, 'cols:7').focus();
-  await page.keyboard.press('Enter');
-  check('L2 : Entrée prend la tuile au clavier', (await tile(m, 'cols:7').getAttribute('aria-pressed')) === 'true');
-  await board.focus();
-  await page.keyboard.press('Enter');
-  await page.waitForTimeout(200);
-  check('L2 : Entrée sur la zone la pose — 7 ne divise pas 60, il reste 4', (await m.locator('[data-manipulation-representation]').textContent()).includes('4'));
+  // Le CLAVIER : 7 par rang laisse un rang incomplet de 4.
+  await h.focus();
+  for (let i = 0; i < 3; i += 1) await page.keyboard.press('ArrowLeft');
+  await page.waitForTimeout(900);
+  check('L2 : au clavier, 7 par rang → un rang incomplet de 4 livres, dessinés à part', (await rect().getAttribute('data-rest')) === '4'
+    && (await m.locator('[data-rectangle] [data-book="rest"]').count()) === 4);
+
+  // Tous les rangs de 1 à 8, puis 10 : le rectangle 10 × 6 est COUCHÉ.
+  await page.keyboard.press('Home'); await page.waitForTimeout(900);
+  for (let d = 2; d <= 8; d += 1) { await page.keyboard.press('ArrowLeft'); await page.waitForTimeout(800); }
+  check('L2 : jusqu’à 8, six paires trouvées, pas encore de découverte', (await m.locator('[data-pair]').count()) === 6 && (await phaseOf(m)) === 'act');
+  await page.keyboard.press('ArrowLeft'); await page.keyboard.press('ArrowLeft'); await page.waitForTimeout(900);
+  check('L2 : 10 par rang → le même 6 × 10, couché : aucune paire nouvelle', (await rect().getAttribute('data-turned')) === 'true' && (await m.locator('[data-pair]').count()) === 6);
+  check('L2 : le rectangle couché ouvre la découverte', (await phaseOf(m)) === 'discover');
   check('L2 : aucun débordement horizontal', await noHorizontalScroll(page));
   await ctx.close();
 }
@@ -473,9 +585,14 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
   await dragTo(page, tile(m, 'copy'), dividend);
   await dragTo(page, tile(m, 'copy'), dividend);
   await dragTo(page, tile(m, 'copy'), dividend);
+  check('L6 M3 : 5 copies posées — la scène n’annonce PAS « توقّف », le reste n’est pas encore portable', (await m.locator('[data-euclid-overflow]').count()) === 0
+    && (await m.locator('[data-drop-zone="carry"]').count()) === 0);
+  // La 6ᵉ copie : l'élève l'ESSAIE, la mathématique la refuse.
+  await dragTo(page, tile(m, 'copy'), dividend);
   const txt = await m.textContent();
-  check('L6 M3 : 5 copies de 135 tiennent dans 765, la 6ᵉ déborde', txt.includes('5') && txt.includes('90'));
-  check('L6 M3 : le quotient a rempli l’égalité APRÈS le geste', (await m.locator('[data-manipulation-representation]').textContent()).includes('90'));
+  check('L6 M3 : la 6ᵉ copie est refusée avec les nombres (reste 90 < 135)', /لا تتّسع/.test((await m.locator('p[role="status"]').textContent()) ?? '') && txt.includes('90'));
+  check('L6 M3 : alors seulement, le reste se porte et remplit l’égalité', (await m.locator('[data-drop-zone="carry"]').count()) === 1
+    && (await m.locator('[data-manipulation-representation]').textContent()).includes('90'));
   await ctx.close();
 }
 
@@ -537,9 +654,7 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
   await pickLevel(page, 'advanced');
   const m = await visibleManip(page, 'common-divisors');
   await m.waitFor();
-  await tile(m, 'k:9').click();
-  await m.locator('[data-drop-zone="table"]').click();
-  await page.waitForTimeout(250);
+  await addGroups(m, 9);
   check('mouvement réduit : la manipulation fonctionne (9 باقات → 10 و 6)', (await m.textContent()).includes('10') && (await m.textContent()).includes('6'));
   await ctx.close();
 }
@@ -561,17 +676,32 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
   const m = await visibleManip(page, 'common-divisors');
   await m.waitFor();
   check('monde : avant tout choix, les DEUX piles entières sont dessinées (90 + 54 objets)', (await m.locator('[data-pile] svg').count()) === 144);
-  await tile(m, 'k:9').click();
-  await m.locator('[data-drop-zone="table"]').click();
-  await page.waitForTimeout(300);
+  check('monde : plus de rail de NOMBRES — le geste est d’ajouter un bouquet', (await m.locator('[data-drag-source^="k:"]').count()) === 0
+    && (await m.locator('[data-drag-source="group:add"]').count()) === 1);
+  // UN VRAI GLISSER : un emballage de la réserve jusqu'à la table.
+  await dragTo(page, m.locator('[data-drag-source="group:add"]'), m.locator('[data-drop-zone="table"]'));
+  check('monde : glisser un emballage sur la table forme 1 bouquet de 90 + 54', (await m.locator('[data-groups-count]').textContent()) === '1'
+    && (await m.locator('[data-group-card]').count()) === 1);
+  await addGroups(m, 8);
   check('monde : 9 bouquets → 9 cadres identiques', (await m.locator('[data-group-card]').count()) === 9);
   check('monde : chaque bouquet contient 10 + 6 fleurs DESSINÉES', (await m.locator('[data-group-card]').first().locator('svg').count()) === 16);
   check('monde : rien ne reste dehors', (await m.locator('[data-group-leftover]').count()) === 0 && (await m.locator('[data-grouping-scene]').getAttribute('data-works')) === 'true');
-  await tile(m, 'k:4').click();
-  await m.locator('[data-drop-zone="table"]').click();
-  await page.waitForTimeout(300);
+  check('monde : la trace montre la montée 1 → 9, avec ✓ sur 1, 2, 3, 6, 9', (await m.locator('[data-tried-k]').count()) === 9
+    && (await m.locator('[data-tried-mark="common"]').count()) === 5);
+  // Rendre un bouquet à la réserve (tap-tap) : 8, puis on redescend à 4.
+  for (let i = 0; i < 5; i += 1) {
+    await m.locator('[data-drag-source="group:remove"]').click();
+    await m.locator('[data-drop-zone="stock"]').click();
+    await page.waitForTimeout(80);
+  }
   check('monde : 4 bouquets → 2 rouges et 2 blanches restent, dessinées dehors', (await m.locator('[data-group-leftover] svg').count()) === 4
     && (await m.locator('[data-group-leftover]').getAttribute('data-leftover-a')) === '2');
+  // « Le plus grand » : 18 marche, mais il faut avoir vu 19 échouer.
+  await addGroups(m, 14);
+  check('monde : 18 marche — la scène demande d’en ajouter un de plus avant de conclure', (await m.locator('[data-groups-beyond]').count()) === 1
+    && (await m.locator('[data-common-next]').count()) === 0);
+  await addGroups(m, 1);
+  check('monde : 19 échoue → la carte « إلى القائمتين » apparaît', (await m.locator('[data-common-next]').count()) === 1);
   await ctx.close();
 }
 {
@@ -579,17 +709,36 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
   const m = await visibleManip(page, 'coprime-explorer');
   await m.waitFor();
   check('trousses : le niveau débutant ouvre sur les objets, pas sur les listes', (await m.locator('[data-coprime-groups]').count()) === 1);
-  await tile(m, 'k:2').click();
-  await m.locator('[data-drop-zone="kits"]').click();
-  await page.waitForTimeout(250);
+  await addGroups(m, 2);
   check('trousses : 2 trousses → 8 + 9 dans chacune, 1 stylo dehors', (await m.locator('[data-group-card]').count()) === 2 && (await m.locator('[data-group-leftover] svg').count()) === 1);
-  check('trousses : l’enseignement n’apparaît pas encore (un seul essai)', (await m.locator('[data-coprime-insight]').count()) === 0);
-  await tile(m, 'k:1').click(); await m.locator('[data-drop-zone="kits"]').click(); await page.waitForTimeout(150);
-  await tile(m, 'k:3').click(); await m.locator('[data-drop-zone="kits"]').click(); await page.waitForTimeout(250);
-  check('trousses : après 1, 2 et 3, « seul 1 marche » apparaît', (await m.locator('[data-coprime-insight]').count()) === 1);
-  await m.locator('[data-coprime-insight] button').click();
-  await page.waitForTimeout(250);
-  check('trousses : le passage aux listes garde les nombres essayés en vue', (await m.locator('[data-drop-zone="shared"]').count()) === 1 && (await m.textContent()).includes('الأعداد التي جرّبتها'));
+  await addGroups(m, 3);
+  check('trousses : après 1 … 5, rien n’est encore affirmé — il faut aller jusqu’à 17', (await m.locator('[data-coprime-insight]').count()) === 0
+    && (await phaseOf(m)) === 'act');
+  await addGroups(m, 12);
+  check('trousses : 2 … 17 tous essayés → « seul 1 marche » est un CONSTAT', (await m.locator('[data-coprime-insight]').count()) === 1
+    && (await m.locator('[data-tried-mark="common"]').count()) === 1);
+  check('trousses : un seul laboratoire à ce niveau — la découverte s’ouvre ici, sans chaîne vers les listes', (await phaseOf(m)) === 'discover'
+    && (await m.locator('[data-drop-zone="shared"]').count()) === 0);
+  await ctx.close();
+}
+{
+  // متقدم 22 / 35 : « تحقّق » ne conclut qu'avec la PREUVE complète.
+  const { ctx, page } = await open(`${CH}/awwaliyan-fima-baynahuma/17-wa-18`);
+  await pickLevel(page, 'advanced');
+  const m = await visibleManip(page, 'coprime-explorer');
+  await m.waitFor();
+  const put = async (id) => { await m.locator(`[data-drag-source="${id}"]`).click(); await m.locator('[data-drop-zone="shared"]').click(); await page.waitForTimeout(120); };
+  await put('a:1');
+  await m.getByRole('button', { name: 'تحقّق' }).click();
+  await page.waitForTimeout(150);
+  check('listes : 1 posé puis « تحقّق » ne conclut PAS — il dit ce qui reste à tester', (await phaseOf(m)) === 'act'
+    && /2 ، 11 ، 22/.test((await m.locator('[data-coprime-check-note]').textContent()) ?? ''));
+  await put('a:2');
+  check('listes : 2 est refusé AVEC sa raison, et compte comme testé', /يقسم 22 فقط/.test((await m.locator('p[role="status"]').last().textContent()) ?? ''));
+  await put('a:11'); await put('a:22');
+  await m.getByRole('button', { name: 'تحقّق' }).click();
+  await page.waitForTimeout(200);
+  check('listes : tous les diviseurs de 22 confrontés à 35 → la découverte s’ouvre', (await phaseOf(m)) === 'discover');
   await ctx.close();
 }
 {
@@ -603,6 +752,35 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
   await page.waitForTimeout(300);
   check('recette : ÷4 → 4 parts identiques de 21 + 12', (await m.locator('[data-group-card]').count()) === 4 && (await m.locator('[data-group-card]').first().locator('svg').count()) === 33);
   check('recette : la part lue est 21/12', (await m.locator('[data-recipe-portion]').textContent()).includes('21'));
+  // L'ÉLÈVE DÉCIDE (2026-09-30) : le rail offre 2 … 12, pas seulement les bons ;
+  // il affirme lui-même que c'est irréductible ; aucun PGCD doré.
+  check('recette : le rail propose aussi des nombres qui NE conviennent PAS (5, 7…)', (await m.locator('[data-drag-source="k:7"]').count()) === 1);
+  await tile(m, 'k:7').click();
+  await m.locator('[data-drop-zone="fraction"]').click();
+  await page.waitForTimeout(200);
+  check('recette : 7 est refusé avec la raison (il ne divise que le numérateur)', /البسط فقط/.test((await m.locator('p[role="status"]').textContent()) ?? ''));
+  await page.keyboard.press('Escape');
+  await m.locator('[data-claim-irreducible]').click();
+  await page.waitForTimeout(150);
+  check('recette : affirmer « irréductible » à 21/12 est refusé', /ليس بعد/.test((await m.locator('p[role="status"]').textContent()) ?? '')
+    && (await m.locator('[data-drop-zone="pgcd"]').count()) === 0);
+  await tile(m, 'k:3').click();
+  await m.locator('[data-drop-zone="fraction"]').click();
+  await page.waitForTimeout(200);
+  check('recette : à 7/4, rien n’est annoncé — c’est à l’élève de conclure', (await m.locator('[data-drop-zone="pgcd"]').count()) === 0);
+  await m.locator('[data-claim-irreducible]').click();
+  await page.waitForTimeout(200);
+  check('recette : la bonne affirmation ouvre le chemin « في خطوة واحدة », sans PGCD désigné', (await m.locator('[data-drop-zone="pgcd"]').count()) === 1
+    && (await m.locator('[data-drag-source="p:12"]').count()) === 1);
+  await tile(m, 'p:4').click();
+  await m.locator('[data-drop-zone="pgcd"]').click();
+  await page.waitForTimeout(200);
+  check('recette : 4 en une fois est refusé en MONTRANT ce qu’il donne (21/12)', /21\/12/.test((await m.locator('p[role="status"]').textContent()) ?? ''));
+  await page.keyboard.press('Escape');
+  await tile(m, 'p:12').click();
+  await m.locator('[data-drop-zone="pgcd"]').click();
+  await page.waitForTimeout(250);
+  check('recette : 12 en une fois → la conjecture « أي الطريقين أوفر؟ »', (await phaseOf(m)) === 'discover');
   await ctx.close();
 }
 {
@@ -618,6 +796,32 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
   check('chantier : les trois zones sont bâties', (await m.locator('[data-site-zone][data-built="true"]').count()) === 3);
   check('chantier : aucun demi-brique nulle part', (await m.locator('[data-wall-partial]').count()) === 0);
   check('chantier : la découverte s’ouvre après les trois constructions', (await phaseOf(m)) === 'discover');
+  // Les égalités dans les phrases arabes se lisent de GAUCHE à droite (isolées LTR) :
+  // « 18 = 3 × 6 » ne doit plus se lire « 6 × 3 = 18 » (audit, défaut m).
+  const ltr = await m.evaluate((root) => [...root.querySelectorAll('bdi[dir="ltr"]')].filter((b) => b.getClientRects().length).every((b) => {
+    const tn = b.firstChild; if (!tn || tn.nodeType !== 3 || tn.length < 3) return true;
+    const r = document.createRange(); const x = (i) => { r.setStart(tn, i); r.setEnd(tn, i + 1); return r.getBoundingClientRect().left; };
+    return x(0) < x(tn.length - 1);
+  }));
+  check('chantier : chaque égalité isolée se lit de gauche à droite', ltr);
+  await ctx.close();
+}
+{
+  // متقدم (900, 90, 9) : les briques ne se comptent plus — on PRÉDIT, puis le mur répond.
+  const { ctx, page } = await open(`${CH}/khawass-qawasim/thalath-halat`);
+  await pickLevel(page, 'advanced');
+  const m = await visibleManip(page, 'divisor-properties');
+  await m.waitFor();
+  await tile(m, 'wall:b').click();
+  await m.locator('[data-drop-zone="zone:join"]').click();
+  await page.waitForTimeout(200);
+  check('chantier متقدم : bâtir sans prédire est refusé, avec la raison', (await m.locator('[data-site-zone="join"]').getAttribute('data-built')) === 'false'
+    && /توقّع أولًا/.test((await m.locator('p[role="status"]').textContent()) ?? ''));
+  await m.locator('[data-site-zone="join"]').getByRole('button', { name: 'يبقى جزء من طوبة' }).click();
+  await m.locator('[data-drop-zone="zone:join"]').click();
+  await page.waitForTimeout(200);
+  check('chantier متقدم : la prédiction « un morceau de brique » est réfutée par le mur (990 = 9 × 110)', (await m.locator('[data-site-zone="join"]').getAttribute('data-built')) === 'true'
+    && (await m.locator('[data-prediction-verdict="wrong"]').count()) === 1);
   await ctx.close();
 }
 {
@@ -626,7 +830,11 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
   const m = await visibleManip(page, 'pgcd-differences');
   await m.waitFor();
   check('rubans : les deux rubans sont dessinés', (await m.locator('[data-ribbons] [data-ribbon]').count()) === 2);
-  check('rubans : les ciseaux marquent la coupe avant le geste', (await m.locator('[data-ribbon-cut]').count()) === 1);
+  check('rubans : avant le geste, le grand ruban est ENTIER — ni ciseaux ni différence écrite', (await m.locator('[data-ribbon-cut]').count()) === 0
+    && !((await m.locator('[data-drop-zone="big"]').textContent()) ?? '').includes('112'));
+  await m.locator('[data-drag-source="num:small"]').first().click();
+  check('rubans : le petit ruban EN MAIN pose les ciseaux sur le grand', (await m.locator('[data-ribbon-cut]').count()) === 1);
+  await page.keyboard.press('Escape');
   await tile(m, 'num:small').click();
   await m.locator('[data-drop-zone="big"]').click();
   await page.waitForTimeout(250);
@@ -731,7 +939,7 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
     (await phaseOf(m)) === 'discover' && (await m.locator('[data-manipulation-discovery]').count()) === 1);
   check('W1 : la règle formelle n’est pas encore écrite', (await m.locator('[data-manipulation-formal]').count()) === 0);
 
-  await m.locator('[data-manipulation-discovery] button').first().click();
+  await m.locator('[data-manipulation-discovery] button', { hasText: 'قاسمًا' }).click();
   await page.waitForTimeout(300);
   check('W1 : la bonne conjecture fait écrire a = b × q + r',
     (await phaseOf(m)) === 'formal' && (await m.locator('[data-manipulation-formal]').count()) === 1);
@@ -741,10 +949,9 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
   await pickLevel(page, 'advanced');
   const books = page.locator('[data-manipulation="divisor-explorer-books"]').first();
   check('W2 : le niveau متقدم montre la bibliothèque du manuel', await books.isVisible() && !(await m.isVisible()));
-  await books.locator('.be-choice', { hasText: /^28$/ }).click();
-  await page.waitForTimeout(300);
+  await setShelf(page, books, 28);
   check('W2 : la bibliothèque JOUE au niveau متقدم — 28 range tout en 15 rayons',
-    (await books.locator('.be-shelf').count()) === 15);
+    (await books.locator('[data-shelf]').count()) === 15);
   await pickLevel(page, 'beginner');
   check('W2 : revenir à مبتدئ RETROUVE la scène telle qu’on l’a laissée',
     (await m.locator('[data-bench-count]').getAttribute('data-bench-count')) === benchBefore
@@ -814,16 +1021,33 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
 
 /* ── 12 — COMPLÉTER AUTOMATIQUEMENT (MANIPULATION_CONTRACT §6bis) ──────────
    Ce que ce bloc verrouille :
-     • « أنشئ الفرق » est actif dès que la configuration est valide, et il
-       met la VRAIE scène dans l'état qu'aurait donné la main (mêmes
-       effectifs, même banc, même égalité) ;
-     • il ne déclenche ni la découverte ni la règle ;
+     • « أنشئ الفرق » est VERROUILLÉ tant que l'élève n'a pas mené UNE
+       répartition à la main jusqu'au bout (`unlock: 'first-gesture'`, depuis
+       le 2026-09-30 — il s'ouvrait avant tout geste) ;
+     • ensuite il met la VRAIE scène dans l'état qu'aurait donné la main
+       (mêmes effectifs, même banc, même égalité), sans découverte ni règle ;
      • MIXTE : ce que l'élève a placé reste où il l'a mis ;
      • après coup, la main reprend la main (renvoyer au banc, recompléter) ;
      • changer la configuration — même en pleine animation — ne laisse aucun
-       joueur de l'ancienne ;
+       joueur de l'ancienne ; « إعادة » recommence TOUT (15 / 3, verrou) ;
      • les machines à PGCD n'ouvrent le bouton qu'après un premier geste, et
        laissent la case PGCD à l'élève. */
+
+/** Une répartition MENÉE À LA MAIN : chaque joueur du banc, touché puis posé dans la plus petite équipe. */
+async function shareByHand(m, { tap = false } = {}) {
+  const bench = () => m.locator('[data-drop-zone="bench"] [data-drag-source^="player:"]');
+  for (let i = 0; i < 70; i += 1) {
+    const sizes = (await m.locator('[data-team]').evaluateAll((els) => els.map((e) => Number(e.dataset.teamSize))));
+    const k = sizes.indexOf(Math.min(...sizes));
+    const p = bench().first();
+    if (!(await p.count())) return;
+    const before = await bench().count();
+    if (tap) { await p.tap(); await m.locator(`[data-team="${k}"]`).tap(); } else { await p.click(); await m.locator(`[data-team="${k}"]`).click(); }
+    await m.page().waitForTimeout(20);
+    if ((await bench().count()) === before) { await m.page().keyboard.press('Escape'); return; } // plus aucune place : le reste
+  }
+}
+
 {
   const { ctx, page } = await open(`${CH}/qasim-adad-tabii/al-maktaba`);
   const m = page.locator('[data-manipulation="team-builder"]').first();
@@ -835,25 +1059,33 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
   const settleAuto = async () => { await page.waitForFunction(() => document.querySelector('[data-manipulation="team-builder"] [data-manipulation-autocomplete]')?.dataset.manipulationAutocomplete !== 'running', null, { timeout: 5000 }); await page.waitForTimeout(250); };
 
   check('AC1 : « أنشئ الفرق » est proposé dans la rangée des contrôles', (await btn.count()) === 1 && await btn.isVisible());
-  check('AC1 : configuration valide (15 / 3) → le bouton est actif', (await ac.getAttribute('data-manipulation-autocomplete')) === 'ready' && await btn.isEnabled());
-  check('AC1 : rien n’est placé tant que l’élève n’a pas appuyé', (await bench().count()) === 15);
+  check('AC1 : avant tout partage à la main, il est VERROUILLÉ et dit pourquoi', (await ac.getAttribute('data-manipulation-autocomplete')) === 'locked'
+    && !(await btn.isEnabled()) && /بيدك/.test((await ac.textContent()) ?? ''));
+  await shareByHand(m);
+  check('AC1 : le premier partage se fait à la main — 5,5,5', (await sizes()) === '5,5,5' && (await bench().count()) === 0);
+  check('AC1 : ensuite le bouton n’est plus verrouillé (rien à compléter ici)', (await ac.getAttribute('data-manipulation-autocomplete')) === 'done');
 
-  // MIXTE : deux joueurs placés à la main, puis l'automatique.
+  // NOUVELLE CONFIGURATION 20 / 4, départ MIXTE : deux joueurs à la main.
+  await m.getByRole('button', { name: /^20 لاعب/ }).click();
+  await m.getByRole('button', { name: /كوّن 4 فرق/ }).click();
+  await page.waitForTimeout(300);
+  check('AC4 : 20 / 4 repart à zéro — 20 sur le banc, 4 équipes vides, bouton prêt', (await bench().count()) === 20 && (await sizes()) === '0,0,0,0'
+    && (await ac.getAttribute('data-manipulation-autocomplete')) === 'ready');
   await dragTo(page, m.locator('[data-drag-source="player:0"]'), m.locator('[data-team="0"]'));
   await m.locator('[data-drag-source="player:1"]').click();
   await m.locator('[data-team="2"]').click();
   await page.waitForTimeout(200);
-  check('AC2 : le geste manuel marche toujours (2 joueurs placés)', (await bench().count()) === 13);
+  check('AC2 : le geste manuel marche toujours (2 joueurs placés)', (await bench().count()) === 18);
   check('AC2 : le bouton reste disponible pendant la manipulation manuelle', await btn.isEnabled());
   await btn.click();
   await settleAuto();
-  check('AC2 : l’automatique COMPLÈTE : 3 équipes de 5, banc vide', (await sizes()) === '5,5,5' && (await bench().count()) === 0);
+  check('AC2 : l’automatique COMPLÈTE : 4 équipes de 5, banc vide', (await sizes()) === '5,5,5,5' && (await bench().count()) === 0);
   check('AC2 : les joueurs placés à la main n’ont pas bougé',
     (await m.locator('[data-team="0"] [data-drag-source="player:0"]').count()) === 1
     && (await m.locator('[data-team="2"] [data-drag-source="player:1"]').count()) === 1);
-  check('AC2 : aucun joueur dupliqué (15 joueurs dessinés, pas plus)', (await m.locator('[data-drag-source^="player:"]').count()) === 15);
+  check('AC2 : aucun joueur dupliqué (20 joueurs dessinés, pas plus)', (await m.locator('[data-drag-source^="player:"]').count()) === 20);
   const eq = ((await m.locator('[data-manipulation-representation]').textContent()) ?? '').replace(/\s+/g, ' ');
-  check('AC2 : la notation suit l’état réel — 15 = 3 × 5', /15\s*=\s*3\s*×\s*5/.test(eq), eq.slice(0, 60));
+  check('AC2 : la notation suit l’état réel — 20 = 4 × 5 + 0', /20\s*=\s*4\s*×\s*5\s*\+\s*0/.test(eq), eq.slice(0, 60));
   check('AC2 : l’automatique ne déclenche PAS la découverte', (await phaseOf(m)) === 'act');
   check('AC2 : plus rien à compléter → bouton désactivé', (await ac.getAttribute('data-manipulation-autocomplete')) === 'done' && !(await btn.isEnabled()));
 
@@ -861,20 +1093,11 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
   await m.locator('[data-team="1"] [data-drag-source^="player:"]').first().click();
   await m.locator('[data-drop-zone="bench"]').click();
   await page.waitForTimeout(250);
-  check('AC3 : un joueur placé automatiquement se renvoie au banc à la main', (await bench().count()) === 1 && (await sizes()) === '5,4,5');
+  check('AC3 : un joueur placé automatiquement se renvoie au banc à la main', (await bench().count()) === 1 && (await sizes()) === '5,4,5,5');
   check('AC3 : le bouton redevient actif', await btn.isEnabled());
   await btn.click();
   await settleAuto();
-  check('AC3 : et recomplète la scène', (await sizes()) === '5,5,5' && (await bench().count()) === 0);
-
-  // NOUVELLE CONFIGURATION : aucune trace de l'ancienne.
-  await m.getByRole('button', { name: /^20 لاعب/ }).click();
-  await m.getByRole('button', { name: /كوّن 4 فرق/ }).click();
-  await page.waitForTimeout(300);
-  check('AC4 : 20 / 4 repart à zéro — 20 sur le banc, 4 équipes vides', (await bench().count()) === 20 && (await sizes()) === '0,0,0,0');
-  await btn.click();
-  await settleAuto();
-  check('AC4 : 20 / 4 → 4 équipes de 5', (await sizes()) === '5,5,5,5' && (await bench().count()) === 0);
+  check('AC3 : et recomplète la scène', (await sizes()) === '5,5,5,5' && (await bench().count()) === 0);
 
   // PAS D'ARRONDI : 16 / 3 laisse un joueur dehors, comme la main.
   await m.getByRole('button', { name: /^16 لاعب/ }).click();
@@ -885,7 +1108,8 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
   const eq16 = ((await m.locator('[data-manipulation-representation]').textContent()) ?? '').replace(/\s+/g, ' ');
   check('AC5 : 16 / 3 → 5,5,5 et UN joueur dessiné sur le banc', (await sizes()) === '5,5,5' && (await bench().count()) === 1);
   check('AC5 : 16 = 3 × 5 + 1 émerge de l’état réel', /16\s*=\s*3\s*×\s*5\s*\+\s*1/.test(eq16), eq16.slice(0, 70));
-  check('AC5 : les deux cas vus (15/3, 16/3) → la découverte s’ouvre, comme à la main', (await phaseOf(m)) === 'discover');
+  check('AC5 : le banc change de nom quand il devient le reste', /الباقي/.test((await m.locator('[data-drop-zone="bench"]').getAttribute('aria-label')) ?? ''));
+  check('AC5 : les deux cas vus (15/3 à la main, 16/3) → la découverte s’ouvre', (await phaseOf(m)) === 'discover');
 
   // Changer la configuration EN PLEINE ANIMATION.
   await m.getByRole('button', { name: /^18 لاعب/ }).click();
@@ -897,12 +1121,14 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
   check('AC6 : changer de configuration pendant l’animation l’arrête — 12 sur le banc, équipes vides',
     (await bench().count()) === 12 && (await sizes()) === '0,0,0', `${await bench().count()} / ${await sizes()}`);
 
-  // « إعادة » arrête et remet aussi.
+  // « إعادة » arrête l'animation et recommence TOUT : 15 / 3, mémoire effacée, verrou.
   await btn.click();
   await page.waitForTimeout(90);
   await m.getByRole('button', { name: 'إعادة' }).click();
   await page.waitForTimeout(1300);
-  check('AC6 : « إعادة » pendant l’animation remet la scène à zéro', (await bench().count()) === 12 && (await sizes()) === '0,0,0');
+  check('AC6 : « إعادة » pendant l’animation recommence l’activité — 15 / 3, équipes vides', (await bench().count()) === 15 && (await sizes()) === '0,0,0');
+  check('AC6 : … la découverte est refermée et le bouton reverrouillé', (await phaseOf(m)) === 'act' && (await m.locator('[data-manipulation-discovery]').count()) === 0
+    && (await ac.getAttribute('data-manipulation-autocomplete')) === 'locked');
   await ctx.close();
 }
 
@@ -911,26 +1137,58 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
   const { ctx, page } = await open(`${CH}/qasim-adad-tabii/al-maktaba`, { reducedMotion: true });
   const m = page.locator('[data-manipulation="team-builder"]').first();
   await m.waitFor();
+  await shareByHand(m);
+  await m.getByRole('button', { name: /^20 لاعب/ }).click();
+  await m.getByRole('button', { name: /كوّن 4 فرق/ }).click();
+  await page.waitForTimeout(200);
   await m.getByRole('button', { name: /أنشئ الفرق/ }).click();
   await page.waitForTimeout(120);
   const s = (await m.locator('[data-team]').evaluateAll((els) => els.map((e) => e.dataset.teamSize))).join(',');
-  check('AC7 : prefers-reduced-motion → les équipes sont complètes aussitôt', s === '5,5,5', s);
+  check('AC7 : prefers-reduced-motion → les équipes sont complètes aussitôt', s === '5,5,5,5', s);
   await ctx.close();
 }
 
-// Téléphone : le bouton tient dans la rangée, sans débordement.
+// Téléphone : le partage au doigt, puis le bouton.
 {
   const { ctx, page } = await open(`${CH}/qasim-adad-tabii/al-maktaba`, { mobile: true });
   const m = page.locator('[data-manipulation="team-builder"]').first();
   await m.waitFor();
+  await shareByHand(m, { tap: true });
+  await m.getByRole('button', { name: /^20 لاعب/ }).tap();
+  await page.waitForTimeout(250);
   const b = m.getByRole('button', { name: /أنشئ الفرق/ });
   const box = await b.boundingBox();
   check('AC8 (320 px) : le bouton est une cible confortable', box && box.height >= 40, JSON.stringify(box));
   await b.tap();
   await page.waitForTimeout(1400);
-  check('AC8 (320 px) : il complète au doigt',
-    (await m.locator('[data-team]').evaluateAll((els) => els.map((e) => e.dataset.teamSize))).join(',') === '5,5,5');
+  check('AC8 (320 px) : il complète au doigt — 20 en 3 : 6,6,6 et 2 dehors',
+    (await m.locator('[data-team]').evaluateAll((els) => els.map((e) => e.dataset.teamSize))).join(',') === '6,6,6');
   check('AC8 (320 px) : aucun débordement horizontal', await noHorizontalScroll(page));
+  await ctx.close();
+}
+
+/* LE GLISSER TRAVERSE L'ÉCRAN : sur un téléphone, le banc et l'équipe 1 sont à
+   plus d'un écran l'un de l'autre. Le doigt qui porte un joueur près du bord
+   haut fait défiler la page (useDragInteraction, EDGE) jusqu'à l'équipe. */
+{
+  const { ctx, page } = await open(`${CH}/qasim-adad-tabii/al-maktaba`, { mobile: true });
+  const m = page.locator('[data-manipulation="team-builder"]').first();
+  await m.waitFor();
+  const p = m.locator('[data-drop-zone="bench"] [data-drag-source^="player:"]').first();
+  await p.scrollIntoViewIfNeeded();
+  const b = await p.boundingBox();
+  const far = (await m.locator('[data-team="0"]').boundingBox()).y;
+  await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(b.x + b.width / 2, 20, { steps: 8 });
+  for (let i = 0; i < 100; i += 1) { await page.waitForTimeout(30); if ((await m.locator('[data-team="0"]').boundingBox()).y > 60) break; }
+  const t0 = await m.locator('[data-team="0"]').boundingBox();
+  await page.mouse.move(t0.x + t0.width / 2, Math.max(t0.y + 60, 80), { steps: 4 });
+  await page.mouse.up();
+  await page.waitForTimeout(250);
+  check('DS (320 px) : l’équipe 1 était hors écran, au-dessus du banc', far < 0, `y=${far}`);
+  check('DS (320 px) : un vrai glisser du banc à l’équipe 1 réussit (défilement au bord)', (await m.locator('[data-team="0"]').getAttribute('data-team-size')) === '1');
+  check('DS (320 px) : l’objet lâché n’est plus « en main »', (await m.locator('[data-drag-held]').count()) === 0);
   await ctx.close();
 }
 
@@ -964,7 +1222,7 @@ async function openAsPresenter(url, { noFullscreenApi = false } = {}) {
   const ac = m.locator('[data-manipulation-autocomplete]');
   check('AC10 : « أكمل القسمات » est VERROUILLÉ avant la première division', (await ac.getAttribute('data-manipulation-autocomplete')) === 'locked');
   const dividend = m.locator('[data-drop-zone="dividend"]');
-  for (let i = 0; i < 5; i += 1) await dragTo(page, tile(m, 'copy'), dividend);
+  for (let i = 0; i < 6; i += 1) await dragTo(page, tile(m, 'copy'), dividend);   // 5 posées + la 6ᵉ essayée
   check('AC10 : des copies posées ne suffisent pas — la division doit être finie', (await ac.getAttribute('data-manipulation-autocomplete')) === 'locked');
   await dragTo(page, m.locator('[data-drag-source="rem:90"]').first(), m.locator('[data-drop-zone="carry"]'));
   check('AC10 : la première division finie à la main ouvre le bouton', (await ac.getAttribute('data-manipulation-autocomplete')) === 'ready');

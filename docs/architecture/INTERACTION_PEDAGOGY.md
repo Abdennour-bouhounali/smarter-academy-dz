@@ -13,6 +13,11 @@
 > structure, stage vocabulary and validator rules, `LESSON_CONTRACT.md` and
 > `scripts/validate-lessons.mjs` win. When the playbook disagrees with this document, update the
 > playbook.
+>
+> **Above this document:** `MANIPULATION_DNA.md` (2026-09-30) — the design philosophy of a
+> manipulation (the finger controls a mathematical variable, the mathematics resists, contrast,
+> interaction distance, causal visibility, the design sheet, reuse engineering not experience).
+> This document applies it to lesson design; `MANIPULATION_CONTRACT.md` implements it.
 
 Every file path below is repo-relative. Components are cited as **examples of interaction
 primitives**, never as mandatory building blocks. The rules in this document apply to any
@@ -105,8 +110,10 @@ Canonical touches:
 
 **An action changes a mathematical state.** Tapping a part of the (historical, deleted
 2026-09-25) `PartitionShape` added an index to `cells`; the numerator *was* `cells.length`. In the
-4AM unit, placing a book on a shelf of `divisor-explorer-books` builds the partition whose
-equal shelves *are* the divisor. Dragging the cursor of `NumberLine`
+4AM unit, carrying a player into a team of `team-builder` builds the partition (the refusal
+of a sixth player *is* « equal parts »), and stretching the shelf of `divisor-explorer-books`
+sets b, the size of every shelf, while the 420 books re-shelve under the finger — the shelf
+length *is* the divisor being tested (quotition, `MANIPULATION_DNA.md` §8). Dragging the cursor of `NumberLine`
 (`apps/web/src/lessons/common/components/NumberLine.jsx`) in `mode="place"` sets `value`; the
 position *is* the number.
 
@@ -185,7 +192,7 @@ not scroll a carousel of pre-cut pizzas.
 
 | Primitive | Student controls | Mathematical state | Appropriate when | Historical examples (deleted) · 4AM registry types |
 |---|---|---|---|---|
-| **A. Partition** | how many equal parts; which parts are taken | denominator, numerator, ratio, area share, probability | the concept is *about* equal parts or the whole/part relation | `PartitionShape` (`weights` allows deliberately unequal parts for the "4 morceaux ≠ 4 parts égales" conflict); `ObjectGroup` (fractions of a collection — the student selects *groups*, never single objects) · 4AM: `divisor-explorer-books`, `team-builder` |
+| **A. Partition** | how many equal parts; which parts are taken | denominator, numerator, ratio, area share, probability | the concept is *about* equal parts or the whole/part relation | `PartitionShape` (`weights` allows deliberately unequal parts for the "4 morceaux ≠ 4 parts égales" conflict); `ObjectGroup` (fractions of a collection — the student selects *groups*, never single objects) · 4AM: `team-builder` (partition: fix the number of groups); its quotition twin `divisor-explorer-books` fixes the size of a group by stretching a shelf |
 | **B. Combine / Compose** | which pieces join | sum of fractions, of lengths, of expressions; composed figure | the concept is additive or compositional | `ShapeComposer` (aires: tap piece → tap slot); `FormulaBuilder` (perimetres: chips → formula tokens) |
 | **C. Move** | position of an object | abscissa, coordinate, measure read at a position | the concept is a *position* or a *value on a continuum* | `NumberLine` mode `place`; `Ruler` mode `place-object`; `ReferenceRuler` (estimate with a 1 m reference) |
 | **D. Resize** | a dimension or scale | length, width, area, volume, scale factor | the concept links dimensions to a derived quantity | none shared yet — design note: two steppers (width, height) driving one rectangle whose area and perimeter mirrors update live |
@@ -904,8 +911,11 @@ Deliberate no-drag designs to imitate:
 - `ShapeComposer` — tap a piece, then tap its destination slot;
 - `PolygonPerimeter` — tap each side in contour order; the running total is the manipulation.
 
-Drag is right when the concept *is* a continuous position (number line, ruler, clock hand) — and
-even then it ships with a stepper or keyboard twin (§17, §27).
+Drag is right when the concept *is* a continuous position or magnitude (number line, ruler, clock
+hand, the length of a shelf) — and even then it ships with a stepper or keyboard twin (§17, §27).
+The 4AM shelf (`divisor-explorer-books`, 2026-09-30) is the reference: a stretch gesture
+(`useStretchInteraction`) with slider keys and −/+ as its twins. It replaced 17 number buttons,
+because a button chose b while the shelf *is* b (`MANIPULATION_DNA.md` §3.1).
 
 ---
 

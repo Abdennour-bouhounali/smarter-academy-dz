@@ -52,12 +52,16 @@ export default function Module01IthnanWaArbaunWaSittun() {
             beginner: () => (
               <Manipulation type="common-divisors" a={8} b={12} theme="school"
                 title="تدرّب أولًا: 8 أقلام و 12 كراسًا في حقائب متماثلة"
-                lead="جرّب عدد الحقائب: أيّ الأعداد لا يترك شيئًا خارج الحقائب؟ وما أكبرها؟" />
+                lead="أضف الحقائب واحدة بعد أخرى: أيّ الأعداد لا يترك شيئًا خارجها؟ وما أكبرها؟" />
             ),
             advanced: () => (
-              <Manipulation type="common-divisors" a={a} b={b} theme="school"
+              // Les LISTES directement (`startWith="lists"`) : ici l'objet
+              // mathématique EST la liste de diviseurs — c'est la méthode du
+              // manuel. Jusqu'au 2026-09-30 ce niveau rouvrait les sacs de la
+              // leçon 4, contre ce commentaire et le contrat (§7bis-levels).
+              <Manipulation type="common-divisors" a={a} b={b} theme="school" startWith="lists"
                 title="1) قواسم 42 و 60 — 2) القواسم المشتركة — 3) أكبرها"
-                lead="ابدأ بالمجموعات: ما أكبر عددها؟ ثم عيّن في القائمتين القواسم المشتركة، تحقّق، واختر أكبرها."
+                lead="انقل إلى الوسط كل عدد يقسم 42 و 60 معًا — العدد الذي لا يقسم إلا واحدًا منهما يُرفض مع السبب — ثم ضع أكبرها في خانة PGCD."
                 onFinished={() => setLabDone(true)} />
             ),
           }}
@@ -67,7 +71,7 @@ export default function Module01IthnanWaArbaunWaSittun() {
         { num: 1, title: ACTIVITY.fill, subtitle: 'أكمل المناولة أولًا', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="tayin-bil-hasr" lead="هذا ما فعلته للتوّ، بثلاث خطوات." />
+              <KnowledgeBrick id="tayin-bil-hasr" lead="قارن بما فعلته في المناولة: هل مررت بالخطوات الثلاث نفسها؟" />
               {!labDone && <p className="text-sm text-slate-600">أنهِ الخطوات الثلاث في المناولة.</p>}
               <TapQuestion prompt={<span>انقل وأكمل: «العدد ... يسمى القاسم ... ... ... للعددين 42 و 60». ونكتب ...</span>}
                 options={['العدد 6 يسمى القاسم المشترك الأكبر للعددين 42 و 60، ونكتب PGCD(42 ; 60) = 6', 'العدد 3 يسمى القاسم المشترك الأكبر، PGCD(42 ; 60) = 3', 'العدد 12 يسمى القاسم المشترك الأكبر، PGCD(42 ; 60) = 12', 'العدد 1 يسمى القاسم المشترك الأكبر، PGCD(42 ; 60) = 1']} correct={0} cols={1} requires={['tayin-bil-hasr']}

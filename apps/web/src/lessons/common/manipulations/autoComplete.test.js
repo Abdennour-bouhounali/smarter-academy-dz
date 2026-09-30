@@ -34,7 +34,10 @@ describe('registre — qui a droit à la complétion automatique', () => {
   });
 
   it('les machines à PGCD exigent un premier geste à la main ; les équipes, une configuration', () => {
-    expect(MANIPULATION_TYPES['team-builder'].controls.autoComplete.unlock).toBe('config');
+    // Le premier partage se fait À LA MAIN (audit 2026-09-29, M1-F6) : `config`
+    // ouvrait « أنشئ الفرق » avant tout geste, et la découverte se gagnait sans
+    // qu'un seul joueur ait été porté.
+    expect(MANIPULATION_TYPES['team-builder'].controls.autoComplete.unlock).toBe('first-gesture');
     expect(MANIPULATION_TYPES['pgcd-differences'].controls.autoComplete.unlock).toBe('first-gesture');
     expect(MANIPULATION_TYPES['euclidean-algorithm'].controls.autoComplete.unlock).toBe('first-gesture');
   });
@@ -186,6 +189,7 @@ describe('euclidean-algorithm — « أكمل القسمات »', () => {
     let s = AL.initEuclid({ a: 1938, b: 836 });
     // La première division, à la main : les copies, puis le report du reste.
     while (AL.canAddCopy(s) === true) s = AL.addCopy(s);
+    s = AL.tryCopy(s);                 // la copie de trop, essayée et refusée
     s = AL.carryRemainder(s);
     expect(s.confirmed).toBe(1);
     const n = AL.remainingEuclidGestures(s);
@@ -202,7 +206,8 @@ describe('euclidean-algorithm — « أكمل القسمات »', () => {
   it('MIXTE — une division à moitié remplie à la main se termine sans copie en trop', () => {
     let s = AL.initEuclid({ a: 765, b: 135 });
     s = AL.addCopy(AL.addCopy(s)); // 2 copies sur 5
-    expect(AL.remainingEuclidGestures(s)).toBe(3 + 1 + s.steps.slice(1).reduce((n, x) => n + x.q + 1, 0));
+    // par division : ses copies + l'essai de la copie de trop + le report
+    expect(AL.remainingEuclidGestures(s)).toBe(3 + 1 + 1 + s.steps.slice(1).reduce((n, x) => n + x.q + 2, 0));
     const done = AL.completeEuclid(s);
     expect(done.confirmed).toBe(s.steps.length);
     expect(done.gcd).toBe(45);

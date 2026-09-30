@@ -28,8 +28,6 @@ import { MANIPULATION_LEVEL_IDS, resolveLevelId } from '@smarter-academy/core';
 const T = (ref) => ({ source: 'textbook', ref });
 const P = { source: 'platform' };
 
-const BOOKS_420_CANDIDATES = [10, 12, 14, 15, 16, 18, 20, 21, 25, 26, 28, 30, 32, 35, 40, 42, 60];
-
 export const LEVELS = Object.freeze({
   // 24 : six diviseurs visibles d'un coup ; 1512 : il faut les règles de
   // divisibilité (le calcul direct n'est plus praticable) — l'ex-« تحدّ ».
@@ -37,12 +35,15 @@ export const LEVELS = Object.freeze({
     beginner: { numbers: { a: 24, b: 0 }, candidates: [3, 4, 5, 6, 8, 12], ...P },
     advanced: { numbers: { a: 1512, b: 0 }, candidates: [21, 72, 25, 9], ...T('ex-1') },
   },
-  // Les livres se DESSINENT : 1512 livres ne se lisent plus en rayons. Le
-  // niveau avancé est donc l'activité du manuel (420, dix-sept tailles, la
-  // paire 26/28 à comparer) — celui que la leçon pose déjà en متقدم.
+  // Le RAYON QU'ON ÉTIRE (quotition). 24 livres, rayons de 2 à 12 : six
+  // longueurs qui vident le sol sur onze, des rayons qu'on compte d'un
+  // regard. 420 : l'activité du manuel — le serre-livres de 10 à 60, sans
+  // longueur proposée, les deux propositions du libraire (26, 28) marquées
+  // sur la réglette comme dans l'énoncé, et 11 longueurs sur 51 qui vident
+  // le sol : il faut chercher.
   'divisor-explorer-books': {
-    beginner: { numbers: { total: 24 }, candidates: [3, 4, 5, 6, 8, 12], initialCapacity: 5, ...P },
-    advanced: { numbers: { total: 420 }, candidates: BOOKS_420_CANDIDATES, initialCapacity: 28, pair: [26, 28], ...T('act-1') },
+    beginner: { numbers: { total: 24 }, range: { min: 2, max: 12 }, marks: [], ...P },
+    advanced: { numbers: { total: 420 }, range: { min: 10, max: 60 }, marks: [26, 28], ...T('act-1') },
   },
   // 15 en 3 : le partage tombe juste ; 42 en 5 : plus grand, et il reste
   // deux joueurs — le contraste se construit seul, sans choix proposés.

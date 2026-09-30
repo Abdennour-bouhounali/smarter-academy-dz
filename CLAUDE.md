@@ -18,6 +18,9 @@ code that no longer exists.
   Its §14 is the lesson reference architecture, **frozen for generation on
   2026-09-29**: a generated lesson implements that contract and reuses that
   architecture — never a parallel one.
+- `docs/architecture/MANIPULATION_DNA.md` before designing or redesigning a
+  manipulation: the student's hand must control a mathematical variable, and
+  the platform must not converge toward one manipulation style.
 - The contract that governs the area you touch (`docs/architecture/*.md`).
 - `docs/architecture/BUNDLE_BOUNDARIES.md` before adding a provider, a route,
   a heavy dependency, an `import.meta.glob` or an i18n namespace — it says
@@ -101,12 +104,13 @@ that is deliberate.
 **Never generate a raster image (`cf-image`, or any diffusion model) for lesson
 content.** If a manipulation needs a new visual, extend its SVG. Four reasons:
 
-1. **It must react.** A book highlights on drag, snaps to a shelf, recolours on
-   `selected`/`placed`. A flat JPG takes no props. See the hand-drawn book at
-   `manipulations/divisibility/DivisorExplorerBooks.jsx`.
+1. **It must react.** A shelf re-shelves 420 books while the student drags its
+   bookend; a player shakes when a full team refuses it. A flat JPG takes no
+   props. See the hand-drawn book at `manipulations/primitives/BookFigure.jsx`
+   and the shelf in `manipulations/divisibility/DivisorExplorerBooks.jsx`.
 2. **Arabic.** Diffusion models mangle Latin text and cannot render RTL Arabic
-   at all. Labels like `رف 1` are DOM text so they stay correct and selectable.
-3. **Determinism.** `booksClassroomLayout.test.js` asserts on computed geometry.
+   at all. Labels like `رفّ ناقص` are DOM text so they stay correct and selectable.
+3. **Determinism.** `logic/bookshelf.test.js` asserts on computed geometry.
    Generated output differs every run.
 4. **Mathematical truth.** A generated "10 books on a shelf" may show 9 or 11.
    When the drawing *is* the divisibility argument, that is a wrong lesson.

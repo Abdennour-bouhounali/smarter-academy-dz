@@ -13,7 +13,7 @@
       "module": 1,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module01AlMaktaba.jsx",
-        "line": 132,
+        "line": 154,
         "step": 2,
         "variant": "new"
       }
@@ -24,7 +24,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module02Maarif.jsx",
-        "line": 73,
+        "line": 79,
         "step": 2,
         "variant": "new"
       }
@@ -37,7 +37,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module02Maarif.jsx",
-        "line": 89,
+        "line": 95,
         "step": 3,
         "variant": "new"
       }
@@ -51,7 +51,7 @@
       "module": 2,
       "brick": {
         "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module02Maarif.jsx",
-        "line": 90,
+        "line": 96,
         "step": 3,
         "variant": "new"
       }
@@ -59,12 +59,108 @@
   ],
   "questions": [
     {
+      "questionId": "prep-1",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module00Astaidd.jsx",
+      "line": 35,
+      "requires": [
+        "qisma-iqlidiya"
+      ],
+      "prerequisiteStatus": {
+        "qisma-iqlidiya": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-2",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module00Astaidd.jsx",
+      "line": 36,
+      "requires": [
+        "qisma-iqlidiya"
+      ],
+      "prerequisiteStatus": {
+        "qisma-iqlidiya": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-3",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module00Astaidd.jsx",
+      "line": 37,
+      "requires": [
+        "qisma-iqlidiya"
+      ],
+      "prerequisiteStatus": {
+        "qisma-iqlidiya": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-4",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module00Astaidd.jsx",
+      "line": 38,
+      "requires": [
+        "qawaid-qabiliyat-al-qisma"
+      ],
+      "prerequisiteStatus": {
+        "qawaid-qabiliyat-al-qisma": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-5",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module00Astaidd.jsx",
+      "line": 39,
+      "requires": [
+        "qawaid-qabiliyat-al-qisma"
+      ],
+      "prerequisiteStatus": {
+        "qawaid-qabiliyat-al-qisma": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-6",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module00Astaidd.jsx",
+      "line": 40,
+      "requires": [
+        "qawaid-qabiliyat-al-qisma"
+      ],
+      "prerequisiteStatus": {
+        "qawaid-qabiliyat-al-qisma": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
       "questionId": "M01-S1-Q1",
       "module": 1,
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module01AlMaktaba.jsx",
-      "line": 116,
+      "line": 138,
       "requires": [
         "qisma-iqlidiya"
       ],
@@ -80,7 +176,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module01AlMaktaba.jsx",
-      "line": 138,
+      "line": 171,
       "requires": [
         "qasim-baqi"
       ],
@@ -96,7 +192,7 @@
       "step": 1,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module02Maarif.jsx",
-      "line": 59,
+      "line": 65,
       "requires": [
         "qasim-baqi"
       ],
@@ -112,7 +208,7 @@
       "step": 2,
       "component": "TapQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module02Maarif.jsx",
-      "line": 75,
+      "line": 81,
       "requires": [
         "qasim-jidaa"
       ],
@@ -128,7 +224,7 @@
       "step": 3,
       "component": "BatchChoiceQuestion",
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module02Maarif.jsx",
-      "line": 92,
+      "line": 98,
       "requires": [
         "siyagh-mutakafia"
       ],
@@ -219,42 +315,5 @@
       "pedagogicallyValid": true
     }
   ],
-  "findings": [
-    {
-      "code": "W_UNPARSEABLE_STEPS",
-      "severity": "medium",
-      "message": "module 0: could not resolve 'questions' to a literal array — its content is invisible to the audit",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module00Astaidd.jsx",
-      "line": 0,
-      "module": 0,
-      "step": null,
-      "term": null,
-      "questionId": null,
-      "position": -1
-    },
-    {
-      "code": "W_PRIOR_NOT_DIAGNOSED",
-      "severity": "medium",
-      "message": "priorKnowledge declares 'qisma-iqlidiya' but no Module 0 question diagnoses it",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/lesson.config.js",
-      "line": 0,
-      "module": null,
-      "step": null,
-      "term": null,
-      "questionId": null,
-      "position": -1
-    },
-    {
-      "code": "W_PRIOR_NOT_DIAGNOSED",
-      "severity": "medium",
-      "message": "priorKnowledge declares 'qawaid-qabiliyat-al-qisma' but no Module 0 question diagnoses it",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/lesson.config.js",
-      "line": 0,
-      "module": null,
-      "step": null,
-      "term": null,
-      "questionId": null,
-      "position": -1
-    }
-  ]
+  "findings": []
 }

@@ -7,7 +7,9 @@ import ManipulationAutoComplete from './ManipulationAutoComplete';
 /**
  * Les contrôles de l'ÉLÈVE : « إعادة », « تلميح » (progressif, compte
  * affiché), « تحقّق » quand le type propose une vérification explicite, et
- * « الشرح ». L'élève AVANCE en manipulant, jamais avec un bouton « suivant » :
+ * « الشرح » — qui n'apparaît qu'APRÈS la découverte (ou en mode classe) :
+ * il redit la règle, il ne doit jamais la donner avant le geste (audit du
+ * 2026-09-29 : il l'imprimait dès l'ouverture). L'élève AVANCE en manipulant, jamais avec un bouton « suivant » :
  * celui-là n'existe qu'en mode classe (ManipulationTeacherMode).
  *
  * « Compléter automatiquement » (`ManipulationAutoComplete`) s'ajoute à la
@@ -31,7 +33,7 @@ export default function ManipulationControls({ state, controls = {}, hints = [],
       {onCheck && (
         <Btn tone="blue" onClick={onCheck} disabled={checkDisabled}><CheckCircle2 className="h-4 w-4" aria-hidden="true" /> {t('manipulation.check')}</Btn>
       )}
-      {controls.toggleExplanation !== false && (
+      {controls.toggleExplanation !== false && (state.isDiscovered || state.isClass) && (
         <Btn onClick={state.toggleExplanation} pressed={state.showExplanation}>
           <BookOpen className="h-4 w-4" aria-hidden="true" /> {state.showExplanation ? t('manipulation.hideExplanation') : t('manipulation.showExplanation')}
         </Btn>

@@ -13,7 +13,7 @@ export default function Module02Maarif() {
   return (
     <ContentModule ctx={MODULE_CTX} navLinks={getNavLinks(2)} moduleNumber={2} moduleTitle="معارف — العددان الأوّليّان فيما بينهما" moduleSubtitle="التعريف ومثال الكتاب" estimatedTime="8 دقائق"
       brief={{ tag: 'معارف — الكتاب ص 12', title: 'التعريف', tone: 'violet', body: <p>ما لاحظته مع 17 و 18 يصير تعريفًا.</p> }}
-      intro={<Manipulation type="coprime-explorer" a={22} b={15} title="مثال الكتاب: 22 و 15" lead="اكشف القائمتين ثم القواسم المشتركة." />}
+      intro={<Manipulation type="coprime-explorer" a={22} b={15} title="مثال الكتاب: 22 و 15" lead="جرّب في الوسط قواسم 15 واحدًا واحدًا: أيّها يقسم 22 أيضًا؟ ثم تحقّق." />}
       steps={[
         { num: 1, title: 'التعريف', done: q1,
           content: (

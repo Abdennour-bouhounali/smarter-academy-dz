@@ -10,6 +10,8 @@ import NumberTile from '../primitives/NumberTile';
 import DivisorChip from '../primitives/DivisorChip';
 import DragGhost from '../primitives/DragGhost';
 import GroupingScene from '../primitives/GroupingScene';
+import DraggableObject from '../primitives/DraggableObject';
+import GroupStock, { GroupWrapper } from '../primitives/GroupStock';
 import { themeWords } from '../themeWords';
 import EquationDisplay from '../primitives/EquationDisplay';
 import * as L from '../logic/commonDivisors';
@@ -29,9 +31,19 @@ import * as L from '../logic/commonDivisors';
  *   startWith="lists"  les listes seulement (un exemple du manuel sur les
  *           listes, ex. 28 et 42 dans معارف).
  *
- * 1) LES BOUQUETS (activité 4). L'élève porte un NOMBRE DE BOUQUETS sur la
- *    table ; les fleurs se répartissent réellement, les restes se voient. Le
- *    rail garde la trace : vert = tombe juste des deux côtés.
+ * 1) LES BOUQUETS (activité 4). L'élève AJOUTE UN GROUPE à la fois : il tire
+ *    un emballage vide de la réserve (« أغلفة الباقات ») jusqu'à la table, et
+ *    toutes les fleurs se redistribuent dans les k groupes ; il en rend un à
+ *    la réserve pour revenir en arrière. Les restes se voient, dans leurs
+ *    couleurs. (Depuis le 2026-09-30 — avant, il portait un NOMBRE d'un rail
+ *    1…24 : une calculatrice déguisée, où l'on sautait sur 18 d'un coup.)
+ *
+ *    FICHE (MANIPULATION_DNA §7) — variable : k, le nombre de groupes, tenu
+ *    comme des emballages posés ; invariant : a et b objets, tous les
+ *    groupes identiques ; résistance : ce qui ne rentre pas reste dehors, en
+ *    couleur ; contraste : en montant de 1 en 1, ✓ et ✗ alternent ; la
+ *    découverte « le plus grand » exige d'avoir vu le suivant échouer
+ *    (`greatestGroupFound`), jamais un saut chanceux.
  * 2) LES LISTES (activité 5, معارف 3–4). Les diviseurs de a et de b sont des
  *    jetons ; l'élève porte les COMMUNS au milieu — un jeton qui ne divise
  *    qu'un seul côté est refusé AVEC LA RAISON. Puis il porte le plus grand
@@ -78,43 +90,51 @@ export default function CommonDivisors({
   const drag = useDragInteraction({
     onDrop: (sourceId, zoneId) => {
       setReject(null);
-      if (sourceId.startsWith('k:')) {
-        const k = Number(sourceId.replace('k:', ''));
-        setBouquets((s) => L.choose(s, k));
-        return;
-      }
+      if (sourceId === 'group:add') { setBouquets((s) => L.addGroup(s)); return; }
+      if (sourceId === 'group:remove') { setBouquets((s) => L.removeGroup(s)); return; }
       const d = Number(sourceId.split(':')[1]);
       if (zoneId === 'middle') {
         setLists((s) => L.placeCommon(s, d));
       } else if (zoneId === 'pgcd') {
-        setLists((s) => { const next = L.placePgcd(s, d); if (L.listsDiscoveryReady(next)) state.discover(); return next; });
+        setLists((s) => L.placePgcd(s, d));
       }
     },
     accepts: (sourceId, zoneId) => {
-      if (sourceId.startsWith('k:')) return zoneId === 'table' ? L.canChoose(bouquets, Number(sourceId.replace('k:', ''))) : 'invalid';
+      if (sourceId === 'group:add') return zoneId === 'table' ? L.canChoose(bouquets, (bouquets.k ?? 0) + 1) : '';
+      if (sourceId === 'group:remove') return zoneId === 'stock' ? (bouquets.k === null ? 'empty' : true) : '';
       const d = Number(sourceId.split(':')[1]);
       if (zoneId === 'middle') return L.canPlaceCommon(lists, d);
       if (zoneId === 'pgcd') return L.canPlacePgcd(lists, d);
       return 'invalid';
     },
-    onReject: (sourceId, _z, reason) => setReject({ reason, d: Number(sourceId.split(':')[1]) }),
+    onReject: (sourceId, _z, reason) => setReject(sourceId.startsWith('group:') ? { reason, groups: true } : { reason, d: Number(sourceId.split(':')[1]) }),
   });
 
+  // Les listes : la découverte suit la case PGCD remplie — dans un effet,
+  // jamais dans un updater d'état (playbook §10.10).
+  const listsReady = stage === 'lists' && L.listsDiscoveryReady(lists);
+  useEffect(() => { if (listsReady) state.discover(); }, [listsReady, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished, lists.g); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const heldValue = drag.held ? Number(drag.held.split(':')[1]) : null;
-  const rail = L.groupRail({ a, b });
   // Les mots de la scène : ceux du thème (lesson.json), remplacés par ceux
   // de la situation du manuel quand la leçon les fournit (`context`).
   const words = themeWords(t, theme, context);
   const gLabel = t('manipulation.common.perGroup', { group: words.group, qa: bouquets.qa, qb: bouquets.qb, itemA: words.itemA, itemB: words.itemB });
+  const g = lists.g;
+  // Le plus grand qui marche a été posé, mais rien au-delà n'a été vu :
+  // l'élève est invité à ajouter un groupe de plus (pas de saut chanceux).
+  const needBeyond = bouquets.tried[g] === 'common' && !groupsDone;
+  const addGroup = () => { setReject(null); setBouquets((s) => L.addGroup(s)); };
+  const removeGroup = () => { setReject(null); setBouquets((s) => L.removeGroup(s)); };
+  const wrapper = <GroupWrapper theme={theme} />;
 
   return (
     <ManipulationShell
       type="common-divisors"
       title={title ?? t('manipulation.common.title', { a, b })}
       mission={mission ?? (stage === 'bouquets'
-        ? t('manipulation.common.missionGreatestGroups', { a, b, itemA: words.itemsA, itemB: words.itemsB })
+        ? t('manipulation.common.missionGreatestGroups', { groups: words.groups })
         : t('manipulation.common.listsMission', { a, b }))}
       lead={lead}
       state={state}
@@ -131,8 +151,7 @@ export default function CommonDivisors({
               setStage('lists');
               return true;
             }
-            const next = rail.find((k) => bouquets.tried[k] === undefined) ?? lists.g;
-            setBouquets((s) => L.choose(s, next));
+            setBouquets((s) => L.addGroup(s));
             return true;
           }
           if (!L.allCommonPlaced(lists)) {
@@ -140,13 +159,13 @@ export default function CommonDivisors({
             setLists((s) => L.placeCommon(s, d));
             return true;
           }
-          if (lists.pgcd === null) { setLists((s) => { const x = L.placePgcd(s, s.g); state.discover(); return x; }); return true; }
+          if (lists.pgcd === null) { setLists((s) => L.placePgcd(s, s.g)); return true; }
           return false;
         },
         canAutoStep: () => (stage === 'bouquets' ? !(groupsOnly && groupsDone) : lists.pgcd === null),
         showSolution: () => {
           if (groupsOnly) {
-            setBouquets((s) => L.choose(s, lists.g));
+            setBouquets((s) => L.choose(L.choose(s, lists.g + 1 <= Math.min(a, b) ? lists.g + 1 : lists.g), lists.g));
             state.discover(); state.formalize();
             return;
           }
@@ -191,19 +210,10 @@ export default function CommonDivisors({
       <ManipulationStage dragging={drag.dragging}>
         {stage === 'bouquets' ? (
           <div className="space-y-3">
-            <div className="space-y-1.5">
-              <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <span className="text-sm font-bold text-slate-800">{t('manipulation.common.groupsZone', { group: words.group })}</span>
-                <span className="text-[11px] text-slate-500">{t('manipulation.dragHint')}</span>
-              </div>
-              <div dir="ltr" className="flex flex-wrap gap-1.5" role="group" aria-label={t('manipulation.common.groupsZone', { group: words.group })}>
-                {rail.map((k) => (
-                  <DivisorChip key={k} value={k} drag={drag} id={`k:${k}`} label={`${k}`}
-                    state={bouquets.tried[k] === 'common' ? 'common' : bouquets.tried[k] === 'single' ? 'single' : bouquets.tried[k] === 'no' ? 'no' : 'idle'}
-                    badge={bouquets.tried[k] === 'common' ? '✓' : undefined} />
-                ))}
-              </div>
-            </div>
+            {/* LA RÉSERVE : on TIRE un emballage vide vers la table (ou on en
+                rend un) ; − / + font le même geste sans glisser. */}
+            <GroupStock drag={drag} theme={theme} words={words} k={bouquets.k} tried={bouquets.tried}
+              canAdd={L.canChoose(bouquets, (bouquets.k ?? 0) + 1) === true} onAdd={addGroup} onRemove={removeGroup} />
             <DropZone drag={drag} id="table" label={t('manipulation.common.groupsZone', { group: words.group })} minHeight="min-h-[150px]" className="p-3" data-groups-table>
               {/* LA TABLE : avant tout choix, les deux piles entières ; après,
                   k cadres identiques et, à part, ce qui n'est entré nulle
@@ -211,14 +221,26 @@ export default function CommonDivisors({
               <div className="mb-2 flex flex-wrap items-center justify-between gap-2 text-xs font-bold">
                 <span className="text-slate-700">{words.scene}</span>
                 {bouquets.k === null
-                  ? <span className="text-slate-500">{t('manipulation.common.pileHint')}</span>
+                  ? <span className="text-slate-500">{t('manipulation.common.pileHint', { stock: words.stock })}</span>
                   : <span className={bouquets.works ? 'text-emerald-700' : 'text-amber-800'}>{gLabel}</span>}
               </div>
+              {bouquets.k !== null && (
+                <div className="mb-2 flex justify-end">
+                  <DraggableObject drag={drag} id="group:remove" label={words.remove} className="flex items-center gap-1 rounded-lg px-1 text-[11px] font-bold text-slate-500">
+                    {wrapper}<span>→ {words.stock}</span>
+                  </DraggableObject>
+                </div>
+              )}
               <GroupingScene
                 a={a} b={b} k={bouquets.k} theme={theme} words={words}
                 ariaLabel={bouquets.k === null ? `${a} ${words.itemsA} · ${b} ${words.itemsB}` : `${a} = ${bouquets.k} × ${bouquets.qa} + ${bouquets.ra} · ${b} = ${bouquets.k} × ${bouquets.qb} + ${bouquets.rb}`}
               />
             </DropZone>
+            {needBeyond && (
+              <p className="rounded-xl border-2 border-sky-200 bg-sky-50 px-3 py-2 text-sm font-bold text-sky-900" data-groups-beyond>
+                {t('manipulation.common.groupsNeedBeyond', { g })}
+              </p>
+            )}
             {!groupsOnly && groupsDone && (
               <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border-2 border-emerald-300 bg-emerald-50 p-3" data-common-next>
                 <p className="text-sm font-bold text-emerald-900">{t('manipulation.common.groupsDone', { g: lists.g, a, b })}</p>
@@ -270,11 +292,13 @@ export default function CommonDivisors({
 
         {reject && (
           <p role="status" className="mt-2 rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800">
-            {t(`manipulation.common.listReject.${reject.reason}`, { d: reject.d, a, b, defaultValue: t('manipulation.common.reject.tooMany') })}
+            {reject.groups
+              ? t(`manipulation.common.reject.${reject.reason}`)
+              : t(`manipulation.common.listReject.${reject.reason}`, { d: reject.d, a, b, defaultValue: t('manipulation.common.reject.tooMany') })}
           </p>
         )}
       </ManipulationStage>
-      <DragGhost ghost={drag.ghost}>{heldValue !== null && <NumberTile value={heldValue} tone="divisor" />}</DragGhost>
+      <DragGhost ghost={drag.ghost}>{drag.held?.startsWith('group:') ? wrapper : heldValue !== null && <NumberTile value={heldValue} tone="divisor" />}</DragGhost>
     </ManipulationShell>
   );
 }

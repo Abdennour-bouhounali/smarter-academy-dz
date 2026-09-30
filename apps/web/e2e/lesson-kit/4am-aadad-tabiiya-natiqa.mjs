@@ -81,14 +81,20 @@ async function pickLevel(page, level = 'advanced') {
   await page.waitForTimeout(350);
   await page.waitForSelector('[data-manipulation="divisor-explorer-books"]');
   const manip = page.locator('[data-manipulation="divisor-explorer-books"]').first();
-  check('L1 M1 : le niveau متقدم donne la bibliothèque du manuel', await manip.locator('.be-choices').isVisible());
-  // Choisir une taille EST l'expérience (le clavier est couvert par manipulations.mjs).
-  await manip.locator('.be-choice', { hasText: /^28$/ }).click();
-  await page.waitForTimeout(300);
-  check('L1 M1 : choisir 28 range les 420 livres sans reste (15 rayons)', (await manip.locator('.be-equation').textContent()).includes('15') && (await manip.locator('.be-shelf').count()) === 15);
-  await manip.locator('.be-choice', { hasText: /^26$/ }).click();
-  await page.waitForTimeout(300);
-  check('L1 M1 : choisir 26 laisse 4 livres, dessinés au sol', (await manip.locator('.be-floor .be-book').count()) === 4);
+  check('L1 M1 : le niveau متقدم donne la bibliothèque du manuel — un rayon à étirer', await manip.locator('[data-stretch-handle][role="slider"]').isVisible());
+  // Étirer le rayon EST l'expérience (glisser, toucher et −/+ : manipulations.mjs).
+  const handle = manip.locator('[data-stretch-handle]');
+  await handle.focus();
+  await page.keyboard.press('Home');
+  for (let i = 10; i < 28; i += 1) await page.keyboard.press('ArrowLeft');
+  await page.waitForTimeout(900);
+  check('L1 M1 : un rayon de 28 range les 420 livres sans reste (15 rayons)', ((await manip.locator('[data-manipulation-representation]').textContent()) ?? '').replace(/\s/g, '').includes('420=28×15+0') && (await manip.locator('[data-shelf]').count()) === 15);
+  await page.keyboard.press('ArrowRight');
+  await page.keyboard.press('ArrowRight');
+  await page.waitForTimeout(900);
+  check('L1 M1 : un rayon de 26 laisse 4 livres, dessinés au sol', (await manip.locator('[data-floor-book]').count()) === 4);
+  // Les PREUVES de l'élève remontent dans l'étape 1 — rien de ce qu'il n'a pas essayé.
+  check('L1 M1 : l’étape 1 relit les essais de l’élève (26 et 28 essayés)', (await page.locator('[data-activity-evidence] [data-tried="true"]').count()) === 2);
   check('L1 M1 : pas de débordement', await noHorizontalScroll(page));
   await ctx.close();
 }
@@ -151,8 +157,12 @@ async function pickLevel(page, level = 'advanced') {
   await manip.locator('[data-drag-source="k:3"]').first().click();
   await fraction.click();
   await page.waitForTimeout(250);
+  // C'est l'ÉLÈVE qui déclare le kasr irréductible (2026-09-30) ; la scène ne l'annonce plus.
+  check('L8 M1 : à 7/4, rien n’est annoncé d’office', !(await manip.textContent()).includes('كسر غير قابل للاختزال'));
+  await manip.locator('[data-claim-irreducible]').click();
+  await page.waitForTimeout(250);
   const text = await manip.textContent();
-  check('L8 M1 : ÷4 puis ÷3 aboutit à un kasr irréductible (7/4)', text.includes('كسر غير قابل للاختزال'));
+  check('L8 M1 : ÷4 puis ÷3, puis « لا يمكن الاختزال أكثر » → kasr irréductible (7/4)', text.includes('كسر غير قابل للاختزال'));
   check('L8 M1 (mobile) : aucun débordement horizontal', await noHorizontalScroll(page));
   await ctx.close();
 }

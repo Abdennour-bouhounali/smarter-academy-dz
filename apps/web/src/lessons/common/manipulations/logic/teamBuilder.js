@@ -1,6 +1,6 @@
 import { equalGrouping } from '@smarter-academy/core';
 
-const { groupInto, exactGroupings, fixLeftOver } = equalGrouping;
+const { groupInto, fixLeftOver } = equalGrouping;
 
 /**
  * team-builder — l'état du PARTAGE ÉQUITABLE par le geste.
@@ -34,8 +34,6 @@ export function init({ total, groups }) {
     // c'est lui qu'on voit rester dehors.
     bench: Array.from({ length: total }, (_, i) => i),
     teams: Array.from({ length: g }, () => []),
-    tried: {},
-    attempts: 0,
   };
 }
 
@@ -61,18 +59,29 @@ export function canPlace(state, playerId, t) {
   // d'avis, et l'interface ne doit pas se battre avec lui. On raisonne donc
   // sur les tailles APRÈS le départ du joueur de son équipe actuelle.
   if (from === t) return 'sameTeam';
-  const sizes = state.teams.map((team, i) => team.length - (i === from ? 1 : 0));
-  const size = sizes[t];
-  const smallest = Math.min(...sizes);
+  const { here, min } = rejectDetails(state, playerId, t);
   // Les équipes restent égales : on ne remplit pas une équipe avant les autres.
-  if (size > smallest) return 'teamsMustStayEqual';
+  if (here > min) return 'teamsMustStayEqual';
   // Une équipe ne dépasse jamais la taille que le partage permet.
-  if (size >= targetPerTeam(state)) return 'teamIsFull';
+  if (here >= targetPerTeam(state)) return 'teamIsFull';
   return true;
 }
 
+/**
+ * Les NOMBRES du refus, calculés comme `canPlace` les voit — APRÈS le départ
+ * du joueur de son équipe actuelle. Le message de refus les lit ici et nulle
+ * part ailleurs : recalculés à part dans la vue (avant le départ), ils
+ * donnaient « فيه 5… وأقلّ فريق فيه 5 » — une raison qui se contredisait
+ * (audit du 2026-09-29, M1-F1).
+ */
+export function rejectDetails(state, playerId, t) {
+  const from = teamOf(state, playerId);
+  const sizes = state.teams.map((team, i) => team.length - (i === from ? 1 : 0));
+  return { here: sizes[t] ?? 0, min: Math.min(...sizes), perGroup: targetPerTeam(state) };
+}
+
 export function place(state, playerId, t) {
-  if (canPlace(state, playerId, t) !== true) return { ...state, attempts: state.attempts + 1 };
+  if (canPlace(state, playerId, t) !== true) return state;
   const teams = state.teams.map((team, i) => {
     const without = team.filter((p) => p !== playerId);
     return i === t ? [...without, playerId] : without;
@@ -89,17 +98,6 @@ export function unplace(state, playerId) {
     teams: state.teams.map((team, i) => (i === t ? team.filter((p) => p !== playerId) : team)),
     bench: [...state.bench, playerId].sort((x, y) => x - y),
   };
-}
-
-/** Changer le nombre d'équipes remet la scène : c'est une NOUVELLE question. */
-export function setGroups(state, groups) {
-  return { ...init({ total: state.total, groups }), tried: { ...state.tried } };
-}
-
-/** Changer l'effectif — le geste « et si on était 16 ? » (§8 du brief). */
-export function setTotal(state, total) {
-  if (!Number.isInteger(total) || total < 1) return state;
-  return { ...init({ total, groups: state.groups }), tried: { ...state.tried } };
 }
 
 /** Le placement est-il terminé — c'est-à-dire plus aucun placement permis ? */
@@ -130,21 +128,14 @@ export function verdict(state) {
  * La découverte est prête quand l'élève a VU les deux cas : un partage qui
  * tombe juste et un partage qui laisse quelqu'un dehors. Un seul des deux ne
  * fait pas apparaître la règle — c'est le contraste qui l'enseigne.
+ *
+ * `memory` est la mémoire des configurations STABILISÉES que tient la vue
+ * (`{ "15:3": true, "16:3": false }`) : elle vit hors de l'état de la scène,
+ * qui repart à zéro à chaque changement de nombres.
  */
-export function discoveryReady(state) {
-  const seen = Object.values(state.tried);
+export function discoveryReady(memory) {
+  const seen = Object.values(memory);
   return seen.includes(true) && seen.includes(false);
-}
-
-/** Mémoriser le verdict d'une configuration essayée : clé « total:groups ». */
-export function remember(state) {
-  const v = groupInto(state.total, state.groups);
-  return { ...state, tried: { ...state.tried, [`${state.total}:${state.groups}`]: v.exact } };
-}
-
-/** Les nombres d'équipes qui tombent juste — proposés au niveau débutant seulement. */
-export function exactChoices(total, max) {
-  return exactGroupings(total, { min: 2, max });
 }
 
 /** Le prochain geste canonique (mode classe : « الخطوة التالية »). */

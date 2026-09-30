@@ -55,6 +55,7 @@ import { MANIPULATION_LEVEL_IDS } from './levels';
 export default function ManipulationShell({
   type, title, mission, lead, state, controller, hints = [], numberFields = [], validate, controlsOverride,
   onCheck, checkDisabled, allowModeSwitch = false, representation, explanation, discovery, children, footer, allowFreeLab = true,
+  headerAction,
 }) {
   const { t } = useTranslation('lesson');
   const spec = MANIPULATION_TYPES[type];
@@ -69,13 +70,16 @@ export default function ManipulationShell({
       data-manipulation-mode={state.mode}
       data-phase={state.phase}
       data-level={state.level}
-      className="space-y-3 rounded-3xl border-2 border-indigo-200 bg-indigo-50/40 p-3 sm:p-5"
+      className="space-y-3 rounded-3xl border-2 border-indigo-200 bg-indigo-50/40 p-2 sm:p-5"
       aria-label={shownTitle}
     >
       <header className="space-y-2">
         <div className="flex flex-wrap items-start justify-between gap-2">
           <h3 className="text-base font-bold text-slate-900 sm:text-lg">{shownTitle}</h3>
-          <span className="rounded-full bg-white px-2 py-0.5 text-[11px] font-mono uppercase tracking-wider text-indigo-500">{t('manipulation.badge')}</span>
+          <div className="flex items-center gap-2">
+            {headerAction}
+            <span className="rounded-full bg-white px-2 py-0.5 text-[11px] font-mono uppercase tracking-wider text-indigo-500">{t('manipulation.badge')}</span>
+          </div>
         </div>
         {state.levels && (
           <ManipulationLevelSelector levels={MANIPULATION_LEVEL_IDS} value={state.level} onChange={state.setLevel} />

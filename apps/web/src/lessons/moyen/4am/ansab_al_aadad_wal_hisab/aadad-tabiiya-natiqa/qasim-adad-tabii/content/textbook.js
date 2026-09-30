@@ -54,5 +54,10 @@ export const TEAM_EXPERIENCE = {
   numbers: { beginner: { total: 15, groups: 3 }, contrast: { total: 16, groups: 3 } },
 };
 
-/** Un ajout de la plateforme pour la manipulation : d'autres candidats que 26 et 28, déclaré comme tel. */
-export const EXTRA_CANDIDATES = { source: addition('interaction_generation'), values: [10, 12, 14, 15, 16, 18, 20, 21, 25, 26, 28, 30, 32, 35, 40, 42, 60] };
+/**
+ * Un ajout de la plateforme pour la manipulation, déclaré comme tel : le
+ * serre-livres va de 10 à 60 livres par rayon, et pas seulement aux deux
+ * propositions du manuel (26, 28), qui restent marquées sur la réglette.
+ * En dessous de 10, 420 livres feraient plus de 42 rayons à dessiner.
+ */
+export const SHELF_RANGE = { source: addition('interaction_generation'), min: 10, max: 60 };

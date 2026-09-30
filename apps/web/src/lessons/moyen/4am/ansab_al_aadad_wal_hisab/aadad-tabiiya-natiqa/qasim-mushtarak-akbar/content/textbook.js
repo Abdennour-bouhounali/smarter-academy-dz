@@ -1,5 +1,19 @@
 import { src, addition } from '../../_unit/unitMeta.js';
 
+/**
+ * « أستعدّ » (module 0) — le manuel n'a qu'un seul « أستعدّ » pour toute
+ * l'unité (p. 7, items 1–10 : leçons 1 et 8). Ces affirmations sont donc des
+ * AJOUTS DE LA PLATEFORME, déclarés comme tels (SourceTag « عبارة إضافية من المنصّة ») : même
+ * forme que le manuel (« أصحيح أم خاطئ؟ برّر إجابتك »), une ou plusieurs par
+ * acquis de `priorKnowledge`, jamais les nombres de l'activité qui suit.
+ */
+export const PREP_ITEMS = [
+  { n: 1, skill: 'qawasim', text: 'قواسم العدد 18 هي: 1 ، 2 ، 3 ، 6 ، 9 ، 18.', answer: true, why: '$18 = 1 \\times 18 = 2 \\times 9 = 3 \\times 6$.' },
+  { n: 2, skill: 'qawasim', text: 'قواسم العدد 36 هي: 1 ، 2 ، 3 ، 4 ، 6 ، 9 ، 12 ، 36.', answer: false, why: 'ينقص 18: $36 = 2 \\times 18$. كل باقٍ معدوم يعطي قاسمين.' },
+  { n: 3, skill: 'qawasim', text: 'للبحث عن قواسم العدد 80 يكفي أن نختبر الأعداد من 1 إلى 8.', answer: true, why: '$8 \\times 8 = 64$ أصغر من 80 و $9 \\times 9 = 81$ أكبر منه: كل قاسم أكبر من 8 يأتي مع قاسم أصغر منه.' },
+  { n: 4, skill: 'qawasim', text: 'للعدد 49 قاسمان فقط: 1 و 49.', answer: false, why: '$49 = 7 \\times 7$: 7 قاسم له أيضًا، فقواسمه 1 ، 7 ، 49.' },
+].map((it) => ({ ...it, source: addition('prerequisite_diagnostic') }));
+
 export const ACTIVITY = {
   source: src('act-4', 8, 'أنشطة', 4),
   title: 'القاسم المشترك الأكبر لعددين طبيعيين',

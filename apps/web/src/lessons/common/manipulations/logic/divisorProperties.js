@@ -15,12 +15,31 @@ export const TARGETS = Object.freeze(['sum', 'diff', 'rem']);
  */
 export function init({ n, a, b }) {
   const { q: k, r } = divmod(a, b);
-  return { n, a, b, q: a / n, qp: b / n, k, r, built: [], valid: a % n === 0 && b % n === 0 && a >= b };
+  return { n, a, b, q: a / n, qp: b / n, k, r, built: [], predictions: {}, valid: a % n === 0 && b % n === 0 && a >= b };
 }
 
-export function canBuild(state, target) {
+/**
+ * LA PRÉDICTION (niveau متقدم, 2026-09-30). Avec 900 et 90 en briques de 9,
+ * les briques ne se comptent plus : l'élève doit PRÉDIRE avec la propriété —
+ * « طوب كامل » (whole) ou « يبقى جزء من طوبة » (partial) — avant de bâtir.
+ * Le mur bâti confirme ou réfute. Jusque-là le niveau promettait cette
+ * prédiction (en-tête, `autonomy`, lead) sans l'implémenter.
+ */
+export const PREDICTIONS = Object.freeze(['whole', 'partial']);
+export function predict(state, target, guess) {
+  if (!TARGETS.includes(target) || !PREDICTIONS.includes(guess) || state.built.includes(target)) return state;
+  return { ...state, predictions: { ...state.predictions, [target]: guess } };
+}
+
+/** Ce que le mur MONTRE : toujours des briques entières quand n | a et n | b. */
+export function outcome(state, target) {
+  return blocks(state, target).value % state.n === 0 ? 'whole' : 'partial';
+}
+
+export function canBuild(state, target, { requirePrediction = false } = {}) {
   if (!TARGETS.includes(target)) return 'unknownTarget';
   if (state.built.includes(target)) return 'alreadyBuilt';
+  if (requirePrediction && !state.predictions[target]) return 'predictFirst';
   return true;
 }
 
@@ -41,41 +60,3 @@ export function discoveryReady(state) {
   return TARGETS.every((t) => state.built.includes(t));
 }
 
-/* ── Le constructeur de preuve (أتعلّم البرهنة, p. 11) ───────────────────── */
-
-/** Les lignes de la preuve « n | a et n | b ⇒ n | a + b », dans l'ordre du manuel. */
-export const PROOF_LINES = Object.freeze([
-  { id: 'hyp-a', tex: 'a = n \\times q' },
-  { id: 'hyp-b', tex: "b = n \\times q'" },
-  { id: 'sum', tex: "a + b = n \\times q + n \\times q'" },
-  { id: 'factor', tex: "a + b = n \\times (q + q')" },
-  { id: 'concl', tex: "a + b = n \\times k,\\ k = q + q'" },
-]);
-
-export function proofInit(lines = PROOF_LINES) {
-  // Mélange DÉTERMINISTE (l'ordre dépend des ids) : deux élèves voient la même réserve.
-  const pool = [...lines].sort((x, y) => (hash(x.id) % 97) - (hash(y.id) % 97));
-  return { lines, pool: pool.map((l) => l.id), placed: [], wrong: null };
-}
-
-/** Une ligne se pose dans l'emplacement suivant si c'est bien elle qui vient. */
-export function proofCanPlace(state, lineId, slot) {
-  if (slot !== state.placed.length) return 'notNextSlot';
-  if (state.lines[slot]?.id !== lineId) return 'wrongLine';
-  return true;
-}
-
-export function proofPlace(state, lineId, slot) {
-  if (proofCanPlace(state, lineId, slot) !== true) return { ...state, wrong: lineId };
-  return { ...state, placed: [...state.placed, lineId], pool: state.pool.filter((id) => id !== lineId), wrong: null };
-}
-
-export function proofDone(state) {
-  return state.placed.length === state.lines.length;
-}
-
-function hash(s) {
-  let h = 7;
-  for (const ch of s) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
-  return h;
-}

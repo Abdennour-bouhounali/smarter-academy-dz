@@ -196,11 +196,14 @@ async function settled(page) {
   if (await advTab.count()) { await advTab.click(); await page.waitForTimeout(350); }
   const m = active(page).locator('[data-manipulation="divisor-explorer-books"]').first();
   check('L : unité 2 = la manipulation, passe-plat (coquille imbriquée, AUCUN second plein écran, aucun bouton d’entrée)', f.current === '1'
-    && (await m.getAttribute('data-presentation')) === 'true' && f.nested >= 1 && f.enters === 0 && f.fullscreenEl === 'lesson', JSON.stringify(f));
-  await m.locator('.be-choice', { hasText: /^26$/ }).click();
+    && (await m.locator('[data-bookshelf]').getAttribute('data-presentation')) === 'true' && f.nested >= 1 && f.enters === 0 && f.fullscreenEl === 'lesson', JSON.stringify(f));
+  await m.locator('[data-stretch-handle]').focus();
+  await page.keyboard.press('Home');
+  for (let i = 10; i < 26; i += 1) await page.keyboard.press('ArrowLeft');
+  await page.waitForTimeout(900);
   f = await settled(page);
-  check('L : la bibliothèque JOUE dans la leçon présentée — 26 → 16 rayons + 4 au sol, 420 = 26 × 16 + 4', (await m.locator('.be-shelf').count()) === 16
-    && (await m.locator('.be-floor .be-book').count()) === 4 && (await m.locator('.be-equation').textContent()).replace(/\s/g, '').includes('26×16+4'));
+  check('L : la bibliothèque JOUE dans la leçon présentée — 26 → 16 rayons + 4 au sol, 420 = 26 × 16 + 4', (await m.locator('[data-shelf]').count()) === 16
+    && (await m.locator('[data-floor-book]').count()) === 4 && ((await m.locator('[data-manipulation-representation]').textContent()) ?? '').replace(/\s/g, '').includes('26×16+4'));
   check('L : manipulation présentée — aucun défilement de page', f.pageX && f.contentX && f.contentY, JSON.stringify(f));
 
   await next(page);
@@ -458,7 +461,10 @@ for (const vp of [{ width: 1024, height: 768 }, { width: 390, height: 844 }]) {
   await next(page); await settle(page, 900);
   const advTab2 = active(page).locator('[data-manipulation-workspace] [role="tab"][data-level="advanced"]').first();
   if (await advTab2.count()) { await advTab2.click(); await page.waitForTimeout(350); }
-  await active(page).locator('.be-choice', { hasText: /^26$/ }).click();
+  await active(page).locator('[data-manipulation="divisor-explorer-books"] [data-stretch-handle]').first().focus();
+  await page.keyboard.press('Home');
+  for (let i = 10; i < 26; i += 1) await page.keyboard.press('ArrowLeft');
+  await page.waitForTimeout(900);
   f = await settled(page);
   check(`V ${vp.width}×${vp.height} : la manipulation dans le module (26 choisi) — aucun débordement horizontal`, f.pageX && f.rootX && f.contentX, JSON.stringify(f));
   await exit(page); await settle(page, 300);

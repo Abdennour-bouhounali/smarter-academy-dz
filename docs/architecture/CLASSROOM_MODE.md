@@ -332,11 +332,29 @@ Two surfaces, one shell:
 
 ### Manipulation — ⛶ عرض المناولة
 
-Unchanged from the first implementation. `DivisorExplorerBooks` wraps itself, reads
-`useClassroomMode()` and **solves** its shelves grid for the offered area
-(`divisibility/booksClassroomLayout.js`, pure and tested): one row of books per shelf, largest book
-that fits, otherwise the smallest readable book (15 px) with the grid scrolling internally while
-counters, equation and floor stay on screen.
+`DivisorExplorerBooks` (the shelf the student stretches, redesigned 2026-09-30) wraps itself in
+`ClassroomPresentation scope="manipulation" entry="none"` and poses `<ClassroomEntryButton />` in
+its shell header (`ManipulationShell headerAction`). A manipulation is **not zoomed** by the
+presentation (§8), so the lab fits the offered area itself. Presented, it reads
+`useClassroomMode()` and:
+
+- puts the stretchable shelf (45 % of the width: shelf, −/+, counters) and the bookcase (with
+  the `DivisionRoles` and the floor note) **side by side**. On a projector width is plentiful
+  and height is scarce;
+- drops the lab's mission and lead, and the workspace lead (`ClassroomHidden`): the teacher
+  says them aloud;
+- **measures a height budget** for the bookcase: the bottom of `.sa-classroom-content`, minus
+  the bookcase's top, minus everything below it (roles and note, stage padding, the equation,
+  the discovery). No term depends on the bookcase's own height, so the measure cannot feed
+  itself. It then takes the **largest book unit** (≤ 11 px) whose `bookcaseLayout` fits that
+  budget. Every shelf stays drawn; nothing scrolls internally.
+
+Measured on 2026-09-30 in the presented lesson at 1366×768, 26 books per shelf: the content
+box is 644/644 (no overflow), and the 16 shelves are drawn at a small but countable size.
+**Known limit:** once the discovery panel opens, it takes its height from the same budget, and
+at the minimum book unit the unit can still overflow. The conjecture is discussed aloud in
+class, but this is **not yet fitted**. The old grid solver `booksClassroomLayout.js`, written
+for the 17-button lab, was removed with it.
 
 ## 6. The presentation contract
 
@@ -396,10 +414,9 @@ not something to guess. Every button is at least 44 × 44 px, and its icon comes
 exercise presented on its own, with no step and no jump — it drops its padding, its top margin and
 its own band (a `:has()` rule, so the bar recognises itself with no state to thread through). It
 still costs the scene something: a presented manipulation now has a bottom bar it did not have
-before, so the fit engine settles a little lower (0.92 → 0.86 on the 16-shelf library). Projection
-still *enlarges* — `manipulations.mjs` checks that, with a 5 px threshold rather than the old 8 —
-and what actually matters stays wide of its minimum: shelf books at 31 px against a floor of 15,
-floor books at 40 px against 22, one shelf still one unbroken row of 26.
+before, so the fit engine settles a little lower. The shelf lab does not enlarge by default: it
+fits its measured height budget (§5 « Manipulation »), and block C1 checks the side-by-side layout
+and that nothing overflows at 26 and at 42 shelves.
 
 **The bar's height is taken from the scene.** `usePresentationFit` measures both bars
 (`reservedRefs`) and gives the content what is left; the scale bottoms out at `MIN_FIT_FACTOR`
@@ -525,8 +542,7 @@ A presented **test** (§5, *Test*) adds its own, emitted by `kit/TestPresentatio
 Also emitted, and used by the suites: `[data-classroom-nav-unit=previous|next]`,
 `[data-classroom-nav-module=previous|next]`, `[data-classroom-title]`,
 `[data-classroom-scope-label]`, `[data-classroom-unit-index]`, `[data-module-presented]`,
-`[data-lesson-presented]`, `[data-lesson-roadmap]`, and, on the books lab, `[data-presentation]`
-and `[data-shelves-fit]`. The CSS variables `--sa-classroom-scale / -w / -h` are published on the
+`[data-lesson-presented]`, `[data-lesson-roadmap]`, and, on the books lab, `[data-bookshelf][data-presentation]`. The CSS variables `--sa-classroom-scale / -w / -h` are published on the
 root (§8).
 
 ### Running the suites
@@ -581,7 +597,8 @@ staying silent, and 390×844. Its evidence and attempt calls are stubbed, so it 
 leave it — exit through the toolbar instead), the orientation lock, real iOS Safari, the `presenter`
 prop, two sibling shells, and the `DragGhost` portal under fullscreen. Neither suite runs in CI, and
 there are no unit tests for `useFullscreen`, `useScrollLock`, `usePresentationFit` or the shell
-itself; `classroomFit.js`, `classroomUnits.js` and `booksClassroomLayout.js` are the tested parts.
+itself; `classroomFit.js` and `classroomUnits.js` are the tested parts (the shelf geometry is tested
+in `logic/bookshelf.test.js`, which is not presentation code).
 
 ## 11. Opting in
 
@@ -596,6 +613,7 @@ export default function MyManipulation(props) {
   );
 }
 // inside MyLab's header:  <ClassroomEntryButton scope="manipulation" title={title} />
+// a shell-based lab passes it to the shell:  <ManipulationShell headerAction={<ClassroomEntryButton />} … />
 ```
 
 **An exercise** — same shape with `scope="exercise"`, wrapping the content in `<ClassroomFrame>`

@@ -23,7 +23,11 @@ const { euclidStepTex, pgcdEqualityTex } = divisibility;
  * euclidean-algorithm — LA MACHINE À DIVISER.
  *
  * A. L'élève REPORTE des copies du petit ruban le long du grand (glisser, ou
- *    les boutons + / −). Quand une copie de plus déborde, il s'arrête.
+ *    les boutons + / −). Il ESSAIE aussi la copie de trop : elle ne tient pas
+ *    — la mathématique résiste, rien ne se pose — et c'est seulement alors
+ *    que le reste peut être porté (`tryCopy` / `overflowSeen`, 2026-09-30 ;
+ *    avant, la scène annonçait « توقّف » et grisait « + » d'elle-même). La
+ *    copie qu'on porte est à l'ÉCHELLE du grand ruban.
  *    Même atelier de couture que les différences (thème `workshop`) : la
  *    division est une suite de reports, la soustraction une suite de coupes.
  * B. Idée : a = b × q + r, où q est le NOMBRE DE COPIES qui tiennent et r le
@@ -50,6 +54,7 @@ export default function EuclidAlgorithm({
     onDrop: (sourceId, zoneId) => {
       setReject(null);
       if (sourceId === 'copy' && zoneId === 'dividend') { setLab(L.addCopy); return; }
+      if (sourceId.startsWith('rem:') && zoneId.startsWith('slot')) return;
       if (sourceId.startsWith('rem:') && zoneId === 'carry') { setLab(L.carryRemainder); return; }
       if (sourceId.startsWith('rem:') && zoneId === 'pgcd') {
         const v = Number(sourceId.replace('rem:', ''));
@@ -64,8 +69,19 @@ export default function EuclidAlgorithm({
       if (zoneId === 'pgcd') return L.canPlaceEuclidPgcd(lab, v);
       return 'invalid';
     },
-    onReject: (_s, _z, reason) => setReject(reason),
+    onReject: (sourceId, _z, reason) => {
+      // La copie de trop, LÂCHÉE sur le ruban : refusée, mais vue — l'essai compte.
+      // (Ici et pas dans `accepts`, que l'aimant consulte à chaque mouvement.)
+      if (sourceId === 'copy' && reason === 'overflow') setLab(L.tryCopy);
+      setReject({ reason, v: Number(String(sourceId).replace('rem:', '')) });
+    },
   });
+  /** « + » : ESSAYER une copie de plus — posée si elle tient, refusée sinon. */
+  const tryPlus = () => {
+    if (L.canAddCopy(lab) === 'overflow') setReject({ reason: 'overflow' });
+    else setReject(null);
+    setLab(L.tryCopy);
+  };
 
   useEffect(() => { if (state.isFormal) state.report(onFinished, lab.gcd); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -133,7 +149,7 @@ export default function EuclidAlgorithm({
               parts={[
                 { text: String(div.a) }, { text: '=' }, { text: String(div.b) }, { text: '×' },
                 { slot: 'q', value: lab.copies > 0 ? lab.copies : null, tileTone: 'quotient' },
-                { text: '+' }, { slot: 'r', value: quotientReached ? rest : null, tileTone: 'remainder' },
+                { text: '+' }, { slot: 'r', value: quotientReached && lab.overflowSeen ? rest : null, tileTone: 'remainder' },
               ]}
               drag={drag}
               slotLabel={(s) => (s === 'q' ? t('manipulation.quotient') : t('manipulation.remainder'))}
@@ -175,16 +191,20 @@ export default function EuclidAlgorithm({
           {div ? (
             <>
               <div className="flex flex-wrap items-center gap-2">
-                {/* LA COPIE : un petit ruban qu'on prend et qu'on reporte. */}
-                <DraggableObject drag={drag} id="copy" label={t('manipulation.euclid.copyRibbon', { b: div.b })} className="flex min-h-[44px] w-56 max-w-full items-center gap-2 rounded-xl border-2 border-violet-300 bg-violet-50 px-2 py-1">
+                {/* LA COPIE : un petit ruban qu'on prend et qu'on reporte — à
+                    l'échelle du grand (sa largeur est b / a de celle du grand). */}
+                <div className="flex w-full items-center gap-2">
                   <NumberTile value={div.b} tone="divisor" size="sm" />
-                  <RibbonStrip value={div.b} scale={div.b} tone="b" height="h-6" className="min-w-0 flex-1" />
-                </DraggableObject>
-                <span className="text-xs text-slate-500">{t('manipulation.dragHint')}</span>
+                  <DraggableObject drag={drag} id="copy" label={t('manipulation.euclid.copyRibbon', { b: div.b })}
+                    className="flex min-h-[44px] min-w-[44px] items-center rounded-xl border-2 border-violet-300 bg-violet-50 px-1 py-1"
+                    style={{ width: `${Math.max(8, (100 * div.b) / div.a)}%` }}>
+                    <RibbonStrip value={div.b} scale={div.b} tone="b" height="h-6" className="min-w-0 flex-1" />
+                  </DraggableObject>
+                </div>
                 <span className="ms-auto flex items-center gap-1.5">
-                  <Btn small onClick={() => setLab(L.removeCopy)} disabled={lab.copies === 0} ariaLabel={t('manipulation.euclid.removeCopy')}>−</Btn>
-                  <span className="font-mono text-xs font-bold text-slate-700" dir="auto">{t('manipulation.euclid.copies', { n: lab.copies })}</span>
-                  <Btn small onClick={() => setLab(L.addCopy)} disabled={L.canAddCopy(lab) !== true} ariaLabel={t('manipulation.euclid.addCopy')}>+</Btn>
+                  <Btn onClick={() => { setReject(null); setLab(L.removeCopy); }} disabled={lab.copies === 0} ariaLabel={t('manipulation.euclid.removeCopy')}>−</Btn>
+                  <span className="font-mono text-xs font-bold text-slate-700">{t('manipulation.euclid.copies', { n: lab.copies })}</span>
+                  <Btn onClick={tryPlus} ariaLabel={t('manipulation.euclid.addCopy')}>+</Btn>
                 </span>
               </div>
 
@@ -194,17 +214,17 @@ export default function EuclidAlgorithm({
                   <span dir="auto">{t('manipulation.euclid.dividendRibbon', { a: div.a })}</span>
                 </div>
                 <RibbonStrip value={div.a} scale={div.a} tone="a"
-                  ghost={Math.max(0, div.a - lab.copies * div.b - (rest !== null && quotientReached ? rest : 0))}
+                  ghost={Math.max(0, div.a - lab.copies * div.b - (rest !== null && quotientReached && lab.overflowSeen ? rest : 0))}
                   segments={[
                     ...Array.from({ length: Math.min(lab.copies, 30) }, () => ({ value: div.b, tone: 'b', label: lab.copies <= 12 ? t('manipulation.euclid.cm', { n: div.b }) : undefined })),
-                    ...(rest !== null && rest > 0 && quotientReached ? [{ value: rest, tone: 'rem', label: t('manipulation.euclid.cm', { n: rest }) }] : []),
+                    ...(rest !== null && rest > 0 && quotientReached && lab.overflowSeen ? [{ value: rest, tone: 'rem', label: t('manipulation.euclid.cm', { n: rest }) }] : []),
                   ]} />
-                {quotientReached
-                  ? <p className="text-[11px] font-bold text-amber-800">{t('manipulation.euclid.overflow', { a: div.a })}</p>
+                {quotientReached && lab.overflowSeen
+                  ? <p className="text-[11px] font-bold text-amber-800" data-euclid-overflow>{t('manipulation.euclid.overflow', { r: rest, b: div.b })}</p>
                   : <p className="text-[11px] text-slate-500">{t('manipulation.euclid.notCovered')}: <span dir="ltr" className="font-mono">{div.a - lab.copies * div.b}</span></p>}
               </DropZone>
 
-              {quotientReached && (
+              {quotientReached && lab.overflowSeen && (
                 <div className="flex flex-wrap items-center gap-2">
                   <NumberTile value={rest} drag={drag} id={`rem:${rest}`} label={`${t('manipulation.remainder')} ${rest}`} tone="remainder" />
                   <DropZone drag={drag} id="carry" label={t('manipulation.euclid.carry')} tone="emerald" hint={t('manipulation.euclid.dropCarry')} minHeight="min-h-[56px]" className="min-w-[180px] flex-1" />
@@ -216,7 +236,7 @@ export default function EuclidAlgorithm({
               <div className="rounded-2xl border-2 border-slate-200 bg-white p-2">
                 <div className="mb-1 text-[11px] font-bold text-slate-700">{t('manipulation.euclid.chain')}</div>
                 <div dir="ltr" className="flex flex-wrap gap-1.5">
-                  {nonZeroRemainders.map((v) => <NumberTile key={v} value={v} drag={drag} id={`rem:${v}`} label={`${v}`} tone="remainder" size="sm" />)}
+                  {[...nonZeroRemainders].sort((x, y) => y - x).map((v) => <NumberTile key={v} value={v} drag={drag} id={`rem:${v}`} label={`${v}`} tone="remainder" size="sm" />)}
                   <NumberTile value={0} tone="dim" size="sm" />
                 </div>
               </div>
@@ -227,7 +247,7 @@ export default function EuclidAlgorithm({
             </div>
           )}
 
-          {reject && <p role="status" className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800">{t(`manipulation.euclid.reject.${reject}`)}</p>}
+          {reject && <p role="status" className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800">{t(`manipulation.euclid.reject.${reject.reason}`, { v: reject.v, a, b, r: rest, d: div?.b })}</p>}
         </div>
       </ManipulationStage>
       <DragGhost ghost={drag.ghost}>

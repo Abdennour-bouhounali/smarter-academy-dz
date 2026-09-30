@@ -10,8 +10,12 @@ import { KNOWLEDGE } from '../content/textbook';
 
 /**
  * Module 2 — معارف 1 (p. 10) : les deux définitions, les quatre formulations,
- * les remarques. L'exemple 143/11 est MANIPULÉ (divisor-explorer en mode
- * classe : quotient → reste → verdict) avant que la définition soit lue.
+ * les remarques. L'exemple 143/11 est MANIPULÉ dans le même rayon qu'on
+ * étire qu'au module 1, avant que la définition soit lue. C'est un EXEMPLE
+ * TRAVAILLÉ : un seul niveau (`levels={false}` — son « متقدم » rejouait le
+ * laboratoire des 420 livres du module 1), et une découverte à lui : 11 PUIS
+ * 13 vident le sol, donc le quotient aussi est un قاسم (`discovery=
+ * "symmetry"`) — exactement ce que l'étape 2 lit dans 120 = 6 × 20.
  * LP : P2, P3, P4.
  */
 const [defBaqi, defJidaa] = KNOWLEDGE.definitions;
@@ -35,18 +39,20 @@ export default function Module02Maarif() {
         body: <p>في النشاط رأينا أن 28 قاسم للعدد 420 لأن الباقي معدوم. الكتاب يعطي لهذه الفكرة تعريفين، ثم أربع جمل تقول الشيء نفسه.</p>,
       }}
       intro={
-        // L'exemple du manuel (143 et 11) dans le MÊME laboratoire illustré
-        // que le module 1 : de vrais livres, de vrais rayons. Les deux modules
-        // de la leçon parlent donc de la même bibliothèque, à deux échelles —
-        // 420 livres pour découvrir, 143 pour lire la définition. L'élève
-        // reconnaît l'instrument au lieu d'en apprendre un second.
+        // L'exemple du manuel (143 et 11) dans le MÊME laboratoire que le
+        // module 1 : le rayon qu'on étire. L'élève reconnaît l'instrument au
+        // lieu d'en apprendre un second. Réglette de 5 à 30, repères 11 et 13
+        // (le diviseur et le quotient de l'exemple).
         <Manipulation
           type="divisor-explorer-books"
           total={143}
-          candidates={[11, 12, 13]}
-          initialCapacity={11}
-          title="مثال الكتاب: 143 كتابًا في رفوف من 11"
-          lead="الكتاب يكتب: «11 قاسم للعدد 143». جرّب 11، ثم 12: متى لا يبقى أي كتاب خارج الرفوف؟"
+          min={5}
+          max={30}
+          marks={[11, 13]}
+          levels={false}
+          discovery="symmetry"
+          title="مثال الكتاب: 143 كتابًا"
+          lead="الكتاب يكتب: «11 قاسم للعدد 143». تحقّق بوضع الرفّ على 11، ثم على 13: ماذا تلاحظ في المرّتين؟"
         />
       }
       steps={[

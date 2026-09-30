@@ -57,11 +57,11 @@ export default function Module01AlAdad60() {
           levels={{
             beginner: () => (
               <Manipulation type="factor-pairs" n={24} title="تمرّن أولًا: 24 = … × …"
-                lead="جرّب عدد الكتب في الرفّ واحدًا واحدًا: متى تمتلئ كل الرفوف؟ كل ترتيب تامّ يعطيك قاسمين." />
+                lead="أطِل الصفّ كتابًا بعد كتاب: متى تُكوّن الكتب مستطيلًا تامًّا؟ كل مستطيل تامّ يعطيك قاسمين." />
             ),
             advanced: () => (
               <Manipulation type="factor-pairs" n={60} title="جدول الكتاب: 60 = … × …"
-                lead="لكل عدد d من 1 إلى 7، جرّبه كعدد كتب في الرفّ. عند كل ترتيب تامّ يظهر سطر من الجدول وقاسمان." onFinished={() => setFinished(true)} />
+                lead="أطِل الصفّ ابتداءً من كتاب واحد. كل مستطيل تامّ يضيف سطرًا إلى الجدول وقاسمين. متى تستطيع أن تتوقّف؟" onFinished={() => setFinished(true)} />
             ),
           }}
         />
@@ -79,7 +79,7 @@ export default function Module01AlAdad60() {
           content: (
             <div className="space-y-3">
               <KnowledgeBrick id="qasim-rappel" variant="rappel" compact />
-              <Manipulation type="factor-pairs" n={48} title="العدد 48" lead="نفس الطريقة: من 1 إلى 6 (لأن 6² = 36 ≤ 48 < 49)." />
+              <Manipulation type="factor-pairs" n={48} title="العدد 48" lead="نفس الطريقة: أطِل الصفّ حتى يصير المستطيل مربّعًا تقريبًا، ثم تحقّق أنّ ما بعده مقلوب." />
               <TapQuestion prompt={<span>ما هي قواسم العدد <MathText>{'$17$'}</MathText>؟</span>}
                 options={['1 و 17', '1 ، 7 و 17', '17 فقط', '1 ، 2 و 17']} correct={0} cols={2} requires={['qasim-rappel']}
                 explain={<span>لا يقسم 17 أيّ عدد من 2 إلى 4 (<MathText>{'$4^2 = 16 \\leq 17 < 25$'}</MathText>)، فقاسماه الوحيدان هما 1 و 17.</span>}

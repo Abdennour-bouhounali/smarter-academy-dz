@@ -60,6 +60,102 @@
   ],
   "questions": [
     {
+      "questionId": "prep-7",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/ikhtizal-kasr/modules/Module00Astaidd.jsx",
+      "line": 36,
+      "requires": [
+        "al-aadad-al-natiqa"
+      ],
+      "prerequisiteStatus": {
+        "al-aadad-al-natiqa": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-8",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/ikhtizal-kasr/modules/Module00Astaidd.jsx",
+      "line": 37,
+      "requires": [
+        "al-aadad-al-natiqa"
+      ],
+      "prerequisiteStatus": {
+        "al-aadad-al-natiqa": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-9",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/ikhtizal-kasr/modules/Module00Astaidd.jsx",
+      "line": 38,
+      "requires": [
+        "al-aadad-al-natiqa"
+      ],
+      "prerequisiteStatus": {
+        "al-aadad-al-natiqa": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-10",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/ikhtizal-kasr/modules/Module00Astaidd.jsx",
+      "line": 39,
+      "requires": [
+        "al-aadad-al-natiqa"
+      ],
+      "prerequisiteStatus": {
+        "al-aadad-al-natiqa": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-a",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/ikhtizal-kasr/modules/Module00Astaidd.jsx",
+      "line": 40,
+      "requires": [
+        "awwaliyan-taarif"
+      ],
+      "prerequisiteStatus": {
+        "awwaliyan-taarif": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-b",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/ikhtizal-kasr/modules/Module00Astaidd.jsx",
+      "line": 41,
+      "requires": [
+        "khwarizmiyat-iqlidus"
+      ],
+      "prerequisiteStatus": {
+        "khwarizmiyat-iqlidus": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
       "questionId": "M01-S1-Q1",
       "module": 1,
       "step": 1,
@@ -204,54 +300,5 @@
       "pedagogicallyValid": true
     }
   ],
-  "findings": [
-    {
-      "code": "W_UNPARSEABLE_STEPS",
-      "severity": "medium",
-      "message": "module 0: could not resolve 'questions' to a literal array — its content is invisible to the audit",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/ikhtizal-kasr/modules/Module00Astaidd.jsx",
-      "line": 0,
-      "module": 0,
-      "step": null,
-      "term": null,
-      "questionId": null,
-      "position": -1
-    },
-    {
-      "code": "W_PRIOR_NOT_DIAGNOSED",
-      "severity": "medium",
-      "message": "priorKnowledge declares 'al-aadad-al-natiqa' but no Module 0 question diagnoses it",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/ikhtizal-kasr/lesson.config.js",
-      "line": 0,
-      "module": null,
-      "step": null,
-      "term": null,
-      "questionId": null,
-      "position": -1
-    },
-    {
-      "code": "W_PRIOR_NOT_DIAGNOSED",
-      "severity": "medium",
-      "message": "priorKnowledge declares 'awwaliyan-taarif' but no Module 0 question diagnoses it",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/ikhtizal-kasr/lesson.config.js",
-      "line": 0,
-      "module": null,
-      "step": null,
-      "term": null,
-      "questionId": null,
-      "position": -1
-    },
-    {
-      "code": "W_PRIOR_NOT_DIAGNOSED",
-      "severity": "medium",
-      "message": "priorKnowledge declares 'khwarizmiyat-iqlidus' but no Module 0 question diagnoses it",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/ikhtizal-kasr/lesson.config.js",
-      "line": 0,
-      "module": null,
-      "step": null,
-      "term": null,
-      "questionId": null,
-      "position": -1
-    }
-  ]
+  "findings": []
 }

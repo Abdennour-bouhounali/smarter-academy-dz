@@ -1,5 +1,5 @@
 import { divisibility } from '@smarter-academy/core';
-import { initBouquets, choose, canChoose } from './commonDivisors';
+import { initBouquets, choose, canChoose, addGroup, removeGroup } from './commonDivisors';
 
 const { divisors, commonDivisors, gcdByDefinition } = divisibility;
 
@@ -15,6 +15,9 @@ const { divisors, commonDivisors, gcdByDefinition } = divisibility;
 export const initGroups = initBouquets;
 export const chooseGroups = choose;
 export const canChooseGroups = canChoose;
+/** Le geste : ajouter / retirer UNE trousse (le même qu'à la leçon 4). */
+export const addGroupTo = addGroup;
+export const removeGroupFrom = removeGroup;
 
 /** Les nombres de groupes essayés qui ont marché, croissants. */
 export function workingCounts(groups) {
@@ -22,13 +25,20 @@ export function workingCounts(groups) {
 }
 
 /**
- * L'étape a livré son enseignement quand 1 a été essayé (il marche toujours)
- * et qu'au moins deux autres nombres l'ont été : un seul essai raté ne dit
- * rien, deux commencent à dessiner la règle.
+ * L'étape a livré son enseignement quand elle est PROUVÉE, pas devinée :
+ *   • soit un nombre de groupes > 1 a marché — ils ne sont pas premiers
+ *     entre eux, et ce nombre le montre ;
+ *   • soit TOUS les nombres de 2 à min(a, b) ont été essayés et aucun n'a
+ *     marché — « seul 1 marche » est alors un constat, pas une généralisation.
+ * Jusqu'au 2026-09-30 : 1 plus deux essais suffisaient, et la carte affirmait
+ * « aucune répartition de plus d'un groupe » après deux échecs.
  */
 export function groupsInsightReady(groups) {
   const tried = Object.keys(groups.tried).map(Number);
-  return tried.includes(1) && tried.filter((k) => k > 1).length >= 2;
+  if (tried.some((k) => k > 1 && groups.tried[k] === 'common')) return true;
+  const top = Math.min(groups.a, groups.b);
+  for (let k = 2; k <= top; k += 1) if (!tried.includes(k)) return false;
+  return true;
 }
 
 /**
@@ -38,7 +48,7 @@ export function groupsInsightReady(groups) {
  * le réfute (27 et 36 → 3 et 9).
  */
 export function init({ a, b }) {
-  return { a, b, da: divisors(a), db: divisors(b), common: commonDivisors(a, b), g: gcdByDefinition(a, b), shared: [], attempts: 0, checked: false };
+  return { a, b, da: divisors(a), db: divisors(b), common: commonDivisors(a, b), g: gcdByDefinition(a, b), shared: [], tested: [], checked: false };
 }
 
 /** L'id d'un jeton : `a:3` (le 3 de la liste de a). */
@@ -53,10 +63,34 @@ export function canShare(state, id) {
   return inA ? 'dividesOnlyA' : 'dividesOnlyB';
 }
 
+/** Tout jeton essayé au milieu est TESTÉ — accepté ou refusé, il a été confronté à l'autre nombre. */
 export function share(state, id) {
-  if (canShare(state, id) !== true) return { ...state, attempts: state.attempts + 1 };
   const { d } = parseChip(id);
-  return { ...state, shared: [...state.shared, d].sort((x, y) => x - y), checked: false };
+  const tested = state.tested.includes(d) ? state.tested : [...state.tested, d].sort((x, y) => x - y);
+  if (canShare(state, id) !== true) return { ...state, tested, checked: false };
+  return { ...state, shared: [...state.shared, d].sort((x, y) => x - y), tested, checked: false };
+}
+
+/**
+ * Les listes sont CONCLUANTES quand :
+ *   • premiers entre eux — chaque diviseur du PLUS PETIT nombre a été
+ *     confronté à l'autre (placé ou refusé) : il n'en reste aucun qui pourrait
+ *     être commun. Jusqu'au 2026-09-30, poser 1 et appuyer sur « تحقّق »
+ *     suffisait, puisque 1 est le seul commun.
+ *   • pas premiers entre eux — UN commun > 1 suffit à réfuter : c'est la
+ *     méthode du manuel contre مريم (27 et 36 : 3 ou 9), pas une liste
+ *     exhaustive.
+ */
+export function listsConclusive(state) {
+  if (state.g !== 1) return state.shared.some((d) => d > 1);
+  const small = state.a <= state.b ? state.da : state.db;
+  return small.every((d) => state.tested.includes(d));
+}
+
+/** Les diviseurs du plus petit nombre pas encore confrontés à l'autre. */
+export function untested(state) {
+  const small = state.a <= state.b ? state.da : state.db;
+  return small.filter((d) => !state.tested.includes(d));
 }
 
 export function allShared(state) {

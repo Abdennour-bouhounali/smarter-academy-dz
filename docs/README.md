@@ -26,6 +26,7 @@ to read them.
 | **Generate a new lesson** | [`lessons/LESSON_DEVELOPMENT_GUIDE.md`](./lessons/LESSON_DEVELOPMENT_GUIDE.md) **§14 — the reference architecture, frozen for generation on 2026-09-29**: the real structure, the generation contract (input, required output, what to reuse, what is prohibited) and the validation a generated lesson must pass |
 | Understand the whole system | [`architecture/ARCHITECTURE.md`](./architecture/ARCHITECTURE.md) |
 | Work on Classroom Mode (وضع القسم) | [`architecture/CLASSROOM_MODE.md`](./architecture/CLASSROOM_MODE.md) |
+| **Design** a manipulation (what the hand controls, resistance, contrast, the design sheet, anti-template rules) | [`architecture/MANIPULATION_DNA.md`](./architecture/MANIPULATION_DNA.md) — read it before the contract |
 | Work on a manipulation | [`architecture/MANIPULATION_CONTRACT.md`](./architecture/MANIPULATION_CONTRACT.md) |
 | Work on exercises or the practice engine | [`architecture/EXERCISE_CONTRACT.md`](./architecture/EXERCISE_CONTRACT.md) |
 | Write Arabic UI or lesson text | [`architecture/ARABIC_RTL_CONTRACT.md`](./architecture/ARABIC_RTL_CONTRACT.md) |
@@ -52,7 +53,8 @@ may describe it, but they defer to this one.
 | How a lesson is wired end to end (files, routes, registry, storage) | [`architecture/LESSON_INTEGRATION_GUIDE.md`](./architecture/LESSON_INTEGRATION_GUIDE.md) |
 | How a lesson should teach (interaction & manipulation pedagogy) | [`architecture/INTERACTION_PEDAGOGY.md`](./architecture/INTERACTION_PEDAGOGY.md) |
 | How a lesson is designed and built, end to end, by a human or an agent | [`architecture/LESSON_DESIGN_PLAYBOOK.md`](./architecture/LESSON_DESIGN_PLAYBOOK.md) |
-| Manipulations (tactile laboratories), including the student auto-completion capability (manual first, then « let the lab finish it », §6bis) | [`architecture/MANIPULATION_CONTRACT.md`](./architecture/MANIPULATION_CONTRACT.md) |
+| Manipulation design philosophy — mathematical causality, interaction distance, causal visibility, invariants, resistance, contrast, formalization, reuse engineering not experience (sits above the pedagogy and the contract) | [`architecture/MANIPULATION_DNA.md`](./architecture/MANIPULATION_DNA.md) |
+| Manipulations (tactile laboratories), including the two gesture engines (carry, stretch) and the student auto-completion capability (manual first, then « let the lab finish it », §6bis) | [`architecture/MANIPULATION_CONTRACT.md`](./architecture/MANIPULATION_CONTRACT.md) |
 | Classroom Mode / presentation layer | [`architecture/CLASSROOM_MODE.md`](./architecture/CLASSROOM_MODE.md) |
 | Arabic, RTL, typography, terminology, bidi rules | [`architecture/ARABIC_RTL_CONTRACT.md`](./architecture/ARABIC_RTL_CONTRACT.md) |
 | Exercise validation boundary, answer shapes, practice engine | [`architecture/EXERCISE_CONTRACT.md`](./architecture/EXERCISE_CONTRACT.md) |
@@ -92,6 +94,16 @@ may describe it, but they defer to this one.
   lesson docs that froze the reference architecture (31 defects fixed, the
   doc↔code matrix, test results). **Historical**: the contract it produced is
   the guide's §14.
+- [`reports/REFERENCE_MANIPULATIONS_FORENSIC_AUDIT.md`](./reports/REFERENCE_MANIPULATIONS_FORENSIC_AUDIT.md)
+  — read-only forensic audit (2026-09-29) of every manipulation of the 4AM
+  unit: Part I goes deep on the reference lesson `qasim-adad-tabii` (3
+  instances, student scripts, state machines); Part II covers all 29
+  instances of the 9 lessons (9 types) with per-instance pros/cons, the
+  unit-wide shared defects (§20) and a scoreboard (§30). **Open findings,
+  not a contract** — the contract stays `MANIPULATION_CONTRACT.md`. Part I
+  and the shared defects a–f, i, k (for the reference lesson) were acted on
+  in the 2026-09-30 redesign, and lessons 2–9 were redesigned the same
+  day (`MANIPULATION_DNA.md` §15 lists what remains open).
 - [`reports/QUESTION_ANSWER_AUDIT_2026-09-24.md`](./reports/QUESTION_ANSWER_AUDIT_2026-09-24.md)
   — audit of every answer key and judge (practice, final tests, modules,
   registry, Math Lab). The rules it established live in `EXERCISE_CONTRACT.md`

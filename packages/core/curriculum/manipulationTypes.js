@@ -30,10 +30,12 @@ export const MANIPULATION_TYPES = Object.freeze({
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: { a: [2, 9999], b: [1, 999] } },
   },
   'divisor-explorer-books': {
-    // Variante illustrée du laboratoire de la division (Module 1 — المكتبة) :
-    // les 420 livres sont de vrais objets « livre », rangés rayon par rayon.
-    shows: 'b قاسم لـ a ⇔ لا يبقى أي كتاب خارج الرفوف ⇔ a = b × q + 0',
-    controls: { reset: true, nextStep: false, toggleExplanation: false, changeNumbers: false },
+    // Le RAYON QU'ON ÉTIRE (Module 1 — المكتبة, quotition) : l'élève tire le
+    // serre-livres, tous les rayons prennent la longueur b, les a livres se
+    // rangent en q rayons pleins et r restent au sol. Chaque position est un
+    // essai : MANUEL (§6bis), rien à compléter.
+    shows: 'b عدد الكتب في كل رفّ: b قاسم لـ a ⇔ لا يبقى أي كتاب على الأرض ⇔ a = b × q + 0',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
   'team-builder': {
     // Le partage équitable DEBOUT : n joueurs, k équipes égales, et celui qui
@@ -41,11 +43,14 @@ export const MANIPULATION_TYPES = Object.freeze({
     // livres) ; contexte de la plateforme, déclaré dans la leçon
     // (`experience: platform_context`) — voir manipulationLevels.js.
     shows: 'قسمة عدد على عدد من المجموعات المتساوية: a = b × q + r، والباقي هو من بقي خارج الفرق',
-    controls: { reset: true, nextStep: true, toggleExplanation: true, hideConclusion: true, changeNumbers: { total: [2, 60], groups: [2, 12] }, autoComplete: { unlock: 'config' } },
+    controls: { reset: true, nextStep: true, toggleExplanation: true, hideConclusion: true, changeNumbers: { total: [2, 60], groups: [2, 12] }, autoComplete: { unlock: 'first-gesture' } },
   },
   'factor-pairs': {
+    // La clé est `n`, celle du champ du type (FactorPairs `numberFields`).
+    // Elle était `a` : le laboratoire libre ne trouvait pas ses bornes et
+    // acceptait 0 ou 100 000 (audit 2026-09-29).
     shows: 'قواسم عدد تأتي أزواجًا d × (a ÷ d) ولا حاجة للاختبار بعد √a',
-    controls: { reset: true, nextStep: true, toggleExplanation: true, changeNumbers: { a: [2, 999] } },
+    controls: { reset: true, nextStep: true, toggleExplanation: true, changeNumbers: { n: [2, 999] } },
   },
   'divisor-properties': {
     // Le chantier : deux murs en briques de longueur n (thème `construction`) ;
@@ -82,7 +87,9 @@ export const MANIPULATION_TYPES = Object.freeze({
     // La recette (thème `kitchen`) : diviser les deux termes par k, c'est
     // répartir deux ingrédients en k parts identiques et lire UNE part.
     shows: 'اختزال كسر = القسمة على قاسم مشترك؛ القسمة على PGCD تعطي الشكل غير القابل للاختزال في خطوة واحدة',
-    controls: { reset: true, nextStep: true, toggleExplanation: true, changeNumbers: { n: [1, 9999], d: [2, 9999] } },
+    // Bornes du مختبر حر : jusqu'à 600 (595/560 du manuel y tient). À 9999,
+    // 9240/7560 dessinait 16 800 objets et un dépôt prenait 4 s (audit 2026-09-29).
+    controls: { reset: true, nextStep: true, toggleExplanation: true, changeNumbers: { n: [1, 600], d: [2, 600] } },
   },
 });
 

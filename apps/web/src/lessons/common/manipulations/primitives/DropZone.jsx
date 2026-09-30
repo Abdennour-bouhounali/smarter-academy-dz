@@ -1,9 +1,12 @@
 import React from 'react';
 
 /**
- * Une zone qui ACCUEILLE un objet porté. Trois états, lisibles sans texte :
+ * Une zone qui ACCUEILLE un objet porté. Quatre états, lisibles sans texte :
  *   prête     — un objet est en main (tap/clavier) : bordure colorée, curseur
- *   attirée   — le pointeur ou l'aimant la vise : fond plein, anneau
+ *   attirée   — le pointeur ou l'aimant la vise ET elle accepterait : fond
+ *               plein, anneau
+ *   refusante — le pointeur la survole mais elle refuserait : rose, avant
+ *               même que l'élève lâche (la raison suit au relâchement)
  *   au repos  — pointillés discrets
  *
  * `role="button"` + tabIndex : au clavier, activer la zone y pose l'objet en
@@ -15,6 +18,7 @@ export default function DropZone({
 }) {
   const props = drag.zoneProps(id, { disabled });
   const active = props['data-drop-active'] === 'true';
+  const invalid = props['data-drop-invalid'] === 'true';
   const ready = props['data-drop-ready'] === 'true';
   const T = TONES[tone] ?? TONES.indigo;
   return (
@@ -26,7 +30,7 @@ export default function DropZone({
       {...props}
       {...rest}
       className={`relative rounded-2xl border-2 transition-colors ${minHeight} ${
-        active ? `${T.active} ring-2 ${T.ring}` : ready ? `${T.ready} cursor-pointer` : 'border-dashed border-slate-300 bg-white/70'
+        active ? `${T.active} ring-2 ${T.ring}` : invalid ? 'border-rose-400 bg-rose-50 ring-2 ring-rose-200' : ready ? `${T.ready} cursor-pointer` : 'border-dashed border-slate-300 bg-white/70'
       } ${disabled ? 'opacity-60' : ''} ${className}`}
     >
       {children}

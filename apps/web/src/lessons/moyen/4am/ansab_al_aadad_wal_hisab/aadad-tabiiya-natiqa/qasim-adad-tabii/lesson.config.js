@@ -61,20 +61,20 @@ export const LESSON_CONFIG = {
     {
       kind: 'manipulation', code: 'divisor-explorer-420', type: 'divisor-explorer-books', module: 1,
       level: 'advanced',
-      title: 'هل هو قاسم؟ — 420 كتابًا على الرفوف',
+      title: 'هل هو قاسم؟ — رفّ يمدّه التلميذ لـ 420 كتابًا',
       objective: 'التوزيع بالتساوي: a = b × q + r، والباقي معدوم ⇔ b قاسم لـ a',
-      autonomy: 'سبعة عشر حجمًا دون اقتراح: التلميذ يختار ويقارن محاولاته بنفسه',
+      autonomy: 'التلميذ يمدّ الرفّ بنفسه من 10 إلى 60 كتابًا دون أحجام مقترحة، ويقرّر متى تفرغ الأرض؛ العدد المختار هنا حجم المجموعة لا عدد المجموعات',
       experience: { type: 'textbook', reason: '', theme: 'library' },
       learningPointIds: ['4am_qasim-adad-tabii_P1', '4am_qasim-adad-tabii_P2'],
       sourceElementIds: ['act-1'],
     },
-    // Module 2 (معارف) — l'exemple du manuel, dans le MÊME laboratoire
-    // illustré que le module 1. Un seul instrument pour toute la leçon :
-    // l'élève le reconnaît au lieu d'en apprendre un second. Un seul niveau
-    // ici — le module lit une définition, il ne rejoue pas la découverte.
+    // Module 2 (معارف) — l'exemple du manuel, dans le MÊME rayon qu'on
+    // étire qu'au module 1. Un seul instrument pour toute la leçon. Un seul
+    // niveau ici (`levels={false}` dans le module) — c'est un exemple
+    // travaillé ; sa découverte est la symétrie 143 = 11 × 13 = 13 × 11.
     {
       kind: 'manipulation', code: 'divisor-explorer-143', type: 'divisor-explorer-books', module: 2,
-      title: 'مثال الكتاب: 143 كتابًا في رفوف من 11',
+      title: 'مثال الكتاب: 143 كتابًا — 11 ثم 13 في كل رفّ',
       learningPointIds: ['4am_qasim-adad-tabii_P2'],
       sourceElementIds: ['know-1'],
     },

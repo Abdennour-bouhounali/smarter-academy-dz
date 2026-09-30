@@ -22,6 +22,10 @@ export function themeWords(t, theme, context = {}) {
     scene: k('scene'),
     leftover: k('leftover'),
     allUsed: k('allUsed'),
+    // Le GESTE des groupes : d'où l'on tire une mission vide, et ses verbes.
+    stock: context.stock ?? k('stock'),
+    add: context.add ?? k('add'),
+    remove: context.remove ?? k('remove'),
     more: (n) => t('manipulation.themes.more', { count: n }),
   };
 }

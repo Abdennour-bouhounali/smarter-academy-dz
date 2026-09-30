@@ -6,7 +6,7 @@ import { Manipulation, ManipulationWorkspace } from '../../../../../../common/ma
 import { PitchScene } from '../../../../../../common/manipulations/primitives/PitchBackdrop';
 import { TextbookBox, SourceTag } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { ACTIVITY, EXTRA_CANDIDATES, TEAM_EXPERIENCE } from '../content/textbook';
+import { ACTIVITY, SHELF_RANGE, TEAM_EXPERIENCE } from '../content/textbook';
 
 /**
  * Module 1 — نشاط 1 (p. 8) : 420 كتابًا، 26 أو 28 في كل رفّ ؟
@@ -17,9 +17,19 @@ import { ACTIVITY, EXTRA_CANDIDATES, TEAM_EXPERIENCE } from '../content/textbook
  *   مبتدئ  — LE TERRAIN. 15 joueurs, 3 équipes égales ; puis 16, et un joueur
  *            reste dehors. Petits nombres, geste évident, conséquence
  *            immédiate : on voit le reste debout sur le banc.
- *   متقدم  — LA BIBLIOTHÈQUE DU MANUEL. Les 420 livres, dix-sept tailles de
- *            rayon, aucune suggestion : l'élève choisit, compare ses essais et
- *            décide lui-même lesquels « tombent juste ».
+ *   متقدم  — LA BIBLIOTHÈQUE DU MANUEL. Les 420 livres ; l'élève TIRE le
+ *            serre-livres d'un rayon (10 à 60 livres), tous les rayons
+ *            suivent, et ce qui ne remplit pas un rayon reste au sol. Les
+ *            deux propositions du libraire (26, 28) sont marquées sur la
+ *            réglette, comme dans l'énoncé — aucune autre longueur n'est
+ *            suggérée.
+ *
+ * DEUX LECTURES DE LA MÊME DIVISION (audit 2026-09-29, X-1). Aux équipes,
+ * l'élève fixe le NOMBRE de groupes (partition) ; aux rayons, la TAILLE d'un
+ * groupe (quotition). Le passage n'est plus silencieux : chaque laboratoire
+ * nomme les rôles de a = b × q + r (`DivisionRoles` : b est ce que tu
+ * choisis, q ce qui en résulte, r < b), et l'étape 2 met les deux lectures
+ * côte à côte avant la question.
  *
  * POURQUOI CET ORDRE. La mathématique est identique (a = b × q + r, reste nul
  * ⇔ قاسم) ; ce qui change est la charge. L'élève rencontre l'idée sur quinze
@@ -35,12 +45,12 @@ import { ACTIVITY, EXTRA_CANDIDATES, TEAM_EXPERIENCE } from '../content/textbook
  * dire. LP enseigné : P1.
  */
 export default function Module01AlMaktaba() {
+  // Les essais VALIDÉS au rayon (onVerdict), avec ce qu'ils ont montré.
   const [tried, setTried] = useState({});
   const [teamsSeen, setTeamsSeen] = useState({});
   const [q1, setQ1] = useState(false);
   const [q2, setQ2] = useState(false);
   const { total, candidates } = ACTIVITY.numbers;
-  const bothTried = candidates.every((c) => tried[c] !== undefined);
   // Le contraste du niveau débutant : une répartition juste ET une avec reste.
   const contrastSeen = Object.values(teamsSeen).includes(true) && Object.values(teamsSeen).includes(false);
 
@@ -85,8 +95,7 @@ export default function Module01AlMaktaba() {
                   level="beginner"
                   total={15}
                   groups={3}
-                  title="جرّب: 15 لاعبًا في 3 فرق متساوية"
-                  lead="اسحب كل لاعب إلى فريق. ثم جرّب 16 لاعبًا: ماذا يحدث؟"
+                  lead="بعد أن تكتمل الفرق، جرّب 16 لاعبًا: ماذا يحدث للاعب الأخير؟"
                   onVerdict={({ total: n, groups: k, exact }) => setTeamsSeen((s) => ({ ...s, [`${n}:${k}`]: exact }))}
                 />
                 <SourceTag source={TEAM_EXPERIENCE.source} />
@@ -96,12 +105,13 @@ export default function Module01AlMaktaba() {
               <Manipulation
                 type="divisor-explorer-books"
                 total={total}
-                candidates={EXTRA_CANDIDATES.values}
-                // Les deux tailles que le manuel fait comparer (نشاط 1).
-                pair={candidates}
-                title="جرّب: كم كتابًا في كل رفّ؟"
-                lead="اختر عددًا من الكتب في الرفّ، وانظر مباشرة: هل يبقى شيء؟ ابدأ بـ 26 ثم 28."
-                onVerdict={({ b, divides }) => setTried((t) => ({ ...t, [b]: divides }))}
+                min={SHELF_RANGE.min}
+                max={SHELF_RANGE.max}
+                // Les deux tailles que le manuel fait comparer (نشاط 1) : des
+                // repères sur la réglette, pas des boutons-réponses.
+                marks={candidates}
+                lead="صاحب المكتبة تردّد بين 26 و 28 كتابًا في كل رفّ. اسحب مسند الكتب وجرّب بنفسك: متى لا يبقى أي كتاب على الأرض؟"
+                onVerdict={({ b, divides, quotient, remainder }) => setTried((t) => ({ ...t, [b]: { divides, quotient, remainder } }))}
               />
             ),
           }}
@@ -109,13 +119,25 @@ export default function Module01AlMaktaba() {
       }
       steps={[
         {
-          num: 1, title: ACTIVITY.questions[0], subtitle: 'جرّب 26 ثم 28 في المستوى المتقدّم، ثم أجب', done: q1,
+          num: 1, title: ACTIVITY.questions[0], subtitle: 'ضع الرفّ على 26 ثم على 28 في المستوى المتقدّم، ثم أجب', done: q1,
           content: (
             <div className="space-y-3">
-              {!bothTried && <p className="text-sm text-slate-600">في المستوى المتقدّم من المناولة أعلاه، جرّب الحجمين 26 و 28 أولًا.</p>}
+              {/* LES PREUVES DE L'ÉLÈVE, pas celles de l'écran : ce qu'il a vu
+                  sur le rayon, et rien de ce qu'il n'a pas essayé. Les options
+                  de la question ne portent plus la vérification (« تبقى 4
+                  كتب… ») — la réponse se lit dans ses propres essais. */}
+              <ul className="space-y-1 rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm" data-activity-evidence>
+                {candidates.map((c) => (
+                  <li key={c} className={tried[c] ? 'font-bold text-slate-800' : 'text-slate-500'} data-evidence={c} data-tried={tried[c] ? 'true' : 'false'}>
+                    {tried[c]
+                      ? <MathText>{`${c} كتابًا في كل رفّ: $420 = ${c} \\times ${tried[c].quotient} + ${tried[c].remainder}$`}</MathText>
+                      : `${c} كتابًا في كل رفّ: لم تجرّبه بعد في المستوى المتقدّم.`}
+                  </li>
+                ))}
+              </ul>
               <TapQuestion
                 prompt={<span>أي الكيفيتين أنسب لترتيب <MathText>{'$420$'}</MathText> كتابًا؟</span>}
-                options={['26 كتابًا في كل رفّ: تبقى 4 كتب خارج الرفوف', '28 كتابًا في كل رفّ: 15 رفًّا ولا يبقى شيء', 'الكيفيتان متكافئتان', 'لا يمكن ترتيب 420 كتابًا بالتساوي']}
+                options={['أ) 26 كتابًا في كل رفّ', 'ب) 28 كتابًا في كل رفّ', 'الكيفيتان متكافئتان', 'لا يمكن ترتيب 420 كتابًا بالتساوي']}
                 correct={1}
                 cols={1}
                 requires={['qisma-iqlidiya']}
@@ -129,12 +151,23 @@ export default function Module01AlMaktaba() {
           num: 2, title: ACTIVITY.questions[1], done: q2,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="qasim-baqi" lead="الباقي معدوم: هذا بالضبط ما يجعل 28 قاسمًا للعدد 420." />
-              {contrastSeen && (
-                <p className="rounded-xl border-2 border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-900">
-                  نفس الفكرة رأيتها مع الفرق: عندما لا يبقى أحد خارج الفرق، يكون عدد الفرق قاسمًا لعدد اللاعبين.
+              <KnowledgeBrick id="qasim-baqi" lead="طبّق التعريف على ما رأيته على الرفوف: ماذا كان الباقي مع 28؟" />
+              {/* DEUX LECTURES, UNE DIVISION — dit AVANT la question, sans en
+                  donner la réponse (aucun 420 = 28 × … ici). */}
+              <div className="space-y-1.5 rounded-xl border-2 border-indigo-200 bg-indigo-50 px-3 py-2 text-sm text-indigo-950" data-division-bridge>
+                <p className="font-extrabold">قسمة واحدة، وقراءتان:</p>
+                <p>
+                  <strong>في الفرق</strong> اخترتَ <strong>عدد المجموعات</strong> (3 فرق)، فظهر عدد اللاعبين في كل فريق:{' '}
+                  <MathText>{'$15 = 3 \\times 5 + 0$'}</MathText>{contrastSeen ? '' : ' — جرّبه في المستوى المبتدئ.'}
                 </p>
-              )}
+                <p>
+                  <strong>في المكتبة</strong> تختار <strong>حجم المجموعة</strong> (عدد الكتب في كل رفّ)، فيظهر عدد الرفوف.
+                </p>
+                <p>
+                  في الحالتين نكتب <MathText>{'$a = b \\times q + r$'}</MathText>: <MathText>{'$b$'}</MathText> هو العدد الذي تختاره أنت،
+                  {' '}<MathText>{'$q$'}</MathText> ما ينتج، و <MathText>{'$r$'}</MathText> أصغر دائمًا من <MathText>{'$b$'}</MathText>.
+                </p>
+              </div>
               <TapQuestion
                 prompt={<span>ماذا يمثّل العدد <MathText>{'$28$'}</MathText> بالنسبة إلى العدد <MathText>{'$420$'}</MathText>؟</span>}
                 options={['28 قاسم للعدد 420', '28 مضاعف للعدد 420', '28 باقي قسمة 420', '28 لا علاقة له بـ 420']}

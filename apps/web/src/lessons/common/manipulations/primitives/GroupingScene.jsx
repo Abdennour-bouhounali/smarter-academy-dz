@@ -16,7 +16,7 @@ import { groupingLayout, itemSizeCss, GROUP_SCALE, PILE_SCALE } from './grouping
  * Le dessin EST l'argument : un groupe est un cadre qui contient `qa` objets
  * du premier type et `qb` du second — tous les cadres sont identiques, c'est
  * ce que « متماثلة » veut dire ; ce qui ne rentre dans aucun cadre est dessiné
- * grisé dans un plateau à part — c'est le reste, un nombre d'objets qu'on
+ * penché, dans ses couleurs, dans un plateau à part — c'est le reste, un nombre d'objets qu'on
  * voit, jamais une décimale. Avant tout choix (`k` nul), la scène montre les
  * deux piles entières : rien n'est réparti d'avance.
  *
@@ -43,8 +43,11 @@ export default function GroupingScene({
   const T = ITEM_THEMES[resolveItemTheme(theme)];
   const L = groupingLayout({ a, b, k, maxGroups });
   const okTone = tone === 'emerald' ? 'border-emerald-300 bg-emerald-50/70' : 'border-indigo-300 bg-indigo-50/70';
-  const item = (kind, t, i, muted = false) => (
-    <ItemFigure key={`${kind}-${i}`} kind={kind} tone={t} width={muted ? 'var(--sa-item-left)' : 'var(--sa-item)'} muted={muted} />
+  // Un objet resté DEHORS garde sa couleur : « 2 rouges et 2 blanches restent »
+  // doit se voir — grisé, on ne savait plus lequel était resté (2026-09-30).
+  // Il est seulement penché, hors des cadres.
+  const item = (kind, t, i, left = false) => (
+    <ItemFigure key={`${kind}-${i}`} kind={kind} tone={t} width={left ? 'var(--sa-item-left)' : 'var(--sa-item)'} className={left ? '-rotate-12' : ''} />
   );
   // L'espace entre deux objets suit leur taille : on les compte un à un.
   const gap = 'calc(var(--sa-item) / 8)';

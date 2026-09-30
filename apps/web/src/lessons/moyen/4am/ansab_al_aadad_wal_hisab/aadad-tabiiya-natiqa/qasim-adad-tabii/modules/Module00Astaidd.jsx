@@ -1,18 +1,15 @@
 import React from 'react';
 import { PrerequisiteDiagnostic } from '../../../../../../common/kit';
-import MathText from '../../../../../../common/components/MathText';
-import { SourceTag } from '../../../../../../common/textbook';
+import { prepQuestion } from '../../_unit/prepDiagnostic';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
 import { PREP_ITEMS } from '../content/textbook';
 
 /**
- * Module 0 — أستعدّ (p. 7, items 1–6). Diagnostic des acquis antérieurs,
- * JAMAIS bloquant : aucune `assessment`, la suite est toujours ouverte.
- * Les six affirmations sont celles du manuel ; l'élève dit vrai/faux et lit
- * la justification (le manuel demande « برّر إجابتك »).
+ * Module 0 — أستعدّ (p. 7, items 1–6). Les six affirmations sont celles du manuel ;
+ * l'élève dit vrai/faux et lit la justification (le manuel demande « برّر إجابتك »).
+ * Diagnostic des acquis antérieurs, JAMAIS bloquant : aucune `assessment`, la
+ * suite est toujours ouverte. `id` et `requires` restent littéraux (audit).
  */
-const yesNo = ['صحيح', 'خطأ'];
-
 export default function Module00Astaidd() {
   return (
     <PrerequisiteDiagnostic
@@ -34,22 +31,14 @@ export default function Module00Astaidd() {
         progres: { emoji: '👍', title: 'مكتسباتك في الطريق الصحيح.', body: 'بعض التردّدات الصغيرة ستُصحَّح أثناء الدرس.', advice: 'انتبه إلى شرط الباقي: أصغر من المقسوم عليه.', cta: 'أبدأ النشاط 1', tone: 'from-teal-500 to-cyan-500' },
         pret: { emoji: '🚀', title: 'أنت جاهز!', body: 'القسمة الإقليدية وقواعد قابلية القسمة متحكَّم فيها.', advice: 'حاول حلّ النشاط 1 دون مساعدة.', cta: 'أنا جاهز!', tone: 'from-cyan-500 to-blue-500' },
       }}
-      questions={PREP_ITEMS.map((it) => ({
-        id: `prep-${it.n}`,
-        skill: it.skill,
-        points: it.n <= 3 ? 2 : 1,
-        requires: it.skill === 'qisma' ? ['qisma-iqlidiya'] : ['qawaid-qabiliyat-al-qisma'],
-        prompt: (
-          <span className="space-y-1 block">
-            <MathText>{it.text}</MathText>
-            <SourceTag source={it.source} className="ms-2" />
-          </span>
-        ),
-        options: yesNo,
-        correct: it.answer ? 0 : 1,
-        cols: 2,
-        explain: <MathText>{it.why}</MathText>,
-      }))}
+      questions={[
+        { ...prepQuestion(PREP_ITEMS[0], 2), id: 'prep-1', requires: ['qisma-iqlidiya'] },
+        { ...prepQuestion(PREP_ITEMS[1], 2), id: 'prep-2', requires: ['qisma-iqlidiya'] },
+        { ...prepQuestion(PREP_ITEMS[2], 2), id: 'prep-3', requires: ['qisma-iqlidiya'] },
+        { ...prepQuestion(PREP_ITEMS[3]), id: 'prep-4', requires: ['qawaid-qabiliyat-al-qisma'] },
+        { ...prepQuestion(PREP_ITEMS[4]), id: 'prep-5', requires: ['qawaid-qabiliyat-al-qisma'] },
+        { ...prepQuestion(PREP_ITEMS[5]), id: 'prep-6', requires: ['qawaid-qabiliyat-al-qisma'] },
+      ]}
     />
   );
 }

@@ -288,7 +288,7 @@ Student and teacher modes use `pt-0` because their `<main>` already consumes the
 
 ### Module types observed (not enforced, described)
 
-In the 4AM unit: `style: 'featured'` (the default — activity, معارف, أوظّف تعلّماتي), `'diagnostic'` (the two « أستعدّ » module 0s, built on `PrerequisiteDiagnostic`) and `'boss'` (every « إختبار أولي », built on `BossFinal`, e.g. `qasim-adad-tabii/modules/Module04Itqan.jsx`). `'assessment'` is accepted but unused today. The style only changes the landing-page card.
+In the 4AM unit: `style: 'featured'` (the default — activity, معارف, أوظّف تعلّماتي), `'diagnostic'` (the « أستعدّ » module 0 that opens each of the nine lessons, built on `PrerequisiteDiagnostic`) and `'boss'` (every « إختبار أولي », built on `BossFinal`, e.g. `qasim-adad-tabii/modules/Module04Itqan.jsx`). `'assessment'` is accepted but unused today. The style only changes the landing-page card.
 
 
 ## Phase 8 additions — unit, kind, resources (2026-09-18)

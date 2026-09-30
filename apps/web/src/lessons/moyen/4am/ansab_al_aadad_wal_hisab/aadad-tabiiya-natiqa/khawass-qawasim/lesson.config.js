@@ -65,6 +65,9 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_khawass-qawasim_P4'], sourceElementIds: ['method-proof'] },
   ],
   modules: [
+    { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
+      title: 'أستعدّ', desc: 'ست عبارات: صحيح أم خاطئ؟ «n يقسم a» والقسمة الإقليدية.',
+      stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 6, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'thalath-halat', path: `${LESSON_BASE_PATH}/thalath-halat`,
       title: 'نشاط 3 — ثلاث حالات', desc: 'n يقسم a و b. هل يقسم a + b؟ و a − b؟ وباقي قسمة a على b؟',
       stage: 'trigger', teachesLearningPointIds: ['4am_khawass-qawasim_P1', '4am_khawass-qawasim_P3'],

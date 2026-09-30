@@ -32,6 +32,9 @@ export const LESSON_CONFIG = {
     { kind: 'situation', code: 'situation-qasr-al-rayas', module: 1, title: 'وضعية: ترميم واجهة قصر الرياس', learningPointIds: ['4am_wadiya-idmajiya-aadad_P1'], sourceElementIds: ['situation'] },
   ],
   modules: [
+    { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
+      title: 'أستعدّ', desc: 'ست عبارات: صحيح أم خاطئ؟ قابلية القسمة، المضاعفات والقواسم المشتركة.',
+      stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 6, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'al-wadiya', path: `${LESSON_BASE_PATH}/al-wadiya`, title: 'الوضعية وتحليلها', desc: 'اقرأ، افرز المعطيات، واكتشف الاستراتيجية في ثلاث مراحل كما في الكتاب.',
       stage: 'trigger', teachesLearningPointIds: ['4am_wadiya-idmajiya-aadad_P1'], color: 'amber', style: 'featured', estimatedMin: 12, difficulty: 3, actionText: 'أقرأ الوضعية' },
     { id: '02', number: 2, slug: 'uakkid', path: `${LESSON_BASE_PATH}/uakkid`, title: 'أؤكّد تعلّماتي', desc: 'تسعة أسئلة من الكتاب؛ عند الحاجة أعود إلى الدرس.',

@@ -57,6 +57,9 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_qasim-mushtarak-akbar_P2', '4am_qasim-mushtarak-akbar_P4'], sourceElementIds: ['know-4-def'] },
   ],
   modules: [
+    { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
+      title: 'أستعدّ', desc: 'أربع عبارات: صحيح أم خاطئ؟ البحث عن كل قواسم عدد.',
+      stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 6, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'baqat', path: `${LESSON_BASE_PATH}/baqat`,
       title: 'نشاط 4 — باقات متماثلة', desc: '90 زهرة حمراء و 54 زهرة بيضاء: 9 باقات؟ وما أكبر عدد ممكن من الباقات؟',
       stage: 'trigger', teachesLearningPointIds: ['4am_qasim-mushtarak-akbar_P1', '4am_qasim-mushtarak-akbar_P3'],

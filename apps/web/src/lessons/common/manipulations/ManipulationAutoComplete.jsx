@@ -73,17 +73,20 @@ export default function ManipulationAutoComplete({ capability, auto, resetKey })
   const status = autoCompleteStatus({ capability, auto, running });
   if (status === 'hidden') return null;
   const label = auto.label || t('manipulation.autoComplete.button');
+  // Ce que « la première fois à la main » veut dire pour CE type (« كوّن الفرق
+  // الأولى بيدك… ») ; la phrase générique sinon.
+  const lockedText = auto.lockedLabel || t('manipulation.autoComplete.locked');
   return (
     <span className="inline-flex flex-wrap items-center gap-1.5" data-manipulation-autocomplete={status}>
       <Btn
         onClick={run}
         disabled={status !== 'ready'}
-        title={status === 'locked' ? t('manipulation.autoComplete.locked') : t('manipulation.autoComplete.hint')}
+        title={status === 'locked' ? lockedText : t('manipulation.autoComplete.hint')}
       >
         <Wand2 className="h-4 w-4" aria-hidden="true" /> {label}
       </Btn>
       {status === 'locked' && (
-        <span className="text-[11px] font-bold text-slate-600">{t('manipulation.autoComplete.locked')}</span>
+        <span className="text-[11px] font-bold text-slate-600">{lockedText}</span>
       )}
     </span>
   );

@@ -21,7 +21,7 @@ export default function Module02Tariqa105() {
       ctx={MODULE_CTX} navLinks={getNavLinks(2)} moduleNumber={2}
       moduleTitle="طريقة — قواسم العدد 105" moduleSubtitle="إلى أي عدد نختبر؟" estimatedTime="14 دقيقة"
       brief={{ tag: 'طرائق — الكتاب ص 11', title: METHOD.title, tone: 'violet', body: <p>مع 60 و 48 لاحظت أن الجداءات تتكرر بعد حدّ ما. الكتاب يحوّل هذه الملاحظة إلى طريقة.</p> }}
-      intro={<Manipulation type="factor-pairs" n={105} title="105: نختبر من 1 إلى 10" lead="اكشف الاختبارات واحدًا واحدًا. متى تصبح كل القواسم معروفة؟" />}
+      intro={<Manipulation type="factor-pairs" n={105} title="العدد 105: مستطيلات الكتب" lead="أطِل الصفّ كتابًا بعد كتاب: متى تصبح كل القواسم معروفة؟" />}
       steps={[
         { num: 1, title: 'لماذا نتوقف عند 10؟', done: q1,
           content: (

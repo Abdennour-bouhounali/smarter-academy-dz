@@ -1,1267 +1,459 @@
-import React, { useLayoutEffect, useRef, useState } from "react";
-import { ClassroomPresentation, ClassroomEntryButton, useClassroomMode } from "../../classroom";
-import { useTranslation } from "react-i18next";
-import { solveShelfLayout } from "./booksClassroomLayout";
-import ManipulationLevelSelector from "../ManipulationLevelSelector";
-import { MANIPULATION_LEVEL_IDS, resolveManipulationLevels } from "../levels";
-import { useWorkspaceLevel } from "../workspaceContext";
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Minus, Plus } from 'lucide-react';
+import { ClassroomPresentation, ClassroomEntryButton, useClassroomMode } from '../../classroom';
+import ManipulationShell from '../ManipulationShell';
+import ManipulationStage from '../ManipulationStage';
+import ManipulationDiscovery from '../ManipulationDiscovery';
+import { useManipulation } from '../useManipulation';
+import useStretchInteraction from '../useStretchInteraction';
+import EquationDisplay from '../primitives/EquationDisplay';
+import DivisionRoles from '../primitives/DivisionRoles';
+import { BOOK_PALETTE } from '../primitives/BookFigure';
+import * as S from '../logic/bookshelf';
 
 /**
- * DivisorExplorerBooks.jsx
+ * divisor-explorer-books — LE RAYON QU'ON ÉTIRE.
  *
- * Standalone, dependency-light manipulation for Module 1 — Al Maktaba.
+ * A. Ce que l'élève MANIPULE : le serre-livres d'un rayon. Il le tire vers
+ *    la gauche ou le repousse : le rayon s'allonge ou se raccourcit d'un livre
+ *    à la fois. (Au clavier : les flèches ; au doigt sans glisser : − / +, ou
+ *    toucher la réglette.)
+ * B. Idée : ranger a livres par rayons de b, c'est a = b × q + r (QUOTITION :
+ *    on fixe la TAILLE d'un groupe, le NOMBRE de groupes en résulte). b est
+ *    la grandeur que le doigt tient ; q et r en sont la conséquence.
+ * C. Ce qui change, PENDANT le geste : tous les rayons de la bibliothèque
+ *    prennent la longueur du rayon tiré (un seul serre-livres pour tous —
+ *    l'égalité des parts est physique, on ne peut pas faire un rayon plus
+ *    long que les autres) ; les livres se rangent en q rayons pleins ; ceux
+ *    qui restent tombent dans un RAYON FANTÔME au sol, dont les places vides
+ *    montrent combien il en manquerait pour un rayon de plus. C'est la
+ *    RÉSISTANCE : r livres ne font pas un rayon, et le dessin le prouve.
+ * D. Représentation qui ÉMERGE, au relâchement : a = b × q + r, et les trois
+ *    rôles nommés (b : tu l'as choisi · q : il en résulte · r < b).
+ * E. À découvrir AVANT la règle : le sol se vide pour certaines longueurs
+ *    seulement — exactement quand le reste est nul, c'est-à-dire quand b est
+ *    un قاسم de a. (En معارف, `discovery="symmetry"` : 11 PUIS 13 vident le
+ *    sol, donc le quotient aussi est un قاسم — 143 = 11 × 13 = 13 × 11.)
  *
- * Pedagogical target:
- *   420 books must be arranged with the same number of books on every shelf.
- *   The learner tests 26 and 28, discovers the remainder, then connects:
- *     420 = 26 × 16 + 4
- *     420 = 28 × 15 + 0
+ * POURQUOI UN RAYON ET PAS DES BOUTONS. Jusqu'au 2026-09-29 l'élève touchait
+ * un NOMBRE parmi dix-sept et regardait la page recalculer (audit, M2) : le
+ * doigt ne tenait aucune grandeur, la conséquence tombait hors de l'écran, et
+ * le verdict « قاسم » s'affichait au premier essai. Ici le doigt TIENT b : la
+ * bibliothèque se réorganise sous ses yeux, et le rayon fantôme se remplit,
+ * se vide, se remplit — la régularité apparaît dans le geste lui-même.
  *
- * Design principle:
- *   Do NOT represent "books" as bars/lines. Every book is a recognisable,
- *   illustrated 3-D book object with cover, spine and pages.
+ * COMPRESSION HONNÊTE. Les 420 livres sont TOUS dessinés, un dos par livre
+ * (`bookcaseLayout`, balayé par ses tests) : un rayon = une rangée, jamais
+ * une grille défilante. Un dos fait quelques pixels : on ne compte pas les
+ * livres un à un, on lit les compteurs — et chaque compteur dit un nombre
+ * qu'on VOIT (q rangées, r dos au sol).
  *
- * Classroom mode (وضع القسم):
- *   The manipulation is the first consumer of the platform-level
- *   ClassroomPresentation (lessons/common/classroom). The presentation layer
- *   owns fullscreen, the fallback overlay, the scroll lock, Escape and the
- *   viewport-fitting engine; this component only READS the mode through
- *   `useClassroomMode()` and switches to a classroom layout (`be-root--
- *   presentation`) whose sizes follow `--sa-classroom-scale`. Same
- *   component, same state, same DOM position: nothing is remounted, so the
- *   chosen size, the tried sizes and the shelves survive entering/exiting.
- *   The entry button « عرض المناولة » is rendered only for presenters
- *   (core/auth.js → canPresentClassroom).
+ * UN ESSAI EST UN GESTE VALIDÉ. Pendant le glisser, tout se redessine ; au
+ * relâchement (ou à la touche, au bouton) l'essai est retenu. La découverte
+ * demande trois longueurs, dont une qui vide le sol et une qui en laisse
+ * (`remainderDiscoveryReady`) — le contraste, pas une longueur chanceuse.
  *
- * Interaction:
- *   Choosing a shelf size IS the experiment. The shelves, the leftover books
- *   on the floor and the equality a = b × q + r appear at once, no extra
- *   button. Nothing is drawn before the first choice.
- *
- * Integration (Smarter Academy):
- *   Registered as the closed type `divisor-explorer-books` in
- *   packages/core/curriculum/manipulationTypes.js and manipulationRegistry.js.
- *   A module renders it through the registry entry point:
- *   <Manipulation
- *      type="divisor-explorer-books"
- *      total={420}
- *      candidates={[10,12,14,15,16,18,20,21,25,26,28,30,32,35,40,42,60]}
- *      onVerdict={({ b, divides, quotient, remainder }) => ...}
- *   />
- *   It is deliberately self-contained (own styles, own gesture) and does not
- *   go through ManipulationShell — so it poses its own مبتدئ / متقدم selector
- *   when it is not inside a ManipulationWorkspace (levels.js: 24 / 420); the `divisor-explorer` type remains the
- *   shell-based laboratory used by the other modules.
- *
- * No external images are required: the book illustrations are inline SVG,
- * so the component works offline and remains sharp on every screen.
+ * Même coquille que les autres laboratoires (ManipulationShell) : indices,
+ * conjecture, règle, « إعادة ». Le mode classe de la PLATEFORME (⛶ عرض
+ * المناولة) enveloppe le tout sans rien remonter.
  */
-
-const DEFAULT_CANDIDATES = [10, 12, 14, 15, 16, 18, 20, 21, 25, 26, 28, 30, 32, 35, 40, 42, 60];
-
-// La MÊME palette que `primitives/BookFigure.jsx`, volontairement dupliquée.
-//
-// Le livre d'ici est soudé à ses classes `be-book*` : le moteur de mise en
-// page du mode classe (`booksClassroomLayout.js`) et les sélecteurs e2e les
-// lisent. Le faire passer par la primitive partagée casserait ce contrat sans
-// rien changer pour l'élève. Les deux dessins doivent donc rester
-// IDENTIQUES À L'ŒIL : si l'un change de teintes, changer l'autre.
-const palette = [
-  ["#4F46E5", "#312E81", "#EEF2FF"],
-  ["#0EA5E9", "#075985", "#E0F2FE"],
-  ["#10B981", "#047857", "#ECFDF5"],
-  ["#F59E0B", "#B45309", "#FFFBEB"],
-  ["#EC4899", "#9D174D", "#FDF2F8"],
-  ["#8B5CF6", "#5B21B6", "#F5F3FF"],
-  ["#F97316", "#C2410C", "#FFF7ED"],
-];
-
-/** A deliberately illustrated book, not a generic rectangle/bar. */
-function Book({ index, small = false, placed = false, selected = false, left = false, className = "" }) {
-  const [cover, spine, page] = palette[index % palette.length];
-  const w = small ? 22 : 38;
-  const h = small ? 46 : 72;
-
-  return (
-    <div
-      className={[
-        "be-book",
-        small ? "be-book--small" : "",
-        placed ? "be-book--placed" : "",
-        selected ? "be-book--selected" : "",
-        left ? "be-book--left" : "",
-        className,
-      ].join(" ")}
-      style={{ "--book-cover": cover, "--book-spine": spine, "--book-page": page }}
-      aria-hidden="true"
-    >
-      <svg
-        width={w}
-        height={h}
-        viewBox="0 0 38 72"
-        role="img"
-        aria-hidden="true"
-      >
-        <defs>
-          <linearGradient id={`g${index}`} x1="0" x2="1">
-            <stop offset="0" stopColor={spine} />
-            <stop offset="0.18" stopColor={cover} />
-            <stop offset="1" stopColor={cover} />
-          </linearGradient>
-          <linearGradient id={`p${index}`} x1="0" x2="1">
-            <stop offset="0" stopColor="#FFFFFF" />
-            <stop offset="1" stopColor={page} />
-          </linearGradient>
-        </defs>
-
-        {/* pages */}
-        <path
-          d="M7 5 Q10 3 13 5 L34 10 L34 66 Q31 69 27 67 L8 62 Q6 61 6 58 Z"
-          fill={`url(#p${index})`}
-          stroke="#CBD5E1"
-          strokeWidth="1.2"
-        />
-        {/* front cover */}
-        <path
-          d="M4 3 Q6 1 9 3 L29 8 Q33 9 33 12 L33 64 Q33 68 29 67 L8 62 Q4 61 4 58 Z"
-          fill={`url(#g${index})`}
-          stroke={spine}
-          strokeWidth="1.5"
-        />
-        {/* spine */}
-        <path d="M4 5 Q6 3 9 4 L9 62 Q6 61 4 59 Z" fill={spine} />
-        {/* title decoration */}
-        <path d="M13 18 L26 21" stroke="#fff" strokeWidth="2" opacity=".9" />
-        <path d="M13 23 L28 27" stroke="#fff" strokeWidth="1.5" opacity=".65" />
-        <circle cx="21" cy="39" r="6" fill="#fff" opacity=".9" />
-        <path d="M18 39 L21 36 L24 39 L21 42 Z" fill={cover} />
-        {/* page edges */}
-        <path d="M12 57 L29 61" stroke="#94A3B8" strokeWidth="1" opacity=".7" />
-        <path d="M12 59 L28 63" stroke="#94A3B8" strokeWidth="1" opacity=".5" />
-      </svg>
-    </div>
-  );
-}
-
-// Above this many books a shelf takes the whole row, so 60 books make two
-// tidy rows instead of a tall stack.
-const WIDE_SHELF_FROM = 29;
-
-function Shelf({ capacity, books, index }) {
-  // EVERY book of the shelf is drawn: the count the student reads is the
-  // count they can see. Empty slots only appear when a shelf is not full.
-  const shown = books;
-  const empty = Math.max(0, capacity - shown.length);
-
-  return (
-    <div
-      className={`be-shelf ${capacity >= WIDE_SHELF_FROM ? "be-shelf--wide" : ""}`}
-      aria-label={`رف ${index + 1}`}
-    >
-      <div className="be-shelf__top">
-        <span className="be-shelf__number">رف {index + 1}</span>
-        <span className="be-shelf__count">
-          {books.length}/{capacity}
-        </span>
-      </div>
-
-      <div className="be-shelf__books">
-        {shown.map((bookIndex) => (
-          <Book key={bookIndex} index={bookIndex} small placed />
-        ))}
-        {Array.from({ length: empty }).map((_, i) => (
-          <span className="be-slot" key={`e-${i}`} aria-hidden="true" />
-        ))}
-      </div>
-
-      <div className="be-shelf__wood">
-        <span />
-      </div>
-    </div>
-  );
-}
-
 export default function DivisorExplorerBooks(props) {
-  const { t } = useTranslation("lesson");
-  const workspaceLevel = useWorkspaceLevel();
-  // TWO LEVELS, like every manipulation (levels.js). Inside a
-  // ManipulationWorkspace the workspace owns the only selector; posed alone,
-  // the lab shows its own. The lesson's numbers are always one of the two
-  // levels; the other one is the type's preset (24 books / 420 books).
-  const [setup] = useState(() => (workspaceLevel
-    ? null
-    : resolveManipulationLevels("divisor-explorer-books", { total: props.total ?? 420 }, props.level)));
-  const [level, setLevel] = useState(() => setup?.initial ?? null);
-  const onLessonLevel = !setup || level === setup.initial;
-  const preset = setup && !onLessonLevel ? setup.levels[level] : null;
-  const labProps = preset
-    ? {
-        total: preset.numbers.total,
-        candidates: preset.candidates,
-        initialCapacity: preset.initialCapacity,
-        pair: preset.pair,
-        title: t("manipulation.level.practiceTitle", { level: t(`manipulation.level.${level}`) }),
-      }
-    : props;
-  // The lesson's callbacks describe the lesson's numbers: the other level
-  // never ticks a lesson step.
-  const onVerdict = onLessonLevel ? props.onVerdict : undefined;
-
-  // The presentation shell wraps the lab; the lab's state lives INSIDE, so
-  // entering/leaving classroom mode never remounts it. Changing LEVEL does
-  // remount it (`key`): the other level is a different library.
+  const { t } = useTranslation('lesson');
+  const total = props.total ?? 420;
+  const title = props.title ?? t('manipulation.bookshelf.presentTitle', { books: t('manipulation.bookshelf.books', { count: total }) });
   return (
-    <ClassroomPresentation scope="manipulation" title={labProps.title ?? "جرّب: رتّب كتب المكتبة"} entry="none">
-      {setup && (
-        <ManipulationLevelSelector levels={MANIPULATION_LEVEL_IDS} value={level} onChange={setLevel} className="mb-2" />
-      )}
-      <BooksLab key={level ?? "workspace"} {...labProps} onVerdict={onVerdict} />
+    <ClassroomPresentation scope="manipulation" title={title} entry="none">
+      <BookshelfLab {...props} />
     </ClassroomPresentation>
   );
 }
 
-function BooksLab({
-  total = 420,
-  candidates = DEFAULT_CANDIDATES,
-  // La PAIRE que le manuel fait comparer (activité 1 : 26 et 28). Le bouton
-  // « essaie l'autre » bascule entre ces deux tailles. Absente, il propose un
-  // candidat qui donne le verdict inverse.
-  pair,
-  title = "جرّب: رتّب كتب المكتبة",
-  lead = "اختر عدد الكتب في كل رفّ، وانظر مباشرة: هل يبقى أي كتاب خارج الرفوف؟",
-  initialCapacity = 28,
-  onVerdict,
+const bookColor = (id) => BOOK_PALETTE[id % BOOK_PALETTE.length][0];
+const bookSpine = (id) => BOOK_PALETTE[id % BOOK_PALETTE.length][1];
+
+/** Place (px) laissée de chaque côté du rayon modèle pour la poignée. */
+const EDGE = 26;
+/** Hauteur des livres du rayon modèle (px) : on les voit de dos, hauts et fins. */
+const MODEL_BOOK_H = 46;
+
+function BookshelfLab({
+  total: total0 = 420,
+  min, max,
+  marks: marks0 = [],
+  level,
+  levels: withLevels = true,
+  discovery = 'remainder',
+  title, lead, mission,
+  onVerdict, onFinished,
 }) {
-  const { isClassroomMode: presentation, area, scale } = useClassroomMode();
-  const [capacity, setCapacity] = useState(initialCapacity);
-  // `revealed` : the student has chosen a size, so the scene shows its verdict.
-  const [revealed, setRevealed] = useState(false);
-  // Sizes already tried, with their verdict — the ✓ badge on the buttons.
+  const { t } = useTranslation('lesson');
+  const k = useCallback((key, o) => t(`manipulation.bookshelf.${key}`, o), [t]);
+  const books = useCallback((n) => k('books', { count: n }), [k]);
+  const { isClassroomMode: presentation, area } = useClassroomMode();
+
+  const state = useManipulation({
+    type: 'divisor-explorer-books',
+    initialNumbers: { total: total0 },
+    initialLevel: level,
+    hintCount: 3,
+    withLevels,
+  });
+  const { total } = state.numbers;
+  // L'autre niveau (le préréglage du type) apporte sa réglette et ses marques.
+  const preset = state.isAuthoredLevel ? null : state.levelPreset;
+  const range = useMemo(
+    () => S.shelfRange(total, preset?.range ?? { min, max }),
+    [total, preset, min, max],
+  );
+  const marks = (preset ? preset.marks : marks0) ?? [];
+
+  // ── L'état du laboratoire : la longueur VIVANTE et les essais VALIDÉS ──
+  const [b, setB] = useState(null);
   const [tried, setTried] = useState({});
+  // Nouvelle scène (niveau, « إعادة ») : le rayon est vide. Ajusté PENDANT le
+  // rendu, comme TeamBuilder — jamais une frame avec l'ancien rayon.
+  const sceneKey = `${total}:${state.epoch}`;
+  const [scene, setScene] = useState(sceneKey);
+  if (scene !== sceneKey) { setScene(sceneKey); setB(null); }
+  // La mémoire des essais part avec « إعادة » et avec un autre stock de livres.
+  const memoryKey = `${total}:${state.resetCount}`;
+  const [memory, setMemory] = useState(memoryKey);
+  if (memory !== memoryKey) { setMemory(memoryKey); setTried({}); }
 
-  const quotient = Math.floor(total / capacity);
-  const remainder = total % capacity;
-  const divides = remainder === 0;
+  const commit = useCallback((v) => {
+    setB(v);
+    setTried((prev) => S.commit(prev, total, v));
+    const a = S.arrange(total, v);
+    state.report(onVerdict, { b: v, divides: a.exact, quotient: a.shelves, remainder: a.leftOver });
+  }, [total, state, onVerdict]);
 
-  // ── Classroom layout: the shelves grid is SOLVED for the scene's budget ──
-  // The presentation offers a content box (`.sa-classroom-content`); we read
-  // its height straight from the DOM — synchronously, in a layout effect —
-  // so the very first painted frame already has a bounded grid and the
-  // presentation's fit engine never sees an overflow it would then "fix" by
-  // lowering the scale. We measure where the scene starts inside the lab and
-  // what the scene's own chrome (sign, paddings, floor) takes; the remainder
-  // is the budget for the shelves grid, and `solveShelfLayout` turns it into
-  // columns and a book size. Nothing below the grid depends on the grid, so
-  // this never oscillates.
-  const labRef = useRef(null);
-  const sceneRef = useRef(null);
-  const skyRef = useRef(null);
-  const floorRef = useRef(null);
+  // ── La découverte : méritée par le contraste (ou la symétrie en معارف) ──
+  const pair = discovery === 'symmetry' ? S.symmetryPair(tried, total) : null;
+  const ready = discovery === 'symmetry' ? pair != null : S.remainderDiscoveryReady(tried);
+  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (state.isFormal) state.report(onFinished, { tried }); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── La place réelle : la bibliothèque se dessine pour SA largeur ──
+  const boxRef = useRef(null);
+  const [width, setWidth] = useState(320);
+  useLayoutEffect(() => {
+    const el = boxRef.current;
+    if (!el) return undefined;
+    const measure = () => setWidth(Math.max(200, Math.floor(el.clientWidth)));
+    measure();
+    if (typeof ResizeObserver === 'undefined') return undefined;
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  // MODE CLASSE : le rayon qu'on tire et la bibliothèque côte à côte — sur un
+  // projecteur la largeur abonde et la hauteur manque ; empilés, ils
+  // débordaient de l'écran présenté. Sinon : l'un sous l'autre, pleine largeur.
+  const modelW = presentation ? Math.floor(width * 0.45) : width;
+  const caseW = presentation ? width - modelW - 16 : width;
+
+  // Le rayon MODÈLE (celui qu'on tire) : un livre = `mu` px, le mur à droite.
+  const mu = Math.max(3, Math.min(presentation ? 16 : 14, (modelW - 2 * EDGE) / range.max));
+  const x0 = modelW - EDGE;
+  const xOf = (v) => x0 - v * mu;
+  const toValue = useCallback((clientX, _y, rect) => (x0 - (clientX - rect.left)) / mu, [x0, mu]);
+  const stretch = useStretchInteraction({ value: b, range, toValue, onChange: setB, onCommit: commit, direction: 'rtl' });
+
+  // MODE CLASSE — le BUDGET DE HAUTEUR de la bibliothèque. Un laboratoire
+  // présenté n'est pas zoomé par la présentation : il doit tenir SEUL dans la
+  // zone offerte (CLASSROOM_MODE §8). On mesure, dans la boîte de contenu de
+  // la présentation, ce qui reste sous le haut de la bibliothèque une fois
+  // retirés tout ce qui est dessous (rôles, bas de la scène, égalité,
+  // découverte). Aucun de ces termes ne dépend de la hauteur de la
+  // bibliothèque elle-même : la mesure ne s'auto-entretient pas.
+  const caseRef = useRef(null);
+  const rolesRef = useRef(null);
   const [budget, setBudget] = useState(null);
   useLayoutEffect(() => {
     if (!presentation) { setBudget(null); return undefined; }
-    const lab = labRef.current;
-    const scene = sceneRef.current;
-    if (!lab || !scene || typeof ResizeObserver === "undefined") return undefined;
+    const svg = caseRef.current;
+    const box = svg?.closest('.sa-classroom-content');
+    const stage = svg?.closest('[data-manipulation-stage]');
+    if (!svg || !box || !stage) return undefined;
     let raf = 0;
     const measure = () => {
       raf = 0;
-      const box = lab.closest(".sa-classroom-content");
-      const availableH = box ? box.clientHeight : area.height;
-      const lr = lab.getBoundingClientRect();
-      const sr = scene.getBoundingClientRect();
-      // What sits above the scene and below it — both independent of the grid.
-      //
-      // MEASURE FROM THE CONTENT BOX, NOT FROM THE LAB. The lab is not always
-      // the first thing inside the presented area: since the two-level
-      // workspace (MANIPULATION_CONTRACT §7bis-levels) the lab sits under a
-      // title, a lead line and the مبتدئ/متقدم tabs, all inside the same
-      // content box. Measuring `above` from the lab's own top ignored that
-      // chrome, the grid was given more height than existed, and the
-      // presented lesson scrolled vertically — which the classroom contract
-      // forbids. The box's top is the only honest origin.
-      const boxTop = box ? box.getBoundingClientRect().top : lr.top;
-      const boxBottom = box ? box.getBoundingClientRect().bottom : lr.bottom;
-      const above = sr.top - boxTop;
-      const below = Math.max(0, boxBottom - sr.bottom);
-      const cs = getComputedStyle(scene);
-      const padX = (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0) + 4;
-      const padY = (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0) + 4;
-      const skyH = skyRef.current ? skyRef.current.offsetHeight : 0;
-      // The floor is drawn below the grid and MEASURED: its books have a size
-      // that depends only on the scale (CSS clamp below), never on the grid,
-      // so measuring it cannot feed back into itself.
-      // `offsetHeight`, not the bounding rect: the floor pops in with a
-      // transform animation, and a rect read mid-animation is a few px short
-      // — enough to leave the scene overflowing once the pop ends.
-      const floorEl = floorRef.current;
-      const floorH = floorEl ? floorEl.offsetHeight + (parseFloat(getComputedStyle(floorEl).marginTop) || 0) : 0;
-      const w = Math.floor(sr.width - padX);
-      const h = Math.floor(availableH - above - below - padY - skyH - floorH);
-      setBudget((prev) => (prev && prev.w === w && prev.h === h ? prev : { w, h }));
+      const br = box.getBoundingClientRect();
+      const cs = getComputedStyle(box);
+      const boxBottom = br.bottom - (parseFloat(cs.paddingBottom) || 0);
+      const realBottom = Math.max(...[...box.children].map((c) => c.getBoundingClientRect().bottom));
+      const below = realBottom - stage.getBoundingClientRect().bottom;
+      const pad = parseFloat(getComputedStyle(stage).paddingBottom) || 0;
+      const roles = rolesRef.current ? rolesRef.current.offsetHeight + 12 : 0;
+      const h = Math.floor(boxBottom - svg.getBoundingClientRect().top - roles - pad - below - 4);
+      setBudget((prev) => (prev === h ? prev : h));
     };
     const schedule = () => { if (!raf) raf = requestAnimationFrame(measure); };
-    const ro = new ResizeObserver(schedule);
-    ro.observe(lab);
-    ro.observe(scene);
-    const box = lab.closest(".sa-classroom-content");
-    if (box) ro.observe(box);
-    // L'atelier à deux niveaux change de hauteur quand on bascule : sa taille
-    // fait partie du budget, il faut donc la suivre.
-    const workspace = lab.closest("[data-manipulation-workspace]");
-    if (workspace) ro.observe(workspace);
-    if (floorRef.current) ro.observe(floorRef.current);
-    // First measure SYNCHRONOUSLY (layout effect, before paint): the budget is
-    // applied before the presentation's fit engine measures the stage, so the
-    // engine never sees the unbounded grid and never lowers the scale for it.
     measure();
+    if (typeof ResizeObserver === 'undefined') return undefined;
+    const ro = new ResizeObserver(schedule);
+    ro.observe(box);
+    const root = svg.closest('[data-manipulation]');
+    if (root) ro.observe(root);
     return () => { ro.disconnect(); if (raf) cancelAnimationFrame(raf); };
-  }, [presentation, area.height, area.width, scale, revealed, remainder]);
+  }, [presentation, area?.height, area?.width]);
 
-  const layout = presentation && revealed && budget
-    ? solveShelfLayout({ width: budget.w, height: budget.h, shelves: quotient, capacity, scale })
-    : null;
-  const sceneVars = layout ? {
-    "--be-cols": layout.cols,
-    "--be-book-w": `${layout.bookW}px`,
-    "--be-book-h": `${layout.bookH}px`,
-    "--be-book-gap": `${layout.bookGap}px`,
-    "--be-shelf-gap": `${layout.gap}px`,
-    "--be-shelves-max": `${Math.max(120, budget.h)}px`,
-  } : undefined;
-
-  // EVERY full shelf is drawn: 420 books at 10 per shelf are 42 shelves, and
-  // the student must be able to count them. Nothing is truncated.
-  const shelves = Array.from({ length: quotient }, (_, i) => {
-    const start = i * capacity;
-    return Array.from({ length: Math.min(capacity, total - start) }, (_, j) => start + j);
-  });
-
-  const reset = () => {
-    setCapacity(initialCapacity);
-    setRevealed(false);
-    setTried({});
-  };
-
-  // Choosing a size arranges the books at once and reports the verdict.
-  const choose = (value) => {
-    const verdict = {
-      b: value,
-      divides: total % value === 0,
-      quotient: Math.floor(total / value),
-      remainder: total % value,
-    };
-    setCapacity(value);
-    setRevealed(true);
-    setTried((t) => ({ ...t, [value]: verdict.divides }));
-    onVerdict?.(verdict);
-  };
-
-  // « Essayer une autre taille » — le RACCOURCI de contraste : il propose la
-  // taille qui donnera le verdict INVERSE de celui qu'on regarde, pour que
-  // l'élève voie « ça tombe juste » et « il reste des livres » sans chercher.
-  //
-  // Elle se DÉDUIT des candidats de la leçon ; elle ne peut pas être 26/28 en
-  // dur. Ce couple vient de l'activité des 420 livres : sur les 143 livres du
-  // module 2, il proposait une taille absente du rail, et le bouton mentait.
-  // Le couple du MANUEL d'abord, quand la leçon en désigne un : l'activité 1
-  // demande explicitement de comparer 26 et 28, et le raccourci doit faire
-  // exactement ce que le manuel demande. `pair` est cette paire ; sans elle,
-  // on déduit un candidat de verdict opposé parmi ceux de la leçon.
-  const contrastCandidate = (() => {
-    if (pair?.length === 2) {
-      const [x, y] = pair;
-      if (capacity === x) return y;
-      if (capacity === y) return x;
-      return x;
+  // Le dos d'un livre : le plus grand qui tient. En présentation, on descend
+  // la taille jusqu'à ce que TOUS les rayons tiennent dans le budget — tous
+  // restent dessinés, aucun n'est caché dans un défilement interne.
+  const unit = useMemo(() => {
+    const top = S.unitFor(caseW, range.max, { ceiling: presentation ? 11 : 7 });
+    if (!presentation || budget == null) return top;
+    for (let u = top; u > 2; u -= 0.5) {
+      if (S.bookcaseLayout({ total, b, width: caseW, unit: u }).height <= budget) return u;
     }
-    const wantExact = total % capacity !== 0;
-    const pool = candidates.filter((c) => c !== capacity && c <= total);
-    return pool.find((c) => (total % c === 0) === wantExact) ?? pool[0] ?? null;
-  })();
-
-  const testOther = () => {
-    if (contrastCandidate != null) choose(contrastCandidate);
-  };
-
-  return (
-    <section
-      ref={labRef}
-      className={`be-root ${presentation ? "be-root--presentation" : ""}`}
-      dir="rtl"
-      data-manipulation="divisor-explorer-books"
-      data-presentation={presentation ? "true" : "false"}
-      data-shelves-fit={layout ? (layout.fits ? "true" : "false") : undefined}
-    >
-      <style>{`
-        .be-root {
-          --ink:#17213B;
-          --muted:#64748B;
-          --line:#CBD5E1;
-          --surface:#FFFFFF;
-          --bg:#F4F7FF;
-          --violet:#6D45E8;
-          --violet2:#4F2BC5;
-          --blue:#1687D9;
-          --green:#0B9F68;
-          --green-soft:#E7F8F1;
-          --red:#E5535B;
-          --red-soft:#FFF0F1;
-          --amber:#E69A16;
-          --amber-soft:#FFF7E5;
-          font-family: "Cairo","Tajawal","Noto Sans Arabic",system-ui,sans-serif;
-          color:var(--ink);
-          width:100%;
-        }
-
-        .be-root * { box-sizing:border-box; }
-
-        .be-card {
-          background:linear-gradient(180deg,#fff 0%,#F8FAFF 100%);
-          border:2px solid #D6DDF1;
-          border-radius:26px;
-          box-shadow:0 14px 40px rgba(42,54,98,.10);
-          overflow:hidden;
-        }
-
-        .be-head {
-          padding:18px 20px 14px;
-          background:
-            radial-gradient(circle at 8% 25%,rgba(255,255,255,.85) 0 4px,transparent 5px),
-            radial-gradient(circle at 82% 70%,rgba(255,255,255,.8) 0 3px,transparent 4px),
-            linear-gradient(135deg,#F1EEFF,#EFF8FF);
-          border-bottom:1px solid #E0E6F4;
-        }
-
-        .be-head__bar {
-          display:flex;
-          align-items:center;
-          justify-content:space-between;
-          gap:10px;
-          flex-wrap:wrap;
-          margin-bottom:8px;
-        }
-
-        /* ── Classroom mode (وضع القسم) — the classroom-optimized layout ──
-           Sizes follow the presentation scale published by
-           ClassroomPresentation (--sa-classroom-scale, 0.55…1.25): the fit
-           engine lowers it when the shelves would overflow the screen and
-           lets it grow back when there is room. Nothing here is a browser
-           zoom; the layout stays responsive. */
-        .be-root--presentation {
-          --be-s: var(--sa-classroom-scale, 1);
-          max-width: 1800px;
-          margin: 0 auto;
-        }
-
-        .be-root--presentation .be-card { border-radius: 22px; box-shadow: 0 10px 30px rgba(42,54,98,.08); }
-        .be-root--presentation .be-head { display: none; }
-        .be-root--presentation .be-help { display: none; }
-        .be-root--presentation .be-mission__hint { display: none; }
-
-        /* Two regions: the CONTROLS strip on top, then the SCENE (books and
-           shelves — the widest, the biggest) beside the RESULT column. Under
-           1100px the result goes above the scene, full width. */
-        .be-root--presentation .be-game {
-          padding: calc(14px * var(--be-s)) calc(18px * var(--be-s));
-          display: grid;
-          grid-template-columns: minmax(0, 1fr) auto;
-          grid-template-areas: "top top" "scene side";
-          gap: calc(14px * var(--be-s));
-          align-items: start;
-        }
-
-        .be-root--presentation .be-game__top {
-          grid-area: top;
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          gap: calc(10px * var(--be-s)) calc(14px * var(--be-s));
-        }
-
-        .be-root--presentation .be-game__top > * { margin: 0; }
-        .be-root--presentation .be-scene { grid-area: scene; min-width: 0; }
-        .be-root--presentation .be-side {
-          grid-area: side;
-          display: flex;
-          flex-direction: column;
-          gap: calc(12px * var(--be-s));
-          width: clamp(300px, calc(380px * var(--be-s)), 470px);
-        }
-        .be-root--presentation .be-side:empty { display: none; }
-        .be-root--presentation .be-side > * { margin: 0; }
-
-        .be-root--presentation .be-mission { padding: calc(10px * var(--be-s)) calc(14px * var(--be-s)); }
-        .be-root--presentation .be-mission strong { font-size: calc(19px * var(--be-s)); }
-        .be-root--presentation .be-total { font-size: calc(28px * var(--be-s)); padding: calc(6px * var(--be-s)) calc(14px * var(--be-s)); }
-
-        .be-root--presentation .be-choices { gap: calc(8px * var(--be-s)); }
-        .be-root--presentation .be-choice {
-          min-width: calc(74px * var(--be-s));
-          min-height: calc(64px * var(--be-s));
-          padding: 0 calc(16px * var(--be-s));
-          font-size: calc(26px * var(--be-s));
-          border-radius: calc(16px * var(--be-s));
-          border-color: #94A3B8;
-          color: #0F172A;
-        }
-        .be-root--presentation .be-choice.active { color: #fff; }
-        .be-root--presentation .be-choice.tested::after {
-          width: calc(26px * var(--be-s)); height: calc(26px * var(--be-s));
-          top: calc(-11px * var(--be-s)); left: calc(-9px * var(--be-s));
-          font-size: calc(15px * var(--be-s));
-        }
-
-        .be-root--presentation .be-actions { gap: calc(9px * var(--be-s)); }
-        .be-root--presentation .be-btn { min-height: calc(56px * var(--be-s)); font-size: calc(18px * var(--be-s)); padding: 0 calc(20px * var(--be-s)); }
-
-        .be-root--presentation .be-result { padding: calc(16px * var(--be-s)) calc(20px * var(--be-s)); grid-template-columns: auto 1fr; }
-        .be-root--presentation .be-result strong { font-size: calc(22px * var(--be-s)); }
-        .be-root--presentation .be-result span { font-size: calc(17px * var(--be-s)); }
-        .be-root--presentation .be-result__icon { width: calc(60px * var(--be-s)); height: calc(60px * var(--be-s)); font-size: calc(32px * var(--be-s)); }
-        .be-root--presentation .be-equation {
-          grid-column: 1 / -1;
-          justify-self: stretch;
-          text-align: center;
-          /* 17 monospace glyphs (« 420 = 26 × 16 + 4 ») must fit the result
-             column on ONE line: ~0.6em per glyph → 30px at scale 1. */
-          font-size: calc(30px * var(--be-s));
-          padding: calc(12px * var(--be-s)) calc(14px * var(--be-s));
-          border-color: rgba(23,33,59,.18);
-        }
-        .be-root--presentation .be-observation { gap: calc(8px * var(--be-s)); }
-        .be-root--presentation .be-pill { font-size: calc(17px * var(--be-s)); padding: calc(10px * var(--be-s)) calc(16px * var(--be-s)); }
-
-        .be-root--presentation .be-scene { padding: calc(14px * var(--be-s)); }
-        .be-root--presentation .be-status { font-size: calc(17px * var(--be-s)); }
-        .be-root--presentation .be-status b { font-size: calc(24px * var(--be-s)); }
-        .be-root--presentation .be-library-sign { font-size: calc(19px * var(--be-s)); }
-
-        /* The shelves grid is SOLVED (booksClassroomLayout.js): one row of
-           books per shelf, columns and book size from the scene's budget.
-           When even the smallest readable book does not make everything
-           fit, the grid scrolls INTERNALLY — the page never does, and the
-           counters, equality and floor stay on screen. */
-        .be-root--presentation .be-shelves {
-          grid-template-columns: repeat(var(--be-cols, 2), minmax(0, 1fr));
-          gap: var(--be-shelf-gap, calc(12px * var(--be-s)));
-          max-height: var(--be-shelves-max, 40vh);
-          overflow: auto;
-          overscroll-behavior: contain;
-          padding: 3px 2px 6px;
-        }
-        .be-root--presentation .be-shelf--wide { grid-column: auto; }
-        .be-root--presentation .be-shelf { border-color: #B9C4D6; padding: calc(6px * var(--be-s)) calc(8px * var(--be-s)) 0; min-width: 0; }
-        .be-root--presentation .be-shelf__top { font-size: calc(13px * var(--be-s)); margin-bottom: calc(4px * var(--be-s)); }
-        .be-root--presentation .be-shelf__books {
-          flex-wrap: nowrap;
-          min-height: 0;
-          gap: var(--be-book-gap, 3px);
-          padding: calc(4px * var(--be-s)) calc(4px * var(--be-s)) calc(3px * var(--be-s));
-        }
-        .be-root--presentation .be-book--small,
-        .be-root--presentation .be-book--small svg { width: var(--be-book-w, 22px); height: var(--be-book-h, 46px); flex: 0 0 auto; }
-        .be-root--presentation .be-slot { width: var(--be-book-w, 22px); height: var(--be-book-h, 46px); flex: 0 0 auto; }
-        .be-root--presentation .be-shelf__wood { height: calc(10px * var(--be-s)); }
-        .be-root--presentation .be-floor__books { gap: calc(10px * var(--be-s)); }
-        /* The leftover books are the point: big, and sized by the scale ALONE
-           (never by the grid — their height is part of the grid's budget). */
-        .be-root--presentation .be-floor__books .be-book--small,
-        .be-root--presentation .be-floor__books .be-book--small svg {
-          width: clamp(22px, calc(36px * var(--be-s)), 44px);
-          height: clamp(45px, calc(74px * var(--be-s)), 91px);
-        }
-
-        .be-root--presentation .be-floor__label strong { font-size: calc(21px * var(--be-s)); }
-        .be-root--presentation .be-floor__hint { font-size: calc(16px * var(--be-s)); }
-        .be-root--presentation .be-floor__badge { min-width: calc(48px * var(--be-s)); height: calc(48px * var(--be-s)); font-size: calc(26px * var(--be-s)); }
-        .be-root--presentation .be-floor--empty { font-size: calc(20px * var(--be-s)); }
-        .be-root--presentation .be-waiting strong { font-size: calc(20px * var(--be-s)); }
-        .be-root--presentation .be-waiting span { font-size: calc(17px * var(--be-s)); }
-
-        @media (max-width: 1100px) {
-          .be-root--presentation .be-game {
-            grid-template-columns: minmax(0, 1fr);
-            grid-template-areas: "top" "side" "scene";
-          }
-          .be-root--presentation .be-side { width: auto; }
-        }
-
-        /* Normal mode: the two wrappers are transparent, the flow is unchanged. */
-        .be-game__top, .be-side { display: contents; }
-
-        .be-kicker {
-          display:inline-flex;
-          align-items:center;
-          gap:7px;
-          padding:5px 11px;
-          border-radius:999px;
-          background:#fff;
-          border:2px solid #DCD2FF;
-          color:var(--violet2);
-          font-weight:800;
-          font-size:12px;
-        }
-
-        .be-title {
-          margin:0;
-          font-size:clamp(21px,3vw,29px);
-          line-height:1.2;
-          font-weight:900;
-        }
-
-        .be-lead {
-          margin:7px 0 0;
-          color:var(--muted);
-          font-size:15px;
-          line-height:1.6;
-        }
-
-        .be-game {
-          padding:16px;
-        }
-
-        .be-mission {
-          display:flex;
-          align-items:center;
-          justify-content:space-between;
-          gap:14px;
-          flex-wrap:wrap;
-          padding:12px 14px;
-          border:2px solid #DCD2FF;
-          background:#F7F4FF;
-          border-radius:18px;
-          margin-bottom:14px;
-        }
-
-        .be-mission strong { font-size:15px; }
-        .be-total {
-          display:inline-flex;
-          align-items:center;
-          gap:7px;
-          background:#fff;
-          border:2px solid #CFC3FF;
-          border-radius:13px;
-          padding:7px 12px;
-          font-family:ui-monospace,monospace;
-          font-weight:900;
-          font-size:20px;
-          color:var(--violet2);
-          direction:ltr;
-        }
-
-        .be-choices {
-          display:flex;
-          gap:8px;
-          flex-wrap:wrap;
-          margin-bottom:14px;
-        }
-
-        .be-choice {
-          position:relative;
-          min-width:54px;
-          min-height:48px;
-          padding:0 13px;
-          border-radius:13px;
-          border:2px solid var(--line);
-          border-bottom-width:4px;
-          background:#fff;
-          cursor:pointer;
-          font:inherit;
-          font-family:ui-monospace,"Cairo",monospace;
-          font-size:17px;
-          font-weight:900;
-          transition:.16s ease;
-        }
-
-        .be-choice:hover {
-          transform:translateY(-2px);
-          border-color:var(--violet);
-        }
-
-        .be-choice.active {
-          background:var(--violet);
-          color:#fff;
-          border-color:var(--violet2);
-          box-shadow:0 5px 0 var(--violet2),0 0 0 5px rgba(109,69,232,.12);
-          transform:translateY(-2px);
-        }
-
-        /* Verdict badge on a tried size: green ✓ = divisor, red ✕ = a remainder stays. */
-        .be-choice.tested::after {
-          position:absolute;
-          top:-9px;
-          left:-7px;
-          width:20px;
-          height:20px;
-          display:grid;
-          place-items:center;
-          border-radius:50%;
-          background:var(--green);
-          color:#fff;
-          font:800 12px system-ui;
-          border:2px solid #fff;
-        }
-
-        .be-choice.tested-ok::after { content:"✓"; background:var(--green); }
-        .be-choice.tested-no::after { content:"✕"; background:var(--red); }
-        .be-choice.tested-no { border-color:#F2B8BD; }
-        .be-choice.tested-no.active { border-color:var(--violet2); }
-
-        .be-scene {
-          position:relative;
-          border:2px solid #D8E1EF;
-          border-radius:22px;
-          background:
-            radial-gradient(circle at 10% 15%,#fff 0 2px,transparent 3px),
-            linear-gradient(180deg,#F8FBFF 0%,#EDF3FC 100%);
-          padding:14px;
-          overflow:hidden;
-        }
-
-        .be-scene__sky {
-          height:42px;
-          display:flex;
-          align-items:center;
-          justify-content:space-between;
-          padding:0 4px 6px;
-        }
-
-        .be-library-sign {
-          display:flex;
-          align-items:center;
-          gap:9px;
-          padding:7px 12px;
-          background:#fff;
-          border:2px solid #D6DDF1;
-          border-radius:13px;
-          font-weight:900;
-          box-shadow:0 3px 0 rgba(25,40,70,.06);
-        }
-
-        .be-library-sign__icon {
-          width:31px;height:31px;border-radius:9px;
-          display:grid;place-items:center;
-          background:#EDE9FE;
-          font-size:20px;
-        }
-
-        .be-status {
-          display:flex;
-          align-items:center;
-          gap:7px;
-          font-size:13px;
-          color:var(--muted);
-          font-weight:800;
-        }
-
-        .be-status__sep { color:#B4BFD0; }
-
-        .be-status b {
-          font-family:ui-monospace,monospace;
-          font-size:16px;
-          color:var(--ink);
-          direction:ltr;
-        }
-
-        .be-shelves {
-          display:grid;
-          grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-          gap:11px;
-          max-height:420px;
-          overflow:auto;
-          padding:3px 2px 8px;
-        }
-
-        .be-shelf {
-          background:#FFF;
-          border:2px solid #D5DCE8;
-          border-radius:15px;
-          padding:8px 9px 0;
-          box-shadow:0 5px 10px rgba(28,42,71,.07);
-        }
-
-        .be-shelf--wide { grid-column:1 / -1; }
-
-        .be-shelf__top {
-          display:flex;
-          justify-content:space-between;
-          align-items:center;
-          margin-bottom:6px;
-          font-size:11px;
-          color:var(--muted);
-          font-weight:900;
-        }
-
-        .be-shelf__count {
-          direction:ltr;
-          font-family:ui-monospace,monospace;
-        }
-
-        .be-shelf__books {
-          min-height:58px;
-          display:flex;
-          align-items:flex-end;
-          flex-wrap:wrap;
-          gap:3px;
-          padding:5px 5px 4px;
-          background:linear-gradient(180deg,#F8FAFC,#EEF2F7);
-          border-radius:9px 9px 2px 2px;
-        }
-
-        .be-slot {
-          width:22px;
-          height:46px;
-          border:1.5px dashed #CBD5E1;
-          border-radius:4px;
-          opacity:.42;
-        }
-
-        .be-shelf__wood {
-          height:9px;
-          margin:0 -2px;
-          border-radius:3px 3px 10px 10px;
-          background:linear-gradient(180deg,#A86D3D,#70401F);
-          box-shadow:0 4px 0 #533019;
-        }
-
-        .be-book {
-          width:38px;
-          height:72px;
-          display:flex;
-          align-items:flex-end;
-          justify-content:center;
-          transform-origin:bottom center;
-          transition:transform .18s ease,filter .18s ease;
-          filter:drop-shadow(1px 3px 2px rgba(23,33,59,.20));
-        }
-
-        .be-book--small { width:22px;height:46px; }
-        .be-book--small svg { width:22px;height:46px; }
-
-        .be-book--placed { animation:be-book-in .34s cubic-bezier(.2,1.4,.5,1) both; }
-
-        .be-book:hover { transform:translateY(-7px) rotate(-2deg); filter:drop-shadow(2px 7px 3px rgba(23,33,59,.20)); }
-
-        @keyframes be-book-in {
-          0% { opacity:0; transform:translateY(-22px) rotate(-7deg) scale(.78); }
-          70% { opacity:1; transform:translateY(2px) rotate(2deg) scale(1.04); }
-          100% { opacity:1; transform:none; }
-        }
-
-        .be-floor {
-          margin-top:12px;
-          border:3px dashed #F0A3A8;
-          background:linear-gradient(180deg,#FFF6F6,var(--red-soft));
-          border-radius:17px;
-          padding:10px 12px 12px;
-          animation:be-pop .36s cubic-bezier(.2,1.35,.5,1);
-        }
-
-        .be-floor--empty {
-          border-color:#8CDEBC;
-          background:linear-gradient(180deg,#F6FDF9,var(--green-soft));
-          display:flex;
-          align-items:center;
-          gap:10px;
-          color:#08744C;
-          font-weight:900;
-          font-size:14px;
-        }
-
-        .be-floor__label {
-          display:flex;
-          align-items:center;
-          gap:9px;
-          flex-wrap:wrap;
-          margin-bottom:8px;
-          color:#9F2A32;
-        }
-
-        .be-floor__label strong { font-size:15px; }
-
-        .be-floor__badge {
-          min-width:36px;
-          height:36px;
-          padding:0 10px;
-          display:grid;
-          place-items:center;
-          border-radius:12px;
-          background:var(--red);
-          color:#fff;
-          font:900 19px ui-monospace,monospace;
-          direction:ltr;
-          box-shadow:0 3px 0 #B8333C;
-        }
-
-        .be-floor__hint {
-          color:#B04A52;
-          font-size:12.5px;
-          font-weight:700;
-        }
-
-        .be-floor__books {
-          display:flex;
-          flex-wrap:wrap;
-          align-items:flex-end;
-          gap:8px;
-          padding:10px 10px 6px;
-          border-radius:12px;
-          background:
-            repeating-linear-gradient(90deg,rgba(184,51,60,.06) 0 14px,transparent 14px 28px),
-            #FFFFFF;
-          border:2px solid #F6C9CC;
-        }
-
-        .be-book--left {
-          padding:3px 3px 0;
-          border-radius:7px;
-          outline:2px dashed var(--red);
-          outline-offset:2px;
-          background:rgba(229,83,91,.10);
-          transform:rotate(-8deg);
-          animation:be-book-left .5s cubic-bezier(.2,1.4,.5,1) both;
-        }
-
-        .be-book--left:hover { transform:translateY(-4px) rotate(-8deg); }
-
-        @keyframes be-book-left {
-          0% { opacity:0; transform:translateY(-30px) rotate(12deg) scale(.8); }
-          70% { opacity:1; transform:translateY(3px) rotate(-11deg) scale(1.05); }
-          100% { opacity:1; transform:rotate(-8deg); }
-        }
-
-        .be-waiting {
-          min-height:120px;
-          border:3px dashed #C8BDFB;
-          border-radius:19px;
-          background:linear-gradient(135deg,#F8F5FF,#FFF);
-          padding:14px 16px;
-          display:flex;
-          align-items:center;
-          gap:16px;
-          flex-wrap:wrap;
-        }
-
-        .be-waiting__pile {
-          width:82px;
-          height:75px;
-          position:relative;
-          flex:0 0 auto;
-        }
-
-        .be-stack-book {
-          position:absolute;
-          bottom:0;
-          width:45px;
-          height:68px;
-          filter:drop-shadow(1px 4px 2px rgba(23,33,59,.2));
-        }
-
-        .be-stack-book:nth-child(1){right:4px;transform:rotate(5deg);}
-        .be-stack-book:nth-child(2){right:16px;transform:rotate(-1deg);}
-        .be-stack-book:nth-child(3){right:28px;transform:rotate(-7deg);}
-
-        .be-waiting strong { display:block; font-size:15px; margin-bottom:3px; }
-        .be-waiting span { display:block; color:var(--muted); font-size:13px; line-height:1.55; }
-
-        .be-actions {
-          display:flex;
-          gap:9px;
-          flex-wrap:wrap;
-          margin-bottom:14px;
-        }
-
-        .be-btn {
-          min-height:48px;
-          border-radius:14px;
-          border:2px solid var(--line);
-          border-bottom-width:4px;
-          padding:0 16px;
-          background:#fff;
-          cursor:pointer;
-          font:inherit;
-          font-size:14px;
-          font-weight:900;
-          transition:.15s ease;
-        }
-
-        .be-btn:hover { transform:translateY(-2px); border-color:var(--violet); }
-        .be-btn:active { transform:translateY(2px); border-bottom-width:2px; }
-        .be-btn.primary { background:var(--violet); color:#fff; border-color:var(--violet2); }
-        .be-btn.secondary { background:#F8FAFC; }
-        .be-btn:disabled { opacity:.45; cursor:not-allowed; transform:none; }
-
-        .be-result {
-          margin-top:0;
-          border:2px solid;
-          border-radius:18px;
-          padding:13px 15px;
-          display:grid;
-          grid-template-columns:auto 1fr auto;
-          gap:12px;
-          align-items:center;
-          animation:be-pop .36s cubic-bezier(.2,1.35,.5,1);
-        }
-
-        .be-result.good { border-color:#7AD8B4; background:var(--green-soft); }
-        .be-result.warn { border-color:#F2CD78; background:var(--amber-soft); }
-
-        .be-result__icon {
-          width:44px;height:44px;border-radius:50%;
-          display:grid;place-items:center;
-          background:#fff;
-          font-size:24px;
-          box-shadow:0 3px 0 rgba(23,33,59,.08);
-        }
-
-        .be-result strong { display:block;font-size:16px; }
-        .be-result span { display:block;color:#5F6E84;font-size:13px;margin-top:2px; }
-
-        .be-equation {
-          direction:ltr;
-          white-space:nowrap;
-          font:900 clamp(15px,3vw,21px) ui-monospace,monospace;
-          background:#fff;
-          padding:8px 11px;
-          border-radius:12px;
-          border:2px solid rgba(23,33,59,.10);
-        }
-
-        /* .be-result span (and its fullscreen override) must not touch the equation. */
-        .be-result .be-equation span { display:inline; margin:0; font:inherit; }
-        .be-equation .q { color:var(--violet2); }
-        .be-equation .r { color:var(--red); }
-
-        .be-observation {
-          margin:13px 0 14px;
-          display:flex;
-          gap:8px;
-          flex-wrap:wrap;
-        }
-
-        .be-pill {
-          display:inline-flex;
-          align-items:center;
-          gap:6px;
-          padding:7px 11px;
-          border-radius:999px;
-          background:#fff;
-          border:2px solid #DCE3EF;
-          font-size:12px;
-          font-weight:900;
-        }
-
-        .be-pill b { font-family:ui-monospace,monospace; direction:ltr; }
-        .be-pill.ok { border-color:#8CDEBC;color:#08744C;background:#F0FBF6; }
-        .be-pill.no { border-color:#F2B8BD;color:#B8333C;background:#FFF5F5; }
-
-        .be-help {
-          margin-top:10px;
-          color:var(--muted);
-          font-size:12px;
-          line-height:1.55;
-          text-align:center;
-        }
-
-        @keyframes be-pop {
-          0%{opacity:0;transform:translateY(8px) scale(.97)}
-          65%{transform:translateY(0) scale(1.015)}
-          100%{opacity:1;transform:none}
-        }
-
-        @media (max-width:720px) {
-          .be-game { padding:11px; }
-          .be-scene { padding:9px; }
-          .be-shelves { grid-template-columns:1fr; max-height:360px; }
-          .be-result { grid-template-columns:auto 1fr; }
-          .be-equation { grid-column:1 / -1; justify-self:stretch; text-align:center; }
-        }
-
-        @media (prefers-reduced-motion:reduce) {
-          .be-root *, .be-root *::before, .be-root *::after {
-            animation-duration:.001ms !important;
-            animation-iteration-count:1 !important;
-            transition-duration:.001ms !important;
-          }
-        }
-      `}</style>
-
-      <div className="be-card">
-        <header className="be-head">
-          <div className="be-head__bar">
-            <div className="be-kicker">🎮 لعبة المكتبة · استكشف بنفسك</div>
-            <ClassroomEntryButton />
-          </div>
-          <h2 className="be-title">{title}</h2>
-          <p className="be-lead">{lead}</p>
-        </header>
-
-        <div className="be-game">
-          <div className="be-game__top">
-          <div className="be-mission">
-            <div>
-              <strong>المهمة: وزّع الكتب بالتساوي على الرفوف</strong>
-              <div className="be-mission__hint" style={{ color: "#64748B", fontSize: 12, marginTop: 2 }}>
-                جرّب عددًا واحدًا في كل رف، ثم راقب ماذا يحدث للكتب.
-              </div>
-            </div>
-            <div className="be-total">📚 {total} كتابًا</div>
-          </div>
-
-          <div className="be-choices" aria-label="عدد الكتب في كل رف">
-            {candidates.map((n) => {
-              const active = revealed && capacity === n;
-              const verdict = tried[n]; // undefined = not tried, true = divisor, false = remainder
-              return (
-                <button
-                  key={n}
-                  type="button"
-                  className={`be-choice ${active ? "active" : ""} ${
-                    verdict === undefined ? "" : verdict ? "tested tested-ok" : "tested tested-no"
-                  }`}
-                  onClick={() => choose(n)}
-                  aria-pressed={active}
-                  title={
-                    verdict === undefined
-                      ? undefined
-                      : verdict
-                        ? `${n} قاسم: لا يبقى شيء`
-                        : `${n} ليس قاسمًا: يبقى ${total % n}`
-                  }
-                >
-                  {n}
-                </button>
-              );
-            })}
-          </div>
-
-          <div className="be-actions">
-            <button className="be-btn secondary" type="button" onClick={testOther} disabled={contrastCandidate == null}>
-              🔄 جرّب {contrastCandidate ?? '—'}
-            </button>
-            <button className="be-btn secondary" type="button" onClick={reset}>
-              ↺ ابدأ من جديد
-            </button>
-          </div>
-          </div>
-
-          <div className="be-side">
-          {revealed && (
+    return 2;
+  }, [presentation, budget, caseW, range.max, total, b]);
+  const layout = S.bookcaseLayout({ total, b, width: caseW, unit });
+  const a = b == null ? null : S.arrange(total, b);
+  const settled = a != null && !stretch.dragging;
+
+  // Réglette : graduation lisible pour la place disponible.
+  const labelStep = [1, 2, 5, 10, 20].find((s) => s * mu >= 30) ?? 20;
+  const ticks = [];
+  for (let v = 0; v <= range.max; v += 1) {
+    if (v % labelStep === 0 || v % 5 === 0) ticks.push(v);
+  }
+  const handleX = xOf(b ?? range.min);
+
+  // ── Les conjectures fausses se réfutent par des essais RÉELS de la plage ──
+  const cx = useMemo(() => S.counterExamples(total, range, marks), [total, range, marks]);
+  const remainderOptions = [
+    cx.even && { text: k('opt2'), why: k('why2', { b: cx.even.b, left: books(cx.even.leftOver) }) },
+    { text: k('opt1', { total }), correct: true },
+    cx.small && cx.big && { text: k('opt3'), why: k('why3', { small: cx.small.b, left: books(cx.small.leftOver), big: cx.big.b }) },
+  ].filter(Boolean);
+
+  // Pour la règle : un essai qui a vidé le sol, et dont le quotient est
+  // lui-même une longueur que le rayon peut prendre (28 → 15).
+  const exactTrial = useMemo(() => {
+    const exact = Object.keys(tried).map(Number).filter((v) => tried[v].exact);
+    const reachable = exact.filter((v) => total / v >= range.min && total / v <= range.max);
+    const preferred = reachable.find((v) => marks.includes(v)) ?? reachable[reachable.length - 1];
+    return preferred == null ? null : { b: preferred, q: total / preferred };
+  }, [tried, total, range, marks]);
+
+  const hints = [k('hint1'), marks.length ? k('hint2') : k('hint2NoMarks'), k('hint3')];
+
+  const discoveryBlock = discovery === 'symmetry' ? (
+    <ManipulationDiscovery
+      state={state}
+      prompt={pair ? k('symPrompt', { b: pair[0], q: pair[1] }) : null}
+      options={pair ? [
+        { text: k('symOpt2', { b: pair[0], q: pair[1] }), why: k('symWhy2', { q: pair[1] }) },
+        { text: k('symOpt1', { b: pair[0], q: pair[1], total }), correct: true },
+        { text: k('symOpt3'), why: k('symWhy3', { b: pair[0], q: pair[1] }) },
+      ] : []}
+      formal={pair && (
+        <div className="space-y-2">
+          <EquationDisplay tex={`${total} = ${pair[0]} \\times ${pair[1]} = ${pair[1]} \\times ${pair[0]}`} tone="result" note={k('symFormalNote')} />
+          <p className="text-sm text-slate-700">{k('conclusion')}</p>
+        </div>
+      )}
+    />
+  ) : (
+    <ManipulationDiscovery
+      state={state}
+      prompt={k('discoverPrompt')}
+      options={remainderOptions}
+      formal={(
+        <div className="space-y-2">
+          <EquationDisplay tex={'a = b \\times q + r'} tone="result" note={k('formalNote')} />
+          <p className="text-sm text-slate-700">{k('conclusion')}</p>
+          {exactTrial && (
             <>
-              <div className={`be-result ${divides ? "good" : "warn"}`}>
-                <div className="be-result__icon">{divides ? "🎉" : "📖"}</div>
-
-                <div>
-                  <strong>
-                    {divides
-                      ? `رائع! كل الكتب دخلت الرفوف.`
-                      : `توقّف! بقيت ${remainder} كتب خارج الرفوف.`}
-                  </strong>
-                  <span>
-                    {divides
-                      ? `كوّنا ${quotient} رفوف، في كل رف ${capacity} كتابًا.`
-                      : `كوّنا ${quotient} رفوف ممتلئة، ثم بقيت ${remainder} كتب.`}
-                  </span>
-                </div>
-
-                <div className="be-equation">
-                  {total} = <span className="q">{capacity} × {quotient}</span>
-                  {" + "}
-                  <span className="r">{remainder}</span>
-                </div>
-              </div>
-
-              <div className="be-observation">
-                <span className={`be-pill ${remainder === 0 ? "ok" : "no"}`}>
-                  {remainder === 0 ? "✓ لا يبقى شيء" : "✕ يبقى شيء"}
-                </span>
-                <span className="be-pill">
-                  عدد الرفوف: <b>{quotient}</b>
-                </span>
-                <span className="be-pill">
-                  الباقي: <b>{remainder}</b>
-                </span>
-              </div>
+              <p className="text-sm text-slate-700">{k('quotientToo', { q: exactTrial.q, shelves: k('shelvesIn', { count: exactTrial.b }) })}</p>
+              <EquationDisplay tex={`${total} = ${exactTrial.b} \\times ${exactTrial.q} = ${exactTrial.q} \\times ${exactTrial.b}`} tone="ok" />
             </>
           )}
+        </div>
+      )}
+    />
+  );
+
+  // Le rayon modèle est moins haut en présentation : la hauteur y est comptée.
+  const modelH = presentation ? 34 : MODEL_BOOK_H;
+  const roles = a && (
+    <DivisionRoles roles={[
+      { key: 'b', text: k('roleB', { b }) },
+      { key: 'q', text: k('roleQ', { q: a.shelves }) },
+      { key: 'r', text: k('roleR', { r: a.leftOver, b }) },
+    ]} />
+  );
+  // Le sol, en mots : la résistance, pas un verdict.
+  const floorNote = a == null
+    ? <p className="text-sm font-bold text-slate-600" data-floor-note="pile">{k('pile', { total })}</p>
+    : a.exact
+      ? (
+        <p className="rounded-xl border-2 border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900" data-floor-note="empty">
+          {k('floorEmpty')}
+        </p>
+      ) : (
+        <p className="rounded-xl border-2 border-rose-200 bg-rose-50 px-3 py-2 text-sm font-bold text-rose-900" data-floor-note="ghost">
+          <span className="me-1 rounded bg-rose-600 px-1.5 py-0.5 text-xs text-white">{k('ghost')}</span>
+          {k('ghostNote', { missing: books(a.missing) })}
+        </p>
+      );
+
+  return (
+    <ManipulationShell
+      type="divisor-explorer-books"
+      title={title ?? k('title', { books: books(total) })}
+      // Au projecteur, la consigne est DITE par l'enseignant : la place va au
+      // laboratoire (il doit tenir seul dans l'écran, CLASSROOM_MODE §8).
+      mission={presentation ? null : (mission ?? k('mission'))}
+      lead={presentation ? null : lead}
+      state={state}
+      hints={hints}
+      headerAction={<ClassroomEntryButton />}
+      representation={settled && (
+        <div className="space-y-2" data-bookshelf-verdict={a.exact ? 'exact' : 'remainder'}>
+          <EquationDisplay tex={`${total} = ${b} \\times ${a.shelves} + ${a.leftOver}`} tone={a.exact ? 'ok' : 'result'} />
+          {!presentation && roles}
+        </div>
+      )}
+      discovery={discoveryBlock}
+      explanation={k('explanation')}
+    >
+      <ManipulationStage className="bg-gradient-to-b from-amber-50/60 to-white" data-dragging={stretch.dragging ? 'true' : undefined}>
+        <div ref={boxRef} className={presentation ? 'flex items-start gap-4' : 'space-y-3'} data-bookshelf data-presentation={presentation ? 'true' : 'false'}>
+          <div className="space-y-3" style={presentation ? { width: modelW, flex: 'none' } : undefined}>
+          {/* ── LE RAYON MODÈLE : la grandeur que le doigt tient ───────────── */}
+          <div
+            {...stretch.trackProps}
+            className="relative"
+            style={{ ...stretch.trackProps.style, height: modelH + 74 }}
+            data-model-shelf
+          >
+            <svg width={modelW} height={modelH + 74} className="absolute inset-0" aria-hidden="true" focusable="false">
+              {/* la zone que la réglette n'atteint pas (trop de rayons à dessiner) */}
+              {range.min > 1 && (
+                <rect x={xOf(range.min - 0.5)} y={modelH + 36} width={(range.min - 0.5) * mu} height={10} fill="#E2E8F0" rx={2} />
+              )}
+              {/* le mur et la planche */}
+              <rect x={x0} y={20} width={6} height={modelH + 18} fill="#92400E" rx={1} />
+              <rect x={xOf(range.max) - 6} y={modelH + 30} width={range.max * mu + 12} height={6} fill="#B45309" rx={2} />
+              {/* les livres du rayon : b dos, contre le mur */}
+              {b != null && Array.from({ length: b }, (_, j) => (
+                <g key={j}>
+                  <rect x={x0 - (j + 1) * mu + 0.4} y={30 - (j % 3) * 2} width={Math.max(1, mu - 0.8)} height={modelH + (j % 3) * 2} fill={bookColor(j)} rx={Math.min(2, mu / 4)} />
+                  {mu >= 7 && <rect x={x0 - (j + 1) * mu + 0.4} y={40 - (j % 3) * 2} width={Math.max(1, mu - 0.8)} height={3} fill={bookSpine(j)} opacity={0.6} />}
+                </g>
+              ))}
+              {/* la réglette */}
+              {ticks.map((v) => (
+                <g key={v}>
+                  <line x1={xOf(v)} x2={xOf(v)} y1={modelH + 38} y2={modelH + (v % 10 === 0 ? 48 : 44)} stroke="#94A3B8" strokeWidth={1} />
+                  {v % labelStep === 0 && v > 0 && !marks.some((m) => Math.abs(m - v) * mu < 16) && (
+                    <text x={xOf(v)} y={modelH + 60} textAnchor="middle" fontSize={11} fill="#475569" fontFamily="ui-monospace, monospace">{v}</text>
+                  )}
+                </g>
+              ))}
+              {/* les nombres du manuel : des repères SUR la réglette, pas des
+                  réponses. Deux repères voisins (26, 28 sur un téléphone)
+                  s'écrivent en quinconce pour ne pas se chevaucher. */}
+              {marks.map((m, i) => (
+                <g key={`m${m}`} data-shelf-mark={m}>
+                  <path d={`M ${xOf(m)} ${modelH + 37} l -4 7 h 8 z`} fill="#D97706" />
+                  <text x={xOf(m)} y={modelH + (i % 2 && marks.length > 1 && Math.abs(marks[i] - marks[i - 1]) * mu < 22 ? 68 : 58)} textAnchor="middle" fontSize={11} fontWeight={800} fill="#B45309" fontFamily="ui-monospace, monospace">{m}</text>
+                </g>
+              ))}
+              {/* le serre-livres */}
+              <path
+                d={`M ${handleX - 1} ${24} h -5 v ${modelH + 12} h 16 v -5 h -11 z`}
+                fill={b == null ? '#94A3B8' : '#334155'}
+              />
+            </svg>
+            {/* La poignée : 44 × 64, focalisable, un vrai curseur. */}
+            <div
+              {...stretch.handleProps({ label: k('handle'), valueText: b == null ? k('notSet') : k('valueText', { books: books(b) }) })}
+              className={`absolute top-3 flex h-16 w-11 -translate-x-1/2 items-start justify-center rounded-xl border-2 outline-none transition-colors focus-visible:ring-4 focus-visible:ring-blue-300 ${stretch.dragging ? 'border-blue-500 bg-blue-500/10' : 'border-transparent hover:border-slate-300'}`}
+              style={{ left: handleX, cursor: stretch.dragging ? 'grabbing' : 'grab' }}
+            >
+              <span dir="ltr" className="-mt-3 rounded-full bg-slate-800 px-2 py-0.5 font-mono text-sm font-extrabold text-white shadow" data-shelf-capacity>
+                {b ?? '?'}
+              </span>
+            </div>
           </div>
 
-          <div className="be-scene" ref={sceneRef} style={sceneVars}>
-            <div className="be-scene__sky" ref={skyRef}>
-              <div className="be-library-sign">
-                <span className="be-library-sign__icon">📚</span>
-                <span>مكتبة المدرسة</span>
-              </div>
-              <div className="be-status">
-                <span>
-                  الكتب في كل رف: <b>{revealed ? capacity : "—"}</b>
-                </span>
-                <span className="be-status__sep" aria-hidden="true">·</span>
-                <span>
-                  الرفوف الممتلئة: <b>{revealed ? quotient : "—"}</b>
-                </span>
-              </div>
-            </div>
+          {/* ── Le chemin sans glisser : − / + (la réglette se touche aussi) ── */}
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <button type="button" onClick={() => stretch.nudge(-1)} aria-label={k('shorter')} disabled={b != null && b <= range.min}
+              className="inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-slate-300 bg-white text-slate-800 disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+              <Minus className="h-5 w-5" aria-hidden="true" />
+            </button>
+            <p className="min-w-[7rem] text-center text-sm font-bold text-slate-700" data-shelf-readout>
+              {b == null ? k('notSet') : k('valueText', { books: books(b) })}
+            </p>
+            <button type="button" onClick={() => stretch.nudge(1)} aria-label={k('longer')} disabled={b != null && b >= range.max}
+              className="inline-flex h-11 w-11 items-center justify-center rounded-xl border-2 border-slate-300 bg-white text-slate-800 disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+              <Plus className="h-5 w-5" aria-hidden="true" />
+            </button>
+          </div>
 
-            {revealed ? (
-              <div className="be-shelves">
-                {shelves.map((books, i) => (
-                  <Shelf key={`${capacity}-${i}`} capacity={capacity} books={books} index={i} />
+          {/* ── Les compteurs : ce qu'on voit, en nombres ─────────────────── */}
+          <div className="flex flex-wrap items-center gap-2 text-sm font-bold" data-bookshelf-counters>
+            <span className="rounded-full bg-violet-100 px-3 py-1 text-violet-900">
+              {k('shelvesLabel')}: <b dir="ltr" data-shelves-count>{a ? a.shelves : 0}</b>
+            </span>
+            <span className={`rounded-full px-3 py-1 ${a && a.exact ? 'bg-emerald-100 text-emerald-900' : 'bg-rose-100 text-rose-900'}`}>
+              {k('floorLabel')}: <b dir="ltr" data-floor-count>{a ? a.leftOver : total}</b>
+            </span>
+          </div>
+          </div>
+
+          <div className="space-y-3" style={presentation ? { width: caseW, flex: 'none' } : undefined}>
+          {/* ── LA BIBLIOTHÈQUE : tous les rayons, tous les livres ─────────── */}
+          <svg
+            ref={caseRef}
+            width={caseW} height={layout.height} viewBox={`0 0 ${caseW} ${layout.height}`}
+            role="img"
+            aria-label={a ? `${k('shelvesLabel')}: ${a.shelves} · ${k('floorLabel')}: ${a.leftOver}` : k('pile', { total })}
+            data-bookcase data-capacity={b ?? ''} data-shelves={a ? a.shelves : 0} data-floor={a ? a.leftOver : total}
+          >
+            {layout.pile && (
+              <g data-pile>
+                {layout.pile.books.map((bk) => (
+                  <rect key={bk.id} data-floor-book x={bk.x + 0.3} y={bk.y} width={Math.max(1, unit - 0.6)} height={layout.bookH} fill={bookColor(bk.id)} opacity={0.85} rx={0.8} />
                 ))}
-              </div>
-            ) : (
-              <div className="be-waiting" role="status">
-                <div className="be-waiting__pile" aria-hidden="true">
-                  <Book index={1} className="be-stack-book" />
-                  <Book index={3} className="be-stack-book" />
-                  <Book index={5} className="be-stack-book" />
-                </div>
-                <div>
-                  <strong>📦 {total} كتابًا تنتظر مكانها</strong>
-                  <span>اختر عدد الكتب في كل رفّ من الأزرار أعلاه، وسترى الرفوف تمتلئ فورًا.</span>
-                </div>
-              </div>
+              </g>
             )}
-
-            {revealed && remainder > 0 && (
-              <div
-                ref={floorRef}
-                className="be-floor"
-                role="group"
-                aria-label={`${remainder} كتب بقيت خارج الرفوف`}
-              >
-                <div className="be-floor__label">
-                  <span className="be-floor__badge">{remainder}</span>
-                  <strong>كتب بقيت خارج الرفوف</strong>
-                  <span className="be-floor__hint">
-                    لا تكفي لملء رفّ جديد من {capacity} كتابًا
-                  </span>
-                </div>
-                <div className="be-floor__books">
-                  {Array.from({ length: remainder }, (_, j) => quotient * capacity + j).map(
-                    (bookIndex) => (
-                      <Book key={bookIndex} index={bookIndex} small placed left />
-                    )
-                  )}
-                </div>
-              </div>
+            {layout.shelves.map((s) => (
+              <g key={s.index} data-shelf>
+                <rect x={s.x} y={s.y} width={layout.shelfW} height={layout.bookH + S.PLANK} fill="#FFF7ED" stroke="#E7C9A5" rx={2} />
+                {s.books.map((bk) => (
+                  <rect key={bk.id} data-book x={bk.x + 0.3} y={s.y + 1 + (bk.id % 3)} width={Math.max(1, unit - 0.6)} height={layout.bookH - 1 - (bk.id % 3)} fill={bookColor(bk.id)} rx={0.8} />
+                ))}
+                <rect x={s.x} y={s.y + layout.bookH} width={layout.shelfW} height={S.PLANK} fill="#B45309" rx={1} />
+              </g>
+            ))}
+            {layout.ghost && (
+              <g data-ghost-shelf>
+                <rect x={layout.ghost.x} y={layout.ghost.y} width={layout.ghost.w} height={layout.bookH + S.PLANK} fill="#FFF1F2" stroke="#F43F5E" strokeDasharray="4 3" rx={2} />
+                {layout.ghost.slots.map((x, j) => (
+                  <rect key={`s${j}`} data-empty-slot x={x + 0.6} y={layout.ghost.y + 2} width={Math.max(1, unit - 1.2)} height={layout.bookH - 3} fill="none" stroke="#FDA4AF" strokeWidth={0.8} strokeDasharray="2 2" />
+                ))}
+                {layout.ghost.books.map((bk) => (
+                  <rect key={bk.id} data-floor-book x={bk.x + 0.3} y={layout.ghost.y + 1 + (bk.id % 3)} width={Math.max(1, unit - 0.6)} height={layout.bookH - 1 - (bk.id % 3)} fill={bookColor(bk.id)} rx={0.8} />
+                ))}
+              </g>
             )}
+          </svg>
 
-            {revealed && remainder === 0 && (
-              <div ref={floorRef} className="be-floor be-floor--empty" role="status">
-                <span aria-hidden="true">✅</span>
-                الأرض فارغة: كل كتاب وجد مكانه في رفّ.
-              </div>
-            )}
-
-            <div className="be-help">
-              💡 لا نخبرك بالإجابة قبل التجربة. انظر إلى الكتب: هل تستطيع وضع العدد نفسه
-              في كل رف من دون أن يبقى كتاب خارج المكتبة؟
-            </div>
+          {/* En présentation, les rôles et le sol accompagnent la bibliothèque :
+              la colonne du rayon reste courte, et l'égalité tient à l'écran. */}
+          {presentation && <div ref={rolesRef} className="space-y-3">{settled && roles}{floorNote}</div>}
+          {!presentation && floorNote}
           </div>
         </div>
-      </div>
-    </section>
+      </ManipulationStage>
+    </ManipulationShell>
   );
 }

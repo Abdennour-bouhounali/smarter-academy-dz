@@ -32,12 +32,18 @@ export function groupingLayout({ a, b, k, maxGroups = 18 }) {
   const rb = B ? B.leftOver : b;
   const shown = Math.min(k, maxGroups);
   const perGroup = qa + qb;
+  // La taille suit la CHARGE DESSINÉE de toute la scène, pas d'un seul cadre :
+  // 18 bouquets de 8 fleurs, c'est 144 fleurs à l'écran. Réglée sur un seul
+  // cadre (8 → 20 px), chaque cadre prenait toute la largeur d'un téléphone et
+  // la table s'étirait sur 1 700 px (2026-09-30). Les cadres, eux, restent
+  // identiques entre eux — c'est ce qui compte.
+  const drawn = Math.max(perGroup, (shown * perGroup) / 2);
   return {
     k, qa, qb, ra, rb,
     works: ra === 0 && rb === 0,
     shown,
     hidden: k - shown,
-    itemWidth: itemWidthFor(perGroup),
+    itemWidth: itemWidthFor(drawn),
     perRow: perRowFor(perGroup),
   };
 }

@@ -474,6 +474,32 @@ Reference implementation: `admin.bulk` in
 `apps/web/src/i18n/locales/ar/admin.json`, consumed by `BulkActionBar.jsx` and
 `bulkContentActions.jsx`. Tested in `apps/web/src/hooks/bulkSelection.test.js`.
 
+### Counting nouns in manipulations (2026-09-30)
+
+A manipulation interpolates numbers the student produces (15 players, 16 shelves, 4 books),
+so every counted noun in its strings is a six-form key, with the same two families:
+
+| Family | Case | Example key |
+|---|---|---|
+| `manipulation.teamBuilder.players` | subject | «‌في كل فريق لاعبان‌» |
+| `manipulation.teamBuilder.playersIn` / `teamsIn` | object / oblique | «‌وزّع 15 لاعبًا على فريقَين‌» |
+| `manipulation.bookshelf.books` / `shelves` | subject | «‌ينقصه 22 كتابًا‌», «‌رفوف ممتلئة: 16‌» |
+| `manipulation.bookshelf.shelvesIn` | object | «‌لترى 28 رفًّا‌» |
+
+The component builds the counted phrase (`t('…players', { count })`) and passes it as a
+named slot (`{{players}}`) into the sentence. When a sentence would need several agreeing
+counts, **rephrase** it as «‌الوصف: العدد‌» or with bare numbers («‌لو كان عدد اللاعبين 18 أو
+15…‌») rather than inventing agreement. `team-builder`, `divisor-explorer-books`, `factor-pairs`, `divisor-properties` («‌لوحتان‌»),
+`common-divisors` and `coprime-explorer` (label style «‌في كل باقة — زهرة حمراء: 5‌»),
+`fraction-reduction` («‌خطوتان‌») and `euclidean-algorithm` (label style) follow this since
+2026-09-30.
+
+**An equation inside an Arabic sentence is a `<bdi dir="ltr">`.** Built from numbers in the
+component (`eq(\`${a} = ${n} × ${q}\`)` in `DivisorProperties.jsx`), never interpolated into an
+Arabic string with `dir="auto"`: «‌18 = 3 × 6‌» otherwise rendered as «‌6 × 3 = 18‌», and «‌7² ≤ 60‌»
+as the false «‌7² ≥ 60‌» (forensic audit, defect m). `manipulations.mjs` measures it: in every
+visible `bdi[dir="ltr"]` the first character lies to the left of the last.
+
 ### Translating outside a component
 
 `bulkContentActions.jsx` is a factory called from `useMemo`, not a component,

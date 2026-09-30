@@ -36,22 +36,22 @@ export default function Module01SabaataAsharWaThamaniyataAshar() {
             beginner: () => (
               <Manipulation type="coprime-explorer" a={17} b={18} startWith="groups" theme="school"
                 title="17 قلمًا و 18 كراسًا: كم حقيبة متماثلة؟"
-                lead="جرّب عدد الحقائب: 2، 3، 4… هل ينجح أيّ عدد غير 1؟ ثم تأكّد بالقائمتين."
+                lead="أضف الحقائب واحدة بعد أخرى حتى 17: هل ينجح أيّ عدد غير 1؟"
                 onFinished={() => setC1(true)} />
             ),
             advanced: () => (
               <Manipulation type="coprime-explorer" a={22} b={35}
                 title="ب) 22 و 35: أثبت بنفسك"
-                lead="لا أحد يخبرك بالجواب: اكشف القائمتين، ضع كل قاسم مشترك في الوسط، ثم احكم." />
+                lead="لا أحد يخبرك بالجواب: جرّب في الوسط قواسم العدد الأصغر واحدًا واحدًا، ثم تحقّق." />
             ),
           }}
         />
       )}
       steps={[
-        { num: 1, title: 'أ) لماذا PGCD(17 ; 18) = 1؟', subtitle: 'اكشف المناولة أولًا', done: q1,
+        { num: 1, title: 'أ) لماذا PGCD(17 ; 18) = 1؟', subtitle: 'أنهِ المناولة أولًا', done: c1 && q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="awwaliyan-taarif" lead="القاسم المشترك الوحيد هو 1: هذا ما يسمّيه الكتاب عددين أوليين فيما بينهما." />
+              <KnowledgeBrick id="awwaliyan-taarif" lead="قارن بما وجدته بالحقائب: كم عددًا من الحقائب نجح مع 17 قلمًا و 18 كراسًا؟" />
               <TapQuestion prompt={<span>لماذا القاسم المشترك الأكبر للعددين 17 و 18 هو 1؟</span>}
                 options={['قواسم 17: 1 ، 17؛ قواسم 18: 1 ، 2 ، 3 ، 6 ، 9 ، 18؛ القاسم المشترك الوحيد هو 1', 'لأن 17 عدد أولي', 'لأن 18 عدد زوجي و 17 عدد فردي', 'لأن 17 لا يقسم 18']} correct={0} cols={1} requires={['awwaliyan-taarif']}
                 explain={<span>نقول إن 17 و 18 أوليان فيما بينهما ونكتب <MathText>{'$\\mathrm{PGCD}(18\\ ;\\ 17) = 1$'}</MathText>.</span>} onAnswered={() => setQ1(true)} />

@@ -57,14 +57,14 @@ export default function Module01Baqat() {
               <div className="space-y-2">
                 <Manipulation type="common-divisors" a={STARTER.numbers.a} b={STARTER.numbers.b} context={STARTER.context} theme="football"
                   title="تمرّن أولًا: 12 كرة و 18 قميصًا"
-                  lead="ما أكبر عدد من الفرق المتماثلة يمكن تشكيله دون أن يبقى شيء؟ جرّب عدّة أعداد." />
+                  lead="أضف الفرق واحدًا بعد الآخر: متى لا يبقى شيء؟ وما أكبر عدد ممكن من الفرق المتماثلة؟" />
                 <SourceTag source={STARTER.source} />
               </div>
             ),
             advanced: () => (
               <Manipulation type="common-divisors" a={red} b={white} context={ACTIVITY.context} theme="garden"
                 title="قواسم 90، قواسم 54، وما بينهما"
-                lead="شكّل الباقات أولًا: ما أكبر عدد منها؟ ثم انتقل إلى القائمتين واختر الأعداد التي تقسم 90 و 54 معًا: كل واحد منها عدد باقات ممكن."
+                lead="أضف الباقات واحدة بعد أخرى: متى تدخل كل الزهور؟ وما أكبر عدد ممكن منها؟ ثم انتقل إلى القائمتين."
                 onFinished={() => setLabDone(true)} />
             ),
           }}
@@ -74,7 +74,7 @@ export default function Module01Baqat() {
         { num: 1, title: 'هل يمكنه تشكيل 9 باقات؟ ماذا يمثل العدد 9؟', done: q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="qawasim-mushtaraka" lead="9 يقسم 90 و 54 معًا: هذا ما يسمّيه الكتاب قاسمًا مشتركًا." />
+              <KnowledgeBrick id="qawasim-mushtaraka" lead="طبّق التعريف على ما رأيته: مع 9 باقات، هل بقيت زهرة حمراء أو بيضاء خارجها؟" />
               <TapQuestion prompt={<span>9 باقات: في كل باقة <MathText>{'$90 \\div 9 = 10$'}</MathText> زهرات حمراء و <MathText>{'$54 \\div 9 = 6$'}</MathText> بيضاء. ماذا يمثّل 9 بالنسبة إلى 90 و 54؟</span>}
                 options={['9 قاسم مشترك للعددين 90 و 54', '9 مضاعف مشترك للعددين', '9 هو الفرق بين 90 و 54', '9 قاسم لـ 90 فقط']} correct={0} cols={2} requires={['qawasim-mushtaraka']}
                 explain={<span>9 يقسم 90 ويقسم 54 في آن واحد؛ لذلك لا تبقى أية زهرة.</span>} onAnswered={() => setQ1(true)} />

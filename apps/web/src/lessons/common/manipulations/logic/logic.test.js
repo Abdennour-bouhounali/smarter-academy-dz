@@ -12,7 +12,12 @@ import { plausibleChoices } from '../useManipulation';
 /* Les nombres sont ceux du manuel (§29) : 420/26/28, 60, 105, 18-12-3,
    90/54, 42/60, 252/140, 765/135, 1938/836, 17/18, 27/36, 84/48, 595/560. */
 
-describe('divisor-explorer (420 livres)', () => {
+/* `divisor-explorer` est le type SHELL de la division, enregistré mais posé par
+   aucune leçon aujourd'hui. Ce bloc ne teste QUE sa logique : le laboratoire
+   des livres de la leçon 1 (`divisor-explorer-books`) a sa propre logique,
+   `logic/bookshelf.js`, testée plus bas (bookshelf.test.js). L'ancien titre
+   « 420 livres » faisait croire que ce bloc couvrait le laboratoire réel. */
+describe('divisor-explorer (logique du type shell, sans leçon)', () => {
   it('poser 26 laisse 4 livres, poser 28 range tout — le verdict EST le reste', () => {
     let s = DE.init({ a: 420 });
     s = DE.place(s, 26);
@@ -57,6 +62,35 @@ describe('factor-pairs (60 et 105)', () => {
     expect(FP.foundDivisors(s)).toEqual([1, 3, 5, 7, 15, 21, 35, 105]);
     expect(FP.foundDivisors(s)).toEqual(FP.allDivisors(s));
   });
+  it('« tourné » ne dépend pas de l’ordre des essais (24 : 8, 6, 5, 7 PUIS 1…4)', () => {
+    let s = FP.init({ n: 24 });
+    for (const d of [8, 6, 5, 7, 1, 2, 3, 4]) s = FP.test(s, d);
+    const at = (d) => s.tested.find((t) => t.d === d);
+    expect(at(3).repeat).toBe(false);        // 3 × 8 : debout, pas un doublon
+    expect(at(4).repeat).toBe(false);
+    expect(at(8).repeat).toBe(true);         // 8 × 3 : le même, couché
+    expect(at(6).repeat).toBe(true);
+    expect(s.pairs.map((p) => p.key)).toEqual(['1x24', '2x12', '3x8', '4x6']);
+    expect(FP.discoveryReady(s)).toBe(true);
+  });
+  it('la réglette va jusqu’au premier diviseur au-delà de √n, sans jamais aller jusqu’à n', () => {
+    expect(FP.widthRange(60)).toEqual({ min: 1, max: 14 });
+    expect(FP.widthRange(105)).toEqual({ min: 1, max: 20 });
+    expect(FP.widthRange(24)).toEqual({ min: 1, max: 8 });
+    expect(FP.widthRange(7)).toEqual({ min: 1, max: 7 });   // un nombre premier : 7 lui-même
+  });
+  it('le rectangle tient dans son cadre pour toute largeur, et devient carré en √n', () => {
+    for (const n of [24, 48, 60, 105]) {
+      const { max } = FP.widthRange(n);
+      for (let d = 1; d <= max; d += 1) {
+        const L = FP.rectangleLayout({ n, d, box: 240 });
+        expect(L.width, `${n}/${d}`).toBeLessThanOrEqual(240.001);
+        expect(L.height, `${n}/${d}`).toBeLessThanOrEqual(240.001);
+        expect(L.rows * d + L.rest, `${n}/${d}`).toBe(n);
+      }
+    }
+    expect(FP.rectangleLayout({ n: 36, d: 6, box: 240 }).square).toBe(true);
+  });
 });
 
 describe('divisor-properties (n = 3, a = 18, b = 12)', () => {
@@ -73,16 +107,15 @@ describe('divisor-properties (n = 3, a = 18, b = 12)', () => {
     s = DP.build(s, 'rem');
     expect(DP.discoveryReady(s)).toBe(true);
   });
-  it('la preuve se construit dans l’ordre du manuel, une mauvaise ligne est signalée sans bloquer', () => {
-    let p = DP.proofInit();
-    expect(p.pool).toHaveLength(5);
-    expect(DP.proofCanPlace(p, 'sum', 0)).toBe('wrongLine');
-    p = DP.proofPlace(p, 'sum', 0);
-    expect(p.wrong).toBe('sum');
-    expect(p.placed).toEqual([]);
-    for (const id of ['hyp-a', 'hyp-b', 'sum', 'factor', 'concl']) p = DP.proofPlace(p, id, p.placed.length);
-    expect(DP.proofDone(p)).toBe(true);
-    expect(p.pool).toEqual([]);
+  it('au niveau متقدم, on PRÉDIT avant de bâtir ; le mur confirme (toujours des briques entières)', () => {
+    let s = DP.init({ n: 9, a: 900, b: 90 });
+    expect(DP.canBuild(s, 'sum', { requirePrediction: true })).toBe('predictFirst');
+    s = DP.predict(s, 'sum', 'partial');
+    expect(DP.canBuild(s, 'sum', { requirePrediction: true })).toBe(true);
+    s = DP.build(s, 'sum');
+    expect(DP.outcome(s, 'sum')).toBe('whole');           // la prédiction « partiel » est réfutée
+    expect(DP.predict(s, 'sum', 'whole')).toBe(s);          // on ne réécrit pas une prédiction après coup
+    for (const t of DP.TARGETS) expect(DP.outcome(DP.init({ n: 7, a: 56, b: 21 }), t)).toBe('whole');
   });
 });
 
@@ -97,19 +130,34 @@ describe('common-divisors', () => {
     expect(s.tried[5]).toBe('single');
     expect(CD.greatestGroupFound(s)).toBe(false);
     s = CD.choose(s, 18);
+    // 18 marche, mais « le plus grand » n'est pas encore montré : rien au-delà.
+    expect(CD.greatestGroupFound(s)).toBe(false);
+    s = CD.choose(s, 19);
     expect(CD.greatestGroupFound(s)).toBe(true);
   });
-  it('12/18 : trois essais (2 ✓, 5 ✗, 3 ✓) ne suffisent plus — seul le plus grand, 6, accomplit les groupes', () => {
+  it('12/18 : le plus grand (6) ne suffit pas seul — il faut avoir vu 7 échouer', () => {
     let s = CD.initBouquets({ a: 12, b: 18 });
     for (const k of [2, 5, 3]) s = CD.choose(s, k);
     expect(CD.greatestGroupFound(s)).toBe(false);
     s = CD.choose(s, 6);
+    expect(CD.greatestGroupFound(s)).toBe(false);
+    s = CD.choose(s, 7);
     expect(CD.greatestGroupFound(s)).toBe(true);
   });
-  it('le rail des groupes contient toujours le PGCD', () => {
-    expect(CD.groupRail({ a: 12, b: 18 })).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
-    expect(CD.groupRail({ a: 90, b: 54 })).toHaveLength(24);
-    expect(CD.groupRail({ a: 150, b: 300 }).at(-1)).toBe(150);
+  it('le geste : on AJOUTE un groupe à la fois, et le motif se construit (1 ✓ 2 ✓ 3 ✓ 4 ✗ 5 ✗ 6 ✓ 7 ✗)', () => {
+    let s = CD.initBouquets({ a: 12, b: 18 });
+    for (let i = 0; i < 7; i += 1) s = CD.addGroup(s);
+    expect(s.k).toBe(7);
+    expect(s.tried).toEqual({ 1: 'common', 2: 'common', 3: 'common', 4: 'single', 5: 'no', 6: 'common', 7: 'no' });
+    expect(CD.greatestGroupFound(s)).toBe(true);
+    s = CD.removeGroup(s);
+    expect([s.k, s.qa, s.qb, s.works]).toEqual([6, 2, 3, true]);
+    let z = CD.addGroup(CD.initBouquets({ a: 12, b: 18 }));
+    z = CD.removeGroup(z);
+    expect(z.k).toBeNull();                              // retour aux deux piles
+    expect(CD.removeGroup(z)).toBe(z);
+    let top = CD.choose(CD.initBouquets({ a: 12, b: 18 }), 12);
+    expect(CD.addGroup(top)).toBe(top);                  // pas plus de groupes que d'objets
   });
   it('listes 42/60 : seuls 1, 2, 3, 6 vont au milieu ; 6 seul va dans PGCD, et seulement à la fin', () => {
     let s = CD.initLists({ a: 42, b: 60 });
@@ -117,6 +165,8 @@ describe('common-divisors', () => {
     expect(CD.canPlaceCommon(s, 7)).toBe('dividesOnlyA');
     expect(CD.canPlaceCommon(s, 5)).toBe('dividesOnlyB');
     expect(CD.canPlacePgcd(s, 6)).toBe('notAllCommon');
+    // Un nombre qui n'est pas commun reçoit SA raison, pas « complète d'abord ».
+    expect(CD.canPlacePgcd(s, 7)).toBe('notCommon');
     for (const d of [1, 2, 3]) s = CD.placeCommon(s, d);
     expect(CD.allCommonPlaced(s)).toBe(false);
     s = CD.placeCommon(s, 6);
@@ -138,7 +188,10 @@ describe('pgcd-differences (252 et 140)', () => {
     while (!AL.isDifferencesFinished(s)) s = AL.subtract(s);
     expect(s.steps[s.steps.length - 1].diff).toBe(0);
     expect(AL.lastNonZeroDiff(s)).toBe(28);
-    expect(AL.canPlaceDifferencePgcd(s, 56)).toBe('notLastNonZero');
+    // La case refuse AVEC DES MATHÉMATIQUES : 56 ne divise pas 252, 84 ne divise pas 140.
+    expect(AL.canPlaceDifferencePgcd(s, 56)).toBe('notDividesA');
+    expect(AL.canPlaceDifferencePgcd(s, 84)).toBe('notDividesB');
+    expect(AL.canPlaceDifferencePgcd(s, 14)).toBe('notGreatest');
     expect(AL.canPlaceDifferencePgcd(s, 28)).toBe(true);
     expect(AL.canSubtract(s, 'small', 'big')).toBe('finished');
   });
@@ -151,6 +204,12 @@ describe('euclidean-algorithm (1938 et 836, 765 et 135)', () => {
     expect(AL.canAddCopy(s)).toBe('overflow');
     expect(AL.quotientReached(s)).toBe(true);
     expect(AL.remainderOf(s)).toBe(266);
+    // Le reste ne se porte qu'après avoir ESSAYÉ la copie de trop : l'élève
+    // rencontre le débordement, la scène ne l'annonce pas.
+    expect(AL.canCarryRemainder(s, 266)).toBe('tryOneMore');
+    const tried = AL.tryCopy(s);
+    expect([tried.copies, tried.overflowSeen]).toEqual([2, true]);
+    s = tried;
     expect(AL.canCarryRemainder(s, 266)).toBe(true);
     s = AL.carryRemainder(s);
     expect(AL.currentDivision(s)).toMatchObject({ a: 836, b: 266, q: 3, r: 38 });
@@ -162,6 +221,7 @@ describe('euclidean-algorithm (1938 et 836, 765 et 135)', () => {
     expect(AL.isEuclidFinished(s)).toBe(true);
     expect(s.gcd).toBe(45);
     expect(AL.canPlaceEuclidPgcd(s, 45)).toBe(true);
+    expect(AL.canPlaceEuclidPgcd(s, 90)).toBe('notDividesA');   // 90 ne divise pas 765
     expect(AL.comparison(765, 135)).toEqual({ differences: 8, divisions: 3 });
   });
 });
@@ -182,24 +242,64 @@ describe('coprime-explorer (17/18 et 27/36)', () => {
     expect(s.g).toBe(9);
     expect(CP.canShare(s, CP.chipId('b', 4))).toBe('dividesOnlyB');
   });
+  it('premiers entre eux : poser 1 ne CONCLUT pas — chaque diviseur de 17 doit être confronté à 18', () => {
+    let s = CP.share(CP.init({ a: 17, b: 18 }), CP.chipId('a', 1));
+    expect(CP.listsConclusive(s)).toBe(false);
+    expect(CP.untested(s)).toEqual([17]);
+    s = CP.share(s, CP.chipId('a', 17));            // refusé, mais testé
+    expect(s.shared).toEqual([1]);
+    expect(CP.listsConclusive(s)).toBe(true);
+  });
+  it('pas premiers entre eux : UN commun > 1 suffit à réfuter (méthode du manuel contre مريم)', () => {
+    let s = CP.init({ a: 27, b: 36 });
+    expect(CP.listsConclusive(s)).toBe(false);
+    s = CP.share(s, CP.chipId('a', 3));
+    expect(CP.listsConclusive(s)).toBe(true);
+  });
+  it('les trousses : « seul 1 marche » n’est affirmé qu’après avoir essayé 2 … 17', () => {
+    let g = CP.initGroups({ a: 17, b: 18 });
+    for (let i = 0; i < 3; i += 1) g = CP.addGroupTo(g);
+    expect(CP.groupsInsightReady(g)).toBe(false);   // 1, 2, 3 : trop tôt pour conclure
+    for (let i = 3; i < 17; i += 1) g = CP.addGroupTo(g);
+    expect(g.k).toBe(17);
+    expect(CP.groupsInsightReady(g)).toBe(true);
+    expect(CP.workingCounts(g)).toEqual([1]);
+    let h = CP.initGroups({ a: 27, b: 36 });
+    for (let i = 0; i < 3; i += 1) h = CP.addGroupTo(h);
+    expect(CP.groupsInsightReady(h)).toBe(true);    // 3 marche : réfuté sans aller plus loin
+  });
 });
 
 describe('fraction-reduction (84/48 et 595/560)', () => {
   it('le chemin de سمير : ÷4 puis ÷3 → 7/4, puis le PGCD 12 en une fois', () => {
     let s = FR.init({ n: 84, d: 48 });
-    expect(FR.candidatesA(s)).toEqual([2, 3, 4, 6, 12]);
+    expect(FR.railA(s)).toEqual([2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);   // pas seulement les bons
+    expect(FR.canReduceA(s, 5)).toBe('dividesNeither');
+    expect(FR.canReduceA(s, 7)).toBe('dividesOnlyNumerator');           // l'erreur classique, expliquée
     expect(FR.canReduceB(s, 12)).toBe('pathANotFinished');
     s = FR.reduceA(s, 4);
     expect(FR.currentA(s)).toEqual({ n: 21, d: 12 });
     expect(FR.canReduceA(s, 4)).toBe('dividesOnlyDenominator');
+    expect(FR.canClaimIrreducible(s)).toBe('stillReducible');           // 21/12 : 3 divise encore les deux
     s = FR.reduceA(s, 3);
     expect(FR.currentA(s)).toEqual({ n: 7, d: 4 });
+    expect(FR.pathAFinished(s)).toBe(false);                            // c'est l'élève qui décide de s'arrêter
+    s = FR.claimIrreducible(s);
     expect(FR.pathAFinished(s)).toBe(true);
-    expect(FR.candidatesA(s)).toEqual([]);
     expect(FR.canReduceB(s, 4)).toBe('notPgcd');
+    expect(FR.oneStepWith(s, 4)).toEqual({ n: 21, d: 12 });            // la conséquence montrée au refus
+    expect(FR.canReduceB(s, 5)).toBe('dividesNeither');
     s = FR.reduceB(s, 12);
     expect(FR.discoveryReady(s)).toBe(true);
     expect(FR.chainA(s).map((c) => `${c.n}/${c.d}`)).toEqual(['84/48', '21/12', '7/4']);
+    expect(FR.pathComparison(s)).toEqual({ stepsA: 2, stepsB: 1, equal: false });
+  });
+  it('par 12 dès le chemin أ : un pas de chaque côté — « متساويان » est alors la vraie réponse', () => {
+    let s = FR.claimIrreducible(FR.reduceA(FR.init({ n: 84, d: 48 }), 12));
+    expect(FR.pathAFinished(s)).toBe(true);
+    s = FR.reduceB(s, 12);
+    expect(FR.pathComparison(s).equal).toBe(true);
+    expect(FR.railB(FR.init({ n: 595, d: 560 }))).toContain(35);         // le PGCD au-delà de 12 est proposé
   });
   it('595/560 : PGCD 35, forme irréductible 17/16', () => {
     const s = FR.init({ n: 595, d: 560 });
@@ -252,7 +352,25 @@ describe('team-builder (15 et 16 joueurs, 3 équipes)', () => {
     // Le refus ne consomme pas le joueur : il reste sur le banc.
     const after = TB.place(s, 1, 0);
     expect(after.bench).toContain(1);
-    expect(after.attempts).toBe(1);
+    expect(after).toBe(s);
+  });
+
+  it('les nombres du refus sont ceux que canPlace voit — après le départ du joueur', () => {
+    // 5/5/5 : déplacer un joueur de l'équipe 1 vers l'équipe 2. Sans lui,
+    // l'équipe 1 en a 4 et l'équipe 2 en a 5 : c'est l'équipe 2 qui est trop
+    // grande. La raison ne peut pas dire « 5… et la plus petite 5 ».
+    const s = TB.fill(TB.init({ total: 15, groups: 3 }));
+    const mover = s.teams[0][0];
+    expect(TB.canPlace(s, mover, 1)).toBe('teamsMustStayEqual');
+    expect(TB.rejectDetails(s, mover, 1)).toEqual({ here: 5, min: 4, perGroup: 5 });
+    // Depuis le banc : aucune équipe n'est vidée.
+    const one = TB.place(TB.init({ total: 15, groups: 3 }), 0, 0);
+    expect(TB.canPlace(one, 1, 0)).toBe('teamsMustStayEqual');
+    expect(TB.rejectDetails(one, 1, 0)).toEqual({ here: 1, min: 0, perGroup: 5 });
+    // Plein : la raison nomme la part.
+    const full = TB.fill(TB.init({ total: 16, groups: 3 }));
+    expect(TB.canPlace(full, full.bench[0], 2)).toBe('teamIsFull');
+    expect(TB.rejectDetails(full, full.bench[0], 2)).toEqual({ here: 5, min: 5, perGroup: 5 });
   });
 
   it('une équipe n’accepte jamais plus que sa part', () => {
@@ -271,24 +389,10 @@ describe('team-builder (15 et 16 joueurs, 3 équipes)', () => {
   });
 
   it('la découverte attend le CONTRASTE : un partage juste ET un partage avec reste', () => {
-    let s = TB.remember(TB.init({ total: 15, groups: 3 }));
-    expect(TB.discoveryReady(s)).toBe(false);
-    s = TB.remember(TB.setTotal(s, 16));
-    expect(TB.discoveryReady(s)).toBe(true);
-  });
-
-  it('changer d’effectif ou d’équipes rouvre la question sans perdre la mémoire des essais', () => {
-    let s = TB.remember(TB.init({ total: 15, groups: 3 }));
-    s = TB.setGroups(s, 5);
-    expect(s.teams).toHaveLength(5);
-    expect(s.bench).toHaveLength(15);
-    expect(s.tried['15:3']).toBe(true);
-    expect(TB.setTotal(s, 0)).toBe(s);
-  });
-
-  it('les nombres d’équipes qui tombent juste sont exactement les diviseurs', () => {
-    expect(TB.exactChoices(24, 8)).toEqual([2, 3, 4, 6, 8]);
-    expect(TB.exactChoices(420, 8)).toEqual([2, 3, 4, 5, 6, 7]);
+    expect(TB.discoveryReady({})).toBe(false);
+    expect(TB.discoveryReady({ '15:3': true })).toBe(false);
+    expect(TB.discoveryReady({ '15:3': true, '18:3': true })).toBe(false);
+    expect(TB.discoveryReady({ '15:3': true, '16:3': false })).toBe(true);
   });
 
   it('le geste canonique du mode classe avance puis s’arrête', () => {

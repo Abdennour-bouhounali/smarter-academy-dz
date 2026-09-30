@@ -81,6 +81,9 @@ export const LESSON_CONFIG = {
     { kind: 'situation', code: 'challenge-936-845', module: 4, title: 'تحدّ: 936 مئزرًا ورديًا و 845 مئزرًا أزرقًا', learningPointIds: ['4am_bahth-pgcd_P5'], sourceElementIds: ['challenge'] },
   ],
   modules: [
+    { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
+      title: 'أستعدّ', desc: 'ست عبارات: صحيح أم خاطئ؟ خاصيتا القواسم وPGCD.',
+      stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 6, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'al-furuq', path: `${LESSON_BASE_PATH}/al-furuq`,
       title: 'نشاط 6 أ — الفروق المتتابعة', desc: '252 و 140: اطرح، وعوّض، وأعد — إلى أن يصير الفرق معدومًا.',
       stage: 'trigger', teachesLearningPointIds: ['4am_bahth-pgcd_P1', '4am_bahth-pgcd_P2'], color: 'indigo', style: 'featured', estimatedMin: 14, difficulty: 2, actionText: 'أطرح وأعيد' },

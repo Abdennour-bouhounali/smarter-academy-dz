@@ -53,17 +53,17 @@ export default function Module01AlFuruq() {
             advanced: () => (
               <Manipulation type="pgcd-differences" a={a} b={b}
                 title="جدول الكتاب: 252 و 140 وفرقهما"
-                lead="قصّ الشريط الأصغر من الأكبر إلى أن لا يبقى شيء. لاحظ العمود الأيمن: القاسم المشترك الأكبر لا يتغيّر."
+                lead="قصّ الشريط الأصغر من الأكبر إلى أن لا يبقى شيء. لاحظ المساواة الثانية في كل سطر: القاسم المشترك الأكبر لا يتغيّر."
                 onFinished={() => setD1(true)} />
             ),
           }}
         />
       )}
       steps={[
-        { num: 1, title: '1) لماذا PGCD(252 ; 140) = PGCD(140 ; 112)؟', subtitle: 'أنهِ الطرحات في المناولة أولًا', done: q1,
+        { num: 1, title: '1) لماذا PGCD(252 ; 140) = PGCD(140 ; 112)؟', subtitle: 'أنهِ الطرحات في المناولة أولًا', done: d1 && q1,
           content: (
             <div className="space-y-3">
-              <KnowledgeBrick id="pgcd-farq" lead="252 − 140 = 112. كل قاسم مشترك لـ 252 و 140 يقسم فرقهما 112." />
+              <KnowledgeBrick id="pgcd-farq" lead="تذكّر خاصية الدرس 3 عن الفرق، ثم طبّقها على 252 و 140." />
               <TapQuestion prompt={<span>لماذا <MathText>{'$\\mathrm{PGCD}(252\\ ;\\ 140) = \\mathrm{PGCD}(140\\ ;\\ 112)$'}</MathText>؟</span>}
                 options={['كل قاسم مشترك لـ 252 و 140 يقسم أيضًا 252 − 140 = 112، فللزوجين نفس القواسم المشتركة', 'لأن 112 أصغر من 140', 'لأن 252 = 2 × 140 − 28', 'لأن 140 قاسم للعدد 252']} correct={0} cols={1} requires={['pgcd-farq']}
                 explain={<span>خاصية 1 (الدرس 3): القاسم المشترك يقسم الفرق. والعكس صحيح: قاسم مشترك لـ 140 و 112 يقسم مجموعهما 252.</span>} onAnswered={() => setQ1(true)} />

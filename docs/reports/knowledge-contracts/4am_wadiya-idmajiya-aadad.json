@@ -37,6 +37,102 @@
   "memorisation": [],
   "questions": [
     {
+      "questionId": "prep-1",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/modules/Module00Astaidd.jsx",
+      "line": 37,
+      "requires": [
+        "qawaid-qisma"
+      ],
+      "prerequisiteStatus": {
+        "qawaid-qisma": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-2",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/modules/Module00Astaidd.jsx",
+      "line": 38,
+      "requires": [
+        "qawaid-qisma"
+      ],
+      "prerequisiteStatus": {
+        "qawaid-qisma": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-3",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/modules/Module00Astaidd.jsx",
+      "line": 39,
+      "requires": [
+        "khassiya-1"
+      ],
+      "prerequisiteStatus": {
+        "khassiya-1": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-4",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/modules/Module00Astaidd.jsx",
+      "line": 40,
+      "requires": [
+        "khassiya-1"
+      ],
+      "prerequisiteStatus": {
+        "khassiya-1": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-5",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/modules/Module00Astaidd.jsx",
+      "line": 41,
+      "requires": [
+        "qawasim-mushtaraka"
+      ],
+      "prerequisiteStatus": {
+        "qawasim-mushtaraka": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
+      "questionId": "prep-6",
+      "module": 0,
+      "step": null,
+      "component": "diag",
+      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/modules/Module00Astaidd.jsx",
+      "line": 42,
+      "requires": [
+        "qawasim-mushtaraka"
+      ],
+      "prerequisiteStatus": {
+        "qawasim-mushtaraka": "prior"
+      },
+      "lexiconHits": [],
+      "pedagogicallyValid": true
+    },
+    {
       "questionId": "M01-S3-Q1",
       "module": 1,
       "step": 3,
@@ -129,42 +225,6 @@
       "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/modules/Module02Uakkid.jsx",
       "line": 0,
       "module": 2,
-      "step": null,
-      "term": null,
-      "questionId": null,
-      "position": -1
-    },
-    {
-      "code": "W_PRIOR_NOT_DIAGNOSED",
-      "severity": "medium",
-      "message": "priorKnowledge declares 'qawaid-qisma' but no Module 0 question diagnoses it",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/lesson.config.js",
-      "line": 0,
-      "module": null,
-      "step": null,
-      "term": null,
-      "questionId": null,
-      "position": -1
-    },
-    {
-      "code": "W_PRIOR_NOT_DIAGNOSED",
-      "severity": "medium",
-      "message": "priorKnowledge declares 'khassiya-1' but no Module 0 question diagnoses it",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/lesson.config.js",
-      "line": 0,
-      "module": null,
-      "step": null,
-      "term": null,
-      "questionId": null,
-      "position": -1
-    },
-    {
-      "code": "W_PRIOR_NOT_DIAGNOSED",
-      "severity": "medium",
-      "message": "priorKnowledge declares 'qawasim-mushtaraka' but no Module 0 question diagnoses it",
-      "file": "apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/lesson.config.js",
-      "line": 0,
-      "module": null,
       "step": null,
       "term": null,
       "questionId": null,

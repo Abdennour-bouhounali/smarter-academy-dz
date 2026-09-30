@@ -11,18 +11,18 @@ import NumberTile from '../primitives/NumberTile';
 import DragGhost from '../primitives/DragGhost';
 import BrickWall from '../primitives/BrickWall';
 import EquationDisplay from '../primitives/EquationDisplay';
-import MathText from '../../components/MathText';
 import { measureLayout } from '../primitives/brickLayout';
 import * as L from '../logic/divisorProperties';
 
 /**
- * divisor-properties — LE CHANTIER DES MURS EN BRIQUES DE n, puis LE
- * CONSTRUCTEUR DE PREUVE.
+ * divisor-properties — LE CHANTIER DES MURS EN BRIQUES DE n.
  *
  * A. L'élève porte LE MUR DE b (un vrai mur, en briques de longueur n) vers
  *    l'une des trois zones du chantier : l'ACCOLER au mur de a (a + b),
  *    l'ENLEVER du mur de a (a − b), ou MESURER le mur de a avec des panneaux
- *    de b (le reste). Puis il ordonne les lignes d'une preuve.
+ *    de b (le reste). (La preuve écrite est au module « أتعلّم البرهنة » ; le
+ *    constructeur de preuve qui vivait ici n'était posé par aucune leçon, il
+ *    a été retiré le 2026-09-30.)
  * B. Idée : n | a et n | b ⇒ n | a + b, a − b, r — parce que tout est bâti
  *    en briques entières de n.
  * C. Les murs sont à la même échelle (BrickWall) : accolés, le résultat est
@@ -35,7 +35,10 @@ import * as L from '../logic/divisorProperties';
  *
  * Thème `construction` (packages/core VISUAL_THEMES). Le geste est le même
  * à tous les niveaux ; au niveau avancé (900, 90, 9) les briques sont trop
- * petites pour être comptées : l'élève doit prédire AVEC la propriété.
+ * petites pour être comptées : l'élève PRÉDIT avec la propriété — « طوب كامل »
+ * ou « يبقى جزء من طوبة » — avant de bâtir chaque mur, et le mur bâti
+ * confirme ou réfute (`predict` / `outcome`, 2026-09-30 : la prédiction était
+ * promise sans exister).
  */
 
 /** Les trois zones du chantier et le mesurande que chacune construit. */
@@ -47,16 +50,16 @@ const ZONES = Object.freeze([
 const targetOfZone = (zoneId) => ZONES.find((z) => `zone:${z.id}` === zoneId)?.target ?? null;
 
 export default function DivisorProperties({
-  n: n0, a: a0, b: b0, title, lead, mission, withProof = false, initialMode = 'student', allowModeSwitch = false, onFinished, onProofDone,
+  n: n0, a: a0, b: b0, title, lead, mission, initialMode = 'student', allowModeSwitch = false, onFinished,
 }) {
   const { t } = useTranslation('lesson');
   const state = useManipulation({ type: 'divisor-properties', initialNumbers: { n: n0, a: a0, b: b0 }, initialMode, hintCount: 3 });
   const { n, a, b } = state.numbers;
   const [lab, setLab] = useState(() => L.init({ n: n0, a: a0, b: b0 }));
-  const [proof, setProof] = useState(() => L.proofInit());
   const [reject, setReject] = useState(null);
 
-  useEffect(() => { setLab(L.init({ n, a, b })); setProof(L.proofInit()); setReject(null); }, [n, a, b, state.epoch]);
+  useEffect(() => { setLab(L.init({ n, a, b })); setReject(null); }, [n, a, b, state.epoch]);
+  const isAdvanced = state.level === 'advanced';
 
   const drag = useDragInteraction({
     onDrop: (sourceId, zoneId) => {
@@ -64,31 +67,28 @@ export default function DivisorProperties({
       if (sourceId === 'wall:b') {
         const target = targetOfZone(zoneId);
         if (!target) return;
-        setLab((s) => { const next = L.build(s, target); if (L.discoveryReady(next)) state.discover(); return next; });
-        return;
-      }
-      if (sourceId.startsWith('line:')) {
-        const id = sourceId.replace('line:', '');
-        const slot = Number(zoneId.replace('slot:', ''));
-        setProof((p) => { const next = L.proofPlace(p, id, slot); if (L.proofDone(next)) onProofDone?.(); return next; });
+        setLab((s) => L.build(s, target));
       }
     },
     accepts: (sourceId, zoneId) => {
       if (sourceId === 'wall:b') {
         const target = targetOfZone(zoneId);
-        return target ? L.canBuild(lab, target) : 'wrongZone';
+        // Un mur déjà bâti : geste sans effet (refus muet, pas une erreur).
+        if (target && lab.built.includes(target)) return '';
+        return target ? L.canBuild(lab, target, { requirePrediction: isAdvanced }) : 'wrongZone';
       }
-      if (sourceId.startsWith('line:') && zoneId.startsWith('slot:')) return L.proofCanPlace(proof, sourceId.replace('line:', ''), Number(zoneId.replace('slot:', '')));
       return 'wrongZone';
     },
     onReject: (_s, _z, reason) => setReject(reason),
   });
 
+  // La découverte suit les trois murs bâtis — dans un effet, pas un updater.
+  const ready = L.discoveryReady(lab);
+  useEffect(() => { if (ready) state.discover(); }, [ready, state.epoch]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (state.isFormal) state.report(onFinished); }, [state.isFormal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Tous les murs à la MÊME échelle : la plus grande longueur du chantier.
   const scale = Math.max(a + b, 1);
-  const heldLine = drag.held?.startsWith('line:') ? L.PROOF_LINES.find((l) => `line:${l.id}` === drag.held) : null;
   const heldWall = drag.held === 'wall:b';
   const zoneLabel = (id) => t(`manipulation.props.zone${id[0].toUpperCase()}${id.slice(1)}`);
   const dropLabel = (id) => t(`manipulation.props.drop${id[0].toUpperCase()}${id.slice(1)}`);
@@ -104,11 +104,23 @@ export default function DivisorProperties({
       ...(meas.r > 0 ? [{ value: meas.r, tone: 'rem', label: cm(meas.r) }] : []),
     ];
   };
+  // Une égalité dans une phrase arabe est ISOLÉE en LTR : sans cela,
+  // « 18 = 3 × 6 » se relisait « 6 × 3 = 18 » (audit, défaut m).
+  const eq = (text) => <bdi dir="ltr" className="font-mono">{text}</bdi>;
   const resultNote = (target) => {
     const r = L.blocks(lab, target);
-    if (target === 'sum') return t('manipulation.props.wallSum', { value: r.value, n, count: r.count });
-    if (target === 'diff') return t('manipulation.props.wallDiff', { value: r.value, n, count: r.count });
-    return t('manipulation.props.wallRem', { q: meas.q, b, value: r.value, n, count: r.count });
+    const lead = target === 'sum' ? t('manipulation.props.wallSum')
+      : target === 'diff' ? t('manipulation.props.wallDiff')
+        : t('manipulation.props.wallRem', { panels: t('manipulation.props.panels', { count: meas.q }), b });
+    const guess = lab.predictions[target];
+    const verdict = guess && (guess === L.outcome(lab, target) ? t('manipulation.props.predictRight') : t('manipulation.props.predictWrong'));
+    return (
+      <>
+        {verdict && <span className={`me-1 ${guess === 'whole' ? 'text-emerald-800' : 'text-amber-800'}`} data-prediction-verdict={guess === L.outcome(lab, target) ? 'right' : 'wrong'}>{verdict}</span>}
+        {!verdict && <span className="me-1">{lead}</span>}
+        {eq(`${r.value} = ${n} × ${r.count}`)}
+      </>
+    );
   };
 
   return (
@@ -122,11 +134,12 @@ export default function DivisorProperties({
       validate={(x) => (x.a % x.n !== 0 || x.b % x.n !== 0 ? t('manipulation.props.mustDivideBoth') : x.a < x.b ? t('manipulation.props.aBeforeB') : '')}
       allowModeSwitch={allowModeSwitch}
       hints={[t('manipulation.props.hint1', { a, b }), t('manipulation.props.hint2'), t('manipulation.props.hint3', { n })]}
+      // (réf. §6bis : MANUEL — trois opérations distinctes, rien ne se répète.)
       controller={{
         autoStep: () => {
           const next = L.TARGETS.find((x) => !lab.built.includes(x));
           if (!next) return false;
-          setLab((s) => { const x = L.build(s, next); if (L.discoveryReady(x)) state.discover(); return x; });
+          setLab((s) => L.build(s, next));
           return true;
         },
         canAutoStep: () => lab.built.length < L.TARGETS.length,
@@ -136,7 +149,7 @@ export default function DivisorProperties({
         <div className="space-y-2">
           {lab.built.map((target) => {
             const r = L.blocks(lab, target);
-            return <EquationDisplay key={target} tex={r.tex} tone="ok" size="sm" note={t('manipulation.props.built', { value: r.value, n, count: r.count })} />;
+            return <EquationDisplay key={target} tex={r.tex} tone="ok" size="sm" note={eq(`${r.value} = ${n} × ${r.count}`)} />;
           })}
         </div>
       )}
@@ -152,50 +165,6 @@ export default function DivisorProperties({
           formal={(
             <div className="space-y-3">
               <EquationDisplay tex={`n \\mid a,\\ n \\mid b \\Rightarrow n \\mid a+b,\\ n \\mid a-b,\\ n \\mid r`} tone="result" note={t('manipulation.props.conclusion', { n })} />
-              {withProof && (
-                <div className="space-y-2 rounded-2xl border-2 border-indigo-200 bg-white p-3" data-proof-builder>
-                  <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    <h5 className="text-sm font-extrabold text-indigo-900">{t('manipulation.props.proofTitle')}</h5>
-                    <span className="text-xs text-slate-500">{t('manipulation.props.proofMission')}</span>
-                  </div>
-                  <div className="grid gap-2 md:grid-cols-2">
-                    <div>
-                      <div className="mb-1 text-[11px] font-bold text-slate-600">{t('manipulation.props.proofPool')}</div>
-                      <div className="flex flex-wrap gap-1.5">
-                        {proof.pool.map((id) => {
-                          const line = proof.lines.find((l) => l.id === id);
-                          return (
-                            <button key={id} type="button" {...drag.sourceProps(`line:${id}`)} aria-label={line.tex}
-                              className={`min-h-[44px] rounded-xl border-2 px-2.5 py-1.5 font-mono text-sm ${drag.held === `line:${id}` ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-300' : 'border-slate-300 bg-white hover:border-indigo-400'}`}>
-                              <span dir="ltr"><MathText>{`$${line.tex}$`}</MathText></span>
-                            </button>
-                          );
-                        })}
-                        {proof.pool.length === 0 && <span className="text-xs text-emerald-700">{t('manipulation.props.proofDone')}</span>}
-                      </div>
-                    </div>
-                    <div>
-                      <div className="mb-1 text-[11px] font-bold text-slate-600">{t('manipulation.props.proofSlots')}</div>
-                      <ol className="space-y-1.5">
-                        {proof.lines.map((_, i) => {
-                          const placedId = proof.placed[i];
-                          const line = placedId ? proof.lines.find((l) => l.id === placedId) : null;
-                          return (
-                            <li key={i}>
-                              <DropZone drag={drag} id={`slot:${i}`} label={`${i + 1}`} minHeight="min-h-[44px]" tone="emerald" className="flex items-center gap-2 px-2.5 py-1.5" disabled={!!line}>
-                                <span className="font-mono text-[11px] text-slate-400" dir="ltr">{i + 1}</span>
-                                {line ? <span dir="ltr" className="font-mono text-sm"><MathText>{`$${line.tex}$`}</MathText></span> : <span className="text-xs text-slate-400">—</span>}
-                              </DropZone>
-                            </li>
-                          );
-                        })}
-                      </ol>
-                    </div>
-                  </div>
-                  {proof.wrong && <p role="status" className="text-sm text-rose-800">{t('manipulation.props.proofWrong')}</p>}
-                  {L.proofDone(proof) && <p role="status" className="rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900">{t('manipulation.props.proofDone')}</p>}
-                </div>
-              )}
             </div>
           )}
         />
@@ -211,11 +180,11 @@ export default function DivisorProperties({
               <span>{t('manipulation.props.brickOf', { n })}</span>
             </div>
             <div className="space-y-1">
-              <div className="text-[11px] font-bold text-slate-600" dir="auto">{t('manipulation.props.wallA', { a, n, q: lab.q })}</div>
+              <div className="text-[11px] font-bold text-slate-600">{t('manipulation.props.wallA')}: {eq(`${a} = ${n} × ${lab.q}`)}</div>
               <BrickWall value={a} unit={n} scale={scale} tone="a" />
             </div>
             <div className="space-y-1">
-              <div className="text-[11px] font-bold text-slate-600" dir="auto">{t('manipulation.props.wallB', { b, n, q: lab.qp })}</div>
+              <div className="text-[11px] font-bold text-slate-600">{t('manipulation.props.wallB')}: {eq(`${b} = ${n} × ${lab.qp}`)}</div>
               {/* LE MUR DE b : c'est LUI qu'on porte. Il reste à sa place
                   (l'objet de référence ne disparaît pas) et sa copie va
                   dans la zone choisie. */}
@@ -243,7 +212,19 @@ export default function DivisorProperties({
                   {built ? (
                     <div className="space-y-1">
                       <BrickWall unit={n} scale={scale} segments={resultSegments(z.target)} />
-                      <p className="text-xs font-bold text-emerald-800" dir="auto">{resultNote(z.target)}</p>
+                      <p className="text-xs font-bold text-emerald-800">{resultNote(z.target)}</p>
+                    </div>
+                  ) : isAdvanced ? (
+                    // LA PRÉDICTION : on s'engage AVANT de voir le mur.
+                    <div className="flex flex-wrap items-center gap-1.5" data-prediction={lab.predictions[z.target] ?? ''}>
+                      <span className="text-[11px] font-bold text-slate-600">{t('manipulation.props.predictPrompt')}</span>
+                      {L.PREDICTIONS.map((g) => (
+                        <button key={g} type="button" aria-pressed={lab.predictions[z.target] === g}
+                          onClick={(e) => { e.stopPropagation(); setReject(null); setLab((s) => L.predict(s, z.target, g)); }}
+                          className={`min-h-[44px] rounded-lg border-2 px-2.5 text-xs font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${lab.predictions[z.target] === g ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-slate-300 bg-white text-slate-700'}`}>
+                          {t(g === 'whole' ? 'manipulation.props.predictWhole' : 'manipulation.props.predictPartial')}
+                        </button>
+                      ))}
                     </div>
                   ) : (
                     <div className="h-6" aria-hidden="true" />
@@ -253,7 +234,7 @@ export default function DivisorProperties({
             })}
           </div>
 
-          {reject && <p role="status" className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800">{t(`manipulation.props.reject.${reject}`, { defaultValue: t('manipulation.props.proofWrong') })}</p>}
+          {reject && <p role="status" className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800">{t(`manipulation.props.reject.${reject}`)}</p>}
         </div>
       </ManipulationStage>
       <DragGhost ghost={drag.ghost}>
@@ -263,7 +244,6 @@ export default function DivisorProperties({
             <BrickWall value={b} unit={n} scale={b} tone="b" className="flex-1" height="h-6" />
           </span>
         )}
-        {heldLine && <span className="rounded-xl border-2 border-blue-500 bg-blue-50 px-2.5 py-1.5 font-mono text-sm" dir="ltr"><MathText>{`$${heldLine.tex}$`}</MathText></span>}
       </DragGhost>
     </ManipulationShell>
   );

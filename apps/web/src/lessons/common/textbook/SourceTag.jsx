@@ -7,7 +7,10 @@ import { BookOpen } from 'lucide-react';
  * « الكتاب المدرسي — ص 14 — تمرين 17 ». Toute donnée de leçon porte une
  * `source` (docs/sources/4am/unit1/extraction.json) ; cette étiquette la
  * rend lisible. `platform_addition` est affiché comme tel : le contenu
- * ajouté par la plateforme ne se fait jamais passer pour le manuel.
+ * ajouté par la plateforme ne se fait jamais passer pour le manuel. Une
+ * `reason` peut avoir son propre libellé (`textbook.additionReason.<reason>`,
+ * p. ex. une affirmation de « أستعدّ » n'est pas un « مثال تفاعلي ») ; sinon
+ * le libellé générique.
  */
 export default function SourceTag({ source, className = '' }) {
   const { t } = useTranslation('lesson');
@@ -15,7 +18,7 @@ export default function SourceTag({ source, className = '' }) {
   if (source.type === 'platform_addition') {
     return (
       <span className={`inline-flex items-center gap-1 rounded-full border border-amber-300 bg-amber-50 px-2 py-0.5 text-[11px] font-semibold text-amber-800 ${className}`}>
-        {t('textbook.platformAddition')}
+        {t(`textbook.additionReason.${source.reason}`, { defaultValue: t('textbook.platformAddition') })}
       </span>
     );
   }

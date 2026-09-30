@@ -1,10 +1,19 @@
-import { src } from '../../_unit/unitMeta.js';
+import { src, addition } from '../../_unit/unitMeta.js';
 export const PREP_ITEMS = [
   { n: 7, skill: 'natiq', text: 'العدد المجهول في المساواة $\\dfrac{13}{5} = \\dfrac{\\ldots}{-10}$ هو $-26$.', answer: true, why: '$13 \\times (-2) = -26$ و $5 \\times (-2) = -10$.' },
   { n: 8, skill: 'kusur', text: 'الكسر $\\dfrac{34}{9}$ يساوي $\\dfrac{238}{63}$.', answer: true, why: '$34 \\times 7 = 238$ و $9 \\times 7 = 63$.' },
   { n: 9, skill: 'natiq', text: 'مقلوب العدد الناطق $\\dfrac{-11}{13}$ هو $\\dfrac{-13}{11}$ وحاصل القسمة $9 \\div \\left(-\\dfrac{9}{4}\\right)$ يساوي $-\\dfrac{81}{4}$.', answer: false, why: 'المقلوب صحيح، لكن $9 \\div \\left(-\\dfrac{9}{4}\\right) = 9 \\times \\left(-\\dfrac{4}{9}\\right) = -4$.' },
   { n: 10, skill: 'kusur', text: 'المجموع $\\dfrac{7}{6} + \\dfrac{6}{7}$ يساوي 1 والمجموع $1 + \\dfrac{3}{5}$ يساوي $\\dfrac{4}{5}$.', answer: false, why: '$\\dfrac{7}{6} + \\dfrac{6}{7} = \\dfrac{49 + 36}{42} = \\dfrac{85}{42}$ و $1 + \\dfrac{3}{5} = \\dfrac{8}{5}$.' },
 ].map((it) => ({ ...it, source: src('prep', 7, 'أستعدّ', it.n) }));
+/**
+ * Deux ajouts de la plateforme, déclarés comme tels : les items 7–10 du manuel
+ * ne diagnostiquent que les nombres rationnels, alors que la leçon s'appuie
+ * aussi sur « أوليان فيما بينهما » et sur l'algorithme d'Euclide (leçons 6, 7).
+ */
+export const PREP_PLATFORM_ITEMS = [
+  { n: 'a', skill: 'pgcd', text: 'العددان 14 و 25 أوليان فيما بينهما لأنّ PGCD$(14 ; 25) = 1$.', answer: true, why: 'قواسم 14: 1 ، 2 ، 7 ، 14؛ قواسم 25: 1 ، 5 ، 25؛ القاسم المشترك الوحيد هو 1.' },
+  { n: 'b', skill: 'pgcd', text: '$91 = 65 \\times 1 + 26$ ؛ $65 = 26 \\times 2 + 13$ ؛ $26 = 13 \\times 2 + 0$، إذن PGCD$(91 ; 65) = 26$.', answer: false, why: 'القاسم المشترك الأكبر هو آخر باقٍ غير معدوم: PGCD$(91 ; 65) = 13$.' },
+].map((it) => ({ ...it, source: addition('prerequisite_diagnostic') }));
 
 export const ACTIVITY = {
   source: src('act-8', 9, 'أنشطة', 8), title: 'اختزال كسر',

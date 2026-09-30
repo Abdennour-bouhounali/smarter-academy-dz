@@ -32,7 +32,8 @@ export const LESSON_CONFIG = {
   knowledgeMap: true,
   // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
-  // Acquis des années antérieures (أستعدّ 7–10) et du درس 7.
+  // Acquis des années antérieures (أستعدّ 7–10) et des دروس 6–7 (deux ajouts
+  // de la plateforme dans « أستعدّ », déclarés « عبارة إضافية من المنصّة »).
   priorKnowledge: ['al-aadad-al-natiqa', 'awwaliyan-taarif', 'khwarizmiyat-iqlidus'],
   resources: [
     // Module 1 — workspace à deux niveaux. Réduire, c'est diviser les deux
@@ -61,7 +62,7 @@ export const LESSON_CONFIG = {
     { kind: 'method', code: 'method-reduce-595-560', module: 2, title: 'طريقة: استعمال PGCD لكتابة كسر على الشكل غير القابل للاختزال', learningPointIds: ['4am_ikhtizal-kasr_P3'], sourceElementIds: ['method-reduce'] },
   ],
   modules: [
-    { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`, title: 'أستعدّ', desc: 'أربع عبارات من الكتاب عن الأعداد الناطقة: صحيح أم خاطئ؟',
+    { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`, title: 'أستعدّ', desc: 'ست عبارات: أربع من الكتاب عن الأعداد الناطقة واثنتان عن PGCD. صحيح أم خاطئ؟',
       stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 6, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'samir', path: `${LESSON_BASE_PATH}/samir`, title: 'نشاط 8 — كيف اختزل سمير 84/48؟', desc: '÷4 ثم ÷3 … لماذا لا يمكن مواصلة اختزال 7/4؟',
       stage: 'trigger', teachesLearningPointIds: ['4am_ikhtizal-kasr_P1', '4am_ikhtizal-kasr_P2'], color: 'indigo', style: 'featured', estimatedMin: 12, difficulty: 1, actionText: 'أختزل' },

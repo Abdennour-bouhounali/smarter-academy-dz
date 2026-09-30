@@ -40,20 +40,35 @@ export function choose(state, k) {
 }
 
 /**
- * Le temps des groupes est ACCOMPLI quand l'élève a posé le PLUS GRAND
- * nombre de groupes qui tombe juste — c'est l'idée du PGCD trouvée par le
- * geste (6 pour 12 et 18, 18 pour 90 et 54). Plus de seuil « deux ✓ et un ✗ »
- * qui fermait la scène après trois essais.
+ * LE GESTE : AJOUTER (ou retirer) UN GROUPE. Depuis le 2026-09-30, l'élève ne
+ * porte plus un NOMBRE sur la table (un rail 1…24 où l'on pouvait sauter sur
+ * 18 d'un coup) : il pose un groupe de plus, et tous les objets se
+ * redistribuent. k monte de 1 en 1, et le motif se construit sous ses yeux —
+ * 1 ✓, 2 ✓, 3 ✓, 4 ✗, 5 ✗, 6 ✓… (MANIPULATION_DNA §3.1).
  */
-export function greatestGroupFound(state) {
-  return state.tried[gcdByDefinition(state.a, state.b)] === 'common';
+export function addGroup(state) {
+  const k = (state.k ?? 0) + 1;
+  return canChoose(state, k) === true ? choose(state, k) : state;
 }
 
-/** Les nombres de groupes proposés : 1 … min(a, b) (24 au plus), PGCD toujours compris. */
-export function groupRail({ a, b }) {
-  const g = gcdByDefinition(a, b);
-  const rail = Array.from({ length: Math.min(24, Math.min(a, b)) }, (_, i) => i + 1);
-  return rail.includes(g) ? rail : [...rail, g];
+/** Retirer un groupe ; sous 1, les objets retournent en deux piles. */
+export function removeGroup(state) {
+  if (state.k === null) return state;
+  if (state.k <= 1) return { ...state, k: null, qa: undefined, ra: undefined, qb: undefined, rb: undefined, works: undefined };
+  return choose(state, state.k - 1);
+}
+
+/**
+ * Le temps des groupes est ACCOMPLI quand l'élève a posé le PLUS GRAND
+ * nombre de groupes qui tombe juste (6 pour 12 et 18, 18 pour 90 et 54) ET
+ * qu'il a vu au moins un nombre PLUS GRAND échouer. « Le plus grand » est une
+ * affirmation sur ce qui vient après : sans un essai au-delà, trouver 18
+ * n'était qu'une constatation (audit 2026-09-29, « one lucky k »).
+ */
+export function greatestGroupFound(state) {
+  const g = gcdByDefinition(state.a, state.b);
+  if (state.tried[g] !== 'common') return false;
+  return Object.keys(state.tried).some((k) => Number(k) > g);
 }
 
 export function initLists({ a, b }) {
@@ -80,8 +95,10 @@ export function allCommonPlaced(state) {
 
 /** La case PGCD n'accepte que le plus grand des communs, une fois tous posés. */
 export function canPlacePgcd(state, d) {
+  // La VRAIE raison d'abord : un nombre qui n'est pas commun ne devient pas
+  // acceptable en complétant le milieu (avant : « أكمل أوّلًا… »).
+  if (!state.common.includes(d)) return 'notCommon';
   if (!allCommonPlaced(state)) return 'notAllCommon';
-  if (!state.placed.includes(d)) return 'notCommon';
   if (d !== state.g) return 'notGreatest';
   return true;
 }
