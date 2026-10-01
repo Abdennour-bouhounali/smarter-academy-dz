@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l5-004",
+  "lessonCode": "tarrid-mushkila",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — منذ كم سنة؟",
+    "estimatedMinutes": 5,
+    "tags": [
+      "أعمار",
+      "مجهول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-mushkila_P1",
+      "modelledOn": "method-modelling"
+    }
+  },
+  "statement": {
+    "content": "عمر أمّ اليوم 42 سنة، وعمر ابنتها 12 سنة. نسمّي $x$ عدد السنوات التي مضت منذ أن كان عمر الأم أربعة أضعاف عمر ابنتها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ معادلة تترجم النص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$42 + x = 4(12 + x)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAHAQQUQ"
+        },
+        {
+          "id": "B",
+          "content": "$42 - x = 4(12 - x)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$42 - x = 4 \\times 12 - x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "منذ $x$ سنة كم كان عمر كل منهما؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نطرح $x$ من كل عمر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عمر الأم حينها = 4 × عمر البنت حينها."
+        }
+      ],
+      "feedback": {
+        "correct": "$42 - x = 4(12 - x)$ .",
+        "incorrect": "«منذ» تعني الماضي: نطرح $x$ ، ونطرحه من عمر البنت قبل الضرب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "منذ كم سنة؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر: $42 - x = 48 - 4x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع حدود $x$ في طرف."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق: الأم 40 والبنت 10."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x = 6$ أي $x = 2$ : منذ سنتين، $40 = 4 \\times 10$ .",
+        "incorrect": "انشر $4(12 - x)$ أولًا."
+      }
+    }
+  ]
+}

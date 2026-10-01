@@ -1,0 +1,143 @@
+{
+  "metadata": {
+    "title": "تمرين 34 — تحليل E وحل E = 0",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تحليل",
+      "جداء معدوم"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-34",
+      "page": 53,
+      "section": "أتعمّق",
+      "number": 34
+    }
+  },
+  "statement": {
+    "content": "لتكن العبارة E حيث $E = (5x - 1)^2 - (2x + 3)(5x - 1)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "تحليل العبارة E إلى جداء عاملين هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(5x - 1)(7x + 2)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "B",
+          "content": "$(5x - 1)(3x + 2)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "C",
+          "content": "$(5x - 1)(3x - 4)$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$(5x - 1)^2(2x + 3)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل المشترك $5x - 1$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(5x - 1)[(5x - 1) - (2x + 3)]$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احذف القوسين بتغيير الإشارات."
+        }
+      ],
+      "feedback": {
+        "correct": "$(5x - 1)(5x - 1 - 2x - 3) = (5x - 1)(3x - 4)$.",
+        "incorrect": "الإشارة «−» تشمل $2x$ و 3."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "حلول المعادلة $E = 0$ هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{1}{5}$ و $\\dfrac{4}{3}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{1}{5}$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$-\\dfrac{1}{5}$ و $-\\dfrac{4}{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
+        },
+        {
+          "id": "D",
+          "content": "$5$ و $\\dfrac{3}{4}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل الشكل المحلّل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حل $5x - 1 = 0$ و $3x - 4 = 0$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم العدد على معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = \\dfrac{1}{5}$ أو $x = \\dfrac{4}{3}$.",
+        "incorrect": "لكل عامل حلّه: نقسم العدد على معامل $x$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l5-002",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 5
+}

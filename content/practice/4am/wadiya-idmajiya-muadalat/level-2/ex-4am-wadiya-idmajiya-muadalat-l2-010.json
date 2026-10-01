@@ -1,0 +1,113 @@
+{
+  "metadata": {
+    "title": "تدريب — كراء الدراجات",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معادلة",
+      "مقارنة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "لكراء دراجة: الصيغة (أ) 120 دينارًا لكل ساعة؛ الصيغة (ب) 200 دينار عند الكراء و 80 دينارًا لكل ساعة. نسمّي $x$ عدد الساعات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من أجل كم ساعة تتساوى تكلفتا الصيغتين؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب تكلفة كل صيغة بدلالة $x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المعادلة: $120x = 200 + 80x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع حدود $x$ في طرف."
+        }
+      ],
+      "feedback": {
+        "correct": "$40x = 200$ أي $x = 5$ ساعات (600 دينار في الحالتين).",
+        "incorrect": "تكلفة (ب) هي $200 + 80x$ : 200 تُدفع مرّة واحدة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    },
+    {
+      "id": "q2",
+      "statement": "من أجل 3 ساعات، الصيغة الأفضل هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الصيغة (ب)",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "الصيغة (أ)",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "الصيغتان متساويتان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-QIMAT-TASAWI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد 3."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب التكلفتين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الأفضل هو الأقل تكلفة."
+        }
+      ],
+      "feedback": {
+        "correct": "(أ): $120 \\times 3 = 360$ ؛ (ب): $200 + 240 = 440$ ، فالصيغة (أ) أرخص.",
+        "incorrect": "احسب التكلفتين قبل الحكم."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l2-010",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 2
+}

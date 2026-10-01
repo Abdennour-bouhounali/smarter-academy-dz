@@ -1,0 +1,91 @@
+{
+  "id": "ex-4am-jidaa-maadum-l2-010",
+  "lessonCode": "jidaa-maadum",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — حلّ موجب وحلّ سالب",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جداء معدوم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidaa-maadum_P2",
+      "modelledOn": "ex-14"
+    }
+  },
+  "statement": {
+    "content": "نعتبر المعادلة $(x + 6)(5x - 1) = 0$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما الحل الموجب لهذه المعادلة؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد على شكل كسر a/b",
+      "expectedAnswer": "1/5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطرف الأول جداء عاملين والطرف الثاني $0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خاصية الجداء المعدوم: أحد العاملين على الأقل معدوم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب كل عامل يساوي $0$ ، ثم حلّ كل معادلة من الدرجة الأولى."
+        }
+      ],
+      "feedback": {
+        "correct": "$5x - 1 = 0$ يعني $x = \\dfrac{1}{5}$ .",
+        "incorrect": "حلول معادلة جداء معدوم هي حلول المعادلتين: عامل أول يساوي $0$ أو عامل ثانٍ يساوي $0$ — تحقّق بالتعويض."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما الحل السالب لهذه المعادلة؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد نسبي",
+      "expectedAnswer": "-6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطرف الأول جداء عاملين والطرف الثاني $0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خاصية الجداء المعدوم: أحد العاملين على الأقل معدوم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب كل عامل يساوي $0$ ، ثم حلّ كل معادلة من الدرجة الأولى."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + 6 = 0$ يعني $x = -6$ .",
+        "incorrect": "حلول معادلة جداء معدوم هي حلول المعادلتين: عامل أول يساوي $0$ أو عامل ثانٍ يساوي $0$ — تحقّق بالتعويض."
+      }
+    }
+  ]
+}

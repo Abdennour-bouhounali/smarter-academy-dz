@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-muadala-ula-l2-009",
+  "lessonCode": "muadala-ula",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — المجهول في الطرف الأيمن",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ax + b = c"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadala-ula_P2",
+      "modelledOn": "ex-4"
+    }
+  },
+  "statement": {
+    "content": "المجهول يمكن أن يكون في الطرف الأيمن."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المعادلة $17 = 5x + 2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في طرف واحد حدّ فيه $x$ وعدد، وفي الطرف الآخر عدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تخلّص أولًا من العدد الذي مع الحدّ $ax$ بإجراء العملية المعاكسة على الطرفين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تصل إلى الشكل $ax = b$ ، ثم تقسم الطرفين على معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$17 = 5x + 2$ : نصل إلى $-5x = -15$ ، ومنه $x = 3$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نطرح $4$ من الطرفين في المعادلة $-8 = 3x + 4$ ، فنحصل على:",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-12 = 3x + 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$-12 = 3x$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$-12 = 3x + 8$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العملية تُجرى على الطرفين معًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب كل طرف بعد العملية، ثم بسّطه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعادلة الناتجة لها الحل نفسه الذي للمعادلة الأولى: يمكنك التحقّق بتعويض قيمة لـ $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "نطرح $4$ من الطرفين: $-12 = 3x$ — معادلة لها الحل نفسه.",
+        "incorrect": "العملية نفسها تُجرى على الطرفين، وبالإشارة نفسها."
+      }
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "title": "تدريب — قاعة الرياضة: أيّ صيغة أفضل؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متراجحة",
+      "مفاضلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "تقترح قاعة رياضة صيغتين. الصيغة (أ): 100 دينار لكل حصة. الصيغة (ب): اشتراك سنوي قدره 600 دينار و 40 دينارًا لكل حصة. نسمّي $x$ عدد الحصص."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "«الصيغة (ب) أفضل» تُترجم بالمتراجحة ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$600 + 40x > 100x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        },
+        {
+          "id": "B",
+          "content": "$600 + 40x < 100x$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$600 + 40x = 100x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        },
+        {
+          "id": "D",
+          "content": "$640x < 100x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "«أفضل» تعني «أقل تكلفة»."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب تكلفة كل صيغة بدلالة $x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تكلفة (ب) أقل من تكلفة (أ)."
+        }
+      ],
+      "feedback": {
+        "correct": "تكلفة (ب) $600 + 40x$ أقل من تكلفة (أ) $100x$.",
+        "incorrect": "الأفضل هو الأقل تكلفة، والاشتراك يُدفع مرّة واحدة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    },
+    {
+      "id": "q2",
+      "statement": "ابتداءً من كم حصة تكون الصيغة (ب) أفضل؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "11",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حل المتراجحة السابقة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح $40x$ من الطرفين ثم اقسم على 60."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عدد الحصص عدد طبيعي، والتساوي لا يجعل (ب) أفضل."
+        }
+      ],
+      "feedback": {
+        "correct": "$600 < 60x$ أي $x > 10$ : أصغر عدد طبيعي هو 11 (عند 10 حصص تتساوى التكلفتان: 1000 دينار).",
+        "incorrect": "عند قيمة التساوي لا تكون أيّ صيغة أفضل: خذ العدد الطبيعي الموالي."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "10",
+          "id": "MISC-WADIYA-QIMAT-TASAWI"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l2-005",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 2
+}

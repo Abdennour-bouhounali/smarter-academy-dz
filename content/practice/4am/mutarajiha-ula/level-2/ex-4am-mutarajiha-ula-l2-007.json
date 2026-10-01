@@ -1,0 +1,125 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l2-007",
+  "lessonCode": "mutarajiha-ula",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — مثّل الحلول",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تمثيل بياني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutarajiha-ula_P3",
+      "modelledOn": "know-4"
+    }
+  },
+  "statement": {
+    "content": "نمثّل حلول كل متراجحة على مستقيم مدرّج، بالجزء الملوّن بالأحمر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ تمثيل بياني يوافق حلول المتراجحة $x \\geq -1$ على مستقيم مدرّج؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الجزء الملوّن على يمين $-1$ والرمز $[$ عند $-1$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الجزء الملوّن على يسار $-1$ والرمز $]$ عند $-1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+        },
+        {
+          "id": "C",
+          "content": "الجزء الملوّن على يمين $-1$ والرمز $]$ عند $-1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المتراجحة أولًا لتجد الحدّ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحلول الأكبر من الحدّ على يمينه، والأصغر منه على يساره."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اختبر الحدّ نفسه: إن كان حلًّا فالرمز موجّه نحو الجزء الملوّن."
+        }
+      ],
+      "feedback": {
+        "correct": "الحلول: $x \\geq -1$ ، فالجزء الملوّن على يمين $-1$ ، و $-1$ حلّ فالرمز موجّه نحو الجزء الملوّن.",
+        "incorrect": "حدّد جهة الحلول، ثم اختبر الحدّ نفسه لتختار اتجاه الرمز."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "أيّ تمثيل بياني يوافق حلول المتراجحة $x < 2$ على مستقيم مدرّج؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الجزء الملوّن على يسار $2$ والرمز $[$ عند $2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الجزء الملوّن على يسار $2$ والرمز $]$ عند $2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
+        },
+        {
+          "id": "C",
+          "content": "الجزء الملوّن على يمين $2$ والرمز $]$ عند $2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المتراجحة أولًا لتجد الحدّ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحلول الأكبر من الحدّ على يمينه، والأصغر منه على يساره."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اختبر الحدّ نفسه: إن كان حلًّا فالرمز موجّه نحو الجزء الملوّن."
+        }
+      ],
+      "feedback": {
+        "correct": "الحلول: $x < 2$ ، فالجزء الملوّن على يسار $2$ ، و $2$ ليس حلًّا فالرمز غير موجّه نحو الجزء الملوّن.",
+        "incorrect": "حدّد جهة الحلول، ثم اختبر الحدّ نفسه لتختار اتجاه الرمز."
+      }
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l5-002",
+  "lessonCode": "mutarajiha-ula",
+  "level": 5,
+  "metadata": {
+    "title": "تمرين 32 — المتراجحة الأولى",
+    "estimatedMinutes": 6,
+    "tags": [
+      "حل متراجحة",
+      "تمثيل بياني"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-32",
+      "page": 51,
+      "section": "أوظّف تعلّماتي",
+      "number": 32
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 51): المتراجحة $3(2x - 6) + 4(2x - 3) \\geq 2x - 5(2x - 3)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المتراجحة $3(2x - 6) + 4(2x - 3) \\geq 2x - 5(2x - 3)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\geq \\dfrac{15}{22}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "B",
+          "content": "$x \\leq \\dfrac{45}{22}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        },
+        {
+          "id": "C",
+          "content": "$x \\geq \\dfrac{45}{22}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$3(2x - 6) + 4(2x - 3) \\geq 2x - 5(2x - 3)$ تؤول إلى $22x \\geq 45$، ثم نقسم على $22$ (عدد موجب، فالاتجاه لا يتغيّر): $x \\geq \\dfrac{45}{22}$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "أيّ تمثيل بياني يوافق حلول المتراجحة $3(2x - 6) + 4(2x - 3) \\geq 2x - 5(2x - 3)$ على مستقيم مدرّج؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الجزء الملوّن على يسار $\\dfrac{45}{22}$ والرمز $]$ عند $\\dfrac{45}{22}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+        },
+        {
+          "id": "B",
+          "content": "الجزء الملوّن على يمين $\\dfrac{45}{22}$ والرمز $[$ عند $\\dfrac{45}{22}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "الجزء الملوّن على يمين $\\dfrac{45}{22}$ والرمز $]$ عند $\\dfrac{45}{22}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المتراجحة أولًا لتجد الحدّ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحلول الأكبر من الحدّ على يمينه، والأصغر منه على يساره."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اختبر الحدّ نفسه: إن كان حلًّا فالرمز موجّه نحو الجزء الملوّن."
+        }
+      ],
+      "feedback": {
+        "correct": "الحلول: $x \\geq \\dfrac{45}{22}$ ، فالجزء الملوّن على يمين $\\dfrac{45}{22}$ ، و $\\dfrac{45}{22}$ حلّ فالرمز موجّه نحو الجزء الملوّن.",
+        "incorrect": "حدّد جهة الحلول، ثم اختبر الحدّ نفسه لتختار اتجاه الرمز."
+      }
+    }
+  ]
+}

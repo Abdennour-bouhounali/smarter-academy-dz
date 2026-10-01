@@ -1,0 +1,108 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l3-003",
+  "lessonCode": "tarrid-mushkila",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 13 — السدّ",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ترييض",
+      "نسب مئوية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-13",
+      "page": 50,
+      "section": "أوظّف تعلّماتي",
+      "number": 13
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 50): بلغت النسبة المئوية لإنجاز بناء سَدّ 75% من المدة المقرّرة، ثم تواصل البناء لمدة 4 سنوات. إذا علمت أنّ المُدّة المتبقية لإنجاز المشروع هي 11 سنة، فما هي المُدّة المُقرّرة لبنائه؟ نقرأ: انقضى 75% من المدة المقرّرة $D$ ، ثم 4 سنوات، وبقيت 11 سنة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ معادلة تترجم النص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$0{,}75D + 4 = 11$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$0{,}75D + 4 + 11 = D$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$75D + 15 = D$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما مجموع المدد الثلاث؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما انقضى + 4 سنوات + ما بقي = المدة كلها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "75% من $D$ هي $0{,}75D$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}75D + 4 + 11 = D$ .",
+        "incorrect": "المدة كلها $D$ تظهر في الطرف الثاني."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما المدة المقرّرة (بالسنوات)؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "60",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اطرح $0{,}75D$ من الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على $0{,}25D = 15$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على $0{,}25$ (أي اضرب في 4)."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}25D = 15$ أي $D = 60$ ، وتحقّق: $45 + 4 + 11 = 60$ .",
+        "incorrect": "ربع المدة يساوي 15 سنة."
+      }
+    }
+  ]
+}

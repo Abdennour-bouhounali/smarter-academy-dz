@@ -1,0 +1,127 @@
+{
+  "id": "ex-4am-jidaa-maadum-l4-001",
+  "lessonCode": "jidaa-maadum",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 17 — فرق مربّعين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متطابقات شهيرة",
+      "جداء معدوم"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-17",
+      "page": 50,
+      "section": "أوظّف تعلّماتي",
+      "number": 17
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 50): 1) حلّل إلى جداء عاملين العبارة $x^2 - 25$ . 2) حل المعادلة $x^2 - 25 = 0$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "تحليل $x^2 - 25$ :",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x - 25)(x + 25)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-NASHR-AWWALAN"
+        },
+        {
+          "id": "B",
+          "content": "$(x - 5)(x + 5)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(x - 5)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-NASHR-AWWALAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$25 = 5^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العبارة من الشكل $a^2 - b^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$a^2 - b^2 = (a - b)(a + b)$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 - 25 = x^2 - 5^2 = (x - 5)(x + 5)$ .",
+        "incorrect": "تعرّف على المتطابقة ثم طبّق الخاصية، وعوّض كل حلّ لتتحقّق."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلول المعادلة $x^2 - 25 = 0$ :",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-5$ و $5$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$5$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$-25$ و $25$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-NASHR-AWWALAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطرف الأول يشبه أحد أطراف متطابقة شهيرة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تذكّر: $a^2 - b^2 = (a - b)(a + b)$ و $a^2 \\pm 2ab + b^2 = (a \\pm b)^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّل بالمتطابقة، ثم طبّق خاصية الجداء المعدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x - 5)(x + 5) = 0$ يعني $x = 5$ أو $x = -5$ .",
+        "incorrect": "تعرّف على المتطابقة ثم طبّق الخاصية، وعوّض كل حلّ لتتحقّق."
+      }
+    }
+  ]
+}

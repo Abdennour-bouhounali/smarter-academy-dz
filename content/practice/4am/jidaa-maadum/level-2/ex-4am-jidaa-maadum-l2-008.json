@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-jidaa-maadum-l2-008",
+  "lessonCode": "jidaa-maadum",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — من الجداء إلى معادلتين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تعريف",
+      "خاصية الجداء المعدوم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidaa-maadum_P1",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "نعتبر المعادلة $(-3x + 2)(x - 7) = 0$ ، ونكتبها على الشكل $(ax + b)(cx + d) = 0$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما قيمة $a$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد نسبي",
+      "expectedAnswer": "-3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل الأول هو $ax + b$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a$ هو معامل $x$ ، بإشارته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقرأ العدد المضروب في $x$ في القوس الأول."
+        }
+      ],
+      "feedback": {
+        "correct": "العامل الأول $-3x + 2$ : $a = -3$ و $b = 2$ .",
+        "incorrect": "الشرطان معًا: جداء عاملين في الطرف الأول، و $0$ في الطرف الثاني."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلول هذه المعادلة هي حلول المعادلتين:",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-3x = 0$ و $2 = 0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
+        },
+        {
+          "id": "B",
+          "content": "$-3x + 2 = x - 7$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
+        },
+        {
+          "id": "C",
+          "content": "$-3x + 2 = 0$ و $x - 7 = 0$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطرف الأول جداء عاملين والطرف الثاني $0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خاصية الجداء المعدوم: أحد العاملين على الأقل معدوم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب كل عامل يساوي $0$ ، ثم حلّ كل معادلة من الدرجة الأولى."
+        }
+      ],
+      "feedback": {
+        "correct": "حلول $(ax + b)(cx + d) = 0$ هي حلول $ax + b = 0$ و $cx + d = 0$ .",
+        "incorrect": "حلول معادلة جداء معدوم هي حلول المعادلتين: عامل أول يساوي $0$ أو عامل ثانٍ يساوي $0$ — تحقّق بالتعويض."
+      }
+    }
+  ]
+}

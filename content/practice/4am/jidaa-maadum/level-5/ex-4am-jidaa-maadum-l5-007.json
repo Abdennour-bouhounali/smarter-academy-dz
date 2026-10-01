@@ -1,0 +1,119 @@
+{
+  "id": "ex-4am-jidaa-maadum-l5-007",
+  "lessonCode": "jidaa-maadum",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — ابحث عن الخطإ",
+    "estimatedMinutes": 4,
+    "tags": [
+      "أخطاء شائعة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidaa-maadum_P3",
+      "modelledOn": "now-47-2"
+    }
+  },
+  "statement": {
+    "content": "حلّ تلميذان معادلتين بطريقتين خاطئتين."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لحلّ $x^2 = 5x$ قسم التلميذ الأول الطرفين على $x$ فوجد $x = 5$ فقط. ما الصحيح؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "ضيّع الحل 0: $x(x - 5) = 0$ يعطي $0$ و $5$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا خطأ: الحل الوحيد 5",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-QISMA-ALA-X"
+        },
+        {
+          "id": "C",
+          "content": "الحل الصحيح $-5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x = 0$ في المعادلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "القسمة على $x$ ممنوعة إذا كان $x$ قد يساوي 0."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انقل ثم حلّل."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 - 5x = x(x - 5) = 0$ : الحلّان 0 و 5، و $0^2 = 5 \\times 0$ .",
+        "incorrect": "لا تقسم الطرفين على عبارة قد تكون معدومة: انقل ثم حلّل."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "كتب التلميذ الثاني: $(x + 1)(x - 2) = 10$ يعني $x + 1 = 10$ أو $x - 2 = 10$ . هل استنتاجه صحيح؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا: خاصية الجداء المعدوم تخصّ جداءً يساوي 0",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نعم: هي خاصية الجداء المعدوم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معادلة جداء معدوم: جداء عاملين من الدرجة الأولى يساوي $0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الطرف الأول: هل هو جداء أم مجموع؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم انظر إلى الطرف الثاني: هل هو $0$ ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = 9$ : $(9 + 1)(9 - 2) = 70 \\neq 10$ ، فالاستنتاج خاطئ.",
+        "incorrect": "الشرطان معًا: جداء عاملين في الطرف الأول، و $0$ في الطرف الثاني."
+      }
+    }
+  ]
+}

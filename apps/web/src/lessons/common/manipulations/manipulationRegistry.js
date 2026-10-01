@@ -28,6 +28,11 @@ export const MANIPULATION_COMPONENTS = {
   'square-tiling': lazy(() => import('./roots/SquareTiling')),
   'pitch-expansion': lazy(() => import('./algebra/PitchExpansion')),
   'turf-factoring': lazy(() => import('./algebra/TurfFactoring')),
+  // Unité 4 « معادلات ومتراجحات » (2026-10-01).
+  'equation-balance': lazy(() => import('./equations/EquationBalance')),
+  'vanishing-pitch': lazy(() => import('./equations/VanishingPitch')),
+  'solution-ray': lazy(() => import('./equations/SolutionRay')),
+  'growth-race': lazy(() => import('./equations/GrowthRace')),
 };
 
 export const REGISTERED_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_COMPONENTS));

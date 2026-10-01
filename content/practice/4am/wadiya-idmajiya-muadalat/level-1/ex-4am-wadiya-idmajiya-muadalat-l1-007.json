@@ -1,0 +1,65 @@
+{
+  "metadata": {
+    "title": "تدريب — معادلة من الدرجة الأولى",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معادلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P1",
+      "modelledOn": "qcm"
+    }
+  },
+  "statement": {
+    "content": "لتكن المعادلة $3x - 4 = 2x + 5$ ذات المجهول $x$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هو حل هذه المعادلة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجهول في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع حدود $x$ في طرف والأعداد في الطرف الآخر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انقل كل حد بتغيير إشارته، ثم تحقّق بالتعويض."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x - 2x = 5 + 4$ أي $x = 9$ ؛ ونتحقق: $27 - 4 = 23 = 18 + 5$.",
+        "incorrect": "عند نقل حدّ إلى الطرف الآخر تتغيّر إشارته."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1,
+      "misconceptionSignatures": [
+        {
+          "value": "1",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l1-007",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 1
+}

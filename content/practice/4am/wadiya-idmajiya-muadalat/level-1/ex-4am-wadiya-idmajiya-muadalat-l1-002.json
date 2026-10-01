@@ -1,0 +1,78 @@
+{
+  "metadata": {
+    "title": "تمرين 2 — المعادلة 4x = 5x (أؤكّد تعلّماتي)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معادلة",
+      "أؤكّد تعلّماتي"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 52,
+      "section": "أؤكّد تعلّماتي",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "في كل حالة اختر الإجابة الصحيحة، وبرّر اختيارك."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حل المعادلة $4x = 5x$ هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{5}{4}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-QISMA-ALA-X"
+        },
+        {
+          "id": "B",
+          "content": "$0$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{4}{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجهول موجود في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع حدود $x$ في طرف واحد: $4x - 5x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض كل اقتراح في الطرفين وقارن."
+        }
+      ],
+      "feedback": {
+        "correct": "$4x - 5x = 0$ أي $-x = 0$ ، إذن $x = 0$ ؛ ونتحقق: $4 \\times 0 = 5 \\times 0$.",
+        "incorrect": "لا نقسم على $x$ : قد يكون معدومًا. ننقل الحدود ثم نحل."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l1-002",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 1
+}

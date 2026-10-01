@@ -1,0 +1,102 @@
+{
+  "metadata": {
+    "title": "تدريب — كم يجب أن يكون الاشتراك؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معادلة",
+      "ترييض"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "في نادٍ: الصيغة (أ) 80 دينارًا لكل حصة؛ الصيغة (ب) اشتراك سنوي قدره $a$ دينار و 30 دينارًا لكل حصة. نريد أن تتساوى الصيغتان عند 12 حصة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هي قيمة $a$؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "600",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب تكلفة كل صيغة من أجل 12 حصة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$80 \\times 12 = a + 30 \\times 12$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حل المعادلة ذات المجهول $a$."
+        }
+      ],
+      "feedback": {
+        "correct": "$960 = a + 360$ أي $a = 600$ دينار.",
+        "incorrect": "المجهول هنا هو الاشتراك $a$."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "بهذا الاشتراك، ابتداءً من كم حصة تكون الصيغة (ب) أفضل؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "13",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حل $600 + 30x < 80x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تعرف أين تتساوى الصيغتان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "التساوي لا يكفي."
+        }
+      ],
+      "feedback": {
+        "correct": "$600 < 50x$ أي $x > 12$ ، فابتداءً من 13 حصة.",
+        "incorrect": "عند 12 حصة تتساوى الصيغتان."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "12",
+          "id": "MISC-WADIYA-QIMAT-TASAWI"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l5-006",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 5
+}

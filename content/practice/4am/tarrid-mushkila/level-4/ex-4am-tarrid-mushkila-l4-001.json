@@ -1,0 +1,111 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l4-001",
+  "lessonCode": "tarrid-mushkila",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 38 — إنشاء مثلث",
+    "estimatedMinutes": 5,
+    "tags": [
+      "متراجحة",
+      "مثلث",
+      "تحقّق"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-38",
+      "page": 53,
+      "section": "أتعمّق",
+      "number": 38
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 53): ما هي قيم $x$ التي من أجلها يُمكن إنشاء مثلث أطوال أضلاعه بالسنتيمتر: 5 ، $x$ و 7. (في مثلث، طول كل ضلع أصغر من مجموع طولي الضلعين الآخرين.)"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيم $x$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x < 12$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAHAQQUQ"
+        },
+        {
+          "id": "B",
+          "content": "$2 < x < 12$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$2 \\leq x \\leq 12$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب المتراجحات الثلاث."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x < 5 + 7$ و $7 < 5 + x$ و $5 < x + 7$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احتفظ بالقيم التي تحقّقها كلها."
+        }
+      ],
+      "feedback": {
+        "correct": "$x < 12$ و $x > 2$ : $2 < x < 12$ .",
+        "incorrect": "من أجل $x = 2$ أو $x = 12$ لا يوجد مثلث (النقاط على استقامة)."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "كم عدد القيم الطبيعية الممكنة لـ $x$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "القيم الطبيعية بين 2 و 12 تمامًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "لا تحسب 2 ولا 12."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عدّ من 3 إلى 11."
+        }
+      ],
+      "feedback": {
+        "correct": "القيم 3 ، 4 ، … ، 11 : تسع قيم.",
+        "incorrect": "الحدّان 2 و 12 مستبعدان."
+      }
+    }
+  ]
+}

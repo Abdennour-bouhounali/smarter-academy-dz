@@ -1,0 +1,115 @@
+{
+  "id": "ex-4am-jidaa-maadum-l2-007",
+  "lessonCode": "jidaa-maadum",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — أعداد عشرية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جداء معدوم",
+      "أعداد عشرية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidaa-maadum_P2",
+      "modelledOn": "act-2b"
+    }
+  },
+  "statement": {
+    "content": "نعتبر المعادلة $(x - 1{,}5)(2x + 0{,}6) = 0$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلول المعادلة:",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$1{,}5$ و $-0{,}3$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$-1{,}5$ و $0{,}3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
+        },
+        {
+          "id": "C",
+          "content": "$1{,}5$ و $-1{,}2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "id": "D",
+          "content": "$1{,}5$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطرف الأول جداء عاملين والطرف الثاني $0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خاصية الجداء المعدوم: أحد العاملين على الأقل معدوم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب كل عامل يساوي $0$ ، ثم حلّ كل معادلة من الدرجة الأولى."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 1{,}5$ أو $2x = -0{,}6$ أي $x = -0{,}3$ .",
+        "incorrect": "حلول معادلة جداء معدوم هي حلول المعادلتين: عامل أول يساوي $0$ أو عامل ثانٍ يساوي $0$ — تحقّق بالتعويض."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما مجموع الحلّين؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "1,2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطرف الأول جداء عاملين والطرف الثاني $0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خاصية الجداء المعدوم: أحد العاملين على الأقل معدوم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب كل عامل يساوي $0$ ، ثم حلّ كل معادلة من الدرجة الأولى."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}5 + (-0{,}3) = 1{,}2$ .",
+        "incorrect": "حلول معادلة جداء معدوم هي حلول المعادلتين: عامل أول يساوي $0$ أو عامل ثانٍ يساوي $0$ — تحقّق بالتعويض."
+      }
+    }
+  ]
+}

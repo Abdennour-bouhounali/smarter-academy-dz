@@ -1,0 +1,128 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l3-002",
+  "lessonCode": "tarrid-mushkila",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 30 — مستطيل ومثلث",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ترييض",
+      "متراجحة",
+      "محيط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-30",
+      "page": 51,
+      "section": "أوظّف تعلّماتي",
+      "number": 30
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 51): مستطيل بعداه $x$ و 6cm ، وفوقه مثلث متقايس الأضلاع قاعدته الضلع العلوي للمستطيل (طوله $x$). ما هي قيم $x$ التي من أجلها يكون محيط المستطيل أكبر من محيط المثلث المتقايس الأضلاع؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ متراجحة تترجم السؤال؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2x + 12 > 3x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$2x + 12 < 3x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+        },
+        {
+          "id": "C",
+          "content": "$x + 6 > 3x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-MAJHUL-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "محيط المستطيل بدلالة $x$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "محيط المستطيل $2(x + 6)$ ومحيط المثلث $3x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "«أكبر من» تعطي الرمز $>$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$2(x + 6) > 3x$ أي $2x + 12 > 3x$ .",
+        "incorrect": "المحيط مجموع الأضلاع الأربعة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما قيم $x$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x > 12$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+        },
+        {
+          "id": "B",
+          "content": "$x = 12$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        },
+        {
+          "id": "C",
+          "content": "$0 < x < 12$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ $2x + 12 > 3x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تجد $12 > x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تذكّر أنّ $x$ طول."
+        }
+      ],
+      "feedback": {
+        "correct": "$x < 12$ و $x$ طول موجب: $0 < x < 12$ .",
+        "incorrect": "من أجل $x = 12$ المحيطان متساويان (36)."
+      }
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+{
+  "metadata": {
+    "title": "تدريب — نشر ثم متراجحة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نشر",
+      "متراجحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P1",
+      "modelledOn": "ex-36"
+    }
+  },
+  "statement": {
+    "content": "لتكن المتراجحة $(x + 2)^2 - x(x + 1) < 19$ ذات المجهول $x$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للطرف الأيسر هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$5x + 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "B",
+          "content": "$x + 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+        },
+        {
+          "id": "C",
+          "content": "$3x + 4$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$2x^2 + 5x + 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$(x + 2)^2 = x^2 + 4x + 4$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر $x(x + 1)$ ثم اطرح."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحدّان $x^2$ يختفيان."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 4x + 4 - x^2 - x = 3x + 4$.",
+        "incorrect": "الإشارة «−» تغيّر إشارة $x^2$ و $x$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "حلول المتراجحة هي الأعداد $x$ حيث ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x < 5$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x > 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        },
+        {
+          "id": "C",
+          "content": "$x < \\dfrac{23}{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "D",
+          "content": "$x = 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب $3x + 4 < 19$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح 4 ثم اقسم على 3."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "القسمة على عدد موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x < 15$ أي $x < 5$.",
+        "incorrect": "لا يتغيّر الاتجاه عند القسمة على 3."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l4-008",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 4
+}

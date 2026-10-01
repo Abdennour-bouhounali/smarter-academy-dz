@@ -1,0 +1,166 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l1-010",
+  "lessonCode": "mutarajiha-ula",
+  "level": 1,
+  "metadata": {
+    "title": "معارف 4 — المثال 1: 5x ≤ 3",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حلّ متراجحة",
+      "تمثيل بياني"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-4",
+      "page": 48,
+      "section": "معارف",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 48): المتراجحة $5x \\leq 3$ وتمثيل حلولها على مستقيم مدرّج."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل العدد $\\dfrac{3}{5}$ حلّ للمتراجحة $5x \\leq 3$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، هو حلّ",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا، ليس حلًّا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب كل طرف وحده."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن النتيجتين بالرمز نفسه: هل المتباينة العددية صحيحة؟"
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = \\dfrac{3}{5}$ : الطرف الأول يساوي $3$ والطرف الثاني $3$ ، و $3 \\leq 3$ متباينة صحيحة.",
+        "incorrect": "احسب الطرفين من أجل هذه القيمة، ثم احكم على المتباينة العددية — وانتبه إلى الرمز الصارم $<$ أو $>$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل العدد $1$ حلّ للمتراجحة $5x \\leq 3$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، هو حلّ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        },
+        {
+          "id": "B",
+          "content": "لا، ليس حلًّا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب كل طرف وحده."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن النتيجتين بالرمز نفسه: هل المتباينة العددية صحيحة؟"
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = 1$ : الطرف الأول يساوي $5$ والطرف الثاني $3$ ، و $5 \\leq 3$ متباينة خاطئة.",
+        "incorrect": "احسب الطرفين من أجل هذه القيمة، ثم احكم على المتباينة العددية — وانتبه إلى الرمز الصارم $<$ أو $>$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "أيّ تمثيل بياني يوافق حلول المتراجحة $5x \\leq 3$ على مستقيم مدرّج؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الجزء الملوّن على يسار $\\dfrac{3}{5}$ والرمز $[$ عند $\\dfrac{3}{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
+        },
+        {
+          "id": "B",
+          "content": "الجزء الملوّن على يمين $\\dfrac{3}{5}$ والرمز $[$ عند $\\dfrac{3}{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+        },
+        {
+          "id": "C",
+          "content": "الجزء الملوّن على يسار $\\dfrac{3}{5}$ والرمز $]$ عند $\\dfrac{3}{5}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المتراجحة أولًا لتجد الحدّ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحلول الأكبر من الحدّ على يمينه، والأصغر منه على يساره."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اختبر الحدّ نفسه: إن كان حلًّا فالرمز موجّه نحو الجزء الملوّن."
+        }
+      ],
+      "feedback": {
+        "correct": "الحلول: $x \\leq \\dfrac{3}{5}$ ، فالجزء الملوّن على يسار $\\dfrac{3}{5}$ ، و $\\dfrac{3}{5}$ حلّ فالرمز موجّه نحو الجزء الملوّن.",
+        "incorrect": "حدّد جهة الحلول، ثم اختبر الحدّ نفسه لتختار اتجاه الرمز."
+      }
+    }
+  ]
+}

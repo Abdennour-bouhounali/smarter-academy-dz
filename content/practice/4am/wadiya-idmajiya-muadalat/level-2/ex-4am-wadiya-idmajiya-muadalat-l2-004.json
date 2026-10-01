@@ -1,0 +1,84 @@
+{
+  "metadata": {
+    "title": "تمرين 6 — تمثيل x > −3 (أؤكّد تعلّماتي)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمثيل بياني",
+      "مستقيم مدرّج"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 52,
+      "section": "أؤكّد تعلّماتي",
+      "number": 6
+    }
+  },
+  "statement": {
+    "content": "نريد تمثيل الأعداد $x$ حيث $x > -3$ على مستقيم مدرّج (الجزء الملوّن بالأحمر يمثّل الحلول)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "التمثيل الصحيح هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الجزء الملوّن على يمين $-3$ ، والمعقوف عند $-3$ متّجه عكس الجزء الملوّن",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الجزء الملوّن على يسار $-3$ ، والمعقوف عند $-3$ متّجه نحو الجزء الملوّن",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+        },
+        {
+          "id": "C",
+          "content": "الجزء الملوّن على يمين $-3$ ، والمعقوف عند $-3$ متّجه نحو الجزء الملوّن",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
+        },
+        {
+          "id": "D",
+          "content": "الجزء الملوّن على يسار 0 ، والمعقوف عند 0 متّجه عكس الجزء الملوّن",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الأعداد الأكبر من $-3$ : في أيّ جهة من المستقيم؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل العدد $-3$ نفسه حل؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعقوف يتّجه نحو الجزء الملوّن فقط إذا كان الحد حلًا."
+        }
+      ],
+      "feedback": {
+        "correct": "الأعداد الأكبر من $-3$ على يمينه، و $-3$ ليس حلًا لأنّ $-3 > -3$ خاطئة.",
+        "incorrect": "حدّد الجهة أولًا، ثم انظر هل الحد حلّ."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 2
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l2-004",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 2
+}

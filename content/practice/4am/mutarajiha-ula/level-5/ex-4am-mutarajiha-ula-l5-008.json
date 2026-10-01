@@ -1,0 +1,108 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l5-008",
+  "lessonCode": "mutarajiha-ula",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — كسران وطرح",
+    "estimatedMinutes": 5,
+    "tags": [
+      "حل متراجحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutarajiha-ula_P2",
+      "modelledOn": "method-inequality"
+    }
+  },
+  "statement": {
+    "content": "لتكن المتراجحة $\\dfrac{3x - 1}{2} - \\dfrac{x + 2}{3} < 1$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المتراجحة $\\dfrac{3x - 1}{2} - \\dfrac{x + 2}{3} < 1$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x < \\dfrac{5}{7}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "B",
+          "content": "$x < \\dfrac{13}{7}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x > \\dfrac{13}{7}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3x - 1}{2} - \\dfrac{x + 2}{3} < 1$ تؤول إلى $\\dfrac{7}{6}x < \\dfrac{13}{6}$، ثم نقسم على $\\dfrac{7}{6}$ (عدد موجب، فالاتجاه لا يتغيّر): $x < \\dfrac{13}{7}$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "كم عددًا طبيعيًا يحقّق هذه المتراجحة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المتراجحة أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مثّل الحلول على مستقيم مدرّج وانظر إلى الحدّ: هل هو نفسه حلّ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عُدّ الأعداد الطبيعية 0، 1، 2، … الموجودة في الجزء الملوّن."
+        }
+      ],
+      "feedback": {
+        "correct": "الحلول: $x < \\dfrac{13}{7}$ ، فالحلول الطبيعية هي 0 و 1: عددها 2.",
+        "incorrect": "حلّ المتراجحة، ثم انتبه إلى الحدّ: هل هو حلّ أم لا؟"
+      }
+    }
+  ]
+}

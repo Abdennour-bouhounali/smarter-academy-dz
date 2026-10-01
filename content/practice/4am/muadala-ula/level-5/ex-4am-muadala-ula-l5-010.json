@@ -1,0 +1,111 @@
+{
+  "id": "ex-4am-muadala-ula-l5-010",
+  "lessonCode": "muadala-ula",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — معاملات عشرية وكسر",
+    "estimatedMinutes": 4,
+    "tags": [
+      "أعداد عشرية",
+      "كسور"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadala-ula_P1",
+      "modelledOn": "method-equation"
+    }
+  },
+  "statement": {
+    "content": "حلّ واكتب الحل على شكل كسر غير قابل للاختزال."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المعادلة $1{,}2x - 0{,}5 = 0{,}3x + 1$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "5/3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معاملات المعادلة أعداد عشرية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اعمل كما مع الأعداد الصحيحة: المجاهيل في طرف والمعاليم في الطرف الآخر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في النهاية قسّم على معامل $x$ (يمكنك ضرب البسط والمقام في 10)."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}2x - 0{,}5 = 0{,}3x + 1$ : ننقل المجاهيل إلى طرف والمعاليم إلى الآخر ونقسم على معامل $x$ : $x = \\dfrac{5}{3}$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل المعادلة $0{,}6x = 0{,}9 - 1{,}5x$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{3}{7}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$-1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{7}{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معاملات المعادلة أعداد عشرية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اعمل كما مع الأعداد الصحيحة: المجاهيل في طرف والمعاليم في الطرف الآخر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في النهاية قسّم على معامل $x$ (يمكنك ضرب البسط والمقام في 10)."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}6x = 0{,}9 - 1{,}5x$ : ننقل المجاهيل إلى طرف والمعاليم إلى الآخر ونقسم على معامل $x$ : $x = \\dfrac{3}{7}$.",
+        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
+      }
+    }
+  ]
+}

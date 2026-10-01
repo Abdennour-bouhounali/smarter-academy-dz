@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "title": "تدريب — محيط حديقة مستطيلة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترييض",
+      "متراجحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P2",
+      "modelledOn": "ex-36"
+    }
+  },
+  "statement": {
+    "content": "حديقة مستطيلة طولها 20m وعرضها $x$ (بالمتر، $x > 0$). نريد أن يكون محيطها أقل من 64m."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هذا الشرط يُترجم بالمتراجحة ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2(20 + x) < 64$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$20 + x < 64$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
+        },
+        {
+          "id": "C",
+          "content": "$20x < 64$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
+        },
+        {
+          "id": "D",
+          "content": "$2(20 + x) > 64$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "محيط المستطيل ضعف مجموع بعديه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المحيط $2(20 + x)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "«أقل من» تعطي الرمز $<$."
+        }
+      ],
+      "feedback": {
+        "correct": "المحيط $2(20 + x) = 40 + 2x$ ، والشرط $40 + 2x < 64$.",
+        "incorrect": "المحيط ضعف (الطول + العرض)، لا الجداء."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو أكبر عرض بعدد طبيعي من الأمتار يحقّق الشرط؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "11",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حل المتراجحة السابقة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2x < 24$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العدد 12 نفسه لا يحقّق الشرط."
+        }
+      ],
+      "feedback": {
+        "correct": "$x < 12$ ، فأكبر عدد طبيعي هو 11 (المحيط 62m).",
+        "incorrect": "عند $x = 12$ يكون المحيط 64m بالضبط، وهو ليس أقل من 64."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "12",
+          "id": "MISC-WADIYA-QIMAT-TASAWI"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l5-009",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 5
+}

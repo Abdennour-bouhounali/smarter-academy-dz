@@ -1,0 +1,142 @@
+{
+  "metadata": {
+    "title": "تدريب — تحليل ثم معادلة جداء معدوم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تحليل",
+      "جداء معدوم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P1",
+      "modelledOn": "ex-41"
+    }
+  },
+  "statement": {
+    "content": "لتكن العبارة $F = (2x + 1)^2 - (2x + 1)(x + 5)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "تحليل العبارة F هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(2x + 1)(x - 4)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(2x + 1)(3x + 6)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "C",
+          "content": "$(2x + 1)(x + 6)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "D",
+          "content": "$(2x + 1)^2(x + 5)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل المشترك $2x + 1$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أخرجه: $(2x + 1)[(2x + 1) - (x + 5)]$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احذف القوسين الثانيين بتغيير الإشارات."
+        }
+      ],
+      "feedback": {
+        "correct": "$(2x + 1)(2x + 1 - x - 5) = (2x + 1)(x - 4)$.",
+        "incorrect": "الإشارة «−» تشمل $x$ و 5."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "حلول المعادلة $F = 0$ هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{1}{2}$ و $-4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
+        },
+        {
+          "id": "B",
+          "content": "$-\\dfrac{1}{2}$ و $4$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$-2$ و $4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "id": "D",
+          "content": "$4$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل الشكل المحلّل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حل $2x + 1 = 0$ و $x - 4 = 0$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأولى: $2x = -1$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = -\\dfrac{1}{2}$ أو $x = 4$.",
+        "incorrect": "نقسم $-1$ على 2."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l4-007",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 4
+}

@@ -23,11 +23,12 @@ export function hasRequiredRole(user, allowedRoles) {
  * `teacher` : le compte enseignant existe désormais (role = 'teacher' côté
  * API) — il présente en classe, c'est précisément son métier.
  *
- * `student` y figure à la demande du propriétaire, pour éprouver le mode
- * classe depuis un compte élève ; c'est un réglage temporaire, et rien dans
- * l'architecture n'en dépend.
+ * `student` N'Y FIGURE PLUS (décision du propriétaire, 2026-10-01 : « وضع القسم
+ * est réservé à l'enseignant ») : il y avait été mis temporairement pour
+ * éprouver le mode classe depuis un compte élève, et le bouton apparaissait
+ * donc à chaque élève sur toutes les leçons.
  */
-export const CLASSROOM_PRESENTER_ROLES = Object.freeze(['admin', 'teacher', 'student']);
+export const CLASSROOM_PRESENTER_ROLES = Object.freeze(['admin', 'teacher']);
 
 /**
  * L'utilisateur peut-il ouvrir le mode classe ?

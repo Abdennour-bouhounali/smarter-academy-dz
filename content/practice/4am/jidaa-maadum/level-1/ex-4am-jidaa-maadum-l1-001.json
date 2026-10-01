@@ -1,0 +1,138 @@
+{
+  "id": "ex-4am-jidaa-maadum-l1-001",
+  "lessonCode": "jidaa-maadum",
+  "level": 1,
+  "metadata": {
+    "title": "تمرين 14 — معادلات جداء معدوم",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جداء معدوم"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-14",
+      "page": 50,
+      "section": "أوظّف تعلّماتي",
+      "number": 14
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 50): حل كل معادلة من المعادلات الآتية: $7(x + 2) = 0$ ، $(x + 5)(2 - x) = 0$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلول المعادلة $7(x + 2) = 0$ :",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-7$ و $-2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-AMIL-THABIT"
+        },
+        {
+          "id": "B",
+          "content": "$-2$ فقط",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$2$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
+        },
+        {
+          "id": "D",
+          "content": "$-2$ و $7$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-AMIL-THABIT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أحد العاملين عدد ثابت."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عامل ثابت غير معدوم لا ينعدم أبدًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يكفي أن تحلّ المعادلة: العامل الآخر يساوي $0$."
+        }
+      ],
+      "feedback": {
+        "correct": "بما أنّ $7 \\neq 0$ فإنّ $x + 2 = 0$ ، أي $x = -2$ .",
+        "incorrect": "العامل الثابت لا يعطي حلًّا: عوّض اقتراحك وتحقّق أنّ الجداء يساوي $0$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلول المعادلة $(x + 5)(2 - x) = 0$ :",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-5$ و $2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$5$ و $-2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
+        },
+        {
+          "id": "C",
+          "content": "$-5$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
+        },
+        {
+          "id": "D",
+          "content": "$-5$ و $-2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-ISHARA-SALIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطرف الأول جداء عاملين والطرف الثاني $0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خاصية الجداء المعدوم: أحد العاملين على الأقل معدوم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب كل عامل يساوي $0$ ، ثم حلّ كل معادلة من الدرجة الأولى."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + 5 = 0$ أو $2 - x = 0$ ، أي $x = -5$ أو $x = 2$ .",
+        "incorrect": "حلول معادلة جداء معدوم هي حلول المعادلتين: عامل أول يساوي $0$ أو عامل ثانٍ يساوي $0$ — تحقّق بالتعويض."
+      }
+    }
+  ]
+}

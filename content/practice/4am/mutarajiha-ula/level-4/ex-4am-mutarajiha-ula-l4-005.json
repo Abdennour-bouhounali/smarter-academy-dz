@@ -1,0 +1,125 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l4-005",
+  "lessonCode": "mutarajiha-ula",
+  "level": 4,
+  "metadata": {
+    "title": "طرائق — حل متراجحة من الدرجة الأولى",
+    "estimatedMinutes": 5,
+    "tags": [
+      "حل متراجحة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-inequality",
+      "page": 49,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 49): حل كل متراجحة مما يلي ثم مثّل بيانيا حلولها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المتراجحة $-7x + 1 < x - 3$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x > \\dfrac{1}{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x < \\dfrac{1}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
+        },
+        {
+          "id": "C",
+          "content": "$x > -\\dfrac{1}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$-7x + 1 < x - 3$ تؤول إلى $-8x < -4$، ثم نقسم على $-8$ (عدد سالب، فنغيّر الاتجاه): $x > \\dfrac{1}{2}$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّ المتراجحة $\\dfrac{3x + 2}{6} \\geq \\dfrac{2x - 3}{5}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\geq -\\dfrac{28}{3}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x \\geq -\\dfrac{8}{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$x \\leq -\\dfrac{28}{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3x + 2}{6} \\geq \\dfrac{2x - 3}{5}$ تؤول إلى $\\dfrac{1}{10}x \\geq -\\dfrac{14}{15}$، ثم نقسم على $\\dfrac{1}{10}$ (عدد موجب، فالاتجاه لا يتغيّر): $x \\geq -\\dfrac{28}{3}$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    }
+  ]
+}

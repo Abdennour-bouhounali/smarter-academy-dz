@@ -1,0 +1,203 @@
+{
+  "metadata": {
+    "title": "تمرين 35 — تحليل A والمعادلة والمتراجحة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "تحليل",
+      "جداء معدوم",
+      "متراجحة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-35",
+      "page": 53,
+      "section": "أتعمّق",
+      "number": 35
+    }
+  },
+  "statement": {
+    "content": "لدينا $6(3x + 4)(3x - 4) = 54x^2 - 96$. لتكن العبارة $A = (3x + 4)(x - 7) - (54x^2 - 96)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "تحليل العبارة A هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(3x + 4)(-17x - 31)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "B",
+          "content": "$(3x + 4)(-17x + 17)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(3x + 4)(-2x - 3)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
+        },
+        {
+          "id": "D",
+          "content": "$(3x + 4)(19x - 31)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل المساواة المعطاة لتظهر العامل المشترك."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$A = (3x + 4)(x - 7) - 6(3x + 4)(3x - 4)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أخرج $3x + 4$ وانتبه إلى $-6 \\times (-4)$."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = (3x + 4)[(x - 7) - 6(3x - 4)] = (3x + 4)(-17x + 17)$.",
+        "incorrect": "العامل 6 يُضرب في $3x$ وفي $-4$ ، والإشارة «−» تشمل الكل."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "حلول المعادلة $A = 0$ هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-\\dfrac{4}{3}$ و $1$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{4}{3}$ و $-1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
+        },
+        {
+          "id": "C",
+          "content": "$-\\dfrac{4}{3}$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
+        },
+        {
+          "id": "D",
+          "content": "$-\\dfrac{4}{3}$ و $17$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-AMIL-THABIT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$A$ جداء عاملين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حل $3x + 4 = 0$ و $-17x + 17 = 0$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الثانية: $-17x = -17$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = -\\dfrac{4}{3}$ أو $x = 1$.",
+        "incorrect": "لكل عامل معادلته؛ انتبه إلى الإشارة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q3",
+      "statement": "حلول المتراجحة $54x^2 - 96 \\leq 18x(3x + 1) - 90$ هي الأعداد $x$ حيث ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\leq -\\dfrac{1}{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        },
+        {
+          "id": "B",
+          "content": "$x \\geq -3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$x \\geq -\\dfrac{1}{3}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$x \\geq \\dfrac{1}{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر الطرف الأيمن."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحدّان $54x^2$ يختفيان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تبقى $-6 \\leq 18x$ ، والقسمة على 18 موجبة."
+        }
+      ],
+      "feedback": {
+        "correct": "$-96 \\leq 18x - 90$ يعني $-6 \\leq 18x$ ، أي $x \\geq -\\dfrac{1}{3}$.",
+        "incorrect": "القسمة على عدد موجب لا تغيّر الاتجاه."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l4-001",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 4
+}

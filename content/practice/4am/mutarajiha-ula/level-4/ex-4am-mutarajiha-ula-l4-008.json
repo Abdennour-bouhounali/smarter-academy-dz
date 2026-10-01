@@ -1,0 +1,108 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l4-008",
+  "lessonCode": "mutarajiha-ula",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — أعداد عشرية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حل متراجحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutarajiha-ula_P2",
+      "modelledOn": "ex-27"
+    }
+  },
+  "statement": {
+    "content": "لتكن المتراجحة $0{,}5x - 1{,}5 > 2x + 3$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المتراجحة $0{,}5x - 1{,}5 > 2x + 3$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x > -3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
+        },
+        {
+          "id": "B",
+          "content": "$x < -3$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x < -1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}5x - 1{,}5 > 2x + 3$ تؤول إلى $-\\dfrac{3}{2}x > \\dfrac{9}{2}$، ثم نقسم على $-\\dfrac{3}{2}$ (عدد سالب، فنغيّر الاتجاه): $x < -3$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما أكبر عدد صحيح يحقّق المتراجحة $0{,}5x - 1{,}5 > 2x + 3$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "-4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المتراجحة أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مثّل الحلول على مستقيم مدرّج وانظر إلى الحدّ: هل هو نفسه حلّ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن أكبر عدد صحيح في الجزء الملوّن."
+        }
+      ],
+      "feedback": {
+        "correct": "الحلول: $x < -3$ ، و $-3$ ليس حلًّا (الرمز صارم): أكبر عدد صحيح هو -4.",
+        "incorrect": "حلّ المتراجحة، ثم انتبه إلى الحدّ: هل هو حلّ أم لا؟"
+      }
+    }
+  ]
+}

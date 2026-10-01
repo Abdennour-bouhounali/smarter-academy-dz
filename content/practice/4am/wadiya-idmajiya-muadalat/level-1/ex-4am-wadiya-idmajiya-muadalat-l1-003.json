@@ -1,0 +1,78 @@
+{
+  "metadata": {
+    "title": "تمرين 3 — معادلة جداء معدوم (أؤكّد تعلّماتي)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جداء معدوم",
+      "أؤكّد تعلّماتي"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 52,
+      "section": "أؤكّد تعلّماتي",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "في كل حالة اختر الإجابة الصحيحة، وبرّر اختيارك."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعادلة $(x - 3)(2x + 2) = 0$ تقبل ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "حلا واحدا هو 3",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "حلا واحدا هو $-1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "حلين هما 3 و $-1$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطرف الأيسر جداء عاملين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "جداء معدوم يعني أن أحد عامليه على الأقل معدوم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب معادلة لكل عامل وحلّها."
+        }
+      ],
+      "feedback": {
+        "correct": "$x - 3 = 0$ أو $2x + 2 = 0$ ، أي $x = 3$ أو $x = -1$.",
+        "incorrect": "لكل عامل معادلته: لا تكتفِ بعامل واحد."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 1
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l1-003",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 1
+}

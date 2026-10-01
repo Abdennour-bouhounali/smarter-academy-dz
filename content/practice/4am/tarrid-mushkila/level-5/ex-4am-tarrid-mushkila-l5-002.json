@@ -1,0 +1,143 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l5-002",
+  "lessonCode": "tarrid-mushkila",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — خزّانان",
+    "estimatedMinutes": 6,
+    "tags": [
+      "ترييض",
+      "معادلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-mushkila_P1",
+      "modelledOn": "method-modelling"
+    }
+  },
+  "statement": {
+    "content": "في خزّان أول 800 لتر ويُفرغ منه 25 لترًا كل دقيقة، وفي خزّان ثانٍ 200 لتر ويُصبّ فيه 15 لترًا كل دقيقة. نسمّي $x$ عدد الدقائق."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ معادلة تترجم «تتساوى كميتا الماء»؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$800 - 25x = 200 + 15x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$800 + 25x = 200 + 15x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$800 - 25x = 200 - 15x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الخزّان الأول يُفرغ والثاني يُملأ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الأول: $800 - 25x$ ، الثاني: $200 + 15x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نساوي الكميتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$800 - 25x = 200 + 15x$ .",
+        "incorrect": "الكمية تنقص في الأول وتزيد في الثاني."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بعد كم دقيقة تتساوى الكميتان؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع حدود $x$ في طرف: $600 = 40x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم على 40."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بالكميتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$40x = 600$ أي $x = 15$ .",
+        "incorrect": "انقل $-25x$ و 200 مع تغيير الإشارة."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "كم لترًا في كل خزّان عندئذ؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "425",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالحل في إحدى العبارتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$200 + 15 \\times 15$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بالعبارة الأخرى."
+        }
+      ],
+      "feedback": {
+        "correct": "$200 + 225 = 425$ و $800 - 375 = 425$ .",
+        "incorrect": "عوّض الحل في $200 + 15x$ ."
+      }
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "id": "ex-4am-jidaa-maadum-l3-003",
+  "lessonCode": "jidaa-maadum",
+  "level": 3,
+  "metadata": {
+    "title": "نشاط 2 — المعادلة (E)",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تحليل",
+      "جداء معدوم"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-2c",
+      "page": 44,
+      "section": "أنشطة",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 44): المعادلة (E): $(1 - 4x)(x + 3) + 7(x + 3) = 0$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الطرف الأول يساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x + 3)(-6 - 4x)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$7(x + 3)(1 - 4x)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-NASHR-AWWALAN"
+        },
+        {
+          "id": "C",
+          "content": "$(x + 3)(8 - 4x)$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل المشترك قوس كامل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هو $(x + 3)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع ما بقي: $(1 - 4x) + 7$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 3)[(1 - 4x) + 7] = (x + 3)(8 - 4x)$ .",
+        "incorrect": "حلّل أولًا ثم طبّق الخاصية، وعوّض كل حلّ في المعادلة لتتحقّق."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلول المعادلة (E):",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-3$ و $2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$3$ و $-2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
+        },
+        {
+          "id": "C",
+          "content": "$-3$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
+        },
+        {
+          "id": "D",
+          "content": "$-3$ و $8$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARH-MUAMIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطرف الثاني $0$ ، لكن الطرف الأول ليس جداءً بعد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ابحث عن عامل مشترك بين الحدود."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّل الطرف الأول، ثم طبّق خاصية الجداء المعدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + 3 = 0$ أو $8 - 4x = 0$ ، أي $x = -3$ أو $x = 2$ .",
+        "incorrect": "حلّل أولًا ثم طبّق الخاصية، وعوّض كل حلّ في المعادلة لتتحقّق."
+      }
+    }
+  ]
+}

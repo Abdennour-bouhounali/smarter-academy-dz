@@ -1,0 +1,115 @@
+{
+  "id": "ex-4am-jidaa-maadum-l1-006",
+  "lessonCode": "jidaa-maadum",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — عامل ثابت",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جداء معدوم",
+      "عامل ثابت"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidaa-maadum_P2",
+      "modelledOn": "act-2b"
+    }
+  },
+  "statement": {
+    "content": "معادلتان فيهما عامل ثابت: $4(x - 6) = 0$ و $-2x = 0$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلول المعادلة $4(x - 6) = 0$ :",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-6$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
+        },
+        {
+          "id": "B",
+          "content": "$24$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-NASHR-AWWALAN"
+        },
+        {
+          "id": "C",
+          "content": "$6$ فقط",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$4$ و $6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-AMIL-THABIT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أحد العاملين عدد ثابت."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عامل ثابت غير معدوم لا ينعدم أبدًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يكفي أن تحلّ المعادلة: العامل الآخر يساوي $0$."
+        }
+      ],
+      "feedback": {
+        "correct": "$4 \\neq 0$ ، إذن $x - 6 = 0$ أي $x = 6$ .",
+        "incorrect": "العامل الثابت لا يعطي حلًّا: عوّض اقتراحك وتحقّق أنّ الجداء يساوي $0$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل المعادلة $-2x = 0$ :",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "0",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أحد العاملين عدد ثابت."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عامل ثابت غير معدوم لا ينعدم أبدًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يكفي أن تحلّ المعادلة: العامل الآخر يساوي $0$."
+        }
+      ],
+      "feedback": {
+        "correct": "$-2x$ جداء $-2$ و $x$ ، و $-2 \\neq 0$ ، إذن $x = 0$ .",
+        "incorrect": "العامل الثابت لا يعطي حلًّا: عوّض اقتراحك وتحقّق أنّ الجداء يساوي $0$."
+      }
+    }
+  ]
+}

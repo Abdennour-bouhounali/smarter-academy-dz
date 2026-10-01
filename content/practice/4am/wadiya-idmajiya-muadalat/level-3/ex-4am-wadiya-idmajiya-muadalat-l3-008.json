@@ -1,0 +1,83 @@
+{
+  "metadata": {
+    "title": "تدريب — متراجحة بأقواس",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متراجحة",
+      "نشر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P1",
+      "modelledOn": "ex-36"
+    }
+  },
+  "statement": {
+    "content": "لتكن المتراجحة $3(x - 2) - (x + 4) > 2$ ذات المجهول $x$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلول هذه المتراجحة هي الأعداد $x$ حيث ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x > 6$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x > 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "C",
+          "content": "$x < 6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        },
+        {
+          "id": "D",
+          "content": "$x > 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر وبسّط الطرف الأيسر أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$3x - 6 - x - 4 = 2x - 10$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم حل $2x - 10 > 2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x - 10 > 2$ يعني $2x > 12$ ، أي $x > 6$.",
+        "incorrect": "الإشارة «−» أمام $(x + 4)$ تغيّر إشارة 4 أيضًا."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l3-008",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 3
+}

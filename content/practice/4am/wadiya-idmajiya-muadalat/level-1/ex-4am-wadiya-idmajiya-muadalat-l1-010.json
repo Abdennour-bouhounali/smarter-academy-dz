@@ -1,0 +1,82 @@
+{
+  "metadata": {
+    "title": "تدريب — حل متراجحة بسيطة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متراجحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P1",
+      "modelledOn": "qcm"
+    }
+  },
+  "statement": {
+    "content": "لتكن المتراجحة $2x + 3 < 11$ ذات المجهول $x$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلول هذه المتراجحة هي الأعداد $x$ حيث ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x > 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        },
+        {
+          "id": "B",
+          "content": "$x < 7$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$x < 4$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$x = 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نعزل $x$ كما في معادلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح 3 من الطرفين ثم اقسم على 2."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "القسمة على عدد موجب تحافظ على الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x < 8$ ، والقسمة على 2 (موجب) تحافظ على الاتجاه: $x < 4$.",
+        "incorrect": "لا نغيّر الاتجاه عند القسمة على عدد موجب، وللمتراجحة حلول كثيرة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l1-010",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 1
+}

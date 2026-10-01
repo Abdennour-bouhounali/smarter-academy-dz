@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-muadala-ula-l2-001",
+  "lessonCode": "muadala-ula",
+  "level": 2,
+  "metadata": {
+    "title": "طرائق — نضيف 5 إلى كل طرف",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ax + b = c"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-equation",
+      "page": 47,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 47): حل المعادلة $2x - 5 = 8$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نضيف $5$ إلى الطرفين في المعادلة $2x - 5 = 8$ ، فنحصل على:",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2x = 8$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$2x = 13$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$2x = 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العملية تُجرى على الطرفين معًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب كل طرف بعد العملية، ثم بسّطه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعادلة الناتجة لها الحل نفسه الذي للمعادلة الأولى: يمكنك التحقّق بتعويض قيمة لـ $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "نضيف $5$ إلى الطرفين: $2x = 13$ — معادلة لها الحل نفسه.",
+        "incorrect": "العملية نفسها تُجرى على الطرفين، وبالإشارة نفسها."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّ المعادلة $2x - 5 = 8$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "13/2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في طرف واحد حدّ فيه $x$ وعدد، وفي الطرف الآخر عدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تخلّص أولًا من العدد الذي مع الحدّ $ax$ بإجراء العملية المعاكسة على الطرفين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تصل إلى الشكل $ax = b$ ، ثم تقسم الطرفين على معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x - 5 = 8$ : نصل إلى $2x = 13$ ، ومنه $x = \\dfrac{13}{2}$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    }
+  ]
+}

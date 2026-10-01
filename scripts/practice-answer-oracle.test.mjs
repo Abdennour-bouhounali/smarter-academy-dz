@@ -22,6 +22,12 @@ import { ORACLE as ORACLE_NASHR } from './practice-oracle/nashr-tabsit.mjs';
 import { ORACLE as ORACLE_MUTATABIQAT } from './practice-oracle/mutatabiqat-shahira.mjs';
 import { ORACLE as ORACLE_TAHLIL } from './practice-oracle/tahlil-ibara.mjs';
 import { ORACLE as ORACLE_WADIYA_HARFI } from './practice-oracle/wadiya-idmajiya-harfi.mjs';
+// Unité 4 « معادلات ومتراجحات » : même principe, un module par leçon.
+import { ORACLE as ORACLE_MUADALA } from './practice-oracle/muadala-ula.mjs';
+import { ORACLE as ORACLE_JIDAA } from './practice-oracle/jidaa-maadum.mjs';
+import { ORACLE as ORACLE_MUTARAJIHA } from './practice-oracle/mutarajiha-ula.mjs';
+import { ORACLE as ORACLE_TARRID } from './practice-oracle/tarrid-mushkila.mjs';
+import { ORACLE as ORACLE_WADIYA_MUADALAT } from './practice-oracle/wadiya-idmajiya-muadalat.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', 'content/practice/4am');
 
@@ -882,6 +888,11 @@ const ORACLE = {
   ...ORACLE_MUTATABIQAT,
   ...ORACLE_TAHLIL,
   ...ORACLE_WADIYA_HARFI,
+  ...ORACLE_MUADALA,
+  ...ORACLE_JIDAA,
+  ...ORACLE_MUTARAJIHA,
+  ...ORACLE_TARRID,
+  ...ORACLE_WADIYA_MUADALAT,
 };
 
 /**

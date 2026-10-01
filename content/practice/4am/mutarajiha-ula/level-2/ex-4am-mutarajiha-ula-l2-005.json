@@ -1,0 +1,176 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l2-005",
+  "lessonCode": "mutarajiha-ula",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — خطوة واحدة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حل متراجحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutarajiha-ula_P2",
+      "modelledOn": "ex-24"
+    }
+  },
+  "statement": {
+    "content": "حلّ كل متراجحة بخطوة واحدة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المتراجحة $5x > -15$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x < -3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        },
+        {
+          "id": "B",
+          "content": "$x > -3$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x > -10$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARH-MUAMIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$5x > -15$ تؤول إلى $5x > -15$، ثم نقسم على $5$ (عدد موجب، فالاتجاه لا يتغيّر): $x > -3$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّ المتراجحة $-6x \\leq 18$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\geq -3$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x \\leq -3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
+        },
+        {
+          "id": "C",
+          "content": "$x \\geq 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-ISHARA-SALIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$-6x \\leq 18$ تؤول إلى $-6x \\leq 18$، ثم نقسم على $-6$ (عدد سالب، فنغيّر الاتجاه): $x \\geq -3$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "حلّ المتراجحة $x + 7 < 2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x < -5$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x < 9$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$x > -5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + 7 < 2$ تؤول إلى $x < -5$: $x < -5$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    }
+  ]
+}

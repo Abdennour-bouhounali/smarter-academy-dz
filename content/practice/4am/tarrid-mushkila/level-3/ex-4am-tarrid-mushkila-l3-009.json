@@ -1,0 +1,108 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l3-009",
+  "lessonCode": "tarrid-mushkila",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — مثلث ومربع لهما المحيط نفسه",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ترييض",
+      "محيط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-mushkila_P1",
+      "modelledOn": "now-49-2"
+    }
+  },
+  "statement": {
+    "content": "مثلث متقايس الأضلاع طول ضلعه $x + 2$ ، ومربع طول ضلعه $x$ (بالسنتيمتر)، ولهما المحيط نفسه."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ معادلة تترجم النص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x + 2 = x$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$3x + 2 = 4x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
+        },
+        {
+          "id": "C",
+          "content": "$3(x + 2) = 4x$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "محيط المثلث بدلالة $x$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "محيط المثلث $3(x + 2)$ ومحيط المربع $4x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المحيطان متساويان."
+        }
+      ],
+      "feedback": {
+        "correct": "$3(x + 2) = 4x$ .",
+        "incorrect": "نضرب الضلع كله $(x + 2)$ في 3."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما طول ضلع المربع (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر: $3x + 6 = 4x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح $3x$ من الطرفين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق: المحيطان 24."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 6$ : المحيطان $3 \\times 8 = 24$ و $4 \\times 6 = 24$ .",
+        "incorrect": "انشر $3(x + 2)$ أولًا."
+      }
+    }
+  ]
+}

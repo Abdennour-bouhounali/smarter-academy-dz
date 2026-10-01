@@ -1,0 +1,125 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l1-003",
+  "lessonCode": "tarrid-mushkila",
+  "level": 1,
+  "metadata": {
+    "title": "تمرين 33 — محيط مستطيل",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترييض",
+      "متراجحة",
+      "محيط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-33",
+      "page": 51,
+      "section": "أوظّف تعلّماتي",
+      "number": 33
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 51): ABCD مستطيل عرضه $BC = 3cm$ وطوله $DC = x$ (بالسنتيمتر). نريد أن يكون محيطه أكبر من أو يساوي 40cm."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عبّر عن محيطه P بدلالة $x$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$P = x + 3$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$P = 2x + 6$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$P = 2x + 3$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "للمستطيل طولان وعرضان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المحيط هو ضعف مجموع الطول والعرض."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انشر $2(x + 3)$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$P = 2(x + 3) = 2x + 6$ .",
+        "incorrect": "لا تنسَ أنّ للمستطيل طولين وعرضين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما القيم التي يمكن أن يأخذها $x$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\geq 20$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$x \\leq 17$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+        },
+        {
+          "id": "C",
+          "content": "$x \\geq 17$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب المتراجحة $2x + 6 \\geq 40$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح 6 من الطرفين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على 2 (موجب): الاتجاه لا يتغيّر."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x \\geq 34$ أي $x \\geq 17$ .",
+        "incorrect": "تحقّق بقيمة: من أجل $x = 17$ المحيط $40$ ، ومن أجل $x = 16$ المحيط $38$ ."
+      }
+    }
+  ]
+}

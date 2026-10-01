@@ -1,0 +1,95 @@
+{
+  "id": "ex-4am-muadala-ula-l1-003",
+  "lessonCode": "muadala-ula",
+  "level": 1,
+  "metadata": {
+    "title": "تمرين 2 — قوى العدد 10",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ax = b",
+      "قوى"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-2",
+      "page": 50,
+      "section": "أوظّف تعلّماتي",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 50): حل كل معادلة من المعادلات المقترحة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المعادلة $10x = 10^2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المعادلة من الشكل $ax = b$ : حدّد العدد المضروب في $x$ والعدد الذي في الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نقسم الطرفين على معامل $x$ ، مع إشارته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحل هو العدد الذي في الطرف الآخر مقسومًا على معامل $x$ ، لا العكس."
+        }
+      ],
+      "feedback": {
+        "correct": "$10x = 10^2$ : نصل إلى $10x = 100$ ، ومنه $x = 10$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّ المعادلة $10^5x = 10^3$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "1/100",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المعادلة من الشكل $ax = b$ : حدّد العدد المضروب في $x$ والعدد الذي في الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نقسم الطرفين على معامل $x$ ، مع إشارته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحل هو العدد الذي في الطرف الآخر مقسومًا على معامل $x$ ، لا العكس."
+        }
+      ],
+      "feedback": {
+        "correct": "$10^5x = 10^3$ : نصل إلى $100000x = 1000$ ، ومنه $x = \\dfrac{1}{100}$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    }
+  ]
+}

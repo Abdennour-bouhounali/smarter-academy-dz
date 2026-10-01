@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "title": "تدريب — بطاقة السينما",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متراجحة",
+      "مفاضلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "في قاعة سينما: الصيغة (أ) 250 دينارًا لكل فيلم؛ الصيغة (ب) بطاقة سنوية قدرها 1500 دينار و 100 دينار لكل فيلم. نسمّي $x$ عدد الأفلام."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "«البطاقة أفضل» تُترجم بالمتراجحة ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$1500 + 100x < 250x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$1500 + 100x > 250x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        },
+        {
+          "id": "C",
+          "content": "$1600x < 250x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-TARJAMA"
+        },
+        {
+          "id": "D",
+          "content": "$1500 + 100x = 250x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "«أفضل» تعني «أقل تكلفة»."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب تكلفة كل صيغة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تكلفة البطاقة أقل من تكلفة الدفع لكل فيلم."
+        }
+      ],
+      "feedback": {
+        "correct": "تكلفة (ب) $1500 + 100x$ أقل من تكلفة (أ) $250x$.",
+        "incorrect": "المتراجحة تقول إن تكلفة البطاقة أقل."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    },
+    {
+      "id": "q2",
+      "statement": "ابتداءً من كم فيلمًا تكون البطاقة أفضل؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "11",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حل المتراجحة السابقة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$1500 < 150x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عدد الأفلام عدد طبيعي، والتساوي لا يكفي."
+        }
+      ],
+      "feedback": {
+        "correct": "$x > 10$ ، فابتداءً من 11 فيلمًا (عند 10 أفلام: 2500 دينار في الحالتين).",
+        "incorrect": "عند قيمة التساوي لا تكون البطاقة أفضل."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "10",
+          "id": "MISC-WADIYA-QIMAT-TASAWI"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l3-005",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 3
+}

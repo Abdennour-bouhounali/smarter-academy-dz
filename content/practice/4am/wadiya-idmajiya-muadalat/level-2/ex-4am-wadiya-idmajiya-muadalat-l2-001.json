@@ -1,0 +1,78 @@
+{
+  "metadata": {
+    "title": "تمرين 4 — المعادلة x² − 1 = 0 (أؤكّد تعلّماتي)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جداء معدوم",
+      "فرق مربعين"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 52,
+      "section": "أؤكّد تعلّماتي",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "في كل حالة اختر الإجابة الصحيحة، وبرّر اختيارك."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعادلة $x^2 - 1 = 0$ تقبل ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "حلين هما 1 و $-1$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "حلا واحدا هو 1",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "حلا واحدا هو $-1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x^2 - 1$ فرق مربعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حلّل: $x^2 - 1^2 = (x - 1)(x + 1)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "طبّق خاصية الجداء المعدوم على كل عامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x - 1)(x + 1) = 0$ يعني $x = 1$ أو $x = -1$.",
+        "incorrect": "العددان 1 و $-1$ مربعهما 1: لا تنس السالب."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l2-001",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 2
+}

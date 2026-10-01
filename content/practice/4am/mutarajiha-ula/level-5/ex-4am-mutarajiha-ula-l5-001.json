@@ -1,0 +1,178 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l5-001",
+  "lessonCode": "mutarajiha-ula",
+  "level": 5,
+  "metadata": {
+    "title": "تمرين 29 — انشر، حلّل، ثم حلّ",
+    "estimatedMinutes": 6,
+    "tags": [
+      "حل متراجحة",
+      "نشر"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-29",
+      "page": 51,
+      "section": "أوظّف تعلّماتي",
+      "number": 29
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 51): $P = (-3x - 1)^2 - 3x(3x + 7)$ و $R = (4x^2 - 1) - (2x + 1)(2x + 3)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "انشر وبسّط العبارة $P$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-27x + 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "B",
+          "content": "$-15x + 1$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$18x^2 - 15x + 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر كل جداء على حدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انتبه إلى الإشارات عند حذف قوس مسبوق بـ «−»."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع الحدود المتشابهة."
+        }
+      ],
+      "feedback": {
+        "correct": "$(-3x - 1)^2 = 9x^2 + 6x + 1$ و $-3x(3x + 7) = -9x^2 - 21x$ ، إذن $P = -15x + 1$.",
+        "incorrect": "انشر خطوة خطوة، ثم اجمع الحدود المتشابهة وتحقّق بقيمة لـ $x$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "اكتب العبارة $R$ على شكل جداء.",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-4(2x + 1)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(2x + 1)(4x + 2)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "C",
+          "content": "$4(2x + 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر كل جداء على حدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انتبه إلى الإشارات عند حذف قوس مسبوق بـ «−»."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع الحدود المتشابهة."
+        }
+      ],
+      "feedback": {
+        "correct": "$R = (2x - 1)(2x + 1) - (2x + 1)(2x + 3) = (2x + 1)[(2x - 1) - (2x + 3)] = -4(2x + 1)$.",
+        "incorrect": "انشر خطوة خطوة، ثم اجمع الحدود المتشابهة وتحقّق بقيمة لـ $x$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "حلّ المتراجحة $P \\leq R$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\geq \\dfrac{5}{7}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x \\geq -\\dfrac{5}{7}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$x \\leq \\dfrac{5}{7}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$P \\leq R$ تؤول إلى $-7x \\leq -5$، ثم نقسم على $-7$ (عدد سالب، فنغيّر الاتجاه): $x \\geq \\dfrac{5}{7}$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    }
+  ]
+}

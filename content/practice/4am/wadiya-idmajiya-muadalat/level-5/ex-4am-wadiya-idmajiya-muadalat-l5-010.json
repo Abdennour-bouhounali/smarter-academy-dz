@@ -1,0 +1,142 @@
+{
+  "metadata": {
+    "title": "تدريب — عدد مجهول وجداء معدوم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترييض",
+      "جداء معدوم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P2",
+      "modelledOn": "ex-34"
+    }
+  },
+  "statement": {
+    "content": "نختار عددًا $x$ ، نضيف إليه 5، ثم نضرب الناتج في العدد نفسه ناقص 3، فنجد 0."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعادلة التي تترجم هذا النص هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x + 5 \\times x - 3 = 0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
+        },
+        {
+          "id": "B",
+          "content": "$(x + 5)(x - 3) = 0$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(x + 5) + (x - 3) = 0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
+        },
+        {
+          "id": "D",
+          "content": "$5x(x - 3) = 0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "«نضيف إليه 5» تعطي $x + 5$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "«العدد نفسه ناقص 3» تعطي $x - 3$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم نضرب الناتجين: ضع الأقواس."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 5)$ ثم نضربه في $(x - 3)$ : $(x + 5)(x - 3) = 0$.",
+        "incorrect": "الأقواس ضرورية: نضرب الناتج كله."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "الأعداد التي تحقّق هذا الشرط هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-5$ و $3$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$5$ و $-3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
+        },
+        {
+          "id": "C",
+          "content": "$3$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
+        },
+        {
+          "id": "D",
+          "content": "$-1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المعادلة جداء معدوم."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حل $x + 5 = 0$ و $x - 3 = 0$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لكل عامل حلّه."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = -5$ أو $x = 3$ ؛ ونتحقق: $0 \\times (-8) = 0$ و $8 \\times 0 = 0$.",
+        "incorrect": "حل كل معادلة: لا تأخذ العدد المكتوب في القوس كما هو."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l5-010",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 5
+}

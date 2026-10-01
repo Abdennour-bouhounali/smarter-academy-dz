@@ -1,0 +1,143 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l5-007",
+  "lessonCode": "tarrid-mushkila",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — حقل مستطيل",
+    "estimatedMinutes": 6,
+    "tags": [
+      "ترييض",
+      "محيط",
+      "مساحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-mushkila_P1",
+      "modelledOn": "ex-33"
+    }
+  },
+  "statement": {
+    "content": "حقل مستطيل محيطه 140m وطوله يزيد على عرضه بـ 10m. نسمّي $x$ عرضه (بالمتر)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ معادلة تترجم النص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x + (x + 10) = 140$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-MAJHUL-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$2(x + x + 10) = 140$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$4x = 140$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطول بدلالة $x$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الطول $x + 10$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المحيط ضعف مجموع الطول والعرض."
+        }
+      ],
+      "feedback": {
+        "correct": "$2(x + x + 10) = 140$ .",
+        "incorrect": "$x + (x + 10)$ نصف المحيط فقط."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما عرض الحقل (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "30",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بسّط: $4x + 20 = 140$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح 20 ثم اقسم على 4."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بالمحيط."
+        }
+      ],
+      "feedback": {
+        "correct": "$4x = 120$ أي $x = 30$ ، والطول 40.",
+        "incorrect": "اقسم على 2 أولًا: $2x + 10 = 70$ ."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "ما مساحة الحقل (بالمتر المربع)؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "1200",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العرض 30 والطول 40."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المساحة جداء البعدين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب."
+        }
+      ],
+      "feedback": {
+        "correct": "$30 \\times 40 = 1200m^2$ .",
+        "incorrect": "الطول يزيد على العرض بـ 10."
+      }
+    }
+  ]
+}

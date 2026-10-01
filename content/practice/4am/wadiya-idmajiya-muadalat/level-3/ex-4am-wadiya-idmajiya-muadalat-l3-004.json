@@ -1,0 +1,161 @@
+{
+  "metadata": {
+    "title": "وضعية — المسبح البلدي: التكلفة عند 8 حصص",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترجمة",
+      "تجريب"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "situation",
+      "page": 52,
+      "section": "أدمج تعلّماتي"
+    }
+  },
+  "statement": {
+    "content": "لممارسة رياضة السباحة في المسبح البلدي، يقترح نادٍ رياضيٌّ على التلاميذ المتمدرسين صيغتين للاشتراك. الصيغة الأولى: الدفع الفوري 75 دينارًا لكل حصة. الصيغة الثانية: اشتراك سنوي قدره 560 دينارا ودفع فوري قدره 5 دنانير لكل حصة. نسمّي $x$ عدد الحصص."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "تكلفة الصيغة الثانية بدلالة $x$ (بالدينار) هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(560 + 5)x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$560x + 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$560 + 5x$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$560 + 75x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في الصيغة الثانية مبلغان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الاشتراك السنوي يُدفع مرّة واحدة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الدفع الفوري يتكرّر مع كل حصة: يُضرب في $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "560 دينارًا مرّة واحدة، و 5 دنانير لكل حصة: $560 + 5x$.",
+        "incorrect": "ميّز الاشتراك (مرّة واحدة) عن الدفع الفوري (كل حصة)."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 2
+    },
+    {
+      "id": "q2",
+      "statement": "كم دينارًا ندفع بالصيغة الأولى من أجل 8 حصص؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "600",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تكلفة الصيغة الأولى $75x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بالعدد 8."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب الجداء."
+        }
+      ],
+      "feedback": {
+        "correct": "$75 \\times 8 = 600$ دينارًا.",
+        "incorrect": "في الصيغة الأولى نضرب ثمن الحصة في عدد الحصص."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    },
+    {
+      "id": "q3",
+      "statement": "كم دينارًا ندفع بالصيغة الثانية من أجل 8 حصص؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "600",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تكلفة الصيغة الثانية $560 + 5x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بالعدد 8."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تنس الاشتراك السنوي."
+        }
+      ],
+      "feedback": {
+        "correct": "$560 + 5 \\times 8 = 560 + 40 = 600$ دينارًا: عند 8 حصص تتساوى الصيغتان.",
+        "incorrect": "الاشتراك يُضاف مرّة واحدة إلى ثمن الحصص."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "4520",
+          "id": "MISC-WADIYA-TARJAMA"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l3-004",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 3
+}

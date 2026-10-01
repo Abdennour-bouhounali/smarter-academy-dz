@@ -1,0 +1,115 @@
+{
+  "id": "ex-4am-muadala-ula-l1-008",
+  "lessonCode": "muadala-ula",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — حل أم ليس حلًّا؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تحقق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadala-ula_P1",
+      "modelledOn": "prep"
+    }
+  },
+  "statement": {
+    "content": "نختبر عددًا بتعويضه في طرفي المعادلة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل العدد $-4$ حل للمعادلة $3x = -12$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، هو حل لها",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا، ليس حلًّا لها",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نعوّض $x$ بالعدد في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب كل طرف وحده."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يكون العدد حلًّا إذا كان الطرفان متساويين."
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = -4$ : الطرف الأول $-12$ والطرف الثاني $-12$ — متساويان.",
+        "incorrect": "احسب الطرفين معًا ثم قارن بينهما."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل العدد $7$ حل للمعادلة $x + 5 = 2$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، هو حل لها",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "لا، ليس حلًّا لها",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نعوّض $x$ بالعدد في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب كل طرف وحده."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يكون العدد حلًّا إذا كان الطرفان متساويين."
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = 7$ : الطرف الأول $12$ والطرف الثاني $2$ — غير متساويين.",
+        "incorrect": "احسب الطرفين معًا ثم قارن بينهما."
+      }
+    }
+  ]
+}

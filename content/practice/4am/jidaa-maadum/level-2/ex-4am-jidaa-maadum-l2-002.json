@@ -1,0 +1,115 @@
+{
+  "id": "ex-4am-jidaa-maadum-l2-002",
+  "lessonCode": "jidaa-maadum",
+  "level": 2,
+  "metadata": {
+    "title": "معارف 2 — المثال 3",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جداء معدوم"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-2",
+      "page": 46,
+      "section": "معارف",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 46): نحل المعادلة $(3x - 4)(-2x + 1) = 0$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلول المعادلة:",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-\\dfrac{1}{2}$ و $-\\dfrac{4}{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{3}{4}$ و $2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{4}{3}$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
+        },
+        {
+          "id": "D",
+          "content": "$\\dfrac{1}{2}$ و $\\dfrac{4}{3}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطرف الأول جداء عاملين والطرف الثاني $0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خاصية الجداء المعدوم: أحد العاملين على الأقل معدوم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب كل عامل يساوي $0$ ، ثم حلّ كل معادلة من الدرجة الأولى."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x - 4 = 0$ يعني $x = \\dfrac{4}{3}$ ، و $-2x + 1 = 0$ يعني $x = \\dfrac{1}{2}$ .",
+        "incorrect": "حلول معادلة جداء معدوم هي حلول المعادلتين: عامل أول يساوي $0$ أو عامل ثانٍ يساوي $0$ — تحقّق بالتعويض."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما أكبر الحلّين؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد على شكل كسر a/b",
+      "expectedAnswer": "4/3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطرف الأول جداء عاملين والطرف الثاني $0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خاصية الجداء المعدوم: أحد العاملين على الأقل معدوم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب كل عامل يساوي $0$ ، ثم حلّ كل معادلة من الدرجة الأولى."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{4}{3} > 1 > \\dfrac{1}{2}$ .",
+        "incorrect": "حلول معادلة جداء معدوم هي حلول المعادلتين: عامل أول يساوي $0$ أو عامل ثانٍ يساوي $0$ — تحقّق بالتعويض."
+      }
+    }
+  ]
+}

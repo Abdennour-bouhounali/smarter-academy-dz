@@ -70,6 +70,11 @@ export const VISUAL_THEMES = Object.freeze({
   construction: { kind: 'lengths', shows: 'جدران من طوب بطول n' },
   workshop: { kind: 'lengths', shows: 'أشرطة تُقصّ وتُقاس' },
   abstract: { kind: 'tiles', shows: 'بلاطات ومناطق' },
+  // Unité 4 « معادلات ومتراجحات » (2026-10-01), mondes du lab growth-race :
+  //   family  des personnes dont l'âge grandit avec x (ترييض مشكلة : le père et ses enfants)
+  //   pool    deux formules d'abonnement au مسبح : coût par séance et carte annuelle
+  family: { kind: 'people', shows: 'أفراد عائلة تكبر أعمارهم' },
+  pool: { kind: 'objects', shows: 'مسبح وتذاكر وصيغ اشتراك' },
 });
 
 export const VISUAL_THEME_IDS = Object.freeze(Object.keys(VISUAL_THEMES));

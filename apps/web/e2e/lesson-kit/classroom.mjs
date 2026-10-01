@@ -497,7 +497,7 @@ for (const vp of [{ width: 1024, height: 768 }, { width: 390, height: 844 }]) {
       await page.goto(`${BASE}/espace/pratique/${PRACTICE_LESSON}/session/${sessionId}`, { waitUntil: 'networkidle' });
       await page.waitForSelector('[data-classroom-scope="exercise"]', { timeout: 20000 });
       const canPresent = (await page.locator('[data-classroom-enter="exercise"]').count()) === 1;
-      check(`X : le compte QA (${presenterStudent.role}) voit ⛶ عرض التمرين sur l’exercice de pratique selon canPresentClassroom`, canPresent === ['admin', 'student'].includes(presenterStudent.role), `role=${presenterStudent.role} visible=${canPresent}`);
+      check(`X : le compte QA (${presenterStudent.role}) voit ⛶ عرض التمرين sur l’exercice de pratique selon canPresentClassroom`, canPresent === ['admin', 'teacher'].includes(presenterStudent.role), `role=${presenterStudent.role} visible=${canPresent}`);
       if (canPresent) {
         // Une réponse en cours AVANT d'entrer (premier choix s'il y en a, sinon rien).
         const choice = page.locator('[data-classroom-scope="exercise"] button[aria-pressed]').first();

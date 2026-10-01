@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "title": "تدريب — نشر ثم حل معادلة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نشر",
+      "معادلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P1",
+      "modelledOn": "ex-34"
+    }
+  },
+  "statement": {
+    "content": "لتكن المعادلة $(x + 3)^2 - x^2 = 33$ ذات المجهول $x$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للطرف الأيسر هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$9$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$6x + 9$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$3x + 9$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        },
+        {
+          "id": "D",
+          "content": "$2x^2 + 6x + 9$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$(x + 3)^2$ مربع مجموع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(x + 3)^2 = x^2 + 6x + 9$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح $x^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 6x + 9 - x^2 = 6x + 9$.",
+        "incorrect": "لا تنس الحد المضاعف $2 \\times x \\times 3$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو حل المعادلة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المعادلة تصبح من الدرجة الأولى."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$6x + 9 = 33$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح 9 ثم اقسم على 6."
+        }
+      ],
+      "feedback": {
+        "correct": "$6x = 24$ أي $x = 4$ ؛ ونتحقق: $49 - 16 = 33$.",
+        "incorrect": "بعد النشر نحل معادلة من الدرجة الأولى."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "7",
+          "id": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l3-007",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 3
+}

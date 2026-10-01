@@ -1,0 +1,120 @@
+{
+  "id": "ex-4am-jidaa-maadum-l1-010",
+  "lessonCode": "jidaa-maadum",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — متى نستعمل الخاصية؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تعريف",
+      "خاصية الجداء المعدوم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidaa-maadum_P1",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "خاصية الجداء المعدوم تخصّ جداءً يساوي $0$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ معادلة مما يلي ليست معادلة جداء معدوم؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(3 - x)(x + 6) = 0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
+        },
+        {
+          "id": "B",
+          "content": "$(x + 1)(x - 1) = 1$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x(2x - 5) = 0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معادلة جداء معدوم: جداء عاملين من الدرجة الأولى يساوي $0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الطرف الأول: هل هو جداء أم مجموع؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم انظر إلى الطرف الثاني: هل هو $0$ ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "في $(x + 1)(x - 1) = 1$ الطرف الثاني $1$ وليس $0$ .",
+        "incorrect": "الشرطان معًا: جداء عاملين في الطرف الأول، و $0$ في الطرف الثاني."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "كتب تلميذ: $(x - 1)(x + 2) = 4$ يعني $x - 1 = 4$ أو $x + 2 = 4$ . هل هذا صحيح؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم: هي خاصية الجداء المعدوم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
+        },
+        {
+          "id": "B",
+          "content": "لا: الخاصية تخصّ جداءً يساوي $0$ فقط",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معادلة جداء معدوم: جداء عاملين من الدرجة الأولى يساوي $0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الطرف الأول: هل هو جداء أم مجموع؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم انظر إلى الطرف الثاني: هل هو $0$ ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = 5$ : $(5 - 1)(5 + 2) = 28 \\neq 4$ ، فالاستنتاج خاطئ: الخاصية لا تُطبَّق على جداء يساوي 4.",
+        "incorrect": "الشرطان معًا: جداء عاملين في الطرف الأول، و $0$ في الطرف الثاني."
+      }
+    }
+  ]
+}

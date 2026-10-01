@@ -1,0 +1,144 @@
+{
+  "metadata": {
+    "title": "تمرين 41 — من امتحان شهادة التعليم المتوسط",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تحليل",
+      "متراجحة",
+      "شهادة التعليم المتوسط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-41",
+      "page": 53,
+      "section": "أتعمّق",
+      "number": 41
+    }
+  },
+  "statement": {
+    "content": "من امتحان شهادة التعليم المتوسط: لتكن العبارة $E = (4x - 1)^2 - (3x + 2)(4x - 1)$ ، ونشرها المبسّط $4x^2 - 13x + 3$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "تحليل العبارة E إلى جداء عاملين هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(4x - 1)(x - 3)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(4x - 1)(7x + 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "C",
+          "content": "$(4x - 1)(x + 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "D",
+          "content": "$(4x + 1)(x - 3)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل المشترك ظاهر في الحدّين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أخرج $4x - 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(4x - 1) - (3x + 2) = 4x - 1 - 3x - 2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$E = (4x - 1)[(4x - 1) - (3x + 2)] = (4x - 1)(x - 3)$.",
+        "incorrect": "الإشارة «−» أمام $(3x + 2)$ تغيّر إشارة 2 أيضًا."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "حلول المتراجحة $4x^2 - 13x + 3 \\leq 4x^2 + 29$ هي الأعداد $x$ حيث ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\leq -2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
+        },
+        {
+          "id": "B",
+          "content": "$x \\geq 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-ISHARA-SALIBA"
+        },
+        {
+          "id": "C",
+          "content": "$x \\geq -\\dfrac{1}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "id": "D",
+          "content": "$x \\geq -2$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحدّان $4x^2$ يختفيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$-13x + 3 \\leq 29$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تبقى $-13x \\leq 26$ : القسمة على $-13$ تغيّر الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$-13x \\leq 26$ ، والقسمة على $-13$ تغيّر الاتجاه: $x \\geq -2$.",
+        "incorrect": "القسمة على عدد سالب تغيّر الاتجاه."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l4-002",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 4
+}

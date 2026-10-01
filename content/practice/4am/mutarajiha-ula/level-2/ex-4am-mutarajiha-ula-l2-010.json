@@ -1,0 +1,127 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l2-010",
+  "lessonCode": "mutarajiha-ula",
+  "level": 2,
+  "metadata": {
+    "title": "معارف 4 — المثال 2",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حل متراجحة",
+      "تمثيل بياني"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-4",
+      "page": 48,
+      "section": "معارف",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 48): المتراجحة $-\\dfrac{1}{2}x + 2 < -1$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المتراجحة $-\\dfrac{1}{2}x + 2 < -1$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x > 6$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x < 6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
+        },
+        {
+          "id": "C",
+          "content": "$x > 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$-\\dfrac{1}{2}x + 2 < -1$ تؤول إلى $-\\dfrac{1}{2}x < -3$، ثم نقسم على $-\\dfrac{1}{2}$ (عدد سالب، فنغيّر الاتجاه): $x > 6$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "أيّ تمثيل بياني يوافق حلول المتراجحة $-\\dfrac{1}{2}x + 2 < -1$ على مستقيم مدرّج؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الجزء الملوّن على يمين $6$ والرمز $]$ عند $6$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الجزء الملوّن على يمين $6$ والرمز $[$ عند $6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
+        },
+        {
+          "id": "C",
+          "content": "الجزء الملوّن على يسار $6$ والرمز $[$ عند $6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المتراجحة أولًا لتجد الحدّ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحلول الأكبر من الحدّ على يمينه، والأصغر منه على يساره."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اختبر الحدّ نفسه: إن كان حلًّا فالرمز موجّه نحو الجزء الملوّن."
+        }
+      ],
+      "feedback": {
+        "correct": "الحلول: $x > 6$ ، فالجزء الملوّن على يمين $6$ ، و $6$ ليس حلًّا فالرمز غير موجّه نحو الجزء الملوّن.",
+        "incorrect": "حدّد جهة الحلول، ثم اختبر الحدّ نفسه لتختار اتجاه الرمز."
+      }
+    }
+  ]
+}

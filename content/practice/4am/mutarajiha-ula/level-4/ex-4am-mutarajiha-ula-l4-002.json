@@ -1,0 +1,126 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l4-002",
+  "lessonCode": "mutarajiha-ula",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 27 — المتراجحتان 3 و 4",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حل متراجحة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-27",
+      "page": 51,
+      "section": "أوظّف تعلّماتي",
+      "number": 27
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 51): حل كل متراجحة مما يلي."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المتراجحة $\\dfrac{x}{2} - \\dfrac{3}{4} \\geq 1$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\geq \\dfrac{7}{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x \\geq \\dfrac{1}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$x \\geq \\dfrac{7}{4}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{x}{2} - \\dfrac{3}{4} \\geq 1$ تؤول إلى $\\dfrac{1}{2}x \\geq \\dfrac{7}{4}$، ثم نقسم على $\\dfrac{1}{2}$ (عدد موجب، فالاتجاه لا يتغيّر): $x \\geq \\dfrac{7}{2}$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّ المتراجحة $\\dfrac{x + 1}{2} < 3x - 1$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x > \\dfrac{3}{5}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x > 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$x < \\dfrac{3}{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{x + 1}{2} < 3x - 1$ تؤول إلى $-\\dfrac{5}{2}x < -\\dfrac{3}{2}$، ثم نقسم على $-\\dfrac{5}{2}$ (عدد سالب، فنغيّر الاتجاه): $x > \\dfrac{3}{5}$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    }
+  ]
+}

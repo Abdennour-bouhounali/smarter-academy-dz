@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l2-003",
+  "lessonCode": "tarrid-mushkila",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 12 — ضعف مجموع عمرين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ترييض",
+      "أعمار"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-12",
+      "page": 50,
+      "section": "أوظّف تعلّماتي",
+      "number": 12
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 50): يبلغ عمر أب 43 سنة وعمرا إبنيه 4 و 7 سنوات بعد كم سنة يكون عمر الأب ضعف مجموع عمري إبنيه؟ نسمّي $x$ عدد السنوات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ معادلة تترجم المشكلة؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$43 + x = 2(4 + x) + (7 + x)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
+        },
+        {
+          "id": "B",
+          "content": "$43 + x = 2(4 + 7 + x)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-MAJHUL-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$43 + x = 2[(4 + x) + (7 + x)]$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من يكبر بعد $x$ سنة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل ابن يكبر بـ $x$ ، و«الضعف» يخصّ المجموع كله."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب المجموع بين قوسين ثم اضربه في 2."
+        }
+      ],
+      "feedback": {
+        "correct": "$43 + x = 2[(4 + x) + (7 + x)]$ .",
+        "incorrect": "ضعف المجموع: نضاعف المجموع كله لا عمر ابن واحد."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بعد كم سنة؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المعادلة تُكتب $43 + x = 4x + 22$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع حدود $x$ في طرف واحد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بحساب الأعمار."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x = 21$ أي $x = 7$ ، و $50 = 2(11 + 14)$ .",
+        "incorrect": "انشر $2[(4 + x) + (7 + x)]$ أولًا."
+      }
+    }
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l2-006",
+  "lessonCode": "mutarajiha-ula",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — المعامل سالب أو كسري",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حل متراجحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutarajiha-ula_P2",
+      "modelledOn": "ex-24"
+    }
+  },
+  "statement": {
+    "content": "حلّ كل متراجحة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المتراجحة $-x > 4$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x > 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-ISHARA-SALIBA"
+        },
+        {
+          "id": "B",
+          "content": "$x > -4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
+        },
+        {
+          "id": "C",
+          "content": "$x < -4$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$-x > 4$ تؤول إلى $-x > 4$، ثم نقسم على $-1$ (عدد سالب، فنغيّر الاتجاه): $x < -4$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّ المتراجحة $\\dfrac{x}{3} \\geq -2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\geq -\\dfrac{2}{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "id": "B",
+          "content": "$x \\geq -6$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x \\leq -6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{x}{3} \\geq -2$ تؤول إلى $\\dfrac{1}{3}x \\geq -2$، ثم نقسم على $\\dfrac{1}{3}$ (عدد موجب، فالاتجاه لا يتغيّر): $x \\geq -6$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "حلّ المتراجحة $-\\dfrac{x}{2} < 3$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x > -6$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x > -\\dfrac{3}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$x < -6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$-\\dfrac{x}{2} < 3$ تؤول إلى $-\\dfrac{1}{2}x < 3$، ثم نقسم على $-\\dfrac{1}{2}$ (عدد سالب، فنغيّر الاتجاه): $x > -6$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    }
+  ]
+}

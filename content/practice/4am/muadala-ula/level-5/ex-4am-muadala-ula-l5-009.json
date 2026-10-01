@@ -1,0 +1,105 @@
+{
+  "id": "ex-4am-muadala-ula-l5-009",
+  "lessonCode": "muadala-ula",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — مقامات وأقواس",
+    "estimatedMinutes": 4,
+    "tags": [
+      "كسور",
+      "نشر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadala-ula_P2",
+      "modelledOn": "now-47-1"
+    }
+  },
+  "statement": {
+    "content": "اضرب ثم انشر ثم حلّ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المعادلة $\\dfrac{3x - 1}{4} = \\dfrac{x + 5}{2}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "11",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المعادلة مقامات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب الطرفين في عدد تقبل كل المقامات القسمة عليه، مع كل الحدود."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم انشر وانقل المجاهيل إلى طرف والمعاليم إلى الآخر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3x - 1}{4} = \\dfrac{x + 5}{2}$ : ننقل المجاهيل إلى طرف والمعاليم إلى الآخر ونقسم على معامل $x$ : $x = 11$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل العدد $11$ حل للمعادلة $\\dfrac{3x - 1}{4} = \\dfrac{x + 5}{2}$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، هو حل لها",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا، ليس حلًّا لها",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نعوّض $x$ بالعدد في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب كل طرف وحده."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يكون العدد حلًّا إذا كان الطرفان متساويين."
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = 11$ : الطرف الأول $8$ والطرف الثاني $8$ — متساويان.",
+        "incorrect": "احسب الطرفين معًا ثم قارن بينهما."
+      }
+    }
+  ]
+}

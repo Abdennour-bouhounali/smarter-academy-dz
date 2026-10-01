@@ -1,0 +1,165 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l1-002",
+  "lessonCode": "mutarajiha-ula",
+  "level": 1,
+  "metadata": {
+    "title": "معارف 3 — المثال 1: هل العدد حلّ؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حلّ متراجحة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-3",
+      "page": 48,
+      "section": "معارف",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 48): المتباينة $4x > -3$ هي متراجحة ذات المجهول $x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل العدد $-2$ حلّ للمتراجحة $4x > -3$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، هو حلّ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        },
+        {
+          "id": "B",
+          "content": "لا، ليس حلًّا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب كل طرف وحده."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن النتيجتين بالرمز نفسه: هل المتباينة العددية صحيحة؟"
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = -2$ : الطرف الأول يساوي $-8$ والطرف الثاني $-3$ ، و $-8 > -3$ متباينة خاطئة.",
+        "incorrect": "احسب الطرفين من أجل هذه القيمة، ثم احكم على المتباينة العددية — وانتبه إلى الرمز الصارم $<$ أو $>$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل العدد $0$ حلّ للمتراجحة $4x > -3$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، هو حلّ",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا، ليس حلًّا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب كل طرف وحده."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن النتيجتين بالرمز نفسه: هل المتباينة العددية صحيحة؟"
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = 0$ : الطرف الأول يساوي $0$ والطرف الثاني $-3$ ، و $0 > -3$ متباينة صحيحة.",
+        "incorrect": "احسب الطرفين من أجل هذه القيمة، ثم احكم على المتباينة العددية — وانتبه إلى الرمز الصارم $<$ أو $>$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "أيّ عدد ليس حلًّا للمتراجحة $4x > -3$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-\\dfrac{1}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        },
+        {
+          "id": "B",
+          "content": "$-1$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اختبر كل عدد بتعويضه في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب الطرفين ثم احكم على المتباينة العددية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العدد المطلوب وحده يعطي متباينة خاطئة."
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = -1$ : $-4 > -3$ خاطئة، أمّا القيم الأخرى فتحقّقها.",
+        "incorrect": "عوّض كل عدد في الطرفين واحسب، ثم قارن بالرمز نفسه."
+      }
+    }
+  ]
+}

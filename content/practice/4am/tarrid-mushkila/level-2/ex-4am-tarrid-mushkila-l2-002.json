@@ -1,0 +1,143 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l2-002",
+  "lessonCode": "tarrid-mushkila",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 37 — برنامج حساب",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ترييض",
+      "برنامج حساب"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-37",
+      "page": 53,
+      "section": "أتعمّق",
+      "number": 37
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 53): إليك برنامج حساب. • اختر عددا. • اضربه في 3 • أضف له 5. نسمّي $x$ العدد المختار."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما العدد الذي ينبغي اختياره للحصول في النتيجة على 32؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نتيجة البرنامج هي $3x + 5$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حلّ $3x + 5 = 32$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بتطبيق البرنامج."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x = 27$ أي $x = 9$ ، و $3 \\times 9 + 5 = 32$ .",
+        "incorrect": "اطرح 5 ثم اقسم على 3."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نريد أن تكون النتيجة ضعف العدد المختار. أيّ معادلة؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3x + 5 = 2 \\times 32$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$2(3x + 5) = x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
+        },
+        {
+          "id": "C",
+          "content": "$3x + 5 = 2x$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما نتيجة البرنامج بدلالة $x$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ضعف العدد المختار هو $2x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "النتيجة = ضعف العدد المختار."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x + 5 = 2x$ .",
+        "incorrect": "المقارنة بين النتيجة وضعف العدد المختار، لا ضعف 32."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "ما هذا العدد؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "-5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ $3x + 5 = 2x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح $2x$ و 5 من الطرفين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العدد قد يكون سالبًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = -5$ ، وتحقّق: $3 \\times (-5) + 5 = -10 = 2 \\times (-5)$ .",
+        "incorrect": "انتبه إلى الإشارة عند نقل 5."
+      }
+    }
+  ]
+}

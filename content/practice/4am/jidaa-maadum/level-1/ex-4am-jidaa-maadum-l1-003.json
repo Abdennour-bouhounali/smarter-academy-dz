@@ -1,0 +1,125 @@
+{
+  "id": "ex-4am-jidaa-maadum-l1-003",
+  "lessonCode": "jidaa-maadum",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — التعرّف على معادلة جداء معدوم",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تعريف"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidaa-maadum_P1",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "معادلة جداء معدوم هي كل معادلة من الشكل $(ax + b)(cx + d) = 0$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ معادلة مما يلي هي معادلة جداء معدوم؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x - 4) + (3x + 1) = 0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
+        },
+        {
+          "id": "B",
+          "content": "$(x - 4)(3x + 1) = 0$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(x - 4)(3x + 1) = 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معادلة جداء معدوم: جداء عاملين من الدرجة الأولى يساوي $0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الطرف الأول: هل هو جداء أم مجموع؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم انظر إلى الطرف الثاني: هل هو $0$ ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$(x - 4)(3x + 1) = 0$ : جداء عاملين من الدرجة الأولى يساوي $0$ .",
+        "incorrect": "الشرطان معًا: جداء عاملين في الطرف الأول، و $0$ في الطرف الثاني."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما هما عاملا الجداء في المعادلة $(2x + 3)(x - 6) = 0$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2x + 3$ و $x - 6$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$2x$ و $3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
+        },
+        {
+          "id": "C",
+          "content": "$(2x + 3)(x - 6)$ و $0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معادلة جداء معدوم: جداء عاملين من الدرجة الأولى يساوي $0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الطرف الأول: هل هو جداء أم مجموع؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم انظر إلى الطرف الثاني: هل هو $0$ ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "الطرف الأول جداء العاملين $2x + 3$ و $x - 6$ .",
+        "incorrect": "الشرطان معًا: جداء عاملين في الطرف الأول، و $0$ في الطرف الثاني."
+      }
+    }
+  ]
+}

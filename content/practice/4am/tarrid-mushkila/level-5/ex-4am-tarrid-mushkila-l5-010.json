@@ -1,0 +1,108 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l5-010",
+  "lessonCode": "tarrid-mushkila",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — صندوق الكتب",
+    "estimatedMinutes": 6,
+    "tags": [
+      "متراجحة",
+      "تحقّق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-mushkila_P2",
+      "modelledOn": "ex-30"
+    }
+  },
+  "statement": {
+    "content": "صندوق يتحمّل 25kg على الأكثر. وزنه فارغًا $1{,}5kg$ ، ونضع فيه كتبًا وزن الواحد منها $0{,}8kg$ . نسمّي $x$ عدد الكتب."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ متراجحة تترجم النص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$1{,}5 + 0{,}8x \\leq 25$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$0{,}8x \\leq 25$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$1{,}5x + 0{,}8 \\leq 25$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "وزن الصندوق المملوء؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "وزن الصندوق + وزن $x$ كتاب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "«على الأكثر» تعني أصغر من أو يساوي."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}5 + 0{,}8x \\leq 25$ .",
+        "incorrect": "وزن الصندوق يُحسب مرة واحدة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما أكبر عدد من الكتب يمكن وضعه؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "29",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$0{,}8x \\leq 23{,}5$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x \\leq 29{,}375$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عدد الكتب عدد طبيعي."
+        }
+      ],
+      "feedback": {
+        "correct": "أكبر عدد طبيعي هو 29 : $1{,}5 + 23{,}2 = 24{,}7 \\leq 25$ .",
+        "incorrect": "لا يمكن وضع جزء من كتاب."
+      }
+    }
+  ]
+}

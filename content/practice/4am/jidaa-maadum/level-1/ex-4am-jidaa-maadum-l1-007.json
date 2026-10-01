@@ -1,0 +1,125 @@
+{
+  "id": "ex-4am-jidaa-maadum-l1-007",
+  "lessonCode": "jidaa-maadum",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — عامل x وعامل مكرّر",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جداء معدوم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidaa-maadum_P2",
+      "modelledOn": "now-47-2"
+    }
+  },
+  "statement": {
+    "content": "نعتبر المعادلتين $x(x - 1) = 0$ و $(x + 7)^2 = 0$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلول المعادلة $x(x - 1) = 0$ :",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$0$ و $-1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
+        },
+        {
+          "id": "B",
+          "content": "$0$ و $1$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$1$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطرف الأول جداء عاملين والطرف الثاني $0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خاصية الجداء المعدوم: أحد العاملين على الأقل معدوم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب كل عامل يساوي $0$ ، ثم حلّ كل معادلة من الدرجة الأولى."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 0$ أو $x - 1 = 0$ ، أي $x = 0$ أو $x = 1$ .",
+        "incorrect": "حلول معادلة جداء معدوم هي حلول المعادلتين: عامل أول يساوي $0$ أو عامل ثانٍ يساوي $0$ — تحقّق بالتعويض."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلول المعادلة $(x + 7)^2 = 0$ :",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-7$ فقط",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$-7$ و $7$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$7$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطرف الأول جداء عاملين والطرف الثاني $0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خاصية الجداء المعدوم: أحد العاملين على الأقل معدوم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب كل عامل يساوي $0$ ، ثم حلّ كل معادلة من الدرجة الأولى."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 7)^2 = (x + 7)(x + 7)$ : العاملان متساويان، و $x + 7 = 0$ يعني $x = -7$ .",
+        "incorrect": "حلول معادلة جداء معدوم هي حلول المعادلتين: عامل أول يساوي $0$ أو عامل ثانٍ يساوي $0$ — تحقّق بالتعويض."
+      }
+    }
+  ]
+}

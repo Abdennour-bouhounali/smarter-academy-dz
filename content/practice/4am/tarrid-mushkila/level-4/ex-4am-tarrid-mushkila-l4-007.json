@@ -1,0 +1,158 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l4-007",
+  "lessonCode": "tarrid-mushkila",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — خزّان يُفرغ",
+    "estimatedMinutes": 5,
+    "tags": [
+      "متراجحة",
+      "اتجاه"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-mushkila_P2",
+      "modelledOn": "now-49-2"
+    }
+  },
+  "statement": {
+    "content": "في خزّان 500 لتر من الماء، ويُفرغ منه 30 لترًا كل دقيقة. نسمّي $x$ عدد الدقائق. نريد أن يبقى فيه أقل من 140 لترًا."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ متراجحة تترجم النص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$500 - 30x < 140$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$500 + 30x < 140$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$30x < 140$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كم يبقى بعد $x$ دقيقة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "يبقى $500 - 30x$ لترًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "«أقل من» تعطي الرمز $<$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$500 - 30x < 140$ .",
+        "incorrect": "الخزّان يُفرغ: الكمية تنقص."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلول المتراجحة:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x < 12$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
+        },
+        {
+          "id": "B",
+          "content": "$x > -12$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$x > 12$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اطرح 500 من الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على $-30x < -360$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تقسم على عدد سالب: غيّر الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$-30x < -360$ أي $x > 12$ .",
+        "incorrect": "القسمة على $-30$ تغيّر الاتجاه."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "ابتداءً من أيّ دقيقة (عدد طبيعي) يبقى أقل من 140 لترًا؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "13",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحلول $x > 12$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عند 12 دقيقة يبقى 140 لترًا بالضبط."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أول عدد طبيعي أكبر من 12."
+        }
+      ],
+      "feedback": {
+        "correct": "عند 13 دقيقة يبقى $500 - 390 = 110$ لترًا.",
+        "incorrect": "عند $x = 12$ يبقى 140 : ليس أقل."
+      }
+    }
+  ]
+}

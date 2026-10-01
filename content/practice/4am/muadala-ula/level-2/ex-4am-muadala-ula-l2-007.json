@@ -1,0 +1,111 @@
+{
+  "id": "ex-4am-muadala-ula-l2-007",
+  "lessonCode": "muadala-ula",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — معامل سالب بعد النقل",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ax + b = c",
+      "إشارة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadala-ula_P1",
+      "modelledOn": "now-47-1"
+    }
+  },
+  "statement": {
+    "content": "انتبه إلى إشارة معامل $x$ عند القسمة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حل المعادلة $-4x + 1 = 13$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-\\dfrac{1}{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "id": "B",
+          "content": "$-3$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$-\\dfrac{7}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في طرف واحد حدّ فيه $x$ وعدد، وفي الطرف الآخر عدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تخلّص أولًا من العدد الذي مع الحدّ $ax$ بإجراء العملية المعاكسة على الطرفين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تصل إلى الشكل $ax = b$ ، ثم تقسم الطرفين على معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$-4x + 1 = 13$ : نصل إلى $-4x = 12$ ، ومنه $x = -3$.",
+        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّ المعادلة $10 - 3x = -5$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في طرف واحد حدّ فيه $x$ وعدد، وفي الطرف الآخر عدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تخلّص أولًا من العدد الذي مع الحدّ $ax$ بإجراء العملية المعاكسة على الطرفين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تصل إلى الشكل $ax = b$ ، ثم تقسم الطرفين على معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$10 - 3x = -5$ : نصل إلى $-3x = -15$ ، ومنه $x = 5$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    }
+  ]
+}

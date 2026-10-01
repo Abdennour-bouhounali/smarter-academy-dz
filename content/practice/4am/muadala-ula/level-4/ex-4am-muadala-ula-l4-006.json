@@ -1,0 +1,111 @@
+{
+  "id": "ex-4am-muadala-ula-l4-006",
+  "lessonCode": "muadala-ula",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — قوس مسبوق بـ «−»",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نشر",
+      "إشارة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadala-ula_P2",
+      "modelledOn": "ex-6"
+    }
+  },
+  "statement": {
+    "content": "قوس مسبوق بإشارة «−» تتغيّر إشارات حدوده عند حذفه."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المعادلة $8 - (x - 3) = 2x + 5$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المعادلة أقواس."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر أولًا وبسّط كل طرف على حدة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم انقل المجاهيل إلى طرف والمعاليم إلى الطرف الآخر، وقسّم على معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$8 - (x - 3) = 2x + 5$ : نصل إلى $-3x = -6$ ، ومنه $x = 2$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل المعادلة $4x - (2x + 7) = 9$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{1}{8}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$8$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المعادلة أقواس."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر أولًا وبسّط كل طرف على حدة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم انقل المجاهيل إلى طرف والمعاليم إلى الطرف الآخر، وقسّم على معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$4x - (2x + 7) = 9$ : نصل إلى $2x = 16$ ، ومنه $x = 8$.",
+        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
+      }
+    }
+  ]
+}

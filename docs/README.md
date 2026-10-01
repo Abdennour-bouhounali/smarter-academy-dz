@@ -7,13 +7,15 @@
 > found it (root `CLAUDE.md`, Documentation Synchronization Rule).
 
 The platform is Arabic-first (ar-DZ, RTL) and follows the Algerian curriculum.
-The live content is three 4AM textbook units under
+The live content is four 4AM textbook units under
 `apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/` — unit 1 « الأعداد
 الطبيعيّة والأعداد النّاطقة » (`aadad-tabiiya-natiqa/`, 9 lessons) and unit 2
 « الحساب على الجذور » (`hisab-judhur/`, 5 lessons + a synthesis, 2026-09-30; textbook
 extraction `docs/sources/4am/unit2/extraction.json`) and unit 3 « الحساب الحرفي »
 (`hisab-harfi/`, 3 lessons + a synthesis, 2026-10-01; extraction generated and checked by
-`docs/sources/4am/unit3/build-extraction.py`) — the **only** lesson
+`docs/sources/4am/unit3/build-extraction.py`) and unit 4 « معادلات ومتراجحات من الدرجة
+الأولى بمجهول واحد » (`muadalat-mutarajihat/`, 4 lessons + a synthesis, 2026-10-01; extraction
+generated and checked by `docs/sources/4am/unit4/build-extraction.py`) — the **only** lesson
 content in the repository. The
 French-era lessons (`lessons/college/`, `lessons/lycee/`), their practice
 content, specs, e2e scripts, French-only engines and the French reference

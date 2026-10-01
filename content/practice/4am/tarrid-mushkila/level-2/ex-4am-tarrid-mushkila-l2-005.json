@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l2-005",
+  "lessonCode": "tarrid-mushkila",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — أمّ وثلاثة أبناء",
+    "estimatedMinutes": 3,
+    "tags": [
+      "أعمار",
+      "ترييض"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-mushkila_P2",
+      "modelledOn": "method-modelling"
+    }
+  },
+  "statement": {
+    "content": "عمر أمّ 38 سنة، وأعمار أبنائها الثلاثة 2 و 5 و 9 سنوات. نسمّي $x$ عدد السنوات التي يصبح بعدها عمر الأم مساويًا مجموع أعمار أبنائها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ معادلة تترجم المشكلة؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$38 + x = (2 + x) + (5 + x) + (9 + x)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$38 + x = 16 + x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-MAJHUL-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$38 = 16 + 3x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-MAJHUL-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من يكبر بعد $x$ سنة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الأم وكل ابن يكبرون بـ $x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المجموع يزيد بـ $3x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$38 + x = (2 + x) + (5 + x) + (9 + x)$ .",
+        "incorrect": "كل ابن يكبر: ثلاث مرات $x$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بعد كم سنة؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "11",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المعادلة تُكتب $38 + x = 3x + 16$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح $x$ و 16 من الطرفين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بالأعمار."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x = 22$ أي $x = 11$ : الأم 49 ، والأبناء $13 + 16 + 20 = 49$ .",
+        "incorrect": "ابدأ بجمع الأعمار الثلاثة: $2 + 5 + 9 = 16$ ."
+      }
+    }
+  ]
+}

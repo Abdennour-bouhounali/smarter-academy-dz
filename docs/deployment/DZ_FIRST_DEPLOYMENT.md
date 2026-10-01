@@ -397,6 +397,12 @@ pratique) suit le même chemin : synchronisation du curriculum ET import du regi
 déploiement qui la porte. Elle est rangée sous « ميدان أنساب الأعداد والحساب » (placement déclaré par
 l'unité, décision du propriétaire).
 
+**Unité 4 (2026-10-01).** L'unité « معادلات ومتراجحات من الدرجة الأولى بمجهول واحد »
+(`muadalat-mutarajihat` : `muadala-ula`, `jidaa-maadum`, `mutarajiha-ula`, `tarrid-mushkila` et la
+synthèse `wadiya-idmajiya-muadalat`, 250 exercices de pratique) suit le même chemin : synchronisation du
+curriculum ET import du registre des épreuves au déploiement qui la porte, sous « ميدان أنساب الأعداد
+والحساب » (placement déclaré, décision du propriétaire).
+
 ### Rattraper une base en retard
 
 Les fichiers `docs/deployment/*.sql` restent valides et restent la façon de

@@ -9,7 +9,7 @@ const webRoot = resolve(here, '../../../..');
 const read = (p) => readFileSync(resolve(webRoot, p), 'utf8');
 
 // Toutes les unités du ميدان (unité 1 : 9 leçons ; unité 2 « الحساب على الجذور » : 6, 2026-09-30 ;
-// unité 3 « الحساب الحرفي » : 4, 2026-10-01).
+// unité 3 « الحساب الحرفي » : 4, 2026-10-01 ; unité 4 « معادلات ومتراجحات » : 5, 2026-10-01).
 const CHAPTER = 'src/lessons/moyen/4am/ansab_al_aadad_wal_hisab';
 const UNITS = readdirSync(resolve(webRoot, CHAPTER)).map((u) => `${CHAPTER}/${u}`);
 
@@ -46,8 +46,8 @@ function evaluationModules() {
 describe('synthèse finale — الحوصلة', () => {
   const modules = evaluationModules();
 
-  it('les unités ont bien 9 + 6 + 4 modules d’évaluation', () => {
-    expect(modules.length).toBe(19);
+  it('les unités ont bien 9 + 6 + 4 + 5 modules d’évaluation', () => {
+    expect(modules.length).toBe(24);
   });
 
   it.each(modules)('%s : la synthèse lit la carte, elle n’est pas vide', (_lesson, rel) => {

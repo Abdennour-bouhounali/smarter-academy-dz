@@ -71,16 +71,17 @@ n'entre pas dans la 4AM, même s'il en est mathématiquement proche.
 
 > **Placement (décision du propriétaire, 2026-10-01).** Les sujets 3.1 et 3.2 sont enseignés par l'unité 3
 > du manuel « الحساب الحرفي », que le propriétaire a placée sous « ميدان أنساب الأعداد والحساب » (comme
-> les unités 1 et 2). Le catalogue garde ces sujets comme source (traçabilité) et l'unité déclare l'écart
+> les unités 1 et 2) ; les sujets 3.3, 3.4 et 3.5 par l'unité 4 « معادلات ومتراجحات من الدرجة الأولى بمجهول
+> واحد », placée de même (2026-10-01). Le catalogue garde ces sujets comme source (traçabilité) et l'unité déclare l'écart
 > (`units_4am_2026_2027.json › placement`).
 
 | # | الموضوع | Décomposition en LP | Dépendances | Statut |
 |---|---|---|---|---|
 | 3.1 | النشر والتبسيط | Unité 3 du manuel « الحساب الحرفي » (2026-10-01) : `nashr-tabsit` (4 LP) et `mutatabiqat-shahira` (4 LP), LP fournis par le propriétaire | aucune intra-programme | **BUILT** |
 | 3.2 | تحليل عبارة جبرية إلى منتوج عوامل من الدرجة الأولى | Unité 3 : `tahlil-ibara` (3 LP) + la synthèse `wadiya-idmajiya-harfi` (3 LP) | 3.1 | **BUILT** |
-| 3.3 | حل معادلات من الدرجة الأولى بمجهول واحد | `À DÉCOMPOSER` | 3.1 | NOT STARTED |
-| 3.4 | المعادلات جذاء معدوم | `À DÉCOMPOSER` | 3.2, 3.3 | NOT STARTED |
-| 3.5 | حل متراجحات من الدرجة الأولى بمجهول واحد وتمثيلها بيانيا | Le sujet énumère **deux gestes** : la résolution, et la représentation graphique. Le détail `À DÉCOMPOSER` | 3.3 | NOT STARTED |
+| 3.3 | حل معادلات من الدرجة الأولى بمجهول واحد | Unité 4 du manuel (2026-10-01) : `muadala-ula` (2 LP) et `tarrid-mushkila` « ترييض مشكلة » (2 LP), LP fournis par le propriétaire | 3.1 | **BUILT** |
+| 3.4 | المعادلات جذاء معدوم | Unité 4 : `jidaa-maadum` (3 LP) | 3.2, 3.3 | **BUILT** |
+| 3.5 | حل متراجحات من الدرجة الأولى بمجهول واحد وتمثيلها بيانيا | Unité 4 : `mutarajiha-ula` (3 LP — les deux gestes du sujet : la résolution, P2, et la représentation graphique, P3) + la synthèse `wadiya-idmajiya-muadalat` (2 LP) | 3.3 | **BUILT** |
 | 3.6 | جمل معادلتين من الدرجة الأولى بمجهولين : طريقة التعويض · طريقة الجمع | **Deux LP au moins, nommés par le programme** : طريقة التعويض, طريقة الجمع | 3.3 | NOT STARTED |
 | 3.7 | الدوال الخطية | `À DÉCOMPOSER` | 3.1 | NOT STARTED |
 | 3.8 | الدوال التآلفية | `À DÉCOMPOSER` | 3.7 | NOT STARTED |

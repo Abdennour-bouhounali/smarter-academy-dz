@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "title": "تدريب — اشتراكا الهاتف",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متراجحة",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "عرضان للهاتف: العرض (أ) 3 دنانير لكل دقيقة. العرض (ب) 200 دينار شهريًا ثم دينار واحد لكل دقيقة. نسمّي $x$ عدد الدقائق في الشهر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من أجل كم دقيقة تتساوى تكلفتا العرضين؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "100",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب تكلفة كل عرض بدلالة $x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعادلة: تكلفة (أ) = تكلفة (ب)."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع حدود $x$ في طرف واحد."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x = 200 + x$ يعني $2x = 200$ ، أي $x = 100$ دقيقة.",
+        "incorrect": "تكلفة (أ) $3x$ وتكلفة (ب) $200 + x$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "50",
+          "id": "MISC-WADIYA-TARJAMA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ابتداءً من كم دقيقة يكون العرض (ب) أفضل؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "101",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العرض (ب) أفضل إذا كانت تكلفته أقل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حل المتراجحة $200 + x < 3x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "التساوي لا يكفي: نريد أن يكون (ب) أقل تكلفة."
+        }
+      ],
+      "feedback": {
+        "correct": "$200 < 2x$ أي $x > 100$ ، فابتداءً من 101 دقيقة.",
+        "incorrect": "عند 100 دقيقة تتساوى التكلفتان: خذ العدد الطبيعي الموالي."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "100",
+          "id": "MISC-WADIYA-QIMAT-TASAWI"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l2-006",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 2
+}

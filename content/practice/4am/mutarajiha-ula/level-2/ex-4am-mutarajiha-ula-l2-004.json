@@ -1,0 +1,176 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l2-004",
+  "lessonCode": "mutarajiha-ula",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — من x ≤ 4 إلى متباينات أخرى",
+    "estimatedMinutes": 4,
+    "tags": [
+      "قواعد الاتجاه"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutarajiha-ula_P2",
+      "modelledOn": "ex-22"
+    }
+  },
+  "statement": {
+    "content": "نعلم أن $x \\leq 4$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "إذا كان $x \\leq 4$ فإنّ ...",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-x \\geq 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-ISHARA-SALIBA"
+        },
+        {
+          "id": "B",
+          "content": "$-x \\leq -4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
+        },
+        {
+          "id": "C",
+          "content": "$-x \\geq -4$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طبّق على طرفي $x \\leq 4$ العمليات التي تعطي $-x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الضرب في عدد موجب أو إضافة عدد لا يغيّران الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الضرب في عدد سالب يغيّر الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "من $x \\leq 4$ نحصل على $-x \\geq -4$ (الضرب في عدد سالب يغيّر الاتجاه).",
+        "incorrect": "انطلق من المعطى وطبّق العمليات نفسها على الطرفين، خطوة خطوة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "إذا كان $x \\leq 4$ فإنّ ...",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x - 3 \\leq -1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$x - 3 \\leq 1$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x - 3 \\geq 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طبّق على طرفي $x \\leq 4$ العمليات التي تعطي $x - 3$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الضرب في عدد موجب أو إضافة عدد لا يغيّران الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الضرب في عدد سالب يغيّر الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "من $x \\leq 4$ نحصل على $x - 3 \\leq 1$.",
+        "incorrect": "انطلق من المعطى وطبّق العمليات نفسها على الطرفين، خطوة خطوة."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "إذا كان $x \\leq 4$ فإنّ ...",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{x}{2} \\leq 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{x}{2} \\leq 2$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{x}{2} \\geq 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طبّق على طرفي $x \\leq 4$ العمليات التي تعطي $\\dfrac{x}{2}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الضرب في عدد موجب أو إضافة عدد لا يغيّران الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الضرب في عدد سالب يغيّر الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "من $x \\leq 4$ نحصل على $\\dfrac{x}{2} \\leq 2$.",
+        "incorrect": "انطلق من المعطى وطبّق العمليات نفسها على الطرفين، خطوة خطوة."
+      }
+    }
+  ]
+}

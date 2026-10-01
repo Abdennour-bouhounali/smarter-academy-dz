@@ -1,0 +1,126 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l3-008",
+  "lessonCode": "tarrid-mushkila",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — معدّل علامتين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متراجحة",
+      "تحقّق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-mushkila_P2",
+      "modelledOn": "ex-30"
+    }
+  },
+  "statement": {
+    "content": "تحصّل أنس على 12 من 20 في الفرض الأول. نسمّي $x$ علامته (من 20) في الفرض الثاني. يريد أن يكون معدّل العلامتين 14 على الأقل."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ متراجحة تترجم النص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$12 + x \\geq 14$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{12 + x}{2} \\geq 14$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{12 + x}{2} \\leq 14$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما معدّل علامتين؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المعدّل مجموع العلامتين مقسومًا على 2."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "«على الأقل» تعني أكبر من أو يساوي."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{12 + x}{2} \\geq 14$ .",
+        "incorrect": "المعدّل نصف المجموع."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما العلامات الممكنة للفرض الثاني؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\geq 16$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAHAQQUQ"
+        },
+        {
+          "id": "B",
+          "content": "$16 \\leq x \\leq 20$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x \\geq 14$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAHAQQUQ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المتراجحة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تجد $x \\geq 16$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العلامة من 20: لا تتجاوز 20."
+        }
+      ],
+      "feedback": {
+        "correct": "$x \\geq 16$ والعلامة لا تتجاوز 20: $16 \\leq x \\leq 20$ .",
+        "incorrect": "علامة على 20 لا تكون 21."
+      }
+    }
+  ]
+}

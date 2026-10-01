@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-jidaa-maadum-l1-002",
+  "lessonCode": "jidaa-maadum",
+  "level": 1,
+  "metadata": {
+    "title": "نشاط 2 — الجداء المعدوم",
+    "estimatedMinutes": 4,
+    "tags": [
+      "خاصية الجداء المعدوم"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-2a",
+      "page": 44,
+      "section": "أنشطة",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 44): $a$ و $b$ عددان."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "إذا كان $a \\times b = 0$ فإنّ:",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$a = 1$ أو $b = 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
+        },
+        {
+          "id": "B",
+          "content": "$a = 0$ أو $b = 0$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$a = 0$ و $b = 0$ معًا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "جرّب: $0 \\times 5$ ، $5 \\times 0$ ، $0 \\times 0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل يجب أن يكون العددان معدومين معًا؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خاصية الجداء المعدوم تتكلّم عن «أحد العاملين على الأقل»."
+        }
+      ],
+      "feedback": {
+        "correct": "يكفي أن يكون أحد العددين معدومًا: $0 \\times 5 = 0$ ، فـ $a = 0$ أو $b = 0$ .",
+        "incorrect": "حلول معادلة جداء معدوم هي حلول المعادلتين: عامل أول يساوي $0$ أو عامل ثانٍ يساوي $0$ — تحقّق بالتعويض."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$-\\dfrac{3}{7} \\times y = 0$ . ما قيمة $y$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "0",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أحد العاملين عدد ثابت."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عامل ثابت غير معدوم لا ينعدم أبدًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يكفي أن تحلّ المعادلة: العامل الآخر يساوي $0$."
+        }
+      ],
+      "feedback": {
+        "correct": "$-\\dfrac{3}{7} \\neq 0$ ، فالعامل الآخر معدوم: $y = 0$ .",
+        "incorrect": "العامل الثابت لا يعطي حلًّا: عوّض اقتراحك وتحقّق أنّ الجداء يساوي $0$."
+      }
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "id": "ex-4am-muadala-ula-l2-008",
+  "lessonCode": "muadala-ula",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — الحل كسر",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ax + b = c",
+      "كسر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadala-ula_P1",
+      "modelledOn": "method-equation"
+    }
+  },
+  "statement": {
+    "content": "الحل قد يكون كسرًا غير قابل للاختزال."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المعادلة $4x - 1 = 6$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "7/4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في طرف واحد حدّ فيه $x$ وعدد، وفي الطرف الآخر عدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تخلّص أولًا من العدد الذي مع الحدّ $ax$ بإجراء العملية المعاكسة على الطرفين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تصل إلى الشكل $ax = b$ ، ثم تقسم الطرفين على معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$4x - 1 = 6$ : نصل إلى $4x = 7$ ، ومنه $x = \\dfrac{7}{4}$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل المعادلة $6x + 2 = -1$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{1}{6}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$-2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$-\\dfrac{1}{2}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في طرف واحد حدّ فيه $x$ وعدد، وفي الطرف الآخر عدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تخلّص أولًا من العدد الذي مع الحدّ $ax$ بإجراء العملية المعاكسة على الطرفين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تصل إلى الشكل $ax = b$ ، ثم تقسم الطرفين على معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$6x + 2 = -1$ : نصل إلى $6x = -3$ ، ومنه $x = -\\dfrac{1}{2}$.",
+        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
+      }
+    }
+  ]
+}

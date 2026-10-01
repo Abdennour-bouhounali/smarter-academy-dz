@@ -1,0 +1,132 @@
+{
+  "id": "ex-4am-jidaa-maadum-l2-004",
+  "lessonCode": "jidaa-maadum",
+  "level": 2,
+  "metadata": {
+    "title": "نشاط 2 — عاملان يتغيّران",
+    "estimatedMinutes": 4,
+    "tags": [
+      "خاصية الجداء المعدوم"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-2b",
+      "page": 44,
+      "section": "أنشطة",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 44): حل المعادلة $(x - 2)(x + 5) = 0$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلول المعادلة:",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-10$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-NASHR-AWWALAN"
+        },
+        {
+          "id": "B",
+          "content": "$2$ و $-5$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$-2$ و $5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
+        },
+        {
+          "id": "D",
+          "content": "$2$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطرف الأول جداء عاملين والطرف الثاني $0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خاصية الجداء المعدوم: أحد العاملين على الأقل معدوم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب كل عامل يساوي $0$ ، ثم حلّ كل معادلة من الدرجة الأولى."
+        }
+      ],
+      "feedback": {
+        "correct": "$x - 2 = 0$ أو $x + 5 = 0$ ، أي $x = 2$ أو $x = -5$ .",
+        "incorrect": "حلول معادلة جداء معدوم هي حلول المعادلتين: عامل أول يساوي $0$ أو عامل ثانٍ يساوي $0$ — تحقّق بالتعويض."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "لماذا لا نحلّها بنشر الطرف الأول كما فعل إلياس؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لأنّ النشر يعطي $x^2 - 10 = 0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-NASHR-AWWALAN"
+        },
+        {
+          "id": "B",
+          "content": "لأنّ النشر ممنوع في المعادلات",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-NASHR-AWWALAN"
+        },
+        {
+          "id": "C",
+          "content": "لأنّ النشر يعطي $x^2 + 3x - 10 = 0$ وهي ليست من الدرجة الأولى",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $(x - 2)(x + 5)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى أعلى قوة لـ $x$ بعد النشر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "معادلة من الدرجة الأولى لا تحتوي على $x^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x - 2)(x + 5) = x^2 + 5x - 2x - 10 = x^2 + 3x - 10$ : فيها $x^2$ ، فلا نعرف حلّها بطريقة الدرس 1.",
+        "incorrect": "حلول معادلة جداء معدوم هي حلول المعادلتين: عامل أول يساوي $0$ أو عامل ثانٍ يساوي $0$ — تحقّق بالتعويض."
+      }
+    }
+  ]
+}

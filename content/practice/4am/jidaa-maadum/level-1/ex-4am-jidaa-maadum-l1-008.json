@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-jidaa-maadum-l1-008",
+  "lessonCode": "jidaa-maadum",
+  "level": 1,
+  "metadata": {
+    "title": "نشاط 2 — إلياس وأمين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "خاصية الجداء المعدوم"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-2b",
+      "page": 44,
+      "section": "أنشطة",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 44): لحل المعادلة $3(x - 5) = 0$ كتب إلياس: $3x - 15 = 0$ ؛ $3x = 15$ ؛ $x = 5$ . وكتب أمين: $x - 5 = 0$ بما أنّ $3 \\neq 0$ ؛ $x = 5$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من استعمل خاصية الجداء المعدوم؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا أحد منهما",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-AMIL-THABIT"
+        },
+        {
+          "id": "B",
+          "content": "أمين",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "إلياس",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-NASHR-AWWALAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن السطر الثاني في الكرّاسين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أحدهما نشر الجداء، والآخر لاحظ أنّ أحد العاملين لا ينعدم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خاصية الجداء المعدوم: إذا كان الجداء معدومًا فأحد العاملين معدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "أمين قال: بما أنّ $3 \\neq 0$ فالعامل الآخر $x - 5$ معدوم. إلياس نشر ثم حلّ معادلة من الدرجة الأولى.",
+        "incorrect": "العامل الثابت لا يعطي حلًّا: عوّض اقتراحك وتحقّق أنّ الجداء يساوي $0$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما حل المعادلة $3(x - 5) = 0$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أحد العاملين عدد ثابت."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عامل ثابت غير معدوم لا ينعدم أبدًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يكفي أن تحلّ المعادلة: العامل الآخر يساوي $0$."
+        }
+      ],
+      "feedback": {
+        "correct": "الطريقتان تعطيان $x = 5$ : $3 \\times (5 - 5) = 0$ .",
+        "incorrect": "العامل الثابت لا يعطي حلًّا: عوّض اقتراحك وتحقّق أنّ الجداء يساوي $0$."
+      }
+    }
+  ]
+}

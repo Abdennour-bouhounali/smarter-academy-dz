@@ -1,0 +1,82 @@
+{
+  "metadata": {
+    "title": "تدريب — معادلة جداء معدوم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جداء معدوم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P1",
+      "modelledOn": "qcm"
+    }
+  },
+  "statement": {
+    "content": "لتكن المعادلة $(x - 6)(3x + 9) = 0$ ذات المجهول $x$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلول هذه المعادلة هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$6$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$-6$ و $3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
+        },
+        {
+          "id": "C",
+          "content": "$6$ و $-9$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
+        },
+        {
+          "id": "D",
+          "content": "$6$ و $-3$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطرف الأيسر جداء عاملين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "يكون الجداء معدومًا إذا كان أحد العاملين معدومًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حل $x - 6 = 0$ ثم $3x + 9 = 0$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x - 6 = 0$ أو $3x + 9 = 0$ ، أي $x = 6$ أو $x = -3$.",
+        "incorrect": "لكل عامل معادلته، ونقسم على معامل $x$ في العامل الثاني."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l1-008",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 1
+}

@@ -1,0 +1,111 @@
+{
+  "id": "ex-4am-muadala-ula-l5-003",
+  "lessonCode": "muadala-ula",
+  "level": 5,
+  "metadata": {
+    "title": "دوري الآن — مقامات",
+    "estimatedMinutes": 4,
+    "tags": [
+      "كسور"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "now-47-1",
+      "page": 47,
+      "section": "دوري الآن",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 47): حل كل معادلة مما يلي."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حل المعادلة $\\dfrac{-x + 3}{2} = \\dfrac{2x + 1}{3}$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-\\dfrac{11}{7}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$-7$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$1$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المعادلة مقامات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب الطرفين في عدد تقبل كل المقامات القسمة عليه، مع كل الحدود."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم انشر وانقل المجاهيل إلى طرف والمعاليم إلى الآخر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{-x + 3}{2} = \\dfrac{2x + 1}{3}$ : ننقل المجاهيل إلى طرف والمعاليم إلى الآخر ونقسم على معامل $x$ : $x = 1$.",
+        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّ المعادلة $2x - \\dfrac{1}{3} = \\dfrac{x}{5} + 2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "35/27",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المعادلة مقامات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب الطرفين في عدد تقبل كل المقامات القسمة عليه، مع كل الحدود."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم انشر وانقل المجاهيل إلى طرف والمعاليم إلى الآخر."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x - \\dfrac{1}{3} = \\dfrac{x}{5} + 2$ : ننقل المجاهيل إلى طرف والمعاليم إلى الآخر ونقسم على معامل $x$ : $x = \\dfrac{35}{27}$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    }
+  ]
+}

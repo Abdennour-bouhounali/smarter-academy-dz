@@ -1,0 +1,126 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l5-005",
+  "lessonCode": "mutarajiha-ula",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — متطابقة ثم متراجحة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "حل متراجحة",
+      "تمثيل بياني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutarajiha-ula_P3",
+      "modelledOn": "ex-29"
+    }
+  },
+  "statement": {
+    "content": "لتكن المتراجحة $(2x + 1)^2 - 4x^2 > 3x - 7$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المتراجحة $(2x + 1)^2 - 4x^2 > 3x - 7$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x > -8$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x > -6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        },
+        {
+          "id": "C",
+          "content": "$x < -8$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$(2x + 1)^2 - 4x^2 > 3x - 7$ تؤول إلى $x > -8$: $x > -8$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "أيّ تمثيل بياني يوافق حلول المتراجحة $(2x + 1)^2 - 4x^2 > 3x - 7$ على مستقيم مدرّج؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الجزء الملوّن على يسار $-8$ والرمز $[$ عند $-8$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+        },
+        {
+          "id": "B",
+          "content": "الجزء الملوّن على يمين $-8$ والرمز $[$ عند $-8$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
+        },
+        {
+          "id": "C",
+          "content": "الجزء الملوّن على يمين $-8$ والرمز $]$ عند $-8$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المتراجحة أولًا لتجد الحدّ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحلول الأكبر من الحدّ على يمينه، والأصغر منه على يساره."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اختبر الحدّ نفسه: إن كان حلًّا فالرمز موجّه نحو الجزء الملوّن."
+        }
+      ],
+      "feedback": {
+        "correct": "الحلول: $x > -8$ ، فالجزء الملوّن على يمين $-8$ ، و $-8$ ليس حلًّا فالرمز غير موجّه نحو الجزء الملوّن.",
+        "incorrect": "حدّد جهة الحلول، ثم اختبر الحدّ نفسه لتختار اتجاه الرمز."
+      }
+    }
+  ]
+}

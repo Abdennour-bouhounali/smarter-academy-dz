@@ -1,0 +1,132 @@
+{
+  "id": "ex-4am-jidaa-maadum-l4-009",
+  "lessonCode": "jidaa-maadum",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — مربّع ناقص عدد",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متطابقات شهيرة",
+      "جداء معدوم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidaa-maadum_P3",
+      "modelledOn": "ex-20"
+    }
+  },
+  "statement": {
+    "content": "نريد حلّ المعادلة $(x + 2)^2 - 16 = 0$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "تحليل الطرف الأول:",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x - 2)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-NASHR-AWWALAN"
+        },
+        {
+          "id": "B",
+          "content": "$(x - 2)(x + 6)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(x + 2 - 16)(x + 2 + 16)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-NASHR-AWWALAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$16 = 4^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العبارة من الشكل $a^2 - b^2$ حيث $a = x + 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عيّن $b$ ثم استعمل $(a - b)(a + b)$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 2)^2 - 4^2 = (x + 2 - 4)(x + 2 + 4) = (x - 2)(x + 6)$ .",
+        "incorrect": "تعرّف على المتطابقة ثم طبّق الخاصية، وعوّض كل حلّ لتتحقّق."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلول المعادلة:",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-2$ و $6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
+        },
+        {
+          "id": "B",
+          "content": "$2$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$-18$ و $14$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-NASHR-AWWALAN"
+        },
+        {
+          "id": "D",
+          "content": "$-6$ و $2$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطرف الأول يشبه أحد أطراف متطابقة شهيرة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تذكّر: $a^2 - b^2 = (a - b)(a + b)$ و $a^2 \\pm 2ab + b^2 = (a \\pm b)^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّل بالمتطابقة، ثم طبّق خاصية الجداء المعدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x - 2)(x + 6) = 0$ يعني $x = 2$ أو $x = -6$ .",
+        "incorrect": "تعرّف على المتطابقة ثم طبّق الخاصية، وعوّض كل حلّ لتتحقّق."
+      }
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l1-009",
+  "lessonCode": "mutarajiha-ula",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — الحدّ حلّ أم لا؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حلّ متراجحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutarajiha-ula_P1",
+      "modelledOn": "ex-25"
+    }
+  },
+  "statement": {
+    "content": "لتكن المتراجحة $\\dfrac{x}{2} - 1 \\leq 3$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل العدد $8$ حلّ للمتراجحة $\\dfrac{x}{2} - 1 \\leq 3$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، هو حلّ",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا، ليس حلًّا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب كل طرف وحده."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن النتيجتين بالرمز نفسه: هل المتباينة العددية صحيحة؟"
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = 8$ : الطرف الأول يساوي $3$ والطرف الثاني $3$ ، و $3 \\leq 3$ متباينة صحيحة.",
+        "incorrect": "احسب الطرفين من أجل هذه القيمة، ثم احكم على المتباينة العددية — وانتبه إلى الرمز الصارم $<$ أو $>$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل العدد $10$ حلّ للمتراجحة $\\dfrac{x}{2} - 1 \\leq 3$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، هو حلّ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        },
+        {
+          "id": "B",
+          "content": "لا، ليس حلًّا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب كل طرف وحده."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن النتيجتين بالرمز نفسه: هل المتباينة العددية صحيحة؟"
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = 10$ : الطرف الأول يساوي $4$ والطرف الثاني $3$ ، و $4 \\leq 3$ متباينة خاطئة.",
+        "incorrect": "احسب الطرفين من أجل هذه القيمة، ثم احكم على المتباينة العددية — وانتبه إلى الرمز الصارم $<$ أو $>$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "هل العدد $-4$ حلّ للمتراجحة $\\dfrac{x}{2} - 1 \\leq 3$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، هو حلّ",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا، ليس حلًّا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب كل طرف وحده."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن النتيجتين بالرمز نفسه: هل المتباينة العددية صحيحة؟"
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = -4$ : الطرف الأول يساوي $-3$ والطرف الثاني $3$ ، و $-3 \\leq 3$ متباينة صحيحة.",
+        "incorrect": "احسب الطرفين من أجل هذه القيمة، ثم احكم على المتباينة العددية — وانتبه إلى الرمز الصارم $<$ أو $>$."
+      }
+    }
+  ]
+}

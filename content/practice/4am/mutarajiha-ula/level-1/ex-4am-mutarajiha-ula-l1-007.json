@@ -1,0 +1,125 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l1-007",
+  "lessonCode": "mutarajiha-ula",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — اقرأ التمثيل البياني",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تمثيل بياني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutarajiha-ula_P3",
+      "modelledOn": "act-3b"
+    }
+  },
+  "statement": {
+    "content": "نقرأ حلول متراجحة ممثّلة على مستقيم مدرّج بالجزء الملوّن بالأحمر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مثّلنا حلول متراجحة على مستقيم مدرّج: الجزء الملوّن على يسار $4$ والرمز $[$ عند $4$. أيّ متراجحة لها هذه الحلول؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x < 4$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x > 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+        },
+        {
+          "id": "C",
+          "content": "$x \\leq 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ جهة الجزء الملوّن: على يسار الحدّ أم على يمينه؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "على اليسار الأعداد الأصغر من الحدّ، وعلى اليمين الأكبر منه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اتجاه الرمز يقول هل الحدّ نفسه حلّ: موجّه نحو الجزء الملوّن ⇐ الرمز $\\leq$ أو $\\geq$."
+        }
+      ],
+      "feedback": {
+        "correct": "الجزء الملوّن على يسار $4$ : الحلول أصغر من $4$ ، والرمز غير موجّه نحوه فالحدّ ليس حلًّا: $x < 4$.",
+        "incorrect": "اقرأ الجهة أولًا، ثم اتجاه الرمز عند الحدّ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "مثّلنا حلول متراجحة على مستقيم مدرّج: الجزء الملوّن على يمين $-1$ والرمز $[$ عند $-1$. أيّ متراجحة لها هذه الحلول؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\leq -1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+        },
+        {
+          "id": "B",
+          "content": "$x \\geq -1$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x > -1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ جهة الجزء الملوّن: على يسار الحدّ أم على يمينه؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "على اليسار الأعداد الأصغر من الحدّ، وعلى اليمين الأكبر منه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اتجاه الرمز يقول هل الحدّ نفسه حلّ: موجّه نحو الجزء الملوّن ⇐ الرمز $\\leq$ أو $\\geq$."
+        }
+      ],
+      "feedback": {
+        "correct": "الجزء الملوّن على يمين $-1$ : الحلول أكبر من $-1$ ، والرمز موجّه نحو الجزء الملوّن فالحدّ حلّ: $x \\geq -1$.",
+        "incorrect": "اقرأ الجهة أولًا، ثم اتجاه الرمز عند الحدّ."
+      }
+    }
+  ]
+}

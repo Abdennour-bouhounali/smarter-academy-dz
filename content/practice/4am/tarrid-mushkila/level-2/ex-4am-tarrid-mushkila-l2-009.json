@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l2-009",
+  "lessonCode": "tarrid-mushkila",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — حلّ سالب في الأعمار",
+    "estimatedMinutes": 4,
+    "tags": [
+      "أعمار",
+      "تحقّق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-mushkila_P2",
+      "modelledOn": "method-modelling"
+    }
+  },
+  "statement": {
+    "content": "عمر أب 45 سنة وعمر ابنه 15 سنة. نسمّي $x$ عدد السنوات التي يصبح بعدها عمر الأب أربعة أضعاف عمر ابنه، فنكتب $45 + x = 4(15 + x)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المعادلة: $x = $",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "-5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر: $45 + x = 60 + 4x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع حدود $x$ في طرف واحد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انتبه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$-3x = 15$ أي $x = -5$ .",
+        "incorrect": "من $45 + x = 60 + 4x$ نجد $-15 = 3x$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ماذا نستنتج عن المشكلة؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "يحدث ذلك بعد 5 سنوات.",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAHAQQUQ"
+        },
+        {
+          "id": "B",
+          "content": "لن يحدث ذلك بعد اليوم: كان عمر الأب أربعة أضعاف عمر ابنه منذ 5 سنوات.",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "يحدث ذلك بعد $-5$ سنوات.",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAHAQQUQ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هل يمكن أن يكون عدد السنوات «بعد» سالبًا؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحل السالب يدلّ على الماضي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق: احسب العمرين منذ 5 سنوات."
+        }
+      ],
+      "feedback": {
+        "correct": "منذ 5 سنوات: $40 = 4 \\times 10$ . أما بعد اليوم فلا حلّ.",
+        "incorrect": "عدد سنوات «بعد اليوم» لا يكون سالبًا."
+      }
+    }
+  ]
+}

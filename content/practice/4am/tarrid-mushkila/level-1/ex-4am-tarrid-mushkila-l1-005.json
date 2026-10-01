@@ -1,0 +1,108 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l1-005",
+  "lessonCode": "tarrid-mushkila",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — عدد مجهول",
+    "estimatedMinutes": 2,
+    "tags": [
+      "ترييض",
+      "معادلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-mushkila_P1",
+      "modelledOn": "ex-10"
+    }
+  },
+  "statement": {
+    "content": "عدد إذا أضفت إليه 15 تحصل على 42. نسمّي $x$ هذا العدد."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ معادلة تترجم النص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$15x = 42$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$x = 15 + 42$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$x + 15 = 42$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "«أضفت إليه 15» تعني أي عملية؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نضيف 15 إلى العدد المجهول $x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب «العدد زائد 15 يساوي 42»."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + 15 = 42$ .",
+        "incorrect": "الكلمة «أضفت» تعني جمعًا، والنتيجة 42."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو هذا العدد؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "27",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انطلق من $x + 15 = 42$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح 15 من الطرفين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بالجمع."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 42 - 15 = 27$ ، وتحقّق: $27 + 15 = 42$ .",
+        "incorrect": "اطرح 15 من 42."
+      }
+    }
+  ]
+}

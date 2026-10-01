@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l5-004",
+  "lessonCode": "mutarajiha-ula",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — مربّعان يختفيان",
+    "estimatedMinutes": 5,
+    "tags": [
+      "حل متراجحة",
+      "نشر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutarajiha-ula_P2",
+      "modelledOn": "ex-29"
+    }
+  },
+  "statement": {
+    "content": "لتكن المتراجحة $(x - 3)^2 \\leq (x + 1)(x - 5)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المتراجحة $(x - 3)^2 \\leq (x + 1)(x - 5)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\geq 7$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x \\geq 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        },
+        {
+          "id": "C",
+          "content": "$x \\leq 7$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x - 3)^2 \\leq (x + 1)(x - 5)$ تؤول إلى $-2x \\leq -14$، ثم نقسم على $-2$ (عدد سالب، فنغيّر الاتجاه): $x \\geq 7$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما أصغر عدد صحيح يحقّق المتراجحة $(x - 3)^2 \\leq (x + 1)(x - 5)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المتراجحة أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مثّل الحلول على مستقيم مدرّج وانظر إلى الحدّ: هل هو نفسه حلّ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن أصغر عدد صحيح في الجزء الملوّن."
+        }
+      ],
+      "feedback": {
+        "correct": "الحلول: $x \\geq 7$ ، والحدّ نفسه حلّ: أصغر عدد صحيح هو 7.",
+        "incorrect": "حلّ المتراجحة، ثم انتبه إلى الحدّ: هل هو حلّ أم لا؟"
+      }
+    }
+  ]
+}

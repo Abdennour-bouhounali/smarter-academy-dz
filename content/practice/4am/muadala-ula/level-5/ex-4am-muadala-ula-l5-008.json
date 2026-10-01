@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-muadala-ula-l5-008",
+  "lessonCode": "muadala-ula",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — حل أم مساواة مستحيلة؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مساواة خاطئة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadala-ula_P2",
+      "modelledOn": "ex-9"
+    }
+  },
+  "statement": {
+    "content": "أحيانًا يختفي $x$ من الطرفين."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حل المعادلة $3(x + 2) = 3x + 1$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-\\dfrac{5}{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "لا يوجد أي عدد يحقّق المساواة",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المعادلة أقواس."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر أولًا وبسّط كل طرف على حدة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم انقل المجاهيل إلى طرف والمعاليم إلى الطرف الآخر، وقسّم على معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$3(x + 2) = 3x + 1$ : بعد حذف $x$ من الطرفين يبقى عددان مختلفان: لا يوجد أي عدد يحقّق المساواة.",
+        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّ المعادلة $3(x + 2) = x + 1$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "-5/2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المعادلة أقواس."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر أولًا وبسّط كل طرف على حدة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم انقل المجاهيل إلى طرف والمعاليم إلى الطرف الآخر، وقسّم على معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$3(x + 2) = x + 1$ : نصل إلى $2x = -5$ ، ومنه $x = -\\dfrac{5}{2}$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    }
+  ]
+}

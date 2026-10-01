@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-muadala-ula-l4-007",
+  "lessonCode": "muadala-ula",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — أعداد عشرية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "أعداد عشرية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadala-ula_P2",
+      "modelledOn": "method-equation"
+    }
+  },
+  "statement": {
+    "content": "حلّ المعادلات بمعاملات عشرية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المعادلة $0{,}5x + 1{,}2 = 3{,}7$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معاملات المعادلة أعداد عشرية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اعمل كما مع الأعداد الصحيحة: المجاهيل في طرف والمعاليم في الطرف الآخر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في النهاية قسّم على معامل $x$ (يمكنك ضرب البسط والمقام في 10)."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}5x + 1{,}2 = 3{,}7$ : ننقل المجاهيل إلى طرف والمعاليم إلى الآخر ونقسم على معامل $x$ : $x = 5$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل المعادلة $1{,}4x - 2 = 0{,}4x + 3$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{25}{9}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$5$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معاملات المعادلة أعداد عشرية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اعمل كما مع الأعداد الصحيحة: المجاهيل في طرف والمعاليم في الطرف الآخر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في النهاية قسّم على معامل $x$ (يمكنك ضرب البسط والمقام في 10)."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}4x - 2 = 0{,}4x + 3$ : نصل إلى $x = 5$.",
+        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
+      }
+    }
+  ]
+}

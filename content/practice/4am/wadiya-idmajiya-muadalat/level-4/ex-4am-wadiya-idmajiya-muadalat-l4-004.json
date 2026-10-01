@@ -1,0 +1,129 @@
+{
+  "metadata": {
+    "title": "وضعية — المسبح البلدي: المتراجحة والجواب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متراجحة",
+      "تفسير"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "situation",
+      "page": 52,
+      "section": "أدمج تعلّماتي"
+    }
+  },
+  "statement": {
+    "content": "لممارسة رياضة السباحة في المسبح البلدي، يقترح نادٍ رياضيٌّ على التلاميذ المتمدرسين صيغتين للاشتراك. الصيغة الأولى: الدفع الفوري 75 دينارًا لكل حصة. الصيغة الثانية: اشتراك سنوي قدره 560 دينارا ودفع فوري قدره 5 دنانير لكل حصة. نسمّي $x$ عدد الحصص."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "«التسعيرة الثانية أفضل» تُترجم بالمتراجحة ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$560 + 5x > 75x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        },
+        {
+          "id": "B",
+          "content": "$565x < 75x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$560 + 5x < 75x$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$560 + 5x = 75x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "«أفضل» تعني «أقل تكلفة»."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تكلفة الأولى $75x$ وتكلفة الثانية $560 + 5x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تكلفة الثانية أقل."
+        }
+      ],
+      "feedback": {
+        "correct": "تكلفة الصيغة الثانية $560 + 5x$ أقل من تكلفة الأولى $75x$.",
+        "incorrect": "الأفضل هو الأقل تكلفة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "ابتداءً من أي عدد للحصص تكون التسعيرة الثانية أفضل؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حل المتراجحة السابقة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$560 < 70x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عدد الحصص طبيعي، وعند التساوي لا تكون الثانية أفضل."
+        }
+      ],
+      "feedback": {
+        "correct": "$x > 8$ ، فابتداءً من 9 حصص (عند 8 حصص: 600 دينار في الصيغتين).",
+        "incorrect": "عند 8 حصص تتساوى التكلفتان: خذ العدد الطبيعي الموالي."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "8",
+          "id": "MISC-WADIYA-QIMAT-TASAWI"
+        },
+        {
+          "value": "7",
+          "id": "MISC-WADIYA-TARJAMA"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l4-004",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 4
+}

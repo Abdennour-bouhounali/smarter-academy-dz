@@ -1,0 +1,111 @@
+{
+  "id": "ex-4am-muadala-ula-l1-001",
+  "lessonCode": "muadala-ula",
+  "level": 1,
+  "metadata": {
+    "title": "تمرين 1 — الشكل ax = b",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ax = b"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-1",
+      "page": 50,
+      "section": "أوظّف تعلّماتي",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 50): حل كل معادلة من المعادلات المقترحة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المعادلة $2x = 11$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "11/2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المعادلة من الشكل $ax = b$ : حدّد العدد المضروب في $x$ والعدد الذي في الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نقسم الطرفين على معامل $x$ ، مع إشارته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحل هو العدد الذي في الطرف الآخر مقسومًا على معامل $x$ ، لا العكس."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x = 11$ : نصل إلى $2x = 11$ ، ومنه $x = \\dfrac{11}{2}$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل المعادلة $-3x = 5$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$8$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARH-MUAMIL"
+        },
+        {
+          "id": "B",
+          "content": "$-\\dfrac{5}{3}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$-\\dfrac{3}{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المعادلة من الشكل $ax = b$ : حدّد العدد المضروب في $x$ والعدد الذي في الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نقسم الطرفين على معامل $x$ ، مع إشارته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحل هو العدد الذي في الطرف الآخر مقسومًا على معامل $x$ ، لا العكس."
+        }
+      ],
+      "feedback": {
+        "correct": "$-3x = 5$ : نصل إلى $-3x = 5$ ، ومنه $x = -\\dfrac{5}{3}$.",
+        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
+      }
+    }
+  ]
+}

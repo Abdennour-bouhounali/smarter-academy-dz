@@ -1014,8 +1014,8 @@ usesWorkspaceShell   StudentLayout  MainLayout     TeacherLayout  MainLayout
   « كرّاسي ». No migration, no new endpoint.
 - **Fullscreen.** Classroom Mode (وضع القسم) is the platform's fullscreen
   presentation; the teacher is a presenter role, so the « عرض » entries are
-  there in the teacher shell. Students keep whatever `CLASSROOM_PRESENTER_ROLES`
-  says (see `CLASSROOM_MODE.md` §3).
+  there in the teacher shell. Students never present: `student` is not in
+  `CLASSROOM_PRESENTER_ROLES` since 2026-10-01 (see `CLASSROOM_MODE.md` §3).
 - **Knowledge map, notebook, Math Lab.** « بطاقتي » and « كرّاسي » are the
   same floating column inside the lesson; the notebook pages and the Math Lab
   pages are reused under `/enseignant` with links built from

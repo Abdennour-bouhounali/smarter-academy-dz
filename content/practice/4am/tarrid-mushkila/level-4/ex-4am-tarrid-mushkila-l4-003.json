@@ -1,0 +1,108 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l4-003",
+  "lessonCode": "tarrid-mushkila",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — مربع يكبر",
+    "estimatedMinutes": 5,
+    "tags": [
+      "ترييض",
+      "مساحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-mushkila_P1",
+      "modelledOn": "ex-39"
+    }
+  },
+  "statement": {
+    "content": "إذا زدنا طول ضلع مربع بـ 3cm زادت مساحته بـ $39cm^2$ . نسمّي $x$ طول ضلعه الأصلي (بالسنتيمتر)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ معادلة تترجم النص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x + 3)^2 = x^2 + 39$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x^2 + 3 = 39$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$(x + 3)^2 = 39$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مساحة المربع الجديد؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المساحة الجديدة = المساحة الأصلية + 39."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المساحة الجديدة $(x + 3)^2$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 3)^2 = x^2 + 39$ .",
+        "incorrect": "الزيادة 39 تُضاف إلى المساحة الأصلية $x^2$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما طول الضلع الأصلي (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $(x + 3)^2$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على $x^2 + 6x + 9 = x^2 + 39$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حدود $x^2$ تختزل."
+        }
+      ],
+      "feedback": {
+        "correct": "$6x + 9 = 39$ أي $x = 5$ : $64 - 25 = 39$ .",
+        "incorrect": "انشر ثم اختزل $x^2$ من الطرفين."
+      }
+    }
+  ]
+}

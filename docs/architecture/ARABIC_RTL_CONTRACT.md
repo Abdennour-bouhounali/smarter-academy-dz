@@ -357,6 +357,14 @@ practice choices (`features/practice/inputs/ChoiceInput.jsx`) therefore show
 `ChoiceInput.test.jsx`. If a label is ever needed beside Arabic text, it must
 be its own flex item with `dir="ltr"` — never an inline span before the text.
 
+### Interval brackets « [ » « ] » are mirrored by bidi (2026-10-01)
+
+The textbook draws inequality solutions with brackets whose ORIENTATION carries the mathematics (turned toward
+the red part ⇔ the bound is a solution). A bare `[` or `]` in Arabic text is a mirrored character: the bidi
+algorithm draws it the wrong way round — exactly the distinction the lesson teaches. Write a bracket inside a
+math island (`$[$`, `$]-5 ; +\infty[$`) or isolate it (`\u2066]\u2069`, as `SolutionRay` does for its glyph), and
+draw number lines in SVG (`mutarajiha-ula/components/RayFigure.jsx`, the synthesis' `NumberLine`), never as text.
+
 ### Directional icons
 
 An icon whose **meaning is a reading direction** — forward, back, the panel on

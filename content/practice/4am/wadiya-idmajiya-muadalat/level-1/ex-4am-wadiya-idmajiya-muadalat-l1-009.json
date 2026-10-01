@@ -1,0 +1,113 @@
+{
+  "metadata": {
+    "title": "تدريب — أيّ صيغة أرخص لعدد معيّن؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مقارنة",
+      "تسعيرة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "في قاعة رياضة صيغتان: الصيغة (أ) تكلفتها $40x$ دينارًا، والصيغة (ب) تكلفتها $150 + 10x$ دينارًا، حيث $x$ عدد الحصص."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من أجل 4 حصص، أيّ الصيغتين أقل تكلفة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الصيغة (أ)",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الصيغة (ب)",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "الصيغتان متساويتان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-QIMAT-TASAWI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد 4 في كل عبارة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب التكلفتين ثم قارن."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الأقل تكلفة هو الأفضل."
+        }
+      ],
+      "feedback": {
+        "correct": "الصيغة (أ): $40 \\times 4 = 160$ ؛ الصيغة (ب): $150 + 40 = 190$ ، و $160 < 190$.",
+        "incorrect": "احسب التكلفتين من أجل 4 حصص قبل المقارنة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    },
+    {
+      "id": "q2",
+      "statement": "بكم دينارًا تزيد تكلفة الصيغة (ب) على تكلفة الصيغة (أ) من أجل 4 حصص؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "30",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لديك التكلفتان من أجل 4 حصص."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الفرق هو الأكبر ناقص الأصغر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح تكلفة (أ) من تكلفة (ب)."
+        }
+      ],
+      "feedback": {
+        "correct": "$190 - 160 = 30$ دينارًا.",
+        "incorrect": "احسب التكلفتين أولًا ثم اطرح."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l1-009",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 1
+}

@@ -1,0 +1,107 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l4-006",
+  "lessonCode": "tarrid-mushkila",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — جداء عمرين",
+    "estimatedMinutes": 5,
+    "tags": [
+      "أعمار",
+      "جداء معدوم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-mushkila_P1",
+      "modelledOn": "ex-40"
+    }
+  },
+  "statement": {
+    "content": "عمر سليم $x$ سنة، وأخته تكبره بـ 4 سنوات، وجداء عمريهما 60."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ معادلة تترجم النص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x + (x + 4) = 60$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$x(x + 4) = 60$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$4x = 60$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عمر الأخت بدلالة $x$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عمر الأخت $x + 4$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "«جداء» يعني ضربًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$x(x + 4) = 60$ .",
+        "incorrect": "الجداء ضرب العمرين لا جمعهما."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما عمر سليم؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المعادلة: $x^2 + 4x - 60 = 0$ أي $(x + 10)(x - 6) = 0$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "جداء معدوم: حلّان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العمر لا يكون سالبًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 6$ ($-10$ مرفوض)، و $6 \\times 10 = 60$ .",
+        "incorrect": "احتفظ بالحل الموجب فقط."
+      }
+    }
+  ]
+}

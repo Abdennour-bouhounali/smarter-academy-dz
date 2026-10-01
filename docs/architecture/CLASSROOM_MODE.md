@@ -81,14 +81,14 @@ shells and tests all ask that one function. Changing who may present is editing 
 `LessonClassroomShell` does not expose it. The permission gates Classroom Mode only — it grants no
 other teacher or admin capability, and it never changes what is written to a student's progress.
 
-> **Who presents today.** `CLASSROOM_PRESENTER_ROLES` contains `['admin', 'teacher', 'student']`.
+> **Who presents today.** `CLASSROOM_PRESENTER_ROLES` contains `['admin', 'teacher']`.
 > `teacher` is the product role this mode was built for (the teacher account exists since
 > 2026-09-22 — see [`TEACHER_CLASSROOM_ARCHITECTURE.md`](./TEACHER_CLASSROOM_ARCHITECTURE.md)).
-> `student` is there at the owner's request, to exercise Classroom Mode from a student account; it
-> is a **development/test setting, not a product decision**, and nothing in the architecture depends
-> on it. The tests assert the *mechanism* (every listed role passes, an unlisted role fails, the
-> array is frozen) and deliberately never assert the array's contents, so removing `student` needs
-> no test change. Do not build student-specific presenter behaviour.
+> **A student never sees « وضع القسم »** (owner decision, 2026-10-01): `student` had been added
+> temporarily to exercise the mode from a student account, which put the entry button on every
+> lesson page of every student. The tests assert the mechanism (every listed role passes, an unlisted
+> role fails, the array is frozen) **and** this one decision: `canPresentClassroom({ role: 'student' })`
+> is false. Browser QA of Classroom Mode therefore needs a teacher account (`qa-prof@smarter.dz`).
 >
 > **Two words that both contain « قسم ».** « وضع القسم » is *this* mode, the projector shell, and
 > keeps its name. « قسمي » / « أقسامي » is the teacher's *class* — a roster of students with a join

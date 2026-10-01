@@ -1,0 +1,126 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l1-008",
+  "lessonCode": "tarrid-mushkila",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — حلّ يلائم الواقع",
+    "estimatedMinutes": 2,
+    "tags": [
+      "تحقّق",
+      "واقع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-mushkila_P2",
+      "modelledOn": "ex-40"
+    }
+  },
+  "statement": {
+    "content": "نمذج تلميذ مشكلة عن عدد تلاميذ قسم بمعادلة مجهولها $x$ (عدد التلاميذ)، فوجد $x = 32{,}5$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ماذا نستنتج؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "في القسم $32{,}5$ تلميذًا.",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAHAQQUQ"
+        },
+        {
+          "id": "B",
+          "content": "الحل لا يلائم الواقع: عدد التلاميذ عدد طبيعي، فلنراجع النموذج أو الحساب.",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "نكتب 32 تلميذًا دون أن نتحقّق.",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAHAQQUQ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هل يمكن أن يكون عدد التلاميذ عددًا عشريًا؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عدد أشخاص يكون دائمًا عددًا طبيعيًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ لا يلائم الواقع يدلّ على خطأ في الترجمة أو في الحساب."
+        }
+      ],
+      "feedback": {
+        "correct": "عدد التلاميذ عدد طبيعي: $32{,}5$ لا يلائم الوضعية.",
+        "incorrect": "التقريب ليس تحقّقًا: عوّض في النص."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "أيّ هذه القيم يمكن أن تكون عدد تلاميذ قسم؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-31$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAHAQQUQ"
+        },
+        {
+          "id": "B",
+          "content": "$31{,}5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAHAQQUQ"
+        },
+        {
+          "id": "C",
+          "content": "$31$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عدد التلاميذ لا يكون سالبًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ولا يكون عددًا بفاصلة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن العدد الطبيعي."
+        }
+      ],
+      "feedback": {
+        "correct": "31 عدد طبيعي، فهو ممكن.",
+        "incorrect": "عدد أشخاص: عدد طبيعي."
+      }
+    }
+  ]
+}

@@ -36,7 +36,8 @@
     "CONTIENT QUE LES LEÇONS RÉELLEMENT CONSTRUITES : les neuf leçons de",
     "l'unité « الأعداد الطبيعيّة والأعداد النّاطقة » et, depuis le 2026-09-30, les",
     "cinq leçons de l'unité « الحساب على الجذور » et sa synthèse « أدمج تعلّماتي » (ميدان أنساب الأعداد والحساب,",
-    "sujets hisab_judhur et nataqat_maqam). Les 25",
+    "sujets hisab_judhur et nataqat_maqam), puis le 2026-10-01 les unités « الحساب الحرفي » et « معادلات ومتراجحات »",
+    "(placement déclaré par le propriétaire sous ce même ميدان, voir units_4am_2026_2027.json › placement). Les",
     "sujets officiels non encore construits ont été RETIRÉS",
     "du catalogue ; ils n'apparaissent donc plus nulle part — ni en « قريبًا »",
     "sur la page du ميدان, ni dans l'arbre de progression, ni dans l'API, ni",
@@ -1004,6 +1005,254 @@
       "difficulty": "صعب",
       "status": "available",
       "icon": "🏊"
+    },
+    {
+      "code": "muadala-ula",
+      "sourceTopicId": "muadalat_daraja_ula",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "muadalat-mutarajihat",
+      "order": 19,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "حل معادلة من الدرجة الأولى بمجهول واحد",
+      "description": "حل معادلة من الدرجة الأولى بمجهول واحد بإجراء العمليات نفسها على طرفيها (إضافة، طرح، ضرب أو قسمة على عدد غير معدوم): نقل المجاهيل إلى طرف والمعاليم إلى الطرف الآخر وتجميع الحدود المتشابهة حتى الشكل ax = b حيث a ≠ 0، ثم استخراج الحل الوحيد b/a والتحقق منه بالتعويض.",
+      "prerequisites": [
+        "مفهوم المساواة واختبار صحة مساواة عند تعويض المجهول بقيمة معطاة",
+        "قواعد العمليات على طرفي المساواة (إضافة، طرح، ضرب، أو قسمة الطرفين على عدد غير معدوم)",
+        "تبسيط ونشر العبارات الجبرية"
+      ],
+      "prerequisiteLessonCodes": [
+        "nashr-tabsit"
+      ],
+      "pointsToLearn": [
+        "حل معادلة من الدرجة الأولى بمجهول واحد يؤول حلها إلى الشكل ax = b (حيث a ≠ 0) واستخراج الحل الوحيد x = b/a",
+        "تبسيط طرفي المعادلة بنقل المجاهيل إلى طرف والمعاليم إلى طرف آخر مع تجميع الحدود المتشابهة"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_nashr-tabsit_P4"
+        ],
+        "P2": [
+          "4am_muadala-ula_P1",
+          "4am_nashr-tabsit_P4"
+        ]
+      },
+      "textbookRef": {
+        "unit": 4,
+        "activity": 1,
+        "pages": {
+          "activity": 44,
+          "knowledge": 46,
+          "method": 47,
+          "exercises": 50
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "سهل",
+      "status": "available",
+      "icon": "⚖️"
+    },
+    {
+      "code": "jidaa-maadum",
+      "sourceTopicId": "muadalat_jida_maadum",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "muadalat-mutarajihat",
+      "order": 20,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "معادلات جداء معدوم",
+      "description": "التعرف على معادلة جداء معدوم من الشكل (ax + b)(cx + d) = 0 وحلها بخاصية الجداء المعدوم (A × B = 0 يعني A = 0 أو B = 0)، ثم حل معادلات تؤول إليها بالتحليل: استخراج عامل مشترك أو استعمال المتطابقات الشهيرة.",
+      "prerequisites": [
+        "تحليل عبارة جبرية إلى جداء عاملين من الدرجة الأولى",
+        "إتقان حل معادلة من الدرجة الأولى بمجهول واحد",
+        "خواص ضرب الأعداد النسبية وانعدام الجداء"
+      ],
+      "prerequisiteLessonCodes": [
+        "muadala-ula",
+        "tahlil-ibara"
+      ],
+      "pointsToLearn": [
+        "التعرف على «معادلة جداء معدوم» من الشكل (ax + b)(cx + d) = 0",
+        "تطبيق خاصية الجداء المعدوم: ينعدم جداء عاملين إذا وفقط إذا كان أحد العاملين على الأقل معدوماً (A × B = 0 يعني A = 0 أو B = 0)",
+        "حل معادلات تؤول إلى معادلات جداء معدوم باستخدام التحليل (استخراج العامل المشترك أو المتطابقات الشهيرة)"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_tahlil-ibara_P1"
+        ],
+        "P2": [
+          "4am_jidaa-maadum_P1",
+          "4am_muadala-ula_P1"
+        ],
+        "P3": [
+          "4am_jidaa-maadum_P2",
+          "4am_tahlil-ibara_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 4,
+        "activity": 2,
+        "pages": {
+          "activity": 44,
+          "knowledge": 46,
+          "method": 47,
+          "exercises": 50
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "🎯"
+    },
+    {
+      "code": "mutarajiha-ula",
+      "sourceTopicId": "mutarajihat",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "muadalat-mutarajihat",
+      "order": 21,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "المتراجحات من الدرجة الأولى بمجهول واحد وتمثيل حلولها بيانيًا",
+      "description": "التمييز بين المتباينة والمتراجحة واختبار صحة متراجحة من أجل قيم للمجهول، حل متراجحة من الدرجة الأولى بمجهول واحد بقواعد المتباينات (الحفاظ على الاتجاه عند إضافة أو طرح عدد أو الضرب في عدد موجب، وتغييره عند الضرب أو القسمة على عدد سالب)، وتمثيل حلولها على مستقيم مدرّج.",
+      "prerequisites": [
+        "قواعد ترتيب الأعداد والمتباينات والعمليات عليها",
+        "تعليم الأعداد وحصرها على مستقيم عددي مدرج"
+      ],
+      "prerequisiteLessonCodes": [
+        "muadala-ula"
+      ],
+      "pointsToLearn": [
+        "التمييز بين المتباينة والمتراجحة واختبار صحة متراجحة من أجل قيم معطاة للمجهول x",
+        "حل متراجحة من الدرجة الأولى بمجهول واحد وتطبيق قواعد خواص المتباينات (الحفاظ على اتجاه المتباينة عند إضافة/طرح عدد أو الضرب/القسمة في عدد موجب، وتغيير اتجاهها عند الضرب أو القسمة في عدد سالب)",
+        "التمثيل البياني لحلول المتراجحة على مستقيم عددي مُدرّج وتحديد عارضة الحلول المقبولة والمرفوضة بشكل صحيح"
+      ],
+      "pointPrerequisites": {
+        "P2": [
+          "4am_mutarajiha-ula_P1",
+          "4am_muadala-ula_P2"
+        ],
+        "P3": [
+          "4am_mutarajiha-ula_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 4,
+        "activity": 3,
+        "pages": {
+          "activity": 45,
+          "knowledge": 48,
+          "method": 49,
+          "exercises": 51
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "📏"
+    },
+    {
+      "code": "tarrid-mushkila",
+      "sourceTopicId": "muadalat_daraja_ula",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "muadalat-mutarajihat",
+      "order": 22,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "ترييض مشكلة",
+      "description": "حل مشكلات بتوظيف المعادلات والمتراجحات: اختيار المجهول المناسب، ترجمة نص المشكلة (وضعية من الحياة اليومية أو مسألة هندسية أو عددية) إلى معادلة أو متراجحة من الدرجة الأولى بمجهول واحد، حلها، ثم تفسير النتائج والتأكد من ملاءمتها للواقع.",
+      "prerequisites": [
+        "القدرة على حل المعادلات من الدرجة الأولى ومعادلات الجداء المعدوم",
+        "القدرة على حل المتراجحات وتمثيل حلولها",
+        "قوانين المحيطات والمساحات وحساب التكاليف والنسب"
+      ],
+      "prerequisiteLessonCodes": [
+        "muadala-ula",
+        "jidaa-maadum",
+        "mutarajiha-ula"
+      ],
+      "pointsToLearn": [
+        "صياغة ونمذجة وضعيات من الحياة اليومية أو مسائل هندسية وعدديّة باستخدام معادلات أو متراجحات من الدرجة الأولى بمجهول واحد",
+        "اختيار المجهول المناسب، ترجمة نص المشكلة إلى عبارة جبرية/متراجحة، حلها، وتفسير النتائج والتأكد من ملاءمتها للواقع"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_muadala-ula_P2",
+          "4am_mutarajiha-ula_P2"
+        ],
+        "P2": [
+          "4am_tarrid-mushkila_P1",
+          "4am_jidaa-maadum_P3"
+        ]
+      },
+      "textbookRef": {
+        "unit": 4,
+        "pages": {
+          "method": 49,
+          "exercises": 50
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "🧩"
+    },
+    {
+      "code": "wadiya-idmajiya-muadalat",
+      "sourceTopicId": "mutarajihat",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "muadalat-mutarajihat",
+      "order": 23,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — المعادلات والمتراجحات",
+      "description": "إدماج المعارف والترجيح بين الخيارات: وضعية المسبح البلدي وصيغتي الاشتراك (75 دينارًا للحصة أو 560 دينارًا سنويًا و5 دنانير للحصة) تُحلّ بكتابة عبارات حرفية ومتراجحة للمفاضلة، يسبقها اختبار «أؤكّد تعلّماتي» الذي يعيد كل سؤال إلى درسه، ثم تمارين «أتعمّق».",
+      "prerequisites": [
+        "التحكم الشامل في حل المعادلات والمتراجحات من الدرجة الأولى",
+        "الترييض وقراءة الجداول والبيانات وتحليل النصوص المشكلة"
+      ],
+      "prerequisiteLessonCodes": [
+        "muadala-ula",
+        "jidaa-maadum",
+        "mutarajiha-ula",
+        "tarrid-mushkila"
+      ],
+      "pointsToLearn": [
+        "تجنيد وتوظيف مكتسبات وحدة المعادلات والمتراجحات لحل وضعيات مركبة وتنافسية (مثل المقارنة بين صيغ اشتراك أو تسعيرات)",
+        "صياغة العبارات الحرفية، كتابة متراجحة مناسبة للمفاضلة بين الخيارات، ثم حلها وتفسير النتائج للوصول إلى الخيار الأفضل"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_tarrid-mushkila_P2",
+          "4am_mutarajiha-ula_P3",
+          "4am_jidaa-maadum_P3"
+        ],
+        "P2": [
+          "4am_wadiya-idmajiya-muadalat_P1",
+          "4am_mutarajiha-ula_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 4,
+        "pages": {
+          "qcm": 52,
+          "situation": 52,
+          "deepen": 53
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "صعب",
+      "status": "available",
+      "icon": "🏊"
     }
   ],
   "publishedScope": {
@@ -1012,7 +1261,8 @@
     "unitIds": [
       "aadad-tabiiya-natiqa",
       "hisab-judhur",
-      "hisab-harfi"
+      "hisab-harfi",
+      "muadalat-mutarajihat"
     ],
     "removedTopicCount": 25
   }

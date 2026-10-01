@@ -1,0 +1,124 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l4-010",
+  "lessonCode": "tarrid-mushkila",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — برنامج ومتراجحة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "برنامج حساب",
+      "متراجحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-mushkila_P1",
+      "modelledOn": "ex-37"
+    }
+  },
+  "statement": {
+    "content": "برنامج حساب: اختر عددًا، اطرح منه 4، ثم اضرب الناتج في 3. نسمّي $x$ العدد المختار. نريد أن تكون النتيجة أكبر من العدد المختار."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ متراجحة تترجم النص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3x - 4 > x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
+        },
+        {
+          "id": "B",
+          "content": "$3(x - 4) > x$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x - 4 > 3x$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما نتيجة البرنامج؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نطرح 4 أولًا، ثم نضرب الناتج كله في 3."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "النتيجة أكبر من $x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$3(x - 4) > x$ .",
+        "incorrect": "الضرب يشمل الناتج $x - 4$ كله."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلولها:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x < 6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+        },
+        {
+          "id": "B",
+          "content": "$x > 6$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x > 4$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر: $3x - 12 > x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع حدود $x$ : $2x > 12$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على 2."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x > 12$ أي $x > 6$ .",
+        "incorrect": "تحقّق بقيمة: من أجل $x = 7$ النتيجة 9 أكبر من 7."
+      }
+    }
+  ]
+}

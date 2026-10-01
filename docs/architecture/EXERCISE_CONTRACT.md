@@ -386,6 +386,15 @@ reads wrongly for « the coefficient of x in an expansion ». Oracle entries are
 per lesson in `scripts/practice-oracle/<lesson>.mjs`, built on the independent
 calculator `scripts/practice-oracle/helpers.mjs`.
 
+**Unit 4 « معادلات ومتراجحات » (2026-10-01)** follows the same rule (five lessons × 50, 250 exercises,
+`choice` and `rational` only). An equation's solution is a `rational` (exact fractions accepted through
+`Rational.parse`); an equation WITHOUT solution, a solution SET (two roots of a zero product), an inequality's
+solution set or its number-line picture is a `choice` whose every distractor is false — the oracle checks a set
+of roots exactly and replays a modelling story by brute force; a typed inequality answer is a NUMBER (the bound,
+the largest whole number of messages, the first whole number of sessions). A QCM item with two correct options
+(textbook « أؤكّد تعلّماتي » 5 and 7) becomes, in the bank, ONE choice whose options are combinations
+(« (1) و (3) »), and in a lesson a « يحقّق / لا يحقّق » batch.
+
 ## Non-textbook sources — worksheets (2026-09-24)
 
 The textbook is the default source, but the owner may bring **other official

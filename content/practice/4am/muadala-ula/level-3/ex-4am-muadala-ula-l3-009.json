@@ -1,0 +1,104 @@
+{
+  "id": "ex-4am-muadala-ula-l3-009",
+  "lessonCode": "muadala-ula",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — الحل صفر",
+    "estimatedMinutes": 4,
+    "tags": [
+      "المجهول في الطرفين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadala-ula_P1",
+      "modelledOn": "qcm"
+    }
+  },
+  "statement": {
+    "content": "قد يكون حل المعادلة العدد 0."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المعادلة $3x + 8 = 8 - 5x$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "0",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجهول موجود في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح من الطرفين أحد الحدّين اللذين فيهما $x$ لتجمع المجاهيل في طرف واحد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اجمع الأعداد في الطرف الآخر وقسّم على معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x + 8 = 8 - 5x$ : نصل إلى $8x = 0$ ، ومنه $x = 0$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل العدد $0$ حل للمعادلة $7x = 2x$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، هو حل لها",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا، ليس حلًّا لها",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نعوّض $x$ بالعدد في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب كل طرف وحده."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يكون العدد حلًّا إذا كان الطرفان متساويين."
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = 0$ : الطرف الأول $0$ والطرف الثاني $0$ — متساويان.",
+        "incorrect": "احسب الطرفين معًا ثم قارن بينهما."
+      }
+    }
+  ]
+}

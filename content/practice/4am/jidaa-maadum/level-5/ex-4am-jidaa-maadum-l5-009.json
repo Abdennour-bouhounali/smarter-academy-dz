@@ -1,0 +1,132 @@
+{
+  "id": "ex-4am-jidaa-maadum-l5-009",
+  "lessonCode": "jidaa-maadum",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — 25 ناقص مربّع",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متطابقات شهيرة",
+      "جداء معدوم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidaa-maadum_P3",
+      "modelledOn": "ex-20"
+    }
+  },
+  "statement": {
+    "content": "نريد حلّ المعادلة $25 - (x - 1)^2 = 0$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "تحليل الطرف الأول:",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(6 - x)(4 + x)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(4 - x)(6 + x)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$(6 - x)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-NASHR-AWWALAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$25 = 5^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العبارة من الشكل $a^2 - b^2$ حيث $b = x - 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انتبه إلى $5 - (x - 1)$."
+        }
+      ],
+      "feedback": {
+        "correct": "$5^2 - (x - 1)^2 = [5 - (x - 1)][5 + (x - 1)] = (6 - x)(4 + x)$ .",
+        "incorrect": "تعرّف على المتطابقة ثم طبّق الخاصية، وعوّض كل حلّ لتتحقّق."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلول المعادلة:",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-4$ و $6$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$-6$ و $4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
+        },
+        {
+          "id": "C",
+          "content": "$6$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
+        },
+        {
+          "id": "D",
+          "content": "$-5$ و $5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-NASHR-AWWALAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطرف الأول يشبه أحد أطراف متطابقة شهيرة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تذكّر: $a^2 - b^2 = (a - b)(a + b)$ و $a^2 \\pm 2ab + b^2 = (a \\pm b)^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّل بالمتطابقة، ثم طبّق خاصية الجداء المعدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "$6 - x = 0$ أو $4 + x = 0$ ، أي $x = 6$ أو $x = -4$ .",
+        "incorrect": "تعرّف على المتطابقة ثم طبّق الخاصية، وعوّض كل حلّ لتتحقّق."
+      }
+    }
+  ]
+}

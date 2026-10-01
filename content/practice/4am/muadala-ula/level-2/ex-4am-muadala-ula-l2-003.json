@@ -1,0 +1,128 @@
+{
+  "id": "ex-4am-muadala-ula-l2-003",
+  "lessonCode": "muadala-ula",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 4 — المعادلة الأولى",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ax + b = c"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-4",
+      "page": 50,
+      "section": "أوظّف تعلّماتي",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 50): حل كل معادلة من المعادلات المقترحة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حل المعادلة $5x + 6 = 11$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{17}{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$-1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-ISHARA-SALIBA"
+        },
+        {
+          "id": "C",
+          "content": "$1$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في طرف واحد حدّ فيه $x$ وعدد، وفي الطرف الآخر عدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تخلّص أولًا من العدد الذي مع الحدّ $ax$ بإجراء العملية المعاكسة على الطرفين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تصل إلى الشكل $ax = b$ ، ثم تقسم الطرفين على معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$5x + 6 = 11$ : نصل إلى $5x = 5$ ، ومنه $x = 1$.",
+        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نطرح $6$ من الطرفين في المعادلة $5x + 6 = 11$ ، فنحصل على:",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$5x = 11$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$5x = 5$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$5x = 17$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العملية تُجرى على الطرفين معًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب كل طرف بعد العملية، ثم بسّطه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعادلة الناتجة لها الحل نفسه الذي للمعادلة الأولى: يمكنك التحقّق بتعويض قيمة لـ $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "نطرح $6$ من الطرفين: $5x = 5$ — معادلة لها الحل نفسه.",
+        "incorrect": "العملية نفسها تُجرى على الطرفين، وبالإشارة نفسها."
+      }
+    }
+  ]
+}

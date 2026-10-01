@@ -12,8 +12,10 @@ eight textbook lessons plus one synthesis. Since 2026-09-30 a second unit sits
 beside it, `…/hisab-judhur/` « الحساب على الجذور » (five lessons and their synthesis
 « أدمج تعلّماتي », three new manipulation types — MANIPULATION_CONTRACT §2quater), and since
 2026-10-01 a third, `…/hisab-harfi/` « الحساب الحرفي » (three lessons and their synthesis, two new
-manipulation types on the football pitch — MANIPULATION_CONTRACT §2quinquies). These
-three units are the **only** lesson content in the repository. The French-era lessons (`lessons/college/`, `lessons/lycee/`), their
+manipulation types on the football pitch — MANIPULATION_CONTRACT §2quinquies), and the same day a
+fourth, `…/muadalat-mutarajihat/` « معادلات ومتراجحات من الدرجة الأولى بمجهول واحد » (four lessons and
+their synthesis, four new manipulation types — MANIPULATION_CONTRACT §2sexies). These
+four units are the **only** lesson content in the repository. The French-era lessons (`lessons/college/`, `lessons/lycee/`), their
 specs, practice content, e2e scripts and French-only engines were deleted on
 2026-09-25; older docs that cite them are describing git history.
 
@@ -164,6 +166,22 @@ Unit-count assertions that read the real catalogue (`unitGrouping.test.js`, `fin
   rational-polynomial calculator independent of `packages/core`), spread into the one ORACLE of
   `practice-answer-oracle.test.mjs`. The unit's misconception ids, `policy.json` and `active.json`
   entries are seeded once before the lessons are written.
+
+**Unit 4 « معادلات ومتراجحات » (2026-10-01) confirmed the recipe and added:**
+
+- **One exact module for a family of labs.** The four labs share `packages/core/arithmetic/linear.js`
+  (fractions, `linear('4x-3')`, `solveEquation`, `solveInequality` with `flipped`, `applyBoth`, `factors`),
+  written and tested BEFORE the authors started, so no lab carries its own arithmetic.
+- **The lead seeds every shared file before parallel authoring**: catalogue, extraction, `_unit/`, `App.jsx`
+  routes, the four type registrations (types, registry, level pairs, empty i18n namespaces), `policy.json`,
+  `active.json`, the unit's misconceptions and one empty oracle module per lesson. Authors then touch only their
+  lesson, their lab and their own namespace — five authors, no shared-file race.
+- **A lab built for two lessons.** `growth-race` was written by lesson 4's author against a props contract fixed
+  in the brief (`left`, `right`, `theme`, `domain`, `goal`), and the synthesis reuses it with its own world
+  (`theme="pool"`) and its own level pair; the synthesis keeps the props in `content/textbook.js › LAB` and a
+  lesson-local render test mounts the workspace with that same object.
+- **New drawn worlds are data**: `family` and `pool` were added to `VISUAL_THEMES`
+  (`packages/core/curriculum/manipulationLevels.js`) — `validate:lessons` refuses an undeclared theme.
 
 ### `routes.jsx` — the whole file
 
@@ -518,7 +536,7 @@ before touching one (how). In short:
   divisor lists), keep it at both levels and vary the cognitive demand
   instead. A theme bolted onto a list of divisors hides the mathematics.
 - The type registry is **closed**. Content names a `type`; it never supplies a
-  component. The fifteen types (ten for unit 1, three for unit 2, two for unit 3) live in
+  component. The nineteen types (ten for unit 1, three for unit 2, two for unit 3, four for unit 4) live in
   `packages/core/curriculum/manipulationTypes.js` (data) and
   `manipulations/manipulationRegistry.js` (components).
 - **Reuse before writing.** The existing types are reused across lessons by
@@ -836,6 +854,17 @@ lesson authors working in parallel (see « Adding a textbook UNIT »):
 | **`tahlil-ibara`** | the inverse gesture (`turf-factoring`): identical rows = common factor (the PGCD of unit 1 reappears), a square pitch that closes only for a² + 2ab + b², x² + 25 that never closes; four corrected misprints; طرائق revealed line by line; two QCM items formative in أوظّف, five in the final test |
 | **`wadiya-idmajiya-harfi`** | the synthesis: the pool and its strip modelled on a three-segment side (`x+10+x`), the textbook's « مساعدة » kept as such (no zero-product theory claimed), the 13 QCM one step each, أتعمّق exercises on choosing the expanded or factored form |
 
+Unit 4 « معادلات ومتراجحات من الدرجة الأولى بمجهول واحد » (`…/muadalat-mutarajihat/`, 2026-10-01), five
+authors in parallel on a seeded foundation (see « Adding a textbook UNIT »):
+
+| Lesson | Read it for |
+|---|---|
+| **`muadala-ula`** | the BALANCE (`equation-balance`): a one-sided gesture tips the beam (the rule resists), the mirror gesture writes the textbook's « أي … » line under it; balloons are −1, so Fatima's 9x + 1 = −26 is solved by ADDING a balloon to both pans; Q4 (9x + 1 = 2x → −1/7) as the contrast that motivates ax = b → b/a; ex-9's equation without solution said honestly |
+| **`jidaa-maadum`** | the pitch whose sides are the FACTORS (`vanishing-pitch`): it collapses exactly when a side is 0; pins refused with the exact area, « لا حلول أخرى » gated by the sweep; the ruler's graduation derived from the roots' denominators (no rounding ever); the unit تحدّ and الخوارزمي duplicated as transfer and closing |
+| **`mutarajiha-ula`** | the solution RAY (`solution-ray`): traces painted by the student's own trials (red = solutions, the textbook's colour), the bracket placed and refused with a witness, then (متقدم) transformation cards where ÷(−3) without flipping contradicts the student's red traces; module 1's lab posed alone on the textbook numbers (`levels={false}`); number lines as answer options (`components/RayFigure.jsx`, `GraphChoice.jsx`, also in BossFinal) |
+| **`tarrid-mushkila`** | a lesson with NO textbook activity whose lab is the entry (`growth-race`, `platform_adaptation`): BUILD the model by carrying « + x » onto each person (a forgotten child refused in the story's words), then RACE x on a timeline — the meeting point is the equation, beyond it the inequality; P2 (« ملاءمة للواقع ») taught on a negative solution |
+| **`wadiya-idmajiya-muadalat`** | the synthesis: the pool situation in the textbook's three phases on `growth-race` (`theme="pool"`, `goal="greater"`), interpretation practised on the beginner pricing so the textbook answer (9 sessions) stays for the final test; the 9 QCM one step each, two-correct items as batches, number-line options in SVG |
+
 **Textbook misprints are CORRECTED, not only noted (owner decision, 2026-09-30).**
 The extraction keeps the book's verbatim `text` and adds a `correction`
 `{ decidedBy, decidedOn, text | analysis1, answer?, note }`; `discrepancies`
@@ -985,6 +1014,8 @@ npm run dev    # 5173
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-aadad-tabiiya-natiqa.mjs
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-hisab-judhur.mjs   # unit 2: every module mounted at 1280/320 px + the three root labs
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-hisab-harfi.mjs    # unit 3: every module at 1280/320 px + the pitch and turf labs by real gesture
+KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-muadalat-mutarajihat.mjs  # unit 4: every module at 1280/320 px + the four labs by real gesture
+#   LABS_ONLY=1 skips the mounts; MOUNT_LESSONS=a,b mounts only those lessons (the full run is ~35 min)
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/manipulations.mjs
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/classroom.mjs
 ```
@@ -997,6 +1028,9 @@ the browser's `load` event waits for them and every `page.goto` times out. `help
 (and `test-presentation.mjs`, which builds its own context) therefore aborts `fonts.googleapis.com` /
 `fonts.gstatic.com` — fonts carry no assertion. A suite that creates its own context must do the same.
 If 5173 is taken, Vite starts on 5174 (also CORS-allowed): pass the port it printed.
+**A long-running dev server can serve a stale catalogue** (2026-10-01): after editing `packages/core/curriculum/dz/*.json`
+a server started earlier redirected the new unit's page to `/courses`. Start a fresh server (`npx vite --port 5174`)
+before concluding a new lesson or unit is broken.
 
 **What a new lesson must verify**
 
@@ -1162,7 +1196,7 @@ for every element the lesson cites. Mastery criteria are the server's
 | Module shape | `ContentModule` for content, `PrerequisiteDiagnostic` for « أستعدّ » (module 0, `priorKnowledge` only, questions as literal objects with `requires` — §4 « The « أستعدّ » pattern »), `BossFinal` for « إختبار أولي » — never a hand-rolled module shell, test UI, fullscreen, toolbar or progress write |
 | Steps | `done` on ANSWERED, never on correct (`check:non-blocking`); a step may wait on `onFinished` only per §6; never pass `locked` |
 | Questions | kit components only (`TapQuestion`, `BatchChoiceQuestion`, `NumericQuestion`, `TextbookExercise` for the textbook's exercises); explicit `correct`; every distractor FALSE; `requires` on every question; the parsers of §5, never a custom one |
-| Manipulation | a type from the closed registry (15 types), two levels in one `ManipulationWorkspace`, the lesson's world as a `theme` (§6); a new type only by the recipe of MANIPULATION_CONTRACT §7ter |
+| Manipulation | a type from the closed registry (19 types), two levels in one `ManipulationWorkspace`, the lesson's world as a `theme` (§6); a new type only by the recipe of MANIPULATION_CONTRACT §7ter |
 | Knowledge | `knowledge.jsx` with a plain-text `summary` per item; a brick at the point of teaching; `knowledgeMap: true`; every content module's footer `<KnowledgeSnapshot moduleNumber={N} />`; the final test's `synthese={<KnowledgeSnapshot complete variant="complete" />}`; **and** the progressive map from the start (owner decision, 2026-09-29): a `knowledgeGraph.js` exporting `KNOWLEDGE_GRAPH`, re-exported by `knowledge.jsx`, and `knowledgeMapMode: 'progressive'` — every item carried by a `notebook` node, labelled relationships, guidance only where the lesson's own exercises / questions / « أستعدّ » support it, authored per `KNOWLEDGE_MAP.md` A.10 (rules 1–16) and passing A.14. Enforced: `validate-lessons.mjs` refuses a lesson with a map but no mode / graph / re-export, and `lessonGraphs.test.js` runs the A.14 invariants on every lesson without any per-lesson code |
 | Final test | only in the `evaluation` module; every question assessed with ONE primary LP of this lesson; every LP covered; 4–6 questions; timer ≈ 1 min per question + 1; `badges`, `completion`, `skills` as in the reference lessons |
 | Textbook | every pedagogical block carries a `source` (`src()` / `addition()`); `check:textbook` maps each extracted element to exactly one destination |

@@ -1,0 +1,108 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l3-008",
+  "lessonCode": "mutarajiha-ula",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — قوس قبل الحل",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حل متراجحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutarajiha-ula_P2",
+      "modelledOn": "ex-31"
+    }
+  },
+  "statement": {
+    "content": "لتكن المتراجحة $3(x - 2) \\leq x + 4$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المتراجحة $3(x - 2) \\leq x + 4$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\leq 5$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x \\geq 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        },
+        {
+          "id": "C",
+          "content": "$x \\leq 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$3(x - 2) \\leq x + 4$ تؤول إلى $2x \\leq 10$، ثم نقسم على $2$ (عدد موجب، فالاتجاه لا يتغيّر): $x \\leq 5$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "كم عددًا طبيعيًا يحقّق المتراجحة $3(x - 2) \\leq x + 4$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المتراجحة أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مثّل الحلول على مستقيم مدرّج وانظر إلى الحدّ: هل هو نفسه حلّ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عُدّ الأعداد الطبيعية 0، 1، 2، … الموجودة في الجزء الملوّن."
+        }
+      ],
+      "feedback": {
+        "correct": "الحلول: $x \\leq 5$ ، فالحلول الطبيعية هي 0، 1، 2، 3، 4، 5: عددها 6.",
+        "incorrect": "حلّ المتراجحة، ثم انتبه إلى الحدّ: هل هو حلّ أم لا؟"
+      }
+    }
+  ]
+}

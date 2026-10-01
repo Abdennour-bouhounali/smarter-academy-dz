@@ -1,0 +1,111 @@
+{
+  "id": "ex-4am-muadala-ula-l1-009",
+  "lessonCode": "muadala-ula",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — الكسر حل",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ax = b",
+      "كسر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadala-ula_P1",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "قد يكون الحل كسرًا: اكتبه على شكل $\\dfrac{b}{a}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المعادلة $9x = 6$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "2/3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المعادلة من الشكل $ax = b$ : حدّد العدد المضروب في $x$ والعدد الذي في الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نقسم الطرفين على معامل $x$ ، مع إشارته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحل هو العدد الذي في الطرف الآخر مقسومًا على معامل $x$ ، لا العكس."
+        }
+      ],
+      "feedback": {
+        "correct": "$9x = 6$ : نصل إلى $9x = 6$ ، ومنه $x = \\dfrac{2}{3}$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل المعادلة $8x = -3$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-\\dfrac{8}{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "id": "B",
+          "content": "$-11$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARH-MUAMIL"
+        },
+        {
+          "id": "C",
+          "content": "$-\\dfrac{3}{8}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المعادلة من الشكل $ax = b$ : حدّد العدد المضروب في $x$ والعدد الذي في الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نقسم الطرفين على معامل $x$ ، مع إشارته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحل هو العدد الذي في الطرف الآخر مقسومًا على معامل $x$ ، لا العكس."
+        }
+      ],
+      "feedback": {
+        "correct": "$8x = -3$ : نصل إلى $8x = -3$ ، ومنه $x = -\\dfrac{3}{8}$.",
+        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
+      }
+    }
+  ]
+}

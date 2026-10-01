@@ -1,0 +1,143 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l5-009",
+  "lessonCode": "tarrid-mushkila",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — تذاكر المسرح",
+    "estimatedMinutes": 6,
+    "tags": [
+      "ترييض",
+      "مجهول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-mushkila_P1",
+      "modelledOn": "method-modelling"
+    }
+  },
+  "statement": {
+    "content": "في مسرح، ثمن تذكرة الكبير 300 دينار وتذكرة الطفل 150 دينارًا. بيعت 120 تذكرة بمبلغ 25500 دينار. نسمّي $x$ عدد تذاكر الكبار."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ معادلة تترجم النص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$300x + 150x = 25500$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-MAJHUL-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$300x + 150(120 - x) = 25500$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$300x + 150 = 25500$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كم تذكرة طفل بدلالة $x$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تذاكر الأطفال $120 - x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المبلغ = ثمن تذاكر الكبار + ثمن تذاكر الأطفال."
+        }
+      ],
+      "feedback": {
+        "correct": "$300x + 150(120 - x) = 25500$ .",
+        "incorrect": "عدد تذاكر الأطفال هو الباقي من 120."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "كم تذكرة كبير بيعت؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "50",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بسّط: $150x + 18000 = 25500$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح 18000 ثم اقسم على 150."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بالمبلغ."
+        }
+      ],
+      "feedback": {
+        "correct": "$150x = 7500$ أي $x = 50$ .",
+        "incorrect": "انشر $150(120 - x)$ أولًا."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "كم تذكرة طفل بيعت؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "70",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تذاكر الأطفال $120 - x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض بعدد تذاكر الكبار."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق: $50 \\times 300 + 70 \\times 150$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$120 - 50 = 70$ ، و $15000 + 10500 = 25500$ .",
+        "incorrect": "اطرح عدد تذاكر الكبار من 120."
+      }
+    }
+  ]
+}

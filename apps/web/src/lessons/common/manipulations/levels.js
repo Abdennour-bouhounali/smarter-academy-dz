@@ -130,6 +130,36 @@ export const LEVELS = Object.freeze({
     beginner: { numbers: { expr: '9x+3' }, ...T('act-3') },
     advanced: { numbers: { expr: '6x^2+4x' }, ...T('know-3') },
   },
+  // ── Unité 4 « معادلات ومتراجحات » (2026-10-01) — `ref` = docs/sources/4am/unit4/extraction.json.
+  // Balance. 3x + 2 = 11 : des sacs et des ballons seulement, un partage en 3 ;
+  // 9x + 1 = −26 (نشاط 1، فاطمة) : 26 baudruches face à 9 sacs — le −1 de droite ne
+  // peut pas être « ôter un ballon » (il n'y en a pas) : c'est POSER une baudruche, la
+  // même opération par son effet ; puis 9 parts, et le sac contient des baudruches (−3).
+  'equation-balance': {
+    beginner: { numbers: { eq: '3x+2=11' }, ...P },
+    advanced: { numbers: { eq: '9x+1=-26' }, ...T('act-1') },
+  },
+  // Terrain qui s'annule. 3(x − 5) (نشاط 2، س 1، إلياس وأمين) : un côté constant ne
+  // s'écrase jamais, un seul zéro ; (x − 2)(x + 5) (نشاط 2، س 3) : les DEUX côtés
+  // varient, deux zéros à trouver, et un côté qui se RETOURNE entre −5 et 2.
+  'vanishing-pitch': {
+    beginner: { numbers: { expr: '3|x-5' }, ...T('act-2b') },
+    advanced: { numbers: { expr: 'x-2|x+5' }, ...T('act-2b') },
+  },
+  // Rayon des solutions. x < 3 (جدول النشاط 3) : la borne se lit, seul le crochet est à
+  // décider ; −3x + 5 ≤ 20 (نشاط 3) : la trace des essais est à droite de −5 alors
+  // que le coefficient est négatif — la division par −3 doit inverser le sens.
+  'solution-ray': {
+    beginner: { numbers: { ineq: 'x<3' }, ...T('act-3b') },
+    advanced: { numbers: { ineq: '-3x+5<=20' }, ...T('act-3b') },
+  },
+  // Course. Un père (30 ans) et son fils (6 ans) : deux personnes, un seul « +x » chacune ;
+  // le manuel (ترييض مشكلة) : le père (36) face à TROIS enfants (4, 6, 8) — trois « +x »
+  // à porter, la somme grandit trois fois plus vite.
+  'growth-race': {
+    beginner: { numbers: { left: '30+x', right: '2(6+x)' }, ...P },
+    advanced: { numbers: { left: '36+x', right: '4+x+6+x+8+x' }, ...T('method-modelling') },
+  },
 });
 
 export { MANIPULATION_LEVEL_IDS };

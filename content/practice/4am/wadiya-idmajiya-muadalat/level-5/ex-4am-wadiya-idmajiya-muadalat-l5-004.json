@@ -1,0 +1,168 @@
+{
+  "metadata": {
+    "title": "تدريب — ثلاث صيغ للاشتراك",
+    "estimatedMinutes": 5,
+    "tags": [
+      "متراجحة",
+      "مفاضلة",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "يقترح مسبح ثلاث صيغ. (أ): 70 دينارًا لكل حصة. (ب): اشتراك قدره 300 دينار و 40 دينارًا لكل حصة. (ج): اشتراك سنوي قدره 900 دينار دون أي دفع آخر. نسمّي $x$ عدد الحصص."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ابتداءً من كم حصة تكون (ب) أفضل من (أ)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "11",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب المتراجحة $300 + 40x < 70x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$300 < 30x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "التساوي لا يكفي."
+        }
+      ],
+      "feedback": {
+        "correct": "$x > 10$ ، فابتداءً من 11 حصة.",
+        "incorrect": "عند 10 حصص تتساوى (أ) و (ب)."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "10",
+          "id": "MISC-WADIYA-QIMAT-TASAWI"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ابتداءً من كم حصة تكون (ج) أفضل من (ب)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "16",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تكلفة (ج) ثابتة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المتراجحة: $900 < 300 + 40x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$600 < 40x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x > 15$ ، فابتداءً من 16 حصة.",
+        "incorrect": "عند 15 حصة تتساوى (ب) و (ج)."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "15",
+          "id": "MISC-WADIYA-QIMAT-TASAWI"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "لتلميذ يسبح 13 حصة، الصيغة الأفضل هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "(أ)",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "(ب)",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "(ج)",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-QIMAT-TASAWI"
+        },
+        {
+          "id": "D",
+          "content": "(أ) و (ج) متساويتان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-QIMAT-TASAWI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب التكاليف الثلاث من أجل 13 حصة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "(أ): $70 \\times 13$ ؛ (ب): $300 + 40 \\times 13$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "(ج): 900 دينار دائمًا."
+        }
+      ],
+      "feedback": {
+        "correct": "(أ): 910 ، (ب): 820 ، (ج): 900 : الأقل (ب).",
+        "incorrect": "قارن التكاليف الثلاث."
+      },
+      "cognitiveDemand": "transfer",
+      "difficulty": 4
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l5-004",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 5
+}

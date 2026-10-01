@@ -1,0 +1,124 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l1-004",
+  "lessonCode": "mutarajiha-ula",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — متباينة أم متراجحة؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متراجحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutarajiha-ula_P1",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "نميّز بين متباينة عددية (صحيحة أو خاطئة) ومتراجحة ذات مجهول $x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ كتابة مما يلي متراجحة ذات المجهول $x$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3x + 1 \\geq 2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$3x + 1 = 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        },
+        {
+          "id": "C",
+          "content": "$5 - 2 > 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المتراجحة فيها مجهول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "والمتراجحة متباينة: فيها أحد الرموز $<$ ، $>$ ، $\\leq$ ، $\\geq$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن الكتابة التي فيها $x$ ورمز متباينة معًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x + 1 \\geq 2$ متباينة فيها المجهول $x$ ؛ $5 - 2 > 1$ متباينة عددية بلا مجهول، و $3x + 1 = 2$ معادلة.",
+        "incorrect": "المتراجحة متباينة (رمز ترتيب) فيها مجهول: لا مساواة، ولا أعداد فقط."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "المتباينة $7 < 4$ :",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "متباينة صحيحة",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "متباينة خاطئة",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "متراجحة ذات مجهول",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لا مجهول في هذه الكتابة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل 7 أصغر من 4؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "متباينة عددية: إمّا صحيحة وإمّا خاطئة."
+        }
+      ],
+      "feedback": {
+        "correct": "7 أكبر من 4، فالمتباينة العددية $7 < 4$ خاطئة.",
+        "incorrect": "قارن العددين 7 و 4 مباشرة."
+      }
+    }
+  ]
+}

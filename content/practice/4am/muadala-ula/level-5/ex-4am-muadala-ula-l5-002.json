@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-muadala-ula-l5-002",
+  "lessonCode": "muadala-ula",
+  "level": 5,
+  "metadata": {
+    "title": "تمرين 9 — معادلة بلا حل",
+    "estimatedMinutes": 4,
+    "tags": [
+      "كسور",
+      "مساواة خاطئة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-9",
+      "page": 50,
+      "section": "أوظّف تعلّماتي",
+      "number": 9
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 50): حل كل معادلة من المعادلات الآتية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حل المعادلة $\\dfrac{2 + x}{2} = \\dfrac{2x + 1}{4}$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا يوجد أي عدد يحقّق المساواة",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$-\\dfrac{3}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المعادلة مقامات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب الطرفين في عدد تقبل كل المقامات القسمة عليه، مع كل الحدود."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم انشر وانقل المجاهيل إلى طرف والمعاليم إلى الآخر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{2 + x}{2} = \\dfrac{2x + 1}{4}$ : بعد حذف $x$ من الطرفين يبقى عددان مختلفان: لا يوجد أي عدد يحقّق المساواة.",
+        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّ المعادلة $\\dfrac{x + 4}{10} = \\dfrac{3}{10} - \\dfrac{2x}{5}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "-1/5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المعادلة مقامات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب الطرفين في عدد تقبل كل المقامات القسمة عليه، مع كل الحدود."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم انشر وانقل المجاهيل إلى طرف والمعاليم إلى الآخر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{x + 4}{10} = \\dfrac{3}{10} - \\dfrac{2x}{5}$ : ننقل المجاهيل إلى طرف والمعاليم إلى الآخر ونقسم على معامل $x$ : $x = -\\dfrac{1}{5}$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    }
+  ]
+}

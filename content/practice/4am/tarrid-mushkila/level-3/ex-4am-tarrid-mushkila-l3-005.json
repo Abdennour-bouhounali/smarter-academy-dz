@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l3-005",
+  "lessonCode": "tarrid-mushkila",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — محيط لا يتجاوز",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متراجحة",
+      "محيط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-mushkila_P2",
+      "modelledOn": "ex-33"
+    }
+  },
+  "statement": {
+    "content": "مستطيل عرضه $x$ سنتيمترًا وطوله ضعف عرضه، ومحيطه لا يتجاوز 48cm."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ متراجحة تترجم النص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3x \\leq 48$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-MAJHUL-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$6x \\leq 48$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$6x \\geq 48$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطول بدلالة $x$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الطول $2x$ ، والمحيط $2(2x + x)$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "«لا يتجاوز» تعني أصغر من أو يساوي."
+        }
+      ],
+      "feedback": {
+        "correct": "$2(2x + x) = 6x \\leq 48$ .",
+        "incorrect": "المحيط ضعف مجموع الطول والعرض، و«لا يتجاوز» هي $\\leq$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما أكبر عرض ممكن (عدد طبيعي من السنتيمترات)؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ $6x \\leq 48$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تجد $x \\leq 8$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أكبر عدد يحقّق ذلك."
+        }
+      ],
+      "feedback": {
+        "correct": "$x \\leq 8$ : أكبر عرض 8cm (الطول 16cm والمحيط 48cm).",
+        "incorrect": "اقسم 48 على 6."
+      }
+    }
+  ]
+}

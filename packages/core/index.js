@@ -51,6 +51,9 @@ export * as equalGrouping from './arithmetic/equalGrouping.js';
 // carrés comparés en entiers, écritures décimales exactes, n = a² × b.
 export * as squareRoots from './arithmetic/squareRoots.js';
 export * as polynomials from './arithmetic/polynomials.js';
+// Le premier degré exact de l'unité 4 « معادلات ومتراجحات » : équations, inéquations (sens
+// inversé par un négatif), produits nuls — une seule source pour les quatre labs.
+export * as linear from './arithmetic/linear.js';
 
 // Moteur d'exercices (pratique) — arithmétique exacte et évaluation des
 // réponses. Exporté sous un espace de noms : `Rational.parse` et

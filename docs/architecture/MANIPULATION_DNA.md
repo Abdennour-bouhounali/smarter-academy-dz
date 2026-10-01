@@ -384,6 +384,7 @@ as a substitute for causality: every motion must show a mathematical change.
 | Dormant class-mode code (next step, replay, solution) | Untested, never shown to students (unchanged) |
 | Unit 2 « الحساب على الجذور »: three new labs designed from this DNA (see below) | **Implemented 2026-09-30** |
 | Unit 3 « الحساب الحرفي »: two new labs, one world (the football pitch) for both directions of one reading (see below) | **Implemented 2026-10-01** |
+| Unit 4 « معادلات ومتراجحات »: four new labs, four gestures (balance, collapse, boundary, race) on one exact module (see below) | **Implemented 2026-10-01** |
 
 **Lessons 2–9, what the hand now does (2026-09-30).** The instrument is chosen per concept
 (§6, §12). Lessons 4, 5 and 7 share the reserve **on purpose**: coprime is the PGCD = 1 case of
@@ -422,4 +423,18 @@ gesture (`MANIPULATION_CONTRACT.md` §2quinquies):
 The owner asked to keep, BESIDE the causal gestures, a decorative interaction (the ball, the goals):
 it is confined to the drawn world, `aria-hidden`, off the keyboard path and reduced-motion-safe — an
 exception recorded in the contract, not a licence to animate mathematics.
+
+**Unit 4, what the hand does (2026-10-01).** Four concepts, four different variables — the platform does not
+converge (§12), and the football pitch reappears only where the reading « product = area » carries the argument
+(`MANIPULATION_CONTRACT.md` §2sexies):
+
+| Lesson | Gesture (engine) | What resists / what the student decides |
+|---|---|---|
+| L1 `equation-balance` | carry pieces on and off two pans (carry); stretch k, the equal groups per pan (stretch) | one pan changed alone TIPS the beam by the true hidden x; only the mirror gesture restores it; a piece carried across is refused; bags that cannot be shared refuse the split |
+| L2 `vanishing-pitch` | stretch x — the pitch's SIGNED sides are the factors (stretch); pin a solution | the pitch collapses only when a side is 0; a pin elsewhere is refused with the exact area; « no other solution » needs the sweep |
+| L3 `solution-ray` | stretch a probe — every validated x leaves a red / grey trace (stretch); place the bracket; choose each new line's direction | the bracket is refused with a witness from the student's own traces; ÷(−3) kept as ≤ contradicts the red traces |
+| L4 / synthesis `growth-race` | carry « + x » onto each person / price (carry), then stretch x on a timeline (stretch) | a model that forgets a child (or pays the yearly card every session) is refused in the story's words; the columns meet only at the equation's solution |
+
+The owner asked again to keep, beside the causal gestures, a decorative interaction in each world (ball, phone,
+flag, candle, ripples) — same confinement as unit 3.
 

@@ -1,0 +1,161 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l5-003",
+  "lessonCode": "tarrid-mushkila",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — حصّالتان",
+    "estimatedMinutes": 6,
+    "tags": [
+      "ترييض",
+      "متراجحة",
+      "تحقّق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-mushkila_P2",
+      "modelledOn": "method-modelling"
+    }
+  },
+  "statement": {
+    "content": "في حصّالة أمين 1500 دينار ويضيف إليها 200 دينار كل أسبوع، وفي حصّالة أخته 3000 دينار وتضيف إليها 50 دينارًا كل أسبوع. نسمّي $x$ عدد الأسابيع."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ معادلة تترجم «يتساوى المبلغان»؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$1500 + 200x = 3000 + 50x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$1700x = 3050x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$1500x + 200 = 3000x + 50$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المبلغ الأولي يُحسب مرة واحدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل أسبوع يضيف أمين 200 : بعد $x$ أسبوع $200x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب مبلغ كل حصّالة ثم ساوِ بينهما."
+        }
+      ],
+      "feedback": {
+        "correct": "$1500 + 200x = 3000 + 50x$ .",
+        "incorrect": "المبلغ الأولي لا يُضرب في $x$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بعد كم أسبوعًا يتساوى المبلغان؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$150x = 1500$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم على 150."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بالمبلغين."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 10$ : المبلغان 3500 دينار.",
+        "incorrect": "اجمع حدود $x$ في طرف والأعداد في الآخر."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "ابتداءً من أيّ أسبوع يصبح مبلغ أمين أكبر من مبلغ أخته؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "ابتداءً من الأسبوع 10",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-QIMAT-TASAWI"
+        },
+        {
+          "id": "B",
+          "content": "ابتداءً من الأسبوع 11",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "قبل الأسبوع 10",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عند الأسبوع 10 المبلغان متساويان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أمين يضيف أكثر كل أسبوع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما أول أسبوع بعد التساوي؟"
+        }
+      ],
+      "feedback": {
+        "correct": "عند 10 أسابيع يتساويان (3500)، وعند 11 : $3700 > 3550$ .",
+        "incorrect": "عند التساوي ليس أكبر بعدُ."
+      }
+    }
+  ]
+}

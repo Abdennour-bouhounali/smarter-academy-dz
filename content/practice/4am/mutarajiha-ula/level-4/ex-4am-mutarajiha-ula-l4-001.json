@@ -1,0 +1,126 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l4-001",
+  "lessonCode": "mutarajiha-ula",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 27 — المتراجحتان 1 و 2",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حل متراجحة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-27",
+      "page": 51,
+      "section": "أوظّف تعلّماتي",
+      "number": 27
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 51): حل كل متراجحة مما يلي."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المتراجحة $\\dfrac{5}{2}x - \\dfrac{1}{3} > 0$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x > \\dfrac{5}{6}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "id": "B",
+          "content": "$x > \\dfrac{2}{15}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x < \\dfrac{2}{15}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{5}{2}x - \\dfrac{1}{3} > 0$ تؤول إلى $\\dfrac{5}{2}x > \\dfrac{1}{3}$، ثم نقسم على $\\dfrac{5}{2}$ (عدد موجب، فالاتجاه لا يتغيّر): $x > \\dfrac{2}{15}$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّ المتراجحة $1{,}2x - 0{,}6 \\leq 3$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\leq 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$x \\leq 3$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x \\geq 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}2x - 0{,}6 \\leq 3$ تؤول إلى $\\dfrac{6}{5}x \\leq \\dfrac{18}{5}$، ثم نقسم على $\\dfrac{6}{5}$ (عدد موجب، فالاتجاه لا يتغيّر): $x \\leq 3$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    }
+  ]
+}

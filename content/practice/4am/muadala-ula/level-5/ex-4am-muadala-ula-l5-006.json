@@ -1,0 +1,94 @@
+{
+  "id": "ex-4am-muadala-ula-l5-006",
+  "lessonCode": "muadala-ula",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — برنامج حساب آخر",
+    "estimatedMinutes": 4,
+    "tags": [
+      "برنامج حساب",
+      "ترجمة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadala-ula_P2",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "برنامج حساب: «اختر عددًا، أضف إليه 4، اضرب الناتج في 2، اطرح 3». عند اختيار $x$ نحصل على $2(x + 4) - 3 = 2x + 5$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كانت النتيجة $-7$ : ما العدد المختار؟ (حلّ $2x + 5 = -7$)",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "-6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في طرف واحد حدّ فيه $x$ وعدد، وفي الطرف الآخر عدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تخلّص أولًا من العدد الذي مع الحدّ $ax$ بإجراء العملية المعاكسة على الطرفين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تصل إلى الشكل $ax = b$ ، ثم تقسم الطرفين على معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x + 5 = -7$ : نصل إلى $2x = -12$ ، ومنه $x = -6$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "كانت النتيجة ثلاثة أضعاف العدد المختار: حلّ $2x + 5 = 3x$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجهول موجود في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح من الطرفين أحد الحدّين اللذين فيهما $x$ لتجمع المجاهيل في طرف واحد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اجمع الأعداد في الطرف الآخر وقسّم على معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x + 5 = 3x$ : نصل إلى $-x = -5$ ، ومنه $x = 5$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    }
+  ]
+}

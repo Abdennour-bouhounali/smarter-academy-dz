@@ -1,0 +1,119 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l3-010",
+  "lessonCode": "mutarajiha-ula",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — الحدّ والمجهول في الطرفين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حل متراجحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutarajiha-ula_P2",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "لتكن المتراجحة $2x - 3 \\geq 4x + 1$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل العدد $-2$ حلّ للمتراجحة $2x - 3 \\geq 4x + 1$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، هو حلّ",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا، ليس حلًّا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب كل طرف وحده."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن النتيجتين بالرمز نفسه: هل المتباينة العددية صحيحة؟"
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = -2$ : الطرف الأول يساوي $-7$ والطرف الثاني $-7$ ، و $-7 \\geq -7$ متباينة صحيحة.",
+        "incorrect": "احسب الطرفين من أجل هذه القيمة، ثم احكم على المتباينة العددية — وانتبه إلى الرمز الصارم $<$ أو $>$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّ المتراجحة $2x - 3 \\geq 4x + 1$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\leq -2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x \\geq -2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
+        },
+        {
+          "id": "C",
+          "content": "$x \\leq 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-ISHARA-SALIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x - 3 \\geq 4x + 1$ تؤول إلى $-2x \\geq 4$، ثم نقسم على $-2$ (عدد سالب، فنغيّر الاتجاه): $x \\leq -2$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "title": "تدريب — متراجحتان معًا: الحصر والأعداد الصحيحة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متراجحتان معًا",
+      "تمثيل بياني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P1",
+      "modelledOn": "ex-42"
+    }
+  },
+  "statement": {
+    "content": "نبحث عن الأعداد $x$ التي تحقّق المتراجحتين معًا: $-2x + 5 < 11$ و $3x - 1 \\leq 8$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيم $x$ التي تحقّق المتراجحتين معًا هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-3 < x \\leq 3$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x < -3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
+        },
+        {
+          "id": "C",
+          "content": "$-3 \\leq x < 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
+        },
+        {
+          "id": "D",
+          "content": "$x \\leq 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حل كل متراجحة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الأولى: $-2x < 6$ والقسمة على $-2$ تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الثانية: $3x \\leq 9$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x > -3$ و $x \\leq 3$ : $-3 < x \\leq 3$.",
+        "incorrect": "الحد $-3$ ليس حلًا والحد 3 حلّ."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "كم عددًا صحيحًا يحقّق المتراجحتين معًا؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل الحصر السابق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب الأعداد الصحيحة من الحدّ الأصغر إلى الأكبر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انتبه: أحد الحدّين غير مقبول."
+        }
+      ],
+      "feedback": {
+        "correct": "الأعداد $-2$ و $-1$ و 0 و 1 و 2 و 3: ستة أعداد.",
+        "incorrect": "العدد $-3$ غير مقبول والعدد 3 مقبول."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "7",
+          "id": "MISC-MUTARAJIHA-QAWS"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l5-008",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 5
+}

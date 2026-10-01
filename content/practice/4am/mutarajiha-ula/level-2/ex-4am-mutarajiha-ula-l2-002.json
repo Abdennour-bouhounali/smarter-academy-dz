@@ -1,0 +1,177 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l2-002",
+  "lessonCode": "mutarajiha-ula",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 23 — إذا علمت أن x < −2",
+    "estimatedMinutes": 4,
+    "tags": [
+      "قواعد الاتجاه"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-23",
+      "page": 51,
+      "section": "أوظّف تعلّماتي",
+      "number": 23
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 51): نعلم أن $x < -2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "إذا كان $x < -2$ فإنّ ...",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$5x < -10$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$5x < -12$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$5x > -10$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طبّق على طرفي $x < -2$ العمليات التي تعطي $5x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الضرب في عدد موجب أو إضافة عدد لا يغيّران الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الضرب في عدد سالب يغيّر الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "من $x < -2$ نحصل على $5x < -10$.",
+        "incorrect": "انطلق من المعطى وطبّق العمليات نفسها على الطرفين، خطوة خطوة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "إذا كان $x < -2$ فإنّ ...",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-2x > 6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-ISHARA-SALIBA"
+        },
+        {
+          "id": "B",
+          "content": "$-2x > 4$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$-2x < 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طبّق على طرفي $x < -2$ العمليات التي تعطي $-2x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الضرب في عدد موجب أو إضافة عدد لا يغيّران الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الضرب في عدد سالب يغيّر الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "من $x < -2$ نحصل على $-2x > 4$ (الضرب في عدد سالب يغيّر الاتجاه).",
+        "incorrect": "انطلق من المعطى وطبّق العمليات نفسها على الطرفين، خطوة خطوة."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "إذا كان $x < -2$ فإنّ ...",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3x - 1 < -7$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$3x - 1 > -7$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        },
+        {
+          "id": "C",
+          "content": "$3x - 1 < -9$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "طبّق على طرفي $x < -2$ العمليات التي تعطي $3x - 1$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الضرب في عدد موجب أو إضافة عدد لا يغيّران الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الضرب في عدد سالب يغيّر الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "من $x < -2$ نحصل على $3x - 1 < -7$.",
+        "incorrect": "انطلق من المعطى وطبّق العمليات نفسها على الطرفين، خطوة خطوة."
+      }
+    }
+  ]
+}

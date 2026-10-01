@@ -140,6 +140,44 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'التحليل: كتابة مجموع على شكل جداء هي تكوين مستطيل واحد من قطعه — ka + kb = k(a + b) و a² + 2ab + b² = (a + b)²',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+
+  // ── Unité 4 « معادلات ومتراجحات من الدرجة الأولى بمجهول واحد » (2026-10-01) ──
+  // Calcul exact commun : packages/core/arithmetic/linear.js.
+  'equation-balance': {
+    // Une BALANCE à deux plateaux : des sacs fermés de x ballons, des ballons seuls,
+    // des baudruches (le négatif, qui tire vers le haut). Ôter ou ajouter d'un SEUL
+    // côté fait pencher le fléau (la règle résiste) ; le même geste sur l'autre
+    // plateau le rétablit. Partager chaque plateau en k groupes égaux isole un sac.
+    // Chaque geste est une décision : MANUEL (§6bis).
+    shows: 'المعادلة ميزان متوازن: ما نفعله بأحد الطرفين نفعله بالآخر — حتى الشكل ax = b ثم x = b/a',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'vanishing-pitch': {
+    // Le terrain dont les côtés sont les deux FACTEURS (côtés signés) : l'élève étire
+    // x, le terrain se déforme, et s'ÉCRASE en une ligne (aire nulle) exactement quand
+    // un côté devient nul. Il épingle chaque x où le terrain disparaît ; un x où l'aire
+    // ne l'est pas est refusé avec l'aire lue. Chaque épingle est une réponse : MANUEL.
+    shows: 'خاصية الجداء المعدوم: مساحة الملعب A × B تنعدم إذا وفقط إذا انعدم أحد ضلعيه — A = 0 أو B = 0',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'solution-ray': {
+    // Un mobile sur une droite graduée : chaque position validée laisse une trace —
+    // rouge si l'inégalité est vraie (convention du manuel), grise sinon. L'élève pose
+    // ensuite le CROCHET de la borne, et (متقدم) transforme l'inéquation : une étape
+    // licite garde exactement ses traces, une division par un négatif sans inverser le
+    // sens les contredit. Chaque essai est une réponse : MANUEL.
+    shows: 'حلول المتراجحة نصف مستقيم: نحافظ على الاتجاه بإضافة عدد أو الضرب في موجب، ونغيّره بالضرب أو القسمة على سالب',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'growth-race': {
+    // Deux grandeurs du premier degré qui « grandissent » avec x (âges, coûts) : l'élève
+    // CONSTRUIT d'abord chaque expression en portant les jetons x là où l'histoire les
+    // met (chaque enfant vieillit), puis étire x : les deux colonnes se rejoignent à
+    // la solution de l'équation et se dépassent au-delà (l'inéquation). Chaque jeton
+    // et chaque x validé est une décision : MANUEL.
+    shows: 'ترييض مشكلة: نسمّي المجهول، نترجم النص إلى عبارتين، فتكون المعادلة لحظة تساويهما والمتراجحة لحظة تفوّق إحداهما',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
 });
 
 export const MANIPULATION_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_TYPES));

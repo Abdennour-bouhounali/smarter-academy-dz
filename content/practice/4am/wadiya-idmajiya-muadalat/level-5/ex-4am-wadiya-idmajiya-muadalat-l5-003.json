@@ -1,0 +1,144 @@
+{
+  "metadata": {
+    "title": "تمرين 41 — النشر والمعادلة (شهادة التعليم المتوسط)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نشر",
+      "جداء معدوم",
+      "شهادة التعليم المتوسط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-41",
+      "page": 53,
+      "section": "أتعمّق",
+      "number": 41
+    }
+  },
+  "statement": {
+    "content": "من امتحان شهادة التعليم المتوسط: لتكن العبارة $E = (4x - 1)^2 - (3x + 2)(4x - 1)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة E هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4x^2 - 3x - 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "B",
+          "content": "$4x^2 - 13x + 3$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$28x^2 - 3x - 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "D",
+          "content": "$4x^2 - 13x - 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$(4x - 1)^2$ مربع فرق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(3x + 2)(4x - 1) = 12x^2 + 5x - 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "غيّر إشارة كل حدّ بعد «−»."
+        }
+      ],
+      "feedback": {
+        "correct": "$16x^2 - 8x + 1 - 12x^2 - 5x + 2 = 4x^2 - 13x + 3$.",
+        "incorrect": "الإشارة «−» تغيّر إشارات الحدود الثلاثة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "حلول المعادلة $(4x - 1)(x - 3) = 0$ هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{1}{4}$ و $3$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$4$ و $3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$-\\dfrac{1}{4}$ و $-3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
+        },
+        {
+          "id": "D",
+          "content": "$3$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "جداء عاملين معدوم."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حل $4x - 1 = 0$ و $x - 3 = 0$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "من $4x = 1$ نقسم 1 على 4."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = \\dfrac{1}{4}$ أو $x = 3$.",
+        "incorrect": "نقسم العدد على معامل $x$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l5-003",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 5
+}

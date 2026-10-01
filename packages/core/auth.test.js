@@ -24,8 +24,8 @@ describe('hasRequiredRole', () => {
 describe('canPresentClassroom — qui voit les commandes du mode classe', () => {
   // Ces tests portent sur le MÉCANISME, pas sur la composition de la liste :
   // `CLASSROOM_PRESENTER_ROLES` est un réglage de produit qui change (un rôle
-  // enseignant viendra s'y ajouter ; `student` y figure aujourd'hui pour les
-  // essais du propriétaire). Un test qui fige son contenu casserait à chaque
+  // enseignant y est depuis le 2026-09-22 ; `student` en a été retiré le
+  // 2026-10-01, et le test ci-dessous garde CETTE décision du propriétaire). Un test qui fige son contenu casserait à chaque
   // ajustement légitime, sans rien protéger — alors que la règle à tenir est
   // « la question passe par cette liste, et par elle seule ».
   it('accorde la présentation à tout rôle de la liste, et à lui seul', () => {
@@ -33,6 +33,11 @@ describe('canPresentClassroom — qui voit les commandes du mode classe', () => 
       expect(canPresentClassroom({ role })).toBe(true);
     }
     expect(canPresentClassroom({ role: 'role-absent-de-la-liste' })).toBe(false);
+  });
+
+  it('un élève ne présente jamais (décision du propriétaire, 2026-10-01)', () => {
+    expect(canPresentClassroom({ role: 'student' })).toBe(false);
+    expect(canPresentClassroom({ role: 'teacher' })).toBe(true);
   });
 
   it('refuse un visiteur non connecté', () => {

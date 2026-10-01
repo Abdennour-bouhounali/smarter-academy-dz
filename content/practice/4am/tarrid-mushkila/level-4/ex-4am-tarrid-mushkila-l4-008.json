@@ -1,0 +1,126 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l4-008",
+  "lessonCode": "tarrid-mushkila",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — إطار صورة",
+    "estimatedMinutes": 6,
+    "tags": [
+      "جداء معدوم",
+      "مساحة",
+      "تحقّق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-mushkila_P2",
+      "modelledOn": "ex-40"
+    }
+  },
+  "statement": {
+    "content": "صورة مستطيلة بعداها 20cm و 30cm ، يحيط بها إطار عرضه $x$ سنتيمترًا من كل جهة. مساحة الصورة مع الإطار $1064cm^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ معادلة تترجم النص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(20 + x)(30 + x) = 1064$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-MAJHUL-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$(20 + 2x)(30 + 2x) = 1064$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$20 \\times 30 + 2x = 1064$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كم يزيد كل بعد؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإطار من الجهتين: كل بعد يزيد بـ $2x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المساحة جداء البعدين الجديدين."
+        }
+      ],
+      "feedback": {
+        "correct": "$(20 + 2x)(30 + 2x) = 1064$ .",
+        "incorrect": "الإطار يضاف من الجهتين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بعد التبسيط نجد $(x + 29)(x - 4) = 0$ . عرض الإطار:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x = 4$ أو $x = -29$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAHAQQUQ"
+        },
+        {
+          "id": "B",
+          "content": "$x = 4$ فقط",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x = -29$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAHAQQUQ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "جداء معدوم: حلّان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عرض الإطار طول موجب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق: $28 \\times 38$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 4$ ($-29$ مرفوض)، و $28 \\times 38 = 1064$ .",
+        "incorrect": "العرض لا يكون سالبًا."
+      }
+    }
+  ]
+}

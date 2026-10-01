@@ -1,0 +1,82 @@
+{
+  "metadata": {
+    "title": "تدريب — جداء معدوم بحل كسري",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جداء معدوم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P1",
+      "modelledOn": "ex-41"
+    }
+  },
+  "statement": {
+    "content": "لتكن المعادلة $(2x - 5)(x + 4) = 0$ ذات المجهول $x$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلول هذه المعادلة هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{5}{2}$ و $-4$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{2}{5}$ و $-4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$5$ و $-4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARH-MUAMIL"
+        },
+        {
+          "id": "D",
+          "content": "$-\\dfrac{5}{2}$ و $4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "جداء عاملين معدوم."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حل $2x - 5 = 0$ و $x + 4 = 0$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في $2x = 5$ نقسم 5 على 2."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x - 5 = 0$ يعني $x = \\dfrac{5}{2}$ ، و $x + 4 = 0$ يعني $x = -4$.",
+        "incorrect": "نقسم العدد على معامل $x$ ، لا العكس."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l2-009",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 2
+}

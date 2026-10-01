@@ -1,0 +1,159 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l1-003",
+  "lessonCode": "mutarajiha-ula",
+  "level": 1,
+  "metadata": {
+    "title": "تمرين 25 — عيّن قيم x التي تحقّق المتراجحة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حلّ متراجحة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-25",
+      "page": 51,
+      "section": "أوظّف تعلّماتي",
+      "number": 25
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 51): إليك المتراجحة $3x - 2 < 6$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل العدد $0$ حلّ للمتراجحة $3x - 2 < 6$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، هو حلّ",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا، ليس حلًّا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب كل طرف وحده."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن النتيجتين بالرمز نفسه: هل المتباينة العددية صحيحة؟"
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = 0$ : الطرف الأول يساوي $-2$ والطرف الثاني $6$ ، و $-2 < 6$ متباينة صحيحة.",
+        "incorrect": "احسب الطرفين من أجل هذه القيمة، ثم احكم على المتباينة العددية — وانتبه إلى الرمز الصارم $<$ أو $>$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل العدد $\\dfrac{8}{3}$ حلّ للمتراجحة $3x - 2 < 6$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، هو حلّ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
+        },
+        {
+          "id": "B",
+          "content": "لا، ليس حلًّا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب كل طرف وحده."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن النتيجتين بالرمز نفسه: هل المتباينة العددية صحيحة؟"
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = \\dfrac{8}{3}$ : الطرف الأول يساوي $6$ والطرف الثاني $6$ ، و $6 < 6$ متباينة خاطئة.",
+        "incorrect": "احسب الطرفين من أجل هذه القيمة، ثم احكم على المتباينة العددية — وانتبه إلى الرمز الصارم $<$ أو $>$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "هل العدد $3$ حلّ للمتراجحة $3x - 2 < 6$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، هو حلّ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        },
+        {
+          "id": "B",
+          "content": "لا، ليس حلًّا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب كل طرف وحده."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن النتيجتين بالرمز نفسه: هل المتباينة العددية صحيحة؟"
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = 3$ : الطرف الأول يساوي $7$ والطرف الثاني $6$ ، و $7 < 6$ متباينة خاطئة.",
+        "incorrect": "احسب الطرفين من أجل هذه القيمة، ثم احكم على المتباينة العددية — وانتبه إلى الرمز الصارم $<$ أو $>$."
+      }
+    }
+  ]
+}

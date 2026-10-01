@@ -1,0 +1,142 @@
+{
+  "metadata": {
+    "title": "تدريب — مساحة مستطيل ومساحة مربع",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترييض",
+      "متراجحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P2",
+      "modelledOn": "ex-35"
+    }
+  },
+  "statement": {
+    "content": "مستطيل بعداه $x + 6$ و $x$ ، ومربع ضلعه $x + 2$ ، حيث $x$ عدد موجب (بالسنتيمتر)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "«مساحة المستطيل أكبر من مساحة المربع» تُترجم بالمتراجحة ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 + 6x > x^2 + 4x + 4$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x^2 + 6x > x^2 + 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+        },
+        {
+          "id": "C",
+          "content": "$2x + 6 > 2x + 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
+        },
+        {
+          "id": "D",
+          "content": "$x^2 + 6x < x^2 + 4x + 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مساحة المستطيل جداء بعديه، ومساحة المربع مربع ضلعه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x(x + 6) = x^2 + 6x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(x + 2)^2$ مربع مجموع."
+        }
+      ],
+      "feedback": {
+        "correct": "مساحة المستطيل $x^2 + 6x$ ومساحة المربع $(x + 2)^2 = x^2 + 4x + 4$.",
+        "incorrect": "لا تنس الحد المضاعف في مربع المجموع."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "حلول هذه المتراجحة هي الأعداد الموجبة $x$ حيث ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x < 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        },
+        {
+          "id": "B",
+          "content": "$x > 2$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x > 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARH-MUAMIL"
+        },
+        {
+          "id": "D",
+          "content": "$x = 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحدّان $x^2$ يختفيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تبقى $6x > 4x + 4$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع حدود $x$ ثم اقسم."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x > 4$ أي $x > 2$.",
+        "incorrect": "بعد اختفاء $x^2$ تبقى متراجحة من الدرجة الأولى."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l4-009",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 4
+}

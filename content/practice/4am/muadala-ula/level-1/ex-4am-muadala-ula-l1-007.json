@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-muadala-ula-l1-007",
+  "lessonCode": "muadala-ula",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — عدد مطروح من x",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نقل حد"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadala-ula_P2",
+      "modelledOn": "ex-3"
+    }
+  },
+  "statement": {
+    "content": "حلّ كل معادلة بإجراء العملية نفسها على الطرفين."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المعادلة $x - 9 = -4$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجهول $x$ مضاف إليه عدد (أو مطروح منه) في طرف واحد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أجرِ على الطرفين العملية المعاكسة لما أُجري على $x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما يُطرح من طرف يُطرح من الطرف الآخر أيضًا، فيبقى $x$ وحده."
+        }
+      ],
+      "feedback": {
+        "correct": "$x - 9 = -4$ : نصل إلى $x = 5$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل المعادلة $x + 7 = -3$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$10$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-ISHARA-SALIBA"
+        },
+        {
+          "id": "B",
+          "content": "$-10$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجهول $x$ مضاف إليه عدد (أو مطروح منه) في طرف واحد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أجرِ على الطرفين العملية المعاكسة لما أُجري على $x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما يُطرح من طرف يُطرح من الطرف الآخر أيضًا، فيبقى $x$ وحده."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + 7 = -3$ : نصل إلى $x = -10$.",
+        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
+      }
+    }
+  ]
+}

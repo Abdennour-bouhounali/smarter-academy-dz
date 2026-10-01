@@ -1,0 +1,111 @@
+{
+  "id": "ex-4am-muadala-ula-l3-007",
+  "lessonCode": "muadala-ula",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — الحل كسر",
+    "estimatedMinutes": 4,
+    "tags": [
+      "المجهول في الطرفين",
+      "كسر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadala-ula_P1",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "بعد النقل والتجميع: الشكل $ax = b$ ثم الحل $\\dfrac{b}{a}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المعادلة $8x - 1 = 2x + 3$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "2/3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجهول موجود في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح من الطرفين أحد الحدّين اللذين فيهما $x$ لتجمع المجاهيل في طرف واحد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اجمع الأعداد في الطرف الآخر وقسّم على معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$8x - 1 = 2x + 3$ : نصل إلى $6x = 4$ ، ومنه $x = \\dfrac{2}{3}$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل المعادلة $x + 5 = 6x - 2$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-\\dfrac{3}{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$-1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{7}{5}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجهول موجود في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح من الطرفين أحد الحدّين اللذين فيهما $x$ لتجمع المجاهيل في طرف واحد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اجمع الأعداد في الطرف الآخر وقسّم على معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + 5 = 6x - 2$ : نصل إلى $-5x = -7$ ، ومنه $x = \\dfrac{7}{5}$.",
+        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
+      }
+    }
+  ]
+}

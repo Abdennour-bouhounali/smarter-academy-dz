@@ -1,0 +1,95 @@
+{
+  "id": "ex-4am-muadala-ula-l2-002",
+  "lessonCode": "muadala-ula",
+  "level": 2,
+  "metadata": {
+    "title": "نشاط 1 — عدد فاطمة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "برنامج حساب",
+      "ax + b = c"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-1",
+      "page": 44,
+      "section": "أنشطة",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 44): برنامج حساب: «اختر عددًا، اضربه في 3 ثمّ أضف 2، اضرب الناتج في 3، اطرح 5». عند اختيار $x$ نحصل على $9x + 1$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما النتيجة عند اختيار العدد 2؟",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4",
+      "expectedAnswer": "19",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "النتيجة هي $9x + 1$ من أجل العدد المختار."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بالعدد 2."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $9 \\times 2$ ثم أضف 1."
+        }
+      ],
+      "feedback": {
+        "correct": "$9 \\times 2 + 1 = 19$ ، كما في البرنامج خطوة خطوة.",
+        "incorrect": "عوّض $x$ بالعدد المعطى في كل حدّ، ثم احسب مع الإشارات."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حصلت فاطمة على $-26$ : حلّ المعادلة $9x + 1 = -26$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "-3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في طرف واحد حدّ فيه $x$ وعدد، وفي الطرف الآخر عدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تخلّص أولًا من العدد الذي مع الحدّ $ax$ بإجراء العملية المعاكسة على الطرفين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تصل إلى الشكل $ax = b$ ، ثم تقسم الطرفين على معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$9x + 1 = -26$ : نصل إلى $9x = -27$ ، ومنه $x = -3$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    }
+  ]
+}

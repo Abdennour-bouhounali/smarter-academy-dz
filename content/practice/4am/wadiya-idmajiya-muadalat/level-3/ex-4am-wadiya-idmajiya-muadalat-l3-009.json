@@ -1,0 +1,119 @@
+{
+  "metadata": {
+    "title": "تدريب — مربع عدد يساوي تسعة أضعافه",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جداء معدوم",
+      "ترييض"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P1",
+      "modelledOn": "ex-34"
+    }
+  },
+  "statement": {
+    "content": "نبحث عن الأعداد $x$ التي مربعها يساوي تسعة أضعافها: $x^2 = 9x$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلول المعادلة $x^2 = 9x$ هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$9$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-QISMA-ALA-X"
+        },
+        {
+          "id": "B",
+          "content": "$0$ و $9$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$3$ و $-3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-DIF"
+        },
+        {
+          "id": "D",
+          "content": "$0$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لا تقسم على $x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انقل كل الحدود إلى طرف: $x^2 - 9x = 0$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّل: $x(x - 9) = 0$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x(x - 9) = 0$ يعني $x = 0$ أو $x = 9$.",
+        "incorrect": "القسمة على $x$ تُضيّع الحل 0."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو العدد غير المعدوم الذي مربعه يساوي تسعة أضعافه؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل حلول المعادلة السابقة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استبعد الحل المعدوم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بالتعويض."
+        }
+      ],
+      "feedback": {
+        "correct": "$9^2 = 81 = 9 \\times 9$.",
+        "incorrect": "من بين الحلّين نستبعد 0."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l3-009",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 3
+}

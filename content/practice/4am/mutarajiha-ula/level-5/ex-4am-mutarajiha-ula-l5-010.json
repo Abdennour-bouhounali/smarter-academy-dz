@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l5-010",
+  "lessonCode": "mutarajiha-ula",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — محيط مستطيل",
+    "estimatedMinutes": 5,
+    "tags": [
+      "حل متراجحة",
+      "ترجمة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutarajiha-ula_P2",
+      "modelledOn": "act-3a"
+    }
+  },
+  "statement": {
+    "content": "مستطيل عرضه $x$ وطوله $x + 4$ (بالسنتيمتر). نريد ألّا يتجاوز محيطه 40cm."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ متراجحة تعبّر عن هذا الشرط؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2(x + x + 4) \\leq 40$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$2(x + x + 4) \\geq 40$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+        },
+        {
+          "id": "C",
+          "content": "$x(x + 4) \\leq 40$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المحيط: ضعف مجموع الطول والعرض."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "«لا يتجاوز» تعني «أصغر من أو يساوي»."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تخلط بين المحيط والمساحة."
+        }
+      ],
+      "feedback": {
+        "correct": "المحيط $2(x + x + 4)$ لا يتجاوز 40: $2(x + x + 4) \\leq 40$.",
+        "incorrect": "اكتب المحيط بدلالة $x$ أولًا، ثم الرمز المناسب لـ «لا يتجاوز»."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما أكبر عرض $x$ ، عددًا طبيعيًا بالسنتيمتر، يحقّق الشرط؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المتراجحة أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مثّل الحلول على مستقيم مدرّج وانظر إلى الحدّ: هل هو نفسه حلّ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن أكبر عدد طبيعي في الجزء الملوّن."
+        }
+      ],
+      "feedback": {
+        "correct": "الحلول: $x \\leq 8$ ، و $2(8 + 8 + 4) = 40$ : أكبر عرض هو 8.",
+        "incorrect": "حلّ المتراجحة، ثم انتبه إلى الحدّ: هل هو حلّ أم لا؟"
+      }
+    }
+  ]
+}

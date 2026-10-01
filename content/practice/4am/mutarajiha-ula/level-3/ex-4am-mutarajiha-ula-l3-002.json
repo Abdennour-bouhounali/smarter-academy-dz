@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l3-002",
+  "lessonCode": "mutarajiha-ula",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 25 — حل المتراجحة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حل متراجحة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-25",
+      "page": 51,
+      "section": "أوظّف تعلّماتي",
+      "number": 25
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 51): المتراجحة $3x - 2 < 6$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المتراجحة $3x - 2 < 6$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x < \\dfrac{8}{3}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x < \\dfrac{4}{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$x > \\dfrac{8}{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x - 2 < 6$ تؤول إلى $3x < 8$، ثم نقسم على $3$ (عدد موجب، فالاتجاه لا يتغيّر): $x < \\dfrac{8}{3}$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما أكبر عدد صحيح يحقّق المتراجحة $3x - 2 < 6$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المتراجحة أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مثّل الحلول على مستقيم مدرّج وانظر إلى الحدّ: هل هو نفسه حلّ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن أكبر عدد صحيح في الجزء الملوّن."
+        }
+      ],
+      "feedback": {
+        "correct": "الحلول: $x < \\dfrac{8}{3}$ ، و $\\dfrac{8}{3}$ ليس عددًا صحيحًا: أكبر عدد صحيح أصغر منه هو 2.",
+        "incorrect": "حلّ المتراجحة، ثم انتبه إلى الحدّ: هل هو حلّ أم لا؟"
+      }
+    }
+  ]
+}

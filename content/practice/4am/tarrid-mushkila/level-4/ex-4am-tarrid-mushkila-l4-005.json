@@ -1,0 +1,126 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l4-005",
+  "lessonCode": "tarrid-mushkila",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — مربع عدد",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جداء معدوم",
+      "تحقّق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-mushkila_P2",
+      "modelledOn": "ex-39"
+    }
+  },
+  "statement": {
+    "content": "عدد مربّعه يساوي ستة أضعافه. نسمّي $x$ هذا العدد، فنكتب $x^2 = 6x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلول المعادلة $x^2 = 6x$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x = 6$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-QISMA-ALA-X"
+        },
+        {
+          "id": "B",
+          "content": "$x = 0$ أو $x = 6$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x = -6$ أو $x = 6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لا تقسم على $x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انقل كل الحدود إلى طرف: $x^2 - 6x = 0$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّل: $x(x - 6) = 0$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x(x - 6) = 0$ : $x = 0$ أو $x = 6$ .",
+        "incorrect": "القسمة على $x$ تضيّع الحل 0."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "إذا كان هذا العدد هو عدد أعضاء نادٍ ليس فارغًا، فهو:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAHAQQUQ"
+        },
+        {
+          "id": "B",
+          "content": "$0$ أو $6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAHAQQUQ"
+        },
+        {
+          "id": "C",
+          "content": "$6$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نادٍ ليس فارغًا: عدد أعضائه؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عدد الأعضاء عدد طبيعي غير معدوم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اختر من الحلين ما يلائم."
+        }
+      ],
+      "feedback": {
+        "correct": "النادي ليس فارغًا: العدد 6.",
+        "incorrect": "الحل 0 صحيح رياضيًا لكنه لا يلائم «نادٍ ليس فارغًا»."
+      }
+    }
+  ]
+}

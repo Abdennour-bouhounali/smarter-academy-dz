@@ -1,0 +1,99 @@
+/**
+ * La carte PROGRESSIVE de « أدمج تعلّماتي » (unité 4) — la séance d'INTÉGRATION.
+ * Contrat : docs/architecture/KNOWLEDGE_MAP.md, Part A (A.15, cas de l'intégration) ;
+ * modèles : hisab-harfi/wadiya-idmajiya-harfi et hisab-judhur/wadiya-idmajiya-judhur.
+ *
+ *   — aucune connaissance nouvelle : la DÉMARCHE du manuel (traduire chaque
+ *     formule, essayer, écrire l'inéquation qui départage, interpréter) et les
+ *     deux choix de « أتعمّق » (la forme utile ; deux inéquations à la fois) ;
+ *   — la SOLUTION du مسبح (9 séances, égalité à 8 séances) n'y figure pas :
+ *     c'est la réponse de l'évaluation (A.10 règle 14). L'interprétation est
+ *     montrée sur la tarification du niveau مبتدئ (x > 5 → 6 séances) ;
+ *   — les deux erreurs sont celles que le module 1 corrige (l'abonnement payé à
+ *     chaque séance, la valeur d'égalité prise pour la réponse), avec leur « لماذا؟ » ;
+ *   — « أؤكّد تعلّماتي » (module 2) renvoie aux leçons 1 à 3, dont les cartes
+ *     portent ces connaissances.
+ *
+ *                       [أيّ صيغة أفضل؟]                          مفهوم
+ *                            نترجمها │
+ *                     [ترجمة صيغة تسعير]                          طريقة
+ *              خطأ شائع ┌────────┴────────┐ نجرّب
+ *      ⛔ [الاشتراك في كل حصة]        [التجريب]                    طريقة
+ *                                         │ نقارن بـ
+ *                                [متراجحة للمفاضلة]                علاقة
+ *                                         │ نحلّ ونفسّر
+ *                    خطأ شائع ┌───── [تفسير النتائج]               طريقة
+ *            ⛔ [قيمة التساوي جوابًا]      │ نجمعها
+ *                                 [من النص إلى الخيار]             طريقة
+ *                                         │ في التمارين
+ *                                  [أيّ شكل أستعمل؟]                طريقة (محور 3)
+ *                                         │ متراجحتان
+ *                                   [متراجحتان معًا]                طريقة (محور 3)
+ *                                         │ نستخلص
+ *                                   🎯 [ثلاث مراحل]
+ */
+import { SITUATION, REMARKS } from './content/textbook';
+
+export const KNOWLEDGE_GRAPH = {
+  root: 'wadiya',
+  nodes: [
+    {
+      id: 'wadiya', kind: 'concept', lane: 'center', requires: 'tarjama-sigha',
+      title: 'أيّ صيغة أفضل؟', subtitle: SITUATION.caption,
+      context: { text: SITUATION.text },
+      reveals: ['tarjama'],
+    },
+    { id: 'tarjama', kind: 'method', lane: 'center', requires: 'tarjama-sigha', notebook: true, title: 'ترجمة صيغة تسعير', reveals: ['thabit', 'tajrib'] },
+    {
+      // ⛔ خطأ شائع — module 1, étape 2 : la ligne « (560 + 5)x » et sa correction (MISC-WADIYA-TARJAMA).
+      id: 'thabit', kind: 'common_mistake', lane: 'start', requires: 'tarjama-sigha',
+      title: 'الاشتراك في كل حصة', subtitle: 'مبلغ ثابت أم لكل حصة؟',
+      context: {
+        parts: [
+          { role: 'wrong', text: REMARKS.tarjamaWrong },
+          { role: 'why', text: REMARKS.tarjamaWhy },
+          { role: 'right', text: REMARKS.tarjamaRight },
+        ],
+      },
+      reveals: [],
+    },
+    { id: 'tajrib', kind: 'method', lane: 'end', requires: 'tajrib', notebook: true, title: 'التجريب', subtitle: 'جدول التكاليف', reveals: ['mufadala'] },
+    { id: 'mufadala', kind: 'relationship', lane: 'end', requires: 'mutarajiha-mufadala', notebook: true, title: 'متراجحة للمفاضلة', subtitle: 'الأفضل هو الأقل تكلفة', reveals: ['tafsir'] },
+    { id: 'tafsir', kind: 'method', lane: 'end', requires: 'tafsir-natija', notebook: true, title: 'تفسير النتائج', reveals: ['tasawi', 'tariqa'] },
+    {
+      // ⛔ خطأ شائع — module 1, étape 5 : le distracteur « 5 حصص » (MISC-WADIYA-QIMAT-TASAWI).
+      id: 'tasawi', kind: 'common_mistake', lane: 'start', requires: 'tafsir-natija',
+      title: 'قيمة التساوي جوابًا', subtitle: 'ابتداءً من أيّ عدد؟',
+      context: {
+        parts: [
+          { role: 'wrong', text: REMARKS.tasawiWrong },
+          { role: 'why', text: REMARKS.tasawiWhy },
+          { role: 'right', text: REMARKS.tasawiRight },
+        ],
+      },
+      reveals: [],
+    },
+    { id: 'tariqa', kind: 'method', lane: 'end', requires: 'tariqat-wadiya', notebook: true, title: 'من النص إلى الخيار الأفضل', reveals: ['shakl'] },
+    { id: 'shakl', kind: 'method', lane: 'center', requires: 'shakl-munasib', notebook: true, title: 'أيّ شكل أستعمل؟', subtitle: 'محلّل أم منشور', reveals: ['maan'] },
+    { id: 'maan', kind: 'method', lane: 'center', requires: 'hall-maan', notebook: true, title: 'متراجحتان معًا', subtitle: 'الجزء المشترك', reveals: ['khulasa'] },
+    {
+      // 🎯 خلاصة — les trois étapes de l'analyse du manuel, nommées par lui.
+      id: 'khulasa', kind: 'takeaway', lane: 'center', requires: 'hall-maan',
+      title: 'ثلاث مراحل', subtitle: 'نقرأ · نحلّل · ننفّذ',
+      context: { list: SITUATION.analysis.map((a) => a.label) },
+      reveals: [],
+    },
+  ],
+  edges: [
+    { from: 'wadiya', to: 'tarjama', label: 'نترجمها' },
+    { from: 'tarjama', to: 'thabit', label: 'خطأ شائع' },
+    { from: 'tarjama', to: 'tajrib', label: 'نجرّب' },
+    { from: 'tajrib', to: 'mufadala', label: 'نقارن بـ' },
+    { from: 'mufadala', to: 'tafsir', label: 'نحلّ ونفسّر' },
+    { from: 'tafsir', to: 'tasawi', label: 'خطأ شائع' },
+    { from: 'tafsir', to: 'tariqa', label: 'نجمعها' },
+    { from: 'tariqa', to: 'shakl', label: 'في التمارين' },
+    { from: 'shakl', to: 'maan', label: 'متراجحتان' },
+    { from: 'maan', to: 'khulasa', label: 'نستخلص' },
+  ],
+};

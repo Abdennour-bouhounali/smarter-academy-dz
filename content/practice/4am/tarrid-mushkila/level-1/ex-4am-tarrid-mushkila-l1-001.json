@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l1-001",
+  "lessonCode": "tarrid-mushkila",
+  "level": 1,
+  "metadata": {
+    "title": "تمرين 10 — العدد المجهول",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترييض",
+      "معادلة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-10",
+      "page": 50,
+      "section": "أوظّف تعلّماتي",
+      "number": 10
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 50): ما هو العدد الذي إذا ضربته في 6 و أضفت إلى الناتج 7، تحصل على 31؟ نسمّي $x$ هذا العدد."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ معادلة تترجم النص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$6(x + 7) = 31$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
+        },
+        {
+          "id": "B",
+          "content": "$6x + 7 = 31$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$7x + 6 = 31$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما العملية الأولى التي تُجرى على العدد؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نضرب أولًا في 6، ثم نضيف 7 إلى الناتج."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب العمليتين بالترتيب الذي يذكره النص."
+        }
+      ],
+      "feedback": {
+        "correct": "الضرب في 6 أولًا ثم إضافة 7: $6x + 7 = 31$ .",
+        "incorrect": "تتبّع ترتيب العمليات في النص: الضرب أولًا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو هذا العدد؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انطلق من $6x + 7 = 31$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح 7 من الطرفين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اقسم الطرفين على 6 وتحقّق في النص."
+        }
+      ],
+      "feedback": {
+        "correct": "$6x = 24$ أي $x = 4$ ، وتحقّق: $6 \\times 4 + 7 = 31$ .",
+        "incorrect": "اطرح 7 أولًا ثم اقسم على 6."
+      }
+    }
+  ]
+}

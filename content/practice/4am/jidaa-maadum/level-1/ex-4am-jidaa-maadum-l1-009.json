@@ -1,0 +1,91 @@
+{
+  "id": "ex-4am-jidaa-maadum-l1-009",
+  "lessonCode": "jidaa-maadum",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — الأعداد a و b و c و d",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تعريف"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidaa-maadum_P1",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "نكتب المعادلة $(5x - 2)(-x + 4) = 0$ على الشكل $(ax + b)(cx + d) = 0$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما قيمة $a$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد نسبي",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل الأول هو $ax + b$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a$ هو معامل $x$ في العامل الأول."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقرأ العدد المضروب في $x$ في القوس الأول."
+        }
+      ],
+      "feedback": {
+        "correct": "العامل الأول $5x - 2 = ax + b$ مع $a = 5$ و $b = -2$ .",
+        "incorrect": "الشرطان معًا: جداء عاملين في الطرف الأول، و $0$ في الطرف الثاني."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما قيمة $d$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد نسبي",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل الثاني هو $cx + d$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$d$ هو العدد الخالي من $x$ في العامل الثاني."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقرأ الحدّ الثابت في القوس الثاني، بإشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "العامل الثاني $-x + 4 = cx + d$ مع $c = -1$ و $d = 4$ .",
+        "incorrect": "الشرطان معًا: جداء عاملين في الطرف الأول، و $0$ في الطرف الثاني."
+      }
+    }
+  ]
+}

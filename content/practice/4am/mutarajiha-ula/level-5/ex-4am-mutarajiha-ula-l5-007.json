@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l5-007",
+  "lessonCode": "mutarajiha-ula",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — سيارة الأجرة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "حل متراجحة",
+      "ترجمة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutarajiha-ula_P2",
+      "modelledOn": "act-3a"
+    }
+  },
+  "statement": {
+    "content": "تكلفة رحلة بسيارة أجرة: 150DA عند الانطلاق و 40DA عن كل كيلومتر. لا يملك سمير أكثر من 1000DA. نرمز إلى المسافة بالكيلومتر بـ $x$ : $150 + 40x \\leq 1000$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المتراجحة $150 + 40x \\leq 1000$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\geq \\dfrac{85}{4}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        },
+        {
+          "id": "B",
+          "content": "$x \\leq \\dfrac{85}{4}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x \\leq \\dfrac{115}{4}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$150 + 40x \\leq 1000$ تؤول إلى $40x \\leq 850$، ثم نقسم على $40$ (عدد موجب، فالاتجاه لا يتغيّر): $x \\leq \\dfrac{85}{4}$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما أكبر عدد صحيح من الكيلومترات يمكن لسمير قطعه؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "21",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المتراجحة أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مثّل الحلول على مستقيم مدرّج وانظر إلى الحدّ: هل هو نفسه حلّ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن أكبر عدد طبيعي في الجزء الملوّن."
+        }
+      ],
+      "feedback": {
+        "correct": "الحلول: $x \\leq \\dfrac{85}{4}$ ، و $\\dfrac{85}{4} = 21{,}25$ : أكبر عدد صحيح هو 21.",
+        "incorrect": "حلّ المتراجحة، ثم انتبه إلى الحدّ: هل هو حلّ أم لا؟"
+      }
+    }
+  ]
+}

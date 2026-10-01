@@ -1,0 +1,162 @@
+{
+  "metadata": {
+    "title": "وضعية — المسبح البلدي كاملة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "ترجمة",
+      "متراجحة",
+      "تفسير"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "situation",
+      "page": 52,
+      "section": "أدمج تعلّماتي"
+    }
+  },
+  "statement": {
+    "content": "لممارسة رياضة السباحة في المسبح البلدي، يقترح نادٍ رياضيٌّ على التلاميذ المتمدرسين صيغتين للاشتراك. الصيغة الأولى: الدفع الفوري 75 دينارًا لكل حصة. الصيغة الثانية: اشتراك سنوي قدره 560 دينارا ودفع فوري قدره 5 دنانير لكل حصة. نسمّي $x$ عدد الحصص."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلول المتراجحة التي تعني «التسعيرة الثانية أفضل» هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x < 8$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        },
+        {
+          "id": "B",
+          "content": "$x > 7$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$x > \\dfrac{1}{8}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "id": "D",
+          "content": "$x > 8$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المتراجحة: $560 + 5x < 75x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح $5x$ من الطرفين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$560 < 70x$ ، ثم اقسم على 70."
+        }
+      ],
+      "feedback": {
+        "correct": "$560 < 70x$ أي $x > 8$.",
+        "incorrect": "نطرح $5x$ (لا نجمع 75 و 5)، والقسمة على 70 تحافظ على الاتجاه."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "ابتداءً من أي عدد للحصص تكون التسعيرة الثانية أفضل؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل حلول المتراجحة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عدد الحصص عدد طبيعي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ماذا يحدث عند 8 حصص بالضبط؟"
+        }
+      ],
+      "feedback": {
+        "correct": "ابتداءً من 9 حصص: عند 8 حصص تتساوى الصيغتان (600 دينار).",
+        "incorrect": "أصغر عدد طبيعي يحقّق $x > 8$ ليس 8."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "8",
+          "id": "MISC-WADIYA-QIMAT-TASAWI"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "كم دينارًا يوفّر تلميذ يسبح 12 حصة في السنة إذا اختار التسعيرة الثانية؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "280",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب تكلفة كل صيغة من أجل 12 حصة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الأولى: $75 \\times 12$ ؛ الثانية: $560 + 5 \\times 12$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "التوفير هو الفرق."
+        }
+      ],
+      "feedback": {
+        "correct": "الأولى 900 دينار، الثانية 620 دينارًا: التوفير $900 - 620 = 280$ دينارًا.",
+        "incorrect": "احسب التكلفتين ثم اطرح."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l5-001",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 5
+}

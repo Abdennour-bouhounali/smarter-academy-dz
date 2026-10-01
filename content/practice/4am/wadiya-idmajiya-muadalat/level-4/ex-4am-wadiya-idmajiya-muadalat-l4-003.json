@@ -1,0 +1,143 @@
+{
+  "metadata": {
+    "title": "تمرين 42 — متراجحتان معًا",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متراجحة",
+      "تمثيل بياني"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-42",
+      "page": 53,
+      "section": "أتعمّق",
+      "number": 42
+    }
+  },
+  "statement": {
+    "content": "نبحث عن قيم $x$ التي من أجلها تتحقق المتراجحتان الآتيتان معًا: $-3x + 1 > 7x + 11$ و $\\dfrac{1}{2}x - 3 \\leq x - 1$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلول المتراجحة $-3x + 1 > 7x + 11$ هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x > -1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
+        },
+        {
+          "id": "B",
+          "content": "$x < -1$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x < 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-ISHARA-SALIBA"
+        },
+        {
+          "id": "D",
+          "content": "$x < -\\dfrac{5}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع حدود $x$ في طرف."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$-10x > 10$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "القسمة على $-10$ تغيّر الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$-10x > 10$ يعني $x < -1$.",
+        "incorrect": "انتبه إلى الاتجاه عند القسمة على عدد سالب."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "قيم $x$ التي تحقّق المتراجحتين معًا هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-4 \\leq x < -1$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$-4 < x \\leq -1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
+        },
+        {
+          "id": "C",
+          "content": "$x < -4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+        },
+        {
+          "id": "D",
+          "content": "$x \\geq -4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلول المتراجحة الثانية: $x \\geq -4$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نريد الأعداد التي تحقق $x < -1$ و $x \\geq -4$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انظر هل كل حد حلّ أم لا."
+        }
+      ],
+      "feedback": {
+        "correct": "$x < -1$ و $x \\geq -4$ معًا: $-4 \\leq x < -1$.",
+        "incorrect": "الحد $-4$ حلّ ($\\geq$) والحد $-1$ ليس حلًا ($<$)."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 4
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l4-003",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 4
+}

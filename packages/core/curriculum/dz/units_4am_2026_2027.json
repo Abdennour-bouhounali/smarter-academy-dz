@@ -151,6 +151,57 @@
         "قواعد حذف الأقواس المسبوقة بإشارة + أو −",
         "قوانين حساب المحيطات والمساحات للأشكال الهندسية الأساسية"
       ]
+    },
+    {
+      "code": "muadalat-mutarajihat",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "order": 3,
+      "number": 4,
+      "titleAr": "معادلات ومتراجحات من الدرجة الأولى بمجهول واحد",
+      "subtitleAr": "حل معادلة من الدرجة الأولى بمجهول واحد، معادلات جداء معدوم، المتراجحات وتمثيل حلولها على مستقيم مدرّج، ترييض مشكلة",
+      "sourceTopicIds": [
+        "muadalat_daraja_ula",
+        "muadalat_jida_maadum",
+        "mutarajihat"
+      ],
+      "placement": {
+        "programmeDomainId": "hisab_harfi",
+        "decidedBy": "owner",
+        "decidedOn": "2026-10-01",
+        "note": "Le programme range les équations du premier degré, les équations produit nul et les inéquations dans « ميدان الحساب الحرفي » ; le propriétaire place l'unité 4 du manuel sous « ميدان أنساب الأعداد والحساب », comme les unités 1 à 3. Les sujets restent ceux du programme (traçabilité), le ميدان d'affichage est celui du propriétaire."
+      },
+      "textbook": {
+        "title": "كتاب الرياضيات — السنة الرابعة من التعليم المتوسط",
+        "generation": "الجيل الثاني",
+        "unit": 4,
+        "pages": "43–53",
+        "extraction": "docs/sources/4am/unit4/extraction.json"
+      },
+      "objectivesAr": [
+        "حل معادلة يؤول حلها إلى حل «معادلة جداء معدوم».",
+        "حل متراجحة من الدرجة الأولى بمجهول واحد وتمثيل حلولها على مستقيم مدرج.",
+        "حل مشكلات بتوظيف معادلات أو متراجحات من الدرجة الأولى بمجهول واحد."
+      ],
+      "challenge": {
+        "sourceElementId": "challenge",
+        "page": 43,
+        "titleAr": "تحدّ",
+        "textAr": "في الشكل المقابل، x يُمثل طول ضلع المربع AEGF. عيّن قيمة x علما أنّ x² + 12x = 85"
+      },
+      "aside": {
+        "sourceElementId": "history-khwarizmi",
+        "page": 43,
+        "titleAr": "الخوارزمي",
+        "textAr": "أبو جعفر محمد بن موسى الخوارزمي عالم موسوعي، برز في الرياضيات والفلك؛ فهو أول من استعمل كلمة «جبر» للعلم المعروف الآن بهذا الاسم. وكفاه فخرا أنّه ألّف «كتاب الجبر والمقابلة». في هذا الكتاب الذي شُيّد عليه تقدّم الجبر، قسّم الخوارزمي الأعداد التي يحتاج إليها في الجبر إلى ثلاثة أنواع: جذر أي «x» ومال أي «x²» ومفرد وهو العدد الخالي من «x». جاء في كتاب الخوارزمي المثل الآتي: «... وأمّا الأموال والعدد التي تعدل الجذور فنحو قولك مال وواحد وعشرون من العدد يعدل 10 أجذاره» وبحسب الرموز الحالية تكون المعادلة: x² + 21 = 10x. وقد حلّها واستخرج جذريها 3 و 7.",
+        "captionAr": "الخوارزمي (780م-850م)"
+      },
+      "synthesisLessonCode": "wadiya-idmajiya-muadalat",
+      "prerequisitesAr": [
+        "مفهوم المساواة واختبار صحة مساواة عند تعويض المجهول بقيمة معطاة",
+        "قواعد العمليات على طرفي المساواة والمتباينة وترتيب الأعداد",
+        "نشر وتبسيط وتحليل العبارات الجبرية (الوحدة 3)",
+        "تعليم الأعداد وحصرها على مستقيم عددي مدرج"
+      ]
     }
   ]
 }

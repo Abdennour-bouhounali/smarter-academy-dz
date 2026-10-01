@@ -1,0 +1,111 @@
+{
+  "id": "ex-4am-muadala-ula-l1-004",
+  "lessonCode": "muadala-ula",
+  "level": 1,
+  "metadata": {
+    "title": "تمرين 3 — المجهول وعدد",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نقل حد"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-3",
+      "page": 50,
+      "section": "أوظّف تعلّماتي",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 50): حل كل معادلة من المعادلات المقترحة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حل المعادلة $x + 11 = 2$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$13$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$9$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-ISHARA-SALIBA"
+        },
+        {
+          "id": "C",
+          "content": "$-9$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجهول $x$ مضاف إليه عدد (أو مطروح منه) في طرف واحد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أجرِ على الطرفين العملية المعاكسة لما أُجري على $x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما يُطرح من طرف يُطرح من الطرف الآخر أيضًا، فيبقى $x$ وحده."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + 11 = 2$ : نصل إلى $x = -9$.",
+        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّ المعادلة $3{,}2 + x = 5$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "9/5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجهول $x$ مضاف إليه عدد (أو مطروح منه) في طرف واحد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أجرِ على الطرفين العملية المعاكسة لما أُجري على $x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما يُطرح من طرف يُطرح من الطرف الآخر أيضًا، فيبقى $x$ وحده."
+        }
+      ],
+      "feedback": {
+        "correct": "$3{,}2 + x = 5$ : نصل إلى $x = \\dfrac{9}{5}$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    }
+  ]
+}

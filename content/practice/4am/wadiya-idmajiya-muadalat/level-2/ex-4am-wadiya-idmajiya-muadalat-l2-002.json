@@ -1,0 +1,84 @@
+{
+  "metadata": {
+    "title": "تمرين 5 — ماذا نستنتج من x ≥ −1؟ (أؤكّد تعلّماتي)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متباينات",
+      "أؤكّد تعلّماتي"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 52,
+      "section": "أؤكّد تعلّماتي",
+      "number": 5
+    }
+  },
+  "statement": {
+    "content": "إذا كان $x \\geq -1$ فإن: (1) $2x + 2 \\geq 0$ ، (2) $2x - 2 < 0$ ، (3) $2x \\geq -2$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ هذه المتباينات صحيحة بالضرورة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "(1) و (3)",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "(1) فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        },
+        {
+          "id": "C",
+          "content": "(2) فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        },
+        {
+          "id": "D",
+          "content": "(2) و (3)",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انطلق من $x \\geq -1$ وطبّق خواص المتباينات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الضرب في 2 (موجب) يحافظ على الاتجاه، وكذلك إضافة عدد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جرّب قيمة مثل $x = 5$ لتختبر المتباينة (2)."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x \\geq -2$ ، ثم $2x + 2 \\geq 0$ ؛ و (2) خاطئة من أجل $x = 5$.",
+        "incorrect": "الضرب في عدد موجب والإضافة لا يغيّران الاتجاه؛ في الكتاب إجابتان صحيحتان."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 2
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l2-002",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 2
+}

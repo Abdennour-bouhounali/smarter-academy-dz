@@ -1,0 +1,143 @@
+{
+  "metadata": {
+    "title": "تمرين 36 — المتراجحة A ≥ B",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نشر",
+      "متراجحة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-36",
+      "page": 53,
+      "section": "أتعمّق",
+      "number": 36
+    }
+  },
+  "statement": {
+    "content": "لتكن $A = (x + 4)^2 - x(x - 2)$ و $B = (3x - 1)(3x + 1) - (3x - 2)^2$ ، حيث النشر المبسّط للعبارة B هو $12x - 5$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة A هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$6x + 16$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "B",
+          "content": "$10x + 16$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$2x + 16$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+        },
+        {
+          "id": "D",
+          "content": "$2x^2 + 6x + 16$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$(x + 4)^2$ مربع مجموع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر $x(x - 2)$ ثم احذف القوسين بتغيير الإشارات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحدّان $x^2$ يختفيان."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 8x + 16 - x^2 + 2x = 10x + 16$.",
+        "incorrect": "مربع مجموع فيه حدّ مضاعف، و $-x(x - 2) = -x^2 + 2x$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    },
+    {
+      "id": "q2",
+      "statement": "حلول المتراجحة $A \\geq B$ هي الأعداد $x$ حيث ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\geq \\dfrac{21}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
+        },
+        {
+          "id": "B",
+          "content": "$x \\leq \\dfrac{2}{21}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$x \\leq \\dfrac{11}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "D",
+          "content": "$x \\leq \\dfrac{21}{2}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب $10x + 16 \\geq 12x - 5$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع حدود $x$ في طرف: $-2x \\geq -21$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "القسمة على عدد سالب تغيّر الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$-2x \\geq -21$ ، والقسمة على $-2$ تغيّر الاتجاه: $x \\leq \\dfrac{21}{2}$.",
+        "incorrect": "انتبه إلى الإشارات عند النقل وإلى اتجاه المتراجحة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l3-002",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 3
+}

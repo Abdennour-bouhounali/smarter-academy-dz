@@ -1,0 +1,178 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l4-004",
+  "lessonCode": "mutarajiha-ula",
+  "level": 4,
+  "metadata": {
+    "title": "دوري الآن 1 — حلّ كل متراجحة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "حل متراجحة",
+      "تمثيل بياني"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "now-49-1",
+      "page": 49,
+      "section": "دوري الآن",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 49): حل كل متراجحة مما يلي ثم مثّل بيانيا حلولها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المتراجحة $-5(2x - 1) \\leq 2 - 4x$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\geq -\\dfrac{1}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "B",
+          "content": "$x \\leq \\dfrac{1}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
+        },
+        {
+          "id": "C",
+          "content": "$x \\geq \\dfrac{1}{2}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$-5(2x - 1) \\leq 2 - 4x$ تؤول إلى $-6x \\leq -3$، ثم نقسم على $-6$ (عدد سالب، فنغيّر الاتجاه): $x \\geq \\dfrac{1}{2}$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّ المتراجحة $\\dfrac{5x - 1}{2} + 3 > 1 + 2x$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x > -3$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x > -1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$x < -3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{5x - 1}{2} + 3 > 1 + 2x$ تؤول إلى $\\dfrac{1}{2}x > -\\dfrac{3}{2}$، ثم نقسم على $\\dfrac{1}{2}$ (عدد موجب، فالاتجاه لا يتغيّر): $x > -3$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "أيّ تمثيل بياني يوافق حلول المتراجحة $-5(2x - 1) \\leq 2 - 4x$ على مستقيم مدرّج؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الجزء الملوّن على يمين $\\dfrac{1}{2}$ والرمز $[$ عند $\\dfrac{1}{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الجزء الملوّن على يمين $\\dfrac{1}{2}$ والرمز $]$ عند $\\dfrac{1}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
+        },
+        {
+          "id": "C",
+          "content": "الجزء الملوّن على يسار $\\dfrac{1}{2}$ والرمز $]$ عند $\\dfrac{1}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المتراجحة أولًا لتجد الحدّ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحلول الأكبر من الحدّ على يمينه، والأصغر منه على يساره."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اختبر الحدّ نفسه: إن كان حلًّا فالرمز موجّه نحو الجزء الملوّن."
+        }
+      ],
+      "feedback": {
+        "correct": "الحلول: $x \\geq \\dfrac{1}{2}$ ، فالجزء الملوّن على يمين $\\dfrac{1}{2}$ ، و $\\dfrac{1}{2}$ حلّ فالرمز موجّه نحو الجزء الملوّن.",
+        "incorrect": "حدّد جهة الحلول، ثم اختبر الحدّ نفسه لتختار اتجاه الرمز."
+      }
+    }
+  ]
+}

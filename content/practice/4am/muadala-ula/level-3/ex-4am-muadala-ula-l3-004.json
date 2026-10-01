@@ -1,0 +1,111 @@
+{
+  "id": "ex-4am-muadala-ula-l3-004",
+  "lessonCode": "muadala-ula",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 4 — المعادلة الأخيرة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "المجهول في الطرفين"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-4",
+      "page": 50,
+      "section": "أوظّف تعلّماتي",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 50): حل كل معادلة من المعادلات المقترحة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نطرح $5x$ من الطرفين في المعادلة $5x + 11 = 11x + 5$ ، فنحصل على:",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$11 = 6x + 5$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$11 = 16x + 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$11 = 11x + 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العملية تُجرى على الطرفين معًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب كل طرف بعد العملية، ثم بسّطه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعادلة الناتجة لها الحل نفسه الذي للمعادلة الأولى: يمكنك التحقّق بتعويض قيمة لـ $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "نطرح $5x$ من الطرفين: $11 = 6x + 5$ — معادلة لها الحل نفسه.",
+        "incorrect": "العملية نفسها تُجرى على الطرفين، وبالإشارة نفسها."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّ المعادلة $5x + 11 = 11x + 5$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجهول موجود في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح من الطرفين أحد الحدّين اللذين فيهما $x$ لتجمع المجاهيل في طرف واحد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اجمع الأعداد في الطرف الآخر وقسّم على معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$5x + 11 = 11x + 5$ : نصل إلى $-6x = -6$ ، ومنه $x = 1$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    }
+  ]
+}

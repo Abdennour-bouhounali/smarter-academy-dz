@@ -1,0 +1,113 @@
+{
+  "id": "ex-4am-jidaa-maadum-l1-004",
+  "lessonCode": "jidaa-maadum",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — جداء أم لا؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تعريف"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidaa-maadum_P1",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "نريد أن نعرف هل المعادلة معادلة جداء معدوم، أي من الشكل $(ax + b)(cx + d) = 0$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل $x(x + 9) = 0$ معادلة جداء معدوم؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم: جداء العاملين $x$ و $x + 9$ يساوي $0$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا: لأنّ العامل $x$ ليس بين قوسين",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معادلة جداء معدوم: جداء عاملين من الدرجة الأولى يساوي $0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الطرف الأول: هل هو جداء أم مجموع؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم انظر إلى الطرف الثاني: هل هو $0$ ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 1 \\times x + 0$ عامل من الدرجة الأولى، فهي من الشكل $(ax + b)(cx + d) = 0$ .",
+        "incorrect": "الشرطان معًا: جداء عاملين في الطرف الأول، و $0$ في الطرف الثاني."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل $x^2 + 9x + 1 = 0$ معادلة جداء معدوم كما هي مكتوبة؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم: لأنّ الطرف الثاني $0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
+        },
+        {
+          "id": "B",
+          "content": "لا: الطرف الأول مجموع وليس جداءً",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معادلة جداء معدوم: جداء عاملين من الدرجة الأولى يساوي $0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الطرف الأول: هل هو جداء أم مجموع؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم انظر إلى الطرف الثاني: هل هو $0$ ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "الطرف الأول $x^2 + 9x + 1$ مجموع ثلاثة حدود، وليس جداء عاملين.",
+        "incorrect": "الشرطان معًا: جداء عاملين في الطرف الأول، و $0$ في الطرف الثاني."
+      }
+    }
+  ]
+}

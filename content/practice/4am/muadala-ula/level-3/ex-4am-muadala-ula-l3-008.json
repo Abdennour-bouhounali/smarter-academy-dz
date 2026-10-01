@@ -1,0 +1,127 @@
+{
+  "id": "ex-4am-muadala-ula-l3-008",
+  "lessonCode": "muadala-ula",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — أيّ خطوة صحيحة؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "معادلات متكافئة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadala-ula_P2",
+      "modelledOn": "method-equation"
+    }
+  },
+  "statement": {
+    "content": "خطوة صحيحة تعطي معادلة لها الحل نفسه."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نطرح $4x$ من الطرفين في المعادلة $6x + 1 = 4x - 7$ ، فنحصل على:",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2x + 1 = 8x - 7$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$2x + 1 = 4x - 7$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$2x + 1 = -7$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العملية تُجرى على الطرفين معًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب كل طرف بعد العملية، ثم بسّطه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعادلة الناتجة لها الحل نفسه الذي للمعادلة الأولى: يمكنك التحقّق بتعويض قيمة لـ $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "نطرح $4x$ من الطرفين: $2x + 1 = -7$ — معادلة لها الحل نفسه.",
+        "incorrect": "العملية نفسها تُجرى على الطرفين، وبالإشارة نفسها."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نطرح $10$ من الطرفين في المعادلة $3x + 10 = x - 2$ ، فنحصل على:",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3x = x - 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$3x = x - 12$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$3x = x + 8$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العملية تُجرى على الطرفين معًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب كل طرف بعد العملية، ثم بسّطه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعادلة الناتجة لها الحل نفسه الذي للمعادلة الأولى: يمكنك التحقّق بتعويض قيمة لـ $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "نطرح $10$ من الطرفين: $3x = x - 12$ — معادلة لها الحل نفسه.",
+        "incorrect": "العملية نفسها تُجرى على الطرفين، وبالإشارة نفسها."
+      }
+    }
+  ]
+}

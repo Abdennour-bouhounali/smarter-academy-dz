@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "title": "تدريب — محيط مثلث ومحيط مستطيل",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترييض",
+      "متراجحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P2",
+      "modelledOn": "ex-36"
+    }
+  },
+  "statement": {
+    "content": "مثلث متقايس الأضلاع طول ضلعه $x$ (بالسنتيمتر)، ومستطيل بعداه $x + 3$ و 5. نسمّي $x$ عددًا طبيعيًا."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "«محيط المثلث أكبر من محيط المستطيل» تُترجم بالمتراجحة ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3x > 2x + 16$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$3x > x + 8$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
+        },
+        {
+          "id": "C",
+          "content": "$3x < 2x + 16$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        },
+        {
+          "id": "D",
+          "content": "$x > 2x + 16$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-MAJHUL-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "محيط المثلث المتقايس الأضلاع $3x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "محيط المستطيل ضعف مجموع طوله وعرضه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$2(x + 3 + 5) = 2x + 16$."
+        }
+      ],
+      "feedback": {
+        "correct": "محيط المثلث $3x$ ومحيط المستطيل $2(x + 8) = 2x + 16$.",
+        "incorrect": "محيط المستطيل ضعف مجموع بعديه."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو أصغر عدد طبيعي $x$ يكون من أجله محيط المثلث أكبر من محيط المستطيل؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "17",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حل المتراجحة السابقة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$3x - 2x > 16$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عند $x = 16$ يتساوى المحيطان."
+        }
+      ],
+      "feedback": {
+        "correct": "$x > 16$ ، فأصغر عدد طبيعي هو 17 (المحيطان 51 و 50).",
+        "incorrect": "عند قيمة التساوي لا يكون محيط المثلث أكبر."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "16",
+          "id": "MISC-WADIYA-QIMAT-TASAWI"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l3-010",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 3
+}

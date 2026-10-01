@@ -1,0 +1,111 @@
+{
+  "id": "ex-4am-muadala-ula-l1-006",
+  "lessonCode": "muadala-ula",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — معامل سالب",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ax = b",
+      "إشارة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadala-ula_P1",
+      "modelledOn": "ex-1"
+    }
+  },
+  "statement": {
+    "content": "حلّ كل معادلة، وانتبه إلى إشارة المعامل."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حل المعادلة $-5x = 20$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-4$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$-\\dfrac{1}{4}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$25$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARH-MUAMIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المعادلة من الشكل $ax = b$ : حدّد العدد المضروب في $x$ والعدد الذي في الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نقسم الطرفين على معامل $x$ ، مع إشارته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحل هو العدد الذي في الطرف الآخر مقسومًا على معامل $x$ ، لا العكس."
+        }
+      ],
+      "feedback": {
+        "correct": "$-5x = 20$ : نصل إلى $-5x = 20$ ، ومنه $x = -4$.",
+        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّ المعادلة $-7x = -2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "2/7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المعادلة من الشكل $ax = b$ : حدّد العدد المضروب في $x$ والعدد الذي في الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نقسم الطرفين على معامل $x$ ، مع إشارته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحل هو العدد الذي في الطرف الآخر مقسومًا على معامل $x$ ، لا العكس."
+        }
+      ],
+      "feedback": {
+        "correct": "$-7x = -2$ : نصل إلى $-7x = -2$ ، ومنه $x = \\dfrac{2}{7}$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    }
+  ]
+}

@@ -161,6 +161,55 @@ information, is `aria-hidden`, outside the keyboard path (`tabIndex=-1`), never 
 and is frozen by `prefers-reduced-motion`. This is the one sanctioned exception to « no decorative
 interaction » (§9 checklist) — keep it confined to the drawn world, never on a mathematical object.
 
+## 2sexies. The equation and inequality laboratories (unit 4, 2026-10-01)
+
+Unit 4 « معادلات ومتراجحات من الدرجة الأولى بمجهول واحد » added four types by the §7ter recipe, one per
+concept, each holding a DIFFERENT variable and gesture (DNA §6: equality = balance, product = area, inequality =
+move a boundary, modelling = two quantities growing). All four compute through ONE exact module,
+`packages/core/arithmetic/linear.js` (fractions `{n, d}`, `linear('4x-3')`, `solveEquation`, `solveInequality`
+with `flipped`, `applyBoth` refusing ×0, `factors('x-2|x+5')`, `productAt`; `linear.test.js` sweeps the
+textbook's equations, inequalities and products), and live in `manipulations/equations/` with their logic in
+`logic/<name>.js` + `logic/<name>.test.js` (their own test files) and a render test
+`equations/<name>.render.test.jsx`. Strings: `lesson.json › manipulation.equationBalance | vanishingPitch |
+solutionRay | growthRace`. All four are **manual** (§6bis — every gesture is a decision or an answer), report
+validated trials through `onTrial` (via `state.report`), and carry the owner's decorative layer (below).
+
+| Type | The hand holds | Resistance | Discovery (contrast) | Lessons |
+|---|---|---|---|---|
+| `equation-balance` (`EquationBalance.jsx`) | the CONTENTS of the two pans of a drawn Roberval balance: closed bags (+x, hidden), footballs (+1), helium balloons (−1, floating), flying bags (−x) — carried from the reserve onto a pan or back (carry, tap-tap: touching an object of the target pan with a reserve piece held aims at that pan), then k, the number of equal groups per pan (stretch) | the beam tilts by the TRUE hidden x as soon as one pan changes; while it tilts only the same effect (or its undo) is accepted — « الميزان مال: ما فعلته بكفّة افعله بالأخرى »; carrying a piece straight across is refused (`moveAcross`, the « transposition without sign change » error made physical); k groups refused when bags do not share evenly (leftover bag drawn) or when units would have to be cut | a tilted state seen, the balance solved (one bag alone) AND the substitution check (« افتح الأكياس ») → « نجري العملية نفسها على الطرفين »; each both-sided step writes the textbook's line (`9x + 1 - 1 = -26 - 1`, « أي 9x = −27 »); fractional values drawn as ball sectors (9/2, −1/7) | L1 (`3x+2=11`, `9x+1=-26`; معارف `4x-3=2x+6`, `levels={false}`) |
+| `vanishing-pitch` (`VanishingPitch.jsx`) | **x** on a ruler (stretch); the pitch's two SIGNED sides are the factors A and B drawn from a corner (a negative side goes past the corner, dashed, « ضلع سالب »; a negative area hatched); then « ثبّت هذا الحل » (pin) and « لا حلول أخرى » | a pin where the area is not 0 is refused with the area read exactly (`(−1) × 6 = −6 ≠ 0`); « لا حلول أخرى » refused while a zero is missing or the ruler has not been swept on both sides; the graduation is the LCM of the roots' denominators so every zero IS a graduation (no rounding) | a refused pin, every zero pinned and the claim accepted → $A \times B = 0 \iff A = 0$ أو $B = 0$; at مبتدئ the constant side 3 never collapses (one solution, « لأنّ 3 ≠ 0 »); `expr` = `f1\|f2`, a single factor = its square (one zero), decimals kept as decimals | L2 (`3\|x-5`, `x-2\|x+5`; معارف `3x-4\|-2x+1`, طرائق `2x+1`) |
+| `solution-ray` (`SolutionRay.jsx`) | a PROBE x on a graduated line (stretch): the two sides shown live with the verdict, each validated position leaves a trace — RED when true (the textbook's colour for solutions), grey otherwise; then the BRACKET (second stretch track, side and « موجّه / غير موجّه نحو الجزء الملوّن »); at متقدم, transformation CARDS in the textbook's order and the relation of each new line | the bracket opens after one red and one grey trace and is refused with a witness number taken first from the student's own traces (`checkBracket`; on whole graduations x ≤ 2 and x < 3 coincide, so the witness may be 2,5); a new line whose direction is wrong is refused with a red trace (« نقاطك الحمراء على يمين −5 … ») — ÷(−3) kept as ≤ contradicts the student's own evidence | مبتدئ: the bracket rule (turned toward the red part ⇔ the bound is a solution); متقدم: one step keeping the direction and one negative scaling flipping it → « نغيّر الاتجاه عند الضرب أو القسمة على عدد سالب »; the invariant « equivalent lines keep exactly the same traces » is swept over 7 inequalities | L3 (`x<3`, `-3x+5<=20`; module 1 `2,5x+100<=150` in the phone context, whole x, `levels={false}`, no bracket stage) |
+| `growth-race` (`GrowthRace.jsx`) | BUILD: « + x » / « × x » tokens carried onto each story element (people, price cards) — the expression of each side assembles live; RACE (opened by the student, §7quater, with a way back): **x** whole ≥ 0 on a timeline (stretch), the two quantities drawn as growing figures / stacked columns | « تحقّق » refuses a model contradicting the story, element by element, in the story's words (a child who did not age: MISC-TARRID-MAJHUL-WAHID; a per-session price paid once; the yearly card paid every session: MISC-WADIYA-TARJAMA) | the meeting point plus one trial before and one after (a solution between graduations needs both neighbours; a negative / no solution needs three trials including x = 0) → the textbook's lines (36 + x = 3x + 18 …), التحقق, then the inequality beyond (« ابتداءً من 9 حصص ») | L4 (`30+x` vs `2(6+x)`, `36+x` vs `4+x+6+x+8+x`, theme `family`), synthesis (`75x` vs `560+5x`, `goal="greater"`, theme `pool`) |
+
+`growth-race` props (contract written in the component header): `left`, `right` (linear in x as written in the
+model; `k(…)` products of a constant and a sum allowed, the STRUCTURE — which element carries which x — is kept
+for the build stage), `theme` (`ages` | `pool`; the token's operation comes from the expressions, not the
+theme), `domain` (`natural`), `goal` (`equal` | `less` | `greater`), `maxX`, plus `context={{ leftTitle,
+rightTitle, names, question }}` (a lesson's own words), `onModel`, and `startWith="race"` (the model already
+placed, like `common-divisors`' `startWith="lists"`). A lesson that reuses it keeps the props in its
+`content/textbook.js` (`LAB = { beginner, advanced }`) and mounts the same object in a render test.
+
+**DOM contracts** (e2e `apps/web/e2e/lesson-kit/4am-muadalat-mutarajihat.mjs`, 25 lab checks by real gesture):
+`[data-equation-balance][data-eq][data-tilt][data-solved]`, `[data-balance-pan=L|R]`, `[data-drag-source="p:<side>:<kind>" | "r:<kind>"]`,
+`[data-balance-divide] [data-stretch-handle]`, `[data-balance-divide-go]`, `[data-balance-groups][data-ok]`, `[data-balance-step]`,
+`[data-balance-notice]`; `[data-vanishing-field][data-collapsed][data-sign]`, `[data-vanishing-ruler]`, `[data-vanishing-pin-button]`,
+`[data-vanishing-pin]`, `[data-vanishing-refused]`, `[data-vanishing-claim]`; `[data-solution-ray][data-mode=region|bracket|flip]`,
+`[data-ray-probe]`, `[data-ray-tried] [data-tried-x][data-ok]`, `[data-ray-bracket][data-placed]`, `[data-ray-bracket-handle]`,
+`[data-ray-side]`, `[data-ray-toward]`, `[data-ray-fix]`, `[data-ray-card]` (one card at a time), `[data-ray-choice=<rel>]`,
+`[data-ray-step=ok|ko]`; `[data-growth-race][data-theme][data-stage=build|race]`, `[data-drop-zone="el:<id>"]`, token `[data-drag-source="tok"]`,
+`[data-gr-check]`, `[data-gr-verdict=ok|ko]`, `[data-gr-open-race]`, `[data-gr-ruler]`, `[data-gr-columns][data-rel]`.
+
+**Layering over a drawn scene** (balance): the carry zones sit UNDER a `pointer-events-none` SVG and the
+transparent source overlays ON TOP of it, so the shared `DropZone`'s resting background never hides the drawing;
+a covered pan is aimed at by touching one of its objects with a piece held (the unit-3 « toucher-toucher »
+interception, MANIPULATION_CONTRACT §4.1).
+
+**Decorative layer (owner request, renewed 2026-10-01).** Each lab keeps, beside its causal gestures, a
+decoration of its world — a ball that bounces on the locker-room floor (balance), the pitch's ball that drops
+onto the line when the pitch collapses (vanishing pitch), Younes's phone that shakes or a linesman's flag at the
+bracket (ray), a birthday candle or the pool's ripples (race): `aria-hidden`, `tabIndex={-1}`, never a lab state,
+frozen by reduced motion — the exception of §2quinquies, not a licence to animate mathematics.
+
 ## 2bis. Drawn worlds — every lesson has its own, and the theme is data
 
 The football pitch (lesson 1, مبتدئ) and the library (lesson 1, متقدم) set the standard
@@ -820,6 +869,12 @@ state.
 
 ## 10. Tests
 
+- `packages/core/arithmetic/linear.test.js` and `logic/equationBalance.test.js`, `logic/vanishingPitch.test.js`,
+  `logic/solutionRay.test.js`, `logic/growthRace.test.js` — unit 4: act-1 (−3, −1/7), معارف 1 (9/2), the
+  طرائق decimals (−4), an equation without solution (ex-9); the tip / mirror / refusal rules and the k-groups
+  split; 3(x − 5) and (x − 2)(x + 5) pins swept over every graduation at five widths; inequality rays swept against
+  direct evaluation, the bracket witness, the invariance of the traces under legal transformations; the build
+  refusals and the meeting point of both race worlds.
 - `packages/core/arithmetic/polynomials.test.js` and `logic/algebraLabs.test.js` — unit 3: the
   textbook's expansions (معارف 1–2), the Descartes grid, $(3x - 1)(3 + x) → 3x^2 + 8x - 3$ by carry and
   merge, the refused merge, the cancelling $\pm 3x$, the forgotten zones of $(x + 3)^2$, the two-x

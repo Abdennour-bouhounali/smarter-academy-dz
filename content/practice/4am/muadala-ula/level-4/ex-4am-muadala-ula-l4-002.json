@@ -1,0 +1,95 @@
+{
+  "id": "ex-4am-muadala-ula-l4-002",
+  "lessonCode": "muadala-ula",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 6 — أنشر ثم أحل",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نشر",
+      "تبسيط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-6",
+      "page": 50,
+      "section": "أوظّف تعلّماتي",
+      "number": 6
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 50): $2x + 24 - 7(x - 2) = 138$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العبارة $2x + 24 - 7(x - 2)$ تُبسَّط إلى $-5x + c$ : ما العدد $c$ ؟ (احسب قيمة العبارة من أجل $x = 0$)",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4",
+      "expectedAnswer": "38",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من أجل $x = 0$ يبقى العددان وحدهما."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $24 - 7 \\times (0 - 2)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انتبه: $-7 \\times (-2)$ موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$24 - 7 \\times (-2) = 24 + 14 = 38$ ، فالعبارة $-5x + 38$.",
+        "incorrect": "عوّض $x$ بالعدد المعطى في كل حدّ، ثم احسب مع الإشارات."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّ المعادلة $2x + 24 - 7(x - 2) = 138$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "-20",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المعادلة أقواس."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر أولًا وبسّط كل طرف على حدة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم انقل المجاهيل إلى طرف والمعاليم إلى الطرف الآخر، وقسّم على معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x + 24 - 7(x - 2) = 138$ : نصل إلى $-5x = 100$ ، ومنه $x = -20$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    }
+  ]
+}

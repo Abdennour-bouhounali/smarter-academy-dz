@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "title": "تدريب — ادّخار أحمد وسارة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترييض",
+      "متراجحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "لدى أحمد 2000 دينار ويدّخر 150 دينارًا كل أسبوع؛ ولدى سارة 500 دينار وتدّخر 300 دينار كل أسبوع. نسمّي $x$ عدد الأسابيع."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "«ادّخار سارة يفوق ادّخار أحمد» يُترجم بالمتراجحة ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$800x > 2150x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$500 + 300x < 2000 + 150x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        },
+        {
+          "id": "C",
+          "content": "$500x + 300 > 2000x + 150$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-TARJAMA"
+        },
+        {
+          "id": "D",
+          "content": "$500 + 300x > 2000 + 150x$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب ما يملكه كل واحد بعد $x$ أسبوعًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المبلغ الأوّلي ثابت، والادّخار الأسبوعي يتكرّر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما تملكه سارة أكبر."
+        }
+      ],
+      "feedback": {
+        "correct": "بعد $x$ أسبوعًا: سارة $500 + 300x$ وأحمد $2000 + 150x$.",
+        "incorrect": "المبلغ الأوّلي لا يُضرب في عدد الأسابيع."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "ابتداءً من كم أسبوعًا يفوق ادّخار سارة ادّخار أحمد؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "11",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حل المتراجحة السابقة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$150x > 1500$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عند التساوي لا تفوقه بعد."
+        }
+      ],
+      "feedback": {
+        "correct": "$x > 10$ ، فابتداءً من الأسبوع 11 (عند 10 أسابيع: 3500 دينار لكل منهما).",
+        "incorrect": "خذ أصغر عدد طبيعي أكبر من قيمة التساوي."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "10",
+          "id": "MISC-WADIYA-QIMAT-TASAWI"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l4-006",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 4
+}

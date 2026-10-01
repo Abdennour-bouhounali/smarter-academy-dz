@@ -1,0 +1,119 @@
+{
+  "id": "ex-4am-jidaa-maadum-l2-009",
+  "lessonCode": "jidaa-maadum",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — هل نحلّل أولًا؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تعريف"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_jidaa-maadum_P1",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "قبل تطبيق خاصية الجداء المعدوم يجب أن يكون الطرف الأول جداءً والطرف الثاني $0$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "في أيّ معادلة يجب أن نحلّل الطرف الأول قبل استعمال الخاصية؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 - 4x = 0$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x(x - 4) = 0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
+        },
+        {
+          "id": "C",
+          "content": "$(x - 4)(x + 1) = 0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معادلة جداء معدوم: جداء عاملين من الدرجة الأولى يساوي $0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الطرف الأول: هل هو جداء أم مجموع؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم انظر إلى الطرف الثاني: هل هو $0$ ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 - 4x$ مجموع: نحلّله إلى $x(x - 4)$ أوّلًا. المعادلتان الأخريان جداءان معدومان.",
+        "incorrect": "الشرطان معًا: جداء عاملين في الطرف الأول، و $0$ في الطرف الثاني."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل $(x + 1)(x - 3) + 2 = 0$ معادلة جداء معدوم كما هي مكتوبة؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم: فيها الجداء $(x + 1)(x - 3)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
+        },
+        {
+          "id": "B",
+          "content": "لا: الطرف الأول مجموع جداء والعدد 2",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معادلة جداء معدوم: جداء عاملين من الدرجة الأولى يساوي $0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى الطرف الأول: هل هو جداء أم مجموع؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم انظر إلى الطرف الثاني: هل هو $0$ ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "الطرف الأول $(x + 1)(x - 3) + 2$ مجموع، فلا تُطبَّق الخاصية مباشرة.",
+        "incorrect": "الشرطان معًا: جداء عاملين في الطرف الأول، و $0$ في الطرف الثاني."
+      }
+    }
+  ]
+}

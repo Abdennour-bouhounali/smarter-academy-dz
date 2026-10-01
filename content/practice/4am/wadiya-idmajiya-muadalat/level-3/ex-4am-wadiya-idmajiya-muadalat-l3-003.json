@@ -1,0 +1,84 @@
+{
+  "metadata": {
+    "title": "تمرين 9 — تمثيل حلول x + 1 > −1 (أؤكّد تعلّماتي)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمثيل بياني",
+      "متراجحة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 52,
+      "section": "أؤكّد تعلّماتي",
+      "number": 9
+    }
+  },
+  "statement": {
+    "content": "نريد التمثيل البياني لحلول المتراجحة $x + 1 > -1$ على مستقيم مدرّج (الجزء الملوّن بالأحمر يمثّل الحلول)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "التمثيل الصحيح هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الجزء الملوّن على يسار $-2$ ، والمعقوف عند $-2$ متّجه عكس الجزء الملوّن",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+        },
+        {
+          "id": "B",
+          "content": "الجزء الملوّن على يسار 0 ، والمعقوف عند 0 متّجه عكس الجزء الملوّن",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "الجزء الملوّن على يمين $-2$ ، والمعقوف عند $-2$ متّجه عكس الجزء الملوّن",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "الجزء الملوّن على يمين $-2$ ، والمعقوف عند $-2$ متّجه نحو الجزء الملوّن",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ بحل المتراجحة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح 1 من الطرفين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم حدّد الجهة، وهل الحد حلّ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + 1 > -1$ يعني $x > -2$ : الجزء على يمين $-2$ ، و $-2$ ليس حلًا.",
+        "incorrect": "حل المتراجحة أولًا: $-1 - 1 = -2$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l3-003",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 3
+}

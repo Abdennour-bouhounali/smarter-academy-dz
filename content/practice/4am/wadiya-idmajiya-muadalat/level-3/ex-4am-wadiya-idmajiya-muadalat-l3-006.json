@@ -1,0 +1,119 @@
+{
+  "metadata": {
+    "title": "تدريب — ورشة الطباعة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معادلة",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "ورشة طباعة: الصيغة (أ) 15 دينارًا للصفحة؛ الصيغة (ب) 400 دينار للتجهيز و 5 دنانير للصفحة. نسمّي $x$ عدد الصفحات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من أجل كم صفحة تتساوى التكلفتان؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "40",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب المعادلة: تكلفة (أ) = تكلفة (ب)."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$15x = 400 + 5x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع حدود $x$ في طرف."
+        }
+      ],
+      "feedback": {
+        "correct": "$10x = 400$ أي $x = 40$ صفحة.",
+        "incorrect": "تكلفة (ب) $400 + 5x$ ، ثم نحل المعادلة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    },
+    {
+      "id": "q2",
+      "statement": "لطباعة 40 صفحة بالضبط ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الصيغة (ب) أفضل لأنّ 40 حل المعادلة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-QIMAT-TASAWI"
+        },
+        {
+          "id": "B",
+          "content": "الصيغة (أ) أفضل بـ 400 دينار",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "الصيغة (ب) أفضل بـ 200 دينار",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-TARJAMA"
+        },
+        {
+          "id": "D",
+          "content": "الصيغتان متساويتان: 600 دينار",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد 40."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب التكلفتين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن."
+        }
+      ],
+      "feedback": {
+        "correct": "$15 \\times 40 = 600$ و $400 + 5 \\times 40 = 600$ : التكلفتان متساويتان.",
+        "incorrect": "عند قيمة التساوي لا تكون أيّ صيغة أفضل."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 2
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l3-006",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 3
+}

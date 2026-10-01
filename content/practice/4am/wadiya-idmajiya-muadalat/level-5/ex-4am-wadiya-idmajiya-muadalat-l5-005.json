@@ -1,0 +1,66 @@
+{
+  "metadata": {
+    "title": "تدريب — اشتراك الهاتف بالفاصلة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متراجحة",
+      "أعداد عشرية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "عرضان: (أ) 4 دنانير للدقيقة؛ (ب) 250 دينارًا شهريًا و 1,5 دينار للدقيقة. نسمّي $x$ عدد الدقائق في الشهر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ابتداءً من كم دقيقة يكون العرض (ب) أفضل؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "101",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب المتراجحة $250 + 1{,}5x < 4x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$250 < 2{,}5x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على $2{,}5$ ، وانتبه لحالة التساوي."
+        }
+      ],
+      "feedback": {
+        "correct": "$x > 100$ ، فابتداءً من 101 دقيقة.",
+        "incorrect": "عند 100 دقيقة تتساوى التكلفتان (400 دينار)."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "100",
+          "id": "MISC-WADIYA-QIMAT-TASAWI"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l5-005",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 5
+}

@@ -1,0 +1,138 @@
+{
+  "metadata": {
+    "title": "تدريب — مسبح الحيّ: كم نوفّر؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متراجحة",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "في مسبح الحيّ صيغتان: الصيغة (أ) 60 دينارًا لكل حصة؛ الصيغة (ب) اشتراك سنوي قدره 400 دينار و 20 دينارًا لكل حصة. نسمّي $x$ عدد الحصص."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من أجل كم حصة تتساوى التكلفتان؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب المعادلة $60x = 400 + 20x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع حدود $x$ في طرف."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$40x = 400$ أي $x = 10$ حصص (600 دينار في الحالتين).",
+        "incorrect": "تكلفة (ب) $400 + 20x$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    },
+    {
+      "id": "q2",
+      "statement": "ابتداءً من كم حصة تكون الصيغة (ب) أفضل؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "11",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حل $400 + 20x < 60x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل قيمة التساوي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "التساوي لا يكفي."
+        }
+      ],
+      "feedback": {
+        "correct": "$x > 10$ ، فابتداءً من 11 حصة.",
+        "incorrect": "عند قيمة التساوي لا تكون (ب) أفضل."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "10",
+          "id": "MISC-WADIYA-QIMAT-TASAWI"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "كم دينارًا نوفّر باختيار الصيغة (ب) من أجل 15 حصة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "200",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب تكلفة كل صيغة من أجل 15 حصة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "(أ): $60 \\times 15$ ؛ (ب): $400 + 20 \\times 15$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "التوفير هو الفرق."
+        }
+      ],
+      "feedback": {
+        "correct": "(أ): 900 دينار؛ (ب): 700 دينار؛ التوفير: $900 - 700 = 200$ دينار.",
+        "incorrect": "احسب التكلفتين ثم اطرح."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l4-005",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 4
+}

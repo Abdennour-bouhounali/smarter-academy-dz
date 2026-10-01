@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "title": "تدريب — أجرة سيارة الأجرة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترجمة",
+      "عبارة حرفية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "تحسب سيارة أجرة 50 دينارًا عند الركوب، ثم 30 دينارًا لكل كيلومتر. نسمّي $x$ عدد الكيلومترات المقطوعة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أجرة الرحلة بدلالة $x$ (بالدينار) هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$50 + 30x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$80x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$50x + 30$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-TARJAMA"
+        },
+        {
+          "id": "D",
+          "content": "$30 + x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مبلغ يُدفع مرّة واحدة ومبلغ يتكرّر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المبلغ الذي يتكرّر مع كل كيلومتر يُضرب في $x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب المبلغ الثابت ثم أضف إليه ثمن الكيلومترات."
+        }
+      ],
+      "feedback": {
+        "correct": "50 دينارًا عند الركوب مرّة واحدة، و 30 دينارًا لكل كيلومتر: $50 + 30x$.",
+        "incorrect": "المبلغ الثابت لا يُضرب في $x$."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 1
+    },
+    {
+      "id": "q2",
+      "statement": "كم دينارًا ندفع لرحلة طولها 7km؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "260",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بعدد الكيلومترات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب ثمن الكيلومترات أولًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تنس مبلغ الركوب."
+        }
+      ],
+      "feedback": {
+        "correct": "$50 + 30 \\times 7 = 50 + 210 = 260$ دينارًا.",
+        "incorrect": "نضرب 30 في عدد الكيلومترات ثم نضيف 50."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1,
+      "misconceptionSignatures": [
+        {
+          "value": "560",
+          "id": "MISC-WADIYA-TARJAMA"
+        }
+      ]
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l1-006",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 1
+}

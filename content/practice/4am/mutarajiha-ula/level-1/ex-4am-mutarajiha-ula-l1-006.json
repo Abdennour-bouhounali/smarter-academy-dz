@@ -1,0 +1,164 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l1-006",
+  "lessonCode": "mutarajiha-ula",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — المجهول في الطرفين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حلّ متراجحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutarajiha-ula_P1",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "لتكن المتراجحة $2x + 1 > x + 3$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل العدد $2$ حلّ للمتراجحة $2x + 1 > x + 3$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، هو حلّ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
+        },
+        {
+          "id": "B",
+          "content": "لا، ليس حلًّا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب كل طرف وحده."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن النتيجتين بالرمز نفسه: هل المتباينة العددية صحيحة؟"
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = 2$ : الطرف الأول يساوي $5$ والطرف الثاني $5$ ، و $5 > 5$ متباينة خاطئة.",
+        "incorrect": "احسب الطرفين من أجل هذه القيمة، ثم احكم على المتباينة العددية — وانتبه إلى الرمز الصارم $<$ أو $>$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل العدد $5$ حلّ للمتراجحة $2x + 1 > x + 3$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، هو حلّ",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا، ليس حلًّا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب كل طرف وحده."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن النتيجتين بالرمز نفسه: هل المتباينة العددية صحيحة؟"
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = 5$ : الطرف الأول يساوي $11$ والطرف الثاني $8$ ، و $11 > 8$ متباينة صحيحة.",
+        "incorrect": "احسب الطرفين من أجل هذه القيمة، ثم احكم على المتباينة العددية — وانتبه إلى الرمز الصارم $<$ أو $>$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "أيّ عدد حلّ للمتراجحة $2x + 1 > x + 3$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QAWS"
+        },
+        {
+          "id": "C",
+          "content": "$0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اختبر كل عدد بتعويضه في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب الطرفين ثم احكم على المتباينة العددية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العدد المطلوب وحده يعطي متباينة صحيحة."
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = 3$ : $7 > 6$ صحيحة، أمّا القيم الأخرى فلا تحقّقها.",
+        "incorrect": "عوّض كل عدد في الطرفين واحسب، ثم قارن بالرمز نفسه."
+      }
+    }
+  ]
+}

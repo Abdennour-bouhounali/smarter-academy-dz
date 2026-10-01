@@ -492,5 +492,164 @@
     "relatedLearningPoints": [
       "4am_wadiya-idmajiya-harfi_P3"
     ]
+  },
+  "MISC-MUADALA-NAQL-ISHARA": {
+    "label": "نقل حدّ إلى الطرف الآخر دون تغيير إشارته",
+    "explanation": "طرح 5 من الطرفين: $x + 5 = 12$ يعطي $x = 12 - 5 = 7$ وليس $x = 17$ .",
+    "relatedLearningPoints": [
+      "4am_muadala-ula_P2"
+    ]
+  },
+  "MISC-MUADALA-TARH-MUAMIL": {
+    "label": "طرح المعامل بدل القسمة عليه",
+    "explanation": "$3x = 12$ يعني $x = \\dfrac{12}{3} = 4$ : نقسم على 3، لا نطرح 3.",
+    "relatedLearningPoints": [
+      "4am_muadala-ula_P1"
+    ]
+  },
+  "MISC-MUADALA-QISMA-MAQLUBA": {
+    "label": "قلب حاصل القسمة: a/b بدل b/a",
+    "explanation": "حل $ax = b$ هو $\\dfrac{b}{a}$ : $2x = 9$ يعطي $x = \\dfrac{9}{2}$ وليس $\\dfrac{2}{9}$ .",
+    "relatedLearningPoints": [
+      "4am_muadala-ula_P1"
+    ]
+  },
+  "MISC-MUADALA-TARAF-WAHID": {
+    "label": "إجراء العملية على طرف واحد فقط",
+    "explanation": "كل عملية تُجرى على الطرفين معًا، وإلا لم تبقَ المساواة صحيحة (الميزان يميل).",
+    "relatedLearningPoints": [
+      "4am_muadala-ula_P1",
+      "4am_muadala-ula_P2"
+    ]
+  },
+  "MISC-MUADALA-GHAYR-MUTASHABIH": {
+    "label": "جمع حدّ بـ x مع عدد",
+    "explanation": "$2x + 3$ لا يساوي $5x$ : الحدّان غير متشابهين.",
+    "relatedLearningPoints": [
+      "4am_muadala-ula_P2"
+    ]
+  },
+  "MISC-MUADALA-ISHARA-SALIBA": {
+    "label": "إهمال إشارة المعامل السالب عند القسمة",
+    "explanation": "$-3x = 6$ يعطي $x = \\dfrac{6}{-3} = -2$ .",
+    "relatedLearningPoints": [
+      "4am_muadala-ula_P1"
+    ]
+  },
+  "MISC-JIDAA-HAL-WAHID": {
+    "label": "الاكتفاء بحلّ واحد لمعادلة جداء معدوم",
+    "explanation": "$(x - 2)(x + 5) = 0$ يعني $x - 2 = 0$ أو $x + 5 = 0$ : حلّان هما 2 و $-5$ .",
+    "relatedLearningPoints": [
+      "4am_jidaa-maadum_P2"
+    ]
+  },
+  "MISC-JIDAA-ISHARA-JADHR": {
+    "label": "أخذ إشارة العدد في القوس حلًّا",
+    "explanation": "$x + 5 = 0$ يعني $x = -5$ ، لا $x = 5$ .",
+    "relatedLearningPoints": [
+      "4am_jidaa-maadum_P2"
+    ]
+  },
+  "MISC-JIDAA-QISMA-ALA-X": {
+    "label": "قسمة الطرفين على x وضياع الحل 0",
+    "explanation": "$9x^2 = 4x$ : نحلّل $x(9x - 4) = 0$ فنجد 0 و $\\dfrac{4}{9}$ ؛ القسمة على $x$ تُضيّع الحل 0.",
+    "relatedLearningPoints": [
+      "4am_jidaa-maadum_P3"
+    ]
+  },
+  "MISC-JIDAA-GHAYR-SIFR": {
+    "label": "تطبيق خاصية الجداء المعدوم على جداء غير معدوم",
+    "explanation": "الخاصية تخص الجداء الذي يساوي 0 فقط: من $AB = 6$ لا نستنتج $A = 6$ أو $B = 6$ .",
+    "relatedLearningPoints": [
+      "4am_jidaa-maadum_P2",
+      "4am_jidaa-maadum_P3"
+    ]
+  },
+  "MISC-JIDAA-AMIL-THABIT": {
+    "label": "اعتبار عامل ثابت غير معدوم حلًّا",
+    "explanation": "في $3(x - 5) = 0$ العامل 3 لا ينعدم أبدًا: الحل الوحيد 5.",
+    "relatedLearningPoints": [
+      "4am_jidaa-maadum_P1",
+      "4am_jidaa-maadum_P2"
+    ]
+  },
+  "MISC-JIDAA-NASHR-AWWALAN": {
+    "label": "النشر بدل التحليل",
+    "explanation": "نشر $(x - 2)(x + 5)$ يعطي $x^2 + 3x - 10 = 0$ : ليست من الدرجة الأولى. نحلّل لنصل إلى جداء معدوم.",
+    "relatedLearningPoints": [
+      "4am_jidaa-maadum_P3"
+    ]
+  },
+  "MISC-MUTARAJIHA-SALIB-BILA-QALB": {
+    "label": "عدم تغيير الاتجاه عند الضرب أو القسمة على عدد سالب",
+    "explanation": "$-3x \\leq 15$ يعطي $x \\geq -5$ : القسمة على $-3$ تغيّر الاتجاه.",
+    "relatedLearningPoints": [
+      "4am_mutarajiha-ula_P2"
+    ]
+  },
+  "MISC-MUTARAJIHA-QALB-ZAID": {
+    "label": "تغيير الاتجاه دون سبب",
+    "explanation": "$2x < -6$ يعطي $x < -3$ : القسمة على 2 (موجب) تحافظ على الاتجاه، ولو كان الطرف الآخر سالبًا.",
+    "relatedLearningPoints": [
+      "4am_mutarajiha-ula_P2"
+    ]
+  },
+  "MISC-MUTARAJIHA-QAWS": {
+    "label": "الخلط بين حدٍّ هو حل وحدٍّ ليس حلًّا",
+    "explanation": "في $x \\leq 3$ العدد 3 حلّ (الرمز موجّه نحو الجزء الملوّن)، وفي $x < 3$ ليس حلًّا.",
+    "relatedLearningPoints": [
+      "4am_mutarajiha-ula_P3"
+    ]
+  },
+  "MISC-MUTARAJIHA-JIHA": {
+    "label": "تلوين الجهة الخاطئة من المستقيم المدرّج",
+    "explanation": "$x > 6$ : الحلول هي الأعداد الأكبر من 6، أي على يمين 6.",
+    "relatedLearningPoints": [
+      "4am_mutarajiha-ula_P3"
+    ]
+  },
+  "MISC-MUTARAJIHA-MUSAWA": {
+    "label": "معاملة المتراجحة كأنها معادلة لها حلّ واحد",
+    "explanation": "للمتراجحة عدد لا نهائي من الحلول: كل الأعداد في جهة من الحد.",
+    "relatedLearningPoints": [
+      "4am_mutarajiha-ula_P1",
+      "4am_mutarajiha-ula_P2"
+    ]
+  },
+  "MISC-TARRID-MAJHUL-WAHID": {
+    "label": "إضافة المجهول مرة واحدة لمجموعة أشخاص",
+    "explanation": "بعد $x$ سنة يكبر كل ابن بـ $x$ : مجموع أعمار 3 أبناء يزيد بـ $3x$ .",
+    "relatedLearningPoints": [
+      "4am_tarrid-mushkila_P1"
+    ]
+  },
+  "MISC-TARRID-DIF-MAJMU": {
+    "label": "ترجمة «الضعف» أو «المجموع» ترجمة خاطئة",
+    "explanation": "«ضعف مجموع عمري الإبنين» هو $2[(4 + x) + (7 + x)]$ ، لا $2(4 + x) + (7 + x)$ .",
+    "relatedLearningPoints": [
+      "4am_tarrid-mushkila_P1"
+    ]
+  },
+  "MISC-TARRID-TAHAQQUQ": {
+    "label": "قبول حل لا يلائم الوضعية",
+    "explanation": "طول أو عدد حصص لا يكون سالبًا، وعدد الرسائل عدد طبيعي: نتحقّق من ملاءمة الحل للواقع.",
+    "relatedLearningPoints": [
+      "4am_tarrid-mushkila_P2"
+    ]
+  },
+  "MISC-WADIYA-QIMAT-TASAWI": {
+    "label": "اعتبار قيمة التساوي هي الجواب",
+    "explanation": "عند 8 حصص تتساوى الصيغتان (600 دينار)؛ الصيغة الثانية «أفضل» ابتداءً من 9 حصص.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-muadalat_P2"
+    ]
+  },
+  "MISC-WADIYA-TARJAMA": {
+    "label": "الخلط بين المبلغ الثابت والمبلغ لكل حصة",
+    "explanation": "الصيغة الثانية: $560 + 5x$ (الاشتراك يُدفع مرة واحدة)، لا $(560 + 5)x$ .",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-muadalat_P1",
+      "4am_wadiya-idmajiya-muadalat_P2"
+    ]
   }
 }

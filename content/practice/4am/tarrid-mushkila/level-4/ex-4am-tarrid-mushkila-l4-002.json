@@ -1,0 +1,126 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l4-002",
+  "lessonCode": "tarrid-mushkila",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 39 — المربع المائل",
+    "estimatedMinutes": 6,
+    "tags": [
+      "جداء معدوم",
+      "مساحة",
+      "تحقّق"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-39",
+      "page": 53,
+      "section": "أتعمّق",
+      "number": 39
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 53): ABCD مربع ضلعه 8cm ، والنقاط E ، F ، G ، H على أضلاعه بحيث $AH = BE = CF = DG = x$ ، و EFGH مربع. نريد أن تكون مساحة EFGH تساوي $34cm^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مساحة المربع EFGH بدلالة $x$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2x^2 - 16x + 64$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$4x^2 - 32x + 64$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$64 - x^2$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مساحة EFGH = مساحة ABCD − مساحة المثلثات الأربعة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل مثلث قائم ضلعاه $x$ و $8 - x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مساحة المثلث القائم نصف جداء ضلعي القائمة."
+        }
+      ],
+      "feedback": {
+        "correct": "$64 - 4 \\times \\dfrac{x(8 - x)}{2} = 2x^2 - 16x + 64$ .",
+        "incorrect": "لا تنسَ القسمة على 2 في مساحة المثلث."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "قيم $x$ التي تجعل المساحة $34cm^2$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x = 3$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-HAL-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$x = 3$ أو $x = 5$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x = 5$ أو $x = -3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب $2x^2 - 16x + 64 = 34$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على $2x^2 - 16x + 30 = 0$ أي $(2x - 10)(x - 3) = 0$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء معدوم، ثم تحقّق أن كل حل بين 0 و 8."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 5$ أو $x = 3$ ، وكلاهما بين 0 و 8.",
+        "incorrect": "للجداء المعدوم حلّان هنا، وكلاهما يلائم الشكل."
+      }
+    }
+  ]
+}

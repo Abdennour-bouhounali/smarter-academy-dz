@@ -1,0 +1,108 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l3-010",
+  "lessonCode": "tarrid-mushkila",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — دجاج وأرانب",
+    "estimatedMinutes": 5,
+    "tags": [
+      "ترييض",
+      "مجهول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-mushkila_P1",
+      "modelledOn": "method-modelling"
+    }
+  },
+  "statement": {
+    "content": "في حظيرة دجاج وأرانب: 20 رأسًا و 56 رِجلًا. نسمّي $x$ عدد الأرانب."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ معادلة تترجم النص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4x + 2x = 56$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-MAJHUL-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$4x + 2(20 - x) = 56$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$4x + 20 = 56$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كم عدد الدجاج بدلالة $x$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عدد الدجاج $20 - x$ ، وللدجاجة رِجلان وللأرنب أربع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع أرجل الأرانب وأرجل الدجاج."
+        }
+      ],
+      "feedback": {
+        "correct": "$4x + 2(20 - x) = 56$ .",
+        "incorrect": "عدد الدجاج هو ما يبقى من الرؤوس: $20 - x$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "كم عدد الأرانب؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بسّط: $2x + 40 = 56$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح 40 ثم اقسم على 2."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق: عدد الرؤوس وعدد الأرجل."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x = 16$ أي $x = 8$ : 8 أرانب و 12 دجاجة، $32 + 24 = 56$ .",
+        "incorrect": "انشر $2(20 - x)$ أولًا."
+      }
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l3-009",
+  "lessonCode": "mutarajiha-ula",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — الاشتراك في النادي",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حل متراجحة",
+      "حلّ"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutarajiha-ula_P2",
+      "modelledOn": "act-3a"
+    }
+  },
+  "statement": {
+    "content": "يدفع منخرط في نادٍ رياضي اشتراكًا قدره 800DA ثم 150DA عن كل حصة. ميزانيته 2000DA. نرمز إلى عدد الحصص بـ $x$ ، فالمتراجحة هي $800 + 150x \\leq 2000$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المتراجحة $800 + 150x \\leq 2000$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\leq \\dfrac{56}{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$x \\leq 8$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x \\geq 8$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننقل حدود $x$ إلى طرف والأعداد إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإضافة أو الطرح من الطرفين لا تغيّر الاتجاه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في الأخير نقسم على معامل $x$ : انظر إلى إشارته قبل أن تكتب الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "$800 + 150x \\leq 2000$ تؤول إلى $150x \\leq 1200$، ثم نقسم على $150$ (عدد موجب، فالاتجاه لا يتغيّر): $x \\leq 8$.",
+        "incorrect": "راجع كل خطوة: هل أجريت العملية نفسها على الطرفين؟ وهل غيّرت الاتجاه عند الضرب أو القسمة على عدد سالب فقط؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما أكبر عدد من الحصص يمكنه دفعه؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المتراجحة أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مثّل الحلول على مستقيم مدرّج وانظر إلى الحدّ: هل هو نفسه حلّ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن أكبر عدد طبيعي في الجزء الملوّن."
+        }
+      ],
+      "feedback": {
+        "correct": "الحلول: $x \\leq 8$ ، و $800 + 150 \\times 8 = 2000$ : أكبر عدد هو 8.",
+        "incorrect": "حلّ المتراجحة، ثم انتبه إلى الحدّ: هل هو حلّ أم لا؟"
+      }
+    }
+  ]
+}

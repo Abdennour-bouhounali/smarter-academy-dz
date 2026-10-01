@@ -1,0 +1,78 @@
+{
+  "metadata": {
+    "title": "تمرين 8 — متراجحة بمعامل سالب (أؤكّد تعلّماتي)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متراجحة",
+      "أؤكّد تعلّماتي"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 52,
+      "section": "أؤكّد تعلّماتي",
+      "number": 8
+    }
+  },
+  "statement": {
+    "content": "في كل حالة اختر الإجابة الصحيحة، وبرّر اختيارك."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلول المتراجحة $-\\dfrac{1}{3}x > 1$ هي الأعداد $x$ حيث ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x > 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-ISHARA-SALIBA"
+        },
+        {
+          "id": "B",
+          "content": "$x < -3$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x > -3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل $x$ عدد سالب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نضرب الطرفين في $-3$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تذكّر ما يحدث لاتجاه المتراجحة عند الضرب في عدد سالب."
+        }
+      ],
+      "feedback": {
+        "correct": "نضرب الطرفين في $-3$ (سالب) فيتغيّر الاتجاه: $x < -3$.",
+        "incorrect": "الضرب في عدد سالب يغيّر اتجاه المتراجحة، ويغيّر إشارة الطرف الآخر."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l1-004",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 1
+}

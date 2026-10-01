@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l4-009",
+  "lessonCode": "tarrid-mushkila",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — فرق ثابت ونسبة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "أعمار",
+      "ترييض"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-mushkila_P1",
+      "modelledOn": "method-modelling"
+    }
+  },
+  "statement": {
+    "content": "أب يكبر ابنه بـ 26 سنة، وبعد 4 سنوات يصبح عمره ثلاثة أضعاف عمر ابنه. نسمّي $x$ عمر الابن اليوم."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ معادلة تترجم النص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x + 26 + 4 = 3(x + 4)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x + 26 = 3x + 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
+        },
+        {
+          "id": "C",
+          "content": "$x + 30 = 3x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-MAJHUL-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عمر الأب اليوم $x + 26$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بعد 4 سنوات يكبر الاثنان بـ 4."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عمر الأب حينها = 3 × عمر الابن حينها."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 26) + 4 = 3(x + 4)$ .",
+        "incorrect": "الابن أيضًا يكبر 4 سنوات قبل أن نضاعف عمره."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما عمر الابن اليوم؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر: $x + 30 = 3x + 12$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع حدود $x$ في طرف."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بعد 4 سنوات."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x = 18$ أي $x = 9$ : بعد 4 سنوات الابن 13 والأب $39 = 3 \\times 13$ .",
+        "incorrect": "انشر $3(x + 4)$ أولًا."
+      }
+    }
+  ]
+}

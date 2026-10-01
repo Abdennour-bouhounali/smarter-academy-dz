@@ -1,0 +1,78 @@
+{
+  "metadata": {
+    "title": "تمرين 1 — حل معادلة (أؤكّد تعلّماتي)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معادلة",
+      "أؤكّد تعلّماتي"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 52,
+      "section": "أؤكّد تعلّماتي",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "في كل حالة اختر الإجابة الصحيحة، وبرّر اختيارك."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حل المعادلة $-2 + x = 5$ هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "2",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARAF-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "7",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "3",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجهول $x$ مضاف إليه $-2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "لعزل $x$ نضيف 2 إلى الطرفين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق من جوابك بالتعويض في $-2 + x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 5 + 2 = 7$ ، ونتحقق: $-2 + 7 = 5$.",
+        "incorrect": "ننقل $-2$ إلى الطرف الآخر بتغيير إشارته، ثم نتحقق بالتعويض."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 1
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l1-001",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 1
+}

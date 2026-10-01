@@ -1,0 +1,155 @@
+{
+  "id": "ex-4am-mutarajiha-ula-l1-001",
+  "lessonCode": "mutarajiha-ula",
+  "level": 1,
+  "metadata": {
+    "title": "نشاط 3 — رسائل يونس",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متراجحة",
+      "حلّ"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-3a",
+      "page": 45,
+      "section": "أنشطة",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 45): متعامل للهاتف النقال يقترح $2{,}5$DA للرسالة الواحدة و 100DA اقتطاعًا جزافيًا من الرصيد. يرغب يونس في عدم تجاوز المبلغ 150DA الموجود في رصيده. نرمز إلى عدد الرسائل بـ $x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ متراجحة توافق رغبة يونس؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2{,}5x + 100 \\geq 150$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-JIHA"
+        },
+        {
+          "id": "B",
+          "content": "$150x + 100 \\leq 2{,}5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        },
+        {
+          "id": "C",
+          "content": "$2{,}5x + 100 \\leq 150$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الكلفة: سعر الرسالة مضروبًا في عدد الرسائل، زائد الاقتطاع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الكلفة لا تتجاوز الرصيد: «أصغر من أو تساوي»."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب الكلفة بدلالة $x$ ثم قارنها بالرصيد."
+        }
+      ],
+      "feedback": {
+        "correct": "الكلفة $2{,}5x + 100$ لا تتجاوز 150: $2{,}5x + 100 \\leq 150$.",
+        "incorrect": "اكتب أولًا الكلفة بدلالة $x$ ، ثم الرمز الذي يعني «لا يتجاوز»."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل العدد $18$ حلّ للمتراجحة $2{,}5x + 100 \\leq 150$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، هو حلّ",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا، ليس حلًّا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-MUSAWA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد في الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب كل طرف وحده."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن النتيجتين بالرمز نفسه: هل المتباينة العددية صحيحة؟"
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = 18$ : الطرف الأول يساوي $145$ والطرف الثاني $150$ ، و $145 \\leq 150$ متباينة صحيحة.",
+        "incorrect": "احسب الطرفين من أجل هذه القيمة، ثم احكم على المتباينة العددية — وانتبه إلى الرمز الصارم $<$ أو $>$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "ما أكبر عدد من الرسائل يمكن ليونس إرساله؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutarajiha-ula_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "20",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ المتراجحة أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مثّل الحلول على مستقيم مدرّج وانظر إلى الحدّ: هل هو نفسه حلّ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن أكبر عدد طبيعي في الجزء الملوّن."
+        }
+      ],
+      "feedback": {
+        "correct": "الحلول: $x \\leq 20$ ، و $2{,}5 \\times 20 + 100 = 150$ لا يتجاوز الرصيد: أكبر عدد هو 20.",
+        "incorrect": "حلّ المتراجحة، ثم انتبه إلى الحدّ: هل هو حلّ أم لا؟"
+      }
+    }
+  ]
+}

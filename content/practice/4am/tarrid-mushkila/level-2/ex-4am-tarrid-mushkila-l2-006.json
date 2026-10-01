@@ -1,0 +1,108 @@
+{
+  "id": "ex-4am-tarrid-mushkila-l2-006",
+  "lessonCode": "tarrid-mushkila",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — ثلث عدد",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترييض",
+      "معادلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-mushkila_P1",
+      "modelledOn": "ex-11"
+    }
+  },
+  "statement": {
+    "content": "عدد إذا أخذت ثلثه وأضفت إليه 4 تحصل على 10. نسمّي $x$ هذا العدد."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ معادلة تترجم النص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{x + 4}{3} = 10$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{x}{3} + 4 = 10$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$3x + 4 = 10$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ثلث العدد هو؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نأخذ الثلث أولًا ثم نضيف 4."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب العمليتين بالترتيب."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{x}{3} + 4 = 10$ .",
+        "incorrect": "الإضافة تأتي بعد أخذ الثلث."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما هذا العدد؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-mushkila_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "18",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اطرح 4 من الطرفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على $\\dfrac{x}{3} = 6$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب في 3."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{x}{3} = 6$ أي $x = 18$ ، و $6 + 4 = 10$ .",
+        "incorrect": "اطرح 4 أولًا، ثم اضرب في 3."
+      }
+    }
+  ]
+}

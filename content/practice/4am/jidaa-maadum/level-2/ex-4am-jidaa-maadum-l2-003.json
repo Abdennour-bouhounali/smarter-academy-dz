@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-jidaa-maadum-l2-003",
+  "lessonCode": "jidaa-maadum",
+  "level": 2,
+  "metadata": {
+    "title": "نشاط 2 — بالطريقتين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "خاصية الجداء المعدوم",
+      "أعداد عشرية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-2b",
+      "page": 44,
+      "section": "أنشطة",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 44): نحل المعادلة $-1{,}2(3x + 2{,}7) = 0$ بطريقة إلياس ثم بطريقة أمين."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بطريقة إلياس، نشر الطرف الأول يعطي المعادلة:",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-3{,}6x - 3{,}24 = 0$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$-3{,}6x + 2{,}7 = 0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-GHAYR-SIFR"
+        },
+        {
+          "id": "C",
+          "content": "$3{,}6x - 3{,}24 = 0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-ISHARA-SALIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ننشر: نضرب $-1{,}2$ في كل حدّ من القوس."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انتبه إلى الإشارة: سالب في موجب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $1{,}2 \\times 3$ و $1{,}2 \\times 2{,}7$."
+        }
+      ],
+      "feedback": {
+        "correct": "$-1{,}2 \\times 3x = -3{,}6x$ و $-1{,}2 \\times 2{,}7 = -3{,}24$ .",
+        "incorrect": "العامل الثابت لا يعطي حلًّا: عوّض اقتراحك وتحقّق أنّ الجداء يساوي $0$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما حل المعادلة؟",
+      "learningPoints": [
+        {
+          "code": "4am_jidaa-maadum_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "-0,9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أحد العاملين عدد ثابت."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عامل ثابت غير معدوم لا ينعدم أبدًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يكفي أن تحلّ المعادلة: العامل الآخر يساوي $0$."
+        }
+      ],
+      "feedback": {
+        "correct": "بما أنّ $-1{,}2 \\neq 0$ فإنّ $3x + 2{,}7 = 0$ ، أي $x = -0{,}9$ .",
+        "incorrect": "العامل الثابت لا يعطي حلًّا: عوّض اقتراحك وتحقّق أنّ الجداء يساوي $0$."
+      }
+    }
+  ]
+}

@@ -1,0 +1,202 @@
+{
+  "metadata": {
+    "title": "تدريب — سلسلة: نشر، تحليل، معادلة ومتراجحة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "نشر",
+      "تحليل",
+      "متراجحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-muadalat_P1",
+      "modelledOn": "ex-41"
+    }
+  },
+  "statement": {
+    "content": "لتكن العبارة $G = (3x - 2)^2 - (3x - 2)(x + 4)$ ، ونشرها المبسّط $6x^2 - 22x + 12$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "تحليل العبارة G هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(3x - 2)(4x + 2)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "B",
+          "content": "$(3x - 2)(2x + 2)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "C",
+          "content": "$(3x - 2)(2x - 2)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "D",
+          "content": "$(3x - 2)(2x - 6)$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل المشترك $3x - 2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(3x - 2)[(3x - 2) - (x + 4)]$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "غيّر إشارتي $x$ و 4."
+        }
+      ],
+      "feedback": {
+        "correct": "$(3x - 2)(3x - 2 - x - 4) = (3x - 2)(2x - 6)$.",
+        "incorrect": "الإشارة «−» تشمل $x$ و 4."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "حلول المعادلة $G = 0$ هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{2}{3}$ و $3$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{3}{2}$ و $3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$-\\dfrac{2}{3}$ و $-3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-ISHARA-JADHR"
+        },
+        {
+          "id": "D",
+          "content": "$\\dfrac{2}{3}$ و $6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARH-MUAMIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل الشكل المحلّل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حل $3x - 2 = 0$ و $2x - 6 = 0$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم العدد على معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = \\dfrac{2}{3}$ أو $x = 3$.",
+        "incorrect": "لكل عامل حلّه."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    },
+    {
+      "id": "q3",
+      "statement": "حلول المتراجحة $6x^2 - 22x + 12 \\geq 6x^2 - 10$ هي الأعداد $x$ حيث ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-muadalat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\geq 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-SALIB-BILA-QALB"
+        },
+        {
+          "id": "B",
+          "content": "$x \\leq -1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-ISHARA-SALIBA"
+        },
+        {
+          "id": "C",
+          "content": "$x \\leq 1$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$x \\leq \\dfrac{1}{11}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحدّان $6x^2$ يختفيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$-22x + 12 \\geq -10$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تبقى $-22x \\geq -22$ : القسمة على عدد سالب."
+        }
+      ],
+      "feedback": {
+        "correct": "$-22x \\geq -22$ ، والقسمة على $-22$ تغيّر الاتجاه: $x \\leq 1$.",
+        "incorrect": "القسمة على عدد سالب تغيّر الاتجاه."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-muadalat-l5-007",
+  "lessonCode": "wadiya-idmajiya-muadalat",
+  "level": 5
+}

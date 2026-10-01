@@ -1,0 +1,111 @@
+{
+  "id": "ex-4am-muadala-ula-l4-008",
+  "lessonCode": "muadala-ula",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — طرفان بأقواس",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نشر",
+      "المجهول في الطرفين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_muadala-ula_P2",
+      "modelledOn": "ex-7"
+    }
+  },
+  "statement": {
+    "content": "انشر الطرفين ثم انقل المجاهيل والمعاليم."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ المعادلة $2(x + 4) = 3(x - 1)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "11",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المعادلة أقواس."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر أولًا وبسّط كل طرف على حدة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم انقل المجاهيل إلى طرف والمعاليم إلى الطرف الآخر، وقسّم على معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$2(x + 4) = 3(x - 1)$ : نصل إلى $-x = -11$ ، ومنه $x = 11$.",
+        "incorrect": "أجرِ كل عملية على الطرفين معًا، ثم تحقّق بتعويض $x$ في المعادلة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل المعادلة $4(x - 1) + x = 2(x + 5)$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_muadala-ula_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{14}{3}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{3}{14}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المعادلة أقواس."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر أولًا وبسّط كل طرف على حدة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم انقل المجاهيل إلى طرف والمعاليم إلى الطرف الآخر، وقسّم على معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$4(x - 1) + x = 2(x + 5)$ : نصل إلى $3x = 14$ ، ومنه $x = \\dfrac{14}{3}$.",
+        "incorrect": "عوّض $x$ بكل اقتراح في الطرفين: الحل وحده يجعلهما متساويين."
+      }
+    }
+  ]
+}
