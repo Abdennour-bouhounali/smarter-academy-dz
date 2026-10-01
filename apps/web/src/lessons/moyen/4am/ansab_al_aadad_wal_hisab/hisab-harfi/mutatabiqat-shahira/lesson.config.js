@@ -1,0 +1,126 @@
+/**
+ * الدرس 2 من الوحدة 3 — المتطابقات الشهيرة
+ * Manuel 4AM, unité 3 : نشاط 2 (pp. 32–33), ديكارت (p. 31), معارف 2 (p. 34),
+ * طرائق (p. 35), دوري الآن 1 (p. 36), تمارين 9–19 (pp. 37–38), 28 أ (p. 39),
+ * أتعمّق 35–36 (p. 41), أؤكّد تعلّماتي 7, 8, 13 (p. 40), أستعدّ 5–6 (p. 31).
+ * Source de vérité : docs/sources/4am/unit3/extraction.json.
+ *
+ * Toutes les valeurs ci-dessous sont des LITTÉRAUX (lues par scripts/validate-lessons.mjs).
+ */
+export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/mutatabiqat-shahira';
+
+export const LESSON_CONFIG = {
+  id: 'mutatabiqat-shahira',
+  kind: 'lesson',
+  unit: 'hisab-harfi',
+  unitTitle: 'الحساب الحرفي',
+  sequentialUnlock: true,
+  title: 'المتطابقات الشهيرة',
+  description: 'مربع مجموع، مربع فرق، وجداء مجموع حدين وفرقهما — نقرؤها على مساحات ملعب مربّع نمدّده ونقتطع منه، ونبرهنها بالنشر، ثم نوظّفها لنشر العبارات وللحساب الذهني دون وضع العملية (مثل 21² أو 105 × 95).',
+  level: 'moyen',
+  grade: '4am',
+  chapter: 'ansab_al_aadad_wal_hisab',
+  chapterTitle: 'ميدان أنساب الأعداد والحساب',
+  passingScore: 4,
+  masteryThreshold: 0.8,
+  emoji: '²',
+  estimatedDurationMin: 55,
+  textbookRef: { unit: 3, activity: 2, pages: '31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41' },
+  skills: [
+    'نشر مربع مجموع: (a + b)² = a² + 2ab + b²',
+    'نشر مربع فرق: (a − b)² = a² − 2ab + b²',
+    'نشر جداء مجموع حدين وفرقهما: (a + b)(a − b) = a² − b²',
+    'الحساب الذهني المتمعّن فيه دون وضع العملية: 21² ، 19² ، 105 × 95',
+  ],
+  teachingScope: {
+    include: [
+      'تعريف المتطابقة والمتطابقات الشهيرة الثلاث، بأمثلة معارف 2',
+      'قراءة المتطابقات على المساحات (المربع MNPQ، المربع KLMN، جدول ديكارت)',
+      'نشر وتبسيط عبارات فيها مربعات وجداءات شهيرة، بمعاملات عشرية وكسرية وجذرية',
+      'الحساب المتمعّن فيه: مربع عدد، جداء عددين متناظرين حول عدد مدوّر، فرق مربعين',
+    ],
+    exclude: [
+      'التحليل باستعمال المتطابقات الشهيرة (الدرس 3)، ومنه التمرين 28 ب',
+      'النشر بالخاصية التوزيعية وحدها دون متطابقة (الدرس 1)',
+    ],
+  },
+  knowledgeMap: true,
+  // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
+  knowledgeMapMode: 'progressive',
+  // Leçon 1 de l'unité (nashr-qawsayn : (a + b)(c + d) ; tabsit-hudud : termes
+  // semblables) et années antérieures (murabba-adad : carré d'un relatif, d'un
+  // décimal, d'un produit ; quwa-ashara : puissances de 10).
+  priorKnowledge: ['nashr-qawsayn', 'tabsit-hudud', 'murabba-adad', 'quwa-ashara'],
+  resources: [
+    // Module 1 : LE TERRAIN CARRÉ à deux niveaux (MANIPULATION_CONTRACT §7bis-levels).
+    //   مبتدئ  — (x + 3)² : le carré MNPQ (act-2a) devenu un terrain qu'on allonge.
+    //   متقدم  — (x − 2)² : le carré KLMN (act-2b) : deux bandes RETRANCHÉES, un coin RESTAURÉ.
+    {
+      kind: 'manipulation', code: 'pitch-expansion-square-sum', type: 'pitch-expansion', module: 1,
+      level: 'beginner',
+      title: 'ملعب مربّع ضلعه x + 3',
+      objective: 'مساحة ملعب مربّع ضلعه مجموع حدّين أو فرقهما تساوي مجموع مساحات مناطقه، من أجل كل قيمة للحرف: (a ± b)² = a² ± 2ab + b²',
+      autonomy: '',
+      experience: { type: 'platform_adaptation', reason: 'multiple_representations', theme: 'football' },
+      learningPointIds: ['4am_mutatabiqat-shahira_P1'],
+      sourceElementIds: ['act-2a', 'history-descartes'],
+    },
+    {
+      kind: 'manipulation', code: 'pitch-expansion-square-diff', type: 'pitch-expansion', module: 1,
+      level: 'advanced',
+      title: 'ملعب مربّع ضلعه x − 2: شريطان مقتطعان',
+      objective: 'مساحة ملعب مربّع ضلعه مجموع حدّين أو فرقهما تساوي مجموع مساحات مناطقه، من أجل كل قيمة للحرف: (a ± b)² = a² ± 2ab + b²',
+      autonomy: 'مربّع فرق: يُقتطع من الملعب شريطان ويبقى ركن اقتُطع مرّتين؛ على التلميذ أن يقرّر بنفسه أي منطقة تُطرح وأيها تُضاف، وأن يجمع الحدّين المتشابهين السالبين، دون أن يُقال له إن الركن يُضاف',
+      experience: { type: 'platform_adaptation', reason: 'multiple_representations', theme: 'football' },
+      learningPointIds: ['4am_mutatabiqat-shahira_P2'],
+      sourceElementIds: ['act-2b'],
+    },
+    // Module 2 : LE TERRAIN RECTANGULAIRE (a + b)(a − b), les nombres de act-2c جـ.
+    //   مبتدئ  — (x + 3)(x − 3)
+    //   متقدم  — (2x + 5)(2x − 5) (defaultLevel)
+    {
+      kind: 'manipulation', code: 'pitch-expansion-sum-diff-x', type: 'pitch-expansion', module: 2,
+      level: 'beginner',
+      title: 'ملعب طوله x + 3 وعرضه x − 3',
+      objective: 'مساحة ملعب طوله مجموع حدّين وعرضه فرقهما: المنطقتان المضافة والمقتطعة متساويتان فتتعادمان، ويبقى (a + b)(a − b) = a² − b² من أجل كل قيمة للحرف',
+      autonomy: '',
+      experience: { type: 'platform_adaptation', reason: 'multiple_representations', theme: 'football' },
+      learningPointIds: ['4am_mutatabiqat-shahira_P3'],
+      sourceElementIds: ['act-2c'],
+    },
+    {
+      kind: 'manipulation', code: 'pitch-expansion-sum-diff-2x', type: 'pitch-expansion', module: 2,
+      level: 'advanced',
+      title: 'ملعب طوله 2x + 5 وعرضه 2x − 5',
+      objective: 'مساحة ملعب طوله مجموع حدّين وعرضه فرقهما: المنطقتان المضافة والمقتطعة متساويتان فتتعادمان، ويبقى (a + b)(a − b) = a² − b² من أجل كل قيمة للحرف',
+      autonomy: 'الحد الأول 2x: على التلميذ أن يقرأ الضلع 2x حدًّا واحدًا مربّعه 4x² لا 2x²، وأن يجد بنفسه المنطقتين المتعاكستين 10x و −10x ويجمعهما حتى تتعادما — أعداد الكتاب نفسها (النشاط 2، 3 جـ)',
+      experience: { type: 'platform_adaptation', reason: 'multiple_representations', theme: 'football' },
+      learningPointIds: ['4am_mutatabiqat-shahira_P3'],
+      sourceElementIds: ['act-2c'],
+    },
+  ],
+  modules: [
+    { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
+      title: 'أستعدّ', desc: 'ثماني عبارات: صحيح أم خاطئ؟ نشر جداء قوسين، الحدود المتشابهة، مربع عدد، قوى العدد 10.',
+      stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 5, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
+    { id: '01', number: 1, slug: 'nashat-murabba', path: `${LESSON_BASE_PATH}/nashat-murabba`,
+      title: 'نشاط 2 — مربّع مجموع ومربّع فرق', desc: 'ملعب جواري يكبر: مدّد ضلعه، احسب مساحات مناطقه، ثم أكمل سلسلتي الكتاب واحسب 21² و 19² ذهنيا.',
+      stage: 'trigger', teachesLearningPointIds: ['4am_mutatabiqat-shahira_P1', '4am_mutatabiqat-shahira_P2', '4am_mutatabiqat-shahira_P4'],
+      color: 'indigo', style: 'featured', estimatedMin: 13, difficulty: 2, actionText: 'أجرّب' },
+    { id: '02', number: 2, slug: 'nashat-jidaa', path: `${LESSON_BASE_PATH}/nashat-jidaa`,
+      title: 'نشاط 2 — جداء مجموع حدين وفرقهما', desc: 'ملعب يطول ويضيق بالقدر نفسه: أي منطقتين تتعادمان؟ ثم 105 × 95 دون وضع العملية.',
+      stage: 'discovery', teachesLearningPointIds: ['4am_mutatabiqat-shahira_P3', '4am_mutatabiqat-shahira_P4'],
+      color: 'rose', style: 'featured', estimatedMin: 8, difficulty: 2, actionText: 'أكتشف' },
+    { id: '03', number: 3, slug: 'maarif', path: `${LESSON_BASE_PATH}/maarif`,
+      title: 'معارف — المتطابقات الشهيرة', desc: 'تعريف المتطابقة، المتطابقات الثلاث وأمثلة الكتاب.',
+      stage: 'discovery', teachesLearningPointIds: ['4am_mutatabiqat-shahira_P1', '4am_mutatabiqat-shahira_P2', '4am_mutatabiqat-shahira_P3'],
+      color: 'violet', style: 'featured', estimatedMin: 7, difficulty: 2, actionText: 'أتعلّم' },
+    { id: '04', number: 4, slug: 'awazzif', path: `${LESSON_BASE_PATH}/awazzif`,
+      title: 'أوظّف تعلّماتي', desc: 'الطريقة سطرًا سطرًا، دوري الآن، التمارين 9–19 و 28 أ، وأتعمّق 35 و 36.',
+      stage: 'practice_lab', teachesLearningPointIds: ['4am_mutatabiqat-shahira_P1', '4am_mutatabiqat-shahira_P2', '4am_mutatabiqat-shahira_P3', '4am_mutatabiqat-shahira_P4'],
+      color: 'amber', style: 'featured', estimatedMin: 15, difficulty: 3, actionText: 'أتدرّب' },
+    { id: '05', number: 5, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
+      title: 'إختبار أولي', desc: 'خمسة أسئلة تُقيّم نقاط التعلّم الأربع.',
+      stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 7, difficulty: 3, actionText: 'أدخل التقويم' },
+  ],
+};

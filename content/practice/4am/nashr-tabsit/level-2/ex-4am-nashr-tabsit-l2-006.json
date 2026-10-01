@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "title": "تدريب — جداء قوسين بسيط",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جداء قوسين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P3",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $F = (x + 3)(x + 4)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $F$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 + 12$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        },
+        {
+          "id": "B",
+          "content": "$x^2 + 7x + 7$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        },
+        {
+          "id": "C",
+          "content": "$x^2 + 7x + 12$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أربعة جداءات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x \\times x$ ، $x \\times 4$ ، $3 \\times x$ ، $3 \\times 4$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع الحدّين $4x$ و $3x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 4x + 3x + 12 = x^2 + 7x + 12$.",
+        "incorrect": "كل حد من القوس الأول في كل حد من الثاني: أربعة جداءات."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما معامل $x$ في النشر المبسّط للعبارة $F$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّان من الدرجة الأولى يظهران في النشر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هما $x \\times 4$ و $3 \\times x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع معامليهما."
+        }
+      ],
+      "feedback": {
+        "correct": "$4x + 3x = 7x$: المعامل 7.",
+        "incorrect": "اجمع معاملي الحدّين $x \\times 4$ و $3 \\times x$."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l2-006",
+  "lessonCode": "nashr-tabsit",
+  "level": 2
+}

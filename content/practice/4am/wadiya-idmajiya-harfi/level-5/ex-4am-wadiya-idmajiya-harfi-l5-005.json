@@ -1,0 +1,227 @@
+{
+  "metadata": {
+    "title": "تدريب — مثلث قائم 5، 12، 13",
+    "estimatedMinutes": 6,
+    "tags": [
+      "فيثاغورس",
+      "معادلة",
+      "محيط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P1",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "مثلث قائم طولا ضلعيه القائمين $x + 1$ و $x + 8$ ، وطول وتره $x + 9$ (بالسنتيمتر)، حيث $x$ عدد موجب."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بعد النشر والتبسيط، خاصية فيثاغورس تؤول إلى ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 = 146$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "B",
+          "content": "$x^2 = 16$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x^2 + 36x = 16$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "D",
+          "content": "$x = 16$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-X-MARRATAYN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$(x + 9)^2 = (x + 1)^2 + (x + 8)^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر الحدود الثلاثة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحدّان $18x$ يتعادمان."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 18x + 81 = 2x^2 + 18x + 65$ يعني $x^2 = 81 - 65$.",
+        "incorrect": "انقل الحدود مع تغيير إشاراتها: $81 - 65$ لا $81 + 65$."
+      },
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q2",
+      "statement": "ما قيمة $x$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العددان اللذان مربعهما 16."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الطول موجب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بالأضلاع."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 4$ (نرفض $-4$ لأنّ $x + 1$ يصبح سالبًا). الأضلاع 5 و 12 و 13 : $25 + 144 = 169$.",
+        "incorrect": "من حلّي المعادلة نحتفظ بما يعطي أطوالًا موجبة."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "-4",
+          "id": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "value": "16",
+          "id": "MISC-TABSIT-X-MARRATAYN"
+        }
+      ],
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q3",
+      "statement": "محيط المثلث بدلالة $x$ هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3x + 17$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "id": "B",
+          "content": "$3x + 18$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$3x^2 + 18$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-X-MARRATAYN"
+        },
+        {
+          "id": "D",
+          "content": "$2x + 9$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المحيط مجموع الأضلاع الثلاثة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع الحدود التي فيها $x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم الأعداد: $1 + 8 + 9$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 1) + (x + 8) + (x + 9) = 3x + 18$.",
+        "incorrect": "اجمع الأعداد الثلاثة كلها، و $x + x + x = 3x$."
+      },
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q4",
+      "statement": "احسب محيط المثلث (بالسنتيمتر) من أجل قيمة $x$ التي تجعله قائمًا.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "30",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "القيمة التي وجدتها في السؤال السابق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الأضلاع عندئذ أعداد طبيعية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض في عبارة المحيط."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 4$ : $3 \\times 4 + 18 = 30$ ، أي $5 + 12 + 13 = 30$.",
+        "incorrect": "احسب الأضلاع الثلاثة ثم اجمعها."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "22",
+          "id": "MISC-NAMDHAJA-MISAHA"
+        }
+      ],
+      "cognitiveDemand": "transfer"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l5-005",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 5
+}

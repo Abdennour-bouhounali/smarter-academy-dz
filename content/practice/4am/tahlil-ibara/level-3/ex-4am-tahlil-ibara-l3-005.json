@@ -1,0 +1,127 @@
+{
+  "id": "ex-4am-tahlil-ibara-l3-005",
+  "lessonCode": "tahlil-ibara",
+  "level": 3,
+  "metadata": {
+    "title": "دوري الآن (ص 36) — متطابقة ثم عامل مشترك",
+    "estimatedMinutes": 5,
+    "tags": [
+      "متطابقات شهيرة",
+      "عامل مشترك"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "now-36-2",
+      "page": 36,
+      "section": "دوري الآن",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 36): $E = 144x^2 - 24x + 1$ و $F = (4x^2 - 1) + (12x^2 - 6x)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّل E.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(12x + 1)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$(72x - 1)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        },
+        {
+          "id": "C",
+          "content": "$(12x - 1)^2$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$144 = 12^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$24x = 2 \\times 12x \\times 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحدّ الأوسط سالب: مربع فرق."
+        }
+      ],
+      "feedback": {
+        "correct": "$E = (12x)^2 - 2 \\times 12x \\times 1 + 1^2 = (12x - 1)^2$.",
+        "incorrect": "جذر $144x^2$ هو $12x$ لا نصف 144."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّل F.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(2x - 1)(8x + 1)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(2x - 1)(6x + 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NISYAN-1"
+        },
+        {
+          "id": "C",
+          "content": "$(2x - 1)(8x - 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّل كل قوس على حدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$4x^2 - 1 = (2x - 1)(2x + 1)$ و $12x^2 - 6x = 6x(2x - 1)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استخرج العامل المشترك $(2x - 1)$."
+        }
+      ],
+      "feedback": {
+        "correct": "$F = (2x - 1)(2x + 1) + 6x(2x - 1) = (2x - 1)(8x + 1)$.",
+        "incorrect": "بعد استخراج $(2x - 1)$ يبقى $(2x + 1) + 6x$."
+      }
+    }
+  ]
+}

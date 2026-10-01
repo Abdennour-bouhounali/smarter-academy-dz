@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "title": "تدريب — منطقة أمان حول الملعب",
+    "estimatedMinutes": 5,
+    "tags": [
+      "وضعية إدماجية",
+      "ملعب",
+      "مساعدة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "ملعب كرة قدم طوله 100m وعرضه 60m، تحيط به من كل الجهات منطقة أمان عرضها $x$ (بالمتر). مساعدة: $x^2 + 80x - 336 = (x - 4)(x + 84)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مساحة منطقة الأمان بدلالة $x$ هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 + 160x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "id": "B",
+          "content": "$4x^2 + 320x$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$320x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "id": "D",
+          "content": "$4x^2 + 6000$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "البعدان مع المنطقة: $100 + 2x$ و $60 + 2x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح مساحة الملعب 6000."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انشر بأربعة جداءات."
+        }
+      ],
+      "feedback": {
+        "correct": "$(100 + 2x)(60 + 2x) - 6000 = 200x + 120x + 4x^2 = 4x^2 + 320x$.",
+        "incorrect": "المنطقة على جهتي كل بعد: $2x$ لا $x$."
+      },
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q2",
+      "statement": "ما عرض منطقة الأمان (بالمتر) إذا كانت مساحتها $1344m^2$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب المساواة ثم اقسم على 4."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تصل إلى عبارة المساعدة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العرض موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$4x^2 + 320x = 1344$ يعني $x^2 + 80x - 336 = 0$ ، أي $(x - 4)(x + 84) = 0$ : $x = 4$. نتحقق: $64 + 1280 = 1344$.",
+        "incorrect": "نحتفظ بالقيمة الموجبة ونتحقق بالتعويض."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "-84",
+          "id": "MISC-NAMDHAJA-MISAHA"
+        }
+      ],
+      "cognitiveDemand": "transfer"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l5-003",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 5
+}

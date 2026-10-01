@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "title": "تدريب — قيمة معدومة ونشر",
+    "estimatedMinutes": 2,
+    "tags": [
+      "اختيار الشكل",
+      "نشر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P3",
+      "modelledOn": "ex-39"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $E = (x - 4)(2x + 1)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $E$ من أجل $x = 4$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (يمكن أن يكون سالبًا)",
+      "expectedAnswer": "0",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما قيمة العامل $x - 4$ من أجل $x = 4$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الشكل المحلّل أسرع هنا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء أحد عامليه معدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "العامل $x - 4$ معدوم، إذن $E = 0 \\times 9 = 0$.",
+        "incorrect": "استعمل الشكل المحلّل: أحد العاملين معدوم."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "9",
+          "id": "MISC-SHAKL-GHAYR-MUNASIB"
+        }
+      ],
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "النشر المبسّط للعبارة $E$ هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2x^2 - 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        },
+        {
+          "id": "B",
+          "content": "$2x^2 + 9x - 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "C",
+          "content": "$2x^2 - 7x - 4$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$2x^2 - 7x + 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أربعة جداءات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x \\times 1 = x$ و $(-4) \\times 2x = -8x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع الحدّين المتشابهين."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x^2 + x - 8x - 4 = 2x^2 - 7x - 4$.",
+        "incorrect": "انتبه إلى إشارة الجداءات التي فيها $-4$."
+      },
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l2-007",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 2
+}

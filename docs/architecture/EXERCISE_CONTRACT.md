@@ -375,6 +375,17 @@ off as the textbook:
 - `check:textbook` ignores `modelledOn` (it is not a citation), so a generated
   exercise never counts as coverage of a textbook element.
 
+**Unit 3 « الحساب الحرفي » (2026-10-01)** follows the same rule (four lessons ×
+50). Algebra adds one constraint: the bank uses only `choice` and `rational`. A
+quadratic, a factored form or an intermediate form is a `choice` whose every
+distractor is FALSE as a polynomial (proved in the oracle with an exact
+polynomial comparison); a typed answer is a number — a coefficient of the
+reduced expansion, a value for a given x, a mental-calculation result.
+`affine` is not used: its two-field input is labelled slope / intercept, which
+reads wrongly for « the coefficient of x in an expansion ». Oracle entries are
+per lesson in `scripts/practice-oracle/<lesson>.mjs`, built on the independent
+calculator `scripts/practice-oracle/helpers.mjs`.
+
 ## Non-textbook sources — worksheets (2026-09-24)
 
 The textbook is the default source, but the owner may bring **other official

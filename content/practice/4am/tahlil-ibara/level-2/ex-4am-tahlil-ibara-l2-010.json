@@ -1,0 +1,91 @@
+{
+  "id": "ex-4am-tahlil-ibara-l2-010",
+  "lessonCode": "tahlil-ibara",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — العامل المشترك الأكبر",
+    "estimatedMinutes": 4,
+    "tags": [
+      "عامل مشترك"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P2",
+      "modelledOn": "ex-23"
+    }
+  },
+  "statement": {
+    "content": "نكتب $14x - 21 = k(ax - b)$ حيث $k$ أكبر عدد طبيعي ممكن، و $a$ و $b$ عددان طبيعيان."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما قيمة $k$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$k$ يقسم 14 و 21 معًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ابحث عن PGCD$(14 ; 21)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب قواسم كل عدد وخذ أكبر قاسم مشترك."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD$(14 ; 21) = 7$ : $14x - 21 = 7(2x - 3)$.",
+        "incorrect": "$k$ هو أكبر قاسم مشترك للعددين 14 و 21."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما قيمة $a$ ، معامل $x$ داخل القوس؟",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$a = 14 \\div k$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم 14 على العامل المشترك الأكبر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بنشر $k(ax - b)$."
+        }
+      ],
+      "feedback": {
+        "correct": "$14x - 21 = 7 \\times 2x - 7 \\times 3$.",
+        "incorrect": "اقسم 14 على العامل المشترك الأكبر."
+      }
+    }
+  ]
+}

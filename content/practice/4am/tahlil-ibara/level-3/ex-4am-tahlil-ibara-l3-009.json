@@ -1,0 +1,131 @@
+{
+  "id": "ex-4am-tahlil-ibara-l3-009",
+  "lessonCode": "tahlil-ibara",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — العامل المشترك كاملًا",
+    "estimatedMinutes": 4,
+    "tags": [
+      "عامل مشترك"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P2",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "حلّل كل عبارة باستخراج أكبر عامل مشترك (عدد وحرف)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$6x^2 - 9x = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3(2x^2 - 3x)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
+        },
+        {
+          "id": "B",
+          "content": "$3x(2x - 3)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x(6x - 9)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
+        },
+        {
+          "id": "D",
+          "content": "$3x(2x - 9)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن عامل عددي وعامل حرفي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "PGCD$(6 ; 9) = 3$ و $x$ يقسم الحدّين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استخرج $3x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$6x^2 - 9x = 3x \\times 2x - 3x \\times 3 = 3x(2x - 3)$.",
+        "incorrect": "تحقّق أنّ ما بقي داخل القوس ليس فيه أي عامل مشترك."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$10x^2 + 15x = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$5x(2x + 3)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$5(2x^2 + 3x)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
+        },
+        {
+          "id": "C",
+          "content": "$5x(2x + 15)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل العددي هو PGCD$(10 ; 15)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "والحرف $x$ مشترك أيضًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استخرج العاملين معًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$10x^2 + 15x = 5x \\times 2x + 5x \\times 3 = 5x(2x + 3)$.",
+        "incorrect": "لا تترك $x$ مشتركًا داخل القوس."
+      }
+    }
+  ]
+}

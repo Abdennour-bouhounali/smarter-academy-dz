@@ -1,0 +1,92 @@
+{
+  "metadata": {
+    "title": "نشاط 2 — مربع فرق بطريقتين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مربع فرق"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-2b",
+      "page": 32,
+      "section": "أنشطة",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من النشاط 2 (الكتاب ص 32): نحسب مربع فرق بطريقتين مختلفتين."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $9^2 - 2 \\times 9 \\times 3 + 3^2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "36",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هذه هي الطريقة الثانية لحساب $(9 - 3)^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $9^2$ و $2 \\times 9 \\times 3$ و $3^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انتبه إلى الإشارات: نطرح الحد الأوسط ونضيف الأخير."
+        }
+      ],
+      "feedback": {
+        "correct": "$81 - 54 + 9 = 36 = 6^2 = (9 - 3)^2$",
+        "incorrect": "الحد الأخير $3^2$ يُضاف ولا يُطرح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $(2{,}4 - 3)^2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالفاصلة إن لزم)",
+      "expectedAnswer": "0.36",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب الفرق أولًا: إنه عدد سالب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مربع عدد سالب موجب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ربّع العدد $0{,}6$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(2{,}4 - 3)^2 = (-0{,}6)^2 = 0{,}36$ ، وأيضًا $5{,}76 - 14{,}4 + 9 = 0{,}36$.",
+        "incorrect": "مربع عدد سالب ليس سالبًا."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l1-002",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 1
+}

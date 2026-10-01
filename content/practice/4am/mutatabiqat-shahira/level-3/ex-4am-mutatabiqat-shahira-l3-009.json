@@ -1,0 +1,99 @@
+{
+  "metadata": {
+    "title": "تدريب — أعداد كبيرة ذهنيا",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حساب ذهني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutatabiqat-shahira_P4",
+      "modelledOn": "ex-11"
+    }
+  },
+  "statement": {
+    "content": "احسب ذهنيا (دون وضع العملية) مستعملًا متطابقة شهيرة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $1001^2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "1002001",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$1001 = 1000 + 1$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل مربع مجموع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $1000^2$ و $2 \\times 1000 \\times 1$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(1000 + 1)^2 = 1\\,000\\,000 + 2000 + 1 = 1\\,002\\,001$",
+        "incorrect": "لا تنسَ الحد المضاعف $2000$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $998 \\times 1002$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "999996",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العددان يحيطان بالعدد $1000$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$998 = 1000 - 2$ و $1002 = 1000 + 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $1000^2 - 2^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(1000 - 2)(1000 + 2) = 1\\,000\\,000 - 4 = 999\\,996$",
+        "incorrect": "اطرح مربع $2$."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l3-009",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 3
+}

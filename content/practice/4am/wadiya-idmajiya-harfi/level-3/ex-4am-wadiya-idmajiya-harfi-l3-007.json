@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "title": "تدريب — إطار صورة مستطيلة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نمذجة",
+      "إطار",
+      "نشر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "صورة مستطيلة بعداها 20cm و 30cm، نضعها في إطار عرضه $x$ (بالسنتيمتر) من كل الجهات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المساحة الكلية (الصورة مع الإطار) بدلالة $x$ هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4x^2 + 600$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        },
+        {
+          "id": "B",
+          "content": "$4x^2 + 100x + 600$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x^2 + 50x + 600$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "id": "D",
+          "content": "$4x^2 + 50x + 600$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "البعدان مع الإطار: $20 + 2x$ و $30 + 2x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر الجداء بأربعة جداءات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$40x + 60x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(20 + 2x)(30 + 2x) = 600 + 40x + 60x + 4x^2 = 4x^2 + 100x + 600$.",
+        "incorrect": "الإطار على جهتي كل بعد، والنشر فيه أربعة جداءات."
+      },
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "احسب مساحة الإطار وحده (بـ $cm^2$) من أجل $x = 2$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "216",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المساحة الكلية من أجل $x = 2$ : $24 \\times 34$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح مساحة الصورة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مساحة الصورة $20 \\times 30$."
+        }
+      ],
+      "feedback": {
+        "correct": "$24 \\times 34 - 600 = 816 - 600 = 216$ ، أو $4 \\times 4 + 100 \\times 2 = 216$.",
+        "incorrect": "مساحة الإطار = المساحة الكلية ناقص مساحة الصورة."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "816",
+          "id": "MISC-NAMDHAJA-MISAHA"
+        }
+      ],
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l3-007",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 3
+}

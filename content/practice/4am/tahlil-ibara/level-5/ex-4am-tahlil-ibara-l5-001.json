@@ -1,0 +1,125 @@
+{
+  "id": "ex-4am-tahlil-ibara-l5-001",
+  "lessonCode": "tahlil-ibara",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — حساب ذهني",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حساب ذهني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P3",
+      "modelledOn": "ex-28"
+    }
+  },
+  "statement": {
+    "content": "احسب ذهنيا (دون وضع العملية) باستعمال $a^2 - b^2 = (a - b)(a + b)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$105^2 - 95^2 = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "2000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "فرق مربّعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(105 - 95)(105 + 95)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العاملان 10 و 200."
+        }
+      ],
+      "feedback": {
+        "correct": "$105^2 - 95^2 = 10 \\times 200$.",
+        "incorrect": "حلّل بدل حساب المربّعين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$51^2 - 49^2 = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "200",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "فرق مربّعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$51 - 49 = 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "و $51 + 49$ عدد «مستدير»."
+        }
+      ],
+      "feedback": {
+        "correct": "$51^2 - 49^2 = 2 \\times 100$.",
+        "incorrect": "استعمل $(a - b)(a + b)$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "$1001^2 - 999^2 = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "4000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "فرق مربّعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$1001 - 999 = 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "و $1001 + 999 = 2000$."
+        }
+      ],
+      "feedback": {
+        "correct": "$1001^2 - 999^2 = 2 \\times 2000$.",
+        "incorrect": "حلّل: العاملان صغير و«مستدير»."
+      }
+    }
+  ]
+}

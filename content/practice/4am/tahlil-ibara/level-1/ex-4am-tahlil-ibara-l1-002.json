@@ -1,0 +1,144 @@
+{
+  "id": "ex-4am-tahlil-ibara-l1-002",
+  "lessonCode": "tahlil-ibara",
+  "level": 1,
+  "metadata": {
+    "title": "نشاط 3 — طريقة إيمان",
+    "estimatedMinutes": 4,
+    "tags": [
+      "عامل مشترك",
+      "حساب"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-3",
+      "page": 33,
+      "section": "أنشطة",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 33): لاحظ كيف تحسب إيمان: $3{,}5 \\times 1{,}7 + 3{,}5 \\times 0{,}3 = 3{,}5 \\times (1{,}7 + 0{,}3) = 3{,}5 \\times 2 = 7$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب بالطريقة نفسها: $2{,}9 \\times 13 + 2{,}9 \\times 87$.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "290",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد $2{,}9$ مشترك بين الجداءين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $2{,}9 \\times (13 + 87)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب ما بين القوسين أولًا: يعطي عددًا «مستديرًا»."
+        }
+      ],
+      "feedback": {
+        "correct": "$2{,}9 \\times (13 + 87) = 2{,}9 \\times 100$.",
+        "incorrect": "استخرج العامل المشترك $2{,}9$ ثم اجمع $13 + 87$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب بالطريقة نفسها: $2{,}35 \\times 176 - 2{,}35 \\times 76$.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "235",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد $2{,}35$ مشترك بين الجداءين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $2{,}35 \\times (176 - 76)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب الفرق بين القوسين أولًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$2{,}35 \\times (176 - 76) = 2{,}35 \\times 100$.",
+        "incorrect": "استخرج $2{,}35$ ثم احسب $176 - 76$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "اكتب $9x + 3$ على شكل جداء.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3(3x + 3)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$3(3x + 1)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$9x(1 + 3)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما القاسم المشترك للعددين 9 و 3؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$9x = 3 \\times 3x$ و $3 = 3 \\times 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استخرج 3 ولا تنسَ ما يبقى من الحدّ 3."
+        }
+      ],
+      "feedback": {
+        "correct": "$9x + 3 = 3 \\times 3x + 3 \\times 1 = 3(3x + 1)$.",
+        "incorrect": "الحدّ 3 يساوي $3 \\times 1$: ماذا يبقى منه داخل القوس؟"
+      }
+    }
+  ]
+}

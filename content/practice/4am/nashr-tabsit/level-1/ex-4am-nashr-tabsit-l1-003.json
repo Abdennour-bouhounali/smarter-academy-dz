@@ -1,0 +1,159 @@
+{
+  "metadata": {
+    "title": "تدريب — جداء أم مجموع؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جداء",
+      "مجموع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P1",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "نريد أن نميّز العبارات التي تدلّ على جداء من التي تدلّ على مجموع."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل العبارة $2(x + 7)$ مجموع أم جداء؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "العبارة جداء",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "العبارة مجموع",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى العملية الأخيرة التي تُنجز في العبارة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العمليات داخل الأقواس تُنجز أولًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إن كانت آخر عملية ضربًا فالعبارة تدلّ على جداء، وإن كانت جمعًا أو طرحًا فهي تدلّ على مجموع."
+        }
+      ],
+      "feedback": {
+        "correct": "آخر عملية هي ضرب 2 في القوس: العبارة جداء.",
+        "incorrect": "حدّد العملية التي تُنجز في آخر الحساب، لا العمليات التي داخل الأقواس."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل العبارة $2x + 7$ مجموع أم جداء؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "العبارة جداء",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
+        },
+        {
+          "id": "B",
+          "content": "العبارة مجموع",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى العملية الأخيرة التي تُنجز في العبارة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العمليات داخل الأقواس تُنجز أولًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إن كانت آخر عملية ضربًا فالعبارة تدلّ على جداء، وإن كانت جمعًا أو طرحًا فهي تدلّ على مجموع."
+        }
+      ],
+      "feedback": {
+        "correct": "آخر عملية هي جمع $2x$ و 7: العبارة مجموع.",
+        "incorrect": "حدّد العملية التي تُنجز في آخر الحساب، لا العمليات التي داخل الأقواس."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "هل العبارة $(x - 1)(x + 4)$ مجموع أم جداء؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "العبارة جداء",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "العبارة مجموع",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى العملية الأخيرة التي تُنجز في العبارة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العمليات داخل الأقواس تُنجز أولًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إن كانت آخر عملية ضربًا فالعبارة تدلّ على جداء، وإن كانت جمعًا أو طرحًا فهي تدلّ على مجموع."
+        }
+      ],
+      "feedback": {
+        "correct": "آخر عملية هي ضرب القوسين: العبارة جداء.",
+        "incorrect": "حدّد العملية التي تُنجز في آخر الحساب، لا العمليات التي داخل الأقواس."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l1-003",
+  "lessonCode": "nashr-tabsit",
+  "level": 1
+}

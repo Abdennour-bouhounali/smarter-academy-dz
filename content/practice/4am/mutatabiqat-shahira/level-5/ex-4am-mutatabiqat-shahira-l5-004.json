@@ -1,0 +1,137 @@
+{
+  "metadata": {
+    "title": "تدريب — حساب ذهني بأعداد عشرية",
+    "estimatedMinutes": 6,
+    "tags": [
+      "حساب ذهني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutatabiqat-shahira_P4",
+      "modelledOn": "act-2b"
+    }
+  },
+  "statement": {
+    "content": "احسب ذهنيا (دون وضع العملية) مستعملًا متطابقة شهيرة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $45^2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "2025",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$45 = 40 + 5$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل مربع مجموع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $40^2$ و $2 \\times 40 \\times 5$ و $5^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(40 + 5)^2 = 1600 + 400 + 25 = 2025$",
+        "incorrect": "الحد المضاعف $2 \\times 40 \\times 5$ لا يُنسى."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $0{,}99 \\times 1{,}01$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالفاصلة إن لزم)",
+      "expectedAnswer": "0.9999",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العددان يحيطان بالعدد $1$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$0{,}99 = 1 - 0{,}01$ و $1{,}01 = 1 + 0{,}01$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $1^2 - 0{,}01^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(1 - 0{,}01)(1 + 0{,}01) = 1 - 0{,}0001 = 0{,}9999$",
+        "incorrect": "اطرح مربع $0{,}01$ من $1$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "احسب $7{,}5^2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالفاصلة إن لزم)",
+      "expectedAnswer": "56.25",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$7{,}5 = 7 + 0{,}5$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل مربع مجموع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $7^2$ و $2 \\times 7 \\times 0{,}5$ و $0{,}5^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(7 + 0{,}5)^2 = 49 + 7 + 0{,}25 = 56{,}25$",
+        "incorrect": "الحد المضاعف $2 \\times 7 \\times 0{,}5$."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l5-004",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 5
+}

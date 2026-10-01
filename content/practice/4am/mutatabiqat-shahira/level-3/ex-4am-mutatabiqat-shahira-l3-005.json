@@ -1,0 +1,119 @@
+{
+  "metadata": {
+    "title": "ديكارت — جدول (2x + 1)²",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مربع مجموع",
+      "حساب ذهني"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "history-descartes",
+      "page": 31,
+      "section": "ديكارت"
+    }
+  },
+  "statement": {
+    "content": "نظّم ديكارت حساب $(2x + 1)^2$ في جدول: في رأسه الحدود $x$ ، $x$ ، $1$ وفي كل خانة جداء حدّين، ثم يجمع الأعداد المسجلة في الخانات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مجموع الأعداد المسجلة في الخانات التسع هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4x^2 + 4x + 1$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$2x^2 + 2x + 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        },
+        {
+          "id": "C",
+          "content": "$4x^2 + 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+        },
+        {
+          "id": "D",
+          "content": "$4x^2 + 2x + 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في الجدول تسع خانات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عدّ الخانات $x^2$ والخانات $x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع الحدود المتشابهة."
+        }
+      ],
+      "feedback": {
+        "correct": "$4x^2 + 4x + 1 = (2x + 1)^2$",
+        "incorrect": "عدّ الخانات: أربع خانات $x^2$ وأربع خانات $x$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "استعمل النتيجة لحساب $21^2$ ذهنيا (ضع $x = 10$).",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "441",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$2 \\times 10 + 1 = 21$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بـ $10$ في $4x^2 + 4x + 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $4 \\times 100$ و $4 \\times 10$."
+        }
+      ],
+      "feedback": {
+        "correct": "$4 \\times 100 + 4 \\times 10 + 1 = 441 = 21^2$",
+        "incorrect": "عوّض $x = 10$ في النشر لا في $2x^2$."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l3-005",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 3
+}

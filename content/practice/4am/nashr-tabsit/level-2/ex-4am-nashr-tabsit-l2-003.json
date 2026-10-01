@@ -1,0 +1,109 @@
+{
+  "metadata": {
+    "title": "تدريب — x أمام القوسين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نشر",
+      "الخاصية التوزيعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P2",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "العامل الذي أمام القوسين قد يكون حرفًا: $x(x + 6)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نشر $x(x + 6)$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 + 6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$2x + 6x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-X-MARRATAYN"
+        },
+        {
+          "id": "C",
+          "content": "$x^2 + 6x$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x$ يُضرب في كل حد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x \\times x$ ثم $x \\times 6$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$x \\times x$ مربّع لا ضعف."
+        }
+      ],
+      "feedback": {
+        "correct": "$x \\times x + x \\times 6 = x^2 + 6x$.",
+        "incorrect": "العامل $x$ يُضرب في الحدّين، و $x \\times x$ مربّع."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما معامل $x$ في نشر $x(x + 6)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحد الذي فيه $x$ (لا $x^2$) هو جداء $x$ في 6."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعامل هو العدد الذي يضرب $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x(x + 6) = x^2 + 6x$: معامل $x$ هو 6.",
+        "incorrect": "ابحث عن الحد من الدرجة الأولى بعد النشر."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l2-003",
+  "lessonCode": "nashr-tabsit",
+  "level": 2
+}

@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "title": "تدريب — الحد الثابت وعبارة تساويها",
+    "estimatedMinutes": 2,
+    "tags": [
+      "اختيار الشكل",
+      "نشر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P3",
+      "modelledOn": "ex-39"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $B = 2x^2 + 5x - 7$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $B$ من أجل $x = 0$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (يمكن أن يكون سالبًا)",
+      "expectedAnswer": "-7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد 0."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل حد فيه $x$ ينعدم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يبقى الحد الثابت."
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = 0$ يبقى الحد الثابت وحده: $B = -7$.",
+        "incorrect": "الحدّان $2x^2$ و $5x$ معدومان من أجل $x = 0$."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "7",
+          "id": "MISC-NASHR-ISHARA-SALIBA"
+        }
+      ],
+      "cognitiveDemand": "recall"
+    },
+    {
+      "id": "q2",
+      "statement": "أيّ عبارة تساوي $B$ ؟ (انشر كل واحدة)",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x + 1)(2x - 7)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "B",
+          "content": "$(x - 1)(2x + 7)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(x - 1)(2x - 7)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "D",
+          "content": "$(2x - 1)(x + 7)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر كل جداء بأربعة جداءات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن معامل $x$ في كل نشر بالعدد 5."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق أيضًا من الحد الثابت."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x - 1)(2x + 7) = 2x^2 + 7x - 2x - 7 = 2x^2 + 5x - 7$.",
+        "incorrect": "انشر الجداء كاملًا وانتبه إلى إشارة كل جداء."
+      },
+      "cognitiveDemand": "recall"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l1-008",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 1
+}

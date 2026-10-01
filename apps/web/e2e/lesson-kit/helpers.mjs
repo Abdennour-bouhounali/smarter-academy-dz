@@ -24,12 +24,17 @@ export async function launch() {
   return { browser };
 }
 export async function newCtx(browser, { mobile = false } = {}) {
-  return browser.newContext(
+  const ctx = await browser.newContext(
     mobile
       ? { viewport: { width: 375, height: 667 }, hasTouch: true, isMobile: true, deviceScaleFactor: 2,
           userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1' }
       : { viewport: { width: 1280, height: 1400 } }
   );
+  // Les polices Google (index.html) ne portent aucune assertion ; quand le réseau
+  // ne les atteint pas, elles retiennent l'événement « load » et chaque page.goto
+  // expire (2026-10-01). On les coupe : la page retombe sur ses polices locales.
+  await ctx.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort());
+  return ctx;
 }
 export function watchErrors(page, bucket) {
   page.on('console', (msg) => {

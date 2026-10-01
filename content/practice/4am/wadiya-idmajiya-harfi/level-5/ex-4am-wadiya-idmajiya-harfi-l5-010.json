@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "title": "تدريب — مربع ملوّن بطريقتين",
+    "estimatedMinutes": 5,
+    "tags": [
+      "نمذجة",
+      "مساحة",
+      "طريقتان"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P2",
+      "modelledOn": "ex-37"
+    }
+  },
+  "statement": {
+    "content": "ABCD مربع طول ضلعه 12cm. لوّنّا فيه مربعًا طول ضلعه $x$ في الركن A، ومستطيلًا بعداه 12cm و 2cm على طول الضلع [BC]، حيث $0 < x < 10$ (الجزءان الملوّنان لا يتداخلان)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مساحة الجزء غير الملوّن بدلالة $x$ هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$144 - x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "id": "B",
+          "content": "$120 - 2x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-X-MARRATAYN"
+        },
+        {
+          "id": "C",
+          "content": "$120 - x^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$(12 - x)^2 - 24$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مساحة ABCD هي $12^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح مساحتي الجزأين الملوّنين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مساحة المستطيل $12 \\times 2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$144 - x^2 - 24 = 120 - x^2$.",
+        "incorrect": "اطرح المستطيل والمربع معًا، و $x \\times x = x^2$."
+      },
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q2",
+      "statement": "احسب مساحة الجزء غير الملوّن (بـ $cm^2$) من أجل $x = 4$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "104",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض في العبارة المبسّطة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$4^2 = 16$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح من 120."
+        }
+      ],
+      "feedback": {
+        "correct": "$120 - 16 = 104$.",
+        "incorrect": "احسب $x^2$ ثم اطرحه من 120."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "112",
+          "id": "MISC-TABSIT-X-MARRATAYN"
+        }
+      ],
+      "cognitiveDemand": "transfer"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l5-010",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 5
+}

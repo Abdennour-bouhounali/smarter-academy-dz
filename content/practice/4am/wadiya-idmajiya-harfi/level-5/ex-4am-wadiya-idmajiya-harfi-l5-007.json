@@ -1,0 +1,227 @@
+{
+  "metadata": {
+    "title": "تدريب — عبارة M بثلاثة أشكال",
+    "estimatedMinutes": 6,
+    "tags": [
+      "نشر",
+      "تحليل",
+      "اختيار الشكل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P3",
+      "modelledOn": "ex-40"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $M = (2x + 1)^2 - (x + 2)^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $M$ هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$5x^2 + 8x + 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "B",
+          "content": "$3x^2 - 3$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$3x^2 + 8x + 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "D",
+          "content": "$x^2 - 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر كل مربع مجموع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(2x + 1)^2 = 4x^2 + 4x + 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح القوس الثاني كله."
+        }
+      ],
+      "feedback": {
+        "correct": "$4x^2 + 4x + 1 - x^2 - 4x - 4 = 3x^2 - 3$.",
+        "incorrect": "اطرح كل حدود $(x + 2)^2$، و $(2x)^2 = 4x^2$."
+      },
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q2",
+      "statement": "تحليل العبارة $M$ هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x + 3)(3x + 3)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "B",
+          "content": "$(x - 1)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+        },
+        {
+          "id": "C",
+          "content": "$(x - 1)(3x + 3)$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$(3x - 1)(x + 3)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "فرق مربعين: $a = 2x + 1$ و $b = x + 2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a - b = 2x + 1 - x - 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$a + b = 2x + 1 + x + 2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\big((2x + 1) - (x + 2)\\big)\\big((2x + 1) + (x + 2)\\big) = (x - 1)(3x + 3)$.",
+        "incorrect": "القوس المطروح تتغيّر إشارة كل حدوده."
+      },
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q3",
+      "statement": "احسب $M$ من أجل $x = 1$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (يمكن أن يكون سالبًا)",
+      "expectedAnswer": "0",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أيّ شكل يجعل الحساب فوريًا؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما قيمة $x - 1$ ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء أحد عامليه معدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "بالشكل المحلّل: $0 \\times 6 = 0$.",
+        "incorrect": "الشكل المحلّل أنسب: أحد عامليه معدوم."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "6",
+          "id": "MISC-SHAKL-GHAYR-MUNASIB"
+        }
+      ],
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q4",
+      "statement": "احسب $M$ من أجل $x = 0$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (يمكن أن يكون سالبًا)",
+      "expectedAnswer": "-3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أيّ شكل أنسب من أجل $x = 0$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في الشكل المنشور يبقى الحد الثابت."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انتبه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "بالشكل المنشور يبقى الحد الثابت: $M = -3$ (و $1 - 4 = -3$).",
+        "incorrect": "من أجل $x = 0$ يكفي الحد الثابت من النشر."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "3",
+          "id": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "value": "5",
+          "id": "MISC-NASHR-QAWS-SALIB"
+        }
+      ],
+      "cognitiveDemand": "transfer"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l5-007",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 5
+}

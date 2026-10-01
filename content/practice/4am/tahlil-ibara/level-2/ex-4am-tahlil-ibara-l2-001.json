@@ -1,0 +1,177 @@
+{
+  "id": "ex-4am-tahlil-ibara-l2-001",
+  "lessonCode": "tahlil-ibara",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 20 — ثلاث عبارات",
+    "estimatedMinutes": 5,
+    "tags": [
+      "عامل مشترك"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-20",
+      "page": 38,
+      "section": "أوظّف تعلّماتي",
+      "number": 20
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 38): $A = x^2 - 5x$ ، $B = (x + 3)(1 - 2x) + 5(1 - 2x)$ ، $C = (1 + x)(x - 5) - (1 + 2x)(1 + x)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بملاحظة أنّ $x^2 = x \\times x$ ، حلّل A.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x(x - 5)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x(x^2 - 5)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-X-MARRATAYN"
+        },
+        {
+          "id": "C",
+          "content": "$5x(x - 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل المشترك بين $x^2$ و $5x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x^2 = x \\times x$ و $5x = 5 \\times x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استخرج $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 - 5x = x(x - 5)$.",
+        "incorrect": "بعد استخراج $x$ من $x^2$ يبقى $x$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّل B.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(1 - 2x)(5x + 15)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        },
+        {
+          "id": "B",
+          "content": "$(1 - 2x)(x - 2)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "C",
+          "content": "$(1 - 2x)(x + 8)$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن العامل الذي يتكرّر في كل الحدود."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العامل المشترك هنا هو $(1 - 2x)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتبه مرّة واحدة خارج القوس، وضع داخل القوس ما يبقى من كل حدّ مع إشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$B = (1 - 2x)[(x + 3) + 5] = (1 - 2x)(x + 8)$.",
+        "incorrect": "ما يبقى داخل القوس يُجمع: $(x + 3)$ و $5$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "حلّل C.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(1 + x)(3x - 4)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "B",
+          "content": "$(1 + x)(-x - 6)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(1 + x)(3x - 6)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل المشترك هو $(1 + x)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحدّ الثاني مسبوق بـ «−»: يبقى $-(1 + 2x)$ داخل القوس."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احذف القوس بتغيير إشارتي $1$ و $2x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$C = (1 + x)[(x - 5) - (1 + 2x)] = (1 + x)(x - 5 - 1 - 2x) = (1 + x)(-x - 6)$.",
+        "incorrect": "القوس المسبوق بـ «−» تتغيّر إشارة كل حدّ فيه."
+      }
+    }
+  ]
+}

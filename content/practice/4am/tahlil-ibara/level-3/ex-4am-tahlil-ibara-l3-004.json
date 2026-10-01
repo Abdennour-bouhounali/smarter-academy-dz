@@ -1,0 +1,177 @@
+{
+  "id": "ex-4am-tahlil-ibara-l3-004",
+  "lessonCode": "tahlil-ibara",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 32 — فرق مربّعين",
+    "estimatedMinutes": 6,
+    "tags": [
+      "فرق مربعين"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-32",
+      "page": 39,
+      "section": "أوظّف تعلّماتي",
+      "number": 32
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 39): حلّل باستعمال $a^2 - b^2 = (a + b)(a - b)$ : $A = (3 - 2x)^2 - 9$ ، $B = \\dfrac{1}{4} - \\left(x + \\dfrac{3}{2}\\right)^2$ ، $C = (x + 2)^2 - (3x - 1)^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّل A.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-2x(6 - 2x)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(-6 - 2x)(12 - 2x)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        },
+        {
+          "id": "C",
+          "content": "$(-2x)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$9 = 3^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a = 3 - 2x$ و $b = 3$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $(a - b)(a + b)$ ثم بسّط كل قوس."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = (3 - 2x - 3)(3 - 2x + 3) = -2x(6 - 2x)$.",
+        "incorrect": "$b$ هو جذر 9، أي 3."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّل B.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(2 - x)(x + 2)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "B",
+          "content": "$(-x - 1)(x + 2)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\left(\\dfrac{1}{4} - x - \\dfrac{3}{2}\\right)\\left(\\dfrac{1}{4} + x + \\dfrac{3}{2}\\right)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{1}{4} = \\left(\\dfrac{1}{2}\\right)^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a = \\dfrac{1}{2}$ و $b = x + \\dfrac{3}{2}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ضع $b$ بين قوسين قبل الطرح."
+        }
+      ],
+      "feedback": {
+        "correct": "$B = \\left(\\dfrac{1}{2} - x - \\dfrac{3}{2}\\right)\\left(\\dfrac{1}{2} + x + \\dfrac{3}{2}\\right) = (-x - 1)(x + 2)$.",
+        "incorrect": "$a$ هو جذر $\\dfrac{1}{4}$ ، و $-b = -x - \\dfrac{3}{2}$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "حلّل C.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(-2x + 1)(4x + 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "B",
+          "content": "$(-2x + 3)(4x + 1)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(x + 2 - 3x - 1)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$a = x + 2$ و $b = 3x - 1$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a - b = (x + 2) - (3x - 1)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احذف القوس المسبوق بـ «−» بتغيير الإشارات."
+        }
+      ],
+      "feedback": {
+        "correct": "$C = (x + 2 - 3x + 1)(x + 2 + 3x - 1) = (-2x + 3)(4x + 1)$.",
+        "incorrect": "$-(3x - 1) = -3x + 1$."
+      }
+    }
+  ]
+}

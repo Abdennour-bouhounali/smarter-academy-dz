@@ -1,0 +1,179 @@
+{
+  "metadata": {
+    "title": "معارف 2 — أمثلة الكتاب",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مربع مجموع",
+      "مربع فرق",
+      "جداء مجموع حدين وفرقهما"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-2",
+      "page": 34,
+      "section": "معارف",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من معارف 2 (الكتاب ص 34): المتطابقات الشهيرة الثلاث."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نشر العبارة $(3x + 2)^2$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$9x^2 + 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$9x^2 + 12x + 4$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$3x^2 + 12x + 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مربع مجموع: $a = 3x$ و $b = 2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(3x)^2 = 9x^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحد المضاعف $2 \\times 3x \\times 2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(3x)^2 + 2 \\times 3x \\times 2 + 2^2 = 9x^2 + 12x + 4$",
+        "incorrect": "لا تنسَ الحد المضاعف ولا تربيع المعامل."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نشر العبارة $(4 - 2x)^2$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$16 - 16x + 4x^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$16 - 4x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-BILA-2AB"
+        },
+        {
+          "id": "C",
+          "content": "$16 - 8x + 4x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مربع فرق: $a = 4$ و $b = 2x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(2x)^2 = 4x^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحد المضاعف $-2 \\times 4 \\times 2x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$4^2 - 2 \\times 4 \\times 2x + (2x)^2 = 16 - 16x + 4x^2$",
+        "incorrect": "مربع فرق ثلاثة حدود، لا حدّان."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "نشر العبارة $(5x - 1)(5x + 1)$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$5x^2 - 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        },
+        {
+          "id": "B",
+          "content": "$25x^2 + 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-MAJMU-FARQ-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$25x^2 - 1$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "جداء مجموع حدين وفرقهما: $a = 5x$ و $b = 1$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(a + b)(a - b) = a^2 - b^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(5x)^2 = 25x^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(5x)^2 - 1^2 = 25x^2 - 1$",
+        "incorrect": "المعامل يُربَّع، و $b^2$ مطروح."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l2-008",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 2
+}

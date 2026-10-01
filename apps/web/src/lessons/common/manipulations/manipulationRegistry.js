@@ -26,6 +26,8 @@ export const MANIPULATION_COMPONENTS = {
   'square-root-side': lazy(() => import('./roots/SquareRootSide')),
   'square-fold': lazy(() => import('./roots/SquareFold')),
   'square-tiling': lazy(() => import('./roots/SquareTiling')),
+  'pitch-expansion': lazy(() => import('./algebra/PitchExpansion')),
+  'turf-factoring': lazy(() => import('./algebra/TurfFactoring')),
 };
 
 export const REGISTERED_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_COMPONENTS));

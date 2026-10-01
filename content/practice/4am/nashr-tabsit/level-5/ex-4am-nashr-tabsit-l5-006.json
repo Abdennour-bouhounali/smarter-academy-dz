@@ -1,0 +1,92 @@
+{
+  "metadata": {
+    "title": "تدريب — حساب ذهني بجداء قوسين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جداء قوسين",
+      "حساب ذهني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P3",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "نحسب $103 \\times 12$ بنشر $(100 + 3)(10 + 2)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $103 \\times 12$ بنشر $(100 + 3)(10 + 2)$.",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "1236",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أربعة جداءات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$100 \\times 10$ ، $100 \\times 2$ ، $3 \\times 10$ ، $3 \\times 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع الجداءات الأربعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$1000 + 200 + 30 + 6 = 1236$.",
+        "incorrect": "لا تنسَ الجداءين $100 \\times 2$ و $3 \\times 10$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "كم يعطي من يحسب $100 \\times 10 + 3 \\times 2$ فقط؟ (خطأ شائع)",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "1006",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هذا الحساب يأخذ جداءين فقط."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $100 \\times 10$ و $3 \\times 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اجمعهما."
+        }
+      ],
+      "feedback": {
+        "correct": "$1000 + 6 = 1006$ ، وهو أصغر من $103 \\times 12$: ينقصه جداءان.",
+        "incorrect": "احسب الجداءين المذكورين فقط ثم اجمعهما."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l5-006",
+  "lessonCode": "nashr-tabsit",
+  "level": 5
+}

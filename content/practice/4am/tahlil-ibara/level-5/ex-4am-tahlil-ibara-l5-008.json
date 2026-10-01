@@ -1,0 +1,131 @@
+{
+  "id": "ex-4am-tahlil-ibara-l5-008",
+  "lessonCode": "tahlil-ibara",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — هل تقبل التحليل؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متطابقات شهيرة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P3",
+      "modelledOn": "qcm"
+    }
+  },
+  "statement": {
+    "content": "المتطابقات الشهيرة تحلّل $a^2 + 2ab + b^2$ و $a^2 - 2ab + b^2$ و $a^2 - b^2$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ عبارة لا تقبل تحليلا باستعمال المتطابقات الشهيرة؟",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 - 16$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+        },
+        {
+          "id": "B",
+          "content": "$x^2 + 8x + 16$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-MAJMU-MURABBAYN"
+        },
+        {
+          "id": "C",
+          "content": "$x^2 + 16$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$x^2 - 8x + 16$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى الإشارات وإلى الحدّ الأوسط."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثلاث عبارات من شكل إحدى المتطابقات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مجموع مربّعين بلا حدّ أوسط ليس من أيّ شكل."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 16$ مجموع مربّعين: $(x + 4)^2 = x^2 + 8x + 16$ ، و $(x - 4)(x + 4) = x^2 - 16$.",
+        "incorrect": "حلّل كل عبارة: التي لا تجد لها شكلًا هي المطلوبة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$x^2 + 4 = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x + 2)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-MAJMU-MURABBAYN"
+        },
+        {
+          "id": "B",
+          "content": "$(x + 2)(x - 2)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+        },
+        {
+          "id": "C",
+          "content": "لا تقبل تحليلا باستعمال المتطابقات الشهيرة",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر كل جداء مقترح."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(x + 2)^2$ فيه حدّ أوسط $4x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(x + 2)(x - 2)$ فيه طرح."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 2)^2 = x^2 + 4x + 4$ و $(x + 2)(x - 2) = x^2 - 4$ : لا يساوي أيّ منهما $x^2 + 4$.",
+        "incorrect": "انشر كل اقتراح: هل يعطي $x^2 + 4$ بالضبط؟"
+      }
+    }
+  ]
+}

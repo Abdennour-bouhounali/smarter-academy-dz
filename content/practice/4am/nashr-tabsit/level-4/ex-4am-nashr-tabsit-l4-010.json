@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "title": "تدريب — أخطاء في تبسيط",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تبسيط",
+      "حدود متشابهة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P4",
+      "modelledOn": "ex-6"
+    }
+  },
+  "statement": {
+    "content": "كتب تلميذ: $2x^2 + 3x - x^2 + 5 = 9x^2$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما الخطأ الذي ارتكبه؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "جمع حدودًا غير متشابهة",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "أخطأ في إشارة $-x^2$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "C",
+          "content": "لا خطأ: الإجابة صحيحة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن قوى $x$ في الحدود المجموعة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل $3x$ و 5 من نوع $x^2$؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا نجمع إلا الحدود التي لها نفس قوة $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "جمع $2x^2$ و $3x$ و $-x^2$ و 5 كأنها حدود متشابهة؛ الصحيح $x^2 + 3x + 5$.",
+        "incorrect": "انظر إلى قوة $x$ في كل حد جُمع."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "التبسيط الصحيح هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 + 3x + 5$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$3x^2 + 3x + 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "C",
+          "content": "$x^2 + 8x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع حدّي $x^2$ فقط."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2x^2 - x^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحدّان $3x$ و 5 يبقيان كما هما."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x^2 - x^2 + 3x + 5 = x^2 + 3x + 5$.",
+        "incorrect": "اجمع الحدّين اللذين فيهما $x^2$ فقط."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l4-010",
+  "lessonCode": "nashr-tabsit",
+  "level": 4
+}

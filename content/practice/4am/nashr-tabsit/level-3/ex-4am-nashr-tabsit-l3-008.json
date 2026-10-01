@@ -1,0 +1,109 @@
+{
+  "metadata": {
+    "title": "تدريب — مساحة ملعب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جداء قوسين",
+      "مساحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P1",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "ملعب مستطيل بعداه $x + 3$ و $2x + 1$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "اكتب مساحة الملعب على شكل مجموع:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2x^2 + 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        },
+        {
+          "id": "B",
+          "content": "$(x + 3)(2x + 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
+        },
+        {
+          "id": "C",
+          "content": "$2x^2 + 7x + 3$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المساحة جداء البعدين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المطلوب شكل مجموع: انشر الجداء."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الملعب أربع مناطق."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 3)(2x + 1) = 2x^2 + x + 6x + 3 = 2x^2 + 7x + 3$.",
+        "incorrect": "المساحة مجموع مساحات المناطق الأربع."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما مساحة الملعب من أجل $x = 10$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "273",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ 10."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "البعدان عندئذ 13 و 21."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب البعدين."
+        }
+      ],
+      "feedback": {
+        "correct": "$13 \\times 21 = 273$ ، و $200 + 70 + 3 = 273$.",
+        "incorrect": "احسب البعدين ثم اضربهما."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l3-008",
+  "lessonCode": "nashr-tabsit",
+  "level": 3
+}

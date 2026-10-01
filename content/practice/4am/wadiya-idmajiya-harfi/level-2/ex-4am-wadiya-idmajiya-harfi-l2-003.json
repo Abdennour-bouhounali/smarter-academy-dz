@@ -1,0 +1,77 @@
+{
+  "metadata": {
+    "title": "تمرين 3 — نشر جداء قوسين (أؤكّد تعلّماتي)",
+    "estimatedMinutes": 1,
+    "tags": [
+      "نشر",
+      "أؤكّد تعلّماتي"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 40,
+      "section": "أؤكّد تعلّماتي",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "اختر الإجابة الصحيحة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نشر الجداء $(4 + x)(1 - x)$ هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4 - x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        },
+        {
+          "id": "B",
+          "content": "$4 - 3x - x^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$5 - x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في الجداء أربعة جداءات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$4 \\times 1$ ، $4 \\times (-x)$ ، $x \\times 1$ ، $x \\times (-x)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع الحدود المتشابهة."
+        }
+      ],
+      "feedback": {
+        "correct": "$4 - 4x + x - x^2 = 4 - 3x - x^2$.",
+        "incorrect": "لا تكتف بجداء الحدّين الأولين والأخيرين."
+      },
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l2-003",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 2
+}

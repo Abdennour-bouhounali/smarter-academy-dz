@@ -116,6 +116,20 @@ export const LEVELS = Object.freeze({
     beginner: { numbers: { n: 28 }, ...T('know-4') },
     advanced: { numbers: { n: 288 }, ...T('ex-18') },
   },
+  // ── Unité 3 (2026-10-01). `expr` écrit les deux facteurs « f1|f2 ».
+  // 3(x + 5) : une seule distributivité, deux zones ; (3x − 1)(3 + x)
+  // (نشاط 1، س 3) : quatre zones dont deux RETRANCHÉES, et des termes à réunir.
+  'pitch-expansion': {
+    beginner: { numbers: { expr: '3|x+5' }, ...T('know-1') },
+    advanced: { numbers: { expr: '3x-1|3+x' }, ...T('act-1') },
+  },
+  // Mode rows. 9x + 3 (نشاط 3، س 2) : rangées de hauteur 1, un seul r > 1
+  // juste ; 6x² + 4x (معارف 3) : rangées de hauteur x, le facteur 2x à trouver
+  // entier (le plus grand r ET la hauteur x).
+  'turf-factoring': {
+    beginner: { numbers: { expr: '9x+3' }, ...T('act-3') },
+    advanced: { numbers: { expr: '6x^2+4x' }, ...T('know-3') },
+  },
 });
 
 export { MANIPULATION_LEVEL_IDS };

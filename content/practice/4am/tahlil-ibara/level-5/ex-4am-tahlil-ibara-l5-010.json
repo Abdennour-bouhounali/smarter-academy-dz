@@ -1,0 +1,92 @@
+{
+  "id": "ex-4am-tahlil-ibara-l5-010",
+  "lessonCode": "tahlil-ibara",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — طريقة إيمان في الحساب",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حساب",
+      "عامل مشترك"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P2",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "نستعمل الخاصية التوزيعية في الاتجاه المعاكس، كما فعلت إيمان: $ka + kb = k(a + b)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$17 \\times 23 + 17 \\times 77 = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "1700",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد 17 مشترك."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $17 \\times (23 + 77)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب ما بين القوسين أولًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$17 \\times (23 + 77) = 17 \\times 100$.",
+        "incorrect": "استخرج 17 ثم اجمع $23 + 77$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$4{,}6 \\times 58 - 4{,}6 \\times 48 = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "46",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد $4{,}6$ مشترك."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $4{,}6 \\times (58 - 48)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب الفرق أولًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$4{,}6 \\times (58 - 48) = 4{,}6 \\times 10$.",
+        "incorrect": "استخرج $4{,}6$ ثم احسب $58 - 48$."
+      }
+    }
+  ]
+}

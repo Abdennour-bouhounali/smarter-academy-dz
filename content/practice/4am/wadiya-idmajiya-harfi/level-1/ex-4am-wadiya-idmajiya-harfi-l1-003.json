@@ -1,0 +1,77 @@
+{
+  "metadata": {
+    "title": "تمرين 9 — مجموع مربعين (أؤكّد تعلّماتي)",
+    "estimatedMinutes": 1,
+    "tags": [
+      "تحليل",
+      "أؤكّد تعلّماتي"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 40,
+      "section": "أؤكّد تعلّماتي",
+      "number": 9
+    }
+  },
+  "statement": {
+    "content": "اختر الإجابة الصحيحة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العبارة $x^2 + 25$ تحلل على الشكل ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x + 5)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-MAJMU-MURABBAYN"
+        },
+        {
+          "id": "B",
+          "content": "$x^2 + 5^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
+        },
+        {
+          "id": "C",
+          "content": "لا تقبل تحليلا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التحليل كتابة على شكل جداء."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر $(x + 5)^2$ وقارن."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل تعرف متطابقة لمجموع مربعين؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 5)^2 = x^2 + 10x + 25$ ، و $x^2 + 5^2$ مجموع لا جداء: العبارة لا تقبل تحليلا بالمتطابقات الشهيرة.",
+        "incorrect": "مربع مجموع فيه حدّ مضاعف، والكتابة على شكل مجموع ليست تحليلا."
+      },
+      "cognitiveDemand": "recall"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l1-003",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 1
+}

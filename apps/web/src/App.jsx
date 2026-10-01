@@ -181,6 +181,10 @@ import muadalatXMurabbaRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab
 import amaliyatJudhurRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/amaliyat-judhur/routes';
 import tawzifKhawassJudhurRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/tawzif-khawass-judhur/routes';
 import wadiyaIdmajiyaJudhurRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/wadiya-idmajiya-judhur/routes';
+import nashrTabsitRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/nashr-tabsit/routes';
+import mutatabiqatShahiraRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/mutatabiqat-shahira/routes';
+import tahlilIbaraRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/tahlil-ibara/routes';
+import wadiyaIdmajiyaHarfiRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-harfi/wadiya-idmajiya-harfi/routes';
 
 export default function App() {
   return (
@@ -431,6 +435,10 @@ export default function App() {
             {amaliyatJudhurRoutes()}
             {tawzifKhawassJudhurRoutes()}
             {wadiyaIdmajiyaJudhurRoutes()}
+            {nashrTabsitRoutes()}
+            {mutatabiqatShahiraRoutes()}
+            {tahlilIbaraRoutes()}
+            {wadiyaIdmajiyaHarfiRoutes()}
 
             {/* ── SURFACE DE QA — jamais en production ────────────────
                 Le moteur de leçon n'a jamais été rendu sous RTL, faute de

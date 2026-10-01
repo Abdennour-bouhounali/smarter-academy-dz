@@ -1,0 +1,77 @@
+{
+  "metadata": {
+    "title": "تمرين 8 — مربع فرق بجذر (أؤكّد تعلّماتي)",
+    "estimatedMinutes": 2,
+    "tags": [
+      "متطابقات",
+      "أؤكّد تعلّماتي"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 40,
+      "section": "أؤكّد تعلّماتي",
+      "number": 8
+    }
+  },
+  "statement": {
+    "content": "اختر الإجابة الصحيحة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نشر العبارة $(1 - \\sqrt{2}x)^2$ هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$1 - 2x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-BILA-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$-2x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$1 - 2\\sqrt{2}x + 2x^2$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مربع فرق: $a^2 - 2ab + b^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a = 1$ و $b = \\sqrt{2}x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(\\sqrt{2}x)^2 = 2x^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$1 - 2 \\times 1 \\times \\sqrt{2}x + (\\sqrt{2}x)^2 = 1 - 2\\sqrt{2}x + 2x^2$.",
+        "incorrect": "مربع فرق ليس فرق المربعين، والحد الأخير موجب."
+      },
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l3-004",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 3
+}

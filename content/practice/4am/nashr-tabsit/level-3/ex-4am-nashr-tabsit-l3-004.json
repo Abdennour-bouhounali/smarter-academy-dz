@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "title": "تدريب — جداء قوسين بإشارات",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جداء قوسين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P3",
+      "modelledOn": "ex-3"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $H = (2x + 3)(x - 4)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $H$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2x^2 - 5x - 12$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$2x^2 - 12$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        },
+        {
+          "id": "C",
+          "content": "$2x^2 + 11x - 12$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أربعة جداءات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2x^2 - 8x + 3x - 12$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع $-8x$ و $3x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x^2 - 8x + 3x - 12 = 2x^2 - 5x - 12$.",
+        "incorrect": "اجمع الحدّين من الدرجة الأولى بإشارتيهما."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما معامل $x$ في النشر المبسّط للعبارة $H$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "-5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحدّان من الدرجة الأولى: $2x \\times (-4)$ و $3 \\times x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب كل منهما مع إشارته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اجمع معامليهما."
+        }
+      ],
+      "feedback": {
+        "correct": "$-8x + 3x = -5x$: المعامل $-5$.",
+        "incorrect": "اجمع معاملي $2x \\times (-4)$ و $3 \\times x$."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l3-004",
+  "lessonCode": "nashr-tabsit",
+  "level": 3
+}

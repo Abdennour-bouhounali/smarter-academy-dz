@@ -1,0 +1,112 @@
+{
+  "metadata": {
+    "title": "تدريب — ملعب تُقتطع منه ممرّات",
+    "estimatedMinutes": 6,
+    "tags": [
+      "مربع فرق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutatabiqat-shahira_P2",
+      "modelledOn": "act-2b"
+    }
+  },
+  "statement": {
+    "content": "ملعب مربّع ضلعه $x\\,m$ ($x > 2$). نقتطع منه ممرًّا عرضه $2\\,m$ على طوله وممرًّا عرضه $2\\,m$ على عرضه، فيبقى مربّع ضلعه $(x - 2)\\,m$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مساحة المربّع الباقي (بـ $m^2$) هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 - 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-BILA-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$x^2 - 4x - 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$x^2 - 4x + 4$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المساحة الباقية $(x - 2)^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مربع فرق."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الممرّان يتقاطعان في ركن اقتُطع مرّتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x - 2)^2 = x^2 - 4x + 4$ : الركن $4$ اقتُطع مرّتين فيُضاف.",
+        "incorrect": "الركن المشترك بين الممرّين يُضاف مرة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب المساحة الباقية من أجل $x = 30$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "784",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ $30$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "يمكنك حساب $28^2$ ذهنيا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$28 = 30 - 2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$900 - 120 + 4 = 784 = 28^2$",
+        "incorrect": "لا تنسَ إضافة الركن $4$."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l5-002",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 5
+}

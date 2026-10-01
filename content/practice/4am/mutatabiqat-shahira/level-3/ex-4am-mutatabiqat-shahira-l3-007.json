@@ -1,0 +1,91 @@
+{
+  "metadata": {
+    "title": "تدريب — مربع فرق بمعاملات كسرية",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مربع فرق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutatabiqat-shahira_P2",
+      "modelledOn": "ex-14"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $L = \\left(\\dfrac{x}{2} - 4\\right)^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما معامل $x$ في النشر المبسّط للعبارة $L$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "-4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مربع فرق: $a = \\dfrac{x}{2}$ و $b = 4$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل $x$ يأتي من الحد المضاعف $-2ab$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $2 \\times \\dfrac{1}{2} \\times 4$ وضع الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$-2 \\times \\dfrac{x}{2} \\times 4 = -4x$",
+        "incorrect": "الحد المضاعف سالب في مربع فرق."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما معامل $x^2$ في النشر المبسّط للعبارة $L$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد أو كسر a/b",
+      "expectedAnswer": "0.25",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحد في $x^2$ هو $a^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هنا $a = \\dfrac{x}{2}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ربّع البسط والمقام."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\left(\\dfrac{x}{2}\\right)^2 = \\dfrac{x^2}{4}$",
+        "incorrect": "المقام $2$ يُربَّع أيضًا."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l3-007",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 3
+}

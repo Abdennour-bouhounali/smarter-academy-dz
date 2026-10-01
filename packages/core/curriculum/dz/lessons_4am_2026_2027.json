@@ -792,6 +792,218 @@
       "difficulty": "صعب",
       "status": "available",
       "icon": "🧶"
+    },
+    {
+      "code": "nashr-tabsit",
+      "sourceTopicId": "nashr_tabsit",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "hisab-harfi",
+      "order": 15,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "نشر وتبسيط عبارة جبرية",
+      "description": "كتابة عبارة جبرية مكتوبة على شكل جداء على شكل مجموع أو فرق بتطبيق الخاصية التوزيعية k(a + b) = ka + kb و k(a − b) = ka − kb والقاعدة العامة (a + b)(c + d) = ac + ad + bc + bd، ثم تبسيطها بحذف الأقواس وتجميع الحدود المتشابهة.",
+      "prerequisites": [
+        "أولويات العمليات والحساب على الأعداد النسبية والكسور",
+        "الحساب على القوى وتبسيط الحدود المتشابهة (مثل x × x = x² و 3x + 2x = 5x)",
+        "قواعد حذف الأقواس المسبوقة بإشارة + أو −"
+      ],
+      "prerequisiteLessonCodes": [],
+      "pointsToLearn": [
+        "كتابة عبارة جبرية مكتوبة على شكل جداء على شكل مجموع أو فرق",
+        "تطبيق الخاصية التوزيعية لضرب عدد في مجموع أو فرق: k(a + b) = ka + kb و k(a − b) = ka − kb",
+        "تطبيق القاعدة العامة لنشر جداء قوسين: (a + b)(c + d) = ac + ad + bc + bd",
+        "تبسيط العبارات الجبرية بحذف الأقواس وتجميع الحدود المتشابهة"
+      ],
+      "pointPrerequisites": {
+        "P2": [
+          "4am_nashr-tabsit_P1"
+        ],
+        "P3": [
+          "4am_nashr-tabsit_P2"
+        ],
+        "P4": [
+          "4am_nashr-tabsit_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 3,
+        "activity": 1,
+        "pages": {
+          "activity": 32,
+          "knowledge": 34,
+          "method": 35,
+          "exercises": 37
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "سهل",
+      "status": "available",
+      "icon": "📐"
+    },
+    {
+      "code": "mutatabiqat-shahira",
+      "sourceTopicId": "nashr_tabsit",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "hisab-harfi",
+      "order": 16,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "المتطابقات الشهيرة",
+      "description": "التعرف على المتطابقات الشهيرة الثلاث — مربع مجموع، مربع فرق، جداء مجموع حدين وفرقهما — وتوظيفها لنشر وتبسيط عبارات جبرية بشكل متمعن فيه، وللحساب السريع المتمعن فيه دون وضع العملية (مثل 21² أو 105 × 95).",
+      "prerequisites": [
+        "قواعد نشر العبارات الجبرية باستعمال الخاصية التوزيعية",
+        "حساب مربعات الأعداد النسبية وقوى العدد 10"
+      ],
+      "prerequisiteLessonCodes": [
+        "nashr-tabsit"
+      ],
+      "pointsToLearn": [
+        "التعرف على متطابقة مربع مجموع وتوظيفها لنشر وتبسيط عبارات جبرية: (a + b)² = a² + 2ab + b²",
+        "التعرف على متطابقة مربع فرق وتوظيفها لنشر وتبسيط عبارات جبرية: (a − b)² = a² − 2ab + b²",
+        "التعرف على متطابقة جداء مجموع حدين وفرقهما وتوظيفها لنشر وتبسيط عبارات جبرية: (a + b)(a − b) = a² − b²",
+        "إجراء الحساب السريع والمتمعن فيه لحساب مربعات أو جداءات أعداد دون وضع العملية (مثل 21² أو 105 × 95)"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_nashr-tabsit_P3"
+        ],
+        "P2": [
+          "4am_nashr-tabsit_P3"
+        ],
+        "P3": [
+          "4am_nashr-tabsit_P3"
+        ],
+        "P4": [
+          "4am_mutatabiqat-shahira_P1",
+          "4am_mutatabiqat-shahira_P2",
+          "4am_mutatabiqat-shahira_P3"
+        ]
+      },
+      "textbookRef": {
+        "unit": 3,
+        "activity": 2,
+        "pages": {
+          "activity": 32,
+          "knowledge": 34,
+          "method": 35,
+          "exercises": 37
+        }
+      },
+      "durationMinutes": 55,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "²"
+    },
+    {
+      "code": "tahlil-ibara",
+      "sourceTopicId": "tahlil",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "hisab-harfi",
+      "order": 17,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "تحليل عبارة جبرية",
+      "description": "كتابة عبارة جبرية معطاة على شكل مجموع أو فرق على شكل جداء عاملين من الدرجة الأولى: باستخراج العامل المشترك (الخاصية التوزيعية العكسية ka + kb = k(a + b)) أو بالتعرف على شكل متطابقة شهيرة.",
+      "prerequisites": [
+        "إتقان قواعد النشر والتبسيط المتعلمة سابقاً",
+        "تحديد وعزل العوامل المشتركة في حدود العبارات الجبرية"
+      ],
+      "prerequisiteLessonCodes": [
+        "nashr-tabsit",
+        "mutatabiqat-shahira"
+      ],
+      "pointsToLearn": [
+        "كتابة عبارة جبرية معطاة على شكل مجموع أو فرق على شكل جداء عاملين من الدرجة الأولى",
+        "التعرف على العامل المشترك واستخراجه بتطبيق الخاصية التوزيعية العكسية: ka + kb = k(a + b)",
+        "التعرف على شكل المتطابقة الشهيرة واستعمالها لتحليل العبارة إلى جداء: a² + 2ab + b² = (a + b)² و a² − 2ab + b² = (a − b)² و a² − b² = (a + b)(a − b)"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_tahlil-ibara_P2"
+        ],
+        "P2": [
+          "4am_nashr-tabsit_P2"
+        ],
+        "P3": [
+          "4am_mutatabiqat-shahira_P1",
+          "4am_mutatabiqat-shahira_P2",
+          "4am_mutatabiqat-shahira_P3"
+        ]
+      },
+      "textbookRef": {
+        "unit": 3,
+        "activity": 3,
+        "pages": {
+          "activity": 33,
+          "knowledge": 34,
+          "method": 35,
+          "exercises": 38
+        }
+      },
+      "durationMinutes": 55,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "🧩"
+    },
+    {
+      "code": "wadiya-idmajiya-harfi",
+      "sourceTopicId": "nashr_tabsit",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "hisab-harfi",
+      "order": 18,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — الحساب الحرفي",
+      "description": "حل وضعيات مركبة وتوظيف الحساب الحرفي: وضعية الحوض والشريط (مساحة الشريط 44m²) وتحدّي المثلث القائم، يسبقها اختبار «أؤكّد تعلّماتي» الذي يعيد كل سؤال إلى درسه، ثم تمارين «أتعمّق».",
+      "prerequisites": [
+        "التحكم التام في قواعد النشر والتبسيط والتحليل المتعلمة خلال الوحدة",
+        "قوانين حساب المحيطات والمساحات للأشكال الهندسية الأساسية (مربع، مستطيل، مثلث قائم...)",
+        "مهارات قراءة وضعيّة مشكلة، تحليل المعطيات، وصياغة المساواة أو المعادلة المناسبة"
+      ],
+      "prerequisiteLessonCodes": [
+        "nashr-tabsit",
+        "mutatabiqat-shahira",
+        "tahlil-ibara"
+      ],
+      "pointsToLearn": [
+        "تجنيد وتوظيف مكتسبات وحدة الحساب الحرفي (النشر، التبسيط، التحليل، والمتطابقات الشهيرة) لحل وضعيات ومسائل هندسية وعدديّة مركبة",
+        "النمذجة الجبرية (ترييض وضعية): التعبير عن أطوال ومساحات أو معطيات نصوص بعبارات جبرية بدلالة مجهول x",
+        "اختيار العبارة الأنسب (الشّكل المنشور أو الشّكل المحلّل) لحساب قيم عددية أو صياغة معادلات وحلها"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_nashr-tabsit_P4",
+          "4am_mutatabiqat-shahira_P1",
+          "4am_tahlil-ibara_P1"
+        ],
+        "P2": [
+          "4am_nashr-tabsit_P4"
+        ],
+        "P3": [
+          "4am_tahlil-ibara_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 3,
+        "pages": {
+          "qcm": 40,
+          "situation": 40,
+          "deepen": 41
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "صعب",
+      "status": "available",
+      "icon": "🏊"
     }
   ],
   "publishedScope": {
@@ -799,7 +1011,8 @@
     "decidedOn": "2026-09-21",
     "unitIds": [
       "aadad-tabiiya-natiqa",
-      "hisab-judhur"
+      "hisab-judhur",
+      "hisab-harfi"
     ],
     "removedTopicCount": 25
   }

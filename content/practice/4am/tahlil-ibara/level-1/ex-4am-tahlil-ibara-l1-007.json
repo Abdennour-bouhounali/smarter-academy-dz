@@ -1,0 +1,125 @@
+{
+  "id": "ex-4am-tahlil-ibara-l1-007",
+  "lessonCode": "tahlil-ibara",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — عامل مشترك حرفي",
+    "estimatedMinutes": 4,
+    "tags": [
+      "عامل مشترك"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P2",
+      "modelledOn": "ex-20"
+    }
+  },
+  "statement": {
+    "content": "حلّل كل عبارة باستخراج أكبر عامل مشترك."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$x^2 + 7x = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x(x^2 + 7)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-X-MARRATAYN"
+        },
+        {
+          "id": "B",
+          "content": "$x(x + 7)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$7x(x + 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x^2 = x \\times x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العامل المشترك هو $x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $x \\times x + 7 \\times x$ ثم استخرج $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 7x = x \\times x + 7 \\times x = x(x + 7)$.",
+        "incorrect": "بعد استخراج $x$ من $x^2$ يبقى $x$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$3x^2 - 6x = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3(x^2 - 2x)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
+        },
+        {
+          "id": "B",
+          "content": "$3x(x - 6)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$3x(x - 2)$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العاملان المشتركان: عدد وحرف."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "PGCD$(3 ; 6) = 3$ ، و $x$ يقسم الحدّين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استخرج $3x$ كاملًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x^2 - 6x = 3x \\times x - 3x \\times 2 = 3x(x - 2)$.",
+        "incorrect": "$3(x^2 - 2x)$ تساوي العبارة لكنّ $x$ ما زال مشتركًا داخل القوس."
+      }
+    }
+  ]
+}

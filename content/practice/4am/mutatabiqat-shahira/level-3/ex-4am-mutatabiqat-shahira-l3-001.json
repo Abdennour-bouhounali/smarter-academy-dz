@@ -1,0 +1,177 @@
+{
+  "metadata": {
+    "title": "تمرين 12 — أتمم المساواة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مربع مجموع"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-12",
+      "page": 37,
+      "section": "أوظّف تعلّماتي",
+      "number": 12
+    }
+  },
+  "statement": {
+    "content": "باستعمال $a^2 + 2ab + b^2 = (a + b)^2$ ، نتمّم المساويات الآتية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أي مساواة صحيحة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 + 3x + 9$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        },
+        {
+          "id": "B",
+          "content": "$x^2 + 6x + 9$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x^2 + 6x + 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نتمّم $x^2 + \\ldots x + \\ldots = (\\ldots + 3)^2$ : ابحث عن العبارة التي تساوي $(x + 3)^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحد الأخير هو $3^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحد الأوسط هو $2 \\times x \\times 3$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 6x + 9 = (x + 3)^2$",
+        "incorrect": "الحد الأوسط $2ab$ والحد الأخير $b^2$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العبارة $9x^2 + \\ldots + 1$ تساوي $(\\ldots + 1)^2$ . أي عبارة تساوي $(3x + 1)^2$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$9x^2 + 6x + 1$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$9x^2 + 3x + 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        },
+        {
+          "id": "C",
+          "content": "$9x^2 + 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$9x^2 = (3x)^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذن $a = 3x$ و $b = 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحد الأوسط $2 \\times 3x \\times 1$."
+        }
+      ],
+      "feedback": {
+        "correct": "$9x^2 + 6x + 1 = (3x + 1)^2$",
+        "incorrect": "الحد الأوسط هو $2ab$ لا $ab$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "العبارة $\\ldots + 10x + 25$ تساوي $(\\ldots + \\ldots)^2$ . أي عبارة تساوي $(x + 5)^2$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$25x^2 + 10x + 25$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        },
+        {
+          "id": "B",
+          "content": "$x^2 + 10x + 25$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x^2 + 5x + 25$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$25 = 5^2$ إذن $b = 5$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$10x = 2 \\times a \\times 5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استنتج $a$ ثم $a^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 10x + 25 = (x + 5)^2$ لأن $10x = 2 \\times x \\times 5$.",
+        "incorrect": "من $2 \\times a \\times 5 = 10x$ نجد $a = x$."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l3-001",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 3
+}

@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "title": "تدريب — كم حدًّا قبل التبسيط؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جداء قوسين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P3",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $L = (4x - 1)(x + 5)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر قبل التبسيط هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4x^2 + 20x - x - 5$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$4x^2 - 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        },
+        {
+          "id": "C",
+          "content": "$4x^2 + 20x - 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كل حد من القوس الأول في كل حد من الثاني."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$4x \\times x$ ، $4x \\times 5$ ، $(-1) \\times x$ ، $(-1) \\times 5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أربعة حدود."
+        }
+      ],
+      "feedback": {
+        "correct": "$4x \\times x + 4x \\times 5 - 1 \\times x - 1 \\times 5$.",
+        "incorrect": "يجب أن تظهر الجداءات الأربعة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما الحد الثابت في النشر المبسّط للعبارة $L$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "-5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحد الثابت جداء الحدّين الثابتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هما $-1$ و 5."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انتبه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$(-1) \\times 5 = -5$.",
+        "incorrect": "اضرب الحدّين الثابتين مع إشارتيهما."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l3-009",
+  "lessonCode": "nashr-tabsit",
+  "level": 3
+}

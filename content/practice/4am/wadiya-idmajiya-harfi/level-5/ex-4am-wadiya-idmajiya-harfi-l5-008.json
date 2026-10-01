@@ -1,0 +1,128 @@
+{
+  "metadata": {
+    "title": "تدريب — أرض مربعة يُقتطع منها شريط",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "نمذجة",
+      "مساعدة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "قطعة أرض مربّعة طول ضلعها $x$ (بالمتر). نقتطع منها على طول أحد أضلاعها شريطًا عرضه 3m، فيبقى مستطيل مساحته $40m^2$. مساعدة: $x^2 - 3x - 40 = (x - 8)(x + 5)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مساحة المستطيل الباقي بدلالة $x$ هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 - 9$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-BILA-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$x^2 - 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$2x - 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "id": "D",
+          "content": "$x^2 - 3x$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعدا المستطيل الباقي: $x$ و $x - 3$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المساحة جداء البعدين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انشر $x(x - 3)$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x(x - 3) = x^2 - 3x$.",
+        "incorrect": "المستطيل الباقي بعداه $x$ و $x - 3$، فمساحته جداؤهما."
+      },
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q2",
+      "statement": "ما طول ضلع الأرض (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب المساواة «مساحة المستطيل = 40»."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل المساعدة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الطول موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 - 3x - 40 = 0$ يعني $(x - 8)(x + 5) = 0$ : $x = 8$ (نرفض $-5$). نتحقق: $8 \\times 5 = 40$.",
+        "incorrect": "نحتفظ بالقيمة الموجبة ونتحقق بالتعويض."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "-5",
+          "id": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "value": "5",
+          "id": "MISC-NASHR-ISHARA-SALIBA"
+        }
+      ],
+      "cognitiveDemand": "transfer"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l5-008",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 5
+}

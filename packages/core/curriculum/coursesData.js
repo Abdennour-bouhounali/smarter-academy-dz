@@ -136,6 +136,7 @@ function buildDzCourseLevels() {
   // officielle ; on n'affiche pas un ميدان vide. Un ميدان réapparaît de
   // lui-même le jour où une leçon de lessons_4am_2026_2027.json le nomme.
   // `order` reste la position dans le programme, pas dans cette liste.
+  const topicTitleOf = new Map(programme4am.domains.flatMap((d) => d.topics.map((t) => [t.id, t.titleAr])));
   const chapters = programme4am.domains.map((domain, index) => ({
     id: domain.id,
     title: domain.titleAr,
@@ -162,7 +163,9 @@ function buildDzCourseLevels() {
       .map((lesson) => buildDzLesson(lesson, {
         levelId: 'moyen',
         gradeId: programme4am.grade,
-        topicTitle: domain.topics.find((t) => t.id === lesson.sourceTopicId)?.titleAr,
+        // Le sujet est cherché dans TOUT le programme : une unité placée par le
+        // propriétaire sous un autre ميدان (`placement`, unité 3) garde son sujet officiel.
+        topicTitle: topicTitleOf.get(lesson.sourceTopicId),
       })),
   })).filter((chapter) => chapter.lessons.length > 0);
 

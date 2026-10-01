@@ -1,0 +1,92 @@
+{
+  "id": "ex-4am-tahlil-ibara-l1-008",
+  "lessonCode": "tahlil-ibara",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — قيمة عبارة محلّلة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "شكل محلّل",
+      "قيمة عبارة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P1",
+      "modelledOn": "method-expand-factor"
+    }
+  },
+  "statement": {
+    "content": "العبارة $A = (x - 4)(2x + 1)$ هي تحليل للعبارة $2x^2 - 7x - 4$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب A من أجل $x = 4$.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "0",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل الشكل المحلّل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "من أجل $x = 4$ ، ماذا يساوي العامل $x - 4$؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء فيه عامل معدوم..."
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = 4$ ، $x - 4 = 0$ ، فالجداء معدوم.",
+        "incorrect": "عوّض $x$ بـ 4 في العامل الأول."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب A من أجل $x = 0$.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "-4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الشكلان يعطيان القيمة نفسها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بالشكل المحلّل: $(0 - 4)(2 \\times 0 + 1)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انتبه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$(0 - 4)(0 + 1) = -4$ ، وبالشكل المنشور $0 - 0 - 4 = -4$.",
+        "incorrect": "عوّض $x$ بـ 0 في الشكل المحلّل، وانتبه إلى إشارة العامل الأول."
+      }
+    }
+  ]
+}

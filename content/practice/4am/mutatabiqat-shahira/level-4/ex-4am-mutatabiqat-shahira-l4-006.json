@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "title": "تدريب — مربع فرق ناقص مربع",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مربع فرق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutatabiqat-shahira_P2",
+      "modelledOn": "ex-16"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $P = (2x - 1)^2 - 4x^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $P$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-4x + 1$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$-1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-BILA-2AB"
+        },
+        {
+          "id": "C",
+          "content": "$-2x + 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $(2x - 1)^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(2x)^2 = 4x^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ماذا يبقى بعد طرح $4x^2$ ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$4x^2 - 4x + 1 - 4x^2 = -4x + 1$",
+        "incorrect": "مربع فرق ليس فرق المربعين: الحد المضاعف $-4x$ يبقى."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب قيمة $P$ من أجل $x = 10$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "-39",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل الشكل المبسّط."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بـ $10$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $-4 \\times 10 + 1$."
+        }
+      ],
+      "feedback": {
+        "correct": "$-40 + 1 = -39$ ، وأيضًا $19^2 - 400 = 361 - 400 = -39$.",
+        "incorrect": "عوّض في الشكل المبسّط."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l4-006",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 4
+}

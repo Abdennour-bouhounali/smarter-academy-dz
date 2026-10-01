@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "title": "تدريب — جداء مجموع وفرق وقيمة عبارة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جداء مجموع حدين وفرقهما"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutatabiqat-shahira_P3",
+      "modelledOn": "act-2c"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $H = (7 - x)(7 + x)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $H$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 - 49$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-MAJMU-FARQ-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$49 - x^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$49 - 14x + x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$a = 7$ و $b = x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(a - b)(a + b) = a^2 - b^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أي الحدّين لا تتغيّر إشارته؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$7^2 - x^2 = 49 - x^2$",
+        "incorrect": "الحد الذي لا تتغيّر إشارته هو $a = 7$ : النتيجة $a^2 - b^2$ بهذا الترتيب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب قيمة $H$ من أجل $x = 2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "45",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ $2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "يمكنك استعمال الشكل المنشور."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $49 - 2^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$49 - 4 = 45$ ، أو $5 \\times 9 = 45$.",
+        "incorrect": "استعمل الشكل $49 - x^2$ وعوّض."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l2-010",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 2
+}

@@ -1,0 +1,114 @@
+{
+  "metadata": {
+    "title": "تمرين 19 — دون حساب",
+    "estimatedMinutes": 6,
+    "tags": [
+      "جداء مجموع حدين وفرقهما",
+      "حساب ذهني"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-19",
+      "page": 38,
+      "section": "أوظّف تعلّماتي",
+      "number": 19
+    }
+  },
+  "statement": {
+    "content": "لتكن $A = x^2 - (x - 1)(x + 1)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $A$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2x^2 - 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "B",
+          "content": "$-1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-MAJMU-FARQ-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$1$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$(x - 1)(x + 1)$ جداء مجموع وفرق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشره بين قوسين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احذف القوسين المسبوقين بـ $-$ بتغيير الإشارات."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 - (x^2 - 1) = 1$",
+        "incorrect": "القوسان المسبوقان بـ $-$ يغيّران إشارة كل حد."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب دون حساب $978654321^2 - 978654320 \\times 978654322$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد على شكل $A$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما قيمة $x$ ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "A لا يتعلّق بـ $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "هو $A$ من أجل $x = 978654321$ ، و $A = 1$ مهما كان $x$.",
+        "incorrect": "اكتب $978654320 = x - 1$ و $978654322 = x + 1$."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l4-002",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 4
+}

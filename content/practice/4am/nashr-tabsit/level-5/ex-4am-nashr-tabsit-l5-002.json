@@ -1,0 +1,161 @@
+{
+  "metadata": {
+    "title": "تمرين 8 — عمل رياض وإيمان",
+    "estimatedMinutes": 5,
+    "tags": [
+      "جداء قوسين",
+      "طريقتان"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-8",
+      "page": 37,
+      "section": "أوظّف تعلّماتي",
+      "number": 8
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 37): لنشر العبارة $A = -5(x + 2)(3x - 1)$ وتبسيطها، بدأ رياض بـ $A = (-5x - 10)(3x - 1)$ ، وبدأت إيمان بـ $A = -5(3x^2 - x + 6x - 2)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "إكمال عمل رياض: $(-5x - 10)(3x - 1) = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-15x^2 - 25x + 10$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$-15x^2 - 35x + 10$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "C",
+          "content": "$-15x^2 + 10$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أربعة جداءات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$-15x^2 + 5x - 30x + 10$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(-5x) \\times (-1)$ موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$-15x^2 + 5x - 30x + 10 = -15x^2 - 25x + 10$.",
+        "incorrect": "انتبه إلى $(-5x) \\times (-1)$ و $(-10) \\times (-1)$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "إكمال عمل إيمان: $-5(3x^2 + 5x - 2) = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-15x^2 + 5x - 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$-15x^2 - 25x - 10$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "C",
+          "content": "$-15x^2 - 25x + 10$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل $-5$ يُضرب في الحدود الثلاثة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(-5) \\times (-2)$ موجب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب كل جداء على حدة."
+        }
+      ],
+      "feedback": {
+        "correct": "$-15x^2 - 25x + 10$: نفس نتيجة رياض.",
+        "incorrect": "اضرب $-5$ في كل حد مع إشارته."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "ما قيمة $A$ من أجل $x = 1$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "-30",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض في الشكل الأول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$-5 \\times 3 \\times 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء ثلاثة أعداد أحدها سالب."
+        }
+      ],
+      "feedback": {
+        "correct": "$-5 \\times (1 + 2) \\times (3 - 1) = -30$ ، و $-15 - 25 + 10 = -30$.",
+        "incorrect": "احسب كل عامل ثم اضرب."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l5-002",
+  "lessonCode": "nashr-tabsit",
+  "level": 5
+}

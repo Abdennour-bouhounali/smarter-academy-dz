@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "title": "تمرين 37 — مساحة الجزء غير الملوّن",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نمذجة",
+      "مساحة",
+      "طريقتان"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-37",
+      "page": 41,
+      "section": "أتعمّق",
+      "number": 37
+    }
+  },
+  "statement": {
+    "content": "ABCD مربع طول ضلعه 10cm، و $x$ عدد موجب. لوّنّا فيه مربعًا ضلعه $x$ في الركن A (حيث $AE = AG = x$)، والمستطيل (1) بعداه 4cm و 10cm على طول الضلع [BC] (حيث $FB = 4$)، والمستطيل (2) بعداه $x$ و 4cm في الركن D (حيث $DH = 4$). النقطتان E و F من [AB]، والنقطتان G و H من [AD]."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مساحة الجزء غير الملوّن بعد النشر والتبسيط هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$60 - x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "id": "B",
+          "content": "$60 + 4x - x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "C",
+          "content": "$60 - 4x - x^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$60 - 16x + x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الكل ناقص الأجزاء الملوّنة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المساحات: $100$ ، $x^2$ ، $40$ ، $4x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح كل الأجزاء من 100."
+        }
+      ],
+      "feedback": {
+        "correct": "$100 - x^2 - 40 - 4x = 60 - 4x - x^2$.",
+        "incorrect": "المستطيل (2) بعداه $x$ و 4: مساحته $4x$ وتُطرح."
+      },
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "احسب مساحة الجزء غير الملوّن (بـ $cm^2$) من أجل $x = 4$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "28",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد 4."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$4x = 16$ و $x^2 = 16$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرحهما من 60."
+        }
+      ],
+      "feedback": {
+        "correct": "$60 - 16 - 16 = 28$.",
+        "incorrect": "احسب $x^2$ و $4x$ ثم اطرحهما من 60."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "60",
+          "id": "MISC-SHAKL-GHAYR-MUNASIB"
+        }
+      ],
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l3-002",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 3
+}

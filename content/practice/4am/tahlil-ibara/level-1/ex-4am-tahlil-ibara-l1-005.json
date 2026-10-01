@@ -1,0 +1,176 @@
+{
+  "id": "ex-4am-tahlil-ibara-l1-005",
+  "lessonCode": "tahlil-ibara",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — نوع المتطابقة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متطابقات شهيرة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P3",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "لكل عبارة، تعرّف على شكل المتطابقة الشهيرة التي تحلّلها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العبارة $x^2 + 8x + 16$ من الشكل:",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$a^2 + 2ab + b^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$a^2 - 2ab + b^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$a^2 - b^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى إشارة الحدّ الأوسط."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$16 = 4^2$ و $8x = 2 \\times x \\times 4$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حدّ أوسط موجب يدلّ على مربع مجموع."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 8x + 16 = x^2 + 2 \\times x \\times 4 + 4^2 = (x + 4)^2$.",
+        "incorrect": "العبارة فيها حدّ أوسط موجب: أيّ متطابقة فيها $+2ab$؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العبارة $x^2 - 49$ من الشكل:",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$a^2 + 2ab + b^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-MAJMU-MURABBAYN"
+        },
+        {
+          "id": "B",
+          "content": "$a^2 - 2ab + b^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+        },
+        {
+          "id": "C",
+          "content": "$a^2 - b^2$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هل في العبارة حدّ أوسط فيه $x$؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$49 = 7^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مربّعان بينهما طرح ولا حدّ أوسط."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 - 49 = x^2 - 7^2 = (x - 7)(x + 7)$.",
+        "incorrect": "لا يوجد حدّ أوسط: المتطابقة التي ليس فيها $2ab$ هي المطلوبة."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "العبارة $x^2 - 12x + 36$ من الشكل:",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$a^2 + 2ab + b^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$a^2 - 2ab + b^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$a^2 - b^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى إشارة الحدّ الأوسط."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$36 = 6^2$ و $12x = 2 \\times x \\times 6$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حدّ أوسط سالب يدلّ على مربع فرق."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 - 12x + 36 = x^2 - 2 \\times x \\times 6 + 6^2 = (x - 6)^2$.",
+        "incorrect": "الحدّ الأوسط سالب: أيّ متطابقة فيها $-2ab$؟"
+      }
+    }
+  ]
+}

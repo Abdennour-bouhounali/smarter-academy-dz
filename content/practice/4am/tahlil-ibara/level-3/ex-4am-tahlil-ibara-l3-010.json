@@ -1,0 +1,91 @@
+{
+  "id": "ex-4am-tahlil-ibara-l3-010",
+  "lessonCode": "tahlil-ibara",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — معاملات التحليل",
+    "estimatedMinutes": 4,
+    "tags": [
+      "عامل مشترك"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P2",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "نكتب $18x^2 + 12x = kx(ax + b)$ حيث $k$ أكبر عدد طبيعي ممكن، و $a$ و $b$ عددان طبيعيان."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما قيمة $k$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$k$ يقسم 18 و 12."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ابحث عن PGCD$(18 ; 12)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب قواسم كل عدد."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD$(18 ; 12) = 6$ : $18x^2 + 12x = 6x(3x + 2)$.",
+        "incorrect": "$k$ هو أكبر قاسم مشترك للعددين 18 و 12."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما قيمة $a + b$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$a = 18 \\div k$ و $b = 12 \\div k$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم كل معامل على العامل المشترك الأكبر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع الناتجين."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = 3$ و $b = 2$ ، لأنّ $6x(3x + 2) = 18x^2 + 12x$.",
+        "incorrect": "احسب $a$ و $b$ بالقسمة على العامل المشترك الأكبر، ثم اجمعهما."
+      }
+    }
+  ]
+}

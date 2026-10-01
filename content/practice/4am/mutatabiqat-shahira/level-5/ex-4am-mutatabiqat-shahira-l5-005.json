@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "title": "تدريب — مربعان متساويان",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مربع فرق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutatabiqat-shahira_P2",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارتين $U = (x - 7)^2$ و $V = (7 - x)^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $V = (7 - x)^2$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$49 - 14x + x^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$49 - x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-BILA-2AB"
+        },
+        {
+          "id": "C",
+          "content": "$49 + 14x + x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مربع فرق: $a = 7$ و $b = x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(a - b)^2 = a^2 - 2ab + b^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحد المضاعف $-2 \\times 7 \\times x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(7 - x)^2 = 49 - 14x + x^2$ ، وهو نشر $(x - 7)^2$ نفسه.",
+        "incorrect": "مربع فرق ثلاثة حدود."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $V - U$ من أجل $x = 3$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "0",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن نشري $U$ و $V$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "لهما الحدود نفسها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ماذا يساوي الفرق مهما كان $x$ ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$U = V$ من أجل كل $x$ : $(x - 7)^2 = (7 - x)^2$ ، إذن الفرق $0$.",
+        "incorrect": "العددان $x - 7$ و $7 - x$ متعاكسان ولهما المربع نفسه."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l5-005",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 5
+}

@@ -5,10 +5,11 @@
 > and the normative lesson contract is `docs/architecture/LESSON_CONTRACT.md`; this playbook
 > defers to both. Its rules were first distilled from the French-era lessons (fractions,
 > nombres-entiers, contenances, longueurs, masses, périmètres, aires, durées, angles) — those
-> lessons were **deleted on 2026-09-25**; the only lesson content today is two 4AM units:
+> lessons were **deleted on 2026-09-25**; the only lesson content today is three 4AM units:
 > « الأعداد الطبيعيّة والأعداد النّاطقة » (9 lessons under
 > `apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/`) and
-> « الحساب على الجذور » (5 lessons under `…/hisab-judhur/`, 2026-09-30). Where a
+> « الحساب على الجذور » (5 lessons under `…/hisab-judhur/`, 2026-09-30) and « الحساب الحرفي »
+> (3 lessons + synthesis under `…/hisab-harfi/`, 2026-10-01). Where a
 > passage below cites a French-era file, it is labelled historical.
 >
 > The sibling contracts stay normative — `ARCHITECTURE.md`, `LESSON_CONTRACT.md`,

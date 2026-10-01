@@ -102,6 +102,55 @@
         "الأعداد الناطقة والكتابة الكسرية",
         "قواعد الحساب على القوى والنشر (المتطابقات الشهيرة)"
       ]
+    },
+    {
+      "code": "hisab-harfi",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "order": 2,
+      "number": 3,
+      "titleAr": "الحساب الحرفي",
+      "subtitleAr": "نشر وتبسيط عبارة جبرية، المتطابقات الشهيرة والحساب المتمعن فيه، تحليل عبارة جبرية إلى جداء عوامل",
+      "sourceTopicIds": [
+        "nashr_tabsit",
+        "tahlil"
+      ],
+      "placement": {
+        "programmeDomainId": "hisab_harfi",
+        "decidedBy": "owner",
+        "decidedOn": "2026-10-01",
+        "note": "Le programme range النشر والتبسيط et التحليل dans « ميدان الحساب الحرفي » ; le propriétaire place l'unité 3 du manuel sous « ميدان أنساب الأعداد والحساب », comme les unités 1 et 2. Les sujets restent ceux du programme (traçabilité), le ميدان d'affichage est celui du propriétaire."
+      },
+      "textbook": {
+        "title": "كتاب الرياضيات — السنة الرابعة من التعليم المتوسط",
+        "generation": "الجيل الثاني",
+        "unit": 3,
+        "pages": "31–41",
+        "extraction": "docs/sources/4am/unit3/extraction.json"
+      },
+      "objectivesAr": [
+        "معرفة المتطابقات الشهيرة وتوظيفها في الحساب المتمعن فيه وفي النشر والتحليل.",
+        "نشر أو تحليل عبارات جبرية بسيطة."
+      ],
+      "challenge": {
+        "sourceElementId": "challenge",
+        "page": 31,
+        "titleAr": "تحدّ",
+        "textAr": "لاحظ الشكل المقابل حيث ABC مثلث (AB = x + 1 ، AC = x + 2 ، BC = x + 3). ما هي قيمة العدد x التي من أجلها يكون المثلث ABC قائما في A ؟"
+      },
+      "aside": {
+        "sourceElementId": "history-descartes",
+        "page": 31,
+        "titleAr": "ديكارت",
+        "textAr": "يعتبر الفيلسوف الفرنسي ديكارت (Descartes) أن الرياضيات هي أداة لتفسير معظم الظواهر. في إحدى الوثائق التي ألّفها في 06 جوان من سنة 1635 تحت عنوان «حوار الطريقة» اقترح إمكانيات وضع أسس تربط بين العمليات الحسابية والجبر من جهة، والجبر والهندسة من جهة أخرى. فهو يذكر أنه لحساب مربع عدد معطى بدلالة عدد مجهول، يمكن الاستعانة بمفهوم مساحة مربع. مثلا، لحساب العدد (2x + 1)² نظم العمل في جدول: يجمع الأعداد المسجلة في الخانات ونتحصل على (2x + 1)² = 4x² + 4x + 1",
+        "captionAr": "روني ديكارت"
+      },
+      "synthesisLessonCode": "wadiya-idmajiya-harfi",
+      "prerequisitesAr": [
+        "أولويات العمليات والحساب على الأعداد النسبية والكسور",
+        "الحساب على القوى وتبسيط الحدود المتشابهة",
+        "قواعد حذف الأقواس المسبوقة بإشارة + أو −",
+        "قوانين حساب المحيطات والمساحات للأشكال الهندسية الأساسية"
+      ]
     }
   ]
 }

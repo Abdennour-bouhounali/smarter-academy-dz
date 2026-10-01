@@ -1,0 +1,109 @@
+{
+  "metadata": {
+    "title": "تدريب — طرح جداء قوسين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تبسيط",
+      "أقواس"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P4",
+      "modelledOn": "ex-7"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $N = 4 - (x - 3)(x + 2)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $N$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-x^2 - x - 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "B",
+          "content": "$-x^2 + x + 10$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$-x^2 + x - 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر الجداء أولًا وضعه بين قوسين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(x - 3)(x + 2) = x^2 - x - 6$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم احذف القوسين المسبوقين بـ $-$."
+        }
+      ],
+      "feedback": {
+        "correct": "$4 - (x^2 - x - 6) = 4 - x^2 + x + 6 = -x^2 + x + 10$.",
+        "incorrect": "كل حد من نشر الجداء تتغيّر إشارته."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما قيمة $N$ من أجل $x = 3$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض في الشكل الأول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما قيمة $x - 3$ عندئذ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الجداء معدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "$4 - 0 \\times 5 = 4$.",
+        "incorrect": "عوّض في الشكل الأول: أحد العاملين معدوم."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l4-005",
+  "lessonCode": "nashr-tabsit",
+  "level": 4
+}

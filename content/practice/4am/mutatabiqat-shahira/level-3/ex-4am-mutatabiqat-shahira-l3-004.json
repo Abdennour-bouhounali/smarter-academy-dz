@@ -1,0 +1,161 @@
+{
+  "metadata": {
+    "title": "طرائق — نشر بمتطابقة شهيرة",
+    "estimatedMinutes": 6,
+    "tags": [
+      "مربع مجموع",
+      "مربع فرق",
+      "جداء مجموع حدين وفرقهما"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-expand-identities",
+      "page": 35,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من طرائق الكتاب (ص 35): نتعرّف على نوع المتطابقة ونعيّن الحدين ثم ننشر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما معامل $x$ في نشر العبارة $(2x + 1)^2$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مربع مجموع: $a = 2x$ و $b = 1$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل $x$ يأتي من الحد المضاعف."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $2 \\times 2 \\times 1$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(2x + 1)^2 = 4x^2 + 4x + 1$",
+        "incorrect": "الحد المضاعف $2 \\times 2x \\times 1$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نشر العبارة $(\\sqrt{3} - 4x)^2$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3 - 16x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-BILA-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$3 - 8\\sqrt{3}x + 16x^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$3 - 4\\sqrt{3}x + 16x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مربع فرق: $a = \\sqrt{3}$ و $b = 4x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(\\sqrt{3})^2 = 3$ و $(4x)^2 = 16x^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحد المضاعف $-2 \\times \\sqrt{3} \\times 4x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(\\sqrt{3})^2 - 2 \\times \\sqrt{3} \\times 4x + (4x)^2 = 3 - 8\\sqrt{3}x + 16x^2$",
+        "incorrect": "الحد المضاعف فيه العدد $2$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "نشر العبارة $(2x - \\sqrt{5})(2x + \\sqrt{5})$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4x^2 - 5$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$4x^2 + 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-MAJMU-FARQ-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$2x^2 - 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "جداء مجموع حدين وفرقهما."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a = 2x$ و $b = \\sqrt{5}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(\\sqrt{5})^2 = 5$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(2x)^2 - (\\sqrt{5})^2 = 4x^2 - 5$",
+        "incorrect": "$b^2$ مطروح، و $(2x)^2 = 4x^2$."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l3-004",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 3
+}

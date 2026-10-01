@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tahlil-ibara-l4-007",
+  "lessonCode": "tahlil-ibara",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — اختر الطريقة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "تحليل",
+      "قيمة عبارة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P1",
+      "modelledOn": "now-36-2"
+    }
+  },
+  "statement": {
+    "content": "لتكن العبارة $B = 4x^2 - 12x + 9 - (2x - 3)(x + 1)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّل B إلى جداء عاملين من الدرجة الأولى.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(2x - 3)(x - 2)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "B",
+          "content": "$(2x - 3)(3x - 2)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "C",
+          "content": "$(2x - 3)(x - 4)$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$4x^2 - 12x + 9$ مربع فرق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$4x^2 - 12x + 9 = (2x - 3)^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استخرج $(2x - 3)$ ويبقى $(2x - 3) - (x + 1)$."
+        }
+      ],
+      "feedback": {
+        "correct": "$B = (2x - 3)[(2x - 3) - (x + 1)] = (2x - 3)(x - 4)$.",
+        "incorrect": "القوس $(x + 1)$ مسبوق بـ «−»: تتغيّر إشارتا حدّيه."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب B من أجل $x = 4$.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "0",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل الشكل المحلّل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ماذا يساوي $x - 4$ من أجل $x = 4$؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء فيه عامل معدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = 4$ : $(2 \\times 4 - 3)(4 - 4) = 5 \\times 0$.",
+        "incorrect": "استعمل الشكل المحلّل لتحسب بسرعة."
+      }
+    }
+  ]
+}

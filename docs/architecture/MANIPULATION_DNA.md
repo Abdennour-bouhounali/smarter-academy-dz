@@ -383,6 +383,7 @@ as a substitute for causality: every motion must show a mathematical change.
 | Standalone labs whose second level duplicates another lab (audit, defect k) | **Not yet implemented**, except the معارف 143 worked example (`levels={false}`) |
 | Dormant class-mode code (next step, replay, solution) | Untested, never shown to students (unchanged) |
 | Unit 2 « الحساب على الجذور »: three new labs designed from this DNA (see below) | **Implemented 2026-09-30** |
+| Unit 3 « الحساب الحرفي »: two new labs, one world (the football pitch) for both directions of one reading (see below) | **Implemented 2026-10-01** |
 
 **Lessons 2–9, what the hand now does (2026-09-30).** The instrument is chosen per concept
 (§6, §12). Lessons 4, 5 and 7 share the reserve **on purpose**: coprime is the PGCD = 1 case of
@@ -408,4 +409,17 @@ stretch engine but each holding a different variable (`MANIPULATION_CONTRACT.md`
 | L2 `square-root-side` graduation | choose the graduation 1/g, then stretch | a card resists every graduation tried; the student classifies the roots by whether one graduation lands exactly |
 | L3 `square-fold` | move x; its arrow lands on the line of squares (stretch) | the negative half is hatched and pinning there is refused; x² = 9 stays open until −3 is pinned too |
 | L4 / L5 `square-tiling` | stretch k, the tiles per side of a square of area n (stretch) | k² ∤ n refuses the tiling with n ÷ k² read exactly; L5: only the largest k gives a tile that cannot be tiled again |
+
+**Unit 3, what the hand does (2026-10-01).** One reading — a product of sums is the AREA of a rectangle
+whose sides are those sums (the textbook's own figures) — and its two directions, each with its own
+gesture (`MANIPULATION_CONTRACT.md` §2quinquies):
+
+| Lesson | Gesture (engine) | What resists / what the student decides |
+|---|---|---|
+| L1 / L2 `pitch-expansion` | stretch **x** — the LETTER is a length (stretch); carry each zone into the sum and a term onto a like term (carry) | an incomplete sum is too small for the x on screen and the forgotten zones light up with their area; unlike terms refuse to merge; ONE verified value of x opens nothing — the identity needs two |
+| L3 / synthesis `turf-factoring` | stretch **r**, the number of identical rows (rows); carry each strip to a side of $x^2$ (square) | pieces that cannot be shared fall off the pitch; the corner refuses a split whose right × bottom is not the number of unit squares; $x^2 + 25$ never closes |
+
+The owner asked to keep, BESIDE the causal gestures, a decorative interaction (the ball, the goals):
+it is confined to the drawn world, `aria-hidden`, off the keyboard path and reduced-motion-safe — an
+exception recorded in the contract, not a licence to animate mathematics.
 

@@ -1,0 +1,126 @@
+{
+  "id": "ex-4am-tahlil-ibara-l4-006",
+  "lessonCode": "tahlil-ibara",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — معاملات كسرية",
+    "estimatedMinutes": 5,
+    "tags": [
+      "متطابقات شهيرة",
+      "كسور"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P3",
+      "modelledOn": "ex-31"
+    }
+  },
+  "statement": {
+    "content": "حلّل كل عبارة باستعمال متطابقة شهيرة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$x^2 + x + \\dfrac{1}{4} = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\left(x + \\dfrac{1}{2}\\right)^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\left(x + \\dfrac{1}{4}\\right)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        },
+        {
+          "id": "C",
+          "content": "$(x + 1)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{1}{4} = \\left(\\dfrac{1}{2}\\right)^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحقّق: $2 \\times x \\times \\dfrac{1}{2} = x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مربع مجموع."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 2 \\times x \\times \\dfrac{1}{2} + \\left(\\dfrac{1}{2}\\right)^2 = \\left(x + \\dfrac{1}{2}\\right)^2$.",
+        "incorrect": "$b$ هو جذر $\\dfrac{1}{4}$ ، و $2b$ معامل $x$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$\\dfrac{1}{4}x^2 - 1 = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\left(\\dfrac{1}{4}x - 1\\right)\\left(\\dfrac{1}{4}x + 1\\right)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        },
+        {
+          "id": "B",
+          "content": "$\\left(\\dfrac{1}{2}x - 1\\right)\\left(\\dfrac{1}{2}x + 1\\right)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\left(\\dfrac{1}{2}x - 1\\right)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "فرق مربّعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{1}{4}x^2 = \\left(\\dfrac{1}{2}x\\right)^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $(a - b)(a + b)$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\left(\\dfrac{1}{2}x\\right)^2 - 1^2 = \\left(\\dfrac{1}{2}x - 1\\right)\\left(\\dfrac{1}{2}x + 1\\right)$.",
+        "incorrect": "جذر $\\dfrac{1}{4}x^2$ هو $\\dfrac{1}{2}x$."
+      }
+    }
+  ]
+}

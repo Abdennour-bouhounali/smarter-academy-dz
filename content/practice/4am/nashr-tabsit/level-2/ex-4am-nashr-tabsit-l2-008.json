@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "title": "تدريب — جمع الحدود المتشابهة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تبسيط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P4",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "نبسّط عبارة بجمع الحدود المتشابهة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بسّط $3x + 5 - x + 2$:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$9x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        },
+        {
+          "id": "B",
+          "content": "$4x + 7$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "C",
+          "content": "$2x + 7$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في العبارة حدّان فيهما $x$ وحدّان ثابتان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع $3x$ و $-x$ ثم 5 و 2."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تجمع حدًّا فيه $x$ مع حد ثابت."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x - x + 5 + 2 = 2x + 7$.",
+        "incorrect": "اجمع الحدود المتشابهة فقط، مع إشاراتها."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بسّط $2x^2 + 3x - x^2 + x$. ما معامل $x^2$ في النتيجة؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحدود التي فيها $x^2$ متشابهة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع $2x^2$ و $-x^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$-x^2$ معناه $-1 \\times x^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x^2 - x^2 + 3x + x = x^2 + 4x$: معامل $x^2$ هو 1.",
+        "incorrect": "اجمع معاملي الحدّين اللذين فيهما $x^2$ مع الإشارة."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l2-008",
+  "lessonCode": "nashr-tabsit",
+  "level": 2
+}

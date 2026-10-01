@@ -1,0 +1,99 @@
+{
+  "metadata": {
+    "title": "تدريب — مساحة ملعب مربّع",
+    "estimatedMinutes": 5,
+    "tags": [
+      "حساب ذهني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutatabiqat-shahira_P4",
+      "modelledOn": "act-2a"
+    }
+  },
+  "statement": {
+    "content": "ملعب جواري مربّع ضلعه $102\\,m$ ، وملعب آخر مربّع ضلعه $98\\,m$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب ذهنيا مساحة الملعب الأول بـ $m^2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "10404",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$102 = 100 + 2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل مربع مجموع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $100^2$ و $2 \\times 100 \\times 2$ و $2^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(100 + 2)^2 = 10\\,000 + 400 + 4 = 10\\,404$",
+        "incorrect": "لا تنسَ الحد المضاعف $400$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بكم $m^2$ تزيد مساحة الملعب الأول على مساحة الثاني؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "800",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الفرق هو $102^2 - 98^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "فرق مربعين: $a^2 - b^2 = (a + b)(a - b)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $102 + 98$ و $102 - 98$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(102 + 98)(102 - 98) = 200 \\times 4 = 800$",
+        "incorrect": "فرق المربعين ليس مربع الفرق."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l4-009",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 4
+}

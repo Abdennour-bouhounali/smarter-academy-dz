@@ -121,6 +121,25 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: '√(k² × b) = √(k²) × √b = k√b: مربّع مساحته n مبلّط بـ k × k بلاطة مساحة كل منها b — وأكبر k يعطي أصغر b',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: { n: [2, 999] } },
   },
+
+  // ── Unité 3 « الحساب الحرفي » (2026-10-01) ──────────────────────────────
+  'pitch-expansion': {
+    // Un terrain de football dont les côtés sont les deux facteurs : l'élève
+    // ÉTIRE x, PORTE chaque zone (un produit partiel) dans la somme, RÉUNIT
+    // les termes semblables et vérifie l'égalité pour plusieurs x. Chaque
+    // zone portée et chaque fusion est une décision : MANUEL (§6bis).
+    shows: 'النشر: مساحة الملعب (الجداء) تساوي مجموع مساحات مناطقه — k(a + b) = ka + kb و (a + b)(c + d) = ac + ad + bc + bd والمتطابقات الشهيرة — من أجل كل قيمة لـ x',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'turf-factoring': {
+    // Le geste inverse : des plaques de gazon (x², x, 1) à assembler en UN
+    // terrain rectangulaire, dont les côtés sont les facteurs. rows : l'élève
+    // étire le nombre de rangées identiques (ka + kb = k(a + b)) ; square :
+    // il porte les bandes à droite ou en bas du carré x², le coin décide
+    // (a² + 2ab + b² = (a + b)²). Chaque essai est une réponse : MANUEL.
+    shows: 'التحليل: كتابة مجموع على شكل جداء هي تكوين مستطيل واحد من قطعه — ka + kb = k(a + b) و a² + 2ab + b² = (a + b)²',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
 });
 
 export const MANIPULATION_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_TYPES));

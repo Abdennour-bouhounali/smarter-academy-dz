@@ -61,7 +61,8 @@ manipulations/
 │   ├── DivisionRoles.jsx                      b · q · r named in the scene's words (partition vs quotition, §2ter)
 │   └── ContextScenes.jsx                      the landscape vignettes of each world, for `MissionBrief.visual`
 ├── divisibility/               the 10 types of unit 1 (+ teamFormation.js, pure geometry)
-└── roots/                      the 3 types of unit 2 « الحساب على الجذور » (2026-09-30) — §2quater
+├── roots/                      the 3 types of unit 2 « الحساب على الجذور » (2026-09-30) — §2quater
+└── algebra/                    the 2 types of unit 3 « الحساب الحرفي » (2026-10-01) — §2quinquies
 ```
 
 `divisibility/DivisorExplorerBooks.jsx` (`divisor-explorer-books`, Module 1 of
@@ -123,6 +124,42 @@ Props: see the component headers (the design sheet of `MANIPULATION_DNA.md` §7 
 number with a single non-trivial tiling (18, 8, 50) — a larger k tried and refused.
 `square-root-side` posed ALONE in `graduation` mode has no second level (its `levels.js` pair is a
 refine pair); in a workspace the lesson declares both levels as usual.
+
+## 2quinquies. The algebra laboratories (unit 3, 2026-10-01)
+
+Unit 3 « الحساب الحرفي » (expansion, identities, factorisation) needed a variable that is a LETTER:
+two types were added by the §7ter recipe, one per direction of the same reading — a product of two
+sums is the AREA of a rectangle whose sides are those sums (the textbook's own argument: the
+squares MNPQ / KLMN p. 32–33, Descartes' table p. 31). The world is the **football pitch** (`theme:
+'football'`, owner's choice for the unit): a rectangle the student reads as a pitch, never a bar.
+Exact arithmetic: `packages/core/arithmetic/polynomials.js` (integer-coefficient terms `{c, p}`,
+`partialProducts`, `reduce`, `expand`, `commonMonomial`; `polynomials.test.js` sweeps x ∈ [−20, 20]).
+Pure logic: `logic/pitchExpansion.js`, `logic/turfFactoring.js`, tested in `logic/algebraLabs.test.js`
+on the textbook's numbers (geometry swept over every x of the ruler: the signed zones always cover
+exactly the pitch's area); `algebra/algebraLabs.render.test.jsx` renders every kind and mode.
+Strings: `lesson.json › manipulation.pitchExpansion | turfFactoring`. Both are **manual** (§6bis —
+each carried zone, merge, row count or strip placement is a decision).
+
+| Type | The hand holds | Resistance | Discovery (contrast) | Lessons |
+|---|---|---|---|---|
+| `pitch-expansion` (`algebra/PitchExpansion.jsx`) | **x** (stretch: the pitch grows, every zone follows); each ZONE (carry, from the pitch or from the Descartes table under it) into « المجموع »; a term onto a LIKE term (carry) to merge | unlike terms refuse to merge (« $x^2$ مساحة مربّع و $x$ مساحة شريط »); « تحقّق » compares the pitch's area with the carried sum FOR THE x ON SCREEN — a forgotten zone lights up with its area (the two $ab$ bands of the error $(a + b)^2 = a^2 + b^2$); opposite terms cancel | every zone carried, the sum reduced, the equality verified for **two values of x** → the identity holds for every value (متطابقة). Kind from `expr`: `distributive`, `double`, `square-sum`, `square-diff`, `sum-diff` | L1 (`3\|x+5`, `3x-1\|3+x`, `2x-1\|x+4`), L2 (squares and `x+3\|x-3`), synthesis (`x+10+x`, the pool) |
+| `turf-factoring` (`algebra/TurfFactoring.jsx`) | `rows`: **r**, the number of IDENTICAL rows the turf pieces ($x^2$, $x$, 1, hatched when subtracted) are shared into (stretch). `square`: each STRIP (carry) to the right of or below the $x^2$ square, then « أغلق الملعب » | `rows`: pieces that cannot be shared fall OUTSIDE the pitch (r ∤ a coefficient). `square`: the corner needs right × bottom unit squares — « الركن يحتاج 8 ولديك 9 »; $x^2 + 25$ never closes | `rows`: the largest valid r (the gcd of the coefficients — the PGCD of unit 1) tried AND a refusal → $ka + kb = k(a + b)$, the pitch's height is the common factor. `square`: a SQUARE closed (p = q) and a refused split → $a^2 + 2ab + b^2 = (a + b)^2$; a sum that never closes → « لا تقبل تحليلا » | L3, synthesis |
+
+`expr` syntax (`pitch-expansion`): two factors `"f1|f2"`, a single factor means its square; terms of
+degree ≤ 1 with integer coefficients; a side may have three segments (`x+10+x`). Negative terms are
+drawn as REMOVED (hatched) strips inside the positive length and a double-removed corner as RESTORED
+(cross-hatched) — the textbook's figure of $(a - b)^2$. The ruler runs from the first x that draws both
+sides (`x-2` starts at 3), runs `span` steps (prop, default 5, opening two steps in; L1's beginner uses 9 so x = 9 — the textbook's 3 × (9 + 5) — is reachable) and stops at the last drawable value (`5-2x` stops at 2); a factor positive for no x
+throws (content error). `turf-factoring` `square` has no level selector of its own; `showNeed={false}`
+hides the corner's live need for a more autonomous level. Both report each validated trial through
+`onTrial` (via `state.report`), so a module can list the student's own trials above a question.
+
+**Decorative layer (owner request, 2026-10-01).** Besides the mathematical gestures, the pitch carries
+a deliberately DECORATIVE interaction: mowing stripes, goals and a ball the student may tap; the ball
+rolls to the last carried zone and into the goal when an equality is verified. It carries no
+information, is `aria-hidden`, outside the keyboard path (`tabIndex=-1`), never changes a lab state,
+and is frozen by `prefers-reduced-motion`. This is the one sanctioned exception to « no decorative
+interaction » (§9 checklist) — keep it confined to the drawn world, never on a mathematical object.
 
 ## 2bis. Drawn worlds — every lesson has its own, and the theme is data
 
@@ -783,6 +820,12 @@ state.
 
 ## 10. Tests
 
+- `packages/core/arithmetic/polynomials.test.js` and `logic/algebraLabs.test.js` — unit 3: the
+  textbook's expansions (معارف 1–2), the Descartes grid, $(3x - 1)(3 + x) → 3x^2 + 8x - 3$ by carry and
+  merge, the refused merge, the cancelling $\pm 3x$, the forgotten zones of $(x + 3)^2$, the two-x
+  discovery rule, the signed geometry swept for 8 expressions over every x of their ruler; rows
+  $6x^2 + 4x$ (3 refused, 2 → $2x(3x + 2)$), $9x + 3$, $7x - 21$, the gcd-and-refusal rule, every r
+  swept; square $x^2 + 6x + 9$ (2 | 4 refused, 3 | 3 closes), $x^2 + 25$ never closes, closing swept.
 - `packages/core/arithmetic/squareRoots.test.js` — unit 2's exact arithmetic: perfect squares,
   √ of a rational (rational ⇔ numerator and denominator squares), squares compared in integers
   (no decimal up to 1/1000 squares to 5, swept), the calculator's 2,236067978² = 5,000000002237008484,

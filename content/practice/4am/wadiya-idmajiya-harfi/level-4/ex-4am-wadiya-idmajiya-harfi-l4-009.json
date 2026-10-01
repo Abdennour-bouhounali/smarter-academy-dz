@@ -1,0 +1,164 @@
+{
+  "metadata": {
+    "title": "تدريب — عبارة K بشكلين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تحليل",
+      "اختيار الشكل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P1",
+      "modelledOn": "ex-39"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $K = x^2 - 9 + (x + 3)(2x - 1)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "تحليل العبارة $K$ هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x + 3)(3x - 2)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "B",
+          "content": "$(x + 3)(3x - 4)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(x - 3)(3x - 4)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "D",
+          "content": "$(x + 3)(x - 4)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x^2 - 9$ فرق مربعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العامل المشترك $(x + 3)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع $(x - 3) + (2x - 1)$."
+        }
+      ],
+      "feedback": {
+        "correct": "$K = (x + 3)(x - 3) + (x + 3)(2x - 1) = (x + 3)(3x - 4)$.",
+        "incorrect": "اجمع القوسين الباقيين كاملين بعد استخراج العامل المشترك."
+      },
+      "cognitiveDemand": "reason"
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $K$ من أجل $x = -3$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (يمكن أن يكون سالبًا)",
+      "expectedAnswer": "0",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أيّ شكل يجعل الحساب فوريًا؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما قيمة $x + 3$ ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء أحد عامليه معدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "العامل $x + 3$ معدوم، إذن $K = 0$.",
+        "incorrect": "استعمل الشكل المحلّل."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "-13",
+          "id": "MISC-SHAKL-GHAYR-MUNASIB"
+        }
+      ],
+      "cognitiveDemand": "reason"
+    },
+    {
+      "id": "q3",
+      "statement": "احسب $K$ من أجل $x = 0$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (يمكن أن يكون سالبًا)",
+      "expectedAnswer": "-12",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض في العبارة المعطاة أو في الشكل المحلّل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$0 - 9$ و $3 \\times (-1)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أو: $3 \\times (-4)$."
+        }
+      ],
+      "feedback": {
+        "correct": "$-9 + 3 \\times (-1) = -12$ ، وبالشكل المحلّل $3 \\times (-4) = -12$.",
+        "incorrect": "انتبه إلى الإشارات: الحدّان سالبان."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "-6",
+          "id": "MISC-NASHR-ISHARA-SALIBA"
+        }
+      ],
+      "cognitiveDemand": "reason"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l4-009",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 4
+}

@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "title": "تمرين 39 — نشر D وقيمتها",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نشر",
+      "اختيار الشكل"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-39",
+      "page": 41,
+      "section": "أتعمّق",
+      "number": 39
+    }
+  },
+  "statement": {
+    "content": "إليك العبارة الجبرية D حيث $D = x^2 - 4 + (x - 2)(3x + 5)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $D$ هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4x^2 + 11x - 14$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "B",
+          "content": "$4x^2 - x - 14$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$3x^2 - x - 14$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        },
+        {
+          "id": "D",
+          "content": "$4x^2 - 14$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $(x - 2)(3x + 5)$ أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(-2) \\times 3x = -6x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع الحدود المتشابهة مع $x^2 - 4$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x - 2)(3x + 5) = 3x^2 - x - 10$ ، إذن $D = 4x^2 - x - 14$.",
+        "incorrect": "انتبه إلى إشارة $-2$ عند الضرب، ثم اجمع $x^2$ و $3x^2$."
+      },
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $D$ من أجل $x = 2$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (يمكن أن يكون سالبًا)",
+      "expectedAnswer": "0",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض في العبارة المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2^2 - 4$ و $x - 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحدّان معدومان."
+        }
+      ],
+      "feedback": {
+        "correct": "$4 - 4 + 0 \\times 11 = 0$.",
+        "incorrect": "من أجل $x = 2$ : $x^2 - 4 = 0$ و $x - 2 = 0$."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "-14",
+          "id": "MISC-SHAKL-GHAYR-MUNASIB"
+        }
+      ],
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l3-003",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 3
+}

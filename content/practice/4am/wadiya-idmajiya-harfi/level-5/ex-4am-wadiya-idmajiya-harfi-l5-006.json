@@ -1,0 +1,165 @@
+{
+  "metadata": {
+    "title": "تدريب — قطعة أرض مساحتها 60",
+    "estimatedMinutes": 5,
+    "tags": [
+      "وضعية",
+      "معادلة",
+      "مساعدة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P3",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "قطعة أرض مستطيلة طولها يزيد على عرضها بـ 4m ومساحتها $60m^2$. نرمز بـ $x$ لعرضها (بالمتر). مساعدة: $x^2 + 4x - 60 = (x - 6)(x + 10)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المساواة التي تترجم المساحة هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2x + 4 = 60$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "id": "B",
+          "content": "$x^2 + 4 = 60$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$x(x + 4) = 60$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$4x(x + 4) = 60$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطول $x + 4$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المساحة جداء البعدين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب العرض في الطول."
+        }
+      ],
+      "feedback": {
+        "correct": "$x(x + 4) = 60$ ، أي $x^2 + 4x - 60 = 0$.",
+        "incorrect": "المساحة جداء البعدين، والعرض يُضرب في الحدّين."
+      },
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q2",
+      "statement": "ما عرض القطعة (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل المساعدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "جداء أحد عامليه معدوم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العرض موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x - 6)(x + 10) = 0$ : $x = 6$ (نرفض $-10$). نتحقق: $6 \\times 10 = 60$.",
+        "incorrect": "نحتفظ بالقيمة الموجبة ونتحقق."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "-10",
+          "id": "MISC-NAMDHAJA-MISAHA"
+        }
+      ],
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q3",
+      "statement": "ما طول القطعة (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطول يزيد على العرض بـ 4."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل العرض الذي وجدته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بالمساحة."
+        }
+      ],
+      "feedback": {
+        "correct": "الطول $x + 4 = 6 + 4 = 10$ ، و $6 \\times 10 = 60$.",
+        "incorrect": "الطول $x + 4$ حيث $x$ العرض."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "6",
+          "id": "MISC-NAMDHAJA-MISAHA"
+        }
+      ],
+      "cognitiveDemand": "transfer"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l5-006",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 5
+}

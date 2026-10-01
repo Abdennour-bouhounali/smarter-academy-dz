@@ -1,0 +1,114 @@
+{
+  "metadata": {
+    "title": "دوري الآن 1 — انشر وبسّط",
+    "estimatedMinutes": 7,
+    "tags": [
+      "مربع مجموع",
+      "مربع فرق"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "now-36-1",
+      "page": 36,
+      "section": "دوري الآن",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "انشر كل عبارة مما يلي وبسّطها: $A = (x - 2)^2 + 4(3x - 1)(3x + 3)$ و $B = 9x(9x + 1)^2 - x(x - 1)^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $A$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$37x^2 + 28x - 8$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$37x^2 + 20x - 8$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$37x^2 + 24x - 16$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-BILA-2AB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $(x - 2)^2$ بمتطابقة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر $(3x - 1)(3x + 3)$ بالخاصية التوزيعية ثم اضرب في $4$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع الحدود المتشابهة."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 - 4x + 4 + 36x^2 + 24x - 12 = 37x^2 + 20x - 8$",
+        "incorrect": "في $(x - 2)^2$ الحد المضاعف $-4x$ والحد الأخير $+4$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما معامل $x^2$ في النشر المبسّط للعبارة $B$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "164",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $(9x + 1)^2$ ثم اضرب في $9x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر $(x - 1)^2$ ثم اضرب في $x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح، واجمع معاملات $x^2$ مع الانتباه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$B = 728x^3 + 164x^2 + 8x$",
+        "incorrect": "الحد في $x^2$ يأتي من الحدّين المضاعفين."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l4-001",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 4
+}

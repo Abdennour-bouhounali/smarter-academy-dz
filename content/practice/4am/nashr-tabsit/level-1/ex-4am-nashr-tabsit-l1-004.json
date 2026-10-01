@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "title": "تدريب — معنى النشر",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نشر",
+      "تعريف"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P1",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "نشر عبارة جداء يعني كتابتها بشكل آخر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نشر عبارة جداء يعني:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "كتابتها على شكل جداء عاملين",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
+        },
+        {
+          "id": "B",
+          "content": "كتابتها على شكل مجموع (أو فرق)",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "حساب قيمتها من أجل $x = 0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-SHAKL-GHAYR-MUNASIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العبارة المعطاة جداء."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "النشر يغيّر شكل العبارة لا قيمتها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تذكّر تعريف الكتاب في معارف 1."
+        }
+      ],
+      "feedback": {
+        "correct": "حسب الكتاب: نشر عبارة جداء يعني كتابتها على شكل مجموع (أو فرق).",
+        "incorrect": "النشر يغيّر الشكل: من جداء إلى شكل آخر."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "أي عبارة مكتوبة على شكل جداء؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 + x - 6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
+        },
+        {
+          "id": "B",
+          "content": "$x(x + 1) - 6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
+        },
+        {
+          "id": "C",
+          "content": "$(x + 3)(x - 2)$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن العملية الأخيرة في كل عبارة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العبارة الجداء آخر عملية فيها ضرب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عبارة فيها جداء ثم طرح ليست جداءً."
+        }
+      ],
+      "feedback": {
+        "correct": "في $(x + 3)(x - 2)$ آخر عملية هي ضرب القوسين.",
+        "incorrect": "العبارة التي تنتهي بجمع أو طرح هي مجموع، ولو احتوت على جداء."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l1-004",
+  "lessonCode": "nashr-tabsit",
+  "level": 1
+}

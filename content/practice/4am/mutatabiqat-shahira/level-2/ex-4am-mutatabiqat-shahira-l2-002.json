@@ -1,0 +1,158 @@
+{
+  "metadata": {
+    "title": "نشاط 2 — مربع فرق والحساب الذهني",
+    "estimatedMinutes": 6,
+    "tags": [
+      "مربع فرق",
+      "حساب ذهني"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-2b",
+      "page": 32,
+      "section": "أنشطة",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من النشاط 2 (الكتاب ص 32): $(a - b)^2 = a^2 - 2ab + b^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نشر العبارة $(5 - 2x)^2$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$25 - 4x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-BILA-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$25 - 10x + 4x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        },
+        {
+          "id": "C",
+          "content": "$25 - 20x + 4x^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$25 + 20x + 4x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$a = 5$ و $b = 2x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحد المضاعف $-2 \\times 5 \\times 2x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مربع $2x$ هو $(2x)^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$5^2 - 2 \\times 5 \\times 2x + (2x)^2 = 25 - 20x + 4x^2$",
+        "incorrect": "مربع فرق: ثلاثة حدود، الأوسط سالب والأخير موجب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب ذهنيا $19^2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "361",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$19 = 20 - 1$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل مربع فرق."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $20^2$ و $2 \\times 20 \\times 1$ و $1^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(20 - 1)^2 = 400 - 40 + 1 = 361$",
+        "incorrect": "في مربع فرق الحد الأخير يُضاف."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "احسب ذهنيا $37^2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "1369",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$37 = 40 - 3$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل مربع فرق."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $40^2$ و $2 \\times 40 \\times 3$ و $3^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(40 - 3)^2 = 1600 - 240 + 9 = 1369$",
+        "incorrect": "الحد المضاعف يُطرح والحد الأخير يُضاف."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l2-002",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 2
+}

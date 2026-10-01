@@ -1,0 +1,152 @@
+{
+  "metadata": {
+    "title": "تمرين 35 — أتعمّق",
+    "estimatedMinutes": 7,
+    "tags": [
+      "مربع مجموع",
+      "حساب ذهني"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-35",
+      "page": 41,
+      "section": "أتعمّق",
+      "number": 35
+    }
+  },
+  "statement": {
+    "content": "لتكن العبارة $E = (x + 1)(x + 9) - (x + 3)^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $E$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$10x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$4x$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$16x + 18$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $(x + 1)(x + 9)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر $(x + 3)^2$ بمتطابقة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح مع تغيير كل الإشارات."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 10x + 9 - (x^2 + 6x + 9) = 4x$",
+        "incorrect": "لا تنسَ الحد المضاعف $6x$ ولا تغيير الإشارات."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب ذهنيا $101 \\times 109 - 103^2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "400",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد هو $E$ من أجل قيمة معيّنة لـ $x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x + 1 = 101$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استعمل $E = 4x$."
+        }
+      ],
+      "feedback": {
+        "correct": "هو $E$ من أجل $x = 100$ : $4 \\times 100 = 400$",
+        "incorrect": "ابحث عن $x$ الذي يعطي $101$ و $109$ و $103$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "احسب ذهنيا $1{,}5 \\times 9{,}5 - (3{,}5)^2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالفاصلة إن لزم)",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد هو $E$ من أجل قيمة لـ $x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x + 1 = 1{,}5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $4x$."
+        }
+      ],
+      "feedback": {
+        "correct": "هو $E$ من أجل $x = 0{,}5$ : $4 \\times 0{,}5 = 2$",
+        "incorrect": "من $x + 1 = 1{,}5$ نجد $x = 0{,}5$."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l4-003",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 4
+}

@@ -1,0 +1,177 @@
+{
+  "id": "ex-4am-tahlil-ibara-l2-002",
+  "lessonCode": "tahlil-ibara",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 22 — حدّ وحده بين قوسين",
+    "estimatedMinutes": 5,
+    "tags": [
+      "عامل مشترك"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-22",
+      "page": 38,
+      "section": "أوظّف تعلّماتي",
+      "number": 22
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 38): $C = 5x(2x + 1) + (2x + 1)$ ، $D = (x + 7)(x - 3) - (x - 3)$ ، $E = (x + 1)(x - 4) - x + 4$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّل C.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$5x(2x + 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NISYAN-1"
+        },
+        {
+          "id": "B",
+          "content": "$(2x + 1)(5x + 1)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$6x(2x + 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل المشترك هو $(2x + 1)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(2x + 1) = (2x + 1) \\times 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تنسَ العدد 1 داخل القوس."
+        }
+      ],
+      "feedback": {
+        "correct": "$C = (2x + 1)(5x + 1)$.",
+        "incorrect": "الحدّ $(2x + 1)$ وحده يترك 1 داخل القوس."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّل D.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x - 3)(x + 6)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(x - 3)(x + 7)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NISYAN-1"
+        },
+        {
+          "id": "C",
+          "content": "$(x - 3)(x + 8)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل المشترك هو $(x - 3)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$-(x - 3) = (x - 3) \\times (-1)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح 1 مما بقي."
+        }
+      ],
+      "feedback": {
+        "correct": "$D = (x - 3)(x + 7 - 1) = (x - 3)(x + 6)$.",
+        "incorrect": "الحدّ $-(x - 3)$ يترك $-1$ داخل القوس."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "حلّل E.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x - 4)(x + 2)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "B",
+          "content": "$(x + 1)(x - 5)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
+        },
+        {
+          "id": "C",
+          "content": "$x(x - 4)$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$-x + 4$ مرتبط بالقوس $(x - 4)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$-x + 4 = -(x - 4)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استخرج $(x - 4)$ ثم بسّط ما بقي."
+        }
+      ],
+      "feedback": {
+        "correct": "$E = (x - 4)(x + 1) - (x - 4) = (x - 4)(x + 1 - 1) = x(x - 4)$.",
+        "incorrect": "انتبه: $-x + 4$ هو $-(x - 4)$ لا $+(x - 4)$."
+      }
+    }
+  ]
+}

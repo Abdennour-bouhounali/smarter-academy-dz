@@ -17,6 +17,11 @@ import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { evaluateAnswer, isSuccessOutcome } from '../packages/core/practice/answerEvaluator.js';
+// Unité 3 « الحساب الحرفي » : un module d'oracle par leçon (écrits en parallèle, fusionnés ici).
+import { ORACLE as ORACLE_NASHR } from './practice-oracle/nashr-tabsit.mjs';
+import { ORACLE as ORACLE_MUTATABIQAT } from './practice-oracle/mutatabiqat-shahira.mjs';
+import { ORACLE as ORACLE_TAHLIL } from './practice-oracle/tahlil-ibara.mjs';
+import { ORACLE as ORACLE_WADIYA_HARFI } from './practice-oracle/wadiya-idmajiya-harfi.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', 'content/practice/4am');
 
@@ -873,6 +878,10 @@ const ORACLE = {
   'ex-4am-wadiya-idmajiya-judhur-l5-010:q1': C('A'), // √20 = 2√5
   'ex-4am-wadiya-idmajiya-judhur-l5-010:q2': R(Math.sqrt(8 / 2)),
   'ex-4am-wadiya-idmajiya-judhur-l5-010:q3': C('A'), // 16 < 20
+  ...ORACLE_NASHR,
+  ...ORACLE_MUTATABIQAT,
+  ...ORACLE_TAHLIL,
+  ...ORACLE_WADIYA_HARFI,
 };
 
 /**

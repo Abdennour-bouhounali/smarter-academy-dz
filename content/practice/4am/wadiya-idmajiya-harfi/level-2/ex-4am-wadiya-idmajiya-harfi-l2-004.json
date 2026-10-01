@@ -1,0 +1,77 @@
+{
+  "metadata": {
+    "title": "تمرين 10 — مربع تام (أؤكّد تعلّماتي)",
+    "estimatedMinutes": 1,
+    "tags": [
+      "تحليل",
+      "أؤكّد تعلّماتي"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 40,
+      "section": "أؤكّد تعلّماتي",
+      "number": 10
+    }
+  },
+  "statement": {
+    "content": "اختر الإجابة الصحيحة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العبارة $x^2 + 10x + 25$ تحلل على الشكل ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 + 5^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
+        },
+        {
+          "id": "B",
+          "content": "لا تقبل تحليلا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-MAJMU-MURABBAYN"
+        },
+        {
+          "id": "C",
+          "content": "$(x + 5)^2$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$25 = 5^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل $10x = 2 \\times x \\times 5$ ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تعرّف على شكل مربع مجموع."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 2 \\times x \\times 5 + 5^2 = (x + 5)^2$.",
+        "incorrect": "الحد $10x$ هو الحد المضاعف: العبارة مربع تام."
+      },
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l2-004",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 2
+}

@@ -1,0 +1,143 @@
+{
+  "id": "ex-4am-tahlil-ibara-l5-004",
+  "lessonCode": "tahlil-ibara",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — الشكل المناسب",
+    "estimatedMinutes": 5,
+    "tags": [
+      "نشر",
+      "قيمة عبارة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P1",
+      "modelledOn": "method-expand-factor"
+    }
+  },
+  "statement": {
+    "content": "لتكن العبارة $E = (x - 3)(2x + 5)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب E من أجل $x = 3$.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "0",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أيّ شكل أسرع هنا؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في الشكل المحلّل: ماذا يساوي $x - 3$؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء فيه عامل معدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = 3$ : $(3 - 3)(6 + 5) = 0 \\times 11$.",
+        "incorrect": "استعمل الشكل المحلّل."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب E من أجل $x = 0$.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "-15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ 0."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(0 - 3)(0 + 5)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انتبه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$(-3) \\times 5 = -15$ ، وهو الحدّ الثابت في الشكل المنشور.",
+        "incorrect": "عوّض في الشكل المحلّل وانتبه إلى الإشارة."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "ما النشر المبسّط للعبارة E؟",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2x^2 - x - 15$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$2x^2 + 11x - 15$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "C",
+          "content": "$2x^2 - 15$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أربعة جداءات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x \\times 2x$ ، $x \\times 5$ ، $-3 \\times 2x$ ، $-3 \\times 5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع الحدّين $5x$ و $-6x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x^2 + 5x - 6x - 15 = 2x^2 - x - 15$.",
+        "incorrect": "لا تنسَ الجداءين الأوسطين، ولا إشارة $-3$."
+      }
+    }
+  ]
+}

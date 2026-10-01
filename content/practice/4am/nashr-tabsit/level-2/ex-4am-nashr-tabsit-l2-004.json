@@ -1,0 +1,109 @@
+{
+  "metadata": {
+    "title": "تدريب — 2x في فرق",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نشر",
+      "قيمة عبارة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P2",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $E = 2x(3x - 5)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نشر $E$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$6x^2 - 10x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$6x^2 - 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$6x - 10x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-X-MARRATAYN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$2x$ أمام القوسين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب $2x$ في $3x$ ثم في $-5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$2x \\times 3x$: اضرب المعاملين ثم $x \\times x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x \\times 3x - 2x \\times 5 = 6x^2 - 10x$.",
+        "incorrect": "اضرب $2x$ في الحدّين، و $x \\times x$ مربّع."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب قيمة $E$ من أجل $x = 2$.",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ 2."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "يمكنك استعمال الشكل الأول أو الشكل المنشور."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الشكلان يعطيان القيمة نفسها."
+        }
+      ],
+      "feedback": {
+        "correct": "$2 \\times 2 \\times (6 - 5) = 4$ ، و $6 \\times 4 - 10 \\times 2 = 4$.",
+        "incorrect": "عوّض بعناية واحترم أولويات العمليات."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l2-004",
+  "lessonCode": "nashr-tabsit",
+  "level": 2
+}

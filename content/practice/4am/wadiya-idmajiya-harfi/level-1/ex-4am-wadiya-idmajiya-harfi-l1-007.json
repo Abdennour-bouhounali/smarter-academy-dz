@@ -1,0 +1,106 @@
+{
+  "metadata": {
+    "title": "تدريب — قيمة عبارة محلّلة",
+    "estimatedMinutes": 2,
+    "tags": [
+      "اختيار الشكل",
+      "قيمة عبارة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P3",
+      "modelledOn": "ex-39"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $A = (x - 3)(x + 5)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $A$ من أجل $x = 3$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (يمكن أن يكون سالبًا)",
+      "expectedAnswer": "0",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد 3 في كل عامل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما قيمة العامل $x - 3$ ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء أحد عامليه معدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = 3$ العامل $x - 3$ معدوم، إذن $A = 0 \\times 8 = 0$.",
+        "incorrect": "احسب كل عامل على حدة ثم اضرب."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "8",
+          "id": "MISC-SHAKL-GHAYR-MUNASIB"
+        }
+      ],
+      "cognitiveDemand": "recall"
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $A$ من أجل $x = 0$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (يمكن أن يكون سالبًا)",
+      "expectedAnswer": "-15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد 0."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العاملان يصبحان عددين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انتبه إلى إشارة العامل الأول."
+        }
+      ],
+      "feedback": {
+        "correct": "$(0 - 3)(0 + 5) = (-3) \\times 5 = -15$.",
+        "incorrect": "العامل الأول سالب: الجداء سالب."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "15",
+          "id": "MISC-NASHR-ISHARA-SALIBA"
+        }
+      ],
+      "cognitiveDemand": "recall"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l1-007",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 1
+}

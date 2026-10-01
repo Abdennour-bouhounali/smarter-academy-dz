@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "title": "تمرين 38 — AB² نشرًا ومن أجل x = 0",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نشر",
+      "اختيار الشكل"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-38",
+      "page": 41,
+      "section": "أتعمّق",
+      "number": 38
+    }
+  },
+  "statement": {
+    "content": "ABC مثلث قائم في B حيث $BC = x + 2$ و $AC = 2x + 5$ ، و $x$ عدد موجب."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط لـ $AB^2 = (2x + 5)^2 - (x + 2)^2$ هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3x^2 + 21$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$3x^2 + 16x + 21$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$5x^2 + 24x + 29$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "D",
+          "content": "$3x^2 + 16x + 29$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر كل مربع بمتطابقة مربع مجموع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(2x + 5)^2 = 4x^2 + 20x + 25$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح القوس كله: تتغيّر إشاراته."
+        }
+      ],
+      "feedback": {
+        "correct": "$4x^2 + 20x + 25 - x^2 - 4x - 4 = 3x^2 + 16x + 21$.",
+        "incorrect": "اطرح كل حدود $(x + 2)^2$ لا الأول وحده."
+      },
+      "cognitiveDemand": "reason"
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $AB^2$ من أجل $x = 0$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "21",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أيّ شكل أسهل من أجل $x = 0$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في النشر يبقى الحد الثابت."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أو بالشكل المحلّل: $3 \\times 7$."
+        }
+      ],
+      "feedback": {
+        "correct": "بالنشر: الحد الثابت 21 ؛ وبالجداء: $3 \\times 7 = 21$ — فالطول $AB = \\sqrt{21}$.",
+        "incorrect": "من أجل $x = 0$ يكفي الحد الثابت."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "29",
+          "id": "MISC-NASHR-QAWS-SALIB"
+        }
+      ],
+      "cognitiveDemand": "reason"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l4-002",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 4
+}

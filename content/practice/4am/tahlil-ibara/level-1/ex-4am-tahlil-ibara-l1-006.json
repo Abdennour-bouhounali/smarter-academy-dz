@@ -1,0 +1,125 @@
+{
+  "id": "ex-4am-tahlil-ibara-l1-006",
+  "lessonCode": "tahlil-ibara",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — تحليل بمتطابقة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متطابقات شهيرة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P3",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "حلّل كل عبارة باستعمال متطابقة شهيرة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$x^2 - 36 = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x - 6)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+        },
+        {
+          "id": "B",
+          "content": "$(x - 6)(x + 6)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(x - 18)(x + 18)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العبارة فرق مربّعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$36 = 6^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استعمل $a^2 - b^2 = (a + b)(a - b)$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 - 36 = x^2 - 6^2 = (x - 6)(x + 6)$.",
+        "incorrect": "$(x - 6)^2$ يعطي حدًّا أوسط $-12x$ غير موجود هنا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$x^2 + 2x + 1 = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x + 1)^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(x + 2)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        },
+        {
+          "id": "C",
+          "content": "$(x - 1)(x + 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّ أوسط موجب: مربع مجموع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$1 = 1^2$ و $2x = 2 \\times x \\times 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عيّن $a$ و $b$ ثم اكتب $(a + b)^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 2x + 1 = x^2 + 2 \\times x \\times 1 + 1^2 = (x + 1)^2$.",
+        "incorrect": "الحدّ الأوسط هو $2ab$ ، فـ $b$ هو نصف معامل $x$ لا المعامل نفسه."
+      }
+    }
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "id": "ex-4am-tahlil-ibara-l4-010",
+  "lessonCode": "tahlil-ibara",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — تحقّق من عمل تلميذ",
+    "estimatedMinutes": 5,
+    "tags": [
+      "تحقق",
+      "عامل مشترك"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P1",
+      "modelledOn": "ex-21"
+    }
+  },
+  "statement": {
+    "content": "كتب تلميذ: $(3x - 1)(x + 2) - (x + 2) = (x + 2)(3x - 1)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب الطرف الأيسر من أجل $x = 0$.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "-4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ 0."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(0 - 1)(0 + 2) - (0 + 2)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب الجداء ثم اطرح."
+        }
+      ],
+      "feedback": {
+        "correct": "$(-1) \\times 2 - 2 = -4$.",
+        "incorrect": "عوّض في العبارة الأصلية، حدًّا حدًّا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب الطرف الأيمن $(x + 2)(3x - 1)$ من أجل $x = 0$.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "-2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ 0."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(0 + 2)(0 - 1)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن بالقيمة السابقة."
+        }
+      ],
+      "feedback": {
+        "correct": "$2 \\times (-1) = -2$ : القيمتان مختلفتان، فعمل التلميذ خاطئ.",
+        "incorrect": "عوّض في نتيجة التلميذ."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "ما التحليل الصحيح؟",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x + 2)(3x - 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NISYAN-1"
+        },
+        {
+          "id": "B",
+          "content": "$(x + 2) \\times 3x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "C",
+          "content": "$(x + 2)(3x - 2)$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$-(x + 2) = (x + 2) \\times (-1)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "يبقى $(3x - 1) - 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بسّط ما داخل القوس."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 2)(3x - 1 - 1) = (x + 2)(3x - 2)$.",
+        "incorrect": "الحدّ $-(x + 2)$ يترك $-1$ داخل القوس."
+      }
+    }
+  ]
+}

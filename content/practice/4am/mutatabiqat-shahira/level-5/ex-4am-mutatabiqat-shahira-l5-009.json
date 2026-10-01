@@ -1,0 +1,99 @@
+{
+  "metadata": {
+    "title": "تدريب — أعداد متتالية",
+    "estimatedMinutes": 6,
+    "tags": [
+      "حساب ذهني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutatabiqat-shahira_P4",
+      "modelledOn": "ex-36"
+    }
+  },
+  "statement": {
+    "content": "من أجل كل عدد $n$ : $n^2 - (n - 1)(n + 1) = 1$ ، و $a^2 - b^2 = (a + b)(a - b)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب دون حساب $2025^2 - 2024 \\times 2026$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$2024 = 2025 - 1$ و $2026 = 2025 + 1$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل المساواة المعطاة مع $n = 2025$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "النتيجة لا تتعلّق بـ $n$."
+        }
+      ],
+      "feedback": {
+        "correct": "$2024 \\times 2026 = 2025^2 - 1$ ، إذن الفرق $1$.",
+        "incorrect": "العاملان يحيطان بالعدد $2025$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب ذهنيا $2025^2 - 2024^2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "4049",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "فرق مربعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a^2 - b^2 = (a + b)(a - b)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$2025 - 2024 = 1$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(2025 + 2024)(2025 - 2024) = 4049 \\times 1 = 4049$",
+        "incorrect": "فرق المربعين جداء المجموع والفرق."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l5-009",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 5
+}

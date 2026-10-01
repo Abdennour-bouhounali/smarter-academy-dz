@@ -1,0 +1,229 @@
+{
+  "metadata": {
+    "title": "تمرين 1 — عدد في مجموع أو فرق",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نشر",
+      "الخاصية التوزيعية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-1",
+      "page": 37,
+      "section": "أوظّف تعلّماتي",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 37): انشر كل عبارة مما يلي وبسّطها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$A = 2(5x - 1)$ ، نشرها هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$10x - 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$10x - 2$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$10x + 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد 2 أمام القوسين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "يُضرب 2 في كل حد داخل القوسين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $2 \\times 5x$ ثم $2 \\times 1$."
+        }
+      ],
+      "feedback": {
+        "correct": "$2 \\times 5x - 2 \\times 1 = 10x - 2$.",
+        "incorrect": "العدد 2 يُضرب في الحدّين معًا، مع الإشارة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$B = -3(3 - x)$ ، نشرها هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-9 - 3x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "B",
+          "content": "$-9 + x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$3x - 9$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد الذي أمام القوسين سالب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "يُضرب $-3$ في 3 ثم في $-x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء عددين سالبين موجب: $(-3) \\times (-x)$."
+        }
+      ],
+      "feedback": {
+        "correct": "$-3 \\times 3 - (-3) \\times x = -9 + 3x$.",
+        "incorrect": "انتبه إلى إشارة $(-3) \\times (-x)$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "$C = \\dfrac{2}{5}\\left(-20x + \\dfrac{15}{2}\\right)$ ، نشرها هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-8x + 3$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$-8x + \\dfrac{15}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$8x + 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل كسر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب $\\dfrac{2}{5}$ في كل حد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $\\dfrac{2}{5} \\times (-20)$ و $\\dfrac{2}{5} \\times \\dfrac{15}{2}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{2}{5} \\times (-20x) + \\dfrac{2}{5} \\times \\dfrac{15}{2} = -8x + 3$.",
+        "incorrect": "الكسر يُضرب في الحدّين، و $\\dfrac{2}{5} \\times (-20)$ سالب."
+      }
+    },
+    {
+      "id": "q4",
+      "statement": "$D = -4\\left(7 - \\dfrac{3}{2}x\\right)$ ، نشرها هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-28 - 6x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "B",
+          "content": "$6x - 28$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$28 - 6x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل $-4$ سالب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب $-4$ في 7 ثم في $-\\dfrac{3}{2}x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء عددين سالبين موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$-4 \\times 7 - (-4) \\times \\dfrac{3}{2}x = -28 + 6x$.",
+        "incorrect": "كل جداء بإشارته: $(-4) \\times 7$ سالب و $(-4) \\times \\left(-\\dfrac{3}{2}x\\right)$ موجب."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l1-001",
+  "lessonCode": "nashr-tabsit",
+  "level": 1
+}

@@ -1,0 +1,103 @@
+{
+  "id": "ex-4am-tahlil-ibara-l1-010",
+  "lessonCode": "tahlil-ibara",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — أكمل المتطابقة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متطابقات شهيرة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P3",
+      "modelledOn": "ex-29"
+    }
+  },
+  "statement": {
+    "content": "أتمم كل مساواة لتكون صحيحة من أجل كل عدد $x$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$x^2 + 10x + \\ldots = (x + 5)^2$ : ما العدد الناقص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "25",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحدّ الأخير في $(a + b)^2$ هو $b^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هنا $b = 5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $b^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 5)^2 = x^2 + 10x + 5^2$.",
+        "incorrect": "الحدّ الأخير هو مربّع $b$ ، لا ضعفه."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "10",
+          "id": "MISC-MUTATABIQA-2AB-NISF"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "$x^2 - \\ldots x + 9 = (x - 3)^2$ : ما العدد الناقص أمام $x$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحدّ الأوسط في $(a - b)^2$ هو $-2ab$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هنا $a = x$ و $b = 3$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $2 \\times 3$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x - 3)^2 = x^2 - 2 \\times x \\times 3 + 9 = x^2 - 6x + 9$.",
+        "incorrect": "الحدّ الأوسط هو $2ab$ : لا تنسَ المعامل 2."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "3",
+          "id": "MISC-MUTATABIQA-2AB-NISF"
+        }
+      ]
+    }
+  ]
+}

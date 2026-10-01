@@ -1,0 +1,109 @@
+{
+  "metadata": {
+    "title": "تدريب — مساحة شريط",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نشر",
+      "مساحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P1",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "ملعب مستطيل عرضه 6 وطوله $x + 8$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "اكتب مساحة الملعب على شكل مجموع:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$6x + 8$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$6x + 48$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$6(x + 8)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مساحة المستطيل جداء بعديه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المطلوب شكل مجموع: انشر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الملعب منطقتان: $6 \\times x$ و $6 \\times 8$."
+        }
+      ],
+      "feedback": {
+        "correct": "$6(x + 8) = 6x + 48$: مجموع مساحتي المنطقتين.",
+        "incorrect": "المنطقة الثانية بعداها 6 و 8."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما مساحة الملعب من أجل $x = 12$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "120",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ 12."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في أحد الشكلين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$6 \\times (12 + 8)$."
+        }
+      ],
+      "feedback": {
+        "correct": "$6 \\times 20 = 120$ ، و $72 + 48 = 120$.",
+        "incorrect": "عوّض في الشكل الأول أو المنشور."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l2-010",
+  "lessonCode": "nashr-tabsit",
+  "level": 2
+}

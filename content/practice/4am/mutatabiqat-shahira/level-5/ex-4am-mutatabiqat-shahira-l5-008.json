@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "title": "تدريب — مربع فرق فيه جذر",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مربع فرق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutatabiqat-shahira_P2",
+      "modelledOn": "method-expand-identities"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العدد $Z = (\\sqrt{5} - 1)^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الكتابة المبسّطة للعدد $Z$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-BILA-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$6 + 2\\sqrt{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$6 - 2\\sqrt{5}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مربع فرق: $a = \\sqrt{5}$ و $b = 1$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(\\sqrt{5})^2 = 5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحد المضاعف $-2\\sqrt{5}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$5 - 2\\sqrt{5} + 1 = 6 - 2\\sqrt{5}$",
+        "incorrect": "مربع فرق ليس فرق المربعين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $Z + 2\\sqrt{5}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل الكتابة المبسّطة للعدد $Z$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحدّان $-2\\sqrt{5}$ و $+2\\sqrt{5}$ يتعادمان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يبقى $5 + 1$."
+        }
+      ],
+      "feedback": {
+        "correct": "$6 - 2\\sqrt{5} + 2\\sqrt{5} = 6$",
+        "incorrect": "انشر $Z$ أولًا."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l5-008",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 5
+}

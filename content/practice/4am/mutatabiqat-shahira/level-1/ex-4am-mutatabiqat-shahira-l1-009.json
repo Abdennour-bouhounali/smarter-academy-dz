@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "title": "تدريب — نشر مربع فرق",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مربع فرق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutatabiqat-shahira_P2",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $F = (x - 9)^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $F$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 - 18x + 81$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x^2 - 81$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-BILA-2AB"
+        },
+        {
+          "id": "C",
+          "content": "$x^2 + 18x + 81$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$F$ مربع فرق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(a - b)^2 = a^2 - 2ab + b^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $2 \\times x \\times 9$ و $9^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x - 9)^2 = x^2 - 18x + 81$",
+        "incorrect": "في مربع فرق الحد المضاعف سالب والحد الأخير موجب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما معامل $x$ في النشر المبسّط للعبارة $F$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "-18",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل $x$ يأتي من الحد المضاعف."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحد المضاعف هو $-2ab$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هنا $a = x$ و $b = 9$."
+        }
+      ],
+      "feedback": {
+        "correct": "$-2 \\times 9 = -18$",
+        "incorrect": "لا تنسَ الإشارة $-$ للحد المضاعف."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l1-009",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 1
+}

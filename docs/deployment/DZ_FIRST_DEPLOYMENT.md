@@ -391,6 +391,12 @@ arrive en production par ce chemin normal au prochain déploiement qui la porte
 déploiement n'a pas eu lieu, le périmètre ci-dessus reste celui de la
 production.
 
+**Unité 3 (2026-10-01).** L'unité « الحساب الحرفي » (`hisab-harfi` : `nashr-tabsit`,
+`mutatabiqat-shahira`, `tahlil-ibara` et la synthèse `wadiya-idmajiya-harfi`, 200 exercices de
+pratique) suit le même chemin : synchronisation du curriculum ET import du registre des épreuves au
+déploiement qui la porte. Elle est rangée sous « ميدان أنساب الأعداد والحساب » (placement déclaré par
+l'unité, décision du propriétaire).
+
 ### Rattraper une base en retard
 
 Les fichiers `docs/deployment/*.sql` restent valides et restent la façon de

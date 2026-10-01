@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tahlil-ibara-l5-002",
+  "lessonCode": "tahlil-ibara",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — ملعب مستطيل",
+    "estimatedMinutes": 5,
+    "tags": [
+      "ملعب",
+      "وضعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P1",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "ملعب مستطيل مساحته $x^2 + 7x + 10$ (بالمتر المربع) وعرضه $x + 2$ (بالمتر)، حيث $x$ عدد موجب."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما طول الملعب؟",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x + 7$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
+        },
+        {
+          "id": "B",
+          "content": "$x + 5$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x + 10$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المساحة = العرض × الطول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ابحث عن عامل يضرب في $x + 2$ ليعطي $x^2 + 7x + 10$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انشر $(x + 2) \\times$ (كل اختيار) وقارن."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 2)(x + 5) = x^2 + 5x + 2x + 10 = x^2 + 7x + 10$.",
+        "incorrect": "انشر جداء العرض في الطول المقترح وقارنه بالمساحة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب مساحة الملعب (بالمتر المربع) من أجل $x = 20$.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "550",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل الشكل المحلّل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العرض $20 + 2$ والطول $20 + 5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب العددين."
+        }
+      ],
+      "feedback": {
+        "correct": "$(20 + 2)(20 + 5) = 22 \\times 25$.",
+        "incorrect": "احسب العرض والطول أولًا ثم اضربهما."
+      }
+    }
+  ]
+}

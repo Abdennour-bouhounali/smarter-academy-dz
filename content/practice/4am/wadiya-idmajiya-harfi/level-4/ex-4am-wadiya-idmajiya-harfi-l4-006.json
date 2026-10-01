@@ -1,0 +1,128 @@
+{
+  "metadata": {
+    "title": "تدريب — ملعب مساحته 50",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نمذجة",
+      "معادلة",
+      "مساعدة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "ملعب مستطيل طوله يزيد على عرضه بـ 5m. نرمز بـ $x$ لعرضه (بالمتر)، ومساحته $50m^2$. مساعدة: $x^2 + 5x - 50 = (x - 5)(x + 10)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المساواة التي تترجم مساحة الملعب هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x + x + 5 = 50$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "id": "B",
+          "content": "$x(x + 5) = 50$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$2x + 2(x + 5) = 50$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "id": "D",
+          "content": "$x^2 + 5 = 50$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطول $x + 5$ والعرض $x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المساحة جداء البعدين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المحيط شيء آخر."
+        }
+      ],
+      "feedback": {
+        "correct": "المساحة $x(x + 5)$ ، فالمساواة $x(x + 5) = 50$ ، أي $x^2 + 5x - 50 = 0$.",
+        "incorrect": "المساحة جداء لا مجموع."
+      },
+      "cognitiveDemand": "reason"
+    },
+    {
+      "id": "q2",
+      "statement": "ما عرض الملعب (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب المساواة على الشكل «… = 0»."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل المساعدة: جداء أحد عامليه معدوم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العرض طول موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x - 5)(x + 10) = 0$ من أجل $x = 5$ أو $x = -10$ ، والعرض موجب: $x = 5$. نتحقق: $5 \\times 10 = 50$.",
+        "incorrect": "من القيمتين اللتين تعدمان الجداء نحتفظ بالموجبة."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "-10",
+          "id": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "value": "10",
+          "id": "MISC-NAMDHAJA-MISAHA"
+        }
+      ],
+      "cognitiveDemand": "reason"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l4-006",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 4
+}

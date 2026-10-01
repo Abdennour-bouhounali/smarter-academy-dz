@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "title": "تدريب — فرق مربعين وقيمة معدومة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تحليل",
+      "اختيار الشكل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P1",
+      "modelledOn": "ex-40"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $F = (x + 2)^2 - 16$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "تحليل العبارة $F$ هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x - 14)(x + 18)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+        },
+        {
+          "id": "B",
+          "content": "$(x - 2)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+        },
+        {
+          "id": "C",
+          "content": "$(x - 2)(x + 6)$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$(x + 2)(x - 6)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$16 = 4^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "فرق مربعين: $a = x + 2$ و $b = 4$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(a - b)(a + b)$ ثم بسّط كل قوس."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 2 - 4)(x + 2 + 4) = (x - 2)(x + 6)$.",
+        "incorrect": "استعمل $b = 4$ لا 16، وبسّط داخل كل قوس."
+      },
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $F$ من أجل $x = -6$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (يمكن أن يكون سالبًا)",
+      "expectedAnswer": "0",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل الشكل المحلّل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما قيمة $x + 6$ ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء أحد عامليه معدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "$F = (-8) \\times 0 = 0$ ؛ ونتحقق: $(-4)^2 - 16 = 0$.",
+        "incorrect": "في الشكل المحلّل أحد العاملين معدوم."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "-48",
+          "id": "MISC-SHAKL-GHAYR-MUNASIB"
+        }
+      ],
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l3-008",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 3
+}

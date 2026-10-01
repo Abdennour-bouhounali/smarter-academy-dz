@@ -1,0 +1,125 @@
+{
+  "id": "ex-4am-tahlil-ibara-l2-007",
+  "lessonCode": "tahlil-ibara",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — قوس مشترك",
+    "estimatedMinutes": 4,
+    "tags": [
+      "عامل مشترك"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P2",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "حلّل كل عبارة باستخراج العامل المشترك."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$3(x + 2) + x(x + 2) = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x + 2)(3 + x)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$3x(x + 2)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        },
+        {
+          "id": "C",
+          "content": "$(x + 2)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن العامل الذي يتكرّر في كل الحدود."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العامل المشترك هنا هو $(x + 2)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتبه مرّة واحدة خارج القوس، وضع داخل القوس ما يبقى من كل حدّ مع إشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$3(x + 2) + x(x + 2) = (x + 2)(3 + x)$.",
+        "incorrect": "ما يبقى داخل القوس يُجمع، لا يُضرب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$(x - 1)(x + 5) - 2(x - 1) = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x - 1)(x + 7)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "B",
+          "content": "$(x - 1)(x + 3)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(x + 5)(x - 3)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن العامل الذي يتكرّر في كل الحدود."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العامل المشترك هنا هو $(x - 1)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتبه مرّة واحدة خارج القوس، وضع داخل القوس ما يبقى من كل حدّ مع إشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x - 1)[(x + 5) - 2] = (x - 1)(x + 3)$.",
+        "incorrect": "الحدّ الثاني مطروح: نطرح 2 مما بقي."
+      }
+    }
+  ]
+}

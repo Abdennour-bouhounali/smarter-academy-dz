@@ -1,0 +1,116 @@
+{
+  "metadata": {
+    "title": "تدريب — أي كتابة لحساب 99²؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حساب ذهني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutatabiqat-shahira_P4",
+      "modelledOn": "act-2b"
+    }
+  },
+  "statement": {
+    "content": "نريد حساب $99^2$ ذهنيا، دون وضع العملية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أي كتابة تساوي $99^2$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$100^2 - 1^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-BILA-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$100^2 - 2 \\times 100 \\times 1 + 1^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$100^2 + 2 \\times 100 \\times 1 + 1^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$99 = 100 - 1$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل مربع فرق."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(a - b)^2 = a^2 - 2ab + b^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$99^2 = (100 - 1)^2 = 100^2 - 2 \\times 100 + 1$",
+        "incorrect": "مربع فرق ليس فرق المربعين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $99^2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "9801",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل الكتابة الصحيحة من السؤال السابق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $100^2$ ثم $2 \\times 100 \\times 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح ثم أضف $1$."
+        }
+      ],
+      "feedback": {
+        "correct": "$10\\,000 - 200 + 1 = 9801$",
+        "incorrect": "في مربع فرق نضيف الحد الأخير."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l3-008",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 3
+}

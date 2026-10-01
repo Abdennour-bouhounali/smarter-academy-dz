@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "title": "تدريب — نشر مربع مجموع",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مربع مجموع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutatabiqat-shahira_P1",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $E = (x + 6)^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $E$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 + 6x + 36$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        },
+        {
+          "id": "B",
+          "content": "$x^2 + 36$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+        },
+        {
+          "id": "C",
+          "content": "$x^2 + 12x + 36$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$E$ مربع مجموع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حدّاه $x$ و $6$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحد المضاعف هو $2 \\times x \\times 6$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 6)^2 = x^2 + 12x + 36$",
+        "incorrect": "الحد المضاعف $2ab$ وليس $ab$ ولا يُحذف."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب قيمة $E$ من أجل $x = 4$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "100",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ $4$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "يمكنك أن تحسب $4 + 6$ أولًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم ربّع النتيجة."
+        }
+      ],
+      "feedback": {
+        "correct": "$(4 + 6)^2 = 10^2 = 100$ ، ومن النشر $16 + 48 + 36 = 100$.",
+        "incorrect": "احسب ما بين القوسين أولًا ثم ربّعه."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l1-008",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 1
+}

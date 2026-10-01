@@ -1,0 +1,109 @@
+{
+  "metadata": {
+    "title": "تدريب — بكم زادت المساحة؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تبسيط",
+      "مساحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P4",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "ملعب مربّع ضلعه $x$. نزيد طوله بـ 4 وعرضه بـ 2، فيصبح مستطيلًا بعداه $x + 4$ و $x + 2$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بكم زادت المساحة؟ (العبارة المبسّطة)",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$6x + 8$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x^2 + 6x + 8$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "id": "C",
+          "content": "$6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الزيادة = المساحة الجديدة − المساحة القديمة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(x + 4)(x + 2) - x^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انشر ثم بسّط."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 4)(x + 2) - x^2 = x^2 + 6x + 8 - x^2 = 6x + 8$.",
+        "incorrect": "اطرح المساحة القديمة $x^2$ بعد النشر."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "من أجل $x = 20$ ، بكم زادت المساحة؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "128",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل العبارة المبسّطة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بـ 20."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أو احسب $24 \\times 22 - 400$."
+        }
+      ],
+      "feedback": {
+        "correct": "$6 \\times 20 + 8 = 128$ ، و $528 - 400 = 128$.",
+        "incorrect": "عوّض في الزيادة المبسّطة."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l5-004",
+  "lessonCode": "nashr-tabsit",
+  "level": 5
+}

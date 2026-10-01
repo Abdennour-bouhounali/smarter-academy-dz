@@ -69,10 +69,15 @@ n'entre pas dans la 4AM, même s'il en est mathématiquement proche.
 
 ## 3. ميدان الحساب الحرفي — الجبر
 
+> **Placement (décision du propriétaire, 2026-10-01).** Les sujets 3.1 et 3.2 sont enseignés par l'unité 3
+> du manuel « الحساب الحرفي », que le propriétaire a placée sous « ميدان أنساب الأعداد والحساب » (comme
+> les unités 1 et 2). Le catalogue garde ces sujets comme source (traçabilité) et l'unité déclare l'écart
+> (`units_4am_2026_2027.json › placement`).
+
 | # | الموضوع | Décomposition en LP | Dépendances | Statut |
 |---|---|---|---|---|
-| 3.1 | النشر والتبسيط | `À DÉCOMPOSER` | aucune intra-programme | NOT STARTED |
-| 3.2 | تحليل عبارة جبرية إلى منتوج عوامل من الدرجة الأولى | `À DÉCOMPOSER` | 3.1 | NOT STARTED |
+| 3.1 | النشر والتبسيط | Unité 3 du manuel « الحساب الحرفي » (2026-10-01) : `nashr-tabsit` (4 LP) et `mutatabiqat-shahira` (4 LP), LP fournis par le propriétaire | aucune intra-programme | **BUILT** |
+| 3.2 | تحليل عبارة جبرية إلى منتوج عوامل من الدرجة الأولى | Unité 3 : `tahlil-ibara` (3 LP) + la synthèse `wadiya-idmajiya-harfi` (3 LP) | 3.1 | **BUILT** |
 | 3.3 | حل معادلات من الدرجة الأولى بمجهول واحد | `À DÉCOMPOSER` | 3.1 | NOT STARTED |
 | 3.4 | المعادلات جذاء معدوم | `À DÉCOMPOSER` | 3.2, 3.3 | NOT STARTED |
 | 3.5 | حل متراجحات من الدرجة الأولى بمجهول واحد وتمثيلها بيانيا | Le sujet énumère **deux gestes** : la résolution, et la représentation graphique. Le détail `À DÉCOMPOSER` | 3.3 | NOT STARTED |

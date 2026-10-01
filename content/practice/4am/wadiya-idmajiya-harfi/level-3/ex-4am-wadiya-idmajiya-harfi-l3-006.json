@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "title": "تدريب — ممرّ حول حديقة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نمذجة",
+      "ممر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "حديقة مربّعة طول ضلعها $x$ (بالمتر)، يحيط بها ممرّ عرضه 1m من كل الجهات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مساحة الممرّ بدلالة $x$ هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$2x + 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        },
+        {
+          "id": "C",
+          "content": "$4x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "id": "D",
+          "content": "$4x + 4$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ضلع المربع الخارجي $x + 2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مساحة الممر = المربع الخارجي ناقص الحديقة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انشر $(x + 2)^2$ ثم اطرح $x^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 2)^2 - x^2 = x^2 + 4x + 4 - x^2 = 4x + 4$.",
+        "incorrect": "لا تنس الأركان الأربعة: كل منها $1m^2$."
+      },
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "احسب مساحة الممرّ (بـ $m^2$) من أجل $x = 9$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "40",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض في العبارة المبسّطة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$4 \\times 9$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أضف الأركان."
+        }
+      ],
+      "feedback": {
+        "correct": "$4 \\times 9 + 4 = 40$ ؛ ونتحقق: $11^2 - 9^2 = 121 - 81 = 40$.",
+        "incorrect": "استعمل العبارة المبسّطة، أو المربع الخارجي ناقص الحديقة."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "36",
+          "id": "MISC-NAMDHAJA-MISAHA"
+        }
+      ],
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l3-006",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 3
+}

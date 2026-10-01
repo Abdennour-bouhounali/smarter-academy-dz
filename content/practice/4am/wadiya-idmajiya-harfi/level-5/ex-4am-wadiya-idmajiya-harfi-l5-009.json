@@ -1,0 +1,151 @@
+{
+  "metadata": {
+    "title": "تدريب — حساب ذهني بالمتطابقات",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حساب ذهني",
+      "متطابقات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P1",
+      "modelledOn": "qcm"
+    }
+  },
+  "statement": {
+    "content": "احسب ذهنيا (دون وضع العملية) باستعمال متطابقة شهيرة مناسبة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$101 \\times 99 = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "9999",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "101 و 99 متناظران حول 100."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتبهما $100 + 1$ و $100 - 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء مجموع حدين وفرقهما."
+        }
+      ],
+      "feedback": {
+        "correct": "$(100 + 1)(100 - 1) = 10000 - 1 = 9999$.",
+        "incorrect": "استعمل $(a + b)(a - b) = a^2 - b^2$."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "10001",
+          "id": "MISC-JIDAA-MAJMU-FARQ-ISHARA"
+        }
+      ],
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q2",
+      "statement": "$102^2 = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "10404",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب $102 = 100 + 2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مربع مجموع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$a^2 + 2ab + b^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(100 + 2)^2 = 10000 + 400 + 4 = 10404$.",
+        "incorrect": "لا تنس الحد المضاعف $2 \\times 100 \\times 2$."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "10004",
+          "id": "MISC-HISAB-DHIHNI-MURABBA"
+        }
+      ],
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q3",
+      "statement": "$98^2 = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "9604",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب $98 = 100 - 2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مربع فرق."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$a^2 - 2ab + b^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(100 - 2)^2 = 10000 - 400 + 4 = 9604$.",
+        "incorrect": "الحد المضاعف سالب والحد الأخير موجب."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "9996",
+          "id": "MISC-HISAB-DHIHNI-MURABBA"
+        },
+        {
+          "value": "9596",
+          "id": "MISC-MURABBA-FARQ-ISHARA"
+        }
+      ],
+      "cognitiveDemand": "transfer"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l5-009",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 5
+}

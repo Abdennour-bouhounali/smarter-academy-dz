@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "title": "تدريب — مربع مجموع فيه جذر",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مربع مجموع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutatabiqat-shahira_P1",
+      "modelledOn": "method-expand-identities"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العدد $W = (\\sqrt{2} + 1)^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الكتابة المبسّطة للعدد $W$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$3 + 2\\sqrt{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$3 + \\sqrt{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مربع مجموع: $a = \\sqrt{2}$ و $b = 1$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(\\sqrt{2})^2 = 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحد المضاعف $2 \\times \\sqrt{2} \\times 1$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(\\sqrt{2})^2 + 2\\sqrt{2} + 1 = 3 + 2\\sqrt{2}$",
+        "incorrect": "لا تنسَ الحد المضاعف $2\\sqrt{2}$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $W - 2\\sqrt{2}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل الكتابة المبسّطة للعدد $W$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحدّان $2\\sqrt{2}$ يتعادمان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يبقى مجموع المربعين."
+        }
+      ],
+      "feedback": {
+        "correct": "$3 + 2\\sqrt{2} - 2\\sqrt{2} = 3$",
+        "incorrect": "انشر $W$ أولًا."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l5-006",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 5
+}

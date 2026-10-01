@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "title": "تدريب — كم جداءً؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جداء قوسين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P3",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "ننشر جداء قوسين: $(a + b)(c + d) = ac + ad + bc + bd$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم جداءً نحسب، قبل التبسيط، عند نشر $(x + 2)(x + 5)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في كل قوس حدّان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل حد من القوس الأول يُضرب في كل حد من القوس الثاني."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $2 \\times 2$."
+        }
+      ],
+      "feedback": {
+        "correct": "حدّان في حدّين: أربعة جداءات $x^2 + 5x + 2x + 10$.",
+        "incorrect": "كل حد من القوس الأول يُضرب في كل حدّي القوس الثاني."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نشر $(x + 2)(x + 5)$ وتبسيطه هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 + 10$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        },
+        {
+          "id": "B",
+          "content": "$x^2 + 7x + 10$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x^2 + 7x + 7$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أربعة جداءات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x \\times x$ ، $x \\times 5$ ، $2 \\times x$ ، $2 \\times 5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اجمع الحدّين المتشابهين."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 5x + 2x + 10 = x^2 + 7x + 10$.",
+        "incorrect": "لا تكتفِ بجداء الأوّلين والأخيرين."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l1-009",
+  "lessonCode": "nashr-tabsit",
+  "level": 1
+}

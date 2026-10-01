@@ -1,0 +1,120 @@
+{
+  "metadata": {
+    "title": "تدريب — حدود متشابهة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تبسيط",
+      "حدود متشابهة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P4",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "الحدود المتشابهة هي التي لها نفس قوة $x$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$5x + 3x = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$8x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$8x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-X-MARRATAYN"
+        },
+        {
+          "id": "C",
+          "content": "$15x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-X-MARRATAYN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحدّان متشابهان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نجمع المعاملين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا نضرب المعاملين ولا نغيّر قوة $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$5x + 3x = (5 + 3)x = 8x$.",
+        "incorrect": "نجمع المعاملين ونترك $x$ كما هو."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل $4x^2$ و $4x$ حدّان متشابهان؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا، قوّتا $x$ مختلفتان",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نعم، لهما نفس المعامل",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن قوّة $x$ في الحدّين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المعامل وحده لا يكفي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حدّان متشابهان لهما نفس قوّة $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2$ و $x$ قوّتان مختلفتان: الحدّان غير متشابهين، و $4x^2 + 4x$ لا تُبسَّط.",
+        "incorrect": "المهمّ قوة $x$، لا المعامل."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l1-008",
+  "lessonCode": "nashr-tabsit",
+  "level": 1
+}

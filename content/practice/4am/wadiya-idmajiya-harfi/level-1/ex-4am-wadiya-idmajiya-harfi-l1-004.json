@@ -1,0 +1,66 @@
+{
+  "metadata": {
+    "title": "تمرين 13 — حساب متمعّن فيه (أؤكّد تعلّماتي)",
+    "estimatedMinutes": 1,
+    "tags": [
+      "حساب ذهني",
+      "أؤكّد تعلّماتي"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 40,
+      "section": "أؤكّد تعلّماتي",
+      "number": 13
+    }
+  },
+  "statement": {
+    "content": "احسب ذهنيا (دون وضع العملية)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$19 \\times 21 = \\ldots$",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "399",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "19 و 21 متناظران حول 20."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $19 = 20 - 1$ و $21 = 20 + 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استعمل $(a - b)(a + b) = a^2 - b^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(20 - 1)(20 + 1) = 20^2 - 1^2 = 400 - 1 = 399$.",
+        "incorrect": "جداء مجموع حدين وفرقهما هو فرق مربعيهما."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "401",
+          "id": "MISC-JIDAA-MAJMU-FARQ-ISHARA"
+        }
+      ],
+      "cognitiveDemand": "recall"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l1-004",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 1
+}

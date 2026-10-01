@@ -1,0 +1,127 @@
+{
+  "metadata": {
+    "title": "دوري الآن — انشر وبسّط",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جداء قوسين",
+      "تبسيط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "now-35-1",
+      "page": 35,
+      "section": "دوري الآن",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 35، دوري الآن 1): انشر وبسّط كل مما يلي."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط لـ $(3x - 2)(7x - 4)$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$21x^2 + 8$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        },
+        {
+          "id": "B",
+          "content": "$21x^2 - 26x + 8$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$21x^2 - 26x - 8$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أربعة جداءات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$21x^2 - 12x - 14x + 8$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء عددين سالبين موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$21x^2 - 12x - 14x + 8 = 21x^2 - 26x + 8$.",
+        "incorrect": "أربعة جداءات بإشاراتها: $(-2) \\times (-4)$ موجب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "النشر المبسّط لـ $(8 - 3x)(x + \\sqrt{7}) + (8 + 3x)(x - \\sqrt{7})$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$16x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        },
+        {
+          "id": "B",
+          "content": "$16x - 6\\sqrt{7}x$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$-6x^2 + 16x - 6\\sqrt{7}x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر كل جداء على حدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بعض الحدود تتعادم: $-3x^2$ و $3x^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحدّان $-3\\sqrt{7}x$ لا يتعادمان: لهما نفس الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$(8x + 8\\sqrt{7} - 3x^2 - 3\\sqrt{7}x) + (8x - 8\\sqrt{7} + 3x^2 - 3\\sqrt{7}x) = 16x - 6\\sqrt{7}x$.",
+        "incorrect": "انشر كل جداء كاملًا ثم اجمع الحدود المتشابهة بإشاراتها."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l3-001",
+  "lessonCode": "nashr-tabsit",
+  "level": 3
+}

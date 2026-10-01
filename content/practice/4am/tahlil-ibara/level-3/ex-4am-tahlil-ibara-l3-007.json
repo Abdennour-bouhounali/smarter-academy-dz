@@ -1,0 +1,177 @@
+{
+  "id": "ex-4am-tahlil-ibara-l3-007",
+  "lessonCode": "tahlil-ibara",
+  "level": 3,
+  "metadata": {
+    "title": "نشاط 3 — السؤال 3",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متطابقات شهيرة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-3",
+      "page": 33,
+      "section": "أنشطة",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 33): حلّل كل عبارة واذكر المتطابقة التي اعتمدت عليها: $x^2 + 6x + 9$ ، $x^2 - 4x + 4$ ، $x^2 - 16$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$x^2 + 6x + 9 = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x + 3)^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(x + 9)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        },
+        {
+          "id": "C",
+          "content": "$(x - 3)(x + 3)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$9 = 3^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$6x = 2 \\times x \\times 3$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مربع مجموع."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 2 \\times x \\times 3 + 3^2 = (x + 3)^2$.",
+        "incorrect": "الحدّ الأوسط موجب: أيّ متطابقة؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$x^2 - 4x + 4 = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x + 2)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$(x - 2)^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(x - 2)(x + 2)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$4 = 2^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$4x = 2 \\times x \\times 2$ والحدّ الأوسط سالب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مربع فرق."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 - 2 \\times x \\times 2 + 2^2 = (x - 2)^2$.",
+        "incorrect": "الحدّ الأوسط $-4x$ سالب."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "$x^2 - 16 = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x - 4)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+        },
+        {
+          "id": "B",
+          "content": "$(x - 8)(x + 8)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        },
+        {
+          "id": "C",
+          "content": "$(x - 4)(x + 4)$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لا حدّ أوسط."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$16 = 4^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء مجموع حدين وفرقهما."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 - 4^2 = (x - 4)(x + 4)$.",
+        "incorrect": "لا يوجد حدّ أوسط في العبارة: ليست مربع فرق."
+      }
+    }
+  ]
+}

@@ -1,0 +1,178 @@
+{
+  "metadata": {
+    "title": "تمرين 7 — أقواس مسبوقة بإشارة ناقص",
+    "estimatedMinutes": 6,
+    "tags": [
+      "تبسيط",
+      "أقواس"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-7",
+      "page": 37,
+      "section": "أوظّف تعلّماتي",
+      "number": 7
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 37): انشر كل عبارة مما يلي وبسّطها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$R = a - 3 - 2(a + 3)$ ، النشر المبسّط هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-a$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$-a - 9$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$-a + 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $-2(a + 3)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العامل $-2$ يُضرب في $a$ وفي 3."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اجمع المتشابهة."
+        }
+      ],
+      "feedback": {
+        "correct": "$a - 3 - 2a - 6 = -a - 9$.",
+        "incorrect": "العامل $-2$ يُضرب في الحدّين مع إشارته."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$S = -(a + 2) - (3a - 5)(2a - 4)$ ، النشر المبسّط هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-6a^2 - 23a + 18$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "B",
+          "content": "$6a^2 - 23a + 18$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "C",
+          "content": "$-6a^2 + 21a - 22$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $(3a - 5)(2a - 4)$ وضعه بين قوسين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(3a - 5)(2a - 4) = 6a^2 - 22a + 20$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احذف القوسين المسبوقين بـ $-$ بتغيير الإشارات."
+        }
+      ],
+      "feedback": {
+        "correct": "$-a - 2 - 6a^2 + 22a - 20 = -6a^2 + 21a - 22$.",
+        "incorrect": "كل حد من نشر الجداء تتغيّر إشارته."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "$T = (a + 3)\\left(a + \\dfrac{1}{3}\\right) - (a + 2)\\left(a - \\dfrac{1}{2}\\right)$ ، النشر المبسّط هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{29}{6}a$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{11}{6}a + 2$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$2a^2 + \\dfrac{11}{6}a + 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر كل جداء."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a^2 + \\dfrac{10}{3}a + 1$ و $a^2 + \\dfrac{3}{2}a - 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح الثاني من الأول بتغيير إشارات حدوده."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\left(a^2 + \\dfrac{10}{3}a + 1\\right) - \\left(a^2 + \\dfrac{3}{2}a - 1\\right) = \\dfrac{11}{6}a + 2$.",
+        "incorrect": "الحدّان $a^2$ يتعادمان، وتتغيّر إشارة كل حد من الجداء الثاني."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l5-001",
+  "lessonCode": "nashr-tabsit",
+  "level": 5
+}

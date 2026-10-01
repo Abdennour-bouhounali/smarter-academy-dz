@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "title": "تدريب — حكم على عمل تلميذ",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تبسيط",
+      "أقواس"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P4",
+      "modelledOn": "ex-6"
+    }
+  },
+  "statement": {
+    "content": "كتب تلميذ: $2x - (x - 4) = x - 4$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل إجابته صحيحة؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "B",
+          "content": "لا: لم يغيّر إشارة $-4$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "لا: $2x - x$ لا يساوي $x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "القوسان مسبوقان بإشارة $-$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ماذا يحدث لإشارة كل حد عند حذفهما؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$-(x - 4) = -x \\ldots 4$"
+        }
+      ],
+      "feedback": {
+        "correct": "$-(x - 4) = -x + 4$ ، إذن $2x - (x - 4) = x + 4$.",
+        "incorrect": "راجع إشارات الحدود بعد حذف القوسين المسبوقين بـ $-$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "التبسيط الصحيح هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x + 4$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x - 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "C",
+          "content": "$3x - 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احذف القوسين بتغيير الإشارات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2x - x + 4$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المتشابهة."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x - x + 4 = x + 4$.",
+        "incorrect": "كل حد داخل القوسين تتغيّر إشارته."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l5-007",
+  "lessonCode": "nashr-tabsit",
+  "level": 5
+}

@@ -339,5 +339,158 @@
       "4am_jidhr-tarbii_P1",
       "4am_jidhr-tarbii_P2"
     ]
+  },
+  "MISC-NASHR-HAD-WAHID": {
+    "label": "ضرب العدد في الحد الأول فقط",
+    "explanation": "في $k(a + b)$ يُضرب $k$ في كل حد: $3(x + 5) = 3x + 15$ وليس $3x + 5$.",
+    "relatedLearningPoints": [
+      "4am_nashr-tabsit_P2"
+    ]
+  },
+  "MISC-NASHR-ISHARA-SALIBA": {
+    "label": "إهمال إشارة العامل السالب",
+    "explanation": "$-3(3 - x) = -9 + 3x$ : الإشارة $-$ تُضرب في كل حد، و $(-3) \\times (-x) = +3x$.",
+    "relatedLearningPoints": [
+      "4am_nashr-tabsit_P2"
+    ]
+  },
+  "MISC-NASHR-AWWAL-AKHIR": {
+    "label": "نشر جداء قوسين بجداءين فقط",
+    "explanation": "$(a + b)(c + d)$ فيه أربعة جداءات: $ac + ad + bc + bd$، لا $ac + bd$ فقط.",
+    "relatedLearningPoints": [
+      "4am_nashr-tabsit_P3"
+    ]
+  },
+  "MISC-NASHR-QAWS-SALIB": {
+    "label": "حذف قوسين مسبوقين بـ − دون تغيير الإشارات",
+    "explanation": "$-(4x^2 + x - 3) = -4x^2 - x + 3$ : كل حد داخل القوسين تتغيّر إشارته.",
+    "relatedLearningPoints": [
+      "4am_nashr-tabsit_P4",
+      "4am_mutatabiqat-shahira_P1",
+      "4am_mutatabiqat-shahira_P2",
+      "4am_mutatabiqat-shahira_P3"
+    ]
+  },
+  "MISC-TABSIT-GHAYR-MUTASHABIH": {
+    "label": "جمع حدّين غير متشابهين",
+    "explanation": "$3x^2$ و $2x$ ليسا متشابهين: $3x^2 + 2x$ لا تُختصر إلى $5x^3$ ولا إلى $5x^2$.",
+    "relatedLearningPoints": [
+      "4am_nashr-tabsit_P4"
+    ]
+  },
+  "MISC-TABSIT-X-MARRATAYN": {
+    "label": "الخلط بين x × x و 2x",
+    "explanation": "$x \\times x = x^2$ أما $x + x = 2x$.",
+    "relatedLearningPoints": [
+      "4am_nashr-tabsit_P4"
+    ]
+  },
+  "MISC-MURABBA-MAJMU-BILA-2AB": {
+    "label": "مربع مجموع يساوي مجموع المربعين",
+    "explanation": "$(a + b)^2 = a^2 + 2ab + b^2$ وليس $a^2 + b^2$: ينقص الحد المضاعف $2ab$.",
+    "relatedLearningPoints": [
+      "4am_mutatabiqat-shahira_P1"
+    ]
+  },
+  "MISC-MURABBA-FARQ-ISHARA": {
+    "label": "إشارة خاطئة في نشر مربع فرق",
+    "explanation": "$(a - b)^2 = a^2 - 2ab + b^2$ : الحد الأخير $+b^2$ موجب دائمًا، والحد المضاعف سالب.",
+    "relatedLearningPoints": [
+      "4am_mutatabiqat-shahira_P2"
+    ]
+  },
+  "MISC-MURABBA-FARQ-BILA-2AB": {
+    "label": "مربع فرق يساوي فرق المربعين",
+    "explanation": "$(a - b)^2 \\neq a^2 - b^2$ : $(a - b)^2 = a^2 - 2ab + b^2$.",
+    "relatedLearningPoints": [
+      "4am_mutatabiqat-shahira_P2"
+    ]
+  },
+  "MISC-MUTATABIQA-2AB-NISF": {
+    "label": "نسيان المعامل 2 في الحد المضاعف",
+    "explanation": "الحد المضاعف هو $2ab$ وليس $ab$: $(x + 3)^2 = x^2 + 6x + 9$.",
+    "relatedLearningPoints": [
+      "4am_mutatabiqat-shahira_P1",
+      "4am_mutatabiqat-shahira_P2"
+    ]
+  },
+  "MISC-MUTATABIQA-MURABBA-MUAMIL": {
+    "label": "نسيان تربيع المعامل",
+    "explanation": "$(3x)^2 = 9x^2$ وليس $3x^2$: المعامل يُربَّع أيضًا.",
+    "relatedLearningPoints": [
+      "4am_mutatabiqat-shahira_P1",
+      "4am_mutatabiqat-shahira_P2",
+      "4am_mutatabiqat-shahira_P3"
+    ]
+  },
+  "MISC-JIDAA-MAJMU-FARQ-ISHARA": {
+    "label": "إشارة خاطئة في جداء مجموع وفرق",
+    "explanation": "$(a + b)(a - b) = a^2 - b^2$ : الحد $b^2$ مطروح، والحدّان $+ab$ و $-ab$ يتعادمان.",
+    "relatedLearningPoints": [
+      "4am_mutatabiqat-shahira_P3"
+    ]
+  },
+  "MISC-HISAB-DHIHNI-MURABBA": {
+    "label": "مربع عدد بتربيع رقميه",
+    "explanation": "$21^2 = (20 + 1)^2 = 400 + 40 + 1 = 441$ وليس $400 + 1$.",
+    "relatedLearningPoints": [
+      "4am_mutatabiqat-shahira_P4"
+    ]
+  },
+  "MISC-TAHLIL-AMIL-NAQIS": {
+    "label": "عامل مشترك غير كامل",
+    "explanation": "في $6x^2 + 4x$ العامل المشترك الأكبر هو $2x$: $6x^2 + 4x = 2x(3x + 2)$.",
+    "relatedLearningPoints": [
+      "4am_tahlil-ibara_P2"
+    ]
+  },
+  "MISC-TAHLIL-NISYAN-1": {
+    "label": "نسيان الحد 1 بعد استخراج العامل المشترك",
+    "explanation": "$5x(2x + 1) + (2x + 1) = (2x + 1)(5x + 1)$ : الحد $(2x + 1)$ يساوي $(2x + 1) \\times 1$.",
+    "relatedLearningPoints": [
+      "4am_tahlil-ibara_P2"
+    ]
+  },
+  "MISC-TAHLIL-ISHARA-QAWS": {
+    "label": "خطأ في الإشارة داخل القوس بعد استخراج العامل المشترك",
+    "explanation": "$(x + 2)(x - 1) + x(x + 2) - (x + 2) = (x + 2)(x - 1 + x - 1)$ : الحد $-(x + 2)$ يعطي $-1$.",
+    "relatedLearningPoints": [
+      "4am_tahlil-ibara_P2"
+    ]
+  },
+  "MISC-TAHLIL-MAJMU-MURABBAYN": {
+    "label": "تحليل مجموع مربعين",
+    "explanation": "$x^2 + 25$ لا يُحلّل باستعمال المتطابقات الشهيرة: $(x + 5)^2 = x^2 + 10x + 25$.",
+    "relatedLearningPoints": [
+      "4am_tahlil-ibara_P3"
+    ]
+  },
+  "MISC-TAHLIL-FARQ-MURABBA": {
+    "label": "الخلط بين فرق مربعين ومربع فرق",
+    "explanation": "$x^2 - 25 = (x - 5)(x + 5)$ وليس $(x - 5)^2 = x^2 - 10x + 25$.",
+    "relatedLearningPoints": [
+      "4am_tahlil-ibara_P3"
+    ]
+  },
+  "MISC-TAHLIL-NASHR-BADAL": {
+    "label": "كتابة النشر بدل التحليل",
+    "explanation": "التحليل هو كتابة العبارة على شكل جداء: $x^2 + 6x + 9 = (x + 3)^2$ ؛ العبارة $x(x + 6) + 9$ ليست جداءً.",
+    "relatedLearningPoints": [
+      "4am_tahlil-ibara_P1"
+    ]
+  },
+  "MISC-NAMDHAJA-MISAHA": {
+    "label": "خطأ في التعبير عن مساحة بدلالة x",
+    "explanation": "مساحة مستطيل بعداه $a$ و $b$ هي $a \\times b$، ومساحة مربع ضلعه $c$ هي $c^2$؛ نعبّر عن كل بعد بدلالة $x$ قبل الضرب.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-harfi_P2"
+    ]
+  },
+  "MISC-SHAKL-GHAYR-MUNASIB": {
+    "label": "اختيار شكل غير مناسب للعبارة",
+    "explanation": "لحساب قيمة تجعل جداءً معدومًا نستعمل الشكل المحلّل؛ لقيمة مثل $x = 0$ يكفي الشكل المنشور.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-harfi_P3"
+    ]
   }
 }

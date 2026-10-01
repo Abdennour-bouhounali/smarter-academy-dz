@@ -29,12 +29,12 @@ manipulation.
 > every path under `lessons/college/` or `lessons/lycee/` — belonged to the **French-era lessons
 > deleted on 2026-09-25** (read them in git history). They are kept as illustrations of the
 > principles, not as components to import. **The current manipulations are the closed registry of
-> 13 types** in `packages/core/curriculum/manipulationTypes.js` (mounted by
+> 15 types** in `packages/core/curriculum/manipulationTypes.js` (mounted by
 > `apps/web/src/lessons/common/manipulations/manipulationRegistry.js`): `divisor-explorer`,
 > `divisor-explorer-books`, `team-builder`, `factor-pairs`, `divisor-properties`,
 > `common-divisors`, `pgcd-differences`, `euclidean-algorithm`, `coprime-explorer`,
 > `fraction-reduction` (unit 1), `square-root-side`, `square-fold`, `square-tiling` (unit 2,
-> 2026-09-30) — reused across lessons by props and theme data
+> 2026-09-30), `pitch-expansion`, `turf-factoring` (unit 3, 2026-10-01) — reused across lessons by props and theme data
 > (`MANIPULATION_CONTRACT.md`). Shared components still present include `NumberLine`,
 > `CoordPlane` and `InfoSorter` (`apps/web/src/lessons/common/components/`).
 

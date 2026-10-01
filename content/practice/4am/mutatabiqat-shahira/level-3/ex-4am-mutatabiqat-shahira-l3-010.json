@@ -1,0 +1,91 @@
+{
+  "metadata": {
+    "title": "تدريب — جداء مجموع وفرق بمعامل",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جداء مجموع حدين وفرقهما"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutatabiqat-shahira_P3",
+      "modelledOn": "ex-18"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $M = (2x + 7)(2x - 7)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما معامل $x^2$ في النشر المبسّط للعبارة $M$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$a = 2x$ و $b = 7$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحد في $x^2$ هو $a^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $(2x)^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(2x)^2 = 4x^2$",
+        "incorrect": "المعامل $2$ يُربَّع."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما الحد الثابت في النشر المبسّط للعبارة $M$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "-49",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحد الثابت هو $-b^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هنا $b = 7$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انتبه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$M = 4x^2 - 49$",
+        "incorrect": "الحد $b^2$ مطروح."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l3-010",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 3
+}

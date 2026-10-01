@@ -1,0 +1,121 @@
+{
+  "metadata": {
+    "title": "تمرين 6 — إجابتا تلميذين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تبسيط",
+      "أقواس"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-6",
+      "page": 37,
+      "section": "أوظّف تعلّماتي",
+      "number": 6
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 37): إليك إجابة تلميذين حول نشر وتبسيط العبارة $P = 3(x - 1) - (x + 1)(4x - 3)$ . أجاب الأول: $P = 3x - 3 - 4x^2 - 3x + 4x - 3 = -4x^2 + 4x + 6$ . أجاب الثاني: $P = 3x - 3 - (4x^2 - 3x + 4x - 3) = 3x - 3 - 4x^2 + 3x - 4x + 3 = -4x^2 + 2x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أي الإجابتين صحيحة؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "إجابة التلميذ الأول",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "B",
+          "content": "إجابة التلميذ الثاني",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجداء $(x + 1)(4x - 3)$ مسبوق بإشارة $-$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عند حذف قوسين مسبوقين بـ $-$ ماذا يحدث لإشارات الحدود؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن السطر الأول من كل إجابة."
+        }
+      ],
+      "feedback": {
+        "correct": "الثاني وضع النشر بين قوسين ثم غيّر إشارة كل حد عند حذفهما؛ الأول لم يغيّر الإشارات، ثم أخطأ في $-3 - 3$.",
+        "incorrect": "تحقّق من إشارات الحدود بعد حذف القوسين المسبوقين بـ $-$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "النشر المبسّط للعبارة $P$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-4x^2 + 4x - 6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "B",
+          "content": "$-4x^2 + 4x + 6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "C",
+          "content": "$-4x^2 + 2x$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $(x + 1)(4x - 3)$ وضعه بين قوسين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احذف القوسين بتغيير الإشارات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اجمع الحدود المتشابهة."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x - 3 - 4x^2 + 3x - 4x + 3 = -4x^2 + 2x$.",
+        "incorrect": "الإشارة $-$ أمام الجداء تغيّر إشارة كل حد من نشره."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l4-003",
+  "lessonCode": "nashr-tabsit",
+  "level": 4
+}

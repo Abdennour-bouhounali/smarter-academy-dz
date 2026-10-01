@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "title": "تدريب — جداء مجموع وفرق ناقص مربع فرق",
+    "estimatedMinutes": 6,
+    "tags": [
+      "جداء مجموع حدين وفرقهما"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutatabiqat-shahira_P3",
+      "modelledOn": "ex-16"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $Q = (x + 5)(x - 5) - (x - 5)^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $Q$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$10x - 50$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$-50$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-BILA-2AB"
+        },
+        {
+          "id": "C",
+          "content": "$-10x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$(x + 5)(x - 5) = x^2 - 25$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(x - 5)^2 = x^2 - 10x + 25$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح مع تغيير كل الإشارات."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 - 25 - x^2 + 10x - 25 = 10x - 50$",
+        "incorrect": "القوسان المسبوقان بـ $-$ يغيّران إشارة كل حد."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب قيمة $Q$ من أجل $x = 5$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "0",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ $5$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل الشكل المبسّط أو الشكل الأصلي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ماذا يساوي $x - 5$ من أجل $x = 5$ ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$10 \\times 5 - 50 = 0$",
+        "incorrect": "عوّض في الشكل المبسّط."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l4-007",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 4
+}

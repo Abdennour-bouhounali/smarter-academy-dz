@@ -1,0 +1,228 @@
+{
+  "metadata": {
+    "title": "تمرين 3 — جداء قوسين",
+    "estimatedMinutes": 5,
+    "tags": [
+      "جداء قوسين"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-3",
+      "page": 37,
+      "section": "أوظّف تعلّماتي",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 37): انشر كل عبارة مما يلي وبسّطها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$K = (2x + 1)(x + 2)$ ، النشر المبسّط هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2x^2 + 5x + 2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$2x^2 + 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        },
+        {
+          "id": "C",
+          "content": "$2x^2 + 4x + 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أربعة جداءات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2x^2 + 4x + x + 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع $4x$ و $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x^2 + 4x + x + 2 = 2x^2 + 5x + 2$.",
+        "incorrect": "لا تنسَ الجداء $1 \\times x$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$L = (3x + 2)(4x - 5)$ ، النشر المبسّط هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$12x^2 + 7x - 10$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "B",
+          "content": "$12x^2 - 7x - 10$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$12x^2 - 10$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أربعة جداءات بإشاراتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$12x^2 - 15x + 8x - 10$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع $-15x$ و $8x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$12x^2 - 15x + 8x - 10 = 12x^2 - 7x - 10$.",
+        "incorrect": "اجمع $-15x$ و $8x$ بإشارتيهما."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "$M = (x - 7)(1 - x)$ ، النشر المبسّط هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-x^2 - 6x - 7$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "B",
+          "content": "$x^2 + 8x - 7$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "C",
+          "content": "$-x^2 + 8x - 7$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أربعة جداءات بإشاراتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x - x^2 - 7 + 7x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(-7) \\times (-x)$ موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$x - x^2 - 7 + 7x = -x^2 + 8x - 7$.",
+        "incorrect": "انتبه إلى $(-7) \\times (-x)$ و $x \\times (-x)$."
+      }
+    },
+    {
+      "id": "q4",
+      "statement": "$P = (-x - 2)(5 - x)$ ، النشر المبسّط هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 - 3x - 10$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$-x^2 - 3x - 10$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "C",
+          "content": "$x^2 - 7x - 10$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحدّان الأوّلان سالبان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$-5x + x^2 - 10 + 2x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(-x) \\times (-x)$ موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$-5x + x^2 - 10 + 2x = x^2 - 3x - 10$.",
+        "incorrect": "انتبه إلى $(-x) \\times (-x)$ و $(-2) \\times (-x)$."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l3-003",
+  "lessonCode": "nashr-tabsit",
+  "level": 3
+}

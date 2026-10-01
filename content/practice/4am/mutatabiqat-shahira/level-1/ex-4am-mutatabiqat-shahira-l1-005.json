@@ -1,0 +1,109 @@
+{
+  "metadata": {
+    "title": "تمرين 17 — جداء مجموع حدين وفرقهما",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جداء مجموع حدين وفرقهما"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-17",
+      "page": 38,
+      "section": "أوظّف تعلّماتي",
+      "number": 17
+    }
+  },
+  "statement": {
+    "content": "انشر كل عبارة مما يلي وبسّطها: $A = (x + 7)(x - 7)$ و $B = (x + 0{,}2)(x - 0{,}2)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $A = (x + 7)(x - 7)$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 + 49$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-MAJMU-FARQ-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$x^2 - 49$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x^2 - 14x - 49$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$A$ جداء مجموع حدين وفرقهما."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(a + b)(a - b) = a^2 - b^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحدّان $+7x$ و $-7x$ ماذا يصبحان؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 7)(x - 7) = x^2 - 7^2 = x^2 - 49$",
+        "incorrect": "الحد $b^2$ مطروح في جداء مجموع وفرق."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما الحد الثابت في النشر المبسّط للعبارة $B = (x + 0{,}2)(x - 0{,}2)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالفاصلة إن لزم)",
+      "expectedAnswer": "-0.04",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحد الثابت هو $-b^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هنا $b = 0{,}2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب مربع $0{,}2$ ثم انتبه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 0{,}2)(x - 0{,}2) = x^2 - 0{,}04$",
+        "incorrect": "الحد الثابت سالب: $-b^2$."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l1-005",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 1
+}

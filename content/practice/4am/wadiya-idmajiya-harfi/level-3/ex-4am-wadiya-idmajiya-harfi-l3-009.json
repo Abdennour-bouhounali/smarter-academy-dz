@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "title": "تدريب — عامل مشترك بين قوسين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تحليل",
+      "عامل مشترك"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P1",
+      "modelledOn": "ex-39"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $G = (3x - 1)(x + 4) - (3x - 1)(2x - 5)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "تحليل العبارة $G$ هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(3x - 1)(-x - 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "B",
+          "content": "$(3x - 1)(-x + 9)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(3x - 1)(3x - 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "D",
+          "content": "$(3x - 1)^2(-x + 9)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل المشترك $(3x - 1)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "يبقى $(x + 4) - (2x - 5)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "القوس المسبوق بـ − تتغيّر إشاراته."
+        }
+      ],
+      "feedback": {
+        "correct": "$(3x - 1)\\big[(x + 4) - (2x - 5)\\big] = (3x - 1)(x + 4 - 2x + 5) = (3x - 1)(-x + 9)$.",
+        "incorrect": "حذف القوس المسبوق بـ − يغيّر إشارة كل حد داخله."
+      },
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $G$ من أجل $x = 9$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (يمكن أن يكون سالبًا)",
+      "expectedAnswer": "0",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل الشكل المحلّل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما قيمة $-x + 9$ ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء أحد عامليه معدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $x = 9$ العامل $-x + 9$ معدوم، إذن $G = 0$.",
+        "incorrect": "الشكل المحلّل يجعل الحساب فوريًا هنا."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "26",
+          "id": "MISC-SHAKL-GHAYR-MUNASIB"
+        }
+      ],
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l3-009",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 3
+}

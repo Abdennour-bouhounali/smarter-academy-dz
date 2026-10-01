@@ -1,0 +1,127 @@
+{
+  "id": "ex-4am-tahlil-ibara-l4-001",
+  "lessonCode": "tahlil-ibara",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 25 — كسور وأعداد عشرية",
+    "estimatedMinutes": 6,
+    "tags": [
+      "عامل مشترك",
+      "كسور"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-25",
+      "page": 38,
+      "section": "أوظّف تعلّماتي",
+      "number": 25
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 38): $F = 2x\\left(\\dfrac{2}{7} - x\\right) + \\left(\\dfrac{2}{7} - x\\right)\\left(\\dfrac{5x - 4}{3}\\right)$ و $G = (1{,}2x - 3{,}5)(3{,}7 + x) - (0{,}2x - 6{,}5)(3{,}7 + x) + (3{,}7 + x)$ (العامل $(3{,}7 + x)$ مشترك بين الحدود الثلاثة — صحّحت المنصّة خطأً مطبعيًا)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّل F.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\left(\\dfrac{2}{7} - x\\right)\\dfrac{7x - 4}{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        },
+        {
+          "id": "B",
+          "content": "$\\left(\\dfrac{2}{7} - x\\right)\\dfrac{11x - 4}{3}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\left(\\dfrac{2}{7} - x\\right)(7x - 4)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن العامل الذي يتكرّر في كل الحدود."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العامل المشترك هنا هو $\\left(\\dfrac{2}{7} - x\\right)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتبه مرّة واحدة خارج القوس، وضع داخل القوس ما يبقى من كل حدّ مع إشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$F = \\left(\\dfrac{2}{7} - x\\right)\\left(2x + \\dfrac{5x - 4}{3}\\right) = \\left(\\dfrac{2}{7} - x\\right)\\dfrac{11x - 4}{3}$.",
+        "incorrect": "وحّد المقامين: $2x = \\dfrac{6x}{3}$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّل G.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(3{,}7 + x)(x + 3)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NISYAN-1"
+        },
+        {
+          "id": "B",
+          "content": "$(3{,}7 + x)(x + 4)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(3{,}7 + x)(1{,}4x - 9)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل المشترك هو $(3{,}7 + x)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "يبقى $(1{,}2x - 3{,}5) - (0{,}2x - 6{,}5) + 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "غيّر إشارات القوس المسبوق بـ «−»، ولا تنسَ $+1$."
+        }
+      ],
+      "feedback": {
+        "correct": "$G = (3{,}7 + x)(1{,}2x - 3{,}5 - 0{,}2x + 6{,}5 + 1) = (3{,}7 + x)(x + 4)$.",
+        "incorrect": "الحدّ الأخير $(3{,}7 + x)$ وحده يترك $+1$."
+      }
+    }
+  ]
+}

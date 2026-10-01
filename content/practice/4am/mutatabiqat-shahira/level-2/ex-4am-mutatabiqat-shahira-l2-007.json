@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "title": "تمرين 28 — جداءات ذهنيا",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حساب ذهني"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-28",
+      "page": 39,
+      "section": "أوظّف تعلّماتي",
+      "number": 28
+    }
+  },
+  "statement": {
+    "content": "احسب ذهنيا (دون وضع العملية) كل عدد مما يلي."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $21 \\times 19$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "399",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العددان يحيطان بالعدد $20$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$21 = 20 + 1$ و $19 = 20 - 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استعمل $(a + b)(a - b) = a^2 - b^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(20 + 1)(20 - 1) = 400 - 1 = 399$",
+        "incorrect": "اطرح مربع $1$ من مربع $20$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $101 \\times 99$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "9999",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العددان يحيطان بالعدد $100$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$101 = 100 + 1$ و $99 = 100 - 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $100^2 - 1^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(100 + 1)(100 - 1) = 10\\,000 - 1 = 9999$",
+        "incorrect": "الحد $b^2$ يُطرح ولا يُضاف."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "احسب $1008 \\times 992$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "999936",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العددان يحيطان بالعدد $1000$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$1008 = 1000 + 8$ و $992 = 1000 - 8$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $1000^2 - 8^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(1000 + 8)(1000 - 8) = 1\\,000\\,000 - 64 = 999\\,936$",
+        "incorrect": "اطرح مربع $8$ من مربع $1000$."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l2-007",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 2
+}

@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "title": "تدريب — فرق مساحتي مربعين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متطابقات",
+      "معادلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P1",
+      "modelledOn": "ex-37"
+    }
+  },
+  "statement": {
+    "content": "مربّعان: طول ضلع الأول $x + 3$ وطول ضلع الثاني $x$ (بالسنتيمتر)، حيث $x$ عدد موجب."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "فرق مساحتي المربعين بدلالة $x$ هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$9$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$6x + 9$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$3x + 9$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        },
+        {
+          "id": "D",
+          "content": "$2x^2 + 6x + 9$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الفرق $(x + 3)^2 - x^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر بمربع مجموع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يُحذف $x^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 6x + 9 - x^2 = 6x + 9$.",
+        "incorrect": "لا تنس الحد المضاعف $6x$."
+      },
+      "cognitiveDemand": "reason"
+    },
+    {
+      "id": "q2",
+      "statement": "من أجل أيّ قيمة لـ $x$ يكون الفرق $27\\,cm^2$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب المساواة بالعبارة المبسّطة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معادلة من الدرجة الأولى."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح 9 ثم اقسم على 6."
+        }
+      ],
+      "feedback": {
+        "correct": "$6x + 9 = 27$ يعني $6x = 18$ ، أي $x = 3$ ؛ ونتحقق: $36 - 9 = 27$.",
+        "incorrect": "العبارة المبسّطة تعطي معادلة من الدرجة الأولى."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "6",
+          "id": "MISC-MURABBA-MAJMU-BILA-2AB"
+        }
+      ],
+      "cognitiveDemand": "reason"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l4-007",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 4
+}

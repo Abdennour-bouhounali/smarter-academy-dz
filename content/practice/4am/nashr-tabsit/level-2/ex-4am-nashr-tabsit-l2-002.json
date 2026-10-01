@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "title": "تدريب — عامل سالب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نشر",
+      "إشارات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P2",
+      "modelledOn": "ex-1"
+    }
+  },
+  "statement": {
+    "content": "ننشر جداء عدد سالب في مجموع أو فرق."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نشر $-3(x + 4)$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-3x + 12$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "B",
+          "content": "$-3x - 12$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$-3x + 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل سالب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب $-3$ في $x$ ثم في 4."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(-3) \\times 4$ سالب."
+        }
+      ],
+      "feedback": {
+        "correct": "$-3 \\times x + (-3) \\times 4 = -3x - 12$.",
+        "incorrect": "الإشارة $-$ تُضرب في الحدّين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نشر $-2(5 - 3x)$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-10 + 6x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$-10 - 6x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "C",
+          "content": "$-10 - 3x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل سالب، والقوس فرق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب $-2$ في 5 ثم في $-3x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء عددين سالبين موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$-2 \\times 5 - (-2) \\times 3x = -10 + 6x$.",
+        "incorrect": "انتبه إلى $(-2) \\times (-3x)$."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l2-002",
+  "lessonCode": "nashr-tabsit",
+  "level": 2
+}

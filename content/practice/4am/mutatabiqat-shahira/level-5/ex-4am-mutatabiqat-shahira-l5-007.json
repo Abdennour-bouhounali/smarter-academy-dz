@@ -1,0 +1,91 @@
+{
+  "metadata": {
+    "title": "تدريب — جداء مجموع وفرق بجذور",
+    "estimatedMinutes": 5,
+    "tags": [
+      "جداء مجموع حدين وفرقهما"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutatabiqat-shahira_P3",
+      "modelledOn": "method-expand-identities"
+    }
+  },
+  "statement": {
+    "content": "احسب كل عدد مما يلي مستعملًا متطابقة شهيرة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $(\\sqrt{7} - 2)(\\sqrt{7} + 2)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "جداء مجموع حدين وفرقهما."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a = \\sqrt{7}$ و $b = 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(\\sqrt{7})^2 = 7$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(\\sqrt{7})^2 - 2^2 = 7 - 4 = 3$",
+        "incorrect": "$(\\sqrt{7})^2 = 7$ و $b^2$ مطروح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $(2\\sqrt{3} + 3)(2\\sqrt{3} - 3)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$a = 2\\sqrt{3}$ و $b = 3$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(2\\sqrt{3})^2 = 4 \\times 3$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $a^2 - b^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(2\\sqrt{3})^2 - 3^2 = 12 - 9 = 3$",
+        "incorrect": "المعامل $2$ يُربَّع: $(2\\sqrt{3})^2 = 12$."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l5-007",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 5
+}

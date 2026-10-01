@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tahlil-ibara-l5-009",
+  "lessonCode": "tahlil-ibara",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — جداء عاملين من الدرجة الأولى",
+    "estimatedMinutes": 5,
+    "tags": [
+      "تحليل",
+      "قيمة عبارة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P1",
+      "modelledOn": "method-expand-factor"
+    }
+  },
+  "statement": {
+    "content": "لتكن العبارة $F = (3x - 2)^2 - (3x - 2)(x + 1)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّل F إلى جداء عاملين من الدرجة الأولى.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(3x - 2)(4x - 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "B",
+          "content": "$(3x - 2)(2x - 3)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(3x - 2)(2x - 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن العامل الذي يتكرّر في كل الحدود."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العامل المشترك هنا هو $(3x - 2)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتبه مرّة واحدة خارج القوس، وضع داخل القوس ما يبقى من كل حدّ مع إشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$F = (3x - 2)[(3x - 2) - (x + 1)] = (3x - 2)(2x - 3)$.",
+        "incorrect": "$-(x + 1) = -x - 1$ : تتغيّر الإشارتان."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب F من أجل $x = 1$.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "-1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل الشكل المحلّل أو العبارة المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "من أجل $x = 1$ : $3x - 2 = 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $2x - 3$ من أجل $x = 1$ ثم اضرب."
+        }
+      ],
+      "feedback": {
+        "correct": "$(3 - 2)(2 - 3) = 1 \\times (-1)$ ، وبالعبارة المعطاة $1 - 1 \\times 2$.",
+        "incorrect": "عوّض $x$ بـ 1 وانتبه إلى الإشارة."
+      }
+    }
+  ]
+}

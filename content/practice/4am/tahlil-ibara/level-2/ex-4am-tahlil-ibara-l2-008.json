@@ -1,0 +1,125 @@
+{
+  "id": "ex-4am-tahlil-ibara-l2-008",
+  "lessonCode": "tahlil-ibara",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — لا تنسَ الحدّ 1",
+    "estimatedMinutes": 4,
+    "tags": [
+      "عامل مشترك"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P1",
+      "modelledOn": "ex-22"
+    }
+  },
+  "statement": {
+    "content": "حلّل كل عبارة إلى جداء عاملين من الدرجة الأولى."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$(2x + 3)(x - 4) + (2x + 3) = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(2x + 3)(x - 4)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NISYAN-1"
+        },
+        {
+          "id": "B",
+          "content": "$(2x + 3)(x - 3)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(2x + 3)(x - 5)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل المشترك هو $(2x + 3)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(2x + 3) = (2x + 3) \\times 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع ما بقي: $(x - 4) + 1$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(2x + 3)[(x - 4) + 1] = (2x + 3)(x - 3)$.",
+        "incorrect": "الحدّ $(2x + 3)$ وحده يترك $+1$ داخل القوس."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$(x + 6)^2 - (x + 6) = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x + 6)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NISYAN-1"
+        },
+        {
+          "id": "B",
+          "content": "$(x + 6)(x + 7)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "C",
+          "content": "$(x + 6)(x + 5)$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$(x + 6)^2 = (x + 6)(x + 6)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العامل المشترك هو $(x + 6)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يبقى $(x + 6) - 1$ داخل القوس."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 6)[(x + 6) - 1] = (x + 6)(x + 5)$.",
+        "incorrect": "الحدّ $-(x + 6)$ يترك $-1$ داخل القوس."
+      }
+    }
+  ]
+}

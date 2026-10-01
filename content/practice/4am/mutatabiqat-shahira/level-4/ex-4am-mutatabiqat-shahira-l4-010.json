@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "title": "تدريب — عبارة لا تتعلّق بـ x",
+    "estimatedMinutes": 5,
+    "tags": [
+      "جداء مجموع حدين وفرقهما"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutatabiqat-shahira_P3",
+      "modelledOn": "ex-19"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $R = (3x - 2)(3x + 2) + 4$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $R$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$9x^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$9x^2 + 8$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-MAJMU-FARQ-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$3x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$(3x - 2)(3x + 2)$ جداء مجموع وفرق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(3x)^2 - 2^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم أضف $4$."
+        }
+      ],
+      "feedback": {
+        "correct": "$9x^2 - 4 + 4 = 9x^2$",
+        "incorrect": "الحد $2^2$ مطروح في جداء مجموع وفرق."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب قيمة $R$ من أجل $x = \\dfrac{1}{3}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد أو كسر a/b",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل الشكل المبسّط $9x^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بـ $\\dfrac{1}{3}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $9 \\times \\dfrac{1}{9}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$9 \\times \\left(\\dfrac{1}{3}\\right)^2 = 9 \\times \\dfrac{1}{9} = 1$",
+        "incorrect": "ربّع $\\dfrac{1}{3}$ قبل الضرب في $9$."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l4-010",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 4
+}

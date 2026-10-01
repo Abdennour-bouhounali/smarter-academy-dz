@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "title": "تدريب — مجموع جداءين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تبسيط",
+      "نشر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P4",
+      "modelledOn": "ex-7"
+    }
+  },
+  "statement": {
+    "content": "ننشر ثم نبسّط عبارة فيها جداءان."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بسّط $3(x + 2) + 4(x - 1)$:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$7x + 2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$7x + 10$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "C",
+          "content": "$7x + 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر كل جداء."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$3x + 6$ و $4x - 4$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اجمع الحدود المتشابهة."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x + 6 + 4x - 4 = 7x + 2$.",
+        "incorrect": "انشر الجداءين ثم اجمع المتشابهة بإشاراتها."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بسّط $x(x + 1) + 2(x - 3)$:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 + 3x - 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$x^2 + 3x - 6$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$4x^2 - 6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر كل جداء."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x^2 + x$ و $2x - 6$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع $x$ و $2x$ فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + x + 2x - 6 = x^2 + 3x - 6$.",
+        "incorrect": "لا تجمع $x^2$ مع $x$."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l3-007",
+  "lessonCode": "nashr-tabsit",
+  "level": 3
+}

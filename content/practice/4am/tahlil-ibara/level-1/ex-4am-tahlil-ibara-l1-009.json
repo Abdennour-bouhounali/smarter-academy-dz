@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tahlil-ibara-l1-009",
+  "lessonCode": "tahlil-ibara",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — ملعب العشب",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ملعب",
+      "عامل مشترك"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P2",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "ملعب عشب: 8 شرائط مساحة كل منها $x$ و 12 مربّعًا صغيرًا مساحة كل منها 1، أي $8x + 12$. نفرش القطع كلها في صفوف متماثلة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما أكبر عدد ممكن من الصفوف المتماثلة؟",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كل صفّ يأخذ العدد نفسه من الشرائط ومن المربّعات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عدد الصفوف قاسم مشترك للعددين 8 و 12."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن أكبر قاسم مشترك."
+        }
+      ],
+      "feedback": {
+        "correct": "PGCD$(8 ; 12)$ هو أكبر عدد من الصفوف: في كل صفّ شريطان و 3 مربّعات.",
+        "incorrect": "عدد الصفوف يجب أن يقسم 8 و 12 معًا: ابحث عن أكبرها."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "اكتب $8x + 12$ على شكل جداء، بأكبر عدد من الصفوف.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2(4x + 6)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
+        },
+        {
+          "id": "B",
+          "content": "$4(2x + 3)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$4(2x + 12)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارتفاع الملعب هو عدد الصفوف."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في كل صفّ ربع الشرائط وربع المربّعات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب العامل المشترك ثم محتوى صفّ واحد بين قوسين."
+        }
+      ],
+      "feedback": {
+        "correct": "$8x + 12 = 4 \\times 2x + 4 \\times 3 = 4(2x + 3)$.",
+        "incorrect": "$2(4x + 6)$ تساوي العبارة، لكن بصفّين فقط: يمكن أكثر."
+      }
+    }
+  ]
+}

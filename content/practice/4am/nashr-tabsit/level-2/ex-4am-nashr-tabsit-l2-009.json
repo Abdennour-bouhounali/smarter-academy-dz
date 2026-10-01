@@ -1,0 +1,109 @@
+{
+  "metadata": {
+    "title": "تدريب — من جداء إلى فرق",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نشر",
+      "تعريف"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P1",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "العبارة $A = 4(x - 3)$ جداء."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أي كتابة هي العبارة $A$ على شكل فرق؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4x - 12$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$2(2x - 6)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
+        },
+        {
+          "id": "C",
+          "content": "$4x - 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المطلوب شكل فرق، لا جداء آخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر $A$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب 4 في الحدّين."
+        }
+      ],
+      "feedback": {
+        "correct": "$4(x - 3) = 4x - 12$: فرق حدّين.",
+        "incorrect": "الكتابة المطلوبة تنتهي بطرح، وتساوي $A$ من أجل كل $x$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما الحد الثابت في نشر $A$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "-12",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $A$ أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحد الثابت هو جداء 4 في $-3$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انتبه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = 4x - 12$: الحد الثابت $-12$.",
+        "incorrect": "اضرب 4 في الحد الثابت داخل القوسين مع إشارته."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l2-009",
+  "lessonCode": "nashr-tabsit",
+  "level": 2
+}

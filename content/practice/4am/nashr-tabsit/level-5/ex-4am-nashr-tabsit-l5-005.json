@@ -1,0 +1,109 @@
+{
+  "metadata": {
+    "title": "تدريب — عبارة لا تتعلّق بـ x",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تبسيط",
+      "برهان"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P4",
+      "modelledOn": "ex-7"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $U = (x + 6)(x + 1) - (x + 2)(x + 5)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بسّط $U$. ما قيمتها؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "-4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر الجداءين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x^2 + 7x + 6$ و $x^2 + 7x + 10$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح الثاني من الأول بتغيير إشاراته."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 7x + 6 - x^2 - 7x - 10 = -4$.",
+        "incorrect": "انشر كل جداء، ثم انتبه إلى الإشارة $-$ أمام الجداء الثاني."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ماذا نستنتج؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$U = -4$ من أجل كل قيمة لـ $x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$U = -4$ من أجل $x = 0$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        },
+        {
+          "id": "C",
+          "content": "$U$ تتغيّر مع $x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في العبارة المبسّطة: هل بقي $x$؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المساواة صحيحة من أجل كل $x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جرّب $x = 0$ ثم $x = 1$."
+        }
+      ],
+      "feedback": {
+        "correct": "الحدود التي فيها $x$ تعادمت: $U = -4$ مهما كان $x$.",
+        "incorrect": "العبارة المبسّطة تساوي العبارة الأصلية من أجل كل $x$."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l5-005",
+  "lessonCode": "nashr-tabsit",
+  "level": 5
+}

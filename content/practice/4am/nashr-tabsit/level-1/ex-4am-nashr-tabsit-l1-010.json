@@ -1,0 +1,92 @@
+{
+  "metadata": {
+    "title": "تدريب — حساب ذهني بالتوزيع",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الخاصية التوزيعية",
+      "حساب ذهني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P2",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "الخاصية التوزيعية تسهّل الحساب الذهني: $6 \\times 102 = 6 \\times (100 + 2)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $6 \\times 102$ بنشر $6 \\times (100 + 2)$.",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "612",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب 102 على شكل مجموع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب 6 في 100 ثم في 2."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع الجداءين."
+        }
+      ],
+      "feedback": {
+        "correct": "$6 \\times 100 + 6 \\times 2 = 600 + 12 = 612$.",
+        "incorrect": "اضرب 6 في كل حد من $100 + 2$ ثم اجمع."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $8 \\times 99$ بنشر $8 \\times (100 - 1)$.",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "792",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب 99 على شكل فرق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب 8 في 100 ثم في 1."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح الجداء الثاني من الأول."
+        }
+      ],
+      "feedback": {
+        "correct": "$8 \\times 100 - 8 \\times 1 = 800 - 8 = 792$.",
+        "incorrect": "اضرب 8 في الحدّين ثم اطرح."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l1-010",
+  "lessonCode": "nashr-tabsit",
+  "level": 1
+}

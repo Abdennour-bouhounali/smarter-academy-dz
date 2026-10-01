@@ -1,0 +1,141 @@
+{
+  "metadata": {
+    "title": "تدريب — حوض ضلعه 6m وشريط",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نمذجة",
+      "وضعية",
+      "شريط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "حوض مربّع طول ضلعه 6m، يحيط به من كل الجهات شريط منتظم عرضه $x$ (بالمتر)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "طول ضلع المربع الخارجي (الحوض مع الشريط) هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$6 + x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "id": "B",
+          "content": "$6 + 2x$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$12x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "id": "D",
+          "content": "$2(6 + x)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الشريط يحيط بالحوض من كل الجهات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "على الضلع الواحد: شريط، الحوض، شريط."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + 6 + x = 6 + 2x$.",
+        "incorrect": "الشريط على جهتي كل ضلع."
+      },
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "مساحة الشريط بدلالة $x$ هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$4x^2 + 12x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        },
+        {
+          "id": "C",
+          "content": "$24x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "id": "D",
+          "content": "$4x^2 + 24x$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المربع الخارجي ناقص الحوض."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر $(6 + 2x)^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أو: أربعة مستطيلات $6 \\times x$ وأربعة أركان $x^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(6 + 2x)^2 - 36 = 36 + 24x + 4x^2 - 36 = 4x^2 + 24x$.",
+        "incorrect": "لا تنس الحد المضاعف ولا الأركان الأربعة."
+      },
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l3-005",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 3
+}

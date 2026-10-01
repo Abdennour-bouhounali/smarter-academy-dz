@@ -1,0 +1,126 @@
+{
+  "id": "ex-4am-tahlil-ibara-l3-006",
+  "lessonCode": "tahlil-ibara",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 28 (ب) — احسب ذهنيا",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حساب ذهني"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-28",
+      "page": 39,
+      "section": "أوظّف تعلّماتي",
+      "number": 28
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 39): احسب ذهنيا (دون وضع العملية)، باستعمال $a^2 - b^2 = (a - b)(a + b)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$98^2 - 2^2 = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "9600",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العبارة فرق مربّعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(98 - 2)(98 + 2)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أحد العاملين 100."
+        }
+      ],
+      "feedback": {
+        "correct": "$98^2 - 2^2 = 96 \\times 100$.",
+        "incorrect": "استعمل $a^2 - b^2 = (a - b)(a + b)$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$408^2 - 407^2 = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "815",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العبارة فرق مربّعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$408 - 407 = 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يبقى $408 + 407$."
+        }
+      ],
+      "feedback": {
+        "correct": "$408^2 - 407^2 = 1 \\times (408 + 407)$.",
+        "incorrect": "حلّل الفرق بدل حساب المربّعين."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "$777^2 - 223^2 = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "554000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العبارة فرق مربّعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$777 + 223 = 1000$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $777 - 223$ ثم اضرب في 1000."
+        }
+      ],
+      "feedback": {
+        "correct": "$777^2 - 223^2 = 554 \\times 1000$.",
+        "incorrect": "حلّل: أحد العاملين 1000."
+      }
+    }
+  ]
+}

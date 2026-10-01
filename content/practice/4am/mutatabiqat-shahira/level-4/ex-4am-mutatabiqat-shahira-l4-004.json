@@ -1,0 +1,153 @@
+{
+  "metadata": {
+    "title": "تمرين 36 — خمّن ثم برهن",
+    "estimatedMinutes": 7,
+    "tags": [
+      "مربع فرق",
+      "جداء مجموع حدين وفرقهما",
+      "حساب ذهني"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-36",
+      "page": 41,
+      "section": "أتعمّق",
+      "number": 36
+    }
+  },
+  "statement": {
+    "content": "نعتبر الأعداد $a = 35^2 - 36 \\times 34$ و $2018^2 - 2019 \\times 2017$ ، والصيغة $E_2 = (x - 1)^2 - x(x - 2)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $a = 35^2 - 36 \\times 34$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$36 = 35 + 1$ و $34 = 35 - 1$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$36 \\times 34 = 35^2 - 1^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح."
+        }
+      ],
+      "feedback": {
+        "correct": "$1225 - 1224 = 1$",
+        "incorrect": "اكتب $36 \\times 34$ بدلالة $35$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $2018^2 - 2019 \\times 2017$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "خمّن من الحساب السابق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2019 \\times 2017 = (2018 + 1)(2018 - 1)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استعمل $a^2 - b^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$2019 \\times 2017 = 2018^2 - 1$ إذن الفرق $1$.",
+        "incorrect": "العاملان يحيطان بالعدد $2018$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "النشر المبسّط للصيغة $E_2$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-4x + 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "B",
+          "content": "$1$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$2x^2 - 4x + 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $(x - 1)^2$ بمتطابقة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر $x(x - 2)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح مع تغيير الإشارات."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 - 2x + 1 - x^2 + 2x = 1$",
+        "incorrect": "$-x(x - 2) = -x^2 + 2x$."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l4-004",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 4
+}

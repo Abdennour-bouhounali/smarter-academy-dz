@@ -1,0 +1,164 @@
+{
+  "metadata": {
+    "title": "تدريب — أيّ شكل من أجل x = 0؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نشر",
+      "اختيار الشكل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P3",
+      "modelledOn": "ex-40"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $H = (2x + 3)^2 - 25$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $H$ هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4x^2 - 16$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$4x^2 + 6x - 16$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        },
+        {
+          "id": "C",
+          "content": "$4x^2 + 12x - 16$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$2x^2 + 12x - 16$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مربع مجموع: $a = 2x$ و $b = 3$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(2x)^2 = 4x^2$ و $2 \\times 2x \\times 3$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح 25 من الحد الثابت."
+        }
+      ],
+      "feedback": {
+        "correct": "$4x^2 + 12x + 9 - 25 = 4x^2 + 12x - 16$.",
+        "incorrect": "المعامل 2 يُربّع، والحد المضاعف $2 \\times 2x \\times 3$."
+      },
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $H$ من أجل $x = 0$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (يمكن أن يكون سالبًا)",
+      "expectedAnswer": "-16",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من أجل $x = 0$ أيّ شكل أسهل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في الشكل المنشور يبقى الحد الثابت."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أو: $3^2 - 25$."
+        }
+      ],
+      "feedback": {
+        "correct": "يبقى الحد الثابت: $H = -16$ (و $3^2 - 25 = -16$).",
+        "incorrect": "من أجل $x = 0$ تنعدم كل الحدود التي فيها $x$."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "16",
+          "id": "MISC-NASHR-ISHARA-SALIBA"
+        }
+      ],
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q3",
+      "statement": "احسب $H$ من أجل $x = 1$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (يمكن أن يكون سالبًا)",
+      "expectedAnswer": "0",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض في العبارة المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2 \\times 1 + 3 = 5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$5^2 - 25$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(2 + 3)^2 - 25 = 25 - 25 = 0$.",
+        "incorrect": "عوّض في الشكل المعطى: الحساب أقصر."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "25",
+          "id": "MISC-SHAKL-GHAYR-MUNASIB"
+        }
+      ],
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l3-010",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 3
+}

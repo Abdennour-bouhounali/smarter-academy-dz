@@ -1,0 +1,177 @@
+{
+  "id": "ex-4am-tahlil-ibara-l1-001",
+  "lessonCode": "tahlil-ibara",
+  "level": 1,
+  "metadata": {
+    "title": "تمرين 23 — عامل مشترك عددي أو حرفي",
+    "estimatedMinutes": 4,
+    "tags": [
+      "عامل مشترك"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-23",
+      "page": 38,
+      "section": "أوظّف تعلّماتي",
+      "number": 23
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 38): حلّل كل عبارة مما يلي: $A = 2x + 6$ ، $B = 7x - 21$ ، $C = x^2 - 3x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّل $A = 2x + 6$.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2(x + 3)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$2(x + 6)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$2x(1 + 3)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحدّان $2x$ و 6 مضاعفان للعدد نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$6 = 2 \\times 3$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $2x + 6 = 2 \\times x + 2 \\times 3$ ثم استخرج 2."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x + 6 = 2 \\times x + 2 \\times 3 = 2(x + 3)$.",
+        "incorrect": "العامل 2 يُستخرج من الحدّين معًا: ماذا يبقى من 6 بعد القسمة على 2؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّل $B = 7x - 21$.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$7(x + 3)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "B",
+          "content": "$7(x - 3)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$7(x - 21)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$21$ مضاعف للعدد 7."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$21 = 7 \\times 3$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $7x - 21 = 7 \\times x - 7 \\times 3$ ، والإشارة تبقى كما هي."
+        }
+      ],
+      "feedback": {
+        "correct": "$7x - 21 = 7 \\times x - 7 \\times 3 = 7(x - 3)$.",
+        "incorrect": "انشر اختيارك لتتحقّق: يجب أن تجد $7x - 21$ بالضبط."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "حلّل $C = x^2 - 3x$.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x(x^2 - 3)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-X-MARRATAYN"
+        },
+        {
+          "id": "B",
+          "content": "$3x(x - 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
+        },
+        {
+          "id": "C",
+          "content": "$x(x - 3)$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x^2 = x \\times x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العامل المشترك بين $x^2$ و $3x$ هو $x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $x \\times x - 3 \\times x$ ثم استخرج $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 - 3x = x \\times x - 3 \\times x = x(x - 3)$.",
+        "incorrect": "بعد استخراج $x$ من $x^2$ يبقى $x$ واحد فقط داخل القوس."
+      }
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "metadata": {
+    "title": "تمرين 40 — قيمة E",
+    "estimatedMinutes": 2,
+    "tags": [
+      "قيمة عبارة",
+      "عدد عشري"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-40",
+      "page": 41,
+      "section": "أتعمّق",
+      "number": 40
+    }
+  },
+  "statement": {
+    "content": "نضع: $E = 4x^2 - 8x - 5$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $E$ من أجل $x = 0{,}5$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (يمكن أن يكون سالبًا)",
+      "expectedAnswer": "-8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$0{,}5^2 = 0{,}25$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب كل حد على حدة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع النتائج مع مراعاة الإشارات."
+        }
+      ],
+      "feedback": {
+        "correct": "$4 \\times 0{,}25 - 8 \\times 0{,}5 - 5 = 1 - 4 - 5 = -8$.",
+        "incorrect": "ربّع 0,5 أولًا، ثم انتبه إلى الإشارات."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "0",
+          "id": "MISC-NASHR-ISHARA-SALIBA"
+        }
+      ],
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l2-002",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 2
+}

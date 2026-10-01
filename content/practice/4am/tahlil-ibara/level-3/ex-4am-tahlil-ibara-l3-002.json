@@ -1,0 +1,126 @@
+{
+  "id": "ex-4am-tahlil-ibara-l3-002",
+  "lessonCode": "tahlil-ibara",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 24 — لاحظ وجود عامل مشترك",
+    "estimatedMinutes": 5,
+    "tags": [
+      "عامل مشترك"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-24",
+      "page": 38,
+      "section": "أوظّف تعلّماتي",
+      "number": 24
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 38): $D = (x - \\sqrt{2})(4x + 3) - (x + 2)(x - \\sqrt{2})$ و $E = (2 - 5x)\\left(x - \\dfrac{2}{3}\\right) + (2 - 5x)\\left(x - \\dfrac{4}{3}\\right)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّل D.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x - \\sqrt{2})(3x + 1)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(x - \\sqrt{2})(5x + 5)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "C",
+          "content": "$(x - \\sqrt{2})(3x + 5)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل المشترك هو $(x - \\sqrt{2})$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "يبقى $(4x + 3) - (x + 2)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احذف القوس المسبوق بـ «−»."
+        }
+      ],
+      "feedback": {
+        "correct": "$D = (x - \\sqrt{2})(4x + 3 - x - 2) = (x - \\sqrt{2})(3x + 1)$.",
+        "incorrect": "$-(x + 2) = -x - 2$ : تتغيّر الإشارتان."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّل E.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(2 - 5x)\\left(2x + \\dfrac{2}{3}\\right)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "B",
+          "content": "$(2 - 5x)(2x - 2)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(2 - 5x)\\left(x^2 - \\dfrac{8}{9}\\right)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن العامل الذي يتكرّر في كل الحدود."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العامل المشترك هنا هو $(2 - 5x)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتبه مرّة واحدة خارج القوس، وضع داخل القوس ما يبقى من كل حدّ مع إشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$E = (2 - 5x)\\left(x - \\dfrac{2}{3} + x - \\dfrac{4}{3}\\right) = (2 - 5x)(2x - 2)$.",
+        "incorrect": "ما يبقى داخل القوس يُجمع: $-\\dfrac{2}{3} - \\dfrac{4}{3}$."
+      }
+    }
+  ]
+}

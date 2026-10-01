@@ -1,0 +1,109 @@
+{
+  "metadata": {
+    "title": "تدريب — عدد في فرق",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نشر",
+      "الخاصية التوزيعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P2",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "ننشر جداء عدد في فرق: $k(a - b) = ka - kb$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نشر $7(2 - y)$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$14 - 7y$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$14 - y$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$14 + 7y$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد 7 أمام القوسين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "يُضرب 7 في 2 وفي $-y$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احتفظ بالإشارة $-$."
+        }
+      ],
+      "feedback": {
+        "correct": "$7 \\times 2 - 7 \\times y = 14 - 7y$.",
+        "incorrect": "العدد 7 يُضرب في الحدّين، والفرق يبقى فرقًا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما معامل $x$ في نشر $6(3 - 2x)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "-12",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المعامل هو العدد الذي يضرب $x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحد الذي فيه $x$ هو جداء 6 في $-2x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انتبه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$6(3 - 2x) = 18 - 12x$: معامل $x$ هو $-12$.",
+        "incorrect": "اضرب 6 في الحد الذي فيه $x$ مع إشارته."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l1-006",
+  "lessonCode": "nashr-tabsit",
+  "level": 1
+}

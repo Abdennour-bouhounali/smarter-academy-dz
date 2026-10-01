@@ -77,7 +77,18 @@ describe('découpage 4AM — traçabilité sujet ↔ leçon', () => {
 
   it('chaque leçon est rattachée au chapitre de son sujet', () => {
     const chapterOf = new Map(officialTopics.map((t) => [t.id, t.chapterId]));
+    // Seule exception admise : une unité du manuel que le PROPRIÉTAIRE place
+    // sous un autre ميدان que celui du programme, et qui le DÉCLARE
+    // (`placement`) en nommant le domaine du programme. L'écart est donc
+    // visible et vérifié, jamais silencieux (unité 3 « الحساب الحرفي »).
+    const placed = new Map(units.units.filter((u) => u.placement?.decidedBy === 'owner').map((u) => [u.code, u]));
     for (const lesson of catalogueLessons) {
+      const unit = placed.get(lesson.unitId);
+      if (unit) {
+        expect(chapterOf.get(lesson.sourceTopicId), lesson.id).toBe(unit.placement.programmeDomainId);
+        expect(lesson.chapterId, lesson.id).toBe(unit.chapterId);
+        continue;
+      }
       expect(lesson.chapterId, lesson.id).toBe(chapterOf.get(lesson.sourceTopicId));
     }
   });

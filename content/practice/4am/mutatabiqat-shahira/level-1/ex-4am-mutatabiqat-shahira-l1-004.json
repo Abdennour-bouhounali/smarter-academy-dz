@@ -1,0 +1,115 @@
+{
+  "metadata": {
+    "title": "تمرين 13 — مربع فرق",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مربع فرق"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-13",
+      "page": 38,
+      "section": "أوظّف تعلّماتي",
+      "number": 13
+    }
+  },
+  "statement": {
+    "content": "انشر كل عبارة مما يلي وبسّطها: $A = (x - 4)^2$ و $B = (x - 1{,}5)^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $A = (x - 4)^2$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 - 16$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-BILA-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$x^2 - 8x - 16$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$x^2 - 8x + 16$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$x^2 - 4x + 16$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$A$ مربع فرق: $a = x$ و $b = 4$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(a - b)^2 = a^2 - 2ab + b^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما إشارة الحد الأخير $b^2$؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$(x - 4)^2 = x^2 - 8x + 16$ : الحد المضاعف سالب والحد الأخير موجب.",
+        "incorrect": "مربع فرق ليس فرق المربعين، والحد الأخير $+b^2$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما الحد الثابت (الذي لا يحتوي $x$) في النشر المبسّط للعبارة $B = (x - 1{,}5)^2$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالفاصلة إن لزم)",
+      "expectedAnswer": "2.25",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحد الثابت هو $b^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هنا $b = 1{,}5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $1{,}5 \\times 1{,}5$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x - 1{,}5)^2 = x^2 - 3x + 2{,}25$",
+        "incorrect": "الحد الثابت $b^2$ موجب، وهو مربع $1{,}5$."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l1-004",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 1
+}

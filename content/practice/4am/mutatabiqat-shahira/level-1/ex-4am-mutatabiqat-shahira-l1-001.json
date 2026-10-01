@@ -1,0 +1,92 @@
+{
+  "metadata": {
+    "title": "نشاط 2 — مربع مجموع بطريقتين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مربع مجموع"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-2a",
+      "page": 32,
+      "section": "أنشطة",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من النشاط 2 (الكتاب ص 32): نحسب مربع مجموع بطريقتين مختلفتين."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $8^2 + 2 \\times 8 \\times 2 + 2^2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "100",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هذه هي الطريقة الثانية لحساب $(8 + 2)^2$ : الحدود الثلاثة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب كل حد وحده: $8^2$ ، ثم $2 \\times 8 \\times 2$ ، ثم $2^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع الحدود الثلاثة، ثم قارن بـ $10^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$64 + 32 + 4 = 100 = 10^2 = (8 + 2)^2$ : الطريقتان تعطيان العدد نفسه.",
+        "incorrect": "لا تنسَ الحد الأوسط $2 \\times 8 \\times 2$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $(3 + 0{,}5)^2$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالفاصلة إن لزم)",
+      "expectedAnswer": "12.25",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "يمكنك أن تحسب المجموع أولًا ثم تربّعه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أو انشر: $3^2 + 2 \\times 3 \\times 0{,}5 + 0{,}5^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بالطريقتين: يجب أن تجد العدد نفسه."
+        }
+      ],
+      "feedback": {
+        "correct": "$3{,}5^2 = 9 + 3 + 0{,}25 = 12{,}25$",
+        "incorrect": "$3^2 + 0{,}5^2 = 9{,}25$ لا يكفي: ينقص الحد $2 \\times 3 \\times 0{,}5$."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l1-001",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 1
+}

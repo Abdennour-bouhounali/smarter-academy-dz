@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tahlil-ibara-l5-005",
+  "lessonCode": "tahlil-ibara",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — مربّع مقطوع",
+    "estimatedMinutes": 5,
+    "tags": [
+      "وضعية",
+      "فرق مربعين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P3",
+      "modelledOn": "ex-32"
+    }
+  },
+  "statement": {
+    "content": "من مربّع ضلعه $x + 5$ نقطع مربّعًا صغيرًا ضلعه 3. المساحة المتبقية هي $(x + 5)^2 - 9$ ، حيث $x$ عدد موجب."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّل المساحة المتبقية.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x + 2)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+        },
+        {
+          "id": "B",
+          "content": "$(x + 2)(x + 8)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(x - 4)(x + 14)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "فرق مربّعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$9 = 3^2$ و $a = x + 5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $(a - 3)(a + 3)$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 5 - 3)(x + 5 + 3) = (x + 2)(x + 8)$.",
+        "incorrect": "$b$ هو ضلع المربّع الصغير، لا مساحته."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب المساحة المتبقية من أجل $x = 2$.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "40",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل الشكل المحلّل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(2 + 2)(2 + 8)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب العددين."
+        }
+      ],
+      "feedback": {
+        "correct": "$(2 + 2)(2 + 8) = 4 \\times 10$ ، أو $7^2 - 9 = 49 - 9$.",
+        "incorrect": "عوّض $x$ بـ 2 في أحد الشكلين."
+      }
+    }
+  ]
+}

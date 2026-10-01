@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "title": "تدريب — ملعب يطول ويضيق",
+    "estimatedMinutes": 6,
+    "tags": [
+      "جداء مجموع حدين وفرقهما"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutatabiqat-shahira_P3",
+      "modelledOn": "act-2c"
+    }
+  },
+  "statement": {
+    "content": "ملعب مربّع ضلعه $a\\,m$ ($a > 5$) يتحوّل إلى ملعب مستطيل طوله $(a + 5)\\,m$ وعرضه $(a - 5)\\,m$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مساحة الملعب المستطيل (بـ $m^2$) هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$a^2 - 25$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$a^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-MAJMU-FARQ-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$a^2 - 10a - 25$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المساحة $(a + 5)(a - 5)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "جداء مجموع حدين وفرقهما."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحدّان $+5a$ و $-5a$ يتعادمان."
+        }
+      ],
+      "feedback": {
+        "correct": "$(a + 5)(a - 5) = a^2 - 25$",
+        "incorrect": "ما أضيف في الطول لا يعوّض ما اقتُطع من العرض: يضيع $25$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بكم $m^2$ تنقص المساحة عند هذا التحويل؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "25",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الفرق $a^2 - (a + 5)(a - 5)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل النشر المبسّط."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احذف القوسين بتغيير الإشارات."
+        }
+      ],
+      "feedback": {
+        "correct": "$a^2 - (a^2 - 25) = 25$ مهما كان $a$.",
+        "incorrect": "المساحة تنقص دائمًا بالعدد نفسه."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l5-003",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 5
+}

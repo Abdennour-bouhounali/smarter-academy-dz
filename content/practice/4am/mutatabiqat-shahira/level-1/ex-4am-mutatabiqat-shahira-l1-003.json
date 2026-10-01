@@ -1,0 +1,109 @@
+{
+  "metadata": {
+    "title": "تمرين 9 — مربع مجموع",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مربع مجموع"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-9",
+      "page": 37,
+      "section": "أوظّف تعلّماتي",
+      "number": 9
+    }
+  },
+  "statement": {
+    "content": "انشر كل عبارة مما يلي وبسّطها: $A = (x + 5)^2$ و $B = (x + 0{,}3)^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $A = (x + 5)^2$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 + 25$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$x^2 + 10x + 25$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x^2 + 5x + 25$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$A$ مربع مجموع: $a = x$ و $b = 5$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(a + b)^2 = a^2 + 2ab + b^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب الحد المضاعف $2 \\times x \\times 5$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 5)^2 = x^2 + 2 \\times x \\times 5 + 25 = x^2 + 10x + 25$",
+        "incorrect": "لا تنسَ الحد المضاعف $2ab$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما معامل $x$ في النشر المبسّط للعبارة $B = (x + 0{,}3)^2$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالفاصلة إن لزم)",
+      "expectedAnswer": "0.6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل $x$ يأتي من الحد المضاعف $2ab$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هنا $a = x$ و $b = 0{,}3$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $2 \\times 0{,}3$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 0{,}3)^2 = x^2 + 0{,}6x + 0{,}09$",
+        "incorrect": "الحد المضاعف $2 \\times x \\times 0{,}3$ وليس $x \\times 0{,}3$."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l1-003",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 1
+}

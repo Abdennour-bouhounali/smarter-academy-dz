@@ -1,0 +1,91 @@
+{
+  "metadata": {
+    "title": "تدريب — فرق مربعي مجموعين",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مربع مجموع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutatabiqat-shahira_P1",
+      "modelledOn": "ex-15"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $N = (x + 4)^2 - (x + 2)^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما معامل $x$ في النشر المبسّط للعبارة $N$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر كل مربع وحده."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(x + 4)^2 = x^2 + 8x + 16$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح نشر $(x + 2)^2$ مع تغيير الإشارات."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 8x + 16 - x^2 - 4x - 4 = 4x + 12$",
+        "incorrect": "لكل مربع حدّه المضاعف: $8x$ و $4x$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما الحد الثابت في النشر المبسّط للعبارة $N$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "12",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحدّان الثابتان: $16$ و $4$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإشارة $-$ أمام المربع الثاني."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح."
+        }
+      ],
+      "feedback": {
+        "correct": "$16 - 4 = 12$ ، إذن $N = 4x + 12$.",
+        "incorrect": "الحد الثابت للمربع الثاني يُطرح."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l4-005",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 4
+}

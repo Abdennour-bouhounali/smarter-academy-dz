@@ -1,0 +1,143 @@
+{
+  "metadata": {
+    "title": "تمرين 10 — مربع مجموع بمعامل",
+    "estimatedMinutes": 6,
+    "tags": [
+      "مربع مجموع"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-10",
+      "page": 37,
+      "section": "أوظّف تعلّماتي",
+      "number": 10
+    }
+  },
+  "statement": {
+    "content": "انشر كل عبارة مما يلي وبسّطها: $A = (4x + 1)^2$ ، $B = (2x + 0{,}5)^2$ ، $C = \\left(3x + \\dfrac{5}{3}\\right)^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $A$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$16x^2 + 8x + 1$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$4x^2 + 8x + 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        },
+        {
+          "id": "C",
+          "content": "$16x^2 + 4x + 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$a = 4x$ و $b = 1$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(4x)^2 = 4x \\times 4x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحد المضاعف $2 \\times 4x \\times 1$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(4x)^2 + 2 \\times 4x \\times 1 + 1 = 16x^2 + 8x + 1$",
+        "incorrect": "المعامل $4$ يُربَّع أيضًا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما معامل $x$ في النشر المبسّط للعبارة $B$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل $x$ يأتي من الحد المضاعف."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هنا $a = 2x$ و $b = 0{,}5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $2 \\times 2 \\times 0{,}5$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(2x + 0{,}5)^2 = 4x^2 + 2x + 0{,}25$",
+        "incorrect": "الحد المضاعف $2ab$ : لا تنسَ العدد $2$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "ما الحد الثابت في النشر المبسّط للعبارة $C$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد أو كسر a/b",
+      "expectedAnswer": "25/9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحد الثابت هو $b^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هنا $b = \\dfrac{5}{3}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نربّع البسط والمقام."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\left(\\dfrac{5}{3}\\right)^2 = \\dfrac{25}{9}$",
+        "incorrect": "مربع كسر: نربّع البسط والمقام معًا."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l2-003",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 2
+}

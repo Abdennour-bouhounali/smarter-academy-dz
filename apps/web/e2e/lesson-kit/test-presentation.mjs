@@ -33,6 +33,7 @@ const ADMIN = { id: 9001, role: 'admin', email: 'qa-admin@smarter.dz', first_nam
 
 async function openAs(url, { presenter = true, viewport = { width: 1366, height: 768 }, mobile = false, completed = ['0', '1', '2', '3'] } = {}) {
   const ctx = await browser.newContext({ viewport, hasTouch: mobile, isMobile: mobile });
+  await ctx.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort()); // hors ligne, elles retiennent « load » (helpers.mjs › newCtx)
   if (presenter) {
     await ctx.route('**/api/v1/auth/me', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true, user: ADMIN }) }));
     // Aucune evidence ne doit partir : le test final en émet à son envoi, et

@@ -1,0 +1,109 @@
+{
+  "metadata": {
+    "title": "تدريب — قمصان الفريق",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نشر",
+      "وضعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P2",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "ثمن قميص $x$ دينارًا وثمن زوج جوارب 150 دينارًا. اشترى مدرّب فريق المتوسطة 11 قميصًا و 11 زوج جوارب، فدفع $11(x + 150)$ دينارًا."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "اكتب الثمن الإجمالي على شكل مجموع:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$11x + 150$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$11x + 1650$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$1661x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد 11 يُضرب في ثمن القميص وفي ثمن الجوارب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر $11(x + 150)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$11 \\times 150$."
+        }
+      ],
+      "feedback": {
+        "correct": "$11 \\times x + 11 \\times 150 = 11x + 1650$.",
+        "incorrect": "الجوارب أيضًا 11 زوجًا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "إذا كان ثمن القميص 1200 دينار، فكم دفع المدرّب؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "14850",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ 1200."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في الشكل المنشور: $11 \\times 1200 + \\ldots$"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أو $11 \\times 1350$."
+        }
+      ],
+      "feedback": {
+        "correct": "$13200 + 1650 = 14850$ دينارًا.",
+        "incorrect": "عوّض في أحد الشكلين واحسب بعناية."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l5-008",
+  "lessonCode": "nashr-tabsit",
+  "level": 5
+}

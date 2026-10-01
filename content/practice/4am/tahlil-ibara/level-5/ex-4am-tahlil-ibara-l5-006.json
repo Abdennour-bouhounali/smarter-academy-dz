@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tahlil-ibara-l5-006",
+  "lessonCode": "tahlil-ibara",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — ثلاثة أنواع من القطع",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ملعب",
+      "عامل مشترك"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P2",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "ملعب عشب: 6 مربّعات كبيرة ($x^2$)، 9 شرائط ($x$) و 3 مربّعات صغيرة (1)، أي $6x^2 + 9x + 3$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما أكبر عدد من الصفوف المتماثلة؟",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كل صفّ يأخذ العدد نفسه من كل نوع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عدد الصفوف يقسم 6 و 9 و 3."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن أكبر قاسم مشترك للأعداد الثلاثة."
+        }
+      ],
+      "feedback": {
+        "correct": "أكبر قاسم مشترك للأعداد 6 و 9 و 3 هو 3.",
+        "incorrect": "عدد الصفوف يقسم الأعداد الثلاثة معًا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "اكتب $6x^2 + 9x + 3$ بأكبر عامل مشترك عددي.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3(2x^2 + 3x)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NISYAN-1"
+        },
+        {
+          "id": "B",
+          "content": "$3(2x^2 + 3x + 1)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$3(2x^2 + 9x + 3)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل 3 يُستخرج من الحدود الثلاثة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$3 = 3 \\times 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم كل حدّ على 3."
+        }
+      ],
+      "feedback": {
+        "correct": "$6x^2 + 9x + 3 = 3 \\times 2x^2 + 3 \\times 3x + 3 \\times 1 = 3(2x^2 + 3x + 1)$.",
+        "incorrect": "الحدّ 3 يترك 1 داخل القوس."
+      }
+    }
+  ]
+}

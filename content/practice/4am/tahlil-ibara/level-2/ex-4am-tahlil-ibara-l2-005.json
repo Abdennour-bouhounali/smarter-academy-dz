@@ -1,0 +1,228 @@
+{
+  "id": "ex-4am-tahlil-ibara-l2-005",
+  "lessonCode": "tahlil-ibara",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 27 — مربع فرق",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مربع فرق"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-27",
+      "page": 39,
+      "section": "أوظّف تعلّماتي",
+      "number": 27
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 39): حلّل باستعمال المتطابقة $a^2 - 2ab + b^2 = (a - b)^2$ : $A = x^2 - 10x + 25$ ، $B = 9x^2 - 12x + 4$ ، $C = 81x^2 - 18x + 1$ ، $D = 9 - 6x + x^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّل A.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x - 5)(x + 5)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+        },
+        {
+          "id": "B",
+          "content": "$(x - 5)^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(x + 5)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$25 = 5^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$10x = 2 \\times x \\times 5$ والحدّ الأوسط سالب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العبارة من الشكل $a^2 - 2ab + b^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = x^2 - 2 \\times x \\times 5 + 5^2 = (x - 5)^2$.",
+        "incorrect": "الحدّ $-10x$ يدلّ على مربع فرق."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّل B.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(3x - 2)^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(9x - 2)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        },
+        {
+          "id": "C",
+          "content": "$(3x + 2)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$9x^2 = (3x)^2$ و $4 = 2^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$12x = 2 \\times 3x \\times 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحدّ الأوسط سالب: مربع فرق."
+        }
+      ],
+      "feedback": {
+        "correct": "$B = (3x)^2 - 2 \\times 3x \\times 2 + 2^2 = (3x - 2)^2$.",
+        "incorrect": "جذر $9x^2$ هو $3x$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "حلّل C.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(81x - 1)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        },
+        {
+          "id": "B",
+          "content": "$(9x - 9)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        },
+        {
+          "id": "C",
+          "content": "$(9x - 1)^2$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$81x^2 = (9x)^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$18x = 2 \\times 9x \\times 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $(a - b)^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$C = (9x)^2 - 2 \\times 9x \\times 1 + 1^2 = (9x - 1)^2$.",
+        "incorrect": "جذر $81x^2$ هو $9x$ ، وجذر 1 هو 1."
+      }
+    },
+    {
+      "id": "q4",
+      "statement": "حلّل D.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(3 + x)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$(3 - x)^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(9 - x)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$9 = 3^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$6x = 2 \\times 3 \\times x$ والحدّ الأوسط سالب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العبارة من الشكل $a^2 - 2ab + b^2$ حيث $a = 3$."
+        }
+      ],
+      "feedback": {
+        "correct": "$D = 3^2 - 2 \\times 3 \\times x + x^2 = (3 - x)^2$.",
+        "incorrect": "الحدّ $-6x$ سالب، و $a$ جذر 9."
+      }
+    }
+  ]
+}

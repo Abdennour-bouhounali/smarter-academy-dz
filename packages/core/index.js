@@ -50,6 +50,7 @@ export * as equalGrouping from './arithmetic/equalGrouping.js';
 // Racines carrées exactes — le noyau de l'unité 2 « الحساب على الجذور » :
 // carrés comparés en entiers, écritures décimales exactes, n = a² × b.
 export * as squareRoots from './arithmetic/squareRoots.js';
+export * as polynomials from './arithmetic/polynomials.js';
 
 // Moteur d'exercices (pratique) — arithmétique exacte et évaluation des
 // réponses. Exporté sous un espace de noms : `Rational.parse` et

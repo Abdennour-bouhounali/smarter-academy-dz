@@ -1,0 +1,109 @@
+{
+  "metadata": {
+    "title": "تدريب — طرح ثم تبسيط",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تبسيط",
+      "قيمة عبارة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P4",
+      "modelledOn": "ex-7"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $R = (2x - 1)(x + 3) - 2x^2$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $R$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$5x - 3$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$4x^2 + 5x - 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "C",
+          "content": "$5x + 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر الجداء أولًا: أربعة جداءات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم اطرح $2x^2$ من النتيجة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحدّان اللذان فيهما $x^2$ متشابهان."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x^2 + 6x - x - 3 - 2x^2 = 5x - 3$.",
+        "incorrect": "الحدّان $2x^2$ و $-2x^2$ يتعادمان."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما قيمة $R$ من أجل $x = 4$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "17",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل الشكل المبسّط: أسرع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بـ 4."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أو احسب $7 \\times 7 - 32$."
+        }
+      ],
+      "feedback": {
+        "correct": "$5 \\times 4 - 3 = 17$ ، و $7 \\times 7 - 32 = 17$.",
+        "incorrect": "عوّض في الشكل المبسّط أو في الشكل الأول."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l4-008",
+  "lessonCode": "nashr-tabsit",
+  "level": 4
+}

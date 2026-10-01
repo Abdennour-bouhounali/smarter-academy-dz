@@ -1,0 +1,109 @@
+{
+  "metadata": {
+    "title": "تمرين 15 — مجموع مربعين",
+    "estimatedMinutes": 6,
+    "tags": [
+      "مربع فرق"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-15",
+      "page": 38,
+      "section": "أوظّف تعلّماتي",
+      "number": 15
+    }
+  },
+  "statement": {
+    "content": "انشر كل عبارة مما يلي وبسّطها: $A = (3x - 4)^2 + (x - 3)^2$ و $B = 4(1 - 2x)^2 + (4x - 1)^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $A$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$10x^2 + 25$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-BILA-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$10x^2 - 15x + 25$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        },
+        {
+          "id": "C",
+          "content": "$10x^2 - 30x + 25$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر كل مربع وحده."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(3x - 4)^2 = 9x^2 - 24x + 16$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم انشر $(x - 3)^2$ واجمع الحدود المتشابهة."
+        }
+      ],
+      "feedback": {
+        "correct": "$9x^2 - 24x + 16 + x^2 - 6x + 9 = 10x^2 - 30x + 25$",
+        "incorrect": "لكل مربع حدّه المضاعف."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما معامل $x$ في النشر المبسّط للعبارة $B$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "-24",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $(1 - 2x)^2$ ثم اضرب في $4$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر $(4x - 1)^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع معاملي $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$4(1 - 4x + 4x^2) + 16x^2 - 8x + 1 = 32x^2 - 24x + 5$",
+        "incorrect": "اضرب في $4$ بعد النشر لا قبله."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l3-002",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 3
+}

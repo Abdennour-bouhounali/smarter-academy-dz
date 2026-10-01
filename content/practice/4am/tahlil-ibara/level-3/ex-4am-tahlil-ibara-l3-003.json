@@ -1,0 +1,126 @@
+{
+  "id": "ex-4am-tahlil-ibara-l3-003",
+  "lessonCode": "tahlil-ibara",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 30 — حلّل إلى جداء عوامل",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متطابقات شهيرة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-30",
+      "page": 39,
+      "section": "أوظّف تعلّماتي",
+      "number": 30
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 39): $A = 9x^2 + 24x + 16$ و $B = 121 - 22x + x^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّل A.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(9x + 4)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        },
+        {
+          "id": "B",
+          "content": "$(3x + 4)^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(3x + 8)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$9x^2 = (3x)^2$ و $16 = 4^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحقّق: $2 \\times 3x \\times 4 = 24x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العبارة من الشكل $a^2 + 2ab + b^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = (3x)^2 + 2 \\times 3x \\times 4 + 4^2 = (3x + 4)^2$.",
+        "incorrect": "جذر $9x^2$ هو $3x$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلّل B.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(11 - x)^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(11 + x)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$(121 - x)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$121 = 11^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$22x = 2 \\times 11 \\times x$ والحدّ الأوسط سالب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العبارة من الشكل $a^2 - 2ab + b^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$B = 11^2 - 2 \\times 11 \\times x + x^2 = (11 - x)^2$.",
+        "incorrect": "الحدّ $-22x$ سالب: مربع فرق، و $a$ جذر 121."
+      }
+    }
+  ]
+}

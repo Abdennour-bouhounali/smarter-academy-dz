@@ -1,0 +1,126 @@
+{
+  "id": "ex-4am-tahlil-ibara-l4-009",
+  "lessonCode": "tahlil-ibara",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — أعداد عشرية وكسور",
+    "estimatedMinutes": 5,
+    "tags": [
+      "عامل مشترك",
+      "كسور"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P2",
+      "modelledOn": "ex-25"
+    }
+  },
+  "statement": {
+    "content": "حلّل كل عبارة باستخراج عامل مشترك."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$0{,}5x(x - 2) + 1{,}5(x - 2) = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x - 2)(0{,}5x + 1{,}5)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(x - 2) \\times 2x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        },
+        {
+          "id": "C",
+          "content": "$(x - 2)(0{,}5x - 1{,}5)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن العامل الذي يتكرّر في كل الحدود."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العامل المشترك هنا هو $(x - 2)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتبه مرّة واحدة خارج القوس، وضع داخل القوس ما يبقى من كل حدّ مع إشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x - 2)(0{,}5x + 1{,}5)$.",
+        "incorrect": "$0{,}5x$ و $1{,}5$ حدّان غير متشابهين: لا يُجمعان."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$\\dfrac{1}{3}x - \\dfrac{2}{3} = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{1}{3}\\left(x - \\dfrac{2}{3}\\right)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{1}{3}(x - 2)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$3(x - 2)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل المشترك هو $\\dfrac{1}{3}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{2}{3} = \\dfrac{1}{3} \\times 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $\\dfrac{1}{3} \\times x - \\dfrac{1}{3} \\times 2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{1}{3}x - \\dfrac{2}{3} = \\dfrac{1}{3}(x - 2)$.",
+        "incorrect": "انشر اختيارك لتتحقّق."
+      }
+    }
+  ]
+}

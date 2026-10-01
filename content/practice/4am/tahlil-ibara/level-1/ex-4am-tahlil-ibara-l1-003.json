@@ -1,0 +1,137 @@
+{
+  "id": "ex-4am-tahlil-ibara-l1-003",
+  "lessonCode": "tahlil-ibara",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — جداء أم مجموع؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تعريف التحليل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P1",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "التحليل هو كتابة عبارة مجموع على شكل جداء."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ عبارة مكتوبة على شكل جداء؟",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x(x + 1) + 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
+        },
+        {
+          "id": "B",
+          "content": "$(x + 2)(x - 1)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x^2 + x - 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
+        },
+        {
+          "id": "D",
+          "content": "$(x + 2) + (x - 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى آخر عملية تُجرى في كل عبارة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في الجداء تكون آخر عملية ضربًا بين عاملين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استبعد كل عبارة تنتهي بجمع أو طرح."
+        }
+      ],
+      "feedback": {
+        "correct": "في $(x + 2)(x - 1)$ آخر عملية هي ضرب العاملين $(x + 2)$ و $(x - 1)$.",
+        "incorrect": "إذا كانت آخر عملية جمعًا أو طرحًا فالعبارة مجموع، لا جداء."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "أيّ كتابة هي تحليل للعبارة $x^2 + 5x$؟",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\times x + 5x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
+        },
+        {
+          "id": "B",
+          "content": "$x(x + 5x)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-X-MARRATAYN"
+        },
+        {
+          "id": "C",
+          "content": "$5x(x + 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-AMIL-NAQIS"
+        },
+        {
+          "id": "D",
+          "content": "$x(x + 5)$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التحليل جداء يساوي العبارة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العامل المشترك بين $x^2$ و $5x$ هو $x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انشر كل اختيار وقارنه بـ $x^2 + 5x$ ، وتأكّد أنه جداء."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 5x = x \\times x + x \\times 5 = x(x + 5)$.",
+        "incorrect": "$x \\times x + 5x$ تساوي العبارة لكنها مجموع: التحليل يجب أن يكون جداءً."
+      }
+    }
+  ]
+}

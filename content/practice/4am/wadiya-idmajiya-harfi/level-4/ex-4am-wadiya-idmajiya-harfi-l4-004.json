@@ -1,0 +1,194 @@
+{
+  "metadata": {
+    "title": "تمرين 40 — F نشرًا وتحليلًا",
+    "estimatedMinutes": 5,
+    "tags": [
+      "نشر",
+      "تحليل",
+      "اختيار الشكل"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-40",
+      "page": 41,
+      "section": "أتعمّق",
+      "number": 40
+    }
+  },
+  "statement": {
+    "content": "نضع: $E = 4x^2 - 8x - 5$ و $F = (2x - 2)^2 - 9$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $F$ هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4x^2 - 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-BILA-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$4x^2 - 4x - 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        },
+        {
+          "id": "C",
+          "content": "$4x^2 + 8x - 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
+        },
+        {
+          "id": "D",
+          "content": "$4x^2 - 8x - 5$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مربع فرق: $a = 2x$ و $b = 2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحد المضاعف $2 \\times 2x \\times 2$ بإشارة سالبة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح 9 من الحد الثابت."
+        }
+      ],
+      "feedback": {
+        "correct": "$4x^2 - 8x + 4 - 9 = 4x^2 - 8x - 5$.",
+        "incorrect": "مربع فرق فيه حد مضاعف سالب."
+      },
+      "cognitiveDemand": "reason"
+    },
+    {
+      "id": "q2",
+      "statement": "تحليل العبارة $F$ هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(2x - 11)(2x + 7)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+        },
+        {
+          "id": "B",
+          "content": "$(2x - 5)(2x + 1)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(2x - 5)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+        },
+        {
+          "id": "D",
+          "content": "$(2x + 5)(2x - 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$9 = 3^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "فرق مربعين: $a = 2x - 2$ و $b = 3$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بسّط داخل كل قوس."
+        }
+      ],
+      "feedback": {
+        "correct": "$(2x - 2 - 3)(2x - 2 + 3) = (2x - 5)(2x + 1)$.",
+        "incorrect": "خذ $b = 3$ لا 9."
+      },
+      "cognitiveDemand": "reason"
+    },
+    {
+      "id": "q3",
+      "statement": "لمعرفة قيمة $F$ من أجل $x = 0{,}5$ دون حساب ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نستعمل الشكل المحلّل: أحد عامليه معدوم من أجل $x = 0{,}5$ ، إذن $F = 0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-SHAKL-GHAYR-MUNASIB"
+        },
+        {
+          "id": "B",
+          "content": "نستعمل الشكل المنشور: إنه العبارة E نفسها، و $E = -8$ من أجل $x = 0{,}5$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "لا يمكن: يجب الحساب في كل الحالات",
+          "isCorrect": false,
+          "misconceptionId": "MISC-SHAKL-GHAYR-MUNASIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن النشر المبسّط لـ F بالعبارة E."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما قيمة كل عامل من أجل $x = 0{,}5$ ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قيمة E من أجل $x = 0{,}5$ معروفة."
+        }
+      ],
+      "feedback": {
+        "correct": "النشر المبسّط لـ F هو E، و $E(0{,}5) = 1 - 4 - 5 = -8$. أما العاملان فقيمتاهما $-4$ و 2.",
+        "incorrect": "العاملان لا ينعدمان من أجل $x = 0{,}5$ : انظر إلى الشكل المنشور."
+      },
+      "cognitiveDemand": "reason"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l4-004",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 4
+}

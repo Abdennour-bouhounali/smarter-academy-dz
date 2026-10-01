@@ -1,0 +1,178 @@
+{
+  "metadata": {
+    "title": "نشاط 1 — انشر واذكر الخاصية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نشر",
+      "الخاصية التوزيعية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-1",
+      "page": 32,
+      "section": "أنشطة",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 32، نشاط 1، السؤال 3): انشر كل عبارة وبسّطها، واذكر الخاصية التي اعتمدت عليها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نشر $x(3x + 1)$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3x^2 + x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$3x^2 + 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$4x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x$ أمام القوسين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب $x$ في $3x$ ثم في 1."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$x \\times 3x$ يحتوي على $x \\times x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x \\times 3x + x \\times 1 = 3x^2 + x$ — الخاصية $k(a + b) = ka + kb$.",
+        "incorrect": "العامل $x$ يُضرب في الحدّين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نشر $5x(1 - x)$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$5x + 5x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "B",
+          "content": "$5x - 5x^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$4x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-X-MARRATAYN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$5x$ أمام القوسين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب $5x$ في 1 ثم في $-x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الخاصية $k(a - b) = ka - kb$."
+        }
+      ],
+      "feedback": {
+        "correct": "$5x \\times 1 - 5x \\times x = 5x - 5x^2$.",
+        "incorrect": "الفرق يبقى فرقًا، و $5x \\times x$ فيه $x^2$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "نشر $(3x - 1)(3 + x)$ وتبسيطه هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3x^2 + 10x - 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "B",
+          "content": "$11x^2 - 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        },
+        {
+          "id": "C",
+          "content": "$3x^2 + 8x - 3$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "جداء قوسين: أربعة جداءات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$9x + 3x^2 - 3 - x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع $9x$ و $-x$ فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "$9x + 3x^2 - 3 - x = 3x^2 + 8x - 3$ — الخاصية $(a + b)(c + d) = ac + ad + bc + bd$.",
+        "incorrect": "أربعة جداءات بإشاراتها، ثم اجمع المتشابهة فقط."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l2-001",
+  "lessonCode": "nashr-tabsit",
+  "level": 2
+}

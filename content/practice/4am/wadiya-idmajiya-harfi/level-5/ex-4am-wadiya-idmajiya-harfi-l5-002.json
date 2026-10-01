@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "title": "تدريب — حوض مستطيل وشريط",
+    "estimatedMinutes": 5,
+    "tags": [
+      "وضعية إدماجية",
+      "نمذجة",
+      "مساعدة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "حوض مستطيل بعداه 8m و 12m، يحيط به من كل الجهات شريط منتظم عرضه $x$ (بالمتر). مساعدة: $x^2 + 10x - 24 = (x - 2)(x + 12)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مساحة الشريط بدلالة $x$ هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 + 20x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "id": "B",
+          "content": "$4x^2 + 96$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        },
+        {
+          "id": "C",
+          "content": "$40x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "id": "D",
+          "content": "$4x^2 + 40x$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "البعدان مع الشريط: $8 + 2x$ و $12 + 2x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المساحة الكلية ناقص مساحة الحوض."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انشر بأربعة جداءات ثم اطرح 96."
+        }
+      ],
+      "feedback": {
+        "correct": "$(8 + 2x)(12 + 2x) - 96 = 96 + 16x + 24x + 4x^2 - 96 = 4x^2 + 40x$.",
+        "incorrect": "الشريط على جهتي كل بعد، والنشر فيه أربعة جداءات."
+      },
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q2",
+      "statement": "ما قيمة $x$ (بالمتر) التي تجعل مساحة الشريط $96m^2$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب المساواة ثم انقل 96."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم على 4 لتصل إلى عبارة المساعدة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العرض موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$4x^2 + 40x - 96 = 0$ يعني $x^2 + 10x - 24 = 0$ ، أي $(x - 2)(x + 12) = 0$ : $x = 2$ (نرفض $-12$). نتحقق: $16 + 80 = 96$.",
+        "incorrect": "وظّف الشكل المحلّل من المساعدة ونحتفظ بالقيمة الموجبة."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "-12",
+          "id": "MISC-NAMDHAJA-MISAHA"
+        }
+      ],
+      "cognitiveDemand": "transfer"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l5-002",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 5
+}

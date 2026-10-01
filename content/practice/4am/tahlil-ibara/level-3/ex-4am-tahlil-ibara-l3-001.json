@@ -1,0 +1,144 @@
+{
+  "id": "ex-4am-tahlil-ibara-l3-001",
+  "lessonCode": "tahlil-ibara",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 21 — ابحث عن الخطإ",
+    "estimatedMinutes": 5,
+    "tags": [
+      "تحقق",
+      "عامل مشترك"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-21",
+      "page": 38,
+      "section": "أوظّف تعلّماتي",
+      "number": 21
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 38): لتحليل $A = (x - 1)(x + 2) + x(x + 2) - (x + 2)$ كتب تلميذ: $A = (x + 2)(x - 1 + x) = (x + 2)(2x - 1)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب A من أجل $x = 0$ في العبارة المعطاة.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "-4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ 0 في كل حدّ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(0 - 1)(0 + 2) + 0 \\times (0 + 2) - (0 + 2)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب كل جداء ثم اجمع."
+        }
+      ],
+      "feedback": {
+        "correct": "$(-1) \\times 2 + 0 - 2 = -4$.",
+        "incorrect": "عوّض في العبارة الأصلية، لا في نتيجة التلميذ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب نتيجة التلميذ $(x + 2)(2x - 1)$ من أجل $x = 0$.",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (قد يكون سالبًا)",
+      "expectedAnswer": "-2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ 0."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(0 + 2)(2 \\times 0 - 1)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن بالقيمة السابقة."
+        }
+      ],
+      "feedback": {
+        "correct": "$2 \\times (-1) = -2$ : قيمة تختلف عن $-4$ ، فالتحليل خاطئ.",
+        "incorrect": "عوّض في نتيجة التلميذ هذه المرّة."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "ما التحليل الصحيح للعبارة A؟",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x + 2)(2x - 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "B",
+          "content": "$(x + 2)(2x - 2)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(x + 2)(2x + 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$-(x + 2) = (x + 2) \\times (-1)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "يبقى داخل القوس $(x - 1) + x - 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بسّط ما داخل القوس."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = (x + 2)(x - 1 + x - 1) = (x + 2)(2x - 2)$ ، وقيمته من أجل $x = 0$ هي $-4$.",
+        "incorrect": "التلميذ نسي $-1$ الذي يتركه الحدّ $-(x + 2)$."
+      }
+    }
+  ]
+}

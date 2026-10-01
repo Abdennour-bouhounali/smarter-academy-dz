@@ -1,0 +1,110 @@
+{
+  "metadata": {
+    "title": "تمرين 4 — بالكسور، وتحقّق",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جداء قوسين",
+      "كسور"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-4",
+      "page": 37,
+      "section": "أوظّف تعلّماتي",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 37): لتكن العبارة $A = \\left(\\dfrac{2}{3}x + 5\\right)\\left(4 - \\dfrac{1}{3}x\\right)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "تحقّق: احسب $A$ من أجل $x = 3$.",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "21",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ 3."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{2}{3} \\times 3$ و $\\dfrac{1}{3} \\times 3$ عددان طبيعيان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اضرب القوسين."
+        }
+      ],
+      "feedback": {
+        "correct": "$(2 + 5)(4 - 1) = 7 \\times 3 = 21$.",
+        "incorrect": "احسب كل قوس من أجل $x = 3$ ثم اضرب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "النشر المبسّط للعبارة $A$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-\\dfrac{2}{3}x^2 + x + 20$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$-\\dfrac{2}{9}x^2 + x + 20$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$-\\dfrac{2}{9}x^2 + 20$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أربعة جداءات بالكسور."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{2}{3}x \\times \\left(-\\dfrac{1}{3}x\\right)$: اضرب البسطين والمقامين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\dfrac{8}{3}x - \\dfrac{5}{3}x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{8}{3}x - \\dfrac{2}{9}x^2 + 20 - \\dfrac{5}{3}x = -\\dfrac{2}{9}x^2 + x + 20$.",
+        "incorrect": "في جداء كسرين نضرب المقامين أيضًا."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l4-001",
+  "lessonCode": "nashr-tabsit",
+  "level": 4
+}

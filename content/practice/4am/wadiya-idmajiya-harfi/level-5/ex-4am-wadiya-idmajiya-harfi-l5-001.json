@@ -1,0 +1,186 @@
+{
+  "metadata": {
+    "title": "وضعية — الحوض والشريط",
+    "estimatedMinutes": 6,
+    "tags": [
+      "وضعية إدماجية",
+      "نمذجة",
+      "معادلة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "situation",
+      "page": 40,
+      "section": "أدمج تعلّماتي"
+    }
+  },
+  "statement": {
+    "content": "الشكل الملوّن بالأزرق هو حوض شكله مربع، طول ضلعه 10m. نريد تهيئة شريط منتظم حول هذا الحوض يخصص للراجلين عرضه $x$. ماهي قيمة $x$ حتى تكون مساحة الشريط تساوي $44m^2$؟ مساعدة : $x^2 + 10x - 11 = (x - 1)(x + 11)$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مساحة الشريط بدلالة $x$ (نشر مبسّط) هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$4x^2 + 20x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        },
+        {
+          "id": "C",
+          "content": "$4x^2 + 40x$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$4x^2 + 40x + 100$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ضلع المربع الخارجي: شريط، حوض، شريط."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مساحة الشريط = المربع الخارجي ناقص الحوض."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انشر $(10 + 2x)^2$ ثم اطرح 100."
+        }
+      ],
+      "feedback": {
+        "correct": "$(10 + 2x)^2 - 10^2 = 100 + 40x + 4x^2 - 100 = 4x^2 + 40x$.",
+        "incorrect": "اطرح مساحة الحوض، ولا تنس الحد المضاعف."
+      },
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q2",
+      "statement": "المساواة «مساحة الشريط 44» تكافئ ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 + 10x - 44 = 0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$x^2 + 10x + 11 = 0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "C",
+          "content": "$4x^2 + 40x + 44 = 0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "D",
+          "content": "$x^2 + 10x - 11 = 0$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انقل 44 إلى الطرف الأول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم اقسم كل الحدود على 4."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "كل الحدود، لا بعضها."
+        }
+      ],
+      "feedback": {
+        "correct": "$4x^2 + 40x - 44 = 0$ ، وبالقسمة على 4: $x^2 + 10x - 11 = 0$.",
+        "incorrect": "القسمة على 4 تشمل كل الحدود، ونقل 44 يغيّر إشارتها."
+      },
+      "cognitiveDemand": "transfer"
+    },
+    {
+      "id": "q3",
+      "statement": "ما عرض الشريط $x$ (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل المساعدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "جداء أحد عامليه معدوم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العرض طول موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x - 1)(x + 11) = 0$ من أجل $x = 1$ أو $x = -11$ ؛ العرض موجب: $x = 1$. نتحقق: $4 + 40 = 44$.",
+        "incorrect": "نرفض القيمة السالبة لأنّ العرض طول."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "-11",
+          "id": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "value": "11",
+          "id": "MISC-NASHR-ISHARA-SALIBA"
+        }
+      ],
+      "cognitiveDemand": "transfer"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l5-001",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 5
+}

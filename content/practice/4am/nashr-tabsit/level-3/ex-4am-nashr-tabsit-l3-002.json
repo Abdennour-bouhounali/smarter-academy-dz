@@ -1,0 +1,110 @@
+{
+  "metadata": {
+    "title": "تمرين 2 — نشر وتحقّق بقيمة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جداء قوسين",
+      "قيمة عبارة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-2",
+      "page": 37,
+      "section": "أوظّف تعلّماتي",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 37): لتكن العبارة $A = (x + 2)(3x - 1)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب قيمة $A$ من أجل $x = 0$.",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "-2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ 0 في الشكل المعطى."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(0 + 2)(3 \\times 0 - 1)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء عدد موجب في عدد سالب."
+        }
+      ],
+      "feedback": {
+        "correct": "$(0 + 2)(0 - 1) = 2 \\times (-1) = -2$.",
+        "incorrect": "عوّض $x$ بـ 0 في كل قوس ثم اضرب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "النشر المبسّط للعبارة $A$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3x^2 - 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        },
+        {
+          "id": "B",
+          "content": "$3x^2 + 7x - 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "C",
+          "content": "$3x^2 + 5x - 2$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أربعة جداءات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$3x^2 - x + 6x - 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع $-x$ و $6x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x^2 - x + 6x - 2 = 3x^2 + 5x - 2$، ومن أجل $x = 0$ نجد $-2$ كما في السؤال الأول.",
+        "incorrect": "كل حد في كل حد، ثم اجمع المتشابهة بإشاراتها."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l3-002",
+  "lessonCode": "nashr-tabsit",
+  "level": 3
+}

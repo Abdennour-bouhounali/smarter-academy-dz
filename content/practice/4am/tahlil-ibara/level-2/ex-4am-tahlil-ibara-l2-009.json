@@ -1,0 +1,125 @@
+{
+  "id": "ex-4am-tahlil-ibara-l2-009",
+  "lessonCode": "tahlil-ibara",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — فرق مربّعين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "فرق مربعين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P3",
+      "modelledOn": "ex-32"
+    }
+  },
+  "statement": {
+    "content": "حلّل كل عبارة باستعمال المتطابقة $a^2 - b^2 = (a + b)(a - b)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$4x^2 - 9 = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(4x - 3)(4x + 3)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        },
+        {
+          "id": "B",
+          "content": "$(2x - 3)(2x + 3)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(2x - 3)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$4x^2$ و 9 مربّعان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$4x^2 = (2x)^2$ و $9 = 3^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $(a - b)(a + b)$."
+        }
+      ],
+      "feedback": {
+        "correct": "$4x^2 - 9 = (2x)^2 - 3^2 = (2x - 3)(2x + 3)$.",
+        "incorrect": "جذر $4x^2$ هو $2x$ ، ولا حدّ أوسط في العبارة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$25 - x^2 = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x - 5)(x + 5)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDAA-MAJMU-FARQ-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$(5 - x)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+        },
+        {
+          "id": "C",
+          "content": "$(5 - x)(5 + x)$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أيّ المربّعين يأتي أولًا؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a = 5$ و $b = x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $(a - b)(a + b)$ بهذا الترتيب."
+        }
+      ],
+      "feedback": {
+        "correct": "$25 - x^2 = 5^2 - x^2 = (5 - x)(5 + x)$.",
+        "incorrect": "انشر اختيارك: $(x - 5)(x + 5)$ يعطي $x^2 - 25$ وليس $25 - x^2$."
+      }
+    }
+  ]
+}

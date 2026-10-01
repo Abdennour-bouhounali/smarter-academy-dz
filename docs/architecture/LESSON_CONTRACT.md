@@ -328,7 +328,7 @@ soit ce qui précède (`isModuleClosed`). Après un import, publier
 ## L'unité 4AM — le câblage réel d'une leçon algérienne (2026-09-20)
 
 Les leçons d'une unité (`lessons/moyen/4am/ansab_al_aadad_wal_hisab/<unité>/` :
-`aadad-tabiiya-natiqa/` et, depuis le 2026-09-30, `hisab-judhur/`) ne recopient
+`aadad-tabiiya-natiqa/`, depuis le 2026-09-30 `hisab-judhur/`, depuis le 2026-10-01 `hisab-harfi/`) ne recopient
 plus `routes.jsx` ni `moduleContext.js` : trois fabriques partagées vivent dans
 le `_unit/` de chaque unité et sont la manière actuelle de monter une leçon.
 

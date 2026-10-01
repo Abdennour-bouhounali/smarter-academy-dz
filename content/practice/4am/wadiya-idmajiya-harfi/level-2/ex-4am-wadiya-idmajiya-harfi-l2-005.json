@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "title": "تدريب — مستطيل طوله 2x + 1",
+    "estimatedMinutes": 2,
+    "tags": [
+      "نمذجة",
+      "مساحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P2",
+      "modelledOn": "ex-34"
+    }
+  },
+  "statement": {
+    "content": "مستطيل طوله $2x + 1$ وعرضه $x$ (بالمتر)، حيث $x$ عدد موجب."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مساحة المستطيل بدلالة $x$ هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3x + 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "id": "B",
+          "content": "$2x^2 + x$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$2x^2 + 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "D",
+          "content": "$6x + 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المساحة جداء البعدين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $x(2x + 1)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب $x$ في الحدّين."
+        }
+      ],
+      "feedback": {
+        "correct": "$x(2x + 1) = 2x^2 + x$.",
+        "incorrect": "العرض يُضرب في كل حد من حدّي الطول."
+      },
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "احسب مساحة المستطيل (بـ $m^2$) من أجل $x = 3$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "21",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بالعدد 3."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الطول عندئذ 7 والعرض 3."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب الجداء."
+        }
+      ],
+      "feedback": {
+        "correct": "$2 \\times 9 + 3 = 21$ ، أو $7 \\times 3 = 21$.",
+        "incorrect": "احسب الطول $2 \\times 3 + 1$ أولًا."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "10",
+          "id": "MISC-NAMDHAJA-MISAHA"
+        }
+      ],
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l2-005",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 2
+}

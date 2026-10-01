@@ -1,0 +1,109 @@
+{
+  "metadata": {
+    "title": "تدريب — قوسان فيهما فرق",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جداء قوسين",
+      "قيمة عبارة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P3",
+      "modelledOn": "ex-2"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $K = (x - 6)(x - 1)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $K$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 - 7x - 6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        },
+        {
+          "id": "B",
+          "content": "$x^2 + 6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        },
+        {
+          "id": "C",
+          "content": "$x^2 - 7x + 6$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أربعة جداءات بإشاراتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x^2 - x - 6x + 6$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$(-6) \\times (-1)$ موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 - x - 6x + 6 = x^2 - 7x + 6$.",
+        "incorrect": "جداء عددين سالبين موجب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "تحقّق: ما قيمة $K$ من أجل $x = 2$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "-4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ 2."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في الشكل الأول: $(2 - 6)(2 - 1)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء عدد سالب في عدد موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$(-4) \\times 1 = -4$ ، و $4 - 14 + 6 = -4$.",
+        "incorrect": "عوّض في الشكل الأول ثم في الشكل المنشور: نفس القيمة."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l3-006",
+  "lessonCode": "nashr-tabsit",
+  "level": 3
+}

@@ -1,0 +1,109 @@
+{
+  "metadata": {
+    "title": "تدريب — ملعب أكبر",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جداء قوسين",
+      "مساحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P3",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "تريد البلدية بناء ملعب مستطيل بعداه $2x + 5$ و $x + 3$ (بالوحدة 10 أمتار)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "اكتب مساحة الملعب على شكل مجموع مبسّط:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2x^2 + 15$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-AWWAL-AKHIR"
+        },
+        {
+          "id": "B",
+          "content": "$2x^2 + 11x + 15$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$2x^2 + 11x + 8$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المساحة جداء البعدين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أربعة جداءات: أربع مناطق."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$2x^2 + 6x + 5x + 15$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(2x + 5)(x + 3) = 2x^2 + 6x + 5x + 15 = 2x^2 + 11x + 15$.",
+        "incorrect": "مساحة الملعب مجموع مساحات مناطقه الأربع."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما مساحة الملعب (بالوحدة المربّعة) من أجل $x = 10$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "325",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ 10."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "البعدان 25 و 13."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بالشكل المنشور."
+        }
+      ],
+      "feedback": {
+        "correct": "$25 \\times 13 = 325$ ، و $200 + 110 + 15 = 325$.",
+        "incorrect": "احسب البعدين ثم اضربهما."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l5-003",
+  "lessonCode": "nashr-tabsit",
+  "level": 5
+}

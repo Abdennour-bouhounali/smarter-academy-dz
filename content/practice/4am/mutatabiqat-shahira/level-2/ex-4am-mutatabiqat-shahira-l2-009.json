@@ -1,0 +1,114 @@
+{
+  "metadata": {
+    "title": "تدريب — مربع مجموع وقيمة عبارة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مربع مجموع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutatabiqat-shahira_P1",
+      "modelledOn": "act-2a"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $G = (3x + 4)^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $G$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$9x^2 + 24x + 16$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$9x^2 + 12x + 16$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        },
+        {
+          "id": "C",
+          "content": "$3x^2 + 24x + 16$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        },
+        {
+          "id": "D",
+          "content": "$9x^2 + 16$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$a = 3x$ و $b = 4$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(3x)^2 = 9x^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحد المضاعف $2 \\times 3x \\times 4$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(3x)^2 + 2 \\times 3x \\times 4 + 4^2 = 9x^2 + 24x + 16$",
+        "incorrect": "راجع الحد المضاعف وتربيع المعامل."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب قيمة $G$ من أجل $x = -1$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ $-1$ في $(3x + 4)^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $3 \\times (-1) + 4$ أولًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم ربّع النتيجة."
+        }
+      ],
+      "feedback": {
+        "correct": "$(3 \\times (-1) + 4)^2 = 1^2 = 1$ ، ومن النشر $9 - 24 + 16 = 1$.",
+        "incorrect": "احسب ما بين القوسين قبل التربيع."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l2-009",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 2
+}

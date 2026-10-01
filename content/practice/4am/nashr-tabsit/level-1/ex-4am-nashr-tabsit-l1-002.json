@@ -1,0 +1,228 @@
+{
+  "metadata": {
+    "title": "نشاط 1 — بطريقتين، وجداء أم مجموع",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جداء",
+      "مجموع"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-1",
+      "page": 32,
+      "section": "أنشطة",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 32، نشاط 1): نحسب بطريقتين، ثم نميّز العبارات التي تدلّ على جداء من التي تدلّ على مجموع. (يُقرأ $3 \\times (9 + 5)$: الحرف x في الكتاب علامة ضرب.)"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $3 \\times (9 + 5)$.",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "42",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "يمكن الحساب داخل القوسين أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أو يمكن ضرب 3 في كل حد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الطريقتان تعطيان النتيجة نفسها."
+        }
+      ],
+      "feedback": {
+        "correct": "$3 \\times 14 = 42$ و $3 \\times 9 + 3 \\times 5 = 27 + 15 = 42$.",
+        "incorrect": "اضرب 3 في 9 وفي 5، أو اجمع داخل القوسين ثم اضرب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $(4 - 2{,}5)(3 + 1{,}2)$.",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري (بفاصلة)",
+      "expectedAnswer": "6.3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب داخل كل قوس."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أو انشر: كل حد من القوس الأول في كل حد من الثاني."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$4 - 2{,}5$ و $3 + 1{,}2$ عددان عشريان بسيطان."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}5 \\times 4{,}2 = 6{,}3$.",
+        "incorrect": "احسب الفرق والمجموع أولًا ثم اضرب."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "هل العبارة $x(3x + 1)$ مجموع أم جداء؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "العبارة جداء",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "العبارة مجموع",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى العملية الأخيرة التي تُنجز في العبارة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العمليات داخل الأقواس تُنجز أولًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إن كانت آخر عملية ضربًا فالعبارة تدلّ على جداء، وإن كانت جمعًا أو طرحًا فهي تدلّ على مجموع."
+        }
+      ],
+      "feedback": {
+        "correct": "آخر عملية هي ضرب $x$ في القوس: العبارة جداء.",
+        "incorrect": "حدّد العملية التي تُنجز في آخر الحساب، لا العمليات التي داخل الأقواس."
+      }
+    },
+    {
+      "id": "q4",
+      "statement": "هل العبارة $x(x + 1) - 2 + (x + 1)$ مجموع أم جداء؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "العبارة جداء",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
+        },
+        {
+          "id": "B",
+          "content": "العبارة مجموع",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى العملية الأخيرة التي تُنجز في العبارة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العمليات داخل الأقواس تُنجز أولًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إن كانت آخر عملية ضربًا فالعبارة تدلّ على جداء، وإن كانت جمعًا أو طرحًا فهي تدلّ على مجموع."
+        }
+      ],
+      "feedback": {
+        "correct": "آخر عملية جمع وطرح ثلاثة حدود: العبارة مجموع، وإن كان أحد حدودها جداء.",
+        "incorrect": "حدّد العملية التي تُنجز في آخر الحساب، لا العمليات التي داخل الأقواس."
+      }
+    },
+    {
+      "id": "q5",
+      "statement": "هل العبارة $(3x - 1)(3 + x)$ مجموع أم جداء؟",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "العبارة جداء",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "العبارة مجموع",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-NASHR-BADAL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى العملية الأخيرة التي تُنجز في العبارة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العمليات داخل الأقواس تُنجز أولًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إن كانت آخر عملية ضربًا فالعبارة تدلّ على جداء، وإن كانت جمعًا أو طرحًا فهي تدلّ على مجموع."
+        }
+      ],
+      "feedback": {
+        "correct": "آخر عملية هي ضرب القوسين: العبارة جداء.",
+        "incorrect": "حدّد العملية التي تُنجز في آخر الحساب، لا العمليات التي داخل الأقواس."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l1-002",
+  "lessonCode": "nashr-tabsit",
+  "level": 1
+}

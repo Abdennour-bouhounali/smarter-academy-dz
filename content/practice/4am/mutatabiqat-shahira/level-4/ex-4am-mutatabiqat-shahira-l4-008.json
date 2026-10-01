@@ -1,0 +1,117 @@
+{
+  "metadata": {
+    "title": "تدريب — فرق مربعين بدلالة x",
+    "estimatedMinutes": 6,
+    "tags": [
+      "مربع مجموع",
+      "حساب ذهني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutatabiqat-shahira_P1",
+      "modelledOn": "ex-35"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $D = (x + 3)^2 - (x - 3)^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $D$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$18$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$12x$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $(x + 3)^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر $(x - 3)^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح مع تغيير الإشارات."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 6x + 9 - x^2 + 6x - 9 = 12x$",
+        "incorrect": "الحدّان المضاعفان لا يتعادمان: $+6x$ و $+6x$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "استعمل $D$ لحساب $53^2 - 47^2$ ذهنيا.",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "600",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$53 = x + 3$ و $47 = x - 3$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما قيمة $x$ ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $12x$."
+        }
+      ],
+      "feedback": {
+        "correct": "هو $D$ من أجل $x = 50$ : $12 \\times 50 = 600$",
+        "incorrect": "ابحث عن $x$ الذي يعطي $53$ و $47$."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l4-008",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 4
+}

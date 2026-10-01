@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "title": "تدريب — فرق مربعي عبارتين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تحليل",
+      "فرق مربعين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P1",
+      "modelledOn": "ex-38"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $L = (2x + 3)^2 - (x - 1)^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "تحليل العبارة $L$ هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x + 4)(3x + 2)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(x + 2)(3x + 2)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "C",
+          "content": "$(x + 4)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+        },
+        {
+          "id": "D",
+          "content": "$(x + 4)(3x + 4)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "فرق مربعين: $a = 2x + 3$ و $b = x - 1$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a - b = 2x + 3 - x + 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$a + b = 2x + 3 + x - 1$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\big((2x + 3) - (x - 1)\\big)\\big((2x + 3) + (x - 1)\\big) = (x + 4)(3x + 2)$.",
+        "incorrect": "في $a - b$ تتغيّر إشارة $-1$ فتصبح $+1$."
+      },
+      "cognitiveDemand": "reason"
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $L$ من أجل $x = -4$.",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (يمكن أن يكون سالبًا)",
+      "expectedAnswer": "0",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل الشكل المحلّل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما قيمة $x + 4$ ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء أحد عامليه معدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "العامل $x + 4$ معدوم، إذن $L = 0$ ؛ ونتحقق: $(-5)^2 - (-5)^2 = 0$.",
+        "incorrect": "في الشكل المحلّل أحد العاملين معدوم."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "50",
+          "id": "MISC-MURABBA-FARQ-ISHARA"
+        }
+      ],
+      "cognitiveDemand": "reason"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l4-010",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 4
+}

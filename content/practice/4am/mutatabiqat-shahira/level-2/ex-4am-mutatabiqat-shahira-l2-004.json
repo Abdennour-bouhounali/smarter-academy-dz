@@ -1,0 +1,115 @@
+{
+  "metadata": {
+    "title": "تمرين 14 — مربع فرق بمعامل",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مربع فرق"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-14",
+      "page": 38,
+      "section": "أوظّف تعلّماتي",
+      "number": 14
+    }
+  },
+  "statement": {
+    "content": "انشر كل عبارة مما يلي وبسّطها: $A = (2x - 3)^2$ و $B = (5x - 1{,}4)^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $A$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4x^2 - 6x + 9$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        },
+        {
+          "id": "B",
+          "content": "$2x^2 - 12x + 9$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        },
+        {
+          "id": "C",
+          "content": "$4x^2 - 12x + 9$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$4x^2 - 9$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-FARQ-BILA-2AB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$a = 2x$ و $b = 3$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(2x)^2 = 4x^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحد المضاعف $-2 \\times 2x \\times 3$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(2x)^2 - 2 \\times 2x \\times 3 + 3^2 = 4x^2 - 12x + 9$",
+        "incorrect": "المعامل يُربَّع، والحد المضاعف فيه العدد $2$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما معامل $x$ في النشر المبسّط للعبارة $B$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (بالفاصلة إن لزم)",
+      "expectedAnswer": "-14",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل $x$ يأتي من الحد المضاعف $-2ab$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هنا $a = 5x$ و $b = 1{,}4$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $2 \\times 5 \\times 1{,}4$ وضع الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$(5x - 1{,}4)^2 = 25x^2 - 14x + 1{,}96$",
+        "incorrect": "الحد المضاعف سالب في مربع فرق."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l2-004",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 2
+}

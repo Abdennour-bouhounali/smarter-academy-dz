@@ -27,7 +27,11 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
     for (const type of MANIPULATION_TYPE_IDS) {
       const { beginner, advanced } = LEVELS[type];
       expect(advanced.numbers, type).not.toEqual(beginner.numbers);
-      const size = (n) => Math.max(...Object.values(n));
+      // Une expression algébrique (unité 3, `expr: '3x-1|3+x'`) se mesure par son
+      // nombre de termes plus sa plus haute puissance : plus de zones à porter,
+      // ou des carrés à faire apparaître, c'est une demande plus lourde.
+      const algebraic = (e) => (e.match(/[^+\-|]+/g) ?? []).length + Math.max(1, ...[...e.matchAll(/\^(\d)/g)].map((m) => Number(m[1])));
+      const size = (n) => Math.max(...Object.values(n).map((v) => (typeof v === 'string' ? algebraic(v) : v)));
       expect(size(advanced.numbers), type).toBeGreaterThan(size(beginner.numbers));
       expect(advanced.source, type).toBe('textbook');
       expect(typeof advanced.ref, type).toBe('string');

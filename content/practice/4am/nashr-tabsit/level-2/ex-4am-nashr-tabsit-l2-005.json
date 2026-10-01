@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "title": "تدريب — عامل كسري",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نشر",
+      "كسور"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P2",
+      "modelledOn": "ex-1"
+    }
+  },
+  "statement": {
+    "content": "ننشر جداء كسر في فرق."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نشر $\\dfrac{1}{2}(4x - 6)$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2x - 6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$2x - 3$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$8x - 12$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-ISHARA-SALIBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل $\\dfrac{1}{2}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الضرب في $\\dfrac{1}{2}$ يعني أخذ النصف."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نصف $4x$ ونصف 6."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{1}{2} \\times 4x - \\dfrac{1}{2} \\times 6 = 2x - 3$.",
+        "incorrect": "العامل يُضرب في الحدّين: النصف من كل حد."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نشر $\\dfrac{2}{3}(9 + 6x)$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$6 + 6x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$6 + 4x$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{2}{3} \\times 15x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TABSIT-GHAYR-MUTASHABIH"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العامل كسر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب $\\dfrac{2}{3}$ في 9 ثم في $6x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\dfrac{2}{3} \\times 9$ و $\\dfrac{2}{3} \\times 6$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{2}{3} \\times 9 + \\dfrac{2}{3} \\times 6x = 6 + 4x$.",
+        "incorrect": "الكسر يُضرب في الحدّين، و 9 و $6x$ غير متشابهين."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l2-005",
+  "lessonCode": "nashr-tabsit",
+  "level": 2
+}

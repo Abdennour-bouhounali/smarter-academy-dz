@@ -1,0 +1,228 @@
+{
+  "id": "ex-4am-tahlil-ibara-l2-006",
+  "lessonCode": "tahlil-ibara",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 29 — أتمم المساويات",
+    "estimatedMinutes": 5,
+    "tags": [
+      "متطابقات شهيرة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-29",
+      "page": 39,
+      "section": "أوظّف تعلّماتي",
+      "number": 29
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 39): انقل المساويات الآتية وأتممها باستعمال المتطابقات الشهيرة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$x^2 + 6x + \\ldots = (\\ldots + \\ldots)^2$ : أيّ إتمام صحيح؟",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 + 6x + 36 = (x + 6)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        },
+        {
+          "id": "B",
+          "content": "$x^2 + 6x + 9 = (x + 3)^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x^2 + 6x + 3 = (x + 3)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$6x = 2 \\times x \\times b$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذن $b$ هو نصف 6."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحدّ الأخير هو $b^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$2 \\times x \\times 3 = 6x$ و $3^2 = 9$.",
+        "incorrect": "تحقّق من كل مساواة بنشر طرفها الأيمن."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$36x^2 - \\ldots + 1 = (\\ldots - \\ldots)^2$ : أيّ إتمام صحيح؟",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$36x^2 - 12x + 1 = (6x - 1)^2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$36x^2 - 6x + 1 = (6x - 1)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        },
+        {
+          "id": "C",
+          "content": "$36x^2 - 12x + 1 = (36x - 1)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$36x^2 = (6x)^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحدّ الأوسط $2 \\times 6x \\times 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بنشر الطرف الأيمن."
+        }
+      ],
+      "feedback": {
+        "correct": "$(6x - 1)^2 = 36x^2 - 2 \\times 6x \\times 1 + 1$.",
+        "incorrect": "لا تنسَ المعامل 2 في الحدّ الأوسط، و $a$ جذر $36x^2$."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "$\\ldots - \\ldots + 25 = (x - \\ldots)^2$ : أيّ إتمام صحيح؟",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 - 5x + 25 = (x - 5)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        },
+        {
+          "id": "B",
+          "content": "$x^2 - 25x + 25 = (x - 5)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        },
+        {
+          "id": "C",
+          "content": "$x^2 - 10x + 25 = (x - 5)^2$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$25 = 5^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحدّ الأوسط $2 \\times x \\times 5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بنشر $(x - 5)^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x - 5)^2 = x^2 - 10x + 25$.",
+        "incorrect": "الحدّ الأوسط هو ضعف جداء $x$ و 5."
+      }
+    },
+    {
+      "id": "q4",
+      "statement": "$\\ldots - 81 = (x + \\ldots)(x - \\ldots)$ : أيّ إتمام صحيح؟",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x^2 - 81 = (x + 9)(x - 9)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x^2 - 81 = (x + 81)(x - 81)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        },
+        {
+          "id": "C",
+          "content": "$x^2 - 81 = (x + 3)(x - 3)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-HISAB-DHIHNI-MURABBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$81$ مربّع عدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$81 = 9^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استعمل $a^2 - b^2 = (a + b)(a - b)$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 - 81 = x^2 - 9^2 = (x + 9)(x - 9)$.",
+        "incorrect": "ابحث عن العدد الذي مربّعه 81."
+      }
+    }
+  ]
+}

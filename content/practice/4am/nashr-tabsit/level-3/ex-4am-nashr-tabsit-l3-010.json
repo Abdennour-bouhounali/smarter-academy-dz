@@ -1,0 +1,92 @@
+{
+  "metadata": {
+    "title": "تدريب — شكلان لعبارة واحدة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تبسيط",
+      "قيمة عبارة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_nashr-tabsit_P4",
+      "modelledOn": "ex-2"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $M = (x + 1)(x + 2) - x(x + 3)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بسّط $M$. ما قيمتها؟ (عدد لا يتعلّق بـ $x$)",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر الجداءين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x^2 + 3x + 2$ و $x^2 + 3x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح الثاني من الأول."
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 3x + 2 - x^2 - 3x = 2$.",
+        "incorrect": "انشر كل جداء ثم انتبه إلى الإشارة $-$ أمام الجداء الثاني."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "تحقّق: احسب $M$ من أجل $x = 10$.",
+      "learningPoints": [
+        {
+          "code": "4am_nashr-tabsit_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ 10 في الشكل الأول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$11 \\times 12 - 10 \\times 13$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب كل جداء ثم اطرح."
+        }
+      ],
+      "feedback": {
+        "correct": "$132 - 130 = 2$: نفس القيمة.",
+        "incorrect": "احسب الجداءين ثم الفرق."
+      }
+    }
+  ],
+  "id": "ex-4am-nashr-tabsit-l3-010",
+  "lessonCode": "nashr-tabsit",
+  "level": 3
+}

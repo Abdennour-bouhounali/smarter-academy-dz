@@ -1,0 +1,141 @@
+{
+  "metadata": {
+    "title": "تمرين 37 — حصر x والطول EF",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نمذجة",
+      "أطوال"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-37",
+      "page": 41,
+      "section": "أتعمّق",
+      "number": 37
+    }
+  },
+  "statement": {
+    "content": "ABCD مربع طول ضلعه 10cm، و $x$ عدد موجب. لوّنّا فيه مربعًا ضلعه $x$ في الركن A (حيث $AE = AG = x$)، والمستطيل (1) بعداه 4cm و 10cm على طول الضلع [BC] (حيث $FB = 4$)، والمستطيل (2) بعداه $x$ و 4cm في الركن D (حيث $DH = 4$). النقطتان E و F من [AB]، والنقطتان G و H من [AD]."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حصر للعدد $x$ هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$0 < x < 10$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "id": "B",
+          "content": "$0 < x < 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "id": "C",
+          "content": "$6 < x < 10$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "id": "D",
+          "content": "$0 < x < 6$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى الضلع [AB]."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$AE + EF + FB = 10$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الطول EF موجب تمامًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + EF + 4 = 10$ و $EF > 0$ ، إذن $x < 6$ ، و $x > 0$.",
+        "incorrect": "المستطيل (1) يأخذ 4cm من الضلع: ما يبقى للمربع أقل من ذلك."
+      },
+      "cognitiveDemand": "apply"
+    },
+    {
+      "id": "q2",
+      "statement": "الطول $EF$ بدلالة $x$ هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$6 - x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$10 - x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "id": "C",
+          "content": "$x - 6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        },
+        {
+          "id": "D",
+          "content": "$6 + x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-QAWS-SALIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$EF = AB - AE - FB$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض الأطوال المعلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بسّط $10 - x - 4$."
+        }
+      ],
+      "feedback": {
+        "correct": "$EF = 10 - x - 4 = 6 - x$ (وبالمثل $GH = 6 - x$).",
+        "incorrect": "اطرح الطولين معًا من 10، وانتبه إلى الإشارات."
+      },
+      "cognitiveDemand": "apply"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l2-001",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 2
+}

@@ -1,0 +1,113 @@
+{
+  "metadata": {
+    "title": "تدريب — مربعا عددين متتاليين",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مربع مجموع",
+      "حساب ذهني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mutatabiqat-shahira_P1",
+      "modelledOn": "act-2a"
+    }
+  },
+  "statement": {
+    "content": "نعتبر العبارة $T = (x + 1)^2 - x^2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النشر المبسّط للعبارة $T$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$2x + 1$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x + 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $(x + 1)^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح $x^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ماذا يبقى؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$x^2 + 2x + 1 - x^2 = 2x + 1$",
+        "incorrect": "الحد المضاعف $2x$ يبقى بعد الطرح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "استعمل $T$ لحساب $51^2 - 50^2$ ذهنيا.",
+      "learningPoints": [
+        {
+          "code": "4am_mutatabiqat-shahira_P4",
+          "role": "primary"
+        },
+        {
+          "code": "4am_mutatabiqat-shahira_P1",
+          "role": "secondary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "101",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$51 = x + 1$ و $50 = x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما قيمة $x$ ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $2x + 1$."
+        }
+      ],
+      "feedback": {
+        "correct": "هو $T$ من أجل $x = 50$ : $2 \\times 50 + 1 = 101$",
+        "incorrect": "ابحث عن $x$ الذي يعطي $50$ و $51$."
+      }
+    }
+  ],
+  "id": "ex-4am-mutatabiqat-shahira-l5-010",
+  "lessonCode": "mutatabiqat-shahira",
+  "level": 5
+}

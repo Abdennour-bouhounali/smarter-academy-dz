@@ -1,0 +1,125 @@
+{
+  "id": "ex-4am-tahlil-ibara-l4-005",
+  "lessonCode": "tahlil-ibara",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — فرق مربّعين لعبارتين",
+    "estimatedMinutes": 5,
+    "tags": [
+      "فرق مربعين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tahlil-ibara_P3",
+      "modelledOn": "ex-32"
+    }
+  },
+  "statement": {
+    "content": "حلّل كل عبارة باستعمال $a^2 - b^2 = (a + b)(a - b)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$(2x + 1)^2 - (x - 3)^2 = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x - 2)(3x - 2)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "B",
+          "content": "$(x + 4)(3x - 2)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(x + 4)^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-FARQ-MURABBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$a = 2x + 1$ و $b = x - 3$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a - b = (2x + 1) - (x - 3)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احذف القوس المسبوق بـ «−» بتغيير الإشارات."
+        }
+      ],
+      "feedback": {
+        "correct": "$(2x + 1 - x + 3)(2x + 1 + x - 3) = (x + 4)(3x - 2)$.",
+        "incorrect": "$-(x - 3) = -x + 3$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$9x^2 - (x + 2)^2 = $",
+      "learningPoints": [
+        {
+          "code": "4am_tahlil-ibara_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(2x - 2)(4x + 2)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(2x + 2)(4x - 2)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAHLIL-ISHARA-QAWS"
+        },
+        {
+          "id": "C",
+          "content": "$(8x - 2)(10x + 2)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-MURABBA-MUAMIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$9x^2 = (3x)^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a = 3x$ و $b = x + 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $(a - b)(a + b)$ وغيّر إشارات $b$ في العامل الأول."
+        }
+      ],
+      "feedback": {
+        "correct": "$(3x - x - 2)(3x + x + 2) = (2x - 2)(4x + 2)$.",
+        "incorrect": "$a$ جذر $9x^2$ ، و $-(x + 2) = -x - 2$."
+      }
+    }
+  ]
+}

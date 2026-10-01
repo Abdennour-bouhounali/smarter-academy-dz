@@ -1,0 +1,140 @@
+{
+  "metadata": {
+    "title": "تدريب — صورة في إطار",
+    "estimatedMinutes": 2,
+    "tags": [
+      "نمذجة",
+      "إطار"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-harfi_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "صورة مربّعة طول ضلعها $x$ (بالسنتيمتر)، نضعها في إطار عرضه 3cm من كل الجهات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "طول ضلع المربع الذي تشكّله الصورة مع الإطار هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x + 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "id": "B",
+          "content": "$x + 6$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$3x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        },
+        {
+          "id": "D",
+          "content": "$x + 9$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم ضلعًا واحدًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "على الضلع: إطار، ثم الصورة، ثم إطار."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع الأطوال الثلاثة."
+        }
+      ],
+      "feedback": {
+        "correct": "$3 + x + 3 = x + 6$.",
+        "incorrect": "الإطار موجود على جهتي كل ضلع."
+      },
+      "cognitiveDemand": "recall"
+    },
+    {
+      "id": "q2",
+      "statement": "مساحة الإطار وحده (بـ $cm^2$) هي ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-harfi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$36$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MURABBA-MAJMU-BILA-2AB"
+        },
+        {
+          "id": "B",
+          "content": "$6x + 36$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTATABIQA-2AB-NISF"
+        },
+        {
+          "id": "C",
+          "content": "$12x + 36$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$x^2 + 12x + 36$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NAMDHAJA-MISAHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مساحة الإطار = المربع الكبير ناقص الصورة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المربع الكبير ضلعه $x + 6$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انشر $(x + 6)^2$ ثم اطرح $x^2$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 6)^2 - x^2 = x^2 + 12x + 36 - x^2 = 12x + 36$.",
+        "incorrect": "اطرح مساحة الصورة، ولا تنس الحد المضاعف في مربع المجموع."
+      },
+      "cognitiveDemand": "recall"
+    }
+  ],
+  "id": "ex-4am-wadiya-idmajiya-harfi-l1-009",
+  "lessonCode": "wadiya-idmajiya-harfi",
+  "level": 1
+}
