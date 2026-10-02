@@ -1253,6 +1253,1056 @@
       "difficulty": "صعب",
       "status": "available",
       "icon": "🏊"
+    },
+    {
+      "code": "mafhum-jumla",
+      "sourceTopicId": "jumal_muadalatayn",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "jumal-muadalatayn",
+      "order": 24,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "مفهوم جملة معادلتين من الدرجة الأولى بمجهولين",
+      "description": "التعرف على جملة معادلتين من الدرجة الأولى بمجهولين x و y من الشكل { ax + by = c ; a'x + b'y = c' }، وإدراك أن حلها ثنائية (x ; y) تحقق المعادلتين في آن واحد: اختبار ثنائية معطاة بالتعويض، والتمييز بين جملة تقبل حلا وحيدا وجملة ليس لها حل وجملة لها عدد غير منته من الحلول.",
+      "prerequisites": [
+        "مفهوم المعادلة من الدرجة الأولى بمجهول واحد وطرق حلها",
+        "تعويض المجاهيل بقيم عددية واختبار صحة مساواة رياضية"
+      ],
+      "prerequisiteLessonCodes": [
+        "muadala-ula"
+      ],
+      "pointsToLearn": [
+        "التعرف على الشكل العام لجملة معادلتين من الدرجة الأولى بمجهولين x و y: { ax + by = c ; a'x + b'y = c' }",
+        "إدراك معنى «حل الجملة» باعتباره إيجاد الثنائية (x ; y) التي تحقق المعادلتين في آن واحد",
+        "اختبار صحة ثنائية معطاة وتحديد ما إذا كانت حلا للجملة أم لا",
+        "التمييز بين الجمل التي تقبل حلا وحيدا، أو ليس لها حل، أو لها عدد غير منته من الحلول"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_muadala-ula_P1"
+        ],
+        "P2": [
+          "4am_mafhum-jumla_P1"
+        ],
+        "P3": [
+          "4am_mafhum-jumla_P2"
+        ],
+        "P4": [
+          "4am_mafhum-jumla_P3",
+          "4am_muadala-ula_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 5,
+        "activity": 1,
+        "pages": {
+          "activity": 56,
+          "knowledge": 58,
+          "exercises": 60
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "سهل",
+      "status": "available",
+      "icon": "⚽"
+    },
+    {
+      "code": "hall-jabri",
+      "sourceTopicId": "jumal_muadalatayn",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "jumal-muadalatayn",
+      "order": 25,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "حل جملة معادلتين من الدرجة الأولى بمجهولين جبرياً (طريقتا التعويض والجمع)",
+      "description": "حل جملة معادلتين جبريا: بطريقة التعويض (التعبير عن أحد المجهولين بدلالة الآخر ثم التعويض في المعادلة الأخرى) وبطريقة الجمع (ضرب طرفي معادلة أو كلتيهما في معامل مناسب ليصير معاملا أحد المجهولين متعاكسين ثم الجمع طرفا لطرف)، للحصول على معادلة من الدرجة الأولى بمجهول واحد، واختيار الطريقة الأنسب بحسب معاملات الجملة.",
+      "prerequisites": [
+        "قواعد الحساب الحرفي، النشر، وتبسيط العبارات الجبرية",
+        "خواص المساواة والعمليات على طرفي المعادلة (الضرب في عدد غير معدوم ونقل الحدود)"
+      ],
+      "prerequisiteLessonCodes": [
+        "mafhum-jumla",
+        "nashr-tabsit",
+        "muadala-ula"
+      ],
+      "pointsToLearn": [
+        "طريقة التعويض: التعبير عن أحد المجهولين بدلالة الآخر في إحدى المعادلتين، ثم تعويضه في المعادلة الأخرى للحصول على معادلة بمجهول واحد وحلها",
+        "طريقة الجمع (أو الجمع والتعويض): ضرب طرفي إحدى المعادلتين (أو كلتيهما) في معامل مناسب ليكون معاملا أحد المجهولين متعاكسين، ثم الجمع طرفا لطرف للتخلص من أحد المجهولين",
+        "اختيار الطريقة الجبرية الأنسب والأسهل بحسب معاملات الجملة المعطاة"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_mafhum-jumla_P2",
+          "4am_muadala-ula_P2"
+        ],
+        "P2": [
+          "4am_mafhum-jumla_P2",
+          "4am_muadala-ula_P1"
+        ],
+        "P3": [
+          "4am_hall-jabri_P1",
+          "4am_hall-jabri_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 5,
+        "activity": 2,
+        "pages": {
+          "activity": 56,
+          "method": 59,
+          "exercises": 60
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "🔀"
+    },
+    {
+      "code": "mushkilat-jumla",
+      "sourceTopicId": "jumal_muadalatayn",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "jumal-muadalatayn",
+      "order": 26,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "حل مشكلات بتوظيف جمل معادلتين من الدرجة الأولى بمجهولين",
+      "description": "ترييض وضعيات من الحياة اليومية ومسائل هندسية وعددية بجملة معادلتين: اختيار المجهولين المناسبين x و y، ترجمة معطيات النص إلى جملة معادلتين، حلها بطريقة جبرية مناسبة، ثم التحقق من النتائج وتفسيرها والإجابة عن سؤال المشكلة.",
+      "prerequisites": [
+        "التحكم في الطرق الجبرية لحل جملة معادلتين (التعويض والجمع)",
+        "مهارات قراءة النصوص وتحليل المشكلات والترجمة الجبرية للمعطيات",
+        "قوانين المساحات، المحيطات، والنسب المالية والعدديّة"
+      ],
+      "prerequisiteLessonCodes": [
+        "hall-jabri",
+        "tarrid-mushkila"
+      ],
+      "pointsToLearn": [
+        "صياغة ونمذجة وضعيات ومسائل مستمدة من الحياة اليومية أو مسائل هندسية وعدديّة باستخدام جملة معادلتين",
+        "اتباع الخطوات المنهجية لحل المشكلة: اختيار المجهولين المناسبين x و y، ترجمة معطيات النص إلى جملة معادلتين، حل الجملة باختيار طريقة جبرية مناسبة، ثم التحقق من صحة النتائج وتفسيرها والإجابة عن سؤال المشكلة"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_tarrid-mushkila_P1",
+          "4am_mafhum-jumla_P2"
+        ],
+        "P2": [
+          "4am_mushkilat-jumla_P1",
+          "4am_hall-jabri_P3"
+        ]
+      },
+      "textbookRef": {
+        "unit": 5,
+        "activity": 3,
+        "pages": {
+          "activity": 57,
+          "exercises": 61,
+          "deepen": 63
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "🏟️"
+    },
+    {
+      "code": "wadiya-idmajiya-jumal",
+      "sourceTopicId": "jumal_muadalatayn",
+      "chapterId": "ansab_al_aadad_wal_hisab",
+      "unitId": "jumal-muadalatayn",
+      "order": 27,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — جمل معادلتين من الدرجة الأولى بمجهولين",
+      "description": "إدماج المعارف والحل المنهجي للوضعيات المركبة: وضعية حفل البلدية (علب العصير وقطع الحلوى) تُحلّ بتحديد المجهولين وكتابة جملة معادلتين واختيار طريقة الحل الأنجع ثم التحقق وتفسير النتائج، يسبقها اختبار «أؤكّد تعلّماتي» الذي يعيد كل سؤال إلى درسه، ثم تمارين «أتعمّق».",
+      "prerequisites": [
+        "التحكم الشامل في مفهوم الجملة، طرق الحل الجبرية، والترييض المنهجي للمشكلات",
+        "الحساب العددي والمالي وحل المشكلات التنافسية"
+      ],
+      "prerequisiteLessonCodes": [
+        "mafhum-jumla",
+        "hall-jabri",
+        "mushkilat-jumla"
+      ],
+      "pointsToLearn": [
+        "تجنيد وتوظيف كافة موارد وحدة جملة معادلتين لحل وضعيات مركبة ومسائل واقعية ذات دلالة (مثل وضعيات الشراء والتكاليف)",
+        "الربط بين المعطيات المختلفة، تحديد المجهولين، كتابة جملة المعادلتين التي تعبر عن الوضعية، اختيار طريقة الحل الأكثر نجاعة، ثم التحقق وتفسير النتائج للوصول إلى الحل الدقيق"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_mushkilat-jumla_P2",
+          "4am_hall-jabri_P3"
+        ],
+        "P2": [
+          "4am_wadiya-idmajiya-jumal_P1",
+          "4am_mushkilat-jumla_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 5,
+        "pages": {
+          "qcm": 62,
+          "situation": 62,
+          "deepen": 63
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "صعب",
+      "status": "available",
+      "icon": "🎉"
+    },
+    {
+      "code": "tanasub-muamil",
+      "sourceTopicId": "duwal_khattiya",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "tanasubiya-dala-khattiya",
+      "order": 28,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "التناسبية ومعامل التناسبية",
+      "description": "وضعية انطلاق ومدخل للوحدة: التعرف على الوضعية التناسبية في جدول وحساب معامل التناسبية $a$ ، إتمام جداول التناسبية بخواص التناسبية أو الرابع المتناسب، التمييز بين وضعية تناسبية ووضعية غير تناسبية، والتعبير عن العلاقة بين سطري جدول تناسبية بالعبارة $y = a \\times x$ .",
+      "prerequisites": [
+        "الأعداد النسبية والعمليات عليها (الضرب، القسمة، والكسور)",
+        "تنظيم معطيات في جدول وحساب الرابع التناسبي"
+      ],
+      "prerequisiteLessonCodes": [
+        "ikhtizal-kasr"
+      ],
+      "pointsToLearn": [
+        "التعرف على الوضعية التناسبية في جدول، حساب معامل التناسبية $a$ ، وإتمام جداول التناسبية باستعمال خواص التناسبية أو الرابع التناسبي",
+        "التمييز بين وضعية تناسبية ووضعية غير تناسبية من خلال العلاقات العددية بين المقادير",
+        "التعبير عن العلاقة بين السطر الأول والسطر الثاني لجدول تناسبية بعبارة جبرية من الشكل $y = a \\times x$"
+      ],
+      "pointPrerequisites": {
+        "P1": [],
+        "P2": [
+          "4am_tanasub-muamil_P1"
+        ],
+        "P3": [
+          "4am_tanasub-muamil_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 6,
+        "pages": {
+          "prep": 65,
+          "activity": 66,
+          "exercises": 73
+        }
+      },
+      "durationMinutes": 45,
+      "difficulty": "سهل",
+      "status": "available",
+      "icon": "⚖️"
+    },
+    {
+      "code": "dala-khattiya",
+      "sourceTopicId": "duwal_khattiya",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "tanasubiya-dala-khattiya",
+      "order": 29,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "مفهوم وتعيين الدالة الخطية",
+      "description": "الانتقال من العلاقة التناسبية $y = ax$ إلى مفهوم الدالة الخطية: الترميز $x \\longmapsto ax$ والدستور $f(x) = ax$ ، حساب صورة عدد بدالة خطية علم معاملها، وتعيين معامل دالة خطية انطلاقا من عدد غير معدوم وصورته بحل المعادلة $am = n$ .",
+      "prerequisites": [
+        "مفهوم التناسبية ومعامل التناسبية $a$",
+        "الحساب الحرفي وحل معادلة بسيطة من الدرجة الأولى من الشكل $ax = b$"
+      ],
+      "prerequisiteLessonCodes": [
+        "tanasub-muamil",
+        "muadala-ula"
+      ],
+      "pointsToLearn": [
+        "الانتقال من العلاقة التناسبية $y = ax$ إلى مفهوم الدالة الخطية والتعرف على الترميز $x \\longmapsto ax$ والدستور $f(x) = ax$",
+        "حساب صورة عدد بدالة خطية عُلِمَ معاملها $a$",
+        "تعيين معامل دالة خطية $a$ انطلاقاً من عدد غير معدوم وصورته المعلومة (حساب معامل التناسبية أو حل المعادلة $ax = m$ )"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_tanasub-muamil_P3"
+        ],
+        "P2": [
+          "4am_dala-khattiya_P1"
+        ],
+        "P3": [
+          "4am_dala-khattiya_P1",
+          "4am_muadala-ula_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 6,
+        "activity": 1,
+        "pages": {
+          "activity": 66,
+          "knowledge": 68,
+          "method": 69,
+          "exercises": 72
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "🎛️"
+    },
+    {
+      "code": "tamthil-bayani-khatti",
+      "sourceTopicId": "duwal_khattiya",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "tanasubiya-dala-khattiya",
+      "order": 30,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "التمثيل البياني لدالة خطية وقراءته بيانيًا",
+      "description": "إنشاء التمثيل البياني لدالة خطية في معلم متعامد ومتجانس (مستقيم يشمل المبدأ O تكفي لرسمه نقطة ثانية)، القراءة البيانية لصورة عدد وللعدد الذي علمت صورته، وربط منحى المستقيم بإشارة المعامل $a$ .",
+      "prerequisites": [
+        "تعليم نقط في معلم متعامد ومتجانس وقراءة إحداثيات نقطة",
+        "مفهوم الدالة الخطية والدستور الجبري $f(x) = ax$"
+      ],
+      "prerequisiteLessonCodes": [
+        "dala-khattiya"
+      ],
+      "pointsToLearn": [
+        "إنشاء التمثيل البياني لدالة خطية في معلم متعامد ومتجانس (إدراك أنه مستقيم يشمل مبدأ المعلم $O$ وتعيين نقطة إضافية واحدة)",
+        "القراءة البيانية لتعيين صورة عدد أو تعيين العدد الذي عُلِمَت صورته",
+        "ربط اتجاه منحنى المستقيم بإشارة معامل التوجيه/التناسبية $a$"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_dala-khattiya_P2"
+        ],
+        "P2": [
+          "4am_tamthil-bayani-khatti_P1"
+        ],
+        "P3": [
+          "4am_tamthil-bayani-khatti_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 6,
+        "activity": 3,
+        "pages": {
+          "activity": 66,
+          "knowledge": 68,
+          "method": 69,
+          "exercises": 72,
+          "ict": 76
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "📈"
+    },
+    {
+      "code": "tatbiqat-tanasub",
+      "sourceTopicId": "duwal_khattiya",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "tanasubiya-dala-khattiya",
+      "order": 31,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "تطبيقات التناسبية (النسب المئوية والمقادير المركبة)",
+      "description": "نمذجة الزيادة والتخفيض بـ $t\\%$ بالدالة الخطية المرفقة $x \\longmapsto \\left(1 + \\dfrac{t}{100}\\right)x$ أو $x \\longmapsto \\left(1 - \\dfrac{t}{100}\\right)x$ ، المقادير المركبة الناتجة عن جداء (الطاقة $E = P \\times t$ ) أو حاصل قسمة (السرعة المتوسطة، الكتلة الحجمية)، وترجمة وضعيات يتدخل فيها مقدار بدلالة مقدار آخر.",
+      "prerequisites": [
+        "حساب النسب المئوية وقواعد التناسبية المتعلقة بها",
+        "العلاقات والقوانين الفيزيائية والرياضية الأساسية وتحويل الوحدات"
+      ],
+      "prerequisiteLessonCodes": [
+        "dala-khattiya",
+        "tanasub-muamil"
+      ],
+      "pointsToLearn": [
+        "نمذجة التغيرات المئوية (الزيادة أو التخفيض بـ $t\\%$ ) كعلاقة تناسبية والتعبير عنها بالدالة الخطية المرفقة: $x \\longmapsto \\left(1 + \\dfrac{t}{100}\\right)x$ أو $x \\longmapsto \\left(1 - \\dfrac{t}{100}\\right)x$",
+        "التعامل مع المقادير المركبة الناتجة عن الجداء (مثل الطاقة $E = P \\times t$ ) أو حاصل القسمة (مثل السرعة المتوسطة $v = \\dfrac{d}{t}$ والكتلة الحجمية $m = \\rho \\cdot V$ )",
+        "ترجمة وقراءة وضعيات يتدخل فيها مقدار معطى بدلالة مقدار آخر"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_dala-khattiya_P1",
+          "4am_dala-khattiya_P2"
+        ],
+        "P2": [
+          "4am_tanasub-muamil_P1"
+        ],
+        "P3": [
+          "4am_tatbiqat-tanasub_P1",
+          "4am_tatbiqat-tanasub_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 6,
+        "activity": 5,
+        "pages": {
+          "activity": 67,
+          "knowledge": 70,
+          "method": 71,
+          "exercises": 72
+        }
+      },
+      "durationMinutes": 55,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "🏷️"
+    },
+    {
+      "code": "tarrid-khatti",
+      "sourceTopicId": "duwal_khattiya",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "tanasubiya-dala-khattiya",
+      "order": 32,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "حل مشكلات وترييض وضعيات بتوظيف الدالة الخطية والتناسبية",
+      "description": "نمذجة وضعيات واقعية ومسائل هندسية وعددية تعبر عن علاقات تناسبية بالدوال الخطية، والانتقال بين أشكال التعبير عن التناسبية (جدول، دستور $f(x) = ax$ ، تمثيل بياني)، ثم صياغة العلاقة بين المتغيرات وتفسير النتائج في سياق الوضعية.",
+      "prerequisites": [
+        "تعيين الدالة الخطية ورسم تمثيلها البياني وقراءته",
+        "خطوات ترييض مشكلة والصياغة الجبرية بدلالة المجهول $x$"
+      ],
+      "prerequisiteLessonCodes": [
+        "tamthil-bayani-khatti",
+        "tatbiqat-tanasub",
+        "tarrid-mushkila"
+      ],
+      "pointsToLearn": [
+        "نمذجة وترييض وضعيات واقعية ومسائل هندسية وعدديّة تعبر عن علاقات تناسبية باستخدام الدوال الخطية",
+        "الربط والانتقال السلس بين أشكال التعبير المختلفة عن التناسبية (جدول، دستور جبري $f(x) = ax$ ، تمثيل بياني)",
+        "صياغة واستخراج العلاقة بين المتغيرات وتفسير النتائج الرياضية في سياق الوضعية المشكلة"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_dala-khattiya_P3",
+          "4am_tarrid-mushkila_P1"
+        ],
+        "P2": [
+          "4am_tamthil-bayani-khatti_P1",
+          "4am_tamthil-bayani-khatti_P2"
+        ],
+        "P3": [
+          "4am_tarrid-khatti_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 6,
+        "activity": 4,
+        "pages": {
+          "activity": 67,
+          "method": 71,
+          "deepen": 75
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "صعب",
+      "status": "available",
+      "icon": "🧩"
+    },
+    {
+      "code": "wadiya-idmajiya-khattiya",
+      "sourceTopicId": "duwal_khattiya",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "tanasubiya-dala-khattiya",
+      "order": 33,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — الدالة الخطية والتناسبية",
+      "description": "إدماج موارد الوحدة في وضعية مركبة: المصعد الهوائي (مبرهنة فيثاغورس لطول الحبل، السرعة المتوسطة لمدة الصعود، ثم تكلفة رحلة العائلة كدالة خطية لسعر التذكرة مع تخفيض 40% للأطفال، وقراءة بيانية لحد الميزانية)، يسبقها اختبار «أؤكّد تعلّماتي» الذي يعيد كل سؤال إلى درسه، ثم تمارين «أتعمّق».",
+      "prerequisites": [
+        "التحكم الشامل في مفاهيم وتطبيقات التناسبية والدوال الخطية",
+        "مهارات القراءة البيانية، الحساب العددي والهندسي، والترييض المنهجي للوضعيات المشكلة"
+      ],
+      "prerequisiteLessonCodes": [
+        "tanasub-muamil",
+        "dala-khattiya",
+        "tamthil-bayani-khatti",
+        "tatbiqat-tanasub",
+        "tarrid-khatti"
+      ],
+      "pointsToLearn": [
+        "تجنيد وتوظيف كافة الموارد المتعلمة في الوحدة (التناسبية، الدالة الخطية، التمثيل البياني، النسب المئوية، والمقادير المركبة) لحل وضعيات مشكلة مركبة",
+        "تحليل وضعيّات واقعية مركبة (مثل حساب تكلفة رحلة، تطبيق تخفيضات مئوية، وحساب أطوال أو مسافات)، ونمذجة التكاليف والمقادير بدلالة متغير $x$ كدالة خطية",
+        "اختيار وتطبيق استراتيجية حل مناسبة (مثل الجمع بين الخاصية الهندسيّة كفيثاغورس، التمثيل البياني، والدوال الخطية) للوصول إلى الحل وتفسير النتائج"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_tatbiqat-tanasub_P1",
+          "4am_tamthil-bayani-khatti_P2"
+        ],
+        "P2": [
+          "4am_wadiya-idmajiya-khattiya_P1",
+          "4am_tarrid-khatti_P1"
+        ],
+        "P3": [
+          "4am_wadiya-idmajiya-khattiya_P2",
+          "4am_tarrid-khatti_P3"
+        ]
+      },
+      "textbookRef": {
+        "unit": 6,
+        "pages": {
+          "qcm": 74,
+          "situation": 74,
+          "deepen": 75
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "صعب",
+      "status": "available",
+      "icon": "🚡"
+    },
+    {
+      "code": "mafhum-taalufiya",
+      "sourceTopicId": "duwal_taalufiya",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "dala-taalufiya",
+      "order": 34,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "مفهوم وتعيين دالة تآلفية",
+      "description": "وضعية انطلاق ومدخل للوحدة: أجرة بجزء ثابت وجزء متغير تقود إلى الترميز $x \\longmapsto ax + b$ والدستور $f(x) = ax + b$ ، حساب صورة عدد بدالة تآلفية، تعيين العدد الذي عُلمت صورته بحل المعادلة $ax + b = m$ ، والتمييز بين الدالة التآلفية والدالة الخطية ($b = 0$) والدالة الثابتة ($a = 0$).",
+      "prerequisites": [
+        "مفهوم الدالة الخطية والتناسبية ودستورها $f(x) = ax$",
+        "حل معادلة من الدرجة الأولى بمجهول واحد من الشكل $ax + b = c$"
+      ],
+      "prerequisiteLessonCodes": [
+        "dala-khattiya",
+        "muadala-ula"
+      ],
+      "pointsToLearn": [
+        "التعرف على مفهوم الدالة التآلفية والرمز $x \\longmapsto ax + b$ والدستور $f(x) = ax + b$",
+        "حساب صورة عدد بدالة تآلفية معلومة",
+        "تعيين العدد الذي صورته معلومة بدالة تآلفية (حل المعادلة $ax + b = m$)",
+        "التمييز بين الدالة التآلفية، الدالة الخطية (حالة خاصة عندما $b = 0$)، والدالة الثابتة (حالة خاصة عندما $a = 0$)"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_dala-khattiya_P1"
+        ],
+        "P2": [
+          "4am_mafhum-taalufiya_P1",
+          "4am_dala-khattiya_P2"
+        ],
+        "P3": [
+          "4am_mafhum-taalufiya_P2",
+          "4am_muadala-ula_P1"
+        ],
+        "P4": [
+          "4am_mafhum-taalufiya_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 7,
+        "pages": {
+          "prep": 77,
+          "activity": 78
+        }
+      },
+      "durationMinutes": 45,
+      "difficulty": "سهل",
+      "status": "available",
+      "icon": "🛵"
+    },
+    {
+      "code": "tamthil-bayani-taalufi",
+      "sourceTopicId": "tamthil_bayani",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "dala-taalufiya",
+      "order": 35,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "التمثيل البياني لدالة تآلفية وقراءته بيانيًا",
+      "description": "التمثيل البياني لدالة تآلفية مستقيم يقطع محور التراتيب في النقطة $(0 ; b)$ : إنشاؤه بنقطتين، تعيين المعاملين $a$ (معامل التوجيه) و $b$ (الترتيب عند المبدأ) انطلاقا من التمثيل البياني، والقراءة البيانية لصورة عدد أو للعدد الذي عُلمت صورته.",
+      "prerequisites": [
+        "تعليم نقط وقراءة إحداثياتها في معلم متعامد ومتجانس",
+        "رسم وقراءة التمثيل البياني لدالة خطية"
+      ],
+      "prerequisiteLessonCodes": [
+        "tamthil-bayani-khatti",
+        "mafhum-taalufiya"
+      ],
+      "pointsToLearn": [
+        "إنشاء التمثيل البياني لدالة تآلفية في معلم متعامد ومتجانس (إدراك أنه مستقيم لا يمر بالمبدأ في الحالة العامة وتعيين نقطتين تنتميان إليه)",
+        "تعيين المعاملين $a$ (معامل التوجيه) و $b$ (الترتيب عند المبدأ) انطلاقاً من التمثيل البياني",
+        "القراءة البيانية لتعيين صورة عدد أو تعيين العدد الذي عُلِمَت صورته"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_mafhum-taalufiya_P2",
+          "4am_tamthil-bayani-khatti_P1"
+        ],
+        "P2": [
+          "4am_tamthil-bayani-taalufi_P1"
+        ],
+        "P3": [
+          "4am_tamthil-bayani-taalufi_P1",
+          "4am_tamthil-bayani-khatti_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 7,
+        "pages": {
+          "prep": 77,
+          "activity": 78
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "📈"
+    },
+    {
+      "code": "tanasub-taghayyurat",
+      "sourceTopicId": "duwal_taalufiya",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "dala-taalufiya",
+      "order": 36,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "تعيين دالة تآلفية انطلاقًا من عددين وصورتيهما",
+      "description": "تناسب التغيّرات: النسبة $\\dfrac{f(x_1) - f(x_2)}{x_1 - x_2}$ ثابتة وتساوي المعامل $a$ مهما كان العددان المتمايزان، ثم تعيين $b$ وكتابة العبارة $f(x) = ax + b$ انطلاقا من عددين وصورتيهما — من اشتراك مناصري الفريق إلى تحويل الدرجة سلسيوس إلى الفهرنهايت.",
+      "prerequisites": [
+        "الحساب العددي والجبري والعمليات على الأعداد النسبية",
+        "حل معادلة أو جملة معادلتين لتحديد المجاهيل"
+      ],
+      "prerequisiteLessonCodes": [
+        "mafhum-taalufiya",
+        "hall-jabri"
+      ],
+      "pointsToLearn": [
+        "حساب المعامل $a$ باستعمال خاصية تناسب التغيرات: $a = \\dfrac{f(x_1) - f(x_2)}{x_1 - x_2}$ لعددين متميزين $x_1$ و $x_2$",
+        "تعيين العبارة الجبرية للدالة التآلفية $f(x) = ax + b$ انطلاقاً من معرفة عددين وصورتيهما"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_mafhum-taalufiya_P2"
+        ],
+        "P2": [
+          "4am_tanasub-taghayyurat_P1",
+          "4am_mafhum-taalufiya_P3"
+        ]
+      },
+      "textbookRef": {
+        "unit": 7,
+        "pages": {
+          "activity": 79
+        }
+      },
+      "durationMinutes": 45,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "🏟️"
+    },
+    {
+      "code": "tafsir-bayani-jumla",
+      "sourceTopicId": "duwal_taalufiya",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "dala-taalufiya",
+      "order": 37,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "التفسير البياني لحل جملة معادلتين من الدرجة الأولى بمجهولين",
+      "description": "كتابة كل معادلة من الجملة على الشكل $y = ax + b$ وتمثيلها بمستقيم، إدراك أن الثنائية حلّ الجملة هي إحداثيتا نقطة تقاطع المستقيمين، وتفسير الحالات الثلاث بيانيا: متقاطعان (حل وحيد)، متوازيان (لا حل)، منطبقان (عدد غير منته من الحلول).",
+      "prerequisites": [
+        "طرق الحل الجبرية لجملة معادلتين من الدرجة الأولى بمجهولين (الجمع والتعويض)",
+        "تمثيل الدوال التآلفية بيانيًا وقراءة نقاط التقاطع"
+      ],
+      "prerequisiteLessonCodes": [
+        "hall-jabri",
+        "tamthil-bayani-taalufi"
+      ],
+      "pointsToLearn": [
+        "كتابة كل معادلة من معادلات الجملة على شكل دالة تآلفية $y = ax + b$ وتمثيلها بيانيًا بمستقيم",
+        "إدراك أن الثنائية حلّ الجملة $(x ; y)$ تمثّل إحداثيتي نقطة تقاطع المستقيمين الممثلين للدالتين",
+        "التفسير البياني لحالات الجملة (مستقيمان متقاطعان: حل وحيد، متوازيان: لا تقبل حلاً، منطبقان: عدد لا نهائي من الحلول)"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_tamthil-bayani-taalufi_P1",
+          "4am_mafhum-jumla_P1"
+        ],
+        "P2": [
+          "4am_tafsir-bayani-jumla_P1",
+          "4am_mafhum-jumla_P2"
+        ],
+        "P3": [
+          "4am_tafsir-bayani-jumla_P2",
+          "4am_mafhum-jumla_P4"
+        ]
+      },
+      "textbookRef": {
+        "unit": 7,
+        "pages": {
+          "activity": 79
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "🔀"
+    },
+    {
+      "code": "tarrid-taalufi",
+      "sourceTopicId": "duwal_taalufiya",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "dala-taalufiya",
+      "order": 38,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "حل مشكلات وترييض وضعيات بتوظيف الدالة التآلفية",
+      "description": "نمذجة تكاليف بجزء ثابت وجزء متغير (اشتراك، تأجير، باقات) بدوال تآلفية، ثم المفاضلة بين تسعيرتين جبريا (معادلة ومتراجحة) وبيانيا (نقطة تقاطع المستقيمين) واختيار الصيغة الأفضل بحسب قيم المتغير.",
+      "prerequisites": [
+        "حل المعادلات والمتراجحات من الدرجة الأولى بمجهول واحد",
+        "خطوات ترييض مشكلة والتمثيل البياني للدوال"
+      ],
+      "prerequisiteLessonCodes": [
+        "tamthil-bayani-taalufi",
+        "mutarajiha-ula",
+        "tarrid-mushkila"
+      ],
+      "pointsToLearn": [
+        "نمذجة وضعيات واقعية وتكاليف تتضمن جزءاً ثابتاً وجزءاً متغيراً (مثل الاشتراك السنوي والتأجير) باستخدام الدوال التآلفية",
+        "التعبير الجبري والتمثيل البياني للمفاضلة بين تسعيرتين أو صيغتين واختيار الصيغة الأفضل بحسب القيم المتغيرة"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_mafhum-taalufiya_P1",
+          "4am_tarrid-mushkila_P1"
+        ],
+        "P2": [
+          "4am_tarrid-taalufi_P1",
+          "4am_tamthil-bayani-taalufi_P3",
+          "4am_mutarajiha-ula_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 7,
+        "pages": {
+          "activity": 79
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "صعب",
+      "status": "available",
+      "icon": "🎮"
+    },
+    {
+      "code": "wadiya-idmajiya-taalufiya",
+      "sourceTopicId": "duwal_taalufiya",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "dala-taalufiya",
+      "order": 39,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — الدالة التآلفية",
+      "description": "إدماج المعارف وترييض وضعيات مركبة: تجنيد موارد الوحدة (الدالة التآلفية، الدالة الخطية، التفسير البياني للجمل، والمفاضلة بين الخيارات) في وضعية مشكلة مركبة، يسبقها اختبار «أؤكّد تعلّماتي» الذي يعيد كل سؤال إلى درسه، ثم تمارين «أتعمّق».",
+      "prerequisites": [
+        "التحكم الشامل في مفاهيم وتطبيقات الدوال الخطية والتآلفية والجمل",
+        "مهارات القراءة البيانية والترييض المنهجي للمشكلات المركبة"
+      ],
+      "prerequisiteLessonCodes": [
+        "mafhum-taalufiya",
+        "tamthil-bayani-taalufi",
+        "tanasub-taghayyurat",
+        "tafsir-bayani-jumla",
+        "tarrid-taalufi"
+      ],
+      "pointsToLearn": [
+        "تجنيد وتوظيف كافة موارد الوحدة (الدالة التآلفية، الدالة الخطية، التفسير البياني للجمل، والمفاضلة بين الخيارات) لحل وضعيات مشكلة مركبة",
+        "تحليل وضعيّات واقعية مركبة ونمذجة المعطيات، واختيار استراتيجية الحل المناسبة (جبرية أو بيانية) وتفسير النتائج للوصول إلى الحل الدقيق"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_tanasub-taghayyurat_P2",
+          "4am_tafsir-bayani-jumla_P2"
+        ],
+        "P2": [
+          "4am_wadiya-idmajiya-taalufiya_P1",
+          "4am_tarrid-taalufi_P2"
+        ]
+      },
+      "textbookRef": null,
+      "durationMinutes": 50,
+      "difficulty": "صعب",
+      "status": "available",
+      "icon": "🧩"
+    },
+    {
+      "code": "takrar-mujamma",
+      "sourceTopicId": "takrar_mujamma_saaid",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "ihsa",
+      "order": 40,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "التكرار المجمع والتواتر المجمع (الصاعد والنازل)",
+      "description": "مدخل الوحدة: قامات التلاميذ وعلاماتهم تقود إلى التكرار المجمع الصاعد والنازل لقيمة أو لفئة، ثم إلى التكرار النسبي المجمع (التواتر المجمع الصاعد والنازل)، وتنظيم المعطيات في جداول تكرارية مجمعة وقراءتها وتفسيرها.",
+      "prerequisites": [
+        "مفهوم السلسلة الإحصائية، القيمة، والتكرار",
+        "حساب التواتر والتواتر النسبي (النسب المئوية) وإتمام الجداول التكرارية"
+      ],
+      "prerequisiteLessonCodes": [],
+      "pointsToLearn": [
+        "حساب التكرار المجمع الصاعد والتكرار المجمع النازل لسلسلة إحصائية",
+        "حساب التواتر المجمع الصاعد والتواتر المجمع النازل (التواتر النسبي المجمع) لسلسلة إحصائية مجمعة في فئات أو قيم منفصلة",
+        "تنظيم وتلخيص المعطيات الإحصائية في جداول تكرارية مجمعة وتفسيرها"
+      ],
+      "pointPrerequisites": {
+        "P1": [],
+        "P2": [
+          "4am_takrar-mujamma_P1"
+        ],
+        "P3": [
+          "4am_takrar-mujamma_P1",
+          "4am_takrar-mujamma_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 8,
+        "pages": {
+          "prep": 91,
+          "activity": 92,
+          "knowledge": 94,
+          "method": 95,
+          "exercises": 98
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "سهل",
+      "status": "available",
+      "icon": "📶"
+    },
+    {
+      "code": "mada-wasit-mutawassit",
+      "sourceTopicId": "wasit",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "ihsa",
+      "order": 41,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "مدى ووسيط ومتوسط سلسلة إحصائية",
+      "description": "المدى مقياسا لتشتت المعطيات، المتوسط الحسابي المتوازن لسلسلة بقيم منفصلة أو مجمعة في فئات (مراكز الفئات)، والوسيط Med لسلسلة مرتبة (رتبة القيمة المركزية) أو الفئة الوسيطية، وتفسير هذه المؤشرات.",
+      "prerequisites": [
+        "ترتيب الأعداد تصاعدياً/تنازلياً",
+        "الحساب العددي، وقواعد قسمة التكرارات وتعيين مراكز الفئات"
+      ],
+      "prerequisiteLessonCodes": [
+        "takrar-mujamma"
+      ],
+      "pointsToLearn": [
+        "حساب مدى سلسلة إحصائية (الفرق بين أكبر قيمة وأصغر قيمة) كقياس لتشتت المعطيات",
+        "حساب المتوسط الحسابي المتوازن $m$ لسلسلة إحصائية (سواء كانت بقيم منفصلة أو مجمعة في فئات بتعيين مراكز الفئات)",
+        "تعيين وسيط سلسلة إحصائية $Med$ (قيم منفصلة مرتبة تصاعدياً/تنازلياً أو تحديد الفئة الوسيطية في حالة الفئات)"
+      ],
+      "pointPrerequisites": {
+        "P1": [],
+        "P2": [],
+        "P3": [
+          "4am_takrar-mujamma_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 8,
+        "pages": {
+          "prep": 91,
+          "activity": 93,
+          "knowledge": 96,
+          "method": 97,
+          "exercises": 99
+        }
+      },
+      "durationMinutes": 55,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "🌡️"
+    },
+    {
+      "code": "majdulat-ihsaiya",
+      "sourceTopicId": "silsila_fiat",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "ihsa",
+      "order": 42,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "استعمال المجدولات (Excel) لمعالجة وتلخيص معطيات إحصائية وتمثيلها بيانيًا",
+      "description": "حجز سلسلة إحصائية في مجدول وحفظها، حساب مؤشراتها بالدساتير المدمجة: المدى =MAX()-MIN() ، الوسيط =MEDIANE() ، المتوسط =MOYENNE() ، المنوال =MODE() ، وإنشاء التمثيل البياني المناسب للمعطيات (المدرّج التكراري، المخطط الدائري، مخطط الأعمدة).",
+      "prerequisites": [
+        "المبادئ الأساسية لاستعمال الحاسوب وبرمجيات المجدولات",
+        "مفاهيم ومؤشرات السلسلة الإحصائية والأنواع المختلفة للتمثيلات البيانية"
+      ],
+      "prerequisiteLessonCodes": [
+        "mada-wasit-mutawassit"
+      ],
+      "pointsToLearn": [
+        "حجز وحفظ سلاسل إحصائية في جداول البرمجيات المجدولة (مثل Excel)",
+        "استعمال الدساتير والتعليمات المدمجة لحساب مؤشرات السلسلة الإحصائية: المدى (=MAX()-MIN())، الوسيط (=MEDIAN())، المتوسط الحسابي (=MOYENNE())، والمنوال (=MODE())",
+        "إنشاء ومطابقة التمثيلات البيانية المناسبة للمعطيات (المدرج التكراري، المخطط الدائري، ومخطط الأعمدة)"
+      ],
+      "pointPrerequisites": {
+        "P1": [],
+        "P2": [
+          "4am_majdulat-ihsaiya_P1",
+          "4am_mada-wasit-mutawassit_P1",
+          "4am_mada-wasit-mutawassit_P2",
+          "4am_mada-wasit-mutawassit_P3"
+        ],
+        "P3": [
+          "4am_majdulat-ihsaiya_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 8,
+        "pages": {
+          "prep": 91,
+          "exercises": 99,
+          "deepen": 101
+        }
+      },
+      "durationMinutes": 45,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "📊"
+    },
+    {
+      "code": "qiraat-wadiyat-ihsaiya",
+      "sourceTopicId": "wast_hisabi",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "ihsa",
+      "order": 43,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "ترييض وقراءة وضعيات إحصائية وتفسير المؤشرات",
+      "description": "قراءة جداول ومخططات إحصائية من الحياة اليومية والمواضيع البيئية والاجتماعية، مقارنة سلسلتين بمؤشرات الموقع والتشتت (المتوسط، الوسيط، المدى) واتخاذ القرار، ونمذجة وضعيات واقعية تنطلق من «تحدّ» القسمين.",
+      "prerequisites": [
+        "حساب وقراءة التكرارات والتواترات المجمعة ومؤشرات السلسلة الإحصائية",
+        "قراءة وتفسير المخططات البيانية والجداول الإحصائية"
+      ],
+      "prerequisiteLessonCodes": [
+        "takrar-mujamma",
+        "mada-wasit-mutawassit"
+      ],
+      "pointsToLearn": [
+        "قراءة وترجمة جداول ومخططات إحصائية مستمدة من الحياة اليومية والمواضيع البيئية والاجتماعية",
+        "مقارنة سلسلتين إحصائيتين باستعمال مؤشرات الموقع والتشتت (المتوسط، الوسيط، والمدى) واتخاذ القرارات والتفسيرات المناسبة",
+        "نمذجة وضعيات واقعية واستخلاص نتائج دقيقة ودالة من المؤشرات الإحصائية"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_takrar-mujamma_P3"
+        ],
+        "P2": [
+          "4am_mada-wasit-mutawassit_P1",
+          "4am_mada-wasit-mutawassit_P2",
+          "4am_mada-wasit-mutawassit_P3"
+        ],
+        "P3": [
+          "4am_qiraat-wadiyat-ihsaiya_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 8,
+        "pages": {
+          "challenge": 91,
+          "exercises": 99,
+          "deepen": 101
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "صعب",
+      "status": "available",
+      "icon": "🔎"
+    },
+    {
+      "code": "wadiya-idmajiya-ihsa",
+      "sourceTopicId": "wasit",
+      "chapterId": "tanasubiya_duwal",
+      "unitId": "ihsa",
+      "order": 44,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — إدماج المعارف والتحليل المنهجي للوضعية الإحصائية",
+      "description": "إدماج المعارف: تجنيد موارد الوحدة (التكرارات المجمعة، المدى، الوسيط، المتوسط الحسابي، والنسب المئوية) في الوضعية الإحصائية للميداليات الأولمبية بتحليلها المنهجي (قراءة · تحليل · تنفيذ)، يسبقها اختبار «أؤكّد تعلّماتي» الذي يعيد كل سؤال إلى درسه.",
+      "prerequisites": [
+        "التحكم الشامل في مفاهيم وقوانين الإحصاء ومؤشراته الإحصائية",
+        "الحساب العددي والجبري وترييض الوضعيات والنسب المئوية"
+      ],
+      "prerequisiteLessonCodes": [
+        "takrar-mujamma",
+        "mada-wasit-mutawassit",
+        "majdulat-ihsaiya",
+        "qiraat-wadiyat-ihsaiya"
+      ],
+      "pointsToLearn": [
+        "تجنيد وتوظيف كافة الموارد المكتسبة في الوحدة (التكرارات المجمعة، المدى، الوسيط، المتوسط الحسابي، والنسب المئوية) لحل وضعيات ومسائل إحصائية مركبة",
+        "تحليل الوضعية الإحصائية وفهمها: قراءة النص والجدول الإحصائي، تحديد المطلوب، وترتيب المعطيات",
+        "اختيار وتنفيذ استراتيجية الحل: صياغة وتطبيق الإجراء المناسب (استعمال الوسيط، الوسط الحسابي، النسب المئوية، وحل المعادلة) مع التعبير عن النتائج بجمل واضحة وتفسيرها دلالياً"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_takrar-mujamma_P2",
+          "4am_mada-wasit-mutawassit_P2",
+          "4am_mada-wasit-mutawassit_P3"
+        ],
+        "P2": [
+          "4am_qiraat-wadiyat-ihsaiya_P1"
+        ],
+        "P3": [
+          "4am_wadiya-idmajiya-ihsa_P2",
+          "4am_qiraat-wadiyat-ihsaiya_P3"
+        ]
+      },
+      "textbookRef": {
+        "unit": 8,
+        "pages": {
+          "qcm": 100,
+          "situation": 100,
+          "deepen": 101
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "صعب",
+      "status": "available",
+      "icon": "🏅"
     }
   ],
   "publishedScope": {
@@ -1262,7 +2312,11 @@
       "aadad-tabiiya-natiqa",
       "hisab-judhur",
       "hisab-harfi",
-      "muadalat-mutarajihat"
+      "muadalat-mutarajihat",
+      "jumal-muadalatayn",
+      "tanasubiya-dala-khattiya",
+      "dala-taalufiya",
+      "ihsa"
     ],
     "removedTopicCount": 25
   }

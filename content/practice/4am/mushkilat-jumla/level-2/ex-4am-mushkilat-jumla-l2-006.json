@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l2-006",
+  "lessonCode": "mushkilat-jumla",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — محل الأحذية الرياضية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ترييض",
+      "أثمان"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P2",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "باع محل أحذية رياضية في يوم 18 زوجا من نوعين: الزوج من النوع الأول بـ 4500 DA ومن النوع الثاني بـ 6000 DA، وبلغت المداخيل 93000 DA. نسمّي $x$ عدد أزواج النوع الأول و $y$ عدد أزواج النوع الثاني."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعلومة «بلغت المداخيل 93000 DA» تُترجم بـ:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x + y = 93000$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$6000x + 4500y = 93000$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$4500x + 6000y = 93000$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هذه معلومة مال."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل زوج من النوع الأول يُضرب في ثمنه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المداخيل = مداخيل النوع الأول + مداخيل النوع الثاني."
+        }
+      ],
+      "feedback": {
+        "correct": "مداخيل النوع الأول $4500x$ والثاني $6000y$ .",
+        "incorrect": "لا تعطِ النوع الأول ثمن النوع الثاني."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "كم زوجا بيع من كل نوع؟ اكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "10",
+        "y": "8"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب معلومة العدد: 18 زوجا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x = 18 - y$ في معادلة المال."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحصل على $1500y = 12000$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 8$ و $x = 10$ : $45000 + 48000 = 93000$ .",
+        "incorrect": "الحل ثنائية تحقق المعلومتين."
+      }
+    }
+  ]
+}

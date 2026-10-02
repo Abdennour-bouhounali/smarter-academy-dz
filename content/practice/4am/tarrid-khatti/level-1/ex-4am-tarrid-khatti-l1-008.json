@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-tarrid-khatti-l1-008",
+  "lessonCode": "tarrid-khatti",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — معنى المعامل",
+    "estimatedMinutes": 2,
+    "tags": [
+      "تفسير",
+      "معامل التناسبية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P3",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "ثمن $x$ كيلوغرام من الطماطم بالدينار هو $f(x) = 80x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ماذا يعني العدد 80 في هذه الوضعية؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "ثمن 80kg من الطماطم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "id": "B",
+          "content": "ثمن 1kg من الطماطم: 80DA",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "كتلة الطماطم التي ثمنها 1DA",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TANASUB-MUAMIL-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $f(1)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ماذا يمثّل $x = 1$ ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعامل هو المقدار الموافق لوحدة واحدة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(1) = 80$ : الكيلوغرام بـ 80DA.",
+        "incorrect": "المعامل ثمن وحدة واحدة."
+      }
+    }
+  ]
+}

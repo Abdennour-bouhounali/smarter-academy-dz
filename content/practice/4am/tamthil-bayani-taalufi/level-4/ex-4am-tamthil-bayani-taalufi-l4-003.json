@@ -1,0 +1,80 @@
+{
+  "id": "ex-4am-tamthil-bayani-taalufi-l4-003",
+  "lessonCode": "tamthil-bayani-taalufi",
+  "level": 4,
+  "metadata": {
+    "title": "معاملات عشرية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "رسم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-taalufi_P1"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الدالة التآلفية $f : x \\longmapsto -1{,}5x + 1{,}5$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "التمثيل البياني للدالة $f : x \\longmapsto -1{,}5x + 1{,}5$ هو المستقيم الذي يشمل النقطتين:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(0 ; 1{,}5)$ و $(1 ; 0)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(0 ; -1{,}5)$ و $(1 ; 0)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-ISHARA-A"
+        },
+        {
+          "id": "C",
+          "content": "O و $(1 ; -1{,}5)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-TAALUFI-MABDA"
+        },
+        {
+          "id": "D",
+          "content": "$(1{,}5 ; 0)$ و $(0 ; 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-B-FASILA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد $0$ يعطي مباشرة نقطة المستقيم على محور التراتيب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $f(0)$ ثم صورة عدد آخر تختاره."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نقطتان تكفيان لرسم المستقيم؛ تحقّق أنّ كل نقطة ترتيبها صورة فاصلتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(0) = 1{,}5$ ، وكل نقطة من الثنائية الصحيحة ترتيبها صورة فاصلتها.",
+        "incorrect": "احسب صورة فاصلة كل نقطة: يجب أن تساوي ترتيبها، والمبدأ ليس من التمثيل إلا إذا كان $b = 0$ ."
+      }
+    }
+  ]
+}

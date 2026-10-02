@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-mafhum-jumla-l2-006",
+  "lessonCode": "mafhum-jumla",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — نقاط بلا مباريات؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "كرة القدم",
+      "حل الجملة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mafhum-jumla_P2",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "لعب فريق 10 مباريات دون هزيمة وجمع 22 نقطة ($x$ انتصارات و $y$ تعادلات): $\\begin{cases} x + y = 10 \\\\ 3x + y = 22 \\end{cases}$ . قال رياض: «الثنائية $(4 ; 10)$ تعطي $3 \\times 4 + 10 = 22$ ، فهي حل»."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل رياض محقّ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم: النقاط 22 صحيحة.",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "B",
+          "content": "لا: $4 + 10 = 14 \\neq 10$ مباريات.",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "لا: $3 \\times 4 + 10 \\neq 22$ .",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هل تحقّق $(4 ; 10)$ المعادلتين كلتيهما؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحقّق من عدد المباريات $x + y$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حل الجملة يحقّق الشرطين في آن واحد."
+        }
+      ],
+      "feedback": {
+        "correct": "$3 \\times 4 + 10 = 22$ لكن $4 + 10 = 14 \\neq 10$ : ليست حلا للجملة.",
+        "incorrect": "المعادلة الثانية وحدها لا تكفي."
+      }
+    }
+  ]
+}

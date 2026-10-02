@@ -1,0 +1,59 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l2-010",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — حرارة الشتاء",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مدى",
+      "أعداد نسبية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mada-wasit-mutawassit_P1",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "درجات الحرارة الدنيا في مدينة جبلية خلال خمسة أيام: $-4$ ، $3$ ، $7$ ، $-1$ ، $5$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مدى هذه السلسلة هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "11",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MADA-AKBAR-QIMA",
+          "value": "7"
+        },
+        {
+          "id": "MISC-IHSA-MADA-AKBAR-QIMA",
+          "value": "3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أصغر قيمة سالبة."
+        }
+      ],
+      "feedback": {
+        "correct": "$7 - (-4) = 11$ .",
+        "incorrect": "أصغر قيمة هي $-4$ : $7 - (-4)$."
+      }
+    }
+  ]
+}

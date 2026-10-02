@@ -1,0 +1,102 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l4-002",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 4,
+  "metadata": {
+    "title": "أدمج تعلّماتي — الدول دون ذهب",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "نسبة مئوية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "situation",
+      "page": 100,
+      "section": "أدمج تعلّماتي"
+    }
+  },
+  "statement": {
+    "content": "30 دولة فازت بميدالية ذهبية واحدة على الأقل في دورة أولمبية، وهي تمثّل 69% من الدول الفائزة بميداليات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم دولة فازت بميداليات (قيمة مقرّبة إلى الوحدة)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "43",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "30 جزء والمطلوب الكل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$0{,}69 \\times T = 30$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم ثم دوّر إلى الوحدة."
+        }
+      ],
+      "feedback": {
+        "correct": "$T = \\dfrac{30}{0{,}69} \\approx 43{,}48$ ، أي 43 دولة.",
+        "incorrect": "العدد 30 هو 69% من الكل: نقسمه على $0{,}69$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "21",
+          "id": "MISC-IHSA-NISBA-MIN-ADAD"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "كم دولة تحصّلت فقط على ميداليات فضية أو برونزية؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "13",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كل الدول الفائزة ناقص الفائزة بالذهب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل العدد المقرّب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح."
+        }
+      ],
+      "feedback": {
+        "correct": "$43 - 30 = 13$ دولة تقريبا.",
+        "incorrect": "نطرح الدول الفائزة بالذهب من كل الدول الفائزة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    }
+  ]
+}

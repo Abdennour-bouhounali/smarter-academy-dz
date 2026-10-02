@@ -1,0 +1,71 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l3-001",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 3,
+  "metadata": {
+    "title": "نشاط 3 (ص 93) — متوسط المدينة (أ)",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متوسط متوازن"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-3",
+      "page": 93,
+      "section": "أنشطة",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 93): المدينة (أ): $18$ (يومان)، $15$ (18 يومًا)، $16$ (6 أيام)، $20$ (4 أيام)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "متوسط درجات حرارة المدينة (أ) هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$17{,}25$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUTAWASSIT-BILA-TARJIH"
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{482}{30} \\approx 16{,}07$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{482}{4}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUTAWASSIT-QISMA-QIYAM"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب كل درجة في عدد أيامها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التكرار الكلّي $30$ يومًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{36 + 270 + 96 + 80}{30} = \\dfrac{482}{30} \\approx 16{,}07$ .",
+        "incorrect": "لا تحسب متوسط الدرجات الأربع وحدها."
+      }
+    }
+  ]
+}

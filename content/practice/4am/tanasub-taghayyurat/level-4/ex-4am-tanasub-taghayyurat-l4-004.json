@@ -1,0 +1,92 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l4-004",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — ملء خزان",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "تعيين دالة تآلفية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "خزان فيه ماء يُملأ بانتظام: بعد 3 دقائق فيه 95L ، وبعد 8 دقائق فيه 220L . الحجم دالة تآلفية للزمن."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "التدفّق $a$ (L في الدقيقة):",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "25",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$220 - 95$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "على $8 - 3$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\dfrac{125}{5}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{125}{5} = 25$ L في الدقيقة.",
+        "incorrect": "نقسم 125 على 5 ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حجم الماء في البداية (L):",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "20",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة 0 ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$95 - 25 \\times 3$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$95 - 75$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = 95 - 75 = 20$ L.",
+        "incorrect": "الحجم الأولي هو $b$ ."
+      }
+    }
+  ]
+}

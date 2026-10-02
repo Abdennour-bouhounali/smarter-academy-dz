@@ -1,0 +1,92 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l2-006",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — باقة الإنترنت",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "تعيين دالة تآلفية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "باقة إنترنت شهرية: من استهلك 2GB دفع 700DA ، ومن استهلك 5GB دفع 1300DA . المبلغ دالة تآلفية لعدد الجيغابايت."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ثمن الجيغابايت الواحد $a$ (DA):",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "200",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$1300 - 700$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "على $5 - 2$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تناسب التغيّرات."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{600}{3} = 200$ DA.",
+        "incorrect": "نقسم 600 على 3 ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "المبلغ الثابت $b$ (DA):",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "300",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$700 = 2a + b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$400 + b = 700$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = 700 - 400 = 300$ DA.",
+        "incorrect": "نطرح ثمن 2GB من 700 ."
+      }
+    }
+  ]
+}

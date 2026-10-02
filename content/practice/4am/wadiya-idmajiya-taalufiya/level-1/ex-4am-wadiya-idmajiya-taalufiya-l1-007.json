@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l1-007",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 1,
+  "metadata": {
+    "title": "أيّ صيغة أرخص؟",
+    "estimatedMinutes": 2,
+    "tags": [
+      "مفاضلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P2"
+    }
+  },
+  "statement": {
+    "content": "لكراء قارب: الصيغة أ تكلّف $400 + 50x$ دينارا، والصيغة ب تكلّف $90x$ دينارا، حيث $x$ عدد الساعات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من أجل 12 ساعة:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الصيغة أ أرخص: 1000 DA مقابل 1080 DA",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الصيغة ب أرخص لأنها بلا مبلغ ثابت",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "C",
+          "content": "الصيغتان متساويتان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب الثمنين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$400 + 50 \\times 12$ و $90 \\times 12$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن."
+        }
+      ],
+      "feedback": {
+        "correct": "$400 + 600 = 1000$ و $90 \\times 12 = 1080$.",
+        "incorrect": "لا نحكم دون حساب الثمنين عند القيمة المعطاة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l2-004",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 39 — عصير البرتقال",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تركيز",
+      "وحدات"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-39",
+      "page": 75,
+      "section": "أتعمّق",
+      "number": 39
+    }
+  },
+  "statement": {
+    "content": "500mL من عصير البرتقال يحتوي على 40cg من السكر. وجد عبد الحميد هذا المشروب حلوًا جدا فأضاف له 40mL من الماء. ما هو تركيز السكر في المشروب الجديد؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما حجم المشروب الجديد باللتر؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري باللتر",
+      "expectedAnswer": "0.54",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الماء المضاف يزيد الحجم."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع الحجمين بالمليلتر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$1\\,\\mathrm{L} = 1000\\,\\mathrm{mL}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$500 + 40 = 540\\,\\mathrm{mL} = 0{,}54\\,\\mathrm{L}$.",
+        "incorrect": "اجمع الحجمين ثم حوّل إلى اللتر."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1,
+      "misconceptionSignatures": [
+        {
+          "value": "0.5",
+          "id": "MISC-TARRID-TAFSIR"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما تركيز السكر في المشروب الجديد بـ $\\mathrm{g/L}$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري مدوّر إلى 0,01",
+      "expectedAnswer": "0.74",
+      "evaluationPolicy": {
+        "tolerance": "0.01"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حوّل كتلة السكر إلى الغرام."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$40\\,\\mathrm{cg} = 0{,}4\\,\\mathrm{g}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الكتلة على الحجم الجديد."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{0{,}4}{0{,}54} = \\dfrac{20}{27} \\approx 0{,}74\\,\\mathrm{g/L}$.",
+        "incorrect": "الكتلة لا تتغير بإضافة الماء، والحجم يتغير."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "0.8",
+          "id": "MISC-TARRID-TAFSIR"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l1-001",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 1,
+  "metadata": {
+    "title": "تمرين 7 (ص 99) — أين نحجز السلسلة؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "حجز",
+      "مجال"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-7",
+      "page": 99,
+      "section": "أوظّف تعلّماتي",
+      "number": 7
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 99): «احجز السلسلة الواردة في السطر الأول من المجدول». السلسلة: 4 ، 10 ، 8 ، 4 ، 3 ، 2 ، 4 ، قيمة في كل خلية بدءًا من A1 ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المجال الذي تشغله السلسلة:",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "⁦A1:G1⁩",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "⁦A1:F1⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MAJAL-KHALIYA"
+        },
+        {
+          "id": "C",
+          "content": "⁦A1:A7⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MAJAL-KHALIYA"
+        },
+        {
+          "id": "D",
+          "content": "⁦A1:H1⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MAJAL-KHALIYA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عدّ القيم: سبع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحروف في السطر 1: A ، B ، C ، …"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "السابعة هي G ."
+        }
+      ],
+      "feedback": {
+        "correct": "سبع خلايا في السطر 1، من A1 إلى G1: المجال ⁦A1:G1⁩ .",
+        "incorrect": "عدّ القيم ثم الأعمدة من A ."
+      }
+    }
+  ]
+}

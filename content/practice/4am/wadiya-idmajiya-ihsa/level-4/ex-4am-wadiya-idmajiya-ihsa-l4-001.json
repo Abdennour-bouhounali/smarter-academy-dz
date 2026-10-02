@@ -1,0 +1,103 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l4-001",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 4,
+  "metadata": {
+    "title": "أدمج تعلّماتي — القيمة المخفية الثانية",
+    "estimatedMinutes": 5,
+    "tags": [
+      "وضعية",
+      "متوسط",
+      "معادلة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "situation",
+      "page": 100,
+      "section": "أدمج تعلّماتي"
+    }
+  },
+  "statement": {
+    "content": "حصيلة الميداليات الذهبية للدول الفائزة بها خلال إحدى دورات الألعاب الأولمبية: عدد الميداليات الذهبية: 1 ، 2 ، ⬡ ، 4 ، 5 ، 6 ، 7 ، 11 ، 13 ، 14 ، 16 ، 26 ، ⬡ ، 32 — التكرار: 11 ، 3 ، 2 ، 1 ، 2 ، 2 ، 1 ، 1 ، 1 ، 2 ، 1 ، 1 ، 1 ، 1. وسيط السلسلة: 3 ميداليات. متوسط السلسلة: 7 ميداليات. (⬡ قيمة مخفية: الأولى بين 2 و 4 ، والثانية بين 26 و 32.) القيمة المخفية الأولى هي 3."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما مجموع جداءات القيم الظاهرة في تكراراتها؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "176",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كل قيمة مضروبة في تكرارها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$1 \\times 11 + 2 \\times 3 + \\dots$"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تدخل القيمتين المخفيتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$11 + 6 + 4 + 10 + 12 + 7 + 11 + 13 + 28 + 16 + 26 + 32$.",
+        "incorrect": "نضرب كل قيمة ظاهرة في تكرارها ثم نجمع."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "ما القيمة المخفية الثانية؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "28",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مجموع الميداليات = المتوسط × التكرار الكلي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "القيمة الأولى تكرارها 2."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب المعادلة وحلّها."
+        }
+      ],
+      "feedback": {
+        "correct": "$176 + 2 \\times 3 + y = 7 \\times 30$ ، إذن $y = 210 - 182$.",
+        "incorrect": "القيمة الأولى تُحسب بتكرارها 2 ، والمجموع $7 \\times 30$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "31",
+          "id": "MISC-IHSA-MUTAWASSIT-BILA-TARJIH"
+        }
+      ]
+    }
+  ]
+}

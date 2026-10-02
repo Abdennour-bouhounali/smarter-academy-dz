@@ -1,0 +1,153 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l4-009",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 25 — الماء في جسم الإنسان",
+    "estimatedMinutes": 5,
+    "tags": [
+      "الكتلة الحجمية",
+      "مقدار بدلالة آخر"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-25",
+      "page": 73,
+      "section": "أوظّف تعلّماتي",
+      "number": 25
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 73): يمثل الماء 75% من كتلة جسم الإنسان، والكتلة الحجمية للماء $1g/cm^3$ . 1) ما هي كتلة الماء وحجمه لشخص يزن $63kg$ ؟ 2) عيّن كتلة شخص إذا علمت أنّ حجم الماء المتواجد في جسمه هو $47L$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "1) كتلة الماء في جسم شخص يزن 63kg (بالكيلوغرام):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "47,25",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد: هل نأخذ نسبة من المقدار، أم نزيده، أم نخفّضه؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الزيادة بـ $t\\%$ ضرب في $1 + \\dfrac{t}{100}$ ، والتخفيض ضرب في $1 - \\dfrac{t}{100}$ ، والأخذ ضرب في $\\dfrac{t}{100}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب المضاعف أولًا، ثم اضرب فيه المقدار، وتحقّق أنّ النتيجة معقولة (أكبر بعد زيادة، أصغر بعد تخفيض)."
+        }
+      ],
+      "feedback": {
+        "correct": "$63 \\times 0{,}75 = 47{,}25kg$ .",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "1) حجم هذا الماء (باللتر):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "47,25",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد وحدة البسط ووحدة المقام، قبل التحويل وبعده."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حوّل البسط والمقام كلًّا على حدة: $1h = 3600s$ ، $1km = 1000m$ ، $1m^3 = 1000L$ ، $1L = 1000cm^3$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب المقدار كحاصل قسمة بالوحدات الجديدة، ثم احسب."
+        }
+      ],
+      "feedback": {
+        "correct": "$1g/cm^3 = 1kg/L$ : $47{,}25kg$ من الماء حجمها $47{,}25L$ .",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "2) كتلة شخص في جسمه 47L من الماء:",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$35{,}25kg$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
+        },
+        {
+          "id": "B",
+          "content": "حوالي $62{,}67kg$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$47kg$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "id": "D",
+          "content": "$82{,}25kg$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-JAM"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المقدار المعطى هو المقدار بعد التغيّر، والمطلوب المقدار قبله."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب العلاقة $y = kx$ بالمضاعف $k$ ، ثم عوّض $y$ بقيمته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة $kx = y$ : $x = \\dfrac{y}{k}$ ، ثم تحقّق بالضرب."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}75M = 47$ ، ومنه $M = \\dfrac{47}{0{,}75} \\simeq 62{,}67kg$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

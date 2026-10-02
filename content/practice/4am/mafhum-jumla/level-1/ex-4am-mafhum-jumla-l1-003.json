@@ -1,0 +1,73 @@
+{
+  "id": "ex-4am-mafhum-jumla-l1-003",
+  "lessonCode": "mafhum-jumla",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 4 — مجهولان اسمهما a و b",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جملة معادلتين"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 62,
+      "section": "أؤكّد تعلّماتي",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 62): نعتبر الجملة $\\begin{cases} 2a - b = 3 \\\\ a - 2b = -5 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هذه الجملة ...",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "هي جملة معادلتين ذات مجهول واحد.",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "ليست جملة معادلتين من الدرجة الأولى.",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "هي جملة معادلتين من الدرجة الأولى ذات المجهولين $a$ و $b$ .",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما الحروف المجهولة في الجملة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اسم المجهول لا يهمّ: $a$ و $b$ مجهولان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل كل معادلة من الشكل $\\alpha a + \\beta b = \\gamma$ ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "معادلتان من الدرجة الأولى في المجهولين $a$ و $b$ .",
+        "incorrect": "المجهولان هنا $a$ و $b$ ، وليسا $x$ و $y$ ."
+      }
+    }
+  ]
+}

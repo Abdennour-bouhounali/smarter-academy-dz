@@ -1,0 +1,58 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l1-007",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — مجموعتان متساويتان",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متوسط مجموعات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P3",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "في مسابقة القسم: 10 تلاميذ متوسط نقاطهم 12، و 10 تلاميذ آخرون متوسط نقاطهم 16."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما متوسط نقاط التلاميذ العشرين؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "14",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجموعتان لهما العدد نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مجموع النقاط $10 \\times 12 + 10 \\times 16$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على 20."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{120 + 160}{20} = 14$ : العددان متساويان فالمتوسط هو متوسط المتوسطين.",
+        "incorrect": "اجمع النقاط ثم اقسم على 20."
+      },
+      "difficulty": 1
+    }
+  ]
+}

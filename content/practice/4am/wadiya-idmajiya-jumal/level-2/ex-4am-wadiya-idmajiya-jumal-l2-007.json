@@ -1,0 +1,130 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l2-007",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 2,
+  "metadata": {
+    "title": "نادي الكاراتيه",
+    "estimatedMinutes": 3,
+    "tags": [
+      "حل جملة",
+      "اختيار الطريقة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P1"
+    }
+  },
+  "statement": {
+    "content": "في نادي الكاراتيه، الاشتراك الشهري للمتمدرسين $x$ DA ولغير المتمدرسين $y$ DA. دفع فوج من 5 متمدرسين و 3 غير متمدرسين 7 600 DA، ودفع فوج من 2 متمدرسين و 4 غير متمدرسين 6 400 DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ اقتراح يوصل إلى الحل بأقل حساب؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نقسم المعادلة الثانية على 2: $x + 2y = 3200$ ، ثم نعوّض $x = 3200 - 2y$ في الأولى",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نجمع المعادلتين مباشرة فيختفي $x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        },
+        {
+          "id": "C",
+          "content": "نقسم المعادلة الثانية على 2: $x + 2y = 6400$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-TARAF-WAHID"
+        },
+        {
+          "id": "D",
+          "content": "نعوّض $x = 3200 - 2y$ في المعادلة الثانية نفسها",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAWID-NAFS-MUADALA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن معادلة تُبسَّط."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل معاملات الثانية زوجية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد التبسيط معامل $x$ هو 1."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x + 4y = 6400$ تكافئ $x + 2y = 3200$ ، فالتعويض سهل.",
+        "incorrect": "القسمة تشمل الطرفين، والتعويض في المعادلة الأخرى."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    },
+    {
+      "id": "q2",
+      "statement": "ما الاشتراكان $(x ; y)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
+      "expectedAnswer": {
+        "x": "800",
+        "y": "1200"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x = 3200 - 2y$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض في $5x + 3y = 7600$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقق في المعلومتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$16000 - 7y = 7600$ ، $y = 1200$ ، $x = 800$.",
+        "incorrect": "عوّض ثم احسب المجهول الثاني."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "1200",
+            "y": "800"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    }
+  ]
+}

@@ -11,6 +11,8 @@
 //   poly.of(7).pow(2)  → 49
 export const R = (v) => ({ value: String(v) });
 export const C = (id) => ({ choiceId: id });
+/** Une ثنائية (answerType `point`) : P(13, 19), P('-1/2', '-5/2'). */
+export const P = (x, y) => ({ x: String(x), y: String(y) });
 
 const g = (a, b) => { a = a < 0n ? -a : a; b = b < 0n ? -b : b; while (b) [a, b] = [b, a % b]; return a; };
 class Q {
@@ -61,3 +63,15 @@ class Poly {
 export const poly = { x: new Poly([0, 1]), of: (v) => Poly.of(v), Q: (v) => Q.from(v) };
 /** Valeur exacte d'un calcul numérique (fractions et décimaux), en chaîne. */
 export const q = (v) => Q.from(v);
+
+/**
+ * Unité 5 : la jumla a1·x + b1·y = c1 ; a2·x + b2·y = c2 résolue par Cramer en rationnels EXACTS
+ * (indépendant de packages/core/arithmetic/linearSystem.js). Rend [x, y] en chaînes ('13', '-1/2'),
+ * ou lève une erreur si le déterminant est nul.
+ */
+export function solve2(a1, b1, c1, a2, b2, c2) {
+  const [A1, B1, C1, A2, B2, C2] = [a1, b1, c1, a2, b2, c2].map((v) => Q.from(v));
+  const D = A1.mul(B2).sub(A2.mul(B1));
+  if (D.isZero()) throw new Error('solve2: déterminant nul');
+  return [C1.mul(B2).sub(C2.mul(B1)).div(D).toString(), A1.mul(C2).sub(A2.mul(C1)).div(D).toString()];
+}

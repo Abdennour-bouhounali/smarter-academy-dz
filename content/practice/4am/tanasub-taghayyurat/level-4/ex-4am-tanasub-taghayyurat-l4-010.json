@@ -1,0 +1,81 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l4-010",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — كراء الدراجات",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية",
+      "تعيين دالة تآلفية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "كراء دراجة على الشاطئ: 3 ساعات بـ 650DA و 5 ساعات بـ 950DA ، والثمن دالة تآلفية لعدد الساعات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عبارة الثمن $f(x)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$f(x) = 300x + 650$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-BIDUN-QISMA"
+        },
+        {
+          "id": "B",
+          "content": "$f(x) = 150x + 650$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-B-NISBA"
+        },
+        {
+          "id": "C",
+          "content": "$f(x) = 150x + 200$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$f(x) = 190x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-KHATTIYA-KHALT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$a = \\dfrac{950 - 650}{5 - 3}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a = 150$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$b = 650 - 450$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = 150$ DA للساعة و $b = 200$ DA ؛ تحقّق: $150 \\times 5 + 200 = 950$ .",
+        "incorrect": "عوّض 3 و 5 في كل عبارة."
+      }
+    }
+  ]
+}

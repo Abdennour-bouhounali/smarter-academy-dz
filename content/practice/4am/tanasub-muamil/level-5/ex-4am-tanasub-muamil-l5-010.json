@@ -1,0 +1,148 @@
+{
+  "id": "ex-4am-tanasub-muamil-l5-010",
+  "lessonCode": "tanasub-muamil",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — فاتورة الكهرباء",
+    "estimatedMinutes": 5,
+    "tags": [
+      "كهرباء",
+      "مبلغ ثابت"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-muamil_P2",
+      "modelledOn": "ex-18"
+    }
+  },
+  "statement": {
+    "content": "فاتورة كهرباء: 400DA اشتراك ثابت ثم 4,5DA لكل kWh مستهلك. نسمّي $x$ الاستهلاك و $y$ مبلغ الفاتورة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مبلغ الفاتورة (بالدينار) لاستهلاك 200kWh :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "1300",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في هذا السعر مبلغ ثابت ومبلغ لكل وحدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب عدد الوحدات في سعر الوحدة، ثم أضف المبلغ الثابت."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب ما يُطلب بالترتيب، وتحقّق من الوحدة."
+        }
+      ],
+      "feedback": {
+        "correct": "$400 + 4{,}5 \\times 200 = 1300$ DA.",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $\\dfrac{y}{x}$ من أجل $x = 100$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "8,5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في هذا السعر مبلغ ثابت ومبلغ لكل وحدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب عدد الوحدات في سعر الوحدة، ثم أضف المبلغ الثابت."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب ما يُطلب بالترتيب، وتحقّق من الوحدة."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 850$ ، و $\\dfrac{850}{100} = 8{,}5$ .",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "هل مبلغ الفاتورة متناسب مع الاستهلاك؟",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، ومعامل التناسبية 4,5",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TANASUB-MABLAGH-THABIT"
+        },
+        {
+          "id": "B",
+          "content": "لا: $\\dfrac{850}{100} = 8{,}5$ لكن $\\dfrac{1300}{200} = 6{,}5$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "نعم، ومعامل التناسبية 8,5",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لا يكفي أن يزداد y كلما ازداد x."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب حاصل القسمة $\\dfrac{y}{x}$ في كل عمود وقارن."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يكفي عمودان حاصلا قسمتهما مختلفان لنقول إنّ الوضعية ليست تناسبية؛ وانتبه إلى المبلغ الثابت."
+        }
+      ],
+      "feedback": {
+        "correct": "الاشتراك الثابت يكسر التناسبية.",
+        "incorrect": "احسب حاصل القسمة في كل عمود قبل أن تحكم: الزيادة وحدها لا تكفي."
+      }
+    }
+  ]
+}

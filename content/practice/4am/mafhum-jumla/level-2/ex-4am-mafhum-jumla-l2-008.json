@@ -1,0 +1,91 @@
+{
+  "id": "ex-4am-mafhum-jumla-l2-008",
+  "lessonCode": "mafhum-jumla",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — معاملات جملة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معاملات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mafhum-jumla_P1",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الجملة $\\begin{cases} 3x - 2y = 9 \\\\ -x + 4y = 0 \\end{cases}$ ، من الشكل $\\begin{cases} ax + by = c \\\\ a'x + b'y = c' \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما قيمة $a'$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "-1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$a'$ معامل $x$ في المعادلة الثانية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$-x = -1 \\times x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعامل يُكتب بإشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$-x + 4y = 0$ : $a' = -1$ .",
+        "incorrect": "معامل $-x$ هو $-1$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما قيمة $c$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$c$ هو الطرف الثاني للمعادلة الأولى."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المعادلة الأولى $3x - 2y = 9$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الطرف الثاني عدد معلوم."
+        }
+      ],
+      "feedback": {
+        "correct": "$c = 9$ .",
+        "incorrect": "$c$ الطرف الثاني للمعادلة الأولى."
+      }
+    }
+  ]
+}

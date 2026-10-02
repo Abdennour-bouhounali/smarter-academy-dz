@@ -1,0 +1,94 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l5-008",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — نابض وكتل",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "قراءة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-khatti_P2",
+      "modelledOn": "method-read"
+    }
+  },
+  "statement": {
+    "content": "تتناسب استطالة نابض $y$ (بالسنتيمتر) مع الكتلة المعلّقة به $x$ (بالغرام): $y = 0{,}3x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الكتلة التي تعطي استطالة $4{,}5$ cm (بالغرام):",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 3/4)",
+      "expectedAnswer": "15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد الذي صورته $b$ هو حل المعادلة $ax = b$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم الصورة على المعامل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق: اضرب العدد الذي وجدته في المعامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$4{,}5 \\div 0{,}3 = 15$ g.",
+        "incorrect": "ابحث عن العدد الذي صورته $4{,}5$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "استطالة النابض لكتلة 12 g (بالسنتيمتر):",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 3/4)",
+      "expectedAnswer": "3,6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد بالدالة الخطية $x \\longmapsto ax$ هي جداء هذا العدد في المعامل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب العدد في المعامل مع الانتباه إلى الإشارة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "النقطة التي فاصلتها هذا العدد وترتيبها صورته تنتمي إلى التمثيل."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}3 \\times 12 = 3{,}6$ cm.",
+        "incorrect": "احسب صورة 12."
+      }
+    }
+  ]
+}

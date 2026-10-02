@@ -239,6 +239,16 @@ error (ending the one-attempt question), and `TextbookExercise` used `Number()`
 sides: add fixture cases produced by executing the JS evaluator (never written
 by hand) and run `AnswerEvaluatorFixtureTest` in PHP.
 
+**Size bound (2026-10-02).** A `Rational` numerator or denominator may be any safe
+integer, up to 2⁵³ − 1 (`MAX_SAFE_COMPONENT` in `rational.js` and `Rational.php`).
+Cross-products and sums are computed exactly, in `BigInt` (JS) and `bcmath` (PHP), and a
+result whose terms leave the bound is `null`. Before this date the bound was
+⌊√(2⁵³ − 1)⌋ = 94 906 265, so a typed answer such as 132 000 000 (unit 6, ex-27: a flow
+in L/min) was a `syntax_error` and the bank had to make it a choice question. It is a typed
+`rational` again. An answer above 2⁵³ − 1 is still a `syntax_error`, and so is a decimal
+with more than 12 places. Fixtures: `rational-large-integer-*`,
+`rational-above-max-safe-integer-is-syntax-error`, `rational-max-safe-integer-is-read`.
+
 ## Exercise types the contract must support (not force into one component)
 
 Per the phase brief: multiple choice, numeric, fraction, algebra, ordering, matching, interactive manipulation, graphical, free response. The contract above only constrains the **validate → result** boundary — it says nothing about rendering, so `NumberLine`, `OrderingGame`, `InfoSorter`, `AnswerBuilder`, `GroupBuilder`, and free-form `MathInput` remain exactly as different as they need to be. What's shared is only: "however you validate, return `{isCorrect, fields?, feedback?}`."
@@ -394,6 +404,21 @@ of roots exactly and replays a modelling story by brute force; a typed inequalit
 the largest whole number of messages, the first whole number of sessions). A QCM item with two correct options
 (textbook « أؤكّد تعلّماتي » 5 and 7) becomes, in the bank, ONE choice whose options are combinations
 (« (1) و (3) »), and in a lesson a « يحقّق / لا يحقّق » batch.
+
+**Unit 5 « جمل معادلتين » (2026-10-01)** — four lessons × 50, 200 exercises, and the FIRST bank to use
+`answerType: "point"`: a system's solution is a ثنائية, typed in the textbook's order as
+`"expectedAnswer": { "x": "13", "y": "19" }` (exact fractions `"-1/2"`, `"68/19"`, decimals with a comma accepted
+through `Rational.parse`; one right number is `partially_correct`). The student types it in `PointInput`, whose
+row is isolated `dir="ltr"` since that day (an RTL flex row drew « ) y ; x ( »). `answerFormat` names the shape
+(« الثنائية (x ; y) ») and never the values. The oracle gives a point as `P(x, y)` and recomputes it with
+`solve2` (Cramer in exact rationals, `scripts/practice-oracle/helpers.mjs`, independent of
+`packages/core/arithmetic/linearSystem.js`) or by replaying the story by brute force; the oracle test checks that
+the content's key EQUALS the recomputed pair (not only that it is accepted). « Which system translates the story »
+items are `choice`, each option an equation re-read in the oracle (exactly one must give the story's pair); a
+textbook QCM with two or three correct options becomes ONE choice among combinations, and in a lesson a
+« صحيح / خاطئ » batch. In-lesson answers use `TextbookExercise`'s `interaction: 'pair'` (`PairQuestion`, same
+evaluator; `names: ['a', 'b']` for the textbook's (a ; b) and (d ; t)). New misconceptions: `MISC-JUMLA-*`,
+`MISC-TAWID-*`, `MISC-JAM-*`, `MISC-TAKHFID-NISBA` (`content/practice/misconceptions.json`).
 
 ## Non-textbook sources — worksheets (2026-09-24)
 

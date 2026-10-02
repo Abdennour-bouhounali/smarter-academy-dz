@@ -1,0 +1,122 @@
+{
+  "id": "ex-4am-tarrid-taalufi-l1-001",
+  "lessonCode": "tarrid-taalufi",
+  "level": 1,
+  "metadata": {
+    "title": "نشاط 4 (ص 79) — اشتراك المناصر",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نمذجة",
+      "صورة عدد"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-4",
+      "page": 79,
+      "section": "أنشطة",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 79): يدفع كل مناصر اشتراكا سنويا قدره 2000DA ، يضاف إليه 200DA عند كل دخول للملعب لمشاهدة مقابلة. نسمّي $x$ عدد المقابلات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المبلغ الإجمالي الذي يدفعه المناصر هو:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$f(x) = 200x + 2000$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$f(x) = 2000x + 200$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-JUZ-THABIT"
+        },
+        {
+          "id": "C",
+          "content": "$f(x) = 2200x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-JUZ-THABIT"
+        },
+        {
+          "id": "D",
+          "content": "$f(x) = 200x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-NISYAN-B"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الاشتراك يُدفع مرّة واحدة في الموسم."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثمن الدخول يُدفع عند كل مقابلة: $x$ مرّة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المبلغ = الجزء الثابت + ثمن الدخول × عدد المقابلات."
+        }
+      ],
+      "feedback": {
+        "correct": "الاشتراك 2000DA يُدفع مرّة واحدة، و 200DA تُدفع $x$ مرّة: $f(x) = 200x + 2000$ .",
+        "incorrect": "ما الذي يُدفع مرّة واحدة؟ وما الذي يُدفع عند كل مقابلة؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "إذا تابع مناصر 7 مقابلات خلال موسم رياضي، فما هو المبلغ الإجمالي (DA) الذي يدفعه؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "3400",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-NISYAN-B",
+          "value": "1400"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$f(x) = 200x + 2000$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بـ 7."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$200 \\times 7 + 2000$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(7) = 200 \\times 7 + 2000 = 3400$ DA.",
+        "incorrect": "احسب ثمن 7 مقابلات ثم أضف الاشتراك."
+      }
+    }
+  ]
+}

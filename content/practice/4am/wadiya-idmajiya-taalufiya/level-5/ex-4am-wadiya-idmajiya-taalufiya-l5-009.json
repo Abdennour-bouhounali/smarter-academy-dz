@@ -1,0 +1,157 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l5-009",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 5,
+  "metadata": {
+    "title": "دراجات: ثلاث صيغ ومجالات",
+    "estimatedMinutes": 6,
+    "tags": [
+      "ثلاث صيغ",
+      "متراجحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P2"
+    }
+  },
+  "statement": {
+    "content": "كراء دراجة: أ 100 DA للساعة؛ ب رسم ثابت 150 DA ثم 50 DA للساعة؛ جـ 400 DA جزافيا ( $x$ عدد الساعات)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نقطة تقاطع مستقيمي أ و ب:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y)",
+      "expectedAnswer": {
+        "x": "3",
+        "y": "300"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$100x = 50x + 150$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x = 3$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم الثمن."
+        }
+      ],
+      "feedback": {
+        "correct": "$(3 ; 300)$.",
+        "incorrect": "نقطة التقاطع."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5
+    },
+    {
+      "id": "q2",
+      "statement": "لـ 4 ساعات، الأرخص:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "أ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "B",
+          "content": "ب",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "جـ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "400 ، 350 ، 400."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الأصغر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بين التقاطعين."
+        }
+      ],
+      "feedback": {
+        "correct": "أ: 400 ، ب: 350 ، جـ: 400.",
+        "incorrect": "نحسب الأثمان الثلاثة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5
+    },
+    {
+      "id": "q3",
+      "statement": "ابتداء من كم ساعة كاملة تصبح جـ الأرخص وحدها؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$400 < 50x + 150$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x > 5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أصغر عدد طبيعي."
+        }
+      ],
+      "feedback": {
+        "correct": "$x > 5$ : ابتداء من 6 ساعات.",
+        "incorrect": "عند 5 ساعات ب و جـ متساويتان."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "5",
+          "id": "MISC-TARRID-TAFSIR"
+        }
+      ]
+    }
+  ]
+}

@@ -4,7 +4,7 @@ import { Search, X, SlidersHorizontal } from 'lucide-react';
 import { MASTERY_STATES } from '../../../lessons/common/components/LearningPointMastery';
 import { PRIMARY_FILTERS, SORTS, DEFAULT_VIEW, countAdvancedFilters } from '../progressionView';
 import { ACTIVITY_STATES, MASTERY_STATE_KEYS } from '../buildProgressionTree';
-import { bidi } from '../../../utils/bidi';
+import { mathToPlain } from '../../../utils/mathPlain';
 
 const FILTER_KEY = {
   all: 'progression.curriculum.filterAll',
@@ -156,7 +156,7 @@ export default function ProgressionToolbar({ view, onChange, fields, matched, to
               className="w-full min-h-[44px] px-3 rounded-xl border border-slate-200 bg-white text-sm text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
             >
               <option value="">{t('progression.curriculum.advancedAny')}</option>
-              {fields.map((f) => <option key={f.id} value={f.id}>{bidi(f.title)}</option>)}
+              {fields.map((f) => <option key={f.id} value={f.id}>{mathToPlain(f.title)}</option>)}
             </select>
           </label>
 
@@ -169,7 +169,7 @@ export default function ProgressionToolbar({ view, onChange, fields, matched, to
               className="w-full min-h-[44px] px-3 rounded-xl border border-slate-200 bg-white text-sm text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-60"
             >
               <option value="">{t('progression.curriculum.advancedAny')}</option>
-              {unitsOfField.map((u) => <option key={u.id} value={u.id}>{bidi(u.title)}</option>)}
+              {unitsOfField.map((u) => <option key={u.id} value={u.id}>{mathToPlain(u.title)}</option>)}
             </select>
           </label>
 

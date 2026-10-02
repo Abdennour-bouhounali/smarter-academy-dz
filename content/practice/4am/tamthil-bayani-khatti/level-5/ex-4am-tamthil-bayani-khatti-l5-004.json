@@ -1,0 +1,105 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l5-004",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 5,
+  "metadata": {
+    "title": "تمرين 30 (ص 75) — على طريقته",
+    "estimatedMinutes": 4,
+    "tags": [
+      "معامل",
+      "منحى"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-khatti_P1",
+      "modelledOn": "ex-30"
+    }
+  },
+  "statement": {
+    "content": "$f$ دالة خطية تحقّق، من أجل كل عدد $x$ : $f(x + 1) - f(x) = -0{,}4$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "معامل $f$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 3/4)",
+      "expectedAnswer": "-0,4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $f(t) = at$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر $a(x + 1) - ax$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يبقى $a$ وحده."
+        }
+      ],
+      "feedback": {
+        "correct": "$a(x + 1) - ax = a = -0{,}4$ .",
+        "incorrect": "الفرق لا يتعلّق بـ $x$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "تمثيل $f$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "يصعد من اليسار إلى اليمين",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-MUNHA"
+        },
+        {
+          "id": "B",
+          "content": "ينزل من اليسار إلى اليمين",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى إشارة المعامل $a$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المستقيم يشمل O دائمًا، ومنحاه تعيّنه إشارة $a$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تخيّل نقطة فاصلتها 1: ترتيبها $a$ ، فوق محور الفواصل أم تحته؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$-0{,}4 < 0$ : ينزل.",
+        "incorrect": "انظر إلى إشارة المعامل."
+      }
+    }
+  ]
+}

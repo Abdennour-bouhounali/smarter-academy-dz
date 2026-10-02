@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-tanasub-muamil-l1-010",
+  "lessonCode": "tanasub-muamil",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — نكمل بالعلاقة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "y = a × x"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-muamil_P3",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "في جدول تناسبية العلاقة بين السطرين هي $y = 4 \\times x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما قيمة $y$ من أجل $x = 7$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "28",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في جدول تناسبية نحصل على y بضرب x في المعامل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب المعامل $a = \\dfrac{y}{x}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $y = a \\times x$ ثم تحقّق على عمود من الجدول."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 4 \\times 7 = 28$ .",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "11",
+          "id": "MISC-TANASUB-FARQ-THABIT"
+        }
+      ]
+    }
+  ]
+}

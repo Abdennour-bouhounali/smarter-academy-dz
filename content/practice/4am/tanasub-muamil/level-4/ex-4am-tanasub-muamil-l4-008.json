@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-tanasub-muamil-l4-008",
+  "lessonCode": "tanasub-muamil",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — نبحث عن x",
+    "estimatedMinutes": 3,
+    "tags": [
+      "y = a × x"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-muamil_P3",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "في جدول تناسبية العلاقة بين السطرين هي $y = 1{,}25 \\times x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما قيمة $x$ التي يقابلها $y = 20$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "16",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هنا السطر الثاني معلوم والأول مجهول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "من $y = a \\times x$ نجد $x = y \\div a$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على المعامل، ثم تحقّق بالضرب."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 20 \\div 1{,}25 = 16$ ، وتحقّق: $1{,}25 \\times 16 = 20$ .",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "25",
+          "id": "MISC-TANASUB-MUAMIL-MAQLUB"
+        }
+      ]
+    }
+  ]
+}

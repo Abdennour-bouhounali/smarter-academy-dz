@@ -1,0 +1,81 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l2-004",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — جدول وعبارة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تعيين دالة تآلفية",
+      "جدول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "$f$ دالة تآلفية: $\\begin{array}{|c|c|c|} \\hline x & 0 & 4 \\\\ \\hline f(x) & -3 & 5 \\\\ \\hline \\end{array}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عبارة $f(x)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$f(x) = 8x - 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-BIDUN-QISMA"
+        },
+        {
+          "id": "B",
+          "content": "$f(x) = -3x + 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-A-B-MAQLUB"
+        },
+        {
+          "id": "C",
+          "content": "$f(x) = 2x - 3$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$f(x) = 2x + 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-B-NISBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$f(0) = b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a = \\dfrac{5 - (-3)}{4 - 0}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بـ $f(4)$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = -3$ و $a = \\dfrac{8}{4} = 2$ .",
+        "incorrect": "عوّض 0 و 4 في كل عبارة."
+      }
+    }
+  ]
+}

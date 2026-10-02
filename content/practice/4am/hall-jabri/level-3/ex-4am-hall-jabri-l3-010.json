@@ -1,0 +1,114 @@
+{
+  "id": "ex-4am-hall-jabri-l3-010",
+  "lessonCode": "hall-jabri",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — مجهول معطى بدلالة الآخر",
+    "estimatedMinutes": 4,
+    "tags": [
+      "اختيار الطريقة",
+      "التعويض"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hall-jabri_P3",
+      "modelledOn": "ex-10"
+    }
+  },
+  "statement": {
+    "content": "الجملة $\\begin{cases} x = 3y - 2 \\\\ 5x - 4y = 23 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أنسب طريقة، مع سببها الصحيح:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "التعويض، لأنّ $x$ معبّر عنه بدلالة $y$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الجمع مباشرة، لأنّ معاملي $y$ متعاكسان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        },
+        {
+          "id": "C",
+          "content": "الجمع مباشرة، لأنّ معاملي $x$ متعاكسان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ المعاملات قبل أن تبدأ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل يساوي $1$ أو $-1$ يسهّل التعويض؛ معاملان متعاكسان (أو يصيران كذلك بضرب بسيط) يسهّلان الجمع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد إيجاد مجهول، عوّض قيمته لتجد الآخر، ثم تحقّق من الثنائية في المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "العبارة $3y - 2$ جاهزة. معاملا $y$ هما $-3$ و $-4$ ، ومعاملا $x$ هما $1$ و $5$ : لا تعاكس.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "7",
+        "y": "3"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ المعاملات قبل أن تبدأ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل يساوي $1$ أو $-1$ يسهّل التعويض؛ معاملان متعاكسان (أو يصيران كذلك بضرب بسيط) يسهّلان الجمع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد إيجاد مجهول، عوّض قيمته لتجد الآخر، ثم تحقّق من الثنائية في المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$5(3y - 2) - 4y = 23$ أي $11y = 33$ ، ومنه $y = 3$ و $x = 7$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

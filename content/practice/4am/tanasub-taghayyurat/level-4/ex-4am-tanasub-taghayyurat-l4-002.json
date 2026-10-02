@@ -1,0 +1,92 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l4-002",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — شمعة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "معامل سالب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "شمعة تحترق بانتظام: بعد ساعتين طولها 17cm وبعد 5 ساعات طولها 11cm . الطول دالة تآلفية للزمن."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعامل $a$ (cm للساعة):",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "-2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطول ينقص."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{11 - 17}{5 - 2}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحاصل سالب."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{-6}{3} = -2$ : تنقص 2cm كل ساعة.",
+        "incorrect": "فرق الطولين سالب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "طول الشمعة قبل إشعالها (cm):",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "21",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطول عند الزمن 0 هو $b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$b = 17 - (-2) \\times 2$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$17 + 4$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = 17 + 4 = 21$ cm.",
+        "incorrect": "الطول الأوّلي هو صورة 0 ."
+      }
+    }
+  ]
+}

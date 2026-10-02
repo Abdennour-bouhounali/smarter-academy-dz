@@ -1,0 +1,69 @@
+{
+  "id": "ex-4am-tanasub-muamil-l3-005",
+  "lessonCode": "tanasub-muamil",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — معامل سالب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "أعداد نسبية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-muamil_P1",
+      "modelledOn": "prep"
+    }
+  },
+  "statement": {
+    "content": "الجدول الآتي جدول تناسبية: $\\begin{array}{|c|c|c|c|} \\hline x & -2 & 4 & 6 \\\\ \\hline y & 5 & -10 & -15 \\\\ \\hline \\end{array}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هو معامل التناسبية؟",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "-2,5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل التناسبية هو العدد الذي نضرب فيه أعداد السطر الأول لنحصل على أعداد السطر الثاني."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم عددا من السطر الثاني على العدد المقابل له من السطر الأول: $\\dfrac{y}{x}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق أنّ حاصل القسمة هو نفسه في عمود آخر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{5}{-2} = \\dfrac{-10}{4} = \\dfrac{-15}{6} = -2{,}5$ .",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "2,5",
+          "id": "MISC-TANASUB-MUAMIL-MAQLUB"
+        },
+        {
+          "value": "-2/5",
+          "id": "MISC-TANASUB-MUAMIL-MAQLUB"
+        }
+      ]
+    }
+  ]
+}

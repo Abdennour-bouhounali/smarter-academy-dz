@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-tarrid-taalufi-l4-006",
+  "lessonCode": "tarrid-taalufi",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — نموذج خاطئ",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نمذجة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-taalufi_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "كراء طاولة بينغ بونغ: 400DA تُدفع مرّة واحدة لليوم، ثم 100DA لكل ساعة. كتب أربعة تلاميذ المبلغ بدلالة عدد الساعات $x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ تلميذ أخطأ؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "مراد: $f(x) = 100x + 400$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-JUZ-THABIT"
+        },
+        {
+          "id": "B",
+          "content": "هند: $f(x) = 400 + 100x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-A-B-MAQLUB"
+        },
+        {
+          "id": "C",
+          "content": "يونس: $f(x) = 400x + 100$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجزء الثابت يُدفع مرّة واحدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ترتيب الحدّين لا يغيّر العبارة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن العبارة التي يُضرب فيها 400 في $x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "يونس ضرب الجزء الثابت 400 في $x$ : كأن الرسم يُدفع كل ساعة. أما $100x + 400$ و $400 + 100x$ فهما العبارة نفسها.",
+        "incorrect": "أيّ عبارة تجعل 400DA تُدفع $x$ مرّة؟"
+      }
+    }
+  ]
+}

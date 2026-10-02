@@ -1,0 +1,114 @@
+{
+  "id": "ex-4am-hall-jabri-l4-003",
+  "lessonCode": "hall-jabri",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 22 — أعداد عشرية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "اختيار الطريقة",
+      "أعداد عشرية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-22",
+      "page": 63,
+      "section": "أتعمّق",
+      "number": 22
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 63): حل الجملة الآتية باستعمال طريقة من اختيارك. $\\begin{cases} 8x + 3y = 39{,}5 \\\\ 7x + 9y = 50{,}5 \\end{cases}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "طريقة مناسبة، مع سببها الصحيح:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الجمع بعد ضرب الأولى في $-3$ ، لأنّ $-9y$ و $9y$ يصيران متعاكسين",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "التعويض، لأنّ معامل $x$ في الأولى يساوي $1$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "الجمع مباشرة، لأنّ معاملي $y$ متعاكسان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ المعاملات قبل أن تبدأ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل يساوي $1$ أو $-1$ يسهّل التعويض؛ معاملان متعاكسان (أو يصيران كذلك بضرب بسيط) يسهّلان الجمع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد إيجاد مجهول، عوّض قيمته لتجد الآخر، ثم تحقّق من الثنائية في المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "لا معامل 1 هنا؛ $3y \\times (-3) = -9y$ يعاكس $9y$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "4",
+        "y": "5/2"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ المعاملات قبل أن تبدأ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل يساوي $1$ أو $-1$ يسهّل التعويض؛ معاملان متعاكسان (أو يصيران كذلك بضرب بسيط) يسهّلان الجمع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد إيجاد مجهول، عوّض قيمته لتجد الآخر، ثم تحقّق من الثنائية في المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$-24x - 9y = -118{,}5$ ، وبالجمع $-17x = -68$ ، ومنه $x = 4$ ثم $y = 2{,}5$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

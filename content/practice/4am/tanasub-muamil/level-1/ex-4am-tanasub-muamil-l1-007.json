@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-tanasub-muamil-l1-007",
+  "lessonCode": "tanasub-muamil",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — رصيد الإنترنت",
+    "estimatedMinutes": 3,
+    "tags": [
+      "إنترنت"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-muamil_P2",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "باقة إنترنت للهاتف: كل $1$Go بـ 100DA ، دون أي مبلغ ثابت."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ثمن 3Go بالدينار:",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "300",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجدول جدول تناسبية: نضرب في المعامل، ولا نضيف الفرق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب معامل التناسبية من عمود كامل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب العدد المعلوم في المعامل، أو استعمل تساوي الجداءين المتصالبين."
+        }
+      ],
+      "feedback": {
+        "correct": "$3 \\times 100 = 300$ DA.",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل ثمن الباقة متناسب مع عدد الـ Go ؟",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، ومعامل التناسبية 100",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا، لأنّ الثمن يزداد",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "لا يمكن أن نعرف",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لا يكفي أن يزداد y كلما ازداد x."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب حاصل القسمة $\\dfrac{y}{x}$ في كل عمود وقارن."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يكفي عمودان حاصلا قسمتهما مختلفان لنقول إنّ الوضعية ليست تناسبية؛ وانتبه إلى المبلغ الثابت."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{100}{1} = \\dfrac{200}{2} = \\dfrac{300}{3} = 100$ : الثمن متناسب مع عدد الـ Go.",
+        "incorrect": "احسب حاصل القسمة في كل عمود قبل أن تحكم: الزيادة وحدها لا تكفي."
+      }
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-mafhum-jumla-l5-008",
+  "lessonCode": "mafhum-jumla",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — جملة بوسيط k",
+    "estimatedMinutes": 5,
+    "tags": [
+      "حالات خاصة",
+      "وسيط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mafhum-jumla_P4",
+      "modelledOn": "know-cases"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الجملة $\\begin{cases} x + y = 3 \\\\ x + y = k \\end{cases}$ حيث $k$ عدد معلوم."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما قيمة $k$ التي تجعل للجملة عددًا غير منته من الحلول؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطرفان الأولان متساويان: $x + y$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تكون المعادلتان معادلة واحدة إذا تساوى الطرفان الثانيان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن $k$ بالعدد 3."
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل $k = 3$ المعادلتان معادلة واحدة $x + y = 3$ : حلول لا تنتهي.",
+        "incorrect": "المعادلتان يجب أن تكونا متطابقتين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ومن أجل $k = 5$ ، الجملة ...",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لها حل وحيد",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-HALAT"
+        },
+        {
+          "id": "B",
+          "content": "ليس لها حلول",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "لها عدد غير منته من الحلول",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-HALAT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x + y = 3$ و $x + y = 5$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العبارة نفسها تساوي عددين مختلفين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل يمكن ذلك؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$x + y$ لا يساوي 3 و 5 في آن واحد: ليس لها حلول.",
+        "incorrect": "عددان مختلفان لا يساويان العبارة نفسها."
+      }
+    }
+  ]
+}

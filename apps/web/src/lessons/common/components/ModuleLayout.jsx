@@ -14,7 +14,7 @@ import { useClassroomMode, useClassroomStage, ClassroomEntryButton, ClassroomFra
 import MathLabEntryButton from '../../../features/mathlab/overlay/MathLabEntryButton';
 import { useContentAvailability } from '../../../context/ContentAvailabilityContext';
 import PremiumLessonLocked from './PremiumLessonLocked';
-import { bidi } from '../../../utils/bidi';
+import MathLabel from './MathLabel';
 
 /**
  * ModuleLayout — shared layout wrapper for every lesson module.
@@ -256,7 +256,7 @@ export default function ModuleLayout({
             crumbs={(
               <nav className="flex flex-wrap items-center gap-2 text-xs font-mono text-slate-500 mb-8">
                 <Link to={coursePath} className="hover:text-blue-600">{courseTitle}</Link>
-                {moduleTitle ? <><span>/</span><span className="text-slate-900 font-semibold">{bidi(moduleTitle)}</span></> : null}
+                {moduleTitle ? <><span>/</span><span className="text-slate-900 font-semibold"><MathLabel>{moduleTitle}</MathLabel></span></> : null}
               </nav>
             )}
           />
@@ -349,7 +349,7 @@ export default function ModuleLayout({
             <Link to={coursePath} className="hover:text-blue-600">{courseTitle}</Link>
             <span aria-hidden="true">/</span>
             <span className="text-slate-900 font-semibold" aria-current="page">
-              {String(moduleNumber).padStart(2, '0')}. {bidi(moduleTitle)}
+              {String(moduleNumber).padStart(2, '0')}. <MathLabel>{moduleTitle}</MathLabel>
             </span>
           </nav>
 
@@ -422,9 +422,9 @@ export default function ModuleLayout({
             <span aria-hidden="true">⏱️</span>
             {estimatedTime || `5 ${t('nav.minutesShort')}`} · {t('nav.module')} {moduleNumber}
           </div>
-          <h1 className="text-3xl font-space font-extrabold text-slate-900">{bidi(moduleTitle)}</h1>
+          <h1 className="text-3xl font-space font-extrabold text-slate-900"><MathLabel>{moduleTitle}</MathLabel></h1>
           <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto">
-            {bidi(moduleSubtitle)}
+            <MathLabel>{moduleSubtitle}</MathLabel>
           </p>
         </header>}
 
@@ -588,7 +588,7 @@ function IncompleteStepsHint({ label, icon, incompleteSteps, onStepClick }) {
                     }}
                     className="w-full text-start px-3 py-2 rounded-lg bg-white border border-amber-200 text-xs font-semibold text-amber-900 hover:border-amber-400 hover:bg-amber-100 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
                   >
-                    {t('step.label')} {step.num} — {bidi(step.title)}
+                    {t('step.label')} {step.num} — <MathLabel>{step.title}</MathLabel>
                   </button>
                 </li>
               ))}

@@ -1,0 +1,106 @@
+{
+  "id": "ex-4am-tamthil-bayani-taalufi-l2-001",
+  "lessonCode": "tamthil-bayani-taalufi",
+  "level": 2,
+  "metadata": {
+    "title": "b سالب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الترتيب عند المبدأ"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-taalufi_P1"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الدالة التآلفية $f : x \\longmapsto 3x - 2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النقطة التي يقطع فيها التمثيل البياني محور التراتيب:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "0",
+        "y": "-2"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد $0$ يعطي مباشرة نقطة المستقيم على محور التراتيب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $f(0)$ ثم صورة عدد آخر تختاره."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نقطتان تكفيان لرسم المستقيم؛ تحقّق أنّ كل نقطة ترتيبها صورة فاصلتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(0) = -2$ : النقطة $(0 ; -2)$ .",
+        "incorrect": "النقطة على محور التراتيب فاصلتها $0$ ، وترتيبها $f(0)$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل النقطة $(1 ; 1)$ تنتمي إلى التمثيل البياني؟",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-NISYAN-B"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نقطة من التمثيل ترتيبها صورة فاصلتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب صورة $1$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن الصورة بترتيب النقطة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(1) = 1$ وهو ترتيبها: تنتمي.",
+        "incorrect": "احسب صورة الفاصلة وقارنها بالترتيب."
+      }
+    }
+  ]
+}

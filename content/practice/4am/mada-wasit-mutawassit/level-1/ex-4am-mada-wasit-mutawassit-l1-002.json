@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l1-002",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 1,
+  "metadata": {
+    "title": "أستعدّ 1 (ص 91) — متوسط أربعة أعداد",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متوسط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "prep",
+      "page": 91,
+      "section": "أستعدّ",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 91): السلسلة $3$ ، $-3$ ، $4$ ، $-2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "متوسط هذه السلسلة هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "0,5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT",
+          "value": "1"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع القيم الأربع مع الانتباه إلى الإشارات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم اقسم على 4."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3 + (-3) + 4 + (-2)}{4} = \\dfrac{2}{4} = 0{,}5$ .",
+        "incorrect": "المجموع $2$ والعدد $4$."
+      }
+    }
+  ]
+}

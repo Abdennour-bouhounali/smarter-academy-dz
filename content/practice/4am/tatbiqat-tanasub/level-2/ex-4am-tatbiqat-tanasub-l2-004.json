@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l2-004",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 5 — الماء يتجمّد",
+    "estimatedMinutes": 3,
+    "tags": [
+      "زيادة",
+      "الدالة المرفقة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-5",
+      "page": 72,
+      "section": "أوظّف تعلّماتي",
+      "number": 5
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 72): عندما يتجمد الماء يزداد حجمه بنحو 8%. 1) في أي عدد يجب ضرب حجم الماء للحصول على حجم الجليد؟ 2) نسمي $f$ الدّالة التي ترفق بكل $x$ سنتيمتر مكعب من الماء الحجم $f(x)$ للجليد الناتج. هل $f$ دالة خطية؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "1) العدد الذي نضرب فيه حجم الماء:",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "1,08",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد: هل نأخذ نسبة من المقدار، أم نزيده، أم نخفّضه؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الزيادة بـ $t\\%$ ضرب في $1 + \\dfrac{t}{100}$ ، والتخفيض ضرب في $1 - \\dfrac{t}{100}$ ، والأخذ ضرب في $\\dfrac{t}{100}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب المضاعف أولًا، ثم اضرب فيه المقدار، وتحقّق أنّ النتيجة معقولة (أكبر بعد زيادة، أصغر بعد تخفيض)."
+        }
+      ],
+      "feedback": {
+        "correct": "$1 + \\dfrac{8}{100} = 1{,}08$ .",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "2) الدالة $f$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "دالة خطية: $f(x) = 1{,}08x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "دالة خطية: $f(x) = 0{,}08x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
+        },
+        {
+          "id": "C",
+          "content": "ليست خطية: $f(x) = x + 8$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-JAM"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد: هل نأخذ نسبة من المقدار، أم نزيده، أم نخفّضه؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الزيادة بـ $t\\%$ ضرب في $1 + \\dfrac{t}{100}$ ، والتخفيض ضرب في $1 - \\dfrac{t}{100}$ ، والأخذ ضرب في $\\dfrac{t}{100}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب المضاعف أولًا، ثم اضرب فيه المقدار، وتحقّق أنّ النتيجة معقولة (أكبر بعد زيادة، أصغر بعد تخفيض)."
+        }
+      ],
+      "feedback": {
+        "correct": "حجم الجليد هو حجم الماء مضروبًا في $1{,}08$ مهما كان $x$ : $f(x) = 1{,}08x$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

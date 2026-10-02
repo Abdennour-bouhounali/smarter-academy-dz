@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l1-004",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — التواتر",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تواتر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "سجّل نادي البيئة نوع النفايات التي جُمعت في حملة: 24 كيسا، منها 6 أكياس من العلب المعدنية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما تواتر العلب المعدنية (عدد عشري)؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "0,25",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-TAWATUR-BILA-QISMA",
+          "value": "6"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التواتر = التكرار ÷ التكرار الكلي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التكرار الكلي 24."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$6 \\div 24$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{6}{24} = 0{,}25$ .",
+        "incorrect": "اقسم 6 على 24."
+      },
+      "difficulty": 1
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l1-001",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 1,
+  "metadata": {
+    "title": "نشاط 4 (ص 79) — حاصلا قسمة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تناسب التغيرات"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-4",
+      "page": 79,
+      "section": "أنشطة",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 79): $f$ هي الدالة التآلفية حيث $f(x) = 200x + 2000$ (المبلغ الذي يدفعه مناصر تابع $x$ مقابلة)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $\\dfrac{f(4) - f(1)}{4 - 1}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "200",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب صورتي 4 و 1 بالعبارة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح الصورتين ثم اقسم على $4 - 1$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "فرق الصورتين على فرق العددين."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{2800 - 2200}{3} = \\dfrac{600}{3} = 200$ .",
+        "incorrect": "لا تنسَ القسمة على $4 - 1 = 3$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $\\dfrac{f(6) - f(4)}{6 - 4}$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "200",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $f(6)$ بالعبارة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح $f(4)$ ثم اقسم على $6 - 4$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن بالحاصل السابق."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3200 - 2800}{2} = \\dfrac{400}{2} = 200$ .",
+        "incorrect": "فرق الصورتين 400 ، وفرق العددين 2 ."
+      }
+    }
+  ]
+}

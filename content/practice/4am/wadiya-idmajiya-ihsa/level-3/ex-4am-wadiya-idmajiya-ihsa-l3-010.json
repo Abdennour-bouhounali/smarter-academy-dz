@@ -1,0 +1,101 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l3-010",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 3,
+  "metadata": {
+    "title": "الألعاب المدرسية: من دون ميدالية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نسبة مئوية",
+      "تحرير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P3"
+    }
+  },
+  "statement": {
+    "content": "في الألعاب المدرسية، فاز 15 تلميذا من متوسطتنا بميدالية، وهم يمثّلون 60% من تلاميذها المشاركين."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم تلميذا من المتوسطة شارك في الألعاب؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "25",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "15 جزء."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$0{,}6 \\times T = 15$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على $0{,}6$."
+        }
+      ],
+      "feedback": {
+        "correct": "$T = \\dfrac{15}{0{,}6} = 25$.",
+        "incorrect": "نقسم الجزء على النسبة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "9",
+          "id": "MISC-IHSA-NISBA-MIN-ADAD"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "كم مشاركا من المتوسطة لم يفز بميدالية؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الكل ناقص الجزء."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل عدد المشاركين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح."
+        }
+      ],
+      "feedback": {
+        "correct": "$25 - 15 = 10$.",
+        "incorrect": "نطرح الفائزين من كل المشاركين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ]
+}

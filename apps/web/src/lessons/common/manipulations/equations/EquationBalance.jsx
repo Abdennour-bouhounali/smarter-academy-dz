@@ -70,6 +70,18 @@ const PW = 200; // largeur d'un plateau
 const CX = { L: PIVOT - ARM, R: PIVOT + ARM };
 const KINDS = ['bag', 'anti', 'ball', 'balloon'];
 
+/**
+ * La géométrie du fléau pour un déplacement s des plateaux (s > 0 : le plateau GAUCHE descend
+ * de s, le droit monte de s). En SVG un angle positif tourne dans le sens horaire et abaisse
+ * l'extrémité DROITE : le fléau prend donc −atan(s / ARM), pour que chaque extrémité suive sa
+ * tige (ARM·sin θ ≈ s). Le signe a été inversé à la première version (vu par le propriétaire).
+ */
+export function beamGeometry(s) {
+  const angle = -(Math.atan2(s, ARM) * 180) / Math.PI;
+  const rad = (angle * Math.PI) / 180;
+  return { angle, leftEndDy: -ARM * Math.sin(rad), rightEndDy: ARM * Math.sin(rad) };
+}
+
 /** La place de chaque objet sur un plateau (coordonnées locales : origine au centre du plateau, y vers le haut négatif). */
 export function layoutPan(c) {
   const ground = [
@@ -278,7 +290,7 @@ export default function EquationBalance({
   const diff = B.toNumber(B.weight(lab, 'L')) - B.toNumber(B.weight(lab, 'R'));
   const s = tilt === 0 ? 0 : Math.sign(diff) * Math.min(SWING, 9 + Math.abs(diff) * 1.5);
   const py = { L: plateY + s, R: plateY - s };
-  const angle = (Math.atan2(2 * s, 2 * ARM) * 180) / Math.PI;
+  const { angle } = beamGeometry(s);
 
   const boxOf = (sd, kind) => {
     const items = [...lay[sd].ground, ...lay[sd].float].filter((it) => it.kind === kind || it.kind === `part${kind[0].toUpperCase()}${kind.slice(1)}`);

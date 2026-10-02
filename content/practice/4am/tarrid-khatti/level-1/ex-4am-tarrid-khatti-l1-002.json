@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tarrid-khatti-l1-002",
+  "lessonCode": "tarrid-khatti",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — جدول تناسبية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جدول تناسبية",
+      "دالة خطية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P1",
+      "modelledOn": "method-spring"
+    }
+  },
+  "statement": {
+    "content": "جدول: $x$ : 2 ، 5 ، 8 ؛ $y$ : 14 ، 35 ، 56 ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل الجدول جدول تناسبية؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا، لأن الفرق بين قيمتين متتاليتين ليس ثابتا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TANASUB-FARQ-THABIT"
+        },
+        {
+          "id": "B",
+          "content": "نعم، ومعامله $7$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "نعم، ومعامله $\\dfrac{1}{7}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TANASUB-MUAMIL-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $\\dfrac{y}{x}$ لكل عمود."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{14}{2}$ ، $\\dfrac{35}{5}$ ، $\\dfrac{56}{8}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعامل يحوّل السطر الأول إلى الثاني."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{14}{2} = \\dfrac{35}{5} = \\dfrac{56}{8} = 7$ .",
+        "incorrect": "نقسم $y$ على $x$ ، لا العكس."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نمذج الجدول بالدالة $f(x) = 7x$ . احسب صورة 10 .",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "70",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ 10 ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$f(10) = 7 \\times 10$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الصورة على السطر الثاني."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(10) = 70$ .",
+        "incorrect": "الصورة هي $7 \\times 10$ ."
+      }
+    }
+  ]
+}

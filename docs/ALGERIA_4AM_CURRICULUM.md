@@ -72,7 +72,8 @@ n'entre pas dans la 4AM, même s'il en est mathématiquement proche.
 > **Placement (décision du propriétaire, 2026-10-01).** Les sujets 3.1 et 3.2 sont enseignés par l'unité 3
 > du manuel « الحساب الحرفي », que le propriétaire a placée sous « ميدان أنساب الأعداد والحساب » (comme
 > les unités 1 et 2) ; les sujets 3.3, 3.4 et 3.5 par l'unité 4 « معادلات ومتراجحات من الدرجة الأولى بمجهول
-> واحد », placée de même (2026-10-01). Le catalogue garde ces sujets comme source (traçabilité) et l'unité déclare l'écart
+> واحد », placée de même (2026-10-01) ; le sujet 3.6 par l'unité 5 « جمل معادلتين من الدرجة الأولى بمجهولين »,
+> placée de même (2026-10-01). Le catalogue garde ces sujets comme source (traçabilité) et l'unité déclare l'écart
 > (`units_4am_2026_2027.json › placement`).
 
 | # | الموضوع | Décomposition en LP | Dépendances | Statut |
@@ -82,10 +83,10 @@ n'entre pas dans la 4AM, même s'il en est mathématiquement proche.
 | 3.3 | حل معادلات من الدرجة الأولى بمجهول واحد | Unité 4 du manuel (2026-10-01) : `muadala-ula` (2 LP) et `tarrid-mushkila` « ترييض مشكلة » (2 LP), LP fournis par le propriétaire | 3.1 | **BUILT** |
 | 3.4 | المعادلات جذاء معدوم | Unité 4 : `jidaa-maadum` (3 LP) | 3.2, 3.3 | **BUILT** |
 | 3.5 | حل متراجحات من الدرجة الأولى بمجهول واحد وتمثيلها بيانيا | Unité 4 : `mutarajiha-ula` (3 LP — les deux gestes du sujet : la résolution, P2, et la représentation graphique, P3) + la synthèse `wadiya-idmajiya-muadalat` (2 LP) | 3.3 | **BUILT** |
-| 3.6 | جمل معادلتين من الدرجة الأولى بمجهولين : طريقة التعويض · طريقة الجمع | **Deux LP au moins, nommés par le programme** : طريقة التعويض, طريقة الجمع | 3.3 | NOT STARTED |
-| 3.7 | الدوال الخطية | `À DÉCOMPOSER` | 3.1 | NOT STARTED |
-| 3.8 | الدوال التآلفية | `À DÉCOMPOSER` | 3.7 | NOT STARTED |
-| 3.9 | التمثيل البياني | `À DÉCOMPOSER` — son rattachement (aux fonctions seules, ou aussi aux inéquations de 3.5) `[À VÉRIFIER DANS LE PROGRAMME OFFICIEL]` | 3.7, 3.8 | NOT STARTED |
+| 3.6 | جمل معادلتين من الدرجة الأولى بمجهولين : طريقة التعويض · طريقة الجمع | Unité 5 du manuel (2026-10-01) : `mafhum-jumla` (4 LP), `hall-jabri` (3 LP — P1 طريقة التعويض, P2 طريقة الجمع, P3 le choix), `mushkilat-jumla` (2 LP) + la synthèse `wadiya-idmajiya-jumal` (2 LP), LP fournis par le propriétaire | 3.3 | **BUILT** |
+| 3.7 | الدوال الخطية | Unité 6 du manuel « الدالة الخطية والتناسبية » (2026-10-02), rangée par le propriétaire sous un ميدان d'AFFICHAGE « ميدان التناسبية والدوال » (`units › ownerChapters` ; `placement.programmeDomainId: hisab_harfi`) : `tanasub-muamil`, `dala-khattiya`, `tamthil-bayani-khatti`, `tatbiqat-tanasub`, `tarrid-khatti` (3 LP chacune) + la synthèse `wadiya-idmajiya-khattiya` (3 LP), LP fournis par le propriétaire. La représentation graphique d'une fonction LINÉAIRE y est enseignée (`tamthil-bayani-khatti`) ; 3.8 et 3.9 restent ouverts | 3.1 | **BUILT** |
+| 3.8 | الدوال التآلفية | Unité 7 du manuel « الدالة التآلفية » (2026-10-02, pp. 77–79 fournies), même ميدان d'AFFICHAGE que l'unité 6 (`placement.programmeDomainId: hisab_harfi`) : `mafhum-taalufiya` (4 LP), `tanasub-taghayyurat` (2 LP), `tafsir-bayani-jumla` (3 LP — l'interprétation graphique d'une جملة, lien avec 3.6), `tarrid-taalufi` (2 LP) + la synthèse `wadiya-idmajiya-taalufiya` (2 LP), LP fournis par le propriétaire | 3.7 | **BUILT** |
+| 3.9 | التمثيل البياني | Unité 7 : `tamthil-bayani-taalufi` (3 LP, `sourceTopicId: tamthil_bayani`) — la représentation graphique d'une fonction affine et sa lecture ; celle d'une fonction linéaire est en 3.7 (`tamthil-bayani-khatti`), celle des solutions d'une inéquation en 3.5. Le rattachement exact du sujet reste `[À VÉRIFIER DANS LE PROGRAMME OFFICIEL]` | 3.7, 3.8 | **BUILT** (fonctions) |
 
 ---
 
@@ -104,17 +105,25 @@ n'entre pas dans la 4AM, même s'il en est mathématiquement proche.
 
 ## 5. ميدان تنظيم المعطيات — الإحصاء
 
+Unité 8 du manuel « الإحصاء » (2026-10-02, pp. 91–101 fournies, unité complète), rangée par le propriétaire sous le ميدان
+d'AFFICHAGE « ميدان التناسبية والدوال » après l'unité 7 (`units › ownerChapters` ; `placement.programmeDomainId: tanzim_al_muatayat`),
+code `ihsa`, cinq leçons dont les intitulés, les LP (les « كفاءات ») et les prérequis sont fournis par le propriétaire :
+`takrar-mujamma` (3 LP), `mada-wasit-mutawassit` (3 LP), `majdulat-ihsaiya` « استعمال المجدولات » (3 LP), `qiraat-wadiyat-ihsaiya`
+« ترييض وقراءة وضعيات إحصائية » (3 LP) + la synthèse `wadiya-idmajiya-ihsa` (3 LP). Une leçon ne porte qu'UN `sourceTopicId` :
+l'unité déclare les quatre sujets portés par ses leçons (5.1, 5.4, 5.6, 5.9) ; les cinq autres sont enseignés DANS ces leçons
+(le manuel les traite ensemble) sans en être le sujet de rattachement.
+
 | # | الموضوع | Décomposition en LP | Dépendances | Statut |
 |---|---|---|---|---|
-| 5.1 | سلسلة إحصائية ذات فئات | `À DÉCOMPOSER` | aucune intra-programme | NOT STARTED |
-| 5.2 | حساب التكرار | `À DÉCOMPOSER` | 5.1 | NOT STARTED |
-| 5.3 | التكرار النسبي | `À DÉCOMPOSER` | 5.2 | NOT STARTED |
-| 5.4 | التكرار المجمع الصاعد | `À DÉCOMPOSER` | 5.2 | NOT STARTED |
-| 5.5 | التكرار المجمع النازل | `À DÉCOMPOSER` | 5.2 | NOT STARTED |
-| 5.6 | الوسط الحسابي / المعدل | `À DÉCOMPOSER` | 5.2 | NOT STARTED |
-| 5.7 | التواتر | `À DÉCOMPOSER` — sa distinction d'avec التكرار النسبي (5.3) `[À VÉRIFIER DANS LE PROGRAMME OFFICIEL]` | 5.2 | NOT STARTED |
-| 5.8 | المدى | `À DÉCOMPOSER` | 5.1 | NOT STARTED |
-| 5.9 | الوسيط لسلسلة إحصائية | `À DÉCOMPOSER` | 5.1 | NOT STARTED |
+| 5.1 | سلسلة إحصائية ذات فئات | Unité 8 : `majdulat-ihsaiya` (`sourceTopicId: silsila_fiat` — saisir, résumer et représenter une série, l'histogramme d'une série en classes) ; les classes sont aussi travaillées dans `takrar-mujamma` (طرائق) et `mada-wasit-mutawassit` (مراكز الفئات, الفئة الوسيطية) | aucune intra-programme | **BUILT** |
+| 5.2 | حساب التكرار | enseigné dans `takrar-mujamma` (tableaux d'effectifs, prérequis de l'unité) | 5.1 | **BUILT** (sans leçon propre) |
+| 5.3 | التكرار النسبي | enseigné dans `takrar-mujamma` P2 | 5.2 | **BUILT** (sans leçon propre) |
+| 5.4 | التكرار المجمع الصاعد | Unité 8 : `takrar-mujamma` (`sourceTopicId: takrar_mujamma_saaid`, P1) | 5.2 | **BUILT** |
+| 5.5 | التكرار المجمع النازل | `takrar-mujamma` P1 (le manuel les définit ensemble, p. 94) | 5.2 | **BUILT** (sans leçon propre) |
+| 5.6 | الوسط الحسابي / المعدل | Unité 8 : `qiraat-wadiyat-ihsaiya` (`sourceTopicId: wast_hisabi` — interpréter et comparer par les indicateurs, la moyenne de groupes réunis du تحدّ) ; le calcul de la moyenne pondérée est `mada-wasit-mutawassit` P2 | 5.2 | **BUILT** |
+| 5.7 | التواتر | `takrar-mujamma` P2 — le manuel tranche : « نسمي أيضا كل تكرار نسبي تواترا » (p. 94), donc التواتر = التكرار النسبي dans le manuel | 5.2 | **BUILT** (sans leçon propre) |
+| 5.8 | المدى | `mada-wasit-mutawassit` P1 | 5.1 | **BUILT** (sans leçon propre) |
+| 5.9 | الوسيط لسلسلة إحصائية | Unité 8 : `mada-wasit-mutawassit` (`sourceTopicId: wasit`, P3) + la synthèse `wadiya-idmajiya-ihsa` | 5.1 | **BUILT** |
 
 ---
 

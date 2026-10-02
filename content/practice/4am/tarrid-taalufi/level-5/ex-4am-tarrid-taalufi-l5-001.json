@@ -1,0 +1,98 @@
+{
+  "id": "ex-4am-tarrid-taalufi-l5-001",
+  "lessonCode": "tarrid-taalufi",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — ثلاث صيغ: أين تتغيّر الأرخص؟",
+    "estimatedMinutes": 5,
+    "tags": [
+      "ثلاث صيغ",
+      "معادلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-taalufi_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "قاعة ألعاب، ثلاث صيغ للشهر: A $100x$ ، B $40x + 600$ ، C $1800$ (بالدينار)، حيث $x$ عدد الساعات. A أرخص في البداية، ثم B، ثم C."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عند كم ساعة تصبح B بالمبلغ نفسه لـ A؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "A و B متساويتان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$60x = 600$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$x = 10$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$40x + 600 = 100x$ أي $600 = 60x$ ومنه $x = 10$ .",
+        "incorrect": "حلّ $40x + 600 = 100x$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "عند كم ساعة تصبح C بالمبلغ نفسه لـ B؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "30",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-SABIQ-QISMA",
+          "value": "45"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "B و C متساويتان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$40x = 1200$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قسمة على 40."
+        }
+      ],
+      "feedback": {
+        "correct": "$40x + 600 = 1800$ أي $40x = 1200$ ومنه $x = 30$ .",
+        "incorrect": "حلّ $40x + 600 = 1800$ ."
+      }
+    }
+  ]
+}

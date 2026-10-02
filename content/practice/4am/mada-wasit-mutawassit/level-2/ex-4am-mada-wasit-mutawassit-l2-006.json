@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l2-006",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 2,
+  "metadata": {
+    "title": "معارف 4 (ص 96) — عشر قيم مرتّبة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وسيط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-4",
+      "page": 96,
+      "section": "معارف",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 96): السلسلة المرتّبة $2$ ، $5$ ، $7$ ، $7$ ، $9$ ، $12$ ، $13$ ، $13$ ، $20$ ، $22$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "وسيط هذه السلسلة هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "10,5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-WASIT-RUTBA",
+          "value": "9"
+        },
+        {
+          "id": "MISC-IHSA-WASIT-RUTBA",
+          "value": "12"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عشر قيم: عدد زوجي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "منتصف القيمتين الخامسة والسادسة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{9 + 12}{2} = 10{,}5$ : خمس قيم قبله وخمس بعده.",
+        "incorrect": "العدد زوجي: الوسيط بين قيمتين."
+      }
+    }
+  ]
+}

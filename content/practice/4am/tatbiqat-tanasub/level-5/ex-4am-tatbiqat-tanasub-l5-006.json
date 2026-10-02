@@ -1,0 +1,59 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l5-006",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — ملء الخزان",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مقدار بدلالة آخر",
+      "التدفق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tatbiqat-tanasub_P3",
+      "modelledOn": "act-6"
+    }
+  },
+  "statement": {
+    "content": "خزان سعته $1{,}8m^3$ يُملأ بصنبور تدفقه 12 لترًا في الدقيقة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مدة ملء الخزان (بالدقيقة):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "150",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المقدار المركّب الثابت (سرعة، كتلة حجمية، استطاعة، مضاعف) هو معامل دالة خطية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المقدار المطلوب بدلالة الآخر: $d = v \\times t$ ، $m = \\rho \\times V$ ، $E = P \\times t$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض بالقيمة المعطاة، أو حلّ المعادلة إذا كان المجهول هو المقدار الآخر، ثم تحقّق من الوحدة."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}8m^3 = 1800L$ ، و $\\dfrac{1800}{12} = 150min$ (ساعتان ونصف).",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    }
+  ]
+}

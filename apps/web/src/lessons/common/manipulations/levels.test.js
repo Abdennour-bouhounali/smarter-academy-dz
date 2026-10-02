@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { MANIPULATION_TYPE_IDS, MANIPULATION_TYPES } from '@smarter-academy/core';
+import { MANIPULATION_TYPE_IDS, MANIPULATION_TYPES, linearSystem } from '@smarter-academy/core';
 import * as levelsModule from './levels';
 import { LEVELS, levelsFor, levelMatching, resolveManipulationLevels } from './levels';
 
@@ -31,7 +31,18 @@ describe('niveaux de manipulation — beginner / advanced, rien d’autre', () =
       // nombre de termes plus sa plus haute puissance : plus de zones à porter,
       // ou des carrés à faire apparaître, c'est une demande plus lourde.
       const algebraic = (e) => (e.match(/[^+\-|]+/g) ?? []).length + Math.max(1, ...[...e.matchAll(/\^(\d)/g)].map((m) => Number(m[1])));
-      const size = (n) => Math.max(...Object.values(n).map((v) => (typeof v === 'string' ? algebraic(v) : v)));
+      // Une jumla (unité 5, `system: '2x+y=7|3x-2y=4,2'`) se mesure par ce qu'elle demande à la main :
+      // coefficients autres que ±1 après réduction, parenthèses à développer, décimaux, solution non
+      // entière, et la taille des constantes (chiffres de la plus grande).
+      const jumla = (v) => {
+        const sys = linearSystem.system(...v.split('|'));
+        const nonUnit = sys.flatMap((e) => [e.a, e.b]).filter((c) => Math.abs(c.n) !== c.d).length;
+        const sol = linearSystem.classify(sys);
+        const fractional = sol.kind === 'unique' && (sol.x.d !== 1 || sol.y.d !== 1) ? 1 : 0;
+        const digits = Math.max(...sys.map((e) => String(Math.abs(Math.round(e.c.n / e.c.d))).length));
+        return nonUnit + (v.match(/\(/g) ?? []).length + (v.match(/,/g) ?? []).length + fractional + digits;
+      };
+      const size = (n) => Math.max(...Object.values(n).map((v) => (typeof v !== 'string' ? v : v.includes('=') && v.includes('|') ? jumla(v) : algebraic(v))));
       expect(size(advanced.numbers), type).toBeGreaterThan(size(beginner.numbers));
       expect(advanced.source, type).toBe('textbook');
       expect(typeof advanced.ref, type).toBe('string');

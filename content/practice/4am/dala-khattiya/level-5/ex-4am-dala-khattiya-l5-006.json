@@ -1,0 +1,108 @@
+{
+  "id": "ex-4am-dala-khattiya-l5-006",
+  "lessonCode": "dala-khattiya",
+  "level": 5,
+  "metadata": {
+    "title": "معامل من عدد وصورته (كسران)",
+    "estimatedMinutes": 4,
+    "tags": [
+      "كسر",
+      "تعيين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "$g$ دالة خطية حيث $g\\left(-\\dfrac{3}{4}\\right) = \\dfrac{9}{8}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عيّن معامل الدالة الخطية $g$ علمًا أنّ $g(-0{,}75) = 1{,}125$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "-1.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الدالة خطية: دستورها من الشكل $f(x) = ax$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعلومة المعطاة على شكل معادلة مجهولها $a$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الصورة على العدد غير المعدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "$-0{,}75a = 1{,}125$ ، إذن $a = 1{,}125 \\div (-0{,}75) = -1{,}5$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-MUAMIL-MAQLUB",
+          "value": "-2/3"
+        },
+        {
+          "id": "MISC-KHATTIYA-ISHARA",
+          "value": "1.5"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "عيّن العدد الذي صورته $-0{,}6$ بالدالة $g$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "0.4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المطلوب هنا عدد علمت صورته، لا صورة عدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعادلة $ax = $ الصورة المعطاة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم طرفي المعادلة على المعامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$(-1{,}5) \\times x = -0{,}6$ ، إذن $x = -0{,}6 \\div (-1{,}5) = 0{,}4$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-SURA-SABIQ",
+          "value": "0.9"
+        }
+      ]
+    }
+  ]
+}

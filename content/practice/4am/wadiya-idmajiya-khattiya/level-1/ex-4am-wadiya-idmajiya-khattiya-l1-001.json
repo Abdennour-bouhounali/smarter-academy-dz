@@ -1,0 +1,78 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l1-001",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 1 — المعامل من نقطة",
+    "estimatedMinutes": 2,
+    "tags": [
+      "معامل",
+      "تمثيل بياني"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 74,
+      "section": "أؤكّد تعلّماتي",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "في كل حالة مما يلي اختر الإجابة الصحيحة، وبرّر اختيارك."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "معامل الدّالة الخطية التي تمثيلها البياني يشمل النقطة $A(2 ; 7)$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-FASILA-TARTIB"
+        },
+        {
+          "id": "B",
+          "content": "$3{,}5$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$7$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-FASILA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "النقطة $A$ على المستقيم: ماذا يعني ذلك لصورة 2؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $f(2) = 7$ أي $a \\times 2 = 7$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعامل هو الصورة مقسومة على العدد."
+        }
+      ],
+      "feedback": {
+        "correct": "$a \\times 2 = 7$ ومنه $a = \\dfrac{7}{2} = 3{,}5$.",
+        "incorrect": "الفاصلة 2 والترتيب 7 ليسا المعامل: نقسم الترتيب على الفاصلة."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 1
+    }
+  ]
+}

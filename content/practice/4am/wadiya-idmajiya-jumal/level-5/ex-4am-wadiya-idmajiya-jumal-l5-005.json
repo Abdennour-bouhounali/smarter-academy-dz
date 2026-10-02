@@ -1,0 +1,191 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l5-005",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 5,
+  "metadata": {
+    "title": "مناصرو الشباب في الداربي",
+    "estimatedMinutes": 6,
+    "tags": [
+      "ترجمة",
+      "حل جملة",
+      "التحقق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P2",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "اشترت جمعية مناصري شباب قسنطينة 50 تذكرة للداربي: تذكرة المنصة بـ 800 DA وتذكرة المدرجات بـ 300 DA، ودفعت 23 000 DA. نسمّي $x$ عدد تذاكر المنصة و $y$ عدد تذاكر المدرجات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم النص هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 23000 \\\\ 800x + 300y = 50 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 50 \\\\ 300x + 800y = 23000 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x + y = 50 \\\\ 800x + 300y = 23000 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$\\begin{cases} 800x + 300y = 50 \\\\ x + y = 23000 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معلومة تعدّ التذاكر ومعلومة عن المبلغ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تذكرة المنصة بـ 800 DA."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "كل عدد يُضرب في ثمن تذكرته."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + y = 50$ و $800x + 300y = 23000$.",
+        "incorrect": "العدد 50 عدد تذاكر، و 23 000 مبلغ."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "كم تذكرة $(x ; y)$ من كل نوع؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان طبيعيان",
+      "expectedAnswer": {
+        "x": "16",
+        "y": "34"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقسم معادلة المبلغ على 100."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$y = 50 - x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$8x + 150 - 3x = 230$."
+        }
+      ],
+      "feedback": {
+        "correct": "$5x = 80$ ، $x = 16$ ، $y = 34$.",
+        "incorrect": "بسّط ثم عوّض."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "34",
+            "y": "16"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "التحقق في النص:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$16 + 34 = 50$ تذكرة و $800 \\times 16 + 300 \\times 34 = 23000$ DA",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "يكفي أن نتحقق من $16 + 34 = 50$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "C",
+          "content": "$800 \\times 34 + 300 \\times 16 = 23000$ DA",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARTIB"
+        },
+        {
+          "id": "D",
+          "content": "لا حاجة إلى التحقق بعد الحل",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TAHAQQUQ-NAS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض في المعلومتين كلتيهما."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المنصة: 16 تذكرة بـ 800 DA."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب المبلغ الكلي."
+        }
+      ],
+      "feedback": {
+        "correct": "$12800 + 10200 = 23000$ DA و 50 تذكرة.",
+        "incorrect": "التحقق يشمل المعلومتين، بالترتيب الصحيح."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 3
+    }
+  ]
+}

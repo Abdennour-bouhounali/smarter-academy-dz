@@ -1,0 +1,120 @@
+{
+  "id": "ex-4am-takrar-mujamma-l1-006",
+  "lessonCode": "takrar-mujamma",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — مقاسات الأحذية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "النازل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_takrar-mujamma_P1"
+    }
+  },
+  "statement": {
+    "content": "مقاسات أحذية لاعبي نادٍ (السطر الأول المقاسات، والسطر الثاني عدد اللاعبين): $\\begin{array}{|c|c|c|c|} \\hline 36 & 37 & 38 & 39 \\\\ \\hline 2 & 6 & 7 & 5 \\\\ \\hline \\end{array}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "التكرار المجمع النازل للقيمة 37:",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "18",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MUJAMMA-DUN-QIMA",
+          "value": "12"
+        },
+        {
+          "id": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA",
+          "value": "6"
+        },
+        {
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB",
+          "value": "8"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد القيم التي تحقّق الشرط: القيمة نفسها مع القيم الأصغر منها (أو الأكبر منها)."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التكرار المجمع يجمع التكرارات، لا القيم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع تكرار القيمة وتكرارات القيم المعنية واحدة واحدة، ثم تحقّق: الصاعد الأخير يساوي التكرار الكلي."
+        }
+      ],
+      "feedback": {
+        "correct": "$6 + 7 + 5 = 18$ : تكرار 37 وتكرارات القيم الأكبر منها.",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "التكرار المجمع الصاعد للقيمة 38:",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "15",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MUJAMMA-DUN-QIMA",
+          "value": "8"
+        },
+        {
+          "id": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA",
+          "value": "7"
+        },
+        {
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB",
+          "value": "12"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد القيم التي تحقّق الشرط: القيمة نفسها مع القيم الأصغر منها (أو الأكبر منها)."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التكرار المجمع يجمع التكرارات، لا القيم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع تكرار القيمة وتكرارات القيم المعنية واحدة واحدة، ثم تحقّق: الصاعد الأخير يساوي التكرار الكلي."
+        }
+      ],
+      "feedback": {
+        "correct": "$2 + 6 + 7 = 15$ : تكرار 38 وتكرارات القيم الأصغر منها.",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    }
+  ]
+}

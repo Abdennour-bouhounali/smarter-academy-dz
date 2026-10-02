@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-tanasub-muamil-l2-007",
+  "lessonCode": "tanasub-muamil",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — العمود (0 ; y)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مبلغ ثابت"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-muamil_P2",
+      "modelledOn": "ex-18"
+    }
+  },
+  "statement": {
+    "content": "في جدول، من أجل $x = 0$ نجد $y = 20$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل يمكن أن يكون هذا الجدول جدول تناسبية؟",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، إذا كانت باقي حواصل القسمة متساوية",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "لا: في جدول تناسبية $y = a \\times 0 = 0$ من أجل $x = 0$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "نعم، ومعامله 20",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لا يكفي أن يزداد y كلما ازداد x."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب حاصل القسمة $\\dfrac{y}{x}$ في كل عمود وقارن."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يكفي عمودان حاصلا قسمتهما مختلفان لنقول إنّ الوضعية ليست تناسبية؛ وانتبه إلى المبلغ الثابت."
+        }
+      ],
+      "feedback": {
+        "correct": "في جدول تناسبية $y = a \\times x$ ، فمن أجل $x = 0$ يكون $y = 0$ دائما. $y = 20$ يعني مبلغا ثابتا.",
+        "incorrect": "احسب حاصل القسمة في كل عمود قبل أن تحكم: الزيادة وحدها لا تكفي."
+      }
+    }
+  ]
+}

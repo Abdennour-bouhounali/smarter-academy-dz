@@ -1,0 +1,117 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l3-002",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 3,
+  "metadata": {
+    "title": "نشاط 5 — البنات في المتوسطة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نسبة مئوية لجزء"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-5",
+      "page": 67,
+      "section": "أنشطة",
+      "number": 5
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 67): في متوسطة 100 تلميذ في السنة الأولى (50% بنات)، 95 في الثانية (40% بنات)، 90 في الثالثة (60% بنات) و 90 في الرابعة (70% بنات)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عدد البنات في المتوسطة:",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "205",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد: هل نأخذ نسبة من المقدار، أم نزيده، أم نخفّضه؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الزيادة بـ $t\\%$ ضرب في $1 + \\dfrac{t}{100}$ ، والتخفيض ضرب في $1 - \\dfrac{t}{100}$ ، والأخذ ضرب في $\\dfrac{t}{100}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب المضاعف أولًا، ثم اضرب فيه المقدار، وتحقّق أنّ النتيجة معقولة (أكبر بعد زيادة، أصغر بعد تخفيض)."
+        }
+      ],
+      "feedback": {
+        "correct": "$50 + 38 + 54 + 63 = 205$ .",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "النسبة المئوية للبنات في المتوسطة:",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "حوالي $54{,}67\\%$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$55\\%$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-JAM"
+        },
+        {
+          "id": "C",
+          "content": "$220\\%$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-JAM"
+        },
+        {
+          "id": "D",
+          "content": "حوالي $45{,}33\\%$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد: هل نأخذ نسبة من المقدار، أم نزيده، أم نخفّضه؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الزيادة بـ $t\\%$ ضرب في $1 + \\dfrac{t}{100}$ ، والتخفيض ضرب في $1 - \\dfrac{t}{100}$ ، والأخذ ضرب في $\\dfrac{t}{100}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب المضاعف أولًا، ثم اضرب فيه المقدار، وتحقّق أنّ النتيجة معقولة (أكبر بعد زيادة، أصغر بعد تخفيض)."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{205}{375} \\times 100 \\simeq 54{,}67$ . لا نأخذ متوسط النسب: الأقسام ليست متساوية.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

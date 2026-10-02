@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l5-005",
+  "lessonCode": "mushkilat-jumla",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — الملعب الخماسي",
+    "estimatedMinutes": 6,
+    "tags": [
+      "ترييض",
+      "مساحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P1",
+      "modelledOn": "ex-18"
+    }
+  },
+  "statement": {
+    "content": "ملعب خماسي مستطيل محيطه 120 m. إذا زدنا طوله بـ 4 m وأنقصنا عرضه بـ 4 m نقصت مساحته بـ $96 m^2$ . نسمّي $x$ الطول و $y$ العرض (بالمتر)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "معادلة المساحة $(x + 4)(y - 4) = xy - 96$ تؤول إلى:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-4x + 4y = -96$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$4x - 4y = -80$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$-4x + 4y = -80$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $(x + 4)(y - 4)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحد $xy$ يختفي من الطرفين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انقل $-16$ إلى الطرف الثاني."
+        }
+      ],
+      "feedback": {
+        "correct": "$xy - 4x + 4y - 16 = xy - 96$ ومنه $-4x + 4y = -80$ .",
+        "incorrect": "بعد النشر يبقى $-16$ : لا تنسَ نقله."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بعدا الملعب: اكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "40",
+        "y": "20"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من المحيط $x + y = 60$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ومن المساحة $x - y = 20$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 40$ و $y = 20$ : $44 \\times 16 = 704 = 800 - 96$ .",
+        "incorrect": "أكمل حتى الثنائية."
+      }
+    }
+  ]
+}

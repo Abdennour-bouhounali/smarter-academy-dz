@@ -1,0 +1,120 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l5-002",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 5,
+  "metadata": {
+    "title": "الموزّع الآلي — يومان",
+    "estimatedMinutes": 5,
+    "tags": [
+      "حل جملة",
+      "تحويل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P1",
+      "modelledOn": "ex-30"
+    }
+  },
+  "statement": {
+    "content": "موزّع آلي للأوراق النقدية فيه أوراق من فئتي 1000 DA و 2000 DA فقط. في اليوم الأول سُحبت 356 ورقة بمبلغ 454 000 DA، وفي اليوم الثاني 400 ورقة بمبلغ 520 000 DA. نسمّي في كل يوم $x$ عدد أوراق 1000 DA و $y$ عدد أوراق 2000 DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "اليوم الأول: كم ورقة $(x ; y)$ من كل فئة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان طبيعيان",
+      "expectedAnswer": {
+        "x": "258",
+        "y": "98"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x + y = 356$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x + 2y = 454$ بعد القسمة على 1000."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 98$ و $x = 258$.",
+        "incorrect": "بسّط ثم اطرح."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "98",
+            "y": "258"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "اليوم الثاني: كم ورقة $(x ; y)$ من كل فئة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان طبيعيان",
+      "expectedAnswer": {
+        "x": "280",
+        "y": "120"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x + y = 400$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x + 2y = 520$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 120$ و $x = 280$ ؛ $280000 + 240000 = 520000$.",
+        "incorrect": "ترجم اليوم الثاني بجملة جديدة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "120",
+            "y": "280"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "id": "ex-4am-mafhum-taalufiya-l2-010",
+  "lessonCode": "mafhum-taalufiya",
+  "level": 2,
+  "metadata": {
+    "title": "صورة الصفر",
+    "estimatedMinutes": 3,
+    "tags": [
+      "صورة",
+      "خطية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "$f$ هي الدالة التآلفية حيث $f(x) = 5x + 1$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $f(0)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد بدالة تآلفية: نعوّض $x$ بهذا العدد في العبارة $ax + b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب العدد في المعامل $a$ أولا، وانتبه إلى الإشارات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تنسَ أن تضيف الحدّ الثابت $b$ في النهاية."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(0) = 5 \\times 0 + 1 = 1$ .",
+        "incorrect": "أعد الحساب: اضرب في $a$ ثم أضف $b$ ، وتحقّق من الإشارات."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-NISYAN-B",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "هل $f$ دالة خطية؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P4",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا: $f(0) = 1 \\neq 0$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نعم: معاملها 5",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-KHATTIYA-KHALT"
+        },
+        {
+          "id": "C",
+          "content": "نعم: لأنها تآلفية",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-KHATTIYA-KHALT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كل دالة من الشكل $ax + b$ تآلفية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى $b$ : إذا كان معدوما فالدالة خطية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "وانظر إلى $a$ : إذا كان معدوما فالدالة ثابتة."
+        }
+      ],
+      "feedback": {
+        "correct": "صورة 0 بالدالة الخطية هي 0 ؛ هنا $f(0) = 1$ .",
+        "incorrect": "راجع كل اقتراح: واحد فقط صحيح."
+      }
+    }
+  ]
+}

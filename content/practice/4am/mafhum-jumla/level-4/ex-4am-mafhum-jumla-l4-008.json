@@ -1,0 +1,133 @@
+{
+  "id": "ex-4am-mafhum-jumla-l4-008",
+  "lessonCode": "mafhum-jumla",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — جملة بالمجهولين a و b",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ثنائية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mafhum-jumla_P3",
+      "modelledOn": "qcm"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الجملة $\\begin{cases} 2a - b = 3 \\\\ a - 2b = -5 \\end{cases}$ ، والثنائية $(a ; b)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الثنائية $(3 ; 3)$ ...",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "تحقّق المعادلتين معًا: حل للجملة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "B",
+          "content": "تحقّق المعادلة الأولى فقط",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "تحقّق المعادلة الثانية فقط",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "لا تحقّق أيًّا من المعادلتين",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$a = 3$ و $b = 3$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$6 - 3$ ثم $3 - 6$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن بالعددين 3 و $-5$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$2 \\times 3 - 3 = 3$ لكن $3 - 6 = -3 \\neq -5$ : المعادلة (1) فقط.",
+        "incorrect": "عوّض في المعادلتين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "الثنائية $(1 ; 3)$ ...",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "تحقّق المعادلتين معًا: حل للجملة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "B",
+          "content": "تحقّق المعادلة الأولى فقط",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "تحقّق المعادلة الثانية فقط",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "لا تحقّق أيًّا من المعادلتين",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$a = 1$ و $b = 3$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2 - 3$ ثم $1 - 6$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن بالعددين 3 و $-5$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$2 - 3 = -1 \\neq 3$ لكن $1 - 6 = -5$ : المعادلة (2) فقط.",
+        "incorrect": "عوّض في المعادلتين."
+      }
+    }
+  ]
+}

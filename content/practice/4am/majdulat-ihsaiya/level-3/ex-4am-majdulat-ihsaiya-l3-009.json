@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l3-009",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — المدرّج والأعمدة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مدرّج تكراري"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_majdulat-ihsaiya_P3",
+      "modelledOn": "ex-16"
+    }
+  },
+  "statement": {
+    "content": "نقارن مدرّجًا تكراريًا ومخططًا بالأعمدة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما الذي يميّز المدرّج التكراري؟",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "مستطيلاته متلاصقة على فئات، عرض كل منها طول الفئة",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "أعمدته منفصلة على قيم معزولة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUKHATTAT-GHAYR-MUNASIB"
+        },
+        {
+          "id": "C",
+          "content": "قطاعاته زواياها تتناسب مع التكرارات",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUKHATTAT-GHAYR-MUNASIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "فكّر في الفئات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الفئة مجال."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الفئات متلاصقة."
+        }
+      ],
+      "feedback": {
+        "correct": "مدرّج تكراري: مستطيلات متلاصقة على فئات متلاصقة.",
+        "incorrect": "الأعمدة المنفصلة لقيم معزولة، والقطاعات للدائري."
+      }
+    }
+  ]
+}

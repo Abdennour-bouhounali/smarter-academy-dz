@@ -1,0 +1,131 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l3-009",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 3,
+  "metadata": {
+    "title": "مدرسة كرة القدم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترجمة",
+      "مبلغ ثابت"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "في مدرسة كرة القدم يدفع اللاعب رسم تسجيل $y$ DA مرّة واحدة، ثم $x$ DA عن كل شهر. دفع أنس 4 100 DA عن 3 أشهر (مع التسجيل)، ودفع زميله 6 300 DA عن 5 أشهر (مع التسجيل)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم النص هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} 3x + 3y = 4100 \\\\ 5x + 5y = 6300 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} 3x + y = 4100 \\\\ 5x + y = 6300 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x + 3y = 4100 \\\\ x + 5y = 6300 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "D",
+          "content": "$\\begin{cases} 3x + y = 6300 \\\\ 5x + y = 4100 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما الذي يُدفع مرّة واحدة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الاشتراك الشهري يتكرّر مع كل شهر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "رسم التسجيل لا يُضرب في عدد الأشهر."
+        }
+      ],
+      "feedback": {
+        "correct": "أنس: $3x + y = 4100$ ؛ زميله: $5x + y = 6300$.",
+        "incorrect": "رسم التسجيل يُدفع مرّة واحدة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "ما المبلغان $(x ; y)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
+      "expectedAnswer": {
+        "x": "1100",
+        "y": "800"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اطرح المعادلة الأولى من الثانية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2x = 2200$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض لإيجاد $y$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 1100$ و $y = 4100 - 3300 = 800$.",
+        "incorrect": "الطرح يحذف $y$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "800",
+            "y": "1100"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    }
+  ]
+}

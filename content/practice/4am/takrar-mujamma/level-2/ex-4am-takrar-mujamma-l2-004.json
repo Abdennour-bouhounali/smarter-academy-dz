@@ -1,0 +1,115 @@
+{
+  "id": "ex-4am-takrar-mujamma-l2-004",
+  "lessonCode": "takrar-mujamma",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 1 — على الأقل / على الأكثر",
+    "estimatedMinutes": 3,
+    "tags": [
+      "على الأقل",
+      "على الأكثر"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-1",
+      "page": 98,
+      "section": "أوظّف تعلّماتي",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 98): درجات الحرارة لثلاثين يوما من شهر جوان (°C) (السطر الأول الدرجات، والسطر الثاني عدد الأيام): $\\begin{array}{|c|c|c|c|c|c|} \\hline 30 & 32 & 33 & 34 & 35 & 36 \\\\ \\hline 8 & 9 & 4 & 6 & 2 & 1 \\\\ \\hline \\end{array}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "جـ) عدد الأيام التي سجّل فيها 32 درجة على الأقل:",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "22",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-SARAMA",
+          "value": "13"
+        },
+        {
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB",
+          "value": "17"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ الشرط بعناية: هل القيمة الحدّية نفسها محسوبة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "«على الأقل» و«على الأكثر» تشملان الحدّ، و«تفوق» و«أقل من» لا تشملانه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب القيم التي تحقّق الشرط، ثم اجمع تكراراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$9 + 4 + 6 + 2 + 1 = 22$",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "د) عدد الأيام التي سجّل فيها 32 درجة على الأكثر:",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "17",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-SARAMA",
+          "value": "8"
+        },
+        {
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB",
+          "value": "22"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ الشرط بعناية: هل القيمة الحدّية نفسها محسوبة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "«على الأقل» و«على الأكثر» تشملان الحدّ، و«تفوق» و«أقل من» لا تشملانه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب القيم التي تحقّق الشرط، ثم اجمع تكراراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$8 + 9 = 17$",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    }
+  ]
+}

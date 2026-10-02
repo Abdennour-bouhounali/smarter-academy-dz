@@ -1,0 +1,101 @@
+{
+  "id": "ex-4am-tanasub-muamil-l5-004",
+  "lessonCode": "tanasub-muamil",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — الدراجة النارية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وقود"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-muamil_P3",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "تستهلك دراجة نارية 2,5L من الوقود لكل 100km ، والاستهلاك متناسب مع المسافة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الاستهلاك (باللتر) لمسافة 340km :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "8,5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجدول جدول تناسبية: نضرب في المعامل، ولا نضيف الفرق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب معامل التناسبية من عمود كامل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب العدد المعلوم في المعامل، أو استعمل تساوي الجداءين المتصالبين."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{2{,}5 \\times 340}{100} = 8{,}5$ L.",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العدد $a$ في العلاقة $y = a \\times x$ ($x$ بالكيلومتر و $y$ باللتر):",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "0,025",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في جدول تناسبية نحصل على y بضرب x في المعامل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب المعامل $a = \\dfrac{y}{x}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $y = a \\times x$ ثم تحقّق على عمود من الجدول."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{2{,}5}{100} = 0{,}025$ L لكل km.",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "40",
+          "id": "MISC-TANASUB-MUAMIL-MAQLUB"
+        }
+      ]
+    }
+  ]
+}

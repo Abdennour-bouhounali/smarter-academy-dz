@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tamthil-bayani-taalufi-l3-010",
+  "lessonCode": "tamthil-bayani-taalufi",
+  "level": 3,
+  "metadata": {
+    "title": "مستقيمان",
+    "estimatedMinutes": 3,
+    "tags": [
+      "توازي"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-taalufi_P1"
+    }
+  },
+  "statement": {
+    "content": "المستقيم $(D_1)$ يشمل النقطتين $(0 ; 2)$ و $(1 ; 3)$ ، والمستقيم $(D_2)$ يشمل النقطتين $(0 ; -1)$ و $(1 ; 0)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المستقيمان $(D_1)$ و $(D_2)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "متوازيان",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "متقاطعان على محور التراتيب",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-BAYANI-TAWAZI"
+        },
+        {
+          "id": "C",
+          "content": "منطبقان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-BAYANI-TAWAZI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مستقيمان يمثّلان دالتين تآلفيتين متوازيان إذا كان لهما معامل التوجيه نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن معامل $x$ في العبارتين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نفس $a$ و $b$ مختلف: متوازيان؛ نفس $a$ ونفس $b$ : منطبقان."
+        }
+      ],
+      "feedback": {
+        "correct": "لكليهما $a = 1$ ، والترتيبان عند المبدأ $2$ و $-1$ مختلفان: متوازيان.",
+        "incorrect": "قارن معاملي التوجيه، ثم الترتيبين عند المبدأ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "الترتيب عند المبدأ للدالة التي يمثّلها $(D_2)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "expectedAnswer": "-1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الترتيب عند المبدأ $b$ هو ترتيب النقطة التي يقطع فيها المستقيم محور التراتيب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هذه النقطة فاصلتها $0$ ، لأنّ $f(0) = b$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا لم تكن مرسومة، انطلق من نقطة معلومة وارجع إلى الفاصلة $0$ بالدرجة $a$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "المستقيم يقطع محور التراتيب في $(0 ; -1)$ : $b = -1$ .",
+        "incorrect": "اقرأ ترتيب نقطة التقاطع مع محور التراتيب، لا مع محور الفواصل."
+      }
+    }
+  ]
+}

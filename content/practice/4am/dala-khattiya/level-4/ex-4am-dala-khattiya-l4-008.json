@@ -1,0 +1,66 @@
+{
+  "id": "ex-4am-dala-khattiya-l4-008",
+  "lessonCode": "dala-khattiya",
+  "level": 4,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي — جدول ومعامل",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جدول",
+      "معامل"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 74,
+      "section": "أؤكّد تعلّماتي",
+      "number": 6
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 74): جدول قيم دالة خطية $f$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من الكتاب: الجدول جدول قيم دالة خطية $f$ ($x$ : $-5$ ، $25$ ، $10$ ؛ $f(x)$ : $2$ ، $-10$ ، $-4$). ما معاملها؟",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "-0.4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الدالة خطية: دستورها من الشكل $f(x) = ax$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعلومة المعطاة على شكل معادلة مجهولها $a$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الصورة على العدد غير المعدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "جدول قيم دالة خطية جدول تناسبية: $\\dfrac{2}{-5} = -0{,}4$ ، وهو معامل الدالة.",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TANASUB-MUAMIL-MAQLUB",
+          "value": "-2.5"
+        }
+      ]
+    }
+  ]
+}

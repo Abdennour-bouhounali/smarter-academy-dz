@@ -2,7 +2,7 @@ import { it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
-import EquationBalance, { layoutPan } from './EquationBalance';
+import EquationBalance, { layoutPan, beamGeometry } from './EquationBalance';
 
 it('la balance se rend pour les équations de la leçon (sacs, ballons, baudruches, sacs volants)', () => {
   for (const eq of ['3x+2=11', '9x+1=-26', '4x-3=2x+6', '9x+1=2x', '4x-3=-2x+5', '2x-3=3x+1']) {
@@ -26,4 +26,18 @@ it('le plateau reste dans sa largeur et chaque objet est dessiné une fois, pour
       }
     }
   }
+});
+
+it('le fléau penche du côté du plateau qui descend (et chaque extrémité suit sa tige)', () => {
+  for (const s of [9, 15, 22]) {
+    // s > 0 : le plateau gauche descend de s → l'extrémité GAUCHE du fléau descend (dy > 0 en SVG).
+    const left = beamGeometry(s);
+    expect(left.angle).toBeLessThan(0);
+    expect(left.leftEndDy).toBeCloseTo(s, 0);
+    expect(left.rightEndDy).toBeCloseTo(-s, 0);
+    const right = beamGeometry(-s);
+    expect(right.angle).toBeGreaterThan(0);
+    expect(right.rightEndDy).toBeCloseTo(s, 0);
+  }
+  expect(beamGeometry(0).angle === 0 || Object.is(beamGeometry(0).angle, -0)).toBe(true);
 });

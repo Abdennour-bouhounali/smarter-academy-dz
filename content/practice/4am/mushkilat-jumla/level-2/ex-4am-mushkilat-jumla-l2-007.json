@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l2-007",
+  "lessonCode": "mushkilat-jumla",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — مقصف الثانوية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ترييض",
+      "مقصف"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P1",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "في مقصف الثانوية، اشترت مجموعة 3 سندويشات وقارورتي عصير بـ 520 DA، واشترت مجموعة أخرى سندويشا واحدا وقارورتي عصير بـ 240 DA. نسمّي $x$ ثمن السندويش و $y$ ثمن قارورة العصير."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم المشكلة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} 3x + 2y = 520 \\\\ x + 2y = 240 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} 3x + 2y = 520 \\\\ 2x + y = 240 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} 2x + 3y = 520 \\\\ x + 2y = 240 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب ما اشترته كل مجموعة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المجموعة الأولى: 3 سندويشات وقارورتان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المجموعة الثانية: سندويش واحد وقارورتان."
+        }
+      ],
+      "feedback": {
+        "correct": "الحل: السندويش 140 DA والقارورة 50 DA.",
+        "incorrect": "انتبه إلى عدد السندويشات وعدد القارورات في كل شراء."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما ثمن السندويش وثمن قارورة العصير؟ اكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "140",
+        "y": "50"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "القارورتان موجودتان في الشراءين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح المعادلتين طرفا لطرف."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحصل على $2x = 280$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 140$ ثم $2y = 240 - 140 = 100$ أي $y = 50$ .",
+        "incorrect": "عوّض قيمة $x$ لإيجاد $y$ ."
+      }
+    }
+  ]
+}

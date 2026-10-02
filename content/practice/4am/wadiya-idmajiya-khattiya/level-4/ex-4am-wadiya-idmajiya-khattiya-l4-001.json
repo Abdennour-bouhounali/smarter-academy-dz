@@ -1,0 +1,162 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l4-001",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 4,
+  "metadata": {
+    "title": "مصعد هوائي فوق المدينة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "فيثاغورس",
+      "سرعة",
+      "وحدات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "ينطلق مصعد هوائي من ارتفاع $800\\,\\mathrm{m}$ ليصل ارتفاع $1100\\,\\mathrm{m}$ ، والمسافة الأفقية بين نقطتي الانطلاق والوصول $400\\,\\mathrm{m}$ ، وسرعته $2{,}5\\,\\mathrm{m/s}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما طول الحبل بالمتر؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالمتر",
+      "expectedAnswer": "500",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الضلع العمودي: فرق الارتفاعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$1100 - 800 = 300$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "فيثاغورس بالضلعين 300 و 400."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{300^2 + 400^2} = \\sqrt{250000}$ ، أي 500 m.",
+        "incorrect": "الوتر يُحسب بفيثاغورس على فرق الارتفاعين والمسافة الأفقية."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "700",
+          "id": "MISC-JIDHR-JAMA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما مدة صعود واحد بالثواني؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالثواني",
+      "expectedAnswer": "200",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المدة = المسافة ÷ السرعة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم طول الحبل على $2{,}5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "طول الحبل من السؤال السابق."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{500}{2{,}5} = 200\\,\\mathrm{s}$.",
+        "incorrect": "المدة هي المسافة على السرعة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "1250",
+          "id": "MISC-MAQADIR-QISMA-MAQLUBA"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "هذه المدة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "3 دقائق و 20 ثانية",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "2 دقيقة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQADIR-WIHDA"
+        },
+        {
+          "id": "C",
+          "content": "3 دقائق و 33 ثانية",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQADIR-WIHDA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الدقيقة 60 ثانية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كم دقيقة كاملة في المدة؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الباقي بالثواني."
+        }
+      ],
+      "feedback": {
+        "correct": "$200 = 3 \\times 60 + 20$.",
+        "incorrect": "الدقيقة 60 ثانية، لا 100."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    }
+  ]
+}

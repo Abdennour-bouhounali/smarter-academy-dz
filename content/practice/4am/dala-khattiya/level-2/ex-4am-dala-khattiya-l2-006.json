@@ -1,0 +1,62 @@
+{
+  "id": "ex-4am-dala-khattiya-l2-006",
+  "lessonCode": "dala-khattiya",
+  "level": 2,
+  "metadata": {
+    "title": "العدد الذي صورته عدد سالب",
+    "estimatedMinutes": 4,
+    "tags": [
+      "عدد صورته معلومة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "$f$ الدالة الخطية $f(x) = -4x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عيّن العدد الذي صورته $18$ بالدالة $f$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "-4.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المطلوب هنا عدد علمت صورته، لا صورة عدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعادلة $ax = $ الصورة المعطاة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم طرفي المعادلة على المعامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$(-4) \\times x = 18$ ، إذن $x = 18 \\div (-4) = -4{,}5$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-SURA-SABIQ",
+          "value": "-72"
+        }
+      ]
+    }
+  ]
+}

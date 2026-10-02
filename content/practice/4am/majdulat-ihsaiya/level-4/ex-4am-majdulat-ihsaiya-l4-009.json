@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l4-009",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 24 (ص 101) — مدى سلسلة عشوائية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مدى"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-24",
+      "page": 101,
+      "section": "أتعمّق",
+      "number": 24
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 101): ⁦=ALEA()⁩ يُظهر عددًا عشوائيًا $a$ حيث $0 \\le a < 1$ . نحسب مدى خمسين عددًا كهذه."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مدى السلسلة:",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "يساوي 1 دائمًا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MADA-AKBAR-QIMA"
+        },
+        {
+          "id": "B",
+          "content": "قد يتجاوز 1",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MADA-AKBAR-QIMA"
+        },
+        {
+          "id": "C",
+          "content": "أصغر من 1 دائمًا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أكبر قيمة أصغر من 1."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أصغر قيمة 0 على الأقل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الفرق؟"
+        }
+      ],
+      "feedback": {
+        "correct": "أكبر قيمة < 1 وأصغرها ≥ 0 : المدى < 1 .",
+        "incorrect": "المدى فرق بين عددين من المجال."
+      }
+    }
+  ]
+}

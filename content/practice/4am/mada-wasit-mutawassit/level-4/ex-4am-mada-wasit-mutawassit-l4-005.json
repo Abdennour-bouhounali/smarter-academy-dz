@@ -1,0 +1,67 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l4-005",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 11 (ص 99) — الوسيط 20 والمتوسط 17",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وسيط",
+      "متوسط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-11",
+      "page": 99,
+      "section": "أوظّف تعلّماتي",
+      "number": 11
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 99): اقترح سلسلة وسيطها 20 و متوسطها 17."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ هذه السلاسل تحقّق الشرطين؟",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$14$ ، $17$ ، $20$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-MUTAWASSIT"
+        },
+        {
+          "id": "B",
+          "content": "$11$ ، $20$ ، $20$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$17$ ، $20$ ، $23$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-MUTAWASSIT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "القيمة الوسطى $20$ والمجموع $51$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{11 + 20 + 20}{3} = 17$ ، والقيمة الوسطى $20$.",
+        "incorrect": "تحقّق من الشرطين معًا."
+      }
+    }
+  ]
+}

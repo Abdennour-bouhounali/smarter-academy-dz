@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l1-004",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 1,
+  "metadata": {
+    "title": "الترتيب عند المبدأ",
+    "estimatedMinutes": 2,
+    "tags": [
+      "تمثيل بياني",
+      "الترتيب عند المبدأ"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "ثمن كراء دراجة نارية مائية بدلالة عدد الدقائق $x$ هو $f(x) = 45x + 250$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "في أي ترتيب يقطع المستقيم الممثل للدالة $f$ محور التراتيب؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "250",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "محور التراتيب: النقطة التي فاصلتها 0."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $f(0)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الترتيب عند المبدأ هو $b$."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(0) = 45 \\times 0 + 250 = 250$ : النقطة $(0 ; 250)$.",
+        "incorrect": "الترتيب عند المبدأ هو صورة 0، أي العدد $b$."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 1,
+      "misconceptionSignatures": [
+        {
+          "value": "45",
+          "id": "MISC-TAALUFI-A-B-MAQLUB"
+        }
+      ]
+    }
+  ]
+}

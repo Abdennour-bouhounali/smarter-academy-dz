@@ -1,0 +1,131 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l3-006",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 3,
+  "metadata": {
+    "title": "محلّ المثلّجات",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الجمع",
+      "معامل مناسب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P1",
+      "modelledOn": "ex-22"
+    }
+  },
+  "statement": {
+    "content": "في محلّ المثلّجات قرب الثانوية: 3 مخروطات وكأسا عصير بـ 340 DA، ومخروطان و 5 كؤوس عصير بـ 520 DA. نسمّي $x$ سعر المخروط و $y$ سعر كأس العصير."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لحذف $x$ من الجملة $3x + 2y = 340$ و $2x + 5y = 520$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نجمع المعادلتين مباشرة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        },
+        {
+          "id": "B",
+          "content": "نضرب الأولى في 2 والثانية في 3 ثم نجمع",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        },
+        {
+          "id": "C",
+          "content": "نضرب الأولى في 2 والثانية في $-3$ ثم نجمع",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "نضرب الطرف الأيسر فقط من الأولى في 2",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-TARAF-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نريد معاملين متعاكسين لـ $x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$6x$ و $-6x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نضرب الطرفين معا."
+        }
+      ],
+      "feedback": {
+        "correct": "$6x + 4y = 680$ و $-6x - 15y = -1560$ ، فالجمع يعطي $-11y = -880$.",
+        "incorrect": "نحتاج معاملين متعاكسين، ونضرب الطرفين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "ما السعران $(x ; y)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
+      "expectedAnswer": {
+        "x": "60",
+        "y": "80"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من الجمع: $-11y = -880$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم عوّض في $3x + 2y = 340$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقق في المعلومتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 80$ و $3x = 340 - 160$ ، $x = 60$.",
+        "incorrect": "بعد $y$ عوّض لإيجاد $x$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "80",
+            "y": "60"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l1-001",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 1,
+  "metadata": {
+    "title": "تطبيق نقل: صورة عدد",
+    "estimatedMinutes": 2,
+    "tags": [
+      "دالة تآلفية",
+      "صورة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "تطبيق نقل في المدينة يحسب ثمن الرحلة هكذا: 80 DA عند الركوب، يضاف إليها 35 DA عن كل كيلومتر. نسمّي $x$ عدد الكيلومترات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما ثمن رحلة طولها 6 كيلومترات (بالدينار)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار",
+      "expectedAnswer": "290",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الثمن $f(x) = 35x + 80$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بالعدد 6."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب ثم أضف المبلغ الثابت."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(6) = 35 \\times 6 + 80 = 210 + 80 = 290\\,\\mathrm{DA}$.",
+        "incorrect": "نضرب عدد الكيلومترات في 35 ثم نضيف 80."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 1,
+      "misconceptionSignatures": [
+        {
+          "value": "210",
+          "id": "MISC-TAALUFI-NISYAN-B"
+        },
+        {
+          "value": "690",
+          "id": "MISC-TARRID-JUZ-THABIT"
+        }
+      ]
+    }
+  ]
+}

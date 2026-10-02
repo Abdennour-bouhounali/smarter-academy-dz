@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tarrid-khatti-l4-010",
+  "lessonCode": "tarrid-khatti",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — معنى المعامل في الأنترنت",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تفسير",
+      "معامل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P3",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "ثمن الأنترنت متناسب مع حجمه، وتمثيله مستقيم يشمل المبدأ والنقطة $(0{,}5 ; 75)$ (Go، DA)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "معامل التناسبية (DA/Go):",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "150",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{75}{0{,}5}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "سعر 1Go."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بضرب معاملك في 0,5 ."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = 150$ : 1Go بـ 150DA.",
+        "incorrect": "نقسم الثمن على الحجم."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "معناه:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "ثمن 1Go هو 150DA",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "حجم 150Go بـ 1DA",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TANASUB-MUAMIL-MAQLUB"
+        },
+        {
+          "id": "C",
+          "content": "ثمن 0,5Go هو 150DA",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$f(1)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "وحدة واحدة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "DA لكل Go."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(1) = 150$ : الجيغا بـ 150DA.",
+        "incorrect": "المعامل ثمن وحدة واحدة."
+      }
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l4-008",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — تلميذ جديد",
+    "estimatedMinutes": 4,
+    "tags": [
+      "إضافة قيمة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P3",
+      "modelledOn": "ex-22"
+    }
+  },
+  "statement": {
+    "content": "معدّل 24 تلميذا هو 11. التحق بالقسم تلميذ جديد علامته 16."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما المعدّل الجديد للتلاميذ الـ 25؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "11,2",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MUTAWASSIT-MUTAWASSITAYN",
+          "value": "13,5"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجموع القديم $24 \\times 11$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أضف 16."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على 25."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{264 + 16}{25} = \\dfrac{280}{25} = 11{,}2$ .",
+        "incorrect": "العدد يصبح 25."
+      },
+      "difficulty": 4
+    }
+  ]
+}

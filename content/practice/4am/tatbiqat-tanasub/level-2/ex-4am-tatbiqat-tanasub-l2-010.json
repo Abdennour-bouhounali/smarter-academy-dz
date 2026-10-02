@@ -1,0 +1,58 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l2-010",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — قميص المنتخب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "السعر قبل التغيّر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tatbiqat-tanasub_P3",
+      "modelledOn": "ex-3"
+    }
+  },
+  "statement": {
+    "content": "بعد تخفيض بـ 25%، أصبح سعر قميص المنتخب الوطني 2400DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "سعر القميص قبل التخفيض (بالدينار):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "3200",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المقدار المعطى هو المقدار بعد التغيّر، والمطلوب المقدار قبله."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب العلاقة $y = kx$ بالمضاعف $k$ ، ثم عوّض $y$ بقيمته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة $kx = y$ : $x = \\dfrac{y}{k}$ ، ثم تحقّق بالضرب."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}75x = 2400$ ، ومنه $x = \\dfrac{2400}{0{,}75} = 3200$ . (لا $2400 \\times 1{,}25 = 3000$ : الـ 25% من السعر قبل التخفيض.)",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    }
+  ]
+}

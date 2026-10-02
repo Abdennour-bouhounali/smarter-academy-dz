@@ -7,7 +7,7 @@ import { AuthContext } from '../../../context/AuthContext';
 import { fetchPracticeSession, fetchPracticeOverview } from '../../../services/practiceService';
 import { MASTERY_STATES, resolveMasteryState, reasonLabel, freshnessLabel } from '../../../lessons/common/components/LearningPointMastery';
 import MISCONCEPTIONS from '../../../../../../content/practice/misconceptions.json';
-import { bidi } from '../../../utils/bidi';
+import MathLabel from '../../../lessons/common/components/MathLabel';
 
 const TONE = {
   slate: 'border-slate-200 bg-slate-50',
@@ -135,7 +135,7 @@ export default function PracticeSummary() {
               <li key={lp.code} className={`flex items-start gap-3 rounded-xl border-2 px-4 py-3 ${TONE[state.tone]}`} data-mastery-state={stateKey}>
                 <span aria-hidden="true">{state.emoji}</span>
                 <div className="min-w-0">
-                  <p className="text-sm font-bold text-slate-800">{bidi(lp.title)}</p>
+                  <p className="text-sm font-bold text-slate-800"><MathLabel>{lp.title}</MathLabel></p>
                   <p className="text-xs text-slate-600">
                     {state.label}
                     {freshness && <span className="text-emerald-800"> · ⏳ {freshness}</span>}

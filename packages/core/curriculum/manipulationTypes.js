@@ -178,6 +178,139 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'ترييض مشكلة: نسمّي المجهول، نترجم النص إلى عبارتين، فتكون المعادلة لحظة تساويهما والمتراجحة لحظة تفوّق إحداهما',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+
+  // ── Unité 5 « جمل معادلتين من الدرجة الأولى بمجهولين » (2026-10-01) ──
+  // Calcul exact commun : packages/core/arithmetic/linearSystem.js (sur les fractions de linear.js).
+  'pair-scoreboard': {
+    // Le TABLEAU DES DEUX CONDITIONS : l'élève fixe lui-même les DEUX nombres x et y (des
+    // victoires et des nuls d'une saison, des hommes et des femmes d'un service…) ; deux jauges
+    // lisent chacune son équation sur SA ثنائية. Une ثنائية qui allume une seule jauge est
+    // refusée comme حل de la jumla : il faut les deux « في آن واحد ». Chaque essai est une
+    // réponse : MANUEL (§6bis).
+    shows: 'حل جملة معادلتين ثنائية (x ; y) تحقق المعادلتين في آن واحد: ثنائية تحقق معادلة واحدة ليست حلا للجملة',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'elimination-cards': {
+    // Deux CARTES-ÉQUATIONS en tuiles x, y et unités : l'élève fait disparaître une inconnue —
+    // en portant l'expression isolée (y = 7 − 2x) sur chaque tuile y de l'autre carte
+    // (التعويض), ou en multipliant une carte (× k, étirement) puis en posant une carte sur
+    // l'autre : les tuiles opposées s'annulent par paires (الجمع). Une carte posée sans que
+    // rien ne s'annule est refusée en le montrant. Chaque geste est une décision : MANUEL.
+    shows: 'حل جملة جبريا: نتخلص من أحد المجهولين بالتعويض أو بالجمع بعد الضرب في معامل مناسب، فنحصل على معادلة بمجهول واحد',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'story-modeller': {
+    // L'HISTOIRE QU'ON TRADUIT : l'élève nomme les deux inconnues sur les mots de l'histoire,
+    // puis porte les données de l'énoncé dans les cases de deux équations ; « تحقّق » rejoue
+    // l'histoire avec SA jumla et refuse un modèle qui la contredit, dans les mots de
+    // l'histoire (un prix compté comme un nombre de personnes). Puis la jumla résolue est
+    // rejouée (التحقق) et la réponse écrite. Chaque case remplie est une réponse : MANUEL.
+    shows: 'ترييض مشكلة بجملة معادلتين: نختار المجهولين، نترجم كل معلومة من النص إلى معادلة، نحل الجملة ثم نتحقق من النتيجة في الوضعية',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+
+  // ── Unité 6 « الدالة الخطية والتناسبية » (2026-10-02) ──
+  // Calcul exact commun : packages/core/arithmetic/proportional.js (sur les fractions de linear.js).
+  'ratio-ride': {
+    // LE COMPTEUR QU'ON FAIT TOURNER : l'élève fixe la durée d'un trajet (trottinette louée sur la
+    // promenade) et ENREGISTRE ses propres colonnes (x ; y) ; la ligne des quotients y ÷ x se lit sous
+    // son tableau. « جدول تناسبية » est refusé tant que deux quotients diffèrent (le forfait de
+    // déverrouillage le casse) ; le رابع متناسب se calcule par × a. Chaque colonne est une décision : MANUEL.
+    shows: 'جدول تناسبية: حاصل قسمة y على x ثابت يساوي معامل التناسبية a ، أي y = a × x — وجدول فيه مبلغ ثابت ليس جدول تناسبية',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'linear-machine': {
+    // LA MACHINE À RÈGLE CACHÉE : l'élève y fait entrer ses propres nombres (cartes), lit les sorties,
+    // puis règle le cadran a de SA machine-témoin ; une affirmation « f(x) = ax » est refusée avec un
+    // témoin (f(0) ≠ 0, ou f(2x) ≠ 2f(x)). Un seul couple (m ; f(m)), m ≠ 0, suffit à fixer a ;
+    // le nombre 0 ne fixe rien. Chaque carte est un choix : MANUEL.
+    shows: 'الدالة الخطية x ⟼ ax : صورة x هي ax ، ويكفي عدد غير معدوم m وصورته n لتعيين a = n ÷ m ؛ x² و 2x − 1 ليستا دالتين خطيتين',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'origin-line': {
+    // LA DROITE ÉPINGLÉE À O : l'origine ne bouge pas (on essaie, elle résiste) ; l'élève tire la
+    // poignée A(1 ; a) — la droite pivote, monte si a > 0, descend si a < 0 ; une sonde verticale
+    // (ou horizontale) lit une image (ou un antécédent). Un point posé hors de la droite est refusé
+    // avec son écart. Mondes : téléphérique, ressort (nuage de points du tableau), budget (plafond).
+    shows: 'التمثيل البياني للدالة الخطية x ⟼ ax مستقيم يشمل المبدأ O ومعامل توجيهه a : يكفي تعيين نقطة ثانية، ونقرأ عليه صورة عدد والعدد الذي علمت صورته',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'percent-tag': {
+    // L'ÉTIQUETTE QU'ON ÉTIRE : le prix est une barre ; l'élève choisit زيادة / تخفيض et tire t % —
+    // la barre est multipliée par 1 ± t/100 (jamais « + t »). En متقدم, deux changements successifs :
+    // le pari « −30 % puis +15 % = −15 % » est refusé par la barre elle-même (on multiplie les
+    // multiplicateurs). Chaque réglage est une réponse : MANUEL.
+    shows: 'النسب المئوية تناسبية: زيادة x بـ t% تعني ضربه في 1 + t/100 وتخفيضه يعني ضربه في 1 − t/100 ، والتغيرات المتتابعة تُضرب ولا تُجمع',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // ── Unité 7 « الدالة التآلفية » (2026-10-02) — calcul exact : packages/core/arithmetic/affine.js.
+  'affine-meter': {
+    // LE COMPTEUR À PARTIE FIXE : un bloc b posé d'avance (la paie de base, la prise en charge) et x blocs
+    // de a. L'élève règle x (image) ou cherche x pour un total m (antécédent : ax + b = m) ; en متقدم il
+    // tient aussi les boutons a et b — b = 0 rend la fonction خطية, a = 0 la rend ثابتة.
+    shows: 'الدالة التآلفية جزء ثابت b وجزء متغير ax : صورة x هي ax + b ، والعدد الذي صورته m حلّ المعادلة ax + b = m ؛ b = 0 دالة خطية و a = 0 دالة ثابتة',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'affine-line': {
+    // LA DROITE QUI NE PASSE PLUS PAR O : la droite de x ⟼ ax (fantôme) et sa copie montée de b. L'élève
+    // tire le point (0 ; b) sur l'axe des ordonnées (translation) et la marche « 1 à droite, a en haut »
+    // (pente) ; il lit a et b sur une droite donnée, ou une image / un antécédent avec une sonde.
+    shows: 'التمثيل البياني للدالة التآلفية x ⟼ ax + b مستقيم يقطع محور التراتيب في (0 ; b) ويوازي مستقيم الدالة الخطية x ⟼ ax : b الترتيب عند المبدأ و a معامل التوجيه',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'slope-stairs': {
+    // L'ESCALIER DES ACCROISSEMENTS : deux marqueurs x1, x2 sur la droite ; la marche Δx, Δf se dessine ;
+    // l'élève déplace les marqueurs où il veut — le quotient Δf ÷ Δx ne bouge pas (INVARIANT = a), puis il
+    // descend jusqu'à x = 0 pour lire b. Deux nombres et leurs images suffisent à retrouver f.
+    shows: 'تناسب التغيّرات: مهما كان العددان x1 و x2 فإنّ (f(x1) − f(x2)) ÷ (x1 − x2) يساوي a ، ومن عددين وصورتيهما نعيّن a ثم b',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'line-crossing': {
+    // DEUX DROITES, UN POINT : chaque équation de la جملة est écrite y = ax + b et tracée ; l'élève promène
+    // un point — chaque équation s'allume quand il est sur sa droite ; les deux ensemble : la ثنائية
+    // solution. En متقدم il règle la seconde droite jusqu'aux cas parallèles / confondues.
+    shows: 'حل جملة معادلتين بيانيا: كل معادلة مستقيم y = ax + b ، والثنائية حلّ الجملة إحداثيتا نقطة تقاطعهما ؛ متوازيان: لا حل ، منطبقان: عدد لا نهائي من الحلول',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'plan-compare': {
+    // DEUX TARIFS FACE À FACE : chaque formule est une fonction affine (partie fixe + partie variable) ;
+    // l'élève fait varier x (séances, heures, jours) — les deux coûts et leurs droites bougent ensemble —
+    // trouve x où ils sont égaux et décide quelle formule choisir de chaque côté. Réutilisé par la synthèse.
+    shows: 'المفاضلة بين صيغتين: كل تسعيرة دالة تآلفية (جزء ثابت وجزء متغير) ، يتقاطع المستقيمان حيث تتساوى التكلفتان ، وتتغير الصيغة الأفضل قبل نقطة التقاطع وبعدها',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  // ── Unité 8 « الإحصاء » (2026-10-02) — docs/sources/4am/unit8/extraction.json ─────────────────────────
+  'cumul-gate': {
+    // LA BARRE DE TAILLE : la série rangée (des élèves, des notes) ; l'élève fait glisser un seuil t — ceux
+    // qui ont « t على الأكثر » s'allument d'un côté (التكرار المجمع الصاعد), ceux qui ont « t على الأقل » de
+    // l'autre (النازل) ; la valeur t elle-même est comptée des DEUX côtés. Les colonnes du tableau se
+    // remplissent par ses propres seuils, puis en fractions de N (التواتر المجمع).
+    shows: 'التكرار المجمع الصاعد لقيمة t عدد القيم الأصغر من أو تساوي t ، والنازل عدد القيم الأكبر من أو تساوي t ؛ مقسومين على التكرار الكلي يصبحان تواترين مجمعين',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'stat-balance': {
+    // LA BALANCE DES VALEURS : chaque valeur est un jeton posé à sa place sur une poutre graduée ; l'élève
+    // déplace l'appui jusqu'à l'équilibre (le المتوسط), le rideau jusqu'à couper la série en deux effectifs
+    // égaux (le الوسيط), la pince entre les extrêmes (المدى) ; il tire une valeur extrême et voit la moyenne
+    // partir, la médiane rester. Réutilisé par la synthèse (valeurs cachées retrouvées par la main).
+    shows: 'المتوسط نقطة توازن القيم (مجموع القيم مقسوم على عددها) ، الوسيط يقسم السلسلة المرتبة إلى قسمين لهما نفس التكرار ، والمدى الفرق بين أكبر قيمة وأصغر قيمة',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'sheet-lab': {
+    // LA MAQUETTE DU MAJDOUL : une feuille dessinée — l'élève saisit les valeurs, sélectionne une plage à la
+    // main (A1:G1), compose le دستور (MAX − MIN, MEDIANE, MOYENNE, MODE) ; une plage fausse donne un nombre
+    // qui contredit son calcul, une cellule modifiée recalcule tout ; puis il choisit le graphique qui
+    // convient aux données (أعمدة / دائري / مدرّج).
+    shows: 'المجدول يحسب مؤشرات سلسلة محجوزة في خلايا بدساتير: المدى ⁦=MAX()-MIN()⁩ ، الوسيط ⁦=MEDIANE()⁩ ، المتوسط ⁦=MOYENNE()⁩ ، المنوال ⁦=MODE()⁩ ، ويرسم التمثيل البياني المناسب',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'group-tanks': {
+    // LES RÉSERVOIRS DE GROUPES : chaque groupe est un réservoir de largeur n (son effectif) rempli au niveau
+    // de sa moyenne ; l'élève PARIE le niveau du groupe réuni puis ouvre la vanne — le niveau commun est la
+    // moyenne pondérée (Σ n·m ÷ N), jamais la moyenne des moyennes. En متقدم, deux classes face à face.
+    shows: 'متوسط مجموعتين مجتمعتين هو المتوسط المتوازن: مجموع (التكرار × المتوسط) مقسوم على التكرار الكلي ، وليس متوسط المتوسطين',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
 });
 
 export const MANIPULATION_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_TYPES));

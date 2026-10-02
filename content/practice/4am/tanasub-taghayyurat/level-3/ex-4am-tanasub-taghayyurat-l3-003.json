@@ -1,0 +1,92 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l3-003",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — أعداد عشرية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تناسب التغيرات",
+      "تعيين دالة تآلفية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "$g$ دالة تآلفية حيث $g(2) = 3{,}5$ و $g(6) = 5{,}5$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعامل $a$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بالفاصلة أو كسر مثل 5/7)",
+      "expectedAnswer": "0,5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$5{,}5 - 3{,}5 = 2$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "على $6 - 2 = 4$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\dfrac{2}{4}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{2}{4} = 0{,}5$ .",
+        "incorrect": "فرق الصورتين 2 ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $g(10)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بالفاصلة أو كسر مثل 5/7)",
+      "expectedAnswer": "7,5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن $b$ أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$b = 3{,}5 - 1 = 2{,}5$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$g(10) = 0{,}5 \\times 10 + b$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$g(x) = 0{,}5x + 2{,}5$ ، ومنه $g(10) = 5 + 2{,}5 = 7{,}5$ .",
+        "incorrect": "لا تنسَ $b$ ."
+      }
+    }
+  ]
+}

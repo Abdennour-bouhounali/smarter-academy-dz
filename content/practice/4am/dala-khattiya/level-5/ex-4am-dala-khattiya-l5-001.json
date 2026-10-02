@@ -1,0 +1,149 @@
+{
+  "id": "ex-4am-dala-khattiya-l5-001",
+  "lessonCode": "dala-khattiya",
+  "level": 5,
+  "metadata": {
+    "title": "السكوتر بالدقيقة",
+    "estimatedMinutes": 6,
+    "tags": [
+      "سياق",
+      "تعيين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "كراء سكوتر كهربائي على الواجهة البحرية: الثمن يتناسب مع المدة. 12 دقيقة تكلّف 180DA. نسمي $f(x)$ ثمن $x$ دقيقة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "معامل الدالة الخطية $f$ (ثمن دقيقة) هو:",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الدالة خطية: دستورها من الشكل $f(x) = ax$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعلومة المعطاة على شكل معادلة مجهولها $a$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الصورة على العدد غير المعدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "$12a = 180$ ، إذن $a = 180 \\div 12 = 15$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-MUAMIL-MAQLUB",
+          "value": "1/15"
+        },
+        {
+          "id": "MISC-KHATTIYA-ISHARA",
+          "value": "-15"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $f(35)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "525",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد بدالة خطية تُقرأ على دستورها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بالعدد المعطى في الدستور."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب الجداء، وانتبه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(35) = 15 \\times 35 = 525$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-SURA-SABIQ",
+          "value": "7/3"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "عيّن العدد الذي صورته $675$ بالدالة $f$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "45",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المطلوب هنا عدد علمت صورته، لا صورة عدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعادلة $ax = $ الصورة المعطاة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم طرفي المعادلة على المعامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$15 \\times x = 675$ ، إذن $x = 675 \\div 15 = 45$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-SURA-SABIQ",
+          "value": "10125"
+        }
+      ]
+    }
+  ]
+}

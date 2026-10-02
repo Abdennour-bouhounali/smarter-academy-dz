@@ -1,0 +1,119 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l3-003",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 3,
+  "metadata": {
+    "title": "الدراجة الكهربائية على الكورنيش",
+    "estimatedMinutes": 3,
+    "tags": [
+      "دالة خطية",
+      "تدوير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P3",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "كراء دراجة كهربائية (سكوتر) على الكورنيش يكلّف $15$ DA للدقيقة الواحدة، دون أي مبلغ ثابت. نسمّي $x$ عدد الدقائق."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المبلغ المدفوع $P(x)$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$P(x) = 15x$ ، دالة خطية",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$P(x) = x + 15$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-AFFINE"
+        },
+        {
+          "id": "C",
+          "content": "$P(x) = \\dfrac{x}{15}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-MUAMIL-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كم يدفع في دقيقتين؟ في 3 دقائق؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المبلغ متناسب مع عدد الدقائق."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعامل هو سعر الدقيقة."
+        }
+      ],
+      "feedback": {
+        "correct": "كل دقيقة بـ 15 DA: $P(x) = 15x$.",
+        "incorrect": "المبلغ يتضاعف حين يتضاعف عدد الدقائق: نضرب."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    },
+    {
+      "id": "q2",
+      "statement": "معك $500$ DA. ما أكبر عدد من الدقائق الكاملة يمكنك كراؤها؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "33",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حل $15x \\leq 500$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $500 \\div 15$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عدد الدقائق الكاملة عدد طبيعي لا يتجاوز الحد."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{500}{15} \\approx 33{,}3$ ، و $15 \\times 33 = 495 \\leq 500$ بينما $15 \\times 34 = 510$.",
+        "incorrect": "دوّر نحو الأسفل حتى لا يتجاوز المبلغ ما معك."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "34",
+          "id": "MISC-TARRID-TAFSIR"
+        }
+      ]
+    }
+  ]
+}

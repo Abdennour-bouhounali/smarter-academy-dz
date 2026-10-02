@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l2-004",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — تذاكر الدربي",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متوسط مجموعات",
+      "دربي"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P3",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "في دربي العاصمة: 120 تذكرة بمتوسط 400DA في جناح، و 80 تذكرة بمتوسط 650DA في جناح آخر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما متوسط ثمن التذكرة في الجناحين معا (DA)؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "500",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MUTAWASSIT-MUTAWASSITAYN",
+          "value": "525"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عدد التذاكر مختلف."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المبلغ الكلي $120 \\times 400 + 80 \\times 650$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على 200 تذكرة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{48000 + 52000}{200} = 500$ DA.",
+        "incorrect": "لا تحسب متوسط المتوسطين 525."
+      },
+      "difficulty": 2
+    }
+  ]
+}

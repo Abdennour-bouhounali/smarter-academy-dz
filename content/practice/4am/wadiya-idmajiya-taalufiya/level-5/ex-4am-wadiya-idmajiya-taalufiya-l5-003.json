@@ -1,0 +1,171 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l5-003",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 5,
+  "metadata": {
+    "title": "قاعة الألعاب: ثلاث صيغ شهرية",
+    "estimatedMinutes": 6,
+    "tags": [
+      "ثلاث صيغ",
+      "متراجحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P2"
+    }
+  },
+  "statement": {
+    "content": "قاعة ألعاب: الصيغة أ 200 DA للساعة؛ ب بطاقة 1500 DA ثم 80 DA للساعة؛ جـ اشتراك 3000 DA دون حدّ ( $x$ عدد الساعات في الشهر)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لـ 10 ساعات، الأرخص:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "أ",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "ب",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "C",
+          "content": "جـ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "2000 ، 2300 ، 3000."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الأصغر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قبل التقاطع."
+        }
+      ],
+      "feedback": {
+        "correct": "أ: 2000 ، ب: 2300 ، جـ: 3000.",
+        "incorrect": "نحسب الأثمان الثلاثة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5
+    },
+    {
+      "id": "q2",
+      "statement": "ابتداء من كم ساعة تصبح ب أرخص من أ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "13",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$80x + 1500 < 200x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x > 12{,}5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أصغر عدد طبيعي."
+        }
+      ],
+      "feedback": {
+        "correct": "$x > 12{,}5$ : ابتداء من 13 ساعة.",
+        "incorrect": "متراجحة تامة ثم عدد طبيعي."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "12",
+          "id": "MISC-TARRID-TAFSIR"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "لـ 20 ساعة، الأرخص:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "أ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "B",
+          "content": "ب",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "C",
+          "content": "جـ",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "4000 ، 3100 ، 3000."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الأصغر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد 18,75 ساعة."
+        }
+      ],
+      "feedback": {
+        "correct": "أ: 4000 ، ب: 3100 ، جـ: 3000.",
+        "incorrect": "الصيغة الأرخص تتغيّر مرتين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5
+    }
+  ]
+}

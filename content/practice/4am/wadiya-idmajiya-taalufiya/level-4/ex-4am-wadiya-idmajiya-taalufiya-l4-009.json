@@ -1,0 +1,182 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l4-009",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 4,
+  "metadata": {
+    "title": "ثلاثة تطبيقات توصيل",
+    "estimatedMinutes": 5,
+    "tags": [
+      "ثلاث صيغ",
+      "مفاضلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P2"
+    }
+  },
+  "statement": {
+    "content": "ثلاثة تطبيقات لتوصيل الأكل: أ مصاريف 150 DA ثم 30 DA للكيلومتر؛ ب 60 DA للكيلومتر؛ جـ 400 DA جزافيا داخل المدينة ( $x$ عدد الكيلومترات)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لـ 4 km، الأرخص:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "أ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "B",
+          "content": "ب",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "جـ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "270 ، 240 ، 400."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الأصغر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المستقيم الأدنى."
+        }
+      ],
+      "feedback": {
+        "correct": "أ: 270 ، ب: 240 ، جـ: 400.",
+        "incorrect": "نحسب الأثمان الثلاثة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "لـ 7 km، الأرخص:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "أ",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "ب",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "C",
+          "content": "جـ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "360 ، 420 ، 400."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الأصغر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد 5 km."
+        }
+      ],
+      "feedback": {
+        "correct": "أ: 360 ، ب: 420 ، جـ: 400.",
+        "incorrect": "الصيغة الأرخص تتغيّر."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    },
+    {
+      "id": "q3",
+      "statement": "لـ 10 km، الأرخص:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "أ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "B",
+          "content": "ب",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "C",
+          "content": "جـ",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "450 ، 600 ، 400."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الأصغر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الجزافية للمسافات الطويلة."
+        }
+      ],
+      "feedback": {
+        "correct": "أ: 450 ، ب: 600 ، جـ: 400.",
+        "incorrect": "نحسب ولا نعمّم."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l1-005",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 1,
+  "metadata": {
+    "title": "دورة ألعاب إلكترونية: كم لاعبا؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تكرار كلي",
+      "قراءة جدول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P2"
+    }
+  },
+  "statement": {
+    "content": "نتائج دورة ألعاب إلكترونية بين الأصدقاء (عدد الانتصارات لكل لاعب): عدد الانتصارات: 2 ، 3 ، 4 ، 5 — عدد اللاعبين: 3 ، 4 ، 2 ، 1."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم لاعبا شارك في الدورة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كل لاعب يظهر مرة واحدة في التكرارات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التكرار الكلي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع أعداد اللاعبين لا الانتصارات."
+        }
+      ],
+      "feedback": {
+        "correct": "التكرار الكلي $3 + 4 + 2 + 1 = 10$ لاعبين.",
+        "incorrect": "نجمع التكرارات (عدد اللاعبين) لا القيم."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 1
+    }
+  ]
+}

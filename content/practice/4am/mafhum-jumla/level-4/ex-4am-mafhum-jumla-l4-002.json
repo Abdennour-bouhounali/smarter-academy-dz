@@ -1,0 +1,133 @@
+{
+  "id": "ex-4am-mafhum-jumla-l4-002",
+  "lessonCode": "mafhum-jumla",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — باقات الإنترنت",
+    "estimatedMinutes": 4,
+    "tags": [
+      "هاتف",
+      "ثنائية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mafhum-jumla_P3",
+      "modelledOn": "ex-4"
+    }
+  },
+  "statement": {
+    "content": "اشترى سمير 7 باقات إنترنت: $x$ باقة صغيرة بـ 100DA و $y$ باقة كبيرة بـ 500DA، ودفع 1900DA: $\\begin{cases} x + y = 7 \\\\ 100x + 500y = 1900 \\end{cases}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الثنائية $(4 ; 3)$ ...",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "تحقّق المعادلتين معًا: حل للجملة",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "تحقّق المعادلة الأولى فقط",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "تحقّق المعادلة الثانية فقط",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "لا تحقّق أيًّا من المعادلتين",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x = 4$ و $y = 3$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$4 + 3$ ثم $400 + 1500$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل تجد 7 ثم 1900؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$4 + 3 = 7$ و $400 + 1500 = 1900$ : حل للجملة.",
+        "incorrect": "عوّض في المعادلتين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "الثنائية $(3 ; 4)$ ...",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "تحقّق المعادلتين معًا: حل للجملة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "B",
+          "content": "تحقّق المعادلة الأولى فقط",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "تحقّق المعادلة الثانية فقط",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "لا تحقّق أيًّا من المعادلتين",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x = 3$ و $y = 4$ هذه المرة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$300 + 2000$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن بالمبلغ 1900."
+        }
+      ],
+      "feedback": {
+        "correct": "$3 + 4 = 7$ لكن $300 + 2000 = 2300 \\neq 1900$ : المعادلة (1) فقط.",
+        "incorrect": "الترتيب مهم: $x$ عدد الباقات الصغيرة."
+      }
+    }
+  ]
+}

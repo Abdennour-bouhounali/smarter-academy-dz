@@ -1,0 +1,140 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l1-010",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 1,
+  "metadata": {
+    "title": "تبسيط معادلة وتفسير حل",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تبسيط",
+      "التحقق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P2"
+    }
+  },
+  "statement": {
+    "content": "نبسّط المعادلات قبل الحل، ونتحقق من أنّ الحل يناسب الوضعية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعادلة $20x + 20y = 1600$ تكافئ:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x + y = 80$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x + y = 1600$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-TARAF-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$20x + y = 80$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-TARAF-WAHID"
+        },
+        {
+          "id": "D",
+          "content": "$x + y = 1580$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "للحدود الثلاثة قاسم مشترك."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم الطرفين على 20."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "القسمة تشمل كل الحدود في الطرفين."
+        }
+      ],
+      "feedback": {
+        "correct": "$20x \\div 20 = x$ و $20y \\div 20 = y$ و $1600 \\div 20 = 80$.",
+        "incorrect": "نقسم الطرفين كليهما على العدد نفسه."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    },
+    {
+      "id": "q2",
+      "statement": "في مشكلة عن عدد الأولاد $x$ وعدد البنات $y$ في قسم، وجدت ريم الثنائية $(12{,}5 ; 17{,}5)$. ماذا نستنتج؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "في القسم 12,5 ولدا و 17,5 بنتا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TAHAQQUQ-NAS"
+        },
+        {
+          "id": "B",
+          "content": "في القسم 12 ولدا و 18 بنتا، بالتدوير",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TAHAQQUQ-NAS"
+        },
+        {
+          "id": "C",
+          "content": "هناك خطأ: عدد التلاميذ عدد طبيعي، فنراجع الترييض أو الحساب",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "الجواب مقبول لأنه يحقق الجملة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TAHAQQUQ-NAS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ماذا يمثّل كل عدد في الوضعية؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل يمكن أن يكون عدد الأولاد عددا عشريا؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "التحقق يكون في النص، لا في الجملة وحدها."
+        }
+      ],
+      "feedback": {
+        "correct": "عدد الأشخاص عدد طبيعي: الثنائية العشرية تدلّ على خطأ.",
+        "incorrect": "نتحقق من معنى الحل في الوضعية."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 2
+    }
+  ]
+}

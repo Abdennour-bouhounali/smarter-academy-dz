@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l3-004",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 7 (ص 99) — نغيّر خلية: المتوسط",
+    "estimatedMinutes": 3,
+    "tags": [
+      "إعادة الحساب",
+      "متوسط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-7",
+      "page": 99,
+      "section": "أوظّف تعلّماتي",
+      "number": 7
+    }
+  },
+  "statement": {
+    "content": "سلسلة التمرين 7 محجوزة في الخلايا من A1 إلى G1 : 4 ، 10 ، 8 ، 4 ، 3 ، 2 ، 4 . نعوّض القيمة 10 في الخلية B1 بالعدد 17 دون أن نلمس الدساتير."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد الذي يُظهره الآن ⁦=MOYENNE(A1:G1)⁩ :",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-DUSTUR-KHATI",
+          "value": "5"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجموع زاد بـ 7."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المجموع 42."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$42 \\div 7$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{35 + 7}{7} = \\dfrac{42}{7} = 6$ : أعاد المجدول الحساب.",
+        "incorrect": "المجموع الجديد مقسوم على 7."
+      }
+    }
+  ]
+}

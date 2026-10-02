@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-mafhum-jumla-l5-004",
+  "lessonCode": "mafhum-jumla",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — متى تكون الحلول لا تنتهي؟",
+    "estimatedMinutes": 5,
+    "tags": [
+      "حالات خاصة",
+      "وسيط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mafhum-jumla_P4",
+      "modelledOn": "know-cases"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الجملة $\\begin{cases} x + 2y = 5 \\\\ 2x + 4y = c \\end{cases}$ حيث $c$ عدد معلوم."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما قيمة $c$ التي تجعل للجملة عددًا غير منته من الحلول؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الطرف الأول للمعادلة الثانية ضعف الطرف الأول للأولى."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب طرفي $x + 2y = 5$ في 2."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تكون المعادلتان معادلة واحدة إذا كان $c$ ضعف 5."
+        }
+      ],
+      "feedback": {
+        "correct": "$2(x + 2y) = 2 \\times 5 = 10$ : من أجل $c = 10$ المعادلتان معادلة واحدة.",
+        "incorrect": "اضرب الطرفين معًا في 2."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ومن أجل $c = 12$ ، الجملة ...",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لها حل وحيد",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-HALAT"
+        },
+        {
+          "id": "B",
+          "content": "ليس لها حلول",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "لها عدد غير منته من الحلول",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-HALAT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من الأولى: $2x + 4y = 10$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "والثانية تقول: $2x + 4y = 12$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل يساوي $2x + 4y$ العددين 10 و 12 معًا؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$2x + 4y$ لا يساوي 10 و 12 في آن واحد: ليس لها حلول.",
+        "incorrect": "قارن بعد ضرب الأولى في 2."
+      }
+    }
+  ]
+}

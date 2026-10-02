@@ -1,0 +1,92 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l2-001",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 2,
+  "metadata": {
+    "title": "تحدّ (ص 77) — من سلسيوس إلى فهرنهايت",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تناسب التغيرات",
+      "تعيين دالة تآلفية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "challenge",
+      "page": 77,
+      "section": "تحدّ"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 77): على البيان نقرأ أنّ $10\\,^{\\circ}\\mathrm{C}$ تقابل $50\\,^{\\circ}\\mathrm{F}$ و $30\\,^{\\circ}\\mathrm{C}$ تقابل $86\\,^{\\circ}\\mathrm{F}$ ، أي $f(10) = 50$ و $f(30) = 86$ حيث $f$ دالة تآلفية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعامل $a$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بالفاصلة أو كسر مثل 5/7)",
+      "expectedAnswer": "1,8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "فرق الصورتين $86 - 50$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "فرق العددين $30 - 10$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\dfrac{36}{20}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{86 - 50}{30 - 10} = \\dfrac{36}{20} = 1{,}8$ .",
+        "incorrect": "36 فرق الصورتين فقط: نقسمه على 20 ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العدد $b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "32",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$f(10) = 10a + b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$18 + b = 50$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$b = f(10) - a \\times 10$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = 50 - 1{,}8 \\times 10 = 50 - 18 = 32$ .",
+        "incorrect": "$b$ ليس $\\dfrac{50}{10}$ : نطرح $a \\times 10$ ."
+      }
+    }
+  ]
+}

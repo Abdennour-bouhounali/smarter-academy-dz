@@ -1,0 +1,108 @@
+{
+  "id": "ex-4am-dala-khattiya-l2-005",
+  "lessonCode": "dala-khattiya",
+  "level": 2,
+  "metadata": {
+    "title": "المعامل من عدد سالب",
+    "estimatedMinutes": 4,
+    "tags": [
+      "معامل",
+      "إشارة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "$g$ دالة خطية حيث $g(-4) = 10$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عيّن معامل الدالة الخطية $g$ علمًا أنّ $g(-4) = 10$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "-2.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الدالة خطية: دستورها من الشكل $f(x) = ax$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعلومة المعطاة على شكل معادلة مجهولها $a$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الصورة على العدد غير المعدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "$-4a = 10$ ، إذن $a = 10 \\div (-4) = -2{,}5$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-MUAMIL-MAQLUB",
+          "value": "-0.4"
+        },
+        {
+          "id": "MISC-KHATTIYA-ISHARA",
+          "value": "2.5"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $g(2)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "-5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد بدالة خطية تُقرأ على دستورها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بالعدد المعطى في الدستور."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب الجداء، وانتبه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$g(2) = (-2{,}5) \\times 2 = -5$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-SURA-SABIQ",
+          "value": "-0.8"
+        }
+      ]
+    }
+  ]
+}

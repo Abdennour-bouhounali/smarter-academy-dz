@@ -1,0 +1,103 @@
+{
+  "id": "ex-4am-dala-khattiya-l2-010",
+  "lessonCode": "dala-khattiya",
+  "level": 2,
+  "metadata": {
+    "title": "الطاكسي الجماعي",
+    "estimatedMinutes": 4,
+    "tags": [
+      "سياق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "في خط طاكسي جماعي، ثمن الرحلة يتناسب مع المسافة: الدالة الخطية $p(x) = 6x$ ترفق بالمسافة $x$ (بالكيلومتر) الثمن بالدينار."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $p(12{,}5)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "75",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد بدالة خطية تُقرأ على دستورها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بالعدد المعطى في الدستور."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب الجداء، وانتبه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$p(12{,}5) = 6 \\times 12{,}5 = 75$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-SURA-SABIQ",
+          "value": "25/12"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "عيّن العدد الذي صورته $99$ بالدالة $p$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "16.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المطلوب هنا عدد علمت صورته، لا صورة عدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعادلة $ax = $ الصورة المعطاة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم طرفي المعادلة على المعامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$6 \\times x = 99$ ، إذن $x = 99 \\div 6 = 16{,}5$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-SURA-SABIQ",
+          "value": "594"
+        }
+      ]
+    }
+  ]
+}

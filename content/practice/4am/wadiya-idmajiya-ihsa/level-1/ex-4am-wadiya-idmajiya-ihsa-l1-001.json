@@ -1,0 +1,77 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l1-001",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 1 — التكرار المجمع الصاعد",
+    "estimatedMinutes": 2,
+    "tags": [
+      "تكرار مجمع"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 100,
+      "section": "أؤكّد تعلّماتي",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "في الجدول الإحصائي: القيمة: 7 ، 9 ، 14 ، 28 — التكرار: 6 ، 10 ، 3 ، 1."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "التكرار المجمع الصاعد للقيمة 14 هو:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "13",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUJAMMA-DUN-QIMA"
+        },
+        {
+          "id": "B",
+          "content": "19",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "30",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-SAID-NAZIL-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الصاعد يجمع القيم الأصغر من 14 أو تساويها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "القيم 7 و 9 و 14."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع تكراراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$6 + 10 + 3 = 19$.",
+        "incorrect": "لا ننسى تكرار القيمة 14 نفسها، ولا نأخذ كل التكرارات."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 1
+    }
+  ]
+}

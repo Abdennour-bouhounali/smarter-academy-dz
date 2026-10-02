@@ -1,0 +1,149 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l5-004",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 5,
+  "metadata": {
+    "title": "تمرين 18 (ص 101) — أوتار مثلثات قائمة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "جذور",
+      "مؤشرات"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-18",
+      "page": 101,
+      "section": "أتعمّق",
+      "number": 18
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 101): أطوال أوتار خمسة مثلثات قائمة (cm): $\\sqrt{12}$ ، $4\\sqrt{3}$ ، $\\sqrt{75}$ ، $6\\sqrt{3}$ ، $\\sqrt{27}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مدى هذه السلسلة هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sqrt{63}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MADA-AKBAR-QIMA"
+        },
+        {
+          "id": "B",
+          "content": "$4\\sqrt{3}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$6\\sqrt{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MADA-AKBAR-QIMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب كل طول على الشكل $a\\sqrt{3}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$6\\sqrt{3} - 2\\sqrt{3} = 4\\sqrt{3}$ .",
+        "incorrect": "$\\sqrt{12} = 2\\sqrt{3}$ أصغر طول."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "وسيط هذه السلسلة هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$5\\sqrt{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-BILA-TARTIB"
+        },
+        {
+          "id": "B",
+          "content": "$3\\sqrt{3}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$4\\sqrt{3}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "رتّب: $2\\sqrt{3}$ ، $3\\sqrt{3}$ ، …"
+        }
+      ],
+      "feedback": {
+        "correct": "القيمة الثالثة بعد الترتيب $4\\sqrt{3}$ .",
+        "incorrect": "$\\sqrt{75}$ مكتوبة في الوسط لكنّ السلسلة غير مرتّبة."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "متوسط هذه السلسلة هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4\\sqrt{3}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$20\\sqrt{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUTAWASSIT-QISMA-QIYAM"
+        },
+        {
+          "id": "C",
+          "content": "$\\sqrt{54}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$(2 + 4 + 5 + 6 + 3)\\sqrt{3} = 20\\sqrt{3}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{20\\sqrt{3}}{5} = 4\\sqrt{3}$ .",
+        "incorrect": "اقسم المجموع على $5$."
+      }
+    }
+  ]
+}

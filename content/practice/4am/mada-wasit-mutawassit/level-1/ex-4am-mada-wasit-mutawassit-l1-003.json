@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l1-003",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 1,
+  "metadata": {
+    "title": "معارف 3 (ص 96) — حرارة خمسة مرضى",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مدى"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-3",
+      "page": 96,
+      "section": "معارف",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 96): سجل طبيب درجة حرارة خمسة مرضى: $37{,}3$ ، $39$ ، $38$ ، $38{,}7$ ، $39{,}5$ (بالدرجة)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مدى هذه السلسلة هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "2,2",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MADA-AKBAR-QIMA",
+          "value": "39,5"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أعلى درجة $39{,}5$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أدنى درجة $37{,}3$."
+        }
+      ],
+      "feedback": {
+        "correct": "$39{,}5 - 37{,}3 = 2{,}2$ .",
+        "incorrect": "المدى فرق بين قيمتين، لا أكبر قيمة."
+      }
+    }
+  ]
+}

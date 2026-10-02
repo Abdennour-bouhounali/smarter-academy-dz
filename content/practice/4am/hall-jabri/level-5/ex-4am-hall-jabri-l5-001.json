@@ -1,0 +1,115 @@
+{
+  "id": "ex-4am-hall-jabri-l5-001",
+  "lessonCode": "hall-jabri",
+  "level": 5,
+  "metadata": {
+    "title": "تمرين 12 — نبسّط أولًا",
+    "estimatedMinutes": 4,
+    "tags": [
+      "اختيار الطريقة",
+      "تبسيط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-12",
+      "page": 61,
+      "section": "أوظّف تعلّماتي",
+      "number": 12
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 61): حلّ الجملة باستعمال طريقة من اختيارك. $\\begin{cases} x + 3y = 7 \\\\ 5y - 2 = 3(x - 1) \\end{cases}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعادلة الثانية تُبسَّط على الشكل:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3x - 5y = 1$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$3x - 5y = -1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$3x - 5y = 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ المعاملات قبل أن تبدأ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل يساوي $1$ أو $-1$ يسهّل التعويض؛ معاملان متعاكسان (أو يصيران كذلك بضرب بسيط) يسهّلان الجمع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد إيجاد مجهول، عوّض قيمته لتجد الآخر، ثم تحقّق من الثنائية في المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$5y - 2 = 3x - 3$ ، ثم $-2 + 3 = 3x - 5y$ أي $3x - 5y = 1$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "19/7",
+        "y": "10/7"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ المعاملات قبل أن تبدأ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل يساوي $1$ أو $-1$ يسهّل التعويض؛ معاملان متعاكسان (أو يصيران كذلك بضرب بسيط) يسهّلان الجمع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد إيجاد مجهول، عوّض قيمته لتجد الآخر، ثم تحقّق من الثنائية في المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 7 - 3y$ ؛ $21 - 14y = 1$ ، ومنه $y = \\dfrac{10}{7}$ و $x = \\dfrac{19}{7}$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

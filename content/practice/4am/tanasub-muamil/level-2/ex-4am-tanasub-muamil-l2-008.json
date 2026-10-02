@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-tanasub-muamil-l2-008",
+  "lessonCode": "tanasub-muamil",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — الجداءان المتصالبان",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الجداءان المتصالبان"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-muamil_P1",
+      "modelledOn": "prep"
+    }
+  },
+  "statement": {
+    "content": "الجدول الآتي جدول تناسبية: $\\begin{array}{|c|c|c|} \\hline x & 5 & 8 \\\\ \\hline y & 12 & \\ldots \\\\ \\hline \\end{array}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هو العدد الناقص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "19,2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجدول جدول تناسبية: نضرب في المعامل، ولا نضيف الفرق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب معامل التناسبية من عمود كامل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب العدد المعلوم في المعامل، أو استعمل تساوي الجداءين المتصالبين."
+        }
+      ],
+      "feedback": {
+        "correct": "$5 \\times y = 8 \\times 12 = 96$ ، ومنه $y = \\dfrac{96}{5} = 19{,}2$ .",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "15",
+          "id": "MISC-TANASUB-RABI-JAMA"
+        }
+      ]
+    }
+  ]
+}

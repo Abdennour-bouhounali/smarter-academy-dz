@@ -1,0 +1,123 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l3-007",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 3,
+  "metadata": {
+    "title": "تخفيضات الأحذية الرياضية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تخفيض",
+      "دالة خطية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P2",
+      "modelledOn": "method-percent"
+    }
+  },
+  "statement": {
+    "content": "في المركز التجاري، تخفيض بـ 30% على كل الأحذية الرياضية. حذاء ثمنه $6000$ DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما ثمن الحذاء بعد التخفيض (بالدينار)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار",
+      "expectedAnswer": "4200",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما النسبة التي ندفعها بعد تخفيض 30%؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$100\\% - 30\\% = 70\\%$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب الثمن في $0{,}7$."
+        }
+      ],
+      "feedback": {
+        "correct": "$6000 \\times 0{,}7 = 4200$ DA.",
+        "incorrect": "التخفيض نسبة من الثمن، نضرب في ما يبقى."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1,
+      "misconceptionSignatures": [
+        {
+          "value": "1800",
+          "id": "MISC-TAKHFID-NISBA"
+        },
+        {
+          "value": "5970",
+          "id": "MISC-NISBA-JAM"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "الدالة الخطية التي ترفق بكل ثمن $x$ ثمنه بعد التخفيض:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\longmapsto 0{,}7x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x \\longmapsto 0{,}3x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAKHFID-NISBA"
+        },
+        {
+          "id": "C",
+          "content": "$x \\longmapsto x - 30$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-JAM"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أي عدد ضربنا فيه 6000؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المضاعف هو $1 - \\dfrac{30}{100}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الدالة المرفقة بالتخفيض خطية."
+        }
+      ],
+      "feedback": {
+        "correct": "التخفيض بـ 30% مرفق بالدالة $x \\longmapsto 0{,}7x$.",
+        "incorrect": "نضرب في ما يبقى بعد التخفيض."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 2
+    }
+  ]
+}

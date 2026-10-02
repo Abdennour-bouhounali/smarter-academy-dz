@@ -1,0 +1,63 @@
+{
+  "id": "ex-4am-tarrid-taalufi-l3-009",
+  "lessonCode": "tarrid-taalufi",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — 15 ساعة لعب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "صورة عدد"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-taalufi_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "البطاقة الشهرية لقاعة الألعاب: $f(x) = 40x + 600$ (بالدينار)، حيث $x$ عدد الساعات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما المبلغ (DA) لشهر لعبت فيه 15 ساعة؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "1200",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-NISYAN-B",
+          "value": "600"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$f(15)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$40 \\times 15$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أضف 600."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(15) = 40 \\times 15 + 600 = 1200$ DA.",
+        "incorrect": "عوّض $x$ بـ 15."
+      }
+    }
+  ]
+}

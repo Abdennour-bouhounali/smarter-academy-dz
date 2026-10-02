@@ -7,7 +7,7 @@
 > found it (root `CLAUDE.md`, Documentation Synchronization Rule).
 
 The platform is Arabic-first (ar-DZ, RTL) and follows the Algerian curriculum.
-The live content is four 4AM textbook units under
+The live content is five 4AM textbook units under
 `apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/` — unit 1 « الأعداد
 الطبيعيّة والأعداد النّاطقة » (`aadad-tabiiya-natiqa/`, 9 lessons) and unit 2
 « الحساب على الجذور » (`hisab-judhur/`, 5 lessons + a synthesis, 2026-09-30; textbook
@@ -15,7 +15,16 @@ extraction `docs/sources/4am/unit2/extraction.json`) and unit 3 « الحساب 
 (`hisab-harfi/`, 3 lessons + a synthesis, 2026-10-01; extraction generated and checked by
 `docs/sources/4am/unit3/build-extraction.py`) and unit 4 « معادلات ومتراجحات من الدرجة
 الأولى بمجهول واحد » (`muadalat-mutarajihat/`, 4 lessons + a synthesis, 2026-10-01; extraction
-generated and checked by `docs/sources/4am/unit4/build-extraction.py`) — the **only** lesson
+generated and checked by `docs/sources/4am/unit4/build-extraction.py`) and unit 5 « جمل معادلتين من
+الدرجة الأولى بمجهولين » (`jumal-muadalatayn/`, 3 lessons + a synthesis, 2026-10-01; extraction generated
+and checked by `docs/sources/4am/unit5/build-extraction.py`) and unit 6 « الدالة الخطية والتناسبية »
+(`tanasubiya_duwal/tanasubiya-dala-khattiya/`, 5 lessons + a synthesis, 2026-10-02, under the owner's display ميدان
+« ميدان التناسبية والدوال »; extraction generated and checked by `docs/sources/4am/unit6/build-extraction.py`) and unit 7
+« الدالة التآلفية » (`tanasubiya_duwal/dala-taalufiya/`, 5 lessons + a synthesis, 2026-10-02, same display ميدان; the supplied
+pages 77–79 have no formal pages, so formal knowledge, exercises and the synthesis are declared platform additions; extraction
+generated and checked by `docs/sources/4am/unit7/build-extraction.py`) and unit 8 « الإحصاء » (`tanasubiya_duwal/ihsa/`,
+4 lessons + a synthesis, 2026-10-02, same display ميدان, programme domain « ميدان تنظيم المعطيات »; the full unit pp. 91–101;
+extraction generated and checked by `docs/sources/4am/unit8/build-extraction.py`, exact arithmetic `packages/core/arithmetic/statistics.js`) — the **only** lesson
 content in the repository. The
 French-era lessons (`lessons/college/`, `lessons/lycee/`), their practice
 content, specs, e2e scripts, French-only engines and the French reference

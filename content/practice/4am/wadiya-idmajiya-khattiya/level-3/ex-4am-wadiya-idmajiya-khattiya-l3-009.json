@@ -1,0 +1,123 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l3-009",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 3,
+  "metadata": {
+    "title": "مدرجات الملعب في الداربي",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نسبة مئوية",
+      "كسر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P3",
+      "modelledOn": "ex-38"
+    }
+  },
+  "statement": {
+    "content": "في مباراة الداربي، بقي ثُمن مقاعد الملعب فارغا."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما النسبة المئوية للمقاعد المشغولة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "نسبة مئوية دون الرمز %",
+      "expectedAnswer": "87.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما الكسر المشغول من المقاعد؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$1 - \\dfrac{1}{8}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب الكسر في 100."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{7}{8} \\times 100 = 87{,}5$.",
+        "incorrect": "الثمن فارغ: احسب نسبة الباقي."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1,
+      "misconceptionSignatures": [
+        {
+          "value": "12.5",
+          "id": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "value": "92",
+          "id": "MISC-TARRID-TAFSIR"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "هل يمكن القول إنّ 85% من المقاعد على الأقل مشغولة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، لأنّ النسبة المشغولة أكبر من 85%",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا، لأنّ 12,5% فقط مشغولة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "id": "C",
+          "content": "لا، لأنّ النسبة ليست 85% بالضبط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن النسبة المشغولة بـ 85%."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "«على الأقل» تعني أكبر من أو تساوي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استعمل النسبة من السؤال السابق."
+        }
+      ],
+      "feedback": {
+        "correct": "$87{,}5 \\geq 85$ : القول صحيح.",
+        "incorrect": "«على الأقل 85%» صحيحة إذا كانت النسبة 85% أو أكثر."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 2
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l2-004",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — أي دالة يمثّل المستقيم؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "قراءة",
+      "تعيين الدالة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-khatti_P2",
+      "modelledOn": "qcm"
+    }
+  },
+  "statement": {
+    "content": "المستقيم (D) أدناه يشمل المبدأ والنقطة $(2 ; 5)$ .",
+    "visual": {
+      "range": {
+        "xMin": 0,
+        "xMax": 4,
+        "yMin": 0,
+        "yMax": 10
+      },
+      "unit": 75.0,
+      "unitY": 20.0,
+      "functions": [
+        {
+          "id": "d",
+          "a": 2.5,
+          "b": 0,
+          "label": "(D)",
+          "tone": "indigo"
+        }
+      ],
+      "points": [
+        {
+          "id": "p0",
+          "x": 2.0,
+          "y": 5.0,
+          "name": ""
+        }
+      ],
+      "xStep": 1,
+      "yStep": 2,
+      "frozen": true,
+      "ariaLabel": "معلم فيه المستقيم (D) يشمل O والنقطة (2 ; 5)",
+      "caption": false
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "(D) هو التمثيل البياني للدالة:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\longmapsto 2{,}5x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x \\longmapsto 0{,}4x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-MUAMIL-MAQLUB"
+        },
+        {
+          "id": "C",
+          "content": "$x \\longmapsto x + 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-AFFINE"
+        },
+        {
+          "id": "D",
+          "content": "$x \\longmapsto 5x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-FASILA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التمثيل يشمل O والنقطة المعطاة $(m ; n)$ ، أي $f(m) = n$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $a \\times m = n$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الترتيب على الفاصلة: $a = \\dfrac{n}{m}$ ، مع الانتباه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "صورة 2 هي 5، فالمعامل $\\dfrac{5}{2} = 2{,}5$ .",
+        "incorrect": "اقرأ نقطة من (D) واقسم ترتيبها على فاصلتها."
+      }
+    }
+  ]
+}

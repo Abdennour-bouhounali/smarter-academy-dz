@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-dala-khattiya-l5-005",
+  "lessonCode": "dala-khattiya",
+  "level": 5,
+  "metadata": {
+    "title": "العدد الذي صورته √12",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جذور"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-8",
+      "page": 72,
+      "section": "أوظّف تعلّماتي",
+      "number": 8
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 72): $f(x) = -\\dfrac{\\sqrt{3}}{2}x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد الذي صورته $\\sqrt{12}$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$-2\\sqrt{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-SURA-SABIQ"
+        },
+        {
+          "id": "C",
+          "content": "$-4$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المطلوب هنا عدد علمت صورته، لا صورة عدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعادلة $ax = $ الصورة المعطاة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم طرفي المعادلة على المعامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{12} = 2\\sqrt{3}$ و $-\\dfrac{\\sqrt{3}}{2} \\times (-4) = 2\\sqrt{3}$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

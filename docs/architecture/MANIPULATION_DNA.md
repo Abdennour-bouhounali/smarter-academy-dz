@@ -371,6 +371,10 @@ as a substitute for causality: every motion must show a mathematical change.
    is not causal enough yet.
 4. Does it feel like another lesson's lab with different colours? If yes,
    **stop and redesign**.
+5. Can the student see the object AND the controls that move it in one
+   screen, without scrolling, on a phone as on a laptop? If not, the hand
+   moves something it cannot see — **not done** (owner rule, 2026-10-01;
+   `MANIPULATION_CONTRACT.md` §8bis).
 
 ## 15. Status
 
@@ -437,4 +441,15 @@ converge (§12), and the football pitch reappears only where the reading « prod
 
 The owner asked again to keep, beside the causal gestures, a decorative interaction in each world (ball, phone,
 flag, candle, ripples) — same confinement as unit 3.
+
+**Unit 5, what the hand does (2026-10-01).** Three concepts, three different variables — a ثنائية is not weighed
+on a balance (`MANIPULATION_CONTRACT.md` §2septies):
+
+| Lesson | Gesture (engine) | What resists / what the student decides |
+|---|---|---|
+| L1 `pair-scoreboard` | stretch BOTH numbers of the pair, one handle each (stretch); swap the pair; claim « حل للجملة » | two gauges read each equation on the student's own pair; the claim is refused while only one lights (« تحقّق المعادلة (1) فقط »); the swapped pair is a refused trial (order matters) |
+| L2 `elimination-cards` | carry an isolated expression onto the OTHER card's tiles (التعويض); stretch ×k on a card, lay one card on the other (الجمع) | the expression on its own card gives « 7 = 7 » and is refused; stacking when nothing cancels is refused with the sum written; ×0 wipes the card; done only with (x ; y) checked in both |
+| L3 / synthesis `story-modeller` | carry x, y onto the story's nouns, then the story's numbers into □x + □y = □ (carry); choose the method; carry the values to the story's gates | « تحقّق » refuses a model in the story's words (a price counted as people, swapped quantities, an empty slot is not 1); the story is REPLAYED with the pair — a non-natural count is flagged |
+
+Every one of the three also obeys the new one-screen rule (`MANIPULATION_CONTRACT.md` §8bis, §14 question 5).
 

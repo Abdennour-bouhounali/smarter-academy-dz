@@ -1,0 +1,95 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l3-003",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 10 (ص 72)",
+    "estimatedMinutes": 4,
+    "tags": [
+      "معامل كسري",
+      "عدد صورته معلومة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-10",
+      "page": 72,
+      "section": "أوظّف تعلّماتي",
+      "number": 10
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 72): النقطة $M\\left(\\dfrac{2}{7} ; -\\dfrac{1}{3}\\right)$ تنتمي إلى المستقيم الذي يمثل الدالة الخطية $f$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "معامل $f$ (كسر):",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "كسر مثل 3/4",
+      "expectedAnswer": "-7/6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التمثيل يشمل O والنقطة المعطاة $(m ; n)$ ، أي $f(m) = n$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $a \\times m = n$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الترتيب على الفاصلة: $a = \\dfrac{n}{m}$ ، مع الانتباه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = -\\dfrac{1}{3} \\div \\dfrac{2}{7} = -\\dfrac{7}{6}$ .",
+        "incorrect": "اقسم الترتيب على الفاصلة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العدد الذي صورته $-3$ (كسر):",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "كسر مثل 3/4",
+      "expectedAnswer": "18/7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد الذي صورته $b$ هو حل المعادلة $ax = b$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم الصورة على المعامل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق: اضرب العدد الذي وجدته في المعامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$-3 \\div \\left(-\\dfrac{7}{6}\\right) = \\dfrac{18}{7}$ .",
+        "incorrect": "اقسم الصورة على المعامل."
+      }
+    }
+  ]
+}

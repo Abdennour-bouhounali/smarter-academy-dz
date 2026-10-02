@@ -1,0 +1,119 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l5-002",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 5,
+  "metadata": {
+    "title": "عرضان للعائلة",
+    "estimatedMinutes": 6,
+    "tags": [
+      "دالة خطية",
+      "مقارنة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P3",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "عائلة من بالغين و 3 أطفال؛ $x$ سعر تذكرة البالغ بالدينار. العرض الأول: تخفيض 40% لكل طفل. العرض الثاني: تخفيض 20% لكل أفراد العائلة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ العرضين أقل تكلفة لهذه العائلة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "العرض الأول، لأنّ $3{,}8x < 4x$ مهما كان $x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "العرض الثاني، لأنّ التخفيض يشمل الجميع",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-NAMUDHAJ"
+        },
+        {
+          "id": "C",
+          "content": "العرضان متساويان، لأنّ $3 \\times 40 = 5 \\times 24$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-TATABU-JAM"
+        },
+        {
+          "id": "D",
+          "content": "يتعلّق ذلك بقيمة $x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب تكلفة كل عرض بدلالة $x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العرض الثاني: $5 \\times 0{,}8x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن المعاملين."
+        }
+      ],
+      "feedback": {
+        "correct": "العرض الأول: $2x + 3 \\times 0{,}6x = 3{,}8x$ ؛ الثاني: $5 \\times 0{,}8x = 4x$ : الأول أقل لكل $x > 0$.",
+        "incorrect": "قارن معاملي الدالتين الخطيتين."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 5
+    },
+    {
+      "id": "q2",
+      "statement": "كم توفّر العائلة بالعرض الأول إذا كان $x = 500$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار",
+      "expectedAnswer": "100",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب التكلفة بالعرضين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$4 \\times 500$ و $3{,}8 \\times 500$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح."
+        }
+      ],
+      "feedback": {
+        "correct": "$2000 - 1900 = 100$ DA.",
+        "incorrect": "احسب التكلفتين ثم الفرق."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ]
+}

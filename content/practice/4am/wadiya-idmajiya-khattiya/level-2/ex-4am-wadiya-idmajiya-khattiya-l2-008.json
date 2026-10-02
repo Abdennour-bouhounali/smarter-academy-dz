@@ -1,0 +1,66 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l2-008",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 2,
+  "metadata": {
+    "title": "أكبر سعر بقراءة بيانية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "قراءة بيانية",
+      "ميزانية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P3",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "تكلفة رحلة عائلة هي $C(x) = 4x$ حيث $x$ سعر تذكرة البالغ بالدينار. رسمنا مستقيم التكلفة والخط الأفقي لميزانية العائلة $1000$ DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما فاصلة نقطة تقاطع مستقيم التكلفة مع خط الميزانية؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار",
+      "expectedAnswer": "250",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في نقطة التقاطع، التكلفة تساوي الميزانية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حل المعادلة $4x = 1000$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الفاصلة هي السعر، والترتيب هو التكلفة."
+        }
+      ],
+      "feedback": {
+        "correct": "$4x = 1000$ ومنه $x = 250$ DA: أكبر سعر مسموح.",
+        "incorrect": "نبحث عن الفاصلة (السعر) لا الترتيب (التكلفة)."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "4000",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
+        }
+      ]
+    }
+  ]
+}

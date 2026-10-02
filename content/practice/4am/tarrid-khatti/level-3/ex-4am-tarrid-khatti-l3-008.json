@@ -1,0 +1,58 @@
+{
+  "id": "ex-4am-tarrid-khatti-l3-008",
+  "lessonCode": "tarrid-khatti",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — سلّم خريطة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "سلّم",
+      "وحدات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P3",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "خريطة سلّمها $\\dfrac{1}{25000}$ : المسافة الحقيقية (cm) هي $f(x) = 25000x$ حيث $x$ المسافة على الخريطة (cm)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مسافة 4cm على الخريطة تمثّل مسافة حقيقية (بالكيلومتر) قدرها:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$25000 \\times 4$ cm."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$100000$ cm."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "1km = 100 000cm."
+        }
+      ],
+      "feedback": {
+        "correct": "$100000$ cm أي 1km.",
+        "incorrect": "حوّل السنتيمترات إلى كيلومترات."
+      }
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l2-003",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — وسيط ستّ قيم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وسيط",
+      "دستور"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_majdulat-ihsaiya_P2",
+      "modelledOn": "ex-7"
+    }
+  },
+  "statement": {
+    "content": "زمن (بالدقائق) قضاه ستة أصدقاء في لعبة على الهاتف، محجوز في A1:F1 : 12 ، 7 ، 9 ، 15 ، 10 ، 8 ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد الذي يُظهره ⁦=MEDIANE(A1:F1)⁩ :",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بالفاصلة)",
+      "expectedAnswer": "9,5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-WASIT-BILA-TARTIB",
+          "value": "12"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "رتّب القيم الستّ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "7 ، 8 ، 9 ، 10 ، 12 ، 15 ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "متوسط الثالثة والرابعة."
+        }
+      ],
+      "feedback": {
+        "correct": "المرتبة 7 ، 8 ، 9 ، 10 ، 12 ، 15 : $\\dfrac{9 + 10}{2} = 9{,}5$ .",
+        "incorrect": "عدد زوجي: متوسط القيمتين الوسطيين بعد الترتيب."
+      }
+    }
+  ]
+}

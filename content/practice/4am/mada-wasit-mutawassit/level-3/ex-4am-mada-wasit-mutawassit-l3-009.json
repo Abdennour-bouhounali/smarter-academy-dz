@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l3-009",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — أهداف المقابلات",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متوسط متوازن",
+      "جدول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mada-wasit-mutawassit_P2",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "عدد الأهداف في 20 مقابلة من دوري الأحياء: $0$ هدف (مقابلتان)، $1$ (5 مقابلات)، $2$ (6)، $3$ (4)، $4$ (3)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "متوسط عدد الأهداف في المقابلة هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "2,05",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MUTAWASSIT-BILA-TARJIH",
+          "value": "2"
+        },
+        {
+          "id": "MISC-IHSA-MUTAWASSIT-QISMA-QIYAM",
+          "value": "41/5"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مجموع الأهداف $0 + 5 + 12 + 12 + 12$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم على $20$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{41}{20} = 2{,}05$ .",
+        "incorrect": "اقسم مجموع الأهداف على عدد المقابلات $20$."
+      }
+    }
+  ]
+}

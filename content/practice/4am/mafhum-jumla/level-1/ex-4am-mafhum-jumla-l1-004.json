@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-mafhum-jumla-l1-004",
+  "lessonCode": "mafhum-jumla",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 3 — ثنائية بكسرين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ثنائية",
+      "كسور"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 62,
+      "section": "أؤكّد تعلّماتي",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 62): نعتبر الثنائية $\\left(\\dfrac{1}{2} ; -\\dfrac{1}{2}\\right)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الثنائية $\\left(\\dfrac{1}{2} ; -\\dfrac{1}{2}\\right)$ هي حل للمعادلة...",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x + y = 0$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$2x - \\dfrac{1}{2}y = 0$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{1}{2}x + y - \\dfrac{1}{4} = 0$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x = \\dfrac{1}{2}$ و $y = -\\dfrac{1}{2}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض في كل معادلة واحسب طرفها الأول."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحل يعطي 0 بالضبط."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{1}{2} + \\left(-\\dfrac{1}{2}\\right) = 0$ .",
+        "incorrect": "في الثانية $1 + \\dfrac{1}{4} \\neq 0$ ، وفي الثالثة $-\\dfrac{1}{2} \\neq 0$ ."
+      }
+    }
+  ]
+}

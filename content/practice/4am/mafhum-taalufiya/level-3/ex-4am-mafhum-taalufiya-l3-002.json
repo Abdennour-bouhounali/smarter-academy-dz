@@ -1,0 +1,83 @@
+{
+  "id": "ex-4am-mafhum-taalufiya-l3-002",
+  "lessonCode": "mafhum-taalufiya",
+  "level": 3,
+  "metadata": {
+    "title": "نشاط 2 — الدوال التآلفية الست",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمييز",
+      "الكتاب"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-2",
+      "page": 78,
+      "section": "أنشطة",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 78): أ) $x \\longmapsto 3x^2 + 1$ ؛ ب) $x \\longmapsto -2x + 1$ ؛ ج) $x \\longmapsto 5x$ ؛ د) $x \\longmapsto \\dfrac{x}{2} - 1$ ؛ هـ) $x \\longmapsto 2 + 3x$ ؛ و) $x \\longmapsto \\dfrac{1}{x} - 3$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الدوال التآلفية هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "ب، ج، د، هـ",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "ب، د، هـ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-THABITA"
+        },
+        {
+          "id": "C",
+          "content": "أ، ب، د، هـ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-KHATTIYA-KHALT"
+        },
+        {
+          "id": "D",
+          "content": "ب، ج، هـ، و",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-KHATTIYA-KHALT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الدالة التآلفية من الشكل $x \\longmapsto ax + b$ حيث $a$ و $b$ عددان معلومان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب كل عبارة بعد التبسيط على الشكل $ax + b$ إن أمكن."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$x^2$ و $\\dfrac{1}{x}$ ليسا جداء $x$ في عدد ثابت."
+        }
+      ],
+      "feedback": {
+        "correct": "ب، ج ($b = 0$)، د ($a = \\dfrac{1}{2}$)، هـ ($a = 3$) ؛ أما $3x^2 + 1$ و $\\dfrac{1}{x} - 3$ فليستا من الشكل $ax + b$ .",
+        "incorrect": "راجع كل اقتراح: واحد فقط صحيح."
+      }
+    }
+  ]
+}

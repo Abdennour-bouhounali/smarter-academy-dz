@@ -1,0 +1,154 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l5-010",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 5,
+  "metadata": {
+    "title": "حفلة نهاية السنة",
+    "estimatedMinutes": 6,
+    "tags": [
+      "مفاضلة",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P2"
+    }
+  },
+  "statement": {
+    "content": "لحفلة نهاية السنة: القاعة أ 8000 DA ثم 300 DA للمدعو؛ القاعة ب 500 DA للمدعو ( $x$ عدد المدعوين). الميزانية 20000 DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من أجل كم مدعوا يتساوى الثمنان؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "40",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$300x + 8000 = 500x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$200x = 8000$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "التقاطع."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 40$.",
+        "incorrect": "نساوي الثمنين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5
+    },
+    {
+      "id": "q2",
+      "statement": "لـ 35 مدعوا:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "القاعة ب أرخص: 17500 DA",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "القاعة أ أرخص: 18500 DA",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "C",
+          "content": "الثمن نفسه",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "35 أصغر من 40."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "18500 و 17500."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قبل التقاطع."
+        }
+      ],
+      "feedback": {
+        "correct": "$500 \\times 35 = 17500 < 18500$.",
+        "incorrect": "قبل 40 مدعوا القاعة ب أرخص."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5
+    },
+    {
+      "id": "q3",
+      "statement": "بالميزانية 20000 DA والقاعة أ، أكبر عدد من المدعوين:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "40",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$300x + 8000 \\leq 20000$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x \\leq 40$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عدد طبيعي."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 40$ ($300 \\times 40 + 8000 = 20000$).",
+        "incorrect": "نطرح المبلغ الثابت ثم نقسم."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "200/3",
+          "id": "MISC-TAALUFI-SABIQ-QISMA"
+        }
+      ]
+    }
+  ]
+}

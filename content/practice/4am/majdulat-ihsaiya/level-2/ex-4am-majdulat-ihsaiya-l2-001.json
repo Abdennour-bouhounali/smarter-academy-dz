@@ -1,0 +1,100 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l2-001",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 7 (ص 99) — المدى والوسيط بالمجدول",
+    "estimatedMinutes": 3,
+    "tags": [
+      "دستور",
+      "مدى",
+      "وسيط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-7",
+      "page": 99,
+      "section": "أوظّف تعلّماتي",
+      "number": 7
+    }
+  },
+  "statement": {
+    "content": "سلسلة التمرين 7 محجوزة في الخلايا من A1 إلى G1 : 4 ، 10 ، 8 ، 4 ، 3 ، 2 ، 4 ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد الذي يُظهره ⁦=MAX(A1:G1)-MIN(A1:G1)⁩ في B2 :",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "8",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MADA-AKBAR-QIMA",
+          "value": "10"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أكبر قيمة 10."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أصغر قيمة 2."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$10 - 2$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$10 - 2 = 8$ .",
+        "incorrect": "أكبر قيمة ناقص أصغر قيمة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العدد الذي يُظهره ⁦=MEDIANE(A1:G1)⁩ في B3 :",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "رتّب القيم."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "2 ، 3 ، 4 ، 4 ، 4 ، 8 ، 10 ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الرتبة 4 من 7."
+        }
+      ],
+      "feedback": {
+        "correct": "السلسلة المرتبة 2 ، 3 ، 4 ، 4 ، 4 ، 8 ، 10 : القيمة الرابعة 4.",
+        "incorrect": "رتّب القيم قبل أخذ الوسطى."
+      }
+    }
+  ]
+}

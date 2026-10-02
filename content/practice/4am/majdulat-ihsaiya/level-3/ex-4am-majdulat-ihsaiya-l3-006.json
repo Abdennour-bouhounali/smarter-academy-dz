@@ -1,0 +1,80 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l3-006",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — سلسلة في عمود",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مجال"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_majdulat-ihsaiya_P1",
+      "modelledOn": "ex-24"
+    }
+  },
+  "statement": {
+    "content": "حجزنا نقاط 12 تلميذًا في العمود B من الخلية B2 إلى الخلية B13 ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "دستور متوسطها:",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "⁦=MOYENNE(A1:L1)⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MAJAL-KHALIYA"
+        },
+        {
+          "id": "B",
+          "content": "⁦=MOYENNE(B2;B13)⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MAJAL-KHALIYA"
+        },
+        {
+          "id": "C",
+          "content": "⁦=MOYENNE(B2:B13)⁩",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "⁦=MOYENNE(B2:B12)⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MAJAL-KHALIYA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من B2 إلى B13 ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "النقطتان « ⁦:⁩ » ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الفاصلة المنقوطة تعني خليتين فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "المجال B2:B13 يضمّ الخلايا الاثنتي عشرة.",
+        "incorrect": "B2:B12 تنقصه B13 ، و B2;B13 خليتان فقط."
+      }
+    }
+  ]
+}

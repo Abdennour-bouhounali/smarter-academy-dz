@@ -1,0 +1,108 @@
+{
+  "id": "ex-4am-dala-khattiya-l3-004",
+  "lessonCode": "dala-khattiya",
+  "level": 3,
+  "metadata": {
+    "title": "معامل عشري",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تعيين",
+      "عشري"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "$f$ دالة خطية حيث $f(8) = 3$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عيّن معامل الدالة الخطية $f$ علمًا أنّ $f(8) = 3$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "0.375",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الدالة خطية: دستورها من الشكل $f(x) = ax$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعلومة المعطاة على شكل معادلة مجهولها $a$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الصورة على العدد غير المعدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "$8a = 3$ ، إذن $a = 3 \\div 8 = 0{,}375$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-MUAMIL-MAQLUB",
+          "value": "8/3"
+        },
+        {
+          "id": "MISC-KHATTIYA-ISHARA",
+          "value": "-0.375"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "عيّن العدد الذي صورته $6$ بالدالة $f$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "16",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المطلوب هنا عدد علمت صورته، لا صورة عدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعادلة $ax = $ الصورة المعطاة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم طرفي المعادلة على المعامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}375 \\times x = 6$ ، إذن $x = 6 \\div 0{,}375 = 16$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-SURA-SABIQ",
+          "value": "2.25"
+        }
+      ]
+    }
+  ]
+}

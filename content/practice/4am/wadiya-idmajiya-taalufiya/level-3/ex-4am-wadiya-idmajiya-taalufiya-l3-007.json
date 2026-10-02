@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l3-007",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 3,
+  "metadata": {
+    "title": "باقتا الإنترنت",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مستقيمان متوازيان",
+      "جملة معادلتين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "باقتا إنترنت شهريتان: «نت+» $50x + 600$ و «نت برو» $50x + 450$ ( $x$ عدد الجيغابايت)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة $\\begin{cases} y = 50x + 600 \\\\ y = 50x + 450 \\end{cases}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا تقبل حلا: المستقيمان متوازيان",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "تقبل حلا وحيدا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-BAYANI-TAWAZI"
+        },
+        {
+          "id": "C",
+          "content": "تقبل عددا لا نهائيا من الحلول",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-BAYANI-TAWAZI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن المعاملين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم الترتيبين عند المبدأ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "متوازيان أم منطبقان؟"
+        }
+      ],
+      "feedback": {
+        "correct": "نفس المعامل 50 وترتيبان مختلفان: متوازيان، لا نقطة مشتركة.",
+        "incorrect": "متوازيان: لا حل؛ منطبقان: عدد لا نهائي."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "بكم دينارا «نت برو» أرخص من «نت+»، مهما كان $x$؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار",
+      "expectedAnswer": "150",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اطرح الثمنين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(50x + 600) - (50x + 450)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الفرق لا يتعلق بـ $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "الفرق ثابت: 150 DA.",
+        "incorrect": "نطرح الثمنين: يبقى فرق المبلغين الثابتين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ]
+}

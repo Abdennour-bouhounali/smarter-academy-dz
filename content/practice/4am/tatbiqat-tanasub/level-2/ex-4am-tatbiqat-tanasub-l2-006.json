@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l2-006",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 2,
+  "metadata": {
+    "title": "نشاط 6 — تدفق المحطة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "التدفق",
+      "تحويل الوحدات"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-6",
+      "page": 67,
+      "section": "أنشطة",
+      "number": 6
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 67): تُوَفِّر محطة توزيع المياه الصالحة للشرب $7\\,200\\,000L$ في الساعة. عبّر عن تدفق المياه من هذه المحطة بالوحدة $m^3/s$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "التدفق بالمتر المكعب في الثانية:",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد وحدة البسط ووحدة المقام، قبل التحويل وبعده."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حوّل البسط والمقام كلًّا على حدة: $1h = 3600s$ ، $1km = 1000m$ ، $1m^3 = 1000L$ ، $1L = 1000cm^3$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب المقدار كحاصل قسمة بالوحدات الجديدة، ثم احسب."
+        }
+      ],
+      "feedback": {
+        "correct": "$7\\,200\\,000L = 7200m^3$ ، و $\\dfrac{7200}{3600} = 2m^3/s$ .",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    }
+  ]
+}

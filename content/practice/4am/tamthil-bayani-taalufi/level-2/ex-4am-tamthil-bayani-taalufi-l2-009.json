@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-tamthil-bayani-taalufi-l2-009",
+  "lessonCode": "tamthil-bayani-taalufi",
+  "level": 2,
+  "metadata": {
+    "title": "مستقيمان متوازيان",
+    "estimatedMinutes": 3,
+    "tags": [
+      "توازي"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-taalufi_P1"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الدالة التآلفية $x \\longmapsto 2x + 1$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ دالة تمثيلها البياني يوازي تمثيل الدالة $x \\longmapsto 2x + 1$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\longmapsto 2x - 3$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x \\longmapsto x + 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-A-B-MAQLUB"
+        },
+        {
+          "id": "C",
+          "content": "$x \\longmapsto -2x + 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-ISHARA-A"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مستقيمان يمثّلان دالتين تآلفيتين متوازيان إذا كان لهما معامل التوجيه نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن معامل $x$ في العبارتين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نفس $a$ و $b$ مختلف: متوازيان؛ نفس $a$ ونفس $b$ : منطبقان."
+        }
+      ],
+      "feedback": {
+        "correct": "لهما معامل التوجيه نفسه $2$ وترتيبان عند المبدأ مختلفان: متوازيان.",
+        "incorrect": "المنحى يعيّنه $a$ وحده: قارن معاملات $x$ ."
+      }
+    }
+  ]
+}

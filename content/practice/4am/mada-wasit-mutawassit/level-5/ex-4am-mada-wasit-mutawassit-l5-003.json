@@ -1,0 +1,71 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l5-003",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 5,
+  "metadata": {
+    "title": "تمرين 17 (ص 101) — المدى = المتوسط = الوسيط",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مدى",
+      "متوسط",
+      "وسيط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-17",
+      "page": 101,
+      "section": "أتعمّق",
+      "number": 17
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 101): عيّن خمس سلاسل إحصائية التكرار الكلي لكل منها 3 و أيضا في كل منها المدى و المتوسط و الوسيط متساوية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ هذه السلاسل يتساوى فيها المدى والمتوسط والوسيط؟",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2$ ، $4$ ، $8$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$1$ ، $2$ ، $4$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$4$ ، $8$ ، $12$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب المؤشّرات الثلاثة لكل سلسلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "السلاسل من الشكل $\\dfrac{m}{2}$ ، $m$ ، $\\dfrac{3m}{2}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$4$ ، $8$ ، $12$ : المدى $8$ ، المتوسط $8$ ، الوسيط $8$.",
+        "incorrect": "في $2$ ، $4$ ، $8$ المدى $6$ والوسيط $4$."
+      }
+    }
+  ]
+}

@@ -5,12 +5,13 @@ import React from 'react';
  * AEGF (côté x), les rectangles EBHG et FGKD (x × 6) et le carré GHCK (côté 6) ;
  * EB = FD = 6. Les aires des quatre pièces sont écrites dedans — x², 6x, 6x, 36 :
  * c'est le carré COMPLÉTÉ, (x + 6)² = x² + 12x + 36, que le livre demande de voir.
+ * `showAreas={false}` : la figure nue de l'ouverture d'unité, sans la piste des aires.
  *
  * `x` est la longueur DESSINÉE (en unités de la figure, pas une solution) : la
  * figure ne révèle pas la réponse x = 5, elle garde le rapport du livre (x > 6).
  * Les lettres et les aires sont latines (notation) ; la légende arabe est du DOM.
  */
-export default function ChallengeSquare({ x = 9, side = 6, label }) {
+export default function ChallengeSquare({ x = 9, side = 6, label, showAreas = true }) {
   const u = 22;
   const pad = 26;
   const X = x * u;
@@ -29,10 +30,14 @@ export default function ChallengeSquare({ x = 9, side = 6, label }) {
         <rect x={E.x} y={E.y} width={S} height={X} fill="#DBEAFE" stroke="#1D4ED8" strokeWidth={2} />
         <rect x={F.x} y={F.y} width={X} height={S} fill="#DBEAFE" stroke="#1D4ED8" strokeWidth={2} />
         <rect x={G.x} y={G.y} width={S} height={S} fill="#FEF3C7" stroke="#B45309" strokeWidth={2} strokeDasharray="5 3" />
-        {area(A.x + X / 2, A.y + X / 2, 'x²', '#166534')}
-        {area(E.x + S / 2, E.y + X / 2, '6x', '#1E3A8A')}
-        {area(F.x + X / 2, F.y + S / 2, '6x', '#1E3A8A')}
-        {area(G.x + S / 2, G.y + S / 2, '36', '#92400E')}
+        {showAreas && (
+          <>
+            {area(A.x + X / 2, A.y + X / 2, 'x²', '#166534')}
+            {area(E.x + S / 2, E.y + X / 2, '6x', '#1E3A8A')}
+            {area(F.x + X / 2, F.y + S / 2, '6x', '#1E3A8A')}
+            {area(G.x + S / 2, G.y + S / 2, '36', '#92400E')}
+          </>
+        )}
         {pt(A, 'A', -10, -8)}{pt(E, 'E', 0, -8)}{pt(B, 'B', 10, -8)}
         {pt(F, 'F', -12, 5)}{pt(G, 'G', 10, 16)}{pt(H, 'H', 12, 5)}
         {pt(D, 'D', -10, 16)}{pt(K, 'K', 0, 18)}{pt(C, 'C', 10, 16)}

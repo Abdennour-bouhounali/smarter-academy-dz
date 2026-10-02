@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l2-003",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 2,
+  "metadata": {
+    "title": "نشاط 4 (ص 93) — رواتب 11 عاملًا",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وسيط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-4",
+      "page": 93,
+      "section": "أنشطة",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 93): رواتب شهرية بالدينار لـ 11 عاملًا: $42000$ ، $35000$ ، $55000$ ، $42000$ ، $60000$ ، $50000$ ، $35000$ ، $42000$ ، $50000$ ، $65000$ ، $35000$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الراتب الذي يجزئ هذه السلسلة إلى سلسلتين لهما نفس التكرار (Med) هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "42000",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-WASIT-BILA-TARTIB",
+          "value": "50000"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "رتّب الرواتب تصاعديًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "11 قيمة: الوسيط الراتب السادس."
+        }
+      ],
+      "feedback": {
+        "correct": "الراتب السادس بعد الترتيب $42000$ : خمسة قبله وخمسة بعده.",
+        "incorrect": "رتّب السلسلة واحتفظ بكل تكرار."
+      }
+    }
+  ]
+}

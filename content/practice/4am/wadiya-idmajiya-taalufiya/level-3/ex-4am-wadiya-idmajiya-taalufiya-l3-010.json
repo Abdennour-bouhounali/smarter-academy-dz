@@ -1,0 +1,115 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l3-010",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 3,
+  "metadata": {
+    "title": "كراء دراجة: نقطة التقاطع",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مفاضلة",
+      "تفسير بياني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "كراء دراجة على الشاطئ: الصيغة أ 80 DA للساعة، والصيغة ب رسم ثابت 200 DA ثم 40 DA للساعة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "إحداثيتا نقطة تقاطع المستقيمين (عدد الساعات ؛ الثمن):",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y)",
+      "expectedAnswer": {
+        "x": "5",
+        "y": "400"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$80x = 40x + 200$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$40x = 200$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم الثمن."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 5$ والثمن 400 DA : $(5 ; 400)$.",
+        "incorrect": "الفاصلة عدد الساعات والترتيب الثمن."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "لـ 3 ساعات:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الصيغة أ أرخص: 240 DA",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الصيغة ب أرخص: 320 DA",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "C",
+          "content": "الثمن نفسه",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "3 أصغر من 5."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب الثمنين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قبل التقاطع."
+        }
+      ],
+      "feedback": {
+        "correct": "$80 \\times 3 = 240 < 40 \\times 3 + 200 = 320$.",
+        "incorrect": "قبل 5 ساعات الصيغة أ أرخص."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ]
+}

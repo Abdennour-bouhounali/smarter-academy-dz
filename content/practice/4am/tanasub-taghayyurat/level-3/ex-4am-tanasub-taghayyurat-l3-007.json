@@ -1,0 +1,115 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l3-007",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — سيارة أجرة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "تعيين دالة تآلفية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "في تطبيق لسيارات الأجرة كلّفت رحلة 4km مبلغ 260DA ورحلة 9km مبلغ 460DA . الثمن $f(x)$ دالة تآلفية للمسافة $x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عبارة $f(x)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$f(x) = 40x + 100$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$f(x) = 200x + 260$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-BIDUN-QISMA"
+        },
+        {
+          "id": "C",
+          "content": "$f(x) = 65x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-KHATTIYA-KHALT"
+        },
+        {
+          "id": "D",
+          "content": "$f(x) = 40x + 260$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-B-NISBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$a = \\dfrac{460 - 260}{9 - 4}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a = 40$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$b = 260 - 160$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{200}{5} = 40$ و $b = 260 - 160 = 100$ .",
+        "incorrect": "عوّض 4 و 9 في كل عبارة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ثمن رحلة طولها 12km (DA):",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "580",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "استعمل العبارة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$40 \\times 12$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم أضف ثمن الانطلاق."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(12) = 480 + 100 = 580$ DA.",
+        "incorrect": "لا تنسَ $b = 100$ ."
+      }
+    }
+  ]
+}

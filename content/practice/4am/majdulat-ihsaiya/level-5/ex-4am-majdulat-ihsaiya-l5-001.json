@@ -1,0 +1,105 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l5-001",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — بطولة ألعاب الفيديو",
+    "estimatedMinutes": 5,
+    "tags": [
+      "وسيط",
+      "متوسط",
+      "دستور"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_majdulat-ihsaiya_P2",
+      "modelledOn": "ex-7"
+    }
+  },
+  "statement": {
+    "content": "نقاط ثمانية لاعبين في بطولة القسم محجوزة في A1:H1 : 12 ، 15 ، 9 ، 18 ، 15 ، 11 ، 20 ، 14 ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد الذي يُظهره ⁦=MEDIANE(A1:H1)⁩ :",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بالفاصلة)",
+      "expectedAnswer": "14,5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-WASIT-BILA-TARTIB",
+          "value": "16,5"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "رتّب الثماني."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "9 ، 11 ، 12 ، 14 ، 15 ، 15 ، 18 ، 20 ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "متوسط الرابعة والخامسة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{14 + 15}{2} = 14{,}5$ .",
+        "incorrect": "عدد زوجي: متوسط القيمتين الوسطيين بعد الترتيب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العدد الذي يُظهره ⁦=MOYENNE(A1:H1)⁩ :",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بالفاصلة)",
+      "expectedAnswer": "14,25",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT",
+          "value": "14,5"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجموع 114."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عدد القيم 8."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$114 \\div 8$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{114}{8} = 14{,}25$ .",
+        "incorrect": "المجموع مقسوم على 8."
+      }
+    }
+  ]
+}

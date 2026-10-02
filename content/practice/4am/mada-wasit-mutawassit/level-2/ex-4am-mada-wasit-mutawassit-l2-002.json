@@ -1,0 +1,71 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l2-002",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 2,
+  "metadata": {
+    "title": "أستعدّ 2 (ص 91) — متوسط مع التكرارات",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متوسط متوازن"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "prep",
+      "page": 91,
+      "section": "أستعدّ",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 91): القيم $2$ ، $5$ ، $10$ ، $1$ وتكراراتها على الترتيب $5$ ، $2$ ، $1$ ، $5$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "متوسط هذه السلسلة هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4{,}5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUTAWASSIT-BILA-TARJIH"
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{35}{13} \\approx 2{,}69$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{35}{4}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUTAWASSIT-QISMA-QIYAM"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب كل قيمة في تكرارها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم على التكرار الكلّي $13$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{2 \\times 5 + 5 \\times 2 + 10 \\times 1 + 1 \\times 5}{13} = \\dfrac{35}{13}$ .",
+        "incorrect": "العدد $4{,}5$ متوسط القيم الأربع دون تكراراتها."
+      }
+    }
+  ]
+}

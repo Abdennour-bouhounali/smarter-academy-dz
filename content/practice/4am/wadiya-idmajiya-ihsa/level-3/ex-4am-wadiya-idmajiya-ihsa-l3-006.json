@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l3-006",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 3,
+  "metadata": {
+    "title": "التواتر المجمع: سباق المشي",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تواتر مجمع",
+      "نسبة مئوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P1"
+    }
+  },
+  "statement": {
+    "content": "عدد الكيلومترات التي قطعها 20 تلميذا في يوم المشي: الكيلومترات: 6 ، 8 ، 10 ، 12 ، 14 — عدد التلاميذ: 2 ، 5 ، 6 ، 4 ، 3."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما النسبة المئوية للتلاميذ الذين قطعوا 10 كيلومترات على الأكثر؟ (اكتب العدد دون الرمز %)",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "65",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "«على الأكثر» تشمل 10."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التكرار المجمع الصاعد للقيمة 10."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على التكرار الكلي ثم اضرب في 100."
+        }
+      ],
+      "feedback": {
+        "correct": "$2 + 5 + 6 = 13$ و $\\dfrac{13}{20} = 0{,}65$ ، أي 65%.",
+        "incorrect": "التواتر المجمع = التكرار المجمع على التكرار الكلي."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "13",
+          "id": "MISC-IHSA-TAWATUR-BILA-QISMA"
+        }
+      ]
+    }
+  ]
+}

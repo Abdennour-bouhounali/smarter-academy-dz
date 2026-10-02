@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-tanasub-muamil-l1-009",
+  "lessonCode": "tanasub-muamil",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — العمود الناقص",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الرابع المتناسب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-muamil_P1",
+      "modelledOn": "prep"
+    }
+  },
+  "statement": {
+    "content": "الجدول الآتي جدول تناسبية: $\\begin{array}{|c|c|c|} \\hline x & 2 & 5 \\\\ \\hline y & 8 & \\ldots \\\\ \\hline \\end{array}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هو العدد الناقص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "20",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجدول جدول تناسبية: نضرب في المعامل، ولا نضيف الفرق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب معامل التناسبية من عمود كامل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب العدد المعلوم في المعامل، أو استعمل تساوي الجداءين المتصالبين."
+        }
+      ],
+      "feedback": {
+        "correct": "المعامل $\\dfrac{8}{2} = 4$ ، و $5 \\times 4 = 20$ .",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "11",
+          "id": "MISC-TANASUB-RABI-JAMA"
+        }
+      ]
+    }
+  ]
+}

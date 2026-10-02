@@ -1,0 +1,130 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l2-008",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 2,
+  "metadata": {
+    "title": "كشك الكرنتيكة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الجمع",
+      "حل جملة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P1"
+    }
+  },
+  "statement": {
+    "content": "في كشك قرب المتوسطة: 2 خبزة كرنتيكة وقارورة قازوز بـ 160 DA، و 3 خبزات كرنتيكة وقارورة قازوز بـ 210 DA. نسمّي $x$ سعر خبزة الكرنتيكة و $y$ سعر قارورة القازوز."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أسرع طريقة لحذف $y$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نجمع المعادلتين طرفا بطرف",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        },
+        {
+          "id": "B",
+          "content": "نطرح المعادلة الأولى من الثانية طرفا بطرف",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "نضرب المعادلة الأولى في 3",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        },
+        {
+          "id": "D",
+          "content": "نعوّض $y$ في المعادلة التي استخرجناه منها",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAWID-NAFS-MUADALA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن معاملي $y$ في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المعاملان متساويان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الطرح يحذف الحدود المتساوية."
+        }
+      ],
+      "feedback": {
+        "correct": "$(3x + y) - (2x + y) = 210 - 160$ أي $x = 50$.",
+        "incorrect": "المعاملان متساويان: الطرح هو ما يحذفهما."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    },
+    {
+      "id": "q2",
+      "statement": "ما السعران $(x ; y)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
+      "expectedAnswer": {
+        "x": "50",
+        "y": "60"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بالطرح: $x = 210 - 160$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض في $2x + y = 160$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقق في المعلومتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 50$ و $y = 160 - 100 = 60$.",
+        "incorrect": "بعد $x$ احسب $y$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "60",
+            "y": "50"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    }
+  ]
+}

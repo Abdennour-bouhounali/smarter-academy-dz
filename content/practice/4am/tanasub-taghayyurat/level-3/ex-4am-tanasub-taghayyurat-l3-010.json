@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l3-010",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — أتحقّق",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تعيين دالة تآلفية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "هل الدالة $g(x) = 3x - 2$ هي الدالة التآلفية التي تحقّق $g(2) = 4$ و $g(5) = 13$ ؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجواب:",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا، لأنّ $13 - 4 = 9$ وليس 3",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-BIDUN-QISMA"
+        },
+        {
+          "id": "B",
+          "content": "نعم: $3 \\times 2 - 2 = 4$ و $3 \\times 5 - 2 = 13$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "لا، لأنّ $\\dfrac{4}{2} = 2$ وليس 3",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-KHATTIYA-KHALT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض 2 ثم 5 ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$g(2) = 6 - 2$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دالة تآلفية واحدة تمرّ بنقطتين."
+        }
+      ],
+      "feedback": {
+        "correct": "العبارة تعطي الصورتين المعطاتين، ودالة تآلفية واحدة تحقّق ذلك.",
+        "incorrect": "تحقّق بالتعويض المباشر."
+      }
+    }
+  ]
+}

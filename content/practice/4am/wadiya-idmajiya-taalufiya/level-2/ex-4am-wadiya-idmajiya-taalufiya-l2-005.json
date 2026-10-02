@@ -1,0 +1,111 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l2-005",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 2,
+  "metadata": {
+    "title": "قراءة المعاملين على المستقيم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمثيل بياني",
+      "معامل التوجيه"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "المستقيم الممثل لدالة تآلفية $f$ يشمل النقطتين $(0 ; 3)$ و $(2 ; 7)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الترتيب عند المبدأ $b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "النقطة ذات الفاصلة 0."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ترتيبها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$b = f(0)$."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = 3$.",
+        "incorrect": "$b$ هو ترتيب نقطة التقاطع مع محور التراتيب."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "-3/2",
+          "id": "MISC-BAYANI-B-FASILA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "معامل التوجيه $a$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من الفاصلة 0 إلى 2."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الترتيب يصعد من 3 إلى 7."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$a = \\dfrac{7 - 3}{2 - 0}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{4}{2} = 2$.",
+        "incorrect": "تغيّر الترتيب على تغيّر الفاصلة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "1/2",
+          "id": "MISC-BAYANI-MUAMIL-MAQLUB"
+        },
+        {
+          "value": "4",
+          "id": "MISC-TAGHAYYUR-BIDUN-QISMA"
+        }
+      ]
+    }
+  ]
+}

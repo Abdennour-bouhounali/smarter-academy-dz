@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l3-007",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 3,
+  "metadata": {
+    "title": "المتوسط يجري والوسيط يبقى",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متوسط",
+      "وسيط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P2"
+    }
+  },
+  "statement": {
+    "content": "أجور خمسة عمّال في ورشة (بالدينار): 30000 ، 32000 ، 35000 ، 38000 ، 40000. يُعوَّض أكبر أجر بـ 90000."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بعد التعويض:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "يكبر المتوسط ويبقى الوسيط 35000",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "يكبر المتوسط والوسيط معا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-MUTAWASSIT"
+        },
+        {
+          "id": "C",
+          "content": "لا يتغيّر المتوسط ولا الوسيط",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الوسيط يتعلق بالرتبة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "القيمة ذات الرتبة 3 لم تتغيّر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المجموع تغيّر."
+        }
+      ],
+      "feedback": {
+        "correct": "الوسيط القيمة الثالثة 35000 في الحالتين، والمتوسط يزيد بـ $\\dfrac{50000}{5} = 10000$.",
+        "incorrect": "قيمة متطرّفة تحرّك المتوسط لا الوسيط."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 3
+    }
+  ]
+}

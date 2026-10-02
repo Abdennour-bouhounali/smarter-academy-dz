@@ -1,0 +1,124 @@
+{
+  "id": "ex-4am-mafhum-jumla-l5-005",
+  "lessonCode": "mafhum-jumla",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — جملة بلا حل؟",
+    "estimatedMinutes": 5,
+    "tags": [
+      "حالات خاصة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mafhum-jumla_P4",
+      "modelledOn": "know-cases"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الجملة $\\begin{cases} 3x - y = 2 \\\\ 6x - 2y = 5 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هذه الجملة ...",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لها حل وحيد",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-HALAT"
+        },
+        {
+          "id": "B",
+          "content": "ليس لها حلول",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "لها عدد غير منته من الحلول",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-HALAT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قسّم طرفي المعادلة الثانية على 2."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$3x - y = \\dfrac{5}{2}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل يساوي $3x - y$ العددين 2 و $\\dfrac{5}{2}$ معًا؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$3x - y$ لا يساوي 2 و $\\dfrac{5}{2}$ في آن واحد: ليس لها حلول.",
+        "incorrect": "بسّط المعادلة الثانية ثم قارن."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "قالت ريم: «الثنائية $(1 ; 1)$ حل للجملة». ما رأيك؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "صحيح: $3 - 1 = 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "B",
+          "content": "خطأ: $6 - 2 = 4 \\neq 5$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "خطأ: $3 - 1 \\neq 2$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $(1 ; 1)$ في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الأولى: $3 - 1$ ، الثانية: $6 - 2$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "معادلة واحدة لا تكفي."
+        }
+      ],
+      "feedback": {
+        "correct": "$(1 ; 1)$ تحقّق الأولى فقط: $6 - 2 = 4 \\neq 5$ — ولا حل لهذه الجملة أصلًا.",
+        "incorrect": "تحقّق من المعادلة الثانية أيضًا."
+      }
+    }
+  ]
+}

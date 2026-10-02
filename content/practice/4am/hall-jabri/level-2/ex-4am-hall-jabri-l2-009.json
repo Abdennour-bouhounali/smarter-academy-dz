@@ -1,0 +1,114 @@
+{
+  "id": "ex-4am-hall-jabri-l2-009",
+  "lessonCode": "hall-jabri",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — متعاكسان أم متساويان؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "الجمع",
+      "إشارة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hall-jabri_P2",
+      "modelledOn": "ex-13"
+    }
+  },
+  "statement": {
+    "content": "الجملة $\\begin{cases} 3x + y = 1 \\\\ 6x - y = 8 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ماذا نفعل لنتخلّص من $y$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نجمع المعادلتين طرفًا لطرف مباشرة",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نضرب الثانية في $-1$ ثم نجمع",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        },
+        {
+          "id": "C",
+          "content": "نضرب الأولى وحدها في 2 ثم نجمع",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن معاملي $x$ ثم معاملي $y$ في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب طرفي معادلة (أو كلتيهما) في عدد مناسب ليصير معاملا أحد المجهولين متعاكسين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المعادلتين طرفًا لطرف، ثم عوّض القيمة الناتجة في إحدى المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$y$ و $-y$ متعاكسان: بالجمع مباشرة $9x = 9$ . بعد الضرب في $-1$ يصيران متساويين ($y$ و $y$)، وبعد ضرب الأولى في 2 يصيران $2y$ و $-y$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "1",
+        "y": "-2"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن معاملي $x$ ثم معاملي $y$ في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب طرفي معادلة (أو كلتيهما) في عدد مناسب ليصير معاملا أحد المجهولين متعاكسين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المعادلتين طرفًا لطرف، ثم عوّض القيمة الناتجة في إحدى المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$9x = 9$ ، ومنه $x = 1$ ثم $y = 1 - 3 = -2$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

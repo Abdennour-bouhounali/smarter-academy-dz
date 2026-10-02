@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tarrid-khatti-l1-003",
+  "lessonCode": "tarrid-khatti",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — تذاكر الترامواي",
+    "estimatedMinutes": 2,
+    "tags": [
+      "نمذجة",
+      "دالة خطية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "ثمن تذكرة الترامواي 40DA. نسمّي $x$ عدد التذاكر و $f(x)$ ثمنها بالدينار."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الدالة التي تنمذج الوضعية:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$f(x) = x + 40$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-AFFINE"
+        },
+        {
+          "id": "B",
+          "content": "$f(x) = \\dfrac{x}{40}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TANASUB-MUAMIL-MAQLUB"
+        },
+        {
+          "id": "C",
+          "content": "$f(x) = 40x$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كل تذكرة تزيد الثمن بـ 40DA."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثمن تذكرتين؟ ثلاث؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الثمن متناسب مع العدد."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(x) = 40x$ : الثمن متناسب مع عدد التذاكر.",
+        "incorrect": "ثمن $x$ تذكرة هو $40 \\times x$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما ثمن 12 تذكرة (بالدينار)؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "480",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $f(12)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$40 \\times 12$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الجواب بالدينار."
+        }
+      ],
+      "feedback": {
+        "correct": "$40 \\times 12 = 480$ DA.",
+        "incorrect": "احسب $40 \\times 12$ ."
+      }
+    }
+  ]
+}

@@ -403,6 +403,13 @@ synthèse `wadiya-idmajiya-muadalat`, 250 exercices de pratique) suit le même c
 curriculum ET import du registre des épreuves au déploiement qui la porte, sous « ميدان أنساب الأعداد
 والحساب » (placement déclaré, décision du propriétaire).
 
+**Unité 5 (2026-10-01).** L'unité « جمل معادلتين من الدرجة الأولى بمجهولين » (`jumal-muadalatayn` :
+`mafhum-jumla`, `hall-jabri`, `mushkilat-jumla` et la synthèse `wadiya-idmajiya-jumal`, 200 exercices de
+pratique, dont des réponses `point` — la ثنائية (x ; y)) suit le même chemin : synchronisation du curriculum ET
+import du registre des épreuves. **Le build web demande désormais ~3,2 Go de mémoire** (mesuré) : le script
+`build` de `apps/web` fixe `NODE_OPTIONS=--max-old-space-size=4096` (le tas par défaut, ~2,2 Go, échouait en
+« heap out of memory ») ; un serveur de build doit disposer d'au moins 4 Go libres.
+
 ### Rattraper une base en retard
 
 Les fichiers `docs/deployment/*.sql` restent valides et restent la façon de

@@ -1,0 +1,63 @@
+{
+  "id": "ex-4am-mafhum-taalufiya-l1-007",
+  "lessonCode": "mafhum-taalufiya",
+  "level": 1,
+  "metadata": {
+    "title": "رحلة سيارة الأجرة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "صورة",
+      "وضعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "رحلة بتطبيق سيارات الأجرة: 100DA عند الركوب، و 40DA عن كل كيلومتر. نسمّي $x$ المسافة بالكيلومتر و $f(x)$ المبلغ المدفوع."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب المبلغ المدفوع لرحلة طولها 5 كيلومترات، أي $f(5)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "300",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد بدالة تآلفية: نعوّض $x$ بهذا العدد في العبارة $ax + b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب العدد في المعامل $a$ أولا، وانتبه إلى الإشارات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تنسَ أن تضيف الحدّ الثابت $b$ في النهاية."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(5) = 40 \\times 5 + 100 = 300$ .",
+        "incorrect": "أعد الحساب: اضرب في $a$ ثم أضف $b$ ، وتحقّق من الإشارات."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-NISYAN-B",
+          "value": "200"
+        }
+      ]
+    }
+  ]
+}

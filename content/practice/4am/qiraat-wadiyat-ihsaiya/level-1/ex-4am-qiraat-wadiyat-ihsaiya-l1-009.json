@@ -1,0 +1,59 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l1-009",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — سيارات أمام المدرسة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "قراءة مخطط",
+      "تلوث"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P1",
+      "modelledOn": "intro-pollution"
+    }
+  },
+  "statement": {
+    "content": "عدّ نادي البيئة السيارات أمام المدرسة كل ساعة صباحا. أطوال الأعمدة في المخطط: 450 ، 600 ، 250 ، 200 ، 300."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم سيارة مرّت خلال الصبيحة كلها؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "1800",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التكرار الكلي = مجموع التكرارات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع الأعمدة الخمسة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$450 + 600 + \\dots$"
+        }
+      ],
+      "feedback": {
+        "correct": "$450 + 600 + 250 + 200 + 300 = 1800$ .",
+        "incorrect": "اجمع ارتفاعات الأعمدة الخمسة."
+      },
+      "difficulty": 1
+    }
+  ]
+}

@@ -14,8 +14,16 @@ beside it, `…/hisab-judhur/` « الحساب على الجذور » (five less
 2026-10-01 a third, `…/hisab-harfi/` « الحساب الحرفي » (three lessons and their synthesis, two new
 manipulation types on the football pitch — MANIPULATION_CONTRACT §2quinquies), and the same day a
 fourth, `…/muadalat-mutarajihat/` « معادلات ومتراجحات من الدرجة الأولى بمجهول واحد » (four lessons and
-their synthesis, four new manipulation types — MANIPULATION_CONTRACT §2sexies). These
-four units are the **only** lesson content in the repository. The French-era lessons (`lessons/college/`, `lessons/lycee/`), their
+their synthesis, four new manipulation types — MANIPULATION_CONTRACT §2sexies), and the same day a fifth,
+`…/jumal-muadalatayn/` « جمل معادلتين من الدرجة الأولى بمجهولين » (three lessons and their synthesis, three new
+manipulation types — MANIPULATION_CONTRACT §2septies), and since 2026-10-02 a sixth,
+`lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/` « الدالة الخطية والتناسبية » (five lessons and their
+synthesis, four new manipulation types — MANIPULATION_CONTRACT §2octies), the first unit under a DISPLAY ميدان decided
+by the owner, « ميدان التناسبية والدوال », and the same day a seventh under that ميدان,
+`…/tanasubiya_duwal/dala-taalufiya/` « الدالة التآلفية » (five lessons and their synthesis, five new manipulation
+types — MANIPULATION_CONTRACT §2nonies), and the same day an eighth, `…/tanasubiya_duwal/ihsa/` « الإحصاء » (four lessons and
+their synthesis, four new manipulation types — MANIPULATION_CONTRACT §2decies; programme domain « ميدان تنظيم المعطيات »).
+These eight units are the **only** lesson content in the repository. The French-era lessons (`lessons/college/`, `lessons/lycee/`), their
 specs, practice content, e2e scripts and French-only engines were deleted on
 2026-09-25; older docs that cite them are describing git history.
 
@@ -140,6 +148,14 @@ A second unit is data plus three one-line bindings — never a copy of unit 1's 
    the situation is then assigned to a lesson like any other element), its code appended to
    `publishedScope.unitIds`, and the lessons in `lessons_<grade>_*.json` (owner-supplied titles and
    points to learn, `sourceTopicId` among the unit's `sourceTopicIds`).
+   Write the math in `challenge`/`aside` as `$…$`. Bare `x² + 12x = 85` gets reversed in RTL. **A
+   `challenge` or `aside` that points to a figure** (« الشكل المقابل », « البيان المقابل », « التمثيل البياني
+   المقابل », « في جدول ») must show that figure on the unit page. Register it in
+   `apps/web/src/pages/unit/UnitOpenerFigure.jsx` under the key `<unitCode>:challenge|aside`. Reuse, lazily,
+   the component the lesson already draws for that same figure (never a second copy). Strip anything that
+   gives away the answer (`ChallengeSquare showAreas={false}`, `ChallengeGraph plain`). Then add the unit to
+   `e2e/lesson-kit/4am-unit-opener-figures.mjs`, which fails when a تحدّ points to a figure that isn't
+   registered.
 3. **`_unit/`**: `unitMeta.js` (constants + `src`/`addition`) and the three bindings of
    `lessons/common/unit/` (`moduleContext.js`, `lessonRoutes.jsx`, `prepDiagnostic.jsx`), plus a copy of
    the unit's `prepDiagnostic.test.js` with the unit's lesson count.
@@ -182,6 +198,83 @@ Unit-count assertions that read the real catalogue (`unitGrouping.test.js`, `fin
   lesson-local render test mounts the workspace with that same object.
 - **New drawn worlds are data**: `family` and `pool` were added to `VISUAL_THEMES`
   (`packages/core/curriculum/manipulationLevels.js`) — `validate:lessons` refuses an undeclared theme.
+
+**Unit 5 « جمل معادلتين » (2026-10-01) replayed the recipe (four authors on a seeded foundation) and added:**
+
+- **A pair is an answer type.** In a lesson, `TextbookExercise` takes `interaction: 'pair'` (`PairQuestion`,
+  `expected: { x, y }`, `names` for (a ; b)); in the bank, `answerType: "point"` — both judged by the same evaluator,
+  one right number being `partially_correct` (`EXERCISE_CONTRACT.md` « Unit 5 »). The oracle checks the key equals
+  the pair it recomputes (`P(x, y)`, `solve2`).
+- **One exact module for systems**, `packages/core/arithmetic/linearSystem.js`, on `linear.js` fractions, written
+  and swept over every textbook system before the authors started.
+- **Owner rules born here, binding on every manipulation**: one screen without scrolling, hide / show
+  (`LabFold`) and movable panels (`MovablePanel`), near-square blocks of objects (MANIPULATION_CONTRACT §8bis) —
+  measured by the unit's e2e at four viewports.
+- **The web build needs ~3,2 GB**: `apps/web`'s `build` script sets a 4 GB heap (`DZ_FIRST_DEPLOYMENT.md`).
+
+**Unit 6 « الدالة الخطية والتناسبية » (2026-10-02) — six authors on a seeded foundation — added:**
+
+- **A ميدان the programme does not have.** The owner asked for « ميدان التناسبية والدوال »; the programme
+  (`programme_4am_2026_2027.json`, a verbatim transcription) files « الدوال الخطية » under « ميدان الحساب الحرفي » and stays
+  untouched. The display ميدان is DATA: `units_4am_2026_2027.json › ownerChapters` (`{ id, titleAr, subtitleAr, decidedBy:
+  'owner', decidedOn, note }`), appended by `coursesData.js` after the programme's domains with NO official topic; every
+  unit ranged there declares its programme domain in `placement` (`decomposition.test.js` and `coursesData.test.js`
+  check both). The lessons live under `lessons/moyen/4am/<that chapter id>/<unit>/`, the import depths are those of the
+  other units (six levels from `modules/` and `components/`, five from the lesson root), and the DB handshake creates
+  the chapter row like any other.
+- **One exact module for proportionality**, `packages/core/arithmetic/proportional.js` (tables and ratios, fourth
+  proportional, a from (m ; f(m)), image / antecedent / on-line, direction, percentage multipliers and chains, the
+  « machine » rules x², ax, ax + b with their linearity witnesses), tested before the authors started.
+- **One lab shared by three lessons with a contract fixed in the brief**: `origin-line` (L3 draw / read / pivot, L5 fit,
+  synthesis read + `cap`), its props in MANIPULATION_CONTRACT §2octies; the reusing lessons keep theirs in
+  `content/textbook.js › LAB` + `lab.render.test.jsx`.
+- **A shared-file lock for parallel authors**: every shared file (lesson.json, levels.js, misconceptions.json, …) was
+  edited through one script that re-reads the file inside a global `flock` (`json-set` / exact `replace`) — no race in
+  six parallel authors. Each author pushed its i18n namespace as one JSON value.
+- **Two owner requests on every lab**: a GENUINE manipulation (the hand holds the variable) AND a decorative layer of an
+  Algerian Gen-Alpha world (e-scooters on the promenade, the Eid souk, the téléphérique, the mall soldes), decoration
+  `aria-hidden` and never carrying an answer. The unit e2e measures the one-screen fit on each lab's « glance » block
+  (instrument + controls + reading), not on the whole card (title, level selector and folds sit around it).
+
+**Unit 7 « الدالة التآلفية » (2026-10-02) — six authors on a seeded foundation, the same day — added:**
+
+- **A source with no formal pages.** The owner supplied only pages 77–79 (opener, تحدّ, أستعدّ, five أنشطة): no معارف,
+  طرائق, exercises, QCM or « أدمج تعلّماتي ». The extraction says so (`discrepancies › scope`), and everything else is a
+  DECLARED platform addition with a reason that names it: `knowledge_formalization` (the formal knowledge, label
+  « معارف من المنصّة » in `textbook.additionReason`), `synthesis_generation` (« محتوى إضافي من المنصّة »),
+  `prerequisite_diagnostic`, `interaction_generation`, `practice_generation`. Banks are almost entirely `practice_generation`.
+- **A synthesis without a textbook synthesis.** The platform writes ONE composite situation that needs every lesson of the
+  unit, in the textbook's shape (قراءة · تحليل · تنفيذ), each part linked back to its درس, solved in module 1; the final test
+  TRANSPOSES it to other numbers so its answers appear nowhere else. A levelled manipulation must still cite an extraction
+  element: the synthesis cites the unit's `objectives`, declared `objectives.duplicatedIn` in the builder.
+- **One exact module on the previous ones**: `packages/core/arithmetic/affine.js` is written ON `linear.js` and
+  `linearSystem.js` (an affine function is unit 4's `{ a, b }`, an equation is unit 5's ax + by = c) — no second fraction or
+  system implementation; tested on every textbook number before the authors started.
+- **Level pairs follow `levels.test.js`**: the advanced level cites the textbook and is measurably heavier, so when a
+  textbook activity is the richest version, the platform's simpler numbers go to مبتدئ.
+- **« أستعدّ » requires ONE id per item** (`prepDiagnostic.test.js` counts `requires: ['id']` literals): a prior-knowledge
+  id that needs diagnosing gets its own item, never a second id on an existing one.
+- **Glance selectors are fixed in the brief** (`data-am|al|ss|lc|pc-glance`) so the lead's unit e2e is written before the
+  labs exist; e2e `apps/web/e2e/lesson-kit/4am-dala-taalufiya.mjs` (224 checks).
+- **Misprints this time are bidi**: a coordinate pair printed reversed « (1 ; 0) » for (0 ; 1) in act-3, the unit after an
+  amount (`$…$ DA` reverses — put `\,\mathrm{DA}` inside the island) and « 10°C » (written `$10\,^{\circ}\mathrm{C}$`).
+
+**Unit 8 « الإحصاء » (2026-10-02) — five authors on a seeded foundation, the same day — added:**
+
+- **Owner lessons that cut across the textbook's sections.** The owner's five lessons (cumulative frequencies; range / mean /
+  median; spreadsheets; reading and interpreting situations; synthesis) do not follow the textbook's activity order: L3 gathers
+  the textbook's Excel / GeoGebra / calculator exercises (ex-7, ex-15, ex-16, ex-23, ex-24, ex-1 هـ), L4 has NO textbook activity
+  and enters through the unit's تحدّ. The `destinations` of the extraction say it element by element; the knowledge those two
+  lessons formalize is a declared `knowledge_formalization`.
+- **One exact module for statistics**, `packages/core/arithmetic/statistics.js` on `linear.js` fractions (tables, cumulative
+  up / down, relative cumulative, « على الأكثر / على الأقل / تفوق » counts, range, weighted mean, median by ranks, classes and
+  class centres, median class, mode, groups reunited, a hidden value from a mean, N from a removal), tested on every textbook
+  number before the authors started.
+- **A unit topic list = the topics its lessons carry.** `decomposition.test.js` requires every `sourceTopicIds` entry of a unit
+  to have a lesson; the programme's nine statistics topics are taught inside four lessons, so the unit declares the four
+  carried ones (ALGERIA_4AM_CURRICULUM §5 says where the other five are taught).
+- **Misprints found by computation, not by eye**: the builder asserts every textbook count, sum and rank; it proved ex-20's
+  median « 6 » impossible (→ 6,5), and showed that ex-19's « odd » bars are a puzzle, not a misprint.
 
 ### `routes.jsx` — the whole file
 
@@ -487,6 +580,18 @@ before touching one (how). In short:
   instead (`[data-activity-evidence]`, module 1 of the reference lesson). A
   knowledge-brick lead must not state the next question's answer.
 
+- **One screen, no scroll (owner rule, 2026-10-01 — every manipulation).** The
+  object, every control that acts on it and the reading it produces fit ONE
+  viewport (1280 × 800 down to 320 × 640): the stage height is budgeted from
+  `100dvh`, countable objects shrink with the scene, handles sit beside what
+  they move, secondary material goes below. A lab whose sliders are a scroll
+  away from the figure they change is not done.
+  For a large activity the student chooses what to see: secondary blocks are
+  hidden / shown with `primitives/LabFold.jsx`, and a gauge or counter may
+  float on the scene in `primitives/MovablePanel.jsx`, which the student
+  drags aside (pointer or arrows) — never write a local version of either.
+  Many objects form a near-square block (32 agents = 6 × 6), never a strip.
+  [`MANIPULATION_CONTRACT.md` §8bis](../architecture/MANIPULATION_CONTRACT.md).
 - A manipulation is a **tactile laboratory**: the student moves a real object
   and the notation appears as a consequence. Never an animated explanation,
   never a quiz.
@@ -536,7 +641,7 @@ before touching one (how). In short:
   divisor lists), keep it at both levels and vary the cognitive demand
   instead. A theme bolted onto a list of divisors hides the mathematics.
 - The type registry is **closed**. Content names a `type`; it never supplies a
-  component. The nineteen types (ten for unit 1, three for unit 2, two for unit 3, four for unit 4) live in
+  component. The thirty-five types (ten for unit 1, three for unit 2, two for unit 3, four for unit 4, three for unit 5, four for unit 6, five for unit 7, four for unit 8) live in
   `packages/core/curriculum/manipulationTypes.js` (data) and
   `manipulations/manipulationRegistry.js` (components).
 - **Reuse before writing.** The existing types are reused across lessons by
@@ -865,13 +970,58 @@ authors in parallel on a seeded foundation (see « Adding a textbook UNIT »):
 | **`tarrid-mushkila`** | a lesson with NO textbook activity whose lab is the entry (`growth-race`, `platform_adaptation`): BUILD the model by carrying « + x » onto each person (a forgotten child refused in the story's words), then RACE x on a timeline — the meeting point is the equation, beyond it the inequality; P2 (« ملاءمة للواقع ») taught on a negative solution |
 | **`wadiya-idmajiya-muadalat`** | the synthesis: the pool situation in the textbook's three phases on `growth-race` (`theme="pool"`, `goal="greater"`), interpretation practised on the beginner pricing so the textbook answer (9 sessions) stays for the final test; the 9 QCM one step each, two-correct items as batches, number-line options in SVG |
 
+Unit 5 « جمل معادلتين من الدرجة الأولى بمجهولين » (`…/jumal-muadalatayn/`, 2026-10-01), four authors on a
+seeded foundation, the first unit under the one-screen rule:
+
+| Lesson | Read it for |
+|---|---|
+| **`mafhum-jumla`** | the PAIR held by the hand (`pair-scoreboard`): two gauges, a claim refused while one equation fails, the swapped pair as a refused trial; the textbook's 32 agents in a near-square office that fits one screen with both handles; the تحدّ (coins) as REAL hook and transfer on the same lab; the special cases (none / infinite) written line by line; a two-answer QCM as a combination choice |
+| **`hall-jabri`** | `elimination-cards`: a discovery that opens only when BOTH methods (the textbook's two students) gave the same pair; the worked example revealed line by line; « which method » taught as a platform brick whose distractors state false facts about the coefficients; a three-answer QCM as combinations in the BossFinal; `pair` with `names` for (a ; b) / (d ; t); exact non-integer pairs (68/19 ; 39/19) kept as the textbook prints them |
+| **`mushkilat-jumla`** | `story-modeller` as the textbook's 5-step table, the table's «حل» column filled ONLY from the student's own lab work; the method applied to the تحدّ and to أبو كامل's problem (classical reading declared); a story whose solution is not a natural number; SVG figures for ex-19 and ex-21 |
+| **`wadiya-idmajiya-jumal`** | the synthesis reusing `story-modeller` (`theme="party"`, two money facts, `LAB` in `content/textbook.js` + `lab.render.test.jsx`); solving and checking practised on the beginner numbers so the textbook answer stays for the final test; QCM items 2 and 6 as « صحيح / خاطئ » batches; ex-31 corrected |
+
+Unit 6 « الدالة الخطية والتناسبية » (`lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/`, 2026-10-02), six
+authors on a seeded foundation, under the owner's display ميدان « ميدان التناسبية والدوال »:
+
+| Lesson | Read it for |
+|---|---|
+| **`tanasub-muamil`** | a unit ENTRY lesson with no formal textbook « معارف »: proportionality taught as declared platform reminders (`prior_year_reminder`), never as the textbook's words; `ratio-ride` — the student's OWN rides recorded as table columns, « جدول تناسبية » refused with two quotients, the fixed unlock fee as the contrast; act-1 Q1 as a declared duplicate with the 20 % correction; no f(x) notation before lesson 2 |
+| **`dala-khattiya`** | `linear-machine`: a hidden rule fed with the student's own cards, a claim refused with a witness, 0 that fixes nothing, the machine run backwards for the antecedents of act-1; act-2's three machines classified; method-determine revealed line by line; QCM 2, 3, 5, 6 in the BossFinal |
+| **`tamthil-bayani-khatti`** | `origin-line` built for three lessons: O that refuses to move, a point refused with its gap, readings by probes, the GeoGebra slider of p. 76 (`tech-76`) honestly replaced by the lab's `pivot` mode; the ex-14 sign trap made explicit; exercise graphs drawn in SVG |
+| **`tatbiqat-tanasub`** | `percent-tag`: the additive bar refused by the multiplied one, the tank's chain BET before it is built (−15 % refused by the water); compound quantities (speed, flow, density) with the act-6 copper and know-4 kWh corrections; QCM 7 (three correct) as a combination choice |
+| **`tarrid-khatti`** | a modelling lesson reusing `origin-line` in `fit` mode (beginner on a platform cable car because no lab world draws kg × DA; the textbook's spring at advanced), act-4's three graphs redrawn, the spring method revealed after the student completes the table, the تحدّ (two vehicles) as transfer |
+| **`wadiya-idmajiya-khattiya`** | the synthesis: the cable car (Pythagoras → time → cost 3,8x) in the textbook's three phases, practised on a platform cable and family so the textbook answers stay for the test; `origin-line` `read` + `cap` (`theme="budget"`, `experience.theme: 'cablecar'`); the largest price ROUNDED DOWN (526 DA) and why; all 8 QCM one step each; units with a slash put in `$…$` (they reverse in RTL) |
+
+Unit 7 « الدالة التآلفية » (`lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/`, 2026-10-02), six authors on a seeded
+foundation, same display ميدان; the supplied textbook pages have NO formal pages, so every lesson declares its formal knowledge:
+
+| Lesson | Read it for |
+|---|---|
+| **`mafhum-taalufiya`** | a unit ENTRY lesson whose textbook has NO معارف: the act-1 payroll on `affine-meter` (three stages opened by the student: the textbook table's columns as ruler marks, the target 37775 reached then the inverse program written, the knobs a / b to b = 0 and a = 0), act-2's six rules as one batch (a and b whatever the writing order), the formalization written by the platform and declared (`knowledge_formalization`), act-1's « أضيف » → « أضف » corrected in one line |
+| **`tamthil-bayani-taalufi`** | `affine-line`: the textbook's (d) → (d′) lifted by the student, probe readings at two abscissas showing the same gap, b′ ≠ 1 refused with f(0) = 1, then a chained second lab (a hidden descending ramp read with b′ then the step a′); act-3 2-أ corrected from (1 ; 0) to (0 ; 1); graph figures drawn in `components/AffineFigure.jsx`; `point` answers for (0 ; b) in the bank |
+| **`tanasub-taghayyurat`** | `slope-stairs`: the textbook's act-4 staircase COMPLETED by the student's own stairs, the invariant quotient against stairs of different widths, x₁ = x₂ refused; the تحدّ (°C → °F) as a declared duplicate in `points` mode (unknown images refused until the stair gives a, then descend to 0 for b); the property, its proof sketch f(x₁) − f(x₂) = a(x₁ − x₂), and the two methods (a then b, or the system in a and b) |
+| **`tafsir-bayani-jumla`** | `line-crossing`: the class fund (نشاط 5) where each condition is first WRITTEN y = ax + b (wrong cards refuted by a witness), then P walked until both lamps light at (36 ; 7); the cases stage chained by the student (parallel / coincident); the platform note on the unknowns the textbook leaves to question 2; « القراءة تقريبية » — a graphical reading is exact only on a grid node, confirmed by calculation |
+| **`tarrid-taalufi`** | a lesson whose only textbook element is a declared duplicate (act-4 question 1); `plan-compare` built for two lessons: the bill (the fixed part paid x times refused with the bill's own cost) then the comparison (marker on the crossing, the x-axis painted with the cheapest plan); the comparison taught as equation + inequality + lower line; a five-step platform method (`stage: 'formalization'`) |
+| **`wadiya-idmajiya-taalufiya`** | the FIRST synthesis with NO textbook synthesis: a class trip to Tipaza beach (participants by a جملة read graphically, a bus as an affine function — image and antecedent —, a second bus known by two quotes, the two lines' crossing, three kayak tariffs on `plan-compare` `theme="rental"` incl. a constant one), every part linked back to its درس; the final test a transposed trip (Les Sablettes); Arabic SVG axis titles with explicit `direction="rtl"` |
+
+Unit 8 « الإحصاء » (`lessons/moyen/4am/tanasubiya_duwal/ihsa/`, 2026-10-02), five authors on a seeded foundation, same display
+ميدان; a COMPLETE textbook unit split into the owner's five lessons:
+
+| Lesson | Read it for |
+|---|---|
+| **`takrar-mujamma`** | the unit ENTRY on `cumul-gate`: act-1's 20 pupils in the textbook's own (unsorted) order, the student sorts the queue, sets t on a ride's height gauge and ANNOUNCES the count (a refusal names the people of height exactly t), the two textbook tables filled by the student's own accepted counts, « ÷ N » for التواتر; the invariant up + down = N + f(t) as a declared brick; طرائق revealed line by line; دوري الآن (open) made checkable on declared platform data; tables in final-test prompts as KaTeX arrays (`texTable`); bar chart, histogram and pie redrawn in SVG (`components/Charts.jsx`) |
+| **`mada-wasit-mutawassit`** | `stat-balance` built for two lessons: the كلّاب then the fulcrum (five e-sport scores / El Oued) with act-3 decided on the student's own fulcrum trials and the HONEST answer to « أي المدينتين كانت أكثر حرّا؟ » (same mean 482/30, (ب) more spread); the curtain in rank space, the far token that moves the mean and not the median; act-4's three parts (class centres 1816/41, median class); معارف 4's misprints corrected; طرائق's « add 3 and 43 » asked BEFORE its solution; the plain mean as `prior_year_reminder`; « اقترح سلسلة » exercises turned into « which series satisfies… » choices |
+| **`majdulat-ihsaiya`** | a lesson whose textbook elements are only exercises (ex-7, 15, 16, 23, 24, ex-1 هـ): the spreadsheet knowledge declared (`knowledge_formalization`); `sheet-lab` — the series typed and saved, the hand result before the formula, a short range or a wrong function contradicted by the student's own number, the outlier that moves MOYENNE and not MEDIANE, a chained chart stage; ex-7's screenshot misprint corrected; French (textbook) and English function names accepted; formulas as LTR code (ARABIC_RTL_CONTRACT) |
+| **`qiraat-wadiyat-ihsaiya`** | a lesson with NO textbook activity whose entry is the unit's تحدّ on `group-tanks`: the student BETS the merged class's level, the water refuses the mean of the means, the two classes settle at the same 384/33; the opener « تلوث البيئة » as the real context of a platform chart; ex-19's two combined bars read as a puzzle (not a misprint); ex-14 (position AND spread), ex-22 (N = 31 from a removal); the platform method « أقرأ · أحسب المؤشرات · أقارن · أقرّر » |
+| **`wadiya-idmajiya-ihsa`** | the synthesis WITH a textbook situation: the Olympic medals' two hidden values found BY HAND on `stat-balance` `mode="hidden"` (the curtain fixes 3, the beam 28), then by calculation in the textbook's three phases (rank 15/16, 176 + 2 × 3 + y = 210, 0,69 × T = 30 → 13); a beginner table whose single hidden value is the EXTREME one (only the balance finds it); the 6 QCM one step each with a link back to their درس; ex-20 corrected (6 → 6,5); the final test TRANSPOSES the situation |
+
 **Textbook misprints are CORRECTED, not only noted (owner decision, 2026-09-30).**
 The extraction keeps the book's verbatim `text` and adds a `correction`
 `{ decidedBy, decidedOn, text | analysis1, answer?, note }`; `discrepancies`
 records the resolution. The lesson displays the corrected version with one
 discreet line (« صحّحت المنصّة خطأً مطبعيًا … »), never a long note. Unit 2:
 act-2 (L2), ex-27 and now-30 (L5 — now-30 is a reconstructed, complete
-exercise), the situation's analysis (synthesis).
+exercise), the situation's analysis (synthesis). Unit 5: ex-31 (« x + y = 216 » → 270, synthesis). Unit 6: act-1 (2 % → 20 %, L1–L2), act-6 (copper 6 → 8 cm³, L4), know-4 (« kw/h » → kWh, L4), ex-13 (missing x, L3), ex-17 (question 2 on P و r, L1). Unit 7: act-3 2-أ (« (1 ; 0) » → (0 ; 1), a bidi-reversed couple, L2), act-1 4-ب (« أضيف » → « أضف », L1). Unit 8: ex-20 (median « 6 » impossible → 6,5, synthesis), ex-7 (the spreadsheet screenshot's other series and four formulas in one cell, L3), know-4 (« نفس التكرار 4 » → 5, « بالمتر » → بالسنتيمتر, the median class written as the table's, L2).
 
 ---
 
@@ -1015,6 +1165,12 @@ KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-aadad-tabiiya-na
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-hisab-judhur.mjs   # unit 2: every module mounted at 1280/320 px + the three root labs
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-hisab-harfi.mjs    # unit 3: every module at 1280/320 px + the pitch and turf labs by real gesture
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-muadalat-mutarajihat.mjs  # unit 4: every module at 1280/320 px + the four labs by real gesture
+KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-jumal-muadalatayn.mjs     # unit 5: every module at 1280/320 px + the three labs by real gesture + one-screen fit at 4 viewports
+KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-tanasubiya-dala-khattiya.mjs  # unit 6: unit page + every module at 1280/320 px + every lab's glance block in one screen at 4 viewports, both levels
+KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-tanasub-muamil.mjs           # unit 6 L1: ratio-ride by real gesture (drag, keyboard, refusals, ghost column in Arabic digits)
+KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/math-raw-scan.mjs                # every page of every 4AM lesson: no raw `$…$` / `\command` / KaTeX error in visible text (INDEX_ONLY=1: catalogue, units, indexes)
+KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-dala-taalufiya.mjs            # unit 7: unit page + every module at 1280/320 px + the five labs' glance blocks in one screen at 4 viewports, both levels (224 checks)
+KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-ihsa.mjs                       # unit 8: unit page + every module at 1280/320 px + the four labs' glance blocks (stat-balance twice) in one screen at 4 viewports, both levels
 #   LABS_ONLY=1 skips the mounts; MOUNT_LESSONS=a,b mounts only those lessons (the full run is ~35 min)
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/manipulations.mjs
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/classroom.mjs
@@ -1043,6 +1199,8 @@ before concluding a new lesson or unit is broken.
   terminology matching the register.
 - *Responsive*: 320 px with no horizontal scroll, touch targets ≥ 44 px for
   controls, and the phone, tablet and desktop widths.
+- *One screen*: every manipulation fits one viewport with its controls (no
+  vertical scroll to interact) at 1280×800, 1366×768, 390×844, 320×640.
 - *Classroom*: entry as a presenter, unit navigation, state surviving
   enter/exit, no page scroll, exit restoring the page.
 - *Accessibility*: keyboard path for every gesture, visible focus, readable
@@ -1054,6 +1212,11 @@ before concluding a new lesson or unit is broken.
 ## 12. Do not do this
 
 Each of these has actually happened in this repository, or is a standing rule.
+
+**Math in text**
+- Do not print a content string with `{bidi(x)}` (or raw `{x}`) in JSX when it may carry `$…$`: the student
+  reads the dollars. Use `<MathLabel>{x}</MathLabel>`, or `mathToPlain(x)` where only a string fits
+  (ARABIC_RTL_CONTRACT « Content text outside a module »). Owner report, 2026-10-02: 122 raw formulas, 7 units.
 
 **Progression**
 - Do not gate a step on a *correct* answer (§4). Release blocker.
@@ -1105,6 +1268,8 @@ Each of these has actually happened in this repository, or is a standing rule.
 - Do not replace a textbook situation without declaring `experience.reason`.
 - Do not render the same manipulation twice on one page — check the module's
   steps before adding a level that duplicates one of them.
+- Do not make the student scroll between a figure and the controls that move
+  it (MANIPULATION_CONTRACT §8bis — found on unit 5's 32 agents, 2026-10-01).
 - Do not add a third level, a hidden level, or a « palier » row inside a
   manipulation. Two levels, one selector.
 - Do not let a manipulation replace its own scene on a threshold (« after
@@ -1196,7 +1361,7 @@ for every element the lesson cites. Mastery criteria are the server's
 | Module shape | `ContentModule` for content, `PrerequisiteDiagnostic` for « أستعدّ » (module 0, `priorKnowledge` only, questions as literal objects with `requires` — §4 « The « أستعدّ » pattern »), `BossFinal` for « إختبار أولي » — never a hand-rolled module shell, test UI, fullscreen, toolbar or progress write |
 | Steps | `done` on ANSWERED, never on correct (`check:non-blocking`); a step may wait on `onFinished` only per §6; never pass `locked` |
 | Questions | kit components only (`TapQuestion`, `BatchChoiceQuestion`, `NumericQuestion`, `TextbookExercise` for the textbook's exercises); explicit `correct`; every distractor FALSE; `requires` on every question; the parsers of §5, never a custom one |
-| Manipulation | a type from the closed registry (19 types), two levels in one `ManipulationWorkspace`, the lesson's world as a `theme` (§6); a new type only by the recipe of MANIPULATION_CONTRACT §7ter |
+| Manipulation | a type from the closed registry (26 types), two levels in one `ManipulationWorkspace`, the lesson's world as a `theme` (§6); a new type only by the recipe of MANIPULATION_CONTRACT §7ter |
 | Knowledge | `knowledge.jsx` with a plain-text `summary` per item; a brick at the point of teaching; `knowledgeMap: true`; every content module's footer `<KnowledgeSnapshot moduleNumber={N} />`; the final test's `synthese={<KnowledgeSnapshot complete variant="complete" />}`; **and** the progressive map from the start (owner decision, 2026-09-29): a `knowledgeGraph.js` exporting `KNOWLEDGE_GRAPH`, re-exported by `knowledge.jsx`, and `knowledgeMapMode: 'progressive'` — every item carried by a `notebook` node, labelled relationships, guidance only where the lesson's own exercises / questions / « أستعدّ » support it, authored per `KNOWLEDGE_MAP.md` A.10 (rules 1–16) and passing A.14. Enforced: `validate-lessons.mjs` refuses a lesson with a map but no mode / graph / re-export, and `lessonGraphs.test.js` runs the A.14 invariants on every lesson without any per-lesson code |
 | Final test | only in the `evaluation` module; every question assessed with ONE primary LP of this lesson; every LP covered; 4–6 questions; timer ≈ 1 min per question + 1; `badges`, `completion`, `skills` as in the reference lessons |
 | Textbook | every pedagogical block carries a `source` (`src()` / `addition()`); `check:textbook` maps each extracted element to exactly one destination |

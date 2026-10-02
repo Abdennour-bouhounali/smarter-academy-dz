@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-tarrid-taalufi-l4-008",
+  "lessonCode": "tarrid-taalufi",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — تقاطع غير صحيح",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متراجحة",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-taalufi_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "كراء درّاجة: الصيغة A $f(x) = 120x + 500$ ، والصيغة B $g(x) = 200x$ (بالدينار)، حيث $x$ عدد الساعات الكاملة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ابتداءً من كم ساعة تكون الصيغة A أرخص تمامًا؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TARRID-TAHAQQUQ",
+          "value": "25/4"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ $120x + 500 < 200x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x > \\dfrac{500}{80}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عدد الساعات عدد طبيعي."
+        }
+      ],
+      "feedback": {
+        "correct": "$120x + 500 < 200x$ أي $500 < 80x$ ومنه $x > 6{,}25$ : ابتداءً من 7 ساعات.",
+        "incorrect": "حلّ المتراجحة ثم خذ أصغر عدد طبيعي يحقّقها."
+      }
+    }
+  ]
+}

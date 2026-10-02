@@ -1,0 +1,113 @@
+{
+  "id": "ex-4am-hall-jabri-l2-008",
+  "lessonCode": "hall-jabri",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — جواهر ونجوم",
+    "estimatedMinutes": 4,
+    "tags": [
+      "التعويض",
+      "ألعاب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hall-jabri_P1",
+      "modelledOn": "ex-11"
+    }
+  },
+  "statement": {
+    "content": "في لعبة على الهاتف، كل جوهرة تساوي $x$ نقطة وكل نجمة $y$ نقطة. جمع ياسين جوهرتين ونجمة: 50 نقطة، وجمعت أخته جوهرة وثلاث نجوم: 45 نقطة. الجملة: $\\begin{cases} 2x + y = 50 \\\\ x + 3y = 45 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من المعادلة الأولى ينتج أنّ:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$y = 50 - 2x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$y = 2x - 50$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAWID-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$x = 50 - 2y$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن مجهول معامله $1$ أو $-1$ في إحدى المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عبّر عنه بدلالة المجهول الآخر، ثم عوّضه في المعادلة الأخرى."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
+        }
+      ],
+      "feedback": {
+        "correct": "نطرح $2x$ من طرفي $2x + y = 50$ : $y = 50 - 2x$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة $(x ; y)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "21",
+        "y": "8"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن مجهول معامله $1$ أو $-1$ في إحدى المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عبّر عنه بدلالة المجهول الآخر، ثم عوّضه في المعادلة الأخرى."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + 3(50 - 2x) = 45$ أي $-5x = -105$ ، ومنه $x = 21$ و $y = 8$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

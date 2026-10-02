@@ -1,0 +1,152 @@
+{
+  "id": "ex-4am-hall-jabri-l4-007",
+  "lessonCode": "hall-jabri",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 10 — مجهول معطى بدلالة الآخر",
+    "estimatedMinutes": 4,
+    "tags": [
+      "التعويض"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-10",
+      "page": 60,
+      "section": "أوظّف تعلّماتي",
+      "number": 10
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 60): حل الجملتين: أ) $\\begin{cases} 3x = 2y \\\\ y = 3(x - 3) \\end{cases}$ ب) $\\begin{cases} x = y \\\\ 3x + 2y = 0 \\end{cases}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "في أ)، بتعويض $y$ في المعادلة الأولى نجد:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3x = 6(x - 3)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$3x = 2(3x - 3)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$3x = 6x - 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن مجهول معامله $1$ أو $-1$ في إحدى المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عبّر عنه بدلالة المجهول الآخر، ثم عوّضه في المعادلة الأخرى."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x = 2 \\times 3(x - 3) = 6(x - 3) = 6x - 18$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة أ):",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "6",
+        "y": "9"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن مجهول معامله $1$ أو $-1$ في إحدى المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عبّر عنه بدلالة المجهول الآخر، ثم عوّضه في المعادلة الأخرى."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x = 6x - 18$ أي $x = 6$ ، ثم $y = 3(6 - 3) = 9$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "حل الجملة ب):",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "0",
+        "y": "0"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن مجهول معامله $1$ أو $-1$ في إحدى المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عبّر عنه بدلالة المجهول الآخر، ثم عوّضه في المعادلة الأخرى."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
+        }
+      ],
+      "feedback": {
+        "correct": "$3y + 2y = 0$ ، ومنه $y = 0$ و $x = 0$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

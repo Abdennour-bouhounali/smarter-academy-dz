@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l4-009",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — أيّ جدول؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تناسب التغيرات",
+      "جدول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "ثلاثة جداول، في كل منها $x$ و $y$ — (1) $x$ : 1 ، 2 ، 4 و $y$ : 5 ، 7 ، 11 ؛ (2) $x$ : 1 ، 2 ، 4 و $y$ : 5 ، 7 ، 13 ؛ (3) $x$ : 1 ، 2 ، 4 و $y$ : 3 ، 6 ، 10 ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ جدول يمكن أن يكون جدول دالة تآلفية؟",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الجدول (1)",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الجدول (2)",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-BIDUN-QISMA"
+        },
+        {
+          "id": "C",
+          "content": "الجدول (3)",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-KHATTIYA-KHALT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب الحاصل بين العمودين الأوّلين ثم بين الأخيرين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في دالة تآلفية الحاصلان متساويان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا يكفي أن يزيد $y$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "في (1): $\\dfrac{7 - 5}{1} = 2$ و $\\dfrac{11 - 7}{2} = 2$ .",
+        "incorrect": "قارن حاصلي القسمة لا الفرقين."
+      }
+    }
+  ]
+}

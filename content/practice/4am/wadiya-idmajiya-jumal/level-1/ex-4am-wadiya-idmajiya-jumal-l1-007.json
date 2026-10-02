@@ -1,0 +1,126 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l1-007",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 7 — زاويتان متكاملتان",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترجمة",
+      "زوايا"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 62,
+      "section": "أؤكّد تعلّماتي",
+      "number": 7
+    }
+  },
+  "statement": {
+    "content": "$x$ و $y$ قيسا زاويتين متكاملتين بالدرجات. يزيد $x$ عن $y$ بـ 15 درجة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لإيجاد $x$ و $y$ ، نحل الجملة:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 180 \\\\ x = y + 15 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} y + x = 90 \\\\ y + 15 = x \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} y = 180 - x \\\\ y + x = 15 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما مجموع زاويتين متكاملتين؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "«يزيد $x$ عن $y$ بـ 15» يعني أنّ $x$ أكبر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "معلومة واحدة لكل معادلة."
+        }
+      ],
+      "feedback": {
+        "correct": "متكاملتان: $x + y = 180$ ؛ و $x = y + 15$.",
+        "incorrect": "المتكاملتان مجموعهما 180 درجة، لا 90."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    },
+    {
+      "id": "q2",
+      "statement": "حل هذه الجملة: ما قيسا الزاويتين $(x ; y)$ بالدرجات؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
+      "expectedAnswer": {
+        "x": "195/2",
+        "y": "165/2"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ $y + 15$ في المعادلة الأولى."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2y + 15 = 180$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قد يكون القيس عددا عشريا."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = \\dfrac{165}{2} = 82{,}5$ و $x = 97{,}5$ ؛ و $97{,}5 + 82{,}5 = 180$.",
+        "incorrect": "استعمل التعويض ثم تحقق في المعادلتين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "165/2",
+            "y": "195/2"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    }
+  ]
+}

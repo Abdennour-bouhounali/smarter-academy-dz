@@ -4,6 +4,7 @@ import { BookOpen } from 'lucide-react';
 import { CompleteView } from './KnowledgeMap';
 import { buildStructure, progressionByModule } from './knowledgeStructure';
 import { useLessonKnowledge } from './KnowledgeProvider';
+import MathLabel from '../components/MathLabel';
 
 /**
  * KnowledgeSnapshot — l'« À retenir » d'un module = la carte des
@@ -188,7 +189,7 @@ function SnapRow({ item, isNew, dot = 'bg-slate-300', showSummary = false }) {
           <span className="ms-1.5 align-middle text-[10px] font-bold uppercase tracking-wide text-indigo-600 bg-indigo-100 px-1.5 py-0.5 rounded-full">{t('map.new')}</span>
         )}
         {showSummary && item.summary && (
-          <span className="block text-xs text-slate-600 leading-snug mt-0.5">{item.summary}</span>
+          <span className="block text-xs text-slate-600 leading-snug mt-0.5"><MathLabel><MathLabel>{item.summary}</MathLabel></MathLabel></span>
         )}
       </span>
     </div>

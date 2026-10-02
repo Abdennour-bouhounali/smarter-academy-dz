@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-tafsir-bayani-jumla-l1-008",
+  "lessonCode": "tafsir-bayani-jumla",
+  "level": 1,
+  "metadata": {
+    "title": "الفاصلة أولًا",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ثنائية",
+      "ترتيب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tafsir-bayani-jumla_P2",
+      "modelledOn": "act-5"
+    }
+  },
+  "statement": {
+    "content": "مستقيما جملة يتقاطعان في النقطة التي فاصلتها $4$ وترتيبها $1$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ الجملة هو:",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(4 ; 1)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(1 ; 4)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-BAYANI-MAQLUB"
+        },
+        {
+          "id": "C",
+          "content": "العدد $4$ وحده",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-NISF-HALL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الفاصلة قيمة $x$ والترتيب قيمة $y$ : تذكّر ماذا يمثّل كل مجهول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نقطة التقاطع هي المكان الذي تتساوى فيه القيمتان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق من كل اقتراح بالحساب في الوضعية."
+        }
+      ],
+      "feedback": {
+        "correct": "الحل إحداثيتا نقطة التقاطع، الفاصلة أولًا: $(4 ; 1)$.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

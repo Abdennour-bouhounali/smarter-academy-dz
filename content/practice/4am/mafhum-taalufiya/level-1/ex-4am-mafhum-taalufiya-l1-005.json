@@ -1,0 +1,77 @@
+{
+  "id": "ex-4am-mafhum-taalufiya-l1-005",
+  "lessonCode": "mafhum-taalufiya",
+  "level": 1,
+  "metadata": {
+    "title": "نشاط 2 — الخطية تآلفية؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خطية",
+      "الكتاب"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-2",
+      "page": 78,
+      "section": "أنشطة",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 78): ما رأيك في التصريح «الدالة الخطيّة هي أيضا دالة تآلفية»؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "التصريح:",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P4",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "صحيح: الدالة الخطية هي الدالة التآلفية في الحالة $b = 0$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "خاطئ: الدالة الخطية ليس فيها $b$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-THABITA"
+        },
+        {
+          "id": "C",
+          "content": "خاطئ: الدالة التآلفية لا تكون خطية أبدا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-THABITA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كل دالة من الشكل $ax + b$ تآلفية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى $b$ : إذا كان معدوما فالدالة خطية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "وانظر إلى $a$ : إذا كان معدوما فالدالة ثابتة."
+        }
+      ],
+      "feedback": {
+        "correct": "$x \\longmapsto ax = x \\longmapsto ax + 0$ : تآلفية مع $b = 0$ .",
+        "incorrect": "راجع كل اقتراح: واحد فقط صحيح."
+      }
+    }
+  ]
+}

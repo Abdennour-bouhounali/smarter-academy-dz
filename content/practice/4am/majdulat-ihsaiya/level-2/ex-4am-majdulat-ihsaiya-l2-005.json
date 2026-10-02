@@ -1,0 +1,81 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l2-005",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — مجال سلسلة طويلة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مجال",
+      "حجز"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_majdulat-ihsaiya_P1",
+      "modelledOn": "ex-7"
+    }
+  },
+  "statement": {
+    "content": "حجزت ريم 12 قيمة في السطر 1 ، قيمة في كل خلية بدءًا من A1 ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المجال الذي تشغله القيم:",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "⁦A1:M1⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MAJAL-KHALIYA"
+        },
+        {
+          "id": "B",
+          "content": "⁦A1:A12⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MAJAL-KHALIYA"
+        },
+        {
+          "id": "C",
+          "content": "⁦A1:L1⁩",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "⁦A1:K1⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MAJAL-KHALIYA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عدّ الحروف: A هو الأول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "A B C D E F G H I J K L ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحرف الثاني عشر."
+        }
+      ],
+      "feedback": {
+        "correct": "الحرف الثاني عشر هو L : المجال A1:L1 .",
+        "incorrect": "A1:K1 إحدى عشرة خلية، و A1:A12 في العمود A ."
+      }
+    }
+  ]
+}

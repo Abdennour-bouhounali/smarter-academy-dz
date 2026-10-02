@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l5-005",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — وسيط من جدول بعدد زوجي",
+    "estimatedMinutes": 5,
+    "tags": [
+      "وسيط",
+      "جدول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mada-wasit-mutawassit_P3",
+      "modelledOn": "method-indicators"
+    }
+  },
+  "statement": {
+    "content": "عدد الإخوة لـ 40 تلميذًا: $1$ (6 تلاميذ)، $2$ (10)، $3$ (12)، $4$ (8)، $5$ (4)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "وسيط هذه السلسلة هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-WASIT-RUTBA",
+          "value": "20"
+        },
+        {
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT",
+          "value": "2,85"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$N = 40$ : الرتبتان $20$ و $21$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المجمّع الصاعد $6$ ، $16$ ، $28$ …"
+        }
+      ],
+      "feedback": {
+        "correct": "الرتبتان $20$ و $21$ كلتاهما في القيمة $3$ : الوسيط $3$.",
+        "incorrect": "ابحث عن القيمتين ذواتي الرتبتين $20$ و $21$."
+      }
+    }
+  ]
+}

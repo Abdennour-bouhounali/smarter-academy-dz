@@ -1,0 +1,59 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l5-002",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 5,
+  "metadata": {
+    "title": "تحدّ الكتاب — كم أنثى نضيف؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تحدّ",
+      "معادلة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "challenge",
+      "page": 91,
+      "section": "تحدّ"
+    }
+  },
+  "statement": {
+    "content": "في القسم (أ): 15 ذكرا معدّلهم 10 و 18 أنثى معدّلهن 13. التحقت بالقسم $x$ تلميذة جديدة معدّلها 13 أيضا، فأصبح معدّل القسم 12."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما قيمة $x$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "12",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجموع الجديد $384 + 13x$ والعدد $33 + x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$384 + 13x = 12(33 + x)$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة."
+        }
+      ],
+      "feedback": {
+        "correct": "$384 + 13x = 396 + 12x$ ومنه $x = 12$ .",
+        "incorrect": "اكتب المعادلة: المجموع = المعدّل × العدد."
+      },
+      "difficulty": 5
+    }
+  ]
+}

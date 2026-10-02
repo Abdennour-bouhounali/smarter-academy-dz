@@ -1,0 +1,113 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l5-006",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 5,
+  "metadata": {
+    "title": "تمديد الشراب",
+    "estimatedMinutes": 6,
+    "tags": [
+      "تركيز",
+      "تمديد",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P3",
+      "modelledOn": "ex-39"
+    }
+  },
+  "statement": {
+    "content": "شراب حجمه $0{,}5\\,\\mathrm{L}$ يحتوي على $30\\,\\mathrm{g}$ من السكر. نريد أن نضيف ماء ليصير التركيز $40\\,\\mathrm{g/L}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما تركيز السكر الحالي بـ $\\mathrm{g/L}$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بـ g/L",
+      "expectedAnswer": "60",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التركيز = الكتلة ÷ الحجم."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم 30 على $0{,}5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الوحدة غرام لكل لتر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{30}{0{,}5} = 60\\,\\mathrm{g/L}$.",
+        "incorrect": "الكتلة على الحجم."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "15",
+          "id": "MISC-MAQADIR-QISMA-MAQLUBA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "كم مليلترا من الماء نضيف؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالمليلتر",
+      "expectedAnswer": "250",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كتلة السكر لا تتغير."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحجم الجديد $V$ يحقق $\\dfrac{30}{V} = 40$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح الحجم الأصلي من الحجم الجديد."
+        }
+      ],
+      "feedback": {
+        "correct": "$V = \\dfrac{30}{40} = 0{,}75\\,\\mathrm{L}$ ، فنضيف $0{,}75 - 0{,}5 = 0{,}25\\,\\mathrm{L}$ ، أي 250 mL.",
+        "incorrect": "الحجم الجديد ليس هو الماء المضاف: اطرح الحجم الأصلي."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "750",
+          "id": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "value": "0.25",
+          "id": "MISC-MAQADIR-WIHDA"
+        }
+      ]
+    }
+  ]
+}

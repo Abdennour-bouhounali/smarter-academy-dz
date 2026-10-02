@@ -1,0 +1,105 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l4-003",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 4,
+  "metadata": {
+    "title": "دوري الآن (ص 69)",
+    "estimatedMinutes": 4,
+    "tags": [
+      "معامل كسري",
+      "جذور"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "now-69",
+      "page": 69,
+      "section": "دوري الآن"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 69): (D) التمثيل البياني لدالة خطية يشمل النقطة $A\\left(-\\dfrac{2}{3} ; -\\dfrac{3}{2}\\right)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "معامل الدالة (كسر):",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "كسر مثل 3/4",
+      "expectedAnswer": "9/4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التمثيل يشمل O والنقطة المعطاة $(m ; n)$ ، أي $f(m) = n$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $a \\times m = n$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الترتيب على الفاصلة: $a = \\dfrac{n}{m}$ ، مع الانتباه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$-\\dfrac{3}{2} \\div \\left(-\\dfrac{2}{3}\\right) = \\dfrac{9}{4}$ .",
+        "incorrect": "حاصل قسمة عددين سالبين موجب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل النقطة $B(\\sqrt{32} ; \\sqrt{162})$ تنتمي إلى (D)؟",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-FASILA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب $\\sqrt{32}$ على الشكل $k\\sqrt{2}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب صورة $\\sqrt{32}$ بالدالة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارنها بـ $\\sqrt{162} = 9\\sqrt{2}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{9}{4} \\times 4\\sqrt{2} = 9\\sqrt{2} = \\sqrt{162}$ .",
+        "incorrect": "احسب صورة الفاصلة ثم قارن."
+      }
+    }
+  ]
+}

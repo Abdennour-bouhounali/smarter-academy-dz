@@ -1,0 +1,114 @@
+{
+  "id": "ex-4am-hall-jabri-l3-009",
+  "lessonCode": "hall-jabri",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — الرحلة المدرسية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "الجمع",
+      "رحلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hall-jabri_P2",
+      "modelledOn": "ex-8"
+    }
+  },
+  "statement": {
+    "content": "لرحلة مدرسية: 4 حافلات و 2 سيارتا أجرة تتّسع لـ 216 تلميذًا، وحافلتان و 5 سيارات أجرة تتّسع لـ 140 تلميذًا. نرمز بـ $x$ لعدد مقاعد الحافلة وبـ $y$ لعدد مقاعد السيارة: $\\begin{cases} 4x + 2y = 216 \\\\ 2x + 5y = 140 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لنتخلّص من $x$ ، نضرب طرفي المعادلة الثانية في:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        },
+        {
+          "id": "C",
+          "content": "$-4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن معاملي $x$ ثم معاملي $y$ في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب طرفي معادلة (أو كلتيهما) في عدد مناسب ليصير معاملا أحد المجهولين متعاكسين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المعادلتين طرفًا لطرف، ثم عوّض القيمة الناتجة في إحدى المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$-4x - 10y = -280$ : $4x$ و $-4x$ متعاكسان.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة $(x ; y)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "50",
+        "y": "8"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن معاملي $x$ ثم معاملي $y$ في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب طرفي معادلة (أو كلتيهما) في عدد مناسب ليصير معاملا أحد المجهولين متعاكسين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المعادلتين طرفًا لطرف، ثم عوّض القيمة الناتجة في إحدى المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "بالجمع $-8y = -64$ ، ومنه $y = 8$ ثم $4x = 200$ أي $x = 50$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

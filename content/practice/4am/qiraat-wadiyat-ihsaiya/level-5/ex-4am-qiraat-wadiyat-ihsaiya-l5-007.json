@@ -1,0 +1,59 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l5-007",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — نقطة إضافية للجميع",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متوسط",
+      "تحويل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P3",
+      "modelledOn": "ex-22"
+    }
+  },
+  "statement": {
+    "content": "معدّل 31 تلميذا هو $11{,}5$ . قرّر الأستاذ إضافة نقطة واحدة لكل تلميذ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما المعدّل الجديد؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "12,5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجموع يزيد 31 نقطة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العدد لا يتغيّر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\dfrac{11{,}5 \\times 31 + 31}{31}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{356{,}5 + 31}{31} = 12{,}5$ : يزيد المعدّل نقطة.",
+        "incorrect": "كل علامة تزيد 1 فيزيد المعدّل 1."
+      },
+      "difficulty": 5
+    }
+  ]
+}

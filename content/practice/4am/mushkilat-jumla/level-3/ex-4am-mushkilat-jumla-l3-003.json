@@ -1,0 +1,113 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l3-003",
+  "lessonCode": "mushkilat-jumla",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 26 (ص 63) — أمين وحمزة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ترييض",
+      "أعمار"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-26",
+      "page": 63,
+      "section": "أتعمّق",
+      "number": 26
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 63): اليوم، مجموع عمرَيْ أمين وحمزة هو 34 سنة. بعد 4 سنوات، يصير عمر أمين ضعف عمر حمزة. نسمّي $x$ عمر أمين و $y$ عمر حمزة اليوم."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعلومة «بعد 4 سنوات، يصير عمر أمين ضعف عمر حمزة» تُترجم بـ:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x + 4 = 2y + 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
+        },
+        {
+          "id": "B",
+          "content": "$2(x + 4) = y + 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$x + 4 = 2(y + 4)$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد 4 سنوات، كم يصير عمر كل واحد؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل واحد يكبر بـ 4."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "«الضعف» يخصّ عمر حمزة كله بعد 4 سنوات."
+        }
+      ],
+      "feedback": {
+        "correct": "عمر أمين بعد 4 سنوات ضعف عمر حمزة بعد 4 سنوات.",
+        "incorrect": "حمزة يكبر أيضا: الضعف يخصّ $y + 4$ كله."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العمران: اكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "24",
+        "y": "10"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من المعادلة الثانية $x = 2y + 4$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض في $x + y = 34$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحصل على $3y = 30$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 10$ و $x = 24$ ؛ بعد 4 سنوات $28 = 2 \\times 14$ .",
+        "incorrect": "أكمل حتى الثنائية."
+      }
+    }
+  ]
+}

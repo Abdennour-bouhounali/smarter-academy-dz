@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-tarrid-khatti-l4-001",
+  "lessonCode": "tarrid-khatti",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 29 (ص 75) — زيادة ثم تخفيض",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نسبة مئوية",
+      "دالة خطية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-29",
+      "page": 75,
+      "section": "أتعمّق",
+      "number": 29
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 75): سعر منتوج $x$ دينار، بعد زيادة بـ $t\\%$ متبوعة بتخفيض بالنسبة نفسها أصبح $y$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عبارة $y$ بدلالة $x$ و $t$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$y = x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-TATABU-JAM"
+        },
+        {
+          "id": "B",
+          "content": "$y = \\left(1 - \\dfrac{t^2}{10000}\\right)x$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$y = \\left(1 + \\dfrac{2t}{100}\\right)x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-TATABU-JAM"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "زيادة: نضرب في $1 + \\dfrac{t}{100}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تخفيض: نضرب في $1 - \\dfrac{t}{100}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انشر الجداء."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\left(1 + \\dfrac{t}{100}\\right)\\left(1 - \\dfrac{t}{100}\\right) = 1 - \\dfrac{t^2}{10000}$ .",
+        "incorrect": "التخفيض على السعر بعد الزيادة: لا يلغيها."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "من أجل $x = 5000$ و $t = 10$ ، ما قيمة $y$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "4950",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$1 - \\dfrac{100}{10000} = 0{,}99$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$0{,}99 \\times 5000$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أصغر من 5000."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 0{,}99 \\times 5000 = 4950$ DA.",
+        "incorrect": "المعامل $0{,}99$ لا 1."
+      }
+    }
+  ]
+}

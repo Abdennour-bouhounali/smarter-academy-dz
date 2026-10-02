@@ -1,0 +1,69 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l3-010",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — الفئة الوسيطية لمدة المشاهدة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "فئة وسيطية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mada-wasit-mutawassit_P3",
+      "modelledOn": "know-4"
+    }
+  },
+  "statement": {
+    "content": "مدّة مشاهدة الفيديوهات القصيرة (بالدقائق) يوم الأحد لـ 25 تلميذًا: $0 \\le t < 10$ (6)، $10 \\le t < 20$ (9)، $20 \\le t < 30$ (7)، $30 \\le t \\le 40$ (3)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الفئة الوسيطية هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$0 \\le t < 10$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$10 \\le t < 20$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$20 \\le t < 30$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-QIMA-WUSTA-JADWAL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$N = 25$ : الرتبة $13$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المجمّع الصاعد $6$ ، $15$ …"
+        }
+      ],
+      "feedback": {
+        "correct": "الرتبة $13$ بين $7$ و $15$ : الفئة الثانية.",
+        "incorrect": "استعمل التكرارات المجمعة الصاعدة."
+      }
+    }
+  ]
+}

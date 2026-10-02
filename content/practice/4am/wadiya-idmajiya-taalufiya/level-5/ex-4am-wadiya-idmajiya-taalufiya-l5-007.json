@@ -1,0 +1,161 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l5-007",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 5,
+  "metadata": {
+    "title": "توصيل في حدود الميزانية",
+    "estimatedMinutes": 6,
+    "tags": [
+      "تناسب التغيّرات",
+      "العدد الذي صورته",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "خدمة توصيل: 250 DA لمسافة 5 km و 460 DA لمسافة 12 km، والثمن دالة تآلفية للمسافة $x$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الدستور:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$f(x) = 30x + 100$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$f(x) = 50x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-KHATTIYA-KHALT"
+        },
+        {
+          "id": "C",
+          "content": "$f(x) = 210x + 250$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-BIDUN-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{460 - 250}{12 - 5}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a = 30$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$b = 250 - 150$."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = 30$ و $b = 100$.",
+        "incorrect": "تناسب التغيّرات ثم $b$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5
+    },
+    {
+      "id": "q2",
+      "statement": "بـ 700 DA، أبعد مسافة (km):",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "20",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$30x + 100 = 700$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$30x = 600$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العدد الذي صورته 700."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 20$ km.",
+        "incorrect": "نحلّ $ax + b = m$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "70/3",
+          "id": "MISC-TAALUFI-SABIQ-QISMA"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "بـ 600 DA، أبعد مسافة بعدد طبيعي من الكيلومترات:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "16",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$30x + 100 \\leq 600$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x \\leq 16{,}6\\ldots$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ندوّر نحو الأسفل."
+        }
+      ],
+      "feedback": {
+        "correct": "16 km ($30 \\times 16 + 100 = 580$).",
+        "incorrect": "لا نتجاوز المبلغ: ندوّر نحو الأسفل."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "17",
+          "id": "MISC-TARRID-TAFSIR"
+        }
+      ]
+    }
+  ]
+}

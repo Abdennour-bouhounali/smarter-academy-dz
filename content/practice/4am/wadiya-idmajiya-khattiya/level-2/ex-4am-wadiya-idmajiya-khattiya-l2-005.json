@@ -1,0 +1,119 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l2-005",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 2,
+  "metadata": {
+    "title": "مدة صعود مصعد هوائي",
+    "estimatedMinutes": 3,
+    "tags": [
+      "سرعة متوسطة",
+      "وحدات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "حبل مصعد هوائي طوله $1300\\,\\mathrm{m}$ ، وسرعة المصعد $5\\,\\mathrm{m/s}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما مدة صعود واحد بالثواني؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالثواني",
+      "expectedAnswer": "260",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المدة = المسافة ÷ السرعة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المسافة بالمتر والسرعة بالمتر في الثانية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم 1300 على 5."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{1300}{5} = 260\\,\\mathrm{s}$.",
+        "incorrect": "المدة هي المسافة مقسومة على السرعة، لا جداؤهما."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1,
+      "misconceptionSignatures": [
+        {
+          "value": "6500",
+          "id": "MISC-MAQADIR-QISMA-MAQLUBA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "هذه المدة بالدقائق والثواني هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "4 دقائق و 20 ثانية",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "2 دقيقة و 60 ثانية",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQADIR-WIHDA"
+        },
+        {
+          "id": "C",
+          "content": "26 دقيقة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQADIR-WIHDA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الدقيقة 60 ثانية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كم مرة 60 في 260؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب 260 على الشكل $60 \\times q + r$."
+        }
+      ],
+      "feedback": {
+        "correct": "$260 = 4 \\times 60 + 20$.",
+        "incorrect": "الدقيقة 60 ثانية لا 100."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    }
+  ]
+}

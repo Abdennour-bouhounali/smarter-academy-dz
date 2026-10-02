@@ -1,0 +1,107 @@
+{
+  "id": "ex-4am-tamthil-bayani-taalufi-l5-010",
+  "lessonCode": "tamthil-bayani-taalufi",
+  "level": 5,
+  "metadata": {
+    "title": "نقطة بعيدة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "رسم",
+      "قراءة بيانية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-taalufi_P1"
+    }
+  },
+  "statement": {
+    "content": "المستقيم $(D)$ هو التمثيل البياني لدالة تآلفية $f$ ، ويشمل النقطتين $(0 ; -1)$ و $(2 ; 3)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل النقطة $(5 ; 9)$ تنتمي إلى التمثيل البياني؟",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-NISYAN-B"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نقطة من التمثيل ترتيبها صورة فاصلتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب صورة $5$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن الصورة بترتيب النقطة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(5) = 9$ وهو ترتيبها: تنتمي.",
+        "incorrect": "احسب صورة الفاصلة وقارنها بالترتيب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "النقطة التي يقطع فيها $(D)$ محور الفواصل:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "1/2",
+        "y": "0"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد الذي صورته معلومة هو فاصلة النقطة من المستقيم التي ترتيبها هذه الصورة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب عبارة الدالة، ثم حلّ $ax + b = m$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح $b$ أولًا ثم اقسم على $a$ ، وتحقّق بحساب الصورة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(x) = 2x - 1$ : النقطة $(0{,}5 ; 0)$ .",
+        "incorrect": "الفاصلة أولًا ثم الترتيب، والنقطة يجب أن تحقّق $y = f(x)$ ."
+      }
+    }
+  ]
+}

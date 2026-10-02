@@ -1,0 +1,113 @@
+{
+  "id": "ex-4am-hall-jabri-l1-006",
+  "lessonCode": "hall-jabri",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — عوّض في المعادلة الأخرى",
+    "estimatedMinutes": 4,
+    "tags": [
+      "التعويض"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hall-jabri_P1",
+      "modelledOn": "method-example"
+    }
+  },
+  "statement": {
+    "content": "نحلّ الجملة $\\begin{cases} x = y + 3 \\\\ 2x + y = 12 \\end{cases}$ بطريقة التعويض."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بتعويض $x$ بالعبارة $y + 3$ في المعادلة الثانية نجد:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2(y + 3) + y = 12$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$2y + 3 + y = 12$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NASHR-HAD-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$(y + 3) - y = 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAWID-NAFS-MUADALA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن مجهول معامله $1$ أو $-1$ في إحدى المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عبّر عنه بدلالة المجهول الآخر، ثم عوّضه في المعادلة الأخرى."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
+        }
+      ],
+      "feedback": {
+        "correct": "كل $x$ يصير $(y + 3)$ ، و 2 يُضرب في الحدّين: $2y + 6 + y = 12$ أي $3y = 6$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "5",
+        "y": "2"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن مجهول معامله $1$ أو $-1$ في إحدى المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عبّر عنه بدلالة المجهول الآخر، ثم عوّضه في المعادلة الأخرى."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
+        }
+      ],
+      "feedback": {
+        "correct": "$3y = 6$ ، ومنه $y = 2$ ثم $x = 2 + 3 = 5$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

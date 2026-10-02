@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tarrid-khatti-l2-002",
+  "lessonCode": "tarrid-khatti",
+  "level": 2,
+  "metadata": {
+    "title": "تحدّ (ص 65) — المركبة B",
+    "estimatedMinutes": 3,
+    "tags": [
+      "سرعة متوسطة",
+      "تمثيل بياني"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "challenge",
+      "page": 65,
+      "section": "تحدّ"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 65): تمثيل المسافة التي قطعتها المركبة B بدلالة المدة مستقيم يشمل المبدأ والنقطتين $(2 ; 150)$ و $(4 ; 300)$ (المدة بالساعة، المسافة بالكيلومتر)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما السرعة المتوسطة للمركبة B (km/h)؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "75",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "السرعة = المسافة ÷ المدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{300}{4}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هي معامل التناسبية."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{300}{4} = 75$ km/h ، و $d = 75t$ .",
+        "incorrect": "قسّم المسافة على المدة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حركة المركبة B:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "سرعتها تتغيّر وتتوقّف",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "id": "B",
+          "content": "سرعتها ثابتة: 75km/h",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "ترجع إلى الوراء بعد ساعتين",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التمثيل مستقيم يشمل المبدأ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المسافة متناسبة مع المدة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في كل ساعة 75km."
+        }
+      ],
+      "feedback": {
+        "correct": "مستقيم يشمل المبدأ: المسافة متناسبة مع المدة، والسرعة ثابتة.",
+        "incorrect": "المستقيم لا ينكسر: السرعة لا تتغيّر."
+      }
+    }
+  ]
+}

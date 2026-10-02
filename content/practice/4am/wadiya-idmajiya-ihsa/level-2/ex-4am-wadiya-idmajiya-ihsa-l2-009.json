@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l2-009",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 2,
+  "metadata": {
+    "title": "أيّ مؤشر؟ حرارة المدينة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مدى",
+      "اختيار مؤشر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P2"
+    }
+  },
+  "statement": {
+    "content": "سجّلت محطة أرصاد درجات الحرارة القصوى خلال أسبوع في مدينتين لهما المتوسط نفسه."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لمعرفة أيّ المدينتين تتغيّر حرارتها أكثر خلال الأسبوع نقارن:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "مدى كل سلسلة",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "متوسط كل سلسلة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUQARANA-MUTAWASSIT-FAQAT"
+        },
+        {
+          "id": "C",
+          "content": "أكبر درجة حرارة فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MADA-AKBAR-QIMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التغيّر يعني التشتت."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المتوسطان متساويان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المؤشر الذي يقيس التشتت."
+        }
+      ],
+      "feedback": {
+        "correct": "المدى يقيس التشتت؛ المتوسطان متساويان فلا يفرّقان.",
+        "incorrect": "المتوسط وحده لا يقيس التشتت."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 2
+    }
+  ]
+}

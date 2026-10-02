@@ -1,0 +1,148 @@
+{
+  "id": "ex-4am-dala-khattiya-l3-002",
+  "lessonCode": "dala-khattiya",
+  "level": 3,
+  "metadata": {
+    "title": "نشاط 1 — تخفيضات العيد",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تعيين",
+      "نسبة مئوية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-1",
+      "page": 66,
+      "section": "أنشطة",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 66، بعد تصحيح خطأ مطبعي: 20%): قرر تاجر تخفيض ثمن سلعه بـ 20% بمناسبة عيد الفطر. $x$ السعر قبل التخفيض و $f(x)$ السعر بعده."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "معامل الدالة الخطية $f$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "0.8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد تخفيض نسبة من السعر يبقى جزء منه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسبة المئوية الباقية من السعر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعامل هو هذه النسبة مكتوبة عددًا عشريًا."
+        }
+      ],
+      "feedback": {
+        "correct": "يبقى $80\\%$ من السعر: $a = 1 - 0{,}2 = 0{,}8$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAKHFID-NISBA",
+          "value": "0.2"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $f(120)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "96",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد بدالة خطية تُقرأ على دستورها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بالعدد المعطى في الدستور."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب الجداء، وانتبه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(120) = 0{,}8 \\times 120 = 96$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-SURA-SABIQ",
+          "value": "150"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "عيّن العدد الذي صورته $6$ بالدالة $f$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "7.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المطلوب هنا عدد علمت صورته، لا صورة عدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعادلة $ax = $ الصورة المعطاة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم طرفي المعادلة على المعامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}8 \\times x = 6$ ، إذن $x = 6 \\div 0{,}8 = 7{,}5$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-SURA-SABIQ",
+          "value": "4.8"
+        }
+      ]
+    }
+  ]
+}

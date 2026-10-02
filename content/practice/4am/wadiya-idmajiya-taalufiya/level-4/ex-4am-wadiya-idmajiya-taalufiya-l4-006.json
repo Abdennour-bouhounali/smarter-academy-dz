@@ -1,0 +1,154 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l4-006",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 4,
+  "metadata": {
+    "title": "بطارية الدراجة الكهربائية",
+    "estimatedMinutes": 5,
+    "tags": [
+      "دالة متناقصة",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "بطارية دراجة كهربائية مشحونة 100%. بعد 20 دقيقة بقي 84% ، وبعد 45 دقيقة بقي 64%. نسبة الشحن دالة تآلفية لعدد الدقائق $x$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعامل $a$ (كم تنقص النسبة في الدقيقة، بالإشارة):",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (كسر أو عشري)",
+      "expectedAnswer": "-4/5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{64 - 84}{45 - 20}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{-20}{25}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعامل سالب."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = -\\dfrac{4}{5} = -0{,}8$.",
+        "incorrect": "الشحن ينقص: المعامل سالب."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "4/5",
+          "id": "MISC-BAYANI-ISHARA-A"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "بعد كم دقيقة تفرغ البطارية؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد الدقائق",
+      "expectedAnswer": "125",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$-0{,}8x + 100 = 0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x = \\dfrac{100}{0{,}8}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العدد الذي صورته 0."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 125$ دقيقة.",
+        "incorrect": "نحلّ $f(x) = 0$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    },
+    {
+      "id": "q3",
+      "statement": "هذه المدة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "ساعتان و 5 دقائق",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "ساعة و 25 دقيقة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "id": "C",
+          "content": "ساعتان و 50 دقيقة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الساعة 60 دقيقة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$125 = 2 \\times 60 + 5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حوّل."
+        }
+      ],
+      "feedback": {
+        "correct": "$125 = 120 + 5$ : ساعتان و 5 دقائق.",
+        "incorrect": "الساعة 60 دقيقة لا 100."
+      },
+      "cognitiveDemand": "transfer",
+      "difficulty": 4
+    }
+  ]
+}

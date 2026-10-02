@@ -1,0 +1,57 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l3-008",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — حاصل لدالة معلومة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تناسب التغيرات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "$f$ الدالة التآلفية حيث $f(x) = -2x + 5$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $\\dfrac{f(7) - f(3)}{7 - 3}$ دون حساب الصورتين إن أمكن.",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "-2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما معامل $x$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تناسب التغيّرات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يمكنك التحقّق: $f(7) = -9$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "الحاصل هو المعامل: $-2$ (تحقّق: $\\dfrac{-9 - (-1)}{4} = -2$).",
+        "incorrect": "الحاصل هو معامل $x$ ."
+      }
+    }
+  ]
+}

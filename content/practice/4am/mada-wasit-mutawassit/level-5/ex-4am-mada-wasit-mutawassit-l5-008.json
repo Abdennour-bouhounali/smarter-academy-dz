@@ -1,0 +1,53 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l5-008",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — تكرار مجهول",
+    "estimatedMinutes": 5,
+    "tags": [
+      "متوسط متوازن"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mada-wasit-mutawassit_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "في سلسلة: القيمة $10$ تكرارها $3$ ، والقيمة $20$ تكرارها $n$ ، ومتوسط السلسلة $15$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "التكرار $n$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{10 \\times 3 + 20n}{3 + n} = 15$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$30 + 20n = 45 + 15n$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$5n = 15$ ومنه $n = 3$ .",
+        "incorrect": "اكتب المعادلة ثم حلّها."
+      }
+    }
+  ]
+}

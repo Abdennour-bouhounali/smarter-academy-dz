@@ -1,0 +1,92 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l3-005",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — جدول بثلاثة أعمدة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تناسب التغيرات",
+      "جدول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "$f$ دالة تآلفية: $\\begin{array}{|c|c|c|c|} \\hline x & 1 & 3 & 7 \\\\ \\hline f(x) & 5 & 11 & \\ldots \\\\ \\hline \\end{array}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعامل $a$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العمودان الأولان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{11 - 5}{3 - 1}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تناسب التغيّرات."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{6}{2} = 3$ .",
+        "incorrect": "استعمل العمودين المعلومين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العدد الناقص $f(7)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "23",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من 3 إلى 7 نزيد 4 ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الصورة تزيد $4a$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$f(7) = f(3) + 4a$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(7) = 11 + 3 \\times 4 = 23$ .",
+        "incorrect": "تغيّر الصورة يساوي $a$ ضرب تغيّر العدد."
+      }
+    }
+  ]
+}

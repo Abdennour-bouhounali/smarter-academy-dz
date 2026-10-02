@@ -1,0 +1,99 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l2-007",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 15 (ص 99) — زاويتا الورق والزجاج",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مخطط دائري",
+      "زاوية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-15",
+      "page": 99,
+      "section": "أوظّف تعلّماتي",
+      "number": 15
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 99): نفايات جُمعت على شاطئ: البلاستيك $60\\,\\mathrm{kg}$ ، الزجاج $40\\,\\mathrm{kg}$ ، الورق $50\\,\\mathrm{kg}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "زاوية قطاع الورق (بالدرجات):",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "120",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-NISBA-MIN-ADAD",
+          "value": "180"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الكتلة الكلية 150."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{50}{150} = \\dfrac{1}{3}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثلث الدائرة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{50}{150} \\times 360 = 120$ .",
+        "incorrect": "الحصة من 150 ثم × 360."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "زاوية قطاع الزجاج (بالدرجات):",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "96",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{40}{150}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب في 360."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق: المجموع 360."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{40}{150} \\times 360 = 96$ ، و $144 + 120 + 96 = 360$ .",
+        "incorrect": "الحصة من 150 ثم × 360."
+      }
+    }
+  ]
+}

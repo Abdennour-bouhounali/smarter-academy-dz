@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tamthil-bayani-taalufi-l3-003",
+  "lessonCode": "tamthil-bayani-taalufi",
+  "level": 3,
+  "metadata": {
+    "title": "أربع وحدات إلى اليمين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معامل التوجيه"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-taalufi_P2"
+    }
+  },
+  "statement": {
+    "content": "المستقيم $(D)$ هو التمثيل البياني لدالة تآلفية $f$ ، ويشمل النقطتين $(0 ; -2)$ و $(4 ; 1)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "معامل التوجيه $a$ للمستقيم:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "expectedAnswer": "3/4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل التوجيه $a$ هو ما يصعده المستقيم (أو ينزله) عندما نتقدّم وحدة واحدة إلى اليمين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خذ نقطتين من المستقيم: كم تغيّر الترتيب؟ وكم تغيّرت الفاصلة؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم تغيّر الترتيب على تغيّر الفاصلة، بالإشارة: ينزل ⇒ $a < 0$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "من $(0 ; -2)$ إلى $(4 ; 1)$ : $a = \\dfrac{1 - (-2)}{4 - (0)} = 0{,}75$ .",
+        "incorrect": "اقسم تغيّر الترتيب على تغيّر الفاصلة، لا العكس، وانتبه إلى الإشارة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بقراءة بيانية، عبارة الدالة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$f(x) = 0{,}75x - 2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$f(x) = \\dfrac{4}{3}x - 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-MUAMIL-MAQLUB"
+        },
+        {
+          "id": "C",
+          "content": "$f(x) = 0{,}75x + 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-B-FASILA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ $b$ أولًا: أين يقطع المستقيم محور التراتيب؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم اقرأ $a$ : كم يصعد المستقيم (أو ينزل) لكل وحدة إلى اليمين؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق: كل نقطة معطاة ترتيبها صورة فاصلتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = -2$ و $a = 0{,}75$ : $f(x) = 0{,}75x - 2$ .",
+        "incorrect": "$b$ يُقرأ على محور التراتيب، و $a$ تغيّر الترتيب لوحدة واحدة إلى اليمين."
+      }
+    }
+  ]
+}

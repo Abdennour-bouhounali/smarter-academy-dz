@@ -1,0 +1,81 @@
+{
+  "id": "ex-4am-mafhum-jumla-l5-006",
+  "lessonCode": "mafhum-jumla",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — قطع وجواهر",
+    "estimatedMinutes": 5,
+    "tags": [
+      "ألعاب",
+      "حل الجملة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mafhum-jumla_P2",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "في لعبة جمعت لينة 50 مكافأة: $x$ قطعة ذهبية تساوي نقطتين و $y$ جوهرة تساوي 5 نقاط، ومجموع نقاطها 160: $\\begin{cases} x + y = 50 \\\\ 2x + 5y = 160 \\end{cases}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ ثنائية هي حل الجملة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(20 ; 30)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARTIB"
+        },
+        {
+          "id": "B",
+          "content": "$(25 ; 22)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "C",
+          "content": "$(30 ; 20)$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$(35 ; 15)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحل يحقّق عدد المكافآت والنقاط معًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "لكل ثنائية: $x + y$ ثم $2x + 5y$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استبعد ما لا يعطي 50 أو لا يعطي 160."
+        }
+      ],
+      "feedback": {
+        "correct": "$30 + 20 = 50$ و $60 + 100 = 160$ : $(30 ; 20)$ .",
+        "incorrect": "$(25 ; 22)$ تعطي 160 نقطة لكن 47 مكافأة؛ $(20 ; 30)$ و $(35 ; 15)$ تعطيان 50 مكافأة لكن نقاطًا أخرى."
+      }
+    }
+  ]
+}

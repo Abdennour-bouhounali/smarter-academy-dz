@@ -1,0 +1,128 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l1-008",
+  "lessonCode": "mushkilat-jumla",
+  "level": 1,
+  "metadata": {
+    "title": "تمرين 20 (ص 61) — الأرانب والدجاج",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترييض",
+      "ترجمة",
+      "مزرعة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-20",
+      "page": 61,
+      "section": "أوظّف تعلّماتي",
+      "number": 20
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 61): يريد فلّاح أن يعرف عدد الأرانب وعدد الدجاج في مزرعته. عندما عدّ الرؤوس، وجد 36 رأسا. عندما عدّ السيقان، وجد 90 ساقا. نسمّي $x$ عدد الأرانب و $y$ عدد الدجاج."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعلومة «36 رأسا» تُترجم بـ:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x + y = 36$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$4x + 2y = 36$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$2x + 4y = 36$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كم رأسا لكل حيوان؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "لكل أرنب رأس واحد ولكل دجاجة رأس واحد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عدد الرؤوس هو عدد الحيوانات."
+        }
+      ],
+      "feedback": {
+        "correct": "لكل حيوان رأس واحد: $x + y = 36$ .",
+        "incorrect": "السيقان لا تدخل في عدّ الرؤوس."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "المعلومة «90 ساقا» تُترجم بـ:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2x + 4y = 90$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$x + y = 90$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$4x + 2y = 90$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كم ساقا للأرنب؟ وكم للدجاجة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x$ عدد الأرانب: كل أرنب له 4 سيقان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "السيقان كلها = سيقان الأرانب + سيقان الدجاج."
+        }
+      ],
+      "feedback": {
+        "correct": "للأرنب 4 سيقان وللدجاجة ساقان.",
+        "incorrect": "انتبه إلى أيّ حرف يمثّل الأرانب."
+      }
+    }
+  ]
+}

@@ -137,7 +137,15 @@ function buildDzCourseLevels() {
   // lui-même le jour où une leçon de lessons_4am_2026_2027.json le nomme.
   // `order` reste la position dans le programme, pas dans cette liste.
   const topicTitleOf = new Map(programme4am.domains.flatMap((d) => d.topics.map((t) => [t.id, t.titleAr])));
-  const chapters = programme4am.domains.map((domain, index) => ({
+  // Les ميادين d'AFFICHAGE décidés par le propriétaire (units_4am › ownerChapters,
+  // unité 6 « الدالة الخطية والتناسبية » sous « ميدان التناسبية والدوال », 2026-10-02) :
+  // rangés APRÈS les domaines du programme, sans aucun sujet officiel — le programme
+  // reste une transcription intouchée, et chaque unité qui s'y range déclare son
+  // domaine de programme (`placement`).
+  const ownerDomains = (units4am.ownerChapters ?? []).map((c) => ({
+    id: c.id, titleAr: c.titleAr, subtitleAr: c.subtitleAr, topics: [],
+  }));
+  const chapters = [...programme4am.domains, ...ownerDomains].map((domain, index) => ({
     id: domain.id,
     title: domain.titleAr,
     subtitle: domain.subtitleAr,

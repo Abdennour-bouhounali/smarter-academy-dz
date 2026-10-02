@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l2-005",
+  "lessonCode": "mushkilat-jumla",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — حصّالة نزيم",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ترييض",
+      "قطع نقدية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P2",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "في حصّالة نزيم 50 قطعة نقدية من فئتي 10DA و 20DA، ومجموعها 700DA. نسمّي $x$ عدد قطع 10DA و $y$ عدد قطع 20DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم المشكلة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 50 \\\\ 20x + 10y = 700 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 50 \\\\ 10x + 20y = 700 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} 10x + 20y = 50 \\\\ x + y = 700 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x$ عدد قطع أيّ فئة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قطعة 10DA تساوي 10."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المبلغ: قيمة قطع 10DA زائد قيمة قطع 20DA."
+        }
+      ],
+      "feedback": {
+        "correct": "50 قطعة و 700DA ، و $x$ قطع 10DA .",
+        "incorrect": "انتبه إلى أيّ حرف يمثّل قطع 10DA ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "كم قطعة من كل فئة؟ اكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "30",
+        "y": "20"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقسم المعادلة الثانية على 10."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على $x + 2y = 70$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح منها المعادلة الأولى."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 20$ و $x = 30$ : $300 + 400 = 700$ .",
+        "incorrect": "تحقّق بالعدد وبالمبلغ."
+      }
+    }
+  ]
+}

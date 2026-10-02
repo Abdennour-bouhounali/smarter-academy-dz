@@ -1,0 +1,131 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l4-008",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 4,
+  "metadata": {
+    "title": "عمر رانيا وأبيها",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترجمة",
+      "أعمار"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P2",
+      "modelledOn": "ex-26"
+    }
+  },
+  "statement": {
+    "content": "اليوم مجموع عمري رانيا وأبيها 52 سنة. بعد 6 سنوات يصبح عمر الأب ثلاثة أضعاف عمر رانيا. نسمّي $x$ عمر الأب و $y$ عمر رانيا اليوم."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعلومة «بعد 6 سنوات يصبح عمر الأب ثلاثة أضعاف عمر رانيا» تُترجم بـ:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x + 6 = 3y$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$x = 3(y + 6)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$x + 6 = 3y + 6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "D",
+          "content": "$x + 6 = 3(y + 6)$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد 6 سنوات يكبر كلّ منهما بـ 6."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عمر الأب يصبح $x + 6$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "وعمر رانيا يصبح $y + 6$."
+        }
+      ],
+      "feedback": {
+        "correct": "بعد 6 سنوات: $x + 6 = 3(y + 6)$.",
+        "incorrect": "كلاهما يكبر بـ 6 سنوات."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "ما العمران $(x ; y)$ اليوم؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان طبيعيان",
+      "expectedAnswer": {
+        "x": "42",
+        "y": "10"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجملة $x + y = 52$ و $x - 3y = 12$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح المعادلتين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقق بعد 6 سنوات."
+        }
+      ],
+      "feedback": {
+        "correct": "$4y = 40$ ، $y = 10$ ، $x = 42$ ؛ وبعد 6 سنوات $48 = 3 \\times 16$.",
+        "incorrect": "انشر ثم بسّط قبل الحل."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "10",
+            "y": "42"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    }
+  ]
+}

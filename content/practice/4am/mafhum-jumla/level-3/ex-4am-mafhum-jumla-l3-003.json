@@ -1,0 +1,73 @@
+{
+  "id": "ex-4am-mafhum-jumla-l3-003",
+  "lessonCode": "mafhum-jumla",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 3 — 1) حلّان لمعادلة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "حلول معادلة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-3",
+      "page": 60,
+      "section": "أوظّف تعلّماتي",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 60): اذكر حلين مختلفين للمعادلة $4x + 2y = 5$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ ثنائيتين حلّان مختلفان للمعادلة $4x + 2y = 5$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(0 ; 2{,}5)$ و $(1 ; 1)$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$(0 ; 2{,}5)$ و $(1 ; 0{,}5)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(1 ; 0{,}5)$ و $(2 ; 0)$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض كل ثنائية في $4x + 2y$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "من أجل $x = 0$ : $2y = 5$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "السطر الصحيح: الثنائيتان تعطيان 5 كلتاهما."
+        }
+      ],
+      "feedback": {
+        "correct": "$2 \\times 2{,}5 = 5$ و $4 + 2 \\times 0{,}5 = 5$ .",
+        "incorrect": "$(1 ; 1)$ تعطي 6 و $(2 ; 0)$ تعطي 8."
+      }
+    }
+  ]
+}

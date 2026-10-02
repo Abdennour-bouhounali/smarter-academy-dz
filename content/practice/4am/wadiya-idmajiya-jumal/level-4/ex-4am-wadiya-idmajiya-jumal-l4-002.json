@@ -1,0 +1,106 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l4-002",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 4,
+  "metadata": {
+    "title": "بطاقة الإخلاص — كم وفّر؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تخفيض",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P1",
+      "modelledOn": "ex-31"
+    }
+  },
+  "statement": {
+    "content": "في المتجر نفسه: سعر علبة الحليب 90 DA وسعر قارورة العصير 180 DA. يستفيد صاحب بطاقة الإخلاص من تخفيض 20% على كل مشترياته."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم يدفع صاحب البطاقة مقابل 4 علب حليب و 3 قارورات عصير؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "مبلغ بالدينار",
+      "expectedAnswer": "720",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب الثمن قبل التخفيض."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$4 \\times 90 + 3 \\times 180$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب في 0,8."
+        }
+      ],
+      "feedback": {
+        "correct": "$(360 + 540) \\times 0{,}8 = 900 \\times 0{,}8 = 720$ DA.",
+        "incorrect": "الثمن قبل التخفيض ثم نضرب في النسبة المدفوعة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "180",
+          "id": "MISC-TAKHFID-NISBA"
+        },
+        {
+          "value": "900",
+          "id": "MISC-TAKHFID-NISBA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "كم يوفّر بفضل البطاقة في هذه المشتريات؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "مبلغ بالدينار",
+      "expectedAnswer": "180",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الفرق بين الثمنين قبل التخفيض وبعده."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أو 20% من الثمن قبل التخفيض."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$0{,}2 \\times$ الثمن قبل التخفيض."
+        }
+      ],
+      "feedback": {
+        "correct": "$900 - 720 = 180$ DA ، أي $0{,}2 \\times 900$.",
+        "incorrect": "التوفير هو مقدار التخفيض."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ]
+}

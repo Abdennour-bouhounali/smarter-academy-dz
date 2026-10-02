@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l5-007",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — الفئة الوسيطية في مدرّج",
+    "estimatedMinutes": 3,
+    "tags": [
+      "فئات",
+      "مدرّج تكراري"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_majdulat-ihsaiya_P3",
+      "modelledOn": "ex-16"
+    }
+  },
+  "statement": {
+    "content": "مدرّج تكراري لأوقات النوم (بالساعات) في الفئات $5 \\le t < 7$ ، $7 \\le t < 9$ ، $9 \\le t < 11$ ، ارتفاعات مستطيلاته 5 ، 9 ، 6 ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الفئة التي تشمل الوسيط:",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$9 \\le t < 11$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-RUTBA"
+        },
+        {
+          "id": "B",
+          "content": "$7 \\le t < 9$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$5 \\le t < 7$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-RUTBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ التكرارات من الارتفاعات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التكرار الكلي 20: الرتبتان 10 و 11."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "التكرارات المجمعة 5 ، 14 ، 20 ."
+        }
+      ],
+      "feedback": {
+        "correct": "الرتبتان 10 و 11 ؛ التكرارات المجمعة 5 ، 14 ، 20 : في $7 \\le t < 9$ .",
+        "incorrect": "الوسيط برتبته لا بموضع الفئة."
+      }
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "id": "ex-4am-tanasub-muamil-l1-001",
+  "lessonCode": "tanasub-muamil",
+  "level": 1,
+  "metadata": {
+    "title": "أستعدّ 4 — العدد الناقص",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الرابع المتناسب",
+      "أعداد نسبية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "prep",
+      "page": 65,
+      "section": "أستعدّ",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 65): الجدول الآتي جدول تناسبية. $\\begin{array}{|c|c|c|} \\hline x & -2 & 3 \\\\ \\hline y & 6 & \\ldots \\\\ \\hline \\end{array}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هو العدد الناقص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "-9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجدول جدول تناسبية: نضرب في المعامل، ولا نضيف الفرق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب معامل التناسبية من عمود كامل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب العدد المعلوم في المعامل، أو استعمل تساوي الجداءين المتصالبين."
+        }
+      ],
+      "feedback": {
+        "correct": "المعامل $\\dfrac{6}{-2} = -3$ ، و $3 \\times (-3) = -9$ .",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "11",
+          "id": "MISC-TANASUB-RABI-JAMA"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l1-003",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — تدريج المحور",
+    "estimatedMinutes": 3,
+    "tags": [
+      "قراءة مخطط",
+      "تدريج"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P1",
+      "modelledOn": "ex-19"
+    }
+  },
+  "statement": {
+    "content": "محور مخطط بالأعمدة مدرّج من 50 إلى 50 (0 ، 50 ، 100 …)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عمود يصل إلى التدريجة التاسعة فوق 0: ما التكرار الذي يمثّله؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "450",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-QIRAA-MUKHATTAT",
+          "value": "9"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كم تساوي التدريجة الواحدة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل تدريجة 50."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب عدد التدريجات في 50."
+        }
+      ],
+      "feedback": {
+        "correct": "$9 \\times 50 = 450$ .",
+        "incorrect": "كل تدريجة تساوي 50 وليس 1."
+      },
+      "difficulty": 1
+    }
+  ]
+}

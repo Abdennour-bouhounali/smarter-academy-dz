@@ -1,0 +1,115 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l2-003",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 2,
+  "metadata": {
+    "title": "تذاكر الحفل: جملة معادلتين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جملة معادلتين",
+      "تفسير بياني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "بيعت 30 تذكرة لحفل مدرسي: $x$ تذكرة بـ 100 DA و $y$ تذكرة بـ 200 DA، بمبلغ إجمالي 4000 DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعادلة $100x + 200y = 4000$ تُكتب على الشكل:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$y = -\\dfrac{1}{2}x + 20$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$y = \\dfrac{1}{2}x + 20$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-ISHARA-Y"
+        },
+        {
+          "id": "C",
+          "content": "$y = -2x + 40$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-ISHARA-Y"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انقل $100x$ إلى الطرف الآخر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم على 200."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انتبه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$200y = -100x + 4000$ ومنه $y = -\\dfrac{1}{2}x + 20$.",
+        "incorrect": "نغيّر إشارة الحد المنقول ونقسم كل الحدود على 200."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    },
+    {
+      "id": "q2",
+      "statement": "حلّ الجملة $\\begin{cases} y = -x + 30 \\\\ y = -\\dfrac{1}{2}x + 20 \\end{cases}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y)",
+      "expectedAnswer": {
+        "x": "20",
+        "y": "10"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نقطة تقاطع المستقيمين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$-x + 30 = -\\dfrac{1}{2}x + 20$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم احسب $y$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{1}{2}x = 10$ ، $x = 20$ و $y = 10$ : 20 تذكرة بـ 100 DA و 10 بـ 200 DA.",
+        "incorrect": "الثنائية: الفاصلة أولا ثم الترتيب."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    }
+  ]
+}

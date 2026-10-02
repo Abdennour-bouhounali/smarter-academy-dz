@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-mafhum-taalufiya-l3-001",
+  "lessonCode": "mafhum-taalufiya",
+  "level": 3,
+  "metadata": {
+    "title": "نشاط 1 — من الأجرة إلى الساعات",
+    "estimatedMinutes": 3,
+    "tags": [
+      "عدد صورته معلومة",
+      "الكتاب"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-1",
+      "page": 78,
+      "section": "أنشطة",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 78): أجرة عامل: أجرة قاعدية شهرية قدرها 35000DA، يضاف إليها 185DA لكل ساعة إضافية. نسمّي $x$ عدد الساعات الإضافية و $S(x)$ الأجرة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "تقاضى عامل أجرة 37220DA. كم ساعة إضافية أنجز؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "12",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المطلوب عدد علمت صورته، لا صورة عدد: اكتب المعادلة $ax + b = m$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انقل الحدّ الثابت $b$ إلى الطرف الآخر أولا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اقسم الطرفين على المعامل $a$ ، وتحقّق بحساب صورة ما وجدته."
+        }
+      ],
+      "feedback": {
+        "correct": "$185x + 35000 = 37220$ ، إذن $185x = 2220$ ، ومنه $x = 12$ .",
+        "incorrect": "اطرح $b$ أولا ثم اقسم على $a$ ، وتحقّق بالتعويض."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-SABIQ-QISMA",
+          "value": "7444/37"
+        },
+        {
+          "id": "MISC-TAALUFI-SABIQ-TARTIB",
+          "value": "-1287556/37"
+        },
+        {
+          "id": "MISC-KHATTIYA-SURA-SABIQ",
+          "value": "6920700"
+        }
+      ]
+    }
+  ]
+}

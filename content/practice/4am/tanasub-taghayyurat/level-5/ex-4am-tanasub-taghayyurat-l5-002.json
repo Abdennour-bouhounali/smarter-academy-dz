@@ -1,0 +1,57 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l5-002",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — صورة دون b",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تناسب التغيرات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "$f$ دالة تآلفية معاملها $a = -3$ ، و $f(2) = 5$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $f(10)$ مستعملًا تناسب التغيّرات:",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "-19",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{f(10) - f(2)}{10 - 2} = a$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$f(10) - 5 = -3 \\times 8$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$f(10) = 5 - 24$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(10) = f(2) + a \\times 8 = 5 - 24 = -19$ .",
+        "incorrect": "تغيّر الصورة $= a \\times$ تغيّر العدد."
+      }
+    }
+  ]
+}

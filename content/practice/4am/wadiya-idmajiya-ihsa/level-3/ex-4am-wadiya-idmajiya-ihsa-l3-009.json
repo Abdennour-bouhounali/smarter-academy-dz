@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l3-009",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 3,
+  "metadata": {
+    "title": "متوسط بمراكز الفئات",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متوسط",
+      "فئات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P1"
+    }
+  },
+  "statement": {
+    "content": "مدة التنقل إلى المتوسطة (بالدقائق) لعشرة تلاميذ: الفئة $0 \\leq t < 10$ تكرارها 2 ، الفئة $10 \\leq t < 20$ تكرارها 5 ، الفئة $20 \\leq t \\leq 30$ تكرارها 3."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما المتوسط المقدّر لمدة التنقل (بالدقائق)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "16",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نعوّض كل فئة بمركزها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المراكز 5 و 15 و 25."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم المتوسط المتوازن."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{5 \\times 2 + 15 \\times 5 + 25 \\times 3}{10} = \\dfrac{160}{10} = 16$.",
+        "incorrect": "نستعمل مركز كل فئة لا حدّها الأدنى."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "11",
+          "id": "MISC-IHSA-MARKAZ-FIA"
+        }
+      ]
+    }
+  ]
+}

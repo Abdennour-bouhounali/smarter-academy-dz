@@ -1,0 +1,81 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l1-008",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — مسابقة القسم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متوسط مجموعات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P3",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "في مسابقة القسم: فريق من 4 أصدقاء متوسط نقاطهم 12، وفريق من 6 أصدقاء متوسط نقاطهم 7."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما متوسط نقاط الأصدقاء العشرة؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$9$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$9{,}5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUTAWASSIT-MUTAWASSITAYN"
+        },
+        {
+          "id": "C",
+          "content": "$19$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUTAWASSIT-QISMA-QIYAM"
+        },
+        {
+          "id": "D",
+          "content": "$7$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUTAWASSIT-MUTAWASSITAYN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الفريق الثاني أكبر عددا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مجموع النقاط $4 \\times 12 + 6 \\times 7$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على 10."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{48 + 42}{10} = 9$ ، وليس متوسط المتوسطين $9{,}5$ .",
+        "incorrect": "اضرب كل متوسط في عدد فريقه."
+      },
+      "difficulty": 1
+    }
+  ]
+}

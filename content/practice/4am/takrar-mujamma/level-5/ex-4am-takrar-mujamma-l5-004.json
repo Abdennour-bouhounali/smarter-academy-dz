@@ -1,0 +1,108 @@
+{
+  "id": "ex-4am-takrar-mujamma-l5-004",
+  "lessonCode": "takrar-mujamma",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — جدول نازل",
+    "estimatedMinutes": 4,
+    "tags": [
+      "قراءة جدول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_takrar-mujamma_P3"
+    }
+  },
+  "statement": {
+    "content": "جدول التكرارات المجمعة النازلة لعدد الأهداف في مباريات بطولة ما بين الأقسام: 0 : 24 ، 1 : 18 ، 2 : 9 ، 3 : 4 ، 4 : 1."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عدد المباريات التي سُجّل فيها هدفان بالضبط:",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA",
+          "value": "9"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في جدول التكرار المجمع الصاعد، كل خانة تزيد على السابقة بتكرار قيمتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التكرار = الصاعد للقيمة ناقص الصاعد للقيمة التي قبلها؛ والتكرار الكلي هو آخر صاعد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح الخانتين المتتاليتين، أو استعمل: الصاعد + النازل = التكرار الكلي + تكرار القيمة."
+        }
+      ],
+      "feedback": {
+        "correct": "$9 - 4 = 5$",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "عدد المباريات التي سُجّل فيها هدف واحد على الأكثر:",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "15",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-SARAMA",
+          "value": "6"
+        },
+        {
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB",
+          "value": "18"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في جدول التكرار المجمع الصاعد، كل خانة تزيد على السابقة بتكرار قيمتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التكرار = الصاعد للقيمة ناقص الصاعد للقيمة التي قبلها؛ والتكرار الكلي هو آخر صاعد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح الخانتين المتتاليتين، أو استعمل: الصاعد + النازل = التكرار الكلي + تكرار القيمة."
+        }
+      ],
+      "feedback": {
+        "correct": "الذين سجّلوا هدفين على الأقل 9، والكلي 24: $24 - 9 = 15$ .",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    }
+  ]
+}

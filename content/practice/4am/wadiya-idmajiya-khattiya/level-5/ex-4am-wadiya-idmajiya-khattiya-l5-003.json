@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l5-003",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 5,
+  "metadata": {
+    "title": "ذهاب وإياب",
+    "estimatedMinutes": 6,
+    "tags": [
+      "فيثاغورس",
+      "مدة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P3",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "ينطلق مصعد هوائي من ارتفاع $450\\,\\mathrm{m}$ ليصل ارتفاع $1050\\,\\mathrm{m}$ ، والمسافة الأفقية $800\\,\\mathrm{m}$ ، وسرعته $4\\,\\mathrm{m/s}$ في الصعود والنزول. تتوقّف العائلة دقيقتين في الأعلى."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما طول الحبل بالمتر؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالمتر",
+      "expectedAnswer": "1000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "فرق الارتفاعين $600$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "فيثاغورس بالضلعين 600 و 800."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خذ الجذر التربيعي."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{600^2 + 800^2} = \\sqrt{1\\,000\\,000}$ ، أي 1000 m.",
+        "incorrect": "الوتر من فرق الارتفاعين والمسافة الأفقية."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "1400",
+          "id": "MISC-JIDHR-JAMA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما المدة الكلية للرحلة (صعود وتوقّف ونزول) بالثواني؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالثواني",
+      "expectedAnswer": "620",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مدة صعود واحد: الطول ÷ السرعة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الرحلة صعود ونزول وتوقّف."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الدقيقتان 120 ثانية."
+        }
+      ],
+      "feedback": {
+        "correct": "$2 \\times \\dfrac{1000}{4} + 120 = 500 + 120 = 620\\,\\mathrm{s}$ ، أي 10 دقائق و 20 ثانية.",
+        "incorrect": "لا تنس النزول ولا التوقّف، وحوّل الدقيقتين إلى ثوان."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "250",
+          "id": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "value": "502",
+          "id": "MISC-MAQADIR-WIHDA"
+        }
+      ]
+    }
+  ]
+}

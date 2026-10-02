@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l4-004",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 7 (ص 99) — نغيّر أصغر قيمة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "إعادة الحساب",
+      "مدى"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-7",
+      "page": 99,
+      "section": "أوظّف تعلّماتي",
+      "number": 7
+    }
+  },
+  "statement": {
+    "content": "سلسلة التمرين 7 محجوزة في الخلايا من A1 إلى G1 : 4 ، 10 ، 8 ، 4 ، 3 ، 2 ، 4 . نعوّض القيمة 4 في الخلية G1 بالعدد 1 ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد الذي يُظهره الآن ⁦=MAX(A1:G1)-MIN(A1:G1)⁩ :",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "9",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-DUSTUR-KHATI",
+          "value": "8"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أصغر قيمة صارت 1."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أكبر قيمة 10."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$10 - 1$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "أصغر قيمة صارت 1: $10 - 1 = 9$ .",
+        "incorrect": "أعد قراءة أكبر وأصغر قيمة."
+      }
+    }
+  ]
+}

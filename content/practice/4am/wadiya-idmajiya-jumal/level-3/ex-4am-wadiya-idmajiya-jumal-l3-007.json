@@ -1,0 +1,108 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l3-007",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 3,
+  "metadata": {
+    "title": "حديقة التسلية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "حل جملة",
+      "التحقق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P1",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "استقبلت حديقة التسلية ببن عكنون 90 زائرا في الصباح، تذكرة البالغ 400 DA وتذكرة الطفل 250 DA، وبلغت المداخيل 27 600 DA. نسمّي $x$ عدد البالغين و $y$ عدد الأطفال."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما العددان $(x ; y)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان طبيعيان",
+      "expectedAnswer": {
+        "x": "34",
+        "y": "56"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x + y = 90$ و $400x + 250y = 27600$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$y = 90 - x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقق: عددان طبيعيان."
+        }
+      ],
+      "feedback": {
+        "correct": "$22500 + 150x = 27600$ ، $x = 34$ ، $y = 56$.",
+        "incorrect": "ترجم ثم عوّض وتحقق في النص."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "56",
+            "y": "34"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "كم بلغت مداخيل تذاكر الأطفال وحدها؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "مبلغ بالدينار (عدد طبيعي)",
+      "expectedAnswer": "14000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولا عدد الأطفال."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تذكرة الطفل 250 DA."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب العدد في الثمن."
+        }
+      ],
+      "feedback": {
+        "correct": "$250 \\times 56 = 14000$ DA ، و $400 \\times 34 = 13600$ DA للبالغين.",
+        "incorrect": "احسب عدد الأطفال من الجملة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ]
+}

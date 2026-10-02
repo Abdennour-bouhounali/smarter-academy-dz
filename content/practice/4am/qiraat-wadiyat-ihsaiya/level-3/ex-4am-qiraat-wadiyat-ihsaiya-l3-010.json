@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l3-010",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — مقاسات الأحذية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متوسط",
+      "تكرارات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P2",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "مقاسات أحذية رياضية بيعت في محلّ: المقاس 38 (3 أزواج)، 40 (5 أزواج)، 42 (زوجان)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما متوسط المقاسات المبيعة؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "39,8",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MUTAWASSIT-BILA-TARJIH",
+          "value": "40"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "10 أزواج."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$38 \\times 3 + 40 \\times 5 + 42 \\times 2$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على 10."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{114 + 200 + 84}{10} = 39{,}8$ .",
+        "incorrect": "اضرب كل مقاس في تكراره."
+      },
+      "difficulty": 3
+    }
+  ]
+}

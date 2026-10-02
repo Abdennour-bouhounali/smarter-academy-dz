@@ -1,0 +1,62 @@
+{
+  "id": "ex-4am-mafhum-jumla-l5-002",
+  "lessonCode": "mafhum-jumla",
+  "level": 5,
+  "metadata": {
+    "title": "نشاط 1 — العمّال قبل التقاعد",
+    "estimatedMinutes": 5,
+    "tags": [
+      "قبل وبعد",
+      "حل الجملة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-1",
+      "page": 56,
+      "section": "أنشطة",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 56): يعمل في مصلحة إدارية 32 عاملا. أُحيل 5 رجال و 3 نساء إلى التقاعد ولم يتم تعويضهم، فأصبح عدد النساء بالمصلحة ضعف عدد الرجال. نسمّي $x$ عدد الرجال و $y$ عدد النساء قبل الإحالة على التقاعد: $\\begin{cases} x + y = 32 \\\\ 2x - y = 7 \\end{cases}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هي الثنائية $(x ; y)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية $(x ; y)$ : العدد الأول ثم الثاني (عدد صحيح أو كسر مثل 2/5)",
+      "expectedAnswer": {
+        "x": "13",
+        "y": "19"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع المعادلتين: $x + y + 2x - y = 32 + 7$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "يختفي $y$ ويبقى $3x$ في طرف."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $x$ ثم $y = 32 - x$ ، وتحقّق في النص."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 13$ و $y = 19$ : بعد التقاعد 8 رجال و 16 امرأة، و $16 = 2 \\times 8$ .",
+        "incorrect": "الثنائية: عدد الرجال أولًا."
+      }
+    }
+  ]
+}

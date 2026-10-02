@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-mafhum-taalufiya-l5-009",
+  "lessonCode": "mafhum-taalufiya",
+  "level": 5,
+  "metadata": {
+    "title": "صورة وعدد صورته",
+    "estimatedMinutes": 3,
+    "tags": [
+      "صورة",
+      "عدد صورته معلومة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "$f$ هي الدالة التآلفية حيث $f(x) = 1{,}5x - 4{,}5$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عيّن العدد الذي صورته $-4{,}5$ بالدالة $f$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "0",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المطلوب عدد علمت صورته، لا صورة عدد: اكتب المعادلة $ax + b = m$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انقل الحدّ الثابت $b$ إلى الطرف الآخر أولا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اقسم الطرفين على المعامل $a$ ، وتحقّق بحساب صورة ما وجدته."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}5x - 4{,}5 = -4{,}5$ ، إذن $1{,}5x = 0$ ، ومنه $x = 0$ .",
+        "incorrect": "اطرح $b$ أولا ثم اقسم على $a$ ، وتحقّق بالتعويض."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-SABIQ-QISMA",
+          "value": "-3"
+        },
+        {
+          "id": "MISC-TAALUFI-SABIQ-TARTIB",
+          "value": "1.5"
+        },
+        {
+          "id": "MISC-KHATTIYA-SURA-SABIQ",
+          "value": "-11.25"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $f(3)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "0",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد بدالة تآلفية: نعوّض $x$ بهذا العدد في العبارة $ax + b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب العدد في المعامل $a$ أولا، وانتبه إلى الإشارات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تنسَ أن تضيف الحدّ الثابت $b$ في النهاية."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(3) = 1{,}5 \\times 3 - 4{,}5 = 0$ .",
+        "incorrect": "أعد الحساب: اضرب في $a$ ثم أضف $b$ ، وتحقّق من الإشارات."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-NISYAN-B",
+          "value": "4.5"
+        }
+      ]
+    }
+  ]
+}

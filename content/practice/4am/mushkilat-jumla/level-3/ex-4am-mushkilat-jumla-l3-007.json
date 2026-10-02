@@ -1,0 +1,164 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l3-007",
+  "lessonCode": "mushkilat-jumla",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — الترامواي والحافلة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "ترييض",
+      "نقل",
+      "المراحل الخمس"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P2",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "تذكرة الترامواي 40 DA وتذكرة الحافلة 25 DA. استعمل كريم خلال شهر 38 تذكرة ودفع 1220 DA. نسمّي $x$ عدد تذاكر الترامواي و $y$ عدد تذاكر الحافلة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم المشكلة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 38 \\\\ 40x + 25y = 1220 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 1220 \\\\ 40x + 25y = 38 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x + y = 38 \\\\ 25x + 40y = 1220 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما الذي يُعدّ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تذكرة الترامواي 40."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المبلغ 1220."
+        }
+      ],
+      "feedback": {
+        "correct": "38 تذكرة و 1220 DA.",
+        "incorrect": "كل عدد مع ثمنه."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة واكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "18",
+        "y": "20"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $y = 38 - x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على $15x + 950 = 1220$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم احسب $y$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 18$ و $y = 20$ : $720 + 500 = 1220$ .",
+        "incorrect": "أكمل حتى الثنائية."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "الجملة التي تجيب عن السؤال هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "استعمل كريم 18 تذكرة ترامواي و 20 تذكرة حافلة.",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "استعمل كريم 20 تذكرة ترامواي و 18 تذكرة حافلة.",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARTIB"
+        },
+        {
+          "id": "C",
+          "content": "استعمل كريم 18 تذكرة.",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-NISF-HALL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x$ تذاكر الترامواي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الترتيب في الثنائية مهم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الجواب يذكر العددين."
+        }
+      ],
+      "feedback": {
+        "correct": "$18 + 20 = 38$ و $720 + 500 = 1220$ .",
+        "incorrect": "اقرأ الثنائية بترتيبها."
+      }
+    }
+  ]
+}

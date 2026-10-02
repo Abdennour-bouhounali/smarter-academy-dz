@@ -1,0 +1,141 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l5-006",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 5,
+  "metadata": {
+    "title": "رحلة بخمسين مشاركا",
+    "estimatedMinutes": 6,
+    "tags": [
+      "جملة معادلتين",
+      "صورة",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "ركب الحافلة 50 شخصا: $x$ تلميذا ساهم كل منهم بـ 300 DA و $y$ مرافقا ساهم كل منهم بـ 450 DA ، فجُمع 16200 DA. الناقل يطلب 6000 DA ثابتة و 140 DA للتلميذ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$(x ; y)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y)",
+      "expectedAnswer": {
+        "x": "42",
+        "y": "8"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$y = -x + 50$ و $y = -\\dfrac{2}{3}x + 36$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{1}{3}x = 14$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم $y$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 42$ و $y = 8$.",
+        "incorrect": "نقطة التقاطع."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5
+    },
+    {
+      "id": "q2",
+      "statement": "ثمن الحافلة:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار",
+      "expectedAnswer": "11880",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$140x + 6000$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x = 42$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "صورة 42."
+        }
+      ],
+      "feedback": {
+        "correct": "$5880 + 6000 = 11880\\,\\mathrm{DA}$.",
+        "incorrect": "نعوّض عدد التلاميذ."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "13000",
+          "id": "MISC-TARRID-TAFSIR"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "المبلغ المتبقّي للنشاطات على الشاطئ:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار",
+      "expectedAnswer": "4320",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$16200 - 11880$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بالدينار."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تفسير."
+        }
+      ],
+      "feedback": {
+        "correct": "$4320\\,\\mathrm{DA}$.",
+        "incorrect": "نطرح ثمن الحافلة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5
+    }
+  ]
+}

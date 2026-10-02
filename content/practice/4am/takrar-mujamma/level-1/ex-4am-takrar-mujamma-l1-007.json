@@ -1,0 +1,67 @@
+{
+  "id": "ex-4am-takrar-mujamma-l1-007",
+  "lessonCode": "takrar-mujamma",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — أهداف المباريات",
+    "estimatedMinutes": 3,
+    "tags": [
+      "على الأكثر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_takrar-mujamma_P1"
+    }
+  },
+  "statement": {
+    "content": "عدد الأهداف التي سجّلها فريق في 20 مباراة (السطر الأول عدد الأهداف، والسطر الثاني عدد المباريات): $\\begin{array}{|c|c|c|c|} \\hline 0 & 1 & 2 & 3 \\\\ \\hline 4 & 9 & 6 & 1 \\\\ \\hline \\end{array}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عدد المباريات التي سجّل فيها الفريق هدفا واحدا على الأكثر:",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "13",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-SARAMA",
+          "value": "4"
+        },
+        {
+          "id": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA",
+          "value": "9"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ الشرط بعناية: هل القيمة الحدّية نفسها محسوبة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "«على الأقل» و«على الأكثر» تشملان الحدّ، و«تفوق» و«أقل من» لا تشملانه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب القيم التي تحقّق الشرط، ثم اجمع تكراراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$4 + 9 = 13$ (0 و 1).",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    }
+  ]
+}

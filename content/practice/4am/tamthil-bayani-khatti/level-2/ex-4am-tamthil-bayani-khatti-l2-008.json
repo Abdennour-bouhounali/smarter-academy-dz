@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l2-008",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — أي مستقيم يصعد؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "منحى"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-khatti_P3",
+      "modelledOn": "tech-76"
+    }
+  },
+  "statement": {
+    "content": "ثلاث دوال خطية: $f : x \\longmapsto -0{,}5x$ ، $g : x \\longmapsto 3x$ ، $h : x \\longmapsto -x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الدالة التي تمثيلها البياني يصعد من اليسار إلى اليمين:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$f$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-MUNHA"
+        },
+        {
+          "id": "B",
+          "content": "$g$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$h$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-MUNHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى إشارة المعامل $a$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المستقيم يشمل O دائمًا، ومنحاه تعيّنه إشارة $a$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تخيّل نقطة فاصلتها 1: ترتيبها $a$ ، فوق محور الفواصل أم تحته؟"
+        }
+      ],
+      "feedback": {
+        "correct": "معامل $g$ هو 3، الموجب الوحيد.",
+        "incorrect": "المستقيم يصعد إذا كان المعامل موجبًا."
+      }
+    }
+  ]
+}

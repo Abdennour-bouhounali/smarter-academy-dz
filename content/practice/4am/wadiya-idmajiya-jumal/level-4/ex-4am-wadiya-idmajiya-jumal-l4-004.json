@@ -1,0 +1,131 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l4-004",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 4,
+  "metadata": {
+    "title": "تذاكر الملعب — معطيات مستحيلة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "التحقق",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P2",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "أعلن نادٍ أنه باع 1 000 تذكرة لمباراة: تذكرة المنصة بـ 600 DA وتذكرة المدرجات بـ 200 DA، وأنّ المداخيل بلغت 383 000 DA. نسمّي $x$ عدد تذاكر المنصة و $y$ عدد تذاكر المدرجات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حل الجملة $x + y = 1000$ و $600x + 200y = 383000$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
+      "expectedAnswer": {
+        "x": "915/2",
+        "y": "1085/2"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$y = 1000 - x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$400x + 200000 = 383000$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تدوّر النتيجة."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 457{,}5$ و $y = 542{,}5$.",
+        "incorrect": "عوّض ثم احسب بدقة دون تدوير."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "1085/2",
+            "y": "915/2"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ماذا نستنتج؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "بيعت 457 تذكرة منصة و 543 تذكرة مدرجات",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TAHAQQUQ-NAS"
+        },
+        {
+          "id": "B",
+          "content": "في إعلان النادي خطأ: عدد التذاكر لا يكون عددا عشريا",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "بيعت 458 تذكرة منصة و 542 تذكرة مدرجات",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TAHAQQUQ-NAS"
+        },
+        {
+          "id": "D",
+          "content": "نقبل الحل لأنه يحقق الجملة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TAHAQQUQ-NAS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هل يمكن بيع نصف تذكرة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحقق من الأعداد المدوّرة في النص."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$600 \\times 457 + 200 \\times 543$ = ؟"
+        }
+      ],
+      "feedback": {
+        "correct": "عدد التذاكر عدد طبيعي، والتدوير لا يعطي 383 000 DA: المعطيات غير متوافقة.",
+        "incorrect": "التحقق في النص يرفض حلا غير طبيعي."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 4
+    }
+  ]
+}

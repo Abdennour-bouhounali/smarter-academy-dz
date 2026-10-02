@@ -1,0 +1,92 @@
+{
+  "id": "ex-4am-mafhum-jumla-l1-005",
+  "lessonCode": "mafhum-jumla",
+  "level": 1,
+  "metadata": {
+    "title": "معارف 1 — معاملات جملة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معاملات"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-1",
+      "page": 58,
+      "section": "معارف",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 58): الجملة $\\begin{cases} x - y = 2 \\\\ 2x - 5y = 4 \\end{cases}$ من الشكل $\\begin{cases} ax + by = c \\\\ a'x + b'y = c' \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما قيمة المعامل $b$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "-1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$b$ معامل $y$ في المعادلة الأولى."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في $x - y$ ، الحد $-y$ هو $-1 \\times y$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعامل يُكتب بإشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$x - y = 1 \\times x + (-1) \\times y$ : $b = -1$ .",
+        "incorrect": "لا تنسَ الإشارة: $-y = -1y$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما قيمة المعامل $b'$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "-5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$b'$ معامل $y$ في المعادلة الثانية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المعادلة الثانية $2x - 5y = 4$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعامل يُكتب بإشارته."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x - 5y$ : $b' = -5$ .",
+        "incorrect": "خذ معامل $y$ في المعادلة الثانية بإشارته."
+      }
+    }
+  ]
+}

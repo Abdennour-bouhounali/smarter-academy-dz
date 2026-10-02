@@ -1,0 +1,72 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l2-009",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 2,
+  "metadata": {
+    "title": "عمرا أخوين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترجمة",
+      "الجمع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P1",
+      "modelledOn": "ex-26"
+    }
+  },
+  "statement": {
+    "content": "مجموع عمري الأخوين ياسين وريان 30 سنة، وياسين أكبر من ريان بـ 4 سنوات. نسمّي $x$ عمر ياسين و $y$ عمر ريان."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما العمران $(x ; y)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان طبيعيان",
+      "expectedAnswer": {
+        "x": "17",
+        "y": "13"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x + y = 30$ و $x - y = 4$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع المعادلتين طرفا بطرف."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقق: الفرق 4."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x = 34$ ، $x = 17$ ، $y = 13$.",
+        "incorrect": "الجمع يحذف $y$ لأنّ معامليه متعاكسان."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "13",
+            "y": "17"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    }
+  ]
+}

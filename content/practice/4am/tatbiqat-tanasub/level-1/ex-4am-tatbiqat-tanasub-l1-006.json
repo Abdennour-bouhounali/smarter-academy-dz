@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l1-006",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — سرعة الحافلة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "السرعة المتوسطة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tatbiqat-tanasub_P2",
+      "modelledOn": "know-4"
+    }
+  },
+  "statement": {
+    "content": "قطعت حافلة نقل بين ولايتين مسافة 150km في مدة 2h."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "السرعة المتوسطة $v$ لمتحرك قطع مسافة $d$ في مدة $t$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$v = \\dfrac{d}{t}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$v = d \\times t$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQADIR-QISMA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$v = \\dfrac{t}{d}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQADIR-QISMA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مقدار حاصل القسمة: السرعة مسافة على مدة، والكتلة الحجمية كتلة على حجم، والتدفق حجم على مدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المقدارين بالوحدتين المطلوبتين قبل القسمة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم، ثم اكتب النتيجة مع وحدتها المركّبة."
+        }
+      ],
+      "feedback": {
+        "correct": "السرعة المتوسطة مقدار حاصل قسمة: المسافة على المدة.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "السرعة المتوسطة للحافلة (بالكيلومتر في الساعة):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "75",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مقدار حاصل القسمة: السرعة مسافة على مدة، والكتلة الحجمية كتلة على حجم، والتدفق حجم على مدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المقدارين بالوحدتين المطلوبتين قبل القسمة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم، ثم اكتب النتيجة مع وحدتها المركّبة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{150}{2} = 75km/h$ .",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    }
+  ]
+}

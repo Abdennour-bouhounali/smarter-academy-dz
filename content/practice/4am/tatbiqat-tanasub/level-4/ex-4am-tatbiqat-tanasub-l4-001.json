@@ -1,0 +1,116 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l4-001",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 4,
+  "metadata": {
+    "title": "طرائق — الخزان",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تغيّرات متتابعة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-percent",
+      "page": 71,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 71): خزان ماء مملوء تبلغ سعته $30m^3$ . أفرغنا 30% منه ثم أضفنا 15% مما فيه."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حجم محتواه الآن (بالمتر المكعب):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "24,15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التغيّر الثاني يُحسب من المقدار بعد التغيّر الأول، لا من المقدار الأول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب مضاعف كل تغيّر، ثم اضرب المضاعفات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المضاعف الكلي $k$ : إذا كان $k > 1$ فهي زيادة بـ $(k - 1) \\times 100$ بالمئة، وإذا كان $k < 1$ فهو تخفيض بـ $(1 - k) \\times 100$ بالمئة."
+        }
+      ],
+      "feedback": {
+        "correct": "$30 \\times 0{,}7 \\times 1{,}15 = 24{,}15m^3$ .",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "التغيّر الكلي لحجم الماء:",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "تخفيض بـ $19{,}5\\%$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "تخفيض بـ $15\\%$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-TATABU-JAM"
+        },
+        {
+          "id": "C",
+          "content": "زيادة بـ $15\\%$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-TATABU-JAM"
+        },
+        {
+          "id": "D",
+          "content": "تخفيض بـ $45\\%$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-TATABU-JAM"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التغيّر الثاني يُحسب من المقدار بعد التغيّر الأول، لا من المقدار الأول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب مضاعف كل تغيّر، ثم اضرب المضاعفات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المضاعف الكلي $k$ : إذا كان $k > 1$ فهي زيادة بـ $(k - 1) \\times 100$ بالمئة، وإذا كان $k < 1$ فهو تخفيض بـ $(1 - k) \\times 100$ بالمئة."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}7 \\times 1{,}15 = 0{,}805 = 1 - 0{,}195$ : تخفيض 19,5%.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

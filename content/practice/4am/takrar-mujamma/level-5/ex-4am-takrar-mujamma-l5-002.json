@@ -1,0 +1,63 @@
+{
+  "id": "ex-4am-takrar-mujamma-l5-002",
+  "lessonCode": "takrar-mujamma",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — الصاعد والنازل معا",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خاصية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_takrar-mujamma_P3"
+    }
+  },
+  "statement": {
+    "content": "في سلسلة تكرارها الكلي 40، القيمة 15 تكرارها 9، والتكرار المجمع الصاعد لها 26."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "التكرار المجمع النازل للقيمة 15:",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "23",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MUJAMMA-DUN-QIMA",
+          "value": "14"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في جدول التكرار المجمع الصاعد، كل خانة تزيد على السابقة بتكرار قيمتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التكرار = الصاعد للقيمة ناقص الصاعد للقيمة التي قبلها؛ والتكرار الكلي هو آخر صاعد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح الخانتين المتتاليتين، أو استعمل: الصاعد + النازل = التكرار الكلي + تكرار القيمة."
+        }
+      ],
+      "feedback": {
+        "correct": "$26 + 23 = 40 + 9$ : القيمة 15 تُعدّ في الجهتين.",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    }
+  ]
+}

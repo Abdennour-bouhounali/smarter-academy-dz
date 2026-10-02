@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l3-007",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — حارس المرمى",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مقارنة",
+      "قرار"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P2",
+      "modelledOn": "method"
+    }
+  },
+  "statement": {
+    "content": "تصدّى حارسان لضربات الجزاء في 5 حصص. ياسين: 5 ، 6 ، 5 ، 6 ، 5. وليد: 2 ، 9 ، 3 ، 8 ، 5. للحارسين المتوسط نفسه 5,4."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "يريد المدرّب حارسا منتظما. من يختار؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "ياسين: مداه 1",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "وليد: مداه 7",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUQARANA-MUTAWASSIT-FAQAT"
+        },
+        {
+          "id": "C",
+          "content": "لا فرق لأن المتوسط نفسه",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUQARANA-MUTAWASSIT-FAQAT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المتوسط نفسه: انظر إلى التشتت."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مدى ياسين $6 - 5$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مدى وليد $9 - 2$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "مدى ياسين 1 ومدى وليد 7: ياسين أكثر انتظاما.",
+        "incorrect": "قارن المديين."
+      },
+      "difficulty": 3
+    }
+  ]
+}

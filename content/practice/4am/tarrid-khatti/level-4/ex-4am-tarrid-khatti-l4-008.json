@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tarrid-khatti-l4-008",
+  "lessonCode": "tarrid-khatti",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — درّاج يتوقّف",
+    "estimatedMinutes": 4,
+    "tags": [
+      "قراءة بيانية",
+      "سرعة متوسطة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P3",
+      "modelledOn": "ex-28"
+    }
+  },
+  "statement": {
+    "content": "تمثيل مسار درّاج: من $O$ إلى $(1 ; 30)$ ، ثم $(1{,}5 ; 30)$ ، ثم $(3 ; 60)$ (ساعات، كيلومترات)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "سرعته المتوسطة خلال الرحلة كلها (km/h):",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "20",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المسافة 60km."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المدة 3h."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\dfrac{60}{3}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{60}{3} = 20$ km/h.",
+        "incorrect": "المدة كلها، التوقّف محسوب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "في أيّ مرحلة كانت الوضعية تناسبية من الانطلاق؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "المرحلة الأولى من $O$ إلى $(1 ; 30)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "المرحلة الثانية",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-BIDUN-O"
+        },
+        {
+          "id": "C",
+          "content": "المرحلة الثالثة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-BIDUN-O"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أيّ قطعة تشمل المبدأ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المرحلة الأولى تبدأ من O."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الأخريان لا تشملانه."
+        }
+      ],
+      "feedback": {
+        "correct": "المرحلة الأولى قطعة من مستقيم يشمل المبدأ: $d = 30t$ .",
+        "incorrect": "التناسب يتطلّب مستقيمًا يشمل المبدأ."
+      }
+    }
+  ]
+}

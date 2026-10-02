@@ -1,0 +1,107 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l2-002",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 2,
+  "metadata": {
+    "title": "توصيل الأكل: صورة وعدد صورته",
+    "estimatedMinutes": 3,
+    "tags": [
+      "صورة",
+      "العدد الذي صورته"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "مطعم «فاست فود» يوصل الطلبات: 150 DA مصاريف ثابتة ثم 20 DA عن كل كيلومتر ( $x$ عدد الكيلومترات)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ثمن التوصيل لمسافة 7 km:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار",
+      "expectedAnswer": "290",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$20x + 150$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$20 \\times 7 + 150$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "صورة 7."
+        }
+      ],
+      "feedback": {
+        "correct": "$140 + 150 = 290\\,\\mathrm{DA}$.",
+        "incorrect": "نضرب ثم نضيف المصاريف الثابتة."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "140",
+          "id": "MISC-TAALUFI-NISYAN-B"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "دفع زبون 450 DA للتوصيل. ما المسافة بالكيلومتر؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد الكيلومترات",
+      "expectedAnswer": "15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$20x + 150 = 450$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$20x = 300$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح ثم اقسم."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = \\dfrac{300}{20} = 15$ km.",
+        "incorrect": "نطرح 150 أولا ثم نقسم على 20."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "45/2",
+          "id": "MISC-TAALUFI-SABIQ-QISMA"
+        }
+      ]
+    }
+  ]
+}

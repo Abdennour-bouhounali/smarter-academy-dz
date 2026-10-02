@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l1-001",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 1,
+  "metadata": {
+    "title": "تحدّ الكتاب — نقاط القسم (ب)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تحدّ",
+      "متوسط مجموعات"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "challenge",
+      "page": 91,
+      "section": "تحدّ"
+    }
+  },
+  "statement": {
+    "content": "في القسم (ب): 14 ذكرا معدّلهم $12{,}5$ و 19 أنثى معدّلهن 11."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما مجموع نقاط تلاميذ القسم (ب)؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "384",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ماء كل مجموعة = العدد × المعدّل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $14 \\times 12{,}5$ ثم $19 \\times 11$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع النتيجتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$14 \\times 12{,}5 + 19 \\times 11 = 175 + 209 = 384$ نقطة.",
+        "incorrect": "اضرب معدّل كل مجموعة في عددها ثم اجمع."
+      },
+      "difficulty": 1
+    },
+    {
+      "id": "q2",
+      "statement": "معدّل القسم (ب) هو:",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{384}{33} \\approx 11{,}64$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{12{,}5 + 11}{2} = 11{,}75$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUTAWASSIT-MUTAWASSITAYN"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{384}{2} = 192$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUTAWASSIT-QISMA-QIYAM"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "33 تلميذا في القسم."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نقسم مجموع النقاط على العدد الكلي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا نقسم على عدد المجموعات."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{384}{14 + 19} = \\dfrac{384}{33} \\approx 11{,}64$ : المتوسط المتوازن.",
+        "incorrect": "المعدّل = مجموع النقاط ÷ عدد التلاميذ."
+      }
+    }
+  ]
+}

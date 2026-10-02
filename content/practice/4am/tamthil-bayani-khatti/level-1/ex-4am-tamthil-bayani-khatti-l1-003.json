@@ -1,0 +1,105 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l1-003",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 1,
+  "metadata": {
+    "title": "معارف (ص 68) — الدالة $x \\longmapsto -2x$",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نقطة ثانية",
+      "منحى"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-3",
+      "page": 68,
+      "section": "معارف"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 68): التمثيل البياني للدالة الخطية $f : x \\longmapsto -2x$ مستقيم (D) يشمل المبدأ O."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النقطة من (D) التي فاصلتها 1 ترتيبها:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 3/4)",
+      "expectedAnswer": "-2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد بالدالة الخطية $x \\longmapsto ax$ هي جداء هذا العدد في المعامل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب العدد في المعامل مع الانتباه إلى الإشارة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "النقطة التي فاصلتها هذا العدد وترتيبها صورته تنتمي إلى التمثيل."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(1) = -2 \\times 1 = -2$ : النقطة $A(1 ; -2)$ .",
+        "incorrect": "احسب صورة 1 مع الانتباه إلى الإشارة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "المستقيم (D):",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "يصعد من اليسار إلى اليمين",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-MUNHA"
+        },
+        {
+          "id": "B",
+          "content": "ينزل من اليسار إلى اليمين",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى إشارة المعامل $a$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المستقيم يشمل O دائمًا، ومنحاه تعيّنه إشارة $a$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تخيّل نقطة فاصلتها 1: ترتيبها $a$ ، فوق محور الفواصل أم تحته؟"
+        }
+      ],
+      "feedback": {
+        "correct": "المعامل $-2$ سالب: (D) ينزل من اليسار إلى اليمين.",
+        "incorrect": "إشارة المعامل تعيّن المنحى."
+      }
+    }
+  ]
+}

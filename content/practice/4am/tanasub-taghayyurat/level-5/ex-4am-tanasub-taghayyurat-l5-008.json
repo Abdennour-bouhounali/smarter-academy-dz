@@ -1,0 +1,58 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l5-008",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — العدد الناقص",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تناسب التغيرات",
+      "جدول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "$f$ دالة تآلفية: $\\begin{array}{|c|c|c|c|} \\hline x & 2 & 5 & 9 \\\\ \\hline f(x) & 7 & 16 & y \\\\ \\hline \\end{array}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد $y$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "28",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$a = \\dfrac{16 - 7}{5 - 2}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "من 5 إلى 9 نزيد 4 ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$y = 16 + 4a$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = 3$ ، $y = 16 + 3 \\times 4 = 28$ .",
+        "incorrect": "تغيّر الصورة $= a \\times$ تغيّر العدد."
+      }
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l4-002",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 4,
+  "metadata": {
+    "title": "دوري الآن — سعر السيارة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تغيّرات متتابعة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "now-71",
+      "page": 71,
+      "section": "دوري الآن"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 71): كان سعر سيارة $1\\,800\\,000\\mathrm{DA}$ . ارتفع سعرها بـ 3% ثم انخفض بـ 2% ثم انخفض مرة أخرى بـ 1%."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد الذي يجب ضرب $1\\,800\\,000$ فيه لإيجاد السعر الجديد:",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "0,999306",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التغيّر الثاني يُحسب من المقدار بعد التغيّر الأول، لا من المقدار الأول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب مضاعف كل تغيّر، ثم اضرب المضاعفات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المضاعف الكلي $k$ : إذا كان $k > 1$ فهي زيادة بـ $(k - 1) \\times 100$ بالمئة، وإذا كان $k < 1$ فهو تخفيض بـ $(1 - k) \\times 100$ بالمئة."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}03 \\times 0{,}98 \\times 0{,}99 = 0{,}999306$ (لا 1: النسب لا تُجمع).",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    }
+  ]
+}

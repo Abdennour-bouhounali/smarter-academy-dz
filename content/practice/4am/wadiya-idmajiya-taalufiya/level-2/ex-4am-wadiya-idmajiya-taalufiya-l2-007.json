@@ -1,0 +1,111 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l2-007",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 2,
+  "metadata": {
+    "title": "عدّاد سيارة الأجرة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تناسب التغيّرات",
+      "دالة تآلفية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "عدّاد سيارة أجرة يعرض 340 DA بعد 4 km و 700 DA بعد 10 km، والثمن دالة تآلفية للمسافة $x$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ثمن الكيلومتر الواحد $a$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار",
+      "expectedAnswer": "60",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{700 - 340}{10 - 4}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{360}{6}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تناسب التغيّرات."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = 60\\,\\mathrm{DA}$ للكيلومتر.",
+        "incorrect": "نقسم فرق الثمنين على فرق المسافتين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "360",
+          "id": "MISC-TAGHAYYUR-BIDUN-QISMA"
+        },
+        {
+          "value": "85",
+          "id": "MISC-TAGHAYYUR-B-NISBA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "المبلغ عند الركوب $b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار",
+      "expectedAnswer": "100",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$b = 340 - 4a$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$340 - 240$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$b = f(0)$."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = 340 - 60 \\times 4 = 100\\,\\mathrm{DA}$.",
+        "incorrect": "نعوّض نقطة معلومة: $b = f(4) - 4a$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "85",
+          "id": "MISC-TAGHAYYUR-B-NISBA"
+        }
+      ]
+    }
+  ]
+}

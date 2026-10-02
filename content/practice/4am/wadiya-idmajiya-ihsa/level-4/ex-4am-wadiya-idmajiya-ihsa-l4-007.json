@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l4-007",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 4,
+  "metadata": {
+    "title": "تلميذ جديد في القسم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متوسط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P1"
+    }
+  },
+  "statement": {
+    "content": "متوسط علامات قسم من 24 تلميذا في فرض هو 11. التحق تلميذ جديد بالقسم وتحصّل على 16 في الفرض نفسه."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما المتوسط الجديد للقسم؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "11.2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مجموع العلامات القديم = 24 × 11."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أضف العلامة الجديدة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على العدد الجديد للتلاميذ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{264 + 16}{25} = \\dfrac{280}{25} = 11{,}2$.",
+        "incorrect": "نحسب المجموع الجديد ونقسمه على 25."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "13.5",
+          "id": "MISC-IHSA-MUTAWASSIT-MUTAWASSITAYN"
+        }
+      ]
+    }
+  ]
+}

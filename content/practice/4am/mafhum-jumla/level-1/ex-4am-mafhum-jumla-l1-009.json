@@ -1,0 +1,113 @@
+{
+  "id": "ex-4am-mafhum-jumla-l1-009",
+  "lessonCode": "mafhum-jumla",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — كشك الكرنتيكة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "كرنتيكة",
+      "ثنائية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mafhum-jumla_P3",
+      "modelledOn": "ex-1"
+    }
+  },
+  "statement": {
+    "content": "في كشك الحي، ثمن الكرنتيكة 20DA وثمن قارورة الماء 50DA. اشترت سارة $x$ كرنتيكة و $y$ قارورة ماء ودفعت 400DA: $20x + 50y = 400$ ، أي $2x + 5y = 40$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل الثنائية $(10 ; 4)$ حل للمعادلة $2x + 5y = 40$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x = 10$ و $y = 4$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2 \\times 10 + 5 \\times 4$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل تجد 40؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$20 + 20 = 40$ : نعم.",
+        "incorrect": "احسب $2 \\times 10 + 5 \\times 4$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل الثنائية $(4 ; 10)$ حل للمعادلة $2x + 5y = 40$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARTIB"
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x = 4$ و $y = 10$ هذه المرة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2 \\times 4 + 5 \\times 10$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن بالعدد 40."
+        }
+      ],
+      "feedback": {
+        "correct": "$8 + 50 = 58 \\neq 40$ : لا. الترتيب مهم.",
+        "incorrect": "العدد الأول قيمة $x$ ."
+      }
+    }
+  ]
+}

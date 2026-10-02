@@ -6,7 +6,7 @@ import PathProgress from './PathProgress';
 import Collapsible from './Collapsible';
 import UnitProgressGroup from './UnitProgressGroup';
 import { ChipsSkeleton } from './ProgressionSkeleton';
-import { bidi } from '../../../utils/bidi';
+import MathLabel from '../../../lessons/common/components/MathLabel';
 
 /**
  * Un ميدان (chapter du catalogue) : le sommet de la hiérarchie affichée.
@@ -41,7 +41,7 @@ export default function FieldProgressGroup({ field, defaultOpen = false, profile
         </span>
         <div className="flex-1 min-w-0">
           <p className="text-[11px] font-mono-jetbrains uppercase tracking-wider text-slate-400">{t('progression.curriculum.fieldNumber', { n: field.number })}</p>
-          <h3 className="font-space font-bold text-slate-700 text-base leading-snug">{bidi(field.title)}</h3>
+          <h3 className="font-space font-bold text-slate-700 text-base leading-snug"><MathLabel>{field.title}</MathLabel></h3>
           <p className="text-xs text-slate-500 mt-0.5">{t('progression.curriculum.fieldComingSoonHint')}</p>
         </div>
         <span className="inline-flex items-center rounded-full bg-slate-100 text-slate-600 px-2.5 py-1 text-[11px] font-mono-jetbrains font-bold flex-shrink-0">
@@ -67,7 +67,7 @@ export default function FieldProgressGroup({ field, defaultOpen = false, profile
           </span>
           <span className="flex-1 min-w-0">
             <span className="block text-[11px] font-mono-jetbrains uppercase tracking-wider text-blue-500">{t('progression.curriculum.fieldNumber', { n: field.number })}</span>
-            <span className="block font-space font-bold text-slate-900 text-lg leading-snug">{bidi(field.title)}</span>
+            <span className="block font-space font-bold text-slate-900 text-lg leading-snug"><MathLabel>{field.title}</MathLabel></span>
             {field.subtitle && <span className="block text-xs text-slate-500 mt-0.5">{field.subtitle}</span>}
             <span className="block text-[11px] font-mono-jetbrains text-slate-500 mt-1">
               {t('progression.curriculum.unitLessons', { count: field.lessonCount })}

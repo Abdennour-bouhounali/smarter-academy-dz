@@ -1,0 +1,113 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l2-008",
+  "lessonCode": "mushkilat-jumla",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 17 (ص 61) — نضيف 8",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ترييض",
+      "أعداد"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-17",
+      "page": 61,
+      "section": "أوظّف تعلّماتي",
+      "number": 17
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 61): الفرق بين عددين هو 24. إذا أضفنا 8 إلى كل من العددين، نحصل على عددين آخرين أكبرهما هو ثلاث مرات أكثر من أصغرهما. ما هما العددان؟ نسمّي $x$ الأكبر و $y$ الأصغر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم المشكلة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x - y = 24 \\\\ x + 8 = 3(y + 8) \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x - y = 24 \\\\ x + 8 = 3y + 8 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x - y = 24 \\\\ 3(x + 8) = y + 8 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد الإضافة: الأكبر $x + 8$ والأصغر $y + 8$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الأكبر ثلاث مرات الأصغر كله."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ضع الأصغر كله بين قوسين."
+        }
+      ],
+      "feedback": {
+        "correct": "الحل $(28 ; 4)$ : $36 = 3 \\times 12$ .",
+        "incorrect": "الضرب في 3 يخصّ $y + 8$ كله."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العددان $(x ; y)$ هما:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "28",
+        "y": "4"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من الأولى $x = y + 24$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض في الثانية: $y + 32 = 3y + 24$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم احسب $x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$2y = 8$ أي $y = 4$ و $x = 28$ .",
+        "incorrect": "أكمل حتى الثنائية."
+      }
+    }
+  ]
+}

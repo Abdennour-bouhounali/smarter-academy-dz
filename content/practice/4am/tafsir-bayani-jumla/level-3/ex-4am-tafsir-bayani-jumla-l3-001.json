@@ -1,0 +1,145 @@
+{
+  "id": "ex-4am-tafsir-bayani-jumla-l3-001",
+  "lessonCode": "tafsir-bayani-jumla",
+  "level": 3,
+  "metadata": {
+    "title": "نشاط 5 — نقطة التقاطع",
+    "estimatedMinutes": 5,
+    "tags": [
+      "قراءة بيانية",
+      "تفسير"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-5",
+      "page": 79,
+      "section": "أنشطة",
+      "number": 5
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 79): الجملة $\\begin{cases} y = 43 - x \\\\ y = 25 - \\dfrac{1}{2}x \\end{cases}$ ، حيث $x$ عدد قطع 100DA و $y$ عدد قطع 200DA. الشكل يمثّل المستقيمين.",
+    "visual": {
+      "range": {
+        "xMin": 0,
+        "xMax": 55,
+        "yMin": 0,
+        "yMax": 45
+      },
+      "unit": 5.45,
+      "functions": [
+        {
+          "id": "d1",
+          "a": -1.0,
+          "b": 43.0,
+          "label": "(d1)",
+          "tone": "indigo"
+        },
+        {
+          "id": "d2",
+          "a": -0.5,
+          "b": 25.0,
+          "label": "(d2)",
+          "tone": "amber"
+        }
+      ],
+      "xStep": 5,
+      "yStep": 5,
+      "frozen": true,
+      "ariaLabel": "مستقيما الجملة: الأول يقطع محور التراتيب في 43 والثاني في 25",
+      "caption": false
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ الجملة (إحداثيتا نقطة تقاطع المستقيمين): $(x ; y)$ =",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "36",
+        "y": "7"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث على الشكل عن النقطة المشتركة بين المستقيمين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقرأ فاصلتها على محور الفواصل ثم ترتيبها على محور التراتيب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بتعويض الثنائية في المعادلتين: الفاصلة أولًا ثم الترتيب."
+        }
+      ],
+      "feedback": {
+        "correct": "الحل $(36 ; 7)$ ، ونتحقّق: $36 + 7 = 43$ و $0{,}5 \\times 36 + 7 = 25$.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "إذن جمع التلاميذ:",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "36 قطعة من 100DA و 7 قطع من 200DA",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "7 قطع من 100DA و 36 قطعة من 200DA",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-BAYANI-MAQLUB"
+        },
+        {
+          "id": "C",
+          "content": "43 قطعة من 100DA و 25 قطعة من 200DA",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-B-FASILA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الفاصلة قيمة $x$ والترتيب قيمة $y$ : تذكّر ماذا يمثّل كل مجهول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نقطة التقاطع هي المكان الذي تتساوى فيه القيمتان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق من كل اقتراح بالحساب في الوضعية."
+        }
+      ],
+      "feedback": {
+        "correct": "$x$ عدد قطع 100DA و $y$ عدد قطع 200DA: $36 + 7 = 43$ و $3600 + 1400 = 5000$.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

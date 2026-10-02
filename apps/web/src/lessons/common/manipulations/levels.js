@@ -160,6 +160,123 @@ export const LEVELS = Object.freeze({
     beginner: { numbers: { left: '30+x', right: '2(6+x)' }, ...P },
     advanced: { numbers: { left: '36+x', right: '4+x+6+x+8+x' }, ...T('method-modelling') },
   },
+  // ── Unité 5 « جمل معادلتين » (2026-10-01) — `ref` = docs/sources/4am/unit5/extraction.json.
+  // Une jumla s'écrit « équation 1|équation 2 » (linearSystem.system).
+  // Tableau des deux conditions. Une saison : 10 matchs sans défaite, 22 points (3 par victoire,
+  // 1 par nul) — deux petits nombres que la main fixe d'un regard ; le manuel (نشاط 1) : 32 agents,
+  // et la seconde condition porte sur l'APRÈS (5 hommes et 3 femmes partis) — il faut la traduire.
+  'pair-scoreboard': {
+    beginner: { numbers: { system: 'x+y=10|3x+y=22' }, ...P },
+    advanced: { numbers: { system: 'x+y=32|2(x-5)=y-3' }, ...T('act-1') },
+  },
+  // Cartes d'élimination. x + y = 10 et x − y = 2 : les y sont DÉJÀ opposés, poser une carte sur
+  // l'autre suffit ; le manuel (نشاط 2) : 2x + y = 7 et 3x − 2y = 4,2 — il faut décider : isoler
+  // y = 7 − 2x (التلميذ 1) ou multiplier (1) par 2 (التلميذ 2).
+  'elimination-cards': {
+    beginner: { numbers: { system: 'x+y=10|x-y=2' }, ...P },
+    advanced: { numbers: { system: '2x+y=7|3x-2y=4,2' }, ...T('act-2') },
+  },
+  // Modéliser une histoire. Un derby : 20 supporters, billets 300 et 150 DA, 4800 DA de recette —
+  // les inconnues déjà nommées ; le manuel (نشاط 3, le musée) : 140 visiteurs et 30 300 DA,
+  // l'élève choisit lui-même les inconnues et chaque donnée à porter.
+  'story-modeller': {
+    // `theme` / `named` : l'histoire intégrée du type (lesson.json › storyModeller.themes) que
+    // l'AUTRE niveau d'une manipulation posée seule raconte — les mots ne sont jamais ici.
+    beginner: { numbers: { system: 'x+y=20|300x+150y=4800' }, theme: 'stadium', named: true, ...P },
+    advanced: { numbers: { system: 'x+y=140|300x+150y=30300' }, theme: 'museum', named: false, ...T('act-3') },
+  },
+  // ── Unité 6 « الدالة الخطية والتناسبية » (2026-10-02) — `ref` = docs/sources/4am/unit6/extraction.json.
+  // Une règle s'écrit comme le manuel (proportional.rule) ; plusieurs règles « r1|r2 ».
+  // Compteur de trajet. Un seul tarif, 15 DA la minute : les quotients se lisent égaux d'un coup ;
+  // متقدم : DEUX tarifs (15x et 10x + 50) — le forfait casse la proportionnalité, à décider seul.
+  'ratio-ride': {
+    beginner: { numbers: { plans: '15x' }, ...P },
+    // متقدم cite ex-18 (« أي بيان منهما يمثل وضعية تناسبية؟ ») : décider SEUL entre une situation
+    // proportionnelle et une qui ne l'est pas (le forfait part de 50 comme la courbe du manuel part de 0,3).
+    advanced: { numbers: { plans: '15x|10x+50' }, ...T('ex-18') },
+  },
+  // Machine à règle cachée. La remise de l'Aïd (نشاط 1, 20 % → × 0,8) ; le manuel (نشاط 2) :
+  // trois machines x², 2x, 2x − 1 — laquelle est linéaire, et son a depuis un seul couple.
+  'linear-machine': {
+    beginner: { numbers: { rules: '0,8x' }, ...T('act-1') },
+    advanced: { numbers: { rules: 'x^2|2x|2x-1' }, ...T('act-2') },
+  },
+  // Droite épinglée à O. f(x) = 0,5x (نشاط 3 : O, A(1 ; 0,5), B(4 ; 2)) ; le manuel (طرائق ص 69) :
+  // lire f(4) ET l'antécédent de 3,5 sur la droite de coefficient 0,4 — deux lectures dans les deux sens,
+  // la formule cachée (le manuel donne le graphe), un antécédent non entier (8,75).
+  'origin-line': {
+    beginner: { numbers: { a: '0,5', mode: 'draw' }, ...T('act-3') },
+    advanced: { numbers: { a: '0,4', mode: 'read', reads: 'x:4|y:3,5' }, ...T('method-read') },
+  },
+  // Étiquette étirée. +5 % sur 1200 DA (نشاط 5) ; le réservoir (طرائق ص 71) : −30 % puis +15 %.
+  'percent-tag': {
+    beginner: { numbers: { price: '1200', steps: '+5' }, ...T('act-5') },
+    advanced: { numbers: { price: '30', steps: '-30|+15' }, ...T('method-percent') },
+  },
+  // ── Unité 7 « الدالة التآلفية » (2026-10-02) — `ref` = docs/sources/4am/unit7/extraction.json.
+  // Une fonction s'écrit comme le manuel (affine.affine) ; un système comme linearSystem.eq2.
+  // Compteur à partie fixe. مبتدئ : une course en taxi-application (100 DA de prise en charge + 40 DA
+  // le km), une image à la fois ; متقدم : la paie du نشاط 1 (35000 + 185 par heure) — image de 10 heures,
+  // l'heure qui donne 37775 DA (antécédent : ax + b = m), puis b = 0 / a = 0 aux boutons.
+  'affine-meter': {
+    beginner: { numbers: { rule: '40x+100', mode: 'image' }, ...P },
+    advanced: { numbers: { rule: '185x+35000', mode: 'image|antecedent|classify', target: '37775' }, ...T('act-1') },
+  },
+  // La droite qui ne passe plus par O. مبتدئ : x ⟼ ½x montée de 2 ; متقدم (نشاط 3) : (d) de 3/2·x
+  // montée de 1, puis a et b à LIRE sur la droite (formule cachée).
+  'affine-line': {
+    beginner: { numbers: { a: '1/2', b: '2', mode: 'shift' }, ...P },
+    // متقدم : le نشاط 3 (g = 3/2 x → f = 3/2 x + 1, la translation), PUIS une seconde rampe dont la formule est
+    // cachée (−1/2 x + 3, qui DESCEND) : l'élève lit b et a lui-même — deux laboratoires, enchaînés par son bouton.
+    advanced: { numbers: { a: '3/2', b: '1', mode: 'shift|identify', find: '-1/2:3' }, ...T('act-3') },
+  },
+  // L'escalier. مبتدئ : trois marques sur x ⟼ 50x + 100 ; متقدم (نشاط 4) : f(x) = 200x + 2000 et ses
+  // six marches 0→1→4→6→10→12→15 à compléter. Le تحدّ (deux couples lus) est un montage de la leçon.
+  'slope-stairs': {
+    beginner: { numbers: { rule: '50x+100', marks: '0|2|4' }, ...P },
+    advanced: { numbers: { rule: '200x+2000', marks: '0|1|4|6|10|12|15' }, ...T('act-4') },
+  },
+  // Deux droites. مبتدئ : deux équations faciles à écrire y = ax + b, solution entière ; متقدم (نشاط 5) : la
+  // cagnotte (43 pièces, 5000 DA) à écrire y = … puis (36 ; 7), et les trois cas.
+  'line-crossing': {
+    // مبتدئ (plateforme, spectacle laser) : deux équations à coefficients ±1 / 2, déjà presque sous la forme y = …,
+    // solution (2 ; 3) lisible sur une grille d'unités ; متقدم (نشاط 5) : 100x + 200y = 5000 à diviser par 200,
+    // des nombres qu'on ne compte pas d'un regard, puis l'étape des trois cas (cases).
+    beginner: { numbers: { system: '2x-y=1|x+y=5' }, ...P },
+    advanced: { numbers: { system: 'x+y=43|100x+200y=5000', cases: 'true' }, ...T('act-5') },
+  },
+  // Deux tarifs. مبتدئ : UNE formule à modéliser (500 + 150 par séance) ; متقدم (نشاط 4 question 1) :
+  // l'abonnement (2000 + 200 par match) contre le billet seul (400 par match) — égalité à 10 matchs.
+  'plan-compare': {
+    beginner: { numbers: { plans: '150x+500', mode: 'model' }, ...P },
+    advanced: { numbers: { plans: '200x+2000|400x', mode: 'model|compare' }, ...T('act-4') },
+  },
+  // ── Unité 8 « الإحصاء » (2026-10-02) — `ref` = docs/sources/4am/unit8/extraction.json.
+  // Une série s'écrit « valeur:effectif|… » (valeurs décimales à virgule).
+  // La barre de taille. مبتدئ : 8 enfants devant un manège (4 tailles) ; متقدم (نشاط 1) : les 20 tailles du
+  // manuel, « 159cm على الأقل », « 160cm على الأكثر », les deux colonnes du tableau à remplir.
+  'cumul-gate': {
+    beginner: { numbers: { series: '120:2|130:3|140:2|150:1', mode: 'up|down' }, ...P },
+    advanced: { numbers: { series: '154:3|157:4|159:5|160:5|165:3', mode: 'up|down|table' }, ...T('act-1') },
+  },
+  // La balance. مبتدئ : cinq scores d'un mini-tournoi ; متقدم (نشاط 4) : les 10 températures d'El Oued —
+  // étendue, moyenne 39,3 et médiane 38,5 (N pair) sur la même poutre.
+  'stat-balance': {
+    beginner: { numbers: { series: '2|3|3|4|8', mode: 'mean|median' }, ...P },
+    advanced: { numbers: { series: '40|35|34|41|48|37|35|46|37|40', mode: 'range|mean|median' }, ...T('act-4') },
+  },
+  // Le majdoul. مبتدئ : cinq valeurs, deux دساتير ; متقدم (تمرين 7) : la série 4, 10, 8, 4, 3, 2, 4 et les
+  // quatre دساتير du manuel, puis le graphique à choisir.
+  'sheet-lab': {
+    beginner: { numbers: { cells: '5|8|6|9|7', ask: 'MAX-MIN|MOYENNE' }, ...P },
+    advanced: { numbers: { cells: '4|10|8|4|3|2|4', ask: 'MAX-MIN|MEDIANE|MOYENNE|MODE', chart: 'bars|pie|histogram' }, ...T('ex-7') },
+  },
+  // Les réservoirs. مبتدئ : deux groupes d'amis (4 de moyenne 12, 6 de moyenne 7) ; متقدم (تحدّ) : les deux
+  // classes du manuel, garçons et filles (`classes: '2|2'` : les deux premiers groupes font la classe أ, les deux suivants la classe ب) — même total 384 sur 33.
+  'group-tanks': {
+    beginner: { numbers: { groups: '4:12|6:7' }, ...P },
+    advanced: { numbers: { groups: '15:10|18:13|14:12,5|19:11', classes: '2|2' }, ...T('challenge') },
+  },
 });
 
 export { MANIPULATION_LEVEL_IDS };

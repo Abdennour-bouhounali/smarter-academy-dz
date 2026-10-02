@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l4-005",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — هوايات القسم",
+    "estimatedMinutes": 4,
+    "tags": [
+      "قراءة مخطط",
+      "أعمدة مجمعة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P1",
+      "modelledOn": "ex-19"
+    }
+  },
+  "statement": {
+    "content": "مخطط هوايات تلاميذ: عمود «الرياضة والموسيقى» = 600 ، عمود «الموسيقى والرسم» = 500 ، عمود «الرسم» = 150."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم تلميذا هوايته الرياضة؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "250",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-QIRAA-MUKHATTAT",
+          "value": "600"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ بالموسيقى."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الموسيقى $= 500 - 150$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الرياضة $= 600 - $ الموسيقى."
+        }
+      ],
+      "feedback": {
+        "correct": "الموسيقى $500 - 150 = 350$ ثم الرياضة $600 - 350 = 250$ .",
+        "incorrect": "استخرج الموسيقى أولا."
+      },
+      "difficulty": 4
+    }
+  ]
+}

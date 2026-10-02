@@ -1,0 +1,125 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l1-005",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 1,
+  "metadata": {
+    "title": "طرائق (ص 69) — قراءة على المستقيم",
+    "estimatedMinutes": 4,
+    "tags": [
+      "قراءة بيانية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-khatti_P2",
+      "modelledOn": "method-read"
+    }
+  },
+  "statement": {
+    "content": "المستقيم (D) أدناه يمثّل دالة خطية $f$ ، ويشمل النقطة $E(5 ; 2)$ المعلّمة عليه.",
+    "visual": {
+      "range": {
+        "xMin": 0,
+        "xMax": 10,
+        "yMin": 0,
+        "yMax": 5
+      },
+      "unit": 30.0,
+      "unitY": 40.0,
+      "functions": [
+        {
+          "id": "d",
+          "a": 0.4,
+          "b": 0,
+          "label": "(D)",
+          "tone": "indigo"
+        }
+      ],
+      "points": [
+        {
+          "id": "p0",
+          "x": 5.0,
+          "y": 2.0,
+          "name": "E"
+        }
+      ],
+      "xStep": 1,
+      "yStep": 1,
+      "frozen": true,
+      "ariaLabel": "معلم فيه المستقيم (D) يشمل O و E(5 ; 2)",
+      "caption": false
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بقراءة بيانية، صورة 5 بالدالة $f$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 3/4)",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ من العدد على محور الفواصل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اصعد (أو انزل) عموديًا حتى المستقيم، ثم اذهب أفقيًا إلى محور التراتيب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الصورة هي ترتيب نقطة المستقيم التي فاصلتها هذا العدد."
+        }
+      ],
+      "feedback": {
+        "correct": "ترتيب النقطة E التي فاصلتها 5 هو 2: $f(5) = 2$ .",
+        "incorrect": "الصورة ترتيب لا فاصلة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بقراءة بيانية، العدد الذي صورته 2 هو:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 3/4)",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ من الصورة على محور التراتيب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اذهب أفقيًا حتى المستقيم، ثم عموديًا إلى محور الفواصل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العدد المطلوب هو فاصلة نقطة المستقيم التي ترتيبها هذه الصورة."
+        }
+      ],
+      "feedback": {
+        "correct": "فاصلة النقطة E التي ترتيبها 2 هي 5.",
+        "incorrect": "العدد المطلوب فاصلة نقطة من المستقيم."
+      }
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "id": "ex-4am-mafhum-taalufiya-l1-002",
+  "lessonCode": "mafhum-taalufiya",
+  "level": 1,
+  "metadata": {
+    "title": "نشاط 1 — أعمدة الجدول",
+    "estimatedMinutes": 3,
+    "tags": [
+      "صورة",
+      "الكتاب"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-1",
+      "page": 78,
+      "section": "أنشطة",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 78): أجرة عامل: أجرة قاعدية شهرية قدرها 35000DA، يضاف إليها 185DA لكل ساعة إضافية. نسمّي $x$ عدد الساعات الإضافية و $S(x)$ الأجرة. أتمم الجدول."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $S(5)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "35925",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد بدالة تآلفية: نعوّض $x$ بهذا العدد في العبارة $ax + b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب العدد في المعامل $a$ أولا، وانتبه إلى الإشارات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تنسَ أن تضيف الحدّ الثابت $b$ في النهاية."
+        }
+      ],
+      "feedback": {
+        "correct": "$S(5) = 185 \\times 5 + 35000 = 35925$ .",
+        "incorrect": "أعد الحساب: اضرب في $a$ ثم أضف $b$ ، وتحقّق من الإشارات."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-NISYAN-B",
+          "value": "925"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $S(8)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "36480",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد بدالة تآلفية: نعوّض $x$ بهذا العدد في العبارة $ax + b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب العدد في المعامل $a$ أولا، وانتبه إلى الإشارات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تنسَ أن تضيف الحدّ الثابت $b$ في النهاية."
+        }
+      ],
+      "feedback": {
+        "correct": "$S(8) = 185 \\times 8 + 35000 = 36480$ .",
+        "incorrect": "أعد الحساب: اضرب في $a$ ثم أضف $b$ ، وتحقّق من الإشارات."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-NISYAN-B",
+          "value": "1480"
+        }
+      ]
+    }
+  ]
+}

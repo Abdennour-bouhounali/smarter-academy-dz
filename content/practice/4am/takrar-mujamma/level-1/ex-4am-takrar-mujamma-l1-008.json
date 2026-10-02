@@ -1,0 +1,67 @@
+{
+  "id": "ex-4am-takrar-mujamma-l1-008",
+  "lessonCode": "takrar-mujamma",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — ساعات النوم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "على الأقل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_takrar-mujamma_P1"
+    }
+  },
+  "statement": {
+    "content": "عدد ساعات النوم لعشرين تلميذا (السطر الأول الساعات، والسطر الثاني عدد التلاميذ): $\\begin{array}{|c|c|c|c|} \\hline 5 & 6 & 7 & 8 \\\\ \\hline 3 & 7 & 6 & 4 \\\\ \\hline \\end{array}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عدد التلاميذ الذين ينامون 7 ساعات على الأقل:",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "10",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-SARAMA",
+          "value": "4"
+        },
+        {
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB",
+          "value": "16"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ الشرط بعناية: هل القيمة الحدّية نفسها محسوبة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "«على الأقل» و«على الأكثر» تشملان الحدّ، و«تفوق» و«أقل من» لا تشملانه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب القيم التي تحقّق الشرط، ثم اجمع تكراراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$6 + 4 = 10$ (7 و 8).",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    }
+  ]
+}

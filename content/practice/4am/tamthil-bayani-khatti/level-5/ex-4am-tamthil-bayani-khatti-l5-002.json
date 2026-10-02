@@ -1,0 +1,141 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l5-002",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — مستقيم يشمل $(-6 ; 4)$",
+    "estimatedMinutes": 4,
+    "tags": [
+      "معامل كسري",
+      "عدد صورته معلومة",
+      "منحى"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-khatti_P1",
+      "modelledOn": "now-69"
+    }
+  },
+  "statement": {
+    "content": "التمثيل البياني لدالة خطية $f$ يشمل النقطة $(-6 ; 4)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "معامل $f$ (كسر):",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "كسر مثل 3/4",
+      "expectedAnswer": "-2/3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التمثيل يشمل O والنقطة المعطاة $(m ; n)$ ، أي $f(m) = n$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $a \\times m = n$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الترتيب على الفاصلة: $a = \\dfrac{n}{m}$ ، مع الانتباه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{4}{-6} = -\\dfrac{2}{3}$ .",
+        "incorrect": "اقسم الترتيب على الفاصلة، بالإشارة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العدد الذي صورته $-10$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 3/4)",
+      "expectedAnswer": "15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد الذي صورته $b$ هو حل المعادلة $ax = b$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم الصورة على المعامل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق: اضرب العدد الذي وجدته في المعامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$-10 \\div \\left(-\\dfrac{2}{3}\\right) = 15$ .",
+        "incorrect": "اقسم الصورة على المعامل."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "تمثيل $f$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "يصعد من اليسار إلى اليمين",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-MUNHA"
+        },
+        {
+          "id": "B",
+          "content": "ينزل من اليسار إلى اليمين",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى إشارة المعامل $a$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المستقيم يشمل O دائمًا، ومنحاه تعيّنه إشارة $a$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تخيّل نقطة فاصلتها 1: ترتيبها $a$ ، فوق محور الفواصل أم تحته؟"
+        }
+      ],
+      "feedback": {
+        "correct": "المعامل سالب: ينزل.",
+        "incorrect": "انظر إلى إشارة المعامل."
+      }
+    }
+  ]
+}

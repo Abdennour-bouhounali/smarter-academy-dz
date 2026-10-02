@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-tarrid-khatti-l4-004",
+  "lessonCode": "tarrid-khatti",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — ثلاثة أشكال متّسقة؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جدول",
+      "دستور",
+      "تمثيل بياني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P2",
+      "modelledOn": "method-spring"
+    }
+  },
+  "statement": {
+    "content": "قدّم ثلاثة تلاميذ الوضعية نفسها: الجدول ($x$ : 2 ، 6 ؛ $y$ : 5 ، 15)، الدستور $f(x) = 2{,}5x$ ، ومستقيم يشمل المبدأ و $(4 ; 9)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ تمثيل لا يوافق الآخرَين؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الجدول",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TANASUB-MUAMIL-MAQLUB"
+        },
+        {
+          "id": "B",
+          "content": "الدستور",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TANASUB-MUAMIL-MAQLUB"
+        },
+        {
+          "id": "C",
+          "content": "المستقيم",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب المعامل في كل شكل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{5}{2}$ ، $2{,}5$ ، $\\dfrac{9}{4}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{9}{4} = 2{,}25 \\neq 2{,}5$ : المستقيم لا يوافق.",
+        "incorrect": "المعامل نفسه في الأشكال الثلاثة."
+      }
+    }
+  ]
+}

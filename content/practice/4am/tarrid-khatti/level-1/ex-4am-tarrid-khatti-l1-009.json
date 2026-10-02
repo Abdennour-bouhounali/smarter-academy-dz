@@ -1,0 +1,57 @@
+{
+  "id": "ex-4am-tarrid-khatti-l1-009",
+  "lessonCode": "tarrid-khatti",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — باقة الأنترنت",
+    "estimatedMinutes": 2,
+    "tags": [
+      "نمذجة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "في عرض للهاتف ثمن الأنترنت متناسب مع حجمه: 1Go بـ 100DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما ثمن 7Go (بالدينار)؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "700",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الدالة $f(x) = 100x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$f(7)$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$100 \\times 7$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$100 \\times 7 = 700$ DA.",
+        "incorrect": "الثمن متناسب: نضرب في 100."
+      }
+    }
+  ]
+}

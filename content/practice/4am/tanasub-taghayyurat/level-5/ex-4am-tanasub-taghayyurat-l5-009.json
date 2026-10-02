@@ -1,0 +1,58 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l5-009",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — بالحروف",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تناسب التغيرات",
+      "برهان"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "$f$ دالة تآلفية و $m$ عدد، حيث $f(3) = m$ و $f(7) = m + 12$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعامل $a$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "فرق الصورتين $(m + 12) - m$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$= 12$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "على $7 - 3$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{12}{4} = 3$ ، مهما كان $m$ .",
+        "incorrect": "$m$ يختفي في الفرق."
+      }
+    }
+  ]
+}

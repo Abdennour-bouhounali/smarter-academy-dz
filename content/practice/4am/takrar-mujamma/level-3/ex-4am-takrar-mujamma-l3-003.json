@@ -1,0 +1,106 @@
+{
+  "id": "ex-4am-takrar-mujamma-l3-003",
+  "lessonCode": "takrar-mujamma",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 3 — حوادث المرور",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نسب مئوية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-3",
+      "page": 98,
+      "section": "أوظّف تعلّماتي",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 98): أسباب حوادث الطرقات سنة 2016 في المناطق الحضرية بالجزائر، بترتيب الجدول: العنصر البشري $97{,}97\\%$ ، المركبة $0{,}95\\%$ ، الطريق والمحيط $1{,}08\\%$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "التواتر المجمع الصاعد لعمود «المركبة» (بالمئة):",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (النسبة المئوية دون الرمز)",
+      "expectedAnswer": "98,92",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB",
+          "value": "2,03"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولا التكرار الكلي: مجموع كل التكرارات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التواتر المجمع هو التكرار المجمع مقسوما على التكرار الكلي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع التكرارات المعنية ثم اقسم المجموع على التكرار الكلي، واختزل الكسر إن أمكن."
+        }
+      ],
+      "feedback": {
+        "correct": "$97{,}97 + 0{,}95 = 98{,}92$",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "التواتر المجمع النازل لعمود «المركبة» (بالمئة):",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة (النسبة المئوية دون الرمز)",
+      "expectedAnswer": "2,03",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB",
+          "value": "98,92"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولا التكرار الكلي: مجموع كل التكرارات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التواتر المجمع هو التكرار المجمع مقسوما على التكرار الكلي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع التكرارات المعنية ثم اقسم المجموع على التكرار الكلي، واختزل الكسر إن أمكن."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}95 + 1{,}08 = 2{,}03$",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    }
+  ]
+}

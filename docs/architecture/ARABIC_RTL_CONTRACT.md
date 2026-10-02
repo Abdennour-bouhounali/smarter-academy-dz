@@ -301,6 +301,37 @@ wrap user-provided names in `<bdi>`.
 The same applies to any numeric block inside a manipulation: tiles, bars,
 equations, divisions and algorithm chains all declare `dir="ltr"`.
 
+### A unit after a math island, Arabic text inside an SVG (unit 7, 2026-10-02)
+
+- **`$…$ DA` reverses.** An amount whose unit follows the island (« $50 \times 5 + 300 = 550$ DA ») renders
+  « DA 550 = … » in RTL: the island and the Latin unit form two runs. Put the unit INSIDE the island —
+  `$50 \times 5 + 300 = 550\,\mathrm{DA}$` — and the same for degrees (`$10\,^{\circ}\mathrm{C}$`, « 10°C » reverses).
+  A plain « 300 DA » outside any island is isolated by `MathText` / `bidi` and stays correct. Bank generators apply the
+  same rule.
+- **Arabic text in an inline SVG inherits the page's RTL**: `text-anchor="start"` is then the RIGHT edge, and axis titles
+  are clipped at the figure's edge. Write Arabic SVG text with an explicit `direction="rtl"` and choose the anchors for it
+  (the x-axis title anchored `start` at the axis end, the y-axis title anchored `end` next to the axis) —
+  `dala-taalufiya/wadiya-idmajiya-taalufiya/components/TripFigures.jsx`.
+- **Never glue two amounts with « + » in an Arabic sentence** (owner fix, 2026-10-02): « الأجرة 35000DA + 185DA لكل ساعة إضافية »
+  is ONE left-to-right run (« + » is neutral between two numbers), so in RTL it flips as a block and « 35000 » lands next
+  to « لكل ساعة إضافية » — the opposite meaning. Separate the amounts with Arabic words, as the textbook does:
+  « أجرة قاعدية 35000DA يضاف إليها 185DA لكل ساعة إضافية » (« … و 200DA للمقابلة » is safe too), or write the whole
+  expression as a math island (`$35000 + 185x$`).
+- **A coordinate pair is an island** (`$(0 ; 1)$`): the unit-7 textbook itself printed act-3's « (0 ; 1) » as « (1 ; 0) »,
+  a bidi reversal corrected in the lesson.
+
+
+### Spreadsheet formulas are LTR code, never KaTeX (unit 8, 2026-10-02)
+
+A spreadsheet formula (`=MAX(A1:G1)-MIN(A1:G1)`, `A1:G1`, `Histogramme({7,8,9,10},{6,1,4})`, `=ALEA()`) is **Latin LTR code**: never
+KaTeX, never bare in an Arabic sentence. In JSX it is rendered in `<code dir="ltr">` (`ihsa/majdulat-ihsaiya/components/Figures.jsx ›
+Dustur`, the cells and bar of `sheet-lab`); inside a STRING that goes through `MathText` (statements, options, corrections, bank JSON,
+i18n) it is wrapped in the invisible isolates LRI … PDI (U+2066 / U+2069 — `xl()` in that lesson's `content/textbook.js`). A lone
+symbol quoted between guillemets is isolated too (`« ⁦=⁩ »`): without it « = » and « : » printed reversed around the quotes. The
+sheet itself is laid out LTR (column A on the left, as in the textbook's screenshot); Arabic labels inside its cells keep `dir="rtl"`.
+In a narrow RTL verdict prefer `\tfrac` to a long inline product: a line break at 320 px displayed « 144 = 360 » for `… × 360 = 144`.
+A frequency table inside a final-test prompt is a KaTeX array (`texTable`), never a `<table>` inside the prompt's `<p>`.
+
 ### Plain-text equations are isolated too (2026-09-24)
 
 Content written as plain text — exercise titles («معارف — 120 = 6 × 20»,
@@ -339,6 +370,24 @@ progression tree, practice hub/summary, the teacher's lesson memo, learning
 points and overview tabs). Lesson data stays clean: no invisible character is
 ever written into a lesson or the catalogue.
 
+### Content text outside a module is TYPESET, not only isolated (2026-10-02)
+
+The catalogue's points to learn, descriptions, prerequisites, unit objectives, the unit تحدّ, module titles /
+blurbs, step titles, knowledge summaries and lab names are written like lesson content (« معرفة الترميز
+$x \longmapsto ax + b$ »). `bidi()` alone isolates them but leaves the island raw: the owner saw the dollars and
+the backslashes on the lesson index, the unit page and the catalogue (122 raw formulas across 262 pages, all seven
+units). Every such DISPLAY now goes through **`MathLabel`** (`lessons/common/components/MathLabel.jsx`): without a
+`$…$` island it renders exactly `bidi(text)`; with one, `MathText` (KaTeX, LTR island) — KaTeX is lazy-loaded only
+when a string carries a formula, the fallback meanwhile being `mathToPlain`. Where only a STRING fits (`<option>`,
+`title` / `aria-label`, a template literal), use **`mathToPlain(text)`** (`utils/mathPlain.js`, dependency-free):
+each island becomes isolated Unicode (« x ⟼ ax + b », « (f(x₁) − f(x₂))/(x₁ − x₂) »). The kit does the same for a
+STRING prompt, batch-row label or option (`TapQuestion`, `BatchChoiceQuestion`, `ChoiceGrid`, `PredictionChips`).
+Applied in: `LessonIndex`, `ModuleLayout`, `LessonUI`, `KnowledgeBrick`, `KnowledgeSnapshot`, `KnowledgeMap`,
+`LinearKnowledgeView`, `UnitPage`, `UnitGroup`, `LessonCard`, `NextStepHero`, the progression tree, practice
+hub / summary, the teacher's memo, lessons, learning-points and overview tabs. **Never print a content string with
+`{bidi(x)}` in JSX** — write `<MathLabel>{x}</MathLabel>`. Guard: `apps/web/e2e/lesson-kit/math-raw-scan.mjs`
+(every visible text node outside `.katex`, every page of every 4AM lesson: 0 `$…$`, 0 `\command`, 0 `.katex-error`).
+
 ### The student's own answer is isolated, not typeset (2026-09-24)
 
 When the practice player shows back what the student typed (question history,
@@ -364,6 +413,15 @@ the red part ⇔ the bound is a solution). A bare `[` or `]` in Arabic text is a
 algorithm draws it the wrong way round — exactly the distinction the lesson teaches. Write a bracket inside a
 math island (`$[$`, `$]-5 ; +\infty[$`) or isolate it (`\u2066]\u2069`, as `SolutionRay` does for its glyph), and
 draw number lines in SVG (`mutarajiha-ula/components/RayFigure.jsx`, the synthesis' `NumberLine`), never as text.
+
+### A ثنائية (x ; y) reads left to right — and so do grouped thousands (2026-10-01)
+
+A pair is ordered: (2 ; 0) ≠ (0 ; 2). Every pair is a math island (`$(13 ; 19)$`, `pairLatex`) or a `dir="ltr"`
+element; a pair INPUT is a `dir="ltr"` row « ( x ; y ) » (`PointInput`, `PairQuestion`) — under a bare RTL flex row
+the parentheses and the two fields are mirrored. A system is written `$\begin{cases} … \\ … \end{cases}$`.
+**Grouped digits** « 30 300 DA » inside Arabic plain text are split by bidi into « 300 DA 30 »: write the number
+ungrouped (« 30300 DA », as the textbook's own table does) or inside a math island; `utils/bidi.js` does not
+yet group-protect thousands (open item).
 
 ### Directional icons
 

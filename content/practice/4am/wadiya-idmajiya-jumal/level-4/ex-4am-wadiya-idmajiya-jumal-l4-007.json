@@ -1,0 +1,131 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l4-007",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 4,
+  "metadata": {
+    "title": "خليط العصير",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترجمة",
+      "حل جملة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P2",
+      "modelledOn": "ex-29"
+    }
+  },
+  "statement": {
+    "content": "يحضّر بائع عصير 20 لترا من خليط برتقال ومانجو. لتر البرتقال بـ 120 DA ولتر المانجو بـ 200 DA، وتكلفة الخليط 2 960 DA. نسمّي $x$ عدد لترات البرتقال و $y$ عدد لترات المانجو."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم النص هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 2960 \\\\ 120x + 200y = 20 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 20 \\\\ 200x + 120y = 2960 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x + y = 20 \\\\ 120x + 200y = 2960 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$\\begin{cases} x + y = 20 \\\\ 120x + 200y = 320 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معلومة عن الحجم ومعلومة عن التكلفة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "لتر البرتقال بـ 120 DA."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "كل عدد لترات يُضرب في ثمن لتره."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + y = 20$ و $120x + 200y = 2960$.",
+        "incorrect": "لا تخلط بين اللترات والدنانير."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "كم لترا $(x ; y)$ من كل عصير؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
+      "expectedAnswer": {
+        "x": "13",
+        "y": "7"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x = 20 - y$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض في معادلة التكلفة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$2400 + 80y = 2960$."
+        }
+      ],
+      "feedback": {
+        "correct": "$80y = 560$ ، $y = 7$ ، $x = 13$.",
+        "incorrect": "عوّض ثم تحقق."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "7",
+            "y": "13"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    }
+  ]
+}

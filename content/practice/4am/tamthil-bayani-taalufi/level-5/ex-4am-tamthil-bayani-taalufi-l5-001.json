@@ -1,0 +1,128 @@
+{
+  "id": "ex-4am-tamthil-bayani-taalufi-l5-001",
+  "lessonCode": "tamthil-bayani-taalufi",
+  "level": 5,
+  "metadata": {
+    "title": "رحلة بتطبيق النقل",
+    "estimatedMinutes": 5,
+    "tags": [
+      "وضعية",
+      "قراءة بيانية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-taalufi_P2"
+    }
+  },
+  "statement": {
+    "content": "في تطبيق للنقل، تكلفة رحلة (بالدينار) بدلالة المسافة $x$ (بالكيلومتر) يمثّلها مستقيم يشمل النقطتين $(0 ; 100)$ و $(5 ; 300)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم يزيد ثمن الرحلة (DA) لكل كيلومتر إضافي؟",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "expectedAnswer": "40",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل التوجيه $a$ هو ما يصعده المستقيم (أو ينزله) عندما نتقدّم وحدة واحدة إلى اليمين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خذ نقطتين من المستقيم: كم تغيّر الترتيب؟ وكم تغيّرت الفاصلة؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم تغيّر الترتيب على تغيّر الفاصلة، بالإشارة: ينزل ⇒ $a < 0$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "من $(0 ; 100)$ إلى $(5 ; 300)$ : $a = \\dfrac{300 - (100)}{5 - (0)} = 40$ .",
+        "incorrect": "اقسم تغيّر الترتيب على تغيّر الفاصلة، لا العكس، وانتبه إلى الإشارة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "تكلفة رحلة طولها $8$ km (بالدينار):",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "expectedAnswer": "420",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد هي ترتيب النقطة من المستقيم التي فاصلتها هذا العدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب عبارة الدالة من نقطتين: $b$ ثم $a$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض العدد في $ax + b$ وتحقّق أنّ النقطة على المستقيم."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(x) = 40x + 100$ ، و $f(8) = 420$ : النقطة $(8 ; 420)$ على المستقيم.",
+        "incorrect": "الصورة ترتيب: انطلق من العدد على محور الفواصل."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "طول رحلة تكلفتها $500$ DA (بالكيلومتر):",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد الذي صورته معلومة هو فاصلة النقطة من المستقيم التي ترتيبها هذه الصورة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب عبارة الدالة، ثم حلّ $ax + b = m$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح $b$ أولًا ثم اقسم على $a$ ، وتحقّق بحساب الصورة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(x) = 40x + 100$ ، و $f(10) = 500$ : النقطة $(10 ; 500)$ على المستقيم.",
+        "incorrect": "العدد المطلوب فاصلة: انطلق من الصورة على محور التراتيب."
+      }
+    }
+  ]
+}

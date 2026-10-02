@@ -1,0 +1,92 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l4-008",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — مصعد",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "تناسب التغيرات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "مصعد يصعد بسرعة ثابتة: بعد 2s يكون على ارتفاع 9m ، وبعد 7s على ارتفاع 24m . الارتفاع دالة تآلفية للزمن."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "السرعة $a$ (m في الثانية):",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$24 - 9$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "على $7 - 2$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\dfrac{15}{5}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{15}{5} = 3$ m/s.",
+        "incorrect": "فرق الزمنين 5 ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "الارتفاع عند الانطلاق (m):",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة 0 ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$9 - 3 \\times 2$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = 9 - 6 = 3$ m.",
+        "incorrect": "الارتفاع الأولي هو $b$ ."
+      }
+    }
+  ]
+}

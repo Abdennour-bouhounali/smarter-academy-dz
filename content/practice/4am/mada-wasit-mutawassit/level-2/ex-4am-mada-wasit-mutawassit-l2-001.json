@@ -1,0 +1,91 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l2-001",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 2,
+  "metadata": {
+    "title": "نشاط 3 (ص 93) — مدى مدينتين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مدى",
+      "تشتت"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-3",
+      "page": 93,
+      "section": "أنشطة",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 93): درجات الحرارة في نوفمبر. المدينة (أ): $18$ (يومان)، $15$ (18 يومًا)، $16$ (6 أيام)، $20$ (4 أيام). المدينة (ب): $10$ (3 أيام)، $18$ (4 أيام)، $15$ (16 يومًا)، $20$ (7 أيام)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مدى سلسلة المدينة (أ) هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MADA-TAKRAR",
+          "value": "16"
+        },
+        {
+          "id": "MISC-IHSA-MADA-AKBAR-QIMA",
+          "value": "20"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أكبر درجة $20$ وأصغر درجة $15$."
+        }
+      ],
+      "feedback": {
+        "correct": "$20 - 15 = 5$ .",
+        "incorrect": "استعمل درجات الحرارة لا أعداد الأيام."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "مدى سلسلة المدينة (ب) هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "10",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MADA-TAKRAR",
+          "value": "13"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أصغر درجة في (ب) هي $10$."
+        }
+      ],
+      "feedback": {
+        "correct": "$20 - 10 = 10$ : درجات (ب) أكثر تشتّتًا.",
+        "incorrect": "أكبر قيمة ناقص أصغر قيمة."
+      }
+    }
+  ]
+}

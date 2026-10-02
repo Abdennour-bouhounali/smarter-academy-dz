@@ -1,0 +1,58 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l5-005",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — درجة لا تتغيّر",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية",
+      "معادلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P2",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "وجدنا في التحدّي أنّ $f(x) = 1{,}8x + 32$ تحوّل الدرجة سلسيوس $x$ إلى الفهرنهايت."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما درجة الحرارة التي لها العدد نفسه بالسلسيوس وبالفهرنهايت؟",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "-40",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نبحث عن $x$ حيث $f(x) = x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$1{,}8x + 32 = x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$0{,}8x = -32$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}8x = -32$ ، أي $x = -40$ : $-40\\,^{\\circ}\\mathrm{C} = -40\\,^{\\circ}\\mathrm{F}$ .",
+        "incorrect": "انقل $x$ إلى طرف واحد."
+      }
+    }
+  ]
+}

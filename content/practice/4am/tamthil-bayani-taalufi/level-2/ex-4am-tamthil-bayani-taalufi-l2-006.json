@@ -1,0 +1,93 @@
+{
+  "id": "ex-4am-tamthil-bayani-taalufi-l2-006",
+  "lessonCode": "tamthil-bayani-taalufi",
+  "level": 2,
+  "metadata": {
+    "title": "b ليس على محور الفواصل",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الترتيب عند المبدأ",
+      "قراءة بيانية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-taalufi_P2"
+    }
+  },
+  "statement": {
+    "content": "المستقيم $(D)$ هو التمثيل البياني لدالة تآلفية $f$ ، ويشمل النقطتين $(-1 ; 0)$ و $(0 ; 2)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الترتيب عند المبدأ $b$ للدالة التي يمثّلها المستقيم:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الترتيب عند المبدأ $b$ هو ترتيب النقطة التي يقطع فيها المستقيم محور التراتيب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هذه النقطة فاصلتها $0$ ، لأنّ $f(0) = b$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا لم تكن مرسومة، انطلق من نقطة معلومة وارجع إلى الفاصلة $0$ بالدرجة $a$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "المستقيم يقطع محور التراتيب في $(0 ; 2)$ : $b = 2$ .",
+        "incorrect": "اقرأ ترتيب نقطة التقاطع مع محور التراتيب، لا مع محور الفواصل."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بقراءة بيانية، صورة العدد $1$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد هي ترتيب النقطة من المستقيم التي فاصلتها هذا العدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب عبارة الدالة من نقطتين: $b$ ثم $a$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض العدد في $ax + b$ وتحقّق أنّ النقطة على المستقيم."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(x) = 2x + 2$ ، و $f(1) = 4$ : النقطة $(1 ; 4)$ على المستقيم.",
+        "incorrect": "الصورة ترتيب: انطلق من العدد على محور الفواصل."
+      }
+    }
+  ]
+}

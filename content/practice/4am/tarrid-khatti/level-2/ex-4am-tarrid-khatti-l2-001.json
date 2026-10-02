@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tarrid-khatti-l2-001",
+  "lessonCode": "tarrid-khatti",
+  "level": 2,
+  "metadata": {
+    "title": "طرائق (ص 71) — كتلة لاستطالة 2,1cm",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نابض",
+      "العدد الذي علمت صورته"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-spring",
+      "page": 71,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 71): الاستطالة $y$ (cm) لنابض بدلالة الكتلة $x$ (g) هي $y = 0{,}3x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما الكتلة (بالغرام) التي تعطي استطالة 2,1cm؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ $0{,}3x = 2{,}1$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x = \\dfrac{2{,}1}{0{,}3}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق: $0{,}3 \\times 7$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$2{,}1 = 0{,}3 \\times 7$ : نعلّق كتلة 7g.",
+        "incorrect": "نقسم على 0,3 ولا نضرب فيه."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما الجواب بجملة؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعلّق كتلة قدرها 7g",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الاستطالة 7cm",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "id": "C",
+          "content": "نعلّق 0,63g",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TANASUB-MUAMIL-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x$ كتلة بالغرام."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ماذا كان المجهول؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الجواب بجملة وبوحدته."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 7$ كتلة: «نعلّق كتلة قدرها 7g».",
+        "incorrect": "x كتلة بالغرام، لا استطالة."
+      }
+    }
+  ]
+}

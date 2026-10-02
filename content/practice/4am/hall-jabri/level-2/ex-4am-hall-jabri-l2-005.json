@@ -1,0 +1,114 @@
+{
+  "id": "ex-4am-hall-jabri-l2-005",
+  "lessonCode": "hall-jabri",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — تذاكر الداربي",
+    "estimatedMinutes": 4,
+    "tags": [
+      "التعويض",
+      "كرة القدم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hall-jabri_P1",
+      "modelledOn": "ex-11"
+    }
+  },
+  "statement": {
+    "content": "اشترى أمين 3 تذاكر للمدرجات المغطاة وتذكرة للمدرجات المكشوفة بـ 2200 DA، واشترى صديقه تذكرة مغطاة وتذكرتين مكشوفتين بـ 1400 DA. نرمز بـ $x$ لثمن التذكرة المغطاة وبـ $y$ لثمن المكشوفة: $\\begin{cases} 3x + y = 2200 \\\\ x + 2y = 1400 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من المعادلة الثانية ينتج أنّ:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x = 1400 - 2y$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x = 1400 + 2y$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAWID-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$x = 2y - 1400$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAWID-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن مجهول معامله $1$ أو $-1$ في إحدى المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عبّر عنه بدلالة المجهول الآخر، ثم عوّضه في المعادلة الأخرى."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
+        }
+      ],
+      "feedback": {
+        "correct": "نطرح $2y$ من الطرفين: $x = 1400 - 2y$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة $(x ; y)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "600",
+        "y": "400"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن مجهول معامله $1$ أو $-1$ في إحدى المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عبّر عنه بدلالة المجهول الآخر، ثم عوّضه في المعادلة الأخرى."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
+        }
+      ],
+      "feedback": {
+        "correct": "$3(1400 - 2y) + y = 2200$ أي $-5y = -2000$ ، ومنه $y = 400$ و $x = 600$ : المغطاة بـ 600 DA والمكشوفة بـ 400 DA.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

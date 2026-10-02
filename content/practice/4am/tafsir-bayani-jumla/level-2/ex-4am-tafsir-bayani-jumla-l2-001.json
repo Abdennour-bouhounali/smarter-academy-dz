@@ -1,0 +1,77 @@
+{
+  "id": "ex-4am-tafsir-bayani-jumla-l2-001",
+  "lessonCode": "tafsir-bayani-jumla",
+  "level": 2,
+  "metadata": {
+    "title": "نشاط 5 — شرط المبلغ",
+    "estimatedMinutes": 4,
+    "tags": [
+      "y = ax + b",
+      "قسمة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-5",
+      "page": 79,
+      "section": "أنشطة",
+      "number": 5
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 79): المبلغ في صندوق القسم يُترجم بالمعادلة $100x + 200y = 5000$ ، حيث $x$ عدد قطع 100DA و $y$ عدد قطع 200DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعادلة $100x + 200y = 5000$ تُكتب على الشكل $y = ax + b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$y = -0{,}5x + 25$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$y = -100x + 5000$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-ISHARA-Y"
+        },
+        {
+          "id": "C",
+          "content": "$y = 0{,}5x + 25$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-ISHARA-Y"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المعادلة من الشكل $ax + by = c$ : نريد أن يبقى $y$ وحده في طرف."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انقل حدّ $x$ إلى الطرف الثاني مع تغيير إشارته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم كل الحدود على معامل $y$ ، ثم قارن بالاقتراحات."
+        }
+      ],
+      "feedback": {
+        "correct": "$100x + 200y = 5000$ تعطي $y = -0{,}5x + 25$ : ننقل حدّ $x$ مع تغيير إشارته ثم نقسم على معامل $y$.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

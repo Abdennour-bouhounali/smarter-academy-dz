@@ -1,0 +1,58 @@
+{
+  "id": "ex-4am-tarrid-khatti-l3-005",
+  "lessonCode": "tarrid-khatti",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — المصعد الهوائي",
+    "estimatedMinutes": 3,
+    "tags": [
+      "سرعة",
+      "وحدات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P3",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "تسير مقصورة مصعد هوائي بسرعة ثابتة 5m/s ، فالمسافة $d$ (m) بدلالة المدة $t$ (s) هي $d = 5t$ . طول الحبل 2,4km."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم دقيقة تستغرق الرحلة كلها؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حوّل 2,4km إلى أمتار."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$5t = 2400$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حوّل الثواني إلى دقائق."
+        }
+      ],
+      "feedback": {
+        "correct": "$t = \\dfrac{2400}{5} = 480$ s أي 8 دقائق.",
+        "incorrect": "انتبه للوحدات: m و s ثم الدقائق."
+      }
+    }
+  ]
+}

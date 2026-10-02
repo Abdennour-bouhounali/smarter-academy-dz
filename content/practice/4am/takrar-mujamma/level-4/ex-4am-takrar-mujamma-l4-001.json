@@ -1,0 +1,105 @@
+{
+  "id": "ex-4am-takrar-mujamma-l4-001",
+  "lessonCode": "takrar-mujamma",
+  "level": 4,
+  "metadata": {
+    "title": "طرائق — أعمار عمال مؤسسة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "فئات"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-cumul",
+      "page": 95,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 95): مدرّج تكراري لأعمار 200 عامل في فئات سعتها 5 من 25 إلى 60، تكراراتها بالترتيب: 20 ، 30 ، 40 ، 20 ، 60 ، 20 ، 10."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "التواتر المجمع الصاعد للفئة $35 \\le a < 40$ :",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة أو كسر",
+      "expectedAnswer": "0,45",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-TAWATUR-BILA-QISMA",
+          "value": "90"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولا التكرار الكلي: مجموع كل التكرارات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التواتر المجمع هو التكرار المجمع مقسوما على التكرار الكلي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع التكرارات المعنية ثم اقسم المجموع على التكرار الكلي، واختزل الكسر إن أمكن."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{20 + 30 + 40}{200} = 0{,}45$",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "التواتر المجمع النازل للفئة $50 \\le a < 55$ :",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة أو كسر",
+      "expectedAnswer": "0,15",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-TAWATUR-BILA-QISMA",
+          "value": "30"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولا التكرار الكلي: مجموع كل التكرارات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التواتر المجمع هو التكرار المجمع مقسوما على التكرار الكلي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع التكرارات المعنية ثم اقسم المجموع على التكرار الكلي، واختزل الكسر إن أمكن."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{20 + 10}{200} = 0{,}15$",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    }
+  ]
+}

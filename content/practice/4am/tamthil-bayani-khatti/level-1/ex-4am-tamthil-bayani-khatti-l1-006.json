@@ -1,0 +1,143 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l1-006",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — ما نقرؤه على نقطة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "قراءة بيانية",
+      "ترميز"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-khatti_P2",
+      "modelledOn": "method-read"
+    }
+  },
+  "statement": {
+    "content": "المستقيم (D) أدناه يمثّل دالة خطية $f$ ، ويشمل النقطة $B(3 ; 6)$ .",
+    "visual": {
+      "range": {
+        "xMin": 0,
+        "xMax": 6,
+        "yMin": 0,
+        "yMax": 12
+      },
+      "unit": 50.0,
+      "unitY": 16.6667,
+      "functions": [
+        {
+          "id": "d",
+          "a": 2.0,
+          "b": 0,
+          "label": "(D)",
+          "tone": "indigo"
+        }
+      ],
+      "points": [
+        {
+          "id": "p0",
+          "x": 3.0,
+          "y": 6.0,
+          "name": "B"
+        }
+      ],
+      "xStep": 1,
+      "yStep": 2,
+      "frozen": true,
+      "ariaLabel": "معلم فيه المستقيم (D) يشمل O و B(3 ; 6)",
+      "caption": false
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$f(3) =$",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 3/4)",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ من العدد على محور الفواصل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اصعد (أو انزل) عموديًا حتى المستقيم، ثم اذهب أفقيًا إلى محور التراتيب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الصورة هي ترتيب نقطة المستقيم التي فاصلتها هذا العدد."
+        }
+      ],
+      "feedback": {
+        "correct": "ترتيب B التي فاصلتها 3 هو 6.",
+        "incorrect": "اقرأ ترتيب النقطة التي فاصلتها 3."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "أيّ كتابة صحيحة؟",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$f(3) = 6$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$f(6) = 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-FASILA-TARTIB"
+        },
+        {
+          "id": "C",
+          "content": "$f(0) = 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-BIDUN-O"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ من العدد على محور الفواصل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اصعد (أو انزل) عموديًا حتى المستقيم، ثم اذهب أفقيًا إلى محور التراتيب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الصورة هي ترتيب نقطة المستقيم التي فاصلتها هذا العدد."
+        }
+      ],
+      "feedback": {
+        "correct": "الفاصلة 3 صورتها الترتيب 6.",
+        "incorrect": "في $f(x) = y$ الفاصلة بين القوسين والترتيب في الطرف الثاني."
+      }
+    }
+  ]
+}

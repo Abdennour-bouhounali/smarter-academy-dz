@@ -1,0 +1,111 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l2-009",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — زيت الزيتون",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مقدار بدلالة آخر",
+      "الكتلة الحجمية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tatbiqat-tanasub_P3",
+      "modelledOn": "know-4"
+    }
+  },
+  "statement": {
+    "content": "الكتلة الحجمية لزيت الزيتون $0{,}92kg/L$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الكتلة $m$ (بالكيلوغرام) لحجم $V$ (باللتر) من هذا الزيت:",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$m = 0{,}92V$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$m = \\dfrac{V}{0{,}92}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQADIR-QISMA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$m = 0{,}92 + V$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-AFFINE"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المقدار المركّب الثابت (سرعة، كتلة حجمية، استطاعة، مضاعف) هو معامل دالة خطية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المقدار المطلوب بدلالة الآخر: $d = v \\times t$ ، $m = \\rho \\times V$ ، $E = P \\times t$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض بالقيمة المعطاة، أو حلّ المعادلة إذا كان المجهول هو المقدار الآخر، ثم تحقّق من الوحدة."
+        }
+      ],
+      "feedback": {
+        "correct": "من $\\dfrac{m}{V} = 0{,}92$ : $m = 0{,}92V$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "كتلة $5L$ من هذا الزيت (بالكيلوغرام):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "4,6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المقدار المركّب الثابت (سرعة، كتلة حجمية، استطاعة، مضاعف) هو معامل دالة خطية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المقدار المطلوب بدلالة الآخر: $d = v \\times t$ ، $m = \\rho \\times V$ ، $E = P \\times t$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض بالقيمة المعطاة، أو حلّ المعادلة إذا كان المجهول هو المقدار الآخر، ثم تحقّق من الوحدة."
+        }
+      ],
+      "feedback": {
+        "correct": "$m = 0{,}92 \\times 5 = 4{,}6kg$ .",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    }
+  ]
+}

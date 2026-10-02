@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l2-010",
+  "lessonCode": "mushkilat-jumla",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — باقات الأسبوع واليوم",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ترييض",
+      "هاتف"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P2",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "في محل هاتف، اشترت سلمى باقتين أسبوعيتين و 3 باقات يومية بـ 550 DA، واشترى أخوها باقة أسبوعية واحدة و 3 باقات يومية بـ 350 DA. نسمّي $x$ ثمن الباقة الأسبوعية و $y$ ثمن الباقة اليومية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم المشكلة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} 2x + 3y = 350 \\\\ x + 3y = 550 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} 2x + 3y = 550 \\\\ x + 3y = 350 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x + y = 5 \\\\ x + y = 4 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب ما دفعته سلمى."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل باقة تُضرب في ثمنها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم ما دفعه أخوها."
+        }
+      ],
+      "feedback": {
+        "correct": "سلمى $2x + 3y = 550$ وأخوها $x + 3y = 350$ .",
+        "incorrect": "لا تعدّ الباقات: المعلومتان مبلغان."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما ثمن الباقتين؟ اكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "200",
+        "y": "50"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الباقات اليومية الثلاث في الشراءين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح المعادلتين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم احسب $y$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 200$ ثم $3y = 150$ أي $y = 50$ .",
+        "incorrect": "أكمل حتى الثنائية."
+      }
+    }
+  ]
+}

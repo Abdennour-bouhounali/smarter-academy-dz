@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-mafhum-jumla-l4-006",
+  "lessonCode": "mafhum-jumla",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — تذاكر الحافلة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حالات خاصة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mafhum-jumla_P4",
+      "modelledOn": "know-cases"
+    }
+  },
+  "statement": {
+    "content": "في حافلة الملعب $x$ مناصرًا بالتذكرة الكاملة و $y$ بالتذكرة المخفّضة، ومجموعهم 40. ادّعى السائق أنّ كل واحد دفع 3 تذاكر صغيرة وأنّ مجموعها 100: $\\begin{cases} x + y = 40 \\\\ 3x + 3y = 100 \\end{cases}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هذه الجملة ...",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لها حل وحيد",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-HALAT"
+        },
+        {
+          "id": "B",
+          "content": "ليس لها حلول",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "لها عدد غير منته من الحلول",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-HALAT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب طرفي المعادلة الأولى في 3."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على $3x + 3y = 120$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل يساوي $3x + 3y$ العددين 120 و 100 معًا؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$3x + 3y = 120$ و $3x + 3y = 100$ معًا مستحيل: ليس لها حلول.",
+        "incorrect": "قارن $3(x + y)$ في المعادلتين."
+      }
+    }
+  ]
+}

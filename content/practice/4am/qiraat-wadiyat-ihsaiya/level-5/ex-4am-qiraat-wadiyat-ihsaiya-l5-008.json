@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l5-008",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — مخطط مضلّل",
+    "estimatedMinutes": 4,
+    "tags": [
+      "قراءة مخطط",
+      "تدريج"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "في مخطط لمشاهدات فيديو، المحور العمودي يبدأ من 900 لا من 0. عمود الفيديو A يصل إلى 1000 وعمود الفيديو B إلى 1100، فيبدو B ثلاث مرّات أطول من A."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما الصحيح؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "B أكثر مشاهدة من A بنحو 10% فقط",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "B ثلاث مرّات أكثر مشاهدة من A",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-QIRAA-MUKHATTAT"
+        },
+        {
+          "id": "C",
+          "content": "A و B متساويان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-QIRAA-MUKHATTAT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ القيم على التدريج."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المحور لا يبدأ من 0."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن 1100 و 1000."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{1100}{1000} = 1{,}1$ : زيادة 10% فقط؛ الطول المرئي مضلّل لأن المحور يبدأ من 900.",
+        "incorrect": "نقرأ التدريج قبل مقارنة الأطوال."
+      },
+      "difficulty": 5
+    }
+  ]
+}

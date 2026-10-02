@@ -1,0 +1,94 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l5-005",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — مجموع صورتين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "معامل",
+      "صورة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-khatti_P1",
+      "modelledOn": "now-69"
+    }
+  },
+  "statement": {
+    "content": "$f$ دالة خطية حيث $f(3) + f(5) = 12$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "معامل $f$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 3/4)",
+      "expectedAnswer": "1,5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض: $3a + 5a = 12$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع: $8a = 12$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على 8."
+        }
+      ],
+      "feedback": {
+        "correct": "$8a = 12$ ومنه $a = 1{,}5$ .",
+        "incorrect": "اكتب كل صورة بدلالة $a$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ترتيب نقطة التمثيل التي فاصلتها $-4$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 3/4)",
+      "expectedAnswer": "-6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد بالدالة الخطية $x \\longmapsto ax$ هي جداء هذا العدد في المعامل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب العدد في المعامل مع الانتباه إلى الإشارة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "النقطة التي فاصلتها هذا العدد وترتيبها صورته تنتمي إلى التمثيل."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}5 \\times (-4) = -6$ .",
+        "incorrect": "احسب المعامل أولًا."
+      }
+    }
+  ]
+}

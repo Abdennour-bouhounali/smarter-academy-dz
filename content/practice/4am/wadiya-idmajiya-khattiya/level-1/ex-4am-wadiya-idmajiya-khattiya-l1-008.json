@@ -1,0 +1,78 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l1-008",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 8 — خفض بـ 10%",
+    "estimatedMinutes": 2,
+    "tags": [
+      "نسبة مئوية",
+      "دالة خطية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 74,
+      "section": "أؤكّد تعلّماتي",
+      "number": 8
+    }
+  },
+  "statement": {
+    "content": "في كل حالة مما يلي اختر الإجابة الصحيحة، وبرّر اختيارك."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "يمكن ترجمة خفض مقدار بـ 10% بالدّالة الخطية :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$f : x \\longmapsto 0{,}9x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$g : x \\longmapsto x - 10$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-JAM"
+        },
+        {
+          "id": "C",
+          "content": "$h : x \\longmapsto \\dfrac{10}{100}x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد الخفض، كم في المئة يبقى من المقدار؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$100\\% - 10\\%$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نضرب المقدار في النسبة الباقية."
+        }
+      ],
+      "feedback": {
+        "correct": "يبقى 90% من المقدار: $\\left(1 - \\dfrac{10}{100}\\right)x = 0{,}9x$.",
+        "incorrect": "الخفض بنسبة لا بعدد ثابت، وما يبقى ليس مقدار الخفض."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    }
+  ]
+}

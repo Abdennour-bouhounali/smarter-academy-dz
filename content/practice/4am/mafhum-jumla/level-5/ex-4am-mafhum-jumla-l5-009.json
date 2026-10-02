@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-mafhum-jumla-l5-009",
+  "lessonCode": "mafhum-jumla",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — مجموعة دردشة القسم",
+    "estimatedMinutes": 5,
+    "tags": [
+      "قبل وبعد",
+      "ترجمة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mafhum-jumla_P2",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "في مجموعة دردشة القسم 28 تلميذا: $x$ ولدًا و $y$ بنتًا. غادر 4 أولاد المجموعة، فأصبح عدد البنات ضعف عدد الأولاد الباقين."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ جملة تترجم هذه الوضعية؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 28 \\\\ y = 2(x - 4) \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 28 \\\\ 2y = x - 4 \\end{cases}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x + y = 28 \\\\ y = 2x - 4 \\end{cases}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد المغادرة يبقى $x - 4$ ولدًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "البنات ضعف الأولاد الباقين: $y = 2 \\times (x - 4)$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعادلة الأولى عدد التلاميذ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + y = 28$ و $y = 2(x - 4)$ .",
+        "incorrect": "الضعف يشمل $x - 4$ كلها: $2(x - 4)$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما هي الثنائية $(x ; y)$ : عدد الأولاد ثم عدد البنات قبل المغادرة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية $(x ; y)$ : العدد الأول ثم الثاني (عدد صحيح أو كسر مثل 2/5)",
+      "expectedAnswer": {
+        "x": "12",
+        "y": "16"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $y = 2(x - 4)$ في $x + y = 28$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x + 2x - 8 = 28$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $x$ ثم $y$ ، وتحقّق في النص."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x = 36$ أي $x = 12$ و $y = 16$ : بعد المغادرة 8 أولاد و $16 = 2 \\times 8$ .",
+        "incorrect": "تحقّق من الشرطين في النص."
+      }
+    }
+  ]
+}

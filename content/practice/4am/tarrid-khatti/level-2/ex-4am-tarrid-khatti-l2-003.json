@@ -1,0 +1,93 @@
+{
+  "id": "ex-4am-tarrid-khatti-l2-003",
+  "lessonCode": "tarrid-khatti",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 28 (ص 75) — الدرّاج",
+    "estimatedMinutes": 3,
+    "tags": [
+      "قراءة بيانية",
+      "سرعة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-28",
+      "page": 75,
+      "section": "أتعمّق",
+      "number": 28
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 75): تمثيل المسافة المقطوعة لدرّاج بدلالة المدة خط منكسر من $O$ إلى $(1 ; 40)$ ثم $(2 ; 70)$ ثم $(3 ; 130)$ ثم $(4 ; 155)$ (المدة بالساعة، المسافة بالكيلومتر)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما المسافة الكلية المقطوعة (km)؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "155",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر آخر نقطة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ترتيبها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المسافة على محور التراتيب."
+        }
+      ],
+      "feedback": {
+        "correct": "آخر نقطة $(4 ; 155)$ : 155km.",
+        "incorrect": "المسافة ترتيب آخر نقطة، لا فاصلتها."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما سرعة الدراج (km/h) في المرحلة الأولى؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "40",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المرحلة الأولى من $O$ إلى $(1 ; 40)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مستقيم يشمل المبدأ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "40km في ساعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$d = 40t$ في المرحلة الأولى: 40km/h.",
+        "incorrect": "المرحلة الأولى وحدها."
+      }
+    }
+  ]
+}

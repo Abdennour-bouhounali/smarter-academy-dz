@@ -1,0 +1,116 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l5-002",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — فيديو انتشر",
+    "estimatedMinutes": 5,
+    "tags": [
+      "متوسط",
+      "وسيط",
+      "إعادة الحساب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_majdulat-ihsaiya_P2",
+      "modelledOn": "ex-7"
+    }
+  },
+  "statement": {
+    "content": "مشاهدات خمسة فيديوهات لنادي القسم محجوزة في A1:E1 : 120 ، 150 ، 130 ، 140 ، 2000 (الأخير انتشر)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد الذي يُظهره ⁦=MOYENNE(A1:E1)⁩ :",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "508",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT",
+          "value": "140"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجموع 2540."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عدد القيم 5."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$2540 \\div 5$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{2540}{5} = 508$ .",
+        "incorrect": "اجمع الخمس ثم اقسم على 5."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "أيّ مؤشّر يصف مشاهدات فيديو «عادي» أفضل، ولماذا؟",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "المتوسط 508: يأخذ كل القيم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-MUTAWASSIT"
+        },
+        {
+          "id": "B",
+          "content": "المدى 1880: الفرق بين الأكبر والأصغر",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MADA-AKBAR-QIMA"
+        },
+        {
+          "id": "C",
+          "content": "الوسيط 140: القيمة 2000 تجذب المتوسط ولا تحرّك الوسيط",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كم فيديو تجاوز 508؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "فيديو واحد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "القيمة الكبيرة جدًّا في الطرف."
+        }
+      ],
+      "feedback": {
+        "correct": "أربعة فيديوهات من خمسة تحت 508 : الوسيط 140 يصف الفيديو العادي، والقيمة 2000 جذبت المتوسط.",
+        "incorrect": "قيمة كبيرة جدًّا تحرّك المتوسط لا الوسيط."
+      }
+    }
+  ]
+}

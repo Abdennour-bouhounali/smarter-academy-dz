@@ -1,0 +1,66 @@
+{
+  "id": "ex-4am-dala-khattiya-l3-003",
+  "lessonCode": "dala-khattiya",
+  "level": 3,
+  "metadata": {
+    "title": "نشاط 1 — السعر الذي يصبح 1,4DA",
+    "estimatedMinutes": 4,
+    "tags": [
+      "عدد صورته معلومة",
+      "عشري"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-1",
+      "page": 66,
+      "section": "أنشطة",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 66، بعد تصحيح خطأ مطبعي: 20%): $f(x) = 0{,}8x$ ترفق بسعر سلعة قبل التخفيض سعرها بعده."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عيّن العدد الذي صورته $1{,}4$ بالدالة $f$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "1.75",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المطلوب هنا عدد علمت صورته، لا صورة عدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعادلة $ax = $ الصورة المعطاة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم طرفي المعادلة على المعامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}8 \\times x = 1{,}4$ ، إذن $x = 1{,}4 \\div 0{,}8 = 1{,}75$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-SURA-SABIQ",
+          "value": "1.12"
+        }
+      ]
+    }
+  ]
+}

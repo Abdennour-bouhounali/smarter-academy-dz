@@ -1,0 +1,59 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l5-007",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — مكعب الألمنيوم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الكتلة الحجمية",
+      "وضعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tatbiqat-tanasub_P2",
+      "modelledOn": "act-6"
+    }
+  },
+  "statement": {
+    "content": "مكعب معدني طول حرفه 2cm وكتلته 21,6g."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الكتلة الحجمية للمعدن (بالغرام لكل سنتيمتر مكعب):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "2,7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مقدار حاصل القسمة: السرعة مسافة على مدة، والكتلة الحجمية كتلة على حجم، والتدفق حجم على مدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المقدارين بالوحدتين المطلوبتين قبل القسمة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم، ثم اكتب النتيجة مع وحدتها المركّبة."
+        }
+      ],
+      "feedback": {
+        "correct": "حجم المكعب $2^3 = 8cm^3$ ، و $\\dfrac{21{,}6}{8} = 2{,}7g/cm^3$ (الألمنيوم).",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    }
+  ]
+}

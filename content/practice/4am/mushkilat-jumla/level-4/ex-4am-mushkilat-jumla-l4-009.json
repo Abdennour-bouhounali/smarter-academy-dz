@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l4-009",
+  "lessonCode": "mushkilat-jumla",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — سارة وأخوها",
+    "estimatedMinutes": 5,
+    "tags": [
+      "ترييض",
+      "أعمار"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P1",
+      "modelledOn": "ex-26"
+    }
+  },
+  "statement": {
+    "content": "منذ 5 سنوات كان عمر سارة ضعف عمر أخيها، واليوم مجموع عمريهما 37 سنة. نسمّي $x$ عمر سارة و $y$ عمر أخيها اليوم."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعلومة «منذ 5 سنوات كان عمر سارة ضعف عمر أخيها» تُترجم بـ:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x - 5 = 2(y - 5)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x - 5 = 2y - 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
+        },
+        {
+          "id": "C",
+          "content": "$2(x - 5) = y - 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "منذ 5 سنوات، كم كان عمر كل واحد؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل واحد كان أصغر بـ 5."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "«الضعف» يخصّ عمر الأخ كله آنذاك."
+        }
+      ],
+      "feedback": {
+        "correct": "عمر سارة آنذاك ضعف عمر أخيها آنذاك، والحل $(23 ; 14)$ .",
+        "incorrect": "الأخ كان أصغر بـ 5 أيضا: الضعف يخصّ $y - 5$ كله."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العمران اليوم: اكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "23",
+        "y": "14"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من المعادلة الثانية $x = 2y - 5$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض في $x + y = 37$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحصل على $3y = 42$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 14$ و $x = 23$ ؛ منذ 5 سنوات $18 = 2 \\times 9$ .",
+        "incorrect": "أكمل حتى الثنائية."
+      }
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l2-009",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 2,
+  "metadata": {
+    "title": "تسعيرة بمبلغ ثابت",
+    "estimatedMinutes": 3,
+    "tags": [
+      "دالة خطية",
+      "نمذجة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P2",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "في حديقة ألعاب: الدخول $200$ DA ثم $100$ DA لكل لعبة. نسمّي $x$ عدد الألعاب و $P(x)$ المبلغ المدفوع."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل $P$ دالة خطية للعدد $x$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا، لأنّ $P(x) = 100x + 200$ و $P(0) = 200 \\neq 0$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نعم، معاملها 100",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TANASUB-MABLAGH-THABIT"
+        },
+        {
+          "id": "C",
+          "content": "نعم، معاملها 300",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-NAMUDHAJ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب $P(x)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ماذا يدفع من لا يلعب أي لعبة؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الدالة الخطية صورة 0 بها 0."
+        }
+      ],
+      "feedback": {
+        "correct": "$P(x) = 100x + 200$ ليست من الشكل $ax$.",
+        "incorrect": "مبلغ الدخول الثابت يجعل الوضعية غير تناسبية."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 2
+    }
+  ]
+}

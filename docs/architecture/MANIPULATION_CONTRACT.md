@@ -59,10 +59,14 @@ manipulations/
 │   ├── BrickWall.jsx + brickLayout.js         a length built in bricks of n (walls of lesson 3)
 │   ├── RibbonStrip.jsx                        a length drawn as a notched ribbon (the tailor's workshop)
 │   ├── DivisionRoles.jsx                      b · q · r named in the scene's words (partition vs quotition, §2ter)
+│   ├── LabFold.jsx                            « إخفاء / إظهار » for a secondary block of a large lab (§8bis)
+│   ├── MovablePanel.jsx + movablePanel.js     a panel floating on the scene that the student moves aside (§8bis)
 │   └── ContextScenes.jsx                      the landscape vignettes of each world, for `MissionBrief.visual`
 ├── divisibility/               the 10 types of unit 1 (+ teamFormation.js, pure geometry)
 ├── roots/                      the 3 types of unit 2 « الحساب على الجذور » (2026-09-30) — §2quater
-└── algebra/                    the 2 types of unit 3 « الحساب الحرفي » (2026-10-01) — §2quinquies
+├── algebra/                    the 2 types of unit 3 « الحساب الحرفي » (2026-10-01) — §2quinquies
+├── equations/                  the 4 types of unit 4 « معادلات ومتراجحات » (2026-10-01) — §2sexies
+└── systems/                    the 3 types of unit 5 « جمل معادلتين » (2026-10-01) — §2septies
 ```
 
 `divisibility/DivisorExplorerBooks.jsx` (`divisor-explorer-books`, Module 1 of
@@ -209,6 +213,181 @@ decoration of its world — a ball that bounces on the locker-room floor (balanc
 onto the line when the pitch collapses (vanishing pitch), Younes's phone that shakes or a linesman's flag at the
 bracket (ray), a birthday candle or the pool's ripples (race): `aria-hidden`, `tabIndex={-1}`, never a lab state,
 frozen by reduced motion — the exception of §2quinquies, not a licence to animate mathematics.
+
+## 2septies. The system laboratories (unit 5, 2026-10-01)
+
+Unit 5 « جمل معادلتين من الدرجة الأولى بمجهولين » added three types by the §7ter recipe, in `manipulations/systems/`
+(logic `logic/<name>.js` + tests, render test `systems/<name>.render.test.jsx`, strings `lesson.json ›
+manipulation.pairScoreboard | eliminationCards | storyModeller`). All three compute through ONE exact module,
+`packages/core/arithmetic/linearSystem.js` (on `linear.js` fractions: `eq2('2(x - 5) = y - 3')`, `system`,
+`classify` → unique / none / infinite, `pairHolds`, `isolate`, `substitute`, `scale` refusing ×0, `addEqs`,
+`eliminated`, `eliminationFactors`, `eqLatex`, `pairLatex`; `linearSystem.test.js` sweeps every system of the
+textbook). The Math Lab keeps its own engine (`features/mathlab/tools/algebra/systems.js`, another bundle). A level's
+jumla is written `numbers: { system: 'eq1|eq2' }`; `levels.test.js` measures its demand (non-unit coefficients,
+parentheses, decimals, a non-integer solution, size of constants). All three are **manual** (§6bis), report through
+`state.report`, carry a decorative layer of their world, and were the first labs built and MEASURED under the
+one-screen rule (§8bis): e2e `apps/web/e2e/lesson-kit/4am-jumal-muadalatayn.mjs` checks figure + controls within the
+viewport at 1280 × 800, 1366 × 768, 390 × 844 and 320 × 640, both levels.
+
+| Type | The hand holds | Resistance | Discovery (contrast) | Lessons |
+|---|---|---|---|---|
+| `pair-scoreboard` (`PairScoreboard.jsx`) | BOTH numbers of the pair, one stretch handle each (−/+ and keyboard); « اقلب » swaps the pair | two gauges, one per equation, read the substitution live in the textbook's form (`2(13 − 5) = 16`, `19 − 3 = 16`); « هذه الثنائية حل للجملة » refused while only one lights (`onlyOne` / `none`); a swapped pair is a refused trial | an accepted pair AND a one-gauge trial → « في آن واحد »; the formal phase shows the system written, reduced, its pair and the order rule | L1 (`x+y=10\|3x+y=22` season card `football`; `x+y=32\|2(x-5)=y-3` the textbook's agents `staff`, 5 men and 3 women retiring greyed; the تحدّ `coins`) |
+| `elimination-cards` (`EliminationCards.jsx`) | two equation CARDS in tiles: pull an unknown's tiles into the tray to isolate it, then CARRY the expression onto that unknown's tiles on the other card (التعويض); stretch ×k (−6…6, both sides together) and lay one card on the other (الجمع) | the expression on its own card is refused with what it would give (« 7 = 7 »); stacking when nothing cancels is refused with the sum written; ×0 wipes the card and is refused; the found value is carried back and the lab ends only with (x ; y) checked in both equations | discovery opens once BOTH methods (the textbook's student 1 and student 2) gave the same pair | L2 (`x+y=10\|x-y=2`; act-2 `2x+y=7\|3x-2y=4,2`, world `snack`) |
+| `story-modeller` (`StoryModeller.jsx`) | the textbook's 5-step table as stages: carry x / y onto the story's nouns (`named` pre-places them), the story's numbers (chips, plus a reusable « 1 ») into `□x + □y = □`, choose التعويض / الجمع (lines from `linearSystem`), carry the values to the story's gates | « تحقّق » replays each fact with the student's equation and refuses in the story's words (`moneyInCount` = MISC-JUMLA-TARJAMA, `swapped`, `totalAsCoef`, `coefAsTotal`, `incomplete`…); « انتهيت » after one unknown refused (MISC-JUMLA-NISF-HALL); the REPLAY flags a non-natural count | a refused model beside the accepted one; swapped values still give 140 visitors but the money total betrays them → only the second fact orders the pair | L3 (stadium derby `x+y=20\|300x+150y=4800`; museum act-3 `x+y=140\|300x+150y=30300`), synthesis (`theme="party"`, two `money` facts 150x + 150y = 11 250 and 24x + 30y = 2 100) |
+
+`story-modeller` props (header of the component; the synthesis keeps its own in `content/textbook.js › LAB` and mounts
+them in `lab.render.test.jsx`): `system`, `theme` (`stadium` | `museum` | `party`), `unknowns=[{ id, noun }]`, `named`,
+`facts=[{ quote, kind }]` (`kind` never tied to the order), `chips=[{ value, label }]`, `story`, `answer={ options,
+correct }`, `startWith` (`model` | `solve`), `onModel({ system, tex, unknowns })`, `onSolved({ x, y, method })`,
+`onTrial`, `onFinished`. Missing props fall back to the theme's built-in story; a target number no chip carries, or a
+system without a unique solution, throws at render. On phones the chip reserve is a 3-column grid (`Reserve grid`).
+
+**DOM contracts** (e2e above): `[data-pair-scoreboard][data-world][data-x][data-y][data-solved][data-layout]`,
+`[data-pair-glance]` (the one-sight block), `[data-pair-handle=x|y]`, `[data-pair-less|more=x|y]`, `[data-gauge=1|2][data-ok]`,
+`[data-pair-claim]`, `[data-pair-refused=onlyOne|none]`, `[data-pair-trial][data-ok1][data-ok2][data-swapped]`, `[data-pair-cell]`;
+`[data-elimination-cards][data-method=""|sub|add][data-stage=cards|one|back|done]`, `[data-eq-card=1|2][data-scale]`,
+`[data-eq-tile=x|y|c]`, `[data-scale-handle=n]`, `[data-drag-source="card:n"|"iso:n:v"|"expr:n"|"val"]`,
+`[data-drop-zone="card:n"|"tile:n:v"|"tray"|"back:n"]`, `[data-ec-refused]`, `[data-ec-current]`, `[data-ec-line]`,
+`[data-ec-annihilate]`, `[data-ec-result][data-x][data-y]`; `[data-story-modeller][data-theme][data-stage=name|model|solve|verify|answer]`,
+`[data-sm-core]` (the measured instrument), `[data-sm-noun]`, `[data-drag-source="unk:x"|"chip:<k>"|"val:x"]`,
+`[data-drop-zone="noun:<id>"|"slot:<1|2>:<a|b|c>"|"gate:<id>"]`, `[data-sm-check]`, `[data-sm-verdict]`, `[data-sm-row][data-reason]`,
+`[data-sm-method]`, `[data-sm-line]`, `[data-sm-replay][data-ok]`, `[data-sm-crowd][data-cols]`, `[data-sm-answer]`; all three
+`[data-deco]`, `[data-lab-fold]`, and `story-modeller`'s replay verdict in a `[data-movable-panel]`.
+
+## 2octies. The proportionality laboratories (unit 6, 2026-10-02)
+
+Unit 6 « الدالة الخطية والتناسبية » (ميدان d'affichage « ميدان التناسبية والدوال ») added four types by the §7ter
+recipe, in `manipulations/proportion/` (logic `logic/<name>.js` + tests, render test `proportion/<name>.render.test.jsx`,
+strings `lesson.json › manipulation.ratioRide | linearMachine | originLine | percentTag`). All four compute through ONE
+exact module, `packages/core/arithmetic/proportional.js` (on `linear.js` fractions: `tableRatios`, `commonRatio`,
+`fourthProportional`, `coefficientFrom` refusing m = 0, `image`, `antecedent`, `onLine`, `direction`,
+`percentMultiplier(t, take|increase|decrease)`, `chainMultiplier`, `percentChange`, `rule('2x-1')`, `isLinear`,
+`linearityWitnesses`). All four are **manual** (§6bis), report through `state.report`, carry a DECORATIVE layer of their
+world (`aria-hidden`, out of the keyboard path, still under reduced motion, never carrying an answer) on top of the
+GENUINE manipulation (owner request: both), and are measured one-screen (§8bis) at the four viewports, both levels, by
+`apps/web/e2e/lesson-kit/4am-tanasubiya-dala-khattiya.mjs`. New worlds in `VISUAL_THEMES`: `scooter`, `souk`,
+`cablecar`, `spring`, `mall`, `tank`.
+
+| Type | The hand holds | Resistance | Discovery (contrast) | Lessons |
+|---|---|---|---|---|
+| `ratio-ride` (`RatioRide.jsx`) | the ride DURATION x: drag the scooter along the promenade's minute ruler (−/+, arrows, tap); « سجّل الرحلة » records (x ; y) into the student's OWN table, ratio row y ÷ x exact | judging « جدول تناسبية » / « ليس … » refused with two different quotients or the column (0 ; 50); one column judges nothing; the ghost column filled by × a refused with its quotient; y = □ × x refused by replaying a column | مبتدئ `15x` (ratios shown): judged table + ghost column; متقدم `15x\|10x+50` (ratio row hidden until asked): both plans judged, y = 15 × x written; « y − x constant » refuted by the student's own columns | L1 tanasub-muamil (`scooter`) |
+| `linear-machine` (`LinearMachine.jsx`) | the INPUT x: number cards dragged into the hopper (tap-tap, keyboard, a blank card stretched), and the dial a of a witness machine x ⟼ a·x; the table x / f(x) / a·x turns green / red live | « f(x) = a·x » refused with a column where a·x ≠ f(x), or the machine's own witness (f(0) ≠ 0, a doubled input); (0 ; 0) on the dial refused (« a × 0 = 0 for every a ») ; « no a » refused until the table holds a witness | مبتدئ `0,8x` (the Eid discount, act-1 corrected to 20 %): a from one non-zero pair, then backwards (6 → 7,5 ; 1,4 → 1,75); متقدم `x^2\|2x\|2x-1` (act-2): classify the three machines, « f(0) = 0 is enough » refuted by x² | L2 dala-khattiya (`souk`) |
+| `origin-line` (`OriginLine.jsx`) | draw: a pin snapped to an exact grid (drag, tap, arrows + Enter); pivot / fit: the slope a (grab the line or the slider strip); read: the abscissa or ordinate of a probe on an axis | O shakes and refuses to move (f(0) = 0); a point off the line refused with its calculation and gap (`0,5 × 4 = 2 وليس 3`); fit counts « يمرّ بـ n من m » | draw: two accepted points with different x; read: one image and one antecedent (or the `reads` targets); pivot: one rising and one falling line (sign of a); fit: a line through all the points (or « no line through O fits ») | L3 tamthil-bayani-khatti (`cablecar`; the GeoGebra slider of p. 76 as `pivot`), L5 tarrid-khatti (`fit`, `cablecar` / `spring`), synthesis (`read` + `cap`, `budget`) |
+| `percent-tag` (`PercentTag.jsx`) | the signed t % at the end of the « بعد » bar (stretch, track tap, ±1 %, arrows), زيادة / تخفيض, the article; in a chain the BET on the overall change, then each step | the additive bar « x + t » never meets the multiplied bar (MISC-NISBA-JAM, swept t = −50…50); building a chain refused before a bet; the « −15 % » bet refused by the water level (multipliers multiply); a full tank refuses to overflow | single (`1200`, `+5`, act-5): same t on a second article, y ÷ x constant → x ⟼ 1,05x; chain (`30`, `-30\|+15`, the tank of p. 71): 0,805 → −19,5 %, and −20 % / +20 % → 0,96 | L4 tatbiqat-tanasub (`mall`, `tank`) |
+
+**`origin-line` props** (the unit's shared lab; L5 and the synthesis keep theirs in `content/textbook.js › LAB` and mount
+them in `lab.render.test.jsx`): `a` (required for draw / read; exact writing, `"0,5"`, `"-3,2"`, `"9/4"`), `mode`
+(`draw` | `read` | `fit` | `pivot`), `points` (`"2:0,6|3:0,9"` — fit data, or given points elsewhere), `reads`
+(`"x:4|y:3,5"`), `cap` (a dashed horizontal budget line; the crossing is shown exactly, `10000/19 ≈ 526,32`),
+`xMin xMax yMin yMax` (strings; O always forced into the window; graduations chosen so every required value is reachable
+exactly), `theme` (`cablecar` = equal units on both axes; `spring`, `budget` = one unit per axis — `budget` is a lab
+world, not a `VISUAL_THEMES` entry: a resource declares `experience.theme: 'cablecar'`), `showRule`, `title lead mission
+level levels`, `onTrial` (`{ kind: 'point', ok, x, y, gap }` | `{ kind: 'read-x' | 'read-y', x, y, capHit }` |
+`{ kind: 'line', a, dir, hits }`), `onFinished({ mode, a })`. A content defect throws at render (draw/read without
+`a`, fit without `points`, read with a = 0). On the other workspace level only `a`, `mode` and `reads` apply.
+
+`ratio-ride` props: `plans`, `theme`, `onTrial({ x, columns, plans, rows })`, `onJudged({ id, says, ok })`. `percent-tag`
+props: `price`, `steps` (`"+5"`, `"-30|+15"`, |t| ≤ 50), `theme` (`mall` | `tank`). `linear-machine` props: `rules`
+(`proportional.rule` writings), `theme`. Each component header carries its DNA design sheet and full DOM contract.
+
+**DOM roots** (e2e): `[data-ratio-ride][data-plans][data-x][data-columns][data-layout][data-judged]` (`[data-ride-glance]`
+measured block, `[data-ride-handle]`, `[data-ride-record]`, `[data-ride-claim]`, `[data-ride-verdict]`,
+`[data-ride-ghost]`, `[data-ride-formula]`); `[data-linear-machine]` (cards, hopper, dial, table — see the header);
+`[data-origin-line][data-mode]` (`[data-ol-glance]`, `[data-ol-handle]`, `[data-ol-line]`, `[data-ol-cap]`,
+`[data-ol-hits]`, `[data-ol-formal]`); `[data-percent-tag][data-mode=single|chain][data-world][data-k][data-y]`
+(`[data-percent-glance]`, `[data-percent-handle=t|bet]`, `[data-percent-additive]`, `[data-percent-refused]`,
+`[data-percent-tank][data-volume]`); all four `[data-deco]` and `[data-lab-fold]`.
+
+## 2nonies. The affine-function laboratories (unit 7, 2026-10-02)
+
+Unit 7 « الدالة التآلفية » (same display ميدان « ميدان التناسبية والدوال ») added five types by the §7ter recipe, in
+`manipulations/affine/` (logic `logic/<name>.js` + tests, render test `affine/<name>.render.test.jsx`, strings
+`lesson.json › manipulation.affineMeter | affineLine | slopeStairs | lineCrossing | planCompare`). All five compute through
+ONE exact module, `packages/core/arithmetic/affine.js`, built ON `linear.js` (an affine function IS unit 4's `{ a, b }`)
+and `linearSystem.js` (an equation ax + by = c): `affine('3/2x+1' | '2+3x' | a, b)`, `affineLatex`, `kindOf`,
+`classifyRule` (`'3x^2+1'`, `'1/x-3'` → `other`), `imageOf`, `antecedentOf` (`unique` | `none` | `all`), `onLine`,
+`direction`, `yIntercept`, `xIntercept`, `rateOfChange`, `fromTwoPoints`, `interceptFrom`, `lineFromEquation`,
+`intersect` (`unique` | `parallel` | `same`), `comparePlans`, `cheapestAt`, `stepFrom`. The graph labs reuse the pure grid
+helpers of `logic/originLine.js` unchanged (`parseValue`, `niceStep`, `subdivide`, `ticks`, `planeGeometry`, …). All five
+are **manual** (§6bis), report through `state.report`, carry a DECORATIVE layer (`aria-hidden`, out of the keyboard path,
+still under reduced motion, never an answer) on top of the GENUINE manipulation, and are measured one-screen (§8bis) on
+their « glance » block at the four viewports, both levels, by `apps/web/e2e/lesson-kit/4am-dala-taalufiya.mjs`. New worlds
+in `VISUAL_THEMES`: `payroll`, `ride`, `ramp`, `thermo`, `gaming`, `rental`, `laser`.
+
+| Type | The hand holds | Resistance | Discovery (contrast) | Lessons |
+|---|---|---|---|---|
+| `affine-meter` (`AffineMeter.jsx`) | x (km / overtime hours): the taxi or the time card dragged along its ruler (tap, −/+, arrows); at the `classify` stage the knobs a and b | at x = 0 the meter is NOT empty (the b block is already there); a target m shows its gap (« −185 ») until met at exactly one x; « proportional », « (a + b)·x » and « m ÷ a − b » refuted with the student's own numbers | `image`: trials with x = 0 or a pair x, 2x (+ the textbook columns) → f(x) = ax + b; `antecedent`: m met → « اطرح b ثم اقسم على a »; `classify`: b = 0 (خطية) AND a = 0 (ثابتة) | L1 mafhum-taalufiya (`ride` 40x + 100; `payroll` act-1 185x + 35000, target 37775) |
+| `affine-line` (`AffineLine.jsx`) | shift: the point (0 ; b′) on the y-axis strip, or the whole line grabbed (translation); identify: b′ and the step « 1 to the right, a′ up »; draw: a pin on an exact grid; read: x / y probes | b′ ≠ b refused with « f(0) = b », b′ = 0 is « (d) itself, through O »; the step will not move in shift (a fixed, (d′) ∥ (d)); a point off the line refused with its gap, O refused when b ≠ 0; each identify try names the relation of the two lines | shift: (d′) accepted, then two probe readings at different x give the SAME gap b; identify: the lines coincide; draw: two accepted points; read: the `reads` targets | L2 tamthil-bayani-taalufi (`ramp`; act-3 3/2·x lifted by 1, then a hidden descending ramp) |
+| `slope-stairs` (`SlopeStairs.jsx`) | two numbers x₁, x₂: grab the plane (the nearest marker follows the line), handles under the axis, track tap, arrows, −/+ | x₁ = x₂ refused (« القسمة على 0 مستحيلة »); in `points` mode a number whose image is unknown is refused until the stair between the two given couples is built | `rule`: three stairs of at least two widths — the quotient Δf ÷ Δx never moves (INVARIANT = a), « grows with the stair » / « is the difference of the images » refuted by the student's stairs; the textbook's « … » stairs fill when covered; `points`: the stair (→ a) then a marker at 0 (→ b) | L3 tanasub-taghayyurat (`stadium` act-4 200x + 2000, marks 0\|1\|4\|6\|10\|12\|15; `thermo` the تحدّ 10:50\|30:86) |
+| `line-crossing` (`LineCrossing.jsx`) | build: for each equation the card of its writing y = ax + b; probe: a point P on the integer grid (drag, tap, arrows ± Shift, Enter, pad); cases: the second line's b and a | a wrong card shakes, refuted by an exact witness (« x = 0 gives y = −43, and 0 + (−43) ≠ 43 »); each equation's LAMP lights only when P is exactly on its line, the substitution written under it; an intersection off the grid nodes is SAID (« القراءة تقريبية », the exact pair from the calculation) | probe: a one-lamp trial AND the two-lamp point (« (y ; x) » refuted); cases: parallel (lamps never together) AND coincident (every point lights both) produced by the student → the three-case table | L4 tafsir-bayani-jumla (`laser` 2x − y = 1, x + y = 5; `coins` act-5 → (36 ; 7); معارف with `startWith="cases"`) |
+| `plan-compare` (`PlanCompare.jsx`) | model: plan A's two amounts carried into the bill (« يُدفع مرّة واحدة » / « عند كل وحدة × x »), then x on the strip under the plane; compare: x (bars and lines move together), a marker on an exact grid, then a brush painting the x-axis intervals | « تحقّق » refuses the fixed part paid x times (MISC-TARRID-JUZ-THABIT) with the bill's own cost (2000 × 7 + 200 = 14200 ≠ 3400); a marker off the crossing refused with every plan's cost; « لا تتساويان » refused when the cheapest plan changes; a wrong colour refused with a witness from the student's OWN trials (MISC-TARRID-AFDAL-DAIMAN) | model: model + `ask` targets → f(x) = ax + b, image / antecedent; compare: every breakpoint of the cheapest plan (lower envelope) marked + every interval painted + trials in two intervals → f(x) = g(x), the inequality, the choice sentence | L5 tarrid-taalufi (`gaming`, `stadium` act-4 200x + 2000 vs 400x), synthesis (`rental`, 3 plans incl. a constant one) |
+
+**`plan-compare` props** (the unit's shared lab; the synthesis keeps its own in `content/textbook.js › LAB` and mounts them in
+`lab.render.test.jsx`): `plans` (1–3 `affine` writings, `"200x+2000|400x"`, amounts ≥ 0, pairwise distinct — else a render
+error), `mode` (`model` | `compare` | `model|compare`; one plan ⇒ model only), `ask` (`"x:7|y:4800"` on plan A, y must have a
+whole antecedent in the window), `xMax yMax` (strings; defaults from the crossings, asks and costs), `theme` (`stadium` |
+`gaming` | `rental`), `title lead mission level levels`, `onTrial` (`{ kind: 'model' | 'x' | 'mark' | 'noCross' | 'paint', … }`),
+`onFinished({ kind: 'model' | 'cross' | 'none', x, before, after })`, optional `onModel({ tex })`. With 3 plans the crossings
+to mark are the breakpoints of the cheapest plan; a crossing « above » is accepted but not required.
+
+**Other props.** `affine-meter`: `rule` (a > 0 and b > 0), `mode` (`image` | `image|antecedent|classify`), `target` (needs a
+whole antecedent ≥ 1), `marks` (the textbook columns as ruler flags), `xMax`, `theme` (`ride` | `payroll`).
+`affine-line`: `a`, `b` (exact writings), `mode` (`shift` | `identify` | `draw` | `read`, chained with `|`), `find` (`"a:b"`, the
+hidden line of a chained identify), `reads`, `xMin xMax yMin yMax` (O and x = 1 always in the window, equal units), `showRule`,
+`theme` (`ramp`). `slope-stairs`: `rule` | `points` (exclusive), `marks`, `shown` (stairs already printed), window, `theme`
+(`stadium` | `thermo`; the thermometer is graduated in °C only — a °F scale would give b). `line-crossing`: `system`
+(`linearSystem.eq2` writings, each containing y), `cases`, `startWith` (`build` | `cases`), window, `theme` (`laser` | `coins`).
+Each component header carries its DNA design sheet and full DOM contract.
+
+**DOM roots and glance blocks** (e2e): `[data-affine-meter]` / `[data-am-glance]`; `[data-affine-line][data-mode][data-stage]` /
+`[data-al-glance]`; `[data-slope-stairs][data-mode]` / `[data-ss-glance]`; `[data-line-crossing][data-stage]` /
+`[data-lc-glance]`; `[data-plan-compare][data-stage][data-step]` / `[data-pc-glance]`; all five `[data-deco]`, and
+`[data-lab-fold]` where the trials fold.
+
+**Narrow layouts (320 px).** At 320×640 a lab scene is ~160–180 px wide (unit 5's observation): each lab has a measured narrow
+layout — numbered stage tabs (`affine-meter`), the ghost rule dropped (`affine-line`), a 4-button pad (`slope-stairs`), compact
+lamps and −/+ instead of strips (`line-crossing`), the empty plane hidden while the bill is built (`plan-compare`). The tightest
+measured margins are 8–10 px (L2 advanced, L4 advanced after both lines, the synthesis on phones).
+
+
+## 2decies. The statistics laboratories (unit 8, 2026-10-02)
+
+Unit 8 « الإحصاء » (same display ميدان « ميدان التناسبية والدوال », programme domain « ميدان تنظيم المعطيات ») added four types by
+the §7ter recipe, in `manipulations/stats/` (logic `logic/<name>.js` + tests, render test `stats/<name>.render.test.jsx`, strings
+`lesson.json › manipulation.cumulGate | statBalance | sheetLab | groupTanks`). All four compute through ONE exact module,
+`packages/core/arithmetic/statistics.js`, on `linear.js` fractions (`tableOf`, cumulative up / down and relative, `countAtMost /
+AtLeast / Where`, `range`, `mean`, `median` by ranks, classes / `center` / `medianClass`, `mode`, `combineGroups`,
+`solveValueForMean`, `pieAngles`, `statText` / `approx`) — no lab carries arithmetic. All four are **manual** (§6bis: each gesture
+is an announcement, a position or a prediction), report through `state.report`, carry a DECORATIVE layer (`aria-hidden`, out of
+the keyboard path, still under reduced motion, never an answer), and are measured one-screen (§8bis) on their « glance » block at
+the four viewports, both levels, by `apps/web/e2e/lesson-kit/4am-ihsa.mjs`. A series is written `value:count|…` (or plain values),
+decimal comma. New worlds in `VISUAL_THEMES`: `funpark`, `heatwave`, `esport`, `sheet`, `beach`, `quiz`, `medals`. The full props,
+DOM attributes and DNA sheet of each type are in its component header; the essentials:
+
+| Type | The hand holds | Resistance | Discovery (contrast) | Lessons |
+|---|---|---|---|---|
+| `cumul-gate` (`CumulGate.jsx`, glance `[data-cg-glance]`) | the threshold t: the bar of a ride's height gauge (drag, tap the gauge, −/+, arrows; tapping a drawn person or a table column jumps to its height), the side « على الأكثر ≤ t » / « على الأقل ≥ t », the queue's sort; then the student ANNOUNCES how many pass | the gate stays shut on a wrong count and names its witness: `strict` (the people of height exactly t forgotten), `under` (lit heights still to add), `over` (unlit people counted), `otherSide` | one value counted on BOTH sides: up(t) + down(t) = N + f(t) (12 + 13 = 20 + 5), up(max) = down(min) = N; a t that is not a value (158) gives the count of the value below; the textbook's two tables filled by the student's own accepted counts, « ÷ N » for التواتر | `takrar-mujamma` M1 (`funpark` 8 kids, 3 × 3; `school` act-1's 20 heights, 5 × 4) |
+| `stat-balance` (`StatBalance.jsx`, glance `[data-sb-glance]`) | range: the two jaws of a كلّاب on the beam's columns; mean: the fulcrum p on a graduation 1/D that contains the mean (1/15 for 482/30); median: a curtain in RANK space 0…2N (inside a stack the finger's height chooses the cut); contrast: the far token; hidden: each hidden token between its table bounds | the beam ALWAYS tilts off the exact mean (minimum visible angle, the two distance sums written); the curtain refuses unequal counts (« 4 مقابل 6 »); tokens outside the jaws stay red; a hidden token leaving its bounds is refused and returns | the far token: the mean runs (ghost of the old mean), the median stays (the textbook's 3 and 43); N odd (curtain ON a token) / N even (between two); hidden: the median fixes the first value, the mean the second, « the mean alone suffices » refuted by a witness | `mada-wasit-mutawassit` M1 (`range\|mean`: `esport` 2, 3, 3, 4, 8 / `heatwave` El Oued) and M2 (`median`); synthesis `wadiya-idmajiya-ihsa` M1 (`hidden`, `medals`) |
+| `sheet-lab` (`SheetLab.jsx`, glance `[data-sh-glance]`) | the CELLS (typed, then −/+), the RANGE selected on row 1 (drag; tap first then last; Shift + arrows), the FORMULA (function cards or typed), ENTER into column B after the hand result in column C; at the chart stage a selection of a 2-row table and the chart type | refused in the bar with the spreadsheet's own reason (no « = », a typed number, unknown function #NOM?, a range leaving row 1, no hand result yet); COMPUTED but contradicted by the student's own column C: a short range (A1:F1 → 31/6) or a wrong function (=MAX alone → 10) — a coincidence is named and still refused; a wrong chart type refused, an incomplete selection DRAWS a wrong chart (216° for 144°) | after every row verified, a cell changed: MOYENNE moves, MEDIANE stays (swept on every single-cell change of ex-7); the chart stage (opened by the student, §7quater) ends when bars / pie / histogram each fit their data | `majdulat-ihsaiya` M1 (`sheet`: 5\|8\|6\|9\|7 / ex-7 typed by the student, four formulas, then charts ex-15 / ex-16) |
+| `group-tanks` (`GroupTanks.jsx`, glance `[data-gt-glance]`) | a BET: the 🎯 marker on the EMPTY class tank (drag, tap the track, ▲▼, keys on the slider); the valve; then a group's count n (tap its tank, −/+) | no valve without a bet; the « mean of the means » bet (9,5; 11,5) is refused by the water, which stops lower, on the side of the wider tank (MISC-IHSA-MUTAWASSIT-MUTAWASSITAYN) | a group is a tank of WIDTH n filled to LEVEL m (area n·m = its points); the class tank (width N) settles at Σ n·m ÷ N (communicating vessels = weighted mean, drawn areas equal before / after); equal counts make the mean of means right ONLY then; the two classes of the تحدّ settle at the same 384/33 although boys favour ب and girls أ | `qiraat-wadiyat-ihsaiya` M1 (`quiz` 4:12\|6:7 → 9; `school` the تحدّ, `classes: '2\|2'`) |
+
+**`stat-balance` props** (the unit's shared lab; the synthesis keeps its own in `content/textbook.js › LAB` + `lab.render.test.jsx`):
+`series` (`?` marks a hidden value, hidden mode only), `mode` (`range`, `mean`, `median` in any ordered combination — `median`
+appends the `contrast` stage — or `hidden` alone), `hidden` (`"2:2-4|12:26-32"`: index in the WRITTEN order of `series` : inclusive
+bounds, at most three; a hidden token starts at its lower bound so the page never holds the answer), `targetMean`, `targetMedian`
+(hidden only, both required), `unit` (Latin unit → KaTeX island, Arabic word → DOM text), `axis` (`"min:max:step"`), `theme`
+(`esport` | `heatwave` | `medals`), `onTrial({ stage, … })`, `onFinished({ stages, range, mean, median })`. In hidden mode the
+target chips show « ≈ 6,87 », never a tall fraction, and the pads of the hidden values sit side by side — that is what keeps the
+synthesis's 30 medals inside 320 × 640 (448 px for 568).
+
+**`cumul-gate` props**: `series`, `mode` (`up|down` | `up|down|table`), `given` (the cells the textbook prints:
+`"up:154|up:157|down:160|…"`), `theme` (`funpark` | `school`), `unit`. **`sheet-lab` props**: `cells` (2–12 values), `ask`
+(MAX-MIN, MEDIANE/MEDIAN, MOYENNE/AVERAGE, MODE — the textbook prints the French Excel names, the English ones are accepted as the same
+functions), `entry` (`type` | `given`), `chart` (`bars|pie|histogram`) with `pie` (`'البلاستيك:60|…'`) and `classes`
+(`'7-8:6|8-9:1|9-10:4'`). The lab follows the spreadsheet, never an invented rule: empty cells in a range are ignored, MODE returns
+the first most frequent value in cell order and #N/A when nothing repeats. **`group-tanks` props**: `groups` (`n:m|…`), `classes`
+(groups per class, `'2|2'`), `theme` (`quiz` | `school`); a tank's height is budgeted from the lesson viewport minus what the
+glance block MEASURES besides the tanks, so the block stays in the screen when the reading grows after the valve.
 
 ## 2bis. Drawn worlds — every lesson has its own, and the theme is data
 
@@ -739,6 +918,11 @@ A new chained type follows the same pattern: a pure `…Done(state)` predicate i
 derived `groupsOnly`-style flag from `state.level`, the card + button + back link, and a
 `logic.test.js` case proving that the old threshold no longer ends the first lab.
 
+Unit 7 chains by this rule: `affine-meter` (`image|antecedent|classify`, a « التالي » card per stage and numbered tabs back),
+`affine-line` (`shift|identify`: the card `[data-al-next-card]` once (d′) is accepted and read at two abscissas, `[data-al-back]`
+keeps both labs' states), `line-crossing` (build → probe → `cases`, opened by the student's button after the two lamps lit,
+with a way back) and `plan-compare` (`model|compare`, card + button + back).
+
 ## 7bis. What a manipulation does NOT do
 
 A manipulation is a learning instrument, not an assessment. Verified in code:
@@ -839,6 +1023,49 @@ controls above the stage (they must not move under the finger), vertical composi
 All motion is transform/opacity, and `prefers-reduced-motion` removes it without changing any final
 state.
 
+### 8bis. One screen — the whole manipulation is seen without scrolling (owner rule, 2026-10-01, binding on every manipulation)
+
+**The student never scrolls to see or to interact with a manipulation.** The drawn object, every control
+that acts on it (stretch handles, ± buttons, drag sources AND their drop targets, the check / claim button)
+and the reading it produces (gauge, verdict, the equation line the gesture writes) are visible together in
+ONE viewport, with the app chrome (top bar, lesson header). Found by the owner on unit 5
+(`pair-scoreboard`, « نشاط 1: 32 عاملا قبل التقاعد وبعده »): with the 32 men and women on screen the x and y
+sliders were below the fold, so moving a slider hid the people it moved. It is the lesson-side twin of the
+Math Lab's « d'un seul regard » (`MATH_LAB.md` §3.5).
+
+1. **Budget the stage from the viewport, not from the content.** The scene is a CSS size container whose
+   height is capped by the viewport (`max-height: calc(100dvh - <chrome>)`, `dvh` so mobile toolbars count);
+   countable objects are sized with the scene (`clamp` / container units, the `itemSizeCss` rule of §2bis), so
+   32 or 140 figures SHRINK instead of pushing the controls down. Never a fixed pixel size per object.
+2. **Controls beside the object they move.** A handle sits next to (or overlaid on the edge of) the figure
+   it changes, a drop target is reachable from its source without scrolling, the reading sits beside or
+   directly under the figure — never a screen apart.
+3. **Secondary material yields — the student chooses what to see (owner rule, same day).** For a large
+   activity, two shared tools let the student make the instrument fit and look behind what covers it:
+   - **Hide / show** — `primitives/LabFold.jsx` (`<LabFold id="<type>.<block>" title>`): a « إخفاء / إظهار »
+     block, open by default, remembered per browser (`sa-lab-fold:<id>`), content kept mounted (`hidden`).
+     For SECONDARY material only — trial tables, written lines, legends, explanations — never the object or a
+     control that acts on it. The lesson twin of the Math Lab's `LabPanel` (`MATH_LAB.md` §3.5.4).
+   - **Move** — `primitives/MovablePanel.jsx` (`<MovablePanel id bounds={sceneRef} title className="absolute …">`
+     inside a `relative` scene): a gauge, a counter, a legend or the current line FLOATS on the scene so
+     everything fits one screen, and the student drags it elsewhere by its ⠿ handle (pointer, arrows,
+     Shift + arrow = large step) when it covers what they want to see; ↺ puts it back. Always clamped entire
+     inside the scene (pure geometry `primitives/movablePanel.js`, tested), position remembered per browser
+     (`sa-lab-move:<id>`). Moving a panel is NOT a mathematical gesture: it changes no lab state and is never an
+     answer (the mathematical gestures stay `useDragInteraction` / `useStretchInteraction`).
+   Never place secondary material between an object and its controls. Strings: `lesson.json ›
+   manipulation.layout.*`. DOM: `[data-lab-fold][data-open]`, `[data-lab-fold-toggle]`,
+   `[data-movable-panel]`, `[data-movable-handle]`, `[data-movable-reset]`.
+4. **Many objects form a near-square block, never a long strip.** 32 agents are a 6 × 6 office, not a
+   2 × 16 column (owner, unit 5): columns ≈ ⌈√n⌉, adjusted to the scene's aspect ratio, the layout computed in the
+   type's pure logic and tested (|rows − cols| ≤ 1 for a square scene).
+5. **Phones too.** Checked at 1280 × 800, 1366 × 768, 390 × 844 and 320 × 640: on phones the composition
+   stacks, but each object keeps its controls in the same sight (side by side columns, or the handle row on
+   the scene's edge).
+6. **Measured, not eyeballed.** The type's e2e asserts, for each viewport and both levels, that once the lab is
+   scrolled into view the bounding box of the figure + its controls fits the viewport height
+   (`fitsOneScreen` in the unit's e2e); the component header says how the rule is met.
+
 ## 9. Checklist — every manipulation, every review
 
 ```
@@ -856,6 +1083,8 @@ state.
 [ ] Classroom Mode (if wrapped): enter/exit keeps the state, fits the screen, no page scroll
 [ ] Student mode works
 [ ] Mobile works (320 px, ≥44 px targets, no horizontal scroll)
+[ ] One screen (§8bis): object + its controls + its reading visible together, no vertical scroll, at 1280×800 / 1366×768 / 390×844 / 320×640, both levels
+[ ] Large activity: secondary blocks in LabFold, floating readings in MovablePanel, many objects in a near-square block
 [ ] RTL works
 [ ] Mathematical notation is LTR where needed
 [ ] Reduced motion works

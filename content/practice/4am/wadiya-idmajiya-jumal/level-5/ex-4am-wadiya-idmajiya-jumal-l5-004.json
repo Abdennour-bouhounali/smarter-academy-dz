@@ -1,0 +1,174 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l5-004",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 5,
+  "metadata": {
+    "title": "تخفيض الإخوة في النادي",
+    "estimatedMinutes": 6,
+    "tags": [
+      "تخفيض",
+      "مبلغ ثابت",
+      "حل جملة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P2",
+      "modelledOn": "ex-31"
+    }
+  },
+  "statement": {
+    "content": "في نادي كرة القدم، رسم التسجيل $x$ DA يُدفع مرّة واحدة والاشتراك الشهري $y$ DA لمدة 10 أشهر. دفع أمين 12 500 DA للموسم. أخوه بلال يستفيد من تخفيض 20% على الاشتراكات الشهرية فقط (لا على رسم التسجيل)، فدفع 10 500 DA للموسم."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما دفعه بلال يُترجم بـ:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$0{,}8(x + 10y) = 10500$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAKHFID-NISBA"
+        },
+        {
+          "id": "B",
+          "content": "$x + 0{,}2 \\times 10y = 10500$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAKHFID-NISBA"
+        },
+        {
+          "id": "C",
+          "content": "$x + 0{,}8 \\times 10y = 10500$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$x + 10y = 10500$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAKHFID-NISBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "على أيّ مبلغ يُطبَّق التخفيض؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "رسم التسجيل يبقى كما هو."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الاشتراكات العشرة تُضرب في 0,8."
+        }
+      ],
+      "feedback": {
+        "correct": "التسجيل كاملا و 80% من الاشتراكات: $x + 0{,}8 \\times 10y = 10500$.",
+        "incorrect": "التخفيض على الاشتراكات وحدها."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "ما المبلغان $(x ; y)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
+      "expectedAnswer": {
+        "x": "2500",
+        "y": "1000"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x + 10y = 12500$ و $x + 8y = 10500$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح المعادلتين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم احسب $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$2y = 2000$ ، $y = 1000$ ، $x = 2500$.",
+        "incorrect": "اطرح لحذف رسم التسجيل."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "1000",
+            "y": "2500"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "كم يدفع بلال عن الشهر الواحد؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "مبلغ بالدينار",
+      "expectedAnswer": "800",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولا الاشتراك الشهري."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بلال يدفع 80% منه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب في 0,8."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}8 \\times 1000 = 800$ DA.",
+        "incorrect": "طبّق التخفيض على الاشتراك الشهري."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "200",
+          "id": "MISC-TAKHFID-NISBA"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l4-006",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — متوسط ووسيط",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P2",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "رواتب عمّال ورشة: المتوسط 52000DA والوسيط 38000DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ماذا نستنتج؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "قلّة من الرواتب الكبيرة جدا ترفع المتوسط",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نصف العمّال يتقاضون أكثر من 52000DA",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-MUTAWASSIT"
+        },
+        {
+          "id": "C",
+          "content": "كل الرواتب بين 38000 و 52000",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-MUTAWASSIT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الوسيط يقسم العمّال إلى نصفين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المتوسط أكبر بكثير من الوسيط."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما الذي يجذب المتوسط ولا يحرّك الوسيط؟"
+        }
+      ],
+      "feedback": {
+        "correct": "نصف العمّال يتقاضون 38000DA أو أقل، وقيم كبيرة قليلة ترفع المتوسط.",
+        "incorrect": "الوسيط لا يتأثر بالقيم المتطرفة."
+      },
+      "difficulty": 4
+    }
+  ]
+}

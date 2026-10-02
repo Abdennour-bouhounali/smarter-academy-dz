@@ -1,0 +1,111 @@
+{
+  "id": "ex-4am-dala-khattiya-l4-001",
+  "lessonCode": "dala-khattiya",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 1 — سعر السروال",
+    "estimatedMinutes": 5,
+    "tags": [
+      "تعيين",
+      "نسبة مئوية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-1",
+      "page": 72,
+      "section": "أوظّف تعلّماتي",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 72): سعر سروال هو 2500DA. أصبح هذا السعر 2400DA بعد التخفيض. عيّن الدّالة الخطية التي تنمذج هذه الوضعية. ما هي نسبة هذا التخفيض؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "معامل الدالة الخطية التي ترفق بالسعر قبل التخفيض السعر بعده:",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "0.96",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الدالة خطية: دستورها من الشكل $f(x) = ax$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعلومة المعطاة على شكل معادلة مجهولها $a$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الصورة على العدد غير المعدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "$2500a = 2400$ ، إذن $a = 2400 \\div 2500 = 0{,}96$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-MUAMIL-MAQLUB",
+          "value": "25/24"
+        },
+        {
+          "id": "MISC-KHATTIYA-ISHARA",
+          "value": "-0.96"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "نسبة هذا التخفيض بالمئة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد تخفيض نسبة من السعر يبقى جزء منه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسبة المئوية الباقية من السعر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعامل هو هذه النسبة مكتوبة عددًا عشريًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$1 - 0{,}96 = 0{,}04$ : نسبة التخفيض $4\\%$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAKHFID-NISBA",
+          "value": "96"
+        }
+      ]
+    }
+  ]
+}

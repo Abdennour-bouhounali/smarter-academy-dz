@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-tanasub-muamil-l1-004",
+  "lessonCode": "tanasub-muamil",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — التروتينة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تروتينة",
+      "y = a × x"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-muamil_P3",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "تؤجَّر تروتينة على الكورنيش بـ 15DA للدقيقة. نسمّي $x$ المدة بالدقائق و $y$ السعر بالدينار."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما سعر رحلة مدتها 8 دقائق (بالدينار)؟",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "120",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في جدول تناسبية نحصل على y بضرب x في المعامل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب المعامل $a = \\dfrac{y}{x}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $y = a \\times x$ ثم تحقّق على عمود من الجدول."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 15 \\times 8 = 120$ DA.",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العلاقة بين $y$ و $x$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$y = x + 15$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$y = 15 \\times x$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x = 15 \\times y$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TANASUB-MUAMIL-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في جدول تناسبية نحصل على y بضرب x في المعامل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب المعامل $a = \\dfrac{y}{x}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $y = a \\times x$ ثم تحقّق على عمود من الجدول."
+        }
+      ],
+      "feedback": {
+        "correct": "كل دقيقة بـ 15DA : $y = 15 \\times x$ .",
+        "incorrect": "احسب حاصل القسمة في كل عمود قبل أن تحكم: الزيادة وحدها لا تكفي."
+      }
+    }
+  ]
+}

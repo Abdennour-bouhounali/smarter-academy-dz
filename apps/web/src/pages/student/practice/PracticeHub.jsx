@@ -9,7 +9,7 @@ import LevelSelector from '../../../features/practice/LevelSelector';
 import LearningPointProgress from '../../../features/practice/LearningPointProgress';
 import { resolveMasteryState, reasonLabel, freshnessLabel } from '../../../lessons/common/components/LearningPointMastery';
 import { getLessonPath } from '@smarter-academy/core';
-import { bidi } from '../../../utils/bidi';
+import MathLabel from '../../../lessons/common/components/MathLabel';
 
 /**
  * Le Hub de pratique d'une leçon : les niveaux, et l'état des connaissances
@@ -94,7 +94,7 @@ export default function PracticeHub() {
         {lessonPath && (
           <>
             <span aria-hidden="true" className="text-slate-300">/</span>
-            <Link to={lessonPath} className="min-w-0 truncate hover:text-indigo-700">{bidi(lesson.title)}</Link>
+            <Link to={lessonPath} className="min-w-0 truncate hover:text-indigo-700"><MathLabel>{lesson.title}</MathLabel></Link>
           </>
         )}
       </nav>
@@ -104,7 +104,7 @@ export default function PracticeHub() {
           <p className="inline-flex items-center gap-1.5 text-sm font-bold text-indigo-700">
             <Dumbbell className="h-4 w-4" aria-hidden="true" /> {t('practice.eyebrow')}
           </p>
-          <h1 className="text-xl font-bold leading-snug text-slate-900 sm:text-2xl">{bidi(lesson.title)}</h1>
+          <h1 className="text-xl font-bold leading-snug text-slate-900 sm:text-2xl"><MathLabel>{lesson.title}</MathLabel></h1>
           <p className="text-sm text-slate-600">{t('practice.hubSubtitle')}</p>
         </div>
         {/* Le retour au cours. La pratique n'est pas une impasse : l'élève qui

@@ -1,0 +1,144 @@
+{
+  "id": "ex-4am-tafsir-bayani-jumla-l3-004",
+  "lessonCode": "tafsir-bayani-jumla",
+  "level": 3,
+  "metadata": {
+    "title": "قراءة تقريبية ثم حساب",
+    "estimatedMinutes": 5,
+    "tags": [
+      "قراءة تقريبية",
+      "تعويض"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tafsir-bayani-jumla_P2",
+      "modelledOn": "act-5"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الجملة $\\begin{cases} y = 2x \\\\ y = -x + 5 \\end{cases}$ . الشكل يمثّل المستقيمين.",
+    "visual": {
+      "range": {
+        "xMin": -1,
+        "xMax": 5,
+        "yMin": -1,
+        "yMax": 6
+      },
+      "unit": 37.14,
+      "functions": [
+        {
+          "id": "d1",
+          "a": 2.0,
+          "b": 0.0,
+          "label": "(d1)",
+          "tone": "indigo"
+        },
+        {
+          "id": "d2",
+          "a": -1.0,
+          "b": 5.0,
+          "label": "(d2)",
+          "tone": "amber"
+        }
+      ],
+      "xStep": 1,
+      "yStep": 1,
+      "frozen": true,
+      "ariaLabel": "المستقيمان (d1) و (d2) اللذان يمثّلان معادلتي الجملة",
+      "caption": false
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "على الشكل، نقطة تقاطع المستقيمين:",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "فاصلتها بين 1 و 2 وترتيبها بين 3 و 4: لا نقرؤها بدقة",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "هي $(2 ; 4)$ بالضبط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "C",
+          "content": "هي $(1 ; 3)$ بالضبط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث على الشكل عن النقطة المشتركة بين المستقيمين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقرأ فاصلتها على محور الفواصل ثم ترتيبها على محور التراتيب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بتعويض الثنائية في المعادلتين: الفاصلة أولًا ثم الترتيب."
+        }
+      ],
+      "feedback": {
+        "correct": "نقطة التقاطع ليست عقدة من الشبكة: $(2 ; 4)$ لا تحقّق $y = -x + 5$ ، و $(1 ; 3)$ لا تحقّق $y = 2x$.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بالحساب، الحل المضبوط: $(x ; y)$ =",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "5/3",
+        "y": "10/3"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نقطة التقاطع تقع على المستقيمين معًا: إحداثياها يحقّقان المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بالتعويض أو بالجمع، أوجد $x$ أولًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض قيمة $x$ في إحدى المعادلتين لإيجاد $y$ ، ثم تحقّق في الأخرى."
+        }
+      ],
+      "feedback": {
+        "correct": "الحل $(\\dfrac{5}{3} ; \\dfrac{10}{3})$ ، ونتحقّق: $-2 \\times \\dfrac{5}{3} + \\dfrac{10}{3} = 0$ و $\\dfrac{5}{3} + \\dfrac{10}{3} = 5$.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

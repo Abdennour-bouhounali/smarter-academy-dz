@@ -1,0 +1,127 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l1-001",
+  "lessonCode": "mushkilat-jumla",
+  "level": 1,
+  "metadata": {
+    "title": "تحدّ الوحدة (ص 55) — قطع القسم النقدية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترييض",
+      "اختيار المجاهيل",
+      "ترجمة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "challenge",
+      "page": 55,
+      "section": "تحدّ"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 55): لتزيين قسمهم، جمع التلاميذ مبلغ 610DA مُشكّلا من 37 قطعة نقدية من فئتي 20DA و 10DA. ما هو عدد القطع النقدية التي جمعها التلاميذ من كل فئة؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هما المجهولان المناسبان لهذه المشكلة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "عدد قطع 20DA وعدد قطع 10DA",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "المبلغ المجموع وعدد القطع كلها",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MAJAHIL"
+        },
+        {
+          "id": "C",
+          "content": "قيمة القطعة الواحدة وعدد التلاميذ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MAJAHIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ السؤال الأخير: ماذا يطلب؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المبلغ (610DA) وعدد القطع (37) معطيان في النص."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المجهولان هما ما لا نعرف عدده ويسأل عنه السؤال."
+        }
+      ],
+      "feedback": {
+        "correct": "السؤال يطلب عدد القطع من كل فئة: نسمّي $x$ عدد قطع 20DA و $y$ عدد قطع 10DA .",
+        "incorrect": "المعطى في النص معلوم: المجهول ما يسأل عنه السؤال."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نسمّي $x$ عدد قطع 20DA و $y$ عدد قطع 10DA . المعلومة «37 قطعة نقدية» تُترجم بـ:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$20x + 10y = 37$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$x + y = 37$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x + y = 610$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هذه المعلومة تعدّ القطع، لا الدنانير."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل قطعة تُعدّ مرة واحدة مهما كانت فئتها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع عدد قطع الفئتين."
+        }
+      ],
+      "feedback": {
+        "correct": "كل قطعة تُعدّ مرة واحدة: $x + y = 37$ .",
+        "incorrect": "37 عدد قطع، لا مبلغ بالدينار."
+      }
+    }
+  ]
+}

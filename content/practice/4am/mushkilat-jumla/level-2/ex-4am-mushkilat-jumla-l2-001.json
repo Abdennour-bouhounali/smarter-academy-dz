@@ -1,0 +1,165 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l2-001",
+  "lessonCode": "mushkilat-jumla",
+  "level": 2,
+  "metadata": {
+    "title": "نشاط 3 (ص 57) — المتحف كاملا",
+    "estimatedMinutes": 5,
+    "tags": [
+      "ترييض",
+      "متحف",
+      "المراحل"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-3",
+      "page": 57,
+      "section": "أنشطة",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 57): يقترح متحف تذكرتين لعطلة نهاية الأسبوع: 300 DA للبالغين و 150 DA للصّغار. في هذا اليوم، استقبل المتحف 140 زائرا وبلغت مداخيله 30300 DA. أوجد عدد البالغين وعدد الصغار الذين زاروا المتحف هذا اليوم. نسمّي $x$ عدد البالغين و $y$ عدد الصغار."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "جملة المعادلتين التي تترجم معطيات المشكلة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 30300 \\\\ 300x + 150y = 140 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 140 \\\\ 300x + 150y = 30300 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x + y = 140 \\\\ 150x + 300y = 30300 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ترجم كل معلومة وحدها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معلومة العدد: كل زائر يُعدّ مرة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "معلومة المال: كل بالغ 300 وكل صغير 150."
+        }
+      ],
+      "feedback": {
+        "correct": "هي جملة الكتاب، وحلها $(62 ; 78)$ .",
+        "incorrect": "عدد الزوار مع عدد الزوار، والدنانير مع الدنانير."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة واكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "62",
+        "y": "78"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من المعادلة الأولى $y = 140 - x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض في الثانية: تحصل على $150x = 9300$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم عوّض قيمة $x$ لإيجاد $y$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 62$ و $y = 140 - 62 = 78$ .",
+        "incorrect": "لا تتوقف عند $x$ : الحل ثنائية."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "التحقق من النتيجة في النص:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$62 + 78 = 140$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "B",
+          "content": "$300 \\times 78 + 150 \\times 62 = 30300$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARTIB"
+        },
+        {
+          "id": "C",
+          "content": "$62 + 78 = 140$ و $300 \\times 62 + 150 \\times 78 = 30300$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كم معلومة في النص؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل معلومة تُعوَّض فيها القيمتان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "البالغون يدفعون 300: يُضرب 300 في عددهم."
+        }
+      ],
+      "feedback": {
+        "correct": "المعلومتان محققتان: 140 زائرا و $18600 + 11700 = 30300$ DA.",
+        "incorrect": "نتحقق في المعلومتين، وكل عدد مع ثمنه."
+      }
+    }
+  ]
+}

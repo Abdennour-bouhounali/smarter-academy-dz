@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-tarrid-taalufi-l1-008",
+  "lessonCode": "tarrid-taalufi",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — الاشتراك أم التذكرة؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مقارنة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-taalufi_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "في الملعب: الاشتراك $f(x) = 200x + 2000$ ، والتذكرة وحدها $g(x) = 400x$ ، حيث $x$ عدد المقابلات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مناصر يتابع مقابلتين فقط. أيّ صيغة أرخص له؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الاشتراك",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "B",
+          "content": "التذكرة وحدها",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "تتساويان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ 2 في الدالتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن 2400 و 800."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الأرخص هو المبلغ الأصغر."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(2) = 2400$ و $g(2) = 800$ : التذكرة أرخص.",
+        "incorrect": "احسب المبلغين من أجل $x = 2$ ."
+      }
+    }
+  ]
+}

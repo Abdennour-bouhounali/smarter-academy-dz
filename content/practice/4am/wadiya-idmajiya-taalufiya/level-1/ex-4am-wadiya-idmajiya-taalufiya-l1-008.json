@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l1-008",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 1,
+  "metadata": {
+    "title": "باقة إنترنت في حدود الميزانية",
+    "estimatedMinutes": 2,
+    "tags": [
+      "تفسير",
+      "عدد طبيعي"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P2"
+    }
+  },
+  "statement": {
+    "content": "باقة إنترنت: 200 DA اشتراك ثم 150 DA عن كل جيغابايت. لدى ريم 1000 DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما أكبر عدد طبيعي من الجيغابايت تستطيع ريم شراءه؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$150x + 200 \\leq 1000$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x \\leq \\dfrac{800}{150}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عدد طبيعي: ندوّر نحو الأسفل."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{800}{150} \\approx 5{,}33$ : 5 جيغابايت ($150 \\times 5 + 200 = 950$).",
+        "incorrect": "لا نتجاوز الميزانية: ندوّر نحو الأسفل."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "6",
+          "id": "MISC-TARRID-TAFSIR"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "id": "ex-4am-tarrid-taalufi-l5-004",
+  "lessonCode": "tarrid-taalufi",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — أكثر ساعات بالميزانية نفسها",
+    "estimatedMinutes": 4,
+    "tags": [
+      "العدد الذي صورته معلومة",
+      "مقارنة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-taalufi_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "لدى نادية 3000DA لقاعة الألعاب هذا الشهر. الصيغة A: بطاقة 600DA ثم 50DA للساعة. الصيغة B: 100DA للساعة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم ساعة تلعب بالصيغة A إذا صرفت 3000DA كلها؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "48",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-SABIQ-QISMA",
+          "value": "60"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$50x + 600 = 3000$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح 600."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$x = \\dfrac{2400}{50}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$50x + 600 = 3000$ أي $50x = 2400$ ومنه $x = 48$ .",
+        "incorrect": "اطرح ثمن البطاقة ثم اقسم على 50."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "أيّ صيغة تعطيها ساعات أكثر بـ 3000DA؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "A: 48 ساعة",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "B: 30 ساعة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "C",
+          "content": "متساويتان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "B: $100x = 3000$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن مع 48."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الأكثر ساعات هي الأفضل هنا."
+        }
+      ],
+      "feedback": {
+        "correct": "بـ B: $100x = 3000$ أي 30 ساعة فقط؛ بـ A 48 ساعة.",
+        "incorrect": "احسب عدد الساعات بكل صيغة."
+      }
+    }
+  ]
+}

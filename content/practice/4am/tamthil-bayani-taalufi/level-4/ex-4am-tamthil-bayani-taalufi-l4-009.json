@@ -1,0 +1,92 @@
+{
+  "id": "ex-4am-tamthil-bayani-taalufi-l4-009",
+  "lessonCode": "tamthil-bayani-taalufi",
+  "level": 4,
+  "metadata": {
+    "title": "صورة وعدد بعيدان",
+    "estimatedMinutes": 3,
+    "tags": [
+      "قراءة بيانية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-taalufi_P3"
+    }
+  },
+  "statement": {
+    "content": "المستقيم $(D)$ هو التمثيل البياني لدالة تآلفية $f$ ، ويشمل النقطتين $(0 ; -4)$ و $(2 ; -1)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بقراءة بيانية، العدد الذي صورته $2$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد الذي صورته معلومة هو فاصلة النقطة من المستقيم التي ترتيبها هذه الصورة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب عبارة الدالة، ثم حلّ $ax + b = m$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح $b$ أولًا ثم اقسم على $a$ ، وتحقّق بحساب الصورة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(x) = 1{,}5x - 4$ ، و $f(4) = 2$ : النقطة $(4 ; 2)$ على المستقيم.",
+        "incorrect": "العدد المطلوب فاصلة: انطلق من الصورة على محور التراتيب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بقراءة بيانية، صورة العدد $-2$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "expectedAnswer": "-7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد هي ترتيب النقطة من المستقيم التي فاصلتها هذا العدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب عبارة الدالة من نقطتين: $b$ ثم $a$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض العدد في $ax + b$ وتحقّق أنّ النقطة على المستقيم."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(x) = 1{,}5x - 4$ ، و $f(-2) = -7$ : النقطة $(-2 ; -7)$ على المستقيم.",
+        "incorrect": "الصورة ترتيب: انطلق من العدد على محور الفواصل."
+      }
+    }
+  ]
+}

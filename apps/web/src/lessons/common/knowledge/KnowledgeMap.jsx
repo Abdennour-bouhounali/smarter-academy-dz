@@ -17,7 +17,7 @@ import { useLearningProfile } from '../hooks/useLearningProfile';
 import { MASTERY_STATES, masteryTooltip } from '../components/LearningPointMastery';
 import { moduleMasteryOverlay } from './knowledgeMastery';
 import { resolveGraph } from './progressive/graphModel';
-import { bidi } from '../../../utils/bidi';
+import MathLabel from '../components/MathLabel';
 
 // CARTE PROGRESSIVE — la carte de connaissances de toutes les leçons
 // (KNOWLEDGE_MAP.md, Part A). Chargée à part, à l'ouverture de la carte.
@@ -212,7 +212,7 @@ function KnowledgeRow({ item, onSelect, dotClass }) {
       <span className="min-w-0 flex-1">
         <span className="text-sm text-slate-800 font-medium group-hover:text-slate-950">{item.title}</span>
         {item.summary && (
-          <span className="block text-xs text-slate-500 leading-snug truncate">{item.summary}</span>
+          <span className="block text-xs text-slate-500 leading-snug truncate"><MathLabel><MathLabel>{item.summary}</MathLabel></MathLabel></span>
         )}
       </span>
       {item.isNew && (
@@ -437,7 +437,7 @@ function ItemDetailView({ item, onBack, catColor }) {
 
       {/* Summary */}
       {item.summary && (
-        <p className="text-sm text-slate-600 leading-relaxed">{item.summary}</p>
+        <p className="text-sm text-slate-600 leading-relaxed"><MathLabel><MathLabel>{item.summary}</MathLabel></MathLabel></p>
       )}
 
       {/* Visual */}
@@ -701,7 +701,7 @@ function CompleteCard({ item, catColor }) {
         <span>{item.title}</span>
         {item.isNew && <span className={`text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded-full ${theme.badge}`} data-km-noprint="true">{t('map.new')}</span>}
       </div>
-      {item.summary && <p className="text-xs text-slate-500 mb-2 leading-snug">{item.summary}</p>}
+      {item.summary && <p className="text-xs text-slate-500 mb-2 leading-snug"><MathLabel><MathLabel>{item.summary}</MathLabel></MathLabel></p>}
       {item.visual && (
         <ConceptVisual size={item.visualSize} context="drawer">
           {item.visual}

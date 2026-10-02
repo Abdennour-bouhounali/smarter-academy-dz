@@ -1,0 +1,104 @@
+{
+  "id": "ex-4am-takrar-mujamma-l2-007",
+  "lessonCode": "takrar-mujamma",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — تقييم تطبيق",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تفوق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_takrar-mujamma_P3"
+    }
+  },
+  "statement": {
+    "content": "تقييم 25 مستعملا لتطبيق ألعاب (من 1 إلى 5 نجوم) (السطر الأول عدد النجوم، والسطر الثاني عدد المستعملين): $\\begin{array}{|c|c|c|c|c|} \\hline 1 & 2 & 3 & 4 & 5 \\\\ \\hline 2 & 5 & 8 & 7 & 3 \\\\ \\hline \\end{array}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عدد المستعملين الذين أعطوا تقييما يفوق 3 نجوم:",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "10",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-SARAMA",
+          "value": "18"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ الشرط بعناية: هل القيمة الحدّية نفسها محسوبة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "«على الأقل» و«على الأكثر» تشملان الحدّ، و«تفوق» و«أقل من» لا تشملانه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب القيم التي تحقّق الشرط، ثم اجمع تكراراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "«يفوق 3»: 4 و 5 فقط: $7 + 3 = 10$ .",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "عدد المستعملين الذين أعطوا 3 نجوم على الأقل:",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "18",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-SARAMA",
+          "value": "10"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ الشرط بعناية: هل القيمة الحدّية نفسها محسوبة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "«على الأقل» و«على الأكثر» تشملان الحدّ، و«تفوق» و«أقل من» لا تشملانه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب القيم التي تحقّق الشرط، ثم اجمع تكراراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$8 + 7 + 3 = 18$",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    }
+  ]
+}

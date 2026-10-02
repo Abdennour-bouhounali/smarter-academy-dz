@@ -1,0 +1,72 @@
+{
+  "id": "ex-4am-mafhum-jumla-l1-007",
+  "lessonCode": "mafhum-jumla",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — أيّها جملة معادلتين؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جملة معادلتين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mafhum-jumla_P1",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "اشترى أمين $x$ بطاقة تعبئة صغيرة و $y$ بطاقة كبيرة لهاتفه. نقترح ثلاث «جمل» لوصف مشترياته."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّها جملة معادلتين من الدرجة الأولى بمجهولين؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 12 \\\\ 2x + 3y = 30 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 12 \\\\ xy = 35 \\end{cases}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x^2 + y = 5 \\\\ x - y = 1 \\end{cases}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في معادلة من الدرجة الأولى لا يُضرب مجهول في مجهول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$xy$ جداء مجهولين، و $x^2$ مربّع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ابحث عن الجملة التي كل معادلة فيها من الشكل $ax + by = c$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "المعادلتان من الشكل $ax + by = c$ : جملة معادلتين من الدرجة الأولى.",
+        "incorrect": "$xy$ و $x^2$ ليسا من الدرجة الأولى."
+      }
+    }
+  ]
+}

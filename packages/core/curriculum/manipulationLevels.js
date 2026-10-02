@@ -75,6 +75,62 @@ export const VISUAL_THEMES = Object.freeze({
   //   pool    deux formules d'abonnement au مسبح : coût par séance et carte annuelle
   family: { kind: 'people', shows: 'أفراد عائلة تكبر أعمارهم' },
   pool: { kind: 'objects', shows: 'مسبح وتذاكر وصيغ اشتراك' },
+  // Unité 5 « جمل معادلتين » (2026-10-01) :
+  //   staff    les agents d'un service avant / après les départs à la retraite (نشاط 1)
+  //   coins    les pièces de 20DA et 10DA de la cagnotte de la classe (تحدّ)
+  //   snack    la كرنتيكة et la gazouz du kiosque : deux prix inconnus (cartes d'élimination)
+  //   stadium  les tribunes d'un derby : billets adultes / enfants (modéliser une histoire)
+  //   museum   l'entrée du musée : billets adultes / enfants (نشاط 3)
+  //   party    le goûter de la fête : jus et gâteaux (أدمج تعلّماتي)
+  staff: { kind: 'people', shows: 'عمّال مصلحة قبل وبعد الإحالة على التقاعد' },
+  coins: { kind: 'objects', shows: 'قطع نقدية من فئتي 20DA و 10DA' },
+  snack: { kind: 'objects', shows: 'كرنتيكة ومشروب: سعران مجهولان' },
+  stadium: { kind: 'people', shows: 'مناصرون يدخلون الملعب بتذاكر الكبار والصغار' },
+  museum: { kind: 'people', shows: 'زوّار متحف بتذاكر البالغين والصغار' },
+  party: { kind: 'objects', shows: 'علب عصير وقطع حلوى حفل' },
+  // Unité 6 « الدالة الخطية والتناسبية » (2026-10-02) :
+  //   scooter   les trottinettes louées à la minute sur la promenade (compteur de trajet)
+  //   souk      les étiquettes de la remise de l'Aïd (machine linéaire, نشاط 1)
+  //   cablecar  le téléphérique : une cabine sur un câble droit (droite par O ; أدمج تعلّماتي)
+  //   spring    le ressort et ses masses (طرائق : y = 0,3x)
+  //   mall      les soldes du centre commercial (étiquette étirée)
+  //   tank      le réservoir d'eau vidé puis rempli (changements successifs)
+  scooter: { kind: 'objects', shows: 'تروتينات كهربائية تؤجَّر بالدقيقة' },
+  souk: { kind: 'objects', shows: 'سلع بأسعار قبل وبعد تخفيض العيد' },
+  cablecar: { kind: 'objects', shows: 'مصعد هوائي يسير على حبل مستقيم' },
+  spring: { kind: 'objects', shows: 'نابض تعلّق به كتل' },
+  mall: { kind: 'objects', shows: 'أحذية رياضية بأسعار التخفيضات' },
+  tank: { kind: 'objects', shows: 'خزان ماء يُفرَغ ويُملأ' },
+  // Unité 7 « الدالة التآلفية » (2026-10-02) :
+  //   payroll  la fiche de paie : un salaire de base et des heures supplémentaires (نشاط 1)
+  //   ride     la course en taxi-application : prise en charge + prix au km (compteur à partie fixe)
+  //   ramp     la rampe du skatepark : une pente qui part d'une hauteur b (droite affine)
+  //   thermo   le thermomètre °C / °F du تحدّ (deux couples lus, f(x) = 1,8x + 32)
+  //   gaming   la salle de jeux vidéo : carte d'abonnement contre paiement à l'heure (deux tarifs)
+  //   rental   la location de vélos / kayaks à la plage : forfait contre prix à l'heure (synthèse)
+  payroll: { kind: 'objects', shows: 'أجرة قاعدية وساعات إضافية' },
+  ride: { kind: 'objects', shows: 'رحلة سيارة أجرة بتطبيق: ثمن الانطلاق وثمن الكيلومتر' },
+  ramp: { kind: 'objects', shows: 'منحدر حديقة التزلج يبدأ من ارتفاع b' },
+  thermo: { kind: 'objects', shows: 'محرار بتدريجتي سلسيوس وفهرنهايت' },
+  gaming: { kind: 'objects', shows: 'قاعة ألعاب إلكترونية: اشتراك أو دفع بالساعة' },
+  rental: { kind: 'objects', shows: 'كراء دراجات وقوارب على الشاطئ: جزافي أو بالساعة' },
+  //   laser    (line-crossing, مبتدئ) un spectacle de lumière : deux faisceaux laser droits qui se croisent
+  laser: { kind: 'objects', shows: 'عرض ضوئي: شعاعا ليزر مستقيمان يتقاطعان' },
+  // Unité 8 « الإحصاء » (2026-10-02) :
+  //   funpark  la file d'un manège au parc d'attractions : « القامة t على الأقل » (barre de taille)
+  //   heatwave le thermomètre d'El Oued : dix jours de canicule (balance des valeurs, نشاط 4)
+  //   esport   un mini-tournoi de jeu vidéo entre amis : les scores des joueurs (balance, مبتدئ)
+  //   sheet    l'écran d'ordinateur de la salle d'informatique : un majdoul (sheet-lab)
+  //   beach    les déchets ramassés sur la plage (تمرين 15 : diagramme circulaire)
+  //   quiz     le quiz de la classe : deux groupes et leurs moyennes réunis (réservoirs)
+  //   medals   le tableau des médailles d'or olympiques (أدمج تعلّماتي)
+  funpark: { kind: 'people', shows: 'طابور لعبة في حديقة التسلية بشرط على القامة' },
+  heatwave: { kind: 'objects', shows: 'محرار مدينة الوادي في أيام الحر' },
+  esport: { kind: 'people', shows: 'دورة ألعاب إلكترونية بين الأصدقاء: نقاط اللاعبين' },
+  sheet: { kind: 'objects', shows: 'مجدول على حاسوب قاعة الإعلام الآلي' },
+  beach: { kind: 'objects', shows: 'نفايات مجموعة على الشاطئ' },
+  quiz: { kind: 'people', shows: 'مسابقة القسم: فوجان ومعدّلاهما' },
+  medals: { kind: 'objects', shows: 'ميداليات ذهبية في الألعاب الأولمبية' },
 });
 
 export const VISUAL_THEME_IDS = Object.freeze(Object.keys(VISUAL_THEMES));

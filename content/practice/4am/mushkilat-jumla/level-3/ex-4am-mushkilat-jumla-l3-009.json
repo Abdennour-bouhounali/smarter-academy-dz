@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l3-009",
+  "lessonCode": "mushkilat-jumla",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — محيط مستطيل",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ترييض",
+      "محيط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P1",
+      "modelledOn": "ex-25"
+    }
+  },
+  "statement": {
+    "content": "مستطيل محيطه 46 cm وطوله يزيد على عرضه بـ 7 cm. نسمّي $x$ طوله و $y$ عرضه (بالسنتيمتر)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم المشكلة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} 2(x + y) = 46 \\\\ x = y + 7 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 46 \\\\ x = y + 7 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} 2(x + y) = 46 \\\\ y = x + 7 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما محيط مستطيل بعداه $x$ و $y$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المحيط ضعف مجموع البعدين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الطول هو الأكبر."
+        }
+      ],
+      "feedback": {
+        "correct": "الحل $(15 ; 8)$ : $2 \\times 23 = 46$ و $15 = 8 + 7$ .",
+        "incorrect": "المحيط ضعف مجموع البعدين، والطول أكبر من العرض."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بعدا المستطيل: اكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "15",
+        "y": "8"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من المحيط $x + y = 23$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x = y + 7$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحصل على $2y = 16$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 8$ و $x = 15$ .",
+        "incorrect": "أكمل حتى الثنائية."
+      }
+    }
+  ]
+}

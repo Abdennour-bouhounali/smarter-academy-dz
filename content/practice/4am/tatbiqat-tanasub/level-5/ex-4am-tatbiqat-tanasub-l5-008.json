@@ -1,0 +1,59 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l5-008",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — تحميل لعبة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مقدار بدلالة آخر",
+      "وضعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tatbiqat-tanasub_P3",
+      "modelledOn": "act-6"
+    }
+  },
+  "statement": {
+    "content": "تُحمَّل لعبة حجمها 1,5GB بسرعة ثابتة قدرها 12,5MB في الثانية (1GB = 1000MB)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مدة التحميل (بالثانية):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "120",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المقدار المركّب الثابت (سرعة، كتلة حجمية، استطاعة، مضاعف) هو معامل دالة خطية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المقدار المطلوب بدلالة الآخر: $d = v \\times t$ ، $m = \\rho \\times V$ ، $E = P \\times t$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض بالقيمة المعطاة، أو حلّ المعادلة إذا كان المجهول هو المقدار الآخر، ثم تحقّق من الوحدة."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}5GB = 1500MB$ ، و $\\dfrac{1500}{12{,}5} = 120s$ ، أي دقيقتان.",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    }
+  ]
+}

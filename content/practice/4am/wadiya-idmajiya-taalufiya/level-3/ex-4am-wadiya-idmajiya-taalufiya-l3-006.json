@@ -1,0 +1,107 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l3-006",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 3,
+  "metadata": {
+    "title": "قراءة المستقيم: الصورة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تمثيل بياني",
+      "صورة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "المستقيم الممثل لثمن كراء $f(x)$ ( $x$ عدد الساعات) يقطع محور التراتيب في $(0 ; 500)$ ويشمل النقطة $(4 ; 900)$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ثمن الساعة (المعامل $a$):",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار",
+      "expectedAnswer": "100",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من 0 إلى 4 ساعات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الثمن يصعد من 500 إلى 900."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\dfrac{400}{4}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = 100\\,\\mathrm{DA}$.",
+        "incorrect": "تغيّر الترتيب على تغيّر الفاصلة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "225",
+          "id": "MISC-TAGHAYYUR-B-NISBA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ثمن كراء 7 ساعات:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار",
+      "expectedAnswer": "1200",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$f(x) = 100x + 500$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$f(7)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "صورة 7."
+        }
+      ],
+      "feedback": {
+        "correct": "$700 + 500 = 1200\\,\\mathrm{DA}$.",
+        "incorrect": "نكتب الدستور ثم نحسب الصورة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "700",
+          "id": "MISC-TAALUFI-NISYAN-B"
+        }
+      ]
+    }
+  ]
+}

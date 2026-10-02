@@ -1,0 +1,92 @@
+{
+  "id": "ex-4am-tafsir-bayani-jumla-l4-010",
+  "lessonCode": "tafsir-bayani-jumla",
+  "level": 4,
+  "metadata": {
+    "title": "القراءة تقريبية",
+    "estimatedMinutes": 5,
+    "tags": [
+      "قراءة تقريبية",
+      "كسور"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tafsir-bayani-jumla_P2",
+      "modelledOn": "act-5"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الجملة $\\begin{cases} y = 0{,}5x + 1 \\\\ y = -2x + 4 \\end{cases}$ . الشكل يمثّل المستقيمين.",
+    "visual": {
+      "range": {
+        "xMin": -1,
+        "xMax": 3,
+        "yMin": -1,
+        "yMax": 5
+      },
+      "unit": 43.33,
+      "functions": [
+        {
+          "id": "d1",
+          "a": 0.5,
+          "b": 1.0,
+          "label": "(d1)",
+          "tone": "indigo"
+        },
+        {
+          "id": "d2",
+          "a": -2.0,
+          "b": 4.0,
+          "label": "(d2)",
+          "tone": "amber"
+        }
+      ],
+      "xStep": 1,
+      "yStep": 1,
+      "frozen": true,
+      "ariaLabel": "المستقيمان (d1) و (d2) اللذان يمثّلان معادلتي الجملة",
+      "caption": false
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قرأ تلميذ على الشكل $(1 ; 1{,}5)$ تقريبًا. احسب الحل المضبوط $(x ; y)$ =",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "6/5",
+        "y": "8/5"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نقطة التقاطع تقع على المستقيمين معًا: إحداثياها يحقّقان المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بالتعويض أو بالجمع، أوجد $x$ أولًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض قيمة $x$ في إحدى المعادلتين لإيجاد $y$ ، ثم تحقّق في الأخرى."
+        }
+      ],
+      "feedback": {
+        "correct": "الحل $(1{,}2 ; 1{,}6)$ ، ونتحقّق: $-0{,}5 \\times 1{,}2 + 1{,}6 = 1$ و $2 \\times 1{,}2 + 1{,}6 = 4$.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

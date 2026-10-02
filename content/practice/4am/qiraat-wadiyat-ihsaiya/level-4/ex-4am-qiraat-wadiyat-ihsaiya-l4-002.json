@@ -1,0 +1,77 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l4-002",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 4,
+  "metadata": {
+    "title": "التمرين 14 — التفسير",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تمرين 14",
+      "تفسير"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-14",
+      "page": 99,
+      "section": "أوظّف تعلّماتي",
+      "number": 14
+    }
+  },
+  "statement": {
+    "content": "المدينة «أ»: المتوسط $9{,}5$ ، الوسيط 10، المدى 35. المدينة «ب»: المتوسط $13{,}25$ ، الوسيط 14، المدى 17."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ تفسير صحيح؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "«ب» أدفأ، و«أ» أكثر تفاوتا بين الشتاء والصيف",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "«أ» أدفأ لأن مداها أكبر",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MADA-AKBAR-QIMA"
+        },
+        {
+          "id": "C",
+          "content": "المدينتان متشابهتان لأن الوسيطين متقاربان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUQARANA-MUTAWASSIT-FAQAT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن مؤشري الموقع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم قارن المديين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المدى لا يقول أين تتمركز القيم."
+        }
+      ],
+      "feedback": {
+        "correct": "متوسط ووسيط «ب» أكبر (أدفأ)، ومدى «أ» 35 ضعف مدى «ب» تقريبا (أكثر تشتتا).",
+        "incorrect": "استعمل مؤشر موقع ومؤشر تشتت."
+      },
+      "difficulty": 4
+    }
+  ]
+}

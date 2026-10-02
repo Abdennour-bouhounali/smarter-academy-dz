@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l3-007",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 3,
+  "metadata": {
+    "title": "طرائق — الكثافة السكانية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الكثافة السكانية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-compound",
+      "page": 71,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 71): تبلغ مساحة الجزائر $2\\,381\\,740km^2$ وعدد سكانها 41,2 مليون في سنة 2017."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الكثافة السكانية (عدد السكان في الكيلومتر المربع):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "حوالي $0{,}058$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQADIR-QISMA-MAQLUBA"
+        },
+        {
+          "id": "B",
+          "content": "حوالي $17$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "حوالي $98$ مليارًا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQADIR-QISMA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مقدار حاصل القسمة: السرعة مسافة على مدة، والكتلة الحجمية كتلة على حجم، والتدفق حجم على مدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المقدارين بالوحدتين المطلوبتين قبل القسمة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم، ثم اكتب النتيجة مع وحدتها المركّبة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{41\\,200\\,000}{2\\,381\\,740} \\simeq 17{,}3$ : حوالي 17 نسمة في $km^2$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

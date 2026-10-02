@@ -1,0 +1,73 @@
+{
+  "id": "ex-4am-mafhum-jumla-l2-005",
+  "lessonCode": "mafhum-jumla",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 2 — حلول المعادلة x − y = 2",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ثنائية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-2",
+      "page": 60,
+      "section": "أوظّف تعلّماتي",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 60): من بين الثنائيات $(0{,}5 ; -1{,}5)$ ، $(0 ; -2)$ ، $\\left(0 ; \\dfrac{1}{3}\\right)$ ، $(1 ; -2)$ ، $\\left(\\dfrac{1}{5} ; 0\\right)$ ، نبحث عن حلول المعادلة $x - y = 2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما الثنائيات التي هي حلول للمعادلة $x - y = 2$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(0 ; -2)$ فقط",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$(0{,}5 ; -1{,}5)$ و $(0 ; -2)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(1 ; -2)$ و $(0 ; -2)$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض كل ثنائية في $x - y$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "طرح عدد سالب يعني إضافة مقابله."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قد تقبل المعادلة أكثر من حل."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}5 + 1{,}5 = 2$ و $0 + 2 = 2$ ؛ أما $(1 ; -2)$ فتعطي 3.",
+        "incorrect": "جرّب الثنائيات الخمس كلها."
+      }
+    }
+  ]
+}

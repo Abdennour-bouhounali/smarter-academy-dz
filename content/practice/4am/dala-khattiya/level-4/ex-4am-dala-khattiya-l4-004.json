@@ -1,0 +1,69 @@
+{
+  "id": "ex-4am-dala-khattiya-l4-004",
+  "lessonCode": "dala-khattiya",
+  "level": 4,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي — صورة −6",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تعيين"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 74,
+      "section": "أؤكّد تعلّماتي",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 74): $-9$ هي صورة $-6$ بدالة خطية $g$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عيّن معامل الدالة الخطية $g$ علمًا أنّ $g(-6) = -9$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "1.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الدالة خطية: دستورها من الشكل $f(x) = ax$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعلومة المعطاة على شكل معادلة مجهولها $a$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الصورة على العدد غير المعدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "$-6a = -9$ ، إذن $a = -9 \\div (-6) = 1{,}5$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-MUAMIL-MAQLUB",
+          "value": "2/3"
+        },
+        {
+          "id": "MISC-KHATTIYA-ISHARA",
+          "value": "-1.5"
+        }
+      ]
+    }
+  ]
+}

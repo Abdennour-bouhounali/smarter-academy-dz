@@ -1,0 +1,127 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l3-010",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 11 (ص 72)",
+    "estimatedMinutes": 4,
+    "tags": [
+      "قراءة",
+      "أعداد كبيرة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-11",
+      "page": 72,
+      "section": "أوظّف تعلّماتي",
+      "number": 11
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 72): المستقيم (D) هو التمثيل البياني للدالة $f$ ، ويشمل المبدأ والنقطة $(400 ; 80)$ .",
+    "visual": {
+      "range": {
+        "xMin": 0,
+        "xMax": 500,
+        "yMin": 0,
+        "yMax": 100
+      },
+      "unit": 0.6,
+      "unitY": 2.0,
+      "functions": [
+        {
+          "id": "d",
+          "a": 0.2,
+          "b": 0,
+          "label": "(D)",
+          "tone": "indigo"
+        }
+      ],
+      "points": [
+        {
+          "id": "p0",
+          "x": 400.0,
+          "y": 80.0,
+          "name": ""
+        }
+      ],
+      "xStep": 100,
+      "yStep": 20,
+      "frozen": true,
+      "ariaLabel": "المستقيم (D) يشمل المبدأ والنقطة (400 ; 80)",
+      "caption": false
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$f(1954) =$",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 3/4)",
+      "expectedAnswer": "390,8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التمثيل يشمل O والنقطة المعطاة $(m ; n)$ ، أي $f(m) = n$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $a \\times m = n$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الترتيب على الفاصلة: $a = \\dfrac{n}{m}$ ، مع الانتباه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{80}{400} = 0{,}2$ و $0{,}2 \\times 1954 = 390{,}8$ .",
+        "incorrect": "استنتج المعامل من النقطة المقروءة ثم احسب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العدد الذي صورته 10085:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "50425",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد الذي صورته $b$ هو حل المعادلة $ax = b$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم الصورة على المعامل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق: اضرب العدد الذي وجدته في المعامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$10085 \\div 0{,}2 = 50425$ .",
+        "incorrect": "اقسم الصورة على المعامل."
+      }
+    }
+  ]
+}

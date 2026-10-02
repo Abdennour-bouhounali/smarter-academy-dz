@@ -1,0 +1,77 @@
+{
+  "id": "ex-4am-mafhum-taalufiya-l3-003",
+  "lessonCode": "mafhum-taalufiya",
+  "level": 3,
+  "metadata": {
+    "title": "نشاط 2 — الدالة 3x² + 1",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمييز",
+      "الكتاب"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-2",
+      "page": 78,
+      "section": "أنشطة",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 78): الدالة $x \\longmapsto 3x^2 + 1$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هذه الدالة:",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "ليست تآلفية: $1 \\longmapsto 4$ ، $2 \\longmapsto 13$ ، $3 \\longmapsto 28$ والزيادات غير متساوية",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "تآلفية: $a = 3$ و $b = 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-KHATTIYA-KHALT"
+        },
+        {
+          "id": "C",
+          "content": "تآلفية: $a = 9$ و $b = 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-KHATTIYA-KHALT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الدالة التآلفية من الشكل $x \\longmapsto ax + b$ حيث $a$ و $b$ عددان معلومان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب كل عبارة بعد التبسيط على الشكل $ax + b$ إن أمكن."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$x^2$ و $\\dfrac{1}{x}$ ليسا جداء $x$ في عدد ثابت."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x^2 = 3x \\times x$ : ليست جداء $x$ في عدد ثابت.",
+        "incorrect": "راجع كل اقتراح: واحد فقط صحيح."
+      }
+    }
+  ]
+}

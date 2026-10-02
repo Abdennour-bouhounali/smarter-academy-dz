@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Target, Play, Sparkles, Trophy, Compass, BookOpen, GraduationCap } from 'lucide-react';
 import { ArrowForward } from '../../../components/common/DirectionalIcons';
 import { MASTERY_STATES } from '../../../lessons/common/components/LearningPointMastery';
-import { bidi } from '../../../utils/bidi';
+import MathLabel from '../../../lessons/common/components/MathLabel';
 
 /**
  * « 🎯 خطوتك التالية » — LE héros de l'accueil, l'élément qui répond à
@@ -185,7 +185,7 @@ export default function NextStepHero({ step, gradeId, curriculumIndex }) {
           <div className="flex-1 min-w-0">
             <p className="font-inter text-slate-500 text-sm">{isNext ? t('home.heroNextLead') : t('home.heroContinueLead')}</p>
             <h2 id="home-next-step-title" className="font-space font-bold text-slate-900 text-2xl sm:text-3xl leading-tight mt-1 text-balance">
-              {bidi(resume.course.title)}
+              <MathLabel>{resume.course.title}</MathLabel>
             </h2>
             {(contextLine || otherGrade) && (
               <p className="font-inter text-slate-500 text-sm mt-2 flex items-center gap-2 flex-wrap">
@@ -222,7 +222,7 @@ export default function NextStepHero({ step, gradeId, curriculumIndex }) {
           <div className="flex-1 min-w-0">
             <p className="font-inter text-slate-500 text-sm">{t('home.heroMasteryLead')}</p>
             <h2 id="home-next-step-title" className="font-space font-bold text-slate-900 text-2xl sm:text-3xl leading-tight mt-1 text-balance">
-              {bidi(point.title)}
+              <MathLabel>{point.title}</MathLabel>
             </h2>
             <p className="mt-3 flex items-center gap-2 flex-wrap">
               <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full font-mono-jetbrains text-xs font-bold ${PILL[point.state]}`} data-state={point.state}>
@@ -234,12 +234,12 @@ export default function NextStepHero({ step, gradeId, curriculumIndex }) {
         <dl className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
           <div className="flex gap-2 min-w-0">
             <dt className="text-slate-400 font-mono-jetbrains text-xs flex-shrink-0 pt-0.5">{t('progression.workNow.lesson')}</dt>
-            <dd className="font-semibold text-slate-800 truncate">{bidi(lesson.lesson.title)}</dd>
+            <dd className="font-semibold text-slate-800 truncate"><MathLabel>{lesson.lesson.title}</MathLabel></dd>
           </div>
           {group.kind === 'unit' && (
             <div className="flex gap-2 min-w-0">
               <dt className="text-slate-400 font-mono-jetbrains text-xs flex-shrink-0 pt-0.5">{t('progression.workNow.unit')}</dt>
-              <dd className="text-slate-700 truncate">{bidi(group.title)}</dd>
+              <dd className="text-slate-700 truncate"><MathLabel>{group.title}</MathLabel></dd>
             </div>
           )}
         </dl>
@@ -263,13 +263,13 @@ export default function NextStepHero({ step, gradeId, curriculumIndex }) {
           <div className="flex-1 min-w-0">
             <p className="font-inter text-slate-500 text-sm">{t('home.heroStartLead')}</p>
             <h2 id="home-next-step-title" className="font-space font-bold text-slate-900 text-2xl sm:text-3xl leading-tight mt-1 text-balance">
-              {bidi(lesson.title)}
+              <MathLabel>{lesson.title}</MathLabel>
             </h2>
             {contextLine && <p className="font-inter text-slate-500 text-sm mt-2">{contextLine}</p>}
           </div>
         </div>
         {lesson.description && (
-          <p className="font-inter text-slate-600 text-sm sm:text-base leading-relaxed mt-6 max-w-2xl line-clamp-3">{bidi(lesson.description)}</p>
+          <p className="font-inter text-slate-600 text-sm sm:text-base leading-relaxed mt-6 max-w-2xl line-clamp-3"><MathLabel>{lesson.description}</MathLabel></p>
         )}
         <div className="mt-7 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-4">
           <p className="font-inter text-xs text-slate-500">{t('home.heroStartHint')}</p>

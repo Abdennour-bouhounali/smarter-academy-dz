@@ -1,0 +1,66 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l1-009",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 1,
+  "metadata": {
+    "title": "حبل منحدر قصير",
+    "estimatedMinutes": 2,
+    "tags": [
+      "فيثاغورس",
+      "طول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "في حديقة ألعاب، يربط حبل منزلق مستقيم قمّة برج بنقطة على الأرض. ارتفاع البرج $50\\,\\mathrm{m}$ ، والمسافة الأفقية بين قاعدة البرج ونقطة الوصول $120\\,\\mathrm{m}$ ، والبرج عمودي على الأرض المستوية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما طول الحبل بالمتر؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالمتر",
+      "expectedAnswer": "130",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحبل وتر مثلث قائم."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الضلعان $50$ و $120$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مبرهنة فيثاغورس ثم الجذر التربيعي."
+        }
+      ],
+      "feedback": {
+        "correct": "$50^2 + 120^2 = 2500 + 14400 = 16900$ و $\\sqrt{16900} = 130$.",
+        "incorrect": "مربّع الوتر يساوي مجموع مربّعي الضلعين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1,
+      "misconceptionSignatures": [
+        {
+          "value": "170",
+          "id": "MISC-JIDHR-JAMA"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l2-002",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 30 — الموزّع الآلي",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترجمة",
+      "حل جملة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-30",
+      "page": 63,
+      "section": "أتعمّق",
+      "number": 30
+    }
+  },
+  "statement": {
+    "content": "خلال يوم واحد، سُحب من موزّع آلي للأوراق النقدية 356 ورقة نقدية كلها من فئة 1000DA أو 2000 DA. وبلغ المبلغ الإجمالي الموزّع 454 000 DA. نسمّي $x$ عدد أوراق فئة 1000DA و $y$ عدد أوراق فئة 2000DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم المعطيات هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 356 \\\\ 1000x + 2000y = 454000 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 454000 \\\\ 1000x + 2000y = 356 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x + y = 356 \\\\ 2000x + 1000y = 454000 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "D",
+          "content": "$\\begin{cases} x + y = 356 \\\\ 1000x + 2000y = 356000 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معلومة عن عدد الأوراق ومعلومة عن المبلغ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ورقة من 1000DA قيمتها 1000."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "كل عدد يُضرب في قيمة ورقته."
+        }
+      ],
+      "feedback": {
+        "correct": "عدد الأوراق $x + y = 356$ ، والمبلغ $1000x + 2000y = 454000$.",
+        "incorrect": "لا تخلط بين عدد الأوراق والمبلغ."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو عدد الأوراق $(x ; y)$ من كل فئة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان طبيعيان",
+      "expectedAnswer": {
+        "x": "258",
+        "y": "98"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقسم المعادلة الثانية على 1000."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح $x + y = 356$ من $x + 2y = 454$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقق من المبلغ الكلي."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 454 - 356 = 98$ و $x = 356 - 98 = 258$.",
+        "incorrect": "بسّط ثم اطرح المعادلتين طرفا بطرف."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "98",
+            "y": "258"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    }
+  ]
+}

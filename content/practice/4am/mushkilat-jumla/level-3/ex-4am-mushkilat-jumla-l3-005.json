@@ -1,0 +1,164 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l3-005",
+  "lessonCode": "mushkilat-jumla",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — سفرية إلى تيمقاد",
+    "estimatedMinutes": 5,
+    "tags": [
+      "ترييض",
+      "رحلة",
+      "المراحل الخمس"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P2",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "نظّمت متوسطة سفرية إلى تيمقاد شارك فيها 52 شخصا بين تلاميذ ومرافقين. تذكرة التلميذ 800 DA وتذكرة المرافق 1200 DA، والمبلغ الكلي 44000 DA. نسمّي $x$ عدد التلاميذ و $y$ عدد المرافقين."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم المشكلة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 52 \\\\ 800x + 1200y = 44000 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 52 \\\\ 1200x + 800y = 44000 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x + y = 44000 \\\\ 800x + 1200y = 52 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معلومة عدد ومعلومة مال."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تذكرة التلميذ 800."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المبلغ الكلي 44000."
+        }
+      ],
+      "feedback": {
+        "correct": "52 شخصا و 44000 DA.",
+        "incorrect": "كل عدد مع ثمنه، وكل معلومة بوحدتها."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة واكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "46",
+        "y": "6"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x = 52 - y$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على $400y + 41600 = 44000$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم احسب $x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 6$ و $x = 46$ : $36800 + 7200 = 44000$ .",
+        "incorrect": "أكمل حتى الثنائية."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "الجملة التي تجيب عن السؤال هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "شارك 6 تلاميذ و 46 مرافقا.",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARTIB"
+        },
+        {
+          "id": "B",
+          "content": "شارك 46 تلميذا و 6 مرافقين.",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "شارك 46 تلميذا.",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-NISF-HALL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x$ عدد التلاميذ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العدد الأول من الثنائية لـ $x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الجواب يذكر العددين."
+        }
+      ],
+      "feedback": {
+        "correct": "$46 + 6 = 52$ و $800 \\times 46 + 1200 \\times 6 = 44000$ .",
+        "incorrect": "اقرأ الثنائية بترتيبها، وأجب عن العددين."
+      }
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "id": "ex-4am-tarrid-taalufi-l2-003",
+  "lessonCode": "tarrid-taalufi",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — طول الرحلة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "العدد الذي صورته معلومة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-taalufi_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "تطبيق نقل: 100DA عند الانطلاق ثم 40DA لكل كيلومتر. دفعت ليلى 580DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما طول رحلتها (km)؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "12",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-SABIQ-QISMA",
+          "value": "29/2"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$40x + 100 = 580$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح 100."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$x = \\dfrac{480}{40}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$40x + 100 = 580$ أي $40x = 480$ ومنه $x = 12$ km.",
+        "incorrect": "نطرح 100 ثم نقسم على 40."
+      }
+    }
+  ]
+}

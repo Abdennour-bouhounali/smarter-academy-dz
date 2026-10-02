@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l2-006",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — مدّة استعمال الهاتف",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مقارنة",
+      "مدى"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P2",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "مدّة استعمال الهاتف (بالساعات) خلال 5 أيام. ريم: 3 ، 2 ، 5 ، 4 ، 6. مراد: 1 ، 2 ، 2 ، 9 ، 1."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ التلميذين مدّة استعماله أكثر تشتتا؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "مراد: المدى 8",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "ريم: المدى 4",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MADA-AKBAR-QIMA"
+        },
+        {
+          "id": "C",
+          "content": "هما متماثلان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUQARANA-MUTAWASSIT-FAQAT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب مدى كل سلسلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مراد: $9 - 1$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ريم: $6 - 2$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "مدى مراد $9 - 1 = 8$ ومدى ريم $6 - 2 = 4$ : مراد أكثر تشتتا.",
+        "incorrect": "المدى هو مؤشر التشتت."
+      },
+      "difficulty": 2
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "id": "ex-4am-mafhum-jumla-l5-007",
+  "lessonCode": "mafhum-jumla",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — ماذا يعني «حل الجملة»؟",
+    "estimatedMinutes": 5,
+    "tags": [
+      "حل الجملة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mafhum-jumla_P2",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "نريد حل الجملة $\\begin{cases} x + y = 10 \\\\ x - y = 4 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حل هذه الجملة يعني ...",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "إيجاد كل الثنائيات التي تحقّق المعادلتين في آن واحد",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "إيجاد ثنائية تحقّق إحدى المعادلتين",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "C",
+          "content": "إيجاد قيمة $x$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-NISF-HALL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارجع إلى تعريف حل الجملة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحل ثنائية، والمعادلتان معًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "«في آن واحد» هي الكلمة المهمّة."
+        }
+      ],
+      "feedback": {
+        "correct": "حل جملة يعني إيجاد كل الثنائيات $(x ; y)$ التي تحقّق المعادلتين في آن واحد.",
+        "incorrect": "معادلة واحدة لا تكفي، والحل ثنائية لا عدد."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما هي الثنائية $(x ; y)$ حل الجملة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية $(x ; y)$ : العدد الأول ثم الثاني (عدد صحيح أو كسر مثل 2/5)",
+      "expectedAnswer": {
+        "x": "7",
+        "y": "3"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عددان مجموعهما 10 وفرقهما 4."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع المعادلتين: $2x = 14$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم $y = 10 - x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 7$ و $y = 3$ : $7 + 3 = 10$ و $7 - 3 = 4$ .",
+        "incorrect": "الحل ثنائية: احسب $y$ أيضًا."
+      }
+    }
+  ]
+}

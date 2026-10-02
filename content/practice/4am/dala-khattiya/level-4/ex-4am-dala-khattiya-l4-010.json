@@ -1,0 +1,103 @@
+{
+  "id": "ex-4am-dala-khattiya-l4-010",
+  "lessonCode": "dala-khattiya",
+  "level": 4,
+  "metadata": {
+    "title": "تخفيض 35%",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نسبة مئوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "تخفيضات نهاية الموسم على الألعاب الإلكترونية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "تاجر يخفّض أسعاره بـ $35\\%$ . الدالة الخطية التي ترفق بكل سعر $x$ السعر بعد التخفيض معاملها:",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "0.65",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد تخفيض نسبة من السعر يبقى جزء منه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسبة المئوية الباقية من السعر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعامل هو هذه النسبة مكتوبة عددًا عشريًا."
+        }
+      ],
+      "feedback": {
+        "correct": "يبقى $65\\%$ من السعر: $a = 1 - 0{,}35 = 0{,}65$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAKHFID-NISBA",
+          "value": "0.35"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $f(4200)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "2730",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد بدالة خطية تُقرأ على دستورها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بالعدد المعطى في الدستور."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب الجداء، وانتبه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(4200) = 0{,}65 \\times 4200 = 2730$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-SURA-SABIQ",
+          "value": "84000/13"
+        }
+      ]
+    }
+  ]
+}

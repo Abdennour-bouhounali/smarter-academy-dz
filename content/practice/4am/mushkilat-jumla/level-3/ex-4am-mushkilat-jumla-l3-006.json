@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l3-006",
+  "lessonCode": "mushkilat-jumla",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — دوري FIFA بين الأصدقاء",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ترييض",
+      "ألعاب إلكترونية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P1",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "في دوري FIFA بين أصدقاء: الفوز 3 نقاط، التعادل نقطة واحدة، والخسارة 0. لعب ياسر 14 مباراة، خسر 2 منها، وجمع 26 نقطة. نسمّي $x$ عدد انتصاراته و $y$ عدد تعادلاته."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم المشكلة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 14 \\\\ 3x + y = 26 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 12 \\\\ 3x + y = 26 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x + y = 12 \\\\ x + 3y = 26 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كم مباراة لم يخسرها ياسر؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المباريات المخسورة لا تُحسب في $x$ ولا في $y$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الانتصارات والتعادلات معا: $14 - 2$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "12 مباراة دون خسارة، و 26 نقطة: الحل $(7 ; 5)$ .",
+        "incorrect": "انتبه: 2 من المباريات خسرها."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "كم فوزا وكم تعادلا؟ اكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "7",
+        "y": "5"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اطرح المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "يختفي $y$ : $2x = 14$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم احسب $y$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 7$ و $y = 5$ : $21 + 5 = 26$ نقطة.",
+        "incorrect": "تحقّق بالنقاط وبعدد المباريات."
+      }
+    }
+  ]
+}

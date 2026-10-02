@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tarrid-khatti-l5-007",
+  "lessonCode": "tarrid-khatti",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — سيارتان على الطريق السيّار",
+    "estimatedMinutes": 5,
+    "tags": [
+      "سرعة",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P3",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "تنطلق سيارتان معًا من المكان نفسه: الأولى بسرعة ثابتة 80km/h والثانية 100km/h."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المسافة بينهما بعد $t$ ساعة:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$180t$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-NAMUDHAJ"
+        },
+        {
+          "id": "B",
+          "content": "$20t$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$20 + t$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-AFFINE"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$100t - 80t$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "فرق دالتين خطيتين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$20t$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$100t - 80t = 20t$ .",
+        "incorrect": "الفرق بين المسافتين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بعد كم ساعة تكون المسافة بينهما 50km؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري (الفاصلة مقبولة)",
+      "expectedAnswer": "2.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$20t = 50$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{50}{20}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ساعتان ونصف."
+        }
+      ],
+      "feedback": {
+        "correct": "$t = 2{,}5$ h أي ساعتان و 30 دقيقة.",
+        "incorrect": "حلّ $20t = 50$ ."
+      }
+    }
+  ]
+}

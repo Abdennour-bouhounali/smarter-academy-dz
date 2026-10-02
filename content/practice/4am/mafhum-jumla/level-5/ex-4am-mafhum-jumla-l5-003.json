@@ -1,0 +1,61 @@
+{
+  "id": "ex-4am-mafhum-jumla-l5-003",
+  "lessonCode": "mafhum-jumla",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — موسم بلا هزيمة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "كرة القدم",
+      "حل الجملة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mafhum-jumla_P2",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "أنهى فريق مرحلة الذهاب: 12 مباراة دون أي هزيمة و 28 نقطة (الانتصار بـ 3 نقاط والتعادل بنقطة). نسمّي $x$ عدد الانتصارات و $y$ عدد التعادلات: $\\begin{cases} x + y = 12 \\\\ 3x + y = 28 \\end{cases}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هي الثنائية $(x ; y)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية $(x ; y)$ : العدد الأول ثم الثاني (عدد صحيح أو كسر مثل 2/5)",
+      "expectedAnswer": {
+        "x": "8",
+        "y": "4"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لو كانت المباريات كلها تعادلات لكانت النقاط 12."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل انتصار مكان تعادل يزيد نقطتين: $28 - 12 = 16$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم النقاط الزائدة على 2 لتجد $x$ ، ثم $y = 12 - x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 8$ و $y = 4$ : $8 + 4 = 12$ و $24 + 4 = 28$ .",
+        "incorrect": "تحقّق من عدد المباريات ومن النقاط معًا."
+      }
+    }
+  ]
+}

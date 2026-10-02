@@ -1,0 +1,61 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l4-003",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — قاعة الرياضة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية",
+      "جملة معادلتين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "قاعة رياضة: اشتراك شهرين بـ 3500DA واشتراك 6 أشهر بـ 7500DA . المبلغ دالة تآلفية لعدد الأشهر: $f(x) = ax + b$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعاملان $(a ; b)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (a ; b) — عددان صحيحان أو كسران",
+      "expectedAnswer": {
+        "x": "1000",
+        "y": "1500"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\begin{cases} 2a + b = 3500 \\\\ 6a + b = 7500 \\end{cases}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$4a = 4000$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم $b$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = 1000$ DA للشهر و $b = 3500 - 2000 = 1500$ DA حقوق التسجيل.",
+        "incorrect": "الترتيب $(a ; b)$ ."
+      }
+    }
+  ]
+}

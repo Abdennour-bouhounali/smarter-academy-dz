@@ -1,0 +1,125 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l3-002",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 3,
+  "metadata": {
+    "title": "عائلة وأربعة أطفال",
+    "estimatedMinutes": 4,
+    "tags": [
+      "دالة خطية",
+      "ميزانية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "عائلة من بالغ واحد و 4 أطفال تركب المصعد الهوائي. $x$ سعر تذكرة البالغ بالدينار، وكل طفل يستفيد من تخفيض 25% من $x$ . ميزانية العائلة للرحلة $1800$ DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "تكلفة الرحلة بدلالة $x$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$C(x) = x + 4 \\times 0{,}75x = 4x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$C(x) = x + 4 \\times 0{,}25x = 2x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAKHFID-NISBA"
+        },
+        {
+          "id": "C",
+          "content": "$C(x) = 5x - 25$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-JAM"
+        },
+        {
+          "id": "D",
+          "content": "$C(x) = 5 \\times 0{,}75x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-NAMUDHAJ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كم يدفع كل طفل بدلالة $x$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بعد تخفيض 25% ندفع 75%."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "التخفيض يخص الأطفال وحدهم."
+        }
+      ],
+      "feedback": {
+        "correct": "كل طفل يدفع $0{,}75x$ : $C(x) = x + 3x = 4x$.",
+        "incorrect": "الطفل يدفع ما يبقى بعد التخفيض، والبالغ يدفع $x$ كاملا."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    },
+    {
+      "id": "q2",
+      "statement": "ما أكبر سعر لتذكرة البالغ (بالدينار) في حدود الميزانية؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي بالدينار",
+      "expectedAnswer": "450",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التكلفة يجب ألا تتجاوز الميزانية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حل $4x \\leq 1800$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أكبر سعر هو حيث تساوي التكلفة الميزانية."
+        }
+      ],
+      "feedback": {
+        "correct": "$4x \\leq 1800$ ومنه $x \\leq 450$.",
+        "incorrect": "اقسم الميزانية على معامل التكلفة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "7200",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
+        }
+      ]
+    }
+  ]
+}

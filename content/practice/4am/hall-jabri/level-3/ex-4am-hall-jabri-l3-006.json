@@ -1,0 +1,62 @@
+{
+  "id": "ex-4am-hall-jabri-l3-006",
+  "lessonCode": "hall-jabri",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 11 — جـ)",
+    "estimatedMinutes": 4,
+    "tags": [
+      "اختيار الطريقة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-11",
+      "page": 60,
+      "section": "أوظّف تعلّماتي",
+      "number": 11
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 60): حل الجملة باختيار طريقة مناسبة. $\\begin{cases} 6x - 5y = 0 \\\\ 2x - y = 12 \\end{cases}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حل الجملة:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "15",
+        "y": "18"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ المعاملات قبل أن تبدأ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل يساوي $1$ أو $-1$ يسهّل التعويض؛ معاملان متعاكسان (أو يصيران كذلك بضرب بسيط) يسهّلان الجمع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد إيجاد مجهول، عوّض قيمته لتجد الآخر، ثم تحقّق من الثنائية في المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "من الثانية $y = 2x - 12$ ؛ $6x - 5(2x - 12) = 0$ أي $-4x = -60$ ، ومنه $x = 15$ و $y = 18$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

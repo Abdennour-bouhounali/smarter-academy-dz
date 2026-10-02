@@ -1,0 +1,92 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l4-005",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — مكالمات الهاتف",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "تعيين دالة تآلفية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "عرض هاتفي: 10 دقائق بـ 650DA و 30 دقيقة بـ 1250DA ، والمبلغ دالة تآلفية لعدد الدقائق."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ثمن الدقيقة $a$ (DA):",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "30",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$1250 - 650 = 600$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "على 20 ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تناسب التغيّرات."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{600}{20} = 30$ DA.",
+        "incorrect": "فرق العددين 20 ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ثمن 50 دقيقة (DA):",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "1850",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن $b$ : $650 - 300$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$b = 350$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$30 \\times 50 + 350$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(x) = 30x + 350$ ، $f(50) = 1500 + 350 = 1850$ DA.",
+        "incorrect": "لا تنسَ المبلغ الثابت."
+      }
+    }
+  ]
+}

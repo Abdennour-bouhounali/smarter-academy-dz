@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l2-009",
+  "lessonCode": "mushkilat-jumla",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — الأب وابنه",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترييض",
+      "أعمار"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P1",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "عمر أب ثلاثة أضعاف عمر ابنه، ومجموع عمريهما 48 سنة. نسمّي $x$ عمر الأب و $y$ عمر الابن."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم المشكلة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 48 \\\\ y = 3x \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 48 \\\\ x = 3y \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x + y = 48 \\\\ x = y + 3 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من الأكبر؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "«ثلاثة أضعاف» ضرب في 3، لا إضافة 3."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عمر الأب = 3 × عمر الابن."
+        }
+      ],
+      "feedback": {
+        "correct": "الأب ثلاثة أضعاف ابنه، والمجموع 48: الحل $(36 ; 12)$ .",
+        "incorrect": "الأب هو الأكبر، و«ثلاثة أضعاف» ضرب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما عمر الأب وعمر الابن؟ اكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "36",
+        "y": "12"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ في المعادلة الأولى."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على $4y = 48$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم احسب $x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 12$ و $x = 36$ .",
+        "incorrect": "تحقّق بالمجموع وبالأضعاف."
+      }
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l2-005",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 2,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي (ص 74) — معامل من نقطة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "معامل",
+      "منحى"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-khatti_P1",
+      "modelledOn": "qcm"
+    }
+  },
+  "statement": {
+    "content": "التمثيل البياني لدالة خطية $f$ يشمل النقطة $A(4 ; 10)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "معامل $f$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 3/4)",
+      "expectedAnswer": "2,5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التمثيل يشمل O والنقطة المعطاة $(m ; n)$ ، أي $f(m) = n$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $a \\times m = n$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الترتيب على الفاصلة: $a = \\dfrac{n}{m}$ ، مع الانتباه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{10}{4} = 2{,}5$ .",
+        "incorrect": "الترتيب على الفاصلة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "تمثيل $f$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "يصعد من اليسار إلى اليمين",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "ينزل من اليسار إلى اليمين",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-MUNHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى إشارة المعامل $a$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المستقيم يشمل O دائمًا، ومنحاه تعيّنه إشارة $a$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تخيّل نقطة فاصلتها 1: ترتيبها $a$ ، فوق محور الفواصل أم تحته؟"
+        }
+      ],
+      "feedback": {
+        "correct": "المعامل $2{,}5$ موجب.",
+        "incorrect": "احسب المعامل ثم انظر إلى إشارته."
+      }
+    }
+  ]
+}

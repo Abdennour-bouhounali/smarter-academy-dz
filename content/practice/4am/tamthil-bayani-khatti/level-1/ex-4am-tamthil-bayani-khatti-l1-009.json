@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l1-009",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — معادلة المستقيم",
+    "estimatedMinutes": 4,
+    "tags": [
+      "معادلة",
+      "معامل التوجيه"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-khatti_P1",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "التمثيل البياني للدالة الخطية $h : x \\longmapsto -3x$ مستقيم يشمل المبدأ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "معادلة هذا المستقيم:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$y = -3x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$y = x - 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-AFFINE"
+        },
+        {
+          "id": "C",
+          "content": "$y = -3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-BIDUN-O"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التمثيل البياني لدالة خطية معاملها $a$ معادلته من الشكل $y = ax$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما معامل $h$ ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "كل نقطة $(x ; y)$ منه ترتيبها صورة فاصلتها."
+        }
+      ],
+      "feedback": {
+        "correct": "معادلته $y = -3x$ و $-3$ معامل توجيهه.",
+        "incorrect": "المستقيم يشمل O، وترتيب كل نقطة صورة فاصلتها."
+      }
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l2-008",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — معدّل بالتكرارات",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متوسط متوازن"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mada-wasit-mutawassit_P2",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "علامات 10 تلاميذ في فرض: العلامة $9$ (3 تلاميذ)، $11$ (4 تلاميذ)، $14$ (3 تلاميذ)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "متوسط العلامات هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "11,3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MUTAWASSIT-BILA-TARJIH",
+          "value": "34/3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$9 \\times 3 + 11 \\times 4 + 14 \\times 3$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم على $10$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{27 + 44 + 42}{10} = 11{,}3$ .",
+        "incorrect": "كل علامة تُحسب بعدد التلاميذ الذين نالوها."
+      }
+    }
+  ]
+}

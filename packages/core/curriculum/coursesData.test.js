@@ -98,19 +98,24 @@ describe('catalogue algérien (dzCourseLevels)', () => {
   // Le catalogue ne montre que les ميادين qui portent des leçons (décision du
   // 2026-09-25) ; le programme source, lui, reste entier. Les deux tests
   // ci-dessous protègent les DEUX moitiés de cette règle.
-  const domainsWithLessons = programme4am.domains.filter((d) =>
+  // Les domaines du programme qui portent des leçons, puis les ميادين d'AFFICHAGE du propriétaire
+  // (units_4am › ownerChapters — unité 6, 2026-10-02), rangés après le programme et sans sujet.
+  const ownerDomains = (units4am.ownerChapters ?? []).map((c) => ({ ...c, topics: [] }));
+  const allDomains = [...programme4am.domains, ...ownerDomains];
+  const domainsWithLessons = allDomains.filter((d) =>
     decomposition4am.lessons.some((l) => l.chapterId === d.id));
 
-  it('ne montre que les domaines du programme qui portent des leçons, dans son ordre', () => {
+  it('ne montre que les domaines (programme, puis ميادين du propriétaire) qui portent des leçons, dans leur ordre', () => {
     expect(programme4am.domains).toHaveLength(4);
     expect(grade4am.chapters.length).toBeGreaterThan(0);
     expect(grade4am.chapters.map((c) => c.id)).toEqual(domainsWithLessons.map((d) => d.id));
     expect(grade4am.chapters.map((c) => c.title)).toEqual(domainsWithLessons.map((d) => d.titleAr));
     for (const chapter of grade4am.chapters) expect(chapter.lessons.length, chapter.id).toBeGreaterThan(0);
-    // `order` reste la position dans le PROGRAMME.
+    // `order` reste la position dans le PROGRAMME ; un ميدان du propriétaire vient après lui.
     for (const chapter of grade4am.chapters) {
-      expect(chapter.order).toBe(programme4am.domains.findIndex((d) => d.id === chapter.id));
+      expect(chapter.order).toBe(allDomains.findIndex((d) => d.id === chapter.id));
     }
+    for (const c of ownerDomains) expect(programme4am.domains.some((d) => d.id === c.id), c.id).toBe(false);
   });
 
   it('porte, au mot près, les sujets du programme des domaines montrés — et le programme garde ses 28', () => {

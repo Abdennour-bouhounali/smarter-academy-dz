@@ -1,0 +1,168 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l4-007",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 4,
+  "metadata": {
+    "title": "تذاكر المباراة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "جملة معادلتين",
+      "تفسير بياني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "باع نادٍ 30 تذكرة: $x$ تذكرة عادية بـ 200 DA و $y$ تذكرة VIP بـ 600 DA ، بمبلغ 10800 DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعادلة $200x + 600y = 10800$ تُكتب:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$y = -\\dfrac{1}{3}x + 18$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$y = -3x + 54$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-ISHARA-Y"
+        },
+        {
+          "id": "C",
+          "content": "$y = \\dfrac{1}{3}x + 18$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-ISHARA-Y"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$600y = -200x + 10800$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم على 600."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = -\\dfrac{1}{3}x + 18$.",
+        "incorrect": "نقسم كل الحدود على معامل $y$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "حلّ الجملة $\\begin{cases} y = -x + 30 \\\\ y = -\\dfrac{1}{3}x + 18 \\end{cases}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y)",
+      "expectedAnswer": {
+        "x": "18",
+        "y": "12"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$-x + 30 = -\\dfrac{1}{3}x + 18$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{2}{3}x = 12$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم $y$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 18$ و $y = 12$.",
+        "incorrect": "نقطة التقاطع."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    },
+    {
+      "id": "q3",
+      "statement": "في سياق الوضعية:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "18 تذكرة عادية و 12 تذكرة VIP",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "12 تذكرة عادية و 18 تذكرة VIP",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-BAYANI-MAQLUB"
+        },
+        {
+          "id": "C",
+          "content": "18 DA و 12 DA",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x$ التذاكر العادية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$y$ تذاكر VIP."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الفاصلة أولا."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 18$ عادية و $y = 12$ VIP.",
+        "incorrect": "نعيد كل عدد إلى معناه."
+      },
+      "cognitiveDemand": "transfer",
+      "difficulty": 4
+    }
+  ]
+}

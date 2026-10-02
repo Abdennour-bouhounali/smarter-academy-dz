@@ -1,0 +1,111 @@
+{
+  "id": "ex-4am-mafhum-taalufiya-l5-010",
+  "lessonCode": "mafhum-taalufiya",
+  "level": 5,
+  "metadata": {
+    "title": "تعريفة الليل",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "رحلة بتطبيق سيارات الأجرة: 100DA عند الركوب، و 40DA عن كل كيلومتر. نسمّي $x$ المسافة بالكيلومتر و $f(x)$ المبلغ المدفوع. ليلًا يصبح مبلغ الركوب 150DA ويبقى 40DA للكيلومتر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نهارًا، ما أكبر مسافة يمكن قطعها بـ 700DA؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المطلوب عدد علمت صورته، لا صورة عدد: اكتب المعادلة $ax + b = m$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انقل الحدّ الثابت $b$ إلى الطرف الآخر أولا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اقسم الطرفين على المعامل $a$ ، وتحقّق بحساب صورة ما وجدته."
+        }
+      ],
+      "feedback": {
+        "correct": "$40x + 100 = 700$ ، إذن $40x = 600$ ، ومنه $x = 15$ .",
+        "incorrect": "اطرح $b$ أولا ثم اقسم على $a$ ، وتحقّق بالتعويض."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-SABIQ-QISMA",
+          "value": "17.5"
+        },
+        {
+          "id": "MISC-TAALUFI-SABIQ-TARTIB",
+          "value": "-82.5"
+        },
+        {
+          "id": "MISC-KHATTIYA-SURA-SABIQ",
+          "value": "28100"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ليلًا نسمّي $g(x)$ المبلغ. احسب $g(15)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "750",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد بدالة تآلفية: نعوّض $x$ بهذا العدد في العبارة $ax + b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب العدد في المعامل $a$ أولا، وانتبه إلى الإشارات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تنسَ أن تضيف الحدّ الثابت $b$ في النهاية."
+        }
+      ],
+      "feedback": {
+        "correct": "$g(15) = 40 \\times 15 + 150 = 750$ .",
+        "incorrect": "أعد الحساب: اضرب في $a$ ثم أضف $b$ ، وتحقّق من الإشارات."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-NISYAN-B",
+          "value": "600"
+        }
+      ]
+    }
+  ]
+}

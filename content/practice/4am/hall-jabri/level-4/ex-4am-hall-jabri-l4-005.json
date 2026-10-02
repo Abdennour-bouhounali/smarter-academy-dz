@@ -1,0 +1,63 @@
+{
+  "id": "ex-4am-hall-jabri-l4-005",
+  "lessonCode": "hall-jabri",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 9 — ب)",
+    "estimatedMinutes": 4,
+    "tags": [
+      "اختيار الطريقة",
+      "كسور"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-9",
+      "page": 60,
+      "section": "أوظّف تعلّماتي",
+      "number": 9
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 60): حل الجملة باستعمال طريقة من اختيارك. $\\begin{cases} \\dfrac{x}{6} - y = -1 \\\\ 3x - 2y = 6 \\end{cases}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حل الجملة:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "3",
+        "y": "3/2"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ المعاملات قبل أن تبدأ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل يساوي $1$ أو $-1$ يسهّل التعويض؛ معاملان متعاكسان (أو يصيران كذلك بضرب بسيط) يسهّلان الجمع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد إيجاد مجهول، عوّض قيمته لتجد الآخر، ثم تحقّق من الثنائية في المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = \\dfrac{x}{6} + 1$ ؛ $3x - \\dfrac{x}{3} - 2 = 6$ أي $\\dfrac{8}{3}x = 8$ ، ومنه $x = 3$ و $y = \\dfrac{3}{2}$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

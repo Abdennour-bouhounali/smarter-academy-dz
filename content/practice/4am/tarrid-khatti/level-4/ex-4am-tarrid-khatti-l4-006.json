@@ -1,0 +1,108 @@
+{
+  "id": "ex-4am-tarrid-khatti-l4-006",
+  "lessonCode": "tarrid-khatti",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — زيادة ثم تخفيض بـ 10%",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نسبة مئوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P1",
+      "modelledOn": "ex-29"
+    }
+  },
+  "statement": {
+    "content": "سعر هاتف 2000DA ، زاد بـ 10% ثم انخفض بـ 10%."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "سعره النهائي (DA):",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "1980",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$2000 \\times 1{,}1$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم $\\times 0{,}9$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ليس 2000."
+        }
+      ],
+      "feedback": {
+        "correct": "$2000 \\times 1{,}1 \\times 0{,}9 = 1980$ DA.",
+        "incorrect": "نضرب المعاملين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "الدالة الخطية المرفقة بالتغيّرين:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\longmapsto x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-TATABU-JAM"
+        },
+        {
+          "id": "B",
+          "content": "$x \\longmapsto 0{,}99x$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x \\longmapsto 1{,}2x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-TATABU-JAM"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$1{,}1 \\times 0{,}9$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "جداء المعاملين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$0{,}99$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}1 \\times 0{,}9 = 0{,}99$ .",
+        "incorrect": "لا نجمع النسب."
+      }
+    }
+  ]
+}

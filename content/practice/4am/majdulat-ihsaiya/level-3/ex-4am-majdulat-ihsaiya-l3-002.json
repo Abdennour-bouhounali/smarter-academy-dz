@@ -1,0 +1,116 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l3-002",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 7 (ص 99) — MAX وحده",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مدى",
+      "دستور"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-7",
+      "page": 99,
+      "section": "أوظّف تعلّماتي",
+      "number": 7
+    }
+  },
+  "statement": {
+    "content": "سلسلة التمرين 7 محجوزة في الخلايا من A1 إلى G1 : 4 ، 10 ، 8 ، 4 ، 3 ، 2 ، 4 ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد الذي يُظهره ⁦=MAX(A1:G1)⁩ :",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "10",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MADA-AKBAR-QIMA",
+          "value": "8"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "MAX أكبر قيمة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "لا طرح هنا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أكبر القيم السبع."
+        }
+      ],
+      "feedback": {
+        "correct": "MAX يعطي أكبر قيمة: 10.",
+        "incorrect": "لا تطرح شيئًا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل هذا مدى السلسلة؟",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم: المدى أكبر قيمة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MADA-AKBAR-QIMA"
+        },
+        {
+          "id": "B",
+          "content": "لا: المدى أصغر قيمة 2",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MADA-AKBAR-QIMA"
+        },
+        {
+          "id": "C",
+          "content": "لا: المدى $10 - 2 = 8$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المدى فرق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أكبر قيمة ناقص أصغر قيمة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$10 - 2$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "المدى ⁦=MAX(A1:G1)-MIN(A1:G1)⁩ = 8 ، و MAX وحده 10.",
+        "incorrect": "المدى فرق لا أكبر قيمة."
+      }
+    }
+  ]
+}

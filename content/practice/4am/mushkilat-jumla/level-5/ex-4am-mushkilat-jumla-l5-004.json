@@ -1,0 +1,164 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l5-004",
+  "lessonCode": "mushkilat-jumla",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — بطولة الألعاب الإلكترونية",
+    "estimatedMinutes": 6,
+    "tags": [
+      "ترييض",
+      "ألعاب إلكترونية",
+      "المراحل الخمس"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P2",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "سجّل في بطولة ألعاب إلكترونية 23 فريقا: فرق ثنائية (لاعبان) وفرق خماسية (5 لاعبين)، ومجموع اللاعبين 76. كم فريقا من كل نوع؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نسمّي $x$ عدد الفرق الثنائية و $y$ عدد الفرق الخماسية. الجملة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 76 \\\\ 2x + 5y = 23 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 23 \\\\ 5x + 2y = 76 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x + y = 23 \\\\ 2x + 5y = 76 \\end{cases}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معلومة تعدّ الفرق ومعلومة تعدّ اللاعبين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل فريق ثنائي فيه لاعبان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اللاعبون = لاعبو الفرق الثنائية + لاعبو الفرق الخماسية."
+        }
+      ],
+      "feedback": {
+        "correct": "23 فريقا و 76 لاعبا، والحل $(13 ; 10)$ .",
+        "incorrect": "عدد الفرق غير عدد اللاعبين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة واكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "13",
+        "y": "10"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب الأولى في 2 واطرحها من الثانية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على $3y = 30$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم احسب $x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 10$ و $x = 13$ : $26 + 50 = 76$ .",
+        "incorrect": "أكمل حتى الثنائية."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "الجملة التي تجيب عن السؤال هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "سجّل 10 فرق ثنائية و 13 فريقا خماسيا.",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARTIB"
+        },
+        {
+          "id": "B",
+          "content": "سجّل 13 فريقا ثنائيا و 10 فرق خماسية.",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "سجّل 13 فريقا.",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-NISF-HALL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x$ عدد الفرق الثنائية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الترتيب في الثنائية مهم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الجواب يذكر النوعين."
+        }
+      ],
+      "feedback": {
+        "correct": "$13 + 10 = 23$ و $26 + 50 = 76$ .",
+        "incorrect": "اقرأ الثنائية بترتيبها."
+      }
+    }
+  ]
+}

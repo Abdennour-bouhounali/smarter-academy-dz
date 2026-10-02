@@ -1,0 +1,68 @@
+{
+  "id": "ex-4am-mafhum-jumla-l4-009",
+  "lessonCode": "mafhum-jumla",
+  "level": 4,
+  "metadata": {
+    "title": "أستعدّ 6 — مساواتان معًا",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تعويض"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "prep",
+      "page": 55,
+      "section": "أستعدّ",
+      "number": 6
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 55): أصحيح أم خاطئ؟ من أجل $x = -3$ و $y = -2$ ، المساواتان $x - 2y = 7$ و $\\dfrac{1}{3}x + \\dfrac{1}{3}y = 0$ محققتان معا."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هذه العبارة ...",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "صحيحة",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "خاطئة",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x = -3$ و $y = -2$ في المساواة الأولى."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$-3 - 2 \\times (-2) = -3 + 4$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يكفي أن تكون إحداهما خاطئة."
+        }
+      ],
+      "feedback": {
+        "correct": "$-3 + 4 = 1 \\neq 7$ : العبارة خاطئة.",
+        "incorrect": "احسب بعناية مع الإشارات."
+      }
+    }
+  ]
+}

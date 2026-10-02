@@ -1,0 +1,66 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l5-002",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 5,
+  "metadata": {
+    "title": "دوري الآن (ص 97) — قواسم 225",
+    "estimatedMinutes": 5,
+    "tags": [
+      "وسيط",
+      "مدى",
+      "متوسط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "now-97",
+      "page": 97,
+      "section": "دوري الآن"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 97): جد سلسلة إحصائية قيمها أصغر من 46 و هي قواسم مختلفة للعدد الطبيعي 225 إذا علمت أن متوسطها 15,4، وسيطها 9 ، تكرارها الكلّي 5، مداها 42."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "اكتب قيم السلسلة:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        3,
+        5,
+        9,
+        15,
+        45
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قواسم 225 الأصغر من 46: $1$ ، $3$ ، $5$ ، $9$ ، $15$ ، $25$ ، $45$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المدى $42$ : $45 - 3$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المجموع $5 \\times 15{,}4 = 77$."
+        }
+      ],
+      "feedback": {
+        "correct": "$3$ ، $5$ ، $9$ ، $15$ ، $45$ : المجموع $77$.",
+        "incorrect": "ابدأ بالمدى ثم الوسيط ثم المجموع."
+      }
+    }
+  ]
+}

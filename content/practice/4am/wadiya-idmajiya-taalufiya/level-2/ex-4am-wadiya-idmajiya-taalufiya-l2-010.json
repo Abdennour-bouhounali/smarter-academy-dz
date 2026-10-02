@@ -1,0 +1,69 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l2-010",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 2,
+  "metadata": {
+    "title": "حافلة في حدود الميزانية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "العدد الذي صورته",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P2"
+    }
+  },
+  "statement": {
+    "content": "ناقل يطلب 1500 DA ثابتة و 120 DA عن كل تلميذ. ميزانية النادي 5000 DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما أكبر عدد من التلاميذ يمكن نقلهم؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "29",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$120x + 1500 \\leq 5000$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x \\leq \\dfrac{3500}{120}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ندوّر نحو الأسفل."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3500}{120} \\approx 29{,}2$ : 29 تلميذا ($120 \\times 29 + 1500 = 4980$).",
+        "incorrect": "نطرح المبلغ الثابت ثم نقسم وندوّر نحو الأسفل."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "30",
+          "id": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "value": "41",
+          "id": "MISC-TAALUFI-SABIQ-QISMA"
+        }
+      ]
+    }
+  ]
+}

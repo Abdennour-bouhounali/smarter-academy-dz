@@ -1,0 +1,94 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l4-003",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 24 — الغسالة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تغيّرات متتابعة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-24",
+      "page": 73,
+      "section": "أوظّف تعلّماتي",
+      "number": 24
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 73): تباع غسالة بـ $48\\,000\\mathrm{DA}$ . خضع سعرها إلى تخفيضين متتابعين قدرهما 3% و 4%."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "1) السعر الجديد للغسالة (بالدينار):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "44697,6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التغيّر الثاني يُحسب من المقدار بعد التغيّر الأول، لا من المقدار الأول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب مضاعف كل تغيّر، ثم اضرب المضاعفات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المضاعف الكلي $k$ : إذا كان $k > 1$ فهي زيادة بـ $(k - 1) \\times 100$ بالمئة، وإذا كان $k < 1$ فهو تخفيض بـ $(1 - k) \\times 100$ بالمئة."
+        }
+      ],
+      "feedback": {
+        "correct": "$48\\,000 \\times 0{,}97 \\times 0{,}96 = 44\\,697{,}6$ .",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "2) النسبة المئوية الكلية للتخفيض (العدد $t$ فقط):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "6,88",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التغيّر الثاني يُحسب من المقدار بعد التغيّر الأول، لا من المقدار الأول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب مضاعف كل تغيّر، ثم اضرب المضاعفات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المضاعف الكلي $k$ : إذا كان $k > 1$ فهي زيادة بـ $(k - 1) \\times 100$ بالمئة، وإذا كان $k < 1$ فهو تخفيض بـ $(1 - k) \\times 100$ بالمئة."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}97 \\times 0{,}96 = 0{,}9312$ : تخفيض 6,88%، لا 7%.",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    }
+  ]
+}

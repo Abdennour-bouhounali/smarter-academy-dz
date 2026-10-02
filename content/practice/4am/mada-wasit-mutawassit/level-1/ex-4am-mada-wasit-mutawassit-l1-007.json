@@ -1,0 +1,54 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l1-007",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — دورة ألعاب بين أصدقاء",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متوسط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mada-wasit-mutawassit_P2",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "نقاط خمسة أصدقاء في دورة ألعاب إلكترونية: $2$ ، $3$ ، $3$ ، $4$ ، $8$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "متوسط النقاط هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT",
+          "value": "3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مجموع النقاط $20$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{2 + 3 + 3 + 4 + 8}{5} = \\dfrac{20}{5} = 4$ .",
+        "incorrect": "اجمع النقاط الخمس واقسم على 5."
+      }
+    }
+  ]
+}

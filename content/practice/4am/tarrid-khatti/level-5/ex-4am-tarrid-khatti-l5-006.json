@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tarrid-khatti-l5-006",
+  "lessonCode": "tarrid-khatti",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — تغيّران متتابعان",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نسبة مئوية",
+      "دالة خطية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P1",
+      "modelledOn": "ex-29"
+    }
+  },
+  "statement": {
+    "content": "سعر لعبة فيديو زاد بـ 20% ثم انخفض بـ 25%."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الدالة الخطية المرفقة:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\longmapsto 0{,}95x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-TATABU-JAM"
+        },
+        {
+          "id": "B",
+          "content": "$x \\longmapsto 0{,}9x$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x \\longmapsto 1{,}05x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-TATABU-JAM"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$1{,}2 \\times 0{,}75$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "جداء المعاملين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$0{,}9$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}2 \\times 0{,}75 = 0{,}9$ : انخفاض بـ 10%.",
+        "incorrect": "لا نجمع النسب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "إذا كان سعرها الأصلي 4500DA ، فسعرها النهائي:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "4050",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$0{,}9 \\times 4500$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بالدينار."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أقل من 4500."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}9 \\times 4500 = 4050$ DA.",
+        "incorrect": "اضرب في 0,9."
+      }
+    }
+  ]
+}

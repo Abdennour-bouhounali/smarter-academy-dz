@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l5-005",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — ثلاثة أعمدة مجمّعة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "قراءة مخطط",
+      "أعمدة مجمعة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P1",
+      "modelledOn": "ex-19"
+    }
+  },
+  "statement": {
+    "content": "مخطط لتطبيقات ألعاب: عمود «A و B» = 300 ، عمود «B و C» = 350 ، عمود «A و C» = 250 لاعبا."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم عدد اللاعبين في التطبيقات الثلاثة معا (كل لاعب في تطبيق واحد)؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "450",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-QIRAA-MUKHATTAT",
+          "value": "900"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كل تطبيق محسوب في عمودين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع الأعمدة الثلاثة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على 2."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{300 + 350 + 250}{2} = 450$ لاعبا.",
+        "incorrect": "مجموع الأعمدة يحسب كل تطبيق مرّتين."
+      },
+      "difficulty": 5
+    }
+  ]
+}

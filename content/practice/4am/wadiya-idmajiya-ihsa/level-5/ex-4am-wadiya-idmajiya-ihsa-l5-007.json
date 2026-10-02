@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l5-007",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 5,
+  "metadata": {
+    "title": "وسيط بين قيمة معلومة وقيمة مخفية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "قيمة مخفية",
+      "وسيط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P3"
+    }
+  },
+  "statement": {
+    "content": "السلسلة: القيمة: 2 ، 4 ، $x$ ، 9 — التكرار: 2 ، 3 ، 2 ، 3. حيث $4 < x < 9$ ، ووسيطها $5{,}5$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما قيمة $x$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الرتبتان 5 و 6."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الرتبة 5 عند 4 والرتبة 6 عند $x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\dfrac{4 + x}{2} = 5{,}5$."
+        }
+      ],
+      "feedback": {
+        "correct": "$4 + x = 11$ ، إذن $x = 7$.",
+        "incorrect": "التكرار المجمع لـ 4 هو 5: الرتبة 6 عند $x$."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "5.5",
+          "id": "MISC-IHSA-WASIT-RUTBA"
+        }
+      ]
+    }
+  ]
+}

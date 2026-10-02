@@ -4,7 +4,8 @@ import { Target, Sparkles, Play } from 'lucide-react';
 import { ArrowForward } from '../../../components/common/DirectionalIcons';
 import { MASTERY_STATES } from '../../../lessons/common/components/LearningPointMastery';
 import { WorkNowSkeleton } from './ProgressionSkeleton';
-import { bidi } from '../../../utils/bidi';
+import MathLabel from '../../../lessons/common/components/MathLabel';
+import { mathToPlain } from '../../../utils/mathPlain';
 
 const TONE = {
   gap: { card: 'border-rose-200 bg-rose-50/60', pill: 'bg-rose-100 text-rose-800' },
@@ -49,18 +50,18 @@ export default function WorkNowSection({ items, total, nextStep, unassessedCount
                     </span>
                     <span className="text-xl leading-none" aria-hidden="true">{lesson.lesson.icon}</span>
                   </div>
-                  <h3 className="font-space font-bold text-slate-900 text-base leading-snug">{bidi(point.title)}</h3>
+                  <h3 className="font-space font-bold text-slate-900 text-base leading-snug"><MathLabel>{point.title}</MathLabel></h3>
                   <dl className="text-xs text-slate-600 space-y-0.5">
-                    <div className="flex gap-1.5"><dt className="text-slate-400 font-mono-jetbrains flex-shrink-0">{t('progression.workNow.lesson')}</dt><dd className="font-semibold text-slate-800">{bidi(lesson.lesson.title)}</dd></div>
+                    <div className="flex gap-1.5"><dt className="text-slate-400 font-mono-jetbrains flex-shrink-0">{t('progression.workNow.lesson')}</dt><dd className="font-semibold text-slate-800"><MathLabel>{lesson.lesson.title}</MathLabel></dd></div>
                     {group.kind === 'unit' && (
-                      <div className="flex gap-1.5"><dt className="text-slate-400 font-mono-jetbrains flex-shrink-0">{t('progression.workNow.unit')}</dt><dd>{bidi(group.title)}</dd></div>
+                      <div className="flex gap-1.5"><dt className="text-slate-400 font-mono-jetbrains flex-shrink-0">{t('progression.workNow.unit')}</dt><dd><MathLabel>{group.title}</MathLabel></dd></div>
                     )}
-                    <div className="flex gap-1.5"><dt className="text-slate-400 font-mono-jetbrains flex-shrink-0">{t('progression.workNow.field')}</dt><dd>{bidi(field.title)}</dd></div>
+                    <div className="flex gap-1.5"><dt className="text-slate-400 font-mono-jetbrains flex-shrink-0">{t('progression.workNow.field')}</dt><dd><MathLabel>{field.title}</MathLabel></dd></div>
                   </dl>
                   <Link
                     to={lesson.lesson.path}
                     className="mt-auto min-h-[44px] px-4 rounded-xl bg-slate-900 text-white text-sm font-bold inline-flex items-center justify-center gap-1.5 hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 self-start"
-                    aria-label={`${t('progression.workNow.cta')}: ${bidi(lesson.lesson.title)}`}
+                    aria-label={`${t('progression.workNow.cta')}: ${mathToPlain(lesson.lesson.title)}`}
                   >
                     {t('progression.workNow.cta')} <ArrowForward size={15} aria-hidden="true" />
                   </Link>
@@ -102,7 +103,7 @@ export default function WorkNowSection({ items, total, nextStep, unassessedCount
             >
               <Play size={14} aria-hidden="true" />
               {nextStep.lesson.activityState === 'in_progress' ? t('progression.workNow.nextContinue') : t('progression.workNow.nextStart')}
-              <span className="font-normal opacity-90">· {bidi(nextStep.lesson.lesson.title)}</span>
+              <span className="font-normal opacity-90">· <MathLabel>{nextStep.lesson.lesson.title}</MathLabel></span>
             </Link>
           )}
         </div>

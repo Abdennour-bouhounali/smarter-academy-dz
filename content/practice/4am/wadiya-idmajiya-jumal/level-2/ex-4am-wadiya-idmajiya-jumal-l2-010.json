@@ -1,0 +1,131 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l2-010",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 2,
+  "metadata": {
+    "title": "ملعب مصغّر في الكرّاس",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترجمة",
+      "محيط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P2",
+      "modelledOn": "ex-25"
+    }
+  },
+  "statement": {
+    "content": "رسم أنيس ملعبا مستطيل الشكل محيطه 46 cm، وطوله يزيد عن عرضه بـ 7 cm. نسمّي $x$ الطول و $y$ العرض (بالسنتيمتر)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم النص هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 46 \\\\ x - y = 7 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 23 \\\\ x - y = 7 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x + y = 23 \\\\ y - x = 7 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "D",
+          "content": "$\\begin{cases} x + y = 23 \\\\ x + y = 7 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "محيط المستطيل $2(x + y)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نصف المحيط هو $x + y$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "«يزيد الطول عن العرض» يعني أنّ الطول أكبر."
+        }
+      ],
+      "feedback": {
+        "correct": "$2(x + y) = 46$ أي $x + y = 23$ ، و $x - y = 7$.",
+        "incorrect": "المحيط مجموع الأضلاع الأربعة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    },
+    {
+      "id": "q2",
+      "statement": "ما البعدان $(x ; y)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
+      "expectedAnswer": {
+        "x": "15",
+        "y": "8"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع $x + y = 23$ و $x - y = 7$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2x = 30$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقق من المحيط."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 15$ و $y = 8$ ؛ $2 \\times (15 + 8) = 46$.",
+        "incorrect": "الحل ثنائية: الطول ثم العرض."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "8",
+            "y": "15"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    }
+  ]
+}

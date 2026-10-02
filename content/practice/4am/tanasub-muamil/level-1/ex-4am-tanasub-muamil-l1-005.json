@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-tanasub-muamil-l1-005",
+  "lessonCode": "tanasub-muamil",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — فرق ثابت",
+    "estimatedMinutes": 3,
+    "tags": [
+      "فرق ثابت"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-muamil_P2",
+      "modelledOn": "ex-18"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الجدول: $\\begin{array}{|c|c|c|c|} \\hline x & 3 & 4 & 5 \\\\ \\hline y & 5 & 6 & 7 \\\\ \\hline \\end{array}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل هو جدول تناسبية؟",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، لأنّ الفرق $y - x$ ثابت",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TANASUB-FARQ-THABIT"
+        },
+        {
+          "id": "B",
+          "content": "لا، لأنّ $\\dfrac{5}{3} \\neq \\dfrac{6}{4}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "نعم، ومعامله $2$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لا يكفي أن يزداد y كلما ازداد x."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب حاصل القسمة $\\dfrac{y}{x}$ في كل عمود وقارن."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يكفي عمودان حاصلا قسمتهما مختلفان لنقول إنّ الوضعية ليست تناسبية؛ وانتبه إلى المبلغ الثابت."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{5}{3} \\approx 1{,}67$ و $\\dfrac{6}{4} = 1{,}5$ : حاصلا القسمة مختلفان، فليس جدول تناسبية.",
+        "incorrect": "احسب حاصل القسمة في كل عمود قبل أن تحكم: الزيادة وحدها لا تكفي."
+      }
+    }
+  ]
+}

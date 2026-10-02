@@ -1,0 +1,59 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l5-006",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 5,
+  "metadata": {
+    "title": "حذف علامة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "متوسط",
+      "معادلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P3"
+    }
+  },
+  "statement": {
+    "content": "متوسط علامات قسم في فرض 12. حُذفت علامة تلميذ واحد هي 20 (غاب عن التصحيح)، فأصبح متوسط الباقين $11{,}5$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم كان عدد تلاميذ القسم؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "17",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمّ $n$ عدد التلاميذ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$12n - 20 = 11{,}5(n - 1)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة."
+        }
+      ],
+      "feedback": {
+        "correct": "$12n - 20 = 11{,}5n - 11{,}5$ ، إذن $0{,}5n = 8{,}5$ ، أي $n = 17$.",
+        "incorrect": "المجموع قبل الحذف $12n$ وبعده $11{,}5(n - 1)$."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 5
+    }
+  ]
+}

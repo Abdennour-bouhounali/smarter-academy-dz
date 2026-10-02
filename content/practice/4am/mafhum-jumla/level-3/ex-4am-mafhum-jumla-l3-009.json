@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-mafhum-jumla-l3-009",
+  "lessonCode": "mafhum-jumla",
+  "level": 3,
+  "metadata": {
+    "title": "حالات خاصة 2 — من الكتاب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "حالات خاصة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-cases",
+      "page": 58,
+      "section": "معارف"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 58): نعتبر الجملة $\\begin{cases} 2x - y = 0 \\\\ -x + \\dfrac{y}{2} = -2 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هذه الجملة ...",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لها حل وحيد",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-HALAT"
+        },
+        {
+          "id": "B",
+          "content": "ليس لها حلول",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "لها عدد غير منته من الحلول",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-HALAT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب طرفي المعادلة الثانية في $-2$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على $2x - y = 4$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل يساوي $2x - y$ العددين 0 و 4 معًا؟"
+        }
+      ],
+      "feedback": {
+        "correct": "الجملة تؤول إلى $2x - y = 0$ و $2x - y = 4$ : ليس لها حلول.",
+        "incorrect": "بسّط المعادلة الثانية أولًا."
+      }
+    }
+  ]
+}

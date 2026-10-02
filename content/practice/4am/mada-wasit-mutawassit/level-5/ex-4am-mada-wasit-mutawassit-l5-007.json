@@ -1,0 +1,59 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l5-007",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — القيمة السادسة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "متوسط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mada-wasit-mutawassit_P2",
+      "modelledOn": "ex-8"
+    }
+  },
+  "statement": {
+    "content": "لسلسلة من 5 قيم المتوسط $8$. نضيف قيمة سادسة فيصير المتوسط $9$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "القيمة المضافة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "14",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT",
+          "value": "9"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجموع الأوّل $40$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المجموع الجديد $54$."
+        }
+      ],
+      "feedback": {
+        "correct": "$9 \\times 6 - 8 \\times 5 = 54 - 40 = 14$ .",
+        "incorrect": "المجموع = المتوسط × العدد، قبل الإضافة وبعدها."
+      }
+    }
+  ]
+}

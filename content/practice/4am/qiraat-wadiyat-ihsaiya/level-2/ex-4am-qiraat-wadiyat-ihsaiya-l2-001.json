@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l2-001",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 2,
+  "metadata": {
+    "title": "التمرين 14 — متوسط المدينة «أ»",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمرين 14",
+      "متوسط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-14",
+      "page": 99,
+      "section": "أوظّف تعلّماتي",
+      "number": 14
+    }
+  },
+  "statement": {
+    "content": "متوسط درجات الحرارة الشهرية على مدار سنة (°C) في المدينة «أ» من جانفي إلى ديسمبر: $-3$ ، $-7$ ، $-2$ ، 10 ، 10 ، 20 ، 24 ، 28 ، 21 ، 11 ، 5 ، $-3$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما متوسط درجات حرارة المدينة «أ»؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "9,5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "12 قيمة، بعضها سالب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مجموع القيم 114."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على 12."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{114}{12} = 9{,}5$ °C.",
+        "incorrect": "اجمع القيم مع إشاراتها ثم اقسم على 12."
+      },
+      "difficulty": 2
+    }
+  ]
+}

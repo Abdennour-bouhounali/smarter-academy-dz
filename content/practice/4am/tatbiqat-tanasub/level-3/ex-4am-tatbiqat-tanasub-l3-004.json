@@ -1,0 +1,59 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l3-004",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 3 — السعر قبل التخفيض",
+    "estimatedMinutes": 3,
+    "tags": [
+      "السعر قبل التغيّر"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-3",
+      "page": 72,
+      "section": "أوظّف تعلّماتي",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 72): خفّض تاجر سعر منتوج بـ 5%. إذا كان سعر المنتوج هو 1900DA بعد التخفيض فما هو سعره قبل التخفيض؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "السعر قبل التخفيض (بالدينار):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "2000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المقدار المعطى هو المقدار بعد التغيّر، والمطلوب المقدار قبله."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب العلاقة $y = kx$ بالمضاعف $k$ ، ثم عوّض $y$ بقيمته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة $kx = y$ : $x = \\dfrac{y}{k}$ ، ثم تحقّق بالضرب."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}95x = 1900$ ، ومنه $x = 2000$ . للتحقق: $2000 \\times 0{,}95 = 1900$ .",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    }
+  ]
+}

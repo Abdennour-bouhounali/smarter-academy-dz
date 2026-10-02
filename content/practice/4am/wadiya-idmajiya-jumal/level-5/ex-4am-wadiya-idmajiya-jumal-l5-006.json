@@ -1,0 +1,115 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l5-006",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 5,
+  "metadata": {
+    "title": "عرض الإنترنت أم العرض الثابت؟",
+    "estimatedMinutes": 6,
+    "tags": [
+      "مبلغ ثابت",
+      "متراجحة",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "عرض (أ): اشتراك ثابت $y$ DA و $x$ DA عن كل 1Go؛ من استهلك 3Go دفع 950 DA، ومن استهلك 8Go دفع 1 700 DA. عرض (ب): 1 500 DA في الشهر مهما كان الاستهلاك. عدد الـ Go المستهلكة عدد طبيعي."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما المبلغان $(x ; y)$ في العرض (أ)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
+      "expectedAnswer": {
+        "x": "150",
+        "y": "500"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$3x + y = 950$ و $8x + y = 1700$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح المعادلتين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم احسب $y$."
+        }
+      ],
+      "feedback": {
+        "correct": "$5x = 750$ ، $x = 150$ ، $y = 500$.",
+        "incorrect": "الاشتراك الثابت يختفي بالطرح."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "500",
+            "y": "150"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ابتداءً من كم Go يصبح العرض (ب) أرخص من العرض (أ)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي من الـ Go",
+      "expectedAnswer": "7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العرض (أ) لـ $n$ Go: $500 + 150n$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حل المتراجحة $500 + 150n > 1500$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خذ أصغر عدد طبيعي يحقّقها."
+        }
+      ],
+      "feedback": {
+        "correct": "$150n > 1000$ أي $n > \\dfrac{20}{3} \\approx 6{,}7$ : ابتداءً من 7Go.",
+        "incorrect": "حل المتراجحة ثم خذ أصغر عدد طبيعي يحققها."
+      },
+      "cognitiveDemand": "transfer",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "6",
+          "id": "MISC-WADIYA-QIMAT-TASAWI"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "id": "ex-4am-tanasub-muamil-l3-006",
+  "lessonCode": "tanasub-muamil",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — الصيغة ب للتروتينة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تروتينة",
+      "مبلغ ثابت"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-muamil_P2",
+      "modelledOn": "ex-18"
+    }
+  },
+  "statement": {
+    "content": "الصيغة ب لكراء التروتينة: 50DA لفتح القفل ثم 10DA للدقيقة. نسمّي $x$ المدة بالدقائق و $y$ السعر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "سعر رحلة مدتها 6 دقائق (بالدينار):",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "110",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في هذا السعر مبلغ ثابت ومبلغ لكل وحدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب عدد الوحدات في سعر الوحدة، ثم أضف المبلغ الثابت."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب ما يُطلب بالترتيب، وتحقّق من الوحدة."
+        }
+      ],
+      "feedback": {
+        "correct": "$50 + 10 \\times 6 = 110$ DA.",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $\\dfrac{y}{x}$ من أجل $x = 5$ .",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "20",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في هذا السعر مبلغ ثابت ومبلغ لكل وحدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب عدد الوحدات في سعر الوحدة، ثم أضف المبلغ الثابت."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب ما يُطلب بالترتيب، وتحقّق من الوحدة."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 100$ ، و $\\dfrac{100}{5} = 20$ .",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "هل السعر متناسب مع المدة؟",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، ومعامل التناسبية 10",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TANASUB-MABLAGH-THABIT"
+        },
+        {
+          "id": "B",
+          "content": "لا: $\\dfrac{60}{1} = 60$ لكن $\\dfrac{100}{5} = 20$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "نعم، لأنّ السعر يزداد مع المدة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TANASUB-MABLAGH-THABIT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لا يكفي أن يزداد y كلما ازداد x."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب حاصل القسمة $\\dfrac{y}{x}$ في كل عمود وقارن."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يكفي عمودان حاصلا قسمتهما مختلفان لنقول إنّ الوضعية ليست تناسبية؛ وانتبه إلى المبلغ الثابت."
+        }
+      ],
+      "feedback": {
+        "correct": "مبلغ فتح القفل الثابت يكسر التناسبية.",
+        "incorrect": "احسب حاصل القسمة في كل عمود قبل أن تحكم: الزيادة وحدها لا تكفي."
+      }
+    }
+  ]
+}

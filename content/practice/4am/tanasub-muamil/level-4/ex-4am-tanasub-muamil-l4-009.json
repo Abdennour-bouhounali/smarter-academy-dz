@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-tanasub-muamil-l4-009",
+  "lessonCode": "tanasub-muamil",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — المربع",
+    "estimatedMinutes": 3,
+    "tags": [
+      "هندسة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-muamil_P2",
+      "modelledOn": "ex-17"
+    }
+  },
+  "statement": {
+    "content": "نعتبر مربعا طول ضلعه $c$ ، محيطه $P$ ومساحته $A$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ عبارة صحيحة؟",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "transfer",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "P متناسب مع c (المعامل 4)، و A غير متناسب مع c",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "P و A كلاهما متناسب مع c",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TANASUB-MABLAGH-THABIT"
+        },
+        {
+          "id": "C",
+          "content": "A متناسب مع c ، و P غير متناسب مع c",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لا يكفي أن يزداد y كلما ازداد x."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب حاصل القسمة $\\dfrac{y}{x}$ في كل عمود وقارن."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يكفي عمودان حاصلا قسمتهما مختلفان لنقول إنّ الوضعية ليست تناسبية؛ وانتبه إلى المبلغ الثابت."
+        }
+      ],
+      "feedback": {
+        "correct": "$P = 4 \\times c$ : حاصل القسمة 4 ثابت؛ $A = c^2$ : $\\dfrac{A}{c} = c$ يتغيّر.",
+        "incorrect": "احسب حاصل القسمة في كل عمود قبل أن تحكم: الزيادة وحدها لا تكفي."
+      }
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l5-004",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — القيمة الناقصة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متوسط",
+      "دستور"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_majdulat-ihsaiya_P2",
+      "modelledOn": "ex-7"
+    }
+  },
+  "statement": {
+    "content": "في A1:E1 خمس قيم، أربع منها 10 ، 14 ، 9 ، 13 . الدستور ⁦=MOYENNE(A1:E1)⁩ يُظهر 12 ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "القيمة الخامسة:",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "14",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MUTAWASSIT-QISMA-QIYAM",
+          "value": "12"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجموع = المتوسط × 5."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$12 \\times 5 = 60$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$60 - 46$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "المجموع $12 \\times 5 = 60$ ، والأربع مجموعها 46: الخامسة 14.",
+        "incorrect": "المجموع = المتوسط × عدد القيم."
+      }
+    }
+  ]
+}

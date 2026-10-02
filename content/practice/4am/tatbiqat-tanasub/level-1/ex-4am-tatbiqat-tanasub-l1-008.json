@@ -1,0 +1,59 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l1-008",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — طاقة مكواة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مقدار جداء",
+      "الطاقة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tatbiqat-tanasub_P2",
+      "modelledOn": "know-4"
+    }
+  },
+  "statement": {
+    "content": "مكواة كهربائية استطاعتها $1{,}5kW$ اشتغلت مدة $2h$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الطاقة الكهربائية التي استهلكتها (بالكيلوواط ساعي $kWh$ ):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مقدار جداء: الطاقة استطاعة في مدة، والمساحة طول في عرض."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب العلاقة $E = P \\times t$ مع الوحدات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض واضرب، واكتب الوحدة ( $kWh$ )."
+        }
+      ],
+      "feedback": {
+        "correct": "$E = P \\times t = 1{,}5kW \\times 2h = 3kWh$ .",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    }
+  ]
+}

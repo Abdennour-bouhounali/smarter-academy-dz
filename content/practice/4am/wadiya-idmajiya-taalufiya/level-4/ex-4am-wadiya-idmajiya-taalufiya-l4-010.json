@@ -1,0 +1,115 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l4-010",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 4,
+  "metadata": {
+    "title": "مستقيم من نقطتين ونقطة تقاطع",
+    "estimatedMinutes": 5,
+    "tags": [
+      "تمثيل بياني",
+      "جملة معادلتين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "$f(x) = 2x + 3$ ، و $(d)$ مستقيم يقطع محور التراتيب في $(0 ; 9)$ ويشمل $(3 ; 3)$ ، يمثّل دالة تآلفية $g$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "دستور $g$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$g(x) = -2x + 9$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$g(x) = 2x + 9$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-ISHARA-A"
+        },
+        {
+          "id": "C",
+          "content": "$g(x) = -\\dfrac{1}{2}x + 9$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-MUAMIL-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$b = 9$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a = \\dfrac{3 - 9}{3 - 0}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المستقيم ينزل."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = -2$ و $b = 9$.",
+        "incorrect": "المعامل سالب لأن المستقيم ينزل."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "نقطة تقاطع تمثيلي $f$ و $g$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y)",
+      "expectedAnswer": {
+        "x": "3/2",
+        "y": "6"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$2x + 3 = -2x + 9$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$4x = 6$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم $y$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = \\dfrac{3}{2}$ و $y = 6$.",
+        "incorrect": "إحداثيتا التقاطع قد تكونان كسرين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    }
+  ]
+}

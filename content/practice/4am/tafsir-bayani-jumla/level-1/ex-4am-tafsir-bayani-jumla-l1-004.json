@@ -1,0 +1,82 @@
+{
+  "id": "ex-4am-tafsir-bayani-jumla-l1-004",
+  "lessonCode": "tafsir-bayani-jumla",
+  "level": 1,
+  "metadata": {
+    "title": "هل هي نقطة التقاطع؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تعويض",
+      "نقطة تقاطع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tafsir-bayani-jumla_P2",
+      "modelledOn": "act-5"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الجملة $\\begin{cases} y = x + 3 \\\\ y = -x + 5 \\end{cases}$ (أي $-x + y = 3$ و $x + y = 5$)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النقطة $(1 ; 4)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "تحقّق المعادلتين معًا: هي نقطة تقاطع المستقيمين",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "تحقّق المعادلة الأولى وحدها: على المستقيم الأول فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "C",
+          "content": "تحقّق المعادلة الثانية وحدها: على المستقيم الثاني فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "D",
+          "content": "لا تحقّق أيّ معادلة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ و $y$ في كل معادلة على حدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل معادلة محقّقة تعني أنّ النقطة على مستقيمها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نقطة التقاطع تحقّق المعادلتين معًا."
+        }
+      ],
+      "feedback": {
+        "correct": "بالتعويض: $-x + y = 3$ محقّقة ؛ $x + y = 5$ محقّقة.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

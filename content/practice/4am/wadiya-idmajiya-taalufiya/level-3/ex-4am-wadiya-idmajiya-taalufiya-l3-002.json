@@ -1,0 +1,115 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l3-002",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 3,
+  "metadata": {
+    "title": "تذاكر الحفلة: من القصة إلى الثنائية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جملة معادلتين",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "بيعت 25 تذكرة لحفلة: تذاكر التلاميذ بـ 300 DA وتذاكر الكبار بـ 500 DA، والمبلغ 9100 DA ( $x$ تذاكر التلاميذ و $y$ تذاكر الكبار)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ الجملة $\\begin{cases} x + y = 25 \\\\ 300x + 500y = 9100 \\end{cases}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y)",
+      "expectedAnswer": {
+        "x": "17",
+        "y": "8"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$y = -x + 25$ و $y = -\\dfrac{3}{5}x + \\dfrac{91}{5}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أو عوّض $y = 25 - x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نقطة التقاطع."
+        }
+      ],
+      "feedback": {
+        "correct": "$300x + 500(25 - x) = 9100$ : $-200x = -3400$ ، $x = 17$ و $y = 8$.",
+        "incorrect": "الثنائية تحقق المعادلتين معا."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "النتيجة في سياق الوضعية:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "17 تذكرة للتلاميذ و 8 للكبار",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "8 تذاكر للتلاميذ و 17 للكبار",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-BAYANI-MAQLUB"
+        },
+        {
+          "id": "C",
+          "content": "17 DA و 8 DA",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ماذا يمثل $x$؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "وماذا يمثل $y$؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الفاصلة أولا."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 17$ تذكرة للتلاميذ و $y = 8$ للكبار: $17 + 8 = 25$.",
+        "incorrect": "نعيد كل عدد إلى معناه في الوضعية."
+      },
+      "cognitiveDemand": "transfer",
+      "difficulty": 3
+    }
+  ]
+}

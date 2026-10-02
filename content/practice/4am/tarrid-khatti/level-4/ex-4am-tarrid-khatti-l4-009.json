@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tarrid-khatti-l4-009",
+  "lessonCode": "tarrid-khatti",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — محيط ومساحة مربع",
+    "estimatedMinutes": 3,
+    "tags": [
+      "هندسة",
+      "دالة خطية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "مربع طول ضلعه $c$ (cm)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ مقدار دالة خطية لـ $c$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "المساحة $c^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-NAMUDHAJ"
+        },
+        {
+          "id": "B",
+          "content": "المحيط $4c$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "المساحة والمحيط معًا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-NAMUDHAJ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هل هو من الشكل $ac$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$c^2$ ليست كذلك."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المحيط $4c$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "المحيط $4c$ خطي؛ المساحة $c^2$ منحنى.",
+        "incorrect": "المساحة لا تتضاعف حين يتضاعف الضلع."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "طول الضلع (cm) إذا كان المحيط 26cm:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري (الفاصلة مقبولة)",
+      "expectedAnswer": "6.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$4c = 26$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{26}{4}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق."
+        }
+      ],
+      "feedback": {
+        "correct": "$c = 6{,}5$ cm.",
+        "incorrect": "قسّم على 4."
+      }
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l5-006",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — قيمة كبيرة جدًّا",
+    "estimatedMinutes": 5,
+    "tags": [
+      "قيمة متطرّفة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mada-wasit-mutawassit_P2",
+      "modelledOn": "method-indicators"
+    }
+  },
+  "statement": {
+    "content": "نقاط خمسة لاعبين: $6$ ، $9$ ، $11$ ، $14$ ، $20$ (المتوسط $12$ والوسيط $11$). يُصحَّح خطأ: نقاط اللاعب الأخير $45$ لا $20$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المتوسط الجديد هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "17",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT",
+          "value": "11"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجموع يزيد بـ $25$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{85}{5} = 17$ .",
+        "incorrect": "أعد حساب المجموع."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "الوسيط الجديد هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "11",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT",
+          "value": "17"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هل تغيّر ترتيب القيمة الوسطى؟"
+        }
+      ],
+      "feedback": {
+        "correct": "القيمة الثالثة ما زالت $11$ : الوسيط لا يتأثّر.",
+        "incorrect": "رتّب القيم الجديدة."
+      }
+    }
+  ]
+}

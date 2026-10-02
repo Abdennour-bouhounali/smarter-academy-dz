@@ -1,0 +1,82 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l1-005",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 1,
+  "metadata": {
+    "title": "تمرين 7 (ص 99) — دستور المتوسط",
+    "estimatedMinutes": 3,
+    "tags": [
+      "دستور",
+      "متوسط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-7",
+      "page": 99,
+      "section": "أوظّف تعلّماتي",
+      "number": 7
+    }
+  },
+  "statement": {
+    "content": "سلسلة التمرين 7 محجوزة في الخلايا من A1 إلى G1 : 4 ، 10 ، 8 ، 4 ، 3 ، 2 ، 4 ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الدستور الذي يحسب متوسط السلسلة، كما يكتبه الكتاب:",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "⁦=MAX(A1:G1)-MIN(A1:G1)⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-DUSTUR-KHATI"
+        },
+        {
+          "id": "B",
+          "content": "⁦=MOYENNE(A1:G1)⁩",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "⁦=MEDIANE(A1:G1)⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-MUTAWASSIT"
+        },
+        {
+          "id": "D",
+          "content": "⁦=MODE(A1:G1)⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-DUSTUR-KHATI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "MOYENNE بالفرنسية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "MEDIANE للوسيط."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "MODE للمنوال."
+        }
+      ],
+      "feedback": {
+        "correct": "⁦=MOYENNE(A1:G1)⁩ يحسب المتوسط، ⁦=MEDIANE(A1:G1)⁩ الوسيط، ⁦=MODE(A1:G1)⁩ المنوال.",
+        "incorrect": "لكل مؤشّر دالته."
+      }
+    }
+  ]
+}

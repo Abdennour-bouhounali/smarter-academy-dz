@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l1-008",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — أيّ تمثيل؟ (قيم منفصلة)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمثيل بياني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_majdulat-ihsaiya_P3",
+      "modelledOn": "ex-1"
+    }
+  },
+  "statement": {
+    "content": "جدول عدد الإخوة لكل تلميذ في القسم: القيم 0 ، 1 ، 2 ، 3 ، 4 وتكراراتها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "التمثيل البياني المناسب:",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "مدرّج تكراري",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUKHATTAT-GHAYR-MUNASIB"
+        },
+        {
+          "id": "B",
+          "content": "مخطط دائري",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUKHATTAT-GHAYR-MUNASIB"
+        },
+        {
+          "id": "C",
+          "content": "مخطط بالأعمدة",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هل القيم فئات؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عدد الإخوة قيم منفصلة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عمود لكل قيمة."
+        }
+      ],
+      "feedback": {
+        "correct": "قيم منفصلة: مخطط بالأعمدة، عمود لكل قيمة ارتفاعه تكرارها.",
+        "incorrect": "المدرّج للفئات، والدائري لأجزاء من كلّ."
+      }
+    }
+  ]
+}

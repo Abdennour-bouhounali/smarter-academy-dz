@@ -1,0 +1,114 @@
+{
+  "id": "ex-4am-hall-jabri-l3-004",
+  "lessonCode": "hall-jabri",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 11 — أ)",
+    "estimatedMinutes": 4,
+    "tags": [
+      "اختيار الطريقة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-11",
+      "page": 60,
+      "section": "أوظّف تعلّماتي",
+      "number": 11
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 60): حل الجملة باختيار طريقة مناسبة. $\\begin{cases} x + y = 12 \\\\ 3x + 2y = 31 \\end{cases}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "طريقة مناسبة، مع سببها الصحيح:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "التعويض، لأنّ معاملي $x$ و $y$ في المعادلة الأولى يساويان $1$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الجمع مباشرة، لأنّ معاملي $y$ متعاكسان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        },
+        {
+          "id": "C",
+          "content": "الجمع مباشرة، لأنّ معاملي $x$ متعاكسان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ المعاملات قبل أن تبدأ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل يساوي $1$ أو $-1$ يسهّل التعويض؛ معاملان متعاكسان (أو يصيران كذلك بضرب بسيط) يسهّلان الجمع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد إيجاد مجهول، عوّض قيمته لتجد الآخر، ثم تحقّق من الثنائية في المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 12 - x$ بلا كسور. أمّا المعاملات $1$ و $2$ ، $1$ و $3$ فليست متعاكسة.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "7",
+        "y": "5"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ المعاملات قبل أن تبدأ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل يساوي $1$ أو $-1$ يسهّل التعويض؛ معاملان متعاكسان (أو يصيران كذلك بضرب بسيط) يسهّلان الجمع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد إيجاد مجهول، عوّض قيمته لتجد الآخر، ثم تحقّق من الثنائية في المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x + 2(12 - x) = 31$ أي $x + 24 = 31$ ، ومنه $x = 7$ و $y = 5$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

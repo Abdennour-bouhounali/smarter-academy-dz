@@ -1,0 +1,104 @@
+{
+  "id": "ex-4am-dala-khattiya-l5-008",
+  "lessonCode": "dala-khattiya",
+  "level": 5,
+  "metadata": {
+    "title": "مقارنة عرضين",
+    "estimatedMinutes": 5,
+    "tags": [
+      "نسبة مئوية",
+      "مقارنة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "عرض أ: تخفيض 25% على حذاء سعره 9600DA. عرض ب: الدالة الخطية $g(x) = 0{,}7x$ على السعر نفسه."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "معامل الدالة الخطية للعرض أ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "0.75",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد تخفيض نسبة من السعر يبقى جزء منه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسبة المئوية الباقية من السعر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعامل هو هذه النسبة مكتوبة عددًا عشريًا."
+        }
+      ],
+      "feedback": {
+        "correct": "يبقى $75\\%$ من السعر: $a = 1 - 0{,}25 = 0{,}75$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAKHFID-NISBA",
+          "value": "0.25"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $g(9600)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "6720",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد بدالة خطية تُقرأ على دستورها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بالعدد المعطى في الدستور."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب الجداء، وانتبه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$g(9600) = 0{,}7 \\times 9600 = 6720$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-SURA-SABIQ",
+          "value": "96000/7"
+        }
+      ]
+    }
+  ]
+}

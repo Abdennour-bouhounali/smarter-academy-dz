@@ -1,0 +1,80 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l1-006",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — عبارة الدالة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تعيين دالة تآلفية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "$f$ دالة تآلفية حيث $f(0) = 5$ و $f(2) = 9$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عبارة $f(x)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$f(x) = 2x + 5$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$f(x) = 4x + 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-BIDUN-QISMA"
+        },
+        {
+          "id": "C",
+          "content": "$f(x) = 2x + 9$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-B-NISBA"
+        },
+        {
+          "id": "D",
+          "content": "$f(x) = 5x + 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-A-B-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$f(0) = b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a = \\dfrac{9 - 5}{2 - 0}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بالعددين."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = f(0) = 5$ و $a = \\dfrac{9 - 5}{2} = 2$ .",
+        "incorrect": "عوّض 0 و 2 في كل عبارة."
+      }
+    }
+  ]
+}

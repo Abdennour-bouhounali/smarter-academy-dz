@@ -1,0 +1,108 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l3-010",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 3,
+  "metadata": {
+    "title": "جدول أسعار التذاكر",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جدول تناسبية",
+      "دالة خطية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P2",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "جدول أسعار مصعد هوائي: لشخص واحد $250$ DA، لشخصين $500$ DA، لثلاثة أشخاص $750$ DA، لأربعة أشخاص $1000$ DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما معامل التناسبية الذي يرفق بعدد الأشخاص السعر؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "250",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب حاصل قسمة كل سعر على عدد الأشخاص."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{500}{2}$ ، $\\dfrac{750}{3}$ …"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا تساوت حواصل القسمة فهي المعامل."
+        }
+      ],
+      "feedback": {
+        "correct": "كل حواصل القسمة تساوي 250: السعر $= 250 \\times$ عدد الأشخاص.",
+        "incorrect": "المعامل هو السعر على عدد الأشخاص."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1,
+      "misconceptionSignatures": [
+        {
+          "value": "0.004",
+          "id": "MISC-TANASUB-MUAMIL-MAQLUB"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما سعر 7 أشخاص؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار",
+      "expectedAnswer": "1750",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الدالة $x \\longmapsto 250x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب صورة 7."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب 7 في المعامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$250 \\times 7 = 1750$ DA.",
+        "incorrect": "اضرب عدد الأشخاص في المعامل."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1,
+      "misconceptionSignatures": [
+        {
+          "value": "1250",
+          "id": "MISC-TANASUB-FARQ-THABIT"
+        }
+      ]
+    }
+  ]
+}

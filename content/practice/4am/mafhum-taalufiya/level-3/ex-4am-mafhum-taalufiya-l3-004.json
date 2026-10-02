@@ -1,0 +1,77 @@
+{
+  "id": "ex-4am-mafhum-taalufiya-l3-004",
+  "lessonCode": "mafhum-taalufiya",
+  "level": 3,
+  "metadata": {
+    "title": "نشاط 1 — جدول غير تناسبي",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خطية",
+      "الكتاب"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-1",
+      "page": 78,
+      "section": "أنشطة",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 78): أجرة عامل: أجرة قاعدية شهرية قدرها 35000DA، يضاف إليها 185DA لكل ساعة إضافية. نسمّي $x$ عدد الساعات الإضافية و $S(x)$ الأجرة. الجدول: 5 ← 35925 ، 8 ← 36480."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل الدالة $S$ دالة خطية؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P4",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا: $\\dfrac{35925}{5} = 7185$ و $\\dfrac{36480}{8} = 4560$ ، و $b = 35000 \\neq 0$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نعم: معاملها 185",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-KHATTIYA-KHALT"
+        },
+        {
+          "id": "C",
+          "content": "نعم: لأنّ الأجرة تزداد مع الساعات",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-KHATTIYA-KHALT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كل دالة من الشكل $ax + b$ تآلفية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى $b$ : إذا كان معدوما فالدالة خطية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "وانظر إلى $a$ : إذا كان معدوما فالدالة ثابتة."
+        }
+      ],
+      "feedback": {
+        "correct": "الجدول ليس جدول تناسبية: $S$ تآلفية وليست خطية.",
+        "incorrect": "راجع كل اقتراح: واحد فقط صحيح."
+      }
+    }
+  ]
+}

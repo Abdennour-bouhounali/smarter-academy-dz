@@ -1,0 +1,78 @@
+{
+  "id": "ex-4am-mafhum-jumla-l5-010",
+  "lessonCode": "mafhum-jumla",
+  "level": 5,
+  "metadata": {
+    "title": "تمرين 2 — معادلة بلا حل من القائمة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "ثنائية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-2",
+      "page": 60,
+      "section": "أوظّف تعلّماتي",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 60): الثنائيات $(0{,}5 ; -1{,}5)$ ، $(0 ; -2)$ ، $\\left(0 ; \\dfrac{1}{3}\\right)$ ، $(1 ; -2)$ ، $\\left(\\dfrac{1}{5} ; 0\\right)$ ، والمعادلات $3x + 2y = -1$ ، $3x + 5y = 1$ ، $x - 2y = 4$ ، $5x + 3y = 1$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ معادلة لا تقبل أيًّا من الثنائيات الخمس حلًّا؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3x + 2y = -1$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$3x + 5y = 1$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x - 2y = 4$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$5x + 3y = 1$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "جرّب الثنائيات الخمس في كل معادلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$3x + 2y = -1$ تقبل $(1 ; -2)$ ، و $x - 2y = 4$ تقبل $(0 ; -2)$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "والمعادلة الرابعة تقبل $\\left(\\dfrac{1}{5} ; 0\\right)$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x + 5y = 1$ لا تقبل أيًّا منها: مثلا $\\left(\\dfrac{1}{5} ; 0\\right)$ تعطي $\\dfrac{3}{5}$ و $\\left(0 ; \\dfrac{1}{3}\\right)$ تعطي $\\dfrac{5}{3}$ .",
+        "incorrect": "عوّض كل ثنائية في كل معادلة."
+      }
+    }
+  ]
+}

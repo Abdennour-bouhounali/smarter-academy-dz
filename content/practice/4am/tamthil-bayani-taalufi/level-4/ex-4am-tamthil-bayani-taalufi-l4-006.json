@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-tamthil-bayani-taalufi-l4-006",
+  "lessonCode": "tamthil-bayani-taalufi",
+  "level": 4,
+  "metadata": {
+    "title": "نرفع المستقيم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترتيب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-taalufi_P1"
+    }
+  },
+  "statement": {
+    "content": "$(d)$ مستقيم يشمل المبدأ والنقطة $(2 ; 5)$ ، و $(d')$ هو $(d)$ مرفوعًا بـ $-3$ (كل نقطة منه تنزل $3$ )."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الدالة التي تمثيلها $(d')$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$f(x) = 2{,}5x - 3$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$f(x) = 2{,}5x + 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-ISHARA-A"
+        },
+        {
+          "id": "C",
+          "content": "$f(x) = 0{,}4x - 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-MUAMIL-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ $b$ أولًا: أين يقطع المستقيم محور التراتيب؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم اقرأ $a$ : كم يصعد المستقيم (أو ينزل) لكل وحدة إلى اليمين؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق: كل نقطة معطاة ترتيبها صورة فاصلتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = -3$ و $a = 2{,}5$ : $f(x) = 2{,}5x - 3$ .",
+        "incorrect": "$b$ يُقرأ على محور التراتيب، و $a$ تغيّر الترتيب لوحدة واحدة إلى اليمين."
+      }
+    }
+  ]
+}

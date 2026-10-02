@@ -1,0 +1,101 @@
+{
+  "id": "ex-4am-tanasub-muamil-l5-002",
+  "lessonCode": "tanasub-muamil",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — باقة الإنترنت",
+    "estimatedMinutes": 4,
+    "tags": [
+      "إنترنت"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-muamil_P3",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "باقة إنترنت: 1,5Go بـ 200DA ، 3Go بـ 400DA ، 6Go بـ 800DA ، والثمن متناسب مع عدد الـ Go."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ثمن 4,5Go بالدينار:",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "600",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "خواص جدول التناسبية: نجمع عمودين أو نضرب عمودا في عدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ابحث عن علاقة بين العدد الجديد في السطر الأول والأعداد المعلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "طبّق العلاقة نفسها على السطر الثاني."
+        }
+      ],
+      "feedback": {
+        "correct": "$4{,}5 = 1{,}5 + 3$ ، إذن $200 + 400 = 600$ DA.",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العدد $a$ في العلاقة $y = a \\times x$ (اكتبه كسرا):",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "400/3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في جدول تناسبية نحصل على y بضرب x في المعامل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب المعامل $a = \\dfrac{y}{x}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $y = a \\times x$ ثم تحقّق على عمود من الجدول."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{200}{1{,}5} = \\dfrac{400}{3}$ : $y = \\dfrac{400}{3} \\times x$ .",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "3/400",
+          "id": "MISC-TANASUB-MUAMIL-MAQLUB"
+        }
+      ]
+    }
+  ]
+}

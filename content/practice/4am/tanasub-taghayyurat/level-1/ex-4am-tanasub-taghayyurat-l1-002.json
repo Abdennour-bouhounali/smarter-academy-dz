@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l1-002",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 1,
+  "metadata": {
+    "title": "نشاط 4 (ص 79) — ماذا تلاحظ؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تناسب التغيرات"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-4",
+      "page": 79,
+      "section": "أنشطة",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 79): من أجل $f(x) = 200x + 2000$ وجدنا $\\dfrac{f(4) - f(1)}{4 - 1} = 200$ ، $\\dfrac{f(1) - f(0)}{1 - 0} = 200$ ، $\\dfrac{f(6) - f(4)}{6 - 4} = 200$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ماذا تلاحظ؟",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الحواصل متساوية وتساوي المعامل $a = 200$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الحواصل تكبر كلما كبر العددان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-BIDUN-QISMA"
+        },
+        {
+          "id": "C",
+          "content": "الحواصل تساوي الحدّ الثابت $2000$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-A-B-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن الأعداد الثلاثة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما معامل $x$ في $200x + 2000$ ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تناسب التغيّرات."
+        }
+      ],
+      "feedback": {
+        "correct": "حاصل قسمة تغيّر الصور على تغيّر الأعداد ثابت: $a = 200$ .",
+        "incorrect": "الحواصل الثلاثة كلها 200 ."
+      }
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-takrar-mujamma-l3-006",
+  "lessonCode": "takrar-mujamma",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — أعمار المشاركين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تواتر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_takrar-mujamma_P2"
+    }
+  },
+  "statement": {
+    "content": "أعمار 25 مشاركا في دورة ألعاب إلكترونية (السطر الأول الأعمار، والسطر الثاني عدد المشاركين): $\\begin{array}{|c|c|c|c|} \\hline 12 & 13 & 14 & 15 \\\\ \\hline 5 & 10 & 6 & 4 \\\\ \\hline \\end{array}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "التواتر المجمع الصاعد للقيمة 13:",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة أو كسر",
+      "expectedAnswer": "0,6",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-TAWATUR-BILA-QISMA",
+          "value": "15"
+        },
+        {
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB",
+          "value": "0,8"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولا التكرار الكلي: مجموع كل التكرارات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التواتر المجمع هو التكرار المجمع مقسوما على التكرار الكلي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع التكرارات المعنية ثم اقسم المجموع على التكرار الكلي، واختزل الكسر إن أمكن."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{5 + 10}{25} = 0{,}6$",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "التواتر المجمع النازل للقيمة 14:",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة أو كسر",
+      "expectedAnswer": "0,4",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-TAWATUR-BILA-QISMA",
+          "value": "10"
+        },
+        {
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB",
+          "value": "0,84"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولا التكرار الكلي: مجموع كل التكرارات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التواتر المجمع هو التكرار المجمع مقسوما على التكرار الكلي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع التكرارات المعنية ثم اقسم المجموع على التكرار الكلي، واختزل الكسر إن أمكن."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{6 + 4}{25} = 0{,}4$",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    }
+  ]
+}

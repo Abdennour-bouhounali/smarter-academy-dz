@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l4-008",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 4,
+  "metadata": {
+    "title": "تكرار مجهول بالمتوسط",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تكرار مجهول",
+      "متوسط",
+      "معادلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P3"
+    }
+  },
+  "statement": {
+    "content": "السلسلة: القيمة: 6 ، 10 ، 14 — التكرار: 3 ، $a$ ، 1. متوسطها 9."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما قيمة $a$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المتوسط = المجموع ÷ التكرار الكلي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{18 + 10a + 14}{4 + a} = 9$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب الطرفين في $4 + a$."
+        }
+      ],
+      "feedback": {
+        "correct": "$32 + 10a = 36 + 9a$ ، إذن $a = 4$.",
+        "incorrect": "التكرار الكلي $4 + a$ يتغيّر مع $a$."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 4
+    }
+  ]
+}

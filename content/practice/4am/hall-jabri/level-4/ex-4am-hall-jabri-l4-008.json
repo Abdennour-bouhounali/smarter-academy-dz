@@ -1,0 +1,114 @@
+{
+  "id": "ex-4am-hall-jabri-l4-008",
+  "lessonCode": "hall-jabri",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — معاملات عشرية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "الجمع",
+      "أعداد عشرية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hall-jabri_P2",
+      "modelledOn": "act-2"
+    }
+  },
+  "statement": {
+    "content": "الجملة $\\begin{cases} 0{,}5x + 0{,}2y = 3{,}4 \\\\ 1{,}5x - 0{,}4y = 4{,}2 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لنتخلّص من $y$ ، نضرب طرفي المعادلة الأولى في:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$-2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        },
+        {
+          "id": "C",
+          "content": "$4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن معاملي $x$ ثم معاملي $y$ في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب طرفي معادلة (أو كلتيهما) في عدد مناسب ليصير معاملا أحد المجهولين متعاكسين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المعادلتين طرفًا لطرف، ثم عوّض القيمة الناتجة في إحدى المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + 0{,}4y = 6{,}8$ : $0{,}4y$ و $-0{,}4y$ متعاكسان.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "22/5",
+        "y": "6"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن معاملي $x$ ثم معاملي $y$ في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب طرفي معادلة (أو كلتيهما) في عدد مناسب ليصير معاملا أحد المجهولين متعاكسين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المعادلتين طرفًا لطرف، ثم عوّض القيمة الناتجة في إحدى المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "بالجمع $2{,}5x = 11$ ، ومنه $x = 4{,}4$ ثم $0{,}2y = 3{,}4 - 2{,}2 = 1{,}2$ أي $y = 6$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

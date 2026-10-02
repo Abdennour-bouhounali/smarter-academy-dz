@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l2-008",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — زاوية قطاع",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مخطط دائري",
+      "زاوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_majdulat-ihsaiya_P3",
+      "modelledOn": "ex-15"
+    }
+  },
+  "statement": {
+    "content": "صوّت 120 تلميذًا على رياضة الأسبوع: 30 اختاروا السباحة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "زاوية قطاع السباحة في المخطط الدائري (بالدرجات):",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "90",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MUKHATTAT-GHAYR-MUNASIB",
+          "value": "30"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حصة السباحة $\\dfrac{30}{120}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{30}{120} = \\dfrac{1}{4}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ربع 360."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{30}{120} \\times 360 = 90$ .",
+        "incorrect": "الحصة من الكلّ ثم × 360."
+      }
+    }
+  ]
+}

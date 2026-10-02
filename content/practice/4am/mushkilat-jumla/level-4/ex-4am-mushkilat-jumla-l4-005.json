@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l4-005",
+  "lessonCode": "mushkilat-jumla",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 15 (ص 61) — ما هي النسبة؟",
+    "estimatedMinutes": 5,
+    "tags": [
+      "ترييض",
+      "نسبة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-15",
+      "page": 61,
+      "section": "أوظّف تعلّماتي",
+      "number": 15
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 61): نعتبر النسبة $\\dfrac{a}{b}$ حيث $b \\neq 0$ . إذا أضفنا 2 إلى البسط $a$ ، تكون النسبة تساوي 3. إذا أنقصنا 2 من البسط $a$ ، تكون النسبة تساوي 4. ما هي هذه النسبة؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم المشكلة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} a + 2 = 3 \\\\ a - 2 = 4 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} a + 2 = 3b \\\\ a - 2 = 4b \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} a + 2b = 3 \\\\ a - 2b = 4 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "النسبة بعد الإضافة: $\\dfrac{a + 2}{b}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب طرفي المساواة في $b$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "افعل الشيء نفسه بالنسبة الثانية."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{a + 2}{b} = 3$ و $\\dfrac{a - 2}{b} = 4$ ، أي الجملة، وحلها $(-14 ; -4)$ .",
+        "incorrect": "المقام $b$ لا يختفي: نضرب فيه."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما هي النسبة $\\dfrac{a}{b}$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "كسر أو عدد عشري",
+      "expectedAnswer": "7/2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اطرح المعادلتين: $4 = -b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم $a = 3b - 2$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $\\dfrac{a}{b}$ واختزله."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = -14$ و $b = -4$ : $\\dfrac{-14}{-4} = \\dfrac{7}{2}$ .",
+        "incorrect": "العددان سالبان، لكن النسبة موجبة."
+      }
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l4-004",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — معدّل مجهول",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متوسط مجموعات",
+      "عكسي"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P3",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "في قسم من 20 تلميذا المعدّل 12. معدّل الذكور الثمانية 9."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما معدّل الإناث؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "14",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MUTAWASSIT-MUTAWASSITAYN",
+          "value": "15"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مجموع نقاط القسم $12 \\times 20$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح نقاط الذكور $8 \\times 9$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على عدد الإناث 12."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{240 - 72}{12} = \\dfrac{168}{12} = 14$ .",
+        "incorrect": "عدد الإناث $20 - 8 = 12$ ."
+      },
+      "difficulty": 4
+    }
+  ]
+}

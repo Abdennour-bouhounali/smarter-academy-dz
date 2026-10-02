@@ -1,0 +1,61 @@
+{
+  "id": "ex-4am-mafhum-jumla-l5-001",
+  "lessonCode": "mafhum-jumla",
+  "level": 5,
+  "metadata": {
+    "title": "تحدّ — كم قطعة من كل فئة؟",
+    "estimatedMinutes": 5,
+    "tags": [
+      "قطع نقدية",
+      "حل الجملة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "challenge",
+      "page": 55,
+      "section": "تحدّ"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 55): لتزيين قسمهم، جمع التلاميذ مبلغ 610DA مُشكّلا من 37 قطعة نقدية من فئتي 20DA و 10DA. نسمّي $x$ عدد قطع 20DA و $y$ عدد قطع 10DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هي الثنائية $(x ; y)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية $(x ; y)$ : العدد الأول ثم الثاني (عدد صحيح أو كسر مثل 2/5)",
+      "expectedAnswer": {
+        "x": "24",
+        "y": "13"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لو كانت القطع الـ 37 كلها من فئة 10DA لكان المبلغ 370DA."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ينقص $610 - 370 = 240$ DA، وكل قطعة 20DA مكان قطعة 10DA تزيد 10DA."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم المبلغ الناقص على ما تضيفه كل قطعة 20DA، ثم احسب $y = 37 - x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 24$ و $y = 13$ : $24 + 13 = 37$ و $480 + 130 = 610$ .",
+        "incorrect": "تحقّق من الشرطين معًا: عدد القطع والمبلغ."
+      }
+    }
+  ]
+}

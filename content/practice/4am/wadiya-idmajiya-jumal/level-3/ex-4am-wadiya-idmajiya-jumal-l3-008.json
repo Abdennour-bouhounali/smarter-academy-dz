@@ -1,0 +1,107 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l3-008",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 3,
+  "metadata": {
+    "title": "عرض الهاتف — المكالمات والإنترنت",
+    "estimatedMinutes": 3,
+    "tags": [
+      "حل جملة",
+      "أعداد عشرية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P1"
+    }
+  },
+  "statement": {
+    "content": "دفع ياسين 1 300 DA مقابل 200 دقيقة مكالمات و 3Go إنترنت، ودفعت ليلى 1 100 DA مقابل 100 دقيقة و 4Go من العرض نفسه. نسمّي $x$ ثمن دقيقة المكالمة و $y$ ثمن 1Go (بالدينار)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما الثمنان $(x ; y)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
+      "expectedAnswer": {
+        "x": "19/5",
+        "y": "180"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$200x + 3y = 1300$ و $100x + 4y = 1100$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب المعادلة الثانية في 2 ثم اطرح."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قد يكون ثمن الدقيقة عددا عشريا."
+        }
+      ],
+      "feedback": {
+        "correct": "$5y = 900$ ، $y = 180$ ، ثم $200x = 760$ ، $x = 3{,}8$.",
+        "incorrect": "اجعل معاملي $x$ متساويين ثم اطرح."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "180",
+            "y": "19/5"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "كم يدفع من يستهلك 50 دقيقة و 2Go؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "مبلغ بالدينار",
+      "expectedAnswer": "550",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولا الثمنين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "50 دقيقة: $50x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أضف ثمن 2Go."
+        }
+      ],
+      "feedback": {
+        "correct": "$50 \\times 3{,}8 + 2 \\times 180 = 190 + 360 = 550$ DA.",
+        "incorrect": "عوّض بالثمنين اللذين وجدتهما."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ]
+}

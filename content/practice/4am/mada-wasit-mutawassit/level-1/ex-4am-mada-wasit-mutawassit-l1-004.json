@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l1-004",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 4 (ص 100) — مدى أربع قيم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مدى"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 100,
+      "section": "أؤكّد تعلّماتي",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 100): السلسلة $8{,}1$ ، $5{,}7$ ، $3$ ، $2{,}8$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مدى السلسلة هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$6$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$6{,}9$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$5{,}3$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن أكبر قيمة وأصغر قيمة."
+        }
+      ],
+      "feedback": {
+        "correct": "$8{,}1 - 2{,}8 = 5{,}3$ .",
+        "incorrect": "أكبر قيمة $8{,}1$ وأصغر قيمة $2{,}8$."
+      }
+    }
+  ]
+}

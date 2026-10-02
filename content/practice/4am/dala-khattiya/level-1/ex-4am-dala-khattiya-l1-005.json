@@ -1,0 +1,78 @@
+{
+  "id": "ex-4am-dala-khattiya-l1-005",
+  "lessonCode": "dala-khattiya",
+  "level": 1,
+  "metadata": {
+    "title": "أيّها خطية؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تمييز"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "أربع دوال معرّفة بعباراتها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ الدوال الآتية دالة خطية؟",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\longmapsto x + 6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-AFFINE"
+        },
+        {
+          "id": "B",
+          "content": "$x \\longmapsto 6x$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x \\longmapsto 6x^2$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$x \\longmapsto 6x - 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-AFFINE"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الدالة الخطية من الشكل $x \\longmapsto ax$ حيث $a$ عدد ثابت."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب صورة 0 بكل دالة: بدالة خطية تكون معدومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق أيضًا أنّ صورة العدد هي جداؤه في العدد الثابت نفسه."
+        }
+      ],
+      "feedback": {
+        "correct": "$x \\longmapsto 6x$ من الشكل $x \\longmapsto ax$ ؛ الدوال الأخرى صورة 0 بها غير معدومة أو ليست جداء $x$ في عدد ثابت.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

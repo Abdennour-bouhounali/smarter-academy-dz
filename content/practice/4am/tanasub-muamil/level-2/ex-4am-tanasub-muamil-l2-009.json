@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-tanasub-muamil-l2-009",
+  "lessonCode": "tanasub-muamil",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — نكتب العلاقة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "y = a × x"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-muamil_P3",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "الجدول الآتي جدول تناسبية: $\\begin{array}{|c|c|c|c|} \\hline x & 2 & 3 & 7 \\\\ \\hline y & 9 & 13{,}5 & 31{,}5 \\\\ \\hline \\end{array}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد $a$ في العلاقة $y = a \\times x$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "4,5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في جدول تناسبية نحصل على y بضرب x في المعامل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب المعامل $a = \\dfrac{y}{x}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $y = a \\times x$ ثم تحقّق على عمود من الجدول."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{9}{2} = \\dfrac{13{,}5}{3} = \\dfrac{31{,}5}{7} = 4{,}5$ : $y = 4{,}5 \\times x$ .",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "2/9",
+          "id": "MISC-TANASUB-MUAMIL-MAQLUB"
+        }
+      ]
+    }
+  ]
+}

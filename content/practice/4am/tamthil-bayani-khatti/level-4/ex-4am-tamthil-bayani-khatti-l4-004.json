@@ -1,0 +1,123 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l4-004",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 2 (ص 72)",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جذور",
+      "انتماء نقطة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-2",
+      "page": 72,
+      "section": "أوظّف تعلّماتي",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 72): (D) التمثيل البياني لدالة خطية يشمل النقطة $A(1 ; \\sqrt{3} - \\sqrt{2})$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "معامل الدالة:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sqrt{3} - \\sqrt{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\sqrt{3} + \\sqrt{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-MUAMIL-MAQLUB"
+        },
+        {
+          "id": "C",
+          "content": "$1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-FASILA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التمثيل يشمل O والنقطة المعطاة $(m ; n)$ ، أي $f(m) = n$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $a \\times m = n$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الترتيب على الفاصلة: $a = \\dfrac{n}{m}$ ، مع الانتباه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "صورة 1 هي المعامل نفسه: $a = \\sqrt{3} - \\sqrt{2}$ .",
+        "incorrect": "صورة 1 بالدالة $x \\longmapsto ax$ هي $a$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل النقطة $A'(\\sqrt{3} - \\sqrt{2} ; \\sqrt{3} + \\sqrt{2})$ تنتمي إلى (D)؟",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-FASILA-TARTIB"
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب صورة $\\sqrt{3} - \\sqrt{2}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الصورة هي $(\\sqrt{3} - \\sqrt{2})^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انشر وقارن بـ $\\sqrt{3} + \\sqrt{2}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$(\\sqrt{3} - \\sqrt{2})^2 = 5 - 2\\sqrt{6}$ ، وهو أصغر من 1، أما $\\sqrt{3} + \\sqrt{2}$ فأكبر من 3.",
+        "incorrect": "احسب الصورة ثم قارن."
+      }
+    }
+  ]
+}

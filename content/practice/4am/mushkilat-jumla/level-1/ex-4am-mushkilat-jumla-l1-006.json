@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l1-006",
+  "lessonCode": "mushkilat-jumla",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — عمرا ريان ولينة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترييض",
+      "أعمار"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P1",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "مجموع عمري ريان وأخته لينة 20 سنة، وريان أكبر من لينة بـ 4 سنوات. نسمّي $x$ عمر ريان و $y$ عمر لينة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم المشكلة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 20 \\\\ x + 4 = y \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 20 \\\\ x - y = 4 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x + y = 4 \\\\ x - y = 20 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من الأكبر؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الفرق بين عمر الأكبر وعمر الأصغر 4."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المجموع 20 والفرق 4."
+        }
+      ],
+      "feedback": {
+        "correct": "المجموع $x + y = 20$ ، وريان أكبر: $x - y = 4$ .",
+        "incorrect": "«ريان أكبر بـ 4» تعني عمر ريان ناقص عمر لينة يساوي 4."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما عمر ريان وعمر لينة؟ اكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "12",
+        "y": "8"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع المعادلتين طرفا لطرف."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "يختفي $y$ : تحصل على $2x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم عوّض لإيجاد $y$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "بالجمع $2x = 24$ أي $x = 12$ ، و $y = 8$ .",
+        "incorrect": "الحل ثنائية: عمر ريان أولا ثم عمر لينة."
+      }
+    }
+  ]
+}

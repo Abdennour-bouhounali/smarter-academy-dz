@@ -1,0 +1,106 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l2-005",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 2,
+  "metadata": {
+    "title": "نشاط 6 — لافتة 80",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تحويل الوحدات",
+      "السرعة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-6",
+      "page": 67,
+      "section": "أنشطة",
+      "number": 6
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 67): تسير سيّارة بسرعة متوسطة قدرها $25m/s$ على طريق حُدّدت السرعة القصوى فيه بـ $80km/h$ . هل ارتكب سائق هذه السيّارة مخالفة ؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "سرعة السيارة بالكيلومتر في الساعة:",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "90",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد وحدة البسط ووحدة المقام، قبل التحويل وبعده."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حوّل البسط والمقام كلًّا على حدة: $1h = 3600s$ ، $1km = 1000m$ ، $1m^3 = 1000L$ ، $1L = 1000cm^3$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب المقدار كحاصل قسمة بالوحدات الجديدة، ثم احسب."
+        }
+      ],
+      "feedback": {
+        "correct": "$25 \\times 3600 = 90\\,000m$ في الساعة، أي $90km/h$ .",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل ارتكب السائق مخالفة؟",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، لأنّ $90km/h > 80km/h$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا، لأنّ $25 < 80$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQADIR-WIHDA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد وحدة البسط ووحدة المقام، قبل التحويل وبعده."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حوّل البسط والمقام كلًّا على حدة: $1h = 3600s$ ، $1km = 1000m$ ، $1m^3 = 1000L$ ، $1L = 1000cm^3$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب المقدار كحاصل قسمة بالوحدات الجديدة، ثم احسب."
+        }
+      ],
+      "feedback": {
+        "correct": "نقارن بالوحدة نفسها: 90 أكبر من 80.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

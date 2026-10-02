@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-tarrid-taalufi-l5-003",
+  "lessonCode": "tarrid-taalufi",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — ثلاث باقات",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ثلاث صيغ"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-taalufi_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "ثلاث باقات أنترنت: A $200x$ ، B $50x + 600$ ، C $1500$ (بالدينار)، حيث $x$ عدد الجيغا في الشهر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "يستهلك وليد 8Go في الشهر. الباقة الأرخص له هي:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "A",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "B",
+          "content": "B",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "C",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ 8."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$B = 400 + 600$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن 1600 و 1000 و 1500."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = 1600$ ، $B = 50 \\times 8 + 600 = 1000$ ، $C = 1500$ : B أرخص.",
+        "incorrect": "احسب المبالغ الثلاثة من أجل 8Go."
+      }
+    }
+  ]
+}

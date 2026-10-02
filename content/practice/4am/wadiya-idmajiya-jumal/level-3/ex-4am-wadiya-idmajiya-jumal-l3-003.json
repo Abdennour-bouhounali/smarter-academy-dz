@@ -1,0 +1,131 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l3-003",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 3,
+  "metadata": {
+    "title": "أدمج تعلّماتي — حفل البلدية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ترجمة",
+      "حل جملة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "situation",
+      "page": 62,
+      "section": "أدمج تعلّماتي"
+    }
+  },
+  "statement": {
+    "content": "بمناسبة الاحتفال بالمولد النبوي الشريف، اقتنت بلدية 150 علبة عصير برتقال و 150 قطعة حلوى متماثلة ودفعت 11 250 DA لكل المصاريف. في نهاية الحفل، بقيت 24 علبة عصير و 30 قطعة حلوى ثمنها معا 2 100 DA. نسمّي $x$ سعر علبة عصير و $y$ سعر قطعة حلوى (بالدينار)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم المعطيات هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} 150x + 150y = 11250 \\\\ 30x + 24y = 2100 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 11250 \\\\ 24x + 30y = 2100 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} 150x + 150y = 2100 \\\\ 24x + 30y = 11250 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "D",
+          "content": "$\\begin{cases} 150x + 150y = 11250 \\\\ 24x + 30y = 2100 \\end{cases}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معلومتان عن مبلغين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل عدد يُضرب في سعر الشيء الذي يعدّه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المبلغ في المعادلة هو مبلغ المعلومة نفسها."
+        }
+      ],
+      "feedback": {
+        "correct": "$150x + 150y = 11250$ و $24x + 30y = 2100$.",
+        "incorrect": "العدد 24 يعدّ العلب، و 30 يعدّ القطع."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "ما سعرا العلبة والقطعة $(x ; y)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
+      "expectedAnswer": {
+        "x": "25",
+        "y": "50"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقسم المعادلة الأولى على 150."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$y = 75 - x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض في $24x + 30y = 2100$."
+        }
+      ],
+      "feedback": {
+        "correct": "$2250 - 6x = 2100$ ، $x = 25$ ، $y = 50$.",
+        "incorrect": "بسّط ثم عوّض، وتحقق في النص."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "50",
+            "y": "25"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,151 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l5-001",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 5,
+  "metadata": {
+    "title": "حفل البلدية — الحل الكامل",
+    "estimatedMinutes": 6,
+    "tags": [
+      "حل جملة",
+      "تفسير",
+      "تحويل"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "situation",
+      "page": 62,
+      "section": "أدمج تعلّماتي"
+    }
+  },
+  "statement": {
+    "content": "بمناسبة الاحتفال بالمولد النبوي الشريف، اقتنت بلدية 150 علبة عصير برتقال و 150 قطعة حلوى متماثلة ودفعت 11 250 DA لكل المصاريف. في نهاية الحفل، بقيت 24 علبة عصير و 30 قطعة حلوى ثمنها معا 2 100 DA. نسمّي $x$ سعر علبة عصير و $y$ سعر قطعة حلوى (بالدينار)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما سعر علبة عصير وسعر قطعة حلوى $(x ; y)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
+      "expectedAnswer": {
+        "x": "25",
+        "y": "50"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بسّط المعادلة الأولى."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $y = 75 - x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقق في المعلومتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 25$ و $y = 50$ ؛ $150 \\times 75 = 11250$ و $600 + 1500 = 2100$.",
+        "incorrect": "ترجم، بسّط، عوّض ثم تحقق."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "50",
+            "y": "25"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما ثمن ما استُهلك أثناء الحفل؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "مبلغ بالدينار",
+      "expectedAnswer": "9150",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما المبلغ الكلي؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما ثمن ما بقي؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المستهلك = المشترى ناقص الباقي."
+        }
+      ],
+      "feedback": {
+        "correct": "$11250 - 2100 = 9150$ DA.",
+        "incorrect": "اطرح ثمن ما بقي من المبلغ الكلي."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 3
+    },
+    {
+      "id": "q3",
+      "statement": "تريد البلدية العام المقبل شراء 200 علبة عصير و 120 قطعة حلوى بالسعرين نفسيهما. كم ستدفع؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "مبلغ بالدينار",
+      "expectedAnswer": "11000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولا السعرين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$200x + 120y$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض بالسعرين."
+        }
+      ],
+      "feedback": {
+        "correct": "$200 \\times 25 + 120 \\times 50 = 5000 + 6000 = 11000$ DA.",
+        "incorrect": "عوّض بالسعرين في المشتريات الجديدة."
+      },
+      "cognitiveDemand": "transfer",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "13000",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    }
+  ]
+}

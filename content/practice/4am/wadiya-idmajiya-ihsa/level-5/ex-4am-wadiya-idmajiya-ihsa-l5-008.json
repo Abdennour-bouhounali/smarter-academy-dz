@@ -1,0 +1,106 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l5-008",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 5,
+  "metadata": {
+    "title": "نسبة من نسبة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نسبة مئوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P3"
+    }
+  },
+  "statement": {
+    "content": "نجح 60% من 45 مترشحا في مسابقة الرياضيات، وتحصّل ثلث الناجحين على علامة 15 أو أكثر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم ناجحا في المسابقة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "27",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أخذ نسبة من عدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$0{,}6 \\times 45$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}6 \\times 45 = 27$.",
+        "incorrect": "نضرب 45 في $0{,}6$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "75",
+          "id": "MISC-IHSA-NISBA-MIN-ADAD"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "كم مترشحا تحصّل على 15 أو أكثر؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ثلث الناجحين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم عدد الناجحين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "على 3."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{27}{3} = 9$.",
+        "incorrect": "الثلث يُؤخذ من الناجحين لا من كل المترشحين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "15",
+          "id": "MISC-IHSA-NISBA-MIN-ADAD"
+        }
+      ]
+    }
+  ]
+}

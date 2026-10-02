@@ -1,0 +1,77 @@
+{
+  "id": "ex-4am-mafhum-jumla-l4-010",
+  "lessonCode": "mafhum-jumla",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — جملة من معاملاتها",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معاملات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mafhum-jumla_P1",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "نريد جملة $\\begin{cases} ax + by = c \\\\ a'x + b'y = c' \\end{cases}$ معاملاتها: $a = 2$ ، $b = -3$ ، $c = 1$ و $a' = 1$ ، $b' = 1$ ، $c' = 4$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هي هذه الجملة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} 2x - 3y = 1 \\\\ x + y = 4 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} 2x + 3y = 1 \\\\ x + y = 4 \\end{cases}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} 2x - 3y = 4 \\\\ x + y = 1 \\end{cases}$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$\\begin{cases} -3x + 2y = 1 \\\\ x + y = 4 \\end{cases}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$a$ معامل $x$ و $b$ معامل $y$ في المعادلة الأولى."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$b = -3$ : الحد $-3y$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$c$ و $c'$ هما الطرفان الثانيان."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x - 3y = 1$ و $x + y = 4$ .",
+        "incorrect": "ضع كل معامل في مكانه وبإشارته."
+      }
+    }
+  ]
+}

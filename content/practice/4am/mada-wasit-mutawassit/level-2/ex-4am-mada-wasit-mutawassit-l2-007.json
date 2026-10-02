@@ -1,0 +1,72 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l2-007",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 2,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 6 (ص 100) — المتوسط والوسيط",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متوسط",
+      "وسيط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 100,
+      "section": "أؤكّد تعلّماتي",
+      "number": 6
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 100): السلسلة $13$ ، $1$ ، $4$ ، $10$ ، $12$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "متوسط هذه السلسلة:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "أصغر من وسيطها",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "أكبر من وسيطها",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-MUTAWASSIT"
+        },
+        {
+          "id": "C",
+          "content": "يساوي وسيطها",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-MUTAWASSIT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب المتوسط."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "رتّب ثم خذ القيمة الثالثة."
+        }
+      ],
+      "feedback": {
+        "correct": "المتوسط $8$ والوسيط $10$ : $8 < 10$.",
+        "incorrect": "الوسيط يُقرأ بعد الترتيب: $1$ ، $4$ ، $10$ ، $12$ ، $13$."
+      }
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l5-006",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — تطبيقان",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "تعيين دالة تآلفية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "تطبيق سيارات أجرة: رحلة 4km بـ 300DA ورحلة 10km بـ 600DA ، والثمن دالة تآلفية للمسافة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ثمن الكيلومتر $a$ (DA):",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "50",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$600 - 300$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "على 6 ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تناسب التغيّرات."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{300}{6} = 50$ DA.",
+        "incorrect": "فرق المسافتين 6 ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ثمن رحلة 20km (DA):",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "1100",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$b = 300 - 200$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$f(x) = 50x + 100$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$50 \\times 20 + 100$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(20) = 1000 + 100 = 1100$ DA.",
+        "incorrect": "الثمن ليس متناسبًا مع المسافة: لا نضاعف ثمن 10km ، بل نستعمل العبارة."
+      }
+    }
+  ]
+}

@@ -21,8 +21,13 @@ namespace App\Domain\Practice\Support;
  */
 final class Rational
 {
-    /** Au-delà, un produit en croix dépasserait Number.MAX_SAFE_INTEGER côté JS. ⌊√(2^53 − 1)⌋ */
-    public const MAX_SAFE_COMPONENT = 94906265;
+    /**
+     * La borne d'une composante : tout entier SÛR de JavaScript (2^53 − 1), miroir de rational.js.
+     * Jusqu'au 2026-10-02 elle valait ⌊√(2^53 − 1)⌋ pour que les produits en croix tiennent dans
+     * un double JS — ce qui refusait une réponse comme 132 000 000. Les produits en croix se font
+     * désormais en bcmath (ici) et en BigInt (JS) : exacts, sans dépassement d'int64.
+     */
+    public const MAX_SAFE_COMPONENT = 9007199254740991;
 
     /**
      * La classe `\s` de JavaScript (WhiteSpace + LineTerminator), en clair :
@@ -227,23 +232,55 @@ final class Rational
         return $other instanceof self && $this->n === $other->n && $this->d === $other->d;
     }
 
-    /** −1, 0 ou 1. Produit en croix : exact, jamais de flottant. */
+    /** −1, 0 ou 1. Produit en croix en bcmath : exact, jamais de flottant ni de dépassement. */
     public function compare(self $other): int
     {
-        $left = $this->n * $other->d;
-        $right = $other->n * $this->d;
+        $left = bcmul((string) $this->n, (string) $other->d, 0);
+        $right = bcmul((string) $other->n, (string) $this->d, 0);
 
-        return $left <=> $right;
+        return bccomp($left, $right, 0);
     }
 
     public function add(self $other): ?self
     {
-        return self::of($this->n * $other->d + $other->n * $this->d, $this->d * $other->d);
+        return self::fromBig(
+            bcadd(bcmul((string) $this->n, (string) $other->d, 0), bcmul((string) $other->n, (string) $this->d, 0), 0),
+            bcmul((string) $this->d, (string) $other->d, 0),
+        );
     }
 
     public function subtract(self $other): ?self
     {
-        return self::of($this->n * $other->d - $other->n * $this->d, $this->d * $other->d);
+        return self::fromBig(
+            bcsub(bcmul((string) $this->n, (string) $other->d, 0), bcmul((string) $other->n, (string) $this->d, 0), 0),
+            bcmul((string) $this->d, (string) $other->d, 0),
+        );
+    }
+
+    /** Une fraction calculée en bcmath, réduite, rendue si ses composantes restent sûres (sinon null) — miroir de `fromBig` (JS). */
+    private static function fromBig(string $n, string $d): ?self
+    {
+        if (bccomp($d, '0', 0) === 0) {
+            return null;
+        }
+        if (bccomp($d, '0', 0) < 0) {
+            $n = bcmul($n, '-1', 0);
+            $d = bcmul($d, '-1', 0);
+        }
+        $a = ltrim($n, '-');
+        $b = $d;
+        while (bccomp($b, '0', 0) !== 0) {
+            [$a, $b] = [$b, bcmod($a, $b, 0)];
+        }
+        $g = bccomp($a, '0', 0) === 0 ? '1' : $a;
+        $n = bcdiv($n, $g, 0);
+        $d = bcdiv($d, $g, 0);
+        $max = (string) self::MAX_SAFE_COMPONENT;
+        if (bccomp(ltrim($n, '-'), $max, 0) > 0 || bccomp($d, $max, 0) > 0) {
+            return null;
+        }
+
+        return self::of((int) $n, (int) $d);
     }
 
     public function abs(): ?self

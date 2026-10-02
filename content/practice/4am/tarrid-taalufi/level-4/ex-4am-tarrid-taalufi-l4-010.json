@@ -1,0 +1,57 @@
+{
+  "id": "ex-4am-tarrid-taalufi-l4-010",
+  "lessonCode": "tarrid-taalufi",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — الفرق بعد 20 مقابلة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مقارنة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-taalufi_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "في الملعب: الاشتراك $f(x) = 200x + 2000$ ، والتذكرة وحدها $g(x) = 400x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مناصر تابع 20 مقابلة. كم دينارًا يربح باختيار الصيغة الأرخص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "2000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $f(20)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $g(20)$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الفرق بين المبلغين."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(20) = 6000$ و $g(20) = 8000$ : يربح $8000 - 6000 = 2000$ DA باختيار الاشتراك.",
+        "incorrect": "احسب المبلغين ثم الفرق."
+      }
+    }
+  ]
+}

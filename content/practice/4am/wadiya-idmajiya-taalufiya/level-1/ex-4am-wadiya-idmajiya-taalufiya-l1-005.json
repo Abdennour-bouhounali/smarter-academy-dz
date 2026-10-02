@@ -1,0 +1,69 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l1-005",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 1,
+  "metadata": {
+    "title": "عرضان: المعامل",
+    "estimatedMinutes": 2,
+    "tags": [
+      "تناسب التغيّرات",
+      "معامل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "محل لطباعة القمصان يحسب الثمن بدالة تآلفية لعدد القمصان: 5 قمصان بـ 4000 DA و 9 قمصان بـ 6400 DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما ثمن القميص الواحد (المعامل $a$) بالدينار؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار",
+      "expectedAnswer": "600",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "فرق الثمنين يقابل فرق عدد القمصان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{6400 - 4000}{9 - 5}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تناسب التغيّرات."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{2400}{4} = 600\\,\\mathrm{DA}$ للقميص.",
+        "incorrect": "نقسم فرق الصورتين على فرق العددين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1,
+      "misconceptionSignatures": [
+        {
+          "value": "2400",
+          "id": "MISC-TAGHAYYUR-BIDUN-QISMA"
+        },
+        {
+          "value": "800",
+          "id": "MISC-TAGHAYYUR-B-NISBA"
+        }
+      ]
+    }
+  ]
+}

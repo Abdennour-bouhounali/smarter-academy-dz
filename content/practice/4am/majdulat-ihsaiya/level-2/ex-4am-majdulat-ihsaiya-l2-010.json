@@ -1,0 +1,73 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l2-010",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — حفظ الملف",
+    "estimatedMinutes": 3,
+    "tags": [
+      "حجز",
+      "حفظ"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_majdulat-ihsaiya_P1",
+      "modelledOn": "ex-7"
+    }
+  },
+  "statement": {
+    "content": "حجزت سلسلة في مجدول ثم أغلقت البرمجية دون أن تحفظ الملف."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عند فتح المجدول من جديد:",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "تجد السلسلة محجوزة كما تركتها",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "تجد نتائج الدساتير وحدها دون القيم",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "لا تجد السلسلة: كان يجب حفظ الملف قبل الإغلاق",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما الذي يحفظ عملنا؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحجز وحده لا يكفي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ملف ← حفظ."
+        }
+      ],
+      "feedback": {
+        "correct": "الحجز يكتب في الخلايا، والحفظ يسجّل الملف لنعود إليه.",
+        "incorrect": "احفظ الملف بعد الحجز."
+      }
+    }
+  ]
+}

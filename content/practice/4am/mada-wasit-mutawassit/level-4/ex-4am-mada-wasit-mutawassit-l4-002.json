@@ -1,0 +1,121 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l4-002",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 4,
+  "metadata": {
+    "title": "طرائق (ص 97) — نضيف 3 و 43",
+    "estimatedMinutes": 4,
+    "tags": [
+      "قيمة متطرّفة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-indicators",
+      "page": 97,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 97): للسلسلة $3$ ، $5$ ، $4$ ، $5$ ، $11$ ، $8$ ، $10$ ، $7$ ، $4$ ، $3$ ، $10$ ، $3$ ، $4$ ، $6$ ، $7$ المتوسط $6$ والوسيط $5$ والمدى $8$. نضيف القيمتين $3$ و $43$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المتوسط الجديد هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "8",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MUTAWASSIT-QISMA-QIYAM",
+          "value": "136/15"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجموع $90 + 3 + 43$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "17 قيمة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{136}{17} = 8$ .",
+        "incorrect": "اقسم على $17$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "الوسيط الجديد هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT",
+          "value": "8"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "17 قيمة: الرتبة $9$."
+        }
+      ],
+      "feedback": {
+        "correct": "الوسيط لم يتغيّر: $5$.",
+        "incorrect": "رتّب القيم السبع عشرة."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "المدى الجديد هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "40",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MADA-AKBAR-QIMA",
+          "value": "43"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$43$ و $3$."
+        }
+      ],
+      "feedback": {
+        "correct": "$43 - 3 = 40$ .",
+        "incorrect": "أكبر قيمة صارت $43$."
+      }
+    }
+  ]
+}

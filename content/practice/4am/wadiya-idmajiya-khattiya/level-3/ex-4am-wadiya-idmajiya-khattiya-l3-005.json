@@ -1,0 +1,102 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l3-005",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 3,
+  "metadata": {
+    "title": "خط الانزلاق",
+    "estimatedMinutes": 4,
+    "tags": [
+      "فيثاغورس",
+      "سرعة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P3",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "في حديقة مغامرات، ينطلق خط انزلاق (zipline) من منصة ارتفاعها $25\\,\\mathrm{m}$ ويصل إلى منصة ارتفاعها $5\\,\\mathrm{m}$ ، والمسافة الأفقية بين المنصتين $48\\,\\mathrm{m}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما طول الحبل بالمتر؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالمتر",
+      "expectedAnswer": "52",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الضلع العمودي هو فرق الارتفاعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$25 - 5 = 20$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "فيثاغورس بالضلعين 20 و 48."
+        }
+      ],
+      "feedback": {
+        "correct": "$20^2 + 48^2 = 400 + 2304 = 2704$ و $\\sqrt{2704} = 52$.",
+        "incorrect": "استعمل فرق الارتفاعين ضلعا، ثم فيثاغورس."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "68",
+          "id": "MISC-JIDHR-JAMA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "المنزلق يسير بسرعة متوسطة $4\\,\\mathrm{m/s}$. ما مدة النزول بالثواني؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالثواني",
+      "expectedAnswer": "13",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المدة = المسافة ÷ السرعة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المسافة هي طول الحبل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على 4."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{52}{4} = 13\\,\\mathrm{s}$.",
+        "incorrect": "اقسم طول الحبل على السرعة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-tarrid-khatti-l3-001",
+  "lessonCode": "tarrid-khatti",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 31 (ص 75) — تسعيرتا سيارة الأجرة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مقارنة",
+      "تمثيل بياني"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-31",
+      "page": 75,
+      "section": "أتعمّق",
+      "number": 31
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 75): التسعيرة الأولى 20DA للكيلومتر، والتسعيرة الثانية مبلغ ثابت 4000DA. نسمّي $x$ المسافة بالكيلومتر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من أجل أي مسافة (km) تتساوى التسعيرتان؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "200",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ $20x = 4000$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{4000}{20}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نقطة تقاطع التمثيلين."
+        }
+      ],
+      "feedback": {
+        "correct": "$20x = 4000$ أي $x = 200$ km.",
+        "incorrect": "التسعيرة الثانية لا تتغيّر مع المسافة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "لمسافة 500km التسعيرة الأفضل:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الأولى لأن 20DA أقل من 4000DA",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "id": "B",
+          "content": "الثانية: 4000DA بدل 10 000DA",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "تتساويان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب ثمن الأولى لـ 500km."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$20 \\times 500$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن ثمن الرحلة كلها."
+        }
+      ],
+      "feedback": {
+        "correct": "$20 \\times 500 = 10000$ DA أكبر من 4000DA.",
+        "incorrect": "نقارن ثمن الرحلة كلها لا العددين 20 و 4000."
+      }
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l5-010",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — ذاكرة الهاتف",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية",
+      "معامل سالب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "بعد تثبيت 4 ألعاب بقي في الهاتف 52GB فارغة، وبعد 10 ألعاب بقي 34GB . المساحة الفارغة دالة تآلفية لعدد الألعاب: $f(x) = ax + b$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعاملان $(a ; b)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (a ; b) — عددان صحيحان أو كسران",
+      "expectedAnswer": {
+        "x": "-3",
+        "y": "64"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المساحة تنقص: $a < 0$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a = \\dfrac{34 - 52}{6}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$b = 52 - 4a$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = -3$ GB للعبة و $b = 52 + 12 = 64$ GB (المساحة قبل أي لعبة).",
+        "incorrect": "انتبه لإشارة $a$ ."
+      }
+    }
+  ]
+}

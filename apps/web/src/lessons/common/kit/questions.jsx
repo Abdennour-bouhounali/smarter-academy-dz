@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { formatFr, parseFr } from '@smarter-academy/core';
 import { Feedback, ChoiceGrid, ValidateButton, NumberField, XPBurst } from '../components/LessonUI';
 import { useKit } from './kitContext';
+import MathLabel from '../components/MathLabel';
 
 /**
  * Lesson kit — les trois formes de question formative.
@@ -48,7 +49,7 @@ export function TapQuestion({
 
   return (
     <div className="space-y-3">
-      {prompt && <p className="text-sm font-semibold text-slate-700">{prompt}</p>}
+      {prompt && <p className="text-sm font-semibold text-slate-700">{typeof prompt === 'string' ? <MathLabel>{prompt}</MathLabel> : prompt}</p>}
       {typeof above === 'function' ? above(revealed || solved) : above}
       <div className="relative">
         <ChoiceGrid
@@ -124,7 +125,7 @@ export function BatchChoiceQuestion({
               }`}
             >
               <div className="flex items-center gap-2.5 sm:w-56 shrink-0 text-sm font-semibold text-slate-700">
-                {r.label}
+                {typeof r.label === 'string' ? <MathLabel>{r.label}</MathLabel> : r.label}
               </div>
               <div className="flex gap-1.5 flex-wrap" role="group">
                 {r.options.map((opt, oi) => (
@@ -158,7 +159,7 @@ export function BatchChoiceQuestion({
                         : 'bg-white border-slate-200 text-slate-600 hover:border-blue-400'
                     }`}
                   >
-                    {opt}
+                    {typeof opt === 'string' ? <MathLabel>{opt}</MathLabel> : opt}
                   </button>
                 ))}
               </div>
@@ -222,7 +223,7 @@ export function NumericQuestion({
 
   return (
     <div className="space-y-3">
-      {prompt && <p className="text-sm font-semibold text-slate-700">{prompt}</p>}
+      {prompt && <p className="text-sm font-semibold text-slate-700">{typeof prompt === 'string' ? <MathLabel>{prompt}</MathLabel> : prompt}</p>}
       {typeof above === 'function' ? above(done) : above}
       {!done ? (
         <div className="flex items-center gap-2 flex-wrap">

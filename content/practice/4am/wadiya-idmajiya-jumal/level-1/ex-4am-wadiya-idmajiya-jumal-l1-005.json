@@ -1,0 +1,78 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l1-005",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 5 — حل جملة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "حل جملة",
+      "الجمع"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 62,
+      "section": "أؤكّد تعلّماتي",
+      "number": 5
+    }
+  },
+  "statement": {
+    "content": "إليك الجملة الآتية: $\\begin{cases} 3x - y = -1 \\\\ 3x + y = 5 \\end{cases}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حل هذه الجملة هو ...",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(1 ; 4)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "B",
+          "content": "$(4 ; 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARTIB"
+        },
+        {
+          "id": "C",
+          "content": "$\\left(\\dfrac{2}{3} ; 3\\right)$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معاملا $y$ متعاكسان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اجمع المعادلتين طرفا بطرف."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقق من الثنائية في المعادلتين معا."
+        }
+      ],
+      "feedback": {
+        "correct": "$6x = 4$ أي $x = \\dfrac{2}{3}$ ، ثم $y = 3x + 1 = 3$.",
+        "incorrect": "الحل يحقق المعادلتين في آن واحد."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    }
+  ]
+}

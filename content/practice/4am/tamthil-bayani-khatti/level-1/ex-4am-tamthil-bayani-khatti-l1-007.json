@@ -1,0 +1,115 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l1-007",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — نقطة من التمثيل؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "انتماء نقطة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-khatti_P1",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الدالة الخطية $f : x \\longmapsto 2x$ وتمثيلها البياني (D)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النقطة $P(3 ; 6)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "تنتمي إلى التمثيل",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا تنتمي إلى التمثيل",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-FASILA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نقطة تنتمي إلى التمثيل إذا كان ترتيبها صورة فاصلتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب صورة الفاصلة بالدالة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن الصورة بالترتيب، مع الانتباه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(3) = 2 \\times 3 = 6$ : ترتيب P صورة فاصلتها.",
+        "incorrect": "احسب صورة الفاصلة وقارنها بالترتيب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "النقطة $Q(6 ; 3)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "تنتمي إلى التمثيل",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-FASILA-TARTIB"
+        },
+        {
+          "id": "B",
+          "content": "لا تنتمي إلى التمثيل",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نقطة تنتمي إلى التمثيل إذا كان ترتيبها صورة فاصلتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب صورة الفاصلة بالدالة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن الصورة بالترتيب، مع الانتباه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(6) = 12 \\neq 3$ : Q لا تنتمي إلى (D).",
+        "incorrect": "احسب صورة الفاصلة 6."
+      }
+    }
+  ]
+}

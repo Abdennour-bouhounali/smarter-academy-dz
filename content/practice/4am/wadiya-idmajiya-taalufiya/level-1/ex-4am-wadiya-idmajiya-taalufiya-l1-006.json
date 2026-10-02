@@ -1,0 +1,62 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l1-006",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 1,
+  "metadata": {
+    "title": "مستقيمان ونقطة تقاطعهما",
+    "estimatedMinutes": 2,
+    "tags": [
+      "جملة معادلتين",
+      "تفسير بياني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "في معلم، المستقيم $(d_1)$ يمثّل $y = x + 2$ والمستقيم $(d_2)$ يمثّل $y = -x + 8$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما إحداثيتا نقطة تقاطع المستقيمين (حلّ الجملة)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y)",
+      "expectedAnswer": {
+        "x": "3",
+        "y": "5"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "النقطة على المستقيمين معا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x + 2 = -x + 8$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $x$ ثم $y$."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x = 6$ ، $x = 3$ و $y = 5$ : $(3 ; 5)$.",
+        "incorrect": "نقطة التقاطع تحقق المعادلتين؛ الفاصلة أولا."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    }
+  ]
+}

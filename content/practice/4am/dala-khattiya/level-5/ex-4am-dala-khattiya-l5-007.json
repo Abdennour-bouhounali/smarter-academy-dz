@@ -1,0 +1,117 @@
+{
+  "id": "ex-4am-dala-khattiya-l5-007",
+  "lessonCode": "dala-khattiya",
+  "level": 5,
+  "metadata": {
+    "title": "الزوج (0 ; 0)",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تعيين",
+      "الصفر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "نعرف عن دالة خطية $k$ أنّ $k(0) = 0$ و $k(-6) = 15$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ المعلومتين تكفي لتعيين معامل $k$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$k(0) = 0$ وحدها",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$k(-6) = 15$ وحدها",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "لا تكفي أيّ منهما",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الدالة خطية: دستورها من الشكل $f(x) = ax$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعلومة المعطاة على شكل معادلة مجهولها $a$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الصورة على العدد غير المعدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "من أجل أي $a$ لدينا $a \\times 0 = 0$ : الزوج $(0 ; 0)$ لا يعيّن $a$ ، أما $-6a = 15$ فتعطي $a$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "عيّن معامل الدالة الخطية $k$ علمًا أنّ $k(-6) = 15$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "-2.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الدالة خطية: دستورها من الشكل $f(x) = ax$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعلومة المعطاة على شكل معادلة مجهولها $a$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الصورة على العدد غير المعدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "$-6a = 15$ ، إذن $a = 15 \\div (-6) = -2{,}5$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-MUAMIL-MAQLUB",
+          "value": "-0.4"
+        },
+        {
+          "id": "MISC-KHATTIYA-ISHARA",
+          "value": "2.5"
+        }
+      ]
+    }
+  ]
+}

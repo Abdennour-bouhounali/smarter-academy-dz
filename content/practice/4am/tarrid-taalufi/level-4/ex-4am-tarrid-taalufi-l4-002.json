@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tarrid-taalufi-l4-002",
+  "lessonCode": "tarrid-taalufi",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — سكوتر كهربائي",
+    "estimatedMinutes": 4,
+    "tags": [
+      "معادلة",
+      "مقارنة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-taalufi_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "كراء سكوتر كهربائي: الشركة A تأخذ 50DA لفتح القفل ثم 15DA للدقيقة، والشركة B تأخذ 25DA للدقيقة. نسمّي $x$ مدة الرحلة بالدقائق."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من أجل كم دقيقة يتساوى الثمنان؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "A: $15x + 50$ ، B: $25x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح $15x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$10x = 50$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$15x + 50 = 25x$ أي $50 = 10x$ ومنه $x = 5$ دقائق.",
+        "incorrect": "حلّ $15x + 50 = 25x$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "لرحلة 12 دقيقة:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "A أرخص",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "B أرخص",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "C",
+          "content": "يتساويان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$12 > 5$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب الثمنين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن 230 و 300."
+        }
+      ],
+      "feedback": {
+        "correct": "$15 \\times 12 + 50 = 230$ و $25 \\times 12 = 300$ : A أرخص بعد 5 دقائق.",
+        "incorrect": "عوّض $x$ بـ 12 في الصيغتين."
+      }
+    }
+  ]
+}

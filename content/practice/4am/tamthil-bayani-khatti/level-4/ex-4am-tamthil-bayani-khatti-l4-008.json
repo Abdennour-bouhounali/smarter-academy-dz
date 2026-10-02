@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l4-008",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — إشارتا معاملين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "منحى",
+      "إشارة a"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-khatti_P3",
+      "modelledOn": "tech-76"
+    }
+  },
+  "statement": {
+    "content": "$f : x \\longmapsto ax$ و $g : x \\longmapsto bx$ دالتان خطيتان. تمثيل $f$ يصعد من اليسار إلى اليمين، وتمثيل $g$ ينزل."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ عبارة صحيحة؟",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$a > 0$ و $b < 0$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$a < 0$ و $b > 0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-MUNHA"
+        },
+        {
+          "id": "C",
+          "content": "$a > 0$ و $b > 0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-MUNHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى إشارة المعامل $a$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المستقيم يشمل O دائمًا، ومنحاه تعيّنه إشارة $a$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تخيّل نقطة فاصلتها 1: ترتيبها $a$ ، فوق محور الفواصل أم تحته؟"
+        }
+      ],
+      "feedback": {
+        "correct": "يصعد ⇔ المعامل موجب، وينزل ⇔ المعامل سالب.",
+        "incorrect": "اربط كل منحى بإشارة معامله."
+      }
+    }
+  ]
+}

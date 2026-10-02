@@ -1,0 +1,58 @@
+{
+  "id": "ex-4am-tarrid-khatti-l5-008",
+  "lessonCode": "tarrid-khatti",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — من m/s إلى km/h",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وحدات",
+      "سرعة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P3",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "يركض لاعب بسرعة ثابتة 25m/s في لعبة فيديو، فالمسافة $d = 25t$ ($d$ بالمتر و $t$ بالثانية)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "سرعته بالكيلومتر في الساعة:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "90",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في ساعة 3600 ثانية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$25 \\times 3600$ m."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حوّل إلى km."
+        }
+      ],
+      "feedback": {
+        "correct": "$25 \\times 3600 = 90000$ m أي 90km/h.",
+        "incorrect": "1m/s = 3,6km/h."
+      }
+    }
+  ]
+}

@@ -8,6 +8,8 @@ import MathText from '../../../lessons/common/components/MathText';
 import { ArrowForward } from '../../../components/common/DirectionalIcons';
 import { CLASSROOM_START_STATE } from './memoRoutes';
 import { bidi } from '../../../utils/bidi';
+import MathLabel from '../../../lessons/common/components/MathLabel';
+import { mathToPlain } from '../../../utils/mathPlain';
 
 /**
  * Les SECTIONS de la مذكرة الدرس. Chacune reçoit sa part du modèle
@@ -68,7 +70,7 @@ export function MemoOverview({ header }) {
   const facts = [
     header.grade && [t('overview.level'), header.grade],
     header.chapter && [t('overview.domain'), header.chapter],
-    header.unit && [t('overview.unit'), `${header.unit.number} — ${bidi(header.unit.title)}`],
+    header.unit && [t('overview.unit'), `${header.unit.number} — ${mathToPlain(header.unit.title)}`],
     header.durationMinutes && [t('overview.duration'), t('overview.minutesLong', { count: header.durationMinutes })],
     header.plannedMinutes > 0 && [t('overview.planned'), t('overview.minutesLong', { count: header.plannedMinutes })],
     [t('overview.modules'), String(header.moduleCount)],
@@ -79,7 +81,7 @@ export function MemoOverview({ header }) {
         {header.icon && <span className="text-5xl leading-none" aria-hidden="true">{header.icon}</span>}
         <div className="min-w-0 flex-1">
           <p className="text-xs font-extrabold uppercase tracking-widest text-teal-700">{t('title')}{header.kind === 'synthesis' ? ` · ${t('overview.synthesis')}` : ''}</p>
-          <h1 className="mt-1 font-space text-2xl font-extrabold leading-tight text-slate-900 sm:text-3xl" data-memo-title>{bidi(header.title)}</h1>
+          <h1 className="mt-1 font-space text-2xl font-extrabold leading-tight text-slate-900 sm:text-3xl" data-memo-title><MathLabel>{header.title}</MathLabel></h1>
           {header.description && <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600"><M>{bidi(header.description)}</M></p>}
         </div>
       </div>
@@ -161,7 +163,7 @@ export function MemoObjectives({ objectives, prerequisites }) {
             {prerequisites.lessons.length > 0 && (
               <div>
                 <h3 className="mb-1 text-xs font-extrabold text-slate-500">{t('prerequisites.lessons')}</h3>
-                <ul className="space-y-1">{prerequisites.lessons.map((l) => <li key={l.id}><Link to={l.path} className="text-sm font-bold text-indigo-700 hover:underline">{bidi(l.title)}</Link></li>)}</ul>
+                <ul className="space-y-1">{prerequisites.lessons.map((l) => <li key={l.id}><Link to={l.path} className="text-sm font-bold text-indigo-700 hover:underline"><MathLabel>{l.title}</MathLabel></Link></li>)}</ul>
               </div>
             )}
           </div>
@@ -178,7 +180,7 @@ export function MemoStart({ start }) {
   const phase = start.phase;
   const manipulations = phase?.manipulations ?? [];
   return (
-    <Section id="memo-start" icon={Rocket} title={t('start.title')} lead={start.title ? `${bidi(start.title)}${start.subtitle ? ` — ${start.subtitle}` : ''}` : null}>
+    <Section id="memo-start" icon={Rocket} title={t('start.title')} lead={start.title ? `${mathToPlain(start.title)}${start.subtitle ? ` — ${start.subtitle}` : ''}` : null}>
       {manipulations.length > 0 && (
         <div className="mb-4 flex flex-wrap items-start justify-between gap-3 rounded-2xl border-2 border-indigo-200 bg-indigo-50 p-4" data-memo-start-manipulation>
           <div className="min-w-0">
@@ -500,7 +502,7 @@ export function MemoEvaluation({ evaluation }) {
             <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border-2 border-slate-300 p-3">
               <div>
                 <h3 className="text-sm font-extrabold text-slate-800">🎯 {t('evaluation.test')}</h3>
-                <p className="text-sm text-slate-600">{t('evaluation.testLead', { title: phase.title, minutes: phase.minutes ?? '–' })}{phase.desc ? ` — ${bidi(phase.desc)}` : ''}</p>
+                <p className="text-sm text-slate-600">{t('evaluation.testLead', { title: phase.title, minutes: phase.minutes ?? '–' })}{phase.desc ? ` — ${mathToPlain(phase.desc)}` : ''}</p>
               </div>
               {phase.path && (
                 <Link to={phase.path} state={CLASSROOM_START_STATE} className="inline-flex min-h-[40px] items-center gap-1.5 rounded-xl border-2 border-indigo-700 bg-indigo-600 px-3 text-xs font-extrabold text-white hover:bg-indigo-700 sa-memo-no-print">
@@ -525,7 +527,7 @@ export function MemoEvaluation({ evaluation }) {
 // ── La suite ──────────────────────────────────────────────────────────────
 export function MemoNext({ next }) {
   const { t } = useTranslation('memo');
-  const LessonLink = ({ l }) => <Link to={l.path} className="font-bold text-indigo-700 hover:underline">{bidi(l.title)}</Link>;
+  const LessonLink = ({ l }) => <Link to={l.path} className="font-bold text-indigo-700 hover:underline"><MathLabel>{l.title}</MathLabel></Link>;
   return (
     <Section id="memo-next" icon={UserRound} title={t('next.title')}>
       <dl className="grid gap-3 text-sm md:grid-cols-2">

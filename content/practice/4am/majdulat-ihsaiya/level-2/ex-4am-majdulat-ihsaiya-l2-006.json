@@ -1,0 +1,69 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l2-006",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 15 (ص 99) — زاوية البلاستيك",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مخطط دائري",
+      "زاوية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-15",
+      "page": 99,
+      "section": "أوظّف تعلّماتي",
+      "number": 15
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 99): نفايات جُمعت على شاطئ: البلاستيك $60\\,\\mathrm{kg}$ ، الزجاج $40\\,\\mathrm{kg}$ ، الورق $50\\,\\mathrm{kg}$ . نمثّلها بمخطط دائري في المجدول."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "زاوية قطاع البلاستيك (بالدرجات):",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "144",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-NISBA-MIN-ADAD",
+          "value": "216"
+        },
+        {
+          "id": "MISC-IHSA-MUKHATTAT-GHAYR-MUNASIB",
+          "value": "60"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الكتلة الكلية 150."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حصة البلاستيك $\\dfrac{60}{150}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب في 360."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{60}{150} \\times 360 = 144$ .",
+        "incorrect": "الحصة من الكلّ ثم × 360."
+      }
+    }
+  ]
+}

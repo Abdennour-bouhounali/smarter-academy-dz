@@ -3,12 +3,19 @@
 Arabic-first, RTL mathematics platform for the Algerian curriculum (المتوسط,
 starting with 4AM). Lesson content lives in `apps/web/src/lessons/moyen/`;
 shared engine in `apps/web/src/lessons/common/`; pure logic in `packages/core`;
-API in `apps/api` (Laravel). The only lesson content in the repository is four
-4AM textbook units of ميدان أنساب الأعداد والحساب: « الأعداد الطبيعيّة والأعداد
+API in `apps/api` (Laravel). The lesson content in the repository is eight 4AM
+textbook units. Since 2026-10-02 unit 6 « الدالة الخطية والتناسبية » (5 lessons + its synthesis,
+`lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/`) and unit 7 « الدالة التآلفية » (5 lessons + its synthesis,
+`…/tanasubiya_duwal/dala-taalufiya/`, the same day) and unit 8 « الإحصاء » (4 lessons + its synthesis,
+`…/tanasubiya_duwal/ihsa/`, the same day; programme domain « ميدان تنظيم المعطيات ») sit under « ميدان التناسبية والدوال »,
+a DISPLAY ميدان decided by the owner (`units_4am_2026_2027.json › ownerChapters`; the programme file is
+untouched and each unit declares its programme domain in `placement`). The other five are units of
+ميدان أنساب الأعداد والحساب: « الأعداد الطبيعيّة والأعداد
 النّاطقة » (9 lessons), since 2026-09-30 « الحساب على الجذور » (5 lessons + its synthesis,
 `…/hisab-judhur/`) and, since 2026-10-01, « الحساب الحرفي » (3 lessons + its synthesis,
 `…/hisab-harfi/`, placed under this ميدان by the owner) and, the same day, « معادلات ومتراجحات
-من الدرجة الأولى بمجهول واحد » (4 lessons + its synthesis, `…/muadalat-mutarajihat/`, placed likewise);
+من الدرجة الأولى بمجهول واحد » (4 lessons + its synthesis, `…/muadalat-mutarajihat/`, placed likewise) and
+« جمل معادلتين من الدرجة الأولى بمجهولين » (3 lessons + its synthesis, `…/jumal-muadalatayn/`, placed likewise);
 the French-era
 lessons (`lessons/college/`, `lessons/lycee/`) and the French reference
 catalogue were **deleted on 2026-09-25** — older docs that cite them describe

@@ -1,0 +1,93 @@
+{
+  "id": "ex-4am-tarrid-khatti-l2-004",
+  "lessonCode": "tarrid-khatti",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — تروتينات الكورنيش",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نمذجة",
+      "صورة",
+      "العدد الذي علمت صورته"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P1",
+      "modelledOn": "method-spring"
+    }
+  },
+  "statement": {
+    "content": "تؤجَّر تروتينة كهربائية على الكورنيش بـ 15DA للدقيقة. نسمّي $x$ المدة بالدقائق و $f(x)$ الثمن بالدينار."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما ثمن رحلة مدتها 24 دقيقة (DA)؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "360",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$f(x) = 15x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$f(24)$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$15 \\times 24$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$15 \\times 24 = 360$ DA.",
+        "incorrect": "الثمن $15x$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "كم دقيقة يمكن أن تؤجّرها بـ 450DA؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "30",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ $15x = 450$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x = \\dfrac{450}{15}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بالضرب."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{450}{15} = 30$ دقيقة.",
+        "incorrect": "نبحث عن العدد الذي صورته 450."
+      }
+    }
+  ]
+}

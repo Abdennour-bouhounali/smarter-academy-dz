@@ -1,0 +1,72 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l1-007",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 1,
+  "metadata": {
+    "title": "مقاسات الأحذية الرياضية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تكرار مجمع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P1"
+    }
+  },
+  "statement": {
+    "content": "مقاسات الأحذية الرياضية لتلاميذ قسم: المقاس: 38 ، 39 ، 40 ، 41 ، 42 — عدد التلاميذ: 2 ، 5 ، 8 ، 4 ، 1."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم تلميذا مقاس حذائه 40 على الأكثر؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "«على الأكثر» تشمل 40."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المقاسات 38 و 39 و 40."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تكرار مجمع صاعد."
+        }
+      ],
+      "feedback": {
+        "correct": "$2 + 5 + 8 = 15$ تلميذا.",
+        "incorrect": "نجمع تكرار 40 وتكرارات المقاسات الأصغر منه."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1,
+      "misconceptionSignatures": [
+        {
+          "value": "7",
+          "id": "MISC-IHSA-MUJAMMA-DUN-QIMA"
+        },
+        {
+          "value": "8",
+          "id": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA"
+        },
+        {
+          "value": "13",
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB"
+        }
+      ]
+    }
+  ]
+}

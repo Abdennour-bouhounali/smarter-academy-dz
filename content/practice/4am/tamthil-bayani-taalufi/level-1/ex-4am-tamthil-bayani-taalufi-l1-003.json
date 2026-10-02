@@ -1,0 +1,77 @@
+{
+  "id": "ex-4am-tamthil-bayani-taalufi-l1-003",
+  "lessonCode": "tamthil-bayani-taalufi",
+  "level": 1,
+  "metadata": {
+    "title": "أستعدّ (ص 77) — من خطية إلى تآلفية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "أستعدّ",
+      "رسم"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "prep",
+      "page": 77,
+      "section": "أستعدّ",
+      "number": 6
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 77): التمثيل البياني للدّالة $x \\longmapsto \\dfrac{1}{2}x$ هو مستقيم يشمل مبدأ المعلم و النقطة $A(2 ; 1)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "التمثيل البياني للدالة $f : x \\longmapsto 0{,}5x + 3$ هو المستقيم الذي يشمل النقطتين:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(0 ; 3)$ و $(2 ; 4)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "O و $(2 ; 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-TAALUFI-MABDA"
+        },
+        {
+          "id": "C",
+          "content": "$(0 ; 3)$ و $(2 ; 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-NISYAN-B"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد $0$ يعطي مباشرة نقطة المستقيم على محور التراتيب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $f(0)$ ثم صورة عدد آخر تختاره."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نقطتان تكفيان لرسم المستقيم؛ تحقّق أنّ كل نقطة ترتيبها صورة فاصلتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(0) = 3$ ، وكل نقطة من الثنائية الصحيحة ترتيبها صورة فاصلتها.",
+        "incorrect": "احسب صورة فاصلة كل نقطة: يجب أن تساوي ترتيبها، والمبدأ ليس من التمثيل إلا إذا كان $b = 0$ ."
+      }
+    }
+  ]
+}

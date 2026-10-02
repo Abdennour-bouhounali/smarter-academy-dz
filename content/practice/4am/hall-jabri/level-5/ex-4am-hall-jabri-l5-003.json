@@ -1,0 +1,113 @@
+{
+  "id": "ex-4am-hall-jabri-l5-003",
+  "lessonCode": "hall-jabri",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — مقصف المتوسطة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "اختيار الطريقة",
+      "الجمع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hall-jabri_P3",
+      "modelledOn": "ex-7"
+    }
+  },
+  "statement": {
+    "content": "في مقصف المتوسطة: 3 قطع حلوى وعلبتا عصير بـ 260 DA، وقطعتا حلوى و 3 علب عصير بـ 290 DA. نرمز بـ $x$ لثمن قطعة الحلوى وبـ $y$ لثمن علبة العصير: $\\begin{cases} 3x + 2y = 260 \\\\ 2x + 3y = 290 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "طريقة مناسبة، مع سببها الصحيح:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الجمع بعد ضرب الأولى في $2$ والثانية في $-3$ ، لأنه لا يوجد معامل يساوي $1$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "التعويض، لأنّ معامل $x$ يساوي $1$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "الجمع مباشرة، لأنّ معاملي $y$ متعاكسان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ المعاملات قبل أن تبدأ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل يساوي $1$ أو $-1$ يسهّل التعويض؛ معاملان متعاكسان (أو يصيران كذلك بضرب بسيط) يسهّلان الجمع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد إيجاد مجهول، عوّض قيمته لتجد الآخر، ثم تحقّق من الثنائية في المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$6x + 4y = 520$ و $-6x - 9y = -870$ : $6x$ و $-6x$ متعاكسان.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة $(x ; y)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "40",
+        "y": "70"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن معاملي $x$ ثم معاملي $y$ في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب طرفي معادلة (أو كلتيهما) في عدد مناسب ليصير معاملا أحد المجهولين متعاكسين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المعادلتين طرفًا لطرف، ثم عوّض القيمة الناتجة في إحدى المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "بالجمع $-5y = -350$ ، ومنه $y = 70$ ثم $3x = 120$ أي $x = 40$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-mafhum-taalufiya-l4-009",
+  "lessonCode": "mafhum-taalufiya",
+  "level": 4,
+  "metadata": {
+    "title": "صورة كسر والعدد الذي صورته 1",
+    "estimatedMinutes": 3,
+    "tags": [
+      "صورة",
+      "عدد صورته معلومة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "$f$ هي الدالة التآلفية حيث $f(x) = -4x + 9$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $f(0{,}5)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد بدالة تآلفية: نعوّض $x$ بهذا العدد في العبارة $ax + b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب العدد في المعامل $a$ أولا، وانتبه إلى الإشارات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تنسَ أن تضيف الحدّ الثابت $b$ في النهاية."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(0{,}5) = -4 \\times 0{,}5 + 9 = 7$ .",
+        "incorrect": "أعد الحساب: اضرب في $a$ ثم أضف $b$ ، وتحقّق من الإشارات."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-NISYAN-B",
+          "value": "-2"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "عيّن العدد الذي صورته $1$ بالدالة $f$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المطلوب عدد علمت صورته، لا صورة عدد: اكتب المعادلة $ax + b = m$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انقل الحدّ الثابت $b$ إلى الطرف الآخر أولا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اقسم الطرفين على المعامل $a$ ، وتحقّق بحساب صورة ما وجدته."
+        }
+      ],
+      "feedback": {
+        "correct": "$-4x + 9 = 1$ ، إذن $-4x = -8$ ، ومنه $x = 2$ .",
+        "incorrect": "اطرح $b$ أولا ثم اقسم على $a$ ، وتحقّق بالتعويض."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-SABIQ-QISMA",
+          "value": "-0.25"
+        },
+        {
+          "id": "MISC-TAALUFI-SABIQ-TARTIB",
+          "value": "-9.25"
+        },
+        {
+          "id": "MISC-KHATTIYA-SURA-SABIQ",
+          "value": "5"
+        }
+      ]
+    }
+  ]
+}

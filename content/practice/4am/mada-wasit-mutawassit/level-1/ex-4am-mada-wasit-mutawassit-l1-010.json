@@ -1,0 +1,48 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l1-010",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — وقت الشاشة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متوسط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mada-wasit-mutawassit_P2",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "عدد ساعات استعمال الهاتف لتلميذ خلال خمسة أيام: $3$ ، $5$ ، $2$ ، $4$ ، $6$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المتوسط اليومي (بالساعات) هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجموع $20$ ساعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{20}{5} = 4$ ساعات في اليوم.",
+        "incorrect": "اجمع ثم اقسم على عدد الأيام."
+      }
+    }
+  ]
+}

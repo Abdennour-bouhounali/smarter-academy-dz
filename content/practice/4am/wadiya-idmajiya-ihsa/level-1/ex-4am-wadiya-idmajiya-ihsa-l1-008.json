@@ -1,0 +1,73 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l1-008",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 1,
+  "metadata": {
+    "title": "الدربي: قراءة جدول",
+    "estimatedMinutes": 3,
+    "tags": [
+      "قراءة جدول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P2"
+    }
+  },
+  "statement": {
+    "content": "عدد الأهداف المسجّلة في مباريات فريق الحي هذا الموسم: عدد الأهداف: 0 ، 1 ، 2 ، 3 — عدد المباريات: 4 ، 6 ، 3 ، 2."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ماذا يعني العدد 6 في السطر الثاني؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "سجّل الفريق هدفا واحدا في 6 مباريات",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "سجّل الفريق 6 أهداف في مباراة واحدة",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "لعب الفريق 6 مباريات في الموسم كله",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "السطر الأول القيمة، والسطر الثاني تكرارها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العدد 6 تحت القيمة 1."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "التكرار عدد المباريات."
+        }
+      ],
+      "feedback": {
+        "correct": "القيمة 1 هدف، وتكرارها 6 مباريات.",
+        "incorrect": "القيمة في السطر الأول والتكرار في الثاني: لا يتبادلان."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 1
+    }
+  ]
+}

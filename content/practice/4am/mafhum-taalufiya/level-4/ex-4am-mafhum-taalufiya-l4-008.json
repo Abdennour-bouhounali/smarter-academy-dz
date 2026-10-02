@@ -1,0 +1,103 @@
+{
+  "id": "ex-4am-mafhum-taalufiya-l4-008",
+  "lessonCode": "mafhum-taalufiya",
+  "level": 4,
+  "metadata": {
+    "title": "بعد النشر",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معاملان"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "الدالة $f : x \\longmapsto 3(x + 2)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بعد النشر، المعامل $a$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب العبارة على الشكل $ax + b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a$ هو العدد المضروب في $x$ (بإشارته)، و $b$ هو الحدّ الثابت."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا يهمّ ترتيب كتابة الحدّين."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = 3$ .",
+        "incorrect": "أعد كتابة العبارة على الشكل $ax + b$ ثم اقرأ المعامل المطلوب."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-A-B-MAQLUB",
+          "value": "6"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "بعد النشر، المعامل $b$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب العبارة على الشكل $ax + b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a$ هو العدد المضروب في $x$ (بإشارته)، و $b$ هو الحدّ الثابت."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا يهمّ ترتيب كتابة الحدّين."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = 6$ .",
+        "incorrect": "أعد كتابة العبارة على الشكل $ax + b$ ثم اقرأ المعامل المطلوب."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-NISYAN-B",
+          "value": "2"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-mafhum-jumla-l4-005",
+  "lessonCode": "mafhum-jumla",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — رحلة مدرسية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "رحلة",
+      "حالات خاصة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mafhum-jumla_P4",
+      "modelledOn": "know-cases"
+    }
+  },
+  "statement": {
+    "content": "في رحلة مدرسية 40 مشاركًا: $x$ تلميذا و $y$ مرافقًا. كتب ياسين الجملة $\\begin{cases} x + y = 40 \\\\ 2x + 2y = 80 \\end{cases}$ ، لأنّ كل مشارك أخذ وجبتين وكان عدد الوجبات 80."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هذه الجملة ...",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لها حل وحيد",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-HALAT"
+        },
+        {
+          "id": "B",
+          "content": "ليس لها حلول",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-HALAT"
+        },
+        {
+          "id": "C",
+          "content": "لها عدد غير منته من الحلول",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قسّم طرفي المعادلة الثانية على 2."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على $x + y = 40$ نفسها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعلومة الثانية لا تضيف شيئًا جديدًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x + 2y = 80$ تؤول إلى $x + y = 40$ : عدد غير منته من الحلول (لا يكفي لمعرفة $x$ و $y$).",
+        "incorrect": "الشرطان في الحقيقة شرط واحد."
+      }
+    }
+  ]
+}

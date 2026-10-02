@@ -1,0 +1,155 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l5-004",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 5,
+  "metadata": {
+    "title": "تفريغ المسبح",
+    "estimatedMinutes": 6,
+    "tags": [
+      "دالة متناقصة",
+      "متراجحة",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "يُفرَّغ مسبح بلدي للتنظيف: بعد ساعتين ارتفاع الماء 150 cm ، وبعد 5 ساعات 105 cm. الارتفاع $f(x)$ بعد $x$ ساعة دالة تآلفية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "دستور $f$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$f(x) = -15x + 180$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$f(x) = 15x + 120$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-TARTIB"
+        },
+        {
+          "id": "C",
+          "content": "$f(x) = -45x + 240$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-BIDUN-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$a = \\dfrac{105 - 150}{5 - 2}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a = -15$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$b = 150 + 30$."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = -15$ و $b = 180$.",
+        "incorrect": "بالترتيب نفسه في البسط والمقام."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5
+    },
+    {
+      "id": "q2",
+      "statement": "بعد كم ساعة يفرغ المسبح؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد الساعات",
+      "expectedAnswer": "12",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$-15x + 180 = 0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x = \\dfrac{180}{15}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العدد الذي صورته 0."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 12$ ساعة.",
+        "incorrect": "نحلّ $f(x) = 0$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5
+    },
+    {
+      "id": "q3",
+      "statement": "ابتداء من كم ساعة كاملة يصبح الارتفاع أقل من 60 cm؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$-15x + 180 < 60$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x > 8$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أصغر عدد طبيعي."
+        }
+      ],
+      "feedback": {
+        "correct": "$x > 8$ : ابتداء من 9 ساعات (عند 8 ساعات يساوي 60 cm بالضبط).",
+        "incorrect": "متراجحة تامة؛ والمعامل سالب."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "8",
+          "id": "MISC-TARRID-TAFSIR"
+        }
+      ]
+    }
+  ]
+}

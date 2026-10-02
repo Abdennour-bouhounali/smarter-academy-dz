@@ -1,0 +1,95 @@
+{
+  "id": "ex-4am-tanasub-muamil-l3-008",
+  "lessonCode": "tanasub-muamil",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — ملء الخزان",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ماء"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-muamil_P3",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "يُملأ خزان بماء الحنفية بـ 12 لترا في الدقيقة. نسمّي $x$ المدة بالدقائق و $y$ عدد اللترات: $y = 12 \\times x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عدد اللترات بعد 25 دقيقة:",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "300",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في جدول تناسبية نحصل على y بضرب x في المعامل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب المعامل $a = \\dfrac{y}{x}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $y = a \\times x$ ثم تحقّق على عمود من الجدول."
+        }
+      ],
+      "feedback": {
+        "correct": "$12 \\times 25 = 300$ L.",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "المدة (بالدقائق) لملء 180 لترا:",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هنا السطر الثاني معلوم والأول مجهول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "من $y = a \\times x$ نجد $x = y \\div a$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على المعامل، ثم تحقّق بالضرب."
+        }
+      ],
+      "feedback": {
+        "correct": "$180 \\div 12 = 15$ دقيقة.",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      }
+    }
+  ]
+}

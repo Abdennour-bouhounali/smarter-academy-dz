@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l1-004",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 4 — مدى سلسلة عشرية",
+    "estimatedMinutes": 2,
+    "tags": [
+      "مدى"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 100,
+      "section": "أؤكّد تعلّماتي",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "السلسلة: $8{,}1$ ، $5{,}7$ ، 3 ، $2{,}8$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مدى هذه السلسلة هو:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "6",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$6{,}9$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$5{,}3$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المدى فرق بين قيمتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أكبر قيمة وأصغر قيمة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح الصغرى من الكبرى."
+        }
+      ],
+      "feedback": {
+        "correct": "$8{,}1 - 2{,}8 = 5{,}3$.",
+        "incorrect": "المدى أكبر قيمة ناقص أصغر قيمة."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 1
+    }
+  ]
+}

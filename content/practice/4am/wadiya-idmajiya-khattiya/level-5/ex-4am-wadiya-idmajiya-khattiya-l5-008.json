@@ -1,0 +1,130 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l5-008",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 5,
+  "metadata": {
+    "title": "السكوتر بتخفيض الطلبة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "دالة خطية",
+      "تخفيض",
+      "تدوير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P3",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "كراء سكوتر كهربائي يكلّف $12$ DA للدقيقة. للطلبة تخفيض 25% على سعر الدقيقة. معك $600$ DA. نسمّي $x$ عدد الدقائق."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المبلغ الذي يدفعه طالب بدلالة $x$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$9x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$3x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAKHFID-NISBA"
+        },
+        {
+          "id": "C",
+          "content": "$12x - 25$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-JAM"
+        },
+        {
+          "id": "D",
+          "content": "$15x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سعر الدقيقة بعد التخفيض."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$12 \\times 0{,}75$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الدالة خطية معاملها سعر الدقيقة."
+        }
+      ],
+      "feedback": {
+        "correct": "الدقيقة بـ $12 \\times 0{,}75 = 9$ DA: المبلغ $9x$.",
+        "incorrect": "بعد تخفيض 25% ندفع 75% من السعر."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "ما أكبر عدد من الدقائق الكاملة يمكن كراؤها؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "66",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حل $9x \\leq 600$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{600}{9} \\approx 66{,}7$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر نحو الأسفل."
+        }
+      ],
+      "feedback": {
+        "correct": "$9 \\times 66 = 594 \\leq 600$ و $9 \\times 67 = 603 > 600$.",
+        "incorrect": "لا يمكن تجاوز المبلغ: دوّر نحو الأسفل."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "67",
+          "id": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "value": "50",
+          "id": "MISC-TARRID-NAMUDHAJ"
+        }
+      ]
+    }
+  ]
+}

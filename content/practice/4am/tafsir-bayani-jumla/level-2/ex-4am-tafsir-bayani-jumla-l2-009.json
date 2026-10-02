@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-tafsir-bayani-jumla-l2-009",
+  "lessonCode": "tafsir-bayani-jumla",
+  "level": 2,
+  "metadata": {
+    "title": "نقطة من المستقيم",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تعويض",
+      "مستقيم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tafsir-bayani-jumla_P1",
+      "modelledOn": "act-5"
+    }
+  },
+  "statement": {
+    "content": "نعتبر المعادلة $x - y = 2$ ومستقيمها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ نقطة تقع على مستقيم المعادلة $x - y = 2$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(5 ; 3)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(3 ; 5)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-BAYANI-MAQLUB"
+        },
+        {
+          "id": "C",
+          "content": "$(2 ; 2)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-BAYANI-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ و $y$ في كل معادلة على حدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل معادلة محقّقة تعني أنّ النقطة على مستقيمها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نقطة التقاطع تحقّق المعادلتين معًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$5 - 3 = 2$ : إحداثيا النقطة يحقّقان المعادلة.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-tamthil-bayani-taalufi-l1-008",
+  "lessonCode": "tamthil-bayani-taalufi",
+  "level": 1,
+  "metadata": {
+    "title": "مستقيم ينزل",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معامل التوجيه",
+      "منحى"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-taalufi_P2"
+    }
+  },
+  "statement": {
+    "content": "المستقيم $(D)$ هو التمثيل البياني لدالة تآلفية $f$ ، ويشمل النقطتين $(0 ; 4)$ و $(1 ; 3)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "معامل التوجيه $a$ للمستقيم:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "expectedAnswer": "-1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل التوجيه $a$ هو ما يصعده المستقيم (أو ينزله) عندما نتقدّم وحدة واحدة إلى اليمين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خذ نقطتين من المستقيم: كم تغيّر الترتيب؟ وكم تغيّرت الفاصلة؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم تغيّر الترتيب على تغيّر الفاصلة، بالإشارة: ينزل ⇒ $a < 0$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "من $(0 ; 4)$ إلى $(1 ; 3)$ : $a = \\dfrac{3 - (4)}{1 - (0)} = -1$ .",
+        "incorrect": "اقسم تغيّر الترتيب على تغيّر الفاصلة، لا العكس، وانتبه إلى الإشارة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هذا المستقيم:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "يصعد من اليسار إلى اليمين",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-ISHARA-A"
+        },
+        {
+          "id": "B",
+          "content": "ينزل من اليسار إلى اليمين",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "يوازي محور الفواصل",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-ISHARA-A"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "منحى المستقيم تعيّنه إشارة معامل التوجيه $a$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل يزيد الترتيب أم ينقص عندما تزيد الفاصلة؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$a > 0$ : يصعد ؛ $a < 0$ : ينزل ؛ $a = 0$ : يوازي محور الفواصل."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = -1$ : ينزل من اليسار إلى اليمين.",
+        "incorrect": "انظر إلى إشارة معامل التوجيه لا إلى إشارة $b$ ."
+      }
+    }
+  ]
+}

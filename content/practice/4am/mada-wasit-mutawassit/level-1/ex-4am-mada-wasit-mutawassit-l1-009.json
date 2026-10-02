@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l1-009",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — وسيط دون ترتيب؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وسيط",
+      "ترتيب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mada-wasit-mutawassit_P3",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "المدة (بالدقائق) التي قضاها سبعة تلاميذ في المراجعة يوم السبت: $14$ ، $9$ ، $12$ ، $20$ ، $11$ ، $16$ ، $10$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "وسيط هذه السلسلة هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "12",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-WASIT-BILA-TARTIB",
+          "value": "20"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "رتّب القيم أولًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "سبع قيم: القيمة الرابعة."
+        }
+      ],
+      "feedback": {
+        "correct": "مرتّبة: $9$ ، $10$ ، $11$ ، $12$ ، $14$ ، $16$ ، $20$ : الوسيط $12$.",
+        "incorrect": "القيمة المكتوبة في الوسط ليست الوسيط إن لم تكن السلسلة مرتّبة."
+      }
+    }
+  ]
+}

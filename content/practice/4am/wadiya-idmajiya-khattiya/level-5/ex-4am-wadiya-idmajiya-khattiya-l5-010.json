@@ -1,0 +1,107 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l5-010",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 5,
+  "metadata": {
+    "title": "ميزانية أكبر لعائلة الكتاب",
+    "estimatedMinutes": 6,
+    "tags": [
+      "دالة خطية",
+      "ميزانية",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P3",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "العائلة نفسها (بالغان و 3 أطفال، تخفيض 40% لكل طفل) خصّصت هذه المرة $2500$ DA للرحلة؛ $x$ سعر تذكرة البالغ بالدينار."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما أكبر سعر للتذكرة بعدد طبيعي من الدنانير؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي بالدينار",
+      "expectedAnswer": "657",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب التكلفة بدلالة $x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حل $C(x) \\leq 2500$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر نحو الأسفل."
+        }
+      ],
+      "feedback": {
+        "correct": "$C(x) = 3{,}8x$ و $\\dfrac{2500}{3{,}8} \\approx 657{,}9$ : $3{,}8 \\times 657 = 2496{,}6 \\leq 2500$.",
+        "incorrect": "لا تتجاوز التكلفة الميزانية: دوّر نحو الأسفل."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "658",
+          "id": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "value": "781",
+          "id": "MISC-TAKHFID-NISBA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "إذا كان السعر $650$ DA، كم يبقى من الميزانية؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار",
+      "expectedAnswer": "30",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $C(650)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$3{,}8 \\times 650$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح من الميزانية."
+        }
+      ],
+      "feedback": {
+        "correct": "$3{,}8 \\times 650 = 2470$ و $2500 - 2470 = 30$ DA.",
+        "incorrect": "احسب التكلفة ثم الفرق."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ]
+}

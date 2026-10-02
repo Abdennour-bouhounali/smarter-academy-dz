@@ -1,0 +1,63 @@
+{
+  "id": "ex-4am-tarrid-taalufi-l1-002",
+  "lessonCode": "tarrid-taalufi",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — قاعة الألعاب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "صورة عدد"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-taalufi_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "في قاعة ألعاب: بطاقة شهرية بـ 500DA تُدفع مرّة واحدة، ثم 150DA لكل ساعة لعب."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما المبلغ (DA) الذي يدفعه سفيان في شهر لعب فيه 4 ساعات؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "1100",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-NISYAN-B",
+          "value": "600"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المبلغ $f(x) = 150x + 500$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بـ 4."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$150 \\times 4 + 500$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$150 \\times 4 + 500 = 600 + 500 = 1100$ DA.",
+        "incorrect": "لا تنسَ ثمن البطاقة الشهرية."
+      }
+    }
+  ]
+}

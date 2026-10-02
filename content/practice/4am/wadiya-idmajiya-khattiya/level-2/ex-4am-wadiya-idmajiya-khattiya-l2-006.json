@@ -1,0 +1,102 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l2-006",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 2,
+  "metadata": {
+    "title": "عائلة في المصعد الهوائي",
+    "estimatedMinutes": 3,
+    "tags": [
+      "دالة خطية",
+      "تخفيض"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "عائلة من 3 بالغين وطفل واحد. نسمّي $x$ سعر تذكرة البالغ بالدينار؛ الطفل يستفيد من تخفيض 50% من $x$ . نسمّي $C(x)$ تكلفة رحلة العائلة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$C(x) = ax$ : ما قيمة المعامل $a$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "3.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كم يدفع الطفل بدلالة $x$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الطفل يدفع $0{,}5x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع ما يدفعه كل فرد."
+        }
+      ],
+      "feedback": {
+        "correct": "$C(x) = 3x + 0{,}5x = 3{,}5x$.",
+        "incorrect": "البالغون الثلاثة يدفعون $3x$ ، والطفل نصف $x$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "4",
+          "id": "MISC-TAKHFID-NISBA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما تكلفة الرحلة إذا كان $x = 400$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار",
+      "expectedAnswer": "1400",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب صورة 400 بالدالة $C$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب 400 في المعامل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعامل وجدته في السؤال السابق."
+        }
+      ],
+      "feedback": {
+        "correct": "$3{,}5 \\times 400 = 1400$ DA.",
+        "incorrect": "التكلفة هي المعامل مضروبا في السعر."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l3-002",
+  "lessonCode": "mushkilat-jumla",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 14 (ص 61) — نسبة بعد الإضافة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "ترييض",
+      "نسبة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-14",
+      "page": 61,
+      "section": "أوظّف تعلّماتي",
+      "number": 14
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 61): مجموع عددين $a$ و $b$ هو 133. إذا أضفنا إلى كل منهما 5، أصبحت نسبتهما $\\dfrac{4}{7}$ . ما هما العددان؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم المشكلة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} a + b = 133 \\\\ 4(a + 5) = 7(b + 5) \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} a + b = 133 \\\\ 7(a + 5) = 4(b + 5) \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} a + b = 133 \\\\ 7a + 5 = 4b + 5 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-DIF-MAJMU"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "النسبة: $\\dfrac{a + 5}{b + 5}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل تساوي الجداءين المتصالبين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "القوسان يبقيان."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{a + 5}{b + 5} = \\dfrac{4}{7}$ تعني الجداءين المتصالبين، والحل $(47 ; 86)$ .",
+        "incorrect": "الجداءان المتصالبان: بسط مع مقام الآخر."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العددان: اكتب الثنائية $(a ; b)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (a ; b) — عددان",
+      "expectedAnswer": {
+        "x": "47",
+        "y": "86"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر: $7a + 35 = 4b + 20$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $b = 133 - a$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحصل على $11a = 517$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = 47$ و $b = 86$ ، و $\\dfrac{52}{91} = \\dfrac{4}{7}$ .",
+        "incorrect": "تحقّق بالنسبة بعد الإضافة."
+      }
+    }
+  ]
+}

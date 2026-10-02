@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-takrar-mujamma-l5-007",
+  "lessonCode": "takrar-mujamma",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — 20 تلميذا من جديد",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خاصية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-1",
+      "page": 92,
+      "section": "أنشطة",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من نشاط 1 (ص 92): 20 تلميذا، قاماتهم 154 (3) ، 157 (4) ، 159 (5) ، 160 (5) ، 165 (3) — بين قوسين التكرار."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عند القامة 159: الصاعد 12 والنازل 13. لماذا مجموعهما 25 وليس 20؟",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لأن التلاميذ الخمسة الذين قامتهم 159 عُدّوا في الجهتين",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لأن أحد العدّين خاطئ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUJAMMA-DUN-QIMA"
+        },
+        {
+          "id": "C",
+          "content": "لأن الصاعد والنازل متساويان دائما",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-SAID-NAZIL-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في جدول التكرار المجمع الصاعد، كل خانة تزيد على السابقة بتكرار قيمتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التكرار = الصاعد للقيمة ناقص الصاعد للقيمة التي قبلها؛ والتكرار الكلي هو آخر صاعد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح الخانتين المتتاليتين، أو استعمل: الصاعد + النازل = التكرار الكلي + تكرار القيمة."
+        }
+      ],
+      "feedback": {
+        "correct": "$12 + 13 = 20 + 5$ : تكرار 159 يدخل في المجموعين.",
+        "incorrect": "راجع التعريف: أي القيم تدخل في المجموع؟"
+      }
+    }
+  ]
+}

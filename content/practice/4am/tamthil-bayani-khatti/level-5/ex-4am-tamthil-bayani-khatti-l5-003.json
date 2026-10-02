@@ -1,0 +1,141 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l5-003",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — تلفريك وهران",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "قراءة",
+      "انتماء نقطة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-khatti_P2",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "تقطع عربة تلفريك وهران 3 أمتار في كل ثانية: المسافة $d(t) = 3t$ (بالمتر) بعد $t$ ثانية، وتمثيلها مستقيم يشمل المبدأ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المسافة المقطوعة بعد دقيقة واحدة (بالمتر):",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "180",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد بالدالة الخطية $x \\longmapsto ax$ هي جداء هذا العدد في المعامل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب العدد في المعامل مع الانتباه إلى الإشارة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "النقطة التي فاصلتها هذا العدد وترتيبها صورته تنتمي إلى التمثيل."
+        }
+      ],
+      "feedback": {
+        "correct": "دقيقة = 60 ثانية، و $3 \\times 60 = 180$ .",
+        "incorrect": "حوّل الدقيقة إلى ثوان أولًا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "المدة اللازمة لقطع 450 مترًا (بالثانية):",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "150",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد الذي صورته $b$ هو حل المعادلة $ax = b$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم الصورة على المعامل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق: اضرب العدد الذي وجدته في المعامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$450 \\div 3 = 150$ ثانية.",
+        "incorrect": "ابحث عن العدد الذي صورته 450."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "هل النقطة $(100 ; 280)$ تنتمي إلى تمثيل $d$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-FASILA-TARTIB"
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نقطة تنتمي إلى التمثيل إذا كان ترتيبها صورة فاصلتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب صورة الفاصلة بالدالة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن الصورة بالترتيب، مع الانتباه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$d(100) = 300 \\neq 280$ .",
+        "incorrect": "احسب صورة 100."
+      }
+    }
+  ]
+}

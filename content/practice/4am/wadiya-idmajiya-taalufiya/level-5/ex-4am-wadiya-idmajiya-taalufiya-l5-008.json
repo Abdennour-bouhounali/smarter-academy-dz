@@ -1,0 +1,129 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l5-008",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 5,
+  "metadata": {
+    "title": "عرضان متطابقان",
+    "estimatedMinutes": 6,
+    "tags": [
+      "تناسب التغيّرات",
+      "مستقيمان منطبقان"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "العرض أ لكراء معدات الغطس: 300 DA ثم 40 DA للساعة. العرض ب: ثمنه دالة تآلفية لعدد الساعات، 500 DA لـ 5 ساعات و 700 DA لـ 10 ساعات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "دستور العرض ب:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$g(x) = 40x + 300$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$g(x) = 100x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-KHATTIYA-KHALT"
+        },
+        {
+          "id": "C",
+          "content": "$g(x) = 200x + 500$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-BIDUN-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{700 - 500}{10 - 5}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a = 40$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$b = 500 - 200$."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = 40$ و $b = 300$.",
+        "incorrect": "تناسب التغيّرات ثم $b$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5
+    },
+    {
+      "id": "q2",
+      "statement": "مقارنة العرضين:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الثمن نفسه مهما كان عدد الساعات: المستقيمان منطبقان",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "العرض ب أرخص دائما",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "C",
+          "content": "لا يتساوى الثمنان أبدا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-BAYANI-TAWAZI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن الدستورين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نفس $a$ ونفس $b$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "منطبقان."
+        }
+      ],
+      "feedback": {
+        "correct": "العرضان دالة واحدة: $40x + 300$.",
+        "incorrect": "نفس المعامل ونفس الترتيب عند المبدأ: منطبقان."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 5
+    }
+  ]
+}

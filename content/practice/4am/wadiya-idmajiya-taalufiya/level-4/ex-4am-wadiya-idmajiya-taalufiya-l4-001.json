@@ -1,0 +1,145 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l4-001",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 4,
+  "metadata": {
+    "title": "رحلة القسم: المشاركون والحافلة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "جملة معادلتين",
+      "صورة",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "في رحلة مدرسية ركب الحافلة 30 شخصا: $x$ تلميذا ساهم كل منهم بـ 400 DA و $y$ مرافقا ساهم كل منهم بـ 800 DA ، فجُمع 13600 DA. الناقل يطلب 3000 DA ثابتة و 250 DA عن كل تلميذ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عدد التلاميذ وعدد المرافقين $(x ; y)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y)",
+      "expectedAnswer": {
+        "x": "26",
+        "y": "4"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$y = -x + 30$ و $y = -\\dfrac{1}{2}x + 17$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نقطة التقاطع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقق في المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$-x + 30 = -\\dfrac{1}{2}x + 17$ : $x = 26$ و $y = 4$.",
+        "incorrect": "الفاصلة عدد التلاميذ."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "ثمن الحافلة للقسم:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار",
+      "expectedAnswer": "9500",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$250x + 3000$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x = 26$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "صورة 26."
+        }
+      ],
+      "feedback": {
+        "correct": "$250 \\times 26 + 3000 = 9500\\,\\mathrm{DA}$.",
+        "incorrect": "نعوّض عدد التلاميذ لا عدد الأشخاص."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "10500",
+          "id": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "value": "6500",
+          "id": "MISC-TAALUFI-NISYAN-B"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "المبلغ المتبقّي بعد دفع الحافلة:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار",
+      "expectedAnswer": "4100",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجموع ناقص ثمن الحافلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$13600 - 9500$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بالدينار."
+        }
+      ],
+      "feedback": {
+        "correct": "$4100\\,\\mathrm{DA}$.",
+        "incorrect": "نطرح ثمن الحافلة من المبلغ المجموع."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    }
+  ]
+}

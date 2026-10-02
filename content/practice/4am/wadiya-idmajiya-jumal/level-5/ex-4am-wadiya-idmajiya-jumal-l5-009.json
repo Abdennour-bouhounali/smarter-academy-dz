@@ -1,0 +1,172 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l5-009",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 5,
+  "metadata": {
+    "title": "تطبيق النقل أم سيارة الأجرة؟",
+    "estimatedMinutes": 6,
+    "tags": [
+      "مبلغ ثابت",
+      "متراجحة",
+      "مقارنة عروض"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "تطبيق نقل يحسب مبلغا ثابتا $y$ DA و $x$ DA عن كل كيلومتر: رحلة 5 km كلّفت 350 DA ورحلة 12 km كلّفت 700 DA. سيارة أجرة أخرى تحسب 60 DA عن كل كيلومتر دون مبلغ ثابت. عدد الكيلومترات عدد طبيعي."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما المبلغان $(x ; y)$ في التطبيق؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
+      "expectedAnswer": {
+        "x": "50",
+        "y": "100"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$5x + y = 350$ و $12x + y = 700$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح المعادلتين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم احسب $y$."
+        }
+      ],
+      "feedback": {
+        "correct": "$7x = 350$ ، $x = 50$ ، $y = 100$.",
+        "incorrect": "الطرح يحذف المبلغ الثابت."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "100",
+            "y": "50"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "لرحلة 8 km:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "التطبيق أرخص بـ 20 DA",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "سيارة الأجرة أرخص بـ 20 DA",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "الثمن نفسه",
+          "isCorrect": false,
+          "misconceptionId": "MISC-WADIYA-QIMAT-TASAWI"
+        },
+        {
+          "id": "D",
+          "content": "سيارة الأجرة أرخص بـ 80 DA",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التطبيق: $100 + 8x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "سيارة الأجرة: $60 \\times 8$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن العددين."
+        }
+      ],
+      "feedback": {
+        "correct": "التطبيق $100 + 400 = 500$ DA وسيارة الأجرة $480$ DA.",
+        "incorrect": "احسب الثمنين لـ 8 km ثم قارن."
+      },
+      "cognitiveDemand": "transfer",
+      "difficulty": 4
+    },
+    {
+      "id": "q3",
+      "statement": "ابتداءً من كم كيلومترا يصبح التطبيق أرخص من سيارة الأجرة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي من الكيلومترات",
+      "expectedAnswer": "11",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حل $100 + 50n < 60n$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$100 < 10n$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عند التساوي لا يكون أحدهما أرخص."
+        }
+      ],
+      "feedback": {
+        "correct": "$n > 10$ : ابتداءً من 11 km (عند 10 km يتساوى الثمنان: 600 DA).",
+        "incorrect": "قيمة التساوي ليست الجواب: خذ العدد الطبيعي الموالي."
+      },
+      "cognitiveDemand": "transfer",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "10",
+          "id": "MISC-WADIYA-QIMAT-TASAWI"
+        }
+      ]
+    }
+  ]
+}

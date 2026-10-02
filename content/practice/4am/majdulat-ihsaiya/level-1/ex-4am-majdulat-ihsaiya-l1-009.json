@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l1-009",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — أيّ تمثيل؟ (أجزاء من كلّ)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمثيل بياني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_majdulat-ihsaiya_P3",
+      "modelledOn": "ex-15"
+    }
+  },
+  "statement": {
+    "content": "ميزانية رحلة القسم موزّعة على النقل والأكل والدخول إلى الحديقة، ونريد أن نُظهر حصة كل جزء من الميزانية كلها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "التمثيل البياني المناسب:",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "مخطط بالأعمدة لقيم منفصلة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUKHATTAT-GHAYR-MUNASIB"
+        },
+        {
+          "id": "B",
+          "content": "مخطط دائري",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "مدرّج تكراري",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUKHATTAT-GHAYR-MUNASIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ماذا نريد أن نُظهر؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حصة كل جزء من الكلّ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الدائرة كلها هي الميزانية."
+        }
+      ],
+      "feedback": {
+        "correct": "أجزاء من كلّ: مخطط دائري، زاوية كل قطاع تتناسب مع حصته.",
+        "incorrect": "الحصص من كلّ تُرى في قطاعات دائرة."
+      }
+    }
+  ]
+}

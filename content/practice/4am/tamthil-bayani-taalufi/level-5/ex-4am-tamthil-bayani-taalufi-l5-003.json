@@ -1,0 +1,93 @@
+{
+  "id": "ex-4am-tamthil-bayani-taalufi-l5-003",
+  "lessonCode": "tamthil-bayani-taalufi",
+  "level": 5,
+  "metadata": {
+    "title": "باقة الأنترنت",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "معامل التوجيه"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-taalufi_P2"
+    }
+  },
+  "statement": {
+    "content": "الرصيد المتبقّي من باقة أنترنت (بالجيغا) بعد $x$ يومًا يمثّله مستقيم يشمل النقطتين $(0 ; 12)$ و $(4 ; 6)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "معامل توجيه هذا المستقيم:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "expectedAnswer": "-3/2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل التوجيه $a$ هو ما يصعده المستقيم (أو ينزله) عندما نتقدّم وحدة واحدة إلى اليمين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خذ نقطتين من المستقيم: كم تغيّر الترتيب؟ وكم تغيّرت الفاصلة؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم تغيّر الترتيب على تغيّر الفاصلة، بالإشارة: ينزل ⇒ $a < 0$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "من $(0 ; 12)$ إلى $(4 ; 6)$ : $a = \\dfrac{6 - (12)}{4 - (0)} = -1{,}5$ .",
+        "incorrect": "اقسم تغيّر الترتيب على تغيّر الفاصلة، لا العكس، وانتبه إلى الإشارة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بعد كم يومًا ينفد الرصيد؟",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "expectedAnswer": "8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد الذي صورته معلومة هو فاصلة النقطة من المستقيم التي ترتيبها هذه الصورة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب عبارة الدالة، ثم حلّ $ax + b = m$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح $b$ أولًا ثم اقسم على $a$ ، وتحقّق بحساب الصورة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(x) = -1{,}5x + 12$ ، و $f(8) = 0$ : النقطة $(8 ; 0)$ على المستقيم.",
+        "incorrect": "العدد المطلوب فاصلة: انطلق من الصورة على محور التراتيب."
+      }
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "id": "ex-4am-takrar-mujamma-l2-002",
+  "lessonCode": "takrar-mujamma",
+  "level": 2,
+  "metadata": {
+    "title": "طرائق — شدّة الزلازل",
+    "estimatedMinutes": 3,
+    "tags": [
+      "لكل قيمة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-cumul",
+      "page": 95,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 95): درجات شدة 17 زلزالا حسب مقياس ريشتر (السطر الأول الشدّة، والسطر الثاني التكرارات): $\\begin{array}{|c|c|c|c|c|c|c|c|} \\hline 8{,}5 & 8{,}6 & 8{,}7 & 8{,}8 & 9 & 9{,}1 & 9{,}2 & 9{,}5 \\\\ \\hline 5 & 3 & 1 & 3 & 2 & 1 & 1 & 1 \\\\ \\hline \\end{array}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "التكرار المجمع الصاعد للقيمة 8,8:",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "12",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MUJAMMA-DUN-QIMA",
+          "value": "9"
+        },
+        {
+          "id": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA",
+          "value": "3"
+        },
+        {
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB",
+          "value": "8"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد القيم التي تحقّق الشرط: القيمة نفسها مع القيم الأصغر منها (أو الأكبر منها)."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التكرار المجمع يجمع التكرارات، لا القيم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع تكرار القيمة وتكرارات القيم المعنية واحدة واحدة، ثم تحقّق: الصاعد الأخير يساوي التكرار الكلي."
+        }
+      ],
+      "feedback": {
+        "correct": "$5 + 3 + 1 + 3 = 12$ : تكرار 8,8 وتكرارات القيم الأصغر منها.",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "التكرار المجمع النازل للقيمة 9:",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MUJAMMA-DUN-QIMA",
+          "value": "3"
+        },
+        {
+          "id": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA",
+          "value": "2"
+        },
+        {
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB",
+          "value": "14"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد القيم التي تحقّق الشرط: القيمة نفسها مع القيم الأصغر منها (أو الأكبر منها)."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التكرار المجمع يجمع التكرارات، لا القيم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع تكرار القيمة وتكرارات القيم المعنية واحدة واحدة، ثم تحقّق: الصاعد الأخير يساوي التكرار الكلي."
+        }
+      ],
+      "feedback": {
+        "correct": "$2 + 1 + 1 + 1 = 5$ : تكرار 9 وتكرارات القيم الأكبر منها.",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    }
+  ]
+}

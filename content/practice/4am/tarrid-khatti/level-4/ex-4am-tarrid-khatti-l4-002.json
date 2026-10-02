@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tarrid-khatti-l4-002",
+  "lessonCode": "tarrid-khatti",
+  "level": 4,
+  "metadata": {
+    "title": "تحدّ (ص 65) — المركبة A",
+    "estimatedMinutes": 4,
+    "tags": [
+      "سرعة متوسطة",
+      "قراءة بيانية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "challenge",
+      "page": 65,
+      "section": "تحدّ"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 65): المركبة A تقطع 300km في 4,5h، وتمثيلها خط منكسر يبقى عند 115km من 1h إلى 1,5h."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "السرعة المتوسطة للمركبة A خلال السفر:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$75$ km/h",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "id": "B",
+          "content": "حوالي $66{,}67$ km/h",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$1350$ km/h",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQADIR-QISMA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المدة كلها 4,5h."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{300}{4{,}5}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المسافة على المدة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{300}{4{,}5} \\approx 66{,}67$ km/h.",
+        "incorrect": "المركبة A تصل في 4,5h لا 4h."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "كم ساعة توقّفت المركبة A؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري (الفاصلة مقبولة)",
+      "expectedAnswer": "0.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أين يبقى التمثيل أفقيًا؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "من 1h إلى 1,5h."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الفرق."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}5 - 1 = 0{,}5$ h ، أي نصف ساعة.",
+        "incorrect": "التوقّف حيث لا تتغيّر المسافة."
+      }
+    }
+  ]
+}

@@ -9,6 +9,7 @@ import MathText from '../../components/MathText';
 import { linearEntries } from './graphModel';
 import { kindStyle } from './nodeKinds';
 import NodeContextBody from './NodeContextBody';
+import MathLabel from '../../components/MathLabel';
 
 /**
  * « المعارف مفصّلة » de la carte PROGRESSIVE —
@@ -157,7 +158,7 @@ export default function LinearKnowledgeView({ graph, items, variant = 'screen', 
                 </h3>
                 {item ? (
                   <>
-                    {item.summary && <p className="text-sm text-slate-600 leading-relaxed mt-0.5">{item.summary}</p>}
+                    {item.summary && <p className="text-sm text-slate-600 leading-relaxed mt-0.5"><MathLabel><MathLabel>{item.summary}</MathLabel></MathLabel></p>}
                     {item.visual && (
                       <div className="mt-3">
                         <ConceptVisual size={item.visualSize} context={print ? 'print' : 'drawer'}>{item.visual}</ConceptVisual>

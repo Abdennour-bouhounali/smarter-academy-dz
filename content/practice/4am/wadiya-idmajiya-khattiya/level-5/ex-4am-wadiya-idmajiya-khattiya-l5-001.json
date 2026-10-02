@@ -1,0 +1,222 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l5-001",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 5,
+  "metadata": {
+    "title": "أدمج تعلّماتي — المصعد الهوائي",
+    "estimatedMinutes": 10,
+    "tags": [
+      "فيثاغورس",
+      "سرعة",
+      "دالة خطية",
+      "ميزانية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "situation",
+      "page": 74,
+      "section": "أدمج تعلّماتي"
+    }
+  },
+  "statement": {
+    "content": "1) ينطلق مصعد هوائي من ارتفاع 900m ليصل ارتفاع 1400m، والمسافة الأفقية بين نقطة الانطلاق A والنقطة H الواقعة على الشاقول المار بنقطة الوصول B هي $AH = 2500\\,\\mathrm{m}$ (المثلث $AHB$ قائم في $H$). ما هي المدة الزمنية لصعود واحد، إذا كانت سرعة المصعد الهوائي $5{,}5\\,\\mathrm{m/s}$؟ 2) ليكن $x$ سعر التذكرة لشخص بالغ لرحلة واحدة (ذهابا وإيابا). أ) عبّر عن تكلفة الرحلة بدلالة $x$ لعائلة متكوّنة من شخصين بالغين و 3 أطفال، علما أنّ كلّ طفل يستفيد من تخفيض قدرة 40% من قيمة $x$ . ب) ما هي أكبر قيمة لسعر التذكرة التي تسمح للعائلة بدفع ثمن الرحلة في حدود المبلغ المخصص لذلك والمقدر بـ 2000DA؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "طول الحبل $AB$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$500\\sqrt{26}\\,\\mathrm{m} \\approx 2549{,}51\\,\\mathrm{m}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$3000\\,\\mathrm{m}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JIDHR-JAMA"
+        },
+        {
+          "id": "C",
+          "content": "$\\sqrt{2500^2 + 1400^2}\\,\\mathrm{m}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "id": "D",
+          "content": "$\\sqrt{2500^2 - 500^2}\\,\\mathrm{m}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$BH$ هو فرق الارتفاعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "فيثاغورس في المثلث $AHB$ القائم في $H$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بسّط $\\sqrt{6\\,500\\,000}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$BH = 500$ و $AB^2 = 2500^2 + 500^2 = 6\\,500\\,000$ ، و $\\sqrt{6\\,500\\,000} = \\sqrt{250\\,000 \\times 26} = 500\\sqrt{26}$.",
+        "incorrect": "الوتر يُحسب بفيثاغورس على فرق الارتفاعين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "مدة صعود واحد بالثواني (مدوّرة إلى 0,01):",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري مدوّر إلى 0,01",
+      "expectedAnswer": "463.55",
+      "evaluationPolicy": {
+        "tolerance": "0.01"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المدة = المسافة ÷ السرعة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل طول الحبل من السؤال السابق."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على $5{,}5$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{500\\sqrt{26}}{5{,}5} \\approx 463{,}55\\,\\mathrm{s}$ ، أي 7 دقائق و $43{,}55$ ثانية تقريبا.",
+        "incorrect": "اقسم طول الحبل على السرعة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "545.45",
+          "id": "MISC-JIDHR-JAMA"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "التكلفة $C(x) = ax$ : ما قيمة $a$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "3.8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كم يدفع كل طفل بدلالة $x$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بعد تخفيض 40% يدفع 60%."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع ما يدفعه البالغان والأطفال الثلاثة."
+        }
+      ],
+      "feedback": {
+        "correct": "$C(x) = 2x + 3 \\times 0{,}6x = 3{,}8x$.",
+        "incorrect": "الطفل يدفع ما يبقى بعد التخفيض، لا مقدار التخفيض."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "3.2",
+          "id": "MISC-TAKHFID-NISBA"
+        },
+        {
+          "value": "5",
+          "id": "MISC-TARRID-NAMUDHAJ"
+        }
+      ]
+    },
+    {
+      "id": "q4",
+      "statement": "أكبر سعر للتذكرة بعدد طبيعي من الدنانير:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي بالدينار",
+      "expectedAnswer": "526",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حل $3{,}8x \\leq 2000$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $\\dfrac{2000}{3{,}8}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "السعر بعدد طبيعي لا يتجاوز الحد: دوّر نحو الأسفل."
+        }
+      ],
+      "feedback": {
+        "correct": "$x \\leq \\dfrac{10000}{19} \\approx 526{,}32$ ، و $3{,}8 \\times 526 = 1998{,}8 \\leq 2000$.",
+        "incorrect": "لا تدوّر نحو الأعلى: التكلفة ستتجاوز الميزانية."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "527",
+          "id": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "value": "625",
+          "id": "MISC-TAKHFID-NISBA"
+        }
+      ]
+    }
+  ]
+}

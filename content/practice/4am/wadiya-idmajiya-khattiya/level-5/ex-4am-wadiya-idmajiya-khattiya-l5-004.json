@@ -1,0 +1,120 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l5-004",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 5,
+  "metadata": {
+    "title": "زيادة السعر والميزانية",
+    "estimatedMinutes": 6,
+    "tags": [
+      "دالة خطية",
+      "زيادة",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P3",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "تكلفة رحلة عائلة هي $C(x) = 4{,}4x$ ، حيث $x$ سعر تذكرة البالغ بالدينار، وميزانيتها $2000$ DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما أكبر سعر للتذكرة بعدد طبيعي من الدنانير؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي بالدينار",
+      "expectedAnswer": "454",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حل $4{,}4x \\leq 2000$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $\\dfrac{2000}{4{,}4}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دوّر نحو الأسفل."
+        }
+      ],
+      "feedback": {
+        "correct": "$4{,}4 \\times 454 = 1997{,}6 \\leq 2000$ ، و $4{,}4 \\times 455 = 2002$.",
+        "incorrect": "لا تتجاوز التكلفة الميزانية: دوّر نحو الأسفل."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "455",
+          "id": "MISC-TARRID-TAFSIR"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "كان السعر $400$ DA ثم ارتفع بـ 10%. هل تبقى العائلة في حدود ميزانيتها؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم: السعر الجديد $440$ والتكلفة $1936 \\leq 2000$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا: السعر الجديد $410$ والتكلفة تتجاوز الميزانية",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-JAM"
+        },
+        {
+          "id": "C",
+          "content": "لا: التكلفة $4{,}4 \\times 440 = 2200$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "السعر الجديد: $400 \\times 1{,}1$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب التكلفة بالسعر الجديد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن بالميزانية."
+        }
+      ],
+      "feedback": {
+        "correct": "$400 \\times 1{,}1 = 440$ و $4{,}4 \\times 440 = 1936 \\leq 2000$.",
+        "incorrect": "الزيادة بنسبة: نضرب في $1{,}1$ ، ثم نحسب التكلفة."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 4
+    }
+  ]
+}

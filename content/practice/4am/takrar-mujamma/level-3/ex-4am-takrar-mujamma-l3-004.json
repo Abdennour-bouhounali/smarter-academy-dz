@@ -1,0 +1,104 @@
+{
+  "id": "ex-4am-takrar-mujamma-l3-004",
+  "lessonCode": "takrar-mujamma",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 4 — مخطط دائري للقامات",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مخطط دائري"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-4",
+      "page": 98,
+      "section": "أوظّف تعلّماتي",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 98): مخطط دائري لقامات تلاميذ قسم: 152cm: 20% ، 155cm: 40% ، 160cm: 25% ، وقطاع 144cm نسبته غير مكتوبة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نسبة قطاع 144cm (بالمئة):",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (النسبة المئوية دون الرمز)",
+      "expectedAnswer": "15",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولا التكرار الكلي: مجموع كل التكرارات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التواتر المجمع هو التكرار المجمع مقسوما على التكرار الكلي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع التكرارات المعنية ثم اقسم المجموع على التكرار الكلي، واختزل الكسر إن أمكن."
+        }
+      ],
+      "feedback": {
+        "correct": "$100 - (20 + 40 + 25) = 15$",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "التواتر المجمع الصاعد للقامة 155 (بالمئة):",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (النسبة المئوية دون الرمز)",
+      "expectedAnswer": "75",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB",
+          "value": "65"
+        },
+        {
+          "id": "MISC-IHSA-MUJAMMA-DUN-QIMA",
+          "value": "35"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولا التكرار الكلي: مجموع كل التكرارات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التواتر المجمع هو التكرار المجمع مقسوما على التكرار الكلي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع التكرارات المعنية ثم اقسم المجموع على التكرار الكلي، واختزل الكسر إن أمكن."
+        }
+      ],
+      "feedback": {
+        "correct": "$15 + 20 + 40 = 75$",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "id": "ex-4am-tafsir-bayani-jumla-l5-004",
+  "lessonCode": "tafsir-bayani-jumla",
+  "level": 5,
+  "metadata": {
+    "title": "معاملات عشرية",
+    "estimatedMinutes": 5,
+    "tags": [
+      "أعداد عشرية",
+      "تعويض"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tafsir-bayani-jumla_P2",
+      "modelledOn": "act-5"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الجملة $\\begin{cases} 0{,}2x + 0{,}5y = 3 \\\\ x - y = 1 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ الجملة (إحداثيتا نقطة تقاطع المستقيمين):",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "5",
+        "y": "4"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نقطة التقاطع تقع على المستقيمين معًا: إحداثياها يحقّقان المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بالتعويض أو بالجمع، أوجد $x$ أولًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض قيمة $x$ في إحدى المعادلتين لإيجاد $y$ ، ثم تحقّق في الأخرى."
+        }
+      ],
+      "feedback": {
+        "correct": "الحل $(5 ; 4)$ ، ونتحقّق: $0{,}2 \\times 5 + 0{,}5 \\times 4 = 3$ و $5 - 4 = 1$.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

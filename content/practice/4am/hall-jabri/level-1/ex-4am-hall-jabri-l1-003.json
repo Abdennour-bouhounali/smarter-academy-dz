@@ -1,0 +1,117 @@
+{
+  "id": "ex-4am-hall-jabri-l1-003",
+  "lessonCode": "hall-jabri",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي — من معادلة واحدة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "التعبير عن مجهول",
+      "أؤكّد تعلّماتي"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 62,
+      "section": "أؤكّد تعلّماتي",
+      "number": 6
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 62): من المعادلة $3x - y = 1$ ينتج أن… الكتابات: (1) $y = 3x - 1$ ، (2) $x = \\dfrac{y + 1}{3}$ ، (3) $3x = y + 1$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ الكتابات صحيحة؟",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "(1) فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAWID-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "(1) و (3) فقط",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "(1) و (2) و (3)",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "(2) و (3) فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAWID-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن مجهول معامله $1$ أو $-1$ في إحدى المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عبّر عنه بدلالة المجهول الآخر، ثم عوّضه في المعادلة الأخرى."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
+        }
+      ],
+      "feedback": {
+        "correct": "الثلاث صحيحة: $3x = y + 1$ ، ثم $y = 3x - 1$ ، ثم $x = \\dfrac{y + 1}{3}$ بقسمة الطرفين على 3.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "إذا كان $3x - y = 1$ و $x = 2$ ، فما قيمة $y$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن مجهول معامله $1$ أو $-1$ في إحدى المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عبّر عنه بدلالة المجهول الآخر، ثم عوّضه في المعادلة الأخرى."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 3x - 1 = 3 \\times 2 - 1 = 5$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وأجرِ كل عملية على طرفي المعادلة معًا."
+      }
+    }
+  ]
+}

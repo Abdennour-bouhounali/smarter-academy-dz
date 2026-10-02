@@ -1,0 +1,115 @@
+{
+  "id": "ex-4am-hall-jabri-l3-001",
+  "lessonCode": "hall-jabri",
+  "level": 3,
+  "metadata": {
+    "title": "نشاط 2 — التلميذ 2",
+    "estimatedMinutes": 4,
+    "tags": [
+      "الجمع",
+      "أعداد عشرية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-2",
+      "page": 56,
+      "section": "أنشطة",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 56): إليك جملة المعادلتين الآتية: $\\begin{cases} 2x + y = 7 & ...(1) \\\\ 3x - 2y = 4{,}2 & ...(2) \\end{cases}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ضرب التلميذ 2 المعادلة (1) في عدد ثم جمعها مع (2). ما هذا العدد؟",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$-2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        },
+        {
+          "id": "C",
+          "content": "$3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن معاملي $x$ ثم معاملي $y$ في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب طرفي معادلة (أو كلتيهما) في عدد مناسب ليصير معاملا أحد المجهولين متعاكسين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المعادلتين طرفًا لطرف، ثم عوّض القيمة الناتجة في إحدى المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$4x + 2y = 14$ : $2y$ و $-2y$ متعاكسان، وبالجمع $7x = 18{,}2$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "13/5",
+        "y": "9/5"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن معاملي $x$ ثم معاملي $y$ في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب طرفي معادلة (أو كلتيهما) في عدد مناسب ليصير معاملا أحد المجهولين متعاكسين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المعادلتين طرفًا لطرف، ثم عوّض القيمة الناتجة في إحدى المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$7x = 18{,}2$ ، ومنه $x = 2{,}6$ ثم $y = 7 - 5{,}2 = 1{,}8$ : $(2{,}6 ; 1{,}8)$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

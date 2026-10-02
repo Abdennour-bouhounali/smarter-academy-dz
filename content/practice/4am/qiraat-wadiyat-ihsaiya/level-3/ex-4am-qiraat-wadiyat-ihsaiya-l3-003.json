@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l3-003",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 3,
+  "metadata": {
+    "title": "التمرين 22 — حذف 4 و 19",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمرين 22",
+      "حذف قيم"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-22",
+      "page": 101,
+      "section": "أتعمّق",
+      "number": 22
+    }
+  },
+  "statement": {
+    "content": "معدّل سلسلة علامات قسم هو $11{,}5$ ووسيطها 11. حذفنا أصغر علامة 4 (تلميذ واحد) وأكبر علامة 19 (تلميذ واحد)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما معدّل العلامات بعد هذا الحذف؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "11,5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما متوسط القيمتين المحذوفتين؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{4 + 19}{2}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا ساوى متوسطهما المعدّل، فهل يتغيّر المعدّل؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$4 + 19 = 23 = 2 \\times 11{,}5$ : نحذف قيمتين متوسطهما 11,5، فيبقى المعدّل $11{,}5$ .",
+        "incorrect": "متوسط القيمتين المحذوفتين يساوي المعدّل."
+      },
+      "difficulty": 3
+    }
+  ]
+}

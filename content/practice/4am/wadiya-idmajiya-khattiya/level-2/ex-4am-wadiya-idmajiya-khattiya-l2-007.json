@@ -1,0 +1,129 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l2-007",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 2,
+  "metadata": {
+    "title": "زيادة الموسم الصيفي",
+    "estimatedMinutes": 3,
+    "tags": [
+      "زيادة",
+      "دالة خطية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P2",
+      "modelledOn": "method-percent"
+    }
+  },
+  "statement": {
+    "content": "في فصل الصيف يرفع المصعد الهوائي سعر التذكرة بـ 20%. نسمّي $x$ السعر قبل الزيادة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "السعر بعد الزيادة يُعطى بالدالة الخطية:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\longmapsto 1{,}2x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x \\longmapsto x + 20$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-JAM"
+        },
+        {
+          "id": "C",
+          "content": "$x \\longmapsto 0{,}2x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
+        },
+        {
+          "id": "D",
+          "content": "$x \\longmapsto 0{,}8x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد الزيادة، كم في المئة من السعر ندفع؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$100\\% + 20\\%$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نضرب في $1 + \\dfrac{t}{100}$."
+        }
+      ],
+      "feedback": {
+        "correct": "زيادة 20%: نضرب في $1 + \\dfrac{20}{100} = 1{,}2$.",
+        "incorrect": "الزيادة بنسبة مئوية تُترجم بالضرب، لا بالجمع."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    },
+    {
+      "id": "q2",
+      "statement": "ما السعر في الصيف إذا كان $x = 250$ DA؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار",
+      "expectedAnswer": "300",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ 250."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب في المضاعف."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المضاعف من السؤال السابق."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}2 \\times 250 = 300$ DA.",
+        "incorrect": "اضرب السعر في مضاعف الزيادة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1,
+      "misconceptionSignatures": [
+        {
+          "value": "270",
+          "id": "MISC-NISBA-JAM"
+        },
+        {
+          "value": "50",
+          "id": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l5-003",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — تصويت على الرحلة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مخطط دائري",
+      "زاوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_majdulat-ihsaiya_P3",
+      "modelledOn": "ex-15"
+    }
+  },
+  "statement": {
+    "content": "صوّت 36 تلميذًا على وجهة الرحلة: تيبازة 12 ، تلمسان 9 ، بجاية 15 ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "زاوية قطاع بجاية في المخطط الدائري (بالدرجات):",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "150",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MUKHATTAT-GHAYR-MUNASIB",
+          "value": "15"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التكرار الكلي 36."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{15}{36}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب في 360."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{15}{36} \\times 360 = 150$ .",
+        "incorrect": "الحصة من 36 ثم × 360."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "لماذا نختار مخططًا دائريًا هنا؟",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لأنّ القيم أعداد كبيرة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUKHATTAT-GHAYR-MUNASIB"
+        },
+        {
+          "id": "B",
+          "content": "الوجهات أجزاء من كلّ الأصوات (36)",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "الوجهات فئات متلاصقة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUKHATTAT-GHAYR-MUNASIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما الكلّ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "36 صوتًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "كل وجهة حصة."
+        }
+      ],
+      "feedback": {
+        "correct": "الأصوات الـ 36 هي الكلّ، وكل وجهة حصة منه.",
+        "incorrect": "الوجهات ليست فئات عددية."
+      }
+    }
+  ]
+}

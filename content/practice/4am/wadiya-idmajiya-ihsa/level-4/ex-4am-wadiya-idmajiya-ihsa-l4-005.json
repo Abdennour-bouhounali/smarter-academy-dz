@@ -1,0 +1,100 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l4-005",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 4,
+  "metadata": {
+    "title": "كرة القدم في النادي",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نسبة مئوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P3"
+    }
+  },
+  "statement": {
+    "content": "في نادٍ رياضي للشباب، 27 منخرطا يلعبون كرة القدم، وهم يمثّلون 75% من المنخرطين."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم عدد المنخرطين في النادي؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "36",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "27 جزء."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$0{,}75 \\times T = 27$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم."
+        }
+      ],
+      "feedback": {
+        "correct": "$T = \\dfrac{27}{0{,}75} = 36$.",
+        "incorrect": "نقسم الجزء على النسبة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "20.25",
+          "id": "MISC-IHSA-NISBA-MIN-ADAD"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "كم منخرطا يمارس رياضة أخرى؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الكل ناقص الجزء."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل العدد السابق."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح."
+        }
+      ],
+      "feedback": {
+        "correct": "$36 - 27 = 9$.",
+        "incorrect": "نطرح لاعبي كرة القدم من كل المنخرطين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ]
+}

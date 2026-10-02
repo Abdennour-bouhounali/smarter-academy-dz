@@ -1,0 +1,114 @@
+{
+  "id": "ex-4am-takrar-mujamma-l3-002",
+  "lessonCode": "takrar-mujamma",
+  "level": 3,
+  "metadata": {
+    "title": "معارف 2 — التواتر المجمع",
+    "estimatedMinutes": 3,
+    "tags": [
+      "التواتر المجمع"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-2",
+      "page": 94,
+      "section": "معارف",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 94): علامات 20 تلميذا (السطر الأول العلامات، والسطر الثاني التكرارات): $\\begin{array}{|c|c|c|c|c|} \\hline 9 & 10 & 12 & 13 & 19 \\\\ \\hline 3 & 4 & 7 & 5 & 1 \\\\ \\hline \\end{array}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "التواتر المجمع النازل للقيمة 12:",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b أو عدد عشري بالفاصلة",
+      "expectedAnswer": "0,65",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-TAWATUR-BILA-QISMA",
+          "value": "13"
+        },
+        {
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB",
+          "value": "0,7"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولا التكرار الكلي: مجموع كل التكرارات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التواتر المجمع هو التكرار المجمع مقسوما على التكرار الكلي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع التكرارات المعنية ثم اقسم المجموع على التكرار الكلي، واختزل الكسر إن أمكن."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{7 + 5 + 1}{20} = 0{,}65$",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "التواتر المجمع الصاعد للقيمة 10:",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "كسر على الشكل a/b أو عدد عشري بالفاصلة",
+      "expectedAnswer": "0,35",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-TAWATUR-BILA-QISMA",
+          "value": "7"
+        },
+        {
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB",
+          "value": "0,85"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولا التكرار الكلي: مجموع كل التكرارات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التواتر المجمع هو التكرار المجمع مقسوما على التكرار الكلي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع التكرارات المعنية ثم اقسم المجموع على التكرار الكلي، واختزل الكسر إن أمكن."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3 + 4}{20} = 0{,}35$",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    }
+  ]
+}

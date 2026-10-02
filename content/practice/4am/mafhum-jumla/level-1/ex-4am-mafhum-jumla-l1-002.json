@@ -1,0 +1,73 @@
+{
+  "id": "ex-4am-mafhum-jumla-l1-002",
+  "lessonCode": "mafhum-jumla",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 1 — معادلة بمجهولين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معادلة بمجهولين"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 62,
+      "section": "أؤكّد تعلّماتي",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 62): نعتبر المعادلة $8x - 1 = y$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعادلة $8x - 1 = y$ هي معادلة من الدرجة الأولى ...",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "ذات المجهول $x$ .",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "ذات المجهولين $x$ و $y$ .",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "ذات المجهول $y$ .",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كم حرفًا مجهولًا في المعادلة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الحرفان $x$ و $y$ كلاهما مجهول."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انقل $y$ إلى الطرف الأول: $8x - y = 1$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "فيها مجهولان من الدرجة الأولى: $8x - y = 1$ ، من الشكل $ax + by = c$ .",
+        "incorrect": "الحرف $y$ مجهول أيضًا، وليس عددًا معلومًا."
+      }
+    }
+  ]
+}

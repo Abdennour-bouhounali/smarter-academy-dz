@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l5-001",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 5,
+  "metadata": {
+    "title": "تمرين 13 (ص 99) — سلسلة وحيدة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "وسيط",
+      "مدى",
+      "متوسط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-13",
+      "page": 99,
+      "section": "أوظّف تعلّماتي",
+      "number": 13
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 99): عيّن كل السلاسل الإحصائية التي تكرارها الكلّي 3 و وسيطها 13 ومداها 8 و متوسطها يساوي وسيطها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "اكتب قيم السلسلة الوحيدة:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "integerSet",
+      "answerFormat": "الأعداد مفصولة بفاصلة",
+      "expectedAnswer": [
+        9,
+        13,
+        17
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "سمّ القيم $a$ ، $13$ ، $c$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$c - a = 8$ و $a + c = 26$."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = 9$ و $c = 17$ : $9$ ، $13$ ، $17$.",
+        "incorrect": "ترجم كل شرط إلى معادلة."
+      }
+    }
+  ]
+}

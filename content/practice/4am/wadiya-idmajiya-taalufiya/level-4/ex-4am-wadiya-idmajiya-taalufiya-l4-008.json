@@ -1,0 +1,137 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l4-008",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 4,
+  "metadata": {
+    "title": "بطاقة القاعة أم الدفع بالحصة؟",
+    "estimatedMinutes": 5,
+    "tags": [
+      "متراجحة",
+      "مفاضلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P2"
+    }
+  },
+  "statement": {
+    "content": "قاعة رياضة: بطاقة 1800 DA ثم 120 DA للحصة، أو 270 DA للحصة دون بطاقة ( $x$ عدد الحصص في الشهر)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من أجل كم حصة يتساوى الثمنان؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "12",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$120x + 1800 = 270x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$150x = 1800$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "التقاطع."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 12$.",
+        "incorrect": "نساوي الثمنين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "ابتداء من كم حصة تصبح البطاقة أرخص؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "13",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$120x + 1800 < 270x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x > 12$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أصغر عدد طبيعي."
+        }
+      ],
+      "feedback": {
+        "correct": "ابتداء من 13 حصة.",
+        "incorrect": "متراجحة تامة: عند 12 يتساويان."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "12",
+          "id": "MISC-TARRID-TAFSIR"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "لـ 10 حصص، بكم دينارا تكون الصيغة دون بطاقة أرخص؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار",
+      "expectedAnswer": "300",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب الثمنين لـ 10 حصص."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح الأصغر من الأكبر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قبل 12 حصة."
+        }
+      ],
+      "feedback": {
+        "correct": "$3000 - 2700 = 300\\,\\mathrm{DA}$.",
+        "incorrect": "قبل نقطة التقاطع الدفع بالحصة أرخص."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l1-002",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 1,
+  "metadata": {
+    "title": "قاعة ألعاب: العدد الذي صورته معلومة",
+    "estimatedMinutes": 2,
+    "tags": [
+      "دالة تآلفية",
+      "العدد الذي صورته"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "في قاعة ألعاب إلكترونية تدفع 200 DA بطاقة دخول ثم 100 DA عن كل ساعة لعب. دفع أمين 700 DA. نسمّي $x$ عدد ساعات اللعب."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم ساعة لعب أمين؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد الساعات",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المبلغ $100x + 200$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حلّ $100x + 200 = 700$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح 200 أولا ثم اقسم على 100."
+        }
+      ],
+      "feedback": {
+        "correct": "$100x = 700 - 200 = 500$ ومنه $x = 5$ ساعات.",
+        "incorrect": "نطرح بطاقة الدخول أولا ثم نقسم على ثمن الساعة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1,
+      "misconceptionSignatures": [
+        {
+          "value": "7",
+          "id": "MISC-TAALUFI-SABIQ-QISMA"
+        }
+      ]
+    }
+  ]
+}

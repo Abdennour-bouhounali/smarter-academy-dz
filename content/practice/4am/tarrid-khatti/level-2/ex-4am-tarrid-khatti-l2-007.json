@@ -1,0 +1,92 @@
+{
+  "id": "ex-4am-tarrid-khatti-l2-007",
+  "lessonCode": "tarrid-khatti",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — وصفة البغرير",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نمذجة",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "وصفة بغرير لـ 4 أشخاص تتطلّب 250g من السميد، والكمية متناسبة مع عدد الأشخاص."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم غرامًا من السميد لـ 10 أشخاص؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "625",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لشخص واحد $\\dfrac{250}{4}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$62{,}5$ g للشخص."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$62{,}5 \\times 10$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$62{,}5 \\times 10 = 625$ g.",
+        "incorrect": "المعامل كمية السميد لشخص واحد."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "لكيس 1kg من السميد: لكم شخصًا يكفي؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "16",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "1kg = 1000g."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{1000}{62{,}5}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الجواب عدد أشخاص."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{1000}{62{,}5} = 16$ شخصًا.",
+        "incorrect": "حوّل 1kg إلى 1000g أولًا."
+      }
+    }
+  ]
+}

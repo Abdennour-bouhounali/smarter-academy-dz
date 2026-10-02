@@ -1,0 +1,101 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l3-008",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 3,
+  "metadata": {
+    "title": "تكرار مجهول: الإخوة والأخوات",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تكرار مجهول",
+      "متوسط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P1"
+    }
+  },
+  "statement": {
+    "content": "عدد الإخوة والأخوات لـ 20 تلميذا: العدد: 1 ، 2 ، 3 ، 4 — عدد التلاميذ: 4 ، $a$ ، 6 ، 5."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما قيمة $a$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التكرار الكلي 20."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$4 + a + 6 + 5 = 20$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة."
+        }
+      ],
+      "feedback": {
+        "correct": "$15 + a = 20$ ، إذن $a = 5$.",
+        "incorrect": "مجموع التكرارات يساوي 20."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "ما متوسط هذه السلسلة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "2.6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $a$ بقيمتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مجموع (القيمة × التكرار)."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على 20."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{4 + 10 + 18 + 20}{20} = \\dfrac{52}{20} = 2{,}6$.",
+        "incorrect": "نضرب كل قيمة في تكرارها ثم نقسم على 20."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "2.5",
+          "id": "MISC-IHSA-MUTAWASSIT-BILA-TARJIH"
+        }
+      ]
+    }
+  ]
+}

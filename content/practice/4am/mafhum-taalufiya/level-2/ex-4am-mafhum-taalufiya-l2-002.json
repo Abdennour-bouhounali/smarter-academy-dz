@@ -1,0 +1,107 @@
+{
+  "id": "ex-4am-mafhum-taalufiya-l2-002",
+  "lessonCode": "mafhum-taalufiya",
+  "level": 2,
+  "metadata": {
+    "title": "نشاط 2 — الدالة 2 + 3x",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معاملان",
+      "الكتاب"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-2",
+      "page": 78,
+      "section": "أنشطة",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 78): الدالة التآلفية $x \\longmapsto 2 + 3x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعامل $a$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب العبارة على الشكل $ax + b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a$ هو العدد المضروب في $x$ (بإشارته)، و $b$ هو الحدّ الثابت."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا يهمّ ترتيب كتابة الحدّين."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = 3$ .",
+        "incorrect": "أعد كتابة العبارة على الشكل $ax + b$ ثم اقرأ المعامل المطلوب."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-A-B-MAQLUB",
+          "value": "2"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "المعامل $b$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب العبارة على الشكل $ax + b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a$ هو العدد المضروب في $x$ (بإشارته)، و $b$ هو الحدّ الثابت."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا يهمّ ترتيب كتابة الحدّين."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = 2$ .",
+        "incorrect": "أعد كتابة العبارة على الشكل $ax + b$ ثم اقرأ المعامل المطلوب."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-A-B-MAQLUB",
+          "value": "3"
+        }
+      ]
+    }
+  ]
+}

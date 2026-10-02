@@ -1,0 +1,114 @@
+{
+  "id": "ex-4am-tafsir-bayani-jumla-l5-005",
+  "lessonCode": "tafsir-bayani-jumla",
+  "level": 5,
+  "metadata": {
+    "title": "تطبيقا سيارة أجرة",
+    "estimatedMinutes": 6,
+    "tags": [
+      "ترييض",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tafsir-bayani-jumla_P2",
+      "modelledOn": "act-5"
+    }
+  },
+  "statement": {
+    "content": "التطبيق A: $y = 60x + 120$ ، التطبيق B: $y = 45x + 210$ ، حيث $x$ عدد الكيلومترات و $y$ الثمن (DA)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نقطة تقاطع المستقيمين: $(x ; y)$ =",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "6",
+        "y": "480"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نقطة التقاطع تقع على المستقيمين معًا: إحداثياها يحقّقان المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بالتعويض أو بالجمع، أوجد $x$ أولًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض قيمة $x$ في إحدى المعادلتين لإيجاد $y$ ، ثم تحقّق في الأخرى."
+        }
+      ],
+      "feedback": {
+        "correct": "الحل $(6 ; 480)$ ، ونتحقّق: $-60 \\times 6 + 480 = 120$ و $-45 \\times 6 + 480 = 210$.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نستنتج:",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لرحلة أقصر من 6 كيلومترات التطبيق A أرخص",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لرحلة أقصر من 6 كيلومترات التطبيق B أرخص",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "C",
+          "content": "التطبيق A أرخص مهما كانت المسافة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الفاصلة قيمة $x$ والترتيب قيمة $y$ : تذكّر ماذا يمثّل كل مجهول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نقطة التقاطع هي المكان الذي تتساوى فيه القيمتان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق من كل اقتراح بالحساب في الوضعية."
+        }
+      ],
+      "feedback": {
+        "correct": "لـ 1km مثلًا: $60 + 120 = 180$ و $45 + 210 = 255$ : A أرخص قبل 6km، والثمنان متساويان عند 6km (480DA)، ثم B أرخص.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

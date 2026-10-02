@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l4-006",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — الزاوية الناقصة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مخطط دائري",
+      "زاوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_majdulat-ihsaiya_P3",
+      "modelledOn": "ex-15"
+    }
+  },
+  "statement": {
+    "content": "مخطط دائري بثلاثة قطاعات: زاويتا الأولين 150 و 90 درجة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "زاوية القطاع الثالث (بالدرجات):",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "120",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-QIRAA-MUKHATTAT",
+          "value": "60"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الدائرة كلها 360."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$150 + 90 = 240$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$360 - 240$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$360 - 150 - 90 = 120$ .",
+        "incorrect": "مجموع الزوايا 360."
+      }
+    }
+  ]
+}

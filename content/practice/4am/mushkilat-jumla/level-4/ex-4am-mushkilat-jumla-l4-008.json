@@ -1,0 +1,147 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l4-008",
+  "lessonCode": "mushkilat-jumla",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — باقات الجيغا والميغا",
+    "estimatedMinutes": 6,
+    "tags": [
+      "ترييض",
+      "وحدات",
+      "هاتف"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P1",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "تبيع شركة باقة «1 Go» بـ 100 DA وباقة «500 Mo» بـ 70 DA. اشترى أنيس 9 باقات مجموع سعتها 6 Go. نسمّي $x$ عدد باقات «1 Go» و $y$ عدد باقات «500 Mo» (1 Go = 1000 Mo)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعلومة «مجموع سعتها 6 Go» تُترجم بـ:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x + 500y = 6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-WIHDA"
+        },
+        {
+          "id": "B",
+          "content": "$1000x + 500y = 6000$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$1000x + 500y = 6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-WIHDA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المعادلة الواحدة وحدة واحدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حوّل كل شيء إلى Mo ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "6 Go = 6000 Mo ."
+        }
+      ],
+      "feedback": {
+        "correct": "بالميغا: $1000x + 500y = 6000$ .",
+        "incorrect": "لا نجمع Go مع Mo : نحوّل أولا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "كم باقة من كل نوع؟ اكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "3",
+        "y": "6"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقسم معادلة السعة على 500."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على $2x + y = 12$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح منها $x + y = 9$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 3$ و $y = 6$ : $3000 + 3000 = 6000$ Mo.",
+        "incorrect": "أكمل حتى الثنائية."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "كم دفع أنيس (بالدينار)؟",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "720",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ثمن باقات «1 Go» : عددها × 100."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثمن باقات «500 Mo» : عددها × 70."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المبلغين."
+        }
+      ],
+      "feedback": {
+        "correct": "$3 \\times 100 + 6 \\times 70 = 300 + 420 = 720$ DA.",
+        "incorrect": "استعمل عدد كل باقة الذي وجدته."
+      }
+    }
+  ]
+}

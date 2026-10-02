@@ -1,0 +1,141 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l1-009",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 1,
+  "metadata": {
+    "title": "باقات الإنترنت — المجهولان والجملة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترجمة",
+      "اختيار المجهولين"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P2"
+    }
+  },
+  "statement": {
+    "content": "اشترى أمين 3 باقات إنترنت صغيرة وباقة كبيرة بـ 700 DA، واشترت لينة باقة صغيرة وباقتين كبيرتين بـ 900 DA. الباقات من النوع نفسه متماثلة الثمن."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المجهولان المناسبان هما:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x$ ثمن الباقة الصغيرة و $y$ ثمن الباقة الكبيرة",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x$ عدد الباقات الصغيرة و $y$ عدد الباقات الكبيرة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MAJAHIL"
+        },
+        {
+          "id": "C",
+          "content": "$x$ ما دفعه أمين و $y$ ما دفعته لينة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MAJAHIL"
+        },
+        {
+          "id": "D",
+          "content": "$x$ عدد كل الباقات و $y$ المبلغ الكلي",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MAJAHIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما الذي لا نعرفه في النص؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الأعداد 3 و 1 و 2 والمبلغان معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المجهولان هما ما يجب حسابه."
+        }
+      ],
+      "feedback": {
+        "correct": "نجهل ثمني الباقتين: $x$ للصغيرة و $y$ للكبيرة.",
+        "incorrect": "لا نسمّي مجهولا ما هو معلوم في النص."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 1
+    },
+    {
+      "id": "q2",
+      "statement": "الجملة التي تترجم النص هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + 3y = 700 \\\\ 2x + y = 900 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} 3x + y = 700 \\\\ x + 2y = 900 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} 3x + y = 900 \\\\ x + 2y = 700 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "D",
+          "content": "$\\begin{cases} 3x + y = 700 \\\\ x + y = 900 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معلومة لكل شخص: معادلة لأمين ومعادلة للينة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أمين: 3 صغيرة وواحدة كبيرة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "كل عدد يُضرب في ثمن الباقة التي يعدّها."
+        }
+      ],
+      "feedback": {
+        "correct": "أمين: $3x + y = 700$ ؛ لينة: $x + 2y = 900$.",
+        "incorrect": "راجع أيّ عدد يعدّ الصغيرة وأيّه يعدّ الكبيرة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    }
+  ]
+}

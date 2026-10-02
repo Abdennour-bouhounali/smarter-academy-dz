@@ -1,0 +1,111 @@
+{
+  "id": "ex-4am-mafhum-taalufiya-l2-008",
+  "lessonCode": "mafhum-taalufiya",
+  "level": 2,
+  "metadata": {
+    "title": "صيغة الهاتف النقال",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "صيغة هاتف نقال: 500DA في الشهر، يضاف إليها 50DA عن كل جيغا إضافية. نسمّي $x$ عدد الجيغات الإضافية و $f(x)$ المبلغ الشهري."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب المبلغ الشهري لـ 8 جيغات إضافية.",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "900",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد بدالة تآلفية: نعوّض $x$ بهذا العدد في العبارة $ax + b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب العدد في المعامل $a$ أولا، وانتبه إلى الإشارات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تنسَ أن تضيف الحدّ الثابت $b$ في النهاية."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(8) = 50 \\times 8 + 500 = 900$ .",
+        "incorrect": "أعد الحساب: اضرب في $a$ ثم أضف $b$ ، وتحقّق من الإشارات."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-NISYAN-B",
+          "value": "400"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "دفع تلميذ 1000DA. كم جيغا إضافية استهلك؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المطلوب عدد علمت صورته، لا صورة عدد: اكتب المعادلة $ax + b = m$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انقل الحدّ الثابت $b$ إلى الطرف الآخر أولا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اقسم الطرفين على المعامل $a$ ، وتحقّق بحساب صورة ما وجدته."
+        }
+      ],
+      "feedback": {
+        "correct": "$50x + 500 = 1000$ ، إذن $50x = 500$ ، ومنه $x = 10$ .",
+        "incorrect": "اطرح $b$ أولا ثم اقسم على $a$ ، وتحقّق بالتعويض."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-SABIQ-QISMA",
+          "value": "20"
+        },
+        {
+          "id": "MISC-TAALUFI-SABIQ-TARTIB",
+          "value": "-480"
+        },
+        {
+          "id": "MISC-KHATTIYA-SURA-SABIQ",
+          "value": "50500"
+        }
+      ]
+    }
+  ]
+}

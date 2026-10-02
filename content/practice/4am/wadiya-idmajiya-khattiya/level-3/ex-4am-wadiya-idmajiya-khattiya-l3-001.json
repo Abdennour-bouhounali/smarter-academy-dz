@@ -1,0 +1,144 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l3-001",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 3,
+  "metadata": {
+    "title": "مصعد هوائي قصير",
+    "estimatedMinutes": 4,
+    "tags": [
+      "فيثاغورس",
+      "سرعة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "ينطلق مصعد هوائي من ارتفاع $600\\,\\mathrm{m}$ ليصل ارتفاع $1000\\,\\mathrm{m}$ ، والمسافة الأفقية بين نقطتي الانطلاق والوصول $300\\,\\mathrm{m}$ ، وسرعته $4\\,\\mathrm{m/s}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما الفرق بين الارتفاعين بالمتر؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالمتر",
+      "expectedAnswer": "400",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الضلع العمودي هو فرق الارتفاعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح الارتفاع الأصغر من الأكبر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تأخذ ارتفاع نقطة الوصول وحده."
+        }
+      ],
+      "feedback": {
+        "correct": "$1000 - 600 = 400\\,\\mathrm{m}$.",
+        "incorrect": "الضلع العمودي للمثلث هو فرق الارتفاعين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1,
+      "misconceptionSignatures": [
+        {
+          "value": "1000",
+          "id": "MISC-TARRID-TAFSIR"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما طول الحبل بالمتر؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالمتر",
+      "expectedAnswer": "500",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحبل وتر مثلث قائم."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ضلعاه المسافة الأفقية وفرق الارتفاعين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مبرهنة فيثاغورس."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{300^2 + 400^2} = \\sqrt{250000}$ ، أي 500 m.",
+        "incorrect": "الوتر لا يساوي مجموع الضلعين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "700",
+          "id": "MISC-JIDHR-JAMA"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "ما مدة صعود واحد بالثواني؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالثواني",
+      "expectedAnswer": "125",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المدة = المسافة ÷ السرعة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل طول الحبل من السؤال السابق."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المسافة بالمتر والسرعة بالمتر في الثانية."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{500}{4} = 125\\,\\mathrm{s}$ ، أي دقيقتان و 5 ثوان.",
+        "incorrect": "اقسم طول الحبل على السرعة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    }
+  ]
+}

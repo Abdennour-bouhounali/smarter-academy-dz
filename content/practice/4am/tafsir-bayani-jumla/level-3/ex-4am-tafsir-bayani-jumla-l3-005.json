@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-tafsir-bayani-jumla-l3-005",
+  "lessonCode": "tafsir-bayani-jumla",
+  "level": 3,
+  "metadata": {
+    "title": "كم حلًّا؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متوازيان"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tafsir-bayani-jumla_P3",
+      "modelledOn": "act-5"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الجملة $\\begin{cases} 3x - y = 2 \\\\ 6x - 2y = 1 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هذه الجملة:",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "حلّ وحيد: المستقيمان متقاطعان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-BAYANI-TAWAZI"
+        },
+        {
+          "id": "B",
+          "content": "لا تقبل حلًّا: المستقيمان متوازيان",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "عدد لا نهائي من الحلول: المستقيمان منطبقان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-BAYANI-TAWAZI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب كل معادلة على الشكل $y = ax + b$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن معاملي التوجيه: مختلفان أم متساويان؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا تساويا، قارن الترتيبين عند المبدأ."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 3x - 2$ و $y = 3x - 0{,}5$ : معامل التوجيه نفسه وترتيبان مختلفان عند المبدأ: متوازيان، لا حلّ.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

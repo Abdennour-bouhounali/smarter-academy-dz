@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l4-009",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 4,
+  "metadata": {
+    "title": "سرعة بالكيلومتر في الساعة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "سرعة",
+      "تحويل الوحدات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P1",
+      "modelledOn": "know-4"
+    }
+  },
+  "statement": {
+    "content": "تسير قمرة مصعد هوائي بسرعة $18\\,\\mathrm{km/h}$ على حبل طوله $1500\\,\\mathrm{m}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما سرعتها بـ $\\mathrm{m/s}$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$1\\,\\mathrm{km} = 1000\\,\\mathrm{m}$ و $1\\,\\mathrm{h} = 3600\\,\\mathrm{s}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{18000}{3600}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حوّل البسط والمقام كلا على حدة."
+        }
+      ],
+      "feedback": {
+        "correct": "$18\\,\\mathrm{km/h} = \\dfrac{18000\\,\\mathrm{m}}{3600\\,\\mathrm{s}} = 5\\,\\mathrm{m/s}$.",
+        "incorrect": "الساعة 3600 ثانية لا 60."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "300",
+          "id": "MISC-MAQADIR-WIHDA"
+        },
+        {
+          "value": "64.8",
+          "id": "MISC-MAQADIR-WIHDA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما مدة الصعود بالدقائق؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدقائق",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المدة بالثواني = المسافة ÷ السرعة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل السرعة بـ m/s."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حوّل الثواني إلى دقائق."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{1500}{5} = 300\\,\\mathrm{s} = 5$ دقائق.",
+        "incorrect": "احسب بالثواني ثم اقسم على 60."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "300",
+          "id": "MISC-MAQADIR-WIHDA"
+        }
+      ]
+    }
+  ]
+}

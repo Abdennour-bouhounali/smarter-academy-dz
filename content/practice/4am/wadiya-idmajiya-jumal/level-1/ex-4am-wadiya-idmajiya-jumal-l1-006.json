@@ -1,0 +1,81 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l1-006",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 6 — التعبير عن مجهول",
+    "estimatedMinutes": 3,
+    "tags": [
+      "التعويض",
+      "بدلالة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 62,
+      "section": "أؤكّد تعلّماتي",
+      "number": 6
+    }
+  },
+  "statement": {
+    "content": "نعتبر المعادلة $3x - y = 1$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ مساواة لا تنتج من المعادلة $3x - y = 1$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$y = 3x - 1$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$x = \\dfrac{y + 1}{3}$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$3x = y + 1$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$y = 3x + 1$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن المساواة التي فيها خطأ في الإشارة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ننقل حدا من طرف إلى آخر بتغيير إشارته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض مثلا $x = 1$ في كل مساواة وقارن."
+        }
+      ],
+      "feedback": {
+        "correct": "من $3x - y = 1$ ينتج $y = 3x - 1$ ، لا $3x + 1$.",
+        "incorrect": "انقل $-y$ و $1$ بتغيير إشارتيهما."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "id": "ex-4am-tarrid-taalufi-l5-007",
+  "lessonCode": "tarrid-taalufi",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — نمذجة شهر كامل",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نمذجة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-taalufi_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "نادي سباحة: رسم تسجيل سنوي 2400DA ، ثم 1200DA عن كل شهر. نسمّي $x$ عدد الأشهر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المبلغ المدفوع بعد $x$ شهر هو:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$f(x) = 2400x + 1200$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-JUZ-THABIT"
+        },
+        {
+          "id": "B",
+          "content": "$f(x) = 1200x + 2400$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$f(x) = 3600x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-JUZ-THABIT"
+        },
+        {
+          "id": "D",
+          "content": "$f(x) = 1200x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-NISYAN-B"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما الذي يُدفع مرّة واحدة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثمن الشهر يُضرب في $x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$f(x) = ax + b$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "رسم التسجيل جزء ثابت: $f(x) = 1200x + 2400$ .",
+        "incorrect": "رسم التسجيل يُدفع مرّة واحدة."
+      }
+    }
+  ]
+}

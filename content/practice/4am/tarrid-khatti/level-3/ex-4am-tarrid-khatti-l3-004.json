@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-tarrid-khatti-l3-004",
+  "lessonCode": "tarrid-khatti",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 36 (ص 75) — كرة القدم في القسم",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نسبة مئوية",
+      "تفسير"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-36",
+      "page": 75,
+      "section": "أتعمّق",
+      "number": 36
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 75): قسم من 30 تلميذا، 20 يدرسون الإنجليزية (60% منهم يلعبون كرة القدم) و 10 يدرسون الألمانية (70% منهم يلعبونها)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم تلميذًا يلعب كرة القدم؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "19",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$0{,}6 \\times 20$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$0{,}7 \\times 10$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع."
+        }
+      ],
+      "feedback": {
+        "correct": "$12 + 7 = 19$ تلميذا.",
+        "incorrect": "احسب كل فوج على حدة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "النسبة المئوية لتلاميذ القسم الذين يلعبون كرة القدم:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$65\\%$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-JAM"
+        },
+        {
+          "id": "B",
+          "content": "$130\\%$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-JAM"
+        },
+        {
+          "id": "C",
+          "content": "حوالي $63{,}33\\%$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "19 من 30."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{19}{30} \\times 100$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الفوجان غير متساويين."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{19}{30} \\times 100 \\approx 63{,}33$ .",
+        "incorrect": "لا نأخذ متوسط النسبتين."
+      }
+    }
+  ]
+}

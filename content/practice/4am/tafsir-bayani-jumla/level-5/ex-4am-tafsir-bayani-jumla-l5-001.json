@@ -1,0 +1,129 @@
+{
+  "id": "ex-4am-tafsir-bayani-jumla-l5-001",
+  "lessonCode": "tafsir-bayani-jumla",
+  "level": 5,
+  "metadata": {
+    "title": "نشاط 5 — قطع من فئة واحدة",
+    "estimatedMinutes": 6,
+    "tags": [
+      "متوازيان",
+      "تفسير"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-5",
+      "page": 79,
+      "section": "أنشطة",
+      "number": 5
+    }
+  },
+  "statement": {
+    "content": "انطلاقًا من الكتاب (ص 79): لو كانت قطع الصندوق الـ 43 كلها من فئة 100DA ومبلغها 5000DA، لكانت الجملة $\\begin{cases} x + y = 43 \\\\ 100x + 100y = 5000 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هذه الجملة:",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "حلّ وحيد: المستقيمان متقاطعان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-BAYANI-TAWAZI"
+        },
+        {
+          "id": "B",
+          "content": "لا تقبل حلًّا: المستقيمان متوازيان",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "عدد لا نهائي من الحلول: المستقيمان منطبقان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-BAYANI-TAWAZI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب كل معادلة على الشكل $y = ax + b$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن معاملي التوجيه: مختلفان أم متساويان؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا تساويا، قارن الترتيبين عند المبدأ."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = -x + 43$ و $y = -x + 50$ : معامل التوجيه نفسه وترتيبان مختلفان عند المبدأ: متوازيان، لا حلّ.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نفسّر النتيجة في الوضعية:",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا يمكن: 43 قطعة من 100DA لا تعطي إلا 4300DA",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "يمكن بطريقة واحدة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-BAYANI-TAWAZI"
+        },
+        {
+          "id": "C",
+          "content": "يمكن بطرق كثيرة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-BAYANI-TAWAZI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الفاصلة قيمة $x$ والترتيب قيمة $y$ : تذكّر ماذا يمثّل كل مجهول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نقطة التقاطع هي المكان الذي تتساوى فيه القيمتان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق من كل اقتراح بالحساب في الوضعية."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + y = 43$ يعطي $100x + 100y = 4300 \\neq 5000$ : المستقيمان متوازيان، والوضعية مستحيلة.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

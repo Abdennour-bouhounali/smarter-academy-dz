@@ -1,0 +1,58 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l3-005",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — لعبة الفيديو",
+    "estimatedMinutes": 3,
+    "tags": [
+      "السعر قبل التغيّر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tatbiqat-tanasub_P3",
+      "modelledOn": "ex-3"
+    }
+  },
+  "statement": {
+    "content": "بعد زيادة بـ 15%، أصبح سعر لعبة فيديو 2300DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "سعر اللعبة قبل الزيادة (بالدينار):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "2000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المقدار المعطى هو المقدار بعد التغيّر، والمطلوب المقدار قبله."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب العلاقة $y = kx$ بالمضاعف $k$ ، ثم عوّض $y$ بقيمته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة $kx = y$ : $x = \\dfrac{y}{k}$ ، ثم تحقّق بالضرب."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}15x = 2300$ ، ومنه $x = 2000$ . (لا $2300 \\times 0{,}85 = 1955$ .)",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    }
+  ]
+}

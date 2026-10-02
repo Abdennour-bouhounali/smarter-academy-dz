@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tarrid-khatti-l5-001",
+  "lessonCode": "tarrid-khatti",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — تسعيرتان (على نمط تمرين 31)",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مقارنة",
+      "تمثيل بياني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P3",
+      "modelledOn": "ex-31"
+    }
+  },
+  "statement": {
+    "content": "التسعيرة الأولى 25DA للكيلومتر، والثانية مبلغ ثابت 3000DA. نسمّي $x$ المسافة (km)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من أجل أيّ مسافة (km) تتساويان؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "120",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$25x = 3000$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{3000}{25}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تقاطع التمثيلين."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 120$ km.",
+        "incorrect": "التسعيرة الثانية ثابتة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "لرحلة 100km:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الثانية أفضل",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "id": "B",
+          "content": "الأولى أفضل: 2500DA",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "تتساويان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$25 \\times 100$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن بـ 3000."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "100 أقل من 120."
+        }
+      ],
+      "feedback": {
+        "correct": "$2500 < 3000$ : الأولى أفضل تحت 120km.",
+        "incorrect": "احسب ثمن الرحلة بالتسعيرتين."
+      }
+    }
+  ]
+}

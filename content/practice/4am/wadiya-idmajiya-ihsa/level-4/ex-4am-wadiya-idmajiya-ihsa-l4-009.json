@@ -1,0 +1,106 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l4-009",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 4,
+  "metadata": {
+    "title": "أعمار المتسابقين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تواتر مجمع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P1"
+    }
+  },
+  "statement": {
+    "content": "أعمار 40 متسابقا في مسابقة رياضيات ولائية: العمر: 13 ، 14 ، 15 ، 16 — التكرار: 10 ، 14 ، 10 ، 6."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما النسبة المئوية للمتسابقين الذين عمرهم 14 سنة على الأكثر؟ (دون الرمز %)",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "60",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "«على الأكثر» صاعد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$10 + 14$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "على 40 ثم × 100."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{24}{40} = 0{,}6$ ، أي 60%.",
+        "incorrect": "تواتر مجمع صاعد للقيمة 14."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "24",
+          "id": "MISC-IHSA-TAWATUR-BILA-QISMA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "وما النسبة المئوية للذين عمرهم 15 سنة على الأقل؟ (دون الرمز %)",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "40",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "«على الأقل» نازل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$10 + 6$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "على 40 ثم × 100."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{16}{40} = 0{,}4$ ، أي 40%.",
+        "incorrect": "تواتر مجمع نازل للقيمة 15."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "16",
+          "id": "MISC-IHSA-TAWATUR-BILA-QISMA"
+        }
+      ]
+    }
+  ]
+}

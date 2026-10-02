@@ -37,7 +37,7 @@ export default function Module01ThalathHalat() {
       moduleTitle="نشاط 3 — ثلاث حالات" moduleSubtitle="n يقسم a و b. ماذا يقسم أيضًا؟" estimatedTime="12 دقيقة"
       brief={{ tag: 'أنشطة — الكتاب ص 8', title: ACTIVITY.title, tone: 'indigo',
         headline: 'هيا نبني بالطوب!', emoji: '🧱', visual: <ConstructionScene />,
-        body: <div className="space-y-1"><p>{ACTIVITY.questions[0]}</p><p dir="ltr" className="font-mono text-sm">1) a = 18, b = 12, n = 3 &nbsp; 2) a = 35, b = 15, n = 5 &nbsp; 3) a = 56, b = 21, n = 7</p><SourceTag source={ACTIVITY.source} /></div> }}
+        body: <div className="space-y-1"><p><MathText>{ACTIVITY.questions[0]}</MathText></p><p dir="ltr" className="font-mono text-sm">1) a = 18, b = 12, n = 3 &nbsp; 2) a = 35, b = 15, n = 5 &nbsp; 3) a = 56, b = 21, n = 7</p><SourceTag source={ACTIVITY.source} /></div> }}
       intro={(
         <ManipulationWorkspace
           title="الأنشطة التفاعلية"

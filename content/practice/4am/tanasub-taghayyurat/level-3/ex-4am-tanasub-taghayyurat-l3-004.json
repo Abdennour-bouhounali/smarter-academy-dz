@@ -1,0 +1,61 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l3-004",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — بجملة معادلتين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جملة معادلتين",
+      "تعيين دالة تآلفية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "$f$ دالة تآلفية حيث $f(3) = 11$ و $f(5) = 17$ ، أي $\\begin{cases} 3a + b = 11 \\\\ 5a + b = 17 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ الجملة $(a ; b)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (a ; b) — عددان صحيحان أو كسران",
+      "expectedAnswer": {
+        "x": "3",
+        "y": "2"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اطرح المعادلة الأولى من الثانية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2a = 6$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم عوّض في الأولى."
+        }
+      ],
+      "feedback": {
+        "correct": "$2a = 6$ ، $a = 3$ ، ثم $b = 11 - 9 = 2$ .",
+        "incorrect": "بالطرح يختفي $b$ ."
+      }
+    }
+  ]
+}

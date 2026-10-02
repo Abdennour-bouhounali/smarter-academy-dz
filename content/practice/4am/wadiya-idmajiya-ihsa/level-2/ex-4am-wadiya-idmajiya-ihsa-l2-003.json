@@ -1,0 +1,120 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l2-003",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 2,
+  "metadata": {
+    "title": "أدمج تعلّماتي — ترتيب المعطيات",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "تكرار كلي",
+      "وسيط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "situation",
+      "page": 100,
+      "section": "أدمج تعلّماتي"
+    }
+  },
+  "statement": {
+    "content": "حصيلة الميداليات الذهبية للدول الفائزة بها خلال إحدى دورات الألعاب الأولمبية: عدد الميداليات الذهبية: 1 ، 2 ، ⬡ ، 4 ، 5 ، 6 ، 7 ، 11 ، 13 ، 14 ، 16 ، 26 ، ⬡ ، 32 — التكرار: 11 ، 3 ، 2 ، 1 ، 2 ، 2 ، 1 ، 1 ، 1 ، 2 ، 1 ، 1 ، 1 ، 1. وسيط السلسلة: 3 ميداليات. متوسط السلسلة: 7 ميداليات. (⬡ قيمة مخفية: الأولى بين 2 و 4 ، والثانية بين 26 و 32.)"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم دولة فازت بميدالية ذهبية واحدة على الأقل؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "30",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كل دولة تُعدّ مرة واحدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نجمع التكرارات، بما فيها تكرارا العمودين المخفيين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "التكرار الكلي."
+        }
+      ],
+      "feedback": {
+        "correct": "التكرار الكلي $N = 30$.",
+        "incorrect": "نجمع كل التكرارات، ولا نعدّ الأعمدة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "14",
+          "id": "MISC-IHSA-MUTAWASSIT-QISMA-QIYAM"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "الوسيط هو نصف مجموع القيمتين اللتين رتبتاهما:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "15 و 16",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "7 و 8",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-QIMA-WUSTA-JADWAL"
+        },
+        {
+          "id": "C",
+          "content": "$15{,}5$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-RUTBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التكرار الكلي زوجي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الرتبتان $\\dfrac{N}{2}$ و $\\dfrac{N}{2} + 1$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الرتب رتب الدول لا الأعمدة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{30}{2} = 15$ والرتبة الموالية 16.",
+        "incorrect": "الرتب تخص الدول المرتبة، لا أعمدة الجدول."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    }
+  ]
+}

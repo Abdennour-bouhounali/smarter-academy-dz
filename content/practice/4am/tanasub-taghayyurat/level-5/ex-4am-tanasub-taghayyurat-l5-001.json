@@ -1,0 +1,81 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l5-001",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — فرق صورتين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تناسب التغيرات",
+      "برهان"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "$f$ دالة تآلفية حيث $f(x) = ax + b$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الفرق $f(7) - f(3)$ يساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$4a + b$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-NISYAN-B"
+        },
+        {
+          "id": "B",
+          "content": "$4a$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$10a + 2b$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-BIDUN-QISMA"
+        },
+        {
+          "id": "D",
+          "content": "$4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-BIDUN-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب $f(7)$ و $f(3)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(7a + b) - (3a + b)$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحدّ $b$ يختفي."
+        }
+      ],
+      "feedback": {
+        "correct": "$(7a + b) - (3a + b) = 4a$ .",
+        "incorrect": "وزّع الإشارة على القوسين."
+      }
+    }
+  ]
+}

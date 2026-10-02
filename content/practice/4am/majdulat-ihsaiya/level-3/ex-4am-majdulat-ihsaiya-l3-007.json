@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l3-007",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 3,
+  "metadata": {
+    "title": "أستعدّ (ص 91) — مدرّج لا يطابق جدوله",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مدرّج تكراري",
+      "قراءة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "prep",
+      "page": 91,
+      "section": "أستعدّ",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 91): جدول الفئات $5 \\le a < 10$ ، $10 \\le a < 15$ ، $15 \\le a \\le 20$ بالتكرارات 4 ، 8 ، 7 ، ومدرّج ارتفاعات مستطيلاته 4 ، 8 ، 10 ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل المدرّج يمثّل الجدول؟",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم: الفئات نفسها",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-QIRAA-MUKHATTAT"
+        },
+        {
+          "id": "B",
+          "content": "لا: المستطيل الثاني يجب أن يكون ارتفاعه 4",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-QIRAA-MUKHATTAT"
+        },
+        {
+          "id": "C",
+          "content": "لا: المستطيل الثالث يجب أن يكون ارتفاعه 7 لا 10",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن الارتفاعات بالتكرارات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الأولى 4 = 4 ، الثانية 8 = 8 ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الثالثة؟"
+        }
+      ],
+      "feedback": {
+        "correct": "ارتفاع الثالث 10 بينما تكرار الفئة $15 \\le a \\le 20$ هو 7 .",
+        "incorrect": "قارن كل مستطيل بتكرار فئته."
+      }
+    }
+  ]
+}

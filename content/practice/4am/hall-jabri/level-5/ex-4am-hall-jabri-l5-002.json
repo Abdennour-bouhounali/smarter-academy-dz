@@ -1,0 +1,115 @@
+{
+  "id": "ex-4am-hall-jabri-l5-002",
+  "lessonCode": "hall-jabri",
+  "level": 5,
+  "metadata": {
+    "title": "تمرين 13 — نبسّط أولًا",
+    "estimatedMinutes": 4,
+    "tags": [
+      "اختيار الطريقة",
+      "تبسيط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-13",
+      "page": 61,
+      "section": "أوظّف تعلّماتي",
+      "number": 13
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 61): حلّ الجملة باستعمال طريقة من اختيارك. $\\begin{cases} x - 2y = 1 \\\\ -3(x - y) = 6 \\end{cases}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعادلة الثانية تُكتب أبسط:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x - y = -2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x - y = 2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-ISHARA-SALIBA"
+        },
+        {
+          "id": "C",
+          "content": "$x - y = 3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-TARH-MUAMIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ المعاملات قبل أن تبدأ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل يساوي $1$ أو $-1$ يسهّل التعويض؛ معاملان متعاكسان (أو يصيران كذلك بضرب بسيط) يسهّلان الجمع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد إيجاد مجهول، عوّض قيمته لتجد الآخر، ثم تحقّق من الثنائية في المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "نقسم الطرفين على $-3$ : $x - y = -2$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "-5",
+        "y": "-3"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ المعاملات قبل أن تبدأ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل يساوي $1$ أو $-1$ يسهّل التعويض؛ معاملان متعاكسان (أو يصيران كذلك بضرب بسيط) يسهّلان الجمع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد إيجاد مجهول، عوّض قيمته لتجد الآخر، ثم تحقّق من الثنائية في المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "بطرح المعادلتين $-y = 3$ ، ومنه $y = -3$ ثم $x = 1 + 2y = -5$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

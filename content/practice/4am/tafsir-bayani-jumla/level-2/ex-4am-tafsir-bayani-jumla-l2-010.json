@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-tafsir-bayani-jumla-l2-010",
+  "lessonCode": "tafsir-bayani-jumla",
+  "level": 2,
+  "metadata": {
+    "title": "قاعة الألعاب",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تفسير",
+      "وضعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tafsir-bayani-jumla_P2",
+      "modelledOn": "act-5"
+    }
+  },
+  "statement": {
+    "content": "في قاعة ألعاب إلكترونية: الصيغة A ثمنها $y = 100x + 200$ والصيغة B ثمنها $y = 150x$ ، حيث $x$ عدد الساعات و $y$ الثمن (DA). يتقاطع المستقيمان في $(4 ; 600)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نفسّر نقطة التقاطع $(4 ; 600)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لـ 4 ساعات من اللعب تدفع 600DA في الصيغتين",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لـ 600 ساعة تدفع 4DA في الصيغتين",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-BAYANI-MAQLUB"
+        },
+        {
+          "id": "C",
+          "content": "الصيغة A أرخص مهما كان عدد الساعات",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الفاصلة قيمة $x$ والترتيب قيمة $y$ : تذكّر ماذا يمثّل كل مجهول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نقطة التقاطع هي المكان الذي تتساوى فيه القيمتان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق من كل اقتراح بالحساب في الوضعية."
+        }
+      ],
+      "feedback": {
+        "correct": "$100 \\times 4 + 200 = 600$ و $150 \\times 4 = 600$ : لـ 4 ساعات الثمن نفسه. ولساعة واحدة A تكلّف 300DA و B تكلّف 150DA.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

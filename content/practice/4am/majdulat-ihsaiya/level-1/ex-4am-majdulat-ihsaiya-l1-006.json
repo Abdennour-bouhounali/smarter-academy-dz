@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l1-006",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — مدى نقاط مسابقة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مدى",
+      "دستور"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_majdulat-ihsaiya_P2",
+      "modelledOn": "ex-7"
+    }
+  },
+  "statement": {
+    "content": "نقاط خمسة أصدقاء في مسابقة القسم محجوزة في A1:E1 : 5 ، 8 ، 6 ، 9 ، 7 ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد الذي يُظهره الدستور ⁦=MAX(A1:E1)-MIN(A1:E1)⁩ :",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MADA-AKBAR-QIMA",
+          "value": "9"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "MAX أكبر قيمة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "MIN أصغر قيمة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$9 - 5$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$9 - 5 = 4$ : المدى.",
+        "incorrect": "أكبر قيمة ناقص أصغر قيمة."
+      }
+    }
+  ]
+}

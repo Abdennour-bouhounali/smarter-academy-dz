@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l4-006",
+  "lessonCode": "mushkilat-jumla",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — كرات وقمصان النادي",
+    "estimatedMinutes": 6,
+    "tags": [
+      "ترييض",
+      "نسب مئوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P1",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "اشترى نادي الحي 6 كرات و 10 قمصان بـ 21000 DA. في الموسم التالي ارتفع ثمن الكرة بـ 10% وانخفض ثمن القميص بـ 20%، فدفع النادي للكمية نفسها 19500 DA. نسمّي $x$ ثمن الكرة و $y$ ثمن القميص في الموسم الأول (بالدينار)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "شراء الموسم التالي يُترجم بـ:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$6 \\times 1{,}1x + 10 \\times 0{,}8y = 19500$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$6(x + 10) + 10(y - 20) = 19500$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$6 \\times 0{,}1x + 10 \\times 0{,}2y = 19500$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارتفاع بـ 10% : الثمن الجديد = الثمن + 10% منه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أي الثمن مضروبا في $1{,}1$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انخفاض بـ 20% : الثمن مضروبا في $0{,}8$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "الكرة $1{,}1x$ والقميص $0{,}8y$ ، والحل $(1500 ; 1200)$ .",
+        "incorrect": "النسبة المئوية ليست مبلغا ثابتا: تُضرب في الثمن."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ثمن الكرة وثمن القميص في الموسم الأول: اكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "1500",
+        "y": "1200"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب الجملة: $6x + 10y = 21000$ و $6{,}6x + 8y = 19500$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "من الأولى عبّر عن $y$ بدلالة $x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أو اضرب لتتعاكس معاملات $y$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 1500$ و $y = 1200$ : $9000 + 12000 = 21000$ و $9900 + 9600 = 19500$ .",
+        "incorrect": "تحقّق بالشراءين."
+      }
+    }
+  ]
+}

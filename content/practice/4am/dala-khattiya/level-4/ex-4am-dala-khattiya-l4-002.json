@@ -1,0 +1,70 @@
+{
+  "id": "ex-4am-dala-khattiya-l4-002",
+  "lessonCode": "dala-khattiya",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 6 — عدد كسري وصورته",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تعيين",
+      "كسر"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-6",
+      "page": 72,
+      "section": "أوظّف تعلّماتي",
+      "number": 6
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 72): عيّن الدّالة الخطية $g$ إذا علمت أن $g\\left(\\dfrac{-2}{3}\\right) = \\dfrac{-3}{5}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عيّن معامل الدالة الخطية $g$ علمًا أنّ $g(-\\dfrac{2}{3}) = -0{,}6$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "0.9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الدالة خطية: دستورها من الشكل $f(x) = ax$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعلومة المعطاة على شكل معادلة مجهولها $a$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الصورة على العدد غير المعدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "$-\\dfrac{2}{3}a = -0{,}6$ ، إذن $a = -0{,}6 \\div (-\\dfrac{2}{3}) = 0{,}9$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-MUAMIL-MAQLUB",
+          "value": "10/9"
+        },
+        {
+          "id": "MISC-KHATTIYA-ISHARA",
+          "value": "-0.9"
+        }
+      ]
+    }
+  ]
+}

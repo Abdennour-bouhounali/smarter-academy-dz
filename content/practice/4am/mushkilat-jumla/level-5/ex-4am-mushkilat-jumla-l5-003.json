@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l5-003",
+  "lessonCode": "mushkilat-jumla",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — عدد من رقمين",
+    "estimatedMinutes": 5,
+    "tags": [
+      "ترييض",
+      "أرقام"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P1",
+      "modelledOn": "ex-24"
+    }
+  },
+  "statement": {
+    "content": "عدد مكتوب برقمين: مجموع رقميه 11، وإذا قلبنا رقميه زاد العدد بـ 27. نسمّي $x$ رقم العشرات و $y$ رقم الآحاد."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعلومة «إذا قلبنا رقميه زاد العدد بـ 27» تُترجم بـ:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$10x + y = 10y + x + 27$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$10y + x = 10x + y + 27$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$y + x = x + y + 27$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد يُكتب $10x + y$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بعد القلب يصير رقم العشرات $y$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العدد المقلوب أكبر بـ 27."
+        }
+      ],
+      "feedback": {
+        "correct": "العدد المقلوب $10y + x$ يساوي العدد الأول زائد 27، والعدد 47.",
+        "incorrect": "العدد ليس مجموع رقميه: رقم العشرات يُضرب في 10."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو هذا العدد؟",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي من رقمين",
+      "expectedAnswer": "47",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بسّط: $9y - 9x = 27$ أي $y - x = 3$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مع $x + y = 11$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اكتب العدد $10x + y$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 4$ و $y = 7$ : العدد 47، ومقلوبه $74 = 47 + 27$ .",
+        "incorrect": "الجواب عدد، لا رقماه منفصلين."
+      }
+    }
+  ]
+}

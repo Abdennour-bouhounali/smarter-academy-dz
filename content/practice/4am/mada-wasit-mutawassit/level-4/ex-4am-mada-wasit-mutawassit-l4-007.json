@@ -1,0 +1,55 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l4-007",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — أعمار روّاد نادٍ",
+    "estimatedMinutes": 4,
+    "tags": [
+      "فئات",
+      "مراكز"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mada-wasit-mutawassit_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "أعمار 20 منخرطًا في نادي شطرنج: $10 \\le a < 14$ (5)، $14 \\le a < 18$ (10)، $18 \\le a \\le 22$ (5)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "تقدير العمر المتوسط (بمراكز الفئات) هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "16",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MARKAZ-FIA",
+          "value": "14"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المراكز $12$ ، $16$ ، $20$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{60 + 160 + 100}{20} = 16$ .",
+        "incorrect": "كل فئة يمثّلها مركزها."
+      }
+    }
+  ]
+}

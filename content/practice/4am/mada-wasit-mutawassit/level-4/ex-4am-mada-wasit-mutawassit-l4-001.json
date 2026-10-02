@@ -1,0 +1,113 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l4-001",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 4,
+  "metadata": {
+    "title": "نشاط 4 (ص 93) — الوزن المتوسط",
+    "estimatedMinutes": 4,
+    "tags": [
+      "فئات",
+      "مراكز"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-4",
+      "page": 93,
+      "section": "أنشطة",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 93): أوزان 41 تلميذًا (kg): $34 \\le P < 38$ (4)، $38 \\le P < 42$ (10)، $42 \\le P < 46$ (12)، $46 \\le P < 50$ (9)، $50 \\le P \\le 54$ (6)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "تقدير الوزن المتوسط (بمراكز الفئات) هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$44$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUTAWASSIT-BILA-TARJIH"
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{1816}{41} \\approx 44{,}29$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{1734}{41} \\approx 42{,}29$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MARKAZ-FIA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المراكز $36$ ، $40$ ، $44$ ، $48$ ، $52$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب كل مركز في تكراره."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{144 + 400 + 528 + 432 + 312}{41} = \\dfrac{1816}{41}$ .",
+        "incorrect": "استعمل المراكز لا الحدود الدنيا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "الفئة التي تشمل الوسيط هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$38 \\le P < 42$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-RUTBA"
+        },
+        {
+          "id": "B",
+          "content": "$42 \\le P < 46$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$46 \\le P < 50$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الرتبة $21$."
+        }
+      ],
+      "feedback": {
+        "correct": "المجمّع الصاعد $4$ ، $14$ ، $26$ : الرتبة $21$ في الفئة الثالثة.",
+        "incorrect": "ابحث عن أوّل تكرار مجمّع يبلغ $21$."
+      }
+    }
+  ]
+}

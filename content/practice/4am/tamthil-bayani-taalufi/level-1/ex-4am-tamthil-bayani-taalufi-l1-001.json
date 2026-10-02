@@ -1,0 +1,95 @@
+{
+  "id": "ex-4am-tamthil-bayani-taalufi-l1-001",
+  "lessonCode": "tamthil-bayani-taalufi",
+  "level": 1,
+  "metadata": {
+    "title": "نشاط 3 (ص 78) — الفاصلة 2",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نشاط 3",
+      "ترتيب"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-3",
+      "page": 78,
+      "section": "أنشطة",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 78): $g(x) = \\dfrac{3}{2}x$ و $f(x) = \\dfrac{3}{2}x + 1$ ، و $(d)$ و $(d')$ تمثيلاهما البيانيان."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ترتيب النقطة من $(d)$ التي فاصلتها $2$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ترتيب نقطة من $(d)$ هو $ax$ ، وترتيب النقطة من $(d')$ التي لها نفس الفاصلة هو $ax + b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المستقيم $(d')$ هو $(d)$ مرفوعًا بـ $b$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أضف $b$ إلى ترتيب نقطة $(d)$ (أو اطرحه إذا كان سالبًا)."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}5 \\times 2 = 3$ .",
+        "incorrect": "اضرب الفاصلة في $a$ ثم أضف $b$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "استنتج دون حساب ترتيب النقطة من $(d')$ التي فاصلتها $2$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ترتيب نقطة من $(d)$ هو $ax$ ، وترتيب النقطة من $(d')$ التي لها نفس الفاصلة هو $ax + b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المستقيم $(d')$ هو $(d)$ مرفوعًا بـ $b$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أضف $b$ إلى ترتيب نقطة $(d)$ (أو اطرحه إذا كان سالبًا)."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}5 \\times 2 + 1 = 4$ .",
+        "incorrect": "اضرب الفاصلة في $a$ ثم أضف $b$ ."
+      }
+    }
+  ]
+}

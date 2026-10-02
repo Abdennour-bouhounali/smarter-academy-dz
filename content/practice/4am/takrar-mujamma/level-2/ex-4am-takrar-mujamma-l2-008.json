@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-takrar-mujamma-l2-008",
+  "lessonCode": "takrar-mujamma",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — ساعات الهاتف",
+    "estimatedMinutes": 3,
+    "tags": [
+      "أقل من"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_takrar-mujamma_P3"
+    }
+  },
+  "statement": {
+    "content": "عدد الساعات التي يقضيها تلاميذ قسم يوميا أمام الهاتف (السطر الأول الساعات، والسطر الثاني عدد التلاميذ): $\\begin{array}{|c|c|c|c|c|} \\hline 2 & 3 & 4 & 5 & 6 \\\\ \\hline 4 & 6 & 9 & 5 & 2 \\\\ \\hline \\end{array}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عدد التلاميذ الذين يقضون أقل من 4 ساعات:",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "10",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-SARAMA",
+          "value": "19"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ الشرط بعناية: هل القيمة الحدّية نفسها محسوبة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "«على الأقل» و«على الأكثر» تشملان الحدّ، و«تفوق» و«أقل من» لا تشملانه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب القيم التي تحقّق الشرط، ثم اجمع تكراراتها."
+        }
+      ],
+      "feedback": {
+        "correct": "«أقل من 4» تستثني 4: $4 + 6 = 10$ .",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "التكرار المجمع النازل للقيمة 5:",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MUJAMMA-DUN-QIMA",
+          "value": "2"
+        },
+        {
+          "id": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA",
+          "value": "5"
+        },
+        {
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB",
+          "value": "24"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد القيم التي تحقّق الشرط: القيمة نفسها مع القيم الأصغر منها (أو الأكبر منها)."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التكرار المجمع يجمع التكرارات، لا القيم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع تكرار القيمة وتكرارات القيم المعنية واحدة واحدة، ثم تحقّق: الصاعد الأخير يساوي التكرار الكلي."
+        }
+      ],
+      "feedback": {
+        "correct": "$5 + 2 = 7$ : تكرار 5 وتكرارات القيم الأكبر منها.",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    }
+  ]
+}

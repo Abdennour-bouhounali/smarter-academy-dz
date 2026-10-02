@@ -1,0 +1,115 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l3-009",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 3,
+  "metadata": {
+    "title": "نقطة على المستقيمين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جملة معادلتين",
+      "تفسير بياني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "الجملة $\\begin{cases} y = 2x - 1 \\\\ y = -x + 8 \\end{cases}$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ الجملة:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y)",
+      "expectedAnswer": {
+        "x": "3",
+        "y": "5"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$2x - 1 = -x + 8$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$3x = 9$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم $y$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 3$ و $y = 5$ : $(3 ; 5)$.",
+        "incorrect": "نساوي العبارتين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "النقطة $(4 ; 7)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "على المستقيم الأول فقط",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "على المستقيمين معا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-BAYANI-MAQLUB"
+        },
+        {
+          "id": "C",
+          "content": "على المستقيم الثاني فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-FASILA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$2 \\times 4 - 1$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$-4 + 8$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن بالترتيب 7."
+        }
+      ],
+      "feedback": {
+        "correct": "$2 \\times 4 - 1 = 7$ لكن $-4 + 8 = 4 \\neq 7$.",
+        "incorrect": "نعوّض في كل معادلة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ]
+}

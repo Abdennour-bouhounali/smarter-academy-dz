@@ -1,0 +1,113 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l4-003",
+  "lessonCode": "mushkilat-jumla",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 21 (ص 61) — شبه منحرف وطالس",
+    "estimatedMinutes": 5,
+    "tags": [
+      "ترييض",
+      "طالس"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-21",
+      "page": 61,
+      "section": "أوظّف تعلّماتي",
+      "number": 21
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 61): في المثلث EBC، A من [EB] و D من [EC] و (AD) يوازي (BC)، حيث EA = 10cm و AB = 4cm و DC = 5cm و AD = $y$ و BC = $x$ . محيط شبه المنحرف ABCD يساوي 13,8cm."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم المشكلة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 4{,}8 \\\\ 14y = 10x \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 13{,}8 \\\\ 14y = 10x \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x + y = 4{,}8 \\\\ 4y = 10x \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "محيط ABCD: مجموع أضلاعه الأربعة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خاصية طالس: $\\dfrac{AD}{BC} = \\dfrac{EA}{EB}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$EB = 10 + 4$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$4 + x + 5 + y = 13{,}8$ و $\\dfrac{y}{x} = \\dfrac{10}{14}$ .",
+        "incorrect": "في المحيط ضلعان معلومان، وفي طالس نأخذ EB كاملا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "الطولان: اكتب الثنائية $(x ; y)$ بالسنتيمتر.",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "14/5",
+        "y": "2"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من طالس $y = \\dfrac{5}{7}x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض في معادلة المحيط."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحصل على $\\dfrac{12}{7}x = 4{,}8$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 2{,}8$ و $y = 2$ : $4 + 2{,}8 + 5 + 2 = 13{,}8$ .",
+        "incorrect": "أكمل حتى الثنائية؛ الكسر أو العدد العشري مقبول."
+      }
+    }
+  ]
+}

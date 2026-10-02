@@ -1,0 +1,137 @@
+{
+  "id": "ex-4am-tanasub-muamil-l5-005",
+  "lessonCode": "tanasub-muamil",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — تخفيضات الأحذية",
+    "estimatedMinutes": 5,
+    "tags": [
+      "تخفيض"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-muamil_P3",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "في تخفيضات المركز التجاري، تُخفَّض أسعار الأحذية الرياضية بـ 30% : السعر الجديد متناسب مع السعر القديم."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "السعر الجديد لحذاء ثمنه 4000DA :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "2800",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجدول جدول تناسبية: نضرب في المعامل، ولا نضيف الفرق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب معامل التناسبية من عمود كامل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب العدد المعلوم في المعامل، أو استعمل تساوي الجداءين المتصالبين."
+        }
+      ],
+      "feedback": {
+        "correct": "$4000 - 1200 = 2800$ DA.",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "معامل التناسبية:",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "0,7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل التناسبية هو العدد الذي نضرب فيه أعداد السطر الأول لنحصل على أعداد السطر الثاني."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم عددا من السطر الثاني على العدد المقابل له من السطر الأول: $\\dfrac{y}{x}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق أنّ حاصل القسمة هو نفسه في عمود آخر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{2800}{4000} = 0{,}7$ : السعر الجديد $= 0{,}7 \\times$ القديم.",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "10/7",
+          "id": "MISC-TANASUB-MUAMIL-MAQLUB"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "السعر القديم لحذاء سعره الجديد 5600DA :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "8000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هنا السطر الثاني معلوم والأول مجهول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "من $y = a \\times x$ نجد $x = y \\div a$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على المعامل، ثم تحقّق بالضرب."
+        }
+      ],
+      "feedback": {
+        "correct": "$5600 \\div 0{,}7 = 8000$ DA.",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      }
+    }
+  ]
+}

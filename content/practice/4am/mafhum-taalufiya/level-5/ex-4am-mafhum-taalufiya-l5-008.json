@@ -1,0 +1,81 @@
+{
+  "id": "ex-4am-mafhum-taalufiya-l5-008",
+  "lessonCode": "mafhum-taalufiya",
+  "level": 5,
+  "metadata": {
+    "title": "العبارة الخاطئة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمييز",
+      "خطية",
+      "ثابتة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "أربع عبارات عن الدوال التآلفية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العبارة الخاطئة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P4",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "كل دالة تآلفية هي دالة خطية",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "كل دالة خطية هي دالة تآلفية",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-THABITA"
+        },
+        {
+          "id": "C",
+          "content": "كل دالة ثابتة هي دالة تآلفية",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-THABITA"
+        },
+        {
+          "id": "D",
+          "content": "الدالة $x \\longmapsto 0$ خطية وثابتة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-THABITA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كل دالة من الشكل $ax + b$ تآلفية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى $b$ : إذا كان معدوما فالدالة خطية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "وانظر إلى $a$ : إذا كان معدوما فالدالة ثابتة."
+        }
+      ],
+      "feedback": {
+        "correct": "$x \\longmapsto x + 1$ تآلفية وليست خطية: العبارة الأولى خاطئة.",
+        "incorrect": "راجع كل اقتراح: واحد فقط صحيح."
+      }
+    }
+  ]
+}

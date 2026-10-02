@@ -1,0 +1,130 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l3-005",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 3,
+  "metadata": {
+    "title": "تخفيضات الإكسسوارات",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تخفيض",
+      "حل جملة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P1",
+      "modelledOn": "ex-31"
+    }
+  },
+  "statement": {
+    "content": "ثمن غلاف هاتف $x$ DA وثمن شاحن $y$ DA، ومجموعهما 2 500 DA. في أيام التخفيضات خُفّض ثمن الغلاف بـ 20% وثمن الشاحن بـ 10%، فدفع رياض 2 100 DA ثمنا للاثنين."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعلومة الثانية تُترجم بـ:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$0{,}2x + 0{,}1y = 2100$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAKHFID-NISBA"
+        },
+        {
+          "id": "B",
+          "content": "$0{,}8(x + y) = 2100$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAKHFID-NISBA"
+        },
+        {
+          "id": "C",
+          "content": "$x + y - 30 = 2100$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$0{,}8x + 0{,}9y = 2100$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كم في المئة يدفع رياض من ثمن الغلاف؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بعد تخفيض 10% ندفع 90%."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لكل شيء نسبته."
+        }
+      ],
+      "feedback": {
+        "correct": "الغلاف $0{,}8x$ والشاحن $0{,}9y$ : $0{,}8x + 0{,}9y = 2100$.",
+        "incorrect": "نضرب في النسبة المدفوعة، ولكل شيء تخفيضه."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "ما الثمنان $(x ; y)$ قبل التخفيض؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
+      "expectedAnswer": {
+        "x": "1500",
+        "y": "1000"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$y = 2500 - x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض في المعادلة الثانية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب في 10 للتخلّص من الفواصل."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}8x + 2250 - 0{,}9x = 2100$ ، $x = 1500$ ، $y = 1000$.",
+        "incorrect": "عوّض ثم احسب بدقة الأعداد العشرية."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "1000",
+            "y": "1500"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    }
+  ]
+}

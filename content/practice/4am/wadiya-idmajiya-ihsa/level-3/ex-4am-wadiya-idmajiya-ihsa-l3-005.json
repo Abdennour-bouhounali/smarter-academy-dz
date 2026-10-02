@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l3-005",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 3,
+  "metadata": {
+    "title": "فوجان متساويا المتوسط",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مقارنة",
+      "مدى"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P2"
+    }
+  },
+  "statement": {
+    "content": "علامات الفوج أ: 14 ، 15 ، 15 ، 16 ، 15. علامات الفوج ب: 8 ، 12 ، 15 ، 18 ، 22."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "متوسط الفوجين 15. أيّ عبارة صحيحة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "علامات الفوج أ أكثر تقاربا: مداها 2 ومدى ب 14",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الفوجان متماثلان لأنّ لهما المتوسط نفسه",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUQARANA-MUTAWASSIT-FAQAT"
+        },
+        {
+          "id": "C",
+          "content": "الفوج ب أفضل لأنّ أعلى علامة فيه 22",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MADA-AKBAR-QIMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المتوسط لا يكفي للمقارنة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب مدى كل فوج."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المدى الأصغر يعني تقاربا أكبر."
+        }
+      ],
+      "feedback": {
+        "correct": "مدى أ $16 - 14 = 2$ ومدى ب $22 - 8 = 14$.",
+        "incorrect": "نقارن التشتت بالمدى بعد المتوسط."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 3
+    }
+  ]
+}

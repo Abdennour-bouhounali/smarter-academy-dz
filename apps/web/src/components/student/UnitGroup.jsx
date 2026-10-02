@@ -6,6 +6,7 @@ import { Layers } from 'lucide-react';
 import { ArrowForward } from '../common/DirectionalIcons';
 import { getLessonProgress } from '../../lessons/common/utils/progress/getLessonProgress';
 import { getTotalModules } from '../../lessons/registry';
+import MathLabel from '../../lessons/common/components/MathLabel';
 
 /**
  * La CARTE d'une UNITÉ du manuel (الوحدة) dans la grille des cours : le
@@ -32,7 +33,7 @@ export default function UnitGroup({ unit }) {
           <h4 className="text-lg font-bold text-slate-900">{unit.title}</h4>
           {unit.subtitle && <p className="line-clamp-2 text-sm text-slate-600">{unit.subtitle}</p>}
           <ul className="space-y-0.5 text-xs text-slate-600">
-            {unit.objectives.slice(0, 3).map((o) => <li key={o}>• {o}</li>)}
+            {unit.objectives.slice(0, 3).map((o) => <li key={o}>• <MathLabel>{o}</MathLabel></li>)}
           </ul>
         </div>
         <div className="mt-auto flex items-center justify-between border-t border-indigo-100 pt-3">

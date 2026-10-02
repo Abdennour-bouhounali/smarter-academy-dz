@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-tarrid-taalufi-l4-003",
+  "lessonCode": "tarrid-taalufi",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — ثلاث صيغ (35 ساعة)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ثلاث صيغ"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-taalufi_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "قاعة ألعاب، ثلاث صيغ للشهر: A الدفع بالساعة $100x$ ، B بطاقة $40x + 600$ ، C دون حدّ $1800$ (بالدينار)، حيث $x$ عدد الساعات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "يلعب رامي 35 ساعة في الشهر. الصيغة الأرخص له هي:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "A",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "B",
+          "content": "B",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "C",
+          "content": "C",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ 35 في كل صيغة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "C لا تتغيّر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الأرخص هو المبلغ الأصغر."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = 3500$ ، $B = 40 \\times 35 + 600 = 2000$ ، $C = 1800$ : C أرخص.",
+        "incorrect": "احسب المبالغ الثلاثة من أجل 35 ساعة."
+      }
+    }
+  ]
+}

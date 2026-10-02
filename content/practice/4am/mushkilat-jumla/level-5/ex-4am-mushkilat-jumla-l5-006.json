@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l5-006",
+  "lessonCode": "mushkilat-jumla",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — تذاكر القطار",
+    "estimatedMinutes": 4,
+    "tags": [
+      "المراحل الخمس",
+      "الإجابة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P2",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "سعر التذكرة الكاملة في القطار 600 DA والتذكرة المخفّضة 450 DA. باعت محطة 120 تذكرة بـ 61500 DA. نسمّي $x$ عدد التذاكر الكاملة و $y$ عدد التذاكر المخفّضة. وجد مراد $x = 50$ ثم كتب: «بيعت 50 تذكرة»."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما رأيك في جواب مراد؟",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "جوابه صحيح: $x = 50$ .",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-NISF-HALL"
+        },
+        {
+          "id": "B",
+          "content": "جوابه ناقص: السؤال عن نوعي التذاكر، فعليه إيجاد $y$ والإجابة عن النوعين.",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "جوابه خاطئ لأنّ $x = 70$ .",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ماذا يمثّل $x$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كم تذكرة بيعت كلها؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحل ثنائية."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 50$ صحيح، لكن الحل $(50 ; 70)$ : بيعت 50 تذكرة كاملة و 70 مخفّضة.",
+        "incorrect": "قيمة $x$ وحدها نصف الجواب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "اكتب حل الجملة: الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "50",
+        "y": "70"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x = 50$ في معلومة العدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أو أعد الحل كاملا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بالمبلغ."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 120 - 50 = 70$ : $30000 + 31500 = 61500$ .",
+        "incorrect": "أكمل حتى الثنائية."
+      }
+    }
+  ]
+}

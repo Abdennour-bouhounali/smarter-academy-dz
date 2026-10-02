@@ -1,0 +1,127 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l2-003",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 38 — الناخبون",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نسبة مئوية",
+      "كسر"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-38",
+      "page": 75,
+      "section": "أتعمّق",
+      "number": 38
+    }
+  },
+  "statement": {
+    "content": "هل صحيح أنه إذا كان سُدس عدد الناخبين في انتخابات لم يصوتوا، فإنه يمكن القول أن 80% منهم صوتوا؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما النسبة المئوية للذين صوّتوا؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "نسبة مئوية دون الرمز %، مدوّرة إلى 0,01",
+      "expectedAnswer": "83.33",
+      "evaluationPolicy": {
+        "tolerance": "0.01"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما الكسر الذي صوّت من الناخبين؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$1 - \\dfrac{1}{6}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب الكسر في 100."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{5}{6} \\times 100 = \\dfrac{250}{3} \\approx 83{,}33$.",
+        "incorrect": "السدس لم يصوّت: احسب نسبة الباقي."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "16.67",
+          "id": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "value": "94",
+          "id": "MISC-TARRID-TAFSIR"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "هل القول «80% منهم صوتوا» صحيح؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "صحيح: صوّت أكثر من 80% منهم",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "خاطئ: صوّت 94% منهم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "id": "C",
+          "content": "خاطئ: صوّت 16,67% منهم فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن نسبة المصوّتين بـ 80%."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "السدس ليس 6%."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا صوّت أكثر من 80% فقد صوّت 80% على الأقل."
+        }
+      ],
+      "feedback": {
+        "correct": "صوّت $83{,}33\\%$ تقريبا: إذن صوّت 80% منهم على الأقل.",
+        "incorrect": "احسب نسبة المصوّتين أولا ثم قارن."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 2
+    }
+  ]
+}

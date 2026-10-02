@@ -1,0 +1,105 @@
+{
+  "id": "ex-4am-takrar-mujamma-l4-010",
+  "lessonCode": "takrar-mujamma",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — صاعد فئة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "فئات",
+      "قراءة جدول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_takrar-mujamma_P3"
+    }
+  },
+  "statement": {
+    "content": "جدول تكرارات مجمعة صاعدة لأعمار رواد مسبح في فئات سعتها 10: $0 \\le a < 10$ : 15 ، $10 \\le a < 20$ : 45 ، $20 \\le a < 30$ : 70 ، $30 \\le a \\le 40$ : 80."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عدد الرواد في الفئة $10 \\le a < 20$ :",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "30",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA",
+          "value": "45"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في جدول التكرار المجمع الصاعد، كل خانة تزيد على السابقة بتكرار قيمتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التكرار = الصاعد للقيمة ناقص الصاعد للقيمة التي قبلها؛ والتكرار الكلي هو آخر صاعد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح الخانتين المتتاليتين، أو استعمل: الصاعد + النازل = التكرار الكلي + تكرار القيمة."
+        }
+      ],
+      "feedback": {
+        "correct": "$45 - 15 = 30$",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "عدد الرواد الذين أعمارهم 20 سنة أو أكثر:",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "35",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB",
+          "value": "70"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في جدول التكرار المجمع الصاعد، كل خانة تزيد على السابقة بتكرار قيمتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التكرار = الصاعد للقيمة ناقص الصاعد للقيمة التي قبلها؛ والتكرار الكلي هو آخر صاعد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح الخانتين المتتاليتين، أو استعمل: الصاعد + النازل = التكرار الكلي + تكرار القيمة."
+        }
+      ],
+      "feedback": {
+        "correct": "$80 - 45 = 35$",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    }
+  ]
+}

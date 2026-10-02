@@ -1,0 +1,105 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l5-007",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — نقطة مجهولة الفاصلة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "معامل",
+      "منحى"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-khatti_P1",
+      "modelledOn": "method-draw"
+    }
+  },
+  "statement": {
+    "content": "المستقيم الذي يشمل O والنقطة $(k ; 6)$ هو تمثيل دالة خطية معاملها $1{,}5$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيمة $k$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 3/4)",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد الذي صورته $b$ هو حل المعادلة $ax = b$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم الصورة على المعامل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق: اضرب العدد الذي وجدته في المعامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}5k = 6$ ومنه $k = 4$ .",
+        "incorrect": "الترتيب 6 صورة $k$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "لو كان المستقيم يشمل O والنقطة $(-4 ; 6)$ لكان:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "يصعد من اليسار إلى اليمين",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "ينزل من اليسار إلى اليمين",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى إشارة المعامل $a$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المستقيم يشمل O دائمًا، ومنحاه تعيّنه إشارة $a$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تخيّل نقطة فاصلتها 1: ترتيبها $a$ ، فوق محور الفواصل أم تحته؟"
+        }
+      ],
+      "feedback": {
+        "correct": "معامله $\\dfrac{6}{-4} = -1{,}5 < 0$ : ينزل.",
+        "incorrect": "احسب المعامل الجديد وانظر إلى إشارته."
+      }
+    }
+  ]
+}

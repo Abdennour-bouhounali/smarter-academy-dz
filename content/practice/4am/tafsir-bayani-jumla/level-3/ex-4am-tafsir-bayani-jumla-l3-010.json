@@ -1,0 +1,59 @@
+{
+  "id": "ex-4am-tafsir-bayani-jumla-l3-010",
+  "lessonCode": "tafsir-bayani-jumla",
+  "level": 3,
+  "metadata": {
+    "title": "اجعلهما متوازيين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متوازيان",
+      "معامل التوجيه"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tafsir-bayani-jumla_P3",
+      "modelledOn": "act-5"
+    }
+  },
+  "statement": {
+    "content": "نعتبر المستقيمين $y = ax + 1$ و $y = 3x - 2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيمة $a$ التي تجعل المستقيمين $y = ax + 1$ و $y = 3x - 2$ متوازيين:",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بفاصلة أو كسر مثل 3/2)",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب كل معادلة على الشكل $y = ax + b$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مستقيمان متوازيان أو منطبقان لهما معامل التوجيه نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "منطبقان: معامل التوجيه نفسه والترتيب عند المبدأ نفسه."
+        }
+      ],
+      "feedback": {
+        "correct": "متوازيان: معامل التوجيه نفسه، $a = 3$ ، والترتيبان $1$ و $-2$ مختلفان.",
+        "incorrect": "اكتب المعادلتين على الشكل $y = ax + b$ وقارن المعاملات."
+      }
+    }
+  ]
+}

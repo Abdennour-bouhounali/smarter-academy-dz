@@ -1,0 +1,114 @@
+{
+  "id": "ex-4am-takrar-mujamma-l4-002",
+  "lessonCode": "takrar-mujamma",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 5 — مدة التنقل",
+    "estimatedMinutes": 3,
+    "tags": [
+      "فئات"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-5",
+      "page": 98,
+      "section": "أوظّف تعلّماتي",
+      "number": 5
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 98): مدة تنقل 400 تلميذ إلى المتوسطة بالدقيقة: $5 \\le t < 10$ : 180 ، $10 \\le t < 15$ : 150 ، $15 \\le t < 20$ : 50 ، $20 \\le t \\le 25$ : 20."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "التكرار المجمع الصاعد للفئة $10 \\le t < 15$ :",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "330",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA",
+          "value": "150"
+        },
+        {
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB",
+          "value": "220"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد القيم التي تحقّق الشرط: القيمة نفسها مع القيم الأصغر منها (أو الأكبر منها)."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التكرار المجمع يجمع التكرارات، لا القيم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع تكرار القيمة وتكرارات القيم المعنية واحدة واحدة، ثم تحقّق: الصاعد الأخير يساوي التكرار الكلي."
+        }
+      ],
+      "feedback": {
+        "correct": "$180 + 150 = 330$",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "التكرار المجمع النازل للفئة $15 \\le t < 20$ :",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "70",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA",
+          "value": "50"
+        },
+        {
+          "id": "MISC-IHSA-SAID-NAZIL-MAQLUB",
+          "value": "380"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد القيم التي تحقّق الشرط: القيمة نفسها مع القيم الأصغر منها (أو الأكبر منها)."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التكرار المجمع يجمع التكرارات، لا القيم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع تكرار القيمة وتكرارات القيم المعنية واحدة واحدة، ثم تحقّق: الصاعد الأخير يساوي التكرار الكلي."
+        }
+      ],
+      "feedback": {
+        "correct": "$50 + 20 = 70$",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    }
+  ]
+}

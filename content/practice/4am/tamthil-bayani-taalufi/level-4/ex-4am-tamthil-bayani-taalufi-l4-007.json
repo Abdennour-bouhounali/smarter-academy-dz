@@ -1,0 +1,93 @@
+{
+  "id": "ex-4am-tamthil-bayani-taalufi-l4-007",
+  "lessonCode": "tamthil-bayani-taalufi",
+  "level": 4,
+  "metadata": {
+    "title": "منحدر حديقة التزلّج",
+    "estimatedMinutes": 4,
+    "tags": [
+      "منحدر",
+      "قراءة بيانية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-taalufi_P2"
+    }
+  },
+  "statement": {
+    "content": "في حديقة التزلّج، ارتفاع منحدر (بالمتر) على بعد $x$ متر من الجدار ($0 \\leq x \\leq 5$) يمثّله مستقيم يشمل النقطتين $(0 ; 0{,}9)$ و $(5 ; 3{,}9)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ارتفاع المنحدر عند الجدار (بالمتر):",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "expectedAnswer": "9/10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الترتيب عند المبدأ $b$ هو ترتيب النقطة التي يقطع فيها المستقيم محور التراتيب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هذه النقطة فاصلتها $0$ ، لأنّ $f(0) = b$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا لم تكن مرسومة، انطلق من نقطة معلومة وارجع إلى الفاصلة $0$ بالدرجة $a$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "المستقيم يقطع محور التراتيب في $(0 ; 0{,}9)$ : $b = 0{,}9$ .",
+        "incorrect": "اقرأ ترتيب نقطة التقاطع مع محور التراتيب، لا مع محور الفواصل."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "على أيّ بعد من الجدار (بالمتر) يبلغ الارتفاع $2{,}1$ متر؟",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد الذي صورته معلومة هو فاصلة النقطة من المستقيم التي ترتيبها هذه الصورة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب عبارة الدالة، ثم حلّ $ax + b = m$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح $b$ أولًا ثم اقسم على $a$ ، وتحقّق بحساب الصورة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(x) = 0{,}6x + 0{,}9$ ، و $f(2) = 2{,}1$ : النقطة $(2 ; 2{,}1)$ على المستقيم.",
+        "incorrect": "العدد المطلوب فاصلة: انطلق من الصورة على محور التراتيب."
+      }
+    }
+  ]
+}

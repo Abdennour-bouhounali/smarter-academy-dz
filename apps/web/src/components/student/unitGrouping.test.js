@@ -17,9 +17,9 @@ describe('groupLessonsByUnit', () => {
 
   it("sous un ميدان du manuel : les unités, puis les leçons hors unité — sans doublon", () => {
     const groups = groupLessonsByUnit([chapter1], chapter1.lessons);
-    // Les quatre unités du manuel, dans l'ordre du manuel (la seconde, « الحساب
+    // Les cinq unités du manuel, dans l'ordre du manuel (la seconde, « الحساب
     // على الجذور », n'a pas de synthèse sur la plateforme).
-    expect(groups.units.map((u) => u.id)).toEqual(['aadad-tabiiya-natiqa', 'hisab-judhur', 'hisab-harfi', 'muadalat-mutarajihat']);
+    expect(groups.units.map((u) => u.id)).toEqual(['aadad-tabiiya-natiqa', 'hisab-judhur', 'hisab-harfi', 'muadalat-mutarajihat', 'jumal-muadalatayn']);
     const unitIds = new Set(groups.units.flatMap((u) => {
       const unit = getUnitById(u.id);
       return [...unit.lessons.map((l) => l.id), ...(unit.synthesis ? [unit.synthesis.id] : [])];

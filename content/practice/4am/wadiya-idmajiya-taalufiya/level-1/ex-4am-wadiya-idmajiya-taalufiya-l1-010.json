@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l1-010",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 1,
+  "metadata": {
+    "title": "المعامل نفسه",
+    "estimatedMinutes": 2,
+    "tags": [
+      "مستقيمان متوازيان",
+      "مفاضلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P2"
+    }
+  },
+  "statement": {
+    "content": "عرضان لاشتراك شهري في تطبيق موسيقى مع حصص تدريب: العرض أ $25x + 100$ والعرض ب $25x + 160$ ( $x$ عدد الحصص)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ماذا نستنتج؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا يتساوى الثمنان أبدا، والعرض أ أرخص دائما بـ 60 DA",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "يتساوى الثمنان من أجل $x = 60$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-BAYANI-TAWAZI"
+        },
+        {
+          "id": "C",
+          "content": "الثمنان متساويان دائما لأنّ المعامل نفسه",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-BAYANI-TAWAZI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن المعاملين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن المبلغين الثابتين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مستقيمان متوازيان."
+        }
+      ],
+      "feedback": {
+        "correct": "$(25x + 160) - (25x + 100) = 60$ لكل $x$.",
+        "incorrect": "نفس المعامل ومبلغان ثابتان مختلفان: مستقيمان متوازيان."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 1
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "id": "ex-4am-mafhum-jumla-l4-003",
+  "lessonCode": "mafhum-jumla",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — بطولة إلكترونية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ألعاب",
+      "حل ذهني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mafhum-jumla_P2",
+      "modelledOn": "ex-3"
+    }
+  },
+  "statement": {
+    "content": "لعب أنس 12 مباراة في بطولة إلكترونية، فاز في $x$ منها وخسر $y$ ، وعدد انتصاراته ثلاثة أضعاف عدد هزائمه: $\\begin{cases} x + y = 12 \\\\ x = 3y \\end{cases}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هي الثنائية $(x ; y)$ حل الجملة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية $(x ; y)$ : العدد الأول ثم الثاني (عدد صحيح أو كسر مثل 2/5)",
+      "expectedAnswer": {
+        "x": "9",
+        "y": "3"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ $3y$ في المعادلة الأولى."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$3y + y = 12$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $y$ ثم $x = 3y$ ، واكتب $x$ أولًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$4y = 12$ أي $y = 3$ و $x = 9$ : $(9 ; 3)$ .",
+        "incorrect": "الثنائية تبدأ بعدد الانتصارات $x$ ."
+      }
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l3-008",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 1 هـ (ص 98) — درجات الحرارة في المجدول",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مخطط بالأعمدة",
+      "حجز"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-1",
+      "page": 98,
+      "section": "أوظّف تعلّماتي",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 98): ثلاثون درجة حرارة لشهر جوان، قيمها المختلفة 30 ، 32 ، 33 ، 34 ، 35 ، 36 وتكراراتها 8 ، 9 ، 4 ، 6 ، 2 ، 1 . «مثّل هذه السلسلة بمخطط الأعمدة باستعمال مجدول الإكسال»."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مجموع التكرارات التي نحجزها في السطر 2:",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "30",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-TAKRAR-BADAL-MUJAMMA",
+          "value": "6"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع التكرارات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$8 + 9 + 4 + 6 + 2 + 1$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عدد أيام جوان."
+        }
+      ],
+      "feedback": {
+        "correct": "$8 + 9 + 4 + 6 + 2 + 1 = 30$ : أيام جوان.",
+        "incorrect": "اجمع التكرارات الستة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "في مخطط الأعمدة، العمود الأطول يقابل:",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "30 درجة (أصغر قيمة)",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-QIRAA-MUKHATTAT"
+        },
+        {
+          "id": "B",
+          "content": "32 درجة (9 أيام)",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "36 درجة (أكبر قيمة)",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-QIRAA-MUKHATTAT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارتفاع العمود تكرار."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أكبر تكرار 9."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أيّ قيمة تكرارها 9؟"
+        }
+      ],
+      "feedback": {
+        "correct": "ارتفاع العمود هو التكرار: 9 أيام لـ 32 درجة.",
+        "incorrect": "الارتفاع تكرار لا قيمة."
+      }
+    }
+  ]
+}

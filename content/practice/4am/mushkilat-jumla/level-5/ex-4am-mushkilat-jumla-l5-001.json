@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l5-001",
+  "lessonCode": "mushkilat-jumla",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — معطيات لا تتّفق",
+    "estimatedMinutes": 5,
+    "tags": [
+      "تحقق",
+      "ملاءمة الواقع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P2",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "قيل إنّ 25 مناصرا دخلوا الملعب بتذاكر من صنفين: 300 DA و 500 DA، وإنهم دفعوا معا 9000 DA. نسمّي $x$ عدد تذاكر 300 DA و $y$ عدد تذاكر 500 DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حل الجملة $\\begin{cases} x + y = 25 \\\\ 300x + 500y = 9000 \\end{cases}$ : اكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "35/2",
+        "y": "15/2"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x = 25 - y$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على $200y = 1500$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحل قد يكون كسرا."
+        }
+      ],
+      "feedback": {
+        "correct": "الحل $\\left(\\dfrac{35}{2} ; \\dfrac{15}{2}\\right)$ ، أي $(17{,}5 ; 7{,}5)$ .",
+        "incorrect": "احسب بدقة: لا تقرّب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ماذا نستنتج عن المشكلة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "دخل 17 مناصرا بتذاكر 300 DA و 8 بتذاكر 500 DA.",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TAHAQQUQ-NAS"
+        },
+        {
+          "id": "B",
+          "content": "المعطيات لا تتّفق: عدد المناصرين عدد طبيعي، فلا جواب لهذه المشكلة.",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "دخل 17,5 مناصرا بتذاكر 300 DA.",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TAHAQQUQ-NAS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هل يمكن أن يدخل نصف مناصر؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عدد الأشخاص عدد طبيعي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جرّب 17 و 8 في معلومة المال."
+        }
+      ],
+      "feedback": {
+        "correct": "الحل ليس عددين طبيعيين: لا توجد مجموعة من 25 مناصرا تدفع 9000 DA بهذين الثمنين.",
+        "incorrect": "التقريب لا يحقق القصة: $5100 + 4000 = 9100$ ."
+      }
+    }
+  ]
+}

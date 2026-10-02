@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l4-005",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — زيادتان متتابعتان",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تغيّرات متتابعة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tatbiqat-tanasub_P1",
+      "modelledOn": "method-percent"
+    }
+  },
+  "statement": {
+    "content": "زاد عدد متابعي صفحة نادي الحي بـ 10% في شهر، ثم بـ 10% في الشهر الموالي."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المضاعف الكلي:",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "1,21",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التغيّر الثاني يُحسب من المقدار بعد التغيّر الأول، لا من المقدار الأول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب مضاعف كل تغيّر، ثم اضرب المضاعفات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المضاعف الكلي $k$ : إذا كان $k > 1$ فهي زيادة بـ $(k - 1) \\times 100$ بالمئة، وإذا كان $k < 1$ فهو تخفيض بـ $(1 - k) \\times 100$ بالمئة."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}1 \\times 1{,}1 = 1{,}21$ .",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "التغيّر الكلي في الشهرين:",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "زيادة بـ $20\\%$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-TATABU-JAM"
+        },
+        {
+          "id": "B",
+          "content": "زيادة بـ $21\\%$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "زيادة بـ $11\\%$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-TATABU-JAM"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التغيّر الثاني يُحسب من المقدار بعد التغيّر الأول، لا من المقدار الأول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب مضاعف كل تغيّر، ثم اضرب المضاعفات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المضاعف الكلي $k$ : إذا كان $k > 1$ فهي زيادة بـ $(k - 1) \\times 100$ بالمئة، وإذا كان $k < 1$ فهو تخفيض بـ $(1 - k) \\times 100$ بالمئة."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}21 = 1 + \\dfrac{21}{100}$ : زيادة 21%، لا 20%.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

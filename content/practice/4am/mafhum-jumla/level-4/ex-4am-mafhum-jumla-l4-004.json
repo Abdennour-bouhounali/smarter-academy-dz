@@ -1,0 +1,132 @@
+{
+  "id": "ex-4am-mafhum-jumla-l4-004",
+  "lessonCode": "mafhum-jumla",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — كرنتيكة وغازوز",
+    "estimatedMinutes": 4,
+    "tags": [
+      "كرنتيكة",
+      "ثنائية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mafhum-jumla_P3",
+      "modelledOn": "ex-4"
+    }
+  },
+  "statement": {
+    "content": "دفع وليد 130DA ثمن كرنتيكتين وقارورة غازوز، ودفع صديقه 110DA ثمن كرنتيكة وقارورتي غازوز. نسمّي $x$ ثمن الكرنتيكة و $y$ ثمن الغازوز بالدينار: $\\begin{cases} 2x + y = 130 \\\\ x + 2y = 110 \\end{cases}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الثنائية $(50 ; 30)$ ...",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "تحقّق المعادلتين معًا: حل للجملة",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "تحقّق المعادلة الأولى فقط",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "تحقّق المعادلة الثانية فقط",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "لا تحقّق أيًّا من المعادلتين",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x = 50$ و $y = 30$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$100 + 30$ ثم $50 + 60$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل تجد 130 ثم 110؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$2 \\times 50 + 30 = 130$ و $50 + 2 \\times 30 = 110$ : حل للجملة.",
+        "incorrect": "عوّض في المعادلتين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "الثنائية $(30 ; 50)$ ...",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "تحقّق المعادلتين معًا: حل للجملة",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "تحقّق المعادلة الأولى فقط",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "تحقّق المعادلة الثانية فقط",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "لا تحقّق أيًّا من المعادلتين",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x = 30$ و $y = 50$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$60 + 50$ ثم $30 + 100$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن بالعددين 130 و 110."
+        }
+      ],
+      "feedback": {
+        "correct": "$60 + 50 = 110 \\neq 130$ و $30 + 100 = 130 \\neq 110$ : لا تحقّق أيًّا منهما.",
+        "incorrect": "الترتيب مهم: $x$ ثمن الكرنتيكة."
+      }
+    }
+  ]
+}

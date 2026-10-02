@@ -1,0 +1,73 @@
+{
+  "id": "ex-4am-mafhum-jumla-l3-010",
+  "lessonCode": "mafhum-jumla",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — اقلب الثنائية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترتيب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mafhum-jumla_P2",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "الثنائية $(5 ; 2)$ حل للجملة $\\begin{cases} x + y = 7 \\\\ x - y = 3 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل الثنائية $(2 ; 5)$ حل لهذه الجملة أيضًا؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم: فيها العددان نفسهما",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARTIB"
+        },
+        {
+          "id": "B",
+          "content": "لا: $2 - 5 = -3 \\neq 3$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "لا: $2 + 5 \\neq 7$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في $(2 ; 5)$ : $x = 2$ و $y = 5$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $x - y$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الترتيب في الثنائية مهم."
+        }
+      ],
+      "feedback": {
+        "correct": "$2 + 5 = 7$ لكن $2 - 5 = -3 \\neq 3$ : ليست حلا.",
+        "incorrect": "قلب الثنائية يعطي ثنائية أخرى."
+      }
+    }
+  ]
+}

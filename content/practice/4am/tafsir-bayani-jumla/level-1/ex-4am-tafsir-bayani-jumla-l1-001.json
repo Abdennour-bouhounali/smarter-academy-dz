@@ -1,0 +1,129 @@
+{
+  "id": "ex-4am-tafsir-bayani-jumla-l1-001",
+  "lessonCode": "tafsir-bayani-jumla",
+  "level": 1,
+  "metadata": {
+    "title": "نشاط 5 — دالة صندوق القسم",
+    "estimatedMinutes": 4,
+    "tags": [
+      "دالة تآلفية",
+      "مستقيم"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-5",
+      "page": 79,
+      "section": "أنشطة",
+      "number": 5
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 79): في نشاط صندوق القسم نعتبر الدالة $f : x \\longmapsto 43 - x$ (عدد القطع: $y = 43 - x$)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما طبيعة الدالة $f : x \\longmapsto 43 - x$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "دالة تآلفية: $a = -1$ و $b = 43$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "دالة خطية",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-KHATTIYA-KHALT"
+        },
+        {
+          "id": "C",
+          "content": "ليست دالة تآلفية",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-THABITA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المعادلة من الشكل $ax + by = c$ : نريد أن يبقى $y$ وحده في طرف."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انقل حدّ $x$ إلى الطرف الثاني مع تغيير إشارته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم كل الحدود على معامل $y$ ، ثم قارن بالاقتراحات."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(x) = -x + 43$ : من الشكل $ax + b$ مع $a = -1$ و $b = 43 \\neq 0$ ، فهي تآلفية وليست خطية.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "مستقيم $f$ يقطع محور التراتيب في النقطة:",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(0 ; 43)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(43 ; 0)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-B-FASILA"
+        },
+        {
+          "id": "C",
+          "content": "$(0 ; -43)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-ISHARA-Y"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مستقيم يقطع محور التراتيب حيث $x = 0$ ، ومحور الفواصل حيث $y = 0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x = 0$ في المعادلة لتجد $y$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم عوّض $y = 0$ لتجد $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(0) = 43$ : النقطة $(0 ; 43)$ على محور التراتيب.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

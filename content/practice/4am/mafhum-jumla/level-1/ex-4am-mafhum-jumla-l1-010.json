@@ -1,0 +1,68 @@
+{
+  "id": "ex-4am-mafhum-jumla-l1-010",
+  "lessonCode": "mafhum-jumla",
+  "level": 1,
+  "metadata": {
+    "title": "أستعدّ 5 — مساواة بحرفين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تعويض"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "prep",
+      "page": 55,
+      "section": "أستعدّ",
+      "number": 5
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 55): أصحيح أم خاطئ؟ من أجل $x = 1$ و $y = 0$ ، المساواة $2x - y = 0$ محققة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هذه العبارة ...",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "صحيحة",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "خاطئة",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ 1 و $y$ بـ 0."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $2 \\times 1 - 0$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن بالعدد 0."
+        }
+      ],
+      "feedback": {
+        "correct": "$2 \\times 1 - 0 = 2 \\neq 0$ : العبارة خاطئة.",
+        "incorrect": "احسب الطرف الأول بالقيمتين."
+      }
+    }
+  ]
+}

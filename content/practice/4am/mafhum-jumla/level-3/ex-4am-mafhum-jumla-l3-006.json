@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-mafhum-jumla-l3-006",
+  "lessonCode": "mafhum-jumla",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — قيمة x معطاة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "حل ذهني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mafhum-jumla_P2",
+      "modelledOn": "ex-3"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الجملة $\\begin{cases} x = 4 \\\\ x + 3y = 19 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هي الثنائية $(x ; y)$ حل الجملة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية $(x ; y)$ : العدد الأول ثم الثاني (عدد صحيح أو كسر مثل 2/5)",
+      "expectedAnswer": {
+        "x": "4",
+        "y": "5"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x = 4$ معطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض في $x + 3y = 19$ : $4 + 3y = 19$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $y$ ثم اكتب الثنائية."
+        }
+      ],
+      "feedback": {
+        "correct": "$3y = 15$ أي $y = 5$ : $(4 ; 5)$ .",
+        "incorrect": "الحل ثنائية: $x$ ثم $y$ ."
+      }
+    }
+  ]
+}

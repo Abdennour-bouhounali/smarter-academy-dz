@@ -1,0 +1,67 @@
+{
+  "id": "ex-4am-tarrid-taalufi-l1-006",
+  "lessonCode": "tarrid-taalufi",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — كراء درّاجة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "صورة عدد"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-taalufi_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "على الشاطئ: كراء درّاجة برسم ثابت 300DA ثم 150DA لكل ساعة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما مبلغ الكراء (DA) لمدة 3 ساعات؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "750",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-NISYAN-B",
+          "value": "450"
+        },
+        {
+          "id": "MISC-TARRID-JUZ-THABIT",
+          "value": "1050"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$f(x) = 150x + 300$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بـ 3."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$450 + 300$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$150 \\times 3 + 300 = 750$ DA.",
+        "incorrect": "أضف الرسم الثابت إلى ثمن الساعات."
+      }
+    }
+  ]
+}

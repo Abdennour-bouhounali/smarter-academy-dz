@@ -1,0 +1,78 @@
+{
+  "id": "ex-4am-mafhum-jumla-l2-002",
+  "lessonCode": "mafhum-jumla",
+  "level": 2,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 2 — الثنائية (0 ; 0)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ثنائية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 62,
+      "section": "أؤكّد تعلّماتي",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 62): الثنائية $(0 ; 0)$ هي حل للمعادلة ... (قد تكون أكثر من معادلة واحدة)"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "اختر الجواب الصحيح:",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3x + y = 0$ فقط",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$3x + y = 0$ و $x - 3y = 0$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x - 3y = 0$ و $\\dfrac{1}{3}x - y = 3$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "المعادلات الثلاث $3x + y = 0$ و $x - 3y = 0$ و $\\dfrac{1}{3}x - y = 3$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x = 0$ و $y = 0$ في كل معادلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الطرف الأول يساوي 0 في كل معادلة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعادلة محقّقة إذا كان طرفها الثاني 0."
+        }
+      ],
+      "feedback": {
+        "correct": "الطرفان الأولان يساويان 0: تتحقّق $3x + y = 0$ و $x - 3y = 0$ ، أما الثالثة فتعطي $0 \\neq 3$ .",
+        "incorrect": "جرّب الثنائية في المعادلات الثلاث."
+      }
+    }
+  ]
+}

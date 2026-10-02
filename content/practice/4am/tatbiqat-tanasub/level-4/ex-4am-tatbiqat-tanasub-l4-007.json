@@ -1,0 +1,59 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l4-007",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — محطة الضخ",
+    "estimatedMinutes": 3,
+    "tags": [
+      "التدفق",
+      "تحويل الوحدات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tatbiqat-tanasub_P2",
+      "modelledOn": "act-6"
+    }
+  },
+  "statement": {
+    "content": "تضخّ محطة ماءً بتدفق $3m^3/s$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "التدفق باللتر في الساعة:",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "10800000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد وحدة البسط ووحدة المقام، قبل التحويل وبعده."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حوّل البسط والمقام كلًّا على حدة: $1h = 3600s$ ، $1km = 1000m$ ، $1m^3 = 1000L$ ، $1L = 1000cm^3$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب المقدار كحاصل قسمة بالوحدات الجديدة، ثم احسب."
+        }
+      ],
+      "feedback": {
+        "correct": "$3m^3 = 3000L$ في الثانية، و $3000 \\times 3600 = 10\\,800\\,000L/h$ .",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    }
+  ]
+}

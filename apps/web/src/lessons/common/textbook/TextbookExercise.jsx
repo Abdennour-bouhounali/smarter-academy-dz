@@ -7,6 +7,7 @@ import MathText from '../components/MathText';
 import SourceTag from './SourceTag';
 import IntegerSetQuestion from './IntegerSetQuestion';
 import FractionQuestion from './FractionQuestion';
+import PairQuestion from './PairQuestion';
 import { ClassroomPresentation, ClassroomEntryButton, ClassroomFrame } from '../classroom';
 
 /**
@@ -18,6 +19,7 @@ import { ClassroomPresentation, ClassroomEntryButton, ClassroomFrame } from '../
  *   numeric      un nombre (NumericQuestion) — { expected, display? }
  *   integerSet   un ensemble d'entiers (IntegerSetQuestion) — { expected }
  *   fraction     un kasr (FractionQuestion, forme irréductible exigée) — { expected: 'a/b' }
+ *   pair         une ثنائية (x ; y) (PairQuestion, évaluateur `point`) — { expected: { x, y }, names? }
  *   batch        plusieurs lignes, un choix par ligne (BatchChoiceQuestion) — { rows: [{ label, options, correct, correction }] }
  *   reasoning    برهان / تعليل : l'élève rédige puis compare à la solution — { solution }
  * Le texte des options et des explications vient de la donnée ; ce fichier ne
@@ -95,6 +97,12 @@ export default function TextbookExercise({ exercise, solved = false, onAnswered,
       body = (
         <FractionQuestion prompt={q.prompt ? <MathText>{q.prompt}</MathText> : undefined} expected={q.expected} explain={q.explain}
           requireIrreducible={q.requireIrreducible !== false} requires={requires} solved={solved} onAnswered={(ok) => onAnswered?.(ok)} />
+      );
+      break;
+    case 'pair':
+      body = (
+        <PairQuestion prompt={q.prompt ? <MathText>{q.prompt}</MathText> : undefined} expected={q.expected} explain={q.explain} names={q.names}
+          requires={requires} solved={solved} onAnswered={(ok) => onAnswered?.(ok)} />
       );
       break;
     case 'batch':

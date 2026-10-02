@@ -1,0 +1,63 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l1-003",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — عدد خلايا مجال",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مجال"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_majdulat-ihsaiya_P1",
+      "modelledOn": "ex-7"
+    }
+  },
+  "statement": {
+    "content": "المجال ⁦A1:E1⁩ في السطر 1 من مجدول."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم خلية يضمّ هذا المجال؟",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MAJAL-KHALIYA",
+          "value": "2"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "النقطتان « ⁦:⁩ » تعنيان «من … إلى»."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "من A إلى E ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "A ، B ، C ، D ، E ."
+        }
+      ],
+      "feedback": {
+        "correct": "A1 ، B1 ، C1 ، D1 ، E1 : خمس خلايا.",
+        "incorrect": "عدّ الأعمدة من A إلى E ."
+      }
+    }
+  ]
+}

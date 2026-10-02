@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l3-008",
+  "lessonCode": "mushkilat-jumla",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — مدرجات الملعب",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ترييض",
+      "ملعب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P2",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "في ملعب 5 جويلية، تذكرة «الفيراج» بـ 200 DA وتذكرة المنصة المغطاة بـ 500 DA. بيعت لمباراة 1000 تذكرة بمداخيل 260000 DA. نسمّي $x$ عدد تذاكر «الفيراج» و $y$ عدد تذاكر المنصة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم المشكلة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 1000 \\\\ 500x + 200y = 260000 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 1000 \\\\ 200x + 500y = 260000 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x + y = 260000 \\\\ 200x + 500y = 1000 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معلومة عدد التذاكر ومعلومة المداخيل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تذكرة «الفيراج» 200."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المداخيل 260000."
+        }
+      ],
+      "feedback": {
+        "correct": "1000 تذكرة و 260000 DA: الحل $(800 ; 200)$ .",
+        "incorrect": "انتبه إلى ثمن كل صنف."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة واكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "800",
+        "y": "200"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب المعادلة الأولى في 200."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرحها من الثانية: يختفي $x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحصل على $300y = 60000$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 200$ و $x = 800$ : $160000 + 100000 = 260000$ .",
+        "incorrect": "أكمل حتى الثنائية."
+      }
+    }
+  ]
+}

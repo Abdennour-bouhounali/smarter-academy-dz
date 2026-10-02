@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l1-010",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — المعاملان معًا",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تعيين دالة تآلفية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "$f$ دالة تآلفية حيث $f(2) = 10$ و $f(4) = 16$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعاملان $(a ; b)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (a ; b) — عددان صحيحان أو كسران",
+      "expectedAnswer": {
+        "x": "3",
+        "y": "4"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ بـ $a$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a = \\dfrac{16 - 10}{4 - 2}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم $b = 10 - 2a$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{6}{2} = 3$ و $b = 10 - 6 = 4$ .",
+        "incorrect": "احسب $a$ أولًا ثم $b$ ، والترتيب $(a ; b)$ ."
+      }
+    }
+  ]
+}

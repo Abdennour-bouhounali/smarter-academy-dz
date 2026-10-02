@@ -1,0 +1,126 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l5-007",
+  "lessonCode": "mushkilat-jumla",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — مقهى الإنترنت",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تحقق",
+      "ألعاب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P2",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "في مقهى إنترنت، ساعة على الحاسوب بـ 80 DA وساعة على جهاز الألعاب بـ 150 DA. قضى أصدقاء 17 ساعة ودفعوا 1850 DA. نسمّي $x$ عدد ساعات الحاسوب و $y$ عدد ساعات جهاز الألعاب."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم المشكلة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 17 \\\\ 150x + 80y = 1850 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 17 \\\\ 80x + 150y = 1850 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} 80x + 150y = 17 \\\\ x + y = 1850 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معلومة الساعات ومعلومة المال."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ساعة الحاسوب 80."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المبلغ 1850."
+        }
+      ],
+      "feedback": {
+        "correct": "17 ساعة و 1850 DA.",
+        "incorrect": "كل ساعة مع ثمنها."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "أيّ ثنائية تحقق القصة نفسها؟",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(7 ; 10)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARTIB"
+        },
+        {
+          "id": "B",
+          "content": "$(12 ; 5)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "C",
+          "content": "$(10 ; 7)$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض كل ثنائية في المعلومتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كلها تعطي 17 ساعة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المبلغ وحده يفصل بينها."
+        }
+      ],
+      "feedback": {
+        "correct": "$10 + 7 = 17$ و $800 + 1050 = 1850$ .",
+        "incorrect": "معلومة الساعات لا تكفي: تحقّق بالمبلغ."
+      }
+    }
+  ]
+}

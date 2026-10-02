@@ -1,0 +1,92 @@
+{
+  "id": "ex-4am-tarrid-khatti-l5-009",
+  "lessonCode": "tarrid-khatti",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — قسم آخر وكرة القدم",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نسبة مئوية",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P3",
+      "modelledOn": "ex-36"
+    }
+  },
+  "statement": {
+    "content": "قسم من 25 تلميذا: 15 بنتا (40% منهن يلعبن كرة القدم) و 10 بنين (80% منهم يلعبونها)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عدد من يلعبون كرة القدم:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "14",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$0{,}4 \\times 15$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$0{,}8 \\times 10$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع."
+        }
+      ],
+      "feedback": {
+        "correct": "$6 + 8 = 14$ .",
+        "incorrect": "احسب كل فوج."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نسبتهم المئوية في القسم (%):",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "56",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{14}{25}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\times 100$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ليست 60."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{14}{25} \\times 100 = 56$ %.",
+        "incorrect": "لا نأخذ متوسط 40% و 80%."
+      }
+    }
+  ]
+}

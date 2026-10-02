@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l1-005",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — أيّهما أكثر انتظاما؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مقارنة",
+      "مدى"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P2",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "لسلسلتي نقاط لاعبَين في لعبة على الهاتف المتوسط نفسه 50؛ مدى نقاط أمين 3 ومدى نقاط سمير 12."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ اللاعبين نتائجه أكثر انتظاما؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "أمين",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "سمير",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUQARANA-MUTAWASSIT-FAQAT"
+        },
+        {
+          "id": "C",
+          "content": "هما متماثلان لأن لهما المتوسط نفسه",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUQARANA-MUTAWASSIT-FAQAT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما الذي يقيس التشتت؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المدى = أكبر قيمة − أصغر قيمة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن 3 و 12."
+        }
+      ],
+      "feedback": {
+        "correct": "مدى أمين 3 أصغر: نقاطه أقل تشتتا.",
+        "incorrect": "المتوسط نفسه لا يكفي: قارن المديين."
+      },
+      "difficulty": 1
+    }
+  ]
+}

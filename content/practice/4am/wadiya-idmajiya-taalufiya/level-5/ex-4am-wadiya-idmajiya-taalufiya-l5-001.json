@@ -1,0 +1,158 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l5-001",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 5,
+  "metadata": {
+    "title": "رحلة إلى الشاطئ: من المشاركين إلى الحافلة",
+    "estimatedMinutes": 6,
+    "tags": [
+      "جملة معادلتين",
+      "تناسب التغيّرات",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P2"
+    }
+  },
+  "statement": {
+    "content": "ركب الحافلة 45 شخصا: $x$ تلميذا ساهم كل منهم بـ 300 DA و $y$ مرافقا ساهم كل منهم بـ 500 DA ، فجُمع 14500 DA. الناقل أ: 7000 DA ثابتة و 100 DA للتلميذ. الناقل ب: ثمنه دالة تآلفية لعدد التلاميذ، 7400 DA لـ 20 تلميذا و 12200 DA لـ 50 تلميذا."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عدد التلاميذ والمرافقين $(x ; y)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y)",
+      "expectedAnswer": {
+        "x": "40",
+        "y": "5"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$y = -x + 45$ و $y = -\\dfrac{3}{5}x + 29$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{2}{5}x = 16$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم $y$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 40$ و $y = 5$.",
+        "incorrect": "نقطة التقاطع؛ الفاصلة أولا."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5
+    },
+    {
+      "id": "q2",
+      "statement": "أيّ ناقل للقسم؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الناقل ب: 10600 DA مقابل 11000 DA",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الناقل أ: ثمن التلميذ عنده أقل",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "C",
+          "content": "الثمن نفسه",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$g(x) = 160x + 4200$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$f(40) = 11000$ و $g(40) = 10600$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يتساويان عند $x \\approx 46{,}7$."
+        }
+      ],
+      "feedback": {
+        "correct": "$g(40) = 160 \\times 40 + 4200 = 10600 < 11000$.",
+        "incorrect": "نعيّن $g$ ثم نقارن عند عدد التلاميذ."
+      },
+      "cognitiveDemand": "transfer",
+      "difficulty": 5
+    },
+    {
+      "id": "q3",
+      "statement": "بالمبلغ المجموع كله والناقل ب، أكبر عدد ممكن من التلاميذ:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "64",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$160x + 4200 \\leq 14500$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x \\leq \\dfrac{10300}{160}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ندوّر نحو الأسفل."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{10300}{160} \\approx 64{,}4$ : 64 تلميذا.",
+        "incorrect": "نحلّ متراجحة ونأخذ عددا طبيعيا."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "65",
+          "id": "MISC-TARRID-TAFSIR"
+        }
+      ]
+    }
+  ]
+}

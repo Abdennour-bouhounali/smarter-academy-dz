@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l1-006",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — مؤشر التشتت",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مؤشرات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P2",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "نريد أن نعرف إن كانت قيم سلسلة متقاربة أم متباعدة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ مؤشر يقيس تباعد القيم؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "المدى",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "المتوسط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUQARANA-MUTAWASSIT-FAQAT"
+        },
+        {
+          "id": "C",
+          "content": "الوسيط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-MUTAWASSIT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مؤشر موقع أم مؤشر تشتت؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المتوسط والوسيط يقولان أين تتمركز القيم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الثالث يقيس الفرق بين الطرفين."
+        }
+      ],
+      "feedback": {
+        "correct": "المدى (أكبر قيمة − أصغر قيمة) مؤشر تشتت.",
+        "incorrect": "المتوسط والوسيط مؤشرا موقع."
+      },
+      "difficulty": 1
+    }
+  ]
+}

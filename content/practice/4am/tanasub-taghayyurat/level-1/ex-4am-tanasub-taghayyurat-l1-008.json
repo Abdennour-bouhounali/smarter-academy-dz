@@ -1,0 +1,80 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l1-008",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — الدستور الصحيح",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تناسب التغيرات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "$f$ دالة تآلفية حيث $f(x) = ax + b$ ، و $x_1$ ، $x_2$ عددان متمايزان."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعامل $a$ يساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$f(x_1) - f(x_2)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-BIDUN-QISMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{f(x_1) - f(x_2)}{x_1 - x_2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{x_1 - x_2}{f(x_1) - f(x_2)}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-MUAMIL-MAQLUB"
+        },
+        {
+          "id": "D",
+          "content": "$\\dfrac{f(x_1) - f(x_2)}{x_2 - x_1}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحدّ $b$ يختفي في الفرق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$f(x_1) - f(x_2) = a(x_1 - x_2)$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نقسم على فرق العددين."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(x_1) - f(x_2) = a(x_1 - x_2)$ ، فنقسم على $x_1 - x_2 \\neq 0$ .",
+        "incorrect": "الترتيب نفسه في البسط والمقام، والبسط فرق الصورتين."
+      }
+    }
+  ]
+}

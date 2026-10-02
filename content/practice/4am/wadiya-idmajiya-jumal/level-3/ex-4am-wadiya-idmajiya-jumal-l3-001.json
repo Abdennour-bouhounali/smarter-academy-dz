@@ -1,0 +1,201 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l3-001",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 31 — المجهولان والتخفيض",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ترجمة",
+      "تخفيض"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-31",
+      "page": 63,
+      "section": "أتعمّق",
+      "number": 31
+    }
+  },
+  "statement": {
+    "content": "اشترى زبون من متجر كبير 6 علب من الحليب وقارورة عصير ودفع 720 DA. زبون آخر يملك بطاقة إخلاص تمكّنه من الاستفادة من تخفيض قدره 20% على ثمن كلّ مشترياته عند الدفع. اشترى هذا الزبون 5 علب من الحليب و5 قارورات عصير من النوع نفسه ودفع 1080 DA بعد استظهار بطاقته. مشتريات الزبون الأوّل تترجم بالمعادلة $6x + y = 720$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ماذا نعني بكلّ من $x$ و $y$ في المعادلة $6x + y = 720$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x$ عدد علب الحليب و $y$ عدد قارورات العصير",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MAJAHIL"
+        },
+        {
+          "id": "B",
+          "content": "$x$ سعر علبة الحليب و $y$ سعر قارورة العصير (بالدينار)",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x$ سعر قارورة العصير و $y$ سعر علبة الحليب (بالدينار)",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARTIB"
+        },
+        {
+          "id": "D",
+          "content": "$x$ المبلغ المدفوع و $y$ التخفيض",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MAJAHIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد 6 يعدّ علب الحليب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$6x$ ثمن ست علب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المجهولان هما ما نجهله: السعران."
+        }
+      ],
+      "feedback": {
+        "correct": "$6x$ ثمن ست علب حليب، و $y$ ثمن قارورة العصير.",
+        "incorrect": "المجهولان سعران، لا عددان معلومان."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 2
+    },
+    {
+      "id": "q2",
+      "statement": "لماذا نضرب الثمن في 0,8 عند تطبيق تخفيض بـ 20%؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لأنّ الزبون يدفع 20% فقط من الثمن",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAKHFID-NISBA"
+        },
+        {
+          "id": "B",
+          "content": "لأنّ 20% من الثمن تساوي 0,8 من الثمن",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAKHFID-NISBA"
+        },
+        {
+          "id": "C",
+          "content": "لأنّ التخفيض يُطرح من الثمن: نطرح 0,8 دينار من كل علبة",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "لأنّ الثمن بعد التخفيض هو 80% من الثمن، و $80\\% = 0{,}8$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كم في المئة من الثمن يبقى بعد التخفيض؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$100\\% - 20\\%$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حوّل النسبة إلى عدد عشري."
+        }
+      ],
+      "feedback": {
+        "correct": "ندفع $100\\% - 20\\% = 80\\%$ من الثمن، أي الثمن $\\times 0{,}8$.",
+        "incorrect": "20% هو ما نوفّره، لا ما ندفعه."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 2
+    },
+    {
+      "id": "q3",
+      "statement": "المعادلة التي تعبّر عن مشتريات الزبون الثاني هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$5x + 5y = 1080$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAKHFID-NISBA"
+        },
+        {
+          "id": "B",
+          "content": "$0{,}2(5x + 5y) = 1080$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAKHFID-NISBA"
+        },
+        {
+          "id": "C",
+          "content": "$0{,}8(5x + 5y) = 1080$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$0{,}8 \\times 5x + 5y = 1080$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما ثمن 5 علب و 5 قارورات قبل التخفيض؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التخفيض يشمل كل المشتريات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب الثمن كله في النسبة المدفوعة."
+        }
+      ],
+      "feedback": {
+        "correct": "قبل التخفيض $5x + 5y$ ، وبعده $0{,}8(5x + 5y) = 1080$.",
+        "incorrect": "لا تنس التخفيض، وطبّقه على كل المشتريات."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ]
+}

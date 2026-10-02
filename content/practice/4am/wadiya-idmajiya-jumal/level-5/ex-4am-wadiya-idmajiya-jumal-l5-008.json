@@ -1,0 +1,131 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l5-008",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 5,
+  "metadata": {
+    "title": "التمر — زيادة في السعر",
+    "estimatedMinutes": 6,
+    "tags": [
+      "نسبة مئوية",
+      "حل جملة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P2",
+      "modelledOn": "ex-31"
+    }
+  },
+  "statement": {
+    "content": "سعر الكيلوغرام من دقلة نور $x$ DA ومن الغرس $y$ DA. اشترت أمّ وليد 2kg من دقلة نور و 3kg من الغرس بـ 2 800 DA. بعد أسبوع ارتفع سعر دقلة نور بـ 10% وبقي سعر الغرس كما هو، فاشترت 3kg من دقلة نور و 1kg من الغرس بـ 3 040 DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الشراء الثاني يُترجم بـ:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3 \\times 0{,}1x + y = 3040$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAKHFID-NISBA"
+        },
+        {
+          "id": "B",
+          "content": "$3x + y = 3040$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAKHFID-NISBA"
+        },
+        {
+          "id": "C",
+          "content": "$1{,}1(3x + y) = 3040$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAKHFID-NISBA"
+        },
+        {
+          "id": "D",
+          "content": "$3 \\times 1{,}1x + y = 3040$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما السعر الجديد لدقلة نور؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "زيادة 10%: ندفع 110%."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الغرس لم يتغيّر."
+        }
+      ],
+      "feedback": {
+        "correct": "السعر الجديد $1{,}1x$ ، فـ $3 \\times 1{,}1x + y = 3040$.",
+        "incorrect": "الزيادة على دقلة نور وحدها، ونضرب في 1,1."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "ما السعران $(x ; y)$ قبل الزيادة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
+      "expectedAnswer": {
+        "x": "800",
+        "y": "400"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$y = 3040 - 3{,}3x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض في $2x + 3y = 2800$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$7{,}9x = 6320$."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 800$ و $y = 3040 - 2640 = 400$.",
+        "incorrect": "عوّض بدقة مع الأعداد العشرية."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "400",
+            "y": "800"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    }
+  ]
+}

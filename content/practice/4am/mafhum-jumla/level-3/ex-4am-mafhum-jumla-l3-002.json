@@ -1,0 +1,61 @@
+{
+  "id": "ex-4am-mafhum-jumla-l3-002",
+  "lessonCode": "mafhum-jumla",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 3 — 2) ب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "حل ذهني"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-3",
+      "page": 60,
+      "section": "أوظّف تعلّماتي",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 60): عيّن ذهنيا الثنائية حل الجملة $\\begin{cases} y = x - 1 \\\\ y = 2x \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هي الثنائية $(x ; y)$ حل الجملة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية $(x ; y)$ : العدد الأول ثم الثاني (عدد صحيح أو كسر مثل 2/5)",
+      "expectedAnswer": {
+        "x": "-1",
+        "y": "-2"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$y$ يساوي $x - 1$ ويساوي $2x$ في آن واحد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذن $2x = x - 1$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $x$ ، ثم $y = 2x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x = x - 1$ أي $x = -1$ ، و $y = -2$ : $(-1 ; -2)$ .",
+        "incorrect": "انتبه إلى الترتيب: $x$ أولًا."
+      }
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l1-005",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 3 (ص 100) — وسيط أربع قيم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وسيط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 100,
+      "section": "أؤكّد تعلّماتي",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 100): السلسلة الإحصائية $8$ ، $20$ ، $40$ ، $60$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "وسيط هذه السلسلة هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$30$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$20$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-RUTBA"
+        },
+        {
+          "id": "C",
+          "content": "$40$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-RUTBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عدد القيم زوجي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خذ منتصف القيمتين الثانية والثالثة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{20 + 40}{2} = 30$ .",
+        "incorrect": "أربع قيم: الوسيط بين قيمتين."
+      }
+    }
+  ]
+}

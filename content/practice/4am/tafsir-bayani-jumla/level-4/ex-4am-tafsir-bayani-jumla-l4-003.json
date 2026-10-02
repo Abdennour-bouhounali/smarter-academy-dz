@@ -1,0 +1,61 @@
+{
+  "id": "ex-4am-tafsir-bayani-jumla-l4-003",
+  "lessonCode": "tafsir-bayani-jumla",
+  "level": 4,
+  "metadata": {
+    "title": "الضرب ثم الجمع",
+    "estimatedMinutes": 5,
+    "tags": [
+      "جمع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tafsir-bayani-jumla_P2",
+      "modelledOn": "act-5"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الجملة $\\begin{cases} 5x - 2y = 1 \\\\ 3x + 4y = 11 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حلّ الجملة (إحداثيتا نقطة تقاطع المستقيمين):",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "1",
+        "y": "2"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نقطة التقاطع تقع على المستقيمين معًا: إحداثياها يحقّقان المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بالتعويض أو بالجمع، أوجد $x$ أولًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض قيمة $x$ في إحدى المعادلتين لإيجاد $y$ ، ثم تحقّق في الأخرى."
+        }
+      ],
+      "feedback": {
+        "correct": "الحل $(1 ; 2)$ ، ونتحقّق: $5 \\times 1 - 2 \\times 2 = 1$ و $3 \\times 1 + 4 \\times 2 = 11$.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

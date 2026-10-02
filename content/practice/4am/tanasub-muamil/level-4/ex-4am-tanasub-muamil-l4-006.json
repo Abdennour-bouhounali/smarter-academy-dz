@@ -1,0 +1,59 @@
+{
+  "id": "ex-4am-tanasub-muamil-l4-006",
+  "lessonCode": "tanasub-muamil",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — سلّم خريطة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خريطة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-muamil_P3",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "على خريطة الجزائر العاصمة، كل 1cm يمثّل 2,5km في الواقع. المسافة الحقيقية متناسبة مع المسافة على الخريطة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مسافة 7,4cm على الخريطة تمثّل (بالكيلومتر):",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "18,5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في جدول تناسبية نحصل على y بضرب x في المعامل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب المعامل $a = \\dfrac{y}{x}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $y = a \\times x$ ثم تحقّق على عمود من الجدول."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 2{,}5 \\times 7{,}4 = 18{,}5$ km.",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      }
+    }
+  ]
+}

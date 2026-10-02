@@ -1,0 +1,135 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l3-005",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 3,
+  "metadata": {
+    "title": "بطارية الهاتف",
+    "estimatedMinutes": 4,
+    "tags": [
+      "دالة متناقصة",
+      "تناسب التغيّرات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "بعد ساعة من اللعب على الهاتف بقي في البطارية 85% ، وبعد 4 ساعات بقي 40%. نسبة الشحن $f(x)$ بعد $x$ ساعة دالة تآلفية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "دستور الدالة $f$ :",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$f(x) = -15x + 100$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$f(x) = 15x + 70$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-TARTIB"
+        },
+        {
+          "id": "C",
+          "content": "$f(x) = -45x + 130$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-BIDUN-QISMA"
+        },
+        {
+          "id": "D",
+          "content": "$f(x) = 85x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-KHATTIYA-KHALT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$a = \\dfrac{40 - 85}{4 - 1}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a = -15$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$b = 85 - a$."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{-45}{3} = -15$ و $b = 85 + 15 = 100$.",
+        "incorrect": "نطرح بالترتيب نفسه في البسط والمقام."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "تفرغ البطارية تماما بعد:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "6 ساعات و 40 دقيقة",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "6 ساعات و 67 دقيقة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "id": "C",
+          "content": "7 ساعات",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$-15x + 100 = 0$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x = \\dfrac{20}{3}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الساعة 60 دقيقة."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = \\dfrac{100}{15} = 6 + \\dfrac{2}{3}$ ساعة، و $\\dfrac{2}{3}$ ساعة $= 40$ دقيقة.",
+        "incorrect": "نحوّل الجزء العشري من الساعة إلى دقائق."
+      },
+      "cognitiveDemand": "transfer",
+      "difficulty": 3
+    }
+  ]
+}

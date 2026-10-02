@@ -1,0 +1,96 @@
+{
+  "id": "ex-4am-tamthil-bayani-taalufi-l3-008",
+  "lessonCode": "tamthil-bayani-taalufi",
+  "level": 3,
+  "metadata": {
+    "title": "نقطتا المستقيم لا تشملان محور التراتيب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معامل التوجيه",
+      "الترتيب عند المبدأ"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-taalufi_P2"
+    }
+  },
+  "statement": {
+    "content": "المستقيم $(D)$ هو التمثيل البياني لدالة تآلفية $f$ ، ويشمل النقطتين $(1 ; 1)$ و $(3 ; 5)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "معامل التوجيه $a$ للمستقيم:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل التوجيه $a$ هو ما يصعده المستقيم (أو ينزله) عندما نتقدّم وحدة واحدة إلى اليمين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خذ نقطتين من المستقيم: كم تغيّر الترتيب؟ وكم تغيّرت الفاصلة؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم تغيّر الترتيب على تغيّر الفاصلة، بالإشارة: ينزل ⇒ $a < 0$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "من $(1 ; 1)$ إلى $(3 ; 5)$ : $a = \\dfrac{5 - (1)}{3 - (1)} = 2$ .",
+        "incorrect": "اقسم تغيّر الترتيب على تغيّر الفاصلة، لا العكس، وانتبه إلى الإشارة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "النقطة التي يقطع فيها $(D)$ محور التراتيب:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "0",
+        "y": "-1"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الترتيب عند المبدأ $b$ هو ترتيب النقطة التي يقطع فيها المستقيم محور التراتيب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هذه النقطة فاصلتها $0$ ، لأنّ $f(0) = b$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا لم تكن مرسومة، انطلق من نقطة معلومة وارجع إلى الفاصلة $0$ بالدرجة $a$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(x) = 2x - 1$ : النقطة $(0 ; -1)$ .",
+        "incorrect": "الفاصلة أولًا ثم الترتيب، والنقطة يجب أن تحقّق $y = f(x)$ ."
+      }
+    }
+  ]
+}

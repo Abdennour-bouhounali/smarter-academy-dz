@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l4-003",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — خلايا فارغة في المجال",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مجال",
+      "متوسط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_majdulat-ihsaiya_P2",
+      "modelledOn": "ex-7"
+    }
+  },
+  "statement": {
+    "content": "في السطر 1: A1 = 6 ، B1 = 8 ، C1 فارغة، D1 = 10 ، E1 = 4 ، F1 فارغة. المجدول يتجاهل الخلايا الفارغة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد الذي يُظهره ⁦=MOYENNE(A1:F1)⁩ :",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MAJAL-KHALIYA",
+          "value": "14/3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كم خلية فيها عدد؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أربع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$28 \\div 4$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "أربع قيم مجموعها 28: $\\dfrac{28}{4} = 7$ .",
+        "incorrect": "الخلايا الفارغة لا تُحسب."
+      }
+    }
+  ]
+}

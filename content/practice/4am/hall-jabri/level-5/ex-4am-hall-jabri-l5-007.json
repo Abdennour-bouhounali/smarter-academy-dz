@@ -1,0 +1,62 @@
+{
+  "id": "ex-4am-hall-jabri-l5-007",
+  "lessonCode": "hall-jabri",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — عملات اللعبة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "الجمع",
+      "أعداد عشرية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hall-jabri_P2",
+      "modelledOn": "ex-22"
+    }
+  },
+  "statement": {
+    "content": "في لعبة إلكترونية، $x$ عدد العملات الذهبية و $y$ عدد العملات الفضية في حقيبة لاعب: $\\begin{cases} 0{,}4x + 0{,}5y = 9 \\\\ 0{,}2x - 0{,}5y = 0 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حل الجملة $(x ; y)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "15",
+        "y": "6"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن معاملي $x$ ثم معاملي $y$ في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب طرفي معادلة (أو كلتيهما) في عدد مناسب ليصير معاملا أحد المجهولين متعاكسين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المعادلتين طرفًا لطرف، ثم عوّض القيمة الناتجة في إحدى المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}5y$ و $-0{,}5y$ متعاكسان: بالجمع $0{,}6x = 9$ ، ومنه $x = 15$ ثم $0{,}5y = 3$ أي $y = 6$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

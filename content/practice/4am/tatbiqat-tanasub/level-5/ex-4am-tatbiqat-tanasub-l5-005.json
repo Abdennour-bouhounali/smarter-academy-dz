@@ -1,0 +1,117 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l5-005",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — استهلاك السيارة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مقدار بدلالة آخر",
+      "وضعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tatbiqat-tanasub_P3",
+      "modelledOn": "act-5"
+    }
+  },
+  "statement": {
+    "content": "تستهلك سيارة $6{,}5L$ من البنزين لكل $100km$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كمية البنزين $c$ (باللتر) بدلالة المسافة $d$ (بالكيلومتر):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$c = 0{,}065d$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$c = 6{,}5d$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQADIR-WIHDA"
+        },
+        {
+          "id": "C",
+          "content": "$c = \\dfrac{100}{6{,}5}d$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQADIR-QISMA-MAQLUBA"
+        },
+        {
+          "id": "D",
+          "content": "$c = d + 6{,}5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-AFFINE"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المقدار المركّب الثابت (سرعة، كتلة حجمية، استطاعة، مضاعف) هو معامل دالة خطية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المقدار المطلوب بدلالة الآخر: $d = v \\times t$ ، $m = \\rho \\times V$ ، $E = P \\times t$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض بالقيمة المعطاة، أو حلّ المعادلة إذا كان المجهول هو المقدار الآخر، ثم تحقّق من الوحدة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{6{,}5}{100} = 0{,}065L$ لكل كيلومتر: $c = 0{,}065d$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "كمية البنزين اللازمة لقطع 340km (باللتر):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "22,1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المقدار المركّب الثابت (سرعة، كتلة حجمية، استطاعة، مضاعف) هو معامل دالة خطية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المقدار المطلوب بدلالة الآخر: $d = v \\times t$ ، $m = \\rho \\times V$ ، $E = P \\times t$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض بالقيمة المعطاة، أو حلّ المعادلة إذا كان المجهول هو المقدار الآخر، ثم تحقّق من الوحدة."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}065 \\times 340 = 22{,}1L$ .",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    }
+  ]
+}

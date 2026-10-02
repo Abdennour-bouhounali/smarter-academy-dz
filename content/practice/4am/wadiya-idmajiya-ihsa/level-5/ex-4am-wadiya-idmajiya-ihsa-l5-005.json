@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l5-005",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 5,
+  "metadata": {
+    "title": "قسمان معا",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متوسط",
+      "مجموعتان"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P1"
+    }
+  },
+  "statement": {
+    "content": "متوسط علامات القسم أ (20 تلميذا) في فرض مشترك 12 ، ومتوسط القسم ب (30 تلميذا) $10{,}5$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما متوسط علامات القسمين معا؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "11.1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مجموع علامات كل قسم."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$20 \\times 12$ و $30 \\times 10{,}5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على 50."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{240 + 315}{50} = \\dfrac{555}{50} = 11{,}1$.",
+        "incorrect": "متوسط مجموعتين ليس متوسط المتوسطين: نرجّح بعدد التلاميذ."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "11.25",
+          "id": "MISC-IHSA-MUTAWASSIT-MUTAWASSITAYN"
+        }
+      ]
+    }
+  ]
+}

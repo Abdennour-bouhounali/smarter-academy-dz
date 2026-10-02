@@ -1,0 +1,115 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l3-002",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 31 — الحل",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حل جملة",
+      "تخفيض"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-31",
+      "page": 63,
+      "section": "أتعمّق",
+      "number": 31
+    }
+  },
+  "statement": {
+    "content": "اشترى زبون من متجر كبير 6 علب من الحليب وقارورة عصير ودفع 720 DA. زبون آخر يملك بطاقة إخلاص تمكّنه من الاستفادة من تخفيض قدره 20% على ثمن كلّ مشترياته عند الدفع. اشترى هذا الزبون 5 علب من الحليب و5 قارورات عصير من النوع نفسه ودفع 1080 DA بعد استظهار بطاقته. مشتريات الزبون الأوّل تترجم بالمعادلة $6x + y = 720$ . ومشتريات الزبون الثاني تؤول إلى $x + y = 270$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حل الجملة $6x + y = 720$ و $x + y = 270$ : ما السعران $(x ; y)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
+      "expectedAnswer": {
+        "x": "90",
+        "y": "180"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معاملا $y$ متساويان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح المعادلة الثانية من الأولى."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم عوّض لإيجاد $y$."
+        }
+      ],
+      "feedback": {
+        "correct": "$5x = 450$ ، $x = 90$ ، $y = 270 - 90 = 180$.",
+        "incorrect": "الطرح يحذف $y$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "180",
+            "y": "90"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "كم كان سيدفع الزبون الثاني دون بطاقة الإخلاص؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "مبلغ بالدينار (عدد طبيعي)",
+      "expectedAnswer": "1350",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولا السعرين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثمن 5 علب و 5 قارورات قبل التخفيض."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تطبّق التخفيض هنا."
+        }
+      ],
+      "feedback": {
+        "correct": "$5 \\times 90 + 5 \\times 180 = 1350$ DA ، و $0{,}8 \\times 1350 = 1080$.",
+        "incorrect": "المطلوب الثمن قبل التخفيض."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "1080",
+          "id": "MISC-TAKHFID-NISBA"
+        }
+      ]
+    }
+  ]
+}

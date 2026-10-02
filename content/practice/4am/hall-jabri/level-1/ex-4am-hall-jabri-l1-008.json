@@ -1,0 +1,98 @@
+{
+  "id": "ex-4am-hall-jabri-l1-008",
+  "lessonCode": "hall-jabri",
+  "level": 1,
+  "metadata": {
+    "title": "تمرين 9 — أ)",
+    "estimatedMinutes": 4,
+    "tags": [
+      "الجمع",
+      "طريقة من اختيارك"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-9",
+      "page": 60,
+      "section": "أوظّف تعلّماتي",
+      "number": 9
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 60): حل الجملة باستعمال طريقة من اختيارك. $\\begin{cases} -2x + y = 0 \\\\ 3x - y = 4 \\end{cases}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بجمع المعادلتين طرفًا لطرف نجد قيمة $x$ . ما هي؟",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن معاملي $x$ ثم معاملي $y$ في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب طرفي معادلة (أو كلتيهما) في عدد مناسب ليصير معاملا أحد المجهولين متعاكسين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المعادلتين طرفًا لطرف، ثم عوّض القيمة الناتجة في إحدى المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$y$ و $-y$ يُلغيان: $-2x + 3x = 0 + 4$ أي $x = 4$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وأجرِ كل عملية على طرفي المعادلة معًا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "4",
+        "y": "8"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ المعاملات قبل أن تبدأ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل يساوي $1$ أو $-1$ يسهّل التعويض؛ معاملان متعاكسان (أو يصيران كذلك بضرب بسيط) يسهّلان الجمع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد إيجاد مجهول، عوّض قيمته لتجد الآخر، ثم تحقّق من الثنائية في المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "معاملا $y$ متعاكسان فالجمع أسرع: $x = 4$ ثم $y = 2x = 8$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

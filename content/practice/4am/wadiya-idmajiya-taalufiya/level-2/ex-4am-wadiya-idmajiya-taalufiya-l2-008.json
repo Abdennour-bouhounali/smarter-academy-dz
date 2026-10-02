@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l2-008",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 2,
+  "metadata": {
+    "title": "صيغة جزافية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "دالة ثابتة",
+      "دالة تآلفية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "محطة كراء على الشاطئ تقترح صيغة «جزافية»: 600 DA لليوم كله مهما كان عدد الساعات $x$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الدالة $x \\longmapsto 600$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "دالة ثابتة، وهي دالة تآلفية حيث $a = 0$ و $b = 600$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "دالة خطية معاملها 600",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-KHATTIYA-KHALT"
+        },
+        {
+          "id": "C",
+          "content": "ليست دالة تآلفية لأنها لا تتعلق بـ $x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-THABITA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتبها على الشكل $ax + b$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما قيمة $a$؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حالة خاصة."
+        }
+      ],
+      "feedback": {
+        "correct": "$600 = 0 \\times x + 600$ : دالة ثابتة، حالة خاصة من الدوال التآلفية.",
+        "incorrect": "الدالة الثابتة حالة خاصة $a = 0$."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 1
+    }
+  ]
+}

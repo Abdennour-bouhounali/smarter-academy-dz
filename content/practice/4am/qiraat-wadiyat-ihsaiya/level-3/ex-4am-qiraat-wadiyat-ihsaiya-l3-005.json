@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l3-005",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — ثلاث مجموعات",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متوسط مجموعات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P3",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "في نادي الشطرنج: 10 أعضاء متوسط نقاطهم 8، و 15 عضوا متوسط نقاطهم 12، و 5 أعضاء متوسط نقاطهم 20."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما متوسط نقاط أعضاء النادي؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "12",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MUTAWASSIT-MUTAWASSITAYN",
+          "value": "40/3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ثلاث مجموعات بأعداد مختلفة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المجموع $80 + 180 + 100$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على 30."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{80 + 180 + 100}{30} = \\dfrac{360}{30} = 12$ .",
+        "incorrect": "المتوسط المتوازن على 30 عضوا."
+      },
+      "difficulty": 3
+    }
+  ]
+}

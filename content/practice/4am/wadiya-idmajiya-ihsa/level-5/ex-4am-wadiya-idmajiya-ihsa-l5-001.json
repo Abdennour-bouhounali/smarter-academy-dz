@@ -1,0 +1,145 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l5-001",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 5,
+  "metadata": {
+    "title": "كأس إفريقيا: أهداف الفرق",
+    "estimatedMinutes": 6,
+    "tags": [
+      "قيمة مخفية",
+      "وسيط",
+      "متوسط",
+      "نسبة مئوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P3"
+    }
+  },
+  "statement": {
+    "content": "عدد الأهداف التي سجّلها كل فريق من 20 فريقا في دور المجموعات لبطولة إفريقية: عدد الأهداف: 0 ، 1 ، ⬡ ، 4 ، 5 ، ⬡ ، 9 — عدد الفرق: 2 ، 6 ، 5 ، 3 ، 2 ، 1 ، 1. (الأولى بين 1 و 4 ، والثانية بين 5 و 9). الوسيط 3 والمتوسط $2{,}9$. هذه الفرق تمثّل 80% من الفرق التي شاركت في التصفيات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما القيمة المخفية الأولى؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "20 زوجي: الرتبتان 10 و 11."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التكرارات المجمعة 2 ، 8 ، ثم 13."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أين تقع الرتبتان؟"
+        }
+      ],
+      "feedback": {
+        "correct": "الرتبتان 10 و 11 في العمود المخفي الأول، فالقيمة تساوي الوسيط.",
+        "incorrect": "نعيّن الرتبتين بالتكرارات المجمعة."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "ما القيمة المخفية الثانية؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجموع = المتوسط × 20."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "القيمة الأولى تكرارها 5."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "معادلة."
+        }
+      ],
+      "feedback": {
+        "correct": "$2{,}9 \\times 20 = 58$ و $0 + 6 + 15 + 12 + 10 + y + 9 = 58$ ، إذن $y = 6$.",
+        "incorrect": "القيمة الأولى تُحسب خمس مرات."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "18",
+          "id": "MISC-IHSA-MUTAWASSIT-BILA-TARJIH"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "كم فريقا شارك في التصفيات؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "25",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "20 فريقا جزء."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$0{,}8 \\times T = 20$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم."
+        }
+      ],
+      "feedback": {
+        "correct": "$T = \\dfrac{20}{0{,}8} = 25$ فريقا.",
+        "incorrect": "العدد 20 هو 80% من الكل."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "16",
+          "id": "MISC-IHSA-NISBA-MIN-ADAD"
+        }
+      ]
+    }
+  ]
+}

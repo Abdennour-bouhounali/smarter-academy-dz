@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l1-001",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 1,
+  "metadata": {
+    "title": "نشاط 3 (ص 93) — مدى الرواتب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مدى"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-3",
+      "page": 93,
+      "section": "أنشطة",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 93): مخطط بالأعمدة للرواتب الشهرية في مؤسسة صغيرة: 4 عمال براتب $30000\\,\\mathrm{DA}$ ، 3 بـ $35000$ ، 6 بـ $40000$ ، 5 بـ $45000$ ، 4 بـ $50000$ ، 3 بـ $60000$ ، وعامل واحد بـ $75000$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هو الفرق بين أكبر راتب وأصغر راتب (DA)؟ (يسمى هذا الفرق مدى سلسلة الرواتب)",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "45000",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MADA-AKBAR-QIMA",
+          "value": "75000"
+        },
+        {
+          "id": "MISC-IHSA-MADA-TAKRAR",
+          "value": "5"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أكبر راتب $75000$ وأصغر راتب $30000$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المدى = أكبر قيمة − أصغر قيمة."
+        }
+      ],
+      "feedback": {
+        "correct": "$75000 - 30000 = 45000$ DA.",
+        "incorrect": "اطرح أصغر راتب من أكبر راتب، لا التكرارات."
+      }
+    }
+  ]
+}

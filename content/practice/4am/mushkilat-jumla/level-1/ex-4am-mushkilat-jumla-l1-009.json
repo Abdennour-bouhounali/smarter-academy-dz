@@ -1,0 +1,126 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l1-009",
+  "lessonCode": "mushkilat-jumla",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — التحقق في رحلة مدرسية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تحقق",
+      "رحلة مدرسية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P2",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "في رحلة مدرسية إلى البحر، ركب الحافلة 30 شخصا: تلاميذ (التذكرة 150 DA) ومرافقون (التذكرة 250 DA)، ودُفع 5100 DA. نسمّي $x$ عدد التلاميذ و $y$ عدد المرافقين."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قالت مريم: «في الحافلة 24 تلميذا و 6 مرافقين». التحقق في النص يعطي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "جوابها صحيح: $24 + 6 = 30$ و $150 \\times 24 + 250 \\times 6 = 5100$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "جوابها خاطئ: المبلغ لا يساوي 5100 DA",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TAHAQQUQ-NAS"
+        },
+        {
+          "id": "C",
+          "content": "لا يمكن التحقق دون حل الجملة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TAHAQQUQ-NAS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض العددين في معلومة العدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم عوّضهما في معلومة المال."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الجواب صحيح إذا تحققت المعلومتان معا."
+        }
+      ],
+      "feedback": {
+        "correct": "المعلومتان محققتان: 30 شخصا و $3600 + 1500 = 5100$ DA.",
+        "incorrect": "التحقق تعويض في النص، ولا يحتاج إلى حل الجملة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "قال أيمن: «في الحافلة 6 تلاميذ و 24 مرافقا». التحقق يعطي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "جوابه صحيح لأنّ $6 + 24 = 30$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "B",
+          "content": "جوابه خاطئ: $150 \\times 6 + 250 \\times 24 = 6900$ لا 5100",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "جوابه صحيح لأنّ 6 و 24 عددان طبيعيان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TAHAQQUQ-NAS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عدد الأشخاص صحيح، فهل المبلغ صحيح؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب ما يدفعه 6 تلاميذ و 24 مرافقا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "معلومة واحدة لا تكفي للتحقق."
+        }
+      ],
+      "feedback": {
+        "correct": "معلومة العدد محققة، لكن المبلغ $900 + 6000 = 6900$ DA: الترتيب مقلوب.",
+        "incorrect": "نتحقق في المعلومتين معا، لا في واحدة."
+      }
+    }
+  ]
+}

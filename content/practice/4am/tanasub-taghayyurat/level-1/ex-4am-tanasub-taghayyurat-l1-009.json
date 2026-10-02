@@ -1,0 +1,57 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l1-009",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — b من صورة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تعيين دالة تآلفية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "$h$ دالة تآلفية معاملها $a = 4$ ، و $h(1) = 7$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد $b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$h(1) = 4 \\times 1 + b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$4 + b = 7$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$b = h(1) - a \\times 1$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = 7 - 4 = 3$ .",
+        "incorrect": "نطرح $a \\times 1$ من الصورة."
+      }
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l4-001",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — مستقيم يشمل O أم لا؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "قراءة",
+      "دالة خطية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-khatti_P2",
+      "modelledOn": "qcm"
+    }
+  },
+  "statement": {
+    "content": "المستقيم (D) أدناه يشمل المبدأ والنقطة $(4 ; 3)$ .",
+    "visual": {
+      "range": {
+        "xMin": 0,
+        "xMax": 8,
+        "yMin": 0,
+        "yMax": 6
+      },
+      "unit": 37.5,
+      "unitY": 33.3333,
+      "functions": [
+        {
+          "id": "d",
+          "a": 0.75,
+          "b": 0,
+          "label": "(D)",
+          "tone": "indigo"
+        }
+      ],
+      "points": [
+        {
+          "id": "p0",
+          "x": 4.0,
+          "y": 3.0,
+          "name": ""
+        }
+      ],
+      "xStep": 1,
+      "yStep": 1,
+      "frozen": true,
+      "ariaLabel": "المستقيم (D) يشمل المبدأ والنقطة (4 ; 3)",
+      "caption": false
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "(D) هو التمثيل البياني للدالة:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\longmapsto x - 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-AFFINE"
+        },
+        {
+          "id": "B",
+          "content": "$x \\longmapsto 0{,}75x$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x \\longmapsto \\dfrac{4}{3}x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-MUAMIL-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التمثيل يشمل O والنقطة المعطاة $(m ; n)$ ، أي $f(m) = n$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $a \\times m = n$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الترتيب على الفاصلة: $a = \\dfrac{n}{m}$ ، مع الانتباه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3}{4} = 0{,}75$ ، و (D) يشمل O.",
+        "incorrect": "اقرأ نقطة غير O واقسم ترتيبها على فاصلتها."
+      }
+    }
+  ]
+}

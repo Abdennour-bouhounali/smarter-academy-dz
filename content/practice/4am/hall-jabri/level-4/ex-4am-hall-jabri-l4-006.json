@@ -1,0 +1,63 @@
+{
+  "id": "ex-4am-hall-jabri-l4-006",
+  "lessonCode": "hall-jabri",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 11 — د)",
+    "estimatedMinutes": 4,
+    "tags": [
+      "اختيار الطريقة",
+      "كسور"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-11",
+      "page": 60,
+      "section": "أوظّف تعلّماتي",
+      "number": 11
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 60): حل الجملة باختيار طريقة مناسبة. $\\begin{cases} a - b = 6 \\\\ 3a - \\dfrac{b}{2} = 3 \\end{cases}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حل الجملة $(a ; b)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "point",
+      "answerFormat": "الثنائية (a ; b) — عددان صحيحان أو كسران",
+      "expectedAnswer": {
+        "x": "0",
+        "y": "-6"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ المعاملات قبل أن تبدأ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل يساوي $1$ أو $-1$ يسهّل التعويض؛ معاملان متعاكسان (أو يصيران كذلك بضرب بسيط) يسهّلان الجمع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد إيجاد مجهول، عوّض قيمته لتجد الآخر، ثم تحقّق من الثنائية في المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = b + 6$ ؛ $3b + 18 - \\dfrac{b}{2} = 3$ أي $\\dfrac{5}{2}b = -15$ ، ومنه $b = -6$ و $a = 0$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l2-008",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — الثنائية (a ; b)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تعيين دالة تآلفية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "$f$ دالة تآلفية حيث $f(-2) = -7$ و $f(1) = 2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعاملان $(a ; b)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (a ; b) — عددان صحيحان أو كسران",
+      "expectedAnswer": {
+        "x": "3",
+        "y": "-1"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$a = \\dfrac{2 - (-7)}{1 - (-2)}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a = \\dfrac{9}{3}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$b = f(1) - a$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = 3$ و $b = 2 - 3 = -1$ : $f(x) = 3x - 1$ .",
+        "incorrect": "انتبه للإشارات في الفرقين."
+      }
+    }
+  ]
+}

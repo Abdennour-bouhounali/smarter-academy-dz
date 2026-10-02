@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tarrid-khatti-l2-005",
+  "lessonCode": "tarrid-khatti",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — من الجدول إلى الدستور",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جدول",
+      "دستور"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P2",
+      "modelledOn": "method-spring"
+    }
+  },
+  "statement": {
+    "content": "جدول تناسبية: $x$ : 3 ، 6 ؛ $y$ : 4,5 ، 9 ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الدستور الذي يعبّر عن $y$ بدلالة $x$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$y = x + 1{,}5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-AFFINE"
+        },
+        {
+          "id": "B",
+          "content": "$y = 1{,}5x$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$y = \\dfrac{2}{3}x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TANASUB-MUAMIL-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{4{,}5}{3}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المعامل نفسه للعمودين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نضرب $x$ في المعامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{4{,}5}{3} = \\dfrac{9}{6} = 1{,}5$ : $y = 1{,}5x$ .",
+        "incorrect": "المعامل $\\dfrac{y}{x}$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما العدد $x$ الذي يوافقه $y = 12$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ $1{,}5x = 12$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x = \\dfrac{12}{1{,}5}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق: $1{,}5 \\times 8$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{12}{1{,}5} = 8$ .",
+        "incorrect": "نقسم على المعامل."
+      }
+    }
+  ]
+}

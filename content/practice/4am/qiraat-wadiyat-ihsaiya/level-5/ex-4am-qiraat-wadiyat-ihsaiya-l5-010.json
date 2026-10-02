@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l5-010",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — ثلاثة أجنحة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متوسط مجموعات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P3",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "في مقابلة: 200 تذكرة بـ 300DA ، 150 تذكرة بـ 500DA ، 50 تذكرة بـ 900DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما متوسط ثمن التذكرة (DA)؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "450",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MUTAWASSIT-MUTAWASSITAYN",
+          "value": "1700/3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "400 تذكرة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المبلغ الكلي $200 \\times 300 + 150 \\times 500 + 50 \\times 900$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على 400."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{180000}{400} = 450$ DA.",
+        "incorrect": "المتوسط المتوازن، لا متوسط الأسعار الثلاثة."
+      },
+      "difficulty": 5
+    }
+  ]
+}

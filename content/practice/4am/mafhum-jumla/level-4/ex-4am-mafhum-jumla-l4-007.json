@@ -1,0 +1,61 @@
+{
+  "id": "ex-4am-mafhum-jumla-l4-007",
+  "lessonCode": "mafhum-jumla",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — نادي الشطرنج",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نادي",
+      "قبل وبعد"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mafhum-jumla_P2",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "في نادي الشطرنج 30 عضوًا: $x$ ولدًا و $y$ بنتًا. غادر 4 أولاد وبنتان النادي، فأصبح عدد الأولاد مساويًا لعدد البنات: $\\begin{cases} x + y = 30 \\\\ x - 4 = y - 2 \\end{cases}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هي الثنائية $(x ; y)$ : عدد الأولاد ثم عدد البنات قبل المغادرة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية $(x ; y)$ : العدد الأول ثم الثاني (عدد صحيح أو كسر مثل 2/5)",
+      "expectedAnswer": {
+        "x": "16",
+        "y": "14"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من المعادلة الثانية: $x = y + 2$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عددان مجموعهما 30 والأول يزيد على الثاني بـ 2."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$y + 2 + y = 30$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 16$ و $y = 14$ : $16 + 14 = 30$ ، وبعد المغادرة $12 = 12$ .",
+        "incorrect": "تحقّق في النص: المجموع 30، وبعد المغادرة العددان متساويان."
+      }
+    }
+  ]
+}

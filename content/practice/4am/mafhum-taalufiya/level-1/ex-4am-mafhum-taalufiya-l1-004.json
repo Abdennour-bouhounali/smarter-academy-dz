@@ -1,0 +1,77 @@
+{
+  "id": "ex-4am-mafhum-taalufiya-l1-004",
+  "lessonCode": "mafhum-taalufiya",
+  "level": 1,
+  "metadata": {
+    "title": "نشاط 2 — المعاملان",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معاملان",
+      "الكتاب"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-2",
+      "page": 78,
+      "section": "أنشطة",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 78): الدالة $x \\longmapsto -2x + 1$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعاملان $a$ و $b$ لهذه الدالة التآلفية هما:",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$a = -2$ ، $b = 1$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$a = 2$ ، $b = 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$a = 1$ ، $b = -2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-A-B-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$a$ هو العدد المضروب في $x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الإشارة التي قبل العدد جزء منه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$b$ هو الحدّ الذي لا يحتوي $x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$-2x + 1 = (-2) \\times x + 1$ : $a = -2$ و $b = 1$ .",
+        "incorrect": "راجع كل اقتراح: واحد فقط صحيح."
+      }
+    }
+  ]
+}

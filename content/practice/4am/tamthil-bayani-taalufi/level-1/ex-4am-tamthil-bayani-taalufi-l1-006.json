@@ -1,0 +1,103 @@
+{
+  "id": "ex-4am-tamthil-bayani-taalufi-l1-006",
+  "lessonCode": "tamthil-bayani-taalufi",
+  "level": 1,
+  "metadata": {
+    "title": "نقطتان من التمثيل",
+    "estimatedMinutes": 3,
+    "tags": [
+      "رسم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-taalufi_P1"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الدالة التآلفية $f : x \\longmapsto 2x + 1$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ترتيب النقطة من التمثيل التي فاصلتها $1$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد هي ترتيب النقطة من المستقيم التي فاصلتها هذا العدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب عبارة الدالة من نقطتين: $b$ ثم $a$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض العدد في $ax + b$ وتحقّق أنّ النقطة على المستقيم."
+        }
+      ],
+      "feedback": {
+        "correct": "$2 \\times 1 + 1 = 3$ .",
+        "incorrect": "اضرب الفاصلة في $a$ ثم أضف $b$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل النقطة $(2 ; 5)$ تنتمي إلى التمثيل البياني؟",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-NISYAN-B"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نقطة من التمثيل ترتيبها صورة فاصلتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب صورة $2$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن الصورة بترتيب النقطة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(2) = 5$ وهو ترتيبها: تنتمي.",
+        "incorrect": "احسب صورة الفاصلة وقارنها بالترتيب."
+      }
+    }
+  ]
+}

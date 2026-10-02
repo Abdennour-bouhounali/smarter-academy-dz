@@ -1,0 +1,114 @@
+{
+  "id": "ex-4am-dala-khattiya-l3-010",
+  "lessonCode": "dala-khattiya",
+  "level": 3,
+  "metadata": {
+    "title": "تمييز وتعيين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تمييز",
+      "صورة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "دوال معرّفة بعباراتها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ الدوال الآتية دالة خطية؟",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\longmapsto x - 0{,}5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-AFFINE"
+        },
+        {
+          "id": "B",
+          "content": "$x \\longmapsto x^2 + 1$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$x \\longmapsto -0{,}5x$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الدالة الخطية من الشكل $x \\longmapsto ax$ حيث $a$ عدد ثابت."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب صورة 0 بكل دالة: بدالة خطية تكون معدومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق أيضًا أنّ صورة العدد هي جداؤه في العدد الثابت نفسه."
+        }
+      ],
+      "feedback": {
+        "correct": "$x \\longmapsto -0{,}5x$ من الشكل $x \\longmapsto ax$ ؛ الدوال الأخرى صورة 0 بها غير معدومة أو ليست جداء $x$ في عدد ثابت.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $f(-12)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد بدالة خطية تُقرأ على دستورها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بالعدد المعطى في الدستور."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب الجداء، وانتبه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(-12) = (-0{,}5) \\times (-12) = 6$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-SURA-SABIQ",
+          "value": "24"
+        }
+      ]
+    }
+  ]
+}

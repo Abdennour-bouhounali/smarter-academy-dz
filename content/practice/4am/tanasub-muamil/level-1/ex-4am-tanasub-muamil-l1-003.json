@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-tanasub-muamil-l1-003",
+  "lessonCode": "tanasub-muamil",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — أهو جدول تناسبية؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جدول تناسبية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-muamil_P1",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الجدول: $\\begin{array}{|c|c|c|c|} \\hline x & 1 & 2 & 5 \\\\ \\hline y & 3 & 6 & 15 \\\\ \\hline \\end{array}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل هو جدول تناسبية؟",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، ومعامله $3$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نعم، ومعامله $\\dfrac{1}{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TANASUB-MUAMIL-MAQLUB"
+        },
+        {
+          "id": "C",
+          "content": "لا، ليس جدول تناسبية",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل التناسبية هو العدد الذي نضرب فيه أعداد السطر الأول لنحصل على أعداد السطر الثاني."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم عددا من السطر الثاني على العدد المقابل له من السطر الأول: $\\dfrac{y}{x}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق أنّ حاصل القسمة هو نفسه في عمود آخر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3}{1} = \\dfrac{6}{2} = \\dfrac{15}{5} = 3$ : جدول تناسبية معامله 3.",
+        "incorrect": "احسب حاصل القسمة في كل عمود قبل أن تحكم: الزيادة وحدها لا تكفي."
+      }
+    }
+  ]
+}

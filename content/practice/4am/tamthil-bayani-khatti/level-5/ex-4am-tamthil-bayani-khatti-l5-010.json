@@ -1,0 +1,128 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l5-010",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — دالتان ونقطة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "انتماء نقطة",
+      "منحى"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-khatti_P1",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الدالتين $f : x \\longmapsto 0{,}5x$ و $g : x \\longmapsto -0{,}5x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النقطة $P(6 ; -3)$ تنتمي إلى تمثيل:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$f$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$g$ فقط",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$f$ و $g$ معًا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-BIDUN-O"
+        },
+        {
+          "id": "D",
+          "content": "لا أحد منهما",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نقطة تنتمي إلى التمثيل إذا كان ترتيبها صورة فاصلتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب صورة الفاصلة بالدالة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن الصورة بالترتيب، مع الانتباه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$g(6) = -3$ أما $f(6) = 3$ .",
+        "incorrect": "احسب صورة 6 بكل دالة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "التمثيل الذي ينزل من اليسار إلى اليمين:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$f$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-MUNHA"
+        },
+        {
+          "id": "B",
+          "content": "$g$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى إشارة المعامل $a$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المستقيم يشمل O دائمًا، ومنحاه تعيّنه إشارة $a$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تخيّل نقطة فاصلتها 1: ترتيبها $a$ ، فوق محور الفواصل أم تحته؟"
+        }
+      ],
+      "feedback": {
+        "correct": "معامل $g$ سالب.",
+        "incorrect": "المستقيم ينزل إذا كان المعامل سالبًا."
+      }
+    }
+  ]
+}

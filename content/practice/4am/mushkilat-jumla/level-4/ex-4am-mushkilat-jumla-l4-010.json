@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l4-010",
+  "lessonCode": "mushkilat-jumla",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — عصير مخلوط",
+    "estimatedMinutes": 5,
+    "tags": [
+      "ترييض",
+      "مزج"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P1",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "مزج بائع عصائر 20 لترا من عصيرين: عصير برتقال بـ 150 DA للتر وعصير ليمون بـ 100 DA للتر، فكان ثمن المزيج 130 DA للتر. نسمّي $x$ عدد لترات البرتقال و $y$ عدد لترات الليمون."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "معلومة الثمن تُترجم بـ:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$150x + 100y = 130$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$150x + 100y = 2600$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$150x + 100y = 250 \\times 20$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "130 DA ثمن لتر واحد من المزيج."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثمن المزيج كله: 20 لترا بـ 130."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثمن البرتقال + ثمن الليمون = ثمن المزيج كله."
+        }
+      ],
+      "feedback": {
+        "correct": "ثمن المزيج كله $20 \\times 130 = 2600$ ، والحل $(12 ; 8)$ .",
+        "incorrect": "لا نساوي مبلغ 20 لترا بثمن لتر واحد."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "كم لترا من كل عصير؟ اكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "12",
+        "y": "8"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب معلومة الحجم: 20 لترا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $y = 20 - x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحصل على $50x = 600$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 12$ و $y = 8$ : $1800 + 800 = 2600$ .",
+        "incorrect": "أكمل حتى الثنائية."
+      }
+    }
+  ]
+}

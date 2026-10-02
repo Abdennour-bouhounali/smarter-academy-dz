@@ -1,0 +1,111 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l3-008",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 3,
+  "metadata": {
+    "title": "تطبيق نقل وميزانية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "صورة",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "تطبيق نقل يحسب 120 DA عند الركوب ثم 45 DA للكيلومتر ( $x$ عدد الكيلومترات). لدى يوسف 1000 DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ثمن رحلة 10 km:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار",
+      "expectedAnswer": "570",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$45x + 120$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$450 + 120$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "صورة 10."
+        }
+      ],
+      "feedback": {
+        "correct": "$570\\,\\mathrm{DA}$.",
+        "incorrect": "نضرب ثم نضيف."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "450",
+          "id": "MISC-TAALUFI-NISYAN-B"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "أطول رحلة بعدد طبيعي من الكيلومترات يستطيع دفعها:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "19",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$45x + 120 \\leq 1000$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x \\leq \\dfrac{880}{45}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ندوّر نحو الأسفل."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{880}{45} \\approx 19{,}6$ : 19 km ($45 \\times 19 + 120 = 975$).",
+        "incorrect": "لا نتجاوز المبلغ المتاح."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "20",
+          "id": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "value": "22",
+          "id": "MISC-TAALUFI-SABIQ-QISMA"
+        }
+      ]
+    }
+  ]
+}

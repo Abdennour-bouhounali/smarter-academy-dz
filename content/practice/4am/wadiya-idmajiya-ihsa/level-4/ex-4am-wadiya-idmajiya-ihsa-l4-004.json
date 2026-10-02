@@ -1,0 +1,102 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l4-004",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 4,
+  "metadata": {
+    "title": "دورة الألعاب الإلكترونية: قيمتان مخفيتان",
+    "estimatedMinutes": 3,
+    "tags": [
+      "قيمة مخفية",
+      "وسيط",
+      "متوسط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P3"
+    }
+  },
+  "statement": {
+    "content": "عدد الانتصارات لـ 15 لاعبا في دورة إلكترونية: الانتصارات: 1 ، 2 ، ⬡ ، 6 ، 8 ، ⬡ ، 15 — عدد اللاعبين: 2 ، 3 ، 4 ، 2 ، 2 ، 1 ، 1. (الأولى بين 2 و 6 ، والثانية بين 8 و 15). الوسيط 4 والمتوسط $5{,}4$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما القيمة المخفية الأولى؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "15 فردي: الرتبة 8."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التكرارات المجمعة 2 ، 5 ، ثم 9."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في أيّ عمود الرتبة 8؟"
+        }
+      ],
+      "feedback": {
+        "correct": "الرتبة 8 في العمود المخفي الأول (الرتب من 6 إلى 9)، فالقيمة تساوي الوسيط.",
+        "incorrect": "نعيّن رتبة الوسيط ثم عمودها بالتكرارات المجمعة."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "ما القيمة المخفية الثانية؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "14",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجموع = المتوسط × 15."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "القيمة الأولى تكرارها 4."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "معادلة."
+        }
+      ],
+      "feedback": {
+        "correct": "$5{,}4 \\times 15 = 81$ و $2 + 6 + 4 \\times 4 + 12 + 16 + y + 15 = 81$ ، إذن $y = 14$.",
+        "incorrect": "القيمة الأولى تُحسب أربع مرات."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "26",
+          "id": "MISC-IHSA-MUTAWASSIT-BILA-TARJIH"
+        }
+      ]
+    }
+  ]
+}

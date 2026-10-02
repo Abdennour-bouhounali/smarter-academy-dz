@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-tarrid-khatti-l4-007",
+  "lessonCode": "tarrid-khatti",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — كراء دراجة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية غير تناسبية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "كراء دراجة: ساعة بـ 150DA، ساعتان بـ 250DA، ثلاث ساعات بـ 350DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل الثمن متناسب مع المدة؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، لأن الثمن يزيد بـ 100DA كل ساعة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TANASUB-FARQ-THABIT"
+        },
+        {
+          "id": "B",
+          "content": "لا: $\\dfrac{150}{1} \\neq \\dfrac{250}{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "نعم، والمعامل 150",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-NAMUDHAJ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب حاصل قسمة الثمن على المدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "150 ، 125 ، … "
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حاصل القسمة ثابت؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$150 \\neq 125$ : ليست تناسبية (الثمن $100x + 50$ ).",
+        "incorrect": "فرق ثابت لا يعني تناسبًا."
+      }
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-tamthil-bayani-taalufi-l4-002",
+  "lessonCode": "tamthil-bayani-taalufi",
+  "level": 4,
+  "metadata": {
+    "title": "نمدّ المستقيم إلى محور التراتيب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الترتيب عند المبدأ"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-taalufi_P2"
+    }
+  },
+  "statement": {
+    "content": "المستقيم $(D)$ هو التمثيل البياني لدالة تآلفية $f$ ، ويشمل النقطتين $(-1 ; -4)$ و $(3 ; 4)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النقطة التي يقطع فيها $(D)$ محور التراتيب:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "0",
+        "y": "-2"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الترتيب عند المبدأ $b$ هو ترتيب النقطة التي يقطع فيها المستقيم محور التراتيب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هذه النقطة فاصلتها $0$ ، لأنّ $f(0) = b$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا لم تكن مرسومة، انطلق من نقطة معلومة وارجع إلى الفاصلة $0$ بالدرجة $a$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(x) = 2x - 2$ : النقطة $(0 ; -2)$ .",
+        "incorrect": "الفاصلة أولًا ثم الترتيب، والنقطة يجب أن تحقّق $y = f(x)$ ."
+      }
+    }
+  ]
+}

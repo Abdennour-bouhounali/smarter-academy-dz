@@ -1,0 +1,80 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l1-004",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — بداية الدستور",
+    "estimatedMinutes": 3,
+    "tags": [
+      "دستور"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_majdulat-ihsaiya_P2",
+      "modelledOn": "ex-7"
+    }
+  },
+  "statement": {
+    "content": "نريد أن يحسب المجدول متوسط سلسلة محجوزة في A1:E1 ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كل دستور في المجدول يبدأ بـ:",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "النقطتين « ⁦:⁩ »",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-DUSTUR-KHATI"
+        },
+        {
+          "id": "B",
+          "content": "اسم الخلية A1",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-DUSTUR-KHATI"
+        },
+        {
+          "id": "C",
+          "content": "الإشارة « ⁦=⁩ »",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "الإشارة « + »",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-DUSTUR-KHATI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى دساتير التمرين 7."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كلها تبدأ بالإشارة نفسها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "دونها يحفظ المجدول نصًّا."
+        }
+      ],
+      "feedback": {
+        "correct": "الدستور يبدأ بـ « ⁦=⁩ » ، وإلا حفظ المجدول ما كتبناه نصًّا ولم يحسب.",
+        "incorrect": "دون « ⁦=⁩ » لا يحسب المجدول شيئًا."
+      }
+    }
+  ]
+}

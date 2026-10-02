@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l1-002",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — التمثيل يشمل المبدأ",
+    "estimatedMinutes": 4,
+    "tags": [
+      "المبدأ O"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-khatti_P1",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الدالة الخطية $f : x \\longmapsto 3x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ نقطة تنتمي حتمًا إلى التمثيل البياني لـ $f$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$O(0 ; 0)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(0 ; 1)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-BIDUN-O"
+        },
+        {
+          "id": "C",
+          "content": "$(1 ; 0)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-FASILA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب صورة 0."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "صورة 0 بأي دالة خطية هي $a \\times 0$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "النقطة التي فاصلتها 0 وترتيبها صورة 0."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(0) = 3 \\times 0 = 0$ : كل تمثيل لدالة خطية يشمل المبدأ.",
+        "incorrect": "احسب صورة الفاصلة وقارنها بالترتيب."
+      }
+    }
+  ]
+}

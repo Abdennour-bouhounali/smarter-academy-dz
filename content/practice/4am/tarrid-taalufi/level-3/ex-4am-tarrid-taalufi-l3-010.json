@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-tarrid-taalufi-l3-010",
+  "lessonCode": "tarrid-taalufi",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — القراءة البيانية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمثيل بياني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-taalufi_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "على معلم، مستقيم الصيغة A ومستقيم الصيغة B يمثّلان المبلغ بدلالة عدد الوحدات $x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من أجل قيمة معلومة لـ $x$ ، الصيغة الأرخص هي التي يكون مستقيمها:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "تحت المستقيم الآخر",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "فوق المستقيم الآخر",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-FASILA-TARTIB"
+        },
+        {
+          "id": "C",
+          "content": "الأكثر ميلًا دائمًا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المبلغ هو ترتيب النقطة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ترتيب أصغر = مبلغ أصغر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن موضعي النقطتين على الشاقول نفسه."
+        }
+      ],
+      "feedback": {
+        "correct": "المبلغ هو الترتيب: النقطة الأدنى ترتيبها أصغر، فالصيغة أرخص.",
+        "incorrect": "المبلغ يُقرأ على محور التراتيب."
+      }
+    }
+  ]
+}

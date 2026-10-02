@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l1-009",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 1,
+  "metadata": {
+    "title": "نسبة من عدد: النادي الرياضي",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نسبة مئوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P3"
+    }
+  },
+  "statement": {
+    "content": "في قسم من 40 تلميذا، 25% منهم مسجّلون في نادٍ رياضي."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم تلميذا مسجّلا في النادي؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "25% تعني 25 من كل 100."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نضرب العدد في $0{,}25$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أخذ نسبة من عدد."
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}25 \\times 40 = 10$.",
+        "incorrect": "نضرب 40 في $\\dfrac{25}{100}$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1,
+      "misconceptionSignatures": [
+        {
+          "value": "160",
+          "id": "MISC-IHSA-NISBA-MIN-ADAD"
+        }
+      ]
+    }
+  ]
+}

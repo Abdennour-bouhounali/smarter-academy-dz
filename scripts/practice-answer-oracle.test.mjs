@@ -28,6 +28,31 @@ import { ORACLE as ORACLE_JIDAA } from './practice-oracle/jidaa-maadum.mjs';
 import { ORACLE as ORACLE_MUTARAJIHA } from './practice-oracle/mutarajiha-ula.mjs';
 import { ORACLE as ORACLE_TARRID } from './practice-oracle/tarrid-mushkila.mjs';
 import { ORACLE as ORACLE_WADIYA_MUADALAT } from './practice-oracle/wadiya-idmajiya-muadalat.mjs';
+// Unité 5 « جمل معادلتين » : même principe ; les ثنائيات sont des `point` (P(x, y)).
+import { ORACLE as ORACLE_MAFHUM_JUMLA } from './practice-oracle/mafhum-jumla.mjs';
+import { ORACLE as ORACLE_HALL_JABRI } from './practice-oracle/hall-jabri.mjs';
+import { ORACLE as ORACLE_MUSHKILAT_JUMLA } from './practice-oracle/mushkilat-jumla.mjs';
+import { ORACLE as ORACLE_WADIYA_JUMAL } from './practice-oracle/wadiya-idmajiya-jumal.mjs';
+// Unité 6 « الدالة الخطية والتناسبية » (2026-10-02).
+import { ORACLE as ORACLE_TANASUB } from './practice-oracle/tanasub-muamil.mjs';
+import { ORACLE as ORACLE_DALA } from './practice-oracle/dala-khattiya.mjs';
+import { ORACLE as ORACLE_TAMTHIL } from './practice-oracle/tamthil-bayani-khatti.mjs';
+import { ORACLE as ORACLE_TATBIQAT } from './practice-oracle/tatbiqat-tanasub.mjs';
+import { ORACLE as ORACLE_TARRID_KHATTI } from './practice-oracle/tarrid-khatti.mjs';
+import { ORACLE as ORACLE_WADIYA_KHATTIYA } from './practice-oracle/wadiya-idmajiya-khattiya.mjs';
+// Unité 7 « الدالة التآلفية » (2026-10-02).
+import { ORACLE as ORACLE_MAFHUM_TAALUFIYA } from './practice-oracle/mafhum-taalufiya.mjs';
+import { ORACLE as ORACLE_TAMTHIL_TAALUFI } from './practice-oracle/tamthil-bayani-taalufi.mjs';
+import { ORACLE as ORACLE_TAGHAYYURAT } from './practice-oracle/tanasub-taghayyurat.mjs';
+import { ORACLE as ORACLE_TAFSIR_JUMLA } from './practice-oracle/tafsir-bayani-jumla.mjs';
+import { ORACLE as ORACLE_TARRID_TAALUFI } from './practice-oracle/tarrid-taalufi.mjs';
+import { ORACLE as ORACLE_WADIYA_TAALUFIYA } from './practice-oracle/wadiya-idmajiya-taalufiya.mjs';
+// Unité 8 « الإحصاء » (2026-10-02).
+import { ORACLE as ORACLE_TAKRAR_MUJAMMA } from './practice-oracle/takrar-mujamma.mjs';
+import { ORACLE as ORACLE_MADA_WASIT } from './practice-oracle/mada-wasit-mutawassit.mjs';
+import { ORACLE as ORACLE_MAJDULAT } from './practice-oracle/majdulat-ihsaiya.mjs';
+import { ORACLE as ORACLE_QIRAAT_WADIYAT } from './practice-oracle/qiraat-wadiyat-ihsaiya.mjs';
+import { ORACLE as ORACLE_WADIYA_IHSA } from './practice-oracle/wadiya-idmajiya-ihsa.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', 'content/practice/4am');
 
@@ -893,6 +918,27 @@ const ORACLE = {
   ...ORACLE_MUTARAJIHA,
   ...ORACLE_TARRID,
   ...ORACLE_WADIYA_MUADALAT,
+  ...ORACLE_MAFHUM_JUMLA,
+  ...ORACLE_HALL_JABRI,
+  ...ORACLE_MUSHKILAT_JUMLA,
+  ...ORACLE_WADIYA_JUMAL,
+  ...ORACLE_TANASUB,
+  ...ORACLE_DALA,
+  ...ORACLE_TAMTHIL,
+  ...ORACLE_TATBIQAT,
+  ...ORACLE_TARRID_KHATTI,
+  ...ORACLE_WADIYA_KHATTIYA,
+  ...ORACLE_MAFHUM_TAALUFIYA,
+  ...ORACLE_TAMTHIL_TAALUFI,
+  ...ORACLE_TAGHAYYURAT,
+  ...ORACLE_TAFSIR_JUMLA,
+  ...ORACLE_TARRID_TAALUFI,
+  ...ORACLE_WADIYA_TAALUFIYA,
+  ...ORACLE_TAKRAR_MUJAMMA,
+  ...ORACLE_MADA_WASIT,
+  ...ORACLE_MAJDULAT,
+  ...ORACLE_QIRAAT_WADIYAT,
+  ...ORACLE_WADIYA_IHSA,
 };
 
 /**
@@ -961,6 +1007,7 @@ describe('oracle indépendant du banc 4AM — la clé est-elle la réponse juste
       // Et la clé du contenu EST cette réponse (même valeur / même ensemble).
       if (q.answerType === 'rational') expect(evaluateAnswer({ value: String(q.expectedAnswer) }, { ...q, expectedAnswer: ORACLE[key].value }).isCorrect).toBe(true);
       if (q.answerType === 'integerSet') expect([...q.expectedAnswer].sort((a, b) => a - b).join(',')).toBe(ORACLE[key].value.split(', ').join(','));
+      if (q.answerType === 'point') expect(evaluateAnswer({ x: String(q.expectedAnswer.x), y: String(q.expectedAnswer.y) }, { ...q, expectedAnswer: ORACLE[key] }).isCorrect).toBe(true);
       if (q.answerType === 'choice') {
         for (const c of q.choices) expect(isSuccessOutcome(evaluateAnswer(C(c.id), q).outcome)).toBe(c.id === ORACLE[key].choiceId);
       }

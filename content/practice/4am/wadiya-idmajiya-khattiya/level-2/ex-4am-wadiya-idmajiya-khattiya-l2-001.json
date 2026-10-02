@@ -1,0 +1,140 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l2-001",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 32 — هل g خطية؟",
+    "estimatedMinutes": 5,
+    "tags": [
+      "دالة خطية",
+      "نشر"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-32",
+      "page": 75,
+      "section": "أتعمّق",
+      "number": 32
+    }
+  },
+  "statement": {
+    "content": "هل الدّالة $g$ المعرّفة بالدستور: $g(x) = x\\sqrt{8}\\left(\\dfrac{1}{2} - x\\sqrt{2}\\right) + 8 - 16\\left(\\dfrac{x}{2} - \\sqrt{2}\\right)^2$ دالة خطية؟ في حالة الإيجاب عيّن معاملها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بعد النشر والتبسيط، $g(x)$ يساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-8x^2 + 17\\sqrt{2}\\,x - 24$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$17\\sqrt{2}\\,x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-AFFINE"
+        },
+        {
+          "id": "C",
+          "content": "$-8x^2 + 17\\sqrt{2}\\,x + 8$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$-4x^2 + \\sqrt{2}\\,x - 24$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\sqrt{8} = 2\\sqrt{2}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\left(\\dfrac{x}{2} - \\sqrt{2}\\right)^2 = \\dfrac{x^2}{4} - \\sqrt{2}\\,x + 2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انشر كل جزء ثم اجمع الحدود المتشابهة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\sqrt{2}\\,x - 4x^2 + 8 - 4x^2 + 16\\sqrt{2}\\,x - 32 = -8x^2 + 17\\sqrt{2}\\,x - 24$.",
+        "incorrect": "انشر الجزأين بعناية: الطرح يشمل كل حدود المربع."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "هل $g$ دالة خطية؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا: يبقى حد في $x^2$ وحد ثابت",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نعم، معاملها $17\\sqrt{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-AFFINE"
+        },
+        {
+          "id": "C",
+          "content": "نعم، معاملها $-8$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-AFFINE"
+        },
+        {
+          "id": "D",
+          "content": "لا، لأنّ في عبارتها جذرا تربيعيا",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما شكل عبارة الدالة الخطية؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $g(0)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الدالة الخطية من الشكل $ax$ فقط."
+        }
+      ],
+      "feedback": {
+        "correct": "$g(0) = -24 \\neq 0$ وفيها حد في $x^2$ : ليست خطية.",
+        "incorrect": "الدالة الخطية صورة 0 بها 0 ولا تحوي $x^2$ ؛ الجذر لا يمنع الخطية."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 2
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "id": "ex-4am-tafsir-bayani-jumla-l4-001",
+  "lessonCode": "tafsir-bayani-jumla",
+  "level": 4,
+  "metadata": {
+    "title": "نشاط 5 — مبلغ آخر",
+    "estimatedMinutes": 6,
+    "tags": [
+      "تعويض",
+      "تحويل"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-5",
+      "page": 79,
+      "section": "أنشطة",
+      "number": 5
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 79): $\\begin{cases} x + y = 43 \\\\ 100x + 200y = 5000 \\end{cases}$ ، حيث $x$ عدد قطع 100DA و $y$ عدد قطع 200DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النقطة $(40 ; 3)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "تحقّق المعادلتين معًا: هي نقطة تقاطع المستقيمين",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "B",
+          "content": "تحقّق المعادلة الأولى وحدها: على المستقيم الأول فقط",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "تحقّق المعادلة الثانية وحدها: على المستقيم الثاني فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "D",
+          "content": "لا تحقّق أيّ معادلة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ و $y$ في كل معادلة على حدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل معادلة محقّقة تعني أنّ النقطة على مستقيمها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نقطة التقاطع تحقّق المعادلتين معًا."
+        }
+      ],
+      "feedback": {
+        "correct": "بالتعويض: $x + y = 43$ محقّقة ؛ $100x + 200y = 5000$ غير محقّقة.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "لو كان المبلغ 5600DA (والعدد دائمًا 43 قطعة)، حلّ الجملة الجديدة: $(x ; y)$ =",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "30",
+        "y": "13"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نقطة التقاطع تقع على المستقيمين معًا: إحداثياها يحقّقان المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بالتعويض أو بالجمع، أوجد $x$ أولًا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض قيمة $x$ في إحدى المعادلتين لإيجاد $y$ ، ثم تحقّق في الأخرى."
+        }
+      ],
+      "feedback": {
+        "correct": "الحل $(30 ; 13)$ ، ونتحقّق: $30 + 13 = 43$ و $100 \\times 30 + 200 \\times 13 = 5600$.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

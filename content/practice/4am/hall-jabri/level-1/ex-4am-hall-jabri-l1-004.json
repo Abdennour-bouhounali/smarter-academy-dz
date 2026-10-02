@@ -1,0 +1,114 @@
+{
+  "id": "ex-4am-hall-jabri-l1-004",
+  "lessonCode": "hall-jabri",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — كرنتيكة وشاي",
+    "estimatedMinutes": 4,
+    "tags": [
+      "الجمع",
+      "كشك الحي"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hall-jabri_P2",
+      "modelledOn": "act-2"
+    }
+  },
+  "statement": {
+    "content": "في كشك الحي: ثمن قطعة كرنتيكة وكأس شاي معًا 100 DA، والكرنتيكة أغلى من الشاي بـ 20 DA. إذا رمزنا بـ $x$ لثمن الكرنتيكة وبـ $y$ لثمن الشاي (بالدينار) نجد الجملة $\\begin{cases} x + y = 100 \\\\ x - y = 20 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بجمع المعادلتين طرفًا لطرف نجد:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2x = 120$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$2y = 80$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        },
+        {
+          "id": "C",
+          "content": "$2x = 80$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن معاملي $x$ ثم معاملي $y$ في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب طرفي معادلة (أو كلتيهما) في عدد مناسب ليصير معاملا أحد المجهولين متعاكسين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المعادلتين طرفًا لطرف، ثم عوّض القيمة الناتجة في إحدى المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$y$ و $-y$ يُلغيان: $(x + y) + (x - y) = 100 + 20$ أي $2x = 120$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "60",
+        "y": "40"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن معاملي $x$ ثم معاملي $y$ في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب طرفي معادلة (أو كلتيهما) في عدد مناسب ليصير معاملا أحد المجهولين متعاكسين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المعادلتين طرفًا لطرف، ثم عوّض القيمة الناتجة في إحدى المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 60$ ثم $y = 100 - 60 = 40$ : الكرنتيكة بـ 60 DA والشاي بـ 40 DA.",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

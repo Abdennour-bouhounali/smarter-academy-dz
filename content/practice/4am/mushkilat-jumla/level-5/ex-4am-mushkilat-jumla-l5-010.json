@@ -1,0 +1,163 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l5-010",
+  "lessonCode": "mushkilat-jumla",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — حديقة التسلية",
+    "estimatedMinutes": 6,
+    "tags": [
+      "ترييض",
+      "المراحل الخمس"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P2",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "حديقة تسلية بتذكرتين: 500 DA للكبار و 300 DA للصغار. يوم السبت دخلها 260 زائرا بمداخيل 106000 DA. كم كبيرا وكم صغيرا دخلوا الحديقة؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما المجهولان المناسبان؟",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "عدد الكبار وعدد الصغار",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "عدد الزوار والمداخيل",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MAJAHIL"
+        },
+        {
+          "id": "C",
+          "content": "ثمن تذكرة الكبير وثمن تذكرة الصغير",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MAJAHIL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ماذا يسأل السؤال؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ما الذي يعطيه النص بالأرقام؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المجهول ما لا نعرف عدده."
+        }
+      ],
+      "feedback": {
+        "correct": "نسمّي $x$ عدد الكبار و $y$ عدد الصغار .",
+        "incorrect": "المعطى في النص معلوم."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "نسمّي $x$ عدد الكبار و $y$ عدد الصغار. حل الجملة واكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "140",
+        "y": "120"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب معلومة العدد ومعلومة المال."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $y = 260 - x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحصل على $200x = 28000$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 140$ و $y = 120$ : $70000 + 36000 = 106000$ .",
+        "incorrect": "أكمل حتى الثنائية."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "الجملة التي تجيب عن السؤال هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "دخل 120 كبيرا و 140 صغيرا.",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARTIB"
+        },
+        {
+          "id": "B",
+          "content": "دخل 140 كبيرا.",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-NISF-HALL"
+        },
+        {
+          "id": "C",
+          "content": "دخل 140 كبيرا و 120 صغيرا.",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x$ عدد الكبار."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الترتيب في الثنائية مهم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الجواب يذكر العددين."
+        }
+      ],
+      "feedback": {
+        "correct": "$140 + 120 = 260$ و $500 \\times 140 + 300 \\times 120 = 106000$ .",
+        "incorrect": "اقرأ الثنائية بترتيبها، وأجب عن العددين."
+      }
+    }
+  ]
+}

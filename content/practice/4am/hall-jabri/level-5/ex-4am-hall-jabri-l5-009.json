@@ -1,0 +1,97 @@
+{
+  "id": "ex-4am-hall-jabri-l5-009",
+  "lessonCode": "hall-jabri",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — نكمل إلى الثنائية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "الثنائية",
+      "الجمع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hall-jabri_P2",
+      "modelledOn": "act-2"
+    }
+  },
+  "statement": {
+    "content": "حلّ مراد الجملة $\\begin{cases} 5x - 2y = 4 \\\\ 3x + 2y = 12 \\end{cases}$ بجمع المعادلتين فوجد $x = 2$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بالتعويض في إحدى المعادلتين، ما قيمة $y$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو كسر مثل -3/4 (أو عدد عشري)",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حل الجملة ثنائية $(x ; y)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض القيمة المعلومة في إحدى المعادلتين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق من الثنائية في المعادلتين معًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$5 \\times 2 - 2y = 4$ أي $2y = 6$ ، ومنه $y = 3$ ؛ ومن الثانية أيضًا $6 + 2y = 12$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وأجرِ كل عملية على طرفي المعادلة معًا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "2",
+        "y": "3"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حل الجملة ثنائية $(x ; y)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض القيمة المعلومة في إحدى المعادلتين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق من الثنائية في المعادلتين معًا."
+        }
+      ],
+      "feedback": {
+        "correct": "الحل ثنائية: $(2 ; 3)$ ، وللتحقق $10 - 6 = 4$ و $6 + 6 = 12$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "id": "ex-4am-tarrid-taalufi-l4-001",
+  "lessonCode": "tarrid-taalufi",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — بطاقة قاعة الرياضة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متراجحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-taalufi_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "بطاقة لقاعة رياضة: $f(x) = 40x + 1200$ ، ودون بطاقة: $g(x) = 100x$ ، حيث $x$ عدد الحصص."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "البطاقة أرخص عندما:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x > 20$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x < 20$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUTARAJIHA-QALB-ZAID"
+        },
+        {
+          "id": "C",
+          "content": "$x > 30$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-QISMA-MAQLUBA"
+        },
+        {
+          "id": "D",
+          "content": "دائمًا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب $f(x) < g(x)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح $40x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$60x > 1200$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$40x + 1200 < 100x$ أي $1200 < 60x$ ومنه $x > 20$ .",
+        "incorrect": "حلّ $40x + 1200 < 100x$ ."
+      }
+    }
+  ]
+}

@@ -9,7 +9,8 @@ import PathProgress from './PathProgress';
 import Collapsible from './Collapsible';
 import { formatLastActivity } from '../formatLastActivity';
 import { ChipsSkeleton } from './ProgressionSkeleton';
-import { bidi } from '../../../utils/bidi';
+import MathLabel from '../../../lessons/common/components/MathLabel';
+import { mathToPlain } from '../../../utils/mathPlain';
 
 // Des CLÉS, pas des phrases (évaluées avant l'initialisation d'i18next).
 const MASTERY_MESSAGE_KEY = {
@@ -72,7 +73,7 @@ export default function LessonProgressRow({ node, profileStatus, onExplain }) {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
               <Link to={node.lesson.path} className="font-space font-bold text-slate-900 text-base hover:text-blue-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded">
-                {bidi(node.lesson.title)}
+                <MathLabel>{node.lesson.title}</MathLabel>
               </Link>
               {node.isSynthesis && (
                 <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 text-amber-800 px-2 py-0.5 text-[11px] font-mono-jetbrains font-bold">
@@ -151,7 +152,7 @@ export default function LessonProgressRow({ node, profileStatus, onExplain }) {
             {sorted.map((p) => (
               <LearningPointCard
                 key={p.code}
-                title={bidi(p.title)}
+                title={mathToPlain(p.title)}
                 state={p.state}
                 confidence={p.confidence}
                 row={p}

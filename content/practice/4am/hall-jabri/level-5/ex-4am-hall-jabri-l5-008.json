@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-hall-jabri-l5-008",
+  "lessonCode": "hall-jabri",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — أنيس وإيناس",
+    "estimatedMinutes": 4,
+    "tags": [
+      "اختيار الطريقة",
+      "مقارنة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hall-jabri_P3",
+      "modelledOn": "act-2"
+    }
+  },
+  "statement": {
+    "content": "حلّ أنيس الجملة $\\begin{cases} 2x + 3y = 12 \\\\ x - y = 1 \\end{cases}$ بالتعويض انطلاقًا من $x = y + 1$ ، وحلّتها إيناس بالجمع بعد ضرب المعادلة الثانية في 3."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ماذا يصحّ؟",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "يجدان الثنائية نفسها $(3 ; 2)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "يجد أنيس $(3 ; 2)$ وتجد إيناس $(2 ; 3)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARTIB"
+        },
+        {
+          "id": "C",
+          "content": "طريقة إيناس لا تصلح لأنّ معاملي $y$ لا يصيران متعاكسين",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ المعاملات قبل أن تبدأ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل يساوي $1$ أو $-1$ يسهّل التعويض؛ معاملان متعاكسان (أو يصيران كذلك بضرب بسيط) يسهّلان الجمع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد إيجاد مجهول، عوّض قيمته لتجد الآخر، ثم تحقّق من الثنائية في المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "بعد الضرب في 3: $3x - 3y = 3$ ، و $3y$ و $-3y$ متعاكسان: $5x = 15$ . والطريقتان تعطيان الحل الوحيد $(3 ; 2)$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tarrid-khatti-l3-006",
+  "lessonCode": "tarrid-khatti",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — أيّ محل أرخص؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مقارنة",
+      "معامل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P3",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "المحل A يبيع البرتقال بـ 180DA للكيلوغرام. المحل B يبيع 5kg بـ 850DA (والثمن متناسب مع الكتلة)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "سعر الكيلوغرام في المحل B (DA):",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "170",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{850}{5}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل التناسبية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثمن 1kg."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{850}{5} = 170$ DA/kg.",
+        "incorrect": "نقسم الثمن على الكتلة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "لشراء 3kg:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "المحل A أرخص",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "id": "B",
+          "content": "المحل B أرخص بـ 30DA",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "المحلان سواء",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$180 \\times 3$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$170 \\times 3$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الفرق."
+        }
+      ],
+      "feedback": {
+        "correct": "$540 - 510 = 30$ DA لصالح B.",
+        "incorrect": "قارن ثمن 3kg في المحلين."
+      }
+    }
+  ]
+}

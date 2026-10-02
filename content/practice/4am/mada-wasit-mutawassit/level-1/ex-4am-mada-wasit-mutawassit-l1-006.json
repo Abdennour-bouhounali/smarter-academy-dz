@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l1-006",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 1,
+  "metadata": {
+    "title": "معارف 4 (ص 96) — تسع قيم مرتّبة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وسيط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-4",
+      "page": 96,
+      "section": "معارف",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 96): السلسلة المرتّبة $4$ ، $5$ ، $11$ ، $11$ ، $15$ ، $17$ ، $23$ ، $23$ ، $25$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "وسيط هذه السلسلة هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "15",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT",
+          "value": "134/9"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تسع قيم: عدد فردي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "القيمة الخامسة."
+        }
+      ],
+      "feedback": {
+        "correct": "القيمة الخامسة $15$ تترك أربع قيم قبلها وأربعًا بعدها.",
+        "incorrect": "عدّ أربع قيم من كل طرف."
+      }
+    }
+  ]
+}

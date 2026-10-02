@@ -1,0 +1,113 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l5-005",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 5,
+  "metadata": {
+    "title": "دالة مخفية في عبارة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "دالة خطية",
+      "نشر",
+      "صورة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P1",
+      "modelledOn": "ex-32"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الدالة $g(x) = (2x - 1)^2 - 4x^2 - 1$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$g$ دالة خطية. ما معاملها؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد نسبي",
+      "expectedAnswer": "-4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $(2x - 1)^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(a - b)^2 = a^2 - 2ab + b^2$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بسّط ثم اقرأ معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$g(x) = 4x^2 - 4x + 1 - 4x^2 - 1 = -4x$.",
+        "incorrect": "انشر المربع بعناية: الحد الأوسط $-2 \\times 2x \\times 1$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "4",
+          "id": "MISC-KHATTIYA-ISHARA"
+        },
+        {
+          "value": "-2",
+          "id": "MISC-JIDHR-JAMA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما صورة $-2{,}5$ بالدالة $g$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$g(x) = ax$ بالمعامل الذي وجدته."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بـ $-2{,}5$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "سالب في سالب موجب."
+        }
+      ],
+      "feedback": {
+        "correct": "$-4 \\times (-2{,}5) = 10$.",
+        "incorrect": "انتبه إلى الإشارة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "-10",
+          "id": "MISC-KHATTIYA-ISHARA"
+        }
+      ]
+    }
+  ]
+}

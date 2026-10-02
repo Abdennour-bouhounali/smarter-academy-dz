@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l1-010",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 1,
+  "metadata": {
+    "title": "تمرين 16 (ص 99) — أيّ تمثيل لفئات؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمثيل بياني",
+      "فئات"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-16",
+      "page": 99,
+      "section": "أوظّف تعلّماتي",
+      "number": 16
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 99): الفئات $7 \\le t < 8$ ، $8 \\le t < 9$ ، $9 \\le t < 10$ وتكراراتها 6 ، 1 ، 4 ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "يطلب التمرين تمثيل هذه السلسلة بـ:",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "مدرّج تكراري",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "مخطط دائري",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUKHATTAT-GHAYR-MUNASIB"
+        },
+        {
+          "id": "C",
+          "content": "مخطط بالأعمدة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUKHATTAT-GHAYR-MUNASIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هل القيم فئات؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الفئات متلاصقة: 8 نهاية الأولى وبداية الثانية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مستطيلات متلاصقة."
+        }
+      ],
+      "feedback": {
+        "correct": "فئات متلاصقة: مدرّج تكراري، كما في الطلبية ⁦Histogramme({7,8,9,10},{6,1,4})⁩ .",
+        "incorrect": "الفئات مجالات متلاصقة."
+      }
+    }
+  ]
+}

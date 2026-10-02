@@ -1,0 +1,160 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l4-001",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 4,
+  "metadata": {
+    "title": "حفل البلدية — التبسيط والتفسير",
+    "estimatedMinutes": 5,
+    "tags": [
+      "تبسيط",
+      "تفسير"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "situation",
+      "page": 62,
+      "section": "أدمج تعلّماتي"
+    }
+  },
+  "statement": {
+    "content": "بمناسبة الاحتفال بالمولد النبوي الشريف، اقتنت بلدية 150 علبة عصير برتقال و 150 قطعة حلوى متماثلة ودفعت 11 250 DA لكل المصاريف. في نهاية الحفل، بقيت 24 علبة عصير و 30 قطعة حلوى ثمنها معا 2 100 DA. نسمّي $x$ سعر علبة عصير و $y$ سعر قطعة حلوى (بالدينار)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بعد التبسيط، الجملة تكافئ:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 75 \\\\ 4x + 5y = 2100 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-TARAF-WAHID"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 11250 \\\\ 4x + 5y = 350 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-TARAF-WAHID"
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x + y = 75 \\\\ 4x + 5y = 350 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$\\begin{cases} x + y = 75 \\\\ 4x + 5y = 300 \\end{cases}$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقسم الأولى على 150."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم الثانية على 6."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "القسمة تشمل الطرفين."
+        }
+      ],
+      "feedback": {
+        "correct": "$11250 \\div 150 = 75$ و $2100 \\div 6 = 350$.",
+        "incorrect": "اقسم الطرفين كليهما على العدد نفسه."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "ما سعر قطعة الحلوى (بالدينار)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "مبلغ بالدينار",
+      "expectedAnswer": "50",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x = 75 - y$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض في $4x + 5y = 350$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$300 + y = 350$."
+        }
+      ],
+      "feedback": {
+        "correct": "$4(75 - y) + 5y = 350$ أي $300 + y = 350$ ، $y = 50$.",
+        "incorrect": "عوّض ثم احسب المجهول المطلوب."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "25",
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "ما ثمن علب العصير التي استُهلكت أثناء الحفل؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "مبلغ بالدينار",
+      "expectedAnswer": "3150",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كم علبة استُهلكت؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$150 - 24$ علبة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب في سعر العلبة."
+        }
+      ],
+      "feedback": {
+        "correct": "$(150 - 24) \\times 25 = 126 \\times 25 = 3150$ DA.",
+        "incorrect": "استُهلك ما اشتُري ناقص ما بقي."
+      },
+      "cognitiveDemand": "transfer",
+      "difficulty": 4
+    }
+  ]
+}

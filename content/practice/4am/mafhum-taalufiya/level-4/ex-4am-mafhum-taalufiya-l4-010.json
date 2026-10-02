@@ -1,0 +1,71 @@
+{
+  "id": "ex-4am-mafhum-taalufiya-l4-010",
+  "lessonCode": "mafhum-taalufiya",
+  "level": 4,
+  "metadata": {
+    "title": "كراء القوارب في الشاطئ",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية",
+      "عدد صورته معلومة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "كراء قارب كاياك في الشاطئ: 300DA للسترة، يضاف إليها 200DA عن كل ساعة. نسمّي $x$ عدد الساعات و $f(x)$ المبلغ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ميزانية مجموعة من الأصدقاء 1700DA. كم ساعة يمكنهم كراء القارب؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المطلوب عدد علمت صورته، لا صورة عدد: اكتب المعادلة $ax + b = m$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انقل الحدّ الثابت $b$ إلى الطرف الآخر أولا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اقسم الطرفين على المعامل $a$ ، وتحقّق بحساب صورة ما وجدته."
+        }
+      ],
+      "feedback": {
+        "correct": "$200x + 300 = 1700$ ، إذن $200x = 1400$ ، ومنه $x = 7$ .",
+        "incorrect": "اطرح $b$ أولا ثم اقسم على $a$ ، وتحقّق بالتعويض."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-SABIQ-QISMA",
+          "value": "8.5"
+        },
+        {
+          "id": "MISC-TAALUFI-SABIQ-TARTIB",
+          "value": "-291.5"
+        },
+        {
+          "id": "MISC-KHATTIYA-SURA-SABIQ",
+          "value": "340300"
+        }
+      ]
+    }
+  ]
+}

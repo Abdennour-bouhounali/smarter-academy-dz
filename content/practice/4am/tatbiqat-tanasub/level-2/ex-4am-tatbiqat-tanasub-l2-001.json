@@ -1,0 +1,59 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l2-001",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 20 — سعر الكتاب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تخفيض"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-20",
+      "page": 73,
+      "section": "أوظّف تعلّماتي",
+      "number": 20
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 73): سعر كتاب هو 560DA، خفض هذا السعر بـ 6%. ما هو السعر الجديد لهذا الكتاب؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "السعر الجديد (بالدينار):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "526,4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد: هل نأخذ نسبة من المقدار، أم نزيده، أم نخفّضه؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الزيادة بـ $t\\%$ ضرب في $1 + \\dfrac{t}{100}$ ، والتخفيض ضرب في $1 - \\dfrac{t}{100}$ ، والأخذ ضرب في $\\dfrac{t}{100}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب المضاعف أولًا، ثم اضرب فيه المقدار، وتحقّق أنّ النتيجة معقولة (أكبر بعد زيادة، أصغر بعد تخفيض)."
+        }
+      ],
+      "feedback": {
+        "correct": "$560 \\times 0{,}94 = 526{,}4$ ، أي $526{,}4DA$ (لا $560 - 6$).",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    }
+  ]
+}

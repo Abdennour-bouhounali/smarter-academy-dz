@@ -1,0 +1,82 @@
+{
+  "id": "ex-4am-mafhum-jumla-l2-004",
+  "lessonCode": "mafhum-jumla",
+  "level": 2,
+  "metadata": {
+    "title": "نشاط 1 — حل الجملة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ثنائية",
+      "جملة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-1",
+      "page": 56,
+      "section": "أنشطة",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 56): يعمل في مصلحة إدارية 32 عاملا، $x$ رجلا و $y$ امرأة. ترجمت الوضعية بالجملة $\\begin{cases} x + y = 32 \\\\ 2x - y = 7 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ ثنائية هي حل الجملة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(24 ; 8)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "B",
+          "content": "$(13 ; 19)$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$(19 ; 13)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARTIB"
+        },
+        {
+          "id": "D",
+          "content": "$(12 ; 17)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحل يحقّق المعادلتين في آن واحد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "جرّب كل ثنائية في $x + y = 32$ ثم في $2x - y = 7$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استبعد كل ثنائية لا تحقّق إحدى المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$13 + 19 = 32$ و $26 - 19 = 7$ : $(13 ; 19)$ .",
+        "incorrect": "$(24 ; 8)$ و $(19 ; 13)$ تحقّقان الأولى فقط، و $(12 ; 17)$ الثانية فقط."
+      }
+    }
+  ]
+}

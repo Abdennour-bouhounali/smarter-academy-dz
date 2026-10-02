@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l5-009",
+  "lessonCode": "mushkilat-jumla",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — زلابية رمضان",
+    "estimatedMinutes": 5,
+    "tags": [
+      "ترييض",
+      "توزيع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P1",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "أراد كمال توزيع قطع زلابية على ضيوفه: إذا أعطى كل ضيف 4 قطع بقيت 6 قطع، وإذا أراد أن يعطي كل ضيف 5 قطع نقصته 3 قطع. نسمّي $x$ عدد الضيوف و $y$ عدد قطع الزلابية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم المشكلة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} y = 4x - 6 \\\\ y = 5x + 3 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} y = 4x + 6 \\\\ y = 5x - 3 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} y = 4x + 6 \\\\ y = 5x + 3 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "«بقيت 6» : القطع أكثر مما وُزّع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "«نقصته 3» : القطع أقل مما يلزم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $y$ في الحالتين."
+        }
+      ],
+      "feedback": {
+        "correct": "الحل $(9 ; 42)$ : $36 + 6 = 42$ و $45 - 3 = 42$ .",
+        "incorrect": "ما بقي يُضاف إلى ما وُزّع، وما نقص يُطرح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "عدد الضيوف وعدد القطع: اكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "9",
+        "y": "42"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ساوِ بين العبارتين: $4x + 6 = 5x - 3$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على $x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم احسب $y$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 9$ و $y = 42$ .",
+        "incorrect": "أكمل حتى الثنائية."
+      }
+    }
+  ]
+}

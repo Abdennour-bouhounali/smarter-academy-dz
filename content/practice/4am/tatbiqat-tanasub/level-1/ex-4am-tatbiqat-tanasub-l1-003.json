@@ -1,0 +1,129 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l1-003",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 1,
+  "metadata": {
+    "title": "تمرين 19 — الفواكه في الكيس",
+    "estimatedMinutes": 3,
+    "tags": [
+      "أخذ نسبة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-19",
+      "page": 73,
+      "section": "أوظّف تعلّماتي",
+      "number": 19
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 73): يوجد في كيس 30 برتقالة و 10 تفاحات. أخذ أحمد 20% من البرتقالات وأخذت لينة 30% من التفّاحات. ما هو عدد الفواكه التي بقيت في الكيس؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عدد البرتقالات التي أخذها أحمد:",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد: هل نأخذ نسبة من المقدار، أم نزيده، أم نخفّضه؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الزيادة بـ $t\\%$ ضرب في $1 + \\dfrac{t}{100}$ ، والتخفيض ضرب في $1 - \\dfrac{t}{100}$ ، والأخذ ضرب في $\\dfrac{t}{100}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب المضاعف أولًا، ثم اضرب فيه المقدار، وتحقّق أنّ النتيجة معقولة (أكبر بعد زيادة، أصغر بعد تخفيض)."
+        }
+      ],
+      "feedback": {
+        "correct": "$30 \\times \\dfrac{20}{100} = 6$ برتقالات.",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "عدد التفاحات التي أخذتها لينة:",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد: هل نأخذ نسبة من المقدار، أم نزيده، أم نخفّضه؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الزيادة بـ $t\\%$ ضرب في $1 + \\dfrac{t}{100}$ ، والتخفيض ضرب في $1 - \\dfrac{t}{100}$ ، والأخذ ضرب في $\\dfrac{t}{100}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب المضاعف أولًا، ثم اضرب فيه المقدار، وتحقّق أنّ النتيجة معقولة (أكبر بعد زيادة، أصغر بعد تخفيض)."
+        }
+      ],
+      "feedback": {
+        "correct": "$10 \\times \\dfrac{30}{100} = 3$ تفاحات.",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "عدد الفواكه التي بقيت في الكيس:",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "31",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد: هل نأخذ نسبة من المقدار، أم نزيده، أم نخفّضه؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الزيادة بـ $t\\%$ ضرب في $1 + \\dfrac{t}{100}$ ، والتخفيض ضرب في $1 - \\dfrac{t}{100}$ ، والأخذ ضرب في $\\dfrac{t}{100}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب المضاعف أولًا، ثم اضرب فيه المقدار، وتحقّق أنّ النتيجة معقولة (أكبر بعد زيادة، أصغر بعد تخفيض)."
+        }
+      ],
+      "feedback": {
+        "correct": "$40 - 6 - 3 = 31$ . لا نأخذ $50\\%$ من 40: النسبتان من مقدارين مختلفين.",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    }
+  ]
+}

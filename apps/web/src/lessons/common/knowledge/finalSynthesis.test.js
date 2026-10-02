@@ -8,10 +8,13 @@ const here = dirname(fileURLToPath(import.meta.url));
 const webRoot = resolve(here, '../../../..');
 const read = (p) => readFileSync(resolve(webRoot, p), 'utf8');
 
-// Toutes les unités du ميدان (unité 1 : 9 leçons ; unité 2 « الحساب على الجذور » : 6, 2026-09-30 ;
-// unité 3 « الحساب الحرفي » : 4, 2026-10-01 ; unité 4 « معادلات ومتراجحات » : 5, 2026-10-01).
-const CHAPTER = 'src/lessons/moyen/4am/ansab_al_aadad_wal_hisab';
-const UNITS = readdirSync(resolve(webRoot, CHAPTER)).map((u) => `${CHAPTER}/${u}`);
+// Toutes les unités de TOUS les ميادين (unité 1 : 9 leçons ; unité 2 « الحساب على الجذور » : 6, 2026-09-30 ;
+// unité 3 « الحساب الحرفي » : 4, 2026-10-01 ; unité 4 « معادلات ومتراجحات » : 5, 2026-10-01 ;
+// unité 5 « جمل معادلتين » : 4, 2026-10-01 ; unité 6 « الدالة الخطية والتناسبية » : 6, 2026-10-02,
+// sous le ميدان d'affichage « ميدان التناسبية والدوال »).
+const GRADE = 'src/lessons/moyen/4am';
+const UNITS = readdirSync(resolve(webRoot, GRADE)).flatMap((chapter) =>
+  readdirSync(resolve(webRoot, GRADE, chapter)).map((u) => `${GRADE}/${chapter}/${u}`));
 
 /** Les modules d'évaluation de toutes les unités : ceux qui passent un `synthese`. */
 function evaluationModules() {
@@ -46,8 +49,8 @@ function evaluationModules() {
 describe('synthèse finale — الحوصلة', () => {
   const modules = evaluationModules();
 
-  it('les unités ont bien 9 + 6 + 4 + 5 modules d’évaluation', () => {
-    expect(modules.length).toBe(24);
+  it('les unités ont bien 9 + 6 + 4 + 5 + 4 + 6 + 6 + 5 modules d’évaluation', () => {
+    expect(modules.length).toBe(45);
   });
 
   it.each(modules)('%s : la synthèse lit la carte, elle n’est pas vide', (_lesson, rel) => {

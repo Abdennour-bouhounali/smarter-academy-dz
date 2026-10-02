@@ -1,0 +1,106 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l4-003",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 4,
+  "metadata": {
+    "title": "عائلة كبيرة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "دالة خطية",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P3",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "عائلة من بالغين و 4 أطفال. $x$ سعر تذكرة البالغ بالدينار، وكل طفل يدفع نصف سعر البالغ. ميزانية الرحلة $2500$ DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما أكبر سعر لتذكرة البالغ (بالدينار) في حدود الميزانية؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي بالدينار",
+      "expectedAnswer": "625",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب التكلفة بدلالة $x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الأطفال الأربعة يدفعون $4 \\times 0{,}5x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حل المتراجحة: التكلفة ≤ الميزانية."
+        }
+      ],
+      "feedback": {
+        "correct": "$C(x) = 2x + 2x = 4x$ و $4x \\leq 2500$ ومنه $x \\leq 625$.",
+        "incorrect": "اكتب التكلفة دالة خطية ثم قسّم الميزانية على معاملها."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "416",
+          "id": "MISC-TAKHFID-NISBA"
+        },
+        {
+          "value": "833",
+          "id": "MISC-TARRID-NAMUDHAJ"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "إذا كان سعر التذكرة $600$ DA، كم يبقى من الميزانية (بالدينار)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار",
+      "expectedAnswer": "100",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب التكلفة $C(600)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$C(x) = 4x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح التكلفة من الميزانية."
+        }
+      ],
+      "feedback": {
+        "correct": "$C(600) = 2400$ و $2500 - 2400 = 100$ DA.",
+        "incorrect": "احسب التكلفة أولا ثم اطرحها من الميزانية."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    }
+  ]
+}

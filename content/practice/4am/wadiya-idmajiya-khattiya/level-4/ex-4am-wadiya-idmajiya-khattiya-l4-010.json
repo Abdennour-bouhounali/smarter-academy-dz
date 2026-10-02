@@ -1,0 +1,106 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l4-010",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 4,
+  "metadata": {
+    "title": "رحلة مدرسية",
+    "estimatedMinutes": 5,
+    "tags": [
+      "دالة خطية",
+      "ميزانية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P3",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "رحلة مدرسية إلى المصعد الهوائي: 30 تلميذا يستفيد كلّ منهم من تخفيض 40% من سعر تذكرة البالغ $x$ ، و 3 أساتذة يدفعون السعر كاملا. ميزانية الرحلة $8400$ DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "التكلفة $C(x) = ax$ : ما قيمة $a$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "21",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كل تلميذ يدفع $0{,}6x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التلاميذ: $30 \\times 0{,}6x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أضف ما يدفعه الأساتذة."
+        }
+      ],
+      "feedback": {
+        "correct": "$C(x) = 3x + 30 \\times 0{,}6x = 3x + 18x = 21x$.",
+        "incorrect": "التلميذ يدفع ما يبقى بعد التخفيض."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "15",
+          "id": "MISC-TAKHFID-NISBA"
+        },
+        {
+          "value": "33",
+          "id": "MISC-TARRID-NAMUDHAJ"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما أكبر سعر لتذكرة البالغ (بالدينار) في حدود الميزانية؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي بالدينار",
+      "expectedAnswer": "400",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التكلفة لا تتجاوز الميزانية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل المعامل من السؤال السابق."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الميزانية على المعامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{8400}{21} = 400$ DA.",
+        "incorrect": "أكبر سعر حيث تساوي التكلفة الميزانية."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l3-001",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 3,
+  "metadata": {
+    "title": "تحدّ (ص 77) — عبارة f(x)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تعيين دالة تآلفية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "challenge",
+      "page": 77,
+      "section": "تحدّ"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 77): $f$ دالة تآلفية ترفق بدرجة الحرارة $x$ بالسلسيوس درجتها $f(x)$ بالفهرنهايت، و $f(10) = 50$ ، $f(30) = 86$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عبّر عن $f(x)$ بدلالة $x$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$f(x) = 36x + 50$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-BIDUN-QISMA"
+        },
+        {
+          "id": "B",
+          "content": "$f(x) = 1{,}8x + 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-B-NISBA"
+        },
+        {
+          "id": "C",
+          "content": "$f(x) = 1{,}8x + 32$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$f(x) = 32x + 1{,}8$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-A-B-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $a$ بتناسب التغيّرات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a = 1{,}8$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$b = 50 - 18$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{36}{20} = 1{,}8$ و $b = 50 - 18 = 32$ .",
+        "incorrect": "عوّض 10 و 30 في كل عبارة."
+      }
+    }
+  ]
+}

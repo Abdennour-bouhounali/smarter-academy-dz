@@ -1,0 +1,158 @@
+{
+  "id": "ex-4am-mafhum-jumla-l1-001",
+  "lessonCode": "mafhum-jumla",
+  "level": 1,
+  "metadata": {
+    "title": "تمرين 1 — ثنائيات المعادلة x − 2y = 7",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ثنائية",
+      "تعويض"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-1",
+      "page": 60,
+      "section": "أوظّف تعلّماتي",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 60): نعتبر المعادلة من الدرجة الأولى بمجهولين $x - 2y = 7$ . نريد أن نعرف إن كانت كل ثنائية حلا لها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل الثنائية $(7 ; 0)$ حل للمعادلة $x - 2y = 7$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في $(7 ; 0)$ : $x = 7$ و $y = 0$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض في الطرف الأول $x - 2y$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن النتيجة بالعدد 7."
+        }
+      ],
+      "feedback": {
+        "correct": "$7 - 2 \\times 0 = 7$ : المساواة محقّقة.",
+        "incorrect": "احسب $7 - 2 \\times 0$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل الثنائية $(0 ; 1)$ حل للمعادلة $x - 2y = 7$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARTIB"
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في $(0 ; 1)$ : $x = 0$ و $y = 1$ ، وليس العكس."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $0 - 2 \\times 1$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا لم تحصل على 7 فليست حلا."
+        }
+      ],
+      "feedback": {
+        "correct": "$0 - 2 \\times 1 = -2 \\neq 7$ : ليست حلا.",
+        "incorrect": "العدد الأول قيمة $x$ والثاني قيمة $y$ ."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "هل الثنائية $(1 ; -3)$ حل للمعادلة $x - 2y = 7$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x = 1$ و $y = -3$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انتبه إلى الإشارة: $-2 \\times (-3) = 6$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اجمع: $1 + 6$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$1 - 2 \\times (-3) = 1 + 6 = 7$ : حل للمعادلة.",
+        "incorrect": "ضرب عددين سالبين يعطي عددا موجبا."
+      }
+    }
+  ]
+}

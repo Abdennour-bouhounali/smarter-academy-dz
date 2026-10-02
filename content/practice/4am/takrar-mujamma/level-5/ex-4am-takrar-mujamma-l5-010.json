@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-takrar-mujamma-l5-010",
+  "lessonCode": "takrar-mujamma",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — طابورا لعبتين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خاصية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_takrar-mujamma_P3",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "لعبة A تشترط «130cm على الأقل» ولعبة B «130cm على الأكثر». في طابور 30 طفلا، 18 طفلا قاماتهم 130cm على الأقل، و 4 أطفال قاماتهم 130cm بالضبط."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عدد الأطفال الذين يمكنهم ركوب اللعبة B:",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "16",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MUJAMMA-DUN-QIMA",
+          "value": "12"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في جدول التكرار المجمع الصاعد، كل خانة تزيد على السابقة بتكرار قيمتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التكرار = الصاعد للقيمة ناقص الصاعد للقيمة التي قبلها؛ والتكرار الكلي هو آخر صاعد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح الخانتين المتتاليتين، أو استعمل: الصاعد + النازل = التكرار الكلي + تكرار القيمة."
+        }
+      ],
+      "feedback": {
+        "correct": "الصاعد + النازل = 30 + 4: $16 + 18 = 34$ .",
+        "incorrect": "راجع أي القيم تدخل في المجموع، ثم أعد الجمع (والقسمة على التكرار الكلي إن طُلب تواتر)."
+      }
+    }
+  ]
+}

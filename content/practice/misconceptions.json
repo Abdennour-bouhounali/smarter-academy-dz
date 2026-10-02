@@ -651,5 +651,511 @@
       "4am_wadiya-idmajiya-muadalat_P1",
       "4am_wadiya-idmajiya-muadalat_P2"
     ]
+  },
+  "MISC-JUMLA-MUADALA-WAHIDA": {
+    "label": "الاكتفاء بتحقيق معادلة واحدة من الجملة",
+    "explanation": "حل الجملة ثنائية تحقق المعادلتين في آن واحد: $(24 ; 8)$ تحقق $x + y = 32$ لكنها لا تحقق $2x - y = 7$ ، فليست حلا للجملة.",
+    "relatedLearningPoints": [
+      "4am_mafhum-jumla_P2",
+      "4am_mafhum-jumla_P3"
+    ]
+  },
+  "MISC-JUMLA-TARTIB": {
+    "label": "قلب ترتيب الثنائية (y ; x) بدل (x ; y)",
+    "explanation": "في الثنائية $(x ; y)$ الترتيب مهم: $(2 ; 0)$ تعني $x = 2$ و $y = 0$ ، و $(0 ; 2)$ ثنائية أخرى.",
+    "relatedLearningPoints": [
+      "4am_mafhum-jumla_P2",
+      "4am_mafhum-jumla_P3"
+    ]
+  },
+  "MISC-JUMLA-HALAT": {
+    "label": "الخلط بين حالات الجملة (حل وحيد، لا حل، عدد غير منته)",
+    "explanation": "إذا آلت المعادلتان إلى المعادلة نفسها فللجملة عدد غير منته من الحلول؛ وإذا آلتا إلى $2x - y = 0$ و $2x - y = 4$ فلا حل لها.",
+    "relatedLearningPoints": [
+      "4am_mafhum-jumla_P4"
+    ]
+  },
+  "MISC-TAWID-ISHARA": {
+    "label": "خطأ في الإشارة عند التعبير عن مجهول بدلالة الآخر",
+    "explanation": "من $y + 2x = 1$ ينتج $y = 1 - 2x$ وليس $y = 1 + 2x$ : ننقل $2x$ بتغيير إشارته.",
+    "relatedLearningPoints": [
+      "4am_hall-jabri_P1"
+    ]
+  },
+  "MISC-TAWID-NAFS-MUADALA": {
+    "label": "التعويض في المعادلة نفسها التي استُخرج منها المجهول",
+    "explanation": "نعوّض العبارة في المعادلة الأخرى؛ تعويضها في المعادلة نفسها يعطي مساواة صحيحة دائما (مثل $7 = 7$) ولا يحدد شيئا.",
+    "relatedLearningPoints": [
+      "4am_hall-jabri_P1"
+    ]
+  },
+  "MISC-JAM-TARAF-WAHID": {
+    "label": "ضرب طرف واحد فقط من المعادلة في المعامل",
+    "explanation": "نضرب الطرفين معا: $(2x + y = 7) \\times 2$ تعطي $4x + 2y = 14$ وليس $4x + 2y = 7$ .",
+    "relatedLearningPoints": [
+      "4am_hall-jabri_P2"
+    ]
+  },
+  "MISC-JAM-LA-TAAKUS": {
+    "label": "الجمع دون أن يكون المعاملان متعاكسين",
+    "explanation": "نجمع طرفا لطرف عندما يكون معاملا أحد المجهولين متعاكسين (مثل $2y$ و $-2y$)، وإلا بقي المجهولان معا.",
+    "relatedLearningPoints": [
+      "4am_hall-jabri_P2"
+    ]
+  },
+  "MISC-JUMLA-NISF-HALL": {
+    "label": "التوقف بعد إيجاد مجهول واحد",
+    "explanation": "بعد إيجاد $x$ نعوّض في إحدى المعادلتين لإيجاد $y$ : الحل ثنائية $(x ; y)$ .",
+    "relatedLearningPoints": [
+      "4am_hall-jabri_P1",
+      "4am_hall-jabri_P2"
+    ]
+  },
+  "MISC-JUMLA-TARJAMA": {
+    "label": "ترجمة معلومة من النص بمعادلة لا تطابقها",
+    "explanation": "«استقبل المتحف 140 زائرا» تُترجم بعدد الأشخاص $x + y = 140$ ، و«بلغت المداخيل 30300DA» بالمال $300x + 150y = 30300$ : لا نخلط بين العدد والثمن.",
+    "relatedLearningPoints": [
+      "4am_mushkilat-jumla_P1"
+    ]
+  },
+  "MISC-JUMLA-MAJAHIL": {
+    "label": "اختيار مجهولين لا يجيبان عن سؤال المشكلة",
+    "explanation": "نسمّي $x$ و $y$ الكميتين المطلوبتين في السؤال (عدد البالغين وعدد الصغار)، لا المعطيات المعلومة.",
+    "relatedLearningPoints": [
+      "4am_mushkilat-jumla_P2"
+    ]
+  },
+  "MISC-JUMLA-TAHAQQUQ-NAS": {
+    "label": "التحقق في الجملة بدل التحقق في نص المشكلة",
+    "explanation": "نتحقق من النتيجة في معطيات النص نفسه: $62 + 78 = 140$ زائرا و $300 \\times 62 + 150 \\times 78 = 30300$ DA ؛ وعدد الأشخاص عدد طبيعي.",
+    "relatedLearningPoints": [
+      "4am_mushkilat-jumla_P2",
+      "4am_wadiya-idmajiya-jumal_P2"
+    ]
+  },
+  "MISC-JUMLA-WIHDA": {
+    "label": "معادلتان بوحدتين مختلفتين",
+    "explanation": "في المعادلة الواحدة نستعمل وحدة واحدة: 1kg 50g = 1050g ، و 7kg = 7000g .",
+    "relatedLearningPoints": [
+      "4am_mushkilat-jumla_P1",
+      "4am_wadiya-idmajiya-jumal_P1"
+    ]
+  },
+  "MISC-TAKHFID-NISBA": {
+    "label": "الضرب في نسبة التخفيض بدل النسبة المدفوعة",
+    "explanation": "بعد تخفيض 20% ندفع 80% من الثمن: نضرب في $0{,}8$ لا في $0{,}2$ ، ولا ننسى التخفيض فنكتب الثمن كاملا.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-jumal_P1"
+    ]
+  },
+  "MISC-TANASUB-FARQ-THABIT": {
+    "label": "الخلط بين فرق ثابت ونسبة ثابتة",
+    "explanation": "في جدول تناسبية يكون حاصل القسمة $\\dfrac{y}{x}$ ثابتا، لا الفرق $y - x$ : نضرب في $a$ ولا نضيف عددا.",
+    "relatedLearningPoints": [
+      "4am_tanasub-muamil_P1",
+      "4am_tanasub-muamil_P2"
+    ]
+  },
+  "MISC-TANASUB-MABLAGH-THABIT": {
+    "label": "اعتبار وضعية فيها مبلغ ثابت وضعية تناسبية",
+    "explanation": "تسعيرة «مبلغ ثابت + سعر الوحدة» ليست تناسبية: من أجل $x = 0$ يكون المبلغ غير معدوم، وحواصل القسمة $\\dfrac{y}{x}$ مختلفة.",
+    "relatedLearningPoints": [
+      "4am_tanasub-muamil_P2",
+      "4am_tarrid-khatti_P1"
+    ]
+  },
+  "MISC-TANASUB-MUAMIL-MAQLUB": {
+    "label": "حساب المعامل بقسمة السطر الأول على الثاني",
+    "explanation": "معامل التناسبية هو $a = \\dfrac{y}{x}$ (السطر الثاني على السطر الأول) لأن $y = a \\times x$ .",
+    "relatedLearningPoints": [
+      "4am_tanasub-muamil_P1",
+      "4am_tanasub-muamil_P3"
+    ]
+  },
+  "MISC-TANASUB-RABI-JAMA": {
+    "label": "حساب الرابع المتناسب بإضافة الفرق",
+    "explanation": "الرابع المتناسب يُحسب بالضرب في المعامل أو بالجداءين المتصالبين، لا بإضافة الفرق بين عددين.",
+    "relatedLearningPoints": [
+      "4am_tanasub-muamil_P1"
+    ]
+  },
+  "MISC-KHATTIYA-AFFINE": {
+    "label": "اعتبار $x \\longmapsto ax + b$ مع $b \\neq 0$ دالة خطية",
+    "explanation": "الدالة الخطية من الشكل $x \\longmapsto ax$ فقط: صورة 0 بها هي 0 ؛ $2x - 1$ ليست خطية.",
+    "relatedLearningPoints": [
+      "4am_dala-khattiya_P1"
+    ]
+  },
+  "MISC-KHATTIYA-SURA-SABIQ": {
+    "label": "الخلط بين صورة عدد والعدد الذي علمت صورته",
+    "explanation": "صورة $x$ هي $f(x) = ax$ (نضرب) ؛ العدد الذي صورته $b$ هو حل المعادلة $ax = b$ (نقسم على $a$ ).",
+    "relatedLearningPoints": [
+      "4am_dala-khattiya_P2",
+      "4am_tamthil-bayani-khatti_P2"
+    ]
+  },
+  "MISC-KHATTIYA-MUAMIL-MAQLUB": {
+    "label": "حساب $a = \\dfrac{m}{n}$ بدل $\\dfrac{n}{m}$",
+    "explanation": "من $f(m) = n$ نكتب $a \\times m = n$ ومنه $a = \\dfrac{n}{m}$ : الصورة على العدد.",
+    "relatedLearningPoints": [
+      "4am_dala-khattiya_P3"
+    ]
+  },
+  "MISC-KHATTIYA-ISHARA": {
+    "label": "خطأ في إشارة المعامل",
+    "explanation": "قسمة عددين مختلفي الإشارة تعطي عددا سالبا: $g(-2) = 6$ يعطي $a = -3$ .",
+    "relatedLearningPoints": [
+      "4am_dala-khattiya_P3",
+      "4am_tamthil-bayani-khatti_P3"
+    ]
+  },
+  "MISC-BAYANI-BIDUN-O": {
+    "label": "رسم مستقيم لا يشمل المبدأ لدالة خطية",
+    "explanation": "التمثيل البياني لدالة خطية يشمل دائما المبدأ O لأن $f(0) = 0$ ؛ نكتفي بنقطة ثانية.",
+    "relatedLearningPoints": [
+      "4am_tamthil-bayani-khatti_P1"
+    ]
+  },
+  "MISC-BAYANI-FASILA-TARTIB": {
+    "label": "الخلط بين الفاصلة والترتيب في القراءة البيانية",
+    "explanation": "صورة عدد هي ترتيب النقطة التي فاصلتها هذا العدد ؛ العدد الذي علمت صورته هو فاصلة النقطة التي ترتيبها الصورة.",
+    "relatedLearningPoints": [
+      "4am_tamthil-bayani-khatti_P2"
+    ]
+  },
+  "MISC-BAYANI-MUNHA": {
+    "label": "ربط خاطئ بين إشارة $a$ ومنحى المستقيم",
+    "explanation": "إذا كان $a > 0$ فالمستقيم يصعد من اليسار إلى اليمين، وإذا كان $a < 0$ فهو ينزل.",
+    "relatedLearningPoints": [
+      "4am_tamthil-bayani-khatti_P3"
+    ]
+  },
+  "MISC-NISBA-JAM": {
+    "label": "إضافة $t$ بدل الضرب في $1 + \\dfrac{t}{100}$",
+    "explanation": "زيادة $x$ بـ $t\\%$ تعني ضربه في $1 + \\dfrac{t}{100}$ (مثلا $1{,}05$ لـ 5%)، لا إضافة العدد $t$ .",
+    "relatedLearningPoints": [
+      "4am_tatbiqat-tanasub_P1"
+    ]
+  },
+  "MISC-NISBA-TATABU-JAM": {
+    "label": "جمع النسب المئوية المتتابعة",
+    "explanation": "تغيّران متتابعان بـ $t\\%$ ثم $t'\\%$ يُترجمان بجداء المضاعفين لا بمجموع النسبتين: $-30\\%$ ثم $+15\\%$ ليس $-15\\%$ .",
+    "relatedLearningPoints": [
+      "4am_tatbiqat-tanasub_P1"
+    ]
+  },
+  "MISC-NISBA-AKHDH-BADAL-ZIYADA": {
+    "label": "الخلط بين أخذ $t\\%$ والزيادة بـ $t\\%$",
+    "explanation": "أخذ 5% من $x$ هو $0{,}05x$ ، أما زيادة $x$ بـ 5% فهي $1{,}05x$ وتخفيضه بـ 5% هو $0{,}95x$ .",
+    "relatedLearningPoints": [
+      "4am_tatbiqat-tanasub_P1"
+    ]
+  },
+  "MISC-MAQADIR-WIHDA": {
+    "label": "خطأ في تحويل وحدات مقدار مركب",
+    "explanation": "$1m/s = 3{,}6km/h$ و $1m^3 = 1000L$ و $1h = 3600s$ : نحوّل البسط والمقام كلا على حدة.",
+    "relatedLearningPoints": [
+      "4am_tatbiqat-tanasub_P2"
+    ]
+  },
+  "MISC-MAQADIR-QISMA-MAQLUBA": {
+    "label": "قلب حاصل القسمة في مقدار مركب",
+    "explanation": "السرعة المتوسطة $v = \\dfrac{d}{t}$ (المسافة على المدة) والكتلة الحجمية $\\dfrac{m}{V}$ (الكتلة على الحجم).",
+    "relatedLearningPoints": [
+      "4am_tatbiqat-tanasub_P2",
+      "4am_tatbiqat-tanasub_P3"
+    ]
+  },
+  "MISC-TARRID-NAMUDHAJ": {
+    "label": "نمذجة وضعية غير تناسبية بدالة خطية",
+    "explanation": "قبل كتابة $f(x) = ax$ نتحقق أن المقدار ينعدم من أجل $x = 0$ وأن حاصل القسمة ثابت.",
+    "relatedLearningPoints": [
+      "4am_tarrid-khatti_P1",
+      "4am_wadiya-idmajiya-khattiya_P2"
+    ]
+  },
+  "MISC-TARRID-TAFSIR": {
+    "label": "نتيجة رياضية دون تفسير في سياق الوضعية",
+    "explanation": "نكتب الجواب بوحدته وفي سياق النص (دقائق وثوان، دينار، كيلوغرام)، ونتحقق من معقوليته.",
+    "relatedLearningPoints": [
+      "4am_tarrid-khatti_P3",
+      "4am_wadiya-idmajiya-khattiya_P3"
+    ]
+  },
+  "MISC-TAALUFI-KHATTIYA-KHALT": {
+    "label": "اعتبار كل دالة تآلفية دالة خطية (أو جدولها جدول تناسبية)",
+    "explanation": "الدالة $x \\longmapsto ax + b$ مع $b \\neq 0$ ليست خطية: $f(0) = b \\neq 0$ وقيمها غير متناسبة مع $x$ .",
+    "relatedLearningPoints": [
+      "4am_mafhum-taalufiya_P4",
+      "4am_mafhum-taalufiya_P1"
+    ]
+  },
+  "MISC-TAALUFI-NISYAN-B": {
+    "label": "حساب الصورة بنسيان الحدّ الثابت $b$",
+    "explanation": "صورة $x$ هي $ax + b$ : نضرب في $a$ ثم نضيف $b$ ، لا نكتفي بـ $ax$ .",
+    "relatedLearningPoints": [
+      "4am_mafhum-taalufiya_P2"
+    ]
+  },
+  "MISC-TAALUFI-SABIQ-QISMA": {
+    "label": "تعيين العدد الذي صورته $m$ بقسمة $m$ على $a$ دون طرح $b$",
+    "explanation": "نحلّ $ax + b = m$ : أولا $ax = m - b$ ثم $x = \\dfrac{m - b}{a}$ .",
+    "relatedLearningPoints": [
+      "4am_mafhum-taalufiya_P3"
+    ]
+  },
+  "MISC-TAALUFI-SABIQ-TARTIB": {
+    "label": "عكس ترتيب العمليتين عند تعيين العدد الذي صورته معلومة",
+    "explanation": "البرنامج العكسي لـ «اضرب في $a$ ثم أضف $b$» هو «اطرح $b$ ثم اقسم على $a$» ، وليس $\\dfrac{m}{a} - b$ .",
+    "relatedLearningPoints": [
+      "4am_mafhum-taalufiya_P3"
+    ]
+  },
+  "MISC-TAALUFI-A-B-MAQLUB": {
+    "label": "الخلط بين المعاملين $a$ و $b$",
+    "explanation": "$a$ هو معامل $x$ و $b$ هو الحدّ الثابت أينما كُتبا: في $2 + 3x$ لدينا $a = 3$ و $b = 2$ .",
+    "relatedLearningPoints": [
+      "4am_mafhum-taalufiya_P1",
+      "4am_tamthil-bayani-taalufi_P2"
+    ]
+  },
+  "MISC-TAALUFI-THABITA": {
+    "label": "رفض أن تكون الدالة الثابتة أو الخطية دالة تآلفية",
+    "explanation": "الخطية حالة خاصة $b = 0$ ، والثابتة حالة خاصة $a = 0$ : كلتاهما من الشكل $ax + b$ .",
+    "relatedLearningPoints": [
+      "4am_mafhum-taalufiya_P4"
+    ]
+  },
+  "MISC-BAYANI-TAALUFI-MABDA": {
+    "label": "رسم مستقيم يشمل المبدأ لدالة تآلفية $b \\neq 0$",
+    "explanation": "مستقيم الدالة التآلفية يقطع محور التراتيب في $(0 ; b)$ ، فلا يشمل المبدأ إلا إذا كان $b = 0$ .",
+    "relatedLearningPoints": [
+      "4am_tamthil-bayani-taalufi_P1"
+    ]
+  },
+  "MISC-BAYANI-B-FASILA": {
+    "label": "قراءة $b$ على محور الفواصل",
+    "explanation": "$b$ هو ترتيب نقطة تقاطع المستقيم مع محور التراتيب (النقطة ذات الفاصلة 0) ، لا فاصلة تقاطعه مع محور الفواصل.",
+    "relatedLearningPoints": [
+      "4am_tamthil-bayani-taalufi_P2"
+    ]
+  },
+  "MISC-BAYANI-MUAMIL-MAQLUB": {
+    "label": "حساب معامل التوجيه بقسمة تغيّر الفواصل على تغيّر التراتيب",
+    "explanation": "معامل التوجيه $a$ هو تغيّر الترتيب مقسوما على تغيّر الفاصلة: كم يصعد المستقيم عندما نتقدم وحدة واحدة إلى اليمين.",
+    "relatedLearningPoints": [
+      "4am_tamthil-bayani-taalufi_P2",
+      "4am_tanasub-taghayyurat_P1"
+    ]
+  },
+  "MISC-BAYANI-ISHARA-A": {
+    "label": "إعطاء معامل موجب لمستقيم ينزل",
+    "explanation": "إذا نزل المستقيم من اليسار إلى اليمين فإن ترتيبه ينقص عندما تزيد الفاصلة: $a < 0$ .",
+    "relatedLearningPoints": [
+      "4am_tamthil-bayani-taalufi_P2"
+    ]
+  },
+  "MISC-TAGHAYYUR-BIDUN-QISMA": {
+    "label": "اعتبار فرق الصورتين $f(x_1) - f(x_2)$ هو المعامل $a$",
+    "explanation": "يجب القسمة على فرق العددين: $a = \\dfrac{f(x_1) - f(x_2)}{x_1 - x_2}$ .",
+    "relatedLearningPoints": [
+      "4am_tanasub-taghayyurat_P1"
+    ]
+  },
+  "MISC-TAGHAYYUR-TARTIB": {
+    "label": "طرح الصورتين بترتيب والعددين بالترتيب المعاكس",
+    "explanation": "يجب أن يُطرح في البسط والمقام بالترتيب نفسه: $\\dfrac{f(x_1) - f(x_2)}{x_1 - x_2}$ ، وإلا تغيّرت إشارة $a$ .",
+    "relatedLearningPoints": [
+      "4am_tanasub-taghayyurat_P1"
+    ]
+  },
+  "MISC-TAGHAYYUR-B-NISBA": {
+    "label": "حساب $b$ بقسمة الصورة على العدد",
+    "explanation": "$b$ ليس $\\dfrac{f(x_1)}{x_1}$ : بعد معرفة $a$ نحسب $b = f(x_1) - a x_1$ .",
+    "relatedLearningPoints": [
+      "4am_tanasub-taghayyurat_P2"
+    ]
+  },
+  "MISC-JUMLA-BAYANI-MAQLUB": {
+    "label": "كتابة حلّ الجملة $(y ; x)$ بدل $(x ; y)$",
+    "explanation": "الثنائية حلّ الجملة هي إحداثيتا نقطة التقاطع: الفاصلة أولا ثم الترتيب.",
+    "relatedLearningPoints": [
+      "4am_tafsir-bayani-jumla_P2"
+    ]
+  },
+  "MISC-JUMLA-BAYANI-TAWAZI": {
+    "label": "الخلط بين المستقيمين المتوازيين والمنطبقين",
+    "explanation": "متوازيان (نفس $a$ و $b$ مختلف): لا توجد نقطة مشتركة فلا حلّ ؛ منطبقان (نفس $a$ ونفس $b$): كل نقطة مشتركة فعدد لا نهائي من الحلول.",
+    "relatedLearningPoints": [
+      "4am_tafsir-bayani-jumla_P3"
+    ]
+  },
+  "MISC-JUMLA-ISHARA-Y": {
+    "label": "خطأ في الإشارة عند كتابة $ax + by = c$ على الشكل $y = \\ldots$",
+    "explanation": "ننقل $ax$ بتغيير إشارته ثم نقسم كل الحدود على $b$ : $y = -\\dfrac{a}{b}x + \\dfrac{c}{b}$ .",
+    "relatedLearningPoints": [
+      "4am_tafsir-bayani-jumla_P1"
+    ]
+  },
+  "MISC-TARRID-JUZ-THABIT": {
+    "label": "ضرب الجزء الثابت في المتغير عند النمذجة",
+    "explanation": "الجزء الثابت (اشتراك، رسوم أولية) يُدفع مرة واحدة: هو $b$ ، والجزء المتغير هو $ax$ .",
+    "relatedLearningPoints": [
+      "4am_tarrid-taalufi_P1"
+    ]
+  },
+  "MISC-TARRID-AFDAL-DAIMAN": {
+    "label": "اعتبار إحدى الصيغتين الأفضل دائما",
+    "explanation": "عندما يتقاطع المستقيمان تتغير الصيغة الأفضل عند فاصلة نقطة التقاطع: نقارن بحسب قيمة المتغير.",
+    "relatedLearningPoints": [
+      "4am_tarrid-taalufi_P2"
+    ]
+  },
+  "MISC-IHSA-MUJAMMA-DUN-QIMA": {
+    "label": "التكرار المجمع دون احتساب تكرار القيمة نفسها",
+    "explanation": "التكرار المجمع الصاعد لـ $t$ يشمل تكرار $t$ نفسها ثم تكرارات القيم الأصغر منها: «على الأكثر» تعني أصغر من أو تساوي.",
+    "relatedLearningPoints": [
+      "4am_takrar-mujamma_P1"
+    ]
+  },
+  "MISC-IHSA-SAID-NAZIL-MAQLUB": {
+    "label": "الخلط بين الصاعد والنازل",
+    "explanation": "الصاعد يجمع القيم الأصغر (من البداية حتى القيمة)، والنازل يجمع القيم الأكبر (من القيمة حتى النهاية).",
+    "relatedLearningPoints": [
+      "4am_takrar-mujamma_P1"
+    ]
+  },
+  "MISC-IHSA-TAKRAR-BADAL-MUJAMMA": {
+    "label": "إعطاء التكرار بدل التكرار المجمع",
+    "explanation": "التكرار المجمع مجموع تراكمي: نضيف إلى تكرار القيمة تكرارات ما قبلها (أو ما بعدها)، لا نكتفي بتكرار القيمة.",
+    "relatedLearningPoints": [
+      "4am_takrar-mujamma_P1"
+    ]
+  },
+  "MISC-IHSA-TAWATUR-BILA-QISMA": {
+    "label": "التواتر دون القسمة على التكرار الكلي",
+    "explanation": "التواتر (التكرار النسبي) هو التكرار مقسوما على التكرار الكلي $N$ ؛ والتواتر المجمع الأخير يساوي 1 (أو 100%).",
+    "relatedLearningPoints": [
+      "4am_takrar-mujamma_P2"
+    ]
+  },
+  "MISC-IHSA-SARAMA": {
+    "label": "الخلط بين «أصغر تماما» و«أصغر من أو تساوي»",
+    "explanation": "«أقل من 34» تستثني 34، و«34 على الأكثر» تشملها: نقرأ الحدّ بعناية قبل الجمع.",
+    "relatedLearningPoints": [
+      "4am_takrar-mujamma_P3"
+    ]
+  },
+  "MISC-IHSA-MADA-AKBAR-QIMA": {
+    "label": "المدى هو أكبر قيمة",
+    "explanation": "المدى فرق: أكبر قيمة ناقص أصغر قيمة، وليس أكبر قيمة وحدها.",
+    "relatedLearningPoints": [
+      "4am_mada-wasit-mutawassit_P1"
+    ]
+  },
+  "MISC-IHSA-MADA-TAKRAR": {
+    "label": "حساب المدى بالتكرارات",
+    "explanation": "المدى يُحسب على القيم (أكبر قيمة − أصغر قيمة) لا على التكرارات.",
+    "relatedLearningPoints": [
+      "4am_mada-wasit-mutawassit_P1"
+    ]
+  },
+  "MISC-IHSA-MUTAWASSIT-BILA-TARJIH": {
+    "label": "متوسط القيم دون اعتبار تكراراتها",
+    "explanation": "المتوسط المتوازن: نضرب كل قيمة في تكرارها ونقسم المجموع على التكرار الكلي، لا على عدد القيم المختلفة.",
+    "relatedLearningPoints": [
+      "4am_mada-wasit-mutawassit_P2"
+    ]
+  },
+  "MISC-IHSA-MUTAWASSIT-QISMA-QIYAM": {
+    "label": "القسمة على عدد القيم المختلفة",
+    "explanation": "نقسم مجموع (القيمة × التكرار) على التكرار الكلي $N$ .",
+    "relatedLearningPoints": [
+      "4am_mada-wasit-mutawassit_P2"
+    ]
+  },
+  "MISC-IHSA-MARKAZ-FIA": {
+    "label": "استعمال حدّ الفئة بدل مركزها",
+    "explanation": "في سلسلة مجمعة في فئات نعوّض كل فئة بمركزها $\\dfrac{a + b}{2}$ لتقدير المتوسط.",
+    "relatedLearningPoints": [
+      "4am_mada-wasit-mutawassit_P2"
+    ]
+  },
+  "MISC-IHSA-WASIT-BILA-TARTIB": {
+    "label": "الوسيط دون ترتيب السلسلة",
+    "explanation": "لا يُقرأ الوسيط إلا بعد ترتيب القيم تصاعديا أو تنازليا.",
+    "relatedLearningPoints": [
+      "4am_mada-wasit-mutawassit_P3"
+    ]
+  },
+  "MISC-IHSA-WASIT-RUTBA": {
+    "label": "خطأ في رتبة الوسيط",
+    "explanation": "إذا كان $N$ فرديا فالوسيط القيمة ذات الرتبة $\\dfrac{N + 1}{2}$ ، وإذا كان زوجيا فهو متوسط القيمتين ذواتي الرتبتين $\\dfrac{N}{2}$ و $\\dfrac{N}{2} + 1$ .",
+    "relatedLearningPoints": [
+      "4am_mada-wasit-mutawassit_P3"
+    ]
+  },
+  "MISC-IHSA-WASIT-MUTAWASSIT": {
+    "label": "الخلط بين الوسيط والمتوسط",
+    "explanation": "الوسيط يقسم السلسلة المرتبة إلى نصفين لهما نفس التكرار، والمتوسط مجموع القيم مقسوم على عددها: قيمتان متطرفتان تحرّكان المتوسط لا الوسيط.",
+    "relatedLearningPoints": [
+      "4am_mada-wasit-mutawassit_P3"
+    ]
+  },
+  "MISC-IHSA-WASIT-QIMA-WUSTA-JADWAL": {
+    "label": "الوسيط هو القيمة الوسطى في سطر الجدول",
+    "explanation": "في جدول تكرارات يُحدَّد الوسيط برتبته باستعمال التكرارات المجمعة، لا بموضع القيمة في سطر الجدول.",
+    "relatedLearningPoints": [
+      "4am_mada-wasit-mutawassit_P3"
+    ]
+  },
+  "MISC-IHSA-MAJAL-KHALIYA": {
+    "label": "مجال خلايا خاطئ في الدستور",
+    "explanation": "الدستور يحسب على المجال المحدد فقط: A1:G1 يشمل سبع خلايا من A1 إلى G1 ؛ مجال ناقص أو يضمّ خلية نص يغيّر النتيجة.",
+    "relatedLearningPoints": [
+      "4am_majdulat-ihsaiya_P2"
+    ]
+  },
+  "MISC-IHSA-DUSTUR-KHATI": {
+    "label": "اختيار دستور غير مناسب",
+    "explanation": "=MOYENNE() للمتوسط، =MEDIANE() للوسيط، =MAX()-MIN() للمدى، =MODE() للمنوال.",
+    "relatedLearningPoints": [
+      "4am_majdulat-ihsaiya_P2"
+    ]
+  },
+  "MISC-IHSA-MUKHATTAT-GHAYR-MUNASIB": {
+    "label": "تمثيل بياني غير مناسب للمعطيات",
+    "explanation": "المدرّج التكراري لسلسلة مجمعة في فئات، المخطط بالأعمدة لقيم منفصلة، والمخطط الدائري لتوزيع كلّ على أجزائه.",
+    "relatedLearningPoints": [
+      "4am_majdulat-ihsaiya_P3"
+    ]
+  },
+  "MISC-IHSA-MUTAWASSIT-MUTAWASSITAYN": {
+    "label": "متوسط مجموعتين هو متوسط متوسطيهما",
+    "explanation": "إذا اختلف عدد الأفراد في المجموعتين نحسب المتوسط المتوازن: (التكرار × المتوسط) لكل مجموعة، ثم نقسم المجموع على التكرار الكلي.",
+    "relatedLearningPoints": [
+      "4am_qiraat-wadiyat-ihsaiya_P2"
+    ]
+  },
+  "MISC-IHSA-MUQARANA-MUTAWASSIT-FAQAT": {
+    "label": "المقارنة بالمتوسط وحده",
+    "explanation": "سلسلتان لهما المتوسط نفسه قد تختلفان في التشتت: نقارن أيضا المدى والوسيط قبل الحكم.",
+    "relatedLearningPoints": [
+      "4am_qiraat-wadiyat-ihsaiya_P2"
+    ]
+  },
+  "MISC-IHSA-QIRAA-MUKHATTAT": {
+    "label": "قراءة خاطئة لتدريج المخطط",
+    "explanation": "نقرأ ارتفاع العمود على تدريج المحور العمودي (خطوة التدريج قد تكون 10 أو 50) ثم ننقل القيمة إلى الجدول.",
+    "relatedLearningPoints": [
+      "4am_qiraat-wadiyat-ihsaiya_P1"
+    ]
+  },
+  "MISC-IHSA-NISBA-MIN-ADAD": {
+    "label": "خطأ في «أخذ نسبة من عدد»",
+    "explanation": "إذا كان $69\\%$ من العدد $T$ يساوي 30 فإن $0{,}69 \\times T = 30$ ، أي $T = \\dfrac{30}{0{,}69}$ ، وليس $0{,}69 \\times 30$ .",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-ihsa_P3"
+    ]
   }
 }

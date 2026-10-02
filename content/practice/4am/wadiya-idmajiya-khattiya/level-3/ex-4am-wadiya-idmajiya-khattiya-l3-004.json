@@ -1,0 +1,129 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l3-004",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 3,
+  "metadata": {
+    "title": "باقة الإنترنت في العيد",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تخفيض",
+      "دالة خطية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P2",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "سعر الجيغا في باقة إنترنت $100$ DA. بمناسبة العيد يطبّق المتعامل تخفيضا بـ 20% على كل جيغا. نسمّي $x$ عدد الجيغات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المبلغ المدفوع في العيد بدلالة $x$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$80x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$20x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAKHFID-NISBA"
+        },
+        {
+          "id": "C",
+          "content": "$100x - 20$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-JAM"
+        },
+        {
+          "id": "D",
+          "content": "$120x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد التخفيض، كم يكلّف الجيغا؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$100 \\times 0{,}8$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اضرب في عدد الجيغات."
+        }
+      ],
+      "feedback": {
+        "correct": "الجيغا بـ $100 \\times 0{,}8 = 80$ DA، فالمبلغ $80x$.",
+        "incorrect": "بعد تخفيض 20% ندفع 80% من السعر."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    },
+    {
+      "id": "q2",
+      "statement": "معك $1000$ DA. كم جيغا كاملا يمكنك شراؤه في العيد؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "12",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حل $80x \\leq 1000$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$1000 \\div 80$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عدد الجيغات الكاملة عدد طبيعي."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{1000}{80} = 12{,}5$ : 12 جيغا كاملا ($960$ DA).",
+        "incorrect": "دوّر نحو الأسفل: لا يمكن تجاوز المبلغ."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "13",
+          "id": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "value": "10",
+          "id": "MISC-TARRID-NAMUDHAJ"
+        }
+      ]
+    }
+  ]
+}

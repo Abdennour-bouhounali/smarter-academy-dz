@@ -1,0 +1,68 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l5-006",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — خلية منسية",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مجال",
+      "متوسط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_majdulat-ihsaiya_P2",
+      "modelledOn": "ex-7"
+    }
+  },
+  "statement": {
+    "content": "سلسلة من 11 قيمة في A1:K1 . كتب أنس ⁦=MOYENNE(A1:J1)⁩ فأظهر 13 ، ونسي الخلية K1 وفيها 24 ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المتوسط الصحيح للقيم الإحدى عشرة:",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "14",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MAJAL-KHALIYA",
+          "value": "13"
+        },
+        {
+          "id": "MISC-IHSA-MUTAWASSIT-MUTAWASSITAYN",
+          "value": "18,5"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مجموع العشر = 13 × 10 ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أضف 24."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على 11."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{130 + 24}{11} = \\dfrac{154}{11} = 14$ .",
+        "incorrect": "المجموع الكامل مقسوم على 11."
+      }
+    }
+  ]
+}

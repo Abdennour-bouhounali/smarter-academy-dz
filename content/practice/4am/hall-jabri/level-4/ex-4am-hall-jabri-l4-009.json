@@ -1,0 +1,114 @@
+{
+  "id": "ex-4am-hall-jabri-l4-009",
+  "lessonCode": "hall-jabri",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — شبابيك الملعب",
+    "estimatedMinutes": 4,
+    "tags": [
+      "الجمع",
+      "كرة القدم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hall-jabri_P2",
+      "modelledOn": "ex-8"
+    }
+  },
+  "statement": {
+    "content": "قبل الداربي باع الشبّاك (أ) 5 تذاكر للمنصّة الشرفية و 3 تذاكر للمدرجات بـ 7900 DA، وباع الشبّاك (ب) تذكرتين للمنصّة و 7 تذاكر للمدرجات بـ 7800 DA. نرمز بـ $x$ لثمن تذكرة المنصّة وبـ $y$ لثمن تذكرة المدرجات: $\\begin{cases} 5x + 3y = 7900 \\\\ 2x + 7y = 7800 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لنتخلّص من $x$ بطريقة الجمع، نضرب:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الأولى في $2$ والثانية في $-5$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الأولى في $2$ والثانية في $5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        },
+        {
+          "id": "C",
+          "content": "الأولى في $7$ والثانية في $3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن معاملي $x$ ثم معاملي $y$ في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب طرفي معادلة (أو كلتيهما) في عدد مناسب ليصير معاملا أحد المجهولين متعاكسين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المعادلتين طرفًا لطرف، ثم عوّض القيمة الناتجة في إحدى المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$10x + 6y = 15800$ و $-10x - 35y = -39000$ : $10x$ و $-10x$ متعاكسان.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة $(x ; y)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "1100",
+        "y": "800"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن معاملي $x$ ثم معاملي $y$ في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب طرفي معادلة (أو كلتيهما) في عدد مناسب ليصير معاملا أحد المجهولين متعاكسين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المعادلتين طرفًا لطرف، ثم عوّض القيمة الناتجة في إحدى المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "بالجمع $-29y = -23200$ ، ومنه $y = 800$ ثم $5x = 5500$ أي $x = 1100$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l4-008",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — علامة ناقصة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "متوسط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mada-wasit-mutawassit_P2",
+      "modelledOn": "ex-8"
+    }
+  },
+  "statement": {
+    "content": "علامات تلميذة في أربعة فروض: $12$ ، $15$ ، $x$ ، $9$ ، ومتوسطها $13$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العلامة $x$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "16",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT",
+          "value": "13"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مجموع العلامات $13 \\times 4 = 52$."
+        }
+      ],
+      "feedback": {
+        "correct": "$52 - 12 - 15 - 9 = 16$ .",
+        "incorrect": "المجموع = المتوسط × العدد."
+      }
+    }
+  ]
+}

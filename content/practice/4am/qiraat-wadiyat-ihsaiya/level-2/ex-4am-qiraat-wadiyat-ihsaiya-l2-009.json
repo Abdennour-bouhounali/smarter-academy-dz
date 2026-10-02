@@ -1,0 +1,69 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l2-009",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — يوم عادي على الشاطئ",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وسيط",
+      "قيمة متطرفة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P2",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "عدد القارورات المجموعة على الشاطئ في 5 أيام: 120 ، 150 ، 90 ، 600 ، 140."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما وسيط هذه السلسلة؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "140",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-WASIT-BILA-TARTIB",
+          "value": "90"
+        },
+        {
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT",
+          "value": "220"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "رتّب القيم."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "5 قيم: الرتبة 3."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "القيمة الوسطى."
+        }
+      ],
+      "feedback": {
+        "correct": "بعد الترتيب 90 ، 120 ، 140 ، 150 ، 600: الوسيط 140.",
+        "incorrect": "رتّب القيم قبل قراءة الوسيط."
+      },
+      "difficulty": 2
+    }
+  ]
+}

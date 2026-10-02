@@ -1,0 +1,57 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l2-009",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — صورتان متساويتان",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تناسب التغيرات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "$f$ دالة تآلفية حيث $f(3) = 7$ و $f(7) = 7$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعامل $a$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "0",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "فرق الصورتين $7 - 7$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{0}{4}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ما نوع هذه الدالة؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{0}{4} = 0$ : $f(x) = 7$ دالة ثابتة (حالة خاصة).",
+        "incorrect": "فرق الصورتين معدوم."
+      }
+    }
+  ]
+}

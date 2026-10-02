@@ -1,0 +1,80 @@
+{
+  "id": "ex-4am-tanasub-muamil-l3-001",
+  "lessonCode": "tanasub-muamil",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 16 — العدد b",
+    "estimatedMinutes": 4,
+    "tags": [
+      "الجداءان المتصالبان"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-16",
+      "page": 73,
+      "section": "أوظّف تعلّماتي",
+      "number": 16
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 73): عيّن العدد $b$ إذا علمت أن الجدول الآتي جدول تناسبية. $\\begin{array}{|c|c|} \\hline b - 1 & 4 \\\\ \\hline -16 & 1 - b \\\\ \\hline \\end{array}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيمة (أو قيم) $b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "cognitiveDemand": "transfer",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$b = 9$ فقط",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$b = -7$ أو $b = 9$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$b = 7$ أو $b = -9$",
+          "isCorrect": false
+        },
+        {
+          "id": "D",
+          "content": "$b = -7$ فقط",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجدول جدول تناسبية: نضرب في المعامل، ولا نضيف الفرق."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب معامل التناسبية من عمود كامل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب العدد المعلوم في المعامل، أو استعمل تساوي الجداءين المتصالبين."
+        }
+      ],
+      "feedback": {
+        "correct": "$(b - 1)(1 - b) = -64$ أي $(b - 1)^2 = 64$ : $b - 1 = 8$ أو $b - 1 = -8$ ، ومنه $b = 9$ أو $b = -7$ .",
+        "incorrect": "احسب حاصل القسمة في كل عمود قبل أن تحكم: الزيادة وحدها لا تكفي."
+      }
+    }
+  ]
+}

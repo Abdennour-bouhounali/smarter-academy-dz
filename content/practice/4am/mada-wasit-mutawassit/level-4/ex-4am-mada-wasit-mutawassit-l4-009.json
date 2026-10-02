@@ -1,0 +1,66 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l4-009",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — فوجان ومتوسط واحد",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تشتت",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mada-wasit-mutawassit_P1",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "علامات فوجين في مسابقة: الفوج 1: $9$ ، $10$ ، $10$ ، $11$ ؛ الفوج 2: $4$ ، $8$ ، $12$ ، $16$ . لكل فوج المتوسط $10$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ الفوجين علاماته أكثر تجانسًا (أقلّ تشتّتًا)؟",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الفوج 1 (المدى $2$)",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الفوج 2 (المدى $12$)",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUQARANA-MUTAWASSIT-FAQAT"
+        },
+        {
+          "id": "C",
+          "content": "لا فرق: لهما المتوسط نفسه",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUQARANA-MUTAWASSIT-FAQAT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن مدى الفوجين."
+        }
+      ],
+      "feedback": {
+        "correct": "المدى $11 - 9 = 2$ مقابل $16 - 4 = 12$ : الفوج 1 أكثر تجانسًا.",
+        "incorrect": "المتوسط وحده لا يصف التشتّت."
+      }
+    }
+  ]
+}

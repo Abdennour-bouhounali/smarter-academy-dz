@@ -1,0 +1,73 @@
+{
+  "id": "ex-4am-mafhum-taalufiya-l2-009",
+  "lessonCode": "mafhum-taalufiya",
+  "level": 2,
+  "metadata": {
+    "title": "خطية أم ثابتة؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خطية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الدالة $h : x \\longmapsto -7x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الدالة $h$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P4",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "خطية (وتآلفية): $a = -7$ و $b = 0$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "ثابتة لأنّ فيها عددا واحدا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-THABITA"
+        },
+        {
+          "id": "C",
+          "content": "ليست تآلفية لأنّه لا يوجد $b$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-THABITA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كل دالة من الشكل $ax + b$ تآلفية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انظر إلى $b$ : إذا كان معدوما فالدالة خطية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "وانظر إلى $a$ : إذا كان معدوما فالدالة ثابتة."
+        }
+      ],
+      "feedback": {
+        "correct": "$-7x = -7x + 0$ : $b = 0$ ، دالة خطية، وهي تآلفية.",
+        "incorrect": "راجع كل اقتراح: واحد فقط صحيح."
+      }
+    }
+  ]
+}

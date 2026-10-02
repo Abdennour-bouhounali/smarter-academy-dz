@@ -1,0 +1,82 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l5-006",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — ثلاث نقط ومستقيم يشمل O",
+    "estimatedMinutes": 4,
+    "tags": [
+      "استقامة",
+      "معامل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-khatti_P1",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "في معلم: $A(2 ; 3)$ ، $B(-4 ; -6)$ ، $C(6 ; 8)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النقط التي تقع على مستقيم واحد يشمل O هي:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "A و B فقط",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "A و C فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TANASUB-FARQ-THABIT"
+        },
+        {
+          "id": "C",
+          "content": "A و B و C",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-BIDUN-O"
+        },
+        {
+          "id": "D",
+          "content": "B و C فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نقطة $(x ; y)$ على مستقيم يشمل O معامله $\\dfrac{y}{x}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $\\dfrac{y}{x}$ لكل نقطة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "النقط ذات النسبة نفسها على المستقيم نفسه."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3}{2} = \\dfrac{-6}{-4} = 1{,}5$ لكن $\\dfrac{8}{6} \\neq 1{,}5$ .",
+        "incorrect": "قارن حاصل قسمة الترتيب على الفاصلة."
+      }
+    }
+  ]
+}

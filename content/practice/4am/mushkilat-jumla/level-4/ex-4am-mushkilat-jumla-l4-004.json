@@ -1,0 +1,113 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l4-004",
+  "lessonCode": "mushkilat-jumla",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 27 (ص 63) — تفاح وإجاص",
+    "estimatedMinutes": 5,
+    "tags": [
+      "ترييض",
+      "وحدات"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-27",
+      "page": 63,
+      "section": "أتعمّق",
+      "number": 27
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 63): تزن 5 تفاحات و 3 إجاصات معا 1kg 50g. إذا علمت أنّ وزن إجّاصة هو $\\dfrac{2}{3}$ وزن تفاحة. نسمّي $x$ وزن تفاحة و $y$ وزن إجاصة (بالغرام)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعلومة «تزن 5 تفاحات و 3 إجاصات معا 1kg 50g» تُترجم بـ:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$5x + 3y = 1{,}50$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-WIHDA"
+        },
+        {
+          "id": "B",
+          "content": "$5x + 3y = 1050$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$5x + 3y = 150$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-WIHDA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x$ و $y$ بالغرام."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حوّل 1kg إلى غرامات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "1kg 50g = 1000g + 50g."
+        }
+      ],
+      "feedback": {
+        "correct": "وحدة واحدة في المعادلة: 1050g .",
+        "incorrect": "الكيلوغرام 1000 غرام."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "الوزنان: اكتب الثنائية $(x ; y)$ بالغرام.",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "150",
+        "y": "100"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $y = \\dfrac{2}{3}x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$3y = 2x$ : تحصل على $7x = 1050$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم احسب $y$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 150$ و $y = 100$ : $750 + 300 = 1050$ .",
+        "incorrect": "أكمل حتى الثنائية."
+      }
+    }
+  ]
+}

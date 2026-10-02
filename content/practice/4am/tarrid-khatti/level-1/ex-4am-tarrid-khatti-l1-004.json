@@ -1,0 +1,80 @@
+{
+  "id": "ex-4am-tarrid-khatti-l1-004",
+  "lessonCode": "tarrid-khatti",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — أيّ وضعية تناسبية؟",
+    "estimatedMinutes": 2,
+    "tags": [
+      "وضعية تناسبية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "نسمّي $x$ طولًا بالسنتيمتر أو عددًا من السنوات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ وضعية تنمذجها دالة خطية؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "مساحة مربع طول ضلعه $x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-NAMUDHAJ"
+        },
+        {
+          "id": "B",
+          "content": "محيط مربع طول ضلعه $x$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "عمر شخص عمره اليوم 13 سنة بعد $x$ سنة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-AFFINE"
+        },
+        {
+          "id": "D",
+          "content": "ثمن رحلة سيارة أجرة: 100DA ثابتة و 30DA لكل كيلومتر",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-AFFINE"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن الشكل $ax$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "من أجل $x = 0$ يجب أن تنعدم الكمية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$4x$ ، $x^2$ ، $13 + x$ ، $100 + 30x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "المحيط $4x$ : دالة خطية. المساحة $x^2$ ليست خطية، و $13 + x$ و $100 + 30x$ لا تنعدمان عند 0.",
+        "incorrect": "دالة خطية: $f(0) = 0$ والنسبة ثابتة."
+      }
+    }
+  ]
+}

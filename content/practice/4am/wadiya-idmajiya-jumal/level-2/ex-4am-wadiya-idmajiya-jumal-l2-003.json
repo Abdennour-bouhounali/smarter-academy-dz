@@ -1,0 +1,131 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l2-003",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 2,
+  "metadata": {
+    "title": "رحلة القسم — الحل",
+    "estimatedMinutes": 3,
+    "tags": [
+      "اختيار الطريقة",
+      "حل جملة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P1",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "قبل رحلة القسم، طلب مندوب القسم 10 علب عصير و 10 قطع حلوى متماثلة ودفع 800 DA. في طريق العودة بقيت 2 علب عصير و 3 قطع حلوى ثمنها معا 210 DA. نسمّي $x$ سعر علبة العصير و $y$ سعر قطعة الحلوى (بالدينار)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ خطوة أولى تسهّل حل الجملة $10x + 10y = 800$ و $2x + 3y = 210$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نقسم طرفي المعادلة الأولى على 10 فنجد $x + y = 80$ ، ثم نعوّض $y = 80 - x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نجمع المعادلتين مباشرة فيختفي $y$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        },
+        {
+          "id": "C",
+          "content": "نقسم المعادلة الأولى على 10 فنجد $x + y = 800$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-TARAF-WAHID"
+        },
+        {
+          "id": "D",
+          "content": "نعوّض $y = 80 - x$ في المعادلة الأولى نفسها",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAWID-NAFS-MUADALA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هل في إحدى المعادلتين قاسم مشترك؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل المجهول 1 يسهّل التعويض."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نعوّض في المعادلة الأخرى."
+        }
+      ],
+      "feedback": {
+        "correct": "المعادلة الأولى تكافئ $x + y = 80$ ، والتعويض في الثانية يعطي معادلة بمجهول واحد.",
+        "incorrect": "القسمة تشمل الطرفين، والتعويض يكون في المعادلة الأخرى."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة: ما السعران $(x ; y)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
+      "expectedAnswer": {
+        "x": "30",
+        "y": "50"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$y = 80 - x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض في $2x + 3y = 210$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقق في المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x + 240 - 3x = 210$ ، $x = 30$ ، ثم $y = 50$.",
+        "incorrect": "بعد إيجاد $x$ عوّض لإيجاد $y$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "50",
+            "y": "30"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    }
+  ]
+}

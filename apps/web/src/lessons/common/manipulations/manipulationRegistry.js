@@ -33,6 +33,26 @@ export const MANIPULATION_COMPONENTS = {
   'vanishing-pitch': lazy(() => import('./equations/VanishingPitch')),
   'solution-ray': lazy(() => import('./equations/SolutionRay')),
   'growth-race': lazy(() => import('./equations/GrowthRace')),
+  // Unité 5 « جمل معادلتين » (2026-10-01).
+  'pair-scoreboard': lazy(() => import('./systems/PairScoreboard')),
+  'elimination-cards': lazy(() => import('./systems/EliminationCards')),
+  'story-modeller': lazy(() => import('./systems/StoryModeller')),
+  // Unité 6 « الدالة الخطية والتناسبية » (2026-10-02).
+  'ratio-ride': lazy(() => import('./proportion/RatioRide')),
+  'linear-machine': lazy(() => import('./proportion/LinearMachine')),
+  'origin-line': lazy(() => import('./proportion/OriginLine')),
+  'percent-tag': lazy(() => import('./proportion/PercentTag')),
+  // Unité 7 « الدالة التآلفية » (2026-10-02).
+  'affine-meter': lazy(() => import('./affine/AffineMeter')),
+  'affine-line': lazy(() => import('./affine/AffineLine')),
+  'slope-stairs': lazy(() => import('./affine/SlopeStairs')),
+  'line-crossing': lazy(() => import('./affine/LineCrossing')),
+  'plan-compare': lazy(() => import('./affine/PlanCompare')),
+  // Unité 8 « الإحصاء » (2026-10-02).
+  'cumul-gate': lazy(() => import('./stats/CumulGate')),
+  'stat-balance': lazy(() => import('./stats/StatBalance')),
+  'sheet-lab': lazy(() => import('./stats/SheetLab')),
+  'group-tanks': lazy(() => import('./stats/GroupTanks')),
 };
 
 export const REGISTERED_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_COMPONENTS));

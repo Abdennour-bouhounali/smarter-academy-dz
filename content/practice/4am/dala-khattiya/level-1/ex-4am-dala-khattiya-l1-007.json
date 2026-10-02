@@ -1,0 +1,66 @@
+{
+  "id": "ex-4am-dala-khattiya-l1-007",
+  "lessonCode": "dala-khattiya",
+  "level": 1,
+  "metadata": {
+    "title": "المعامل من عدد وصورته",
+    "estimatedMinutes": 4,
+    "tags": [
+      "معامل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "$h$ دالة خطية حيث $h(5) = 35$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عيّن معامل الدالة الخطية $h$ علمًا أنّ $h(5) = 35$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الدالة خطية: دستورها من الشكل $f(x) = ax$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعلومة المعطاة على شكل معادلة مجهولها $a$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الصورة على العدد غير المعدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "$5a = 35$ ، إذن $a = 35 \\div 5 = 7$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-MUAMIL-MAQLUB",
+          "value": "1/7"
+        },
+        {
+          "id": "MISC-KHATTIYA-ISHARA",
+          "value": "-7"
+        }
+      ]
+    }
+  ]
+}

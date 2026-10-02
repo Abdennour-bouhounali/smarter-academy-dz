@@ -1,0 +1,97 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l3-006",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 12 (ص 99) — الوسيط في 3",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وسيط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-12",
+      "page": 99,
+      "section": "أوظّف تعلّماتي",
+      "number": 12
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 99): السلسلة $12$ ، $8$ ، $6$ ، $10$ ، $2$ ، $4$ وسيطها Med."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الوسيط Med هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-WASIT-BILA-TARTIB",
+          "value": "8"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "رتّب: $2$ ، $4$ ، $6$ ، $8$ …"
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{6 + 8}{2} = 7$ .",
+        "incorrect": "ست قيم مرتّبة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "سلسلة لها نفس التكرار الكلّي ووسيطها $3\\mathrm{Med}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$6$ ، $12$ ، $18$ ، $24$ ، $30$ ، $36$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$21$ ، $21$ ، $21$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-RUTBA"
+        },
+        {
+          "id": "C",
+          "content": "$6$ ، $12$ ، $18$ ، $21$ ، $24$ ، $30$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-RUTBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ست قيم، ووسيط $21$."
+        }
+      ],
+      "feedback": {
+        "correct": "ضرب القيم في 3 يضرب الوسيط في 3: $\\dfrac{18 + 24}{2} = 21$ .",
+        "incorrect": "تحقّق من عدد القيم ومن الوسيط."
+      }
+    }
+  ]
+}

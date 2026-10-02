@@ -1,0 +1,113 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l4-002",
+  "lessonCode": "mushkilat-jumla",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 19 (ص 61) — زوايا مثلث",
+    "estimatedMinutes": 5,
+    "tags": [
+      "ترييض",
+      "زوايا"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-19",
+      "page": 61,
+      "section": "أوظّف تعلّماتي",
+      "number": 19
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 61): المثلث ABC متقايس الساقين رأسه A. (d) منصّف الزاوية $\\widehat{C}$ يقطع [AB] في D و AD = DC. نسمّي $x$ و $y$ قيسي الزاويتين $\\widehat{A}$ و $\\widehat{B}$ بالدرجات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم المشكلة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 180 \\\\ y = 2x \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + 2y = 180 \\\\ y = 2x \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} 2x + y = 180 \\\\ y = 2x \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المثلث المتقايس الساقين رأسه A: $\\widehat{C} = \\widehat{B}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ADC متقايس الساقين: $\\widehat{ACD} = x$ ، و (d) منصّف."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مجموع زوايا المثلث 180."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + y + y = 180$ و $\\widehat{C} = y = 2x$ : الحل $(36 ; 72)$ .",
+        "incorrect": "الزاوية $\\widehat{C}$ تساوي $y$ ، فتُحسب في مجموع الزوايا."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "القيسان: اكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "36",
+        "y": "72"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $y = 2x$ في المعادلة الأولى."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على $5x = 180$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم احسب $y$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 36$ و $y = 72$ : $36 + 72 + 72 = 180$ .",
+        "incorrect": "أكمل حتى الثنائية."
+      }
+    }
+  ]
+}

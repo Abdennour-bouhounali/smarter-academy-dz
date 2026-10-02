@@ -1,0 +1,92 @@
+{
+  "id": "ex-4am-tamthil-bayani-taalufi-l2-010",
+  "lessonCode": "tamthil-bayani-taalufi",
+  "level": 2,
+  "metadata": {
+    "title": "نقطة على محور الفواصل",
+    "estimatedMinutes": 3,
+    "tags": [
+      "قراءة بيانية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-taalufi_P3"
+    }
+  },
+  "statement": {
+    "content": "المستقيم $(D)$ هو التمثيل البياني لدالة تآلفية $f$ ، ويشمل النقطتين $(0 ; -3)$ و $(1 ; -1)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بقراءة بيانية، العدد الذي صورته $1$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد الذي صورته معلومة هو فاصلة النقطة من المستقيم التي ترتيبها هذه الصورة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب عبارة الدالة، ثم حلّ $ax + b = m$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح $b$ أولًا ثم اقسم على $a$ ، وتحقّق بحساب الصورة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(x) = 2x - 3$ ، و $f(2) = 1$ : النقطة $(2 ; 1)$ على المستقيم.",
+        "incorrect": "العدد المطلوب فاصلة: انطلق من الصورة على محور التراتيب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بقراءة بيانية، العدد الذي صورته $0$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "expectedAnswer": "3/2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد الذي صورته معلومة هو فاصلة النقطة من المستقيم التي ترتيبها هذه الصورة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب عبارة الدالة، ثم حلّ $ax + b = m$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح $b$ أولًا ثم اقسم على $a$ ، وتحقّق بحساب الصورة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(x) = 2x - 3$ ، و $f(1{,}5) = 0$ : النقطة $(1{,}5 ; 0)$ على المستقيم.",
+        "incorrect": "العدد المطلوب فاصلة: انطلق من الصورة على محور التراتيب."
+      }
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l4-005",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 30 (ص 75)",
+    "estimatedMinutes": 4,
+    "tags": [
+      "معامل",
+      "جذور"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-30",
+      "page": 75,
+      "section": "أتعمّق",
+      "number": 30
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 75): $f$ دالة خطية تحقّق $f(x + \\sqrt{2}) - f(x - \\sqrt{2}) = 4$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "معامل $f$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\sqrt{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-MUAMIL-MAQLUB"
+        },
+        {
+          "id": "C",
+          "content": "$2\\sqrt{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-MUAMIL-MAQLUB"
+        },
+        {
+          "id": "D",
+          "content": "$\\dfrac{\\sqrt{2}}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-MUAMIL-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $f(t) = at$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a(x + \\sqrt{2}) - a(x - \\sqrt{2}) = 2\\sqrt{2}a$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ $2\\sqrt{2}a = 4$."
+        }
+      ],
+      "feedback": {
+        "correct": "$2\\sqrt{2}a = 4$ ومنه $a = \\sqrt{2}$ .",
+        "incorrect": "الفرق لا يتعلّق بـ $x$ : يساوي $2\\sqrt{2}a$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "صورة $\\sqrt{2}$ بالدالة $f$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد بالدالة الخطية $x \\longmapsto ax$ هي جداء هذا العدد في المعامل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب العدد في المعامل مع الانتباه إلى الإشارة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "النقطة التي فاصلتها هذا العدد وترتيبها صورته تنتمي إلى التمثيل."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(\\sqrt{2}) = \\sqrt{2} \\times \\sqrt{2} = 2$ .",
+        "incorrect": "اضرب في المعامل الذي وجدته."
+      }
+    }
+  ]
+}

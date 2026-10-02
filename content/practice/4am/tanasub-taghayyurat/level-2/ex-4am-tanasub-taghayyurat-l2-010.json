@@ -1,0 +1,92 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l2-010",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — مستقيم يقطع المحورين",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تناسب التغيرات",
+      "تمثيل بياني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P1",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "المستقيم الذي يمثّل دالة تآلفية $f$ يمرّ بالنقطتين $A(0 ; 4)$ و $B(2 ; 0)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعامل $a$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "-2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$f(0) = 4$ و $f(2) = 0$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{0 - 4}{2 - 0}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المستقيم ينزل."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{-4}{2} = -2$ .",
+        "incorrect": "الترتيب ينقص: المعامل سالب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العدد $b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$b = f(0)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "النقطة ذات الفاصلة 0 ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ترتيب $A$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = f(0) = 4$ .",
+        "incorrect": "$b$ ترتيب النقطة التي فاصلتها 0 لا فاصلة $B$ ."
+      }
+    }
+  ]
+}

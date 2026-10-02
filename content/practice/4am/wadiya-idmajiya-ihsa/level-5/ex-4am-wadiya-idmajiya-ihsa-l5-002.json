@@ -1,0 +1,155 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l5-002",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 5,
+  "metadata": {
+    "title": "حملة تنظيف الشاطئ: قيمة مخفية",
+    "estimatedMinutes": 5,
+    "tags": [
+      "قيمة مخفية",
+      "متوسط",
+      "مدى",
+      "وسيط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P3"
+    }
+  },
+  "statement": {
+    "content": "جمع خمسة متطوعين في حملة تنظيف الشاطئ (بالكيلوغرام): 2 ، 3 ، 5 ، 6 ، $x$ حيث $x > 6$. متوسط السلسلة 5 كيلوغرامات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما قيمة $x$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجموع = 5 × 5."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2 + 3 + 5 + 6 + x = 25$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ."
+        }
+      ],
+      "feedback": {
+        "correct": "$16 + x = 25$ ، إذن $x = 9$.",
+        "incorrect": "مجموع الكتل يساوي المتوسط مضروبا في 5."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "ما مدى السلسلة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أكبر قيمة الآن معروفة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أكبر قيمة ناقص أصغر قيمة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح."
+        }
+      ],
+      "feedback": {
+        "correct": "$9 - 2 = 7$ كيلوغرامات.",
+        "incorrect": "المدى فرق بين أكبر قيمة وأصغر قيمة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "9",
+          "id": "MISC-IHSA-MADA-AKBAR-QIMA"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "لو جمع المتطوع الخامس 20 كيلوغراما بدل $x$ ، فإنّ:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الوسيط يبقى 5 والمتوسط يكبر",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الوسيط والمتوسط يكبران",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-MUTAWASSIT"
+        },
+        {
+          "id": "C",
+          "content": "المتوسط يبقى 5",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "القيمة الثالثة بعد الترتيب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المجموع يتغيّر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن."
+        }
+      ],
+      "feedback": {
+        "correct": "القيمة الثالثة تبقى 5 ، والمتوسط يصبح $\\dfrac{36}{5} = 7{,}2$.",
+        "incorrect": "قيمة متطرّفة تحرّك المتوسط لا الوسيط."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 4
+    }
+  ]
+}

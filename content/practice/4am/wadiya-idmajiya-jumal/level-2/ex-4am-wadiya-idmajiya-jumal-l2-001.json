@@ -1,0 +1,133 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l2-001",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 29 — العسل",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترجمة",
+      "وحدات",
+      "حل جملة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-29",
+      "page": 63,
+      "section": "أتعمّق",
+      "number": 29
+    }
+  },
+  "statement": {
+    "content": "تحصل فلّاح مختصّ في تربية النحل على 7kg من العسل. لتسويق هذه الكمية، تمكّن من توزيعها على 18 علبة زجاجية، بعضها من فئة 500g والأخرى من فئة 250g، ممتلئة بالعسل. نسمّي $x$ عدد علب فئة 500g و $y$ عدد علب فئة 250g."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم المعطيات هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 18 \\\\ 500x + 250y = 7 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-WIHDA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 7000 \\\\ 500x + 250y = 18 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x + y = 18 \\\\ 500x + 250y = 7000 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$\\begin{cases} x + y = 18 \\\\ 250x + 500y = 7000 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معلومة عن عدد العلب ومعلومة عن الكتلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حوّل 7kg إلى غرام."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "في المعادلة الواحدة وحدة واحدة."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + y = 18$ و $500x + 250y = 7000$ لأنّ 7kg = 7000g.",
+        "incorrect": "انتبه إلى الوحدات: الكتل بالغرام."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    },
+    {
+      "id": "q2",
+      "statement": "ما هو عدد العلب $(x ; y)$ من كل فئة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان طبيعيان",
+      "expectedAnswer": {
+        "x": "10",
+        "y": "8"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من المعادلة الأولى: $y = 18 - x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض في $500x + 250y = 7000$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقق: الكتلة الكلية 7000 غرام."
+        }
+      ],
+      "feedback": {
+        "correct": "$250x + 4500 = 7000$ ، $x = 10$ ثم $y = 8$.",
+        "incorrect": "استعمل التعويض ثم تحقق في النص."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "8",
+            "y": "10"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    }
+  ]
+}

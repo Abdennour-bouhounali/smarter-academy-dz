@@ -1,0 +1,59 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l3-001",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 23 — البذلة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نسبة التخفيض"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-23",
+      "page": 73,
+      "section": "أوظّف تعلّماتي",
+      "number": 23
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 73): سعر بذلة قبل التخفيض 4500DA وبعد التخفيض 4140DA. ما هي نسبة هذا التخفيض؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نسبة التخفيض (العدد $t$ فقط):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب المضاعف $k = \\dfrac{y}{x}$ : المقدار بعد على المقدار قبل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$k = 1 + \\dfrac{t}{100}$ في الزيادة، و $k = 1 - \\dfrac{t}{100}$ في التخفيض."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استنتج t من k، ثم تحقّق بحساب المقدار بعد التغيّر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{4140}{4500} = 0{,}92 = 1 - \\dfrac{8}{100}$ : تخفيض 8%.",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "id": "ex-4am-dala-khattiya-l5-004",
+  "lessonCode": "dala-khattiya",
+  "level": 5,
+  "metadata": {
+    "title": "دالة بالجذور",
+    "estimatedMinutes": 5,
+    "tags": [
+      "جذور"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-8",
+      "page": 72,
+      "section": "أوظّف تعلّماتي",
+      "number": 8
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 72): $f$ هي الدّالة الخطية المعرّفة بالدّستور $f(x) = -\\dfrac{\\sqrt{3}}{2}x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد الذي صورته $\\sqrt{3}$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$-2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$-\\dfrac{3}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-SURA-SABIQ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المطلوب هنا عدد علمت صورته، لا صورة عدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعادلة $ax = $ الصورة المعطاة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم طرفي المعادلة على المعامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$-\\dfrac{\\sqrt{3}}{2} \\times x = \\sqrt{3}$ ، إذن $x = -2$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$f(4)$ يساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2\\sqrt{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$-2\\sqrt{3}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$-\\dfrac{8}{\\sqrt{3}}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-SURA-SABIQ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد بدالة خطية تُقرأ على دستورها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بالعدد المعطى في الدستور."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب الجداء، وانتبه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(4) = -\\dfrac{\\sqrt{3}}{2} \\times 4 = -2\\sqrt{3}$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

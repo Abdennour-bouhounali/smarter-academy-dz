@@ -1,0 +1,142 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l5-010",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 5,
+  "metadata": {
+    "title": "وصلان متناقضان",
+    "estimatedMinutes": 6,
+    "tags": [
+      "حالات الجملة",
+      "التحقق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P2",
+      "modelledOn": "know-cases"
+    }
+  },
+  "statement": {
+    "content": "في وصل أول: علبتا عصير و 4 قطع حلوى بـ 300 DA. في وصل ثان من المحل نفسه: علبة عصير وقطعتا حلوى بـ 160 DA. نسمّي $x$ سعر العلبة و $y$ سعر القطعة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ماذا نستنتج من الجملة $2x + 4y = 300$ و $x + 2y = 160$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "حلها $(60 ; 45)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "B",
+          "content": "لها عدد غير منته من الحلول",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-HALAT"
+        },
+        {
+          "id": "C",
+          "content": "حلها $(20 ; 70)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "D",
+          "content": "ليس لها حل: ضعف الوصل الثاني 320 DA لا 300 DA، ففي أحد الوصلين خطأ",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن الوصل الأول بضعف الوصل الثاني."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ضعف $x + 2y$ هو $2x + 4y$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المشتريات نفسها بثمنين مختلفين؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$2(x + 2y) = 2x + 4y$ ، فيجب أن يكون الثمن 320 DA: الجملة ليس لها حل.",
+        "incorrect": "ضاعف المعادلة الثانية وقارن."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 5
+    },
+    {
+      "id": "q2",
+      "statement": "لو كان الوصل الثاني 150 DA بدل 160 DA، فإنّ:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "للجملة حل وحيد هو $(50 ; 50)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-HALAT"
+        },
+        {
+          "id": "B",
+          "content": "للجملة عدد غير منته من الحلول، فلا نستطيع تحديد السعرين",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "الجملة ليس لها حل",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-HALAT"
+        },
+        {
+          "id": "D",
+          "content": "للجملة حل وحيد هو $(100 ; 25)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-HALAT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ضاعف المعادلة الثانية الجديدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2x + 4y = 300$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعادلتان متكافئتان."
+        }
+      ],
+      "feedback": {
+        "correct": "الوصلان يقولان الشيء نفسه: عدد غير منته من الثنائيات.",
+        "incorrect": "معادلتان متكافئتان لا تحدّدان المجهولين."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 5
+    }
+  ]
+}

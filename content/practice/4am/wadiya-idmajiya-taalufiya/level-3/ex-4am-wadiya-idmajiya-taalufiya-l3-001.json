@@ -1,0 +1,171 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l3-001",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 3,
+  "metadata": {
+    "title": "ناقلان لرحلة الكشافة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تناسب التغيّرات",
+      "مفاضلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "لرحلة فوج كشافة: الناقل أ يطلب 4000 DA ثابتة و 100 DA عن كل مشارك. الناقل ب ثمنه دالة تآلفية لعدد المشاركين $x$ : 3500 DA لـ 10 مشاركين و 6500 DA لـ 30 مشاركا."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "دستور ثمن الناقل ب:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$g(x) = 150x + 2000$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$g(x) = 3000x + 2000$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-BIDUN-QISMA"
+        },
+        {
+          "id": "C",
+          "content": "$g(x) = 350x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-KHATTIYA-KHALT"
+        },
+        {
+          "id": "D",
+          "content": "$g(x) = 150x + 3500$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-B-NISBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$a = \\dfrac{6500 - 3500}{30 - 10}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$b = 3500 - 10a$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقق بالعرضين."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{3000}{20} = 150$ و $b = 3500 - 1500 = 2000$.",
+        "incorrect": "المعامل فرق الصورتين على فرق العددين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "من أجل كم مشاركا يتساوى الثمنان؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد المشاركين",
+      "expectedAnswer": "40",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$100x + 4000 = 150x + 2000$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2000 = 50x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نقطة التقاطع."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 40$ (والثمن 8000 DA).",
+        "incorrect": "نساوي الثمنين ونحلّ."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q3",
+      "statement": "الفوج 28 مشاركا. الأرخص:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الناقل أ: 6800 DA",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "B",
+          "content": "الناقل ب: 6200 DA",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "الثمن نفسه",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "28 أصغر من 40."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $f(28)$ و $g(28)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قبل نقطة التقاطع."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(28) = 6800$ و $g(28) = 150 \\times 28 + 2000 = 6200$.",
+        "incorrect": "قبل 40 مشاركا الناقل ب أرخص."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-tafsir-bayani-jumla-l1-002",
+  "lessonCode": "tafsir-bayani-jumla",
+  "level": 1,
+  "metadata": {
+    "title": "من المعادلة إلى المستقيم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "y = ax + b"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tafsir-bayani-jumla_P1",
+      "modelledOn": "act-5"
+    }
+  },
+  "statement": {
+    "content": "نعتبر المعادلة $x + y = 5$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعادلة $x + y = 5$ تُكتب على الشكل $y = ax + b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$y = -x + 5$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$y = x + 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-ISHARA-Y"
+        },
+        {
+          "id": "C",
+          "content": "$y = -x - 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-ISHARA-Y"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المعادلة من الشكل $ax + by = c$ : نريد أن يبقى $y$ وحده في طرف."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انقل حدّ $x$ إلى الطرف الثاني مع تغيير إشارته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم كل الحدود على معامل $y$ ، ثم قارن بالاقتراحات."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + y = 5$ تعطي $y = -x + 5$ : ننقل حدّ $x$ مع تغيير إشارته ثم نقسم على معامل $y$.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

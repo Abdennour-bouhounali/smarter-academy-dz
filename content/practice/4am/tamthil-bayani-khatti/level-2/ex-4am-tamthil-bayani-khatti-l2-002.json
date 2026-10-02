@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l2-002",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 2,
+  "metadata": {
+    "title": "نشاط 3 (ص 66) — النقطتان C و M",
+    "estimatedMinutes": 4,
+    "tags": [
+      "قراءة",
+      "معادلة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-3",
+      "page": 66,
+      "section": "أنشطة",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 66): المستقيم (OA) هو التمثيل البياني للدالة $f : x \\longmapsto 0{,}5x$ ، حيث $A(1 ; 0{,}5)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ترتيب النقطة C من (OA) ذات الفاصلة $-2$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 3/4)",
+      "expectedAnswer": "-1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ من العدد على محور الفواصل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اصعد (أو انزل) عموديًا حتى المستقيم، ثم اذهب أفقيًا إلى محور التراتيب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الصورة هي ترتيب نقطة المستقيم التي فاصلتها هذا العدد."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(-2) = 0{,}5 \\times (-2) = -1$ : ترتيب C هو $-1$ .",
+        "incorrect": "ترتيب C صورة فاصلتها."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "إذا كانت $M(x ; y)$ نقطة من (OA) فإنّ:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$y = 0{,}5x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$y = x + 0{,}5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-AFFINE"
+        },
+        {
+          "id": "C",
+          "content": "$x = 0{,}5y$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-MUAMIL-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ترتيب كل نقطة من (OA) صورة فاصلتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $y = f(x)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض $f(x)$ بعبارتها."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = f(x) = 0{,}5x$ .",
+        "incorrect": "المستقيم (OA) يشمل O ، وترتيب M صورة فاصلتها."
+      }
+    }
+  ]
+}

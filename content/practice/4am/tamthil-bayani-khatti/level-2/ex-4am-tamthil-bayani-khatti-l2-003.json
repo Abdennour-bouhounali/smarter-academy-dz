@@ -1,0 +1,125 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l2-003",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — قراءة صورة وعدد",
+    "estimatedMinutes": 4,
+    "tags": [
+      "قراءة بيانية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-khatti_P2",
+      "modelledOn": "method-read"
+    }
+  },
+  "statement": {
+    "content": "المستقيم (D) أدناه يمثّل دالة خطية $f$ ، ويشمل النقطة $K(4 ; 3)$ .",
+    "visual": {
+      "range": {
+        "xMin": 0,
+        "xMax": 8,
+        "yMin": 0,
+        "yMax": 6
+      },
+      "unit": 37.5,
+      "unitY": 33.3333,
+      "functions": [
+        {
+          "id": "d",
+          "a": 0.75,
+          "b": 0,
+          "label": "(D)",
+          "tone": "indigo"
+        }
+      ],
+      "points": [
+        {
+          "id": "p0",
+          "x": 4.0,
+          "y": 3.0,
+          "name": "K"
+        }
+      ],
+      "xStep": 1,
+      "yStep": 1,
+      "frozen": true,
+      "ariaLabel": "معلم فيه المستقيم (D) يشمل O و K(4 ; 3)",
+      "caption": false
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بقراءة بيانية، صورة 8:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 3/4)",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ من العدد على محور الفواصل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اصعد (أو انزل) عموديًا حتى المستقيم، ثم اذهب أفقيًا إلى محور التراتيب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الصورة هي ترتيب نقطة المستقيم التي فاصلتها هذا العدد."
+        }
+      ],
+      "feedback": {
+        "correct": "من 8 نصعد إلى (D) فنقرأ 6: $f(8) = 6$ .",
+        "incorrect": "الصورة ترتيب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بقراءة بيانية، العدد الذي صورته $1{,}5$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 3/4)",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابدأ من الصورة على محور التراتيب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اذهب أفقيًا حتى المستقيم، ثم عموديًا إلى محور الفواصل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "العدد المطلوب هو فاصلة نقطة المستقيم التي ترتيبها هذه الصورة."
+        }
+      ],
+      "feedback": {
+        "correct": "من $1{,}5$ على محور التراتيب نصل إلى الفاصلة 2.",
+        "incorrect": "العدد المطلوب فاصلة."
+      }
+    }
+  ]
+}

@@ -54,6 +54,18 @@ export * as polynomials from './arithmetic/polynomials.js';
 // Le premier degré exact de l'unité 4 « معادلات ومتراجحات » : équations, inéquations (sens
 // inversé par un négatif), produits nuls — une seule source pour les quatre labs.
 export * as linear from './arithmetic/linear.js';
+// Les jumal de l'unité 5 « جمل معادلتين من الدرجة الأولى بمجهولين » : deux équations en (x ; y),
+// vérifier une ثنائية, les trois cas, isoler / substituer / combiner — exact, sur les fractions de linear.js.
+export * as linearSystem from './arithmetic/linearSystem.js';
+// La proportionnalité exacte de l'unité 6 « الدالة الخطية والتناسبية » : tableaux, quatrième proportionnel,
+// coefficient depuis (m ; f(m)), droite par O, pourcentages et changements successifs, règles « machines ».
+export * as proportional from './arithmetic/proportional.js';
+// La fonction affine exacte de l'unité 7 « الدالة التآلفية » : image et antécédent, linéaire / constante, droite
+// (b = الترتيب عند المبدأ), تناسب التغيّرات et deux points, ax + by = c écrite y = ax + b, deux droites, deux tarifs.
+export * as affine from './arithmetic/affine.js';
+// La statistique exacte de l'unité 8 « الإحصاء » : effectifs, التكرار / التواتر المجمع الصاعد والنازل, المدى,
+// المتوسط (pondéré, مراكز الفئات), الوسيط (rangs) et الفئة الوسيطية, المنوال, groupes réunis et valeurs cachées.
+export * as statistics from './arithmetic/statistics.js';
 
 // Moteur d'exercices (pratique) — arithmétique exacte et évaluation des
 // réponses. Exporté sous un espace de noms : `Rational.parse` et

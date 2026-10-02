@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l2-007",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — خطأ كريم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تناسب التغيرات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "$f$ دالة تآلفية حيث $f(2) = 4$ و $f(5) = 13$ . كتب كريم: $a = \\dfrac{13 - 4}{2 - 5} = -3$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما رأيك؟",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "كريم محقّ: $a = -3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-TARTIB"
+        },
+        {
+          "id": "B",
+          "content": "أخطأ في ترتيب الطرح في المقام: $a = \\dfrac{13 - 4}{5 - 2} = 3$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "أخطأ: $a = 13 - 4 = 9$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAGHAYYUR-BIDUN-QISMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الصورة تزيد لمّا يزيد العدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إشارة $a$ ؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الترتيب نفسه فوق وتحت."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{13 - 4}{5 - 2} = \\dfrac{9}{3} = 3$ .",
+        "incorrect": "إذا عكسنا المقام وحده تتغيّر الإشارة."
+      }
+    }
+  ]
+}

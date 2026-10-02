@@ -1,0 +1,154 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l4-004",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 4,
+  "metadata": {
+    "title": "عرضان للإنترنت",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مفاضلة",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P2"
+    }
+  },
+  "statement": {
+    "content": "العرض أ: 600 DA ثم 100 DA للجيغابايت؛ العرض ب: 250 DA للجيغابايت ( $x$ عدد الجيغابايت)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من أجل كم جيغابايت يتساوى الثمنان؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$100x + 600 = 250x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$150x = 600$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نقطة التقاطع."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 4$.",
+        "incorrect": "نساوي الثمنين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "يستهلك أنس 6 جيغابايت. الأرخص له:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "العرض أ: 1200 DA",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "العرض ب: 1500 DA",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "C",
+          "content": "الثمن نفسه",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "6 أكبر من 4."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب الثمنين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد التقاطع."
+        }
+      ],
+      "feedback": {
+        "correct": "$600 + 600 = 1200 < 1500$.",
+        "incorrect": "بعد نقطة التقاطع يصبح العرض أ أرخص."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    },
+    {
+      "id": "q3",
+      "statement": "بميزانية 1500 DA والعرض أ، أكبر عدد طبيعي من الجيغابايت:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$100x + 600 \\leq 1500$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x \\leq 9$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عدد طبيعي."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 9$ ($100 \\times 9 + 600 = 1500$).",
+        "incorrect": "نطرح الاشتراك ثم نقسم."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "15",
+          "id": "MISC-TAALUFI-SABIQ-QISMA"
+        }
+      ]
+    }
+  ]
+}

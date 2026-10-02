@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l4-005",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — ميزانية نادي القسم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مخطط دائري",
+      "زاوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_majdulat-ihsaiya_P3",
+      "modelledOn": "ex-15"
+    }
+  },
+  "statement": {
+    "content": "ميزانية نادي القسم 2400DA : 600DA للقمصان، والباقي للتنقّل والكرات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "زاوية قطاع القمصان في المخطط الدائري (بالدرجات):",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "90",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-NISBA-MIN-ADAD",
+          "value": "25"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{600}{2400}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ربع الميزانية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ربع 360."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{600}{2400} \\times 360 = 90$ .",
+        "incorrect": "الحصة من الكلّ ثم × 360."
+      }
+    }
+  ]
+}

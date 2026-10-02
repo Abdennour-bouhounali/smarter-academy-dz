@@ -1,0 +1,82 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l3-001",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 7 (ص 99) — مجال ناقص",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مجال",
+      "متوسط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-7",
+      "page": 99,
+      "section": "أوظّف تعلّماتي",
+      "number": 7
+    }
+  },
+  "statement": {
+    "content": "سلسلة التمرين 7 محجوزة في الخلايا من A1 إلى G1 : 4 ، 10 ، 8 ، 4 ، 3 ، 2 ، 4 ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كتب أنس في B4 الدستور ⁦=MOYENNE(A1:F1)⁩ . العدد الذي يُظهره المجدول (مقرَّبًا):",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "5,83",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MAJAL-KHALIYA"
+        },
+        {
+          "id": "B",
+          "content": "5,17",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "5",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MAJAL-KHALIYA"
+        },
+        {
+          "id": "D",
+          "content": "4,43",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MAJAL-KHALIYA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "A1:F1 لا يشمل G1 ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "مجموع ستّ قيم: 31."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$31 \\div 6$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "المجال A1:F1 ستّ قيم مجموعها 31: $\\dfrac{31}{6} \\approx 5{,}17$ ، لا 5.",
+        "incorrect": "المجدول يحسب على المجال المكتوب فقط."
+      }
+    }
+  ]
+}

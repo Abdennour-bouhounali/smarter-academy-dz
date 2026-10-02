@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-dala-khattiya-l2-008",
+  "lessonCode": "dala-khattiya",
+  "level": 2,
+  "metadata": {
+    "title": "تمييز من الجداول",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تمييز"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-2",
+      "page": 66,
+      "section": "أنشطة",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 66): الدوال أ) $x \\longmapsto x^2$ ؛ ب) $x \\longmapsto 2x$ ؛ جـ) $x \\longmapsto 2x - 1$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الدالة الخطية من بين الدوال الثلاث هي:",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\longmapsto x^2$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$x \\longmapsto 2x$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x \\longmapsto 2x - 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-AFFINE"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الدالة الخطية من الشكل $x \\longmapsto ax$ حيث $a$ عدد ثابت."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب صورة 0 بكل دالة: بدالة خطية تكون معدومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق أيضًا أنّ صورة العدد هي جداؤه في العدد الثابت نفسه."
+        }
+      ],
+      "feedback": {
+        "correct": "$x \\longmapsto 2x$ من الشكل $x \\longmapsto ax$ ؛ الدوال الأخرى صورة 0 بها غير معدومة أو ليست جداء $x$ في عدد ثابت.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

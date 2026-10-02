@@ -1,0 +1,77 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l1-005",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 5 — المعامل من عدد وصورته",
+    "estimatedMinutes": 2,
+    "tags": [
+      "معامل"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 74,
+      "section": "أؤكّد تعلّماتي",
+      "number": 5
+    }
+  },
+  "statement": {
+    "content": "في كل حالة مما يلي اختر الإجابة الصحيحة، وبرّر اختيارك."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$f$ دالة خطية حيث $f(m) = n$ و $m \\neq 0$ ، معاملها هو:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{n}{m}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$mn$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-MUAMIL-MAQLUB"
+        },
+        {
+          "id": "C",
+          "content": "$n$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-SURA-SABIQ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب $f(m)$ بدلالة المعامل $a$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$a \\times m = n$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نقسم طرفي المساواة على $m$ غير المعدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "$a \\times m = n$ ومنه $a = \\dfrac{n}{m}$.",
+        "incorrect": "المعامل يحقق $a \\times m = n$ : حلّ هذه المعادلة."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 2
+    }
+  ]
+}

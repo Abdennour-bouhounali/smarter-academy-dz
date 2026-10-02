@@ -1360,7 +1360,7 @@
     }
   },
   {
-    "name": "rational-eight-decimals-exceed-safe-denominator",
+    "name": "rational-eight-decimals-read-exactly",
     "question": {
       "id": "q-rat-tenth",
       "answerType": "rational",
@@ -1375,9 +1375,9 @@
       "value": "0.12345678"
     },
     "expected": {
-      "outcome": "syntax_error",
+      "outcome": "incorrect",
       "misconceptionId": null,
-      "normalized": "0.12345678",
+      "normalized": "6172839/50000000",
       "isCorrect": false,
       "feedbackKey": "incorrect"
     }
@@ -1406,7 +1406,7 @@
     }
   },
   {
-    "name": "rational-integer-above-safe-component",
+    "name": "rational-integer-above-old-cap-is-read",
     "question": {
       "id": "q-rat-3",
       "answerType": "rational",
@@ -1421,7 +1421,7 @@
       "value": "100000000"
     },
     "expected": {
-      "outcome": "syntax_error",
+      "outcome": "incorrect",
       "misconceptionId": null,
       "normalized": "100000000",
       "isCorrect": false,
@@ -1521,7 +1521,7 @@
     }
   },
   {
-    "name": "rational-json-float-third-is-syntax-error",
+    "name": "rational-json-float-third-read-at-twelve-decimals",
     "question": {
       "id": "q-rat-tenth",
       "answerType": "rational",
@@ -1536,9 +1536,9 @@
       "value": 0.3333333333333333
     },
     "expected": {
-      "outcome": "syntax_error",
+      "outcome": "incorrect",
       "misconceptionId": null,
-      "normalized": "0.3333333333333333",
+      "normalized": "333333333333/1000000000000",
       "isCorrect": false,
       "feedbackKey": "incorrect"
     }
@@ -5815,6 +5815,144 @@
       "normalized": "7/4",
       "isCorrect": false,
       "feedbackKey": "notIrreducible"
+    }
+  },
+  {
+    "name": "rational-large-integer-typed-is-correct",
+    "question": {
+      "id": "q-rat-big",
+      "answerType": "rational",
+      "feedback": {
+        "correct": "Oui.",
+        "incorrect": "Non.",
+        "partial": "Presque."
+      },
+      "expectedAnswer": "132000000"
+    },
+    "answer": {
+      "value": "132000000"
+    },
+    "expected": {
+      "outcome": "correct",
+      "misconceptionId": null,
+      "normalized": "132000000",
+      "isCorrect": true,
+      "feedbackKey": "correct"
+    }
+  },
+  {
+    "name": "rational-large-integer-grouped-is-equivalent",
+    "question": {
+      "id": "q-rat-big",
+      "answerType": "rational",
+      "feedback": {
+        "correct": "Oui.",
+        "incorrect": "Non.",
+        "partial": "Presque."
+      },
+      "expectedAnswer": "132000000"
+    },
+    "answer": {
+      "value": "132 000 000"
+    },
+    "expected": {
+      "outcome": "equivalent_correct",
+      "misconceptionId": null,
+      "normalized": "132000000",
+      "isCorrect": true,
+      "feedbackKey": "correct"
+    }
+  },
+  {
+    "name": "rational-large-integer-arabic-digits",
+    "question": {
+      "id": "q-rat-big",
+      "answerType": "rational",
+      "feedback": {
+        "correct": "Oui.",
+        "incorrect": "Non.",
+        "partial": "Presque."
+      },
+      "expectedAnswer": "132000000"
+    },
+    "answer": {
+      "value": "١٣٢٠٠٠٠٠٠"
+    },
+    "expected": {
+      "outcome": "equivalent_correct",
+      "misconceptionId": null,
+      "normalized": "132000000",
+      "isCorrect": true,
+      "feedbackKey": "correct"
+    }
+  },
+  {
+    "name": "rational-large-integer-off-by-one-is-incorrect",
+    "question": {
+      "id": "q-rat-big",
+      "answerType": "rational",
+      "feedback": {
+        "correct": "Oui.",
+        "incorrect": "Non.",
+        "partial": "Presque."
+      },
+      "expectedAnswer": "132000000"
+    },
+    "answer": {
+      "value": "132000001"
+    },
+    "expected": {
+      "outcome": "incorrect",
+      "misconceptionId": null,
+      "normalized": "132000001",
+      "isCorrect": false,
+      "feedbackKey": "incorrect"
+    }
+  },
+  {
+    "name": "rational-above-max-safe-integer-is-syntax-error",
+    "question": {
+      "id": "q-rat-big",
+      "answerType": "rational",
+      "feedback": {
+        "correct": "Oui.",
+        "incorrect": "Non.",
+        "partial": "Presque."
+      },
+      "expectedAnswer": "132000000"
+    },
+    "answer": {
+      "value": "9007199254740992"
+    },
+    "expected": {
+      "outcome": "syntax_error",
+      "misconceptionId": null,
+      "normalized": "9007199254740992",
+      "isCorrect": false,
+      "feedbackKey": "incorrect"
+    }
+  },
+  {
+    "name": "rational-max-safe-integer-is-read",
+    "question": {
+      "id": "q-rat-big",
+      "answerType": "rational",
+      "feedback": {
+        "correct": "Oui.",
+        "incorrect": "Non.",
+        "partial": "Presque."
+      },
+      "expectedAnswer": "9007199254740991"
+    },
+    "answer": {
+      "value": "9007199254740991"
+    },
+    "expected": {
+      "outcome": "correct",
+      "misconceptionId": null,
+      "normalized": "9007199254740991",
+      "isCorrect": true,
+      "feedbackKey": "correct"
     }
   }
 ]

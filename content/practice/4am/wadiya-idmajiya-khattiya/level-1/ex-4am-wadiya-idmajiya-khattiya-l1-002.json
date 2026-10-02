@@ -1,0 +1,77 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l1-002",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 2 — صورة عدد",
+    "estimatedMinutes": 2,
+    "tags": [
+      "صورة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 74,
+      "section": "أؤكّد تعلّماتي",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "في كل حالة مما يلي اختر الإجابة الصحيحة، وبرّر اختيارك."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$-9$ هي صورة $-6$ بالدّالة الخطية:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$f : x \\longmapsto -\\dfrac{6}{4}x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "$g : x \\longmapsto 1{,}5x$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$h : x \\longmapsto -\\dfrac{4}{6}x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-MUAMIL-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب صورة $-6$ بكل دالة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انتبه إلى الإشارة: سالب في سالب موجب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعامل الصحيح هو $\\dfrac{-9}{-6}$."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}5 \\times (-6) = -9$.",
+        "incorrect": "عوّض $x$ بـ $-6$ في كل دالة وقارن بـ $-9$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    }
+  ]
+}

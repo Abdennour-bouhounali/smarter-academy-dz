@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-tarrid-taalufi-l2-010",
+  "lessonCode": "tarrid-taalufi",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — نقطة التقاطع",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمثيل بياني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-taalufi_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "مستقيما صيغتين يتقاطعان في النقطة $(10 ; 4000)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ماذا يعني العدد 10؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "من أجل 10 وحدات تتساوى التكلفتان",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "التكلفة المشتركة 10DA",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-FASILA-TARTIB"
+        },
+        {
+          "id": "C",
+          "content": "الصيغة الأولى أرخص دائمًا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الفاصلة تُقرأ على المحور الأفقي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المحور الأفقي: عدد الوحدات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الترتيب 4000 هو المبلغ."
+        }
+      ],
+      "feedback": {
+        "correct": "فاصلة نقطة التقاطع هي حلّ المعادلة $f(x) = g(x)$ : عدد الوحدات الذي تتساوى عنده التكلفتان (4000DA).",
+        "incorrect": "الفاصلة عدد الوحدات، والترتيب هو المبلغ."
+      }
+    }
+  ]
+}

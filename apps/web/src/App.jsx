@@ -190,6 +190,30 @@ import jidaaMaadumRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/muad
 import mutarajihaUlaRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/mutarajiha-ula/routes';
 import tarridMushkilaRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/tarrid-mushkila/routes';
 import wadiyaIdmajiyaMuadalatRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/muadalat-mutarajihat/wadiya-idmajiya-muadalat/routes';
+import mafhumJumlaRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mafhum-jumla/routes';
+import hallJabriRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/hall-jabri/routes';
+import mushkilatJumlaRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/mushkilat-jumla/routes';
+import wadiyaIdmajiyaJumalRoutes from './lessons/moyen/4am/ansab_al_aadad_wal_hisab/jumal-muadalatayn/wadiya-idmajiya-jumal/routes';
+// Unité 6 « الدالة الخطية والتناسبية » — ميدان d'affichage « ميدان التناسبية والدوال » (2026-10-02).
+import tanasubMuamilRoutes from './lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tanasub-muamil/routes';
+import dalaKhattiyaRoutes from './lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/dala-khattiya/routes';
+import tamthilBayaniKhattiRoutes from './lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tamthil-bayani-khatti/routes';
+import tatbiqatTanasubRoutes from './lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tatbiqat-tanasub/routes';
+import tarridKhattiRoutes from './lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/tarrid-khatti/routes';
+import wadiyaIdmajiyaKhattiyaRoutes from './lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/wadiya-idmajiya-khattiya/routes';
+// Unité 7 « الدالة التآلفية » — même ميدان d'affichage (2026-10-02).
+import mafhumTaalufiyaRoutes from './lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/mafhum-taalufiya/routes';
+import tamthilBayaniTaalufiRoutes from './lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tamthil-bayani-taalufi/routes';
+import tanasubTaghayyuratRoutes from './lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tanasub-taghayyurat/routes';
+import tafsirBayaniJumlaRoutes from './lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tafsir-bayani-jumla/routes';
+import tarridTaalufiRoutes from './lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/tarrid-taalufi/routes';
+import wadiyaIdmajiyaTaalufiyaRoutes from './lessons/moyen/4am/tanasubiya_duwal/dala-taalufiya/wadiya-idmajiya-taalufiya/routes';
+// Unité 8 « الإحصاء » — même ميدان d'affichage (2026-10-02).
+import takrarMujammaRoutes from './lessons/moyen/4am/tanasubiya_duwal/ihsa/takrar-mujamma/routes';
+import madaWasitMutawassitRoutes from './lessons/moyen/4am/tanasubiya_duwal/ihsa/mada-wasit-mutawassit/routes';
+import majdulatIhsaiyaRoutes from './lessons/moyen/4am/tanasubiya_duwal/ihsa/majdulat-ihsaiya/routes';
+import qiraatWadiyatIhsaiyaRoutes from './lessons/moyen/4am/tanasubiya_duwal/ihsa/qiraat-wadiyat-ihsaiya/routes';
+import wadiyaIdmajiyaIhsaRoutes from './lessons/moyen/4am/tanasubiya_duwal/ihsa/wadiya-idmajiya-ihsa/routes';
 
 export default function App() {
   return (
@@ -449,6 +473,27 @@ export default function App() {
             {mutarajihaUlaRoutes()}
             {tarridMushkilaRoutes()}
             {wadiyaIdmajiyaMuadalatRoutes()}
+            {mafhumJumlaRoutes()}
+            {hallJabriRoutes()}
+            {mushkilatJumlaRoutes()}
+            {wadiyaIdmajiyaJumalRoutes()}
+            {tanasubMuamilRoutes()}
+            {dalaKhattiyaRoutes()}
+            {tamthilBayaniKhattiRoutes()}
+            {tatbiqatTanasubRoutes()}
+            {tarridKhattiRoutes()}
+            {wadiyaIdmajiyaKhattiyaRoutes()}
+            {mafhumTaalufiyaRoutes()}
+            {tamthilBayaniTaalufiRoutes()}
+            {tanasubTaghayyuratRoutes()}
+            {tafsirBayaniJumlaRoutes()}
+            {tarridTaalufiRoutes()}
+            {wadiyaIdmajiyaTaalufiyaRoutes()}
+            {takrarMujammaRoutes()}
+            {madaWasitMutawassitRoutes()}
+            {majdulatIhsaiyaRoutes()}
+            {qiraatWadiyatIhsaiyaRoutes()}
+            {wadiyaIdmajiyaIhsaRoutes()}
 
             {/* ── SURFACE DE QA — jamais en production ────────────────
                 Le moteur de leçon n'a jamais été rendu sous RTL, faute de

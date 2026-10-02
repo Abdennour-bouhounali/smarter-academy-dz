@@ -1,0 +1,63 @@
+{
+  "id": "ex-4am-dala-khattiya-l2-007",
+  "lessonCode": "dala-khattiya",
+  "level": 2,
+  "metadata": {
+    "title": "تخفيض 30%",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نسبة مئوية",
+      "معامل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "تخفيضات الصيف في متجر الهواتف."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "تاجر يخفّض أسعاره بـ $30\\%$ . الدالة الخطية التي ترفق بكل سعر $x$ السعر بعد التخفيض معاملها:",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "0.7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بعد تخفيض نسبة من السعر يبقى جزء منه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسبة المئوية الباقية من السعر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعامل هو هذه النسبة مكتوبة عددًا عشريًا."
+        }
+      ],
+      "feedback": {
+        "correct": "يبقى $70\\%$ من السعر: $a = 1 - 0{,}3 = 0{,}7$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAKHFID-NISBA",
+          "value": "0.3"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-tanasub-muamil-l5-008",
+  "lessonCode": "tanasub-muamil",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — المساحة ومربع نصف القطر",
+    "estimatedMinutes": 4,
+    "tags": [
+      "قرص"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-muamil_P2",
+      "modelledOn": "ex-17"
+    }
+  },
+  "statement": {
+    "content": "نعتبر أقراصا، مساحة كل منها $A = \\pi r^2$ . $\\begin{array}{|c|c|c|c|} \\hline r & 2{,}5 & 3 & 8 \\\\ \\hline r^2 & 6{,}25 & 9 & 64 \\\\ \\hline A & 6{,}25\\pi & 9\\pi & 64\\pi \\\\ \\hline \\end{array}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل A متناسب مع $r^2$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "transfer",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، ومعامل التناسبية $\\pi$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا، لأنّ A غير متناسب مع r",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "نعم، ومعامل التناسبية $2\\pi$",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لا يكفي أن يزداد y كلما ازداد x."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب حاصل القسمة $\\dfrac{y}{x}$ في كل عمود وقارن."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يكفي عمودان حاصلا قسمتهما مختلفان لنقول إنّ الوضعية ليست تناسبية؛ وانتبه إلى المبلغ الثابت."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{6{,}25\\pi}{6{,}25} = \\dfrac{9\\pi}{9} = \\dfrac{64\\pi}{64} = \\pi$ : A متناسب مع $r^2$ (وليس مع r).",
+        "incorrect": "احسب حاصل القسمة في كل عمود قبل أن تحكم: الزيادة وحدها لا تكفي."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "مساحة قرص نصف قطره 10 هي $k\\pi$ . ما قيمة $k$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "100",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في جدول تناسبية نحصل على y بضرب x في المعامل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب المعامل $a = \\dfrac{y}{x}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $y = a \\times x$ ثم تحقّق على عمود من الجدول."
+        }
+      ],
+      "feedback": {
+        "correct": "$A = \\pi \\times 10^2 = 100\\pi$ .",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      }
+    }
+  ]
+}

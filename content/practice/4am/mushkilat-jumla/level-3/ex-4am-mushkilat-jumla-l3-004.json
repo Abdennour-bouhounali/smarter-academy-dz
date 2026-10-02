@@ -1,0 +1,113 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l3-004",
+  "lessonCode": "mushkilat-jumla",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 28 (ص 63) — الفرض والواجب",
+    "estimatedMinutes": 5,
+    "tags": [
+      "ترييض",
+      "معدل"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-28",
+      "page": 63,
+      "section": "أتعمّق",
+      "number": 28
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 63): تنقّط أعمال التلاميذ على 20. تحصّل تلميذ على علامة في فرض محروس بمعامل 2 وعلامة ثانية في واجب منزلي بمعامل 1 وكان معدله 11. بتبادل المعاملين، كان معدل التلميذ 13. نسمّي $x$ علامة الفرض و $y$ علامة الواجب."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم المشكلة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} 2x + y = 11 \\\\ x + 2y = 13 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} \\dfrac{2x + y}{3} = 11 \\\\ \\dfrac{x + 2y}{3} = 13 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} \\dfrac{2x + y}{2} = 11 \\\\ \\dfrac{x + 2y}{2} = 13 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كيف يُحسب معدل بمعاملات؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نقسم على مجموع المعاملات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مجموع المعاملين $2 + 1$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "المعدل = مجموع (العلامة × المعامل) ÷ 3، والحل $(9 ; 15)$ .",
+        "incorrect": "لا تنسَ القسمة على مجموع المعاملات."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العلامتان: اكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "9",
+        "y": "15"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب كل معادلة في 3."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على $2x + y = 33$ و $x + 2y = 39$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمعهما ثم اطرحهما."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + y = 24$ و $x - y = -6$ : $x = 9$ و $y = 15$ .",
+        "incorrect": "العلامتان بين 0 و 20: تحقّق بالمعدلين."
+      }
+    }
+  ]
+}

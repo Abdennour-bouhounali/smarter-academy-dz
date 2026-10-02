@@ -1,0 +1,114 @@
+{
+  "id": "ex-4am-hall-jabri-l5-010",
+  "lessonCode": "hall-jabri",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — باقات الإنترنت والمكالمات",
+    "estimatedMinutes": 4,
+    "tags": [
+      "اختيار الطريقة",
+      "الهاتف"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hall-jabri_P3",
+      "modelledOn": "ex-11"
+    }
+  },
+  "statement": {
+    "content": "دفع زكريا 1800 DA مقابل 3 باقات إنترنت وباقتي مكالمات، ودفع رضا 1150 DA مقابل باقتي إنترنت وباقة مكالمات. نرمز بـ $x$ لثمن باقة الإنترنت وبـ $y$ لثمن باقة المكالمات: $\\begin{cases} 3x + 2y = 1800 \\\\ 2x + y = 1150 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "طريقة مناسبة:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "التعويض انطلاقًا من $y = 1150 - 2x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الجمع مباشرة، لأنّ معاملي $y$ متعاكسان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        },
+        {
+          "id": "C",
+          "content": "التعويض انطلاقًا من $y = 2x - 1150$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAWID-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ المعاملات قبل أن تبدأ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل يساوي $1$ أو $-1$ يسهّل التعويض؛ معاملان متعاكسان (أو يصيران كذلك بضرب بسيط) يسهّلان الجمع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد إيجاد مجهول، عوّض قيمته لتجد الآخر، ثم تحقّق من الثنائية في المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "معامل $y$ في الثانية يساوي 1: $y = 1150 - 2x$ بلا كسور.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة $(x ; y)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "500",
+        "y": "150"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقرأ المعاملات قبل أن تبدأ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل يساوي $1$ أو $-1$ يسهّل التعويض؛ معاملان متعاكسان (أو يصيران كذلك بضرب بسيط) يسهّلان الجمع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد إيجاد مجهول، عوّض قيمته لتجد الآخر، ثم تحقّق من الثنائية في المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x + 2(1150 - 2x) = 1800$ أي $-x = -500$ ، ومنه $x = 500$ و $y = 150$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

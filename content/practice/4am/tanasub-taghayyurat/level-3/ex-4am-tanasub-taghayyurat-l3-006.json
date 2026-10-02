@@ -1,0 +1,92 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l3-006",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — كسور وإشارات",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تناسب التغيرات",
+      "تعيين دالة تآلفية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "$h$ دالة تآلفية حيث $h(-3) = 5$ و $h(1) = 3$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعامل $a$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بالفاصلة أو كسر مثل 5/7)",
+      "expectedAnswer": "-1/2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{3 - 5}{1 - (-3)}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{-2}{4}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بسّط."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{-2}{4} = -\\dfrac{1}{2}$ .",
+        "incorrect": "المقام $1 + 3 = 4$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العدد $b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بالفاصلة أو كسر مثل 5/7)",
+      "expectedAnswer": "7/2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$b = h(1) - a \\times 1$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$3 - \\left(-\\dfrac{1}{2}\\right)$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$3 + \\dfrac{1}{2}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = 3 + \\dfrac{1}{2} = \\dfrac{7}{2}$ .",
+        "incorrect": "طرح عدد سالب جمع."
+      }
+    }
+  ]
+}

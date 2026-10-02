@@ -1,0 +1,59 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l5-009",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — الكثافة السكانية لبلدية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الكثافة السكانية",
+      "وضعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tatbiqat-tanasub_P2",
+      "modelledOn": "method-compound"
+    }
+  },
+  "statement": {
+    "content": "بلدية مساحتها $30km^2$ وعدد سكانها 45000 نسمة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الكثافة السكانية (نسمة في الكيلومتر المربع):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "1500",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مقدار حاصل القسمة: السرعة مسافة على مدة، والكتلة الحجمية كتلة على حجم، والتدفق حجم على مدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المقدارين بالوحدتين المطلوبتين قبل القسمة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم، ثم اكتب النتيجة مع وحدتها المركّبة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{45\\,000}{30} = 1500$ نسمة في $km^2$ .",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    }
+  ]
+}

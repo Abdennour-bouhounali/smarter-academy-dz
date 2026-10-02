@@ -1,0 +1,57 @@
+{
+  "id": "ex-4am-tarrid-taalufi-l2-009",
+  "lessonCode": "tarrid-taalufi",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — مبلغ التساوي",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معادلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-taalufi_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "قاعة ألعاب: البطاقة الشهرية $f(x) = 40x + 600$ والدفع بالساعة $g(x) = 100x$ . تتساوى التكلفتان من أجل 10 ساعات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما المبلغ المشترك (DA) من أجل 10 ساعات؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "1000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $g(10)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحقّق بـ $f(10)$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هو ترتيب نقطة التقاطع."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(10) = 40 \\times 10 + 600 = 1000$ و $g(10) = 1000$ .",
+        "incorrect": "عوّض $x$ بـ 10 في إحدى الدالتين."
+      }
+    }
+  ]
+}

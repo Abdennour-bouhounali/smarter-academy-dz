@@ -1,0 +1,59 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l5-003",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — الراتب بعد سنتين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تغيّرات متتابعة",
+      "وضعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tatbiqat-tanasub_P1",
+      "modelledOn": "ex-24"
+    }
+  },
+  "statement": {
+    "content": "راتب عامل 30000DA، ويزيد بـ 4% كل سنة (كل زيادة تُحسب من راتب السنة السابقة)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الراتب بعد سنتين (بالدينار):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "32448",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التغيّر الثاني يُحسب من المقدار بعد التغيّر الأول، لا من المقدار الأول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب مضاعف كل تغيّر، ثم اضرب المضاعفات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المضاعف الكلي $k$ : إذا كان $k > 1$ فهي زيادة بـ $(k - 1) \\times 100$ بالمئة، وإذا كان $k < 1$ فهو تخفيض بـ $(1 - k) \\times 100$ بالمئة."
+        }
+      ],
+      "feedback": {
+        "correct": "$30\\,000 \\times 1{,}04 \\times 1{,}04 = 32\\,448$ (لا $30\\,000 \\times 1{,}08 = 32\\,400$).",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    }
+  ]
+}

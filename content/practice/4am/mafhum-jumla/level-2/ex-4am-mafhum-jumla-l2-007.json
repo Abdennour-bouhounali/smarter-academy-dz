@@ -1,0 +1,113 @@
+{
+  "id": "ex-4am-mafhum-jumla-l2-007",
+  "lessonCode": "mafhum-jumla",
+  "level": 2,
+  "metadata": {
+    "title": "تحدّ — تزيين القسم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "قطع نقدية",
+      "ثنائية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "challenge",
+      "page": 55,
+      "section": "تحدّ"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 55): لتزيين قسمهم، جمع التلاميذ مبلغ 610DA مُشكّلا من 37 قطعة نقدية من فئتي 20DA و 10DA. نسمّي $x$ عدد قطع 20DA و $y$ عدد قطع 10DA: $\\begin{cases} x + y = 37 \\\\ 20x + 10y = 610 \\end{cases}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل الثنائية $(24 ; 13)$ حل للجملة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x = 24$ و $y = 13$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$24 + 13$ ثم $20 \\times 24 + 10 \\times 13$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل تجد 37 ثم 610؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$24 + 13 = 37$ و $480 + 130 = 610$ : حل للجملة.",
+        "incorrect": "احسب عدد القطع ثم المبلغ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل الثنائية $(13 ; 24)$ حل للجملة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARTIB"
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x = 13$ قطعة من 20DA هذه المرة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$20 \\times 13 + 10 \\times 24$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن بالمبلغ 610."
+        }
+      ],
+      "feedback": {
+        "correct": "$13 + 24 = 37$ لكن $260 + 240 = 500 \\neq 610$ : ليست حلا.",
+        "incorrect": "الترتيب مهم: $x$ عدد قطع 20DA."
+      }
+    }
+  ]
+}

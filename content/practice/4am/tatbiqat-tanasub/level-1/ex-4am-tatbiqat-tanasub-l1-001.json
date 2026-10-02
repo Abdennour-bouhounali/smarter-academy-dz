@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l1-001",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 1,
+  "metadata": {
+    "title": "تمرين 22 — زيادة 5%",
+    "estimatedMinutes": 3,
+    "tags": [
+      "زيادة",
+      "الدالة المرفقة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-22",
+      "page": 73,
+      "section": "أوظّف تعلّماتي",
+      "number": 22
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 73): 1) من بين الدّوال الآتية، ميّز تلك التي تعبّر عن زيادة 5% في مقدار $x$ . أ) $f : x \\longmapsto 0{,}05x$ ب) $g : x \\longmapsto 1{,}05x$ جـ) $h : x \\longmapsto 0{,}95x$ . 2) راتب عامل مصنع هو $25\\,000\\mathrm{DA}$ شهريا. استفاد هذا العامل من زيادة قدرها 5%. ما هو راتبه الجديد؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "1) الدالة التي تعبّر عن زيادة 5%:",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$f : x \\longmapsto 0{,}05x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
+        },
+        {
+          "id": "B",
+          "content": "$g : x \\longmapsto 1{,}05x$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$h : x \\longmapsto 0{,}95x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد: هل نأخذ نسبة من المقدار، أم نزيده، أم نخفّضه؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الزيادة بـ $t\\%$ ضرب في $1 + \\dfrac{t}{100}$ ، والتخفيض ضرب في $1 - \\dfrac{t}{100}$ ، والأخذ ضرب في $\\dfrac{t}{100}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب المضاعف أولًا، ثم اضرب فيه المقدار، وتحقّق أنّ النتيجة معقولة (أكبر بعد زيادة، أصغر بعد تخفيض)."
+        }
+      ],
+      "feedback": {
+        "correct": "زيادة 5% ضرب في $1 + \\dfrac{5}{100} = 1{,}05$ : الدالة $g$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "2) الراتب الجديد (بالدينار):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "26250",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد: هل نأخذ نسبة من المقدار، أم نزيده، أم نخفّضه؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الزيادة بـ $t\\%$ ضرب في $1 + \\dfrac{t}{100}$ ، والتخفيض ضرب في $1 - \\dfrac{t}{100}$ ، والأخذ ضرب في $\\dfrac{t}{100}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب المضاعف أولًا، ثم اضرب فيه المقدار، وتحقّق أنّ النتيجة معقولة (أكبر بعد زيادة، أصغر بعد تخفيض)."
+        }
+      ],
+      "feedback": {
+        "correct": "$25\\,000 \\times 1{,}05 = 26\\,250$ ، أي $26\\,250\\mathrm{DA}$ .",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    }
+  ]
+}

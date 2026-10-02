@@ -1,0 +1,106 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l4-002",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 4,
+  "metadata": {
+    "title": "خمسة أفراد وتخفيض 30%",
+    "estimatedMinutes": 5,
+    "tags": [
+      "دالة خطية",
+      "ميزانية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "عائلة من 3 بالغين وطفلين. $x$ سعر تذكرة البالغ بالدينار، وكل طفل يستفيد من تخفيض 30% من $x$ . ميزانية الرحلة $2200$ DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "التكلفة $C(x) = ax$ : ما قيمة $a$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "4.4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ماذا يدفع كل طفل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "بعد تخفيض 30% يدفع $0{,}7x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع: البالغون ثم الطفلان."
+        }
+      ],
+      "feedback": {
+        "correct": "$C(x) = 3x + 2 \\times 0{,}7x = 4{,}4x$.",
+        "incorrect": "الطفل يدفع ما يبقى بعد التخفيض."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "3.6",
+          "id": "MISC-TAKHFID-NISBA"
+        },
+        {
+          "value": "5",
+          "id": "MISC-TARRID-NAMUDHAJ"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما أكبر سعر لتذكرة البالغ (بالدينار) في حدود الميزانية؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي بالدينار",
+      "expectedAnswer": "500",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حل $4{,}4x \\leq 2200$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم الميزانية على المعامل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق أنّ التكلفة لا تتجاوز الميزانية."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{2200}{4{,}4} = 500$ و $4{,}4 \\times 500 = 2200$.",
+        "incorrect": "أكبر سعر هو حيث تساوي التكلفة الميزانية."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ]
+}

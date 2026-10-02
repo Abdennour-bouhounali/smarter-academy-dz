@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-tarrid-taalufi-l2-008",
+  "lessonCode": "tarrid-taalufi",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — 12 حصة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مقارنة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-taalufi_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "قاعة رياضة: الصيغة الأولى اشتراك 1500DA ثم 100DA للحصة، والصيغة الثانية 250DA للحصة دون اشتراك."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لـ 12 حصة في الشهر، الصيغة الأرخص هي:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الأولى",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الثانية",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "C",
+          "content": "تتساويان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الأولى: $100x + 1500$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الثانية: $250x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض $x$ بـ 12."
+        }
+      ],
+      "feedback": {
+        "correct": "$100 \\times 12 + 1500 = 2700$ و $250 \\times 12 = 3000$ : الأولى أرخص.",
+        "incorrect": "احسب المبلغين من أجل 12 حصة."
+      }
+    }
+  ]
+}

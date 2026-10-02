@@ -1,0 +1,82 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l3-003",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 3,
+  "metadata": {
+    "title": "نشاط 5 — استهلاك البنزين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نسبة التخفيض"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-5",
+      "page": 67,
+      "section": "أنشطة",
+      "number": 5
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 67): تستهلك سيارة $6{,}7L$ من البنزين لكل $100km$ . بعد ضبط المحرك، انخفض استهلاك البنزين إلى $6{,}1L$ لكل $100km$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هذا الانخفاض بنسبة مئوية:",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "حوالي $9{,}84\\%$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAKHFID-NISBA"
+        },
+        {
+          "id": "B",
+          "content": "حوالي $8{,}96\\%$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$0{,}6\\%$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-JAM"
+        },
+        {
+          "id": "D",
+          "content": "حوالي $91{,}04\\%$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب المضاعف $k = \\dfrac{y}{x}$ : المقدار بعد على المقدار قبل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$k = 1 + \\dfrac{t}{100}$ في الزيادة، و $k = 1 - \\dfrac{t}{100}$ في التخفيض."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "استنتج t من k، ثم تحقّق بحساب المقدار بعد التغيّر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{6{,}7 - 6{,}1}{6{,}7} \\times 100 = \\dfrac{60}{6{,}7} \\simeq 8{,}96$ : النسبة من الاستهلاك قبل الانخفاض.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

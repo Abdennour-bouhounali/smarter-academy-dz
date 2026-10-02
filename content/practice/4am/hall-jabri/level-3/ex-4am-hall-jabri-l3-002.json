@@ -1,0 +1,114 @@
+{
+  "id": "ex-4am-hall-jabri-l3-002",
+  "lessonCode": "hall-jabri",
+  "level": 3,
+  "metadata": {
+    "title": "نشاط 2 — جـ 2) بالتعويض",
+    "estimatedMinutes": 4,
+    "tags": [
+      "التعويض"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-2",
+      "page": 56,
+      "section": "أنشطة",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 56): حل باستعمال الطريقتين السّابقتين جملة المعادلتين الآتية: $\\begin{cases} x + 4y = 7 \\\\ 5x + 3y = 1 \\end{cases}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بطريقة التعويض، من المعادلة الأولى ثم في الثانية نجد:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$5(7 - 4y) + 3y = 1$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$5(7 + 4y) + 3y = 1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAWID-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$(7 - 4y) + 4y = 7$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAWID-NAFS-MUADALA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن مجهول معامله $1$ أو $-1$ في إحدى المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عبّر عنه بدلالة المجهول الآخر، ثم عوّضه في المعادلة الأخرى."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 7 - 4y$ ، ثم كل $x$ في $5x + 3y = 1$ يصير $(7 - 4y)$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "-1",
+        "y": "2"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن مجهول معامله $1$ أو $-1$ في إحدى المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عبّر عنه بدلالة المجهول الآخر، ثم عوّضه في المعادلة الأخرى."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
+        }
+      ],
+      "feedback": {
+        "correct": "$35 - 17y = 1$ ، ومنه $y = 2$ ثم $x = 7 - 8 = -1$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

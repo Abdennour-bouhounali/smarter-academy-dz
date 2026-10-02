@@ -1,0 +1,131 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l2-006",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 2,
+  "metadata": {
+    "title": "الحصّالة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترجمة",
+      "حل جملة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P2",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "في حصّالة سليم 25 قطعة نقدية، بعضها من فئة 10 DA والباقي من فئة 20 DA، ومجموعها 380 DA. نسمّي $x$ عدد قطع 10 DA و $y$ عدد قطع 20 DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم النص هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 25 \\\\ 10x + 20y = 380 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 380 \\\\ 10x + 20y = 25 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x + y = 25 \\\\ 20x + 10y = 380 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "D",
+          "content": "$\\begin{cases} 10x + 20y = 25 \\\\ x + y = 380 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معلومة تعدّ القطع ومعلومة تجمع القيم."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قطعة 10 DA قيمتها 10."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "كل عدد قطع يُضرب في قيمة القطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "العدد $x + y = 25$ والمبلغ $10x + 20y = 380$.",
+        "incorrect": "لا تخلط بين عدد القطع ومجموعها."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    },
+    {
+      "id": "q2",
+      "statement": "كم قطعة $(x ; y)$ من كل فئة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان طبيعيان",
+      "expectedAnswer": {
+        "x": "12",
+        "y": "13"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اقسم معادلة المبلغ على 10."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x + 2y = 38$ ثم اطرح $x + y = 25$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقق في النص."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 13$ ثم $x = 12$ ؛ $120 + 260 = 380$.",
+        "incorrect": "بسّط ثم اطرح المعادلتين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "13",
+            "y": "12"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l4-006",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 4,
+  "metadata": {
+    "title": "معارف 4 (ص 96) — قامات 25 شخصًا",
+    "estimatedMinutes": 4,
+    "tags": [
+      "فئة وسيطية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-4",
+      "page": 96,
+      "section": "معارف",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 96، مصحّحًا: الأطوال بالسنتيمتر): $165 \\le t < 170$ (5)، $170 \\le t < 175$ (6)، $175 \\le t \\le 180$ (14)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الفئة الوسيطية هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$165 \\le t < 170$",
+          "isCorrect": false
+        },
+        {
+          "id": "B",
+          "content": "$170 \\le t < 175$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-QIMA-WUSTA-JADWAL"
+        },
+        {
+          "id": "C",
+          "content": "$175 \\le t \\le 180$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$N = 25$ : الرتبة $13$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المجمّع الصاعد $5$ ، $11$ ، $25$."
+        }
+      ],
+      "feedback": {
+        "correct": "الرتبة $13$ بعد $11$ : الفئة الثالثة.",
+        "incorrect": "الفئة الوسطى في الجدول ليست بالضرورة الفئة الوسيطية."
+      }
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l4-008",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 4,
+  "metadata": {
+    "title": "تخفيضان متتاليان",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تخفيض",
+      "تتابع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P2",
+      "modelledOn": "method-percent"
+    }
+  },
+  "statement": {
+    "content": "هاتف ثمنه $x$ DA. يُخفَّض ثمنه بـ 20%، ثم يُخفَّض الثمن الجديد بـ 10%."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الثمن النهائي بدلالة $x$ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$0{,}72x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$0{,}7x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-TATABU-JAM"
+        },
+        {
+          "id": "C",
+          "content": "$x - 30$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-JAM"
+        },
+        {
+          "id": "D",
+          "content": "$0{,}3x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAKHFID-NISBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كل تخفيض يُترجم بضرب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التخفيض الأول: $\\times 0{,}8$ ؛ الثاني: $\\times 0{,}9$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب المضاعفين."
+        }
+      ],
+      "feedback": {
+        "correct": "$x \\times 0{,}8 \\times 0{,}9 = 0{,}72x$.",
+        "incorrect": "التخفيضان المتتاليان لا يُجمعان: نضرب المضاعفين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "ما الثمن النهائي إذا كان $x = 5000$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار",
+      "expectedAnswer": "3600",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض في الدالة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب في المضاعف الكلي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المضاعف من السؤال السابق."
+        }
+      ],
+      "feedback": {
+        "correct": "$5000 \\times 0{,}72 = 3600$ DA.",
+        "incorrect": "طبّق التخفيضين بالتتابع."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "3500",
+          "id": "MISC-NISBA-TATABU-JAM"
+        }
+      ]
+    }
+  ]
+}

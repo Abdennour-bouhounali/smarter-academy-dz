@@ -1,0 +1,77 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l1-004",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 4 — قراءة مستقيم",
+    "estimatedMinutes": 2,
+    "tags": [
+      "تمثيل بياني"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 74,
+      "section": "أؤكّد تعلّماتي",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "في كل حالة مما يلي اختر الإجابة الصحيحة، وبرّر اختيارك. المستقيم (D) يشمل مبدأ المعلم والنقطة $(1 ; 0{,}25)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المستقيم (D) هو التمثيل البياني للدّالة:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$f : x \\longmapsto x + 0{,}25$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-AFFINE"
+        },
+        {
+          "id": "B",
+          "content": "$g : x \\longmapsto 0{,}75x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-FASILA-TARTIB"
+        },
+        {
+          "id": "C",
+          "content": "$h : x \\longmapsto 0{,}25x$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المستقيم يشمل المبدأ: الدالة خطية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقرأ صورة 1 على المستقيم."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعامل هو صورة 1."
+        }
+      ],
+      "feedback": {
+        "correct": "(D) يشمل $O$ و $(1 ; 0{,}25)$ : صورة 1 هي $0{,}25$ ، فالدالة $x \\longmapsto 0{,}25x$.",
+        "incorrect": "صورة 0 بدالة تمثيلها يشمل المبدأ هي 0، وصورة 1 تعطي المعامل."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    }
+  ]
+}

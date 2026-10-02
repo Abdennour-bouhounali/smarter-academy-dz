@@ -1,0 +1,103 @@
+{
+  "id": "ex-4am-mafhum-jumla-l1-008",
+  "lessonCode": "mafhum-jumla",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — الترتيب في الثنائية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ثنائية",
+      "ترتيب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mafhum-jumla_P2",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "في الثنائية $(x ; y)$ العدد الأول قيمة $x$ والعدد الثاني قيمة $y$ . نعتبر الثنائية $(4 ; 9)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما قيمة $y$ في الثنائية $(4 ; 9)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد الثاني في الثنائية هو قيمة $y$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الثنائية $(x ; y)$ = $(4 ; 9)$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن موضعًا بموضع."
+        }
+      ],
+      "feedback": {
+        "correct": "العدد الثاني: $y = 9$ .",
+        "incorrect": "الترتيب مهم: $x$ أولًا ثم $y$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "الثنائيتان $(4 ; 9)$ و $(9 ; 4)$ ...",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "مختلفتان",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "متساويتان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن قيمة $x$ في الثنائيتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في الأولى $x = 4$ وفي الثانية $x = 9$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثنائيتان متساويتان إذا تساوت قيمتا $x$ وقيمتا $y$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "في الأولى $x = 4$ وفي الثانية $x = 9$ : ثنائيتان مختلفتان.",
+        "incorrect": "العددان نفسهما لا يكفيان: الترتيب مهم."
+      }
+    }
+  ]
+}

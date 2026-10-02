@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-tarrid-khatti-l2-008",
+  "lessonCode": "tarrid-khatti",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — كتلة سالبة؟",
+    "estimatedMinutes": 2,
+    "tags": [
+      "تفسير",
+      "معقولية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P3",
+      "modelledOn": "method-spring"
+    }
+  },
+  "statement": {
+    "content": "نابض: $y = 0{,}3x$ ($x$ الكتلة بالغرام، $y$ الاستطالة بالسنتيمتر). أعطى حلّ معادلة $x = -4$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ماذا نستنتج؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعلّق كتلة 4g",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "id": "B",
+          "content": "الكتلة لا تكون سالبة: النتيجة لا تلائم الوضعية",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "الاستطالة $-1{,}2$ cm",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ماذا يمثّل $x$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل توجد كتلة سالبة؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نتحقّق من معقولية النتيجة."
+        }
+      ],
+      "feedback": {
+        "correct": "الكتلة مقدار موجب: نراجع النموذج أو الحساب.",
+        "incorrect": "كتلة سالبة لا معنى لها."
+      }
+    }
+  ]
+}

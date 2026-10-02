@@ -1,0 +1,87 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l2-005",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 2,
+  "metadata": {
+    "title": "نشاط 4 (ص 93) — حرارة الوادي",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مدى",
+      "متوسط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-4",
+      "page": 93,
+      "section": "أنشطة",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 93): درجات الحرارة القصوى بمدينة الوادي في الأيام العشرة الأولى من جوان: $40$ ، $35$ ، $34$ ، $41$ ، $48$ ، $37$ ، $35$ ، $46$ ، $37$ ، $40$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مدى هذه السلسلة هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "14",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MADA-AKBAR-QIMA",
+          "value": "48"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أكبر قيمة $48$."
+        }
+      ],
+      "feedback": {
+        "correct": "$48 - 34 = 14$ .",
+        "incorrect": "أصغر قيمة $34$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "متوسط هذه السلسلة هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "39,3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT",
+          "value": "41"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مجموع القيم $393$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{393}{10} = 39{,}3$ .",
+        "incorrect": "اجمع القيم العشر واقسم على 10."
+      }
+    }
+  ]
+}

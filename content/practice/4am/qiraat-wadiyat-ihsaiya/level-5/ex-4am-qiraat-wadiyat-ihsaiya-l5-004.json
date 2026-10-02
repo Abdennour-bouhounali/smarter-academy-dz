@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l5-004",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — اختيار محلّ",
+    "estimatedMinutes": 4,
+    "tags": [
+      "قرار",
+      "مقارنة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P2",
+      "modelledOn": "method"
+    }
+  },
+  "statement": {
+    "content": "أسعار حذاء رياضي (DA) في 5 أسابيع. المحلّ A: 6000 ، 6200 ، 5800 ، 6000 ، 6000. المحلّ B: 4500 ، 8000 ، 5000 ، 7500 ، 5000."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "تريد سلمى معرفة السعر مسبقا دون مفاجآت. أيّ محلّ؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "A: المتوسط 6000 والمدى 400",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "B: المتوسط 6000 والمدى 3500",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUQARANA-MUTAWASSIT-FAQAT"
+        },
+        {
+          "id": "C",
+          "content": "لا فرق: المتوسط نفسه",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUQARANA-MUTAWASSIT-FAQAT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب المتوسطين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ثم المديين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الانتظام = تشتت صغير."
+        }
+      ],
+      "feedback": {
+        "correct": "للمحلّين المتوسط 6000، ومدى A $6200 - 5800 = 400$ أصغر بكثير من مدى B $8000 - 4500 = 3500$ .",
+        "incorrect": "المتوسط وحده لا يقرّر."
+      },
+      "difficulty": 5
+    }
+  ]
+}

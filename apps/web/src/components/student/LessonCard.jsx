@@ -7,7 +7,7 @@ import { ArrowForward } from '../common/DirectionalIcons';
 import { useContentAvailability } from '../../context/ContentAvailabilityContext';
 import { getLessonProgress } from '../../lessons/common/utils/progress/getLessonProgress';
 import { getTotalModules } from '../../lessons/registry';
-import { bidi } from '../../utils/bidi';
+import MathLabel from '../../lessons/common/components/MathLabel';
 
 /**
  * The single lesson-tile renderer shared by the public /courses catalogue
@@ -65,7 +65,7 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
               {t('hiddenByTeacherBadge', { ns: 'access' })}
             </span>
           </div>
-          <h4 className="font-space font-bold text-slate-700 text-lg mb-2">{bidi(lesson.title)}</h4>
+          <h4 className="font-space font-bold text-slate-700 text-lg mb-2"><MathLabel>{lesson.title}</MathLabel></h4>
           <p className="font-inter text-slate-500 text-sm leading-relaxed line-clamp-2 mb-4">{t('hiddenByTeacherHint', { ns: 'access' })}</p>
         </div>
         <div className="pt-4 border-t border-teal-100 flex items-center justify-between text-xs font-mono-jetbrains text-slate-400 mt-auto">
@@ -90,8 +90,8 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
                 {t('premiumBadge')}
               </span>
             </div>
-            <h4 className="font-space font-bold text-slate-800 text-lg mb-2">{bidi(lesson.title)}</h4>
-            <p className="font-inter text-slate-500 text-sm leading-relaxed line-clamp-3 mb-4">{bidi(lesson.description)}</p>
+            <h4 className="font-space font-bold text-slate-800 text-lg mb-2"><MathLabel>{lesson.title}</MathLabel></h4>
+            <p className="font-inter text-slate-500 text-sm leading-relaxed line-clamp-3 mb-4"><MathLabel>{lesson.description}</MathLabel></p>
           </div>
           <div className="pt-4 border-t border-violet-100 flex items-center justify-between mt-auto">
             <span className="flex items-center gap-1 text-xs font-mono-jetbrains text-slate-500"><Clock size={14} /> {lesson.duration}</span>
@@ -159,14 +159,14 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
             <div className="flex items-center gap-2 mb-2">
               <h4 className={`font-space font-bold text-slate-900 text-lg transition-colors ${
                 isPremiumLesson ? 'group-hover:text-violet-700' : 'group-hover:text-blue-600'
-              }`}>{bidi(lesson.title)}</h4>
+              }`}><MathLabel>{lesson.title}</MathLabel></h4>
               {isPremiumLesson ? (
                 <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-violet-500" title={t('premiumBadge')} />
               ) : (
                 <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-emerald-500" title={t('freeBadge', { ns: 'access' })} />
               )}
             </div>
-            <p className="font-inter text-slate-500 text-sm leading-relaxed line-clamp-3 mb-4">{bidi(lesson.description)}</p>
+            <p className="font-inter text-slate-500 text-sm leading-relaxed line-clamp-3 mb-4"><MathLabel>{lesson.description}</MathLabel></p>
           </div>
           <div className="pt-4 border-t border-slate-100 flex items-center justify-between mt-auto">
             <span className="flex items-center gap-1 text-xs font-mono-jetbrains text-slate-500"><Clock size={14} /> {lesson.duration}</span>
@@ -199,8 +199,8 @@ const LessonCard = forwardRef(function LessonCard({ lesson, onClick }, ref) {
             {t('lessonComingSoonBadge')}
           </span>
         </div>
-        <h4 className="font-space font-bold text-slate-700 text-lg mb-2">{bidi(lesson.title)}</h4>
-        <p className="font-inter text-slate-400 text-sm leading-relaxed line-clamp-2 mb-4">{bidi(lesson.description)}</p>
+        <h4 className="font-space font-bold text-slate-700 text-lg mb-2"><MathLabel>{lesson.title}</MathLabel></h4>
+        <p className="font-inter text-slate-400 text-sm leading-relaxed line-clamp-2 mb-4"><MathLabel>{lesson.description}</MathLabel></p>
       </div>
       <div className="pt-4 border-t border-slate-200/50 flex items-center justify-between text-xs font-mono-jetbrains text-slate-400 mt-auto">
         <span className="flex items-center gap-1"><Clock size={14} /> {lesson.duration}</span>

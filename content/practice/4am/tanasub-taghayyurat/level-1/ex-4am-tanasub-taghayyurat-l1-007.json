@@ -1,0 +1,58 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l1-007",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — جدول",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تناسب التغيرات",
+      "جدول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "$g$ دالة تآلفية، ونعرف منها الجدول: $\\begin{array}{|c|c|c|} \\hline x & 2 & 6 \\\\ \\hline g(x) & 5 & 13 \\\\ \\hline \\end{array}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعامل $a$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "فرق الصورتين $13 - 5$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "فرق العددين $6 - 2$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{13 - 5}{6 - 2} = \\dfrac{8}{4} = 2$ .",
+        "incorrect": "فرق الصورتين 8 لا يكفي: نقسمه على 4 ."
+      }
+    }
+  ]
+}

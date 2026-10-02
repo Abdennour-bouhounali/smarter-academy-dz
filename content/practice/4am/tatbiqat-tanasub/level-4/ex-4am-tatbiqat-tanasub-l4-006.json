@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l4-006",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 27 — تدفق النهر",
+    "estimatedMinutes": 3,
+    "tags": [
+      "التدفق",
+      "تحويل الوحدات"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-27",
+      "page": 73,
+      "section": "أوظّف تعلّماتي",
+      "number": 27
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 73): يبلغ متوسط تدفق نهر $2200m^3/s$ . عبّر عن هذه التدفقات باللتر في الدقيقة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "التدفق باللتر في الدقيقة (اكتب العدد):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح (يمكن فصل الآلاف بمسافات)",
+      "expectedAnswer": "132000000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد وحدة البسط ووحدة المقام، قبل التحويل وبعده."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حوّل البسط والمقام كلًّا على حدة: $1h = 3600s$ ، $1km = 1000m$ ، $1m^3 = 1000L$ ، $1L = 1000cm^3$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب المقدار كحاصل قسمة بالوحدات الجديدة، ثم احسب."
+        }
+      ],
+      "feedback": {
+        "correct": "$2200m^3 = 2\\,200\\,000L$ في الثانية، و $2\\,200\\,000 \\times 60 = 132\\,000\\,000L/min$ .",
+        "incorrect": "حوّل البسط والمقام كلًّا على حدة: $1m^3 = 1000L$ و $1s = \\dfrac{1}{60}min$ ، أي نضرب في $1000$ ثم في $60$ ."
+      }
+    }
+  ]
+}

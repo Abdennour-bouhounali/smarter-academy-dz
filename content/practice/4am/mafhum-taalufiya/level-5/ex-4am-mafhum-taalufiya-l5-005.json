@@ -1,0 +1,66 @@
+{
+  "id": "ex-4am-mafhum-taalufiya-l5-005",
+  "lessonCode": "mafhum-taalufiya",
+  "level": 5,
+  "metadata": {
+    "title": "متى تكون ثابتة؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ثابتة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "$k$ عدد. $f$ هي الدالة التآلفية حيث $f(x) = (k - 2)x + 3$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيمة $k$ التي تجعل $f$ دالة ثابتة:",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P4",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الدالة الثابتة: $a = 0$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المعامل $a$ هنا هو $k - 2$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة $k - 2 = 0$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$k = 2$ .",
+        "incorrect": "أعد كتابة العبارة على الشكل $ax + b$ ثم اقرأ المعامل المطلوب."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-THABITA",
+          "value": "3"
+        },
+        {
+          "id": "MISC-KHATTIYA-ISHARA",
+          "value": "-2"
+        }
+      ]
+    }
+  ]
+}

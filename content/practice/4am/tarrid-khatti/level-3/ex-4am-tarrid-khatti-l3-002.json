@@ -1,0 +1,92 @@
+{
+  "id": "ex-4am-tarrid-khatti-l3-002",
+  "lessonCode": "tarrid-khatti",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 28 (ص 75) — قراءات الدرّاج",
+    "estimatedMinutes": 4,
+    "tags": [
+      "قراءة بيانية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-28",
+      "page": 75,
+      "section": "أتعمّق",
+      "number": 28
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 75): مسار الدرّاج من $O$ إلى $(1 ; 40)$ ثم $(2 ; 70)$ ثم $(3 ; 130)$ ثم $(4 ; 155)$ (ساعات، كيلومترات)، والسرعة ثابتة في كل مرحلة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم ساعة استغرق لقطع 100km الأولى؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري (الفاصلة مقبولة)",
+      "expectedAnswer": "2.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "100 بين 70 و 130."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في المرحلة الثالثة 60km في ساعة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "30km في نصف ساعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$2 + \\dfrac{30}{60} = 2{,}5$ h.",
+        "incorrect": "ابحث عن الفاصلة التي ترتيبها 100."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ما المسافة (km) المقطوعة خلال نصف الساعة الأخيرة؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري (الفاصلة مقبولة)",
+      "expectedAnswer": "12.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المرحلة الأخيرة: 25km في ساعة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نصفها في نصف ساعة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$155 - 142{,}5$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{155 - 130}{2} = 12{,}5$ km.",
+        "incorrect": "نصف ساعة من المرحلة الأخيرة."
+      }
+    }
+  ]
+}

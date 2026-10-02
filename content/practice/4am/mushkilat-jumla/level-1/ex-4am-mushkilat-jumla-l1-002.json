@@ -1,0 +1,128 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l1-002",
+  "lessonCode": "mushkilat-jumla",
+  "level": 1,
+  "metadata": {
+    "title": "نشاط 3 (ص 57) — ترجمة معلومتي المتحف",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترييض",
+      "ترجمة",
+      "متحف"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-3",
+      "page": 57,
+      "section": "أنشطة",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 57): يقترح متحف تذكرتين: 300 DA للبالغين و 150 DA للصّغار. في هذا اليوم، استقبل المتحف 140 زائرا وبلغت مداخيله 30300 DA. نسمّي $x$ عدد البالغين و $y$ عدد الصغار."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعلومة «استقبل المتحف 140 زائرا» تُترجم بـ:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$300x + 150y = 140$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$x + y = 30300$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$x + y = 140$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هل تعدّ هذه المعلومة أشخاصا أم دنانير؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل زائر، بالغا كان أو صغيرا، يُعدّ مرة واحدة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع عدد البالغين وعدد الصغار."
+        }
+      ],
+      "feedback": {
+        "correct": "140 عدد زوار: كل زائر يُعدّ مرة واحدة، $x + y = 140$ .",
+        "incorrect": "الأثمان (300 و 150) لا تدخل في عدّ الأشخاص."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "المعلومة «بلغت مداخيله 30300 DA» تُترجم بـ:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$300x + 150y = 30300$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$150x + 300y = 30300$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$x + y = 30300$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هذه المعلومة مبلغ بالدينار."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل بالغ يدفع 300 وكل صغير يدفع 150."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مداخيل البالغين زائد مداخيل الصغار."
+        }
+      ],
+      "feedback": {
+        "correct": "مداخيل البالغين $300x$ ومداخيل الصغار $150y$ : المجموع 30300 .",
+        "incorrect": "انتبه: $x$ عدد البالغين، فثمنه 300 لا 150."
+      }
+    }
+  ]
+}

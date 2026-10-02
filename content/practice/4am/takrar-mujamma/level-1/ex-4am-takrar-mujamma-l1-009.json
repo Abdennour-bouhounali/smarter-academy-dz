@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-takrar-mujamma-l1-009",
+  "lessonCode": "takrar-mujamma",
+  "level": 1,
+  "metadata": {
+    "title": "أستعدّ 4 — مخطط دائري",
+    "estimatedMinutes": 3,
+    "tags": [
+      "التواتر"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "prep",
+      "page": 91,
+      "section": "أستعدّ",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 91): مخطط دائري بثلاثة قطاعات مكتوب عليها 40 و 10 و 30 يمثل جدولا تكراراته النسبية 0,5 و 0,125 و 0,375 (بالترتيب نفسه)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل المخطط الدائري يمثّل الجدول؟",
+      "learningPoints": [
+        {
+          "code": "4am_takrar-mujamma_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "صحيح: $\\dfrac{40}{80} = 0{,}5$ ، $\\dfrac{10}{80} = 0{,}125$ ، $\\dfrac{30}{80} = 0{,}375$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "خطأ: التكرارات النسبية يجب أن تكون 40 و 10 و 30",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-TAWATUR-BILA-QISMA"
+        },
+        {
+          "id": "C",
+          "content": "خطأ: مجموع التكرارات النسبية لا يساوي 1",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-QIRAA-MUKHATTAT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب أولا التكرار الكلي: مجموع كل التكرارات."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التواتر المجمع هو التكرار المجمع مقسوما على التكرار الكلي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع التكرارات المعنية ثم اقسم المجموع على التكرار الكلي، واختزل الكسر إن أمكن."
+        }
+      ],
+      "feedback": {
+        "correct": "التكرار الكلي $80$ ، وكل تكرار مقسوما على 80 يعطي التكرار النسبي المكتوب.",
+        "incorrect": "راجع التعريف: أي القيم تدخل في المجموع؟"
+      }
+    }
+  ]
+}

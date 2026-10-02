@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l3-005",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 7 (ص 99) — نغيّر خلية: الوسيط",
+    "estimatedMinutes": 3,
+    "tags": [
+      "إعادة الحساب",
+      "وسيط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-7",
+      "page": 99,
+      "section": "أوظّف تعلّماتي",
+      "number": 7
+    }
+  },
+  "statement": {
+    "content": "سلسلة التمرين 7 محجوزة في الخلايا من A1 إلى G1 : 4 ، 10 ، 8 ، 4 ، 3 ، 2 ، 4 . نعوّض القيمة 10 في الخلية B1 بالعدد 17 دون أن نلمس الدساتير."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد الذي يُظهره الآن ⁦=MEDIANE(A1:G1)⁩ :",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT",
+          "value": "6"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "رتّب من جديد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "2 ، 3 ، 4 ، 4 ، 4 ، 8 ، 17 ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الرابعة."
+        }
+      ],
+      "feedback": {
+        "correct": "المرتبة 2 ، 3 ، 4 ، 4 ، 4 ، 8 ، 17 : الوسيط ما زال 4.",
+        "incorrect": "القيمة الكبيرة في الطرف لا تحرّك الوسيط."
+      }
+    }
+  ]
+}

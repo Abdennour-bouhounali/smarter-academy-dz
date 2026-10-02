@@ -1,0 +1,58 @@
+{
+  "id": "ex-4am-tanasub-taghayyurat-l4-006",
+  "lessonCode": "tanasub-taghayyurat",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — كم كيلومترًا؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية",
+      "تعيين دالة تآلفية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-taghayyurat_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "تكلّف رحلة 3km مبلغ 220DA ورحلة 7km مبلغ 380DA ، والثمن دالة تآلفية للمسافة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "طول الرحلة التي ثمنها 500DA (km):",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-taghayyurat_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عيّن الدالة أولًا: $a = 40$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$b = 100$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ $40x + 100 = 500$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(x) = 40x + 100$ و $40x + 100 = 500$ ، أي $x = 10$ km.",
+        "incorrect": "نطرح $b$ قبل القسمة على $a$ ."
+      }
+    }
+  ]
+}

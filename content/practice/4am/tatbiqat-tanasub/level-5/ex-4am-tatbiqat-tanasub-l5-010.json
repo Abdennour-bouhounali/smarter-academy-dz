@@ -1,0 +1,59 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l5-010",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — السعر بالرسم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "السعر قبل التغيّر",
+      "وضعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tatbiqat-tanasub_P3",
+      "modelledOn": "ex-3"
+    }
+  },
+  "statement": {
+    "content": "يُضاف إلى سعر حاسوب لوحي رسمٌ بنسبة 19%، فيصبح السعر المدفوع $y = 1{,}19x$ حيث $x$ السعر دون رسم. دفع تلميذ 5950DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "سعر الحاسوب اللوحي دون رسم (بالدينار):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "5000",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المقدار المعطى هو المقدار بعد التغيّر، والمطلوب المقدار قبله."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب العلاقة $y = kx$ بالمضاعف $k$ ، ثم عوّض $y$ بقيمته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة $kx = y$ : $x = \\dfrac{y}{k}$ ، ثم تحقّق بالضرب."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}19x = 5950$ ، ومنه $x = 5000$ . للتحقق: $5000 \\times 1{,}19 = 5950$ .",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    }
+  ]
+}

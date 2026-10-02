@@ -1,0 +1,159 @@
+{
+  "id": "ex-4am-mafhum-jumla-l2-003",
+  "lessonCode": "mafhum-jumla",
+  "level": 2,
+  "metadata": {
+    "title": "معارف 2 — ثلاث ثنائيات",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ثنائية",
+      "ترتيب"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-2",
+      "page": 58,
+      "section": "معارف",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 58): نعتبر الجملة $\\begin{cases} x - y = 2 \\\\ 2x - 5y = 4 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل الثنائية $(2 ; 0)$ حل للجملة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x = 2$ و $y = 0$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2 - 0$ ثم $2 \\times 2 - 5 \\times 0$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل تجد 2 ثم 4؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$2 - 0 = 2$ و $4 - 0 = 4$ : حل للجملة.",
+        "incorrect": "عوّض في المعادلتين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل الثنائية $(3 ; 1)$ حل للجملة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x = 3$ و $y = 1$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$3 - 1$ ثم $6 - 5$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحل يحقّق المعادلتين معًا."
+        }
+      ],
+      "feedback": {
+        "correct": "$3 - 1 = 2$ لكن $6 - 5 = 1 \\neq 4$ : ليست حلا.",
+        "incorrect": "المعادلة الأولى وحدها لا تكفي."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "هل الثنائية $(0 ; 2)$ حل للجملة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARTIB"
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في $(0 ; 2)$ : $x = 0$ و $y = 2$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$0 - 2 = -2$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الترتيب في الثنائية مهم."
+        }
+      ],
+      "feedback": {
+        "correct": "$0 - 2 = -2 \\neq 2$ : ليست حلا، رغم أنّ $(2 ; 0)$ حل.",
+        "incorrect": "قلب الثنائية يعطي ثنائية أخرى."
+      }
+    }
+  ]
+}

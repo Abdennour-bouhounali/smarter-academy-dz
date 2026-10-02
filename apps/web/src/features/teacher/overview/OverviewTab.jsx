@@ -9,7 +9,7 @@ import SignalCard from '../insights/SignalCard';
 import InterventionForm from '../interventions/InterventionForm';
 import { interventionDefaults, studentName } from '../insights/insights';
 import { barSegments, LP_STATUS_BAR } from '../learningPoints/lpBar';
-import { bidi } from '../../../utils/bidi';
+import MathLabel from '../../../lessons/common/components/MathLabel';
 
 const VISIBLE_SIGNALS = 4;
 
@@ -137,7 +137,7 @@ function RecentChanges({ changes, classGroupId, onOpenPoint }) {
               <ul className="divide-y divide-slate-100 text-xs">
                 {changes.byLearningPoint.map((p) => (
                   <li key={p.code} className="flex items-center gap-3 py-1.5">
-                    <button type="button" onClick={() => onOpenPoint(p.code)} className="min-w-0 flex-1 truncate text-start font-semibold text-teal-800 hover:underline">{bidi(p.title)}</button>
+                    <button type="button" onClick={() => onOpenPoint(p.code)} className="min-w-0 flex-1 truncate text-start font-semibold text-teal-800 hover:underline"><MathLabel>{p.title}</MathLabel></button>
                     {p.improved > 0 && <span className="text-emerald-700">↑ {p.improved}</span>}
                     {p.declined > 0 && <span className="text-rose-700">↓ {p.declined}</span>}
                     {p.firstAssessed > 0 && <span className="text-sky-700">• {p.firstAssessed}</span>}
@@ -177,7 +177,7 @@ function LearningMapSummary({ map, onOpenPoint, onOpenTab }) {
           <div className="space-y-4">
             {map.data.lessons.map((lesson) => (
               <div key={lesson.code}>
-                <h3 className="mb-1 text-xs font-semibold text-teal-800">{bidi(lesson.title)}</h3>
+                <h3 className="mb-1 text-xs font-semibold text-teal-800"><MathLabel>{lesson.title}</MathLabel></h3>
                 <ul className="space-y-1">
                   {lesson.learningPoints.map((lp) => {
                     const segments = barSegments(lp.counts);
@@ -185,7 +185,7 @@ function LearningMapSummary({ map, onOpenPoint, onOpenTab }) {
                     return (
                       <li key={lp.code}>
                         <button type="button" onClick={() => onOpenPoint(lp.code)} className="flex w-full items-center gap-3 rounded-lg px-1 py-1 text-start hover:bg-slate-50" data-map-point={lp.code}>
-                          <span className="min-w-0 flex-1 truncate text-xs text-slate-700">{bidi(lp.title)}</span>
+                          <span className="min-w-0 flex-1 truncate text-xs text-slate-700"><MathLabel>{lp.title}</MathLabel></span>
                           <span className="flex h-2 w-40 shrink-0 overflow-hidden rounded-full bg-slate-100 sm:w-56" role="img" aria-label={label} title={label}>
                             {segments.map((s) => s.percent > 0 && <span key={s.key} className={`h-full ${LP_STATUS_BAR[s.key]}`} style={{ width: `${s.percent}%` }} />)}
                           </span>

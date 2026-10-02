@@ -1,0 +1,83 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l3-009",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 26 — الزئبق",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الكتلة الحجمية",
+      "تحويل الوحدات"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-26",
+      "page": 73,
+      "section": "أوظّف تعلّماتي",
+      "number": 26
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 73): الكتلة الحجمية للزئبق تساوي 13600 كيلوغرام لكل متر مكعب. احسب بالسنتيمتر المكعب حجم كيلوغرام واحد من الزئبق."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حجم $1kg$ من الزئبق:",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "حوالي $73{,}53cm^3$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$13\\,600cm^3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQADIR-QISMA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "حوالي $0{,}0735cm^3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQADIR-WIHDA"
+        },
+        {
+          "id": "D",
+          "content": "حوالي $7{,}35cm^3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQADIR-WIHDA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد وحدة البسط ووحدة المقام، قبل التحويل وبعده."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حوّل البسط والمقام كلًّا على حدة: $1h = 3600s$ ، $1km = 1000m$ ، $1m^3 = 1000L$ ، $1L = 1000cm^3$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب المقدار كحاصل قسمة بالوحدات الجديدة، ثم احسب."
+        }
+      ],
+      "feedback": {
+        "correct": "$V = \\dfrac{1}{13600}m^3 = \\dfrac{1\\,000\\,000}{13600}cm^3 \\simeq 73{,}53cm^3$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

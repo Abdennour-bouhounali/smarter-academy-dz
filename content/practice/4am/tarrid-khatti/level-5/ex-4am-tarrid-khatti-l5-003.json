@@ -1,0 +1,109 @@
+{
+  "id": "ex-4am-tarrid-khatti-l5-003",
+  "lessonCode": "tarrid-khatti",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — تروتينة أم اشتراك؟",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مقارنة",
+      "نمذجة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P1",
+      "modelledOn": "ex-31"
+    }
+  },
+  "statement": {
+    "content": "تروتينة: 12DA للدقيقة. اشتراك: 450DA مهما كانت المدة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ابتداءً من أيّ مدة (دقيقة) يصبح الاشتراك أفضل؟ (المدة التي تتساوى عندها التسعيرتان)",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري (الفاصلة مقبولة)",
+      "expectedAnswer": "37.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$12x = 450$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{450}{12}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عدد عشري."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 37{,}5$ دقيقة.",
+        "incorrect": "حلّ $12x = 450$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "لرحلة 30 دقيقة:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الاشتراك أفضل",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "id": "B",
+          "content": "الدفع بالدقيقة أفضل: 360DA",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "تتساويان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$12 \\times 30$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن بـ 450."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "30 أقل من 37,5."
+        }
+      ],
+      "feedback": {
+        "correct": "$360 < 450$ .",
+        "incorrect": "احسب الثمن بالطريقتين."
+      }
+    }
+  ]
+}

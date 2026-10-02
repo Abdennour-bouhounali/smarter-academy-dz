@@ -1,0 +1,142 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l1-008",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 1,
+  "metadata": {
+    "title": "رحلة القسم — ترجمة وحل",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترجمة",
+      "حل جملة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "قبل رحلة القسم، طلب مندوب القسم 10 علب عصير و 10 قطع حلوى متماثلة ودفع 800 DA. في طريق العودة بقيت 2 علب عصير و 3 قطع حلوى ثمنها معا 210 DA. نسمّي $x$ سعر علبة العصير و $y$ سعر قطعة الحلوى (بالدينار)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعلومة «بقيت 2 علب عصير و 3 قطع حلوى ثمنها معا 210 DA» تُترجم بـ:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3x + 2y = 210$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$2x + 3y = 210$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x + y = 210$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "D",
+          "content": "$2x + 3y = 800$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما الذي يعدّه العدد 2، وما الذي يعدّه 3؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كل عدد يُضرب في سعر الشيء الذي يعدّه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المبلغ هو المذكور في المعلومة نفسها."
+        }
+      ],
+      "feedback": {
+        "correct": "علبتان ثمنهما $2x$ وثلاث قطع ثمنها $3y$ : $2x + 3y = 210$.",
+        "incorrect": "اضرب عدد العلب في سعر العلبة، وعدد القطع في سعر القطعة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    },
+    {
+      "id": "q2",
+      "statement": "أيّ ثنائية هي حل الجملة $10x + 10y = 800$ و $2x + 3y = 210$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(50 ; 30)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARTIB"
+        },
+        {
+          "id": "B",
+          "content": "$(40 ; 40)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "C",
+          "content": "$(45 ; 40)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "D",
+          "content": "$(30 ; 50)$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقق من كل ثنائية في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ابدأ بـ $10x + 10y = 800$ ، أي $x + y = 80$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثنائية تحقق معادلة واحدة ليست حلا."
+        }
+      ],
+      "feedback": {
+        "correct": "$10 \\times 30 + 10 \\times 50 = 800$ و $2 \\times 30 + 3 \\times 50 = 210$.",
+        "incorrect": "الحل يحقق المعادلتين معا، والترتيب $(x ; y)$ مهم."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    }
+  ]
+}

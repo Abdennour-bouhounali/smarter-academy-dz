@@ -1,0 +1,108 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l3-006",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 3,
+  "metadata": {
+    "title": "قراءة على مستقيم التكلفة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "قراءة بيانية",
+      "صورة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P3",
+      "modelledOn": "method-read"
+    }
+  },
+  "statement": {
+    "content": "مستقيم التكلفة لعائلة يمثّل الدالة الخطية $C : x \\longmapsto 2{,}5x$ ، حيث $x$ سعر تذكرة البالغ بالدينار و $C(x)$ التكلفة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما ترتيب نقطة المستقيم التي فاصلتها $600$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "1500",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الترتيب هو صورة الفاصلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $C(600)$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب في المعامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$C(600) = 2{,}5 \\times 600 = 1500$.",
+        "incorrect": "الترتيب هو صورة الفاصلة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1,
+      "misconceptionSignatures": [
+        {
+          "value": "240",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما فاصلة نقطة المستقيم التي ترتيبها $2000$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "800",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الفاصلة هي العدد الذي صورته 2000."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حل $2{,}5x = 2000$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على المعامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = \\dfrac{2000}{2{,}5} = 800$.",
+        "incorrect": "نبحث عن العدد الذي صورته 2000: نقسم على المعامل."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "5000",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
+        }
+      ]
+    }
+  ]
+}

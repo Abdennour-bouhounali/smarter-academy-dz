@@ -1,0 +1,114 @@
+{
+  "id": "ex-4am-hall-jabri-l3-007",
+  "lessonCode": "hall-jabri",
+  "level": 3,
+  "metadata": {
+    "title": "دوري الآن — الجملة الأولى",
+    "estimatedMinutes": 4,
+    "tags": [
+      "الجمع",
+      "كسور"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "now-59",
+      "page": 59,
+      "section": "دوري الآن"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 59): حل الجملة الآتية مبيّنا طريقة الحل المستعملة. $\\begin{cases} 2x + y = 6 \\\\ \\dfrac{1}{2}x - y = -2 \\end{cases}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "بجمع المعادلتين طرفًا لطرف نجد:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{5}{2}x = 4$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{5}{2}x = 8$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{3}{2}x = 4$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MUADALA-NAQL-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن معاملي $x$ ثم معاملي $y$ في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب طرفي معادلة (أو كلتيهما) في عدد مناسب ليصير معاملا أحد المجهولين متعاكسين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المعادلتين طرفًا لطرف، ثم عوّض القيمة الناتجة في إحدى المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$y$ و $-y$ يُلغيان: $2x + \\dfrac{1}{2}x = 6 - 2$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "8/5",
+        "y": "14/5"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن معاملي $x$ ثم معاملي $y$ في المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب طرفي معادلة (أو كلتيهما) في عدد مناسب ليصير معاملا أحد المجهولين متعاكسين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع المعادلتين طرفًا لطرف، ثم عوّض القيمة الناتجة في إحدى المعادلتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = \\dfrac{8}{5}$ ثم $y = 6 - \\dfrac{16}{5} = \\dfrac{14}{5}$ : $(1{,}6 ; 2{,}8)$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l2-002",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 2,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 6 — المتوسط والوسيط",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متوسط",
+      "وسيط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 100,
+      "section": "أؤكّد تعلّماتي",
+      "number": 6
+    }
+  },
+  "statement": {
+    "content": "السلسلة: 13 ، 1 ، 4 ، 10 ، 12."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "متوسط هذه السلسلة:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "أصغر من وسيطها",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "أكبر من وسيطها",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-MUTAWASSIT"
+        },
+        {
+          "id": "C",
+          "content": "يساوي وسيطها",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-BILA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب المتوسط والوسيط."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "رتّب القيم قبل الوسيط."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن العددين."
+        }
+      ],
+      "feedback": {
+        "correct": "المتوسط 8 والوسيط 10: $8 < 10$.",
+        "incorrect": "رتّب القيم: الوسيط القيمة الثالثة بعد الترتيب."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    }
+  ]
+}

@@ -1,0 +1,182 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l3-006",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 3,
+  "metadata": {
+    "title": "نشاط 6 — أيّ المعادن أثقل؟ (نص مصحّح)",
+    "estimatedMinutes": 5,
+    "tags": [
+      "الكتلة الحجمية",
+      "تحويل الوحدات"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-6",
+      "page": 67,
+      "section": "أنشطة",
+      "number": 6
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 67، نصّ مصحّح: حجم النحاس $8cm^3$ ): يزن $3dm^3$ من الذهب $57{,}9kg$ ويزن $6cm^3$ من الفضة $63g$ ، أما $8cm^3$ من النحاس فيَزن $71{,}2g$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الكتلة الحجمية للذهب (بالغرام لكل سنتيمتر مكعب):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "19,3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد وحدة البسط ووحدة المقام، قبل التحويل وبعده."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حوّل البسط والمقام كلًّا على حدة: $1h = 3600s$ ، $1km = 1000m$ ، $1m^3 = 1000L$ ، $1L = 1000cm^3$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب المقدار كحاصل قسمة بالوحدات الجديدة، ثم احسب."
+        }
+      ],
+      "feedback": {
+        "correct": "$57{,}9kg = 57\\,900g$ و $3dm^3 = 3000cm^3$ : $19{,}3g/cm^3$ .",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "الكتلة الحجمية للفضة (بالغرام لكل سنتيمتر مكعب):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "10,5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مقدار حاصل القسمة: السرعة مسافة على مدة، والكتلة الحجمية كتلة على حجم، والتدفق حجم على مدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المقدارين بالوحدتين المطلوبتين قبل القسمة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم، ثم اكتب النتيجة مع وحدتها المركّبة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{63}{6} = 10{,}5g/cm^3$ .",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "الكتلة الحجمية للنحاس (بالغرام لكل سنتيمتر مكعب):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "8,9",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مقدار حاصل القسمة: السرعة مسافة على مدة، والكتلة الحجمية كتلة على حجم، والتدفق حجم على مدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المقدارين بالوحدتين المطلوبتين قبل القسمة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم، ثم اكتب النتيجة مع وحدتها المركّبة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{71{,}2}{8} = 8{,}9g/cm^3$ .",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    },
+    {
+      "id": "q4",
+      "statement": "المعدن الأثقل:",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الذهب",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الفضة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQADIR-WIHDA"
+        },
+        {
+          "id": "C",
+          "content": "النحاس",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQADIR-WIHDA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مقدار حاصل القسمة: السرعة مسافة على مدة، والكتلة الحجمية كتلة على حجم، والتدفق حجم على مدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المقدارين بالوحدتين المطلوبتين قبل القسمة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم، ثم اكتب النتيجة مع وحدتها المركّبة."
+        }
+      ],
+      "feedback": {
+        "correct": "نقارن كتلة $1cm^3$ من كل معدن: $19{,}3 > 10{,}5 > 8{,}9$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

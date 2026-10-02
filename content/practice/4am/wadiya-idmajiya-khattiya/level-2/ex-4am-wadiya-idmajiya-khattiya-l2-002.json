@@ -1,0 +1,127 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l2-002",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 37 — نترات مياه الشرب",
+    "estimatedMinutes": 4,
+    "tags": [
+      "كتلة حجمية",
+      "وحدات"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-37",
+      "page": 75,
+      "section": "أتعمّق",
+      "number": 37
+    }
+  },
+  "statement": {
+    "content": "يجب ألّا تتجاوز الكتلة الحجمية لنترات مياه الشرب $45\\,\\mathrm{mg/L}$. كأس سعته 13cL. عند ملئه بالماء تتحصل على 8mg من النترات. هل يمكن أن نقول أن هذا الماء صالح للشرب؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما الكتلة الحجمية للنترات في هذا الماء بـ $\\mathrm{mg/L}$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري مدوّر إلى 0,01",
+      "expectedAnswer": "61.54",
+      "evaluationPolicy": {
+        "tolerance": "0.01"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حوّل سعة الكأس إلى اللتر."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$13\\,\\mathrm{cL} = 0{,}13\\,\\mathrm{L}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الكتلة على الحجم."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{8}{0{,}13} = \\dfrac{800}{13} \\approx 61{,}54\\,\\mathrm{mg/L}$.",
+        "incorrect": "وحدة الحد المسموح هي اللتر: حوّل السنتيلتر قبل القسمة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "0.62",
+          "id": "MISC-MAQADIR-WIHDA"
+        },
+        {
+          "value": "1.625",
+          "id": "MISC-MAQADIR-QISMA-MAQLUBA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "هل هذا الماء صالح للشرب؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا، لأنّ كتلته الحجمية تفوق الحد المسموح",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نعم، لأنّ $8\\,\\mathrm{mg}$ أقل من $45\\,\\mathrm{mg}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQADIR-WIHDA"
+        },
+        {
+          "id": "C",
+          "content": "نعم، لأنّ الكأس أقل من لتر",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن الكتلة الحجمية بالحد المسموح."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المقارنة بالوحدة نفسها $\\mathrm{mg/L}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الحد يخص كل لتر، مهما كانت الكمية."
+        }
+      ],
+      "feedback": {
+        "correct": "$61{,}54 > 45$ : الماء غير صالح للشرب.",
+        "incorrect": "نقارن كتلة حجمية بكتلة حجمية، لا كتلة بكتلة حجمية."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 2
+    }
+  ]
+}

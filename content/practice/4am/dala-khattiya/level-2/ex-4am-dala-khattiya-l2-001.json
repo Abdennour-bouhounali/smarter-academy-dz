@@ -1,0 +1,107 @@
+{
+  "id": "ex-4am-dala-khattiya-l2-001",
+  "lessonCode": "dala-khattiya",
+  "level": 2,
+  "metadata": {
+    "title": "معارف 2 — جدول الدالة −3x",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جدول",
+      "صورة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-2",
+      "page": 68,
+      "section": "معارف",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 68): $f$ هي الدّالة الخطية المعرّفة بالشّكل : $f(x) = -3x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $f(-1{,}5)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "4.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد بدالة خطية تُقرأ على دستورها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بالعدد المعطى في الدستور."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب الجداء، وانتبه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(-1{,}5) = (-3) \\times (-1{,}5) = 4{,}5$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-SURA-SABIQ",
+          "value": "0.5"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $f(0{,}5)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "-1.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد بدالة خطية تُقرأ على دستورها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض $x$ بالعدد المعطى في الدستور."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب الجداء، وانتبه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(0{,}5) = (-3) \\times 0{,}5 = -1{,}5$ .",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-KHATTIYA-SURA-SABIQ",
+          "value": "-1/6"
+        }
+      ]
+    }
+  ]
+}

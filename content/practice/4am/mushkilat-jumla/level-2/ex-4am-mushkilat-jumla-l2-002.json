@@ -1,0 +1,113 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l2-002",
+  "lessonCode": "mushkilat-jumla",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 24 (ص 63) — مجموع وفرق",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ترييض",
+      "أعداد"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-24",
+      "page": 63,
+      "section": "أتعمّق",
+      "number": 24
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 63): عددان طبيعيان مجموعهما 2019 والفرق بينهما 25. عيّن هذين العددين. نسمّي $x$ الأكبر و $y$ الأصغر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم المشكلة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 25 \\\\ x - y = 2019 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 2019 \\\\ x - y = 25 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x + y = 2019 \\\\ y - x = 25 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجموع كم؟ والفرق كم؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الفرق: الأكبر ناقص الأصغر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$x$ هو الأكبر."
+        }
+      ],
+      "feedback": {
+        "correct": "المجموع 2019 والفرق 25، والأكبر أولا.",
+        "incorrect": "الفرق بين عددين طبيعيين يُكتب الأكبر ناقص الأصغر."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العددان $(x ; y)$ هما:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "1022",
+        "y": "997"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع المعادلتين طرفا لطرف."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "يختفي $y$ ويبقى $2x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم $y = 2019 - x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "بالجمع $2x = 2044$ أي $x = 1022$ ، و $y = 997$ .",
+        "incorrect": "تحقّق: المجموع والفرق معا."
+      }
+    }
+  ]
+}

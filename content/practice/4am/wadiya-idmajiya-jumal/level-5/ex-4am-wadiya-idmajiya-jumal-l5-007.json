@@ -1,0 +1,168 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l5-007",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 5,
+  "metadata": {
+    "title": "ملعب كرة القدم المصغّرة",
+    "estimatedMinutes": 6,
+    "tags": [
+      "ترجمة",
+      "محيط",
+      "مساحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P2",
+      "modelledOn": "ex-25"
+    }
+  },
+  "statement": {
+    "content": "ملعب كرة قدم مصغّرة مستطيل محيطه 84 m، وطوله يساوي ضعف عرضه ناقص 6 m. نسمّي $x$ الطول و $y$ العرض بالمتر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم النص هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 84 \\\\ x = 2y - 6 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 42 \\\\ y = 2x - 6 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x + y = 42 \\\\ x = 2(y - 6) \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "D",
+          "content": "$\\begin{cases} x + y = 42 \\\\ x = 2y - 6 \\end{cases}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نصف المحيط $x + y$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "«ضعف العرض ناقص 6» : $2y - 6$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الطول هو الذي يساوي."
+        }
+      ],
+      "feedback": {
+        "correct": "$2(x + y) = 84$ أي $x + y = 42$ ، و $x = 2y - 6$.",
+        "incorrect": "المحيط مجموع الأضلاع الأربعة، والطول هو $x$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "ما البعدان $(x ; y)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
+      "expectedAnswer": {
+        "x": "26",
+        "y": "16"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ بـ $2y - 6$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$3y - 6 = 42$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم احسب $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 16$ و $x = 26$.",
+        "incorrect": "التعويض مباشر لأنّ $x$ معبَّر عنه بدلالة $y$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "16",
+            "y": "26"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "ما مساحة الملعب بالمتر المربع؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "مساحة بالمتر المربع",
+      "expectedAnswer": "416",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب البعدين أولا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المساحة = الطول × العرض."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب العددين."
+        }
+      ],
+      "feedback": {
+        "correct": "$26 \\times 16 = 416$ متر مربع.",
+        "incorrect": "المساحة جداء البعدين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ]
+}

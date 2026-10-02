@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-tanasub-muamil-l5-006",
+  "lessonCode": "tanasub-muamil",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — رحلة بالمصعد الهوائي",
+    "estimatedMinutes": 4,
+    "tags": [
+      "رحلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-muamil_P2",
+      "modelledOn": "ex-18"
+    }
+  },
+  "statement": {
+    "content": "رحلة مدرسية إلى المصعد الهوائي: التذكرة 120DA للتلميذ. وللعودة: كراء حافلة بـ 3000DA يتقاسمها التلاميذ بالتساوي."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ مقدار متناسب مع عدد التلاميذ؟",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "reason",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "ثمن كل التذاكر",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نصيب كل تلميذ من كراء الحافلة",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "المقداران كلاهما",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "لا يكفي أن يزداد y كلما ازداد x."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب حاصل القسمة $\\dfrac{y}{x}$ في كل عمود وقارن."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "يكفي عمودان حاصلا قسمتهما مختلفان لنقول إنّ الوضعية ليست تناسبية؛ وانتبه إلى المبلغ الثابت."
+        }
+      ],
+      "feedback": {
+        "correct": "ثمن التذاكر $= 120 \\times$ العدد ؛ أمّا نصيب التلميذ $3000 \\div$ العدد فينقص كلما ازداد العدد.",
+        "incorrect": "احسب حاصل القسمة في كل عمود قبل أن تحكم: الزيادة وحدها لا تكفي."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ثمن تذاكر 35 تلميذا بالدينار:",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "4200",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في جدول تناسبية نحصل على y بضرب x في المعامل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب المعامل $a = \\dfrac{y}{x}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $y = a \\times x$ ثم تحقّق على عمود من الجدول."
+        }
+      ],
+      "feedback": {
+        "correct": "$120 \\times 35 = 4200$ DA.",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      }
+    }
+  ]
+}

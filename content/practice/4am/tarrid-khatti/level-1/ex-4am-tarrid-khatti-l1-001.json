@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-tarrid-khatti-l1-001",
+  "lessonCode": "tarrid-khatti",
+  "level": 1,
+  "metadata": {
+    "title": "نشاط 4 (ص 67) — سعر البطاطا",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تمثيل بياني",
+      "معامل التناسبية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-4",
+      "page": 67,
+      "section": "أنشطة",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 67): تمثيل بياني لسعر البطاطا (DA) بدلالة كتلتها (kg)، نقطه $(0{,}5 ; 25)$ ، $(1{,}5 ; 75)$ ، $(2{,}5 ; 125)$ ، $(3 ; 150)$ ، $(3{,}5 ; 175)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هذه النقط:",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "على مستقيم يشمل المبدأ: الوضعية تناسبية",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "على مستقيم لا يشمل المبدأ: الوضعية ليست تناسبية",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-BIDUN-O"
+        },
+        {
+          "id": "C",
+          "content": "على منحنى: الوضعية ليست تناسبية",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-NAMUDHAJ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب حاصل قسمة الترتيب على الفاصلة لكل نقطة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هل حاصل القسمة نفسه دائمًا؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حاصل قسمة ثابت ⇔ مستقيم يشمل المبدأ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{25}{0{,}5} = \\dfrac{150}{3} = 50$ : حاصل القسمة ثابت، النقط على مستقيم يشمل المبدأ.",
+        "incorrect": "احسب $\\dfrac{y}{x}$ لنقطتين على الأقل."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "عيّن معامل التناسبية $a$ (بالدينار للكيلوغرام).",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "50",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "خذ النقطة $(3 ; 150)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قسّم السعر على الكتلة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$a = \\dfrac{150}{3}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{150}{3} = 50$ : سعر 1kg هو 50DA.",
+        "incorrect": "المعامل هو السعر على الكتلة، لا العكس."
+      }
+    }
+  ]
+}

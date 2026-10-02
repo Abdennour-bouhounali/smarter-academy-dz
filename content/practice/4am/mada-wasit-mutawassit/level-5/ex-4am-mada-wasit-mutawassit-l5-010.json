@@ -1,0 +1,70 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l5-010",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — قيمتان في الطرفين",
+    "estimatedMinutes": 5,
+    "tags": [
+      "وسيط",
+      "رتبة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mada-wasit-mutawassit_P3",
+      "modelledOn": "method-indicators"
+    }
+  },
+  "statement": {
+    "content": "سلسلة مرتّبة من 9 قيم وسيطها $20$. نضيف إليها قيمة $3$ أصغر من كل القيم، وقيمة $50$ أكبر من كل القيم."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "وسيط السلسلة الجديدة (11 قيمة):",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$20$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{3 + 50}{2} = 26{,}5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-MUTAWASSIT"
+        },
+        {
+          "id": "C",
+          "content": "لا يمكن معرفته",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "رتبة الوسيط الجديد $6$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قيمة واحدة أُضيفت قبل الوسيط القديم."
+        }
+      ],
+      "feedback": {
+        "correct": "الرتبة $6$ في الجديدة هي الرتبة $5$ في القديمة: $20$.",
+        "incorrect": "إضافة قيمة صغيرة وقيمة كبيرة لا تحرّك الوسط."
+      }
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l5-001",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — حلّ بياني",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حل بياني",
+      "متراجحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-khatti_P2",
+      "modelledOn": "ex-33"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الدالة الخطية $f : x \\longmapsto 1{,}2x$ وتمثيلها البياني (D)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "حل المعادلة $f(x) = 6$ (فاصلة نقطة (D) التي ترتيبها 6):",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 3/4)",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "العدد الذي صورته $b$ هو حل المعادلة $ax = b$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم الصورة على المعامل."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق: اضرب العدد الذي وجدته في المعامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$6 \\div 1{,}2 = 5$ .",
+        "incorrect": "ابحث عن العدد الذي صورته 6."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حلول المتراجحة $f(x) \\leqslant 6$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\leqslant 5$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x \\geqslant 5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-MUNHA"
+        },
+        {
+          "id": "C",
+          "content": "$x \\leqslant 7{,}2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-SURA-SABIQ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المستقيم يصعد أم ينزل؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أين يكون (D) تحت الخط $y = 6$ أو عليه؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جبريًا: القسمة على عدد موجب تحفظ الاتجاه."
+        }
+      ],
+      "feedback": {
+        "correct": "(D) يصعد، فهو تحت $y = 6$ ما دام $x \\leqslant 5$ .",
+        "incorrect": "المعامل موجب: الاتجاه لا يتغيّر."
+      }
+    }
+  ]
+}

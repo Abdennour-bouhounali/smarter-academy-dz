@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l4-003",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 4,
+  "metadata": {
+    "title": "طرائق (ص 97) — التمرين 2: البضاعة الثانية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وسيط",
+      "رتبة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-indicators",
+      "page": 97,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 97): الأسعار $54$ ، $55$ ، $56$ ، $57$ ، $58$ ، $60$ (DA) وتكراراتها $12$ ، $18$ ، $10$ ، $8$ ، $9$ ، $3$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "وسيط هذه السلسلة هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "55,5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-WASIT-RUTBA",
+          "value": "55"
+        },
+        {
+          "id": "MISC-IHSA-WASIT-RUTBA",
+          "value": "56"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$M = 60$ زوجي: الرتبتان $30$ و $31$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المجمّع الصاعد $12$ ، $30$ ، $40$ …"
+        }
+      ],
+      "feedback": {
+        "correct": "الرتبة $30$ هي $55$ والرتبة $31$ هي $56$ : $\\dfrac{55 + 56}{2} = 55{,}5$ .",
+        "incorrect": "العدد زوجي: قيمتان في الوسط."
+      }
+    }
+  ]
+}

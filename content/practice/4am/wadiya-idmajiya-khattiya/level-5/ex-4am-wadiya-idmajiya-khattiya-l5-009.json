@@ -1,0 +1,120 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l5-009",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 5,
+  "metadata": {
+    "title": "المسافة المقطوعة دالة للزمن",
+    "estimatedMinutes": 5,
+    "tags": [
+      "دالة خطية",
+      "سرعة",
+      "قراءة بيانية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P3",
+      "modelledOn": "method-read"
+    }
+  },
+  "statement": {
+    "content": "قمرة مصعد هوائي تسير بسرعة ثابتة $5\\,\\mathrm{m/s}$ على حبل طوله $1300\\,\\mathrm{m}$. نسمّي $t$ الزمن بالثواني منذ الانطلاق و $d(t)$ المسافة المقطوعة بالمتر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الدالة $d$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$d(t) = 5t$ ، دالة خطية",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$d(t) = \\dfrac{t}{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-MAQADIR-QISMA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$d(t) = 1300 - 5t$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-AFFINE"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كم مترا تقطع في ثانية؟ في ثانيتين؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المسافة متناسبة مع الزمن."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعامل هو السرعة."
+        }
+      ],
+      "feedback": {
+        "correct": "في كل ثانية 5 أمتار: $d(t) = 5t$.",
+        "incorrect": "المسافة = السرعة × الزمن."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "على التمثيل البياني لـ $d$ ، ما فاصلة النقطة التي ترتيبها $1300$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالثواني",
+      "expectedAnswer": "260",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الترتيب 1300 يعني المسافة كلها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حل $5t = 1300$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الفاصلة هي الزمن."
+        }
+      ],
+      "feedback": {
+        "correct": "$t = \\dfrac{1300}{5} = 260$ s: لحظة الوصول.",
+        "incorrect": "الفاصلة هي العدد الذي صورته 1300."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "6500",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
+        }
+      ]
+    }
+  ]
+}

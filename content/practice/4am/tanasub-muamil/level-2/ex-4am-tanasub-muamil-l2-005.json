@@ -1,0 +1,117 @@
+{
+  "id": "ex-4am-tanasub-muamil-l2-005",
+  "lessonCode": "tanasub-muamil",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — جواهر اللعبة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ألعاب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tanasub-muamil_P3",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "في لعبة على الهاتف: 500 جوهرة بـ 600DA ، 1000 جوهرة بـ 1200DA ، 2500 جوهرة بـ 3000DA. نسمّي $x$ عدد الجواهر و $y$ الثمن."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "معامل التناسبية $a = \\dfrac{y}{x}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 2,5 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "1,2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل التناسبية هو العدد الذي نضرب فيه أعداد السطر الأول لنحصل على أعداد السطر الثاني."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اقسم عددا من السطر الثاني على العدد المقابل له من السطر الأول: $\\dfrac{y}{x}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق أنّ حاصل القسمة هو نفسه في عمود آخر."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{600}{500} = \\dfrac{1200}{1000} = \\dfrac{3000}{2500} = 1{,}2$ .",
+        "incorrect": "أعد الحساب: في جدول تناسبية حاصل القسمة ثابت، فتحقّق من جوابك بالضرب في المعامل."
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "5/6",
+          "id": "MISC-TANASUB-MUAMIL-MAQLUB"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "العلاقة بين $y$ و $x$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tanasub-muamil_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "cognitiveDemand": "apply",
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x = 1{,}2 \\times y$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TANASUB-MUAMIL-MAQLUB"
+        },
+        {
+          "id": "B",
+          "content": "$y = x + 100$",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "$y = 1{,}2 \\times x$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في جدول تناسبية نحصل على y بضرب x في المعامل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب المعامل $a = \\dfrac{y}{x}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $y = a \\times x$ ثم تحقّق على عمود من الجدول."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 1{,}2 \\times x$ : مثلا $1{,}2 \\times 2500 = 3000$ .",
+        "incorrect": "احسب حاصل القسمة في كل عمود قبل أن تحكم: الزيادة وحدها لا تكفي."
+      }
+    }
+  ]
+}

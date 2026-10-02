@@ -1,0 +1,77 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l1-003",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 3 — وسيط أربع قيم",
+    "estimatedMinutes": 2,
+    "tags": [
+      "وسيط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 100,
+      "section": "أؤكّد تعلّماتي",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "السلسلة الإحصائية: 8 ، 20 ، 40 ، 60."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "وسيط هذه السلسلة هو:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "30",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "20",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-RUTBA"
+        },
+        {
+          "id": "C",
+          "content": "40",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-RUTBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عدد القيم زوجي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الرتبتان 2 و 3."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نصف مجموع القيمتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{20 + 40}{2} = 30$.",
+        "incorrect": "مع عدد زوجي من القيم، الوسيط نصف مجموع القيمتين الوسطيين."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 1
+    }
+  ]
+}

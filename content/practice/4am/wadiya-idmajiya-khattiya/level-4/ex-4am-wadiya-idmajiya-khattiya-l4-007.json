@@ -1,0 +1,119 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l4-007",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 4,
+  "metadata": {
+    "title": "انتخابات مندوب القسم",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نسبة مئوية",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P3",
+      "modelledOn": "ex-38"
+    }
+  },
+  "statement": {
+    "content": "في انتخاب مندوب القسم، امتنع $\\dfrac{3}{8}$ من التلاميذ عن التصويت."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما النسبة المئوية للتلاميذ الذين صوّتوا؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "نسبة مئوية دون الرمز %",
+      "expectedAnswer": "62.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الكسر الذي صوّت: $1 - \\dfrac{3}{8}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حوّل الكسر إلى نسبة مئوية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب في 100."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{5}{8} \\times 100 = 62{,}5$.",
+        "incorrect": "احسب كسر المصوّتين أولا."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "37.5",
+          "id": "MISC-TARRID-TAFSIR"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "قال أحدهم: «صوّت أكثر من ثلثي التلاميذ». هل هذا صحيح؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "خاطئ، لأنّ $\\dfrac{5}{8} < \\dfrac{2}{3}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "صحيح، لأنّ $62{,}5 > 60$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        },
+        {
+          "id": "C",
+          "content": "صحيح، لأنّ $\\dfrac{5}{8} > \\dfrac{1}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-TAFSIR"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ثلثا التلاميذ: كم في المئة تقريبا؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{2}{3} \\approx 66{,}67\\%$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن 62,5 بهذه النسبة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{5}{8} = 0{,}625$ و $\\dfrac{2}{3} \\approx 0{,}667$ : القول خاطئ.",
+        "incorrect": "قارن بالثلثين لا بالنصف ولا بـ 60%."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 3
+    }
+  ]
+}

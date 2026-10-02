@@ -1,0 +1,131 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l3-010",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 3,
+  "metadata": {
+    "title": "مكتبة التعاونية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تبسيط",
+      "حل جملة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P1",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "اشترت تعاونية المتوسطة 64 بين قصص ومجلات علمية بمبلغ 25 000 DA؛ ثمن القصة 300 DA وثمن المجلة 500 DA. نسمّي $x$ عدد القصص و $y$ عدد المجلات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ اقتراح يوصل إلى الحل بأقل حساب؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نقسم $300x + 500y = 25000$ على 100 فنجد $3x + 5y = 250$ ، ثم نعوّض $y = 64 - x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نجمع $x + y = 64$ و $300x + 500y = 25000$ مباشرة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-LA-TAAKUS"
+        },
+        {
+          "id": "C",
+          "content": "نقسم $300x + 500y = 25000$ على 100 فنجد $3x + 5y = 25000$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JAM-TARAF-WAHID"
+        },
+        {
+          "id": "D",
+          "content": "نعوّض $y = 64 - x$ في $x + y = 64$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAWID-NAFS-MUADALA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هل في معادلة المبلغ قاسم مشترك؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل $y$ في المعادلة الأولى 1."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نعوّض في المعادلة الأخرى."
+        }
+      ],
+      "feedback": {
+        "correct": "التبسيط ثم التعويض يعطي $3x + 320 - 5x = 250$.",
+        "incorrect": "القسمة على الطرفين، والتعويض في المعادلة الأخرى."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    },
+    {
+      "id": "q2",
+      "statement": "كم قصة وكم مجلة $(x ; y)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان طبيعيان",
+      "expectedAnswer": {
+        "x": "35",
+        "y": "29"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$3x + 5(64 - x) = 250$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$320 - 2x = 250$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقق من المبلغ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 35$ و $y = 29$ ؛ $300 \\times 35 + 500 \\times 29 = 25000$.",
+        "incorrect": "بسّط ثم عوّض."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "29",
+            "y": "35"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    }
+  ]
+}

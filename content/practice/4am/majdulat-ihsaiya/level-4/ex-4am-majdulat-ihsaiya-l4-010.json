@@ -1,0 +1,81 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l4-010",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — سلسلة في عمود من A2",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مجال",
+      "حجز"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_majdulat-ihsaiya_P1",
+      "modelledOn": "ex-24"
+    }
+  },
+  "statement": {
+    "content": "حجزنا 25 قيمة في العمود A ، بدءًا من الخلية A2 (A1 فيها عنوان العمود)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مجال القيم:",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "⁦A1:A26⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MAJAL-KHALIYA"
+        },
+        {
+          "id": "B",
+          "content": "⁦A2:A26⁩",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "⁦A2:A25⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MAJAL-KHALIYA"
+        },
+        {
+          "id": "D",
+          "content": "⁦A1:A25⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MAJAL-KHALIYA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أول قيمة في A2 ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "25 قيمة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$2 + 25 - 1$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "من A2 إلى A26 : 25 خلية. A1:A26 يضمّ خلية العنوان.",
+        "incorrect": "عدّ من A2 ."
+      }
+    }
+  ]
+}

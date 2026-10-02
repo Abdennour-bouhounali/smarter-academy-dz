@@ -1,0 +1,114 @@
+{
+  "id": "ex-4am-hall-jabri-l5-004",
+  "lessonCode": "hall-jabri",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — زلابية وقلب اللوز",
+    "estimatedMinutes": 4,
+    "tags": [
+      "التعويض",
+      "رمضان"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_hall-jabri_P1",
+      "modelledOn": "ex-11"
+    }
+  },
+  "statement": {
+    "content": "في رمضان اشترت عائلة كيلوغرامين من الزلابية وكيلوغرامًا من قلب اللوز بـ 1100 DA، واشترت عائلة أخرى كيلوغرامًا من الزلابية وكيلوغرامين من قلب اللوز بـ 1300 DA. نرمز بـ $x$ لثمن كيلوغرام الزلابية وبـ $y$ لثمن كيلوغرام قلب اللوز: $\\begin{cases} 2x + y = 1100 \\\\ x + 2y = 1300 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من المعادلة الأولى ينتج أنّ:",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$y = 1100 - 2x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$y = 2x - 1100$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAWID-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$y = 1100 + 2x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAWID-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن مجهول معامله $1$ أو $-1$ في إحدى المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عبّر عنه بدلالة المجهول الآخر، ثم عوّضه في المعادلة الأخرى."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
+        }
+      ],
+      "feedback": {
+        "correct": "نطرح $2x$ من الطرفين: $y = 1100 - 2x$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة $(x ; y)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_hall-jabri_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان صحيحان أو كسران مثل 3/2",
+      "expectedAnswer": {
+        "x": "300",
+        "y": "500"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ابحث عن مجهول معامله $1$ أو $-1$ في إحدى المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عبّر عنه بدلالة المجهول الآخر، ثم عوّضه في المعادلة الأخرى."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة ذات المجهول الواحد، ثم عوّض القيمة لتجد المجهول الثاني."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + 2(1100 - 2x) = 1300$ أي $-3x = -900$ ، ومنه $x = 300$ و $y = 500$ .",
+        "incorrect": "عوّض الثنائية التي وجدتها في المعادلتين: الحل يحقّقهما معًا، والترتيب $(x ; y)$ مهمّ."
+      }
+    }
+  ]
+}

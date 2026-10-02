@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l4-002",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — متوسط بالحاسبة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حاسبة",
+      "متوسط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_majdulat-ihsaiya_P2",
+      "modelledOn": "ex-23"
+    }
+  },
+  "statement": {
+    "content": "نقاط تمرين: 12 (3 تلاميذ)، 15 (5 تلاميذ)، 20 (تلميذان). نحسب المتوسط بذاكرة الحاسبة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المتوسط:",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بالفاصلة)",
+      "expectedAnswer": "15,1",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MUTAWASSIT-BILA-TARJIH",
+          "value": "47/3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$12 \\times 3$ M+ …"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المجموع في الذاكرة 151."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "التكرار الكلي 10."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{36 + 75 + 40}{10} = \\dfrac{151}{10} = 15{,}1$ .",
+        "incorrect": "كل قيمة في تكرارها، ثم القسمة على 10."
+      }
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "id": "ex-4am-mafhum-jumla-l3-005",
+  "lessonCode": "mafhum-jumla",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — جواهر اللعبة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ألعاب",
+      "حل ذهني"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mafhum-jumla_P2",
+      "modelledOn": "ex-3"
+    }
+  },
+  "statement": {
+    "content": "في لعبة على الهاتف جمع إسحاق 9 جواهر: $x$ زرقاء و $y$ حمراء، وعدد الحمراء ضعف عدد الزرقاء: $\\begin{cases} x + y = 9 \\\\ y = 2x \\end{cases}$"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما هي الثنائية $(x ; y)$ حل الجملة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية $(x ; y)$ : العدد الأول ثم الثاني (عدد صحيح أو كسر مثل 2/5)",
+      "expectedAnswer": {
+        "x": "3",
+        "y": "6"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $y$ بـ $2x$ في المعادلة الأولى."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x + 2x = 9$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $x$ ثم $y = 2x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$3x = 9$ أي $x = 3$ ، و $y = 6$ : $(3 ; 6)$ ، و $3 + 6 = 9$ .",
+        "incorrect": "الحمراء ضعف الزرقاء: $y = 2x$ ."
+      }
+    }
+  ]
+}

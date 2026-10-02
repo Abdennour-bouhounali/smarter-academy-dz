@@ -1,0 +1,119 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l4-005",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 4,
+  "metadata": {
+    "title": "خطية أم لا؟",
+    "estimatedMinutes": 5,
+    "tags": [
+      "دالة خطية",
+      "نشر"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P1",
+      "modelledOn": "ex-32"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الدالتين $h(x) = (x + 2)^2 - x^2 - 4$ و $k(x) = x(x + 1) - x^2 + 3$."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$h$ دالة خطية. ما معاملها؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $(x + 2)^2$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$(x + 2)^2 = x^2 + 4x + 4$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بسّط ثم اقرأ معامل $x$."
+        }
+      ],
+      "feedback": {
+        "correct": "$h(x) = x^2 + 4x + 4 - x^2 - 4 = 4x$.",
+        "incorrect": "انشر المربع ثم بسّط: يبقى حد واحد في $x$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "2",
+          "id": "MISC-JIDHR-JAMA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "هل $k$ دالة خطية؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا، لأنّ $k(x) = x + 3$ وفيها حد ثابت",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نعم، معاملها 1",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-AFFINE"
+        },
+        {
+          "id": "C",
+          "content": "لا، لأنّ عبارتها تحوي $x^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-NAMUDHAJ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انشر $x(x + 1)$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x^2 + x - x^2 + 3$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بعد التبسيط، هل يبقى حد ثابت؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$k(x) = x + 3$ و $k(0) = 3 \\neq 0$ : ليست خطية.",
+        "incorrect": "احكم بعد التبسيط: الحدّان في $x^2$ يختزلان."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 3
+    }
+  ]
+}

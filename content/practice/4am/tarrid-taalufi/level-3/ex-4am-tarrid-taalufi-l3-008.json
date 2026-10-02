@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-tarrid-taalufi-l3-008",
+  "lessonCode": "tarrid-taalufi",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — أوّل ساعة رابحة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متراجحة",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-taalufi_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "كراء ملعب خماسي: A بـ 3000DA للساعة، B اشتراك 6000DA ثم 1500DA للساعة. نكتري الملعب بساعات كاملة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما أصغر عدد من الساعات تكون من أجله الصيغة B أرخص تمامًا؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUTARAJIHA-QAWS",
+          "value": "4"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حلّ $1500x + 6000 < 3000x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x > 4$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أصغر عدد طبيعي أكبر تمامًا من 4."
+        }
+      ],
+      "feedback": {
+        "correct": "$1500x + 6000 < 3000x$ أي $x > 4$ : أصغر عدد طبيعي هو 5.",
+        "incorrect": "عند 4 ساعات تتساويان: نريد أرخص تمامًا."
+      }
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l3-003",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 3,
+  "metadata": {
+    "title": "نشاط 4 (ص 93) — وسيط حرارة الوادي",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وسيط"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-4",
+      "page": 93,
+      "section": "أنشطة",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 93): $40$ ، $35$ ، $34$ ، $41$ ، $48$ ، $37$ ، $35$ ، $46$ ، $37$ ، $40$ (درجات الحرارة القصوى بالوادي)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "رتّب السلسلة ترتيبًا تنازليًا ثم أعط وسيطها:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "38,5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-WASIT-RUTBA",
+          "value": "40"
+        },
+        {
+          "id": "MISC-IHSA-WASIT-RUTBA",
+          "value": "37"
+        },
+        {
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT",
+          "value": "39,3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$48$ ، $46$ ، $41$ ، $40$ ، $40$ ، $37$ …"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "منتصف الخامسة والسادسة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{40 + 37}{2} = 38{,}5$ .",
+        "incorrect": "عشر قيم: الوسيط منتصف قيمتين."
+      }
+    }
+  ]
+}

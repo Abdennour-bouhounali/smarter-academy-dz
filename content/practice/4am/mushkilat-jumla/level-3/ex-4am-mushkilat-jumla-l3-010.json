@@ -1,0 +1,113 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l3-010",
+  "lessonCode": "mushkilat-jumla",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 25 (ص 63) — مساحة لا تتغيّر",
+    "estimatedMinutes": 5,
+    "tags": [
+      "ترييض",
+      "مساحة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-25",
+      "page": 63,
+      "section": "أتعمّق",
+      "number": 25
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 63): مستطيل محيطه 60cm. إذا زدنا طوله بـ 5cm وأنقصنا عرضه بـ 2cm، بقيت مساحته نفسها. نسمّي $x$ الطول و $y$ العرض (بالسنتيمتر)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعلومة «بقيت مساحته نفسها» تُترجم بـ:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(x + 5)(y - 2) = 0$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$(x - 5)(y + 2) = xy$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$(x + 5)(y - 2) = xy$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المساحة الجديدة: الطول الجديد × العرض الجديد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الطول يزيد بـ 5 والعرض ينقص بـ 2."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المساحة الجديدة تساوي المساحة القديمة."
+        }
+      ],
+      "feedback": {
+        "correct": "$(x + 5)(y - 2) = xy$ تؤول إلى $-2x + 5y = 10$ .",
+        "incorrect": "«نفسها» تعني المساحة القديمة $xy$ ، لا 0."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "بعدا المستطيل: اكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "20",
+        "y": "10"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "من المحيط $x + y = 30$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انشر معادلة المساحة: الحد $xy$ يختفي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض $x = 30 - y$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$-2x + 5y = 10$ و $x + y = 30$ : $y = 10$ و $x = 20$ ؛ $25 \\times 8 = 200$ .",
+        "incorrect": "أكمل حتى الثنائية."
+      }
+    }
+  ]
+}

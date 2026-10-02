@@ -1,0 +1,157 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l5-002",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 5,
+  "metadata": {
+    "title": "قاربان لأربع ساعات",
+    "estimatedMinutes": 6,
+    "tags": [
+      "ثلاث صيغ",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P2"
+    }
+  },
+  "statement": {
+    "content": "كراء كاياك: الصيغة أ 200 DA للساعة؛ ب رسم ثابت 360 DA ثم 80 DA للساعة؛ جـ 800 DA جزافيا. خصّص القسم 1500 DA لكراء قاربين."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نقطة تقاطع مستقيمي الصيغتين أ و ب (الساعات ؛ الثمن):",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y)",
+      "expectedAnswer": {
+        "x": "3",
+        "y": "600"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$200x = 80x + 360$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$120x = 360$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم الثمن."
+        }
+      ],
+      "feedback": {
+        "correct": "$(3 ; 600)$.",
+        "incorrect": "نقطة التقاطع."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5
+    },
+    {
+      "id": "q2",
+      "statement": "لـ 4 ساعات، الصيغة الأرخص لقارب:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "أ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        },
+        {
+          "id": "B",
+          "content": "ب",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "جـ",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-AFDAL-DAIMAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "800 ، 680 ، 800."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الأصغر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "بين التقاطعين."
+        }
+      ],
+      "feedback": {
+        "correct": "أ: 800 ، ب: 680 ، جـ: 800.",
+        "incorrect": "نحسب الأثمان الثلاثة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5
+    },
+    {
+      "id": "q3",
+      "statement": "بالصيغة ب وبالمبلغ 1500 DA للقاربين، أكبر عدد طبيعي من الساعات:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$2(80x + 360) \\leq 1500$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$160x \\leq 780$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ندوّر نحو الأسفل."
+        }
+      ],
+      "feedback": {
+        "correct": "$x \\leq 4{,}875$ : 4 ساعات (1360 DA).",
+        "incorrect": "قاربان: نضاعف الثمن."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "5",
+          "id": "MISC-TARRID-TAFSIR"
+        }
+      ]
+    }
+  ]
+}

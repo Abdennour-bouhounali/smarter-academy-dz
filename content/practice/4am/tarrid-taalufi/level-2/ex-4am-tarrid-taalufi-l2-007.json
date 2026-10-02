@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-tarrid-taalufi-l2-007",
+  "lessonCode": "tarrid-taalufi",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — باقتا أنترنت",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معادلة",
+      "مقارنة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-taalufi_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "الباقة A: $f(x) = 50x + 600$ ، الباقة B: $g(x) = 200x$ ، حيث $x$ عدد الجيغا."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من أجل كم جيغا تتساوى الباقتان؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-MUADALA-NAQL-ISHARA",
+          "value": "12/5"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$f(x) = g(x)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اطرح $50x$ من الطرفين."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$150x = 600$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$50x + 600 = 200x$ أي $600 = 150x$ ومنه $x = 4$ .",
+        "incorrect": "حلّ $50x + 600 = 200x$ ."
+      }
+    }
+  ]
+}

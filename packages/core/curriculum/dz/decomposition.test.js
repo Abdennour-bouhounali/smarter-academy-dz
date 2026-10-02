@@ -93,6 +93,26 @@ describe('découpage 4AM — traçabilité sujet ↔ leçon', () => {
     }
   });
 
+  it('un ميدان d’affichage du propriétaire est déclaré, sans sujet, et seulement pour des unités placées', () => {
+    // Unité 6 (2026-10-02) : « ميدان التناسبية والدوال » n'est pas un domaine du programme.
+    // Il vit dans units_4am › ownerChapters, n'ajoute AUCUN sujet officiel, et toute unité
+    // qui s'y range déclare le domaine de programme de son sujet (`placement`).
+    const programmeIds = new Set(programme.domains.map((d) => d.id));
+    const owner = units.ownerChapters ?? [];
+    for (const c of owner) {
+      expect(programmeIds.has(c.id), c.id).toBe(false);
+      expect(c.decidedBy, c.id).toBe('owner');
+      expect(c.decidedOn, c.id).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      const chapter = dzGrade4am.chapters.find((ch) => ch.id === c.id);
+      if (chapter) expect(chapter.topics, c.id).toEqual([]);
+    }
+    const ownerIds = new Set(owner.map((c) => c.id));
+    for (const unit of units.units.filter((u) => ownerIds.has(u.chapterId))) {
+      expect(unit.placement?.decidedBy, unit.code).toBe('owner');
+      expect(programmeIds.has(unit.placement.programmeDomainId), unit.code).toBe(true);
+    }
+  });
+
   it('applique la règle arrêtée : un sujet = une leçon, SAUF dans une unité du manuel', () => {
     expect(decomposition.decompositionRule).toBe('one_lesson_per_official_topic_unless_textbook_unit');
     const topicsInUnits = new Set(units.units.flatMap((u) => u.sourceTopicIds));

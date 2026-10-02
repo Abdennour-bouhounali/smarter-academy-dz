@@ -1,0 +1,120 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l5-010",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 5,
+  "metadata": {
+    "title": "تحرير النتيجة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تحرير",
+      "تفسير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P3"
+    }
+  },
+  "statement": {
+    "content": "في وضعية: «75% من المشاركين في سباق أنهوه، أي 48 عدّاء. ما عدد المشاركين الذين لم ينهوا السباق؟»"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما عدد المشاركين الذين لم ينهوا السباق؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "16",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "48 جزء."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الكل $\\dfrac{48}{0{,}75}$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم اطرح."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{48}{0{,}75} = 64$ و $64 - 48 = 16$.",
+        "incorrect": "نجد الكل أولا ثم نطرح الجزء."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "12",
+          "id": "MISC-IHSA-NISBA-MIN-ADAD"
+        },
+        {
+          "value": "64",
+          "id": "MISC-IHSA-NISBA-MIN-ADAD"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "أيّ جملة تجيب عن السؤال بوضوح؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "16 عدّاء لم ينهوا السباق من أصل 64 مشاركا",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "25% من المشاركين",
+          "isCorrect": false
+        },
+        {
+          "id": "C",
+          "content": "64 مشاركا",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "السؤال عن عدد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اذكر العدد ووحدته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جملة تجيب عن المطلوب."
+        }
+      ],
+      "feedback": {
+        "correct": "الجملة تذكر العدد المطلوب في سياق الوضعية.",
+        "incorrect": "الجواب عدد العدّائين، لا نسبتهم ولا كل المشاركين."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 4
+    }
+  ]
+}

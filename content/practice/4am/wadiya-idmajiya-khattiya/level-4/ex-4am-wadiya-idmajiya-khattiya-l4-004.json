@@ -1,0 +1,108 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-khattiya-l4-004",
+  "lessonCode": "wadiya-idmajiya-khattiya",
+  "level": 4,
+  "metadata": {
+    "title": "من البيان إلى المعامل",
+    "estimatedMinutes": 4,
+    "tags": [
+      "قراءة بيانية",
+      "معامل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-khattiya_P3",
+      "modelledOn": "method-read"
+    }
+  },
+  "statement": {
+    "content": "مستقيم التكلفة لعائلة يشمل المبدأ والنقطة $(300 ; 1050)$ ، حيث الفاصلة سعر تذكرة البالغ بالدينار والترتيب التكلفة. ميزانية العائلة $1750$ DA."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما معامل دالة التكلفة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري",
+      "expectedAnswer": "3.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "النقطة على المستقيم: $C(300) = 1050$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المعامل هو الصورة على العدد."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم 1050 على 300."
+        }
+      ],
+      "feedback": {
+        "correct": "$a = \\dfrac{1050}{300} = 3{,}5$.",
+        "incorrect": "المعامل = الترتيب ÷ الفاصلة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "2/7",
+          "id": "MISC-KHATTIYA-MUAMIL-MAQLUB"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما فاصلة نقطة تقاطع المستقيم مع خط الميزانية؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-khattiya_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد بالدينار",
+      "expectedAnswer": "500",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في نقطة التقاطع التكلفة 1750."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "حل $3{,}5x = 1750$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الفاصلة هي السعر."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = \\dfrac{1750}{3{,}5} = 500$ DA.",
+        "incorrect": "الفاصلة هي العدد الذي صورته 1750."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "6125",
+          "id": "MISC-KHATTIYA-SURA-SABIQ"
+        }
+      ]
+    }
+  ]
+}

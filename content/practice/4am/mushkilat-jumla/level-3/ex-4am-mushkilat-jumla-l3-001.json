@@ -1,0 +1,164 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l3-001",
+  "lessonCode": "mushkilat-jumla",
+  "level": 3,
+  "metadata": {
+    "title": "تحدّ الوحدة (ص 55) — المراحل الخمس",
+    "estimatedMinutes": 5,
+    "tags": [
+      "ترييض",
+      "المراحل الخمس",
+      "قطع نقدية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "challenge",
+      "page": 55,
+      "section": "تحدّ"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 55): لتزيين قسمهم، جمع التلاميذ مبلغ 610DA مُشكّلا من 37 قطعة نقدية من فئتي 20DA و 10DA. نسمّي $x$ عدد قطع 20DA و $y$ عدد قطع 10DA ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "جملة المعادلتين هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 610 \\\\ 20x + 10y = 37 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 37 \\\\ 10x + 20y = 610 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x + y = 37 \\\\ 20x + 10y = 610 \\end{cases}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معلومة تعدّ القطع ومعلومة تجمع الدنانير."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x$ قطع 20DA : كل واحدة 20."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المبلغ 610."
+        }
+      ],
+      "feedback": {
+        "correct": "37 قطعة و 610DA ، وقطعة 20DA تُضرب في 20.",
+        "incorrect": "انتبه إلى فئة كل حرف."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "حل الجملة واكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "24",
+        "y": "13"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$y = 37 - x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض: $20x + 10(37 - x) = 610$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحصل على $10x = 240$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 24$ و $y = 13$ .",
+        "incorrect": "أكمل حتى الثنائية."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "الجملة التي تجيب عن السؤال هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "جمع التلاميذ 24 قطعة من فئة 20DA و 13 قطعة من فئة 10DA.",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "جمع التلاميذ 13 قطعة من فئة 20DA و 24 قطعة من فئة 10DA.",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARTIB"
+        },
+        {
+          "id": "C",
+          "content": "جمع التلاميذ 24 قطعة.",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-NISF-HALL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ماذا يمثّل $x$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العدد الأول من الثنائية لـ $x$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الجواب يذكر العددين."
+        }
+      ],
+      "feedback": {
+        "correct": "تحقّق: $480 + 130 = 610$ و $24 + 13 = 37$ .",
+        "incorrect": "اقرأ الثنائية بترتيبها، وأجب عن الفئتين."
+      }
+    }
+  ]
+}

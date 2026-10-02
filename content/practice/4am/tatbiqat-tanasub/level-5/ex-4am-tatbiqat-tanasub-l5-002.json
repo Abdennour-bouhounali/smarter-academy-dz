@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l5-002",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — زيادة ثم تخفيض",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تغيّرات متتابعة",
+      "وضعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tatbiqat-tanasub_P1",
+      "modelledOn": "method-percent"
+    }
+  },
+  "statement": {
+    "content": "ارتفع سعر قميص المنتخب بـ 25% قبل كأس إفريقيا، ثم انخفض السعر الجديد بـ 20% بعدها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مقارنة بالسعر الأول:",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "ينقص السعر بـ $5\\%$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-TATABU-JAM"
+        },
+        {
+          "id": "B",
+          "content": "يعود السعر إلى ما كان عليه",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "يزيد السعر بـ $5\\%$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-TATABU-JAM"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التغيّر الثاني يُحسب من المقدار بعد التغيّر الأول، لا من المقدار الأول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب مضاعف كل تغيّر، ثم اضرب المضاعفات."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المضاعف الكلي $k$ : إذا كان $k > 1$ فهي زيادة بـ $(k - 1) \\times 100$ بالمئة، وإذا كان $k < 1$ فهو تخفيض بـ $(1 - k) \\times 100$ بالمئة."
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}25 \\times 0{,}8 = 1$ : المضاعف الكلي 1، فيعود السعر نفسه — رغم أنّ $25 - 20 = 5$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

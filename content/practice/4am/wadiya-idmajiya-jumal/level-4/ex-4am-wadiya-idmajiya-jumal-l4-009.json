@@ -1,0 +1,131 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l4-009",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 4,
+  "metadata": {
+    "title": "مثلث متساوي الساقين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترجمة",
+      "محيط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P2",
+      "modelledOn": "ex-19"
+    }
+  },
+  "statement": {
+    "content": "مثلث متساوي الساقين محيطه 32 cm، وطول كل من ساقيه يزيد عن طول قاعدته بـ 4 cm. نسمّي $x$ طول الساق و $y$ طول القاعدة (بالسنتيمتر)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم النص هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 32 \\\\ x - y = 4 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} 2x + y = 32 \\\\ y - x = 4 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} 2x + y = 32 \\\\ x - y = 4 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$\\begin{cases} x + 2y = 32 \\\\ x - y = 4 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "للمثلث ساقان متقايستان وقاعدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المحيط: ساقان وقاعدة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الساق أطول من القاعدة."
+        }
+      ],
+      "feedback": {
+        "correct": "$2x + y = 32$ و $x - y = 4$.",
+        "incorrect": "في المحيط ساقان، لا ساق واحدة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "ما الطولان $(x ; y)$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسور أو أعداد عشرية مقبولة",
+      "expectedAnswer": {
+        "x": "12",
+        "y": "8"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اجمع المعادلتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$3x = 36$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقق من المحيط."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = 12$ و $y = 8$ ؛ $2 \\times 12 + 8 = 32$.",
+        "incorrect": "الجمع يحذف $y$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "8",
+            "y": "12"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    }
+  ]
+}

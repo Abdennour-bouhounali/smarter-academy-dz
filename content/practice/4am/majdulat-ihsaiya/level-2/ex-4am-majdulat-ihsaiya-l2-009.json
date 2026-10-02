@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l2-009",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — مدى أوقات السباق",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مدى",
+      "دستور"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_majdulat-ihsaiya_P2",
+      "modelledOn": "ex-7"
+    }
+  },
+  "statement": {
+    "content": "أوقات (بالثواني) أربعة عدّائين محجوزة في A1:D1 : 14 ، 9 ، 21 ، 17 ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "العدد الذي يُظهره ⁦=MAX(A1:D1)-MIN(A1:D1)⁩ :",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "12",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-MADA-AKBAR-QIMA",
+          "value": "21"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أكبر قيمة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أصغر قيمة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$21 - 9$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$21 - 9 = 12$ .",
+        "incorrect": "المدى فرق."
+      }
+    }
+  ]
+}

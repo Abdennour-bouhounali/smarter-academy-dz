@@ -1,0 +1,123 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l3-005",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 14 (ص 73)",
+    "estimatedMinutes": 4,
+    "tags": [
+      "انتماء نقطة",
+      "فخّ الإشارة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-14",
+      "page": 73,
+      "section": "أوظّف تعلّماتي",
+      "number": 14
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 73): (D) هو المستقيم الذي يمثل بيان الدالة $f : x \\longmapsto -3{,}2x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل النقطة $B(5 ; 16)$ تنتمي إلى (D)؟",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "تنتمي إلى التمثيل",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "لا تنتمي إلى التمثيل",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نقطة تنتمي إلى التمثيل إذا كان ترتيبها صورة فاصلتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب صورة الفاصلة بالدالة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن الصورة بالترتيب، مع الانتباه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(5) = -16 \\neq 16$ .",
+        "incorrect": "لا تنس إشارة المعامل."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "النقطتان $B(5 ; 16)$ و $C(10 ; 32)$ تنتميان إلى تمثيل الدالة:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\longmapsto 3{,}2x$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$x \\longmapsto -3{,}2x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$x \\longmapsto 0{,}32x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-MUAMIL-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب $\\dfrac{16}{5}$ و $\\dfrac{32}{10}$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المعامل موجب أم سالب؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مستقيم موجب المعامل يصعد ومستقيم سالب المعامل ينزل: هما مستقيمان مختلفان."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{16}{5} = \\dfrac{32}{10} = 3{,}2$ : B و C على تمثيل $3{,}2x$ الذي يصعد.",
+        "incorrect": "اقسم ترتيب كل نقطة على فاصلتها."
+      }
+    }
+  ]
+}

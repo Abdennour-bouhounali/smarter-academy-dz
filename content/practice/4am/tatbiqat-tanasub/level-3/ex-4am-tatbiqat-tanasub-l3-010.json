@@ -1,0 +1,59 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l3-010",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — المدفأة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "مقدار بدلالة آخر",
+      "الطاقة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tatbiqat-tanasub_P3",
+      "modelledOn": "know-4"
+    }
+  },
+  "statement": {
+    "content": "مدفأة كهربائية استطاعتها $2kW$ استهلكت طاقة قدرها $9kWh$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مدة اشتغالها (بالساعة):",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "4,5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المقدار المركّب الثابت (سرعة، كتلة حجمية، استطاعة، مضاعف) هو معامل دالة خطية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المقدار المطلوب بدلالة الآخر: $d = v \\times t$ ، $m = \\rho \\times V$ ، $E = P \\times t$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض بالقيمة المعطاة، أو حلّ المعادلة إذا كان المجهول هو المقدار الآخر، ثم تحقّق من الوحدة."
+        }
+      ],
+      "feedback": {
+        "correct": "$E = P \\times t$ : $2t = 9$ ، ومنه $t = 4{,}5h$ (أي 4 ساعات و 30 دقيقة).",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    }
+  ]
+}

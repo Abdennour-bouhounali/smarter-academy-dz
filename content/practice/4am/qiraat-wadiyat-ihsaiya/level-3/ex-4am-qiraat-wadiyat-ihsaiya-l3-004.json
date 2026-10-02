@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l3-004",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 3,
+  "metadata": {
+    "title": "تحدّ الكتاب — أيّ القسمين أفضل؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تحدّ",
+      "مقارنة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "challenge",
+      "page": 91,
+      "section": "تحدّ"
+    }
+  },
+  "statement": {
+    "content": "القسم (أ): 15 ذكرا معدّلهم 10 و 18 أنثى معدّلهن 13. القسم (ب): 14 ذكرا معدّلهم $12{,}5$ و 19 أنثى معدّلهن 11."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ القسمين نتائجه أفضل في المعدّل؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "القسم (أ)",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUTAWASSIT-MUTAWASSITAYN"
+        },
+        {
+          "id": "B",
+          "content": "القسم (ب)",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUTAWASSIT-MUTAWASSITAYN"
+        },
+        {
+          "id": "C",
+          "content": "للقسمين المعدّل نفسه",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب مجموع نقاط كل قسم."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في كل قسم 33 تلميذا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن المجموعين."
+        }
+      ],
+      "feedback": {
+        "correct": "مجموع النقاط 384 في القسمين والعدد 33: المعدّل نفسه $\\dfrac{384}{33} \\approx 11{,}64$ .",
+        "incorrect": "المقارنة مجموعة بمجموعة لا تحسم."
+      },
+      "difficulty": 3
+    }
+  ]
+}

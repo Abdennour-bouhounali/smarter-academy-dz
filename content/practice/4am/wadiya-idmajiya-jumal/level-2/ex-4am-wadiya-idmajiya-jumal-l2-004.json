@@ -1,0 +1,131 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l2-004",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 2,
+  "metadata": {
+    "title": "تذاكر الداربي",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترجمة",
+      "حل جملة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P2",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "لحضور الداربي في ملعب 5 جويلية، اشترت مجموعة من الأصدقاء 12 تذكرة، بعضها للمدرجات بـ 300 DA للتذكرة والباقي للمنصة بـ 500 DA للتذكرة، ودفعوا 4 400 DA. نسمّي $x$ عدد تذاكر المدرجات و $y$ عدد تذاكر المنصة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم النص هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 4400 \\\\ 300x + 500y = 12 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 12 \\\\ 500x + 300y = 4400 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x + y = 12 \\\\ 300x + 500y = 4400 \\end{cases}$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$\\begin{cases} 300x + 500y = 12 \\\\ x + y = 4400 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معلومة تعدّ التذاكر ومعلومة تجمع الأثمان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تذكرة المدرجات بـ 300 DA."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عدد التذاكر لا يُضرب في الثمن في معادلة العدد."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + y = 12$ تذكرة و $300x + 500y = 4400$ DA.",
+        "incorrect": "العدد 12 عدد تذاكر، و 4 400 مبلغ."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    },
+    {
+      "id": "q2",
+      "statement": "كم تذكرة $(x ; y)$ من كل نوع؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان طبيعيان",
+      "expectedAnswer": {
+        "x": "8",
+        "y": "4"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$y = 12 - x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض في معادلة المبلغ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقق: المجموع 4 400 DA."
+        }
+      ],
+      "feedback": {
+        "correct": "$300x + 6000 - 500x = 4400$ ، $x = 8$ ، $y = 4$.",
+        "incorrect": "عوّض ثم تحقق في النص."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "4",
+            "y": "8"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    }
+  ]
+}

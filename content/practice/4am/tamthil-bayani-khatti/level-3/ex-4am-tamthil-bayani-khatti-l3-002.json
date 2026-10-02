@@ -1,0 +1,123 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l3-002",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 13 (ص 73)",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نقطة ثانية",
+      "كسر"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-13",
+      "page": 73,
+      "section": "أوظّف تعلّماتي",
+      "number": 13
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 73): مثّل بيانيا الدالة $f : x \\longmapsto \\dfrac{-3}{2}x$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نرسم المستقيم الذي يشمل O والنقطة ذات الإحداثيين الصحيحين:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(2 ; -3)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(2 ; 3)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-ISHARA"
+        },
+        {
+          "id": "C",
+          "content": "$(-3 ; 2)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-FASILA-TARTIB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "صورة عدد بالدالة الخطية $x \\longmapsto ax$ هي جداء هذا العدد في المعامل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب العدد في المعامل مع الانتباه إلى الإشارة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "النقطة التي فاصلتها هذا العدد وترتيبها صورته تنتمي إلى التمثيل."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(2) = \\dfrac{-3}{2} \\times 2 = -3$ .",
+        "incorrect": "اختر فاصلة تساوي مقام المعامل."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "المستقيم المرسوم:",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "يصعد من اليسار إلى اليمين",
+          "isCorrect": false,
+          "misconceptionId": "MISC-BAYANI-MUNHA"
+        },
+        {
+          "id": "B",
+          "content": "ينزل من اليسار إلى اليمين",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "انظر إلى إشارة المعامل $a$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المستقيم يشمل O دائمًا، ومنحاه تعيّنه إشارة $a$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تخيّل نقطة فاصلتها 1: ترتيبها $a$ ، فوق محور الفواصل أم تحته؟"
+        }
+      ],
+      "feedback": {
+        "correct": "المعامل $\\dfrac{-3}{2}$ سالب: ينزل.",
+        "incorrect": "انظر إلى إشارة المعامل."
+      }
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-taalufiya-l1-009",
+  "lessonCode": "wadiya-idmajiya-taalufiya",
+  "level": 1,
+  "metadata": {
+    "title": "متى تتساوى صيغتان؟",
+    "estimatedMinutes": 2,
+    "tags": [
+      "مفاضلة",
+      "معادلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-taalufiya_P1"
+    }
+  },
+  "statement": {
+    "content": "تطبيقا توصيل: الأول يطلب $30x + 120$ دينارا والثاني $50x$ دينارا، حيث $x$ عدد الكيلومترات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "من أجل كم كيلومترا يتساوى الثمنان؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد الكيلومترات",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$30x + 120 = 50x$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$120 = 20x$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "فاصلة نقطة تقاطع المستقيمين."
+        }
+      ],
+      "feedback": {
+        "correct": "$20x = 120$ ومنه $x = 6$ km (والثمن 300 DA).",
+        "incorrect": "نساوي بين الثمنين ونحلّ المعادلة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1,
+      "misconceptionSignatures": [
+        {
+          "value": "4",
+          "id": "MISC-TARRID-JUZ-THABIT"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-jumal-l3-004",
+  "lessonCode": "wadiya-idmajiya-jumal",
+  "level": 3,
+  "metadata": {
+    "title": "التفاح والبرتقال",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وحدات",
+      "حل جملة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-jumal_P2",
+      "modelledOn": "ex-27"
+    }
+  },
+  "statement": {
+    "content": "تزن 3 تفاحات وبرتقالتان معا 1kg 100g، وتزن تفاحة و 4 برتقالات معا 1kg 200g (الثمار من النوع نفسه متماثلة). نسمّي $x$ كتلة التفاحة و $y$ كتلة البرتقالة بالغرام."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعلومة الأولى تُترجم بـ:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3x + 2y = 1{,}1$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-WIHDA"
+        },
+        {
+          "id": "B",
+          "content": "$2x + 3y = 1100$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$3x + 2y = 1100$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$x + y = 1100$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حوّل 1kg 100g إلى غرام."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "1kg = 1000g."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "كل عدد يُضرب في كتلة الثمرة التي يعدّها."
+        }
+      ],
+      "feedback": {
+        "correct": "1kg 100g = 1100g ، فـ $3x + 2y = 1100$.",
+        "incorrect": "وحّد الوحدة: كل الكتل بالغرام."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    },
+    {
+      "id": "q2",
+      "statement": "ما الكتلتان $(x ; y)$ بالغرام؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-jumal_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) بالغرام",
+      "expectedAnswer": {
+        "x": "200",
+        "y": "250"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المعادلة الثانية $x + 4y = 1200$."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$x = 1200 - 4y$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "عوّض في $3x + 2y = 1100$."
+        }
+      ],
+      "feedback": {
+        "correct": "$3600 - 10y = 1100$ ، $y = 250$ ، $x = 200$.",
+        "incorrect": "عبّر عن $x$ من الثانية وعوّض في الأولى."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": {
+            "x": "250",
+            "y": "200"
+          },
+          "id": "MISC-JUMLA-TARTIB"
+        }
+      ]
+    }
+  ]
+}

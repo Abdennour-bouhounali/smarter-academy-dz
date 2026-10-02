@@ -1,0 +1,114 @@
+{
+  "id": "ex-4am-mafhum-jumla-l2-001",
+  "lessonCode": "mafhum-jumla",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 4 — حل للجملة أم لا؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جملة",
+      "ثنائية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-4",
+      "page": 60,
+      "section": "أوظّف تعلّماتي",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 60): نعتبر الجملة $\\begin{cases} 2x + y = 4 \\\\ x + y = 3 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل الثنائية $(3 ; -2)$ حل للجملة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، حل للجملة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-MUADALA-WAHIDA"
+        },
+        {
+          "id": "B",
+          "content": "لا، ليست حلا للجملة",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض في المعادلتين كلتيهما."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2 \\times 3 + (-2)$ ثم $3 + (-2)$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حل الجملة يحقّق المعادلتين في آن واحد."
+        }
+      ],
+      "feedback": {
+        "correct": "$6 - 2 = 4$ لكن $3 - 2 = 1 \\neq 3$ : ليست حلا.",
+        "incorrect": "معادلة واحدة لا تكفي."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل الثنائية $(1 ; 2)$ حل للجملة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، حل للجملة",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا، ليست حلا للجملة",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$x = 1$ و $y = 2$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$2 + 2$ ثم $1 + 2$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "هل تجد 4 ثم 3؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$2 \\times 1 + 2 = 4$ و $1 + 2 = 3$ : حل للجملة.",
+        "incorrect": "عوّض في المعادلتين."
+      }
+    }
+  ]
+}

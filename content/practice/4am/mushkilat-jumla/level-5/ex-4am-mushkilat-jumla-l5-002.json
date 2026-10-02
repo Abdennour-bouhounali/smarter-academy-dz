@@ -1,0 +1,113 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l5-002",
+  "lessonCode": "mushkilat-jumla",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — تخفيض المنخرطين",
+    "estimatedMinutes": 6,
+    "tags": [
+      "ترييض",
+      "نسب مئوية",
+      "ملعب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mushkilat-jumla_P1",
+      "modelledOn": "act-3"
+    }
+  },
+  "statement": {
+    "content": "تذكرة المدرجات 300 DA وتذكرة المنصة 700 DA. اشترت مجموعة 10 تذاكر مدرجات و 4 تذاكر منصة بـ 5800 DA. واشترت رابطة المنخرطين، التي تستفيد من تخفيض 50% على تذاكر المدرجات فقط، 20 تذكرة مدرجات وتذكرتي منصة. نسمّي $x$ و $y$ ثمني التذكرتين قبل التخفيض."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "إذا دفعت الرابطة 4400 DA، فمشترياتها تُترجم بـ:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$20x + 2y = 4400$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$0{,}5(20x + 2y) = 4400$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$20 \\times 0{,}5x + 2y = 4400$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التخفيض يخصّ تذاكر المدرجات فقط."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تذكرة المدرجات بعد التخفيض: نصف ثمنها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تذاكر المنصة بثمنها الكامل."
+        }
+      ],
+      "feedback": {
+        "correct": "تذاكر المدرجات بنصف الثمن: $20 \\times 0{,}5x = 10x$ ، وتذكرتا المنصة $2y$ .",
+        "incorrect": "التخفيض لا يمسّ تذاكر المنصة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "تحقّق: حل الجملة $\\begin{cases} 10x + 4y = 5800 \\\\ 10x + 2y = 4400 \\end{cases}$ واكتب الثنائية $(x ; y)$ .",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "300",
+        "y": "700"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اطرح المعادلتين طرفا لطرف."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "يختفي $x$ : $2y = 1400$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم احسب $x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 700$ و $x = 300$ : الثمنان المعلنان.",
+        "incorrect": "أكمل حتى الثنائية."
+      }
+    }
+  ]
+}

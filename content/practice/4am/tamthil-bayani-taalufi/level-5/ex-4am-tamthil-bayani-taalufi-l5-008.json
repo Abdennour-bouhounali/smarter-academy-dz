@@ -1,0 +1,58 @@
+{
+  "id": "ex-4am-tamthil-bayani-taalufi-l5-008",
+  "lessonCode": "tamthil-bayani-taalufi",
+  "level": 5,
+  "metadata": {
+    "title": "نرفع المستقيم إلى نقطة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "ترتيب",
+      "الترتيب عند المبدأ"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-taalufi_P1"
+    }
+  },
+  "statement": {
+    "content": "$(d)$ تمثيل الدالة الخطية $x \\longmapsto 3x$ . نرفع $(d)$ (أو ننزله) حتى يشمل النقطة $(2 ; 4)$ فنحصل على $(d')$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الترتيب عند المبدأ للدالة التي يمثّلها $(d')$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-taalufi_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بفاصلة أو كسر مثل 7/9)",
+      "expectedAnswer": "-2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الترتيب عند المبدأ $b$ هو ترتيب النقطة التي يقطع فيها المستقيم محور التراتيب."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "هذه النقطة فاصلتها $0$ ، لأنّ $f(0) = b$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "إذا لم تكن مرسومة، انطلق من نقطة معلومة وارجع إلى الفاصلة $0$ بالدرجة $a$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "المستقيم يقطع محور التراتيب في $(0 ; -2)$ : $b = -2$ .",
+        "incorrect": "اقرأ ترتيب نقطة التقاطع مع محور التراتيب، لا مع محور الفواصل."
+      }
+    }
+  ]
+}

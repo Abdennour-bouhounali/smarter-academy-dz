@@ -1,0 +1,77 @@
+{
+  "id": "ex-4am-mafhum-taalufiya-l2-005",
+  "lessonCode": "mafhum-taalufiya",
+  "level": 2,
+  "metadata": {
+    "title": "نشاط 1 — برنامج الحساب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "برنامج حساب",
+      "الكتاب"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-1",
+      "page": 78,
+      "section": "أنشطة",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 78): أجرة عامل: أجرة قاعدية شهرية قدرها 35000DA، يضاف إليها 185DA لكل ساعة إضافية. نسمّي $x$ عدد الساعات الإضافية و $S(x)$ الأجرة. صف الدالة $S$ ببرنامج حساب من الشكل «اضرب $x$ في …، أضف …»."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "برنامج الحساب هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "«اضرب $x$ في 185، أضف 35000»",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "«اضرب $x$ في 35000، أضف 185»",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TAALUFI-A-B-MAQLUB"
+        },
+        {
+          "id": "C",
+          "content": "«أضف 35000 إلى $x$ ، ثم اضرب في 185»",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-JUZ-THABIT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$S(x) = 185x + 35000$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الضرب في 185 يأتي قبل الإضافة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بـ $x = 10$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$S(x) = 185x + 35000$ : نضرب في 185 ثم نضيف 35000.",
+        "incorrect": "راجع كل اقتراح: واحد فقط صحيح."
+      }
+    }
+  ]
+}

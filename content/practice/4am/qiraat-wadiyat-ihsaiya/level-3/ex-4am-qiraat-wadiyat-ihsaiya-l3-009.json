@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-qiraat-wadiyat-ihsaiya-l3-009",
+  "lessonCode": "qiraat-wadiyat-ihsaiya",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — تدريج من 25",
+    "estimatedMinutes": 3,
+    "tags": [
+      "قراءة مخطط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_qiraat-wadiyat-ihsaiya_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "محور مخطط بالأعمدة لعدد المشاهدات مدرّج من 25 إلى 25، والأرقام مكتوبة كل 100."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "عمود يتجاوز التدريجة المكتوب عليها 100 بثلاث تدريجات: ما قيمته؟",
+      "learningPoints": [
+        {
+          "code": "4am_qiraat-wadiyat-ihsaiya_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "175",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-QIRAA-MUKHATTAT",
+          "value": "103"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كل تدريجة 25."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نبدأ من 100."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$100 + 3 \\times 25$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$100 + 3 \\times 25 = 175$ .",
+        "incorrect": "التدريجة غير المكتوبة تساوي 25 أيضا."
+      },
+      "difficulty": 3
+    }
+  ]
+}

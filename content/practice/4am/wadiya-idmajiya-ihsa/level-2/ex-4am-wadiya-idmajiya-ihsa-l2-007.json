@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l2-007",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 2,
+  "metadata": {
+    "title": "الكل من نسبة جزء",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نسبة مئوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P3"
+    }
+  },
+  "statement": {
+    "content": "في رحلة مدرسية، 9 تلاميذ فقط أحضروا القبعة، وهم يمثّلون 30% من المشاركين."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم عدد المشاركين في الرحلة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "30",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "9 هو جزء، والمطلوب الكل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$0{,}3 \\times T = 9$."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على $0{,}3$."
+        }
+      ],
+      "feedback": {
+        "correct": "$T = \\dfrac{9}{0{,}3} = 30$ مشاركا.",
+        "incorrect": "العدد 9 هو 30% من الكل، فنقسمه على $0{,}3$."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "2.7",
+          "id": "MISC-IHSA-NISBA-MIN-ADAD"
+        }
+      ]
+    }
+  ]
+}

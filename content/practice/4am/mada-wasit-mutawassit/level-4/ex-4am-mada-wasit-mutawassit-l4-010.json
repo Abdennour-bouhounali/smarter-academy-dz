@@ -1,0 +1,86 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l4-010",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — راتب المدير",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وسيط",
+      "قيمة متطرّفة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_mada-wasit-mutawassit_P3",
+      "modelledOn": "method-indicators"
+    }
+  },
+  "statement": {
+    "content": "الرواتب الشهرية (DA) في ورشة صغيرة: $30000$ ، $32000$ ، $35000$ ، $36000$ ، وراتب المدير $300000$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "متوسط هذه الرواتب هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "86600",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT",
+          "value": "35000"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المجموع $433000$."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{433000}{5} = 86600$ DA.",
+        "incorrect": "اقسم المجموع على $5$."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "وسيط هذه الرواتب هو:",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "35000",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-IHSA-WASIT-MUTAWASSIT",
+          "value": "86600"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "خمس قيم مرتّبة: القيمة الثالثة."
+        }
+      ],
+      "feedback": {
+        "correct": "الوسيط $35000$ DA : لا يتأثّر براتب المدير، بخلاف المتوسط $86600$.",
+        "incorrect": "الوسيط قيمة رتبية، لا مجموع."
+      }
+    }
+  ]
+}

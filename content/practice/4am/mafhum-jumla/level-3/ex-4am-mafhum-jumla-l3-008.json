@@ -1,0 +1,118 @@
+{
+  "id": "ex-4am-mafhum-jumla-l3-008",
+  "lessonCode": "mafhum-jumla",
+  "level": 3,
+  "metadata": {
+    "title": "حالات خاصة 1 — من الكتاب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "حالات خاصة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-cases",
+      "page": 58,
+      "section": "معارف"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 58): نعتبر الجملة $\\begin{cases} 4x + 6y = 2 \\\\ -2x - 3y = -1 \\end{cases}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هذه الجملة ...",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P4",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لها حل وحيد",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-HALAT"
+        },
+        {
+          "id": "B",
+          "content": "ليس لها حلول",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-HALAT"
+        },
+        {
+          "id": "C",
+          "content": "لها عدد غير منته من الحلول",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "بسّط كل معادلة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قسّم الأولى على 2، واضرب الثانية في $-1$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحصل مرّتين على $2x + 3y = 1$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "المعادلتان تؤولان إلى $2x + 3y = 1$ : عدد غير منته من الحلول.",
+        "incorrect": "بسّط قبل أن تحكم."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل الثنائية $(-1 ; 1)$ حل لهذه الجملة؟",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-jumla_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض في $4x + 6y = 2$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$-4 + 6 = 2$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم في $-2x - 3y = -1$ : $2 - 3$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$-4 + 6 = 2$ و $2 - 3 = -1$ : حل للجملة.",
+        "incorrect": "عوّض في المعادلتين."
+      }
+    }
+  ]
+}

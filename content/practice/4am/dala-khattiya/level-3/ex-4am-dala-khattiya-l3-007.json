@@ -1,0 +1,62 @@
+{
+  "id": "ex-4am-dala-khattiya-l3-007",
+  "lessonCode": "dala-khattiya",
+  "level": 3,
+  "metadata": {
+    "title": "المعامل من جدول عشري",
+    "estimatedMinutes": 4,
+    "tags": [
+      "جدول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "جدول قيم دالة خطية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجدول جدول قيم دالة خطية $f$ ($x$ : $0{,}5$ ، $2$ ، $3$ ؛ $f(x)$ : $0{,}7$ ، $2{,}8$ ، $4{,}2$). ما معاملها؟",
+      "learningPoints": [
+        {
+          "code": "4am_dala-khattiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "1.4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الدالة خطية: دستورها من الشكل $f(x) = ax$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعلومة المعطاة على شكل معادلة مجهولها $a$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الصورة على العدد غير المعدوم."
+        }
+      ],
+      "feedback": {
+        "correct": "جدول قيم دالة خطية جدول تناسبية: $\\dfrac{0{,}7}{0{,}5} = 1{,}4$ ، وهو معامل الدالة.",
+        "incorrect": "أعد الحساب خطوة خطوة، وتحقّق من الإشارة ومن ترتيب القسمة."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TANASUB-MUAMIL-MAQLUB",
+          "value": "5/7"
+        }
+      ]
+    }
+  ]
+}

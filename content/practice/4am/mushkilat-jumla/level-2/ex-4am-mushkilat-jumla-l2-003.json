@@ -1,0 +1,113 @@
+{
+  "id": "ex-4am-mushkilat-jumla-l2-003",
+  "lessonCode": "mushkilat-jumla",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 16 (ص 61) — قسمة إقليدية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "ترييض",
+      "قسمة إقليدية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-16",
+      "page": 61,
+      "section": "أوظّف تعلّماتي",
+      "number": 16
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 61): عددان مجموعهما يساوي 206. عند قسمة أكبرهما على أصغرهما، يكون حاصل القسمة 4 وباقي القسمة 1. ما هما العددان؟ نسمّي $x$ الأكبر و $y$ الأصغر."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الجملة التي تترجم المشكلة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\begin{cases} x + y = 206 \\\\ x = 4y \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "B",
+          "content": "$\\begin{cases} x + y = 206 \\\\ y = 4x + 1 \\end{cases}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-TARJAMA"
+        },
+        {
+          "id": "C",
+          "content": "$\\begin{cases} x + y = 206 \\\\ x = 4y + 1 \\end{cases}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تذكّر: المقسوم = القاسم × حاصل القسمة + الباقي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المقسوم هو الأكبر $x$ والقاسم هو الأصغر $y$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "لا تنسَ الباقي."
+        }
+      ],
+      "feedback": {
+        "correct": "القسمة الإقليدية للأكبر على الأصغر، مع الباقي 1.",
+        "incorrect": "الأكبر يُقسم على الأصغر، والباقي جزء من المساواة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "العددان $(x ; y)$ هما:",
+      "learningPoints": [
+        {
+          "code": "4am_mushkilat-jumla_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "point",
+      "answerFormat": "الثنائية (x ; y) — عددان، كسر أو عدد عشري بالفاصلة مقبول",
+      "expectedAnswer": {
+        "x": "165",
+        "y": "41"
+      },
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض $x$ في المعادلة الأولى."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحصل على $5y + 1 = 206$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم احسب $x$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$y = 41$ و $x = 4 \\times 41 + 1 = 165$ ، والباقي $1 < 41$ .",
+        "incorrect": "عوّض العبارة في المعادلة الأخرى."
+      }
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-ihsa-l4-010",
+  "lessonCode": "wadiya-idmajiya-ihsa",
+  "level": 4,
+  "metadata": {
+    "title": "تحليل الوضعية: أيّ معطى لأيّ مجهول؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تحليل وضعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-ihsa_P2"
+    }
+  },
+  "statement": {
+    "content": "في جدول إحصائي قيمتان مخفيتان: الأولى في وسط الجدول، والثانية أكبر قيمة. يعطي النص الوسيط والمتوسط، والرتبتان الوسيطتان تقعان في عمود القيمة الأولى."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ استراتيجية مناسبة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-ihsa_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نجد الأولى بالوسيط، ثم الثانية بمعادلة المتوسط",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نجد الثانية بالوسيط، ثم الأولى بالمتوسط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-MUTAWASSIT"
+        },
+        {
+          "id": "C",
+          "content": "نجد القيمتين بالمتوسط وحده",
+          "isCorrect": false
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ماذا يكشف الوسيط؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أكبر قيمة لا تحرّك الوسيط."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "معادلة واحدة لمجهول واحد."
+        }
+      ],
+      "feedback": {
+        "correct": "الرتبتان في عمود الأولى فهي الوسيط؛ ثم معادلة المتوسط بمجهول واحد.",
+        "incorrect": "معادلة المتوسط وحدها فيها مجهولان."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 4
+    }
+  ]
+}

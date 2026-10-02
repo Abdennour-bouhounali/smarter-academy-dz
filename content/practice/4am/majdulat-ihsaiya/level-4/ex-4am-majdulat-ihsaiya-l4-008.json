@@ -1,0 +1,82 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l4-008",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 24 (ص 101) — =ALEA() في العمود",
+    "estimatedMinutes": 3,
+    "tags": [
+      "دستور",
+      "مجال"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-24",
+      "page": 101,
+      "section": "أتعمّق",
+      "number": 24
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 101): نحجز في A1 الدستور ⁦=ALEA()⁩ ثم نسحب من A1 إلى A50 : سلسلة تكرارها الكلي 50 ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "دستور وسيط هذه السلسلة:",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "⁦=MOYENNE(A1:A50)⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-WASIT-MUTAWASSIT"
+        },
+        {
+          "id": "B",
+          "content": "⁦MEDIANE(A1:A50)⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-DUSTUR-KHATI"
+        },
+        {
+          "id": "C",
+          "content": "⁦=MEDIANE(A1:A50)⁩",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "⁦=MEDIANE(A1:G1)⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MAJAL-KHALIYA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "أين السلسلة؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في العمود A من A1 إلى A50 ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الدالة MEDIANE مع « ⁦=⁩ » ."
+        }
+      ],
+      "feedback": {
+        "correct": "⁦=MEDIANE(A1:A50)⁩ : الدالة الصحيحة على المجال الصحيح.",
+        "incorrect": "المجال A1:A50 والدالة MEDIANE ، وتبدأ بـ « ⁦=⁩ » ."
+      }
+    }
+  ]
+}

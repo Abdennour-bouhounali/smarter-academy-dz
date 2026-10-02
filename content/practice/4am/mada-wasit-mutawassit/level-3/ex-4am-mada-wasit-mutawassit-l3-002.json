@@ -1,0 +1,71 @@
+{
+  "id": "ex-4am-mada-wasit-mutawassit-l3-002",
+  "lessonCode": "mada-wasit-mutawassit",
+  "level": 3,
+  "metadata": {
+    "title": "نشاط 3 (ص 93) — أيّ المدينتين أكثر حرًّا؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تفسير"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-3",
+      "page": 93,
+      "section": "أنشطة",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 93): للمدينتين (أ) و (ب) المتوسط نفسه $\\dfrac{482}{30} \\approx 16{,}07$ ، ومدى (أ) $5$ ومدى (ب) $10$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ماذا نستنتج؟",
+      "learningPoints": [
+        {
+          "code": "4am_mada-wasit-mutawassit_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "(ب) أكثر حرًّا لأنّ مداها أكبر.",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MADA-AKBAR-QIMA"
+        },
+        {
+          "id": "B",
+          "content": "لا تُعدّ إحداهما أكثر حرًّا في المتوسط؛ درجات (ب) أكثر تشتّتًا.",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "(أ) أكثر حرًّا لأنّ مداها أصغر.",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-MUQARANA-MUTAWASSIT-FAQAT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المتوسط واحد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ماذا يقيس المدى؟"
+        }
+      ],
+      "feedback": {
+        "correct": "المتوسط نفسه؛ المدى يقيس تباعد القيم لا الحرارة.",
+        "incorrect": "المدى مقياس تشتّت."
+      }
+    }
+  ]
+}

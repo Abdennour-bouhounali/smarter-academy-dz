@@ -1,0 +1,118 @@
+{
+  "id": "ex-4am-tatbiqat-tanasub-l1-002",
+  "lessonCode": "tatbiqat-tanasub",
+  "level": 1,
+  "metadata": {
+    "title": "تمرين 21 — انخفاض 15%",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تخفيض",
+      "الدالة المرفقة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-21",
+      "page": 73,
+      "section": "أوظّف تعلّماتي",
+      "number": 21
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 73): 1) اكتب عبارة الدّالة الخطّية التي تترجم انخفاض مقدار $x$ بنسبة 15%. 2) انخفض عدد رؤوس قطيع من الحيوانات المكوّن من 40 رأسا بـ 15%. ما هو عدد رؤوس القطيع بعد هذا الانخفاض؟"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "1) الدالة الخطية التي تترجم الانخفاض بـ 15%:",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$x \\longmapsto 0{,}15x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
+        },
+        {
+          "id": "B",
+          "content": "$x \\longmapsto 0{,}85x$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$x \\longmapsto 1{,}15x$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-AKHDH-BADAL-ZIYADA"
+        },
+        {
+          "id": "D",
+          "content": "$x \\longmapsto x - 15$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-NISBA-JAM"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد: هل نأخذ نسبة من المقدار، أم نزيده، أم نخفّضه؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الزيادة بـ $t\\%$ ضرب في $1 + \\dfrac{t}{100}$ ، والتخفيض ضرب في $1 - \\dfrac{t}{100}$ ، والأخذ ضرب في $\\dfrac{t}{100}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب المضاعف أولًا، ثم اضرب فيه المقدار، وتحقّق أنّ النتيجة معقولة (أكبر بعد زيادة، أصغر بعد تخفيض)."
+        }
+      ],
+      "feedback": {
+        "correct": "$1 - \\dfrac{15}{100} = 0{,}85$ : $x \\longmapsto 0{,}85x$ .",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "2) عدد رؤوس القطيع بعد الانخفاض:",
+      "learningPoints": [
+        {
+          "code": "4am_tatbiqat-tanasub_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "34",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد: هل نأخذ نسبة من المقدار، أم نزيده، أم نخفّضه؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الزيادة بـ $t\\%$ ضرب في $1 + \\dfrac{t}{100}$ ، والتخفيض ضرب في $1 - \\dfrac{t}{100}$ ، والأخذ ضرب في $\\dfrac{t}{100}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب المضاعف أولًا، ثم اضرب فيه المقدار، وتحقّق أنّ النتيجة معقولة (أكبر بعد زيادة، أصغر بعد تخفيض)."
+        }
+      ],
+      "feedback": {
+        "correct": "$40 \\times 0{,}85 = 34$ رأسًا.",
+        "incorrect": "أعد الحساب بالمضاعف أو بالعلاقة بين المقادير، وتحقّق من الوحدة."
+      }
+    }
+  ]
+}

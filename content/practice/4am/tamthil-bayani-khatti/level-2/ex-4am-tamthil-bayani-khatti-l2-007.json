@@ -1,0 +1,116 @@
+{
+  "id": "ex-4am-tamthil-bayani-khatti-l2-007",
+  "lessonCode": "tamthil-bayani-khatti",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 14 (ص 73) — على طريقته",
+    "estimatedMinutes": 4,
+    "tags": [
+      "انتماء نقطة",
+      "إشارة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tamthil-bayani-khatti_P1",
+      "modelledOn": "ex-14"
+    }
+  },
+  "statement": {
+    "content": "نعتبر الدالة الخطية $f : x \\longmapsto -1{,}5x$ وتمثيلها (D)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النقطة $P(2 ; 3)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "تنتمي إلى التمثيل",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-ISHARA"
+        },
+        {
+          "id": "B",
+          "content": "لا تنتمي إلى التمثيل",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نقطة تنتمي إلى التمثيل إذا كان ترتيبها صورة فاصلتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب صورة الفاصلة بالدالة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن الصورة بالترتيب، مع الانتباه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(2) = -3 \\neq 3$ : P على تمثيل $1{,}5x$ لا على (D).",
+        "incorrect": "لا تنس إشارة المعامل."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "النقطة $Q(2 ; -3)$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tamthil-bayani-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "تنتمي إلى التمثيل",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا تنتمي إلى التمثيل",
+          "isCorrect": false,
+          "misconceptionId": "MISC-KHATTIYA-ISHARA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نقطة تنتمي إلى التمثيل إذا كان ترتيبها صورة فاصلتها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب صورة الفاصلة بالدالة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن الصورة بالترتيب، مع الانتباه إلى الإشارة."
+        }
+      ],
+      "feedback": {
+        "correct": "$f(2) = -1{,}5 \\times 2 = -3$ .",
+        "incorrect": "احسب صورة 2."
+      }
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "id": "ex-4am-tarrid-khatti-l5-005",
+  "lessonCode": "tarrid-khatti",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — مستطيل طوله ضعف عرضه",
+    "estimatedMinutes": 4,
+    "tags": [
+      "هندسة",
+      "دالة خطية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-khatti_P1",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "مستطيل عرضه $\\ell$ وطوله $2\\ell$ (cm)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "إذا كان محيطه 45cm ، فما عرضه (cm)؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري (الفاصلة مقبولة)",
+      "expectedAnswer": "7.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المحيط $2(\\ell + 2\\ell) = 6\\ell$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$6\\ell = 45$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\dfrac{45}{6}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\ell = 7{,}5$ cm.",
+        "incorrect": "المحيط $6\\ell$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "مساحته $2\\ell^2$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-khatti_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "دالة خطية لـ $\\ell$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TARRID-NAMUDHAJ"
+        },
+        {
+          "id": "B",
+          "content": "ليست دالة خطية لـ $\\ell$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "هل هي من الشكل $a\\ell$ ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ضاعف $\\ell$ : المساحة تُضرب في 4."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "منحنى."
+        }
+      ],
+      "feedback": {
+        "correct": "$2\\ell^2$ ليست من الشكل $a\\ell$ .",
+        "incorrect": "المساحة تُضرب في 4 حين يتضاعف العرض."
+      }
+    }
+  ]
+}

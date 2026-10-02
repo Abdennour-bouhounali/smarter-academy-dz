@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-majdulat-ihsaiya-l3-010",
+  "lessonCode": "majdulat-ihsaiya",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — الأسماء بالإنجليزية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "دستور"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_majdulat-ihsaiya_P2",
+      "modelledOn": "ex-7"
+    }
+  },
+  "statement": {
+    "content": "في مجدول باللغة الإنجليزية كتب صديقك الدستور ⁦=AVERAGE(A1:G1)⁩ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "يقابله في الكتاب (مجدول بالفرنسية):",
+      "learningPoints": [
+        {
+          "code": "4am_majdulat-ihsaiya_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "⁦=MEDIANE(A1:G1)⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-DUSTUR-KHATI"
+        },
+        {
+          "id": "B",
+          "content": "⁦=MODE(A1:G1)⁩",
+          "isCorrect": false,
+          "misconceptionId": "MISC-IHSA-DUSTUR-KHATI"
+        },
+        {
+          "id": "C",
+          "content": "⁦=MOYENNE(A1:G1)⁩",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "AVERAGE معناه المتوسط."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "MEDIAN يقابل MEDIANE ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المتوسط بالفرنسية MOYENNE ."
+        }
+      ],
+      "feedback": {
+        "correct": "AVERAGE هو MOYENNE : المتوسط.",
+        "incorrect": "MEDIANE يقابله MEDIAN ."
+      }
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-tafsir-bayani-jumla-l3-009",
+  "lessonCode": "tafsir-bayani-jumla",
+  "level": 3,
+  "metadata": {
+    "title": "معاملات كسرية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "y = ax + b",
+      "كسور"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tafsir-bayani-jumla_P1",
+      "modelledOn": "act-5"
+    }
+  },
+  "statement": {
+    "content": "نعتبر المعادلة $4x - 6y = 3$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المعادلة $4x - 6y = 3$ تُكتب على الشكل $y = ax + b$ :",
+      "learningPoints": [
+        {
+          "code": "4am_tafsir-bayani-jumla_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$y = \\dfrac{2}{3}x - 0{,}5$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$y = -\\dfrac{2}{3}x + 0{,}5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-ISHARA-Y"
+        },
+        {
+          "id": "C",
+          "content": "$y = \\dfrac{2}{3}x + 0{,}5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-JUMLA-ISHARA-Y"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المعادلة من الشكل $ax + by = c$ : نريد أن يبقى $y$ وحده في طرف."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "انقل حدّ $x$ إلى الطرف الثاني مع تغيير إشارته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم كل الحدود على معامل $y$ ، ثم قارن بالاقتراحات."
+        }
+      ],
+      "feedback": {
+        "correct": "$4x - 6y = 3$ تعطي $y = \\dfrac{2}{3}x - 0{,}5$ : ننقل حدّ $x$ مع تغيير إشارته ثم نقسم على معامل $y$.",
+        "incorrect": "راجع كل اقتراح بالحساب: واحد فقط صحيح."
+      }
+    }
+  ]
+}

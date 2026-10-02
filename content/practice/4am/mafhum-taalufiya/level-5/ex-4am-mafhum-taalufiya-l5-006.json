@@ -1,0 +1,62 @@
+{
+  "id": "ex-4am-mafhum-taalufiya-l5-006",
+  "lessonCode": "mafhum-taalufiya",
+  "level": 5,
+  "metadata": {
+    "title": "تعيين b",
+    "estimatedMinutes": 3,
+    "tags": [
+      "معاملان"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation"
+    }
+  },
+  "statement": {
+    "content": "$f$ هي الدالة التآلفية حيث $f(x) = 3x + b$ و $f(2) = 11$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيمة $b$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_mafhum-taalufiya_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد صحيح أو عشري بالفاصلة أو كسر مثل -3/4",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$f(2) = 3 \\times 2 + b$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب المعادلة $6 + b = 11$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح من الطرفين."
+        }
+      ],
+      "feedback": {
+        "correct": "$b = 5$ .",
+        "incorrect": "أعد كتابة العبارة على الشكل $ax + b$ ثم اقرأ المعامل المطلوب."
+      },
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TAALUFI-SABIQ-QISMA",
+          "value": "11/3"
+        }
+      ]
+    }
+  ]
+}

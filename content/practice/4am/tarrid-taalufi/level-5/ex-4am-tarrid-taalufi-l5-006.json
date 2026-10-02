@@ -1,0 +1,57 @@
+{
+  "id": "ex-4am-tarrid-taalufi-l5-006",
+  "lessonCode": "tarrid-taalufi",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — معامل عشري",
+    "estimatedMinutes": 3,
+    "tags": [
+      "متراجحة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_tarrid-taalufi_P2",
+      "modelledOn": "act-4"
+    }
+  },
+  "statement": {
+    "content": "شحن رصيد لعبة: العرض A $f(x) = 2{,}5x + 150$ ، والعرض B $g(x) = 4x$ (بالدينار)، حيث $x$ عدد النقاط."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما عدد النقاط الذي يتساوى عنده العرضان؟",
+      "learningPoints": [
+        {
+          "code": "4am_tarrid-taalufi_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "100",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اطرح $2{,}5x$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$1{,}5x = 150$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$x = \\dfrac{150}{1{,}5}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$2{,}5x + 150 = 4x$ أي $150 = 1{,}5x$ ومنه $x = 100$ .",
+        "incorrect": "حلّ $2{,}5x + 150 = 4x$ ."
+      }
+    }
+  ]
+}
