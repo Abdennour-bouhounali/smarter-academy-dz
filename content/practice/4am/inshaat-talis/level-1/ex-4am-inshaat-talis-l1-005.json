@@ -1,0 +1,48 @@
+{
+  "id": "ex-4am-inshaat-talis-l1-005",
+  "lessonCode": "inshaat-talis",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — طول قطعة بعد التقسيم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تقسيم قطعة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_inshaat-talis_P1",
+      "modelledOn": "method-divide"
+    }
+  },
+  "statement": {
+    "content": "[AB] قطعة طولها $12\\,\\mathrm{cm}$ قسّمناها بالمسطرة غير المدرّجة والمدور إلى 3 قطع متقايسة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "طول كل قطعة بالسنتيمتر:",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "القطع الثلاث متقايسة ومجموعها AB."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{12}{3} = 4$ : كل قطعة $4\\,\\mathrm{cm}$ .",
+        "incorrect": "اقسم طول [AB] على عدد القطع."
+      }
+    }
+  ]
+}

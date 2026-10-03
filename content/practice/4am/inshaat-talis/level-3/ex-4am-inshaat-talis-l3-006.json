@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-inshaat-talis-l3-006",
+  "lessonCode": "inshaat-talis",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — ثلثا جذر 13",
+    "estimatedMinutes": 5,
+    "tags": [
+      "طول غير ناطق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_inshaat-talis_P2",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "[AB] قطعة طولها $\\sqrt{13}$ (وتر مثلث قائم ضلعا زاويته القائمة 2 و 3). نريد قطعة طولها $\\dfrac{2\\sqrt{13}}{3}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نقسم [AB] بالمسطرة غير المدرّجة والمدور إلى:",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "3 قطع متقايسة ونأخذ قطعتين",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "قطعتين متقايستين ونأخذ 3",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "13 قطعة متقايسة ونأخذ قطعتين",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-JADHR-MANSI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{2\\sqrt{13}}{3} = \\dfrac{2}{3} \\times \\sqrt{13}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "ثلثا AB : ثلاث قطع متقايسة ونأخذ اثنتين.",
+        "incorrect": "المعامل هو $\\dfrac{2}{3}$ لا $\\dfrac{3}{2}$ ولا $\\dfrac{2}{13}$ ."
+      }
+    }
+  ]
+}

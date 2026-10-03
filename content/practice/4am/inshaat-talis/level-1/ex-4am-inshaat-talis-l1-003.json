@@ -1,0 +1,71 @@
+{
+  "id": "ex-4am-inshaat-talis-l1-003",
+  "lessonCode": "inshaat-talis",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — العلامة الموصولة بالنقطة B",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تقسيم قطعة",
+      "عدد العلامات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_inshaat-talis_P1",
+      "modelledOn": "method-divide"
+    }
+  },
+  "statement": {
+    "content": "لتقسيم قطعة [AB] إلى 5 قطع متقايسة عيّنا على نصف مستقيم [Ax) خمس قطع متقايسة بالمدور."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أي علامة نصلها بالنقطة B ؟",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "العلامة الخامسة",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "العلامة الرابعة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-ADAD-AL-ALAMAT"
+        },
+        {
+          "id": "C",
+          "content": "العلامة الأولى",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-ADAD-AL-ALAMAT"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الموازيات المارّة بالعلامات الأخرى توازي المستقيم الموصول."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "رتبة العلامة الموصولة تحدّد عدد القطع."
+        }
+      ],
+      "feedback": {
+        "correct": "نصل الخامسة بـ B : في المثلث الذي رؤوسه A والعلامة 5 و B تقسم الموازيات [AB] إلى 5 قطع متقايسة.",
+        "incorrect": "بالعلامة الرابعة نحصل على 4 قطع فقط، وبالأولى لا نحصل على أي تقسيم."
+      }
+    }
+  ]
+}

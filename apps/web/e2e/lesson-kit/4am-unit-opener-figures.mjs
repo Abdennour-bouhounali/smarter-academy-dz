@@ -6,7 +6,7 @@
 //   SHOTS=dir enregistre une capture du bloc d'ouverture de chaque unité.
 import { BASE, launch, newCtx, watchErrors, check, summary, noHorizontalScroll } from './helpers.mjs';
 
-const A = 'ansab_al_aadad_wal_hisab'; const T = 'tanasubiya_duwal';
+const A = 'ansab_al_aadad_wal_hisab'; const T = 'tanasubiya_duwal'; const H = 'handasa';
 // [chapitre, unité, slots attendus]
 const UNITS = [
   [A, 'aadad-tabiiya-natiqa', []],
@@ -17,6 +17,7 @@ const UNITS = [
   [T, 'tanasubiya-dala-khattiya', ['challenge']],
   [T, 'dala-taalufiya', ['challenge']],
   [T, 'ihsa', ['challenge']],
+  [H, 'khassiyat-talis', ['challenge']],
 ];
 const REFERS = /المقابل|نظم العمل في جدول/;
 const errors = [];

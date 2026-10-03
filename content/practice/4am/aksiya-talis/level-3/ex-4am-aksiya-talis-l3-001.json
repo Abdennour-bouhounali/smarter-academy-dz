@@ -1,0 +1,145 @@
+{
+  "id": "ex-4am-aksiya-talis-l3-001",
+  "lessonCode": "aksiya-talis",
+  "level": 3,
+  "metadata": {
+    "title": "طرائق — (CF) و (AB)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جداء متصالب"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-parallel",
+      "page": 109,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 109): A ، D ، F على استقامة (D بين A و F) و B ، D ، C على استقامة (D بين B و C)؛ AD = 3,5 ، DF = 1,5 ، BD = 4,2 ، DC = 1,8.",
+    "figure": {
+      "points": {
+        "A": [
+          2.68,
+          2.25
+        ],
+        "B": [
+          4.16,
+          -0.59
+        ],
+        "C": [
+          -1.78,
+          0.25
+        ],
+        "D": [
+          0,
+          0
+        ],
+        "E": [
+          4.8,
+          -1.83
+        ],
+        "F": [
+          -1.15,
+          -0.96
+        ]
+      },
+      "segments": [
+        [
+          "A",
+          "E"
+        ],
+        [
+          "A",
+          "F"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "C",
+          "F"
+        ],
+        [
+          "E",
+          "F"
+        ]
+      ],
+      "ariaLabel": "A و B و E على استقامة، A و D و F على استقامة، B و D و C على استقامة",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب الجداء $3{,}5 \\times 1{,}8$ :",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة",
+      "expectedAnswer": "6,3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجداء المتصالب: البسط الأول في المقام الثاني، والمقام الأول في البسط الثاني."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب العددين كأنهما طبيعيان، ثم ضع الفاصلة حسب عدد الأرقام بعدها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بتقدير سريع: هل الناتج معقول؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$3{,}5 \\times 1{,}8 = 6{,}3$",
+        "incorrect": "أعد الضرب وانتبه إلى موضع الفاصلة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب الجداء $1{,}5 \\times 4{,}2$ :",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة",
+      "expectedAnswer": "6,3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجداء المتصالب: البسط الأول في المقام الثاني، والمقام الأول في البسط الثاني."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب العددين كأنهما طبيعيان، ثم ضع الفاصلة حسب عدد الأرقام بعدها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بتقدير سريع: هل الناتج معقول؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}5 \\times 4{,}2 = 6{,}3$ : الجداءان متساويان، إذن $\\dfrac{DA}{DF} = \\dfrac{DB}{DC}$ و (CF)//(AB).",
+        "incorrect": "أعد الضرب وانتبه إلى موضع الفاصلة."
+      }
+    }
+  ]
+}

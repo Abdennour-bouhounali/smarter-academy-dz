@@ -277,6 +277,37 @@ export const LEVELS = Object.freeze({
     beginner: { numbers: { groups: '4:12|6:7' }, ...P },
     advanced: { numbers: { groups: '15:10|18:13|14:12,5|19:11', classes: '2|2' }, ...T('challenge') },
   },
+  // ── Unité 9 « خاصية طالس » (2026-10-02) ──
+  // Le faisceau. مبتدئ : un projecteur, des rayons gradués en unités entières (k lisible) ; متقدم (نشاط 1) : AB = 6,
+  // AC = 7, BC = 6,1, l'écran à AB′ = 3,2 (AC′ = 56/15), puis la chambre noire (وضعية الفراشة).
+  'thales-beam': {
+    beginner: { numbers: { AB: 4, AC: 5, BC: 3, mode: 'projector' }, ...P },
+    advanced: { numbers: { AB: 6, AC: 7, BC: 6.1, ABp: 3.2, mode: 'projector|butterfly' }, ...T('act-1') },
+  },
+  // Le niveau à bulle. مبتدئ : l'échelle double aux montants inégaux (AB = 6, AC = 9, une encoche par unité) — deux
+  // planches de niveau (1/3 et 2/3, aucune au milieu, pour que « les milieux » soit réfutable) ; متقدم (نشاط 2) : le
+  // tréteau en X, deux droites sécantes graduées des DEUX côtés de A (AB = 9, AC = 12 : l'élève calcule le tiers,
+  // 3 et 4, aucune position proposée), le rapport 1/3 imposé, les trois figures des élèves dont l'ordre inversé.
+  'parallel-level': {
+    beginner: { numbers: { AB: 6, AC: 9, mode: 'ladder' }, ...P },
+    advanced: { numbers: { AB: 9, AC: 12, ratio: '1/3', mode: 'crossing' }, ...T('act-2') },
+  },
+  // L'éventail. مبتدئ : [AB] en 3 parts égales ; متقدم (طرائق ص 109) : le point M de [AB] tel que MA/MB = 3/2.
+  'segment-divider': {
+    beginner: { numbers: { parts: 3, mode: 'equal' }, ...P },
+    advanced: { numbers: { p: 3, q: 2, marks: 5, mode: 'ratio' }, ...T('method-ratio-point') },
+  },
+  // Le bâton et l'ombre. مبتدئ : un bâton de 1 m, ombres entières (h = 5 m) ; متقدم (تحدّ) : bâton à 10 m, ombre
+  // commune à 11,6 m (h = 7,25 m).
+  'shadow-stick': {
+    beginner: { numbers: { stick: 1, stickAt: 4, tip: 5 }, ...P },
+    advanced: { numbers: { stick: 1, stickAt: 10, tip: 11.6 }, ...T('challenge') },
+  },
+  // La coupe du cône. مبتدئ : un cône de 12 sur 4 (h = r ⇒ r = 3) ; متقدم (أدمج تعلّماتي) : 18 sur 6 (r = 4,5).
+  'cone-cylinder': {
+    beginner: { numbers: { H: 12, R: 4 }, ...P },
+    advanced: { numbers: { H: 18, R: 6 }, ...T('situation') },
+  },
 });
 
 export { MANIPULATION_LEVEL_IDS };

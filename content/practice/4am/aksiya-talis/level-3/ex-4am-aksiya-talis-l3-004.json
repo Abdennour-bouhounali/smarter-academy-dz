@@ -1,0 +1,138 @@
+{
+  "id": "ex-4am-aksiya-talis-l3-004",
+  "lessonCode": "aksiya-talis",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 16 — يونس وإيناس",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تبرير"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-16",
+      "page": 111,
+      "section": "وضع نقط على مستقيم",
+      "number": 16
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 111): M و O و A على استقامة، N و O و P على استقامة (O بين النقطتين): OM = 9cm ، ON = 5cm ، OP = 3cm ، OA = 5,4cm. كتب يونس: $\\dfrac{ON}{OP} \\approx 1{,}7$ و $\\dfrac{OM}{OA} \\approx 1{,}7$ إذن (MN)//(AP). وكتبت إيناس: $\\dfrac{OP}{ON} = 0{,}6$ و $\\dfrac{OA}{OM} = 0{,}6$ إذن (MN)//(AP).",
+    "figure": {
+      "points": {
+        "O": [
+          0,
+          0
+        ],
+        "M": [
+          -3.14,
+          8.43
+        ],
+        "A": [
+          1.88,
+          -5.06
+        ],
+        "N": [
+          3,
+          4
+        ],
+        "P": [
+          -1.8,
+          -2.4
+        ]
+      },
+      "segments": [
+        {
+          "from": "O",
+          "to": "M",
+          "label": "9cm"
+        },
+        {
+          "from": "O",
+          "to": "A",
+          "label": "5,4cm"
+        },
+        {
+          "from": "O",
+          "to": "N",
+          "label": "5cm"
+        },
+        {
+          "from": "O",
+          "to": "P",
+          "label": "3cm"
+        },
+        [
+          "M",
+          "N"
+        ],
+        [
+          "A",
+          "P"
+        ]
+      ],
+      "ariaLabel": "M و O و A على استقامة، N و O و P على استقامة، OM = 9cm و ON = 5cm و OP = 3cm و OA = 5,4cm",
+      "maxWidth": 205
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ التلميذين على صواب؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "إيناس",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "يونس",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAQRIB-BURHAN"
+        },
+        {
+          "id": "C",
+          "content": "كلاهما",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAQRIB-BURHAN"
+        },
+        {
+          "id": "D",
+          "content": "لا أحد منهما",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-SHAKL-BURHAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق أولا من ترتيب النقط على المستقيمين المتقاطعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب النسبتين وقارنهما بالجداء المتصالب، لا بقيم مقرّبة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نسبتان متساويتان مع نفس الترتيب: الخاصية العكسية. نسبتان مختلفتان: نستدل بالخلف بخاصية طالس."
+        }
+      ],
+      "feedback": {
+        "correct": "قيمتان مقرّبتان متساويتان لا تثبتان تساوي نسبتين؛ إيناس قارنت قيمتين مضبوطتين.",
+        "incorrect": "راجع الشرطين: الترتيب، ثم تساوي النسبتين بالحساب."
+      }
+    }
+  ]
+}

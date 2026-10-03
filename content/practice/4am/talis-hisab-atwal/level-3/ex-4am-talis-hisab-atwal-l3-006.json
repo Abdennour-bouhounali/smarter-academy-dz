@@ -1,0 +1,125 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l3-006",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — طول قطعة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "حساب طول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P2",
+      "modelledOn": "method-lengths"
+    }
+  },
+  "statement": {
+    "content": "في الشكل، M من $[AB]$ و N من $[AC]$ و $(MN) \\parallel (BC)$ ؛ $AM = 4$ ، $MB = 2$ و $AN = 5$ .",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          4.568,
+          2.034
+        ],
+        "C": [
+          5.196,
+          -3.0
+        ],
+        "M": [
+          3.045,
+          1.356
+        ],
+        "N": [
+          3.464,
+          -2.0
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "M",
+          "label": "4"
+        },
+        {
+          "from": "M",
+          "to": "B",
+          "label": "2"
+        },
+        {
+          "from": "A",
+          "to": "N",
+          "label": "5"
+        },
+        {
+          "from": "N",
+          "to": "C"
+        },
+        {
+          "from": "B",
+          "to": "C",
+          "arrows": 1
+        },
+        {
+          "from": "M",
+          "to": "N",
+          "arrows": 1,
+          "tone": "indigo"
+        }
+      ],
+      "ariaLabel": "M من [AB] و N من [AC] و (MN) يوازي (BC)؛ AM = 4 و MB = 2 و AN = 5",
+      "maxWidth": 260,
+      "labels": {
+        "A": "w"
+      }
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب NC.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "2,5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-QITAA-BADAL-DILA",
+          "value": "7,5"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$AB = 6$ : $\\dfrac{4}{6} = \\dfrac{5}{AC}$ ومنه $AC = 7{,}5$ و $NC = 7{,}5 - 5 = 2{,}5$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    }
+  ]
+}

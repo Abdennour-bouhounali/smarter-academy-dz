@@ -1,0 +1,70 @@
+{
+  "id": "ex-4am-inshaat-talis-l3-005",
+  "lessonCode": "inshaat-talis",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — تناسب لإنشاء 12 على 5",
+    "estimatedMinutes": 5,
+    "tags": [
+      "إنشاء طول معلوم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_inshaat-talis_P2",
+      "modelledOn": "method-construct-length"
+    }
+  },
+  "statement": {
+    "content": "نريد إنشاء قطعة [AB] حيث $AB = \\dfrac{12}{5}$ بخاصية طالس، دون قياس."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أي تناسب يصلح؟",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{5}{4} = \\dfrac{3}{AB}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{5}{3} = \\dfrac{AB}{4}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{4}{5} = \\dfrac{3}{AB}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$AB = \\dfrac{12}{5}$ تعني $5 \\times AB = 12$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "تحقّق من كل اقتراح بالجداء المتصالب."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{5}{4} = \\dfrac{3}{AB}$ يعطي $5 \\times AB = 12$ .",
+        "incorrect": "الاقتراحان الآخران يعطيان $\\dfrac{20}{3}$ و $\\dfrac{15}{4}$ ."
+      }
+    }
+  ]
+}

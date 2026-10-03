@@ -1,0 +1,83 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l2-010",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 2,
+  "metadata": {
+    "title": "معادلة الوضعية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "معادلة",
+      "مقطع محوري"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "situation",
+      "page": 112,
+      "section": "أدمج تعلّماتي"
+    }
+  },
+  "statement": {
+    "content": "في وضعية الأسطوانة داخل المخروط (ارتفاعه $18\\,\\mathrm{cm}$ ونصف قطر قاعدته $6\\,\\mathrm{cm}$ ) نجد $\\dfrac{r}{6} = \\dfrac{18 - h}{18}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "في الحالة $h = r$ تصبح المساواة:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$12r = 108$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-HALL-MUADALA"
+        },
+        {
+          "id": "B",
+          "content": "$24r = 108$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$r = 18 - r$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
+        },
+        {
+          "id": "D",
+          "content": "$18r = 108 - r$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-HALL-MUADALA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض h بـ r."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الجداء التصالبي: $18r = 6(18 - r)$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انشر ثم اجمع حدود r."
+        }
+      ],
+      "feedback": {
+        "correct": "$18r = 108 - 6r$ أي $24r = 108$ .",
+        "incorrect": "عند نقل $-6r$ تتغيّر إشارته."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    }
+  ]
+}

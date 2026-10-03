@@ -1,0 +1,129 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l3-010",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — النقطتان بعد B و C",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعيات طالس الثلاث",
+      "حساب طول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P1",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "M على امتداد $[AB]$ بعد B و N على امتداد $[AC]$ بعد C، و $(MN) \\parallel (BC)$ ؛ $AB = 4$ ، $AM = 6$ و $AC = 5$ .",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          3.106,
+          1.383
+        ],
+        "C": [
+          3.637,
+          -2.1
+        ],
+        "M": [
+          4.659,
+          2.075
+        ],
+        "N": [
+          5.455,
+          -3.15
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B",
+          "label": "4"
+        },
+        {
+          "from": "B",
+          "to": "M"
+        },
+        {
+          "from": "A",
+          "to": "C",
+          "label": "5"
+        },
+        {
+          "from": "C",
+          "to": "N"
+        },
+        {
+          "from": "B",
+          "to": "C",
+          "arrows": 1
+        },
+        {
+          "from": "M",
+          "to": "N",
+          "arrows": 1,
+          "tone": "indigo"
+        }
+      ],
+      "ariaLabel": "M على امتداد [AB] و N على امتداد [AC] و (MN) يوازي (BC)؛ AB = 4 و AM = 6 و AC = 5",
+      "maxWidth": 260,
+      "labels": {
+        "A": "w"
+      }
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب AN.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "7,5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "10/3"
+        },
+        {
+          "id": "MISC-TALIS-JAMA-BADAL-DARB",
+          "value": "7"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الرأس المشترك والمستقيمين المتوازيين في الشكل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في كل نسبة: ضلع من المثلث الأول على الضلع الموافق له في المثلث الثاني، بالترتيب نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب رؤوس المثلثين بالترتيب نفسه، رأسا تحت رأس، ثم اقرأ النسب."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{AM}{AB} = \\dfrac{AN}{AC}$ أي $\\dfrac{6}{4} = \\dfrac{AN}{5}$ ومنه $AN = 7{,}5$ .",
+        "incorrect": "راجع الرؤوس المتقابلة: الرأس المشترك، ثم طرفا المستقيمين المتوازيين."
+      }
+    }
+  ]
+}

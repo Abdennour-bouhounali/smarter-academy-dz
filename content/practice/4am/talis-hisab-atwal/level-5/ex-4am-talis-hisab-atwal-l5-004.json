@@ -1,0 +1,114 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l5-004",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 5,
+  "metadata": {
+    "title": "وضعية — تكبير بجهاز الإسقاط",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "تكبير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P3",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "جهاز إسقاط في A يُسقط صورة على حائط. نضع لوحة شفافة $[MN]$ عرضها $20\\,\\mathrm{cm}$ موازية للحائط على بعد $AM = 50\\,\\mathrm{cm}$ ، فتظهر صورتها $[BC]$ على الحائط على بعد $AB = 3\\,\\mathrm{m}$ (M من $[AB]$ و N من $[AC]$)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "معامل التكبير الذي يحوّل المثلث AMN إلى ABC هو:",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-MUAMIL-MAQLUB",
+          "value": "1/6"
+        },
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "0,06"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل التناسبية هو طول في المثلث الناتج مقسوما على الطول الموافق له في المثلث الأصلي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذا كان المعامل أصغر من الواحد فهو تصغير، وإذا كان أكبر منه فهو تكبير."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب كل طول في المعامل نفسه، ولا تُضف العدد نفسه إلى كل طول."
+        }
+      ],
+      "feedback": {
+        "correct": "$k = \\dfrac{AB}{AM} = \\dfrac{300}{50} = 6$ (نحوّل الأطوال إلى الوحدة نفسها).",
+        "incorrect": "راجع اتجاه النسبة: المثلث الناتج في البسط والمثلث الأصلي في المقام."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "عرض الصورة BC على الحائط بالسنتيمتر هو:",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "120",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-MUAMIL-MAQLUB",
+          "value": "10/3"
+        },
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "1,2"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل التناسبية هو طول في المثلث الناتج مقسوما على الطول الموافق له في المثلث الأصلي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذا كان المعامل أصغر من الواحد فهو تصغير، وإذا كان أكبر منه فهو تكبير."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب كل طول في المعامل نفسه، ولا تُضف العدد نفسه إلى كل طول."
+        }
+      ],
+      "feedback": {
+        "correct": "$BC = 6 \\times 20 = 120\\,\\mathrm{cm}$ .",
+        "incorrect": "راجع اتجاه النسبة: المثلث الناتج في البسط والمثلث الأصلي في المقام."
+      }
+    }
+  ]
+}

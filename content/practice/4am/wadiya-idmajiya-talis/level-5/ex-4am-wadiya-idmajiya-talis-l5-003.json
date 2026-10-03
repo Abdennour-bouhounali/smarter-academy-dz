@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l5-003",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — الأسطوانة والمخروط: نسبة الحجمين",
+    "estimatedMinutes": 7,
+    "tags": [
+      "حجم",
+      "نسبة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "مخروط دوران ارتفاعه $18\\,\\mathrm{cm}$ ونصف قطر قاعدته $6\\,\\mathrm{cm}$ ، والأسطوانة المحاطة به التي ارتفاعها يساوي نصف قطرها حجمها $91{,}125\\pi\\,\\mathrm{cm}^3$ . نذكّر أنّ حجم المخروط $\\dfrac{1}{3} \\times \\pi \\times R^2 \\times H$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نكتب حجم المخروط $k\\pi\\,\\mathrm{cm}^3$ . ما قيمة $k$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (المعامل k في الكتابة kπ)",
+      "expectedAnswer": "216",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$R^2 = 36$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب في H."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على 3."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{1}{3} \\times 36 \\times 18 = 216$ ، أي $216\\pi$ .",
+        "incorrect": "لا ننسى $\\dfrac{1}{3}$ في حجم المخروط."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "648",
+          "id": "MISC-TALIS-MULAAMA-WAQI"
+        },
+        {
+          "value": "36",
+          "id": "MISC-TALIS-TARBI-MANSI"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما نسبة حجم الأسطوانة إلى حجم المخروط؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (كسر أو عشري)",
+      "expectedAnswer": "0.421875",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "النسبة = حجم الأسطوانة ÷ حجم المخروط."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "π يختصر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتبها كسرا مختزلا أو عددا عشريا."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{91{,}125}{216} = \\dfrac{27}{64} = 0{,}421875$ : الأسطوانة تشغل أقل من نصف المخروط.",
+        "incorrect": "π يُختصر، والنسبة أصغر من 1."
+      },
+      "cognitiveDemand": "transfer",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "64/27",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ]
+    }
+  ]
+}

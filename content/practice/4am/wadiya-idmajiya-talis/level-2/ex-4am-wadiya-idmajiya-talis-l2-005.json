@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l2-005",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — ظلّ عمارة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "طريقة الظل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P1",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "في اللحظة نفسها، عصا شاقولية طولها $1{,}5\\,\\mathrm{m}$ ظلّها $2\\,\\mathrm{m}$ ، وظلّ عمارة $24\\,\\mathrm{m}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما ارتفاع العمارة (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "18",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الأشعة متوازية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الارتفاع ÷ الظلّ ثابت."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\dfrac{h}{24} = \\dfrac{1{,}5}{2}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$h = 24 \\times \\dfrac{1{,}5}{2} = 18\\,\\mathrm{m}$ .",
+        "incorrect": "نقارن ارتفاعا بظلّه في الحالتين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "32",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ]
+    }
+  ]
+}

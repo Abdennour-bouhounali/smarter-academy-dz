@@ -1,0 +1,66 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l5-004",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — أين يقف ليكون ظلّه 2 m؟",
+    "estimatedMinutes": 7,
+    "tags": [
+      "طريقة الظل",
+      "معادلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P1",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "مصباح على ارتفاع $6\\,\\mathrm{m}$ في أعلى عمود شاقولي. طفل طوله $1{,}5\\,\\mathrm{m}$ يقف على بعد $x$ من قدم العمود، وظلّه طوله $2\\,\\mathrm{m}$ (نهاية الظلّ على استقامة مع قدم العمود وقدم الطفل)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما قيمة $x$ (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "رأس المثلثين نهاية الظلّ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المسافة من نهاية الظلّ إلى العمود $x + 2$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\dfrac{6}{1{,}5} = \\dfrac{x + 2}{2}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x + 2 = 2 \\times \\dfrac{6}{1{,}5} = 8$ ، إذن $x = 6\\,\\mathrm{m}$ .",
+        "incorrect": "نقيس من نهاية الظلّ، ثم نطرح الظلّ."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "8",
+          "id": "MISC-TALIS-ZILL-RAS-MUSHTARAK"
+        }
+      ]
+    }
+  ]
+}

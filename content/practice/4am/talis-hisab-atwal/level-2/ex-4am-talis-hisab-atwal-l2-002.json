@@ -1,0 +1,168 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l2-002",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 2,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 2 — وضعية الفراشة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية الفراشة",
+      "حساب طول"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 112,
+      "section": "أؤكّد تعلّماتي",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 112): B و A و L على استقامة، C و A و M على استقامة (A بين النقطتين)، و $(LM) \\parallel (BC)$ ؛ $BC = 4$ ، $AM = 3$ ، $ML = 2$ ، $AL = 2$ ، $AB = x$ و $AC = y$ .",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          3.759,
+          1.368
+        ],
+        "C": [
+          5.196,
+          -3.0
+        ],
+        "L": [
+          -1.879,
+          -0.684
+        ],
+        "M": [
+          -2.598,
+          1.5
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B",
+          "label": "x"
+        },
+        {
+          "from": "A",
+          "to": "L",
+          "label": "2"
+        },
+        {
+          "from": "A",
+          "to": "C",
+          "label": "y"
+        },
+        {
+          "from": "A",
+          "to": "M",
+          "label": "3"
+        },
+        {
+          "from": "B",
+          "to": "C",
+          "label": "4",
+          "arrows": 1
+        },
+        {
+          "from": "L",
+          "to": "M",
+          "label": "2",
+          "arrows": 1,
+          "tone": "indigo"
+        }
+      ],
+      "ariaLabel": "B و A و L على استقامة و C و A و M على استقامة؛ (LM) يوازي (BC)؛ BC = 4 و AM = 3 و ML = 2 و AL = 2",
+      "maxWidth": 220
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب x.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "1"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{AL}{AB} = \\dfrac{LM}{BC}$ أي $\\dfrac{2}{x} = \\dfrac{2}{4}$ ومنه $x = 4$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب y.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "1,5"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{AM}{AC} = \\dfrac{LM}{BC}$ أي $\\dfrac{3}{y} = \\dfrac{2}{4}$ ومنه $y = 6$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    }
+  ]
+}

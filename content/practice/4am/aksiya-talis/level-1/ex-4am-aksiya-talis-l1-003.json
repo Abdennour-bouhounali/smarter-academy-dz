@@ -1,0 +1,114 @@
+{
+  "id": "ex-4am-aksiya-talis-l1-003",
+  "lessonCode": "aksiya-talis",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — النسبتان في مثلث",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نسبة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_aksiya-talis_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "ABC مثلث، B′ من [AB] و C′ من [AC] حيث AB = 8 ، AB′ = 2 ، AC = 12 ، AC′ = 3."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $\\dfrac{AC'}{AC}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد: كسر غير قابل للاختزال أو عدد عشري بالفاصلة",
+      "expectedAnswer": "1/4",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "4"
+        },
+        {
+          "id": "MISC-TALIS-QITAA-BADAL-DILA",
+          "value": "1/3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النقطة المشتركة بين المستقيمين، ثم الطولين المعنيين على المستقيم نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "النسبة: طول يبدأ من النقطة المشتركة مقسوما على الطول الموافق له على المستقيم نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب الكسر ثم اختزله (أو احسب قيمته المضبوطة)."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3}{12} = \\dfrac{1}{4}$ ، وهي أيضا $\\dfrac{AB'}{AB} = \\dfrac{2}{8}$ .",
+        "incorrect": "راجع: من أي نقطة يبدأ كل طول؟ وهل اختزلت الكسر؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ماذا ينتج عن المستقيمين (B′C′) و (BC)؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(B'C') \\parallel (BC)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "(B′C′) لا يوازي (BC)",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-AKS-BIDUN-TASAWI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق أولا من ترتيب النقط على المستقيمين المتقاطعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب النسبتين وقارنهما بالجداء المتصالب، لا بقيم مقرّبة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نسبتان متساويتان مع نفس الترتيب: الخاصية العكسية. نسبتان مختلفتان: نستدل بالخلف بخاصية طالس."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{AB'}{AB} = \\dfrac{AC'}{AC} = \\dfrac{1}{4}$ و B′ ، C′ بين الرأس والقاعدة: حسب الخاصية العكسية لخاصية طالس.",
+        "incorrect": "راجع الشرطين: الترتيب، ثم تساوي النسبتين بالحساب."
+      }
+    }
+  ]
+}

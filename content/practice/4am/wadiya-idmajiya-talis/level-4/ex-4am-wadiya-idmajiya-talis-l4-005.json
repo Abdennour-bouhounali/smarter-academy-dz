@@ -1,0 +1,77 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l4-005",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — أسطوانة مستحيلة",
+    "estimatedMinutes": 6,
+    "tags": [
+      "ملاءمة النتيجة",
+      "معادلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P3",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "نبحث عن أسطوانة دوران محاطة بمخروط دوران ارتفاعه $18\\,\\mathrm{cm}$ ونصف قطر قاعدته $6\\,\\mathrm{cm}$ ، ارتفاعها يزيد على نصف قطرها بـ $20\\,\\mathrm{cm}$ ( $h = r + 20$ )."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ماذا نستنتج؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$r = 0{,}5\\,\\mathrm{cm}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-HALL-MUADALA"
+        },
+        {
+          "id": "B",
+          "content": "$r = 4{,}5\\,\\mathrm{cm}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-QITAA-BADAL-DILA"
+        },
+        {
+          "id": "C",
+          "content": "لا توجد أسطوانة كهذه: المعادلة تعطي r سالبا",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{r}{6} = \\dfrac{18 - h}{18}$ مع $h = r + 20$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$18 - (r + 20) = -2 - r$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ ثم انظر إلى إشارة r."
+        }
+      ],
+      "feedback": {
+        "correct": "$18r = -12 - 6r$ أي $24r = -12$ ومنه $r = -\\dfrac{1}{2}$ : لا أسطوانة؛ ثم إنّ h لا يتجاوز 18.",
+        "incorrect": "نصف قطر سالب غير ملائم للواقع."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 4
+    }
+  ]
+}

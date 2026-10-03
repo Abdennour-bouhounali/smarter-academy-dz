@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-inshaat-talis-l5-004",
+  "lessonCode": "inshaat-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — ثلاثة أخماس جذر 10",
+    "estimatedMinutes": 6,
+    "tags": [
+      "طول غير ناطق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_inshaat-talis_P2",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "[AB] وتر مثلث قائم ضلعا زاويته القائمة 1 و 3. قسّمنا [AB] إلى 5 قطع متقايسة بالمسطرة غير المدرّجة والمدور وأخذنا 3 منها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "طول القطعة الناتجة:",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{3\\sqrt{10}}{5}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$6$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-JADHR-MANSI"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{5\\sqrt{10}}{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$AB = \\sqrt{1^2 + 3^2}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$AB = \\sqrt{10}$ و $\\dfrac{3}{5}\\sqrt{10} = \\dfrac{3\\sqrt{10}}{5}$ .",
+        "incorrect": "$\\dfrac{3}{5} \\times 10 = 6$ نسيت الجذر، و $\\dfrac{5}{3}$ نسبة مقلوبة."
+      }
+    }
+  ]
+}

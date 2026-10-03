@@ -1,0 +1,120 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l5-005",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 5,
+  "metadata": {
+    "title": "وضعية — الغرفة المظلمة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية الفراشة",
+      "وضعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P2",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "غرفة مظلمة بثقب صغير O في جدارها: شجرة $[AB]$ طولها $1{,}8\\,\\mathrm{m}$ على بعد $3\\,\\mathrm{m}$ من الثقب، وصورتها المقلوبة $[A'B']$ على الجدار المقابل على بعد $0{,}15\\,\\mathrm{m}$ من الثقب. A و O و A′ على استقامة و B و O و B′ على استقامة، و $(AB) \\parallel (A'B')$ ، والمسافتان مقيستان على $(AA')$ : $OA = 3$ و $OA' = 0{,}15$ .",
+    "figure": {
+      "points": {
+        "O": [
+          0,
+          0
+        ],
+        "A": [
+          -2.954,
+          0.521
+        ],
+        "B": [
+          -2.913,
+          -1.06
+        ],
+        "A'": [
+          0.739,
+          -0.13
+        ],
+        "B'": [
+          0.728,
+          0.265
+        ]
+      },
+      "segments": [
+        {
+          "from": "O",
+          "to": "A"
+        },
+        {
+          "from": "O",
+          "to": "A'"
+        },
+        {
+          "from": "O",
+          "to": "B"
+        },
+        {
+          "from": "O",
+          "to": "B'"
+        },
+        {
+          "from": "A",
+          "to": "B",
+          "arrows": 1
+        },
+        {
+          "from": "A'",
+          "to": "B'",
+          "arrows": 1,
+          "tone": "indigo"
+        }
+      ],
+      "ariaLabel": "الثقب O، الشجرة [AB] من جهة وصورتها [A′B′] المقلوبة من الجهة الأخرى، و (AB) يوازي (A′B′)",
+      "maxWidth": 220
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب طول الصورة A′B′ بالسنتيمتر.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (عشري بالفاصلة مقبول)",
+      "expectedAnswer": "9",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "3600"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{OA'}{OA} = \\dfrac{A'B'}{AB}$ أي $\\dfrac{0{,}15}{3} = \\dfrac{A'B'}{1{,}8}$ ومنه $A'B' = 0{,}09\\,\\mathrm{m} = 9\\,\\mathrm{cm}$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    }
+  ]
+}

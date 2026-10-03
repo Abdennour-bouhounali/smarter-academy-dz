@@ -1,0 +1,166 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l3-005",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 4 — القيم المضبوطة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "حساب طول",
+      "قيمة مضبوطة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-4",
+      "page": 110,
+      "section": "خاصية طالس",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 110): في الرباعي ABCD، $(AB) \\parallel (CD)$ و $(AC)$ و $(BD)$ يتقاطعان في O ؛ $AB = 4$ ، $OA = 3$ ، $OB = 2$ و $OC = 5$ .",
+    "figure": {
+      "points": {
+        "O": [
+          0,
+          0
+        ],
+        "A": [
+          -1.359,
+          0.634
+        ],
+        "B": [
+          0.94,
+          0.342
+        ],
+        "C": [
+          2.265,
+          -1.057
+        ],
+        "D": [
+          -1.567,
+          -0.57
+        ]
+      },
+      "segments": [
+        {
+          "from": "O",
+          "to": "A",
+          "label": "3"
+        },
+        {
+          "from": "O",
+          "to": "C",
+          "label": "5"
+        },
+        {
+          "from": "O",
+          "to": "B",
+          "label": "2"
+        },
+        {
+          "from": "O",
+          "to": "D"
+        },
+        {
+          "from": "A",
+          "to": "B",
+          "label": "4",
+          "arrows": 1
+        },
+        {
+          "from": "C",
+          "to": "D",
+          "arrows": 1,
+          "tone": "indigo"
+        }
+      ],
+      "ariaLabel": "الرباعي ABCD حيث (AB) يوازي (CD) و (AC) و (BD) يتقاطعان في O؛ AB = 4 و OA = 3 و OB = 2 و OC = 5",
+      "maxWidth": 220
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب OD (القيمة المضبوطة).",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "كسر مثل 5/7 (القيمة المضبوطة)",
+      "expectedAnswer": "10/3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "1,2"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3}{5} = \\dfrac{2}{OD}$ ومنه $OD = \\dfrac{10}{3}$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب CD (القيمة المضبوطة).",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "كسر مثل 5/7 (القيمة المضبوطة)",
+      "expectedAnswer": "20/3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "2,4"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3}{5} = \\dfrac{4}{CD}$ ومنه $CD = \\dfrac{20}{3}$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    }
+  ]
+}

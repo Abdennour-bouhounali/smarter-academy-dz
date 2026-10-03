@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l1-009",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — جدول التناسبية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جدول تناسبية",
+      "تكبير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P3",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "أطوال أضلاع المثلث AMN هي 2 و 3 و 4. المثلث ABC تكبير له بمعامل $k = 2$ (في وضعية طالس)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أطوال أضلاع المثلث ABC هي:",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "4 و 6 و 8",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "4 و 5 و 6",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-JAMA-BADAL-DARB"
+        },
+        {
+          "id": "C",
+          "content": "1 و 1,5 و 2",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-MUAMIL-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل التناسبية هو طول في المثلث الناتج مقسوما على الطول الموافق له في المثلث الأصلي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذا كان المعامل أصغر من الواحد فهو تصغير، وإذا كان أكبر منه فهو تكبير."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب كل طول في المعامل نفسه، ولا تُضف العدد نفسه إلى كل طول."
+        }
+      ],
+      "feedback": {
+        "correct": "نضرب كل طول في 2: $2 \\times 2 = 4$ ، $2 \\times 3 = 6$ ، $2 \\times 4 = 8$ .",
+        "incorrect": "راجع اتجاه النسبة: المثلث الناتج في البسط والمثلث الأصلي في المقام."
+      }
+    }
+  ]
+}

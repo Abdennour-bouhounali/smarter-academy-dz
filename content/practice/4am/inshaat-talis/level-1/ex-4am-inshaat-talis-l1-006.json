@@ -1,0 +1,66 @@
+{
+  "id": "ex-4am-inshaat-talis-l1-006",
+  "lessonCode": "inshaat-talis",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — هل تتقايس القطع؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تقسيم قطعة",
+      "فتحة المدور"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_inshaat-talis_P1",
+      "modelledOn": "method-divide"
+    }
+  },
+  "statement": {
+    "content": "عيّن سليم على نصف مستقيم [Ax) ثلاث قطع متقايسة بفتحة مدور اختارها كما يشاء، ووصل العلامة الثالثة بـ B ، ثم رسم بالمسطرة والكوس الموازيين المارّين بالعلامتين الأخريين."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "القطع الثلاث التي حصل عليها على [AB]:",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "متقايسة، مهما كانت فتحة المدور وميل [Ax)",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "متقايسة فقط إذا كانت فتحة المدور تساوي ثلث AB",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-SHART-ZAID"
+        },
+        {
+          "id": "C",
+          "content": "متقايسة فقط إذا كان [Ax) عموديا على [AB]",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-SHART-ZAID"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المثلث الذي رؤوسه A والعلامة الثالثة و B طبّق خاصية طالس."
+        }
+      ],
+      "feedback": {
+        "correct": "خاصية طالس: $\\dfrac{AM_1}{AB} = \\dfrac{1}{3}$ و $\\dfrac{AM_2}{AB} = \\dfrac{2}{3}$ مهما كانت الفتحة والميل.",
+        "incorrect": "لا شرط على الفتحة ولا على الميل: تكفي العلامات المتقايسة والموازيات."
+      }
+    }
+  ]
+}

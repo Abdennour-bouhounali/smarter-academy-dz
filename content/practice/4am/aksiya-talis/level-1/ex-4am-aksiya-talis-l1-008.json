@@ -1,0 +1,162 @@
+{
+  "id": "ex-4am-aksiya-talis-l1-008",
+  "lessonCode": "aksiya-talis",
+  "level": 1,
+  "metadata": {
+    "title": "معارف 3 — مثال الكتاب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نسبة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-3",
+      "page": 108,
+      "section": "معارف",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 108): M و O و R على استقامة، N و O و P على استقامة، و O بين النقطتين في كل مرة: OM = 3 ، OR = 2,4 ، ON = 5 ، OP = 4.",
+    "figure": {
+      "points": {
+        "O": [
+          0,
+          0
+        ],
+        "M": [
+          -1.8,
+          2.4
+        ],
+        "R": [
+          1.44,
+          -1.92
+        ],
+        "N": [
+          4,
+          3
+        ],
+        "P": [
+          -3.2,
+          -2.4
+        ]
+      },
+      "segments": [
+        {
+          "from": "O",
+          "to": "M",
+          "label": "3"
+        },
+        {
+          "from": "O",
+          "to": "R",
+          "label": "2,4"
+        },
+        {
+          "from": "O",
+          "to": "N",
+          "label": "5"
+        },
+        {
+          "from": "O",
+          "to": "P",
+          "label": "4"
+        },
+        [
+          "M",
+          "N"
+        ],
+        [
+          "P",
+          "R"
+        ]
+      ],
+      "ariaLabel": "M و O و R على استقامة، N و O و P على استقامة، OM = 3 و OR = 2,4 و ON = 5 و OP = 4",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $\\dfrac{OM}{OR}$ (عدد عشري):",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد: كسر غير قابل للاختزال أو عدد عشري بالفاصلة",
+      "expectedAnswer": "1,25",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "0,8"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النقطة المشتركة بين المستقيمين، ثم الطولين المعنيين على المستقيم نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "النسبة: طول يبدأ من النقطة المشتركة مقسوما على الطول الموافق له على المستقيم نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب الكسر ثم اختزله (أو احسب قيمته المضبوطة)."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3}{2{,}4} = 1{,}25$",
+        "incorrect": "راجع: من أي نقطة يبدأ كل طول؟ وهل اختزلت الكسر؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $\\dfrac{ON}{OP}$ (عدد عشري):",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد: كسر غير قابل للاختزال أو عدد عشري بالفاصلة",
+      "expectedAnswer": "1,25",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "0,8"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النقطة المشتركة بين المستقيمين، ثم الطولين المعنيين على المستقيم نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "النسبة: طول يبدأ من النقطة المشتركة مقسوما على الطول الموافق له على المستقيم نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب الكسر ثم اختزله (أو احسب قيمته المضبوطة)."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{5}{4} = 1{,}25$ : النسبتان متساويتان ونفس الترتيب، إذن (MN)//(PR).",
+        "incorrect": "راجع: من أي نقطة يبدأ كل طول؟ وهل اختزلت الكسر؟"
+      }
+    }
+  ]
+}

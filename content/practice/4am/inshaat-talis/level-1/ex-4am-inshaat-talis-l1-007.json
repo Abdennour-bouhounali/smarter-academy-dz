@@ -1,0 +1,70 @@
+{
+  "id": "ex-4am-inshaat-talis-l1-007",
+  "lessonCode": "inshaat-talis",
+  "level": 1,
+  "metadata": {
+    "title": "طرائق (ص 107) — تناسب لإنشاء طول",
+    "estimatedMinutes": 3,
+    "tags": [
+      "إنشاء طول معلوم"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-construct-length",
+      "page": 107,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 107): نريد إنشاء قطعة مستقيم [AB] بحيث يكون $AB = \\dfrac{14}{3}$ (الوحدة السنتيمتر)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أي تناسب يسمح بإنشائها بخاصية طالس؟",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{3}{7} = \\dfrac{2}{AB}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{7}{3} = \\dfrac{2}{AB}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{2}{3} = \\dfrac{7}{AB}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$AB = \\dfrac{14}{3}$ تعني $3 \\times AB = 14$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب 14 جداء عددين واقرأ التناسب بالجداء المتصالب."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3}{7} = \\dfrac{2}{AB}$ يعطي $3 \\times AB = 7 \\times 2 = 14$ ، أي $AB = \\dfrac{14}{3}$ .",
+        "incorrect": "تحقّق بالجداء المتصالب: الاقتراحان الآخران يعطيان $\\dfrac{6}{7}$ و $\\dfrac{21}{2}$ ."
+      }
+    }
+  ]
+}

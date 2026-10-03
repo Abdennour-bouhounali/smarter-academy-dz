@@ -63,7 +63,7 @@ export default function ChallengeQuestion({
           )}
           {statement?.content && (
             <div className="mb-4 rounded-2xl bg-slate-50 p-3 sm:p-4">
-              <ExerciseStatement content={statement.content} visual={statement.visual} />
+              <ExerciseStatement content={statement.content} visual={statement.visual} figure={statement.figure} />
             </div>
           )}
           <h2 ref={headingRef} tabIndex={-1} className="text-xl font-bold leading-relaxed text-slate-900 focus:outline-none sm:text-2xl">

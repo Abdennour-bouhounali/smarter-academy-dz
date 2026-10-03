@@ -1,0 +1,102 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l4-004",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — أسطوانة ارتفاعها ضعف نصف قطرها",
+    "estimatedMinutes": 6,
+    "tags": [
+      "معادلة",
+      "مقطع محوري"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "أسطوانة دوران محاطة بمخروط دوران ارتفاعه $20\\,\\mathrm{cm}$ ونصف قطر قاعدته $5\\,\\mathrm{cm}$ (قاعدتها على قاعدته)، وارتفاعها ضعف نصف قطرها: $h = 2r$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما نصف قطرها $r$ (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (كسر أو عشري)",
+      "expectedAnswer": "10/3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{r}{5} = \\dfrac{20 - h}{20}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض h بـ 2r."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع حدود r."
+        }
+      ],
+      "feedback": {
+        "correct": "$20r = 100 - 10r$ أي $30r = 100$ ومنه $r = \\dfrac{10}{3}\\,\\mathrm{cm}$ .",
+        "incorrect": "نعوّض h بـ 2r لا بـ r."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "4",
+          "id": "MISC-TALIS-HALL-MUADALA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما ارتفاعها $h$ (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (كسر أو عشري)",
+      "expectedAnswer": "20/3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$h = 2r$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل r."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب في 2."
+        }
+      ],
+      "feedback": {
+        "correct": "$h = 2 \\times \\dfrac{10}{3} = \\dfrac{20}{3}\\,\\mathrm{cm}$ .",
+        "incorrect": "h ضعف r."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ]
+}

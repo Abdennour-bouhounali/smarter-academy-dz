@@ -1,0 +1,68 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l3-007",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — معامل عشري",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تصغير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P3",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "المثلث AMN تصغير للمثلث ABC بمعامل $k = 0{,}4$ (في وضعية طالس)، و $BC = 7{,}5$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب MN.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-MUAMIL-MAQLUB",
+          "value": "18,75"
+        },
+        {
+          "id": "MISC-TALIS-JAMA-BADAL-DARB",
+          "value": "7,9"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل التناسبية هو طول في المثلث الناتج مقسوما على الطول الموافق له في المثلث الأصلي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذا كان المعامل أصغر من الواحد فهو تصغير، وإذا كان أكبر منه فهو تكبير."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب كل طول في المعامل نفسه، ولا تُضف العدد نفسه إلى كل طول."
+        }
+      ],
+      "feedback": {
+        "correct": "$MN = 0{,}4 \\times 7{,}5 = 3$ .",
+        "incorrect": "راجع اتجاه النسبة: المثلث الناتج في البسط والمثلث الأصلي في المقام."
+      }
+    }
+  ]
+}

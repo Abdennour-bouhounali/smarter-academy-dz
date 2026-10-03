@@ -1,0 +1,69 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l3-009",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — محيط المثلث المكبَّر",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تكبير",
+      "محيط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P3",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "أطوال أضلاع المثلث ABC هي 2 و 3 و 4. المثلث AB′C′ تكبير له بمعامل $k = \\dfrac{5}{2}$ (في وضعية طالس)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب محيط المثلث AB′C′.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "22,5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-JAMA-BADAL-DARB",
+          "value": "16,5"
+        },
+        {
+          "id": "MISC-TALIS-MUAMIL-MAQLUB",
+          "value": "3,6"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل التناسبية هو طول في المثلث الناتج مقسوما على الطول الموافق له في المثلث الأصلي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذا كان المعامل أصغر من الواحد فهو تصغير، وإذا كان أكبر منه فهو تكبير."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب كل طول في المعامل نفسه، ولا تُضف العدد نفسه إلى كل طول."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{5}{2} \\times (2 + 3 + 4) = \\dfrac{5}{2} \\times 9 = 22{,}5$ .",
+        "incorrect": "راجع اتجاه النسبة: المثلث الناتج في البسط والمثلث الأصلي في المقام."
+      }
+    }
+  ]
+}

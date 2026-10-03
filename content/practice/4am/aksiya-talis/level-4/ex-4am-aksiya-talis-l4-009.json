@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-aksiya-talis-l4-009",
+  "lessonCode": "aksiya-talis",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — أطوال متتالية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خاصية عكسية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_aksiya-talis_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "النقط A و E و B على استقامة (E بين A و B)، والنقط A و F و C على استقامة (F بين A و C): AE = 4,2 ، EB = 2,8 ، AF = 3 ، FC = 2."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب AB:",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-QITAA-BADAL-DILA",
+          "value": "2,8"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم الشكل وضع عليه الأطوال المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الطول المطلوب جزء من قطعة أو مجموع قطعتين على المستقيم نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع أو اطرح حسب موقع النقطة بين الأخريين."
+        }
+      ],
+      "feedback": {
+        "correct": "$AB = 4{,}2 + 2{,}8 = 7$",
+        "incorrect": "راجع موقع النقطة: هل الطول جزء أم مجموع؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل (EF) يوازي (BC)؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم: $\\dfrac{AE}{AB} = \\dfrac{AF}{AC} = 0{,}6$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا: $AE \\neq AF$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-JAMA-BADAL-DARB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق أولا من ترتيب النقط على المستقيمين المتقاطعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب النسبتين وقارنهما بالجداء المتصالب، لا بقيم مقرّبة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نسبتان متساويتان مع نفس الترتيب: الخاصية العكسية. نسبتان مختلفتان: نستدل بالخلف بخاصية طالس."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{4{,}2}{7} = 0{,}6$ و $\\dfrac{3}{5} = 0{,}6$ ونفس الترتيب.",
+        "incorrect": "راجع الشرطين: الترتيب، ثم تساوي النسبتين بالحساب."
+      }
+    }
+  ]
+}

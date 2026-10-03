@@ -38,6 +38,9 @@ const FIGURES = {
   ]).then(([{ default: DataTable }, { CHALLENGE }]) => ({
     default: () => <DataTable head={CHALLENGE.head} rows={CHALLENGE.rows} />,
   })),
+  // p. 103 — « رسم الشكل المقابل » : la minaret, le rayon de soleil, le bâton de 1 m, 10 m et 11,6 m au sol — dessinée par
+  // la synthèse qui reprend le تحدّ (doublon déclaré) ; la hauteur n'y est ni écrite ni graduée (c'est la question).
+  'khassiyat-talis:challenge': () => import('../../lessons/moyen/4am/handasa/khassiyat-talis/wadiya-idmajiya-talis/components/MinaretFigure.jsx'),
 };
 
 const lazyCache = {};

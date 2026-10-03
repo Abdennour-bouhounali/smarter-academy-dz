@@ -1,0 +1,106 @@
+{
+  "id": "ex-4am-aksiya-talis-l3-003",
+  "lessonCode": "aksiya-talis",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 7 — «يبدو» متوازيين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "عدم التوازي"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-7",
+      "page": 110,
+      "section": "أوظّف تعلّماتي",
+      "number": 7
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 110): ABC مثلث حيث AB = 4cm ، AC = 5cm ، BC = 6cm. I ∈ [AB] و J ∈ [AC] حيث BI = CJ = 1cm. يبدو أنّ (IJ) و (BC) متوازيان."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $\\dfrac{AI}{AB}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد: كسر غير قابل للاختزال أو عدد عشري بالفاصلة",
+      "expectedAnswer": "3/4",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-QITAA-BADAL-DILA",
+          "value": "1/4"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النقطة المشتركة بين المستقيمين، ثم الطولين المعنيين على المستقيم نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "النسبة: طول يبدأ من النقطة المشتركة مقسوما على الطول الموافق له على المستقيم نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب الكسر ثم اختزله (أو احسب قيمته المضبوطة)."
+        }
+      ],
+      "feedback": {
+        "correct": "$AI = 3$ إذن $\\dfrac{AI}{AB} = \\dfrac{3}{4}$",
+        "incorrect": "راجع: من أي نقطة يبدأ كل طول؟ وهل اختزلت الكسر؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $\\dfrac{AJ}{AC}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد: كسر غير قابل للاختزال أو عدد عشري بالفاصلة",
+      "expectedAnswer": "4/5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-QITAA-BADAL-DILA",
+          "value": "1/5"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النقطة المشتركة بين المستقيمين، ثم الطولين المعنيين على المستقيم نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "النسبة: طول يبدأ من النقطة المشتركة مقسوما على الطول الموافق له على المستقيم نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب الكسر ثم اختزله (أو احسب قيمته المضبوطة)."
+        }
+      ],
+      "feedback": {
+        "correct": "$AJ = 4$ إذن $\\dfrac{AJ}{AC} = \\dfrac{4}{5}$ ، و $\\dfrac{3}{4} \\neq \\dfrac{4}{5}$ : المستقيمان غير متوازيين.",
+        "incorrect": "راجع: من أي نقطة يبدأ كل طول؟ وهل اختزلت الكسر؟"
+      }
+    }
+  ]
+}

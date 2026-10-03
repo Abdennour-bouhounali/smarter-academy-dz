@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l5-009",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — مخروط بمولّده",
+    "estimatedMinutes": 7,
+    "tags": [
+      "مقطع محوري",
+      "فيثاغورس",
+      "معادلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "مخروط دوران طول مولّده $10\\,\\mathrm{cm}$ ونصف قطر قاعدته $6\\,\\mathrm{cm}$ ، فيه أسطوانة دوران محاطة (قاعدتها على قاعدته) ارتفاعها يساوي نصف قطرها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما ارتفاع المخروط (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "8",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المقطع المحوري: مثلث قائم."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المولّد هو الوتر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "خاصية فيثاغورس."
+        }
+      ],
+      "feedback": {
+        "correct": "$H^2 = 10^2 - 6^2 = 64$ إذن $H = 8\\,\\mathrm{cm}$ .",
+        "incorrect": "المولّد وتر المثلث القائم."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "4",
+          "id": "MISC-TALIS-MULAAMA-WAQI"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما نصف قطر الأسطوانة (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (كسر أو عشري)",
+      "expectedAnswer": "24/7",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{r}{6} = \\dfrac{H - r}{H}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل H الذي حسبته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة."
+        }
+      ],
+      "feedback": {
+        "correct": "$8r = 48 - 6r$ أي $14r = 48$ ومنه $r = \\dfrac{24}{7}\\,\\mathrm{cm}$ .",
+        "incorrect": "نعوّض h بـ r في مساواة طالس بالارتفاع H لا بالمولّد."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5,
+      "evaluationPolicy": {
+        "tolerance": "0.01"
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "15/4",
+          "id": "MISC-TALIS-QITAA-BADAL-DILA"
+        }
+      ]
+    }
+  ]
+}

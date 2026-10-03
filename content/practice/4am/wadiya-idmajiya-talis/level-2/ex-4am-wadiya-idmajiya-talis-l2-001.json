@@ -1,0 +1,112 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l2-001",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 2,
+  "metadata": {
+    "title": "تحدّ الوحدة — ارتفاع المئذنة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "طريقة الظل",
+      "خاصية طالس"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "challenge",
+      "page": 103,
+      "section": "تحدّ"
+    }
+  },
+  "statement": {
+    "content": "عصا شاقولية طولها $1\\,\\mathrm{m}$ على بعد $10\\,\\mathrm{m}$ من قاعدة مئذنة، وظلّها ينتهي حيث ينتهي ظلّ المئذنة، على بعد $11{,}6\\,\\mathrm{m}$ من قاعدة المئذنة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما طول ظلّ العصا (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "1.6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الظلّان ينتهيان في النقطة نفسها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ظلّ العصا يبدأ من قدمها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح المسافتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$11{,}6 - 10 = 1{,}6\\,\\mathrm{m}$ .",
+        "incorrect": "ظلّ العصا يمتدّ من قدمها إلى نهاية الظلّين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "21.6",
+          "id": "MISC-TALIS-ZILL-RAS-MUSHTARAK"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما ارتفاع المئذنة (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "7.25",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلثان رأسهما نهاية الظلّين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العصا والمئذنة متوازيتان."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب الارتفاع ÷ طول العصا = ظلّ المئذنة ÷ ظلّ العصا."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{h}{1} = \\dfrac{11{,}6}{1{,}6}$ إذن $h = 7{,}25\\,\\mathrm{m}$ .",
+        "incorrect": "نقارن ظلّين مقيسين من نقطة النهاية المشتركة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "10",
+          "id": "MISC-TALIS-ZILL-RAS-MUSHTARAK"
+        },
+        {
+          "value": "11.6",
+          "id": "MISC-TALIS-MULAAMA-WAQI"
+        }
+      ]
+    }
+  ]
+}

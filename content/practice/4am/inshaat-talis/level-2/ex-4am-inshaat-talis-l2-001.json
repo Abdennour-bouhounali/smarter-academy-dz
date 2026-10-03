@@ -1,0 +1,61 @@
+{
+  "id": "ex-4am-inshaat-talis-l2-001",
+  "lessonCode": "inshaat-talis",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 17 (ص 111) — عدد القطع",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تمرين 17",
+      "تقسيم قطعة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-17",
+      "page": 111,
+      "section": "وضع نقط على مستقيم",
+      "number": 17
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: ارسم قطعة مستقيم [AB]. أنشئ، دون استعمال مسطرة مدرجة، النقطة M من [AB] حيث $\\dfrac{AM}{AB} = \\dfrac{3}{7}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "على نصف مستقيم مساعد [Ax) نعيّن بالمدور قطعا متقايسة عددها:",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-ADAD-AL-ALAMAT",
+          "value": "10"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{AM}{AB} = \\dfrac{3}{7}$ : AB أجزاء متساوية، و AM ثلاثة منها."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كم جزءًا في AB كلها؟"
+        }
+      ],
+      "feedback": {
+        "correct": "سبع قطع، ونصل السابعة بـ B : AM ثلاث منها.",
+        "incorrect": "$\\dfrac{AM}{AB}$ نسبة جزء إلى الكل: الكل AB سبعة أجزاء (العدد 10 يخص $\\dfrac{MA}{MB}$ )."
+      }
+    }
+  ]
+}

@@ -1,0 +1,183 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l4-007",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — عموديان على مستقيم واحد",
+    "estimatedMinutes": 4,
+    "tags": [
+      "التوازي",
+      "حساب طول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P1",
+      "modelledOn": "ex-3"
+    }
+  },
+  "statement": {
+    "content": "I و H و F على استقامة؛ $(HJ)$ و $(FG)$ عموديان على $(IF)$ في H و F ؛ I و J و G على استقامة ؛ $IH = 3$ ، $IF = 7{,}5$ و $HJ = 2$ .",
+    "figure": {
+      "points": {
+        "I": [
+          0,
+          5
+        ],
+        "H": [
+          0,
+          3
+        ],
+        "F": [
+          0,
+          0
+        ],
+        "J": [
+          2,
+          3
+        ],
+        "G": [
+          5,
+          0
+        ]
+      },
+      "segments": [
+        {
+          "from": "I",
+          "to": "H",
+          "label": "3"
+        },
+        {
+          "from": "H",
+          "to": "F"
+        },
+        {
+          "from": "I",
+          "to": "J"
+        },
+        {
+          "from": "J",
+          "to": "G"
+        },
+        {
+          "from": "H",
+          "to": "J",
+          "label": "2"
+        },
+        {
+          "from": "F",
+          "to": "G"
+        }
+      ],
+      "ariaLabel": "I و H و F على استقامة، (HJ) و (FG) عموديان على (IF)، و I و J و G على استقامة",
+      "maxWidth": 220,
+      "rightAngles": [
+        [
+          "I",
+          "H",
+          "J"
+        ],
+        [
+          "I",
+          "F",
+          "G"
+        ]
+      ]
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المستقيمان $(HJ)$ و $(FG)$ متوازيان لأن:",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "مستقيمان عموديان على مستقيم واحد متوازيان",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$IH < IF$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
+        },
+        {
+          "id": "C",
+          "content": "النقط I و J و G على استقامة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الرأس المشترك والمستقيمين المتوازيين في الشكل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في كل نسبة: ضلع من المثلث الأول على الضلع الموافق له في المثلث الثاني، بالترتيب نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب رؤوس المثلثين بالترتيب نفسه، رأسا تحت رأس، ثم اقرأ النسب."
+        }
+      ],
+      "feedback": {
+        "correct": "كلاهما عمودي على $(IF)$ فهما متوازيان.",
+        "incorrect": "راجع الرؤوس المتقابلة: الرأس المشترك، ثم طرفا المستقيمين المتوازيين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب FG.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "0,8"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{IH}{IF} = \\dfrac{HJ}{FG}$ أي $\\dfrac{3}{7{,}5} = \\dfrac{2}{FG}$ ومنه $FG = 5$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    }
+  ]
+}

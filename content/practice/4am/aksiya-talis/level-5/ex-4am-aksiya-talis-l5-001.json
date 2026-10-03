@@ -1,0 +1,228 @@
+{
+  "id": "ex-4am-aksiya-talis-l5-001",
+  "lessonCode": "aksiya-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تمرين 23 — طالس ثم عكسها",
+    "estimatedMinutes": 6,
+    "tags": [
+      "مسألة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-23",
+      "page": 113,
+      "section": "أتعمّق",
+      "number": 23
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 113): A ، K ، B على استقامة؛ L تقاطع (AC) و (DK)؛ AK = 30 ، KB = 20 ، LD = 13,5 ، و AL = KB = 20 و CB = AK = 30 (الترميز)، و (CB)//(LK).",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "K": [
+          30,
+          0
+        ],
+        "B": [
+          50,
+          0
+        ],
+        "C": [
+          27.11,
+          19.39
+        ],
+        "L": [
+          16.27,
+          11.63
+        ],
+        "D": [
+          5.97,
+          20.36
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "K",
+          "label": "30",
+          "ticks": 3
+        },
+        {
+          "from": "K",
+          "to": "B",
+          "label": "20",
+          "ticks": 2
+        },
+        {
+          "from": "A",
+          "to": "L",
+          "ticks": 2
+        },
+        [
+          "L",
+          "C"
+        ],
+        {
+          "from": "C",
+          "to": "B",
+          "ticks": 3
+        },
+        {
+          "from": "L",
+          "to": "D",
+          "label": "13,5"
+        },
+        [
+          "L",
+          "K"
+        ],
+        [
+          "C",
+          "K"
+        ],
+        {
+          "from": "D",
+          "to": "A",
+          "dashed": true
+        }
+      ],
+      "ariaLabel": "A و K و B على استقامة، L تقاطع (AC) و (DK)؛ AK = 30 و KB = 20 و LD = 13,5؛ AL = KB و AK = CB حسب الترميز",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب LK:",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "18",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-QITAA-BADAL-DILA",
+          "value": "45"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب تساوي النسبتين الذي يجعل المستقيمين متوازيين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المجهول يظهر في إحدى النسبتين: استعمل الجداء المتصالب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الجداء على العدد الثالث، ثم تحقّق من النسبتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{LK}{CB} = \\dfrac{AK}{AB} = \\dfrac{3}{5}$ إذن $LK = 18$",
+        "incorrect": "اكتب تساوي النسبتين من جديد ثم أعد الجداء المتصالب."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب LC:",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد: كسر غير قابل للاختزال",
+      "expectedAnswer": "40/3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "12"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب تساوي النسبتين الذي يجعل المستقيمين متوازيين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المجهول يظهر في إحدى النسبتين: استعمل الجداء المتصالب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الجداء على العدد الثالث، ثم تحقّق من النسبتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$AC = \\dfrac{20}{3/5} = \\dfrac{100}{3}$ إذن $LC = \\dfrac{100}{3} - 20 = \\dfrac{40}{3}$",
+        "incorrect": "اكتب تساوي النسبتين من جديد ثم أعد الجداء المتصالب."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "هل (CK) يوازي (DA)؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا: $\\dfrac{LA}{LC} = \\dfrac{3}{2}$ و $\\dfrac{LD}{LK} = \\dfrac{3}{4}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نعم: لأن (CB) يوازي (LK)",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-AKS-BIDUN-TASAWI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق أولا من ترتيب النقط على المستقيمين المتقاطعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب النسبتين وقارنهما بالجداء المتصالب، لا بقيم مقرّبة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نسبتان متساويتان مع نفس الترتيب: الخاصية العكسية. نسبتان مختلفتان: نستدل بالخلف بخاصية طالس."
+        }
+      ],
+      "feedback": {
+        "correct": "النسبتان مختلفتان: لو كان $(CK) \\parallel (DA)$ لتساوتا حسب خاصية طالس.",
+        "incorrect": "راجع الشرطين: الترتيب، ثم تساوي النسبتين بالحساب."
+      }
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "id": "ex-4am-aksiya-talis-l3-006",
+  "lessonCode": "aksiya-talis",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — فرق صغير",
+    "estimatedMinutes": 3,
+    "tags": [
+      "عدم التوازي"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_aksiya-talis_P1",
+      "modelledOn": "method-parallel"
+    }
+  },
+  "statement": {
+    "content": "ABC مثلث، M من [AB] و N من [AC]: AM = 2,5 ، AB = 6 ، AN = 3 ، AC = 7,5."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب الجداء $2{,}5 \\times 7{,}5$ :",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة",
+      "expectedAnswer": "18,75",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجداء المتصالب: البسط الأول في المقام الثاني، والمقام الأول في البسط الثاني."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب العددين كأنهما طبيعيان، ثم ضع الفاصلة حسب عدد الأرقام بعدها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بتقدير سريع: هل الناتج معقول؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$2{,}5 \\times 7{,}5 = 18{,}75$ بينما $6 \\times 3 = 18$",
+        "incorrect": "أعد الضرب وانتبه إلى موضع الفاصلة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "إذن:",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "(MN) لا يوازي (BC)",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(MN) \\parallel (BC)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAQRIB-BURHAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق أولا من ترتيب النقط على المستقيمين المتقاطعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب النسبتين وقارنهما بالجداء المتصالب، لا بقيم مقرّبة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نسبتان متساويتان مع نفس الترتيب: الخاصية العكسية. نسبتان مختلفتان: نستدل بالخلف بخاصية طالس."
+        }
+      ],
+      "feedback": {
+        "correct": "$18{,}75 \\neq 18$ : النسبتان مختلفتان، فالمستقيمان غير متوازيين.",
+        "incorrect": "راجع الشرطين: الترتيب، ثم تساوي النسبتين بالحساب."
+      }
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-inshaat-talis-l2-008",
+  "lessonCode": "inshaat-talis",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — وتر طوله جذر 13",
+    "estimatedMinutes": 4,
+    "tags": [
+      "طول غير ناطق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_inshaat-talis_P2",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "نريد إنشاء قطعة طولها $\\sqrt{13}$ دون أي قياس."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نرسم مثلثا قائما ضلعا زاويته القائمة:",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "2 و 3",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "1 و 12",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-FITHAGHURIS-JAM"
+        },
+        {
+          "id": "C",
+          "content": "4 و 9",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-FITHAGHURIS-JAM"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "مربع الوتر يساوي مجموع مربعي الضلعين."
+        }
+      ],
+      "feedback": {
+        "correct": "$2^2 + 3^2 = 4 + 9 = 13$ : الوتر $\\sqrt{13}$ .",
+        "incorrect": "مجموع الضلعين ليس المطلوب: $1^2 + 12^2 = 145$ و $4^2 + 9^2 = 97$ ."
+      }
+    }
+  ]
+}

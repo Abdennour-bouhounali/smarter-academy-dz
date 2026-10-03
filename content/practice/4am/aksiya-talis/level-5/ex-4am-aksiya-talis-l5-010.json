@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-aksiya-talis-l5-010",
+  "lessonCode": "aksiya-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — ما الذي يضمن التوازي؟",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نفس الترتيب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_aksiya-talis_P2",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "(d) و (d′) مستقيمان متقاطعان في A، B و B′ من (d) و C و C′ من (d′) (كلها تختلف عن A)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ المعطيات تضمن أن (B′C′) يوازي (BC)؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{AB'}{AB} = \\dfrac{AC'}{AC}$ و B′ ، C′ كلتاهما من الجهة الأخرى للنقطة A",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{AB'}{AB} = \\dfrac{AC'}{AC}$ فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TARTIB-MANSI"
+        },
+        {
+          "id": "C",
+          "content": "$BB' = CC'$ و B′ ، C′ بين A والنقطتين B و C",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-JAMA-BADAL-DARB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المستقيمين المتقاطعين وضع النقط في المواقع المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نفس الترتيب: موقع النقطة الأولى بالنسبة إلى الرأس والنقطة الأخرى يماثل موقع الثانية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انظر هل النقطتان في الجهة نفسها من الرأس أم في جهتين مختلفتين."
+        }
+      ],
+      "feedback": {
+        "correct": "الشرطان معًا: تساوي النسبتين ونفس الترتيب (A بين B و B′ وبين C و C′).",
+        "incorrect": "ارسم الشكل: في أي جهة من الرأس تقع كل نقطة؟"
+      }
+    }
+  ]
+}

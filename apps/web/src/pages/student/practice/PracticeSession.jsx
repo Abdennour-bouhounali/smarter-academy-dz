@@ -553,12 +553,13 @@ export default function PracticeSession() {
       <ClassroomFrame maxWidth={1080}>
       <div ref={workspaceRef} className="space-y-3" data-exercise-workspace>
         {/* ── les DONNÉES du problème : le contexte, pas la question. ───── */}
-        {(exercise.statement?.content || exercise.statement?.visual || exercise.statement?.support) && (
+        {(exercise.statement?.content || exercise.statement?.visual || exercise.statement?.figure || exercise.statement?.support) && (
           <section aria-labelledby="practice-statement-label" className="rounded-xl bg-white/70 px-3.5 py-3 ring-1 ring-slate-200 sm:px-4">
             <p id="practice-statement-label" className="mb-1 text-xs font-bold text-slate-600">{t('practice.statementLabel')}</p>
             <ExerciseStatement
               content={exercise.statement?.content}
               visual={exercise.statement?.visual}
+              figure={exercise.statement?.figure}
               support={exercise.statement?.support}
             />
           </section>

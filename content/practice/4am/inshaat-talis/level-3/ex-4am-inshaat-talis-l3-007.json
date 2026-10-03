@@ -1,0 +1,153 @@
+{
+  "id": "ex-4am-inshaat-talis-l3-007",
+  "lessonCode": "inshaat-talis",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — اقرأ الإنشاء",
+    "estimatedMinutes": 5,
+    "tags": [
+      "تقسيم قطعة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_inshaat-talis_P1",
+      "modelledOn": "method-divide"
+    }
+  },
+  "statement": {
+    "content": "في الشكل: على نصف مستقيم مبدؤه A خمس قطع متقايسة تنتهي عند العلامة $P_5$ ، والمستقيم $(P_5B)$ والموازي له المارّ بالعلامة الثانية $P_2$ يقطع [AB] في M.",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          10,
+          0
+        ],
+        "P1": [
+          1,
+          1.2
+        ],
+        "P2": [
+          2,
+          2.4
+        ],
+        "P3": [
+          3,
+          3.6
+        ],
+        "P4": [
+          4,
+          4.8
+        ],
+        "P5": [
+          5,
+          6
+        ],
+        "M": [
+          4,
+          0
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B",
+          "bold": true
+        },
+        {
+          "from": "A",
+          "to": "P1",
+          "ticks": 1
+        },
+        {
+          "from": "P1",
+          "to": "P2",
+          "ticks": 1
+        },
+        {
+          "from": "P2",
+          "to": "P3",
+          "ticks": 1
+        },
+        {
+          "from": "P3",
+          "to": "P4",
+          "ticks": 1
+        },
+        {
+          "from": "P4",
+          "to": "P5",
+          "ticks": 1
+        },
+        {
+          "from": "P5",
+          "to": "B",
+          "arrows": 1,
+          "tone": "indigo"
+        },
+        {
+          "from": "P2",
+          "to": "M",
+          "arrows": 1,
+          "tone": "emerald"
+        }
+      ],
+      "hidden": [
+        "P1",
+        "P3",
+        "P4"
+      ],
+      "labels": {
+        "A": "sw",
+        "B": "se",
+        "M": "s",
+        "P2": "nw",
+        "P5": "nw"
+      },
+      "ariaLabel": "نصف مستقيم مبدؤه A عليه خمس قطع متقايسة تنتهي عند P5، والمستقيم (P5B) والموازي له المارّ بالعلامة الثانية P2 يقطع [AB] في M",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\dfrac{AM}{AB}$ تساوي (كسر):",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "كسر غير قابل للاختزال",
+      "expectedAnswer": "2/5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-ADAD-AL-ALAMAT",
+          "value": "1/2"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "في المثلث $AP_5B$ : $(P_2M) // (P_5B)$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{AM}{AB} = \\dfrac{AP_2}{AP_5}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{AP_2}{AP_5} = \\dfrac{2}{5}$ لأن القطع متقايسة.",
+        "incorrect": "عدّ القطع من A إلى $P_2$ ثم إلى $P_5$ ."
+      }
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l4-006",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — مئذنة حيّ القصبة",
+    "estimatedMinutes": 6,
+    "tags": [
+      "طريقة الظل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P1",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "غرست سارة عصا شاقولية طولها $2\\,\\mathrm{m}$ على بعد $7{,}5\\,\\mathrm{m}$ من قاعدة مئذنة، فانتهى ظلّها حيث ينتهي ظلّ المئذنة، على بعد $9\\,\\mathrm{m}$ من قاعدة المئذنة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما طول ظلّ العصا (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "1.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الظلّان ينتهيان معًا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "ظلّ العصا من قدمها إلى النهاية المشتركة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اطرح."
+        }
+      ],
+      "feedback": {
+        "correct": "$9 - 7{,}5 = 1{,}5\\,\\mathrm{m}$ .",
+        "incorrect": "ظلّ العصا لا يبدأ من قاعدة المئذنة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "ما ارتفاع المئذنة (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "12",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{h}{2} = \\dfrac{9}{\\text{ظلّ العصا}}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل ظلّ العصا الذي حسبته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء تصالبي."
+        }
+      ],
+      "feedback": {
+        "correct": "$h = 2 \\times \\dfrac{9}{1{,}5} = 12\\,\\mathrm{m}$ .",
+        "incorrect": "نقارن ظلّ المئذنة كاملا بظلّ العصا."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "10",
+          "id": "MISC-TALIS-ZILL-RAS-MUSHTARAK"
+        },
+        {
+          "value": "1/3",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ]
+    }
+  ]
+}

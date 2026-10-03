@@ -1,0 +1,77 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l2-009",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — سلّم ورفّ",
+    "estimatedMinutes": 4,
+    "tags": [
+      "الخاصية العكسية",
+      "إثبات عدم التوازي"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "سلّم مزدوج: ساقاه [AB] و [AC] طول كل منهما $2\\,\\mathrm{m}$ ، ورفّ [MN] حيث M من [AB] و N من [AC] ، $AM = 1{,}2\\,\\mathrm{m}$ و $AN = 1{,}3\\,\\mathrm{m}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل الرفّ (MN) يوازي (BC)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، لأنّ الساقين متساويتان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-AKS-BIDUN-TASAWI"
+        },
+        {
+          "id": "B",
+          "content": "لا: $\\dfrac{1{,}2}{2} \\neq \\dfrac{1{,}3}{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "نعم، لأنّ $1{,}2$ و $1{,}3$ متقاربان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAQRIB-BURHAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب النسبتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{AM}{AB}$ و $\\dfrac{AN}{AC}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نسبتان مختلفتان: ماذا تقول خاصية طالس؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$0{,}6 \\neq 0{,}65$ : لو كان (MN)//(BC) لتساوت النسبتان، إذن الرفّ غير موازٍ.",
+        "incorrect": "التقارب لا يكفي: نحتاج تساويا مضبوطا."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    }
+  ]
+}

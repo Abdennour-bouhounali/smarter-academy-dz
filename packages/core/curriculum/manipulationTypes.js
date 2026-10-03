@@ -304,6 +304,44 @@ export const MANIPULATION_TYPES = Object.freeze({
     shows: 'المجدول يحسب مؤشرات سلسلة محجوزة في خلايا بدساتير: المدى ⁦=MAX()-MIN()⁩ ، الوسيط ⁦=MEDIANE()⁩ ، المتوسط ⁦=MOYENNE()⁩ ، المنوال ⁦=MODE()⁩ ، ويرسم التمثيل البياني المناسب',
     controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
   },
+  // Unité 9 « خاصية طالس » (2026-10-02) — la géométrie : une longueur, une position, un rapport se TIENNENT à la main.
+  'thales-beam': {
+    // LE FAISCEAU : deux rayons issus de A (l'objectif d'un projecteur, le trou d'une chambre noire) ; l'élève fait
+    // glisser l'écran (B′C′) le long des rayons — parallèle à (BC) — et les trois rapports AB′/AB, AC′/AC, B′C′/BC
+    // restent ÉGAUX (k) ; incliner l'écran les sépare. Passer l'écran de l'autre côté de A retourne l'image (وضعية الفراشة).
+    // Réutilisé par la synthèse (theme « ombre » : la minaret et le bâton).
+    shows: 'إذا قطع مستقيمان متوازيان مستقيمين متقاطعين في A فإن أطوال المثلثين متناسبة: AB′/AB = AC′/AC = B′C′/BC = k ، والمثلث الصغير تصغير للكبير بمعامل k',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'parallel-level': {
+    // LE NIVEAU À BULLE : deux points posés par l'élève sur deux droites sécantes graduées (les montants d'une échelle
+    // double, puis les droites de نشاط 2) ; la barre (B′C′) n'est « de niveau » — parallèle à (BC) — que si
+    // AB′/AB = AC′/AC ET si les points sont dans le même ordre ; des rapports égaux de part et d'autre de A la refusent.
+    shows: 'إذا كان AB′/AB = AC′/AC وكانت النقط A، B، B′ و A، C، C′ مرتبة بنفس الترتيب فإن (B′C′) يوازي (BC) ؛ نسبتان مختلفتان تثبتان عدم التوازي',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'segment-divider': {
+    // L'ÉVENTAIL DES PARALLÈLES : l'élève trace une demi-droite depuis A, y reporte au compas n ouvertures égales,
+    // relie la dernière marque à B puis fait glisser l'équerre le long de la règle : les parallèles découpent [AB] en
+    // parts égales (ou dans le rapport p/q). Une ouverture changée en route ou une « parallèle » inclinée donne des
+    // parts inégales que la règle mesure.
+    shows: 'لتقسيم [AB] إلى n قطع متقايسة (أو بنسبة p/q) نعيّن على نصف مستقيم مبدؤه A قطعا متقايسة بالمدور ونرسم موازيات للمستقيم الواصل بين آخر علامة و B',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'shadow-stick': {
+    // LE BÂTON ET L'OMBRE (تحدّ) : la minaret et son ombre ; l'élève fait glisser un bâton de 1 m sur le sol jusqu'à ce
+    // que l'extrémité de SON ombre tombe sur celle de la minaret — alors un seul rayon de soleil passe par les deux
+    // sommets, les deux verticales sont parallèles et h / 1 = (ombre de la minaret) / (ombre du bâton).
+    shows: 'العصا والمئذنة شاقوليتان فهما متوازيتان ؛ إذا انطبقت نهاية ظل العصا على نهاية ظل المئذنة فإن المثلثين في وضعية طالس: h ÷ (طول العصا) = (ظل المئذنة) ÷ (ظل العصا)',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
+  'cone-cylinder': {
+    // LA COUPE AXIALE : un cône (hauteur H, rayon R) et le cylindre posé sur sa base ; l'élève tire le coin du
+    // rectangle le long de la génératrice — le coin ne quitte pas le cône (sinon le cylindre le perce) — et lit r, h,
+    // h = H − (H/R)·r (Thalès au sommet O) et le volume πr²h ; il cherche le cylindre où h = r.
+    shows: 'في المقطع المحوري للمخروط: r/R = (H − h)/H حسب خاصية طالس ، فيُعيَّن بعد الأسطوانة المحاطة بحل معادلة ثم حجمها πr²h',
+    controls: { reset: true, nextStep: false, toggleExplanation: true, changeNumbers: false },
+  },
   'group-tanks': {
     // LES RÉSERVOIRS DE GROUPES : chaque groupe est un réservoir de largeur n (son effectif) rempli au niveau
     // de sa moyenne ; l'élève PARIE le niveau du groupe réuni puis ouvre la vanne — le niveau commun est la

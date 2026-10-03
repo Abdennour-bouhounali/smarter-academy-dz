@@ -1,0 +1,54 @@
+{
+  "id": "ex-4am-inshaat-talis-l5-005",
+  "lessonCode": "inshaat-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — رابع متناسب",
+    "estimatedMinutes": 6,
+    "tags": [
+      "إنشاء طول معلوم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_inshaat-talis_P2",
+      "modelledOn": "method-construct-length"
+    }
+  },
+  "statement": {
+    "content": "نريد إنشاء قطعة طولها x حيث $\\dfrac{4}{6} = \\dfrac{5}{x}$ : على [Ax) النقطتان C و D حيث $AC = 4$ و $AD = 6$ ، وعلى [Ay) النقطة E حيث $AE = 5$ ، والموازي لـ (CE) المارّ بـ D يقطع [Ay) في B."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الطول $x = AB$ :",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "7,5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "10/3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$4 \\times x = 6 \\times 5$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$x = \\dfrac{30}{4} = 7{,}5$ .",
+        "incorrect": "الجداء المتصالب: $4x = 30$ ."
+      }
+    }
+  ]
+}

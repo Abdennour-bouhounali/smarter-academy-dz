@@ -1,0 +1,181 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l4-003",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 9 — فيثاغورس ثم طالس",
+    "estimatedMinutes": 4,
+    "tags": [
+      "عكس فيثاغورس",
+      "حساب طول"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-9",
+      "page": 110,
+      "section": "خاصية طالس",
+      "number": 9
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 110): (الأطوال على الشكل ليست حقيقية) $(AF)$ عمودي على $(AB)$ في A ؛ A و E و D على استقامة و B و E و F على استقامة ؛ $AB = 2{,}8$ ، $AE = 3{,}3$ ، $ED = 2$ و $BD = 4{,}5$ . لا ترميز لزاوية قائمة في B.",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          4.5
+        ],
+        "B": [
+          2.8,
+          4.5
+        ],
+        "D": [
+          2.8,
+          0
+        ],
+        "E": [
+          1.743,
+          1.698
+        ],
+        "F": [
+          0,
+          -2.925
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B",
+          "label": "2,8"
+        },
+        {
+          "from": "B",
+          "to": "D",
+          "label": "4,5"
+        },
+        {
+          "from": "A",
+          "to": "E",
+          "label": "3,3"
+        },
+        {
+          "from": "E",
+          "to": "D",
+          "label": "2"
+        },
+        {
+          "from": "A",
+          "to": "F"
+        },
+        {
+          "from": "B",
+          "to": "F"
+        }
+      ],
+      "ariaLabel": "(AF) عمودي على (AB) في A؛ A و E و D على استقامة و B و E و F على استقامة",
+      "maxWidth": 220,
+      "rightAngles": [
+        [
+          "F",
+          "A",
+          "B"
+        ]
+      ]
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المستقيمان $(BD)$ و $(AF)$ متوازيان لأن:",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$2{,}8^2 + 4{,}5^2 = 5{,}3^2$ فالمثلث ABD قائم في B، و $(BD)$ و $(AF)$ عموديان على $(AB)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "الشكل يبدو كذلك",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
+        },
+        {
+          "id": "C",
+          "content": "$AE \\neq ED$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الرأس المشترك والمستقيمين المتوازيين في الشكل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في كل نسبة: ضلع من المثلث الأول على الضلع الموافق له في المثلث الثاني، بالترتيب نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب رؤوس المثلثين بالترتيب نفسه، رأسا تحت رأس، ثم اقرأ النسب."
+        }
+      ],
+      "feedback": {
+        "correct": "$7{,}84 + 20{,}25 = 28{,}09 = 5{,}3^2$ : عكس خاصية فيثاغورس.",
+        "incorrect": "راجع الرؤوس المتقابلة: الرأس المشترك، ثم طرفا المستقيمين المتوازيين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب AF.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "7,425",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "30/11"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{AF}{BD} = \\dfrac{EA}{ED}$ ومنه $AF = \\dfrac{4{,}5 \\times 3{,}3}{2} = 7{,}425$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    }
+  ]
+}

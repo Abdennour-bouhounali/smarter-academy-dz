@@ -1,0 +1,224 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l5-001",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — وضعية كاملة: مخروط 24 و 8",
+    "estimatedMinutes": 7,
+    "tags": [
+      "مقطع محوري",
+      "معادلة",
+      "حجم",
+      "ملاءمة النتيجة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "أسطوانة دوران ارتفاعها $h$ ونصف قطرها $r$ ، محاطة بمخروط دوران ارتفاعه $24\\,\\mathrm{cm}$ ونصف قطر قاعدته $8\\,\\mathrm{cm}$ (قاعدتها على قاعدته)، في الحالة $h = r$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "مساواة طالس في المقطع المحوري:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{r}{8} = \\dfrac{h}{24}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-QITAA-BADAL-DILA"
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{8}{r} = \\dfrac{24 - h}{24}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{r}{8} = \\dfrac{24 - h}{24}$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم نصف المقطع المحوري."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المثلثان رأسهما رأس المخروط."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الضلع على المحور في المثلث الصغير $24 - h$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{r}{8} = \\dfrac{24 - h}{24}$ .",
+        "incorrect": "الضلع الذي رأسه رأس المخروط ليس h."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "ما قيمة $r$ (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "عوّض h بـ r."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "جداء تصالبي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع حدود r."
+        }
+      ],
+      "feedback": {
+        "correct": "$24r = 192 - 8r$ أي $32r = 192$ ومنه $r = 6\\,\\mathrm{cm}$ .",
+        "incorrect": "نعوّض ثم نحلّ."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "8",
+          "id": "MISC-TALIS-MULAAMA-WAQI"
+        },
+        {
+          "value": "12",
+          "id": "MISC-TALIS-HALL-MUADALA"
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "statement": "نكتب حجمها $k\\pi\\,\\mathrm{cm}^3$ . ما قيمة $k$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (المعامل k في الكتابة kπ)",
+      "expectedAnswer": "216",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$V = \\pi r^2 h$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$h = r$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "مكعّب r."
+        }
+      ],
+      "feedback": {
+        "correct": "$6^2 \\times 6 = 216$ ، أي $V = 216\\pi$ .",
+        "incorrect": "يُربَّع نصف القطر."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "36",
+          "id": "MISC-TALIS-TARBI-MANSI"
+        },
+        {
+          "value": "864",
+          "id": "MISC-TALIS-QUTR-BADAL-NISF"
+        }
+      ]
+    },
+    {
+      "id": "q4",
+      "statement": "القيمة المقرّبة إلى $0{,}01$ لحجمها، وهل هي ملائمة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$678{,}58\\,\\mathrm{cm}^3$ ، ملائمة لأنّ $6 < 8$ و $6 < 24$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$216\\,\\mathrm{cm}^3$ ، ملائمة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-HAJM-BIDUN-PI"
+        },
+        {
+          "id": "C",
+          "content": "$678{,}58\\,\\mathrm{cm}^3$ ، غير ملائمة لأنّ الحجم أكبر من 24",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-MULAAMA-WAQI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اضرب في π."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "دوّر إلى الأقرب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن بُعدي الأسطوانة ببُعدي المخروط."
+        }
+      ],
+      "feedback": {
+        "correct": "$216\\pi \\approx 678{,}58\\,\\mathrm{cm}^3$ ، والبُعدان أصغر من بُعدي المخروط.",
+        "incorrect": "الحجم بـ π ، والملاءمة تُقرأ على الأبعاد."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 4
+    }
+  ]
+}

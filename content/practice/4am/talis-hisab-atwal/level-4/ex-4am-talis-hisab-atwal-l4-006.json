@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l4-006",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — من k إلى الطول الأصلي",
+    "estimatedMinutes": 4,
+    "tags": [
+      "معامل التناسبية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P3",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "المثلث AMN تصغير للمثلث ABC بمعامل $k = \\dfrac{3}{5}$ (في وضعية طالس)، و $AN = 6$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب AC.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "10",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-MUAMIL-MAQLUB",
+          "value": "3,6"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل التناسبية هو طول في المثلث الناتج مقسوما على الطول الموافق له في المثلث الأصلي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذا كان المعامل أصغر من الواحد فهو تصغير، وإذا كان أكبر منه فهو تكبير."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب كل طول في المعامل نفسه، ولا تُضف العدد نفسه إلى كل طول."
+        }
+      ],
+      "feedback": {
+        "correct": "$AN = \\dfrac{3}{5} \\times AC$ ومنه $AC = 6 \\div \\dfrac{3}{5} = 10$ .",
+        "incorrect": "راجع اتجاه النسبة: المثلث الناتج في البسط والمثلث الأصلي في المقام."
+      }
+    }
+  ]
+}

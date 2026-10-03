@@ -1,0 +1,174 @@
+{
+  "id": "ex-4am-aksiya-talis-l2-002",
+  "lessonCode": "aksiya-talis",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 15 — المستطيل",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خاصية عكسية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-15",
+      "page": 111,
+      "section": "أوظّف تعلّماتي",
+      "number": 15
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 111): ABCD مستطيل حيث DC = 10 و BC = 15 ، M من [AB] و N من [AD] حيث AM = 2 و AN = 3.",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          10
+        ],
+        "B": [
+          0,
+          0
+        ],
+        "C": [
+          15,
+          0
+        ],
+        "D": [
+          15,
+          10
+        ],
+        "M": [
+          0,
+          8
+        ],
+        "N": [
+          3,
+          10
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "M",
+          "label": "2"
+        },
+        {
+          "from": "A",
+          "to": "N",
+          "label": "3"
+        },
+        {
+          "from": "D",
+          "to": "C",
+          "label": "10"
+        },
+        {
+          "from": "B",
+          "to": "C",
+          "label": "15"
+        },
+        [
+          "M",
+          "B"
+        ],
+        [
+          "N",
+          "D"
+        ],
+        [
+          "M",
+          "N"
+        ],
+        [
+          "B",
+          "D"
+        ]
+      ],
+      "ariaLabel": "مستطيل ABCD، M من [AB] و N من [AD]، AM = 2 و AN = 3 و DC = 10 و BC = 15",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $\\dfrac{AM}{AB}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد: كسر غير قابل للاختزال أو عدد عشري بالفاصلة",
+      "expectedAnswer": "1/5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-QITAA-BADAL-DILA",
+          "value": "2/15"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النقطة المشتركة بين المستقيمين، ثم الطولين المعنيين على المستقيم نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "النسبة: طول يبدأ من النقطة المشتركة مقسوما على الطول الموافق له على المستقيم نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب الكسر ثم اختزله (أو احسب قيمته المضبوطة)."
+        }
+      ],
+      "feedback": {
+        "correct": "$AB = DC = 10$ إذن $\\dfrac{AM}{AB} = \\dfrac{2}{10} = \\dfrac{1}{5}$",
+        "incorrect": "راجع: من أي نقطة يبدأ كل طول؟ وهل اختزلت الكسر؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $\\dfrac{AN}{AD}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد: كسر غير قابل للاختزال أو عدد عشري بالفاصلة",
+      "expectedAnswer": "1/5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-QITAA-BADAL-DILA",
+          "value": "3/10"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النقطة المشتركة بين المستقيمين، ثم الطولين المعنيين على المستقيم نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "النسبة: طول يبدأ من النقطة المشتركة مقسوما على الطول الموافق له على المستقيم نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب الكسر ثم اختزله (أو احسب قيمته المضبوطة)."
+        }
+      ],
+      "feedback": {
+        "correct": "$AD = BC = 15$ إذن $\\dfrac{AN}{AD} = \\dfrac{3}{15} = \\dfrac{1}{5}$ : (MN)//(BD).",
+        "incorrect": "راجع: من أي نقطة يبدأ كل طول؟ وهل اختزلت الكسر؟"
+      }
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "ex-4am-inshaat-talis-l4-008",
+  "lessonCode": "inshaat-talis",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — فتحة مدور تغيّرت",
+    "estimatedMinutes": 6,
+    "tags": [
+      "تقسيم قطعة",
+      "قطع متقايسة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_inshaat-talis_P1",
+      "modelledOn": "method-divide"
+    }
+  },
+  "statement": {
+    "content": "أراد يونس تقسيم [AB] حيث $AB = 18\\,\\mathrm{cm}$ إلى 4 قطع متقايسة: عيّن على نصف مستقيم [Ax) ثلاث قطع بفتحة 2cm ثم قطعة رابعة بفتحة 3cm ، ووصل العلامة الرابعة بـ B ورسم الموازيات."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "طول القطعة الأقرب إلى B بالسنتيمتر:",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$AP_4 = 2 + 2 + 2 + 3$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الموازيات تحفظ النسب: القطعة الأخيرة تقابل $\\dfrac{3}{9}$ من [Ax)."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3}{9} \\times 18 = 6$ ، والقطع الأخرى $\\dfrac{2}{9} \\times 18 = 4$ : القطع غير متقايسة لأن العلامات غير متقايسة.",
+        "incorrect": "القطع على [AB] متناسبة مع القطع على [Ax) : 2 و 2 و 2 و 3."
+      }
+    }
+  ]
+}

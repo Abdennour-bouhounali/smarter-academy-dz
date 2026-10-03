@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-aksiya-talis-l5-004",
+  "lessonCode": "aksiya-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — خطّان على جدارية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_aksiya-talis_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "على جدارية، الخطّان (d) و (d′) يتقاطعان في A. رسم أمين B و B′ على (d) و C و C′ على (d′) بحيث A بين B و B′ و A بين C و C′: AB = 1,5m ، AB′ = 2,5m ، AC = 1,8m ، AC′ = 3m."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب الجداء $1{,}5 \\times 3$ :",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة",
+      "expectedAnswer": "4,5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجداء المتصالب: البسط الأول في المقام الثاني، والمقام الأول في البسط الثاني."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب العددين كأنهما طبيعيان، ثم ضع الفاصلة حسب عدد الأرقام بعدها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بتقدير سريع: هل الناتج معقول؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$1{,}5 \\times 3 = 4{,}5$ ، و $2{,}5 \\times 1{,}8 = 4{,}5$ أيضا",
+        "incorrect": "أعد الضرب وانتبه إلى موضع الفاصلة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل الخطّان (BC) و (B′C′) متوازيان؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم: $\\dfrac{AB}{AB'} = \\dfrac{AC}{AC'}$ ونفس الترتيب",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا: B و B′ في جهتين من A",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-BAYN-FAQAT"
+        },
+        {
+          "id": "C",
+          "content": "لا يمكن الحكم دون قياس على الجدار",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-SHAKL-BURHAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق أولا من ترتيب النقط على المستقيمين المتقاطعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب النسبتين وقارنهما بالجداء المتصالب، لا بقيم مقرّبة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نسبتان متساويتان مع نفس الترتيب: الخاصية العكسية. نسبتان مختلفتان: نستدل بالخلف بخاصية طالس."
+        }
+      ],
+      "feedback": {
+        "correct": "الجداءان متساويان و A بين النقطتين على كل خط: حسب الخاصية العكسية لخاصية طالس.",
+        "incorrect": "راجع الشرطين: الترتيب، ثم تساوي النسبتين بالحساب."
+      }
+    }
+  ]
+}

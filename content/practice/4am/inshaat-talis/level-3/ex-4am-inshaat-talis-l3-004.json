@@ -1,0 +1,163 @@
+{
+  "id": "ex-4am-inshaat-talis-l3-004",
+  "lessonCode": "inshaat-talis",
+  "level": 3,
+  "metadata": {
+    "title": "طرائق (ص 109) — النقطة N",
+    "estimatedMinutes": 5,
+    "tags": [
+      "نقطة خارج القطعة",
+      "طرائق"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-ratio-point",
+      "page": 109,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 109): (d₁) // (d₂) ، $AK = AF = 3$ و $BE = 2$ ، و K و E في نفس الجهة من المستقيم (AB). (EF) يقطع [AB] في M و (EK) يقطع المستقيم (AB) في N.",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          5,
+          0
+        ],
+        "F": [
+          -1.026,
+          -2.819
+        ],
+        "K": [
+          1.026,
+          2.819
+        ],
+        "E": [
+          5.684,
+          1.879
+        ],
+        "M": [
+          3,
+          0
+        ],
+        "N": [
+          15,
+          0
+        ],
+        "a1": [
+          -1.4,
+          -3.85
+        ],
+        "a2": [
+          1.4,
+          3.85
+        ],
+        "b1": [
+          4.32,
+          -1.88
+        ],
+        "b2": [
+          6.03,
+          2.82
+        ]
+      },
+      "segments": [
+        {
+          "from": "a1",
+          "to": "a2",
+          "tone": "indigo"
+        },
+        {
+          "from": "b1",
+          "to": "b2",
+          "tone": "indigo"
+        },
+        {
+          "from": "A",
+          "to": "N",
+          "dashed": true
+        },
+        {
+          "from": "A",
+          "to": "B",
+          "bold": true
+        },
+        {
+          "from": "F",
+          "to": "E",
+          "tone": "rose"
+        },
+        {
+          "from": "K",
+          "to": "N",
+          "tone": "amber"
+        }
+      ],
+      "hidden": [
+        "a1",
+        "a2",
+        "b1",
+        "b2"
+      ],
+      "labels": {
+        "A": "sw",
+        "B": "s",
+        "F": "w",
+        "K": "w",
+        "E": "e",
+        "M": "s",
+        "N": "s"
+      },
+      "ariaLabel": "مستقيمان متوازيان (d1) و (d2) يشملان A و B، F على (d1) تحت A و K فوقها، E على (d2) فوق B، (EF) يقطع [AB] في M و (EK) يقطع المستقيم (AB) في N",
+      "maxWidth": 360
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\dfrac{NA}{NB}$ تساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{3}{2}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{2}{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{3}{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-NISBA-JUZ-KULL"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$(AK) // (BE)$ : المثلثان NAK و NBE في وضعية طالس."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{NA}{NB} = \\dfrac{AK}{BE} = \\dfrac{3}{2}$ : النسبة نفسها لنقطة خارج [AB].",
+        "incorrect": "NA يقابل AK و NB يقابل BE."
+      }
+    }
+  ]
+}

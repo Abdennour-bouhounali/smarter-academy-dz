@@ -1,0 +1,167 @@
+{
+  "id": "ex-4am-aksiya-talis-l2-001",
+  "lessonCode": "aksiya-talis",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 11 — MN و BC",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خاصية عكسية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-11",
+      "page": 111,
+      "section": "أوظّف تعلّماتي",
+      "number": 11
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 111): M من [AB] و N من [AC] حيث AB = 36 ، MB = 20 ، AN = 20 ، AC = 45.",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          -18,
+          -31.18
+        ],
+        "C": [
+          15.75,
+          -42.16
+        ],
+        "M": [
+          -8,
+          -13.86
+        ],
+        "N": [
+          7,
+          -18.74
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B",
+          "label": "36",
+          "labelSide": 1
+        },
+        {
+          "from": "M",
+          "to": "B",
+          "label": "20"
+        },
+        {
+          "from": "A",
+          "to": "N",
+          "label": "20"
+        },
+        {
+          "from": "A",
+          "to": "C",
+          "label": "45"
+        },
+        [
+          "B",
+          "C"
+        ],
+        [
+          "M",
+          "N"
+        ]
+      ],
+      "labels": {
+        "M": "e",
+        "N": "w"
+      },
+      "ariaLabel": "مثلث ABC، M من [AB] و N من [AC]، AB = 36 و MB = 20 و AN = 20 و AC = 45",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب AM:",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "16",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-QITAA-BADAL-DILA",
+          "value": "20"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم الشكل وضع عليه الأطوال المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الطول المطلوب جزء من قطعة أو مجموع قطعتين على المستقيم نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع أو اطرح حسب موقع النقطة بين الأخريين."
+        }
+      ],
+      "feedback": {
+        "correct": "$AM = 36 - 20 = 16$",
+        "incorrect": "راجع موقع النقطة: هل الطول جزء أم مجموع؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $\\dfrac{AM}{AB}$ (كسر غير قابل للاختزال):",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد: كسر غير قابل للاختزال أو عدد عشري بالفاصلة",
+      "expectedAnswer": "4/9",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-QITAA-BADAL-DILA",
+          "value": "5/9"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النقطة المشتركة بين المستقيمين، ثم الطولين المعنيين على المستقيم نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "النسبة: طول يبدأ من النقطة المشتركة مقسوما على الطول الموافق له على المستقيم نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب الكسر ثم اختزله (أو احسب قيمته المضبوطة)."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{16}{36} = \\dfrac{4}{9}$ ، و $\\dfrac{AN}{AC} = \\dfrac{20}{45} = \\dfrac{4}{9}$ أيضا: (MN)//(BC).",
+        "incorrect": "راجع: من أي نقطة يبدأ كل طول؟ وهل اختزلت الكسر؟"
+      }
+    }
+  ]
+}

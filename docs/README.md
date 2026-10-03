@@ -7,7 +7,7 @@
 > found it (root `CLAUDE.md`, Documentation Synchronization Rule).
 
 The platform is Arabic-first (ar-DZ, RTL) and follows the Algerian curriculum.
-The live content is five 4AM textbook units under
+The live content is nine 4AM textbook units, starting under
 `apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/` — unit 1 « الأعداد
 الطبيعيّة والأعداد النّاطقة » (`aadad-tabiiya-natiqa/`, 9 lessons) and unit 2
 « الحساب على الجذور » (`hisab-judhur/`, 5 lessons + a synthesis, 2026-09-30; textbook
@@ -24,7 +24,10 @@ and checked by `docs/sources/4am/unit5/build-extraction.py`) and unit 6 « ال�
 pages 77–79 have no formal pages, so formal knowledge, exercises and the synthesis are declared platform additions; extraction
 generated and checked by `docs/sources/4am/unit7/build-extraction.py`) and unit 8 « الإحصاء » (`tanasubiya_duwal/ihsa/`,
 4 lessons + a synthesis, 2026-10-02, same display ميدان, programme domain « ميدان تنظيم المعطيات »; the full unit pp. 91–101;
-extraction generated and checked by `docs/sources/4am/unit8/build-extraction.py`, exact arithmetic `packages/core/arithmetic/statistics.js`) — the **only** lesson
+extraction generated and checked by `docs/sources/4am/unit8/build-extraction.py`, exact arithmetic `packages/core/arithmetic/statistics.js`) and unit 9 « خاصية طالس » (`handasa/khassiyat-talis/`, 3 lessons + a
+synthesis, 2026-10-02, the first unit of the programme's « ميدان الهندسة »; extraction generated and checked by
+`docs/sources/4am/unit9/build-extraction.py`, exact Thales `packages/core/arithmetic/thales.js`, figures drawn by the shared
+`GeoFigure`, also in practice statements as `statement.figure`) — the **only** lesson
 content in the repository. The
 French-era lessons (`lessons/college/`, `lessons/lycee/`), their practice
 content, specs, e2e scripts, French-only engines and the French reference

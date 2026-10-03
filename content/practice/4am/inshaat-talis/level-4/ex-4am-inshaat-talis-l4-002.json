@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-inshaat-talis-l4-002",
+  "lessonCode": "inshaat-talis",
+  "level": 4,
+  "metadata": {
+    "title": "دوري الآن (ص 109) — C خارج [AB]",
+    "estimatedMinutes": 6,
+    "tags": [
+      "دوري الآن",
+      "نقطة خارج القطعة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "now-109",
+      "page": 109,
+      "section": "دوري الآن"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: (xy) مستقيم، A و B نقطتان منه. استعمل مسطرة غير مدرّجة ومدور لإنشاء نقطة C من المستقيم (xy) حيث $\\dfrac{CA}{CB} = \\dfrac{2}{5}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "إذا كانت C خارج [AB] فإن $\\dfrac{AC}{AB}$ تساوي (كسر):",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "كسر غير قابل للاختزال",
+      "expectedAnswer": "2/3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-JUZ-KULL",
+          "value": "2/7"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "CA أصغر من CB : C من جهة A."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$AB = CB - CA$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "AB ثلاثة أجزاء ($5 - 2$) و AC جزآن: $\\dfrac{AC}{AB} = \\dfrac{2}{3}$ .",
+        "incorrect": "خارج القطعة: $AB = CB - CA$ لا $CA + CB$ ."
+      }
+    }
+  ]
+}

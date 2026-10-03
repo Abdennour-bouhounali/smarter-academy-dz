@@ -1,0 +1,110 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l5-007",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 5,
+  "metadata": {
+    "title": "وضعية — المحيطان",
+    "estimatedMinutes": 4,
+    "tags": [
+      "معامل التناسبية",
+      "محيط"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P3",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "المثلثان AMN و ABC في وضعية طالس. محيط AMN هو $12$ ومحيط ABC هو $30$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "معامل التناسبية k الذي يحوّل ABC إلى AMN هو:",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (كسر مثل 3/4 أو عشري بالفاصلة)",
+      "expectedAnswer": "0,4",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-MUAMIL-MAQLUB",
+          "value": "2,5"
+        },
+        {
+          "id": "MISC-TALIS-JAMA-BADAL-DARB",
+          "value": "18"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل التناسبية هو طول في المثلث الناتج مقسوما على الطول الموافق له في المثلث الأصلي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذا كان المعامل أصغر من الواحد فهو تصغير، وإذا كان أكبر منه فهو تكبير."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب كل طول في المعامل نفسه، ولا تُضف العدد نفسه إلى كل طول."
+        }
+      ],
+      "feedback": {
+        "correct": "كل طول يُضرب في k فيُضرب المحيط في k: $k = \\dfrac{12}{30} = \\dfrac{2}{5}$ .",
+        "incorrect": "راجع اتجاه النسبة: المثلث الناتج في البسط والمثلث الأصلي في المقام."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "إذا كان $BC = 12{,}5$ ، احسب MN.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-MUAMIL-MAQLUB",
+          "value": "31,25"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل التناسبية هو طول في المثلث الناتج مقسوما على الطول الموافق له في المثلث الأصلي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذا كان المعامل أصغر من الواحد فهو تصغير، وإذا كان أكبر منه فهو تكبير."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب كل طول في المعامل نفسه، ولا تُضف العدد نفسه إلى كل طول."
+        }
+      ],
+      "feedback": {
+        "correct": "$MN = \\dfrac{2}{5} \\times 12{,}5 = 5$ .",
+        "incorrect": "راجع اتجاه النسبة: المثلث الناتج في البسط والمثلث الأصلي في المقام."
+      }
+    }
+  ]
+}

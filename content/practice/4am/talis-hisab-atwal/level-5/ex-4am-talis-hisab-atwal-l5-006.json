@@ -1,0 +1,133 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l5-006",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 5,
+  "metadata": {
+    "title": "وضعية — خطأ زميل",
+    "estimatedMinutes": 4,
+    "tags": [
+      "النسب المتساوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P1",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "في الشكل، M من $[AB]$ و N من $[AC]$ و $(MN) \\parallel (BC)$ . كتبت سارة: $\\dfrac{AM}{MB} = \\dfrac{AN}{AC}$ .",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          4.568,
+          2.034
+        ],
+        "C": [
+          5.196,
+          -3.0
+        ],
+        "M": [
+          2.284,
+          1.017
+        ],
+        "N": [
+          2.598,
+          -1.5
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "M"
+        },
+        {
+          "from": "M",
+          "to": "B"
+        },
+        {
+          "from": "A",
+          "to": "N"
+        },
+        {
+          "from": "N",
+          "to": "C"
+        },
+        {
+          "from": "B",
+          "to": "C",
+          "arrows": 1
+        },
+        {
+          "from": "M",
+          "to": "N",
+          "arrows": 1,
+          "tone": "indigo"
+        }
+      ],
+      "ariaLabel": "M من [AB] و N من [AC] و (MN) يوازي (BC)",
+      "maxWidth": 260,
+      "labels": {
+        "A": "w"
+      }
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما الخطأ في كتابة سارة؟",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$MB$ قطعة وليست ضلعا للمثلث ABC: الصواب $\\dfrac{AM}{AB} = \\dfrac{AN}{AC}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا خطأ: الكتابة صحيحة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-QITAA-BADAL-DILA"
+        },
+        {
+          "id": "C",
+          "content": "الصواب $\\dfrac{AM}{AB} = \\dfrac{AC}{AN}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الرأس المشترك والمستقيمين المتوازيين في الشكل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في كل نسبة: ضلع من المثلث الأول على الضلع الموافق له في المثلث الثاني، بالترتيب نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب رؤوس المثلثين بالترتيب نفسه، رأسا تحت رأس، ثم اقرأ النسب."
+        }
+      ],
+      "feedback": {
+        "correct": "نقارن ضلعي المثلثين اللذين رأسهما A: $\\dfrac{AM}{AB} = \\dfrac{AN}{AC}$ .",
+        "incorrect": "راجع الرؤوس المتقابلة: الرأس المشترك، ثم طرفا المستقيمين المتوازيين."
+      }
+    }
+  ]
+}

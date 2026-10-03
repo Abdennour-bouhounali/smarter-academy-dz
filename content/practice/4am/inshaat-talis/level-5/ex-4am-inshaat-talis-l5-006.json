@@ -1,0 +1,74 @@
+{
+  "id": "ex-4am-inshaat-talis-l5-006",
+  "lessonCode": "inshaat-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — تقسيم بنسب 1 و 2 و 2",
+    "estimatedMinutes": 6,
+    "tags": [
+      "تقسيم قطعة",
+      "نسبة معلومة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_inshaat-talis_P1",
+      "modelledOn": "method-divide"
+    }
+  },
+  "statement": {
+    "content": "نريد تقسيم [AB] حيث $AB = 10\\,\\mathrm{cm}$ إلى ثلاث قطع أطوالها متناسبة مع 1 و 2 و 2 ابتداءً من A، بالمسطرة غير المدرّجة والمدور. $M_1$ و $M_2$ نقطتا التقسيم ($M_1$ الأقرب إلى A)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$AM_1$ بالسنتيمتر:",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "2",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$1 + 2 + 2 = 5$ أجزاء متساوية."
+        }
+      ],
+      "feedback": {
+        "correct": "$AM_1 = \\dfrac{1}{5} \\times 10 = 2$ .",
+        "incorrect": "AB خمسة أجزاء و $AM_1$ جزء واحد."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "$AM_2$ بالسنتيمتر:",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$AM_2$ يضم القطعتين الأوليين."
+        }
+      ],
+      "feedback": {
+        "correct": "$AM_2 = \\dfrac{1 + 2}{5} \\times 10 = 6$ .",
+        "incorrect": "$AM_2$ ثلاثة أجزاء من خمسة."
+      }
+    }
+  ]
+}

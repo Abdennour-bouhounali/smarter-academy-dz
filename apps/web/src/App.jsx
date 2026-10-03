@@ -214,6 +214,11 @@ import madaWasitMutawassitRoutes from './lessons/moyen/4am/tanasubiya_duwal/ihsa
 import majdulatIhsaiyaRoutes from './lessons/moyen/4am/tanasubiya_duwal/ihsa/majdulat-ihsaiya/routes';
 import qiraatWadiyatIhsaiyaRoutes from './lessons/moyen/4am/tanasubiya_duwal/ihsa/qiraat-wadiyat-ihsaiya/routes';
 import wadiyaIdmajiyaIhsaRoutes from './lessons/moyen/4am/tanasubiya_duwal/ihsa/wadiya-idmajiya-ihsa/routes';
+// Unité 9 « خاصية طالس » (2026-10-02), ميدان الهندسة du programme.
+import talisHisabAtwalRoutes from './lessons/moyen/4am/handasa/khassiyat-talis/talis-hisab-atwal/routes';
+import aksiyaTalisRoutes from './lessons/moyen/4am/handasa/khassiyat-talis/aksiya-talis/routes';
+import inshaatTalisRoutes from './lessons/moyen/4am/handasa/khassiyat-talis/inshaat-talis/routes';
+import wadiyaIdmajiyaTalisRoutes from './lessons/moyen/4am/handasa/khassiyat-talis/wadiya-idmajiya-talis/routes';
 
 export default function App() {
   return (
@@ -494,6 +499,10 @@ export default function App() {
             {majdulatIhsaiyaRoutes()}
             {qiraatWadiyatIhsaiyaRoutes()}
             {wadiyaIdmajiyaIhsaRoutes()}
+            {talisHisabAtwalRoutes()}
+            {aksiyaTalisRoutes()}
+            {inshaatTalisRoutes()}
+            {wadiyaIdmajiyaTalisRoutes()}
 
             {/* ── SURFACE DE QA — jamais en production ────────────────
                 Le moteur de leçon n'a jamais été rendu sous RTL, faute de

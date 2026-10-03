@@ -1,0 +1,128 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l1-006",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — حساب MN",
+    "estimatedMinutes": 3,
+    "tags": [
+      "حساب طول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P2",
+      "modelledOn": "method-lengths"
+    }
+  },
+  "statement": {
+    "content": "في الشكل، $(MN) \\parallel (BC)$ حيث $AM = 2$ و $AB = 6$ و $BC = 9$ .",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          4.568,
+          2.034
+        ],
+        "C": [
+          5.196,
+          -3.0
+        ],
+        "M": [
+          1.523,
+          0.678
+        ],
+        "N": [
+          1.732,
+          -1.0
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "M",
+          "label": "2"
+        },
+        {
+          "from": "M",
+          "to": "B"
+        },
+        {
+          "from": "A",
+          "to": "N"
+        },
+        {
+          "from": "N",
+          "to": "C"
+        },
+        {
+          "from": "B",
+          "to": "C",
+          "label": "9",
+          "arrows": 1
+        },
+        {
+          "from": "M",
+          "to": "N",
+          "arrows": 1,
+          "tone": "indigo"
+        }
+      ],
+      "ariaLabel": "M من [AB] و N من [AC] و (MN) يوازي (BC)؛ AM = 2 و AB = 6 و BC = 9",
+      "maxWidth": 260,
+      "labels": {
+        "A": "w"
+      }
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب MN.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "27"
+        },
+        {
+          "id": "MISC-TALIS-QITAA-BADAL-DILA",
+          "value": "4,5"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{AM}{AB} = \\dfrac{MN}{BC}$ أي $\\dfrac{2}{6} = \\dfrac{MN}{9}$ ومنه $MN = 3$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    }
+  ]
+}

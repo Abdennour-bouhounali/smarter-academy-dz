@@ -1,0 +1,180 @@
+{
+  "id": "ex-4am-aksiya-talis-l2-009",
+  "lessonCode": "aksiya-talis",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 13 — المثلث القائم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "عدم التوازي"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-13",
+      "page": 111,
+      "section": "أوظّف تعلّماتي",
+      "number": 13
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 111): ABD مثلث قائم في A، E من [AB] و F من [AD] حيث AB = 8 ، EB = 2,4 ، AD = 6 ، AF = 1,2.",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          -6.4,
+          -4.8
+        ],
+        "D": [
+          3.6,
+          -4.8
+        ],
+        "E": [
+          -4.48,
+          -3.36
+        ],
+        "F": [
+          0.72,
+          -0.96
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B",
+          "label": "8"
+        },
+        {
+          "from": "E",
+          "to": "B",
+          "label": "2,4"
+        },
+        {
+          "from": "A",
+          "to": "D",
+          "label": "6"
+        },
+        {
+          "from": "A",
+          "to": "F",
+          "label": "1,2"
+        },
+        [
+          "B",
+          "D"
+        ],
+        [
+          "E",
+          "F"
+        ]
+      ],
+      "rightAngles": [
+        [
+          "B",
+          "A",
+          "D"
+        ]
+      ],
+      "ariaLabel": "مثلث ABD قائم في A، E من [AB] و F من [AD]، AB = 8 و EB = 2,4 و AD = 6 و AF = 1,2",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب AE:",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة",
+      "expectedAnswer": "5,6",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-QITAA-BADAL-DILA",
+          "value": "2,4"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم الشكل وضع عليه الأطوال المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الطول المطلوب جزء من قطعة أو مجموع قطعتين على المستقيم نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع أو اطرح حسب موقع النقطة بين الأخريين."
+        }
+      ],
+      "feedback": {
+        "correct": "$AE = 8 - 2{,}4 = 5{,}6$",
+        "incorrect": "راجع موقع النقطة: هل الطول جزء أم مجموع؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل (EF) يوازي (BD)؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا: $\\dfrac{AE}{AB} = 0{,}7$ و $\\dfrac{AF}{AD} = 0{,}2$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نعم: لأن الزاوية في A قائمة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-SHAKL-BURHAN"
+        },
+        {
+          "id": "C",
+          "content": "نعم: E و F بين الرأس والقاعدة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-AKS-BIDUN-TASAWI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق أولا من ترتيب النقط على المستقيمين المتقاطعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب النسبتين وقارنهما بالجداء المتصالب، لا بقيم مقرّبة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نسبتان متساويتان مع نفس الترتيب: الخاصية العكسية. نسبتان مختلفتان: نستدل بالخلف بخاصية طالس."
+        }
+      ],
+      "feedback": {
+        "correct": "النسبتان مختلفتان: لو كان $(EF) \\parallel (BD)$ لتساوتا حسب خاصية طالس.",
+        "incorrect": "راجع الشرطين: الترتيب، ثم تساوي النسبتين بالحساب."
+      }
+    }
+  ]
+}

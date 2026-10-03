@@ -1,0 +1,66 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l2-002",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — أسطوانة محاطة: نصف القطر",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مقطع محوري",
+      "خاصية طالس"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "أسطوانة دوران مرسومة داخل مخروط دوران ارتفاعه $12\\,\\mathrm{cm}$ ونصف قطر قاعدته $4\\,\\mathrm{cm}$ ، قاعدتها على قاعدة المخروط ودائرتها الأخرى على سطحه، وارتفاعها $h = 9\\,\\mathrm{cm}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما نصف قطر الأسطوانة $r$ (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم نصف المقطع المحوري."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الضلع الذي رأسه رأس المخروط في المثلث الصغير هو $12 - h$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\dfrac{r}{4} = \\dfrac{12 - h}{12}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{r}{4} = \\dfrac{12 - 9}{12}$ إذن $r = 1\\,\\mathrm{cm}$ .",
+        "incorrect": "الضلع الموافق لـ r يبدأ من رأس المخروط، وطوله ليس h."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "3",
+          "id": "MISC-TALIS-QITAA-BADAL-DILA"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l1-001",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 1,
+  "metadata": {
+    "title": "أستعدّ 1 — الرابع المتناسب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الرابع المتناسب"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "prep",
+      "page": 103,
+      "section": "أستعدّ",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 103): المساواة $\\dfrac{3}{4} = \\dfrac{1{,}5}{x}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيمة x هي:",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "1,125"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$3 \\times x = 4 \\times 1{,}5 = 6$ إذن $x = 2$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    }
+  ]
+}

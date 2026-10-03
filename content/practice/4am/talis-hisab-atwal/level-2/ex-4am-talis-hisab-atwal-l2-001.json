@@ -1,0 +1,174 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l2-001",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 2,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 1 — x و y",
+    "estimatedMinutes": 3,
+    "tags": [
+      "حساب طول"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 112,
+      "section": "أؤكّد تعلّماتي",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 112): في الشكل $(BC) \\parallel (IJ)$ حيث I من $[AB]$ و J من $[AC]$ ، و $AI = 3$ ، $IB = 2$ ، $JC = 3$ ، $BC = 10$ ، $IJ = x$ و $AJ = y$ .",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          2.65,
+          -4.24
+        ],
+        "C": [
+          -3.974,
+          -6.36
+        ],
+        "I": [
+          1.59,
+          -2.544
+        ],
+        "J": [
+          -2.384,
+          -3.816
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "I",
+          "label": "3"
+        },
+        {
+          "from": "I",
+          "to": "B",
+          "label": "2"
+        },
+        {
+          "from": "A",
+          "to": "J",
+          "label": "y"
+        },
+        {
+          "from": "J",
+          "to": "C",
+          "label": "3"
+        },
+        {
+          "from": "B",
+          "to": "C",
+          "label": "10",
+          "arrows": 1
+        },
+        {
+          "from": "I",
+          "to": "J",
+          "label": "x",
+          "arrows": 1,
+          "tone": "indigo"
+        }
+      ],
+      "ariaLabel": "I من [AB] و J من [AC] و (IJ) يوازي (BC)؛ AI = 3 و IB = 2 و JC = 3 و BC = 10 و IJ = x و AJ = y",
+      "maxWidth": 260,
+      "labels": {
+        "A": "w"
+      }
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب x.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-QITAA-BADAL-DILA",
+          "value": "15"
+        },
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "50/3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$AB = 5$ و $\\dfrac{AI}{AB} = \\dfrac{IJ}{BC}$ أي $\\dfrac{3}{5} = \\dfrac{x}{10}$ ومنه $x = 6$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب y.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "4,5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-QITAA-BADAL-DILA",
+          "value": "1,8"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{AI}{AB} = \\dfrac{AJ}{AC}$ أي $\\dfrac{3}{5} = \\dfrac{y}{y + 3}$ ومنه $5y = 3y + 9$ ، $y = 4{,}5$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    }
+  ]
+}

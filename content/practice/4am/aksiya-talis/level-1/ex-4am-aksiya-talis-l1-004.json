@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-aksiya-talis-l1-004",
+  "lessonCode": "aksiya-talis",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — الشكل 1",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نفس الترتيب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_aksiya-talis_P2",
+      "modelledOn": "act-2"
+    }
+  },
+  "statement": {
+    "content": "(d) و (d′) مستقيمان متقاطعان في A، B من (d) و C من (d′). النقطة B′ من (d) تقع من الجهة الأخرى للنقطة A بالنسبة إلى B، والنقطة C′ من (d′) تقع من الجهة الأخرى للنقطة A بالنسبة إلى C."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل النقط A، B، B′ مرتبة بنفس ترتيب النقط A، C، C′؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم: A بين B و B′ و A بين C و C′",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا: B′ و C′ ليستا بين الرأس والقاعدة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-BAYN-FAQAT"
+        },
+        {
+          "id": "C",
+          "content": "لا يمكن معرفة الترتيب دون الأطوال",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-SHAKL-BURHAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المستقيمين المتقاطعين وضع النقط في المواقع المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نفس الترتيب: موقع النقطة الأولى بالنسبة إلى الرأس والنقطة الأخرى يماثل موقع الثانية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انظر هل النقطتان في الجهة نفسها من الرأس أم في جهتين مختلفتين."
+        }
+      ],
+      "feedback": {
+        "correct": "A بين النقطتين على كل مستقيم: الترتيب نفسه (الشكل 1 من النشاط 2).",
+        "incorrect": "ارسم الشكل: في أي جهة من الرأس تقع كل نقطة؟"
+      }
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l2-004",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — عرض وادٍ",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مسافة غير مباشرة",
+      "خاصية طالس"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P1",
+      "modelledOn": "ex-22"
+    }
+  },
+  "statement": {
+    "content": "لتقدير عرض وادٍ، رسم أمين مستقيمين متوازيين (AB) و (CD)، وجعل النقط O و B و D على استقامة والنقط O و A و C على استقامة (O على الضفة الأخرى). $AB = 3\\,\\mathrm{m}$ ، $CD = 7{,}5\\,\\mathrm{m}$ ، $BD = 9\\,\\mathrm{m}$ .",
+    "figure": {
+      "points": {
+        "O": [
+          0,
+          0
+        ],
+        "B": [
+          5.91,
+          -1.04
+        ],
+        "D": [
+          14.77,
+          -2.6
+        ],
+        "A": [
+          4.67,
+          -3.77
+        ],
+        "C": [
+          11.66,
+          -9.43
+        ]
+      },
+      "segments": [
+        [
+          "O",
+          "B"
+        ],
+        {
+          "from": "B",
+          "to": "D",
+          "label": "9 m"
+        },
+        [
+          "O",
+          "A"
+        ],
+        [
+          "A",
+          "C"
+        ],
+        {
+          "from": "A",
+          "to": "B",
+          "label": "3 m",
+          "arrows": 1
+        },
+        {
+          "from": "C",
+          "to": "D",
+          "label": "7,5 m",
+          "arrows": 1
+        }
+      ],
+      "labels": {
+        "O": "w",
+        "B": "n",
+        "D": "ne",
+        "A": "sw",
+        "C": "s"
+      },
+      "ariaLabel": "النقطة O على الضفة الأخرى للوادي؛ O و B و D على استقامة و O و A و C على استقامة، و (AB) يوازي (CD)؛ AB = 3 m و CD = 7,5 m و BD = 9 m",
+      "caption": "O على الضفة الأخرى للوادي",
+      "maxWidth": 340
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما الطول OB (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$OD = OB + BD$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المثلثان OAB و OCD في وضعية طالس."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $\\dfrac{OB}{OB + 9} = \\dfrac{3}{7{,}5}$ وحلّ."
+        }
+      ],
+      "feedback": {
+        "correct": "$7{,}5 \\times OB = 3(OB + 9)$ أي $4{,}5\\,OB = 27$ ومنه $OB = 6\\,\\mathrm{m}$ .",
+        "incorrect": "BD قطعة وليست ضلعا للمثلث الكبير."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "3.6",
+          "id": "MISC-TALIS-QITAA-BADAL-DILA"
+        }
+      ]
+    }
+  ]
+}

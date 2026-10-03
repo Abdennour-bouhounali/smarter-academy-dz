@@ -1,0 +1,184 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l1-002",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 1,
+  "metadata": {
+    "title": "تمرين 1 — المثلثان والنسب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية طالس",
+      "النسب المتساوية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-1",
+      "page": 110,
+      "section": "خاصية طالس",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 110): في الشكل، المستقيمان $(AE)$ و $(BF)$ يتقاطعان في O، والمستقيمان $(AB)$ و $(EF)$ متوازيان.",
+    "figure": {
+      "points": {
+        "O": [
+          0,
+          0
+        ],
+        "A": [
+          -1.099,
+          2.356
+        ],
+        "B": [
+          1.127,
+          2.119
+        ],
+        "E": [
+          1.319,
+          -2.827
+        ],
+        "F": [
+          -1.352,
+          -2.543
+        ]
+      },
+      "segments": [
+        {
+          "from": "O",
+          "to": "A"
+        },
+        {
+          "from": "O",
+          "to": "E"
+        },
+        {
+          "from": "O",
+          "to": "B"
+        },
+        {
+          "from": "O",
+          "to": "F"
+        },
+        {
+          "from": "A",
+          "to": "B",
+          "arrows": 1
+        },
+        {
+          "from": "E",
+          "to": "F",
+          "arrows": 1,
+          "tone": "indigo"
+        }
+      ],
+      "ariaLabel": "المستقيمان (AE) و (BF) يتقاطعان في O، A و B من جهة و E و F من الجهة الأخرى، و (AB) يوازي (EF)",
+      "maxWidth": 220
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المثلثان اللذان أطوال أحدهما متناسبة مع أطوال أضلاع الآخر هما:",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "OAB و OEF",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "OAE و OBF",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
+        },
+        {
+          "id": "C",
+          "content": "ABE و EFB",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الرأس المشترك والمستقيمين المتوازيين في الشكل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في كل نسبة: ضلع من المثلث الأول على الضلع الموافق له في المثلث الثاني، بالترتيب نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب رؤوس المثلثين بالترتيب نفسه، رأسا تحت رأس، ثم اقرأ النسب."
+        }
+      ],
+      "feedback": {
+        "correct": "المستقيمان (AE) و (BF) متقاطعان في O و $(AB) \\parallel (EF)$ : المثلثان OAB و OEF في وضعية طالس.",
+        "incorrect": "راجع الرؤوس المتقابلة: الرأس المشترك، ثم طرفا المستقيمين المتوازيين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "النسب المتساوية هي:",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{OA}{OE} = \\dfrac{OB}{OF} = \\dfrac{AB}{EF}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{OA}{OF} = \\dfrac{OB}{OE} = \\dfrac{AB}{EF}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{OA}{AE} = \\dfrac{OB}{BF} = \\dfrac{AB}{EF}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-QITAA-BADAL-DILA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الرأس المشترك والمستقيمين المتوازيين في الشكل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في كل نسبة: ضلع من المثلث الأول على الضلع الموافق له في المثلث الثاني، بالترتيب نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب رؤوس المثلثين بالترتيب نفسه، رأسا تحت رأس، ثم اقرأ النسب."
+        }
+      ],
+      "feedback": {
+        "correct": "A يقابل E و B يقابل F: $\\dfrac{OA}{OE} = \\dfrac{OB}{OF} = \\dfrac{AB}{EF}$ .",
+        "incorrect": "راجع الرؤوس المتقابلة: الرأس المشترك، ثم طرفا المستقيمين المتوازيين."
+      }
+    }
+  ]
+}

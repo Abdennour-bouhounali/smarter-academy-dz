@@ -1,0 +1,61 @@
+{
+  "id": "ex-4am-inshaat-talis-l3-002",
+  "lessonCode": "inshaat-talis",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 19 (ص 111) — P بين M و N",
+    "estimatedMinutes": 5,
+    "tags": [
+      "تمرين 19",
+      "نسبة معلومة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-19",
+      "page": 111,
+      "section": "وضع نقط على مستقيم",
+      "number": 19
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: ضع نقطتين متمايزتين M و N، أنشئ نقطة P من (MN) حيث $\\dfrac{PM}{PN} = \\dfrac{11}{7}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "إذا كانت P بين M و N فإن $\\dfrac{MP}{MN}$ تساوي (كسر):",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "كسر غير قابل للاختزال",
+      "expectedAnswer": "11/18",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-JUZ-KULL",
+          "value": "11/7"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "PM أحد عشر جزءًا و PN سبعة أجزاء متساوية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$MN = MP + PN$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "MN ثمانية عشر جزءًا و MP منها أحد عشر: $\\dfrac{MP}{MN} = \\dfrac{11}{18}$ .",
+        "incorrect": "$\\dfrac{11}{7}$ نسبة جزأين؛ المطلوب نسبة جزء إلى الكل."
+      }
+    }
+  ]
+}

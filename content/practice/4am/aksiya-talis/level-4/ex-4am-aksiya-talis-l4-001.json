@@ -1,0 +1,132 @@
+{
+  "id": "ex-4am-aksiya-talis-l4-001",
+  "lessonCode": "aksiya-talis",
+  "level": 4,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 3",
+    "estimatedMinutes": 3,
+    "tags": [
+      "عدم التوازي"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 112,
+      "section": "أؤكّد تعلّماتي",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 112): A ، B ، E على استقامة و A ، C ، F على استقامة: AB = 11 ، BE = 22 ، AC = 15 ، CF = 45.",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          8.8,
+          6.6
+        ],
+        "E": [
+          26.4,
+          19.8
+        ],
+        "C": [
+          15,
+          0
+        ],
+        "F": [
+          60,
+          0
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B",
+          "label": "11"
+        },
+        {
+          "from": "B",
+          "to": "E",
+          "label": "22"
+        },
+        {
+          "from": "A",
+          "to": "C",
+          "label": "15"
+        },
+        {
+          "from": "C",
+          "to": "F",
+          "label": "45"
+        },
+        [
+          "B",
+          "C"
+        ],
+        [
+          "E",
+          "F"
+        ]
+      ],
+      "ariaLabel": "A و B و E على استقامة، A و C و F على استقامة، AB = 11 و BE = 22 و AC = 15 و CF = 45",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ينتج:",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "(EF) لا يوازي (BC)",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(BC) \\parallel (EF)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-QITAA-BADAL-DILA"
+        },
+        {
+          "id": "C",
+          "content": "$BC = \\dfrac{1}{2}EF$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-QITAA-BADAL-DILA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق أولا من ترتيب النقط على المستقيمين المتقاطعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب النسبتين وقارنهما بالجداء المتصالب، لا بقيم مقرّبة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نسبتان متساويتان مع نفس الترتيب: الخاصية العكسية. نسبتان مختلفتان: نستدل بالخلف بخاصية طالس."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{AB}{AE} = \\dfrac{11}{33} = \\dfrac{1}{3}$ و $\\dfrac{AC}{AF} = \\dfrac{15}{60} = \\dfrac{1}{4}$ : النسبتان مختلفتان.",
+        "incorrect": "راجع الشرطين: الترتيب، ثم تساوي النسبتين بالحساب."
+      }
+    }
+  ]
+}

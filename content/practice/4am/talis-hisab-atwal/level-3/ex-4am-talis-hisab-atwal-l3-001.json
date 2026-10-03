@@ -1,0 +1,165 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l3-001",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 3,
+  "metadata": {
+    "title": "نشاط 1 — الحالة الأولى",
+    "estimatedMinutes": 3,
+    "tags": [
+      "حساب طول",
+      "قيمة مضبوطة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-1",
+      "page": 104,
+      "section": "أنشطة",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 104): B′ من $[AB]$ و C′ من $[AC]$ و $(B'C') \\parallel (BC)$ ؛ $AB = 6$ ، $AC = 7$ ، $AB' = 3{,}2$ و $BC = 6{,}1$ (بالسنتيمتر).",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          5.317,
+          2.78
+        ],
+        "C": [
+          6.203,
+          -3.243
+        ],
+        "B'": [
+          2.836,
+          1.483
+        ],
+        "C'": [
+          3.308,
+          -1.73
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B'"
+        },
+        {
+          "from": "B'",
+          "to": "B"
+        },
+        {
+          "from": "A",
+          "to": "C'"
+        },
+        {
+          "from": "C'",
+          "to": "C"
+        },
+        {
+          "from": "B",
+          "to": "C",
+          "arrows": 1
+        },
+        {
+          "from": "B'",
+          "to": "C'",
+          "arrows": 1,
+          "tone": "indigo"
+        }
+      ],
+      "ariaLabel": "B′ من [AB] و C′ من [AC] و (B′C′) يوازي (BC)",
+      "maxWidth": 260,
+      "labels": {
+        "A": "w"
+      }
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب AC′ (القيمة المضبوطة).",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "كسر مثل 5/7 (القيمة المضبوطة)",
+      "expectedAnswer": "56/15",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "96/35"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3{,}2}{6} = \\dfrac{AC'}{7}$ ومنه $AC' = \\dfrac{56}{15} \\approx 3{,}73$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب B′C′ (القيمة المضبوطة).",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "كسر مثل 5/7 (القيمة المضبوطة)",
+      "expectedAnswer": "244/75",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "183/16"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$B'C' = \\dfrac{8}{15} \\times 6{,}1 = \\dfrac{244}{75} \\approx 3{,}25$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    }
+  ]
+}

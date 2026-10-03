@@ -1,0 +1,66 @@
+{
+  "id": "ex-4am-inshaat-talis-l5-007",
+  "lessonCode": "inshaat-talis",
+  "level": 5,
+  "metadata": {
+    "title": "طرائق (ص 107) — تبرير الإنشاء",
+    "estimatedMinutes": 6,
+    "tags": [
+      "إنشاء طول معلوم",
+      "تبرير"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-construct-length",
+      "page": 107,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: (وحدة الأطوال هي السنتيمتر) أنشئ قطعة مستقيم [AB] بحيث يكون $AB = \\dfrac{14}{3}$ . عيّنا $AC = 3$ و $AD = 7$ على [Ax) و $AE = 2$ على [Ay) ، والموازي لـ (CE) المارّ بـ D يقطع [Ay) في B."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نبرّر $AB = \\dfrac{14}{3}$ بـ:",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "خاصية طالس في المثلثين ACE و ADB لأن (CE) يوازي (DB)",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "خاصية فيثاغورس في المثلث ADB",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-KHASIYA"
+        },
+        {
+          "id": "C",
+          "content": "خاصية مستقيم المنتصفين في المثلث ADB",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-KHASIYA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ما المستقيمان المتوازيان في الشكل؟"
+        }
+      ],
+      "feedback": {
+        "correct": "(CE) // (DB) و C من [AD] و E من [AB] : $\\dfrac{AC}{AD} = \\dfrac{AE}{AB}$ .",
+        "incorrect": "لا زاوية قائمة في الشكل، و C ليست منتصف [AD] لأن $2 \\times 3 \\neq 7$ ."
+      }
+    }
+  ]
+}

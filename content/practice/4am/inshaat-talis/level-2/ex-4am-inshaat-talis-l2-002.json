@@ -1,0 +1,56 @@
+{
+  "id": "ex-4am-inshaat-talis-l2-002",
+  "lessonCode": "inshaat-talis",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 17 (ص 111) — العلامة التي يمر بها الموازي",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تمرين 17",
+      "تقسيم قطعة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-17",
+      "page": 111,
+      "section": "وضع نقط على مستقيم",
+      "number": 17
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: ارسم قطعة مستقيم [AB]. أنشئ، دون استعمال مسطرة مدرجة، النقطة M من [AB] حيث $\\dfrac{AM}{AB} = \\dfrac{3}{7}$ . عيّنا 7 قطع متقايسة على [Ax) ووصلنا العلامة السابعة بـ B."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الموازي الذي يعيّن M يشمل العلامة رقم:",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-ADAD-AL-ALAMAT",
+          "value": "4"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الموازي المارّ بالعلامة k يقطع [AB] في نقطة تبعد عن A بـ k أجزاء من سبعة."
+        }
+      ],
+      "feedback": {
+        "correct": "العلامة الثالثة: $\\dfrac{AM}{AB} = \\dfrac{3}{7}$ حسب خاصية طالس.",
+        "incorrect": "نريد $\\dfrac{3}{7}$ : ثلاثة أجزاء من سبعة."
+      }
+    }
+  ]
+}

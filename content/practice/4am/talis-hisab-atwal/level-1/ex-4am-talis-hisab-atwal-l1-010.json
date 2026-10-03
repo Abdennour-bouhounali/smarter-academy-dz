@@ -1,0 +1,126 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l1-010",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — نسبة من نسبة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "النسب المتساوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P1",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "في الشكل، $(MN) \\parallel (BC)$ و $\\dfrac{AM}{AB} = \\dfrac{2}{5}$ .",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          4.568,
+          2.034
+        ],
+        "C": [
+          5.196,
+          -3.0
+        ],
+        "M": [
+          1.827,
+          0.814
+        ],
+        "N": [
+          2.078,
+          -1.2
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "M"
+        },
+        {
+          "from": "M",
+          "to": "B"
+        },
+        {
+          "from": "A",
+          "to": "N"
+        },
+        {
+          "from": "N",
+          "to": "C"
+        },
+        {
+          "from": "B",
+          "to": "C",
+          "arrows": 1
+        },
+        {
+          "from": "M",
+          "to": "N",
+          "arrows": 1,
+          "tone": "indigo"
+        }
+      ],
+      "ariaLabel": "M من [AB] و N من [AC] و (MN) يوازي (BC)",
+      "maxWidth": 260,
+      "labels": {
+        "A": "w"
+      }
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النسبة $\\dfrac{AN}{AC}$ تساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "كسر مثل 3/4",
+      "expectedAnswer": "0,4",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-QITAA-BADAL-DILA",
+          "value": "2/3"
+        },
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "2,5"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الرأس المشترك والمستقيمين المتوازيين في الشكل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في كل نسبة: ضلع من المثلث الأول على الضلع الموافق له في المثلث الثاني، بالترتيب نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب رؤوس المثلثين بالترتيب نفسه، رأسا تحت رأس، ثم اقرأ النسب."
+        }
+      ],
+      "feedback": {
+        "correct": "حسب خاصية طالس $\\dfrac{AN}{AC} = \\dfrac{AM}{AB} = \\dfrac{2}{5}$ .",
+        "incorrect": "راجع الرؤوس المتقابلة: الرأس المشترك، ثم طرفا المستقيمين المتوازيين."
+      }
+    }
+  ]
+}

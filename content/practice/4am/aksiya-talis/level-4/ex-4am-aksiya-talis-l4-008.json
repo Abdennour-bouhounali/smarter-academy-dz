@@ -1,0 +1,68 @@
+{
+  "id": "ex-4am-aksiya-talis-l4-008",
+  "lessonCode": "aksiya-talis",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — أشكال الأستاذ الأربعة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نفس الترتيب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_aksiya-talis_P2",
+      "modelledOn": "act-2"
+    }
+  },
+  "statement": {
+    "content": "يفرض الأستاذ $\\dfrac{AB'}{AB} = \\dfrac{AC'}{AC} = \\dfrac{1}{4}$ . لكل من B′ و C′ موضعان ممكنان: بين A والنقطة (B أو C)، أو من الجهة الأخرى للنقطة A. فهناك أربعة أشكال ممكنة."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم شكلا من الأشكال الأربعة يكون فيه (B′C′) موازيا لـ (BC)؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-TARTIB-MANSI",
+          "value": "4"
+        },
+        {
+          "id": "MISC-TALIS-BAYN-FAQAT",
+          "value": "1"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المستقيمين المتقاطعين وضع النقط في المواقع المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نفس الترتيب: موقع النقطة الأولى بالنسبة إلى الرأس والنقطة الأخرى يماثل موقع الثانية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انظر هل النقطتان في الجهة نفسها من الرأس أم في جهتين مختلفتين."
+        }
+      ],
+      "feedback": {
+        "correct": "شكلان: النقطتان بين الرأس والقاعدة، أو النقطتان من الجهة الأخرى للنقطة A (نفس الترتيب في الحالتين).",
+        "incorrect": "ارسم الشكل: في أي جهة من الرأس تقع كل نقطة؟"
+      }
+    }
+  ]
+}

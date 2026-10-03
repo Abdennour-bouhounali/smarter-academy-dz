@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-aksiya-talis-l5-006",
+  "lessonCode": "aksiya-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — نسبتان متساويتان، جهتان مختلفتان",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نفس الترتيب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_aksiya-talis_P2",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "A ، B ، B′ على استقامة حيث B′ بين A و B: AB′ = 3 و AB = 5. A ، C ، C′ على استقامة حيث A بين C و C′: AC = 10 و AC′ = 6."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ماذا ينتج عن (BC) و (B′C′)؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "غير متوازيين: $\\dfrac{3}{5} = \\dfrac{6}{10}$ لكن الترتيب مختلف",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "متوازيان: $\\dfrac{AB'}{AB} = \\dfrac{AC'}{AC}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TARTIB-MANSI"
+        },
+        {
+          "id": "C",
+          "content": "غير متوازيين: النسبتان مختلفتان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-SHAKL-BURHAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المستقيمين المتقاطعين وضع النقط في المواقع المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نفس الترتيب: موقع النقطة الأولى بالنسبة إلى الرأس والنقطة الأخرى يماثل موقع الثانية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انظر هل النقطتان في الجهة نفسها من الرأس أم في جهتين مختلفتين."
+        }
+      ],
+      "feedback": {
+        "correct": "النسبتان متساويتان، لكن B′ في جهة B من A و C′ في الجهة المعاكسة لـ C.",
+        "incorrect": "ارسم الشكل: في أي جهة من الرأس تقع كل نقطة؟"
+      }
+    }
+  ]
+}

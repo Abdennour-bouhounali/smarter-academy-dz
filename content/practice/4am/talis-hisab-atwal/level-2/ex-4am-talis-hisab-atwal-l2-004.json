@@ -1,0 +1,166 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l2-004",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 8 — AP و LP",
+    "estimatedMinutes": 3,
+    "tags": [
+      "حساب طول"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-8",
+      "page": 110,
+      "section": "خاصية طالس",
+      "number": 8
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 110): (الوحدة: السنتيمتر) $(NP) \\parallel (ML)$ و $(MN)$ و $(LP)$ يتقاطعان في A ؛ M بين A و N و L بين A و P ؛ $AN = 15$ ، $AM = 9$ و $AL = 6$ .",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "N": [
+          1.559,
+          7.336
+        ],
+        "P": [
+          4.096,
+          2.868
+        ],
+        "M": [
+          0.935,
+          4.402
+        ],
+        "L": [
+          2.458,
+          1.721
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "M",
+          "label": "9"
+        },
+        {
+          "from": "M",
+          "to": "N"
+        },
+        {
+          "from": "A",
+          "to": "L",
+          "label": "6"
+        },
+        {
+          "from": "L",
+          "to": "P"
+        },
+        {
+          "from": "N",
+          "to": "P",
+          "arrows": 1
+        },
+        {
+          "from": "M",
+          "to": "L",
+          "arrows": 1,
+          "tone": "indigo"
+        }
+      ],
+      "ariaLabel": "A و M و N على استقامة و A و L و P على استقامة؛ (NP) يوازي (ML)؛ AN = 15 و AM = 9 و AL = 6",
+      "maxWidth": 260,
+      "labels": {
+        "A": "w"
+      }
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب AP.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "10",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "3,6"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{AM}{AN} = \\dfrac{AL}{AP}$ أي $\\dfrac{9}{15} = \\dfrac{6}{AP}$ ومنه $AP = 10$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب LP.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-QITAA-BADAL-DILA",
+          "value": "10"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$LP = AP - AL = 10 - 6 = 4$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    }
+  ]
+}

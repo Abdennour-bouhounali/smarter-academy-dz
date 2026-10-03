@@ -1,0 +1,190 @@
+{
+  "id": "ex-4am-aksiya-talis-l4-002",
+  "lessonCode": "aksiya-talis",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 24 — مركزا الثقل",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خاصية عكسية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-24",
+      "page": 113,
+      "section": "أتعمّق",
+      "number": 24
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 113): ABC و DBC مثلثان، O منتصف [BC]. J مركز ثقل ABC و K مركز ثقل DBC (مركز الثقل على المتوسط، على ثلثي طوله من الرأس).",
+    "figure": {
+      "points": {
+        "A": [
+          -1,
+          4.5
+        ],
+        "B": [
+          -6,
+          0
+        ],
+        "C": [
+          6,
+          0
+        ],
+        "D": [
+          1,
+          -3.6
+        ],
+        "O": [
+          0,
+          0
+        ],
+        "J": [
+          -0.33,
+          1.5
+        ],
+        "K": [
+          0.33,
+          -1.2
+        ]
+      },
+      "segments": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "A",
+          "C"
+        ],
+        [
+          "D",
+          "B"
+        ],
+        [
+          "D",
+          "C"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "A",
+          "O"
+        ],
+        [
+          "D",
+          "O"
+        ],
+        {
+          "from": "J",
+          "to": "K",
+          "dashed": true
+        }
+      ],
+      "ariaLabel": "مثلثان ABC و DBC، O منتصف [BC]، J مركز ثقل ABC على [AO] و K مركز ثقل DBC على [DO]",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $\\dfrac{OJ}{OA}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد: كسر غير قابل للاختزال أو عدد عشري بالفاصلة",
+      "expectedAnswer": "1/3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-QITAA-BADAL-DILA",
+          "value": "2/3"
+        },
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النقطة المشتركة بين المستقيمين، ثم الطولين المعنيين على المستقيم نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "النسبة: طول يبدأ من النقطة المشتركة مقسوما على الطول الموافق له على المستقيم نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب الكسر ثم اختزله (أو احسب قيمته المضبوطة)."
+        }
+      ],
+      "feedback": {
+        "correct": "$AJ = \\dfrac{2}{3}AO$ إذن $\\dfrac{OJ}{OA} = \\dfrac{1}{3}$",
+        "incorrect": "راجع: من أي نقطة يبدأ كل طول؟ وهل اختزلت الكسر؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ومع $\\dfrac{OK}{OD} = \\dfrac{1}{3}$ ، لماذا (JK) يوازي (AD)؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "النسبتان متساويتان و J بين O و A و K بين O و D (نفس الترتيب)",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لأن J و K مركزا ثقل فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-SHAKL-BURHAN"
+        },
+        {
+          "id": "C",
+          "content": "لأن A و D في جهتين من (BC)",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TARTIB-MANSI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المستقيمين المتقاطعين وضع النقط في المواقع المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نفس الترتيب: موقع النقطة الأولى بالنسبة إلى الرأس والنقطة الأخرى يماثل موقع الثانية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انظر هل النقطتان في الجهة نفسها من الرأس أم في جهتين مختلفتين."
+        }
+      ],
+      "feedback": {
+        "correct": "على المستقيمين (OA) و (OD): الترتيب نفسه والنسبتان $\\dfrac{1}{3}$ : الخاصية العكسية.",
+        "incorrect": "ارسم الشكل: في أي جهة من الرأس تقع كل نقطة؟"
+      }
+    }
+  ]
+}

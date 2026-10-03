@@ -1,0 +1,211 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l1-004",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 4 — تدريج منتظم",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خاصية طالس",
+      "تقسيم قطعة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 112,
+      "section": "أؤكّد تعلّماتي",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "نختار تدريجا منتظما على [AB] (خمس قطع متقايسة، M النقطة الثالثة من A) ونرسم مستقيمات موازية لـ (BC) ، و N نقطة تقاطع الموازي المار بـ M مع [AC]. الإجابات: (1) $\\dfrac{AN}{AC} = \\dfrac{AM}{AB} = \\dfrac{3}{5}$ ؛ (2) $\\dfrac{AM}{AB} = \\dfrac{NM}{CB} = \\dfrac{3}{5}$ ؛ (3) $5 \\times NM = 3 \\times CB$ .",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          5,
+          0
+        ],
+        "C": [
+          7,
+          4.5
+        ],
+        "M": [
+          3,
+          0
+        ],
+        "N": [
+          4.2,
+          2.7
+        ],
+        "G1": [
+          1,
+          0
+        ],
+        "G2": [
+          2,
+          0
+        ],
+        "G4": [
+          4,
+          0
+        ],
+        "H1": [
+          1.4,
+          0.9
+        ],
+        "H2": [
+          2.8,
+          1.8
+        ],
+        "H4": [
+          5.6,
+          3.6
+        ]
+      },
+      "segments": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "A",
+          "C"
+        ],
+        {
+          "from": "B",
+          "to": "C",
+          "arrows": 1,
+          "bold": true
+        },
+        {
+          "from": "M",
+          "to": "N",
+          "arrows": 1,
+          "bold": true
+        },
+        {
+          "from": "G1",
+          "to": "H1",
+          "tone": "sky"
+        },
+        {
+          "from": "G2",
+          "to": "H2",
+          "tone": "sky"
+        },
+        {
+          "from": "G4",
+          "to": "H4",
+          "tone": "sky"
+        },
+        {
+          "from": "A",
+          "to": "G1",
+          "ticks": 1
+        },
+        {
+          "from": "G1",
+          "to": "G2",
+          "ticks": 1
+        },
+        {
+          "from": "G2",
+          "to": "M",
+          "ticks": 1
+        },
+        {
+          "from": "M",
+          "to": "G4",
+          "ticks": 1
+        },
+        {
+          "from": "G4",
+          "to": "B",
+          "ticks": 1
+        }
+      ],
+      "hidden": [
+        "G1",
+        "G2",
+        "G4",
+        "H1",
+        "H2",
+        "H4"
+      ],
+      "labels": {
+        "A": "w",
+        "B": "s",
+        "C": "n",
+        "M": "s",
+        "N": "nw"
+      },
+      "ariaLabel": "القطعة [AB] مقسمة بتدريج منتظم إلى خمس قطع متقايسة، M النقطة الثالثة من A، وموازيات للمستقيم (BC) تمر بنقاط التدريج وتقطع [AC]، و N نقطة تقاطع الموازي المار بـ M مع [AC]",
+      "maxWidth": 320
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أيّ الإجابات صحيحة؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الإجابتان (1) و (2) فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-KITABA-MUTAKAFIA"
+        },
+        {
+          "id": "B",
+          "content": "الإجابات الثلاث",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "الإجابة (1) فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-KITABA-MUTAKAFIA"
+        },
+        {
+          "id": "D",
+          "content": "الإجابة (3) فقط",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-KITABA-MUTAKAFIA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{AM}{AB}$ تقرأ على التدريج."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "(MN)//(BC): المثلثان AMN و ABC في وضعية طالس."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الجداء التصالبي يحوّل تساوي نسبتين إلى تساوي جداءين."
+        }
+      ],
+      "feedback": {
+        "correct": "الثلاث صحيحة: النسب الثلاث تساوي $\\dfrac{3}{5}$ ، و (3) هي الجداء التصالبي لـ (2).",
+        "incorrect": "كتابتان متكافئتان لتناسب واحد كلتاهما صحيحة."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 2
+    }
+  ]
+}

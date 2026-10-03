@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-aksiya-talis-l5-003",
+  "lessonCode": "aksiya-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — لوح أفقي على السلّم",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_aksiya-talis_P1",
+      "modelledOn": "act-2"
+    }
+  },
+  "statement": {
+    "content": "سلّم مزدوج قمّته A وقدماه B و C على أرض أفقية: AB = 2,4m و AC = 3m. يريد رسّام جدارية أن يضع لوحا أفقيا (موازيا للأرض) طرفه B′ على [AB] حيث AB′ = 1,6m."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "على أي بعد AC′ من A (بالمتر) يضع الطرف الآخر C′ على [AC]؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (بالمتر)",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-JAMA-BADAL-DARB",
+          "value": "2,2"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب تساوي النسبتين الذي يجعل المستقيمين متوازيين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المجهول يظهر في إحدى النسبتين: استعمل الجداء المتصالب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الجداء على العدد الثالث، ثم تحقّق من النسبتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{1{,}6}{2{,}4} = \\dfrac{AC'}{3}$ ومنه $AC' = 2$ (المتر)",
+        "incorrect": "اكتب تساوي النسبتين من جديد ثم أعد الجداء المتصالب."
+      }
+    }
+  ]
+}

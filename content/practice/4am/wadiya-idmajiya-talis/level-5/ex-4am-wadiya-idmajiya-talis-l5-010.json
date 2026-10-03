@@ -1,0 +1,117 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l5-010",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — علبة في قمع",
+    "estimatedMinutes": 7,
+    "tags": [
+      "ملاءمة النتيجة",
+      "حجم",
+      "استراتيجية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P3",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "أراد سليم وضع علبة أسطوانية محاطة بقمع على شكل مخروط دوران ارتفاعه $14\\,\\mathrm{cm}$ ونصف قطر قاعدته $7\\,\\mathrm{cm}$ ، ارتفاعها يساوي نصف قطرها، ليضع فيها $300\\,\\mathrm{cm}^3$ من العصير."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما نصف قطر العلبة (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (كسر أو عشري)",
+      "expectedAnswer": "14/3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{r}{7} = \\dfrac{14 - r}{14}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "جداء تصالبي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ."
+        }
+      ],
+      "feedback": {
+        "correct": "$14r = 98 - 7r$ أي $21r = 98$ ومنه $r = \\dfrac{14}{3}\\,\\mathrm{cm}$ .",
+        "incorrect": "نعوّض h بـ r ثم نحلّ."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "evaluationPolicy": {
+        "tolerance": "0.01"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل تتّسع العلبة لـ $300\\,\\mathrm{cm}^3$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا: $\\left(\\dfrac{14}{3}\\right)^3 \\approx 101{,}63 < 300$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-HAJM-BIDUN-PI"
+        },
+        {
+          "id": "B",
+          "content": "نعم: $V = \\pi \\left(\\dfrac{14}{3}\\right)^3 \\approx 319{,}28\\,\\mathrm{cm}^3 > 300$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "لا يمكن الحكم قبل معرفة حجم القمع",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-MULAAMA-WAQI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب الحجم $\\pi r^3$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "لا تنس π."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن بـ 300."
+        }
+      ],
+      "feedback": {
+        "correct": "$V \\approx 319{,}28\\,\\mathrm{cm}^3$ : العلبة تتّسع للعصير.",
+        "incorrect": "الحجم يحتاج π قبل المقارنة."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 5
+    }
+  ]
+}

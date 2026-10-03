@@ -1,0 +1,197 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l1-002",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 2 — وضعية الفراشة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خاصية طالس"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 112,
+      "section": "أؤكّد تعلّماتي",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "في الشكل: النقط B و A و L على استقامة، والنقط C و A و M على استقامة (A بين النقطتين في كل مرة)، و (LM)//(BC). $BC = 4$ ، $AM = 3$ ، $ML = 2$ ، $AL = 2$ ، $AB = x$ ، $AC = y$ .",
+    "figure": {
+      "points": {
+        "B": [
+          -4,
+          2
+        ],
+        "C": [
+          -4,
+          -2
+        ],
+        "A": [
+          0,
+          0
+        ],
+        "L": [
+          2,
+          -1
+        ],
+        "M": [
+          2,
+          1
+        ]
+      },
+      "segments": [
+        {
+          "from": "B",
+          "to": "C",
+          "label": "4",
+          "arrows": 1
+        },
+        {
+          "from": "M",
+          "to": "L",
+          "label": "2",
+          "arrows": 1
+        },
+        {
+          "from": "B",
+          "to": "A",
+          "label": "x"
+        },
+        {
+          "from": "A",
+          "to": "L",
+          "label": "2"
+        },
+        {
+          "from": "C",
+          "to": "A",
+          "label": "y"
+        },
+        {
+          "from": "A",
+          "to": "M",
+          "label": "3"
+        }
+      ],
+      "labels": {
+        "B": "nw",
+        "C": "sw",
+        "A": "n",
+        "L": "se",
+        "M": "ne"
+      },
+      "ariaLabel": "شكل فراشة: النقط B و A و L على استقامة والنقط C و A و M على استقامة، و (LM) يوازي (BC)؛ BC = 4 و AM = 3 و ML = 2 و AL = 2 و AB = x و AC = y",
+      "maxWidth": 320
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيمة $x$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{1}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
+        },
+        {
+          "id": "B",
+          "content": "4",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "8",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-MUAMIL-MAQLUB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الضلعان المتوازيان: $BC = 4$ و $LM = 2$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "B تقابل L ، و C تقابل M."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\dfrac{AB}{AL} = \\dfrac{BC}{LM}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{x}{2} = \\dfrac{4}{2}$ إذن $x = 4$ .",
+        "incorrect": "نكتب طولا من المثلث الكبير على الطول الموافق في الصغير، في كل نسبة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    },
+    {
+      "id": "q2",
+      "statement": "قيمة $y$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "24",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-MUAMIL-MAQLUB"
+        },
+        {
+          "id": "B",
+          "content": "3",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-QITAA-BADAL-DILA"
+        },
+        {
+          "id": "C",
+          "content": "6",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "C تقابل M."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "معامل التكبير من ALM إلى ABC هو $\\dfrac{BC}{LM}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب AM في هذا المعامل."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{y}{3} = \\dfrac{4}{2}$ إذن $y = 6$ .",
+        "incorrect": "C تقابل M: نضرب AM في المعامل."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    }
+  ]
+}

@@ -1,0 +1,184 @@
+{
+  "id": "ex-4am-aksiya-talis-l5-002",
+  "lessonCode": "aksiya-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تمرين 25 — D منتصف [EF]",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مسألة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-25",
+      "page": 113,
+      "section": "أتعمّق",
+      "number": 25
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 113): ABC مثلث و (AD) متوسطه المتعلّق بـ [BC]. M من [AD]. الموازي لـ (AC) المار بـ M يقطع [BC] في E، والموازي لـ (AB) المار بـ M يقطع [BC] في F.",
+    "figure": {
+      "points": {
+        "A": [
+          1,
+          6
+        ],
+        "B": [
+          -4,
+          0
+        ],
+        "C": [
+          6,
+          0
+        ],
+        "D": [
+          1,
+          0
+        ],
+        "M": [
+          1,
+          2.4
+        ],
+        "E": [
+          3,
+          0
+        ],
+        "F": [
+          -1,
+          0
+        ]
+      },
+      "segments": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "A",
+          "C"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "A",
+          "D"
+        ],
+        {
+          "from": "M",
+          "to": "E",
+          "dashed": true
+        },
+        {
+          "from": "M",
+          "to": "F",
+          "dashed": true
+        }
+      ],
+      "ariaLabel": "مثلث ABC و (AD) متوسط، M من [AD]، الموازي لـ (AC) المار بـ M يقطع [BC] في E، والموازي لـ (AB) المار بـ M يقطع [BC] في F",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "في المثلث DAC حيث (ME)//(AC)، $\\dfrac{DE}{DC}$ يساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{DM}{DA}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{DM}{MA}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-QITAA-BADAL-DILA"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{DA}{DM}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النقطة المشتركة بين المستقيمين، ثم الطولين المعنيين على المستقيم نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "النسبة: طول يبدأ من النقطة المشتركة مقسوما على الطول الموافق له على المستقيم نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب الكسر ثم اختزله (أو احسب قيمته المضبوطة)."
+        }
+      ],
+      "feedback": {
+        "correct": "خاصية طالس في المثلث DAC: $\\dfrac{DE}{DC} = \\dfrac{DM}{DA}$ .",
+        "incorrect": "راجع: من أي نقطة يبدأ كل طول؟ وهل اختزلت الكسر؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ومنه، لأن $\\dfrac{DF}{DB} = \\dfrac{DM}{DA}$ أيضا:",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$DE = DF$ لأن $DB = DC$ ، و D منتصف [EF]",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$DE = DF$ لأن M منتصف [AD]",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-SHAKL-BURHAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق أولا من ترتيب النقط على المستقيمين المتقاطعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب النسبتين وقارنهما بالجداء المتصالب، لا بقيم مقرّبة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نسبتان متساويتان مع نفس الترتيب: الخاصية العكسية. نسبتان مختلفتان: نستدل بالخلف بخاصية طالس."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{DE}{DC} = \\dfrac{DF}{DB}$ و $DB = DC$ (D منتصف [BC]) إذن $DE = DF$ .",
+        "incorrect": "راجع الشرطين: الترتيب، ثم تساوي النسبتين بالحساب."
+      }
+    }
+  ]
+}

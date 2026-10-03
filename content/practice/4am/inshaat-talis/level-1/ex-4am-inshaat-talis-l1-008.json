@@ -1,0 +1,59 @@
+{
+  "id": "ex-4am-inshaat-talis-l1-008",
+  "lessonCode": "inshaat-talis",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — الطول الناتج عن الإنشاء",
+    "estimatedMinutes": 3,
+    "tags": [
+      "إنشاء طول معلوم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_inshaat-talis_P2",
+      "modelledOn": "method-construct-length"
+    }
+  },
+  "statement": {
+    "content": "نعيّن على نصف مستقيم [Ax) نقطتين C و D حيث $AC = 2$ و $AD = 5$ ، وعلى نصف مستقيم [Ay) نقطة E حيث $AE = 3$ . الموازي للمستقيم (CE) المارّ بـ D يقطع [Ay) في B."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "AB يساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "7,5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "6/5"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "(CE) و (DB) متوازيان: المثلثان ACE و ADB في وضعية طالس."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب $\\dfrac{AC}{AD} = \\dfrac{AE}{AB}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{2}{5} = \\dfrac{3}{AB}$ ، فـ $2 \\times AB = 15$ و $AB = 7{,}5$ .",
+        "incorrect": "الطول المطلوب هو الرابع المتناسب: $AB = \\dfrac{AD \\times AE}{AC}$ ."
+      }
+    }
+  ]
+}

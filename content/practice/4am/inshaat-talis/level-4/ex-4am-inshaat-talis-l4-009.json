@@ -1,0 +1,48 @@
+{
+  "id": "ex-4am-inshaat-talis-l4-009",
+  "lessonCode": "inshaat-talis",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — إنشاء 5 على 3",
+    "estimatedMinutes": 6,
+    "tags": [
+      "إنشاء طول معلوم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_inshaat-talis_P2",
+      "modelledOn": "method-construct-length"
+    }
+  },
+  "statement": {
+    "content": "نريد إنشاء قطعة [AB] حيث $AB = \\dfrac{5}{3}$ : على [Ax) النقطتان C و D ، وعلى [Ay) النقطة E ، حيث $AC = 3$ و $AE = 1$ ، ثم الموازي لـ (CE) المارّ بـ D يقطع [Ay) في B."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم يجب أن يكون AD ؟",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{AC}{AD} = \\dfrac{AE}{AB}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3}{AD} = \\dfrac{1}{\\frac{5}{3}}$ ، فـ $AD = 3 \\times \\dfrac{5}{3} = 5$ .",
+        "incorrect": "استعمل الجداء المتصالب: $AE \\times AD = AC \\times AB$ ."
+      }
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "id": "ex-4am-inshaat-talis-l5-010",
+  "lessonCode": "inshaat-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تمرين 18 (ص 111) — الطول MB",
+    "estimatedMinutes": 6,
+    "tags": [
+      "تمرين 18",
+      "نقطة خارج القطعة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-18",
+      "page": 111,
+      "section": "وضع نقط على مستقيم",
+      "number": 18
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: ارسم مستقيما (AB). أنشئ، دون استعمال مسطرة مدرّجة، النقطة M من (AB) ولا تنتمي إلى [AB] حيث $\\dfrac{AM}{AB} = \\dfrac{4}{9}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\dfrac{MB}{AB}$ تساوي (كسر):",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "كسر غير قابل للاختزال",
+      "expectedAnswer": "13/9",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-JUZ-KULL",
+          "value": "5/9"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "M من الجهة الأخرى للنقطة A."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$MB = MA + AB$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$MB = \\dfrac{4}{9}AB + AB = \\dfrac{13}{9}AB$ .",
+        "incorrect": "$\\dfrac{5}{9}$ يصلح لو كانت M بين A و B."
+      }
+    }
+  ]
+}

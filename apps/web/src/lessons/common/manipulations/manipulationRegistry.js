@@ -53,6 +53,12 @@ export const MANIPULATION_COMPONENTS = {
   'stat-balance': lazy(() => import('./stats/StatBalance')),
   'sheet-lab': lazy(() => import('./stats/SheetLab')),
   'group-tanks': lazy(() => import('./stats/GroupTanks')),
+  // Unité 9 « خاصية طالس » (2026-10-02).
+  'thales-beam': lazy(() => import('./geometry/ThalesBeam')),
+  'parallel-level': lazy(() => import('./geometry/ParallelLevel')),
+  'segment-divider': lazy(() => import('./geometry/SegmentDivider')),
+  'shadow-stick': lazy(() => import('./geometry/ShadowStick')),
+  'cone-cylinder': lazy(() => import('./geometry/ConeCylinder')),
 };
 
 export const REGISTERED_TYPE_IDS = Object.freeze(Object.keys(MANIPULATION_COMPONENTS));

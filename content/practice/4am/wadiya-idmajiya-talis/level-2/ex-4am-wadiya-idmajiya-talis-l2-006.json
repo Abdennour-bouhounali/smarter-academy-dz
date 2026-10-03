@@ -1,0 +1,83 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l2-006",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — قيمة مقرّبة لحجم",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حجم",
+      "قيمة مقرّبة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P3",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "حجم أسطوانة هو $91{,}125\\pi\\,\\mathrm{cm}^3$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيمته المقرّبة إلى $0{,}01$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$91{,}13\\,\\mathrm{cm}^3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-HAJM-BIDUN-PI"
+        },
+        {
+          "id": "B",
+          "content": "$286{,}27\\,\\mathrm{cm}^3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-MULAAMA-WAQI"
+        },
+        {
+          "id": "C",
+          "content": "$286{,}28\\,\\mathrm{cm}^3$",
+          "isCorrect": true
+        },
+        {
+          "id": "D",
+          "content": "$273{,}38\\,\\mathrm{cm}^3$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-MULAAMA-WAQI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نضرب العدد في π."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نستعمل الآلة الحاسبة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ندوّر إلى رقمين بعد الفاصلة."
+        }
+      ],
+      "feedback": {
+        "correct": "$91{,}125 \\times \\pi \\approx 286{,}2777$ ، والمدوّر إلى $0{,}01$ هو $286{,}28$ .",
+        "incorrect": "الحجم بـ π ، والتدوير إلى الأقرب لا القطع."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2
+    }
+  ]
+}

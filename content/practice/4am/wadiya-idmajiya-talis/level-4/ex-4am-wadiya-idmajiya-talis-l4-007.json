@@ -1,0 +1,77 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l4-007",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — متقاربتان لكن غير متساويتين",
+    "estimatedMinutes": 6,
+    "tags": [
+      "الخاصية العكسية",
+      "إثبات عدم التوازي"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "النقط A و B و E على استقامة بهذا الترتيب، والنقط A و C و F كذلك. $AB = 4$ ، $AE = 7$ ، $AC = 5$ ، $AF = 9$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المستقيمان (BC) و (EF):",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "متوازيان لأنّ $\\dfrac{4}{7} \\approx 0{,}57$ و $\\dfrac{5}{9} \\approx 0{,}56$ متقاربتان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAQRIB-BURHAN"
+        },
+        {
+          "id": "B",
+          "content": "غير متوازيين: $4 \\times 9 = 36 \\neq 35 = 7 \\times 5$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "متوازيان لأنّ الترتيب نفسه",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-AKS-BIDUN-TASAWI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن النسبتين بدقة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الجداء التصالبي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نسبتان مختلفتان: ماذا تقول خاصية طالس؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$36 \\neq 35$ : النسبتان مختلفتان، فلو كان التوازي لتساوتا.",
+        "incorrect": "قيمتان مقرّبتان لا تثبتان تساوي نسبتين."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 4
+    }
+  ]
+}

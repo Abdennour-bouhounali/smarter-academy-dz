@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l1-004",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — شرط الخاصية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية طالس"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P1",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "المستقيمان $(BM)$ و $(CN)$ متقاطعان في النقطة A، و M من $[AB]$ و N من $[AC]$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لكي نكتب $\\dfrac{AM}{AB} = \\dfrac{AN}{AC} = \\dfrac{MN}{BC}$ يجب أن يكون:",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "المستقيمان $(MN)$ و $(BC)$ متوازيين",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$AM = AN$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
+        },
+        {
+          "id": "C",
+          "content": "المستقيمان $(MB)$ و $(NC)$ متوازيين",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الرأس المشترك والمستقيمين المتوازيين في الشكل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في كل نسبة: ضلع من المثلث الأول على الضلع الموافق له في المثلث الثاني، بالترتيب نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب رؤوس المثلثين بالترتيب نفسه، رأسا تحت رأس، ثم اقرأ النسب."
+        }
+      ],
+      "feedback": {
+        "correct": "خاصية طالس تشترط مستقيمين متوازيين يقطعان المستقيمين المتقاطعين: $(MN) \\parallel (BC)$ .",
+        "incorrect": "راجع الرؤوس المتقابلة: الرأس المشترك، ثم طرفا المستقيمين المتوازيين."
+      }
+    }
+  ]
+}

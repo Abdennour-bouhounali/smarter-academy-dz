@@ -1,0 +1,144 @@
+{
+  "id": "ex-4am-aksiya-talis-l4-010",
+  "lessonCode": "aksiya-talis",
+  "level": 4,
+  "metadata": {
+    "title": "معارف 3 — ملاحظة الترتيب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نفس الترتيب"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "know-3",
+      "page": 108,
+      "section": "معارف",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 108): $\\dfrac{AB'}{AB} = \\dfrac{AC'}{AC} = \\dfrac{1}{2}$ ، و B′ من الجهة الأخرى للنقطة A بالنسبة إلى B ، و C′ منتصف [AC].",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          -1.2,
+          -2.4
+        ],
+        "C": [
+          6,
+          -2.4
+        ],
+        "B′": [
+          0.6,
+          1.2
+        ],
+        "m": [
+          -0.6,
+          -1.2
+        ],
+        "C′": [
+          3,
+          -1.2
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B′",
+          "ticks": 2
+        },
+        {
+          "from": "A",
+          "to": "m",
+          "ticks": 2
+        },
+        {
+          "from": "m",
+          "to": "B",
+          "ticks": 2
+        },
+        {
+          "from": "A",
+          "to": "C′",
+          "ticks": 1
+        },
+        {
+          "from": "C′",
+          "to": "C",
+          "ticks": 1
+        },
+        [
+          "B",
+          "C"
+        ],
+        [
+          "B′",
+          "C′"
+        ]
+      ],
+      "hidden": [
+        "m"
+      ],
+      "ariaLabel": "مثلث ABC؛ B′ على امتداد [BA] من جهة A مع AB′ نصف AB، و C′ منتصف [AC]",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ماذا ينتج؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "(BC) و (B′C′) غير متوازيين: النقط ليست مرتبة بنفس الترتيب",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(B'C') \\parallel (BC)$ لأن النسبتين متساويتان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TARTIB-MANSI"
+        },
+        {
+          "id": "C",
+          "content": "(BC) و (B′C′) غير متوازيين لأن النسبتين مختلفتان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-SHAKL-BURHAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المستقيمين المتقاطعين وضع النقط في المواقع المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نفس الترتيب: موقع النقطة الأولى بالنسبة إلى الرأس والنقطة الأخرى يماثل موقع الثانية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انظر هل النقطتان في الجهة نفسها من الرأس أم في جهتين مختلفتين."
+        }
+      ],
+      "feedback": {
+        "correct": "النسبتان متساويتان، لكن B′ في الجهة المعاكسة لـ B و C′ في جهة C: الشرط الثاني غير محقّق.",
+        "incorrect": "ارسم الشكل: في أي جهة من الرأس تقع كل نقطة؟"
+      }
+    }
+  ]
+}

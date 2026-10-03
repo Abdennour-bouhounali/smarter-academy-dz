@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-aksiya-talis-l4-003",
+  "lessonCode": "aksiya-talis",
+  "level": 4,
+  "metadata": {
+    "title": "نشاط 2 — الحامل على شكل X",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نفس الترتيب"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "act-2",
+      "page": 105,
+      "section": "أنشطة",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 105)، بأطوال: (d) و (d′) متقاطعان في A، AB = 6 و AC = 9. B′ و C′ من الجهة الأخرى للنقطة A حيث AB′ = 2 و AC′ = 3."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل (B′C′) يوازي (BC)؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم: النسبتان $\\dfrac{1}{3}$ والنقط مرتبة بنفس الترتيب",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا: B′ و C′ خارج [AB] و [AC]",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-BAYN-FAQAT"
+        },
+        {
+          "id": "C",
+          "content": "لا: AB′ ≠ AC′",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-JAMA-BADAL-DARB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المستقيمين المتقاطعين وضع النقط في المواقع المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نفس الترتيب: موقع النقطة الأولى بالنسبة إلى الرأس والنقطة الأخرى يماثل موقع الثانية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انظر هل النقطتان في الجهة نفسها من الرأس أم في جهتين مختلفتين."
+        }
+      ],
+      "feedback": {
+        "correct": "A بين B و B′ و A بين C و C′، و $\\dfrac{2}{6} = \\dfrac{3}{9}$ .",
+        "incorrect": "ارسم الشكل: في أي جهة من الرأس تقع كل نقطة؟"
+      }
+    }
+  ]
+}

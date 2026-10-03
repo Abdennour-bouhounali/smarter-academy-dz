@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-aksiya-talis-l3-007",
+  "lessonCode": "aksiya-talis",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — قيمتان مقرّبتان",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تبرير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_aksiya-talis_P1",
+      "modelledOn": "ex-16"
+    }
+  },
+  "statement": {
+    "content": "ABC مثلث، M من [AB] و N من [AC]: AM = 7 ، AB = 9 ، AN = 10 ، AC = 13. كتب تلميذ: $\\dfrac{7}{9} \\approx 0{,}8$ و $\\dfrac{10}{13} \\approx 0{,}8$ إذن (MN)//(BC)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما رأيك في جوابه؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "خاطئ: $7 \\times 13 = 91$ و $9 \\times 10 = 90$ ، فالنسبتان مختلفتان",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "صحيح: القيمتان المقرّبتان متساويتان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAQRIB-BURHAN"
+        },
+        {
+          "id": "C",
+          "content": "صحيح لأن M و N بين الرأس والقاعدة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-AKS-BIDUN-TASAWI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق أولا من ترتيب النقط على المستقيمين المتقاطعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب النسبتين وقارنهما بالجداء المتصالب، لا بقيم مقرّبة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نسبتان متساويتان مع نفس الترتيب: الخاصية العكسية. نسبتان مختلفتان: نستدل بالخلف بخاصية طالس."
+        }
+      ],
+      "feedback": {
+        "correct": "التقريب يخفي الفرق؛ الجداء المتصالب يكشفه: $91 \\neq 90$ .",
+        "incorrect": "راجع الشرطين: الترتيب، ثم تساوي النسبتين بالحساب."
+      }
+    }
+  ]
+}

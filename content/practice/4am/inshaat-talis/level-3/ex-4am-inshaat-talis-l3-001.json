@@ -1,0 +1,72 @@
+{
+  "id": "ex-4am-inshaat-talis-l3-001",
+  "lessonCode": "inshaat-talis",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 18 (ص 111) — أين تقع M ؟",
+    "estimatedMinutes": 5,
+    "tags": [
+      "تمرين 18",
+      "نقطة خارج القطعة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-18",
+      "page": 111,
+      "section": "وضع نقط على مستقيم",
+      "number": 18
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: ارسم مستقيما (AB). أنشئ، دون استعمال مسطرة مدرّجة، النقطة M من (AB) ولا تنتمي إلى [AB] حيث $\\dfrac{AM}{AB} = \\dfrac{4}{9}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "تقع النقطة M على المستقيم (AB):",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "من الجهة الأخرى للنقطة A",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "بين A و B",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-JIHA"
+        },
+        {
+          "id": "C",
+          "content": "بعد B",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-JIHA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "M لا تنتمي إلى [AB]."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "قارن AM بـ AB."
+        }
+      ],
+      "feedback": {
+        "correct": "$AM = \\dfrac{4}{9}AB < AB$ : لو كانت بعد B لكان $AM > AB$ ، فهي من الجهة الأخرى للنقطة A.",
+        "incorrect": "بين A و B مستبعد بالنص، وبعد B يعطي $AM > AB$ ."
+      }
+    }
+  ]
+}

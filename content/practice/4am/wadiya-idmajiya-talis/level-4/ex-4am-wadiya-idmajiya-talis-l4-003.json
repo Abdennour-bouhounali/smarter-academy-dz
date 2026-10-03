@@ -1,0 +1,101 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l4-003",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — عرض وادي الحراش",
+    "estimatedMinutes": 6,
+    "tags": [
+      "مسافة غير مباشرة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P1",
+      "modelledOn": "ex-22"
+    }
+  },
+  "statement": {
+    "content": "لتقدير عرض وادٍ: (AB)//(CD)، النقط O و B و D على استقامة والنقط O و A و C على استقامة (O على الضفة الأخرى). $AB = 1{,}5\\,\\mathrm{m}$ ، $CD = 4\\,\\mathrm{m}$ ، $BD = 10\\,\\mathrm{m}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما الطول OB (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$OD = OB + 10$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{OB}{OB + 10} = \\dfrac{1{,}5}{4}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء تصالبي ثم حلّ."
+        }
+      ],
+      "feedback": {
+        "correct": "$4\\,OB = 1{,}5\\,OB + 15$ أي $2{,}5\\,OB = 15$ ومنه $OB = 6\\,\\mathrm{m}$ .",
+        "incorrect": "BD قطعة، والضلع هو OD."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "3.75",
+          "id": "MISC-TALIS-QITAA-BADAL-DILA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما الطول OD (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "16",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$OD = OB + BD$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل OB."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أضف 10."
+        }
+      ],
+      "feedback": {
+        "correct": "$OD = 6 + 10 = 16\\,\\mathrm{m}$ ؛ تحقّق: $\\dfrac{6}{16} = \\dfrac{1{,}5}{4}$ .",
+        "incorrect": "OD يضمّ OB و BD."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-aksiya-talis-l4-004",
+  "lessonCode": "aksiya-talis",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — من الجهة الأخرى للنقطة A",
+    "estimatedMinutes": 3,
+    "tags": [
+      "طول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_aksiya-talis_P1",
+      "modelledOn": "act-2"
+    }
+  },
+  "statement": {
+    "content": "(d) و (d′) متقاطعان في A، AB = 7 و AC = 14. B′ من (d) من الجهة الأخرى للنقطة A حيث AB′ = 3. نضع C′ على (d′) من الجهة الأخرى للنقطة A."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما الطول AC′ الذي يجعل (B′C′) يوازي (BC)؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-JAMA-BADAL-DARB",
+          "value": "10"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب تساوي النسبتين الذي يجعل المستقيمين متوازيين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المجهول يظهر في إحدى النسبتين: استعمل الجداء المتصالب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الجداء على العدد الثالث، ثم تحقّق من النسبتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3}{7} = \\dfrac{AC'}{14}$ ومنه $AC' = 6$ (ونفس الترتيب محقّق).",
+        "incorrect": "اكتب تساوي النسبتين من جديد ثم أعد الجداء المتصالب."
+      }
+    }
+  ]
+}

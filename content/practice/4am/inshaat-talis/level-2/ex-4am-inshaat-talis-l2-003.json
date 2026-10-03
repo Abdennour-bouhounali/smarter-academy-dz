@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-inshaat-talis-l2-003",
+  "lessonCode": "inshaat-talis",
+  "level": 2,
+  "metadata": {
+    "title": "طرائق (ص 109) — من النسبة إلى الموقع",
+    "estimatedMinutes": 4,
+    "tags": [
+      "نسبة معلومة",
+      "طرائق"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-ratio-point",
+      "page": 109,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: [AB] قطعة مستقيم. أنشئ نقطة M من القطعة [AB] حيث $\\dfrac{MA}{MB} = \\dfrac{3}{2}$ . (استعمل مسطرة غير مدرّجة ومدور)"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\dfrac{AM}{AB}$ تساوي (كسر):",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "كسر غير قابل للاختزال",
+      "expectedAnswer": "3/5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-JUZ-KULL",
+          "value": "3/2"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "MA ثلاثة أجزاء و MB جزآن متساويان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$AB = MA + MB$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "AB خمسة أجزاء و AM ثلاثة منها: $\\dfrac{AM}{AB} = \\dfrac{3}{5}$ .",
+        "incorrect": "$\\dfrac{MA}{MB}$ نسبة جزأين، و $\\dfrac{AM}{AB}$ نسبة جزء إلى الكل."
+      }
+    }
+  ]
+}

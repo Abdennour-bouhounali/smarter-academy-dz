@@ -63,6 +63,13 @@ describe('isolateMathRuns — une égalité en clair reste lisible en RTL', () =
     expect(isolateMathRuns('x² = 25 ، 3 ، −9')).toBe(`${L}x² = 25${P} ، 3 ، ${L}−9${P}`);
   });
 
+  it('isole un point « prime » : « B′ » et « (B′C′) » ne s’affichent plus à l’envers (unité 9)', () => {
+    expect(isolateMathRuns('نقطتين B′ من (d) و C′ من (d′)')).toBe(`نقطتين ${L}B′${P} من (d) و ${L}C′${P} من ${L}(d′)${P}`);
+    expect(isolateMathRuns('هل (BC) و (B′C′) متوازيان؟')).toBe(`هل (BC) و ${L}(B′C′)${P} متوازيان؟`);
+    expect(isolateMathRuns('إذن (CF)//(AB) و (B′C′)//(BC).')).toBe(`إذن ${L}(CF)//(AB)${P} و ${L}(B′C′)//(BC)${P}.`);
+    expect(isolateMathRuns('والنسبتان متساويتان: (MN)//(BC)')).toBe(`والنسبتان متساويتان: ${L}(MN)//(BC)${P}`);
+  });
+
   it('reste idempotent sur une écriture algébrique', () => {
     const once = isolateMathRuns('العددان √a و −√a');
     expect(isolateMathRuns(once)).toBe(once);

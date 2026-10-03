@@ -1,0 +1,124 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l5-001",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 5,
+  "metadata": {
+    "title": "وضعية — شاشة في الحي",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "حساب طول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P2",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "في عرض سينمائي بالحي، جهاز الإسقاط في A والشاشة الكبيرة $[BC]$ عرضها $3\\,\\mathrm{m}$ على بعد $AB = 6\\,\\mathrm{m}$ من الجهاز. يمسك أمين شاشة صغيرة $[B'C']$ موازية للشاشة الكبيرة، B′ من $[AB]$ و C′ من $[AC]$ ، فتأتي عليها الصورة كاملة بعرض $B'C' = 1{,}5\\,\\mathrm{m}$ .",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          5.638,
+          2.052
+        ],
+        "C": [
+          6.21,
+          -1.548
+        ],
+        "B'": [
+          2.819,
+          1.026
+        ],
+        "C'": [
+          3.105,
+          -0.774
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B'"
+        },
+        {
+          "from": "B'",
+          "to": "B"
+        },
+        {
+          "from": "A",
+          "to": "C'"
+        },
+        {
+          "from": "C'",
+          "to": "C"
+        },
+        {
+          "from": "B",
+          "to": "C",
+          "label": "3",
+          "arrows": 1
+        },
+        {
+          "from": "B'",
+          "to": "C'",
+          "arrows": 1,
+          "tone": "indigo"
+        }
+      ],
+      "ariaLabel": "جهاز الإسقاط A، الشاشة الكبيرة [BC] والشاشة الصغيرة [B′C′] الموازية لها",
+      "maxWidth": 260,
+      "labels": {
+        "A": "w"
+      }
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "على أي بعد AB′ من الجهاز يمسك أمين الشاشة (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "12"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{AB'}{AB} = \\dfrac{B'C'}{BC}$ أي $\\dfrac{AB'}{6} = \\dfrac{1{,}5}{3}$ ومنه $AB' = 3\\,\\mathrm{m}$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    }
+  ]
+}

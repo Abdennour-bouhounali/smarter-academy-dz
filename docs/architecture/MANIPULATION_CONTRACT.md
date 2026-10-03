@@ -389,6 +389,32 @@ the first most frequent value in cell order and #N/A when nothing repeats. **`gr
 (groups per class, `'2|2'`), `theme` (`quiz` | `school`); a tank's height is budgeted from the lesson viewport minus what the
 glance block MEASURES besides the tanks, so the block stays in the screen when the reading grows after the valve.
 
+## 2undecies. The geometry laboratories (unit 9, 2026-10-02)
+
+Unit 9 « خاصية طالس », the first unit under the programme's « ميدان الهندسة » (`handasa`), added five types by the §7ter
+recipe, in a new folder `manipulations/geometry/` (logic `logic/<name>.js` + tests, render test `geometry/<name>.render.test.jsx`,
+strings `lesson.json › manipulation.thalesBeam | parallelLevel | segmentDivider | shadowStick | coneCylinder`). Every verdict comes
+from ONE exact module, `packages/core/arithmetic/thales.js` on `linear.js` fractions — drawing coordinates may be floats, they decide
+nothing. Its central convention: points on the two secant lines are SIGNED abscissas from A, so `converse({ b, bp, c, cp })` decides
+the reciprocal on the ratios AND the order at once (`reason: 'ratios' | 'order'`). All five are **manual** (§6bis: each gesture is a
+trial), report through `state.report`, carry a decorative layer (`aria-hidden`, `[data-deco]`, out of the keyboard path, still under
+reduced motion) and are measured one-screen (§8bis) on their glance block at the four viewports, both levels, by
+`apps/web/e2e/lesson-kit/4am-khassiyat-talis.mjs`. New worlds in `VISUAL_THEMES`: `cinema`, `camera`, `mural`, `minaret`, `cornet`,
+`river`, `tifo`. Full props, DOM contract and DNA sheet are in each component header; the essentials:
+
+| Type | The hand holds | Resistance | Discovery (contrast) | Lessons |
+|---|---|---|---|---|
+| `thales-beam` (`ThalesBeam.jsx`, glance `[data-tb-glance]`) | the screen's position AB′ (signed index: step 1 at مبتدئ, 0,1 at متقدم over −6…6 so it passes THROUGH A) and its tilt t, by drag on the scene, the B′/C′ sliders, −/+ and keys; « سجّل الموضع » then the student JUDGES the stop (« متساوية » / « ليست كلها متساوية ») | a tilted stop judged equal is refused naming the ratio that differs (AC′/AC = 3/5 ≠ 1/2); a stop at A is refused; a rounded متقدم stop (3,73 ; 3,25) judged unequal is refused with the exact k = 8/15; B′C′ is decided on its exact square (law of cosines, cos Â rational), « ≈ » only on display | two parallel stops + a tilted one (متقدم: also AB′ = 3,2 and a stop behind A — the camera obscura, the butterfly case); « always equal » and « constant difference » refuted with the student's own numbers | `talis-hisab-atwal` M1 (`cinema` 4/5/3 ; act-1 6/7/6,1, `camera` behind A) |
+| `parallel-level` (`ParallelLevel.jsx`, glance `[data-pl-glance]`) | the positions of B′ on (d) and C′ on (d′), notch by notch in a « slot » space that skips A (drag along each bar, tap on the bar, ▲▼, keys) | a spirit level on the plank: the bubble is centred ONLY when `thales.converse` says parallel, otherwise it flees at least 0,35 towards the higher end; at متقدم a placement off the teacher's ratio 1/3 is refused (`condition`), and the textbook's figure 3 (1/3 and 1/3 on opposite sides of A) is refused by the ORDER | مبتدئ: two level planks with different k, (2 ; 3) and (4 ; 6), plus a tilted one (the start (5 ; 8) is « same distance to the feet »); متقدم: the three students' figures 1, 2, 3 made by the student's own placements | `aksiya-talis` M1 (`mural`: the graffiti painters' A-frame ladder 6/9 ; act-2 on an X-trestle 9/12) |
+| `segment-divider` (`SegmentDivider.jsx`, glance `[data-sd-glance]`) | `equal`: the ray's angle, the compass opening (a stretch), each carry (one tap per mark), the mark joined to B, the set square slid along a ruler; `ratio`: the side and rank of a mark on each of the two parallel graduated lines (d₁)//(d₂) and the ruler's two ends | the angle locks at the first mark; a parallel off a mark is refused (« حافة الكوس لا تمر بأي علامة »); an opening changed mid-way cuts unequal bands measured exactly (75/23 ≈ 3,26); joining the 2nd mark gives 2 parts; 2 on A's line and 3 on B's gives MA/MB = 2/3; equal ranks on the same side put the ruler parallel to (AB) | one right construction + a failed one or a second with another angle / opening (the cut points depend on neither — swept in the tests); متقدم: the point inside [AB] AND the point outside (`thales.ratioPoint`) | `inshaat-talis` M1 (`tifo`: a stadium banner, 3 parts ; method-ratio-point 3 : 2) and M2 posed alone (`levels={false}`, دوري الآن 2 : 5) |
+| `shadow-stick` (`ShadowStick.jsx`, glance `[data-sh-glance]`) | the stick's foot (step 0,2 m), then a telescopic pole carried from the stick to the minaret whose TOP rides the sun ray (its height is never set by hand) | anywhere but the right place the stick's shadow ends before or after O — the two parallel rays drawn and the gap written in metres; the pole stays shut while O is not a common point | a missed tip then the match; the pole stopped on the way and at the foot, where it IS the minaret (h = stick × OP ÷ ℓ = 7,25 m); « the stick anywhere » refuted by the student's own trial | `wadiya-idmajiya-talis` M1, مبتدئ (`minaret`, the تحدّ: 1 m stick at 10 m, tip 11,6 m) |
+| `cone-cylinder` (`ConeCylinder.jsx`, glance `[data-cc-glance]`) | the cylinder's h (a stretch on a ruler under the axis) and r (a stretch at its rim corner) in the cone's axial section; n ≤ 24 graduations chosen so every inscribed cylinder has hIdx + rIdx = n and h = r falls on a mark | a cylinder that would pierce the cone turns red while dragging and is refused on release with the permitted radius written; a rim short of the cone leaves a numbered gap | two inscribed cylinders of different lengths + a refusal or gap; « r + h constant », « r × h constant », « r = R » refuted by the student's own cylinders; goal h = r (the half-section a square), V = 91,125π ≈ 286,28 cm³ | `wadiya-idmajiya-talis` M1, متقدم (`cornet`, the situation H = 18, R = 6 ; مبتدئ pair 12/4) |
+
+**A workspace may pair two TYPES (unit 9).** The objective — not the instrument — is what both levels share (§7bis-levels):
+`wadiya-idmajiya-talis` opens on `shadow-stick` at مبتدئ (the تحدّ) and `cone-cylinder` at متقدم (the situation), one objective
+« ترييض وضعية بمثلثين في وضعية طالس وحل معادلة لإيجاد طول غير مباشر ». Each type keeps its own pair in `levels.js`; the workspace uses
+the numbers of one of them. The unit e2e maps the glance selector per LEVEL for that reason.
+
 ## 2bis. Drawn worlds — every lesson has its own, and the theme is data
 
 The football pitch (lesson 1, مبتدئ) and the library (lesson 1, متقدم) set the standard
@@ -807,6 +833,10 @@ inactive one carries `hidden`, exactly as `ContentModule` does for classroom uni
 **never loses the student's state on a switch**: teams already formed, sizes already tried, the
 phase already reached all survive. The one deliberate reset is `modelKey`: change it and both
 panels remount, because the state would describe mathematics that is no longer on screen.
+
+The two levels usually show the SAME type; they may show two different types when one objective is genuinely served by two
+gestures (unit 9's synthesis: the minaret's shadow, then the cylinder in the cone — §2undecies). The objective, `autonomy` and
+`experience` rules are unchanged.
 
 Its decisions live in `workspaceLevels.js` (pure, unit-tested): which tabs exist, which is active,
 what the mount key is. Each panel provides its level through `WorkspaceLevelContext`, so the

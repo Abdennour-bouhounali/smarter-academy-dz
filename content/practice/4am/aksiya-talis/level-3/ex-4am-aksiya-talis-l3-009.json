@@ -1,0 +1,64 @@
+{
+  "id": "ex-4am-aksiya-talis-l3-009",
+  "lessonCode": "aksiya-talis",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — الطول المجهول",
+    "estimatedMinutes": 3,
+    "tags": [
+      "طول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_aksiya-talis_P1",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "M و O و R على استقامة (O بين M و R)، و N و O و P على استقامة (O بين N و P): OM = 4,5 ، OR = 3 ، ON = 6."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما الطول OP الذي يجعل (MN) يوازي (PR)؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "9"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب تساوي النسبتين الذي يجعل المستقيمين متوازيين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المجهول يظهر في إحدى النسبتين: استعمل الجداء المتصالب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الجداء على العدد الثالث، ثم تحقّق من النسبتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{4{,}5}{3} = \\dfrac{6}{OP}$ ومنه $OP = \\dfrac{6 \\times 3}{4{,}5} = 4$",
+        "incorrect": "اكتب تساوي النسبتين من جديد ثم أعد الجداء المتصالب."
+      }
+    }
+  ]
+}

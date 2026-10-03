@@ -1,0 +1,55 @@
+{
+  "id": "ex-4am-inshaat-talis-l5-008",
+  "lessonCode": "inshaat-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — خطأ ريم",
+    "estimatedMinutes": 6,
+    "tags": [
+      "نسبة معلومة",
+      "خطأ شائع"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_inshaat-talis_P1",
+      "modelledOn": "method-ratio-point"
+    }
+  },
+  "statement": {
+    "content": "أرادت ريم نقطة M من [AB] حيث $\\dfrac{MA}{MB} = \\dfrac{2}{3}$ ، فرسمت موازيين مدرّجين بنفس الوحدة يشملان A و B ، وعيّنت 3 وحدات على الموازي المارّ بـ A و 2 على الموازي المارّ بـ B في جهتين مختلفتين، ثم وصلت العلامتين."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النسبة $\\dfrac{MA}{MB}$ التي حصلت عليها (كسر):",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "كسر غير قابل للاختزال",
+      "expectedAnswer": "3/2",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "2/3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{MA}{MB} = \\dfrac{AF}{BE}$ حيث F على موازي A و E على موازي B."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{MA}{MB} = \\dfrac{3}{2}$ : بدّلت العددين، وكان عليها أن تعيّن 2 على موازي A و 3 على موازي B.",
+        "incorrect": "MA يقابل الطول المعيّن على الموازي المارّ بـ A."
+      }
+    }
+  ]
+}

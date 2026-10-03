@@ -1,0 +1,130 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l1-008",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — وضعية الفراشة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية الفراشة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P1",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "في الشكل، المستقيمان $(KP)$ و $(LQ)$ متقاطعان في O، و $(KL) \\parallel (PQ)$ ، و K و L من جهة و P و Q من الجهة الأخرى للنقطة O.",
+    "figure": {
+      "points": {
+        "O": [
+          0,
+          0
+        ],
+        "K": [
+          -1.099,
+          2.356
+        ],
+        "L": [
+          1.127,
+          2.119
+        ],
+        "P": [
+          1.539,
+          -3.298
+        ],
+        "Q": [
+          -1.578,
+          -2.967
+        ]
+      },
+      "segments": [
+        {
+          "from": "O",
+          "to": "K"
+        },
+        {
+          "from": "O",
+          "to": "P"
+        },
+        {
+          "from": "O",
+          "to": "L"
+        },
+        {
+          "from": "O",
+          "to": "Q"
+        },
+        {
+          "from": "K",
+          "to": "L",
+          "arrows": 1
+        },
+        {
+          "from": "P",
+          "to": "Q",
+          "arrows": 1,
+          "tone": "indigo"
+        }
+      ],
+      "ariaLabel": "(KP) و (LQ) متقاطعان في O، و (KL) يوازي (PQ)",
+      "maxWidth": 220
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ينتج:",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{OP}{OK} = \\dfrac{OQ}{OL} = \\dfrac{PQ}{KL}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا تطبق خاصية طالس لأن النقط من جهتين مختلفتين للنقطة O",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{OP}{OL} = \\dfrac{OQ}{OK} = \\dfrac{PQ}{KL}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الرأس المشترك والمستقيمين المتوازيين في الشكل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في كل نسبة: ضلع من المثلث الأول على الضلع الموافق له في المثلث الثاني، بالترتيب نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب رؤوس المثلثين بالترتيب نفسه، رأسا تحت رأس، ثم اقرأ النسب."
+        }
+      ],
+      "feedback": {
+        "correct": "خاصية طالس صحيحة في وضعية الفراشة أيضا: P يقابل K و Q يقابل L.",
+        "incorrect": "راجع الرؤوس المتقابلة: الرأس المشترك، ثم طرفا المستقيمين المتوازيين."
+      }
+    }
+  ]
+}

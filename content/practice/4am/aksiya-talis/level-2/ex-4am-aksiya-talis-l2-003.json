@@ -1,0 +1,120 @@
+{
+  "id": "ex-4am-aksiya-talis-l2-003",
+  "lessonCode": "aksiya-talis",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — نسبتان متساويتان",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خاصية عكسية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_aksiya-talis_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "ABC مثلث، M من [AB] و N من [AC] حيث AB = 10 ، AM = 4 ، AC = 15 ، AN = 6."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $\\dfrac{AN}{AC}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد: كسر غير قابل للاختزال أو عدد عشري بالفاصلة",
+      "expectedAnswer": "2/5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "5/2"
+        },
+        {
+          "id": "MISC-TALIS-QITAA-BADAL-DILA",
+          "value": "2/3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النقطة المشتركة بين المستقيمين، ثم الطولين المعنيين على المستقيم نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "النسبة: طول يبدأ من النقطة المشتركة مقسوما على الطول الموافق له على المستقيم نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب الكسر ثم اختزله (أو احسب قيمته المضبوطة)."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{6}{15} = \\dfrac{2}{5}$",
+        "incorrect": "راجع: من أي نقطة يبدأ كل طول؟ وهل اختزلت الكسر؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل (MN) يوازي (BC)؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم، حسب الخاصية العكسية لخاصية طالس",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا، لأن AM ≠ AN",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-JAMA-BADAL-DARB"
+        },
+        {
+          "id": "C",
+          "content": "لا يمكن الحكم دون رسم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-SHAKL-BURHAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق أولا من ترتيب النقط على المستقيمين المتقاطعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب النسبتين وقارنهما بالجداء المتصالب، لا بقيم مقرّبة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نسبتان متساويتان مع نفس الترتيب: الخاصية العكسية. نسبتان مختلفتان: نستدل بالخلف بخاصية طالس."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{4}{10} = \\dfrac{6}{15} = \\dfrac{2}{5}$ و M ، N بين الرأس والقاعدة.",
+        "incorrect": "راجع الشرطين: الترتيب، ثم تساوي النسبتين بالحساب."
+      }
+    }
+  ]
+}

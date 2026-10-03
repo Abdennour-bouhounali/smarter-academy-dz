@@ -2303,6 +2303,192 @@
       "difficulty": "صعب",
       "status": "available",
       "icon": "🏅"
+    },
+    {
+      "code": "talis-hisab-atwal",
+      "sourceTopicId": "thales",
+      "chapterId": "handasa",
+      "unitId": "khassiyat-talis",
+      "order": 45,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "خاصية طالس وحساب الأطوال",
+      "description": "مدخل الوحدة: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان (وضعية طالس) يقودان إلى النسب المتساوية $\\dfrac{AM}{AB} = \\dfrac{AN}{AC} = \\dfrac{MN}{BC}$ ، يوظَّف تساويها لحساب أطوال مجهولة في أشكال مستوية، ويُقرأ أحد المثلثين تكبيرا أو تصغيرا للآخر بمعامل التناسبية k.",
+      "prerequisites": [
+        "خاصية منتصفي ضلعين في مثلث (مستقيم المنتصفين والتوازي)",
+        "التناسبية، الجداء التصالبي، وحساب الرابع التناسبي"
+      ],
+      "prerequisiteLessonCodes": [],
+      "pointsToLearn": [
+        "التعرف على وضعية طالس (مستقيمان متقاطعان يقطعهما مستقيمان متوازيان) واستخراج النسب المتساوية $\\dfrac{AM}{AB} = \\dfrac{AN}{AC} = \\dfrac{MN}{BC}$",
+        "توظيف خاصية طالس لحساب أطوال مجهولة لقطع مستقيمة في أشكال هندسية مستوية",
+        "إدراك مفهوم التكبير والتصغير وتحديد معامل التناسبية بين أطوال المثلثين"
+      ],
+      "pointPrerequisites": {
+        "P1": [],
+        "P2": [
+          "4am_talis-hisab-atwal_P1"
+        ],
+        "P3": [
+          "4am_talis-hisab-atwal_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 9,
+        "pages": {
+          "prep": 103,
+          "activity": 104,
+          "knowledge": 106,
+          "method": 107,
+          "exercises": 110
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "📐"
+    },
+    {
+      "code": "aksiya-talis",
+      "sourceTopicId": "thales",
+      "chapterId": "handasa",
+      "unitId": "khassiyat-talis",
+      "order": 46,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "الخاصية العكسية لخاصية طالس وإثبات التوازي",
+      "description": "تساوي نسبتين وترتيب النقط: نطبّق الخاصية العكسية لخاصية طالس للبرهنة على توازي مستقيمين، ونثبت عدم توازيهما بنسبتين غير متساويتين، بعد التحقق من استقامية النقط وترتيبها بنفس الترتيب على المستقيمين المتقاطعين.",
+      "prerequisites": [
+        "حساب واختبار تساوي نسبتين (كسرين)",
+        "تعيين استقامية ونفس ترتيب النقط على مستقيم عددي أو هندسي"
+      ],
+      "prerequisiteLessonCodes": [
+        "talis-hisab-atwal"
+      ],
+      "pointsToLearn": [
+        "تطبيق الخاصية العكسية لخاصية طالس للبرهنة على توازي مستقيمين أو إثبات عدم توازيهما",
+        "التأكيد والتحقق من شرط استقامية النقط وترتيبها بنفس الترتيب على المستقيمين المتقاطعين"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_talis-hisab-atwal_P1"
+        ],
+        "P2": []
+      },
+      "textbookRef": {
+        "unit": 9,
+        "pages": {
+          "activity": 105,
+          "knowledge": 108,
+          "method": 109,
+          "exercises": 111,
+          "deepen": 113
+        }
+      },
+      "durationMinutes": 56,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "🪜"
+    },
+    {
+      "code": "inshaat-talis",
+      "sourceTopicId": "thales",
+      "chapterId": "handasa",
+      "unitId": "khassiyat-talis",
+      "order": 47,
+      "kind": "lesson",
+      "decompositionType": "textbook_lesson",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "إنشاءات هندسية وتطبيقات خاصية طالس (تقسيم قطعة مستقيم)",
+      "description": "بالمسطرة غير المدرجة والمدور فقط: نقسم قطعة مستقيم إلى قطع متقايسة أو بنسبة معطاة، وننشئ قطعة طولها معلوم بكسر مثل $\\dfrac{14}{3}$ ، ونبرّر كل إنشاء بخاصية طالس.",
+      "prerequisites": [
+        "الإنشاءات الهندسية الأساسية بالمسطرة والمدور (إنشاء موازٍ، منصف، ومحور)",
+        "تطبيق كتابة تناسب الأطوال باستعمال خاصية طالس"
+      ],
+      "prerequisiteLessonCodes": [
+        "talis-hisab-atwal"
+      ],
+      "pointsToLearn": [
+        "تقسيم قطعة مستقيم إلى عدد من القطع المتقايسة أو بنسبة معطاة باستعمال المسطرة غير المدرجة والمدور فقط",
+        "إنشاء قطعة مستقيم طولها معلوم كنسبة غير ناطقة أو كسرية وتبرير الإنشاء هندسياً"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_talis-hisab-atwal_P1"
+        ],
+        "P2": [
+          "4am_talis-hisab-atwal_P2"
+        ]
+      },
+      "textbookRef": {
+        "unit": 9,
+        "pages": {
+          "method": 107,
+          "method2": 109,
+          "exercises": 111,
+          "deepen": 113
+        }
+      },
+      "durationMinutes": 45,
+      "difficulty": "متوسط",
+      "status": "available",
+      "icon": "🧭"
+    },
+    {
+      "code": "wadiya-idmajiya-talis",
+      "sourceTopicId": "thales",
+      "chapterId": "handasa",
+      "unitId": "khassiyat-talis",
+      "order": 48,
+      "kind": "synthesis",
+      "decompositionType": "textbook_synthesis",
+      "decisionStatus": "textbook_derived",
+      "titleSource": "textbook",
+      "title": "أدمج تعلّماتي — ترييض وضعيات هندسية مركبة بتوظيف خاصية طالس",
+      "description": "إدماج المعارف: تجنيد خاصية طالس وعكسيتها في وضعيات مركبة — ارتفاع مئذنة بطريقة الظل، أسطوانة داخل مخروط (مقطع محوري، معادلة، حجم)، عرض نهر — بتحليلها المنهجي (قراءة · تحليل · تنفيذ)، يسبقها اختبار «أؤكّد تعلّماتي» الذي يعيد كل سؤال إلى درسه.",
+      "prerequisites": [
+        "التحكم الشامل في خاصية طالس وعكسيتها",
+        "الحساب العددي، حل المعادلات، وقوانين المساحات والحجوم"
+      ],
+      "prerequisiteLessonCodes": [
+        "talis-hisab-atwal",
+        "aksiya-talis",
+        "inshaat-talis"
+      ],
+      "pointsToLearn": [
+        "تجنيد وتوظيف الموارد المكتسبة في الوحدة (خاصية طالس، والخاصية العكسية) لحل مسائل هندسية وواقعية مركبة (مثل قياس ارتفاعات غير مباشرة كالمآذن والقطع الفضائية)",
+        "ربط الأشكال الفضائية/المجسمات (كالمخروط والأسطوانة) بالمقاطع المستوية وصياغة معادلات لحساب أبعاد وحجوم غير مباشرة",
+        "اختيار وتنفيذ استراتيجية الحل المناسبة والتأكد من ملاءمة النتائج للواقع"
+      ],
+      "pointPrerequisites": {
+        "P1": [
+          "4am_talis-hisab-atwal_P2",
+          "4am_aksiya-talis_P1"
+        ],
+        "P2": [
+          "4am_talis-hisab-atwal_P2"
+        ],
+        "P3": [
+          "4am_wadiya-idmajiya-talis_P1"
+        ]
+      },
+      "textbookRef": {
+        "unit": 9,
+        "pages": {
+          "qcm": 112,
+          "situation": 112,
+          "deepen": 113
+        }
+      },
+      "durationMinutes": 50,
+      "difficulty": "صعب",
+      "status": "available",
+      "icon": "🕌"
     }
   ],
   "publishedScope": {
@@ -2316,7 +2502,8 @@
       "jumal-muadalatayn",
       "tanasubiya-dala-khattiya",
       "dala-taalufiya",
-      "ihsa"
+      "ihsa",
+      "khassiyat-talis"
     ],
     "removedTopicCount": 25
   }

@@ -1,0 +1,69 @@
+{
+  "id": "ex-4am-aksiya-talis-l1-009",
+  "lessonCode": "aksiya-talis",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — نقطة على امتداد ضلع",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نفس الترتيب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_aksiya-talis_P2",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "ABC مثلث. M على المستقيم (AB) من الجهة الأخرى للنقطة A بالنسبة إلى B، و N نقطة من [AC]."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النقط A، B، M والنقط A، C، N:",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "ليست مرتبة بنفس الترتيب",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "مرتبة بنفس الترتيب",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TARTIB-MANSI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المستقيمين المتقاطعين وضع النقط في المواقع المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نفس الترتيب: موقع النقطة الأولى بالنسبة إلى الرأس والنقطة الأخرى يماثل موقع الثانية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انظر هل النقطتان في الجهة نفسها من الرأس أم في جهتين مختلفتين."
+        }
+      ],
+      "feedback": {
+        "correct": "A بين B و M ، بينما N بين A و C: الموقعان مختلفان.",
+        "incorrect": "ارسم الشكل: في أي جهة من الرأس تقع كل نقطة؟"
+      }
+    }
+  ]
+}

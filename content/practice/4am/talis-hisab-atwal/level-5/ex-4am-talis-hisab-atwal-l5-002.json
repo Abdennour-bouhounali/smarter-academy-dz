@@ -1,0 +1,130 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l5-002",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 5,
+  "metadata": {
+    "title": "وضعية — منحدر التزلج",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "حساب طول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P2",
+      "modelledOn": "act-1"
+    }
+  },
+  "statement": {
+    "content": "منحدر تزلج في الحي: سطحه المائل $[AC]$ يبدأ من الأرض في A، وارتفاعه $BC = 1{,}2\\,\\mathrm{m}$ عند نهايته حيث $AB = 4\\,\\mathrm{m}$ على الأرض. ركيزة شاقولية $[MN]$ ، M على الأرض بين A و B و N على السطح، حيث $AM = 2{,}5\\,\\mathrm{m}$ . (الركيزة و $[BC]$ شاقوليتان فهما متوازيتان.)",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "M": [
+          2.5,
+          0
+        ],
+        "B": [
+          4,
+          0
+        ],
+        "N": [
+          2.5,
+          0.75
+        ],
+        "C": [
+          4,
+          1.2
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "M",
+          "label": "2,5"
+        },
+        {
+          "from": "M",
+          "to": "B"
+        },
+        {
+          "from": "A",
+          "to": "C"
+        },
+        {
+          "from": "B",
+          "to": "C",
+          "label": "1,2",
+          "arrows": 1
+        },
+        {
+          "from": "M",
+          "to": "N",
+          "arrows": 1,
+          "tone": "indigo"
+        }
+      ],
+      "ariaLabel": "منحدر: A و M و B على الأرض، [MN] و [BC] شاقوليتان، N و C على السطح المائل؛ AM = 2,5 و AB = 4 و BC = 1,2",
+      "maxWidth": 300,
+      "rightAngles": [
+        [
+          "A",
+          "M",
+          "N"
+        ],
+        [
+          "A",
+          "B",
+          "C"
+        ]
+      ]
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب طول الركيزة MN (بالمتر).",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "0,75",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "1,92"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{AM}{AB} = \\dfrac{MN}{BC}$ أي $\\dfrac{2{,}5}{4} = \\dfrac{MN}{1{,}2}$ ومنه $MN = 0{,}75\\,\\mathrm{m}$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    }
+  ]
+}

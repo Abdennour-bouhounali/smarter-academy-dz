@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l1-007",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — تكبير أم تصغير؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تكبير",
+      "تصغير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P3",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "المثلثان ABC و AB′C′ في وضعية طالس، ومعامل التناسبية الذي يحوّل ABC إلى AB′C′ هو $k = \\dfrac{4}{3}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المثلث AB′C′ هو:",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "تكبير للمثلث ABC",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "تصغير للمثلث ABC",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-MUAMIL-MAQLUB"
+        },
+        {
+          "id": "C",
+          "content": "مثلث أطواله تساوي أطوال ABC مضافا إليها $\\dfrac{4}{3}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-JAMA-BADAL-DARB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل التناسبية هو طول في المثلث الناتج مقسوما على الطول الموافق له في المثلث الأصلي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذا كان المعامل أصغر من الواحد فهو تصغير، وإذا كان أكبر منه فهو تكبير."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب كل طول في المعامل نفسه، ولا تُضف العدد نفسه إلى كل طول."
+        }
+      ],
+      "feedback": {
+        "correct": "$k = \\dfrac{4}{3} > 1$ : كل طول من ABC يُضرب في $\\dfrac{4}{3}$ فيكبر.",
+        "incorrect": "راجع اتجاه النسبة: المثلث الناتج في البسط والمثلث الأصلي في المقام."
+      }
+    }
+  ]
+}

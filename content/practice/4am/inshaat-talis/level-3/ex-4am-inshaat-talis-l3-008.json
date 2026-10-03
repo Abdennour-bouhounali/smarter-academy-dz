@@ -1,0 +1,59 @@
+{
+  "id": "ex-4am-inshaat-talis-l3-008",
+  "lessonCode": "inshaat-talis",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — الرابع المتناسب",
+    "estimatedMinutes": 5,
+    "tags": [
+      "إنشاء طول معلوم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_inshaat-talis_P2",
+      "modelledOn": "method-construct-length"
+    }
+  },
+  "statement": {
+    "content": "على [Ax) : $AC = 4$ و $AD = 9$ ، وعلى [Ay) : $AE = 6$ . الموازي للمستقيم (CE) المارّ بـ D يقطع [Ay) في B."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "AB يساوي:",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "13,5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "8/3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلثان ACE و ADB في وضعية طالس."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{AC}{AD} = \\dfrac{AE}{AB}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{4}{9} = \\dfrac{6}{AB}$ ، فـ $AB = \\dfrac{9 \\times 6}{4} = 13{,}5$ .",
+        "incorrect": "AB على [Ay) يقابل AD على [Ax)."
+      }
+    }
+  ]
+}

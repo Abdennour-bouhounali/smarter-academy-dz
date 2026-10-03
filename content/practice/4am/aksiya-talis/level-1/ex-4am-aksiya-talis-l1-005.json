@@ -1,0 +1,69 @@
+{
+  "id": "ex-4am-aksiya-talis-l1-005",
+  "lessonCode": "aksiya-talis",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — الشكل 2",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نفس الترتيب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_aksiya-talis_P2",
+      "modelledOn": "act-2"
+    }
+  },
+  "statement": {
+    "content": "(d) و (d′) مستقيمان متقاطعان في A. B و B′ من (d) حيث B′ بين A و B ، و C و C′ من (d′) حيث C′ بين A و C."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النقط A، B، B′ والنقط A، C، C′:",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "مرتبة بنفس الترتيب",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "ليست مرتبة بنفس الترتيب",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TARTIB-MANSI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المستقيمين المتقاطعين وضع النقط في المواقع المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نفس الترتيب: موقع النقطة الأولى بالنسبة إلى الرأس والنقطة الأخرى يماثل موقع الثانية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انظر هل النقطتان في الجهة نفسها من الرأس أم في جهتين مختلفتين."
+        }
+      ],
+      "feedback": {
+        "correct": "B′ بين A و B تقابلها C′ بين A و C.",
+        "incorrect": "ارسم الشكل: في أي جهة من الرأس تقع كل نقطة؟"
+      }
+    }
+  ]
+}

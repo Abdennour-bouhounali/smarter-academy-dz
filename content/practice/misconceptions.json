@@ -1157,5 +1157,202 @@
     "relatedLearningPoints": [
       "4am_wadiya-idmajiya-ihsa_P3"
     ]
+  },
+  "MISC-TALIS-QITAA-BADAL-DILA": {
+    "label": "القطعة بدل الضلع في النسبة",
+    "explanation": "في وضعية طالس نقارن ضلعي المثلثين اللذين رأسهما A: $\\dfrac{AM}{AB}$ وليس $\\dfrac{AM}{MB}$ ؛ القطعة [MB] ليست ضلعا للمثلث الكبير.",
+    "relatedLearningPoints": [
+      "4am_talis-hisab-atwal_P1",
+      "4am_talis-hisab-atwal_P2"
+    ]
+  },
+  "MISC-TALIS-NISBA-MAQLUBA": {
+    "label": "نسبة مقلوبة في أحد الطرفين",
+    "explanation": "النسب المتساوية تكتب بالترتيب نفسه: طول من المثلث الصغير على الطول الموافق له في الكبير في كل نسبة ؛ قلب نسبة واحدة يعطي طولا خاطئا.",
+    "relatedLearningPoints": [
+      "4am_talis-hisab-atwal_P1",
+      "4am_talis-hisab-atwal_P2"
+    ]
+  },
+  "MISC-TALIS-JAMA-BADAL-DARB": {
+    "label": "جمع الفرق بدل الضرب في k",
+    "explanation": "في التكبير والتصغير تُضرب كل الأطوال في العدد نفسه k ؛ إضافة الفرق نفسه إلى كل الأطوال لا يحفظ التناسب.",
+    "relatedLearningPoints": [
+      "4am_talis-hisab-atwal_P2",
+      "4am_talis-hisab-atwal_P3"
+    ]
+  },
+  "MISC-TALIS-MUAMIL-MAQLUB": {
+    "label": "معامل التكبير مقلوب",
+    "explanation": "k = (طول في المثلث الناتج) ÷ (الطول الموافق في المثلث الأصلي) ؛ k < 1 تصغير و k > 1 تكبير.",
+    "relatedLearningPoints": [
+      "4am_talis-hisab-atwal_P3"
+    ]
+  },
+  "MISC-TALIS-MISAHA-K": {
+    "label": "المساحة تضرب في k",
+    "explanation": "إذا ضُربت الأطوال في k فإن المساحة تُضرب في $k^2$ .",
+    "relatedLearningPoints": [
+      "4am_talis-hisab-atwal_P3"
+    ]
+  },
+  "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ": {
+    "label": "تطبيق خاصية طالس دون مستقيمين متوازيين",
+    "explanation": "خاصية طالس تشترط أن يكون المستقيمان متوازيين ؛ دون ذلك لا تكون الأطوال متناسبة.",
+    "relatedLearningPoints": [
+      "4am_talis-hisab-atwal_P1",
+      "4am_aksiya-talis_P1"
+    ]
+  },
+  "MISC-TALIS-TARTIB-MANSI": {
+    "label": "نسيان شرط الترتيب في الخاصية العكسية",
+    "explanation": "تساوي النسبتين لا يكفي: يجب أن تكون النقط A، B، B′ مرتبة بنفس ترتيب النقط A، C، C′ ، وإلا فالمستقيمان غير متوازيين.",
+    "relatedLearningPoints": [
+      "4am_aksiya-talis_P2",
+      "4am_aksiya-talis_P1"
+    ]
+  },
+  "MISC-TALIS-TAQRIB-BURHAN": {
+    "label": "قيمتان مقرّبتان متساويتان كبرهان",
+    "explanation": "تساوي قيمتين مقرّبتين لا يثبت تساوي نسبتين ؛ نقارن قيما مضبوطة أو نستعمل الجداء المتصالب.",
+    "relatedLearningPoints": [
+      "4am_aksiya-talis_P1"
+    ]
+  },
+  "MISC-TALIS-AKS-BIDUN-TASAWI": {
+    "label": "استنتاج التوازي من نسبتين غير متساويتين",
+    "explanation": "نسبتان مختلفتان تثبتان أن المستقيمين غير متوازيين، لا العكس.",
+    "relatedLearningPoints": [
+      "4am_aksiya-talis_P1"
+    ]
+  },
+  "MISC-TALIS-ADAD-AL-ALAMAT": {
+    "label": "عدد العلامات بدل عدد القطع",
+    "explanation": "لتقسيم قطعة إلى n قطع متقايسة نعيّن n علامة متقايسة على نصف المستقيم (n − 1 نقطة تقسيم داخل القطعة).",
+    "relatedLearningPoints": [
+      "4am_inshaat-talis_P1"
+    ]
+  },
+  "MISC-TALIS-NISBA-JUZ-KULL": {
+    "label": "خلط $\\dfrac{MA}{MB}$ و $\\dfrac{AM}{AB}$",
+    "explanation": "إذا كان $\\dfrac{MA}{MB} = \\dfrac{p}{q}$ و M بين A و B فإن $\\dfrac{AM}{AB} = \\dfrac{p}{p + q}$ .",
+    "relatedLearningPoints": [
+      "4am_inshaat-talis_P1",
+      "4am_inshaat-talis_P2"
+    ]
+  },
+  "MISC-TALIS-QUTR-BADAL-NISF": {
+    "label": "القطر بدل نصف القطر",
+    "explanation": "في المقطع المحوري للمخروط نصف قطر القاعدة هو المسافة من المحور إلى الحافة، وحجم الأسطوانة $\\pi r^2 h$ بنصف القطر.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-talis_P2"
+    ]
+  },
+  "MISC-TALIS-MULAAMA-WAQI": {
+    "label": "نتيجة غير ملائمة للواقع",
+    "explanation": "نتحقق أن الطول المحسوب ممكن في الوضعية (ارتفاع أصغر من ارتفاع المخروط، طول موجب، وحدة مناسبة).",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-talis_P3"
+    ]
+  },
+  "MISC-TALIS-HAJM-BIDUN-PI": {
+    "label": "حجم الأسطوانة دون π",
+    "explanation": "حجم أسطوانة دوران $V = \\pi \\times r^2 \\times h$ : العدد $r^2 h$ وحده ليس الحجم، نضربه في π ثم نأخذ قيمة مقرّبة إن طُلبت.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-talis_P2",
+      "4am_wadiya-idmajiya-talis_P3"
+    ]
+  },
+  "MISC-TALIS-TARBI-MANSI": {
+    "label": "نسيان تربيع نصف القطر",
+    "explanation": "في $V = \\pi r^2 h$ يُربَّع نصف القطر وحده: $\\pi \\times r \\times h$ ليس حجم الأسطوانة.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-talis_P2"
+    ]
+  },
+  "MISC-TALIS-ZILL-RAS-MUSHTARAK": {
+    "label": "طريقة الظل دون نهاية مشتركة للظلّين",
+    "explanation": "تطبَّق خاصية طالس على المثلثين اللذين رأسهما النقطة التي ينتهي فيها الظلّان: نقارن ارتفاعًا بظلّه المقيس من قدمه، لا بالمسافة بين العصا والجسم.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-talis_P1"
+    ]
+  },
+  "MISC-TALIS-KITABA-MUTAKAFIA": {
+    "label": "رفض كتابة مكافئة لعدد أو لتناسب",
+    "explanation": "$\\dfrac{9}{2}$ و $4{,}5$ عدد واحد، و $\\dfrac{NM}{CB} = \\dfrac{3}{5}$ تكافئ $5 \\times NM = 3 \\times CB$ (الجداء التصالبي): كل الكتابات المتكافئة صحيحة.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-talis_P1"
+    ]
+  },
+  "MISC-TALIS-MAQTA-MIHWARI": {
+    "label": "الخلط بين المقطع المحوري ومقاطع أخرى",
+    "explanation": "المستوي الذي يشمل محور المخروط يقطعه وفق مثلث متساوي الساقين رأسه رأس المخروط؛ الدائرة مقطع بمستوٍ يوازي القاعدة، والمستطيل مقطع محوري للأسطوانة.",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-talis_P2"
+    ]
+  },
+  "MISC-TALIS-HALL-MUADALA": {
+    "label": "خطأ في حل المعادلة",
+    "explanation": "عند نقل حدّ من طرف إلى آخر تتغيّر إشارته: $18r = 108 - 6r$ تعطي $24r = 108$ وليس $12r = 108$ .",
+    "relatedLearningPoints": [
+      "4am_wadiya-idmajiya-talis_P2",
+      "4am_wadiya-idmajiya-talis_P3"
+    ]
+  },
+  "MISC-TALIS-BAYN-FAQAT": {
+    "label": "الظنّ أن الخاصية العكسية تشترط أن تكون النقط بين الرأس والقاعدة",
+    "explanation": "الشرط هو نفس الترتيب، لا الموقع بين النقطتين: إذا كانت B′ و C′ كلتاهما من الجهة الأخرى للنقطة A وكان $\\dfrac{AB'}{AB} = \\dfrac{AC'}{AC}$ فإن $(B'C') \\parallel (BC)$ أيضا (الشكل 1 من النشاط 2).",
+    "relatedLearningPoints": [
+      "4am_aksiya-talis_P2"
+    ]
+  },
+  "MISC-TALIS-SHAKL-BURHAN": {
+    "label": "الاعتماد على مظهر الشكل أو على القياس بدل الحساب",
+    "explanation": "«يبدو متوازيين» أو «لا يمكن الحكم دون رسم» ليسا حكما: نتحقق من ترتيب النقط ونقارن النسبتين بالحساب (الجداء المتصالب).",
+    "relatedLearningPoints": [
+      "4am_aksiya-talis_P1"
+    ]
+  },
+  "MISC-TALIS-JADHR-MANSI": {
+    "label": "نسيان الجذر في الطول الناتج",
+    "explanation": "إذا كان $AB = \\sqrt{13}$ فإن ثلثيه $\\dfrac{2}{3}\\sqrt{13}$ ؛ ضرب العدد 13 نفسه في النسبة يعطي طولا آخر.",
+    "relatedLearningPoints": [
+      "4am_inshaat-talis_P2"
+    ]
+  },
+  "MISC-TALIS-JADHR-HISAB": {
+    "label": "خطأ في طول جذري",
+    "explanation": "$\\sqrt{a}$ ليس $\\dfrac{a}{2}$ ؛ ووتر مثلث قائم متساوي الساقين ضلعه a طوله $a\\sqrt{2}$ .",
+    "relatedLearningPoints": [
+      "4am_inshaat-talis_P2"
+    ]
+  },
+  "MISC-TALIS-FITHAGHURIS-JAM": {
+    "label": "جمع الضلعين بدل مربعيهما",
+    "explanation": "في مثلث قائم مربع الوتر يساوي مجموع مربعي ضلعي الزاوية القائمة: الضلعان 2 و 3 يعطيان وترا طوله $\\sqrt{13}$ لأن $2^2 + 3^2 = 13$ .",
+    "relatedLearningPoints": [
+      "4am_inshaat-talis_P2"
+    ]
+  },
+  "MISC-TALIS-SHART-ZAID": {
+    "label": "شرط زائد على الإنشاء",
+    "explanation": "فتحة المدور وميل نصف المستقيم المساعد حرّان: كل قطع متقايسة عليه تعطي، بالموازيات، قطعا متقايسة على [AB] (خاصية طالس).",
+    "relatedLearningPoints": [
+      "4am_inshaat-talis_P1"
+    ]
+  },
+  "MISC-TALIS-JIHA": {
+    "label": "خلط داخل القطعة وخارجها",
+    "explanation": "علامتان في جهتين مختلفتين تعطيان النقطة بين A و B، وفي نفس الجهة تعطيان النقطة خارج [AB]، وهي من جهة الطرف الأقرب إليها (إذا كان $MA < MB$ فهي من جهة A).",
+    "relatedLearningPoints": [
+      "4am_inshaat-talis_P1"
+    ]
+  },
+  "MISC-TALIS-KHASIYA": {
+    "label": "خاصية لا تتوفّر شروطها",
+    "explanation": "نبرّر الإنشاء بالخاصية التي تتوفّر شروطها في الشكل: مستقيمان متوازيان يقطعان مستقيمين متقاطعين ← خاصية طالس؛ فيثاغورس يتطلّب زاوية قائمة، ومستقيم المنتصفين يتطلّب منتصفا.",
+    "relatedLearningPoints": [
+      "4am_inshaat-talis_P2"
+    ]
   }
 }

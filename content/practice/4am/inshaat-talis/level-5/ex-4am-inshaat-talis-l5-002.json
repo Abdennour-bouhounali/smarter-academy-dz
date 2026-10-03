@@ -1,0 +1,80 @@
+{
+  "id": "ex-4am-inshaat-talis-l5-002",
+  "lessonCode": "inshaat-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — تيفو بثلاثة أشرطة",
+    "estimatedMinutes": 6,
+    "tags": [
+      "تقسيم قطعة",
+      "نسبة معلومة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_inshaat-talis_P1",
+      "modelledOn": "method-divide"
+    }
+  },
+  "statement": {
+    "content": "لافتة تيفو [AB] طولها $7\\,\\mathrm{m}$ تُطلى بثلاثة أشرطة: أخضر وأبيض وأحمر، أطوالها متناسبة مع 2 و 3 و 2. نرسمها بالمسطرة غير المدرّجة والمدور على ورقة التصميم."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم قطعة متقايسة نعيّن على نصف المستقيم المساعد؟",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "7",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-ADAD-AL-ALAMAT",
+          "value": "3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كل شريط عدد من الأجزاء المتساوية."
+        }
+      ],
+      "feedback": {
+        "correct": "$2 + 3 + 2 = 7$ قطع متقايسة.",
+        "incorrect": "لا نعدّ الأشرطة بل الأجزاء: الأخضر جزآن، الأبيض ثلاثة، الأحمر جزآن."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "طول الشريط الأبيض بالمتر:",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الشريط الأبيض ثلاثة أجزاء من سبعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3}{7} \\times 7 = 3$ .",
+        "incorrect": "الطول الكلي سبعة أجزاء متساوية."
+      }
+    }
+  ]
+}

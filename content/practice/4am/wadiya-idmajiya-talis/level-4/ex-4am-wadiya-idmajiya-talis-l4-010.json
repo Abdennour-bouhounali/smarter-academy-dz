@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l4-010",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — هرم بطريقة الظل",
+    "estimatedMinutes": 6,
+    "tags": [
+      "طريقة الظل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P1",
+      "modelledOn": "intro-thales"
+    }
+  },
+  "statement": {
+    "content": "عصا شاقولية طولها $1\\,\\mathrm{m}$ ظلّها $0{,}8\\,\\mathrm{m}$ . في اللحظة نفسها يصل ظلّ رأس هرم إلى $39\\,\\mathrm{m}$ بعد حافة قاعدته المربعة التي طول ضلعها $150\\,\\mathrm{m}$ (الظلّ عمودي على الحافة)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما ارتفاع الهرم (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "142.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ظلّ الهرم يُقاس من مركز القاعدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نضيف نصف الضلع إلى الظلّ الظاهر."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على $0{,}8$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "الظلّ من المركز $75 + 39 = 114\\,\\mathrm{m}$ ، و $h = \\dfrac{114}{0{,}8} = 142{,}5\\,\\mathrm{m}$ .",
+        "incorrect": "قدم ارتفاع الهرم في مركز القاعدة."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "48.75",
+          "id": "MISC-TALIS-ZILL-RAS-MUSHTARAK"
+        }
+      ]
+    }
+  ]
+}

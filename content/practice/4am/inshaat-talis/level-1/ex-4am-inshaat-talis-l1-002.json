@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-inshaat-talis-l1-002",
+  "lessonCode": "inshaat-talis",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — كم قطعة على نصف المستقيم؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تقسيم قطعة",
+      "عدد العلامات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_inshaat-talis_P1",
+      "modelledOn": "method-divide"
+    }
+  },
+  "statement": {
+    "content": "نريد تقسيم قطعة [AB] إلى 4 قطع متقايسة بالمسطرة غير المدرّجة والمدور، باستعمال نصف مستقيم مساعد [Ax)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم قطعة متقايسة نعيّن بالمدور على [Ax) ابتداءً من A ؟",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-ADAD-AL-ALAMAT",
+          "value": "3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نقطة التقسيم رقم k تقابل العلامة رقم k."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العلامة الأخيرة هي التي نصلها بالنقطة B."
+        }
+      ],
+      "feedback": {
+        "correct": "أربع قطع متقايسة، ونصل العلامة الرابعة بـ B: كل موازٍ يعطي نقطة تقسيم.",
+        "incorrect": "عدد القطع على [Ax) يساوي عدد القطع المطلوبة في [AB]، لا عدد نقط التقسيم."
+      }
+    }
+  ]
+}

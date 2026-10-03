@@ -1,0 +1,107 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l5-007",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — شبه منحرف آخر",
+    "estimatedMinutes": 7,
+    "tags": [
+      "خاصية طالس"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P1",
+      "modelledOn": "ex-20"
+    }
+  },
+  "statement": {
+    "content": "EBCF شبه منحرف قاعدتاه [EF] و [BC] حيث $EF = \\dfrac{1}{3}BC$ ، وقطراه [BF] و [EC] يتقاطعان في G، و $GF = 2\\,\\mathrm{cm}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما قيمة $\\dfrac{GE}{GC}$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (كسر أو عشري)",
+      "expectedAnswer": "1/3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "(EF)//(BC)."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "وضعية الفراشة في G."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\dfrac{GE}{GC} = \\dfrac{EF}{BC}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{GE}{GC} = \\dfrac{EF}{BC} = \\dfrac{1}{3}$ .",
+        "incorrect": "طول من المثلث الصغير على الموافق في الكبير."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "3",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما الطول GB (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{GF}{GB} = \\dfrac{EF}{BC}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "GB في المثلث الكبير."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب GF في 3."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{2}{GB} = \\dfrac{1}{3}$ إذن $GB = 6\\,\\mathrm{cm}$ .",
+        "incorrect": "GB أكبر من GF."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "2/3",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ]
+    }
+  ]
+}

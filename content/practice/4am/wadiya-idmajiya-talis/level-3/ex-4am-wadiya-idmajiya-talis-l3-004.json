@@ -1,0 +1,119 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l3-004",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — هرم خفرع بطريقة الظل",
+    "estimatedMinutes": 5,
+    "tags": [
+      "طريقة الظل",
+      "استراتيجية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P1",
+      "modelledOn": "intro-thales"
+    }
+  },
+  "statement": {
+    "content": "عصا شاقولية طولها $1\\,\\mathrm{m}$ ظلّها $1{,}2\\,\\mathrm{m}$ . في اللحظة نفسها، ظلّ رأس هرم يصل إلى $61\\,\\mathrm{m}$ من حافة قاعدته المربعة التي طول ضلعها $214\\,\\mathrm{m}$ (الظلّ عمودي على الحافة، وقدم ارتفاع الهرم في مركز القاعدة)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "طول ظلّ الهرم الذي نستعمله في خاصية طالس:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$61\\,\\mathrm{m}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-ZILL-RAS-MUSHTARAK"
+        },
+        {
+          "id": "B",
+          "content": "$107 + 61 = 168\\,\\mathrm{m}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$214 + 61 = 275\\,\\mathrm{m}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-ZILL-RAS-MUSHTARAK"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الضلع الشاقولي هو ارتفاع الهرم."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أين قدم هذا الارتفاع؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "من مركز القاعدة إلى حافتها نصف الضلع."
+        }
+      ],
+      "feedback": {
+        "correct": "من قدم الارتفاع (مركز القاعدة) إلى نهاية الظلّ: $107 + 61 = 168\\,\\mathrm{m}$ .",
+        "incorrect": "الظلّ يُقاس من قدم الارتفاع، لا من حافة القاعدة."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 3
+    },
+    {
+      "id": "q2",
+      "statement": "ما ارتفاع الهرم (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "140",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{h}{1} = \\dfrac{\\text{ظلّ الهرم}}{1{,}2}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل الظلّ من قدم الارتفاع."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على $1{,}2$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$h = \\dfrac{168}{1{,}2} = 140\\,\\mathrm{m}$ .",
+        "incorrect": "نقسم ظلّ الهرم المقيس من مركز القاعدة على ظلّ العصا."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "305/6",
+          "id": "MISC-TALIS-ZILL-RAS-MUSHTARAK"
+        }
+      ]
+    }
+  ]
+}

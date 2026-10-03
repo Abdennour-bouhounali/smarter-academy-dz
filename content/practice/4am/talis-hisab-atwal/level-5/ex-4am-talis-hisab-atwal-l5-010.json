@@ -1,0 +1,179 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l5-010",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 5,
+  "metadata": {
+    "title": "تمرين 26 — منصف الزاوية",
+    "estimatedMinutes": 4,
+    "tags": [
+      "برهان",
+      "النسب المتساوية"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-26",
+      "page": 113,
+      "section": "أتعمّق",
+      "number": 26
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 113): RST مثلث. منصف زاوية الرأس R يقطع $[ST]$ في P. المستقيم الذي يشمل T ويوازي $(RP)$ يقطع $(SR)$ في E.",
+    "figure": {
+      "points": {
+        "S": [
+          0,
+          0
+        ],
+        "T": [
+          6,
+          0
+        ],
+        "R": [
+          1.5,
+          3
+        ],
+        "P": [
+          2.297,
+          0
+        ],
+        "E": [
+          3.919,
+          7.837
+        ]
+      },
+      "segments": [
+        {
+          "from": "S",
+          "to": "T"
+        },
+        {
+          "from": "S",
+          "to": "E"
+        },
+        {
+          "from": "R",
+          "to": "T"
+        },
+        {
+          "from": "R",
+          "to": "P",
+          "arrows": 1
+        },
+        {
+          "from": "T",
+          "to": "E",
+          "arrows": 1
+        }
+      ],
+      "ariaLabel": "المثلث RST، P على [ST] و E على امتداد [SR]، و (RP) يوازي (TE)",
+      "maxWidth": 240
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لإثبات $\\dfrac{ST}{SP} = \\dfrac{SE}{SR}$ نستعمل:",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "المثلثين SRP و SET في وضعية طالس لأن $(RP) \\parallel (TE)$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "المثلثين RPT و RTE لأن لهما الضلع $[RT]$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
+        },
+        {
+          "id": "C",
+          "content": "أن P منتصف $[ST]$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الرأس المشترك والمستقيمين المتوازيين في الشكل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في كل نسبة: ضلع من المثلث الأول على الضلع الموافق له في المثلث الثاني، بالترتيب نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب رؤوس المثلثين بالترتيب نفسه، رأسا تحت رأس، ثم اقرأ النسب."
+        }
+      ],
+      "feedback": {
+        "correct": "المستقيمان $(ST)$ و $(SE)$ متقاطعان في S و $(RP) \\parallel (TE)$ : $\\dfrac{SP}{ST} = \\dfrac{SR}{SE}$ ، ومنه $\\dfrac{ST}{SP} = \\dfrac{SE}{SR}$ .",
+        "incorrect": "راجع الرؤوس المتقابلة: الرأس المشترك، ثم طرفا المستقيمين المتوازيين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ثم نستنتج $\\dfrac{PT}{SP} = \\dfrac{RE}{SR}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "بطرح 1 من الطرفين لأن $ST - SP = PT$ و $SE - SR = RE$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "بقلب النسبتين",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "بجمع 1 إلى الطرفين",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-JAMA-BADAL-DARB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الرأس المشترك والمستقيمين المتوازيين في الشكل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في كل نسبة: ضلع من المثلث الأول على الضلع الموافق له في المثلث الثاني، بالترتيب نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب رؤوس المثلثين بالترتيب نفسه، رأسا تحت رأس، ثم اقرأ النسب."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{ST}{SP} - 1 = \\dfrac{ST - SP}{SP} = \\dfrac{PT}{SP}$ و $\\dfrac{SE}{SR} - 1 = \\dfrac{RE}{SR}$ .",
+        "incorrect": "راجع الرؤوس المتقابلة: الرأس المشترك، ثم طرفا المستقيمين المتوازيين."
+      }
+    }
+  ]
+}

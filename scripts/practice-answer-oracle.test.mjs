@@ -53,6 +53,11 @@ import { ORACLE as ORACLE_MADA_WASIT } from './practice-oracle/mada-wasit-mutawa
 import { ORACLE as ORACLE_MAJDULAT } from './practice-oracle/majdulat-ihsaiya.mjs';
 import { ORACLE as ORACLE_QIRAAT_WADIYAT } from './practice-oracle/qiraat-wadiyat-ihsaiya.mjs';
 import { ORACLE as ORACLE_WADIYA_IHSA } from './practice-oracle/wadiya-idmajiya-ihsa.mjs';
+// Unité 9 « خاصية طالس »
+import { ORACLE as ORACLE_TALIS_HISAB } from './practice-oracle/talis-hisab-atwal.mjs';
+import { ORACLE as ORACLE_AKSIYA_TALIS } from './practice-oracle/aksiya-talis.mjs';
+import { ORACLE as ORACLE_INSHAAT_TALIS } from './practice-oracle/inshaat-talis.mjs';
+import { ORACLE as ORACLE_WADIYA_TALIS } from './practice-oracle/wadiya-idmajiya-talis.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', 'content/practice/4am');
 
@@ -939,6 +944,10 @@ const ORACLE = {
   ...ORACLE_MAJDULAT,
   ...ORACLE_QIRAAT_WADIYAT,
   ...ORACLE_WADIYA_IHSA,
+  ...ORACLE_TALIS_HISAB,
+  ...ORACLE_AKSIYA_TALIS,
+  ...ORACLE_INSHAAT_TALIS,
+  ...ORACLE_WADIYA_TALIS,
 };
 
 /**

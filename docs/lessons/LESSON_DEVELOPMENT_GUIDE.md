@@ -22,8 +22,10 @@ synthesis, four new manipulation types — MANIPULATION_CONTRACT §2octies), the
 by the owner, « ميدان التناسبية والدوال », and the same day a seventh under that ميدان,
 `…/tanasubiya_duwal/dala-taalufiya/` « الدالة التآلفية » (five lessons and their synthesis, five new manipulation
 types — MANIPULATION_CONTRACT §2nonies), and the same day an eighth, `…/tanasubiya_duwal/ihsa/` « الإحصاء » (four lessons and
-their synthesis, four new manipulation types — MANIPULATION_CONTRACT §2decies; programme domain « ميدان تنظيم المعطيات »).
-These eight units are the **only** lesson content in the repository. The French-era lessons (`lessons/college/`, `lessons/lycee/`), their
+their synthesis, four new manipulation types — MANIPULATION_CONTRACT §2decies; programme domain « ميدان تنظيم المعطيات »), and the
+same day a ninth, the first GEOMETRY unit, `lessons/moyen/4am/handasa/khassiyat-talis/` « خاصية طالس » (three lessons and their
+synthesis, five new manipulation types — MANIPULATION_CONTRACT §2undecies — under the programme's own « ميدان الهندسة »).
+These nine units are the **only** lesson content in the repository. The French-era lessons (`lessons/college/`, `lessons/lycee/`), their
 specs, practice content, e2e scripts and French-only engines were deleted on
 2026-09-25; older docs that cite them are describing git history.
 
@@ -275,6 +277,27 @@ Unit-count assertions that read the real catalogue (`unitGrouping.test.js`, `fin
   carried ones (ALGERIA_4AM_CURRICULUM §5 says where the other five are taught).
 - **Misprints found by computation, not by eye**: the builder asserts every textbook count, sum and rank; it proved ex-20's
   median « 6 » impossible (→ 6,5), and showed that ex-19's « odd » bars are a puzzle, not a misprint.
+
+**Unit 9 « خاصية طالس » (2026-10-02) — four authors on a seeded foundation, the first geometry unit — added:**
+
+- **A programme ميدان, no `placement`.** « ميدان الهندسة » (`handasa`, topic `thales`) exists in the programme: the unit sits under it
+  directly, lessons in `lessons/moyen/4am/handasa/khassiyat-talis/` (same import depths as the other units).
+- **One exact module for Thales**, `packages/core/arithmetic/thales.js` on `linear.js` fractions: ratios, fourth proportional, k
+  (`scale`), the reciprocal on SIGNED abscissas (`converse` decides ratios AND order, `reason`), partition and ratio points
+  (`ratioPoint`), a constructed length, the shadow height, the cylinder in a cone — tested on every textbook number first.
+- **Figures are DATA: `GeoFigure`** (`lessons/common/components/GeoFigure.jsx` + `geoFigure.js`): named points, segments, lines,
+  rays, polygons, right angles, angles, equality ticks and parallel chevrons, an Arabic `ariaLabel`. Every textbook figure of the unit is
+  `content/figures.js` data drawn by it, in modules, in the final test (`inline` inside a prompt) and in the practice bank through the
+  new `statement.figure` (EXERCISE_CONTRACT « Unit 9 »). A geometry statement that says « الشكل المقابل » always carries its figure.
+- **A synthesis whose workspace pairs two types** (`shadow-stick` مبتدئ = the تحدّ, `cone-cylinder` متقدم = the situation): the
+  objective is what both levels share (MANIPULATION_CONTRACT §7bis-levels, §2undecies).
+- **Bidi of geometry names**: the prime (B′) and « )//( » are now isolated by `utils/bidi.js` (ARABIC_RTL_CONTRACT « Geometry names »).
+- **Seed stub `routes.jsx` before parallel authoring.** `App.jsx` imports every lesson's `routes.jsx`; while a sibling's file does not
+  exist yet, Vite answers 500 on EVERY page, so an author cannot open the dev server. Unit 9's authors worked around it with a temporary
+  resolver stub; next time the lead seeds a minimal `routes.jsx` per lesson (returning `null`) with the other shared files.
+- **Misprints found and corrected**: أستعدّ 5 (ADE → ADF), معارف 2 example (MN/AC → MN/BC), طرائق « حساب أطوال » (1/2 → 2/1 = 5/DN).
+  Figure readings decided in the builder: the تحدّ minaret 7,25 m (shadow method), ex-9 needs the converse of Pythagoras, ex-13
+  « not parallel » under either label reading, ex-23 equality marks read at 500 dpi.
 
 ### `routes.jsx` — the whole file
 
@@ -641,7 +664,7 @@ before touching one (how). In short:
   divisor lists), keep it at both levels and vary the cognitive demand
   instead. A theme bolted onto a list of divisors hides the mathematics.
 - The type registry is **closed**. Content names a `type`; it never supplies a
-  component. The thirty-five types (ten for unit 1, three for unit 2, two for unit 3, four for unit 4, three for unit 5, four for unit 6, five for unit 7, four for unit 8) live in
+  component. The forty types (ten for unit 1, three for unit 2, two for unit 3, four for unit 4, three for unit 5, four for unit 6, five for unit 7, four for unit 8, five for unit 9) live in
   `packages/core/curriculum/manipulationTypes.js` (data) and
   `manipulations/manipulationRegistry.js` (components).
 - **Reuse before writing.** The existing types are reused across lessons by
@@ -1015,13 +1038,23 @@ Unit 8 « الإحصاء » (`lessons/moyen/4am/tanasubiya_duwal/ihsa/`, 2026-10
 | **`qiraat-wadiyat-ihsaiya`** | a lesson with NO textbook activity whose entry is the unit's تحدّ on `group-tanks`: the student BETS the merged class's level, the water refuses the mean of the means, the two classes settle at the same 384/33; the opener « تلوث البيئة » as the real context of a platform chart; ex-19's two combined bars read as a puzzle (not a misprint); ex-14 (position AND spread), ex-22 (N = 31 from a removal); the platform method « أقرأ · أحسب المؤشرات · أقارن · أقرّر » |
 | **`wadiya-idmajiya-ihsa`** | the synthesis WITH a textbook situation: the Olympic medals' two hidden values found BY HAND on `stat-balance` `mode="hidden"` (the curtain fixes 3, the beam 28), then by calculation in the textbook's three phases (rank 15/16, 176 + 2 × 3 + y = 210, 0,69 × T = 30 → 13); a beginner table whose single hidden value is the EXTREME one (only the balance finds it); the 6 QCM one step each with a link back to their درس; ex-20 corrected (6 → 6,5); the final test TRANSPOSES the situation |
 
+Unit 9 « خاصية طالس » (`lessons/moyen/4am/handasa/khassiyat-talis/`, 2026-10-02), four authors on a seeded foundation, the first
+geometry unit, under the programme's « ميدان الهندسة »:
+
+| Lesson | Read it for |
+|---|---|
+| **`talis-hisab-atwal`** | the unit ENTRY on `thales-beam`: a screen slid in a projector's beam (`cinema`), tilted, and pushed THROUGH A into the camera obscura (`camera`, the butterfly case); every stop JUDGED by the student and decided exactly; the textbook's questions (56/15 ≈ 3,73, 244/75 ≈ 3,25; case 2 k = 1/2) answered under the student's own stops; three misprints corrected in one line each; أستعدّ 4–5 revisited in أوظّف once the property is known; every figure GeoFigure data, also in the BossFinal (`inline`) |
+| **`aksiya-talis`** | `parallel-level`: B′ and C′ PLACED notch by notch, a spirit level on the plank centred only when parallel (`thales.converse`); the graffiti A-frame ladder (6/9: two level planks, so « the midpoints » is refuted) then نشاط 2 on an X-trestle (9/12, ratio 1/3 imposed, figure 3 refused by the ORDER); طرائق in both directions (decide, then reveal); ex-16 يونس / إيناس (an approximation is not a proof) as the map's خطأ شائع |
+| **`inshaat-talis`** | a lesson with NO textbook activity whose entry is `segment-divider` (`platform_adaptation`, `tifo` banner): real ruler, compass and set square, a parallel off a mark refused, unequal bands measured exactly; the ratio point inside AND outside on two graduated parallels; دوري الآن done in the lab posed alone; the owner's « نسبة غير ناطقة » taught by one declared example (√13, then 2√13/3 by Thales); a bank that checks the REASONING of constructions |
+| **`wadiya-idmajiya-talis`** | the synthesis with a textbook situation: the تحدّ on `shadow-stick` (plant the stick where both shadows end together — the method — then a pole riding the ray reads 7,25 m) and the cylinder in the cone on `cone-cylinder` (piercing refused, h = r → V = 91,125π), two types in one workspace; `MinaretFigure` drawn once for the unit page, M1 and the final test; QCM cells judged one by one; the pyramid of Khufu by its shadow as transfer; the final test transposes cone and minaret |
+
 **Textbook misprints are CORRECTED, not only noted (owner decision, 2026-09-30).**
 The extraction keeps the book's verbatim `text` and adds a `correction`
 `{ decidedBy, decidedOn, text | analysis1, answer?, note }`; `discrepancies`
 records the resolution. The lesson displays the corrected version with one
 discreet line (« صحّحت المنصّة خطأً مطبعيًا … »), never a long note. Unit 2:
 act-2 (L2), ex-27 and now-30 (L5 — now-30 is a reconstructed, complete
-exercise), the situation's analysis (synthesis). Unit 5: ex-31 (« x + y = 216 » → 270, synthesis). Unit 6: act-1 (2 % → 20 %, L1–L2), act-6 (copper 6 → 8 cm³, L4), know-4 (« kw/h » → kWh, L4), ex-13 (missing x, L3), ex-17 (question 2 on P و r, L1). Unit 7: act-3 2-أ (« (1 ; 0) » → (0 ; 1), a bidi-reversed couple, L2), act-1 4-ب (« أضيف » → « أضف », L1). Unit 8: ex-20 (median « 6 » impossible → 6,5, synthesis), ex-7 (the spreadsheet screenshot's other series and four formulas in one cell, L3), know-4 (« نفس التكرار 4 » → 5, « بالمتر » → بالسنتيمتر, the median class written as the table's, L2).
+exercise), the situation's analysis (synthesis). Unit 5: ex-31 (« x + y = 216 » → 270, synthesis). Unit 6: act-1 (2 % → 20 %, L1–L2), act-6 (copper 6 → 8 cm³, L4), know-4 (« kw/h » → kWh, L4), ex-13 (missing x, L3), ex-17 (question 2 on P و r, L1). Unit 7: act-3 2-أ (« (1 ; 0) » → (0 ; 1), a bidi-reversed couple, L2), act-1 4-ب (« أضيف » → « أضف », L1). Unit 8: ex-20 (median « 6 » impossible → 6,5, synthesis), ex-7 (the spreadsheet screenshot's other series and four formulas in one cell, L3), know-4 (« نفس التكرار 4 » → 5, « بالمتر » → بالسنتيمتر, the median class written as the table's, L2). Unit 9: prep 5 (« ADE » → ADF, L1), know-2 example (MN/AC → MN/BC, L1), method-lengths (« 1/2 = 5/DN » → 2/1, L1).
 
 ---
 
@@ -1171,7 +1204,8 @@ KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-tanasub-muamil.m
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/math-raw-scan.mjs                # every page of every 4AM lesson: no raw `$…$` / `\command` / KaTeX error in visible text (INDEX_ONLY=1: catalogue, units, indexes)
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-dala-taalufiya.mjs            # unit 7: unit page + every module at 1280/320 px + the five labs' glance blocks in one screen at 4 viewports, both levels (224 checks)
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-ihsa.mjs                       # unit 8: unit page + every module at 1280/320 px + the four labs' glance blocks (stat-balance twice) in one screen at 4 viewports, both levels
-#   LABS_ONLY=1 skips the mounts; MOUNT_LESSONS=a,b mounts only those lessons (the full run is ~35 min)
+KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/4am-khassiyat-talis.mjs              # unit 9: unit page + every module at 1280/320 px + the five geometry labs' glance blocks in one screen at 4 viewports (the synthesis switches type with the level)
+#   LABS_ONLY=1 skips the mounts; MOUNT_ONLY=1 (unit 9) skips the labs; MOUNT_LESSONS=a,b mounts only those lessons (the full run is ~35 min — split it)
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/manipulations.mjs
 KIT_BASE=http://localhost:5173 node apps/web/e2e/lesson-kit/classroom.mjs
 ```

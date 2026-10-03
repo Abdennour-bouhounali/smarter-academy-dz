@@ -1,0 +1,164 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l4-005",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — شبه منحرف",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حساب طول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P2",
+      "modelledOn": "ex-4"
+    }
+  },
+  "statement": {
+    "content": "ABCD رباعي فيه $(AB) \\parallel (CD)$ ، وقطراه $(AC)$ و $(BD)$ يتقاطعان في O ؛ $OA = 2$ ، $OC = 5$ ، $AB = 3$ و $OB = 2{,}4$ .",
+    "figure": {
+      "points": {
+        "O": [
+          0,
+          0
+        ],
+        "A": [
+          -0.866,
+          0.5
+        ],
+        "B": [
+          0.866,
+          0.5
+        ],
+        "C": [
+          2.165,
+          -1.25
+        ],
+        "D": [
+          -2.165,
+          -1.25
+        ]
+      },
+      "segments": [
+        {
+          "from": "O",
+          "to": "A",
+          "label": "2"
+        },
+        {
+          "from": "O",
+          "to": "C",
+          "label": "5"
+        },
+        {
+          "from": "O",
+          "to": "B",
+          "label": "2,4"
+        },
+        {
+          "from": "O",
+          "to": "D"
+        },
+        {
+          "from": "A",
+          "to": "B",
+          "label": "3",
+          "arrows": 1
+        },
+        {
+          "from": "C",
+          "to": "D",
+          "arrows": 1,
+          "tone": "indigo"
+        }
+      ],
+      "ariaLabel": "ABCD حيث (AB) يوازي (CD) والقطران يتقاطعان في O؛ OA = 2 و OC = 5 و AB = 3 و OB = 2,4",
+      "maxWidth": 220
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب CD.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "7,5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "1,2"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{OA}{OC} = \\dfrac{AB}{CD}$ أي $\\dfrac{2}{5} = \\dfrac{3}{CD}$ ومنه $CD = 7{,}5$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب OD.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "0,96"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{OA}{OC} = \\dfrac{OB}{OD}$ أي $\\dfrac{2}{5} = \\dfrac{2{,}4}{OD}$ ومنه $OD = 6$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    }
+  ]
+}

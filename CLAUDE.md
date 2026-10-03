@@ -3,8 +3,10 @@
 Arabic-first, RTL mathematics platform for the Algerian curriculum (المتوسط,
 starting with 4AM). Lesson content lives in `apps/web/src/lessons/moyen/`;
 shared engine in `apps/web/src/lessons/common/`; pure logic in `packages/core`;
-API in `apps/api` (Laravel). The lesson content in the repository is eight 4AM
-textbook units. Since 2026-10-02 unit 6 « الدالة الخطية والتناسبية » (5 lessons + its synthesis,
+API in `apps/api` (Laravel). The lesson content in the repository is nine 4AM
+textbook units. Since 2026-10-02 unit 9 « خاصية طالس » (3 lessons + its synthesis,
+`lessons/moyen/4am/handasa/khassiyat-talis/`) is the first unit under the programme's « ميدان الهندسة »
+(no `placement`; geometry figures are `GeoFigure` data, Thales maths in `packages/core/arithmetic/thales.js`). Since 2026-10-02 unit 6 « الدالة الخطية والتناسبية » (5 lessons + its synthesis,
 `lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/`) and unit 7 « الدالة التآلفية » (5 lessons + its synthesis,
 `…/tanasubiya_duwal/dala-taalufiya/`, the same day) and unit 8 « الإحصاء » (4 lessons + its synthesis,
 `…/tanasubiya_duwal/ihsa/`, the same day; programme domain « ميدان تنظيم المعطيات ») sit under « ميدان التناسبية والدوال »,

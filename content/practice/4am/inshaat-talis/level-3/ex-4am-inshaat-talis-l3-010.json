@@ -1,0 +1,56 @@
+{
+  "id": "ex-4am-inshaat-talis-l3-010",
+  "lessonCode": "inshaat-talis",
+  "level": 3,
+  "metadata": {
+    "title": "تمرين 21 (ص 113) — الطول EL",
+    "estimatedMinutes": 5,
+    "tags": [
+      "تمرين 21",
+      "إنشاء طول معلوم"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-21",
+      "page": 113,
+      "section": "أتعمّق",
+      "number": 21
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: EFG مثلث قائم في E حيث $EF = 4\\,\\mathrm{cm}$ و $EG = 3\\,\\mathrm{cm}$ . L نقطة من نصف المستقيم [FE) لا تنتمي إلى [FE] و P نقطة من نصف المستقيم [GE) لا تنتمي إلى [GE] حيث $\\dfrac{EL}{EF} = \\dfrac{EP}{EG} = \\dfrac{2}{3}$ ، فـ $(GF) // (LP)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "EL بالسنتيمتر (كسر):",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "كسر غير قابل للاختزال",
+      "expectedAnswer": "8/3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "6"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{EL}{EF} = \\dfrac{2}{3}$ و $EF = 4$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$EL = \\dfrac{2}{3} \\times 4 = \\dfrac{8}{3}$ : نقسم [EF] إلى ثلاث قطع متقايسة وننقل قطعتين بعد E.",
+        "incorrect": "اضرب EF في $\\dfrac{2}{3}$ ، لا في $\\dfrac{3}{2}$ ."
+      }
+    }
+  ]
+}

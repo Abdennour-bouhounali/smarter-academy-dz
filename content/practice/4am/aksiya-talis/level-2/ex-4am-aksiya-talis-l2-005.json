@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-aksiya-talis-l2-005",
+  "lessonCode": "aksiya-talis",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — وضعية الفراشة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خاصية عكسية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_aksiya-talis_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "المستقيمان (AC) و (BD) يتقاطعان في O، و O بين A و C و O بين B و D: OA = 6 ، OC = 9 ، OB = 4 ، OD = 6."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل (AB) يوازي (CD)؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم: $\\dfrac{OA}{OC} = \\dfrac{OB}{OD} = \\dfrac{2}{3}$ ونفس الترتيب",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا: النقط من جهتين مختلفتين من O",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-BAYN-FAQAT"
+        },
+        {
+          "id": "C",
+          "content": "لا: $OA - OB \\neq OC - OD$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-JAMA-BADAL-DARB"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق أولا من ترتيب النقط على المستقيمين المتقاطعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب النسبتين وقارنهما بالجداء المتصالب، لا بقيم مقرّبة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نسبتان متساويتان مع نفس الترتيب: الخاصية العكسية. نسبتان مختلفتان: نستدل بالخلف بخاصية طالس."
+        }
+      ],
+      "feedback": {
+        "correct": "O بين النقطتين على كل مستقيم (نفس الترتيب) و $\\dfrac{6}{9} = \\dfrac{4}{6}$ .",
+        "incorrect": "راجع الشرطين: الترتيب، ثم تساوي النسبتين بالحساب."
+      }
+    }
+  ]
+}

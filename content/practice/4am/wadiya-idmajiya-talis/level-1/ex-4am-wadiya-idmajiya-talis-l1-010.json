@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l1-010",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — رفّ يوازي القاعدة؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الخاصية العكسية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "النقط A و M و B على استقامة بهذا الترتيب، والنقط A و N و C كذلك. $AM = 2$ ، $AB = 5$ ، $AN = 4$ ، $AC = 10$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل (MN)//(BC)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا، لأنّ $MB = 3$ و $NC = 6$ مختلفان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-JAMA-BADAL-DARB"
+        },
+        {
+          "id": "B",
+          "content": "نعم: $\\dfrac{AM}{AB} = \\dfrac{AN}{AC}$ والنقط مرتبة بنفس الترتيب",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "لا يمكن الحكم دون قياس زاوية",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن نسبا لا فروقا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $\\dfrac{AM}{AB}$ و $\\dfrac{AN}{AC}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق أيضا من ترتيب النقط."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{2}{5} = \\dfrac{4}{10}$ والترتيب نفسه: الخاصية العكسية تعطي التوازي.",
+        "incorrect": "الخاصية العكسية تقارن نسبتين، والفروق لا تكفي."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    }
+  ]
+}

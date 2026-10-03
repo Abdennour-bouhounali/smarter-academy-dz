@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-aksiya-talis-l3-008",
+  "lessonCode": "aksiya-talis",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — نسبتان متساويتان وترتيب مختلف",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نفس الترتيب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_aksiya-talis_P2",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "المستقيمان (AC) و (BD) يتقاطعان في O. O بين A و C ، بينما B بين O و D: OA = 3 ، OC = 6 ، OB = 2 ، OD = 4."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "هل (AB) يوازي (CD)؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "لا: $\\dfrac{OA}{OC} = \\dfrac{OB}{OD}$ لكن النقط ليست مرتبة بنفس الترتيب",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "نعم: $\\dfrac{OA}{OC} = \\dfrac{OB}{OD} = \\dfrac{1}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TARTIB-MANSI"
+        },
+        {
+          "id": "C",
+          "content": "لا: النسبتان مختلفتان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-SHAKL-BURHAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المستقيمين المتقاطعين وضع النقط في المواقع المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نفس الترتيب: موقع النقطة الأولى بالنسبة إلى الرأس والنقطة الأخرى يماثل موقع الثانية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انظر هل النقطتان في الجهة نفسها من الرأس أم في جهتين مختلفتين."
+        }
+      ],
+      "feedback": {
+        "correct": "A و C في جهتين من O، أما B و D ففي الجهة نفسها: الترتيب مختلف.",
+        "incorrect": "ارسم الشكل: في أي جهة من الرأس تقع كل نقطة؟"
+      }
+    }
+  ]
+}

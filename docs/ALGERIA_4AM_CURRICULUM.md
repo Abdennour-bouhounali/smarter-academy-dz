@@ -94,7 +94,7 @@ n'entre pas dans la 4AM, même s'il en est mathématiquement proche.
 
 | # | الموضوع | Décomposition en LP | Dépendances | Statut |
 |---|---|---|---|---|
-| 4.1 | خاصية طالس وعكسيتها في المثلث المستوي وحساب الأطوال | Le sujet énumère **trois gestes** : la propriété, sa réciproque, le calcul de longueurs | aucune intra-programme | NOT STARTED |
+| 4.1 | خاصية طالس وعكسيتها في المثلث المستوي وحساب الأطوال | Unité 9 du manuel « خاصية طالس » (2026-10-02, pp. 103–113, unité complète), la PREMIÈRE unité rangée sous ce ميدان du programme (`handasa`, sans `placement`) : `talis-hisab-atwal` (3 LP — la propriété et le calcul de longueurs, k), `aksiya-talis` (2 LP — la réciproque et l'ordre des points), `inshaat-talis` (2 LP — partage d'un segment, longueur construite) + la synthèse `wadiya-idmajiya-talis` (3 LP), intitulés, LP et prérequis fournis par le propriétaire ; les trois gestes du sujet sont couverts | aucune intra-programme | **BUILT** |
 | 4.2 | النسب المثلثية في مثلث قائم : جيب · جيب تمام · ظل زاوية حادة | **Trois LP au moins, nommés par le programme** : جيب, جيب تمام, ظل | aucune intra-programme | NOT STARTED |
 | 4.3 | العلاقات بين النسب المثلثية | `À DÉCOMPOSER` | 4.2 | NOT STARTED |
 | 4.4 | المعلم في المستوي : إحداثيتا نقطة · إحداثيتا شعاع · المسافة بين نقطتين | **Trois LP au moins, nommés par le programme** | aucune intra-programme | NOT STARTED |

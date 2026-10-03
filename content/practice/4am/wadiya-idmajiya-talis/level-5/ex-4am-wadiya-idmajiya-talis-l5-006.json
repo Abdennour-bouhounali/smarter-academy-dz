@@ -1,0 +1,108 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l5-006",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — أسطوانة ارتفاعها ضعف نصف قطرها",
+    "estimatedMinutes": 7,
+    "tags": [
+      "معادلة",
+      "حجم"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "أسطوانة دوران محاطة بمخروط دوران ارتفاعه $12\\,\\mathrm{cm}$ ونصف قطر قاعدته $4\\,\\mathrm{cm}$ (قاعدتها على قاعدته)، وارتفاعها ضعف نصف قطرها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما نصف قطرها $r$ (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "2.4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{r}{4} = \\dfrac{12 - 2r}{12}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "جداء تصالبي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع حدود r."
+        }
+      ],
+      "feedback": {
+        "correct": "$12r = 48 - 8r$ أي $20r = 48$ ومنه $r = 2{,}4\\,\\mathrm{cm}$ .",
+        "incorrect": "نعوّض h بـ 2r."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "3",
+          "id": "MISC-TALIS-QITAA-BADAL-DILA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "نكتب حجمها $k\\pi\\,\\mathrm{cm}^3$ . ما قيمة $k$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (المعامل k في الكتابة kπ)",
+      "expectedAnswer": "27.648",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$h = 2r$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$V = \\pi r^2 h$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب $r^2 \\times 2r$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$2{,}4^2 \\times 4{,}8 = 27{,}648$ ، أي $V = 27{,}648\\pi$ .",
+        "incorrect": "h ضعف r ، و r مربّع."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 5,
+      "misconceptionSignatures": [
+        {
+          "value": "11.52",
+          "id": "MISC-TALIS-TARBI-MANSI"
+        }
+      ]
+    }
+  ]
+}

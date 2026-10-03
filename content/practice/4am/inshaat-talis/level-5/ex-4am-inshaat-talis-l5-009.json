@@ -1,0 +1,70 @@
+{
+  "id": "ex-4am-inshaat-talis-l5-009",
+  "lessonCode": "inshaat-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — طول بجذر 2",
+    "estimatedMinutes": 6,
+    "tags": [
+      "طول غير ناطق"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_inshaat-talis_P2",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "نريد إنشاء قطعة طولها $\\dfrac{2\\sqrt{2}}{3}$ دون أي قياس."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الإنشاء الصحيح:",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "وتر مثلث قائم متساوي الساقين ضلعه 1 ، نقسمه إلى 3 قطع متقايسة ونأخذ قطعتين",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "وتر مثلث قائم متساوي الساقين ضلعه 2 ، نقسمه إلى 3 قطع متقايسة ونأخذ قطعتين",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-JADHR-HISAB"
+        },
+        {
+          "id": "C",
+          "content": "وتر مثلث قائم متساوي الساقين ضلعه 1 ، نقسمه إلى قطعتين ونأخذ 3",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{2\\sqrt{2}}{3} = \\dfrac{2}{3} \\times \\sqrt{2}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "وتر مثلث قائم متساوي الساقين ضلعه a طوله $a\\sqrt{2}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "الوتر $\\sqrt{2}$ وثلثاه $\\dfrac{2\\sqrt{2}}{3}$ .",
+        "incorrect": "بضلع 2 نحصل على $\\dfrac{4\\sqrt{2}}{3}$ ، وبالنسبة $\\dfrac{3}{2}$ على $\\dfrac{3\\sqrt{2}}{2}$ ."
+      }
+    }
+  ]
+}

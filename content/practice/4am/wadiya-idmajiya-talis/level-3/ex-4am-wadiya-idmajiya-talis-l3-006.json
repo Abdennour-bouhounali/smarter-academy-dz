@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l3-006",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — ترتيب خطوات الحل",
+    "estimatedMinutes": 5,
+    "tags": [
+      "استراتيجية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P3",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "نريد حساب حجم أسطوانة محاطة بمخروط في الحالة التي يتساوى فيها ارتفاعها ونصف قطرها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "الترتيب المناسب للخطوات:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "الحجم ← معادلة في r ← المقطع المحوري",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-MULAAMA-WAQI"
+        },
+        {
+          "id": "B",
+          "content": "المقطع المحوري ← خاصية طالس ← معادلة في r ← الحجم ← التحقّق",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "خاصية فيثاغورس ← الحجم",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحجم يحتاج r."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "r يأتي من معادلة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "المعادلة تأتي من خاصية في شكل مستوٍ."
+        }
+      ],
+      "feedback": {
+        "correct": "نرسم المقطع، نكتب مساواة طالس، نعوّض $h = r$ ونحلّ، ثم الحجم ونتحقّق.",
+        "incorrect": "لا نحسب الحجم قبل معرفة r."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 3
+    }
+  ]
+}

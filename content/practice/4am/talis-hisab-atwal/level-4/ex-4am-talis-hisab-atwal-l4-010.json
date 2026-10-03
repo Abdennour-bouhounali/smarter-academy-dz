@@ -1,0 +1,134 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l4-010",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — زاويتان متماثلتان",
+    "estimatedMinutes": 4,
+    "tags": [
+      "التوازي",
+      "النسب المتساوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P1",
+      "modelledOn": "ex-3"
+    }
+  },
+  "statement": {
+    "content": "S و K′ و K على استقامة، K و L و M على استقامة، والزاويتان $\\widehat{KLK'}$ و $\\widehat{KMS}$ متقايستان (متماثلتان).",
+    "figure": {
+      "points": {
+        "K": [
+          0,
+          0
+        ],
+        "L": [
+          2.6,
+          0
+        ],
+        "M": [
+          4.4,
+          0
+        ],
+        "K'": [
+          1.3,
+          2.2
+        ],
+        "S": [
+          2.2,
+          3.723
+        ]
+      },
+      "segments": [
+        {
+          "from": "K",
+          "to": "S"
+        },
+        {
+          "from": "K",
+          "to": "M"
+        },
+        {
+          "from": "K'",
+          "to": "L"
+        },
+        {
+          "from": "S",
+          "to": "M"
+        }
+      ],
+      "ariaLabel": "S و K′ و K على استقامة، K و L و M على استقامة، والزاويتان في L و M متقايستان",
+      "maxWidth": 220,
+      "angles": [
+        {
+          "at": "L",
+          "from": "M",
+          "to": "K'",
+          "label": ""
+        },
+        {
+          "at": "M",
+          "from": "K",
+          "to": "S",
+          "label": ""
+        }
+      ]
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ينتج:",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$(K'L) \\parallel (SM)$ و $\\dfrac{KK'}{KS} = \\dfrac{KL}{KM} = \\dfrac{K'L}{SM}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(K'L) \\parallel (SM)$ و $\\dfrac{KK'}{K'S} = \\dfrac{KL}{LM} = \\dfrac{K'L}{SM}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-QITAA-BADAL-DILA"
+        },
+        {
+          "id": "C",
+          "content": "لا نستطيع تطبيق خاصية طالس لأن التوازي غير معطى",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الرأس المشترك والمستقيمين المتوازيين في الشكل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في كل نسبة: ضلع من المثلث الأول على الضلع الموافق له في المثلث الثاني، بالترتيب نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب رؤوس المثلثين بالترتيب نفسه، رأسا تحت رأس، ثم اقرأ النسب."
+        }
+      ],
+      "feedback": {
+        "correct": "زاويتان متماثلتان متقايستان: المستقيمان متوازيان، ثم النسب بالرأس المشترك K.",
+        "incorrect": "راجع الرؤوس المتقابلة: الرأس المشترك، ثم طرفا المستقيمين المتوازيين."
+      }
+    }
+  ]
+}

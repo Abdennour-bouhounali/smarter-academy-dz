@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-inshaat-talis-l1-004",
+  "lessonCode": "inshaat-talis",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — كم موازيًا نرسم؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "تقسيم قطعة",
+      "موازيات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_inshaat-talis_P1",
+      "modelledOn": "method-divide"
+    }
+  },
+  "statement": {
+    "content": "لتقسيم قطعة [AB] إلى 6 قطع متقايسة عيّنا على نصف مستقيم [Ax) ست قطع متقايسة، ووصلنا العلامة السادسة بـ B."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم موازيًا آخر للمستقيم الموصول نرسم لنحصل على كل نقط التقسيم؟",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-ADAD-AL-ALAMAT",
+          "value": "6"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "كل موازٍ يشمل علامة واحدة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "العلامة السادسة موصولة من قبل بالنقطة B."
+        }
+      ],
+      "feedback": {
+        "correct": "موازٍ لكل علامة من العلامات الخمس الأولى: 5 نقط تقسيم تفصل 6 قطع.",
+        "incorrect": "المستقيم الموصول بالعلامة السادسة مرسوم: يبقى الموازيات المارّة بالعلامات الخمس الأخرى."
+      }
+    }
+  ]
+}

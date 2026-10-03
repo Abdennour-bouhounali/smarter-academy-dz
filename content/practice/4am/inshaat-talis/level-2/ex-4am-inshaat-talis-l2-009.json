@@ -1,0 +1,48 @@
+{
+  "id": "ex-4am-inshaat-talis-l2-009",
+  "lessonCode": "inshaat-talis",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — أربع قطع متقايسة",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تقسيم قطعة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_inshaat-talis_P1",
+      "modelledOn": "method-divide"
+    }
+  },
+  "statement": {
+    "content": "[AB] قطعة طولها $9\\,\\mathrm{cm}$ قسّمناها إلى 4 قطع متقايسة بالمسطرة غير المدرّجة والمدور."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "طول كل قطعة بالسنتيمتر (عدد عشري):",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "2,25",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$9 \\div 4$ ليس عددا صحيحا: لهذا نقسم بالإنشاء لا بالقياس."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{9}{4} = 2{,}25$ .",
+        "incorrect": "اقسم 9 على 4."
+      }
+    }
+  ]
+}

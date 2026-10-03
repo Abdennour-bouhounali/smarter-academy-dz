@@ -1,0 +1,126 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l5-003",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 5,
+  "metadata": {
+    "title": "وضعية — شارعان متوازيان",
+    "estimatedMinutes": 4,
+    "tags": [
+      "وضعية",
+      "حساب طول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P2",
+      "modelledOn": "ex-2"
+    }
+  },
+  "statement": {
+    "content": "على مخطط الحي، الطريقان $(AE)$ و $(AF)$ يبدآن من الساحة A، ويقطعهما شارعان متوازيان: الأول في B و C والثاني في E و F. $AB = 120\\,\\mathrm{m}$ ، $BE = 80\\,\\mathrm{m}$ و $AC = 150\\,\\mathrm{m}$ .",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "E": [
+          5.796,
+          1.553
+        ],
+        "F": [
+          6.39,
+          -2.326
+        ],
+        "B": [
+          3.478,
+          0.932
+        ],
+        "C": [
+          3.834,
+          -1.396
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B",
+          "label": "120"
+        },
+        {
+          "from": "B",
+          "to": "E",
+          "label": "80"
+        },
+        {
+          "from": "A",
+          "to": "C",
+          "label": "150"
+        },
+        {
+          "from": "C",
+          "to": "F"
+        },
+        {
+          "from": "E",
+          "to": "F",
+          "arrows": 1
+        },
+        {
+          "from": "B",
+          "to": "C",
+          "arrows": 1,
+          "tone": "indigo"
+        }
+      ],
+      "ariaLabel": "الطريقان من الساحة A يقطعهما شارعان متوازيان (BC) و (EF)",
+      "maxWidth": 260,
+      "labels": {
+        "A": "w"
+      }
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب المسافة CF (بالمتر).",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "100",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-QITAA-BADAL-DILA",
+          "value": "250"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$AE = 200$ : $\\dfrac{120}{200} = \\dfrac{150}{AF}$ ومنه $AF = 250$ و $CF = 100\\,\\mathrm{m}$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    }
+  ]
+}

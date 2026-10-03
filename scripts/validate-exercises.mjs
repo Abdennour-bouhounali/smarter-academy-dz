@@ -28,6 +28,7 @@ import { Rational } from '../packages/core/practice/rational.js';
 import { parseAffineAnswer } from '../packages/core/practice/affineCanonical.js';
 import { parseInterval } from '../packages/core/practice/intervalCompare.js';
 import { SUPPORTED_ANSWER_TYPES, parseIntegerSet, evaluateAnswer, isSuccessOutcome } from '../packages/core/practice/answerEvaluator.js';
+import { validateGeoFigure } from '../apps/web/src/lessons/common/components/geoFigure.js';
 
 const argv = process.argv.slice(2);
 const STRICT = argv.includes('--strict');
@@ -468,6 +469,9 @@ function validateExercise(file, data, ctx) {
     if (!COORDPLANE_PROPS.has(key)) err(where, `statement.visual.${key} n'est pas une prop de CoordPlane`);
   }
   checkVisualSize(data.statement?.visual, where);
+  if (data.statement?.figure !== undefined) {
+    for (const e of validateGeoFigure(data.statement.figure)) err(where, `statement.figure : ${e}`);
+  }
   if (data.statement?.support && !SUPPORT_LABS.has(data.statement.support.lab)) {
     err(where, `statement.support.lab « ${data.statement.support.lab} » hors du registre fermé`);
   }

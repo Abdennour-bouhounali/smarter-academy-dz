@@ -1,0 +1,70 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l3-010",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — مخروط 9 و 3 و h = r",
+    "estimatedMinutes": 5,
+    "tags": [
+      "معادلة",
+      "مقطع محوري"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "أسطوانة دوران محاطة بمخروط دوران ارتفاعه $9\\,\\mathrm{cm}$ ونصف قطر قاعدته $3\\,\\mathrm{cm}$ ، وارتفاعها يساوي نصف قطرها."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما نصف قطرها $r$ (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "2.25",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{r}{3} = \\dfrac{9 - h}{9}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض h بـ r."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء تصالبي ثم حلّ."
+        }
+      ],
+      "feedback": {
+        "correct": "$9r = 27 - 3r$ أي $12r = 27$ ومنه $r = 2{,}25\\,\\mathrm{cm}$ .",
+        "incorrect": "نعوّض h بـ r في مساواة طالس."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "3",
+          "id": "MISC-TALIS-MULAAMA-WAQI"
+        },
+        {
+          "value": "4.5",
+          "id": "MISC-TALIS-HALL-MUADALA"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,197 @@
+{
+  "id": "ex-4am-aksiya-talis-l3-002",
+  "lessonCode": "aksiya-talis",
+  "level": 3,
+  "metadata": {
+    "title": "طرائق — (BD) و (EF)",
+    "estimatedMinutes": 3,
+    "tags": [
+      "عدم التوازي"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-parallel",
+      "page": 109,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 109): A ، B ، E على استقامة (B بين A و E) و A ، D ، F على استقامة (D بين A و F)؛ AB = 3,2 ، AE = 4,6 ، AD = 3,5 ، DF = 1,5.",
+    "figure": {
+      "points": {
+        "A": [
+          2.68,
+          2.25
+        ],
+        "B": [
+          4.16,
+          -0.59
+        ],
+        "C": [
+          -1.78,
+          0.25
+        ],
+        "D": [
+          0,
+          0
+        ],
+        "E": [
+          4.8,
+          -1.83
+        ],
+        "F": [
+          -1.15,
+          -0.96
+        ]
+      },
+      "segments": [
+        [
+          "A",
+          "E"
+        ],
+        [
+          "A",
+          "F"
+        ],
+        [
+          "B",
+          "C"
+        ],
+        [
+          "C",
+          "F"
+        ],
+        [
+          "E",
+          "F"
+        ]
+      ],
+      "ariaLabel": "A و B و E على استقامة، A و D و F على استقامة، B و D و C على استقامة",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب AF:",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-QITAA-BADAL-DILA",
+          "value": "1,5"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم الشكل وضع عليه الأطوال المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الطول المطلوب جزء من قطعة أو مجموع قطعتين على المستقيم نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع أو اطرح حسب موقع النقطة بين الأخريين."
+        }
+      ],
+      "feedback": {
+        "correct": "$AF = 3{,}5 + 1{,}5 = 5$",
+        "incorrect": "راجع موقع النقطة: هل الطول جزء أم مجموع؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب الجداء $4{,}6 \\times 3{,}5$ :",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة",
+      "expectedAnswer": "16,1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجداء المتصالب: البسط الأول في المقام الثاني، والمقام الأول في البسط الثاني."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب العددين كأنهما طبيعيان، ثم ضع الفاصلة حسب عدد الأرقام بعدها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بتقدير سريع: هل الناتج معقول؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$4{,}6 \\times 3{,}5 = 16{,}1$ بينما $3{,}2 \\times 5 = 16$",
+        "incorrect": "أعد الضرب وانتبه إلى موضع الفاصلة."
+      }
+    },
+    {
+      "id": "q3",
+      "statement": "إذن:",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "(BD) و (EF) غير متوازيين",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$(BD) \\parallel (EF)$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAQRIB-BURHAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق أولا من ترتيب النقط على المستقيمين المتقاطعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب النسبتين وقارنهما بالجداء المتصالب، لا بقيم مقرّبة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نسبتان متساويتان مع نفس الترتيب: الخاصية العكسية. نسبتان مختلفتان: نستدل بالخلف بخاصية طالس."
+        }
+      ],
+      "feedback": {
+        "correct": "$16 \\neq 16{,}1$ : لو كانا متوازيين لتساوت النسبتان حسب خاصية طالس.",
+        "incorrect": "راجع الشرطين: الترتيب، ثم تساوي النسبتين بالحساب."
+      }
+    }
+  ]
+}

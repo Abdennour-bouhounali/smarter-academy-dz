@@ -1,4 +1,5 @@
 import CoordPlane from '../../lessons/common/components/CoordPlane';
+import GeoFigure from '../../lessons/common/components/GeoFigure';
 import RichText from './RichText';
 import PracticeLab from './PracticeLab';
 
@@ -11,8 +12,12 @@ import PracticeLab from './PracticeLab';
  * largeur réelle des étiquettes. Le validateur vérifie chaque clé contre les
  * vraies props, pour qu'une faute de frappe échoue en CI plutôt que de rendre
  * un plan vide en silence.
+ *
+ * `figure` (unité 9, 2026-10-02) est une figure de géométrie DÉCLARATIVE dessinée par GeoFigure —
+ * points nommés, segments, droites, angles — pour qu'un énoncé « في الشكل المقابل » montre le shape ;
+ * le validateur la vérifie avec `validateGeoFigure`.
  */
-export default function ExerciseStatement({ content, visual, support }) {
+export default function ExerciseStatement({ content, visual, figure, support }) {
   return (
     <div className="space-y-4">
       {content && (
@@ -24,6 +29,8 @@ export default function ExerciseStatement({ content, visual, support }) {
           ))}
         </div>
       )}
+
+      {figure && <GeoFigure {...figure} />}
 
       {visual && (
         <div className="overflow-x-auto">

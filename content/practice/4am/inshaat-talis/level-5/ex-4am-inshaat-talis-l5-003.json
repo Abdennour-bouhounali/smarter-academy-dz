@@ -1,0 +1,86 @@
+{
+  "id": "ex-4am-inshaat-talis-l5-003",
+  "lessonCode": "inshaat-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — نقطتان بنسبة 3",
+    "estimatedMinutes": 6,
+    "tags": [
+      "نسبة معلومة",
+      "نقطة خارج القطعة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_inshaat-talis_P1",
+      "modelledOn": "method-ratio-point"
+    }
+  },
+  "statement": {
+    "content": "نبحث عن النقط M من المستقيم (AB) التي تحقّق $MA = 3 \\times MB$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "النقطة التي تنتمي إلى [AB] : $\\dfrac{AM}{AB}$ (كسر):",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "كسر غير قابل للاختزال",
+      "expectedAnswer": "3/4",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-JUZ-KULL",
+          "value": "3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "داخل [AB] : $AB = MA + MB$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "AB أربعة أجزاء و AM ثلاثة: $\\dfrac{3}{4}$ .",
+        "incorrect": "3 هي $\\dfrac{MA}{MB}$ لا $\\dfrac{AM}{AB}$ ."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "النقطة التي لا تنتمي إلى [AB] : $\\dfrac{AM}{AB}$ (كسر):",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "كسر غير قابل للاختزال",
+      "expectedAnswer": "3/2",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-JUZ-KULL",
+          "value": "3/4"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "خارج [AB] : $AB = MA - MB$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "AB جزآن و AM ثلاثة: $\\dfrac{3}{2}$ (M بعد B).",
+        "incorrect": "خارج القطعة نطرح: $3 - 1 = 2$ ."
+      }
+    }
+  ]
+}

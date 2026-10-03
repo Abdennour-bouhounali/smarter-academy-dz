@@ -66,6 +66,9 @@ export * as affine from './arithmetic/affine.js';
 // La statistique exacte de l'unité 8 « الإحصاء » : effectifs, التكرار / التواتر المجمع الصاعد والنازل, المدى,
 // المتوسط (pondéré, مراكز الفئات), الوسيط (rangs) et الفئة الوسيطية, المنوال, groupes réunis et valeurs cachées.
 export * as statistics from './arithmetic/statistics.js';
+// Thalès exact de l'unité 9 « خاصية طالس » : rapports égaux, quatrième proportionnel, k (تكبير / تصغير), la
+// réciproque sur abscisses SIGNÉES (rapports ET ordre), partage d'un segment, longueur construite, ombre, cylindre dans un cône.
+export * as thales from './arithmetic/thales.js';
 
 // Moteur d'exercices (pratique) — arithmétique exacte et évaluation des
 // réponses. Exporté sous un espace de noms : `Rational.parse` et

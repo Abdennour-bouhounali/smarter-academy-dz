@@ -1,0 +1,123 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l3-003",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 3,
+  "metadata": {
+    "title": "دوري الآن — احسب EW",
+    "estimatedMinutes": 3,
+    "tags": [
+      "وضعية الفراشة",
+      "حساب طول"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "now-107",
+      "page": 107,
+      "section": "دوري الآن"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 107): المستقيمان $(UT)$ و $(VW)$ متقاطعان في E (E بين النقطتين في كل مرة)، و $(UV) \\parallel (WT)$ ؛ $EV = 2{,}25$ ، $EU = 3{,}75$ و $ET = 5{,}25$ .",
+    "figure": {
+      "points": {
+        "E": [
+          0,
+          0
+        ],
+        "U": [
+          -0.986,
+          -1.854
+        ],
+        "V": [
+          -1.565,
+          0.333
+        ],
+        "T": [
+          1.38,
+          2.596
+        ],
+        "W": [
+          2.191,
+          -0.466
+        ]
+      },
+      "segments": [
+        {
+          "from": "E",
+          "to": "U",
+          "label": "3,75"
+        },
+        {
+          "from": "E",
+          "to": "T",
+          "label": "5,25"
+        },
+        {
+          "from": "E",
+          "to": "V",
+          "label": "2,25"
+        },
+        {
+          "from": "E",
+          "to": "W"
+        },
+        {
+          "from": "U",
+          "to": "V",
+          "arrows": 1
+        },
+        {
+          "from": "T",
+          "to": "W",
+          "arrows": 1,
+          "tone": "indigo"
+        }
+      ],
+      "ariaLabel": "(UT) و (VW) متقاطعان في E، و (UV) يوازي (WT)؛ EU = 3,75 و ET = 5,25 و EV = 2,25",
+      "maxWidth": 220
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب EW.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "3,15",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "45/28"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{EW}{EV} = \\dfrac{ET}{EU}$ ومنه $EW = \\dfrac{2{,}25 \\times 5{,}25}{3{,}75} = 3{,}15$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    }
+  ]
+}

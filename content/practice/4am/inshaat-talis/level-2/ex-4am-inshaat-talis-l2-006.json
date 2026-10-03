@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-inshaat-talis-l2-006",
+  "lessonCode": "inshaat-talis",
+  "level": 2,
+  "metadata": {
+    "title": "طرائق (ص 107) — حساب AB",
+    "estimatedMinutes": 4,
+    "tags": [
+      "إنشاء طول معلوم",
+      "طرائق"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-construct-length",
+      "page": 107,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: (وحدة الأطوال هي السنتيمتر) أنشئ قطعة مستقيم [AB] بحيث يكون $AB = \\dfrac{14}{3}$ . عيّنا على [Ax) النقطتين C و D حيث $AC = 3$ و $AD = 7$ ، وعلى [Ay) النقطة E حيث $AE = 2$ ، والموازي لـ (CE) المارّ بـ D يقطع [Ay) في B."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "AB بالسنتيمتر (كسر):",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "كسر غير قابل للاختزال",
+      "expectedAnswer": "14/3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "6/7"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلثان ACE و ADB في وضعية طالس."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{AC}{AD} = \\dfrac{AE}{AB}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3}{7} = \\dfrac{2}{AB}$ ، فـ $AB = \\dfrac{7 \\times 2}{3} = \\dfrac{14}{3}$ .",
+        "incorrect": "اكتب التناسب بالترتيب ثم استعمل الجداء المتصالب."
+      }
+    }
+  ]
+}

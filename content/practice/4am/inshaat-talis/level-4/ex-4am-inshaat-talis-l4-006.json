@@ -1,0 +1,54 @@
+{
+  "id": "ex-4am-inshaat-talis-l4-006",
+  "lessonCode": "inshaat-talis",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 21 (ص 113) — الارتفاع",
+    "estimatedMinutes": 6,
+    "tags": [
+      "تمرين 21"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-21",
+      "page": 113,
+      "section": "أتعمّق",
+      "number": 21
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: EFG مثلث قائم في E حيث $EF = 4\\,\\mathrm{cm}$ و $EG = 3\\,\\mathrm{cm}$ . L نقطة من نصف المستقيم [FE) لا تنتمي إلى [FE] و P نقطة من نصف المستقيم [GE) لا تنتمي إلى [GE] حيث $\\dfrac{EL}{EF} = \\dfrac{EP}{EG} = \\dfrac{2}{3}$ ، فـ $(GF) // (LP)$ . $EL = \\dfrac{8}{3}$ و $EP = 2$ و $LP = \\dfrac{10}{3}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ارتفاع المثلث ELP المتعلّق بالرأس E بالسنتيمتر (عدد عشري):",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "1,6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "المثلث ELP قائم في E."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب مساحته بطريقتين: $EL \\times EP = LP \\times h$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$h = \\dfrac{\\frac{8}{3} \\times 2}{\\frac{10}{3}} = \\dfrac{16}{10} = 1{,}6$ .",
+        "incorrect": "ضعف المساحة يساوي $EL \\times EP$ ويساوي أيضًا $LP \\times h$ ."
+      }
+    }
+  ]
+}

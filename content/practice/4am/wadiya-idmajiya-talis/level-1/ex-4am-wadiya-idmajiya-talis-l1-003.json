@@ -1,0 +1,143 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l1-003",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 3 — توازٍ أم لا؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "الخاصية العكسية",
+      "إثبات عدم التوازي"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 112,
+      "section": "أؤكّد تعلّماتي",
+      "number": 3
+    }
+  },
+  "statement": {
+    "content": "في الشكل: النقط A و B و E على استقامة، والنقط A و C و F على استقامة (بنفس الترتيب). $AB = 11$ ، $BE = 22$ ، $AC = 15$ ، $CF = 45$ .",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          2.667,
+          1.667
+        ],
+        "E": [
+          8,
+          5
+        ],
+        "C": [
+          3,
+          0
+        ],
+        "F": [
+          12,
+          0
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B",
+          "label": "11"
+        },
+        {
+          "from": "B",
+          "to": "E",
+          "label": "22"
+        },
+        {
+          "from": "A",
+          "to": "C",
+          "label": "15",
+          "labelSide": -1
+        },
+        {
+          "from": "C",
+          "to": "F",
+          "label": "45",
+          "labelSide": -1
+        },
+        [
+          "B",
+          "C"
+        ],
+        [
+          "E",
+          "F"
+        ]
+      ],
+      "labels": {
+        "A": "w",
+        "B": "nw",
+        "E": "n",
+        "C": "s",
+        "F": "e"
+      },
+      "ariaLabel": "النقط A و B و E على استقامة والنقط A و C و F على استقامة؛ AB = 11 و BE = 22 و AC = 15 و CF = 45",
+      "maxWidth": 340
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ينتج:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "(BC)//(EF)",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-AKS-BIDUN-TASAWI"
+        },
+        {
+          "id": "B",
+          "content": "$BC = \\dfrac{1}{2}EF$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
+        },
+        {
+          "id": "C",
+          "content": "(EF) لا يوازي (BC)",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$AE = AB + BE$ و $AF = AC + CF$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب $\\dfrac{AB}{AE}$ و $\\dfrac{AC}{AF}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نسبتان مختلفتان تكفيان للحكم."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{11}{33} = \\dfrac{1}{3}$ و $\\dfrac{15}{60} = \\dfrac{1}{4}$ : لو كان التوازي لتساوتا.",
+        "incorrect": "قارن النسبتين بقيمتهما المضبوطة."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 2
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l3-009",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — الوحدة المناسبة",
+    "estimatedMinutes": 5,
+    "tags": [
+      "ملاءمة النتيجة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P3",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "الأطوال بالسنتيمتر، ووجد تلميذ أنّ حجم أسطوانة هو $54\\pi$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نكتب النتيجة:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$54\\pi\\,\\mathrm{cm}^2$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-MULAAMA-WAQI"
+        },
+        {
+          "id": "B",
+          "content": "$54\\pi\\,\\mathrm{cm}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-MULAAMA-WAQI"
+        },
+        {
+          "id": "C",
+          "content": "$54\\pi\\,\\mathrm{cm}^3$",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الحجم جداء ثلاثة أطوال."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$r \\times r \\times h$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "وحدة الطول مرفوعة إلى القوة 3."
+        }
+      ],
+      "feedback": {
+        "correct": "الحجم بوحدة مكعبة: $\\mathrm{cm}^3$ .",
+        "incorrect": "وحدة المساحة مربعة ووحدة الحجم مكعبة."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 2
+    }
+  ]
+}

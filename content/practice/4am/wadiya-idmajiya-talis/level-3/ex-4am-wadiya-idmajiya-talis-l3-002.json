@@ -1,0 +1,167 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l3-002",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 3,
+  "metadata": {
+    "title": "أتعمّق 22 — عرض نهر",
+    "estimatedMinutes": 5,
+    "tags": [
+      "مسافة غير مباشرة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-22",
+      "page": 113,
+      "section": "أتعمّق",
+      "number": 22
+    }
+  },
+  "statement": {
+    "content": "أراد عبد القادر تقدير عرض نهر، فرسم مستقيمين متوازيين (AB) و (CD)، وجعل النقط O و B و D على استقامة والنقط O و A و C على استقامة. $AB = 2\\,\\mathrm{m}$ ، $CD = 5\\,\\mathrm{m}$ ، $BD = 6\\,\\mathrm{m}$ .",
+    "figure": {
+      "points": {
+        "O": [
+          0,
+          0
+        ],
+        "B": [
+          3.94,
+          -0.69
+        ],
+        "D": [
+          9.85,
+          -1.74
+        ],
+        "A": [
+          3.11,
+          -2.52
+        ],
+        "C": [
+          7.78,
+          -6.29
+        ]
+      },
+      "segments": [
+        [
+          "O",
+          "B"
+        ],
+        {
+          "from": "B",
+          "to": "D",
+          "label": "6 m"
+        },
+        [
+          "O",
+          "A"
+        ],
+        [
+          "A",
+          "C"
+        ],
+        {
+          "from": "A",
+          "to": "B",
+          "label": "2 m",
+          "arrows": 1
+        },
+        {
+          "from": "C",
+          "to": "D",
+          "label": "5 m",
+          "arrows": 1
+        }
+      ],
+      "labels": {
+        "O": "w",
+        "B": "n",
+        "D": "ne",
+        "A": "sw",
+        "C": "s"
+      },
+      "ariaLabel": "النقطة O على الضفة الأخرى للنهر؛ O و B و D على استقامة و O و A و C على استقامة، و (AB) يوازي (CD)؛ AB = 2 m و CD = 5 m و BD = 6 m",
+      "caption": "O على الضفة الأخرى للنهر",
+      "maxWidth": 340
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب OB (بالمتر).",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$OD = OB + 6$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{OB}{OD} = \\dfrac{AB}{CD}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء تصالبي ثم معادلة."
+        }
+      ],
+      "feedback": {
+        "correct": "$5\\,OB = 2(OB + 6)$ أي $3\\,OB = 12$ ومنه $OB = 4\\,\\mathrm{m}$ .",
+        "incorrect": "نقارن OB بالضلع OD كاملا، لا بالقطعة BD."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "2.4",
+          "id": "MISC-TALIS-QITAA-BADAL-DILA"
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "statement": "ما الطول OD (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "10",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$OD = OB + BD$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "استعمل OB الذي وجدته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أضف 6."
+        }
+      ],
+      "feedback": {
+        "correct": "$OD = 4 + 6 = 10\\,\\mathrm{m}$ ، وتحقّق: $\\dfrac{4}{10} = \\dfrac{2}{5}$ .",
+        "incorrect": "OD يضمّ OB و BD."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3
+    }
+  ]
+}

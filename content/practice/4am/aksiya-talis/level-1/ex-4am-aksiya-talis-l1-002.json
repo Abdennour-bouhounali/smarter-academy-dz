@@ -1,0 +1,177 @@
+{
+  "id": "ex-4am-aksiya-talis-l1-002",
+  "lessonCode": "aksiya-talis",
+  "level": 1,
+  "metadata": {
+    "title": "تمرين 10 — النسبة الأولى",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نسبة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-10",
+      "page": 111,
+      "section": "أوظّف تعلّماتي",
+      "number": 10
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 111): في الشكل، النقط A و C و E على استقامة، والنقط B و C و F على استقامة، و C بين النقطتين في كل مرة: CA = 2 ، CE = 3 ، CB = 4 ، CF = 6.",
+    "figure": {
+      "points": {
+        "C": [
+          0,
+          0
+        ],
+        "A": [
+          -1.8,
+          0.88
+        ],
+        "E": [
+          2.7,
+          -1.32
+        ],
+        "B": [
+          1.99,
+          3.47
+        ],
+        "F": [
+          -2.99,
+          -5.2
+        ]
+      },
+      "segments": [
+        {
+          "from": "C",
+          "to": "A",
+          "label": "2"
+        },
+        {
+          "from": "C",
+          "to": "E",
+          "label": "3"
+        },
+        {
+          "from": "C",
+          "to": "B",
+          "label": "4"
+        },
+        {
+          "from": "C",
+          "to": "F",
+          "label": "6"
+        },
+        [
+          "A",
+          "B"
+        ],
+        [
+          "E",
+          "F"
+        ]
+      ],
+      "ariaLabel": "A و C و E على استقامة، B و C و F على استقامة، CA = 2 و CE = 3 و CB = 4 و CF = 6",
+      "maxWidth": 265
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $\\dfrac{CB}{CF}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد: كسر غير قابل للاختزال أو عدد عشري بالفاصلة",
+      "expectedAnswer": "2/3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "3/2"
+        },
+        {
+          "id": "MISC-TALIS-QITAA-BADAL-DILA",
+          "value": "2/5"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النقطة المشتركة بين المستقيمين، ثم الطولين المعنيين على المستقيم نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "النسبة: طول يبدأ من النقطة المشتركة مقسوما على الطول الموافق له على المستقيم نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب الكسر ثم اختزله (أو احسب قيمته المضبوطة)."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{CB}{CF} = \\dfrac{4}{6} = \\dfrac{2}{3}$",
+        "incorrect": "راجع: من أي نقطة يبدأ كل طول؟ وهل اختزلت الكسر؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "هل (AB) يوازي (EF)؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "نعم: $\\dfrac{CA}{CE} = \\dfrac{CB}{CF}$ ونفس الترتيب",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "لا: النسبتان مختلفتان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-AKS-BIDUN-TASAWI"
+        },
+        {
+          "id": "C",
+          "content": "لا يمكن الحكم دون رسم الشكل بدقة",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-SHAKL-BURHAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق أولا من ترتيب النقط على المستقيمين المتقاطعين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "احسب النسبتين وقارنهما بالجداء المتصالب، لا بقيم مقرّبة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "نسبتان متساويتان مع نفس الترتيب: الخاصية العكسية. نسبتان مختلفتان: نستدل بالخلف بخاصية طالس."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{2}{3} = \\dfrac{4}{6}$ و C بين النقطتين في كل مرة: $(AB) \\parallel (EF)$ .",
+        "incorrect": "راجع الشرطين: الترتيب، ثم تساوي النسبتين بالحساب."
+      }
+    }
+  ]
+}

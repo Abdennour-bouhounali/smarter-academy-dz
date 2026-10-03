@@ -1,0 +1,83 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l1-009",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — طريقة الظل: أين نغرس العصا؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "طريقة الظل",
+      "استراتيجية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P3",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "نريد قياس ارتفاع عمود إنارة بطريقة الظل، بعصا شاقولية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "نغرس العصا:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "في أيّ مكان، ثم نقيس ظلّها وحده",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-ZILL-RAS-MUSHTARAK"
+        },
+        {
+          "id": "B",
+          "content": "بحيث ينتهي ظلّها حيث ينتهي ظلّ العمود",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "ملاصقة للعمود",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-ZILL-RAS-MUSHTARAK"
+        },
+        {
+          "id": "D",
+          "content": "مائلة نحو الشمس",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "نحتاج مثلثين في وضعية طالس."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المثلثان يحتاجان رأسا مشتركا."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "أين يلتقي الشعاعان؟"
+        }
+      ],
+      "feedback": {
+        "correct": "عندما ينتهي الظلّان في نقطة واحدة O يكون للمثلثين رأس مشترك، والعصا الشاقولية توازي العمود.",
+        "incorrect": "دون رأس مشترك ودون عصا شاقولية لا وضعية طالس."
+      },
+      "cognitiveDemand": "recall",
+      "difficulty": 1
+    }
+  ]
+}

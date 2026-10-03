@@ -1,0 +1,73 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l4-009",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — من السنتيمتر المكعب إلى اللتر",
+    "estimatedMinutes": 6,
+    "tags": [
+      "ملاءمة النتيجة",
+      "وحدات"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P3",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "علبة مثلجات أسطوانية حجمها $27\\pi\\,\\mathrm{cm}^3$ . نذكّر أنّ $1\\,\\mathrm{L} = 1000\\,\\mathrm{cm}^3$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "كم لترا تسع العلبة تقريبا؟ (قيمة مقرّبة إلى 0,01)",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد عشري (قيمة مقرّبة إلى 0,01)",
+      "expectedAnswer": "0.08",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب الحجم بـ $\\mathrm{cm}^3$ أولا."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$27\\pi \\approx 84{,}82$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم على 1000 ثم دوّر."
+        }
+      ],
+      "feedback": {
+        "correct": "$27\\pi \\approx 84{,}82\\,\\mathrm{cm}^3 \\approx 0{,}08\\,\\mathrm{L}$ .",
+        "incorrect": "اللتر ألف سنتيمتر مكعب: نقسم على 1000."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "evaluationPolicy": {
+        "tolerance": "0.01"
+      },
+      "misconceptionSignatures": [
+        {
+          "value": "84.82",
+          "id": "MISC-TALIS-MULAAMA-WAQI"
+        },
+        {
+          "value": "0.03",
+          "id": "MISC-TALIS-HAJM-BIDUN-PI"
+        }
+      ]
+    }
+  ]
+}

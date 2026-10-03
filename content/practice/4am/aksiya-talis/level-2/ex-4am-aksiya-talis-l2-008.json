@@ -1,0 +1,68 @@
+{
+  "id": "ex-4am-aksiya-talis-l2-008",
+  "lessonCode": "aksiya-talis",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — الطول الذي يعطي التوازي",
+    "estimatedMinutes": 3,
+    "tags": [
+      "طول"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_aksiya-talis_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "ABC مثلث حيث AB = 5 و AC = 10، M من [AB] حيث AM = 3، و N نقطة من [AC]."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما الطول AN الذي يجعل (MN) يوازي (BC)؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-JAMA-BADAL-DARB",
+          "value": "8"
+        },
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "50/3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "اكتب تساوي النسبتين الذي يجعل المستقيمين متوازيين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المجهول يظهر في إحدى النسبتين: استعمل الجداء المتصالب."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اقسم الجداء على العدد الثالث، ثم تحقّق من النسبتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3}{5} = \\dfrac{AN}{10}$ ومنه $AN = 6$",
+        "incorrect": "اكتب تساوي النسبتين من جديد ثم أعد الجداء المتصالب."
+      }
+    }
+  ]
+}

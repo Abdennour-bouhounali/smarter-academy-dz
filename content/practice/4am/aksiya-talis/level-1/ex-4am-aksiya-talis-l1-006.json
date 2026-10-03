@@ -1,0 +1,162 @@
+{
+  "id": "ex-4am-aksiya-talis-l1-006",
+  "lessonCode": "aksiya-talis",
+  "level": 1,
+  "metadata": {
+    "title": "تمرين 12 — النسبتان",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نسبة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-12",
+      "page": 111,
+      "section": "أوظّف تعلّماتي",
+      "number": 12
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 111): في الشكل، A و E و C على استقامة، و D و E و B على استقامة (E بين النقطتين في كل مرة): EA = 1,2 ، EC = 1,8 ، ED = 3,2 ، EB = 4,8.",
+    "figure": {
+      "points": {
+        "E": [
+          0,
+          0
+        ],
+        "A": [
+          -0.6,
+          1.04
+        ],
+        "C": [
+          0.9,
+          -1.56
+        ],
+        "D": [
+          -3.09,
+          -0.83
+        ],
+        "B": [
+          4.64,
+          1.24
+        ]
+      },
+      "segments": [
+        {
+          "from": "E",
+          "to": "A",
+          "label": "1,2"
+        },
+        {
+          "from": "E",
+          "to": "C",
+          "label": "1,8"
+        },
+        {
+          "from": "E",
+          "to": "D",
+          "label": "3,2"
+        },
+        {
+          "from": "E",
+          "to": "B",
+          "label": "4,8"
+        },
+        [
+          "A",
+          "D"
+        ],
+        [
+          "B",
+          "C"
+        ]
+      ],
+      "ariaLabel": "A و E و C على استقامة، D و E و B على استقامة، EA = 1,2 و EC = 1,8 و ED = 3,2 و EB = 4,8",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب $\\dfrac{EA}{EC}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد: كسر غير قابل للاختزال أو عدد عشري بالفاصلة",
+      "expectedAnswer": "2/3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "3/2"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النقطة المشتركة بين المستقيمين، ثم الطولين المعنيين على المستقيم نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "النسبة: طول يبدأ من النقطة المشتركة مقسوما على الطول الموافق له على المستقيم نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب الكسر ثم اختزله (أو احسب قيمته المضبوطة)."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{1{,}2}{1{,}8} = \\dfrac{12}{18} = \\dfrac{2}{3}$",
+        "incorrect": "راجع: من أي نقطة يبدأ كل طول؟ وهل اختزلت الكسر؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب $\\dfrac{ED}{EB}$ :",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد: كسر غير قابل للاختزال أو عدد عشري بالفاصلة",
+      "expectedAnswer": "2/3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "3/2"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد النقطة المشتركة بين المستقيمين، ثم الطولين المعنيين على المستقيم نفسه."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "النسبة: طول يبدأ من النقطة المشتركة مقسوما على الطول الموافق له على المستقيم نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب الكسر ثم اختزله (أو احسب قيمته المضبوطة)."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3{,}2}{4{,}8} = \\dfrac{2}{3}$ : النسبتان متساويتان، فـ $(BC) \\parallel (AD)$ .",
+        "incorrect": "راجع: من أي نقطة يبدأ كل طول؟ وهل اختزلت الكسر؟"
+      }
+    }
+  ]
+}

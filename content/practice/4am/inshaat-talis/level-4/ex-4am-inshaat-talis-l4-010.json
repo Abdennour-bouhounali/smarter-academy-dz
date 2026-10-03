@@ -1,0 +1,191 @@
+{
+  "id": "ex-4am-inshaat-talis-l4-010",
+  "lessonCode": "inshaat-talis",
+  "level": 4,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 4 (ص 112) — الطول NM",
+    "estimatedMinutes": 6,
+    "tags": [
+      "أؤكّد تعلّماتي",
+      "تقسيم قطعة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 112,
+      "section": "أؤكّد تعلّماتي",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: نختار تدريجا منتظما على [AB] ونرسم مستقيمات موازية لـ (BC)، كما هو مبيّن في الشكل: [AB] مقسمة إلى 5 قطع متقايسة و M النقطة الثالثة من A، و N على [AC]. نعلم أنّ $CB = 10\\,\\mathrm{cm}$ .",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          10,
+          0
+        ],
+        "C": [
+          7,
+          5
+        ],
+        "M": [
+          6,
+          0
+        ],
+        "N": [
+          4.199999999999999,
+          3
+        ],
+        "g1": [
+          2,
+          0
+        ],
+        "g2": [
+          4,
+          0
+        ],
+        "g4": [
+          8,
+          0
+        ],
+        "h1": [
+          1.4,
+          1
+        ],
+        "h2": [
+          2.8,
+          2
+        ],
+        "h4": [
+          5.6,
+          4
+        ]
+      },
+      "segments": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "A",
+          "C"
+        ],
+        {
+          "from": "B",
+          "to": "C",
+          "arrows": 1,
+          "tone": "indigo"
+        },
+        {
+          "from": "g1",
+          "to": "h1",
+          "arrows": 1,
+          "tone": "indigo"
+        },
+        {
+          "from": "g2",
+          "to": "h2",
+          "arrows": 1,
+          "tone": "indigo"
+        },
+        {
+          "from": "M",
+          "to": "N",
+          "arrows": 1,
+          "tone": "indigo"
+        },
+        {
+          "from": "g4",
+          "to": "h4",
+          "arrows": 1,
+          "tone": "indigo"
+        },
+        {
+          "from": "A",
+          "to": "g1",
+          "ticks": 1
+        },
+        {
+          "from": "g1",
+          "to": "g2",
+          "ticks": 1
+        },
+        {
+          "from": "g2",
+          "to": "M",
+          "ticks": 1
+        },
+        {
+          "from": "M",
+          "to": "g4",
+          "ticks": 1
+        },
+        {
+          "from": "g4",
+          "to": "B",
+          "ticks": 1
+        }
+      ],
+      "hidden": [
+        "g1",
+        "g2",
+        "g4",
+        "h1",
+        "h2",
+        "h4"
+      ],
+      "labels": {
+        "A": "sw",
+        "B": "se",
+        "C": "n",
+        "M": "s",
+        "N": "nw"
+      },
+      "ariaLabel": "مثلث ABC، الضلع [AB] مقسم بتدريج منتظم إلى 5 قطع متقايسة و M النقطة الثالثة من A، وموازيات للمستقيم (BC) تقطع [AC]، و N على [AC]",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "NM بالسنتيمتر:",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "6",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-JUZ-KULL",
+          "value": "4"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$(MN) // (BC)$ : $\\dfrac{NM}{CB} = \\dfrac{AM}{AB}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "التدريج منتظم و M الثالثة من خمس."
+        }
+      ],
+      "feedback": {
+        "correct": "$5 \\times NM = 3 \\times CB = 30$ ، فـ $NM = 6$ .",
+        "incorrect": "$\\dfrac{AM}{AB} = \\dfrac{3}{5}$ لا $\\dfrac{2}{5}$ ."
+      }
+    }
+  ]
+}

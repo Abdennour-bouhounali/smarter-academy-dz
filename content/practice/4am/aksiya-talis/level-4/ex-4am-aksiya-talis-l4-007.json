@@ -1,0 +1,183 @@
+{
+  "id": "ex-4am-aksiya-talis-l4-007",
+  "lessonCode": "aksiya-talis",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 14 — فيثاغورس ثم الخاصية العكسية",
+    "estimatedMinutes": 3,
+    "tags": [
+      "فيثاغورس"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-14",
+      "page": 111,
+      "section": "أوظّف تعلّماتي",
+      "number": 14
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 111): (d₁) و (d₂) متعامدان في O، A و C على (d₁) من جهتي O، D و B على (d₂) من جهتي O: OC = 4 ، DC = 5 ، OB = 1,5 ، AB = 2,5.",
+    "figure": {
+      "points": {
+        "O": [
+          0,
+          0
+        ],
+        "A": [
+          -2,
+          0
+        ],
+        "C": [
+          4,
+          0
+        ],
+        "D": [
+          0,
+          3
+        ],
+        "B": [
+          0,
+          -1.5
+        ]
+      },
+      "lines": [
+        {
+          "through": [
+            "A",
+            "C"
+          ],
+          "extend": [
+            0.12,
+            0.08
+          ]
+        },
+        {
+          "through": [
+            "B",
+            "D"
+          ],
+          "extend": [
+            0.1,
+            0.1
+          ]
+        }
+      ],
+      "segments": [
+        {
+          "from": "O",
+          "to": "C",
+          "label": "4"
+        },
+        {
+          "from": "D",
+          "to": "C",
+          "label": "5"
+        },
+        {
+          "from": "O",
+          "to": "B",
+          "label": "1,5"
+        },
+        {
+          "from": "A",
+          "to": "B",
+          "label": "2,5"
+        }
+      ],
+      "rightAngles": [
+        [
+          "C",
+          "O",
+          "D"
+        ]
+      ],
+      "ariaLabel": "مستقيمان متعامدان في O: A و C على الأول من جهتي O، D و B على الثاني من جهتي O؛ OC = 4 و DC = 5 و OB = 1,5 و AB = 2,5",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب OD:",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-JAMA-BADAL-DARB",
+          "value": "1"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم الشكل وضع عليه الأطوال المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الطول المطلوب جزء من قطعة أو مجموع قطعتين على المستقيم نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع أو اطرح حسب موقع النقطة بين الأخريين."
+        }
+      ],
+      "feedback": {
+        "correct": "$OD^2 = 5^2 - 4^2 = 9$ إذن $OD = 3$",
+        "incorrect": "راجع موقع النقطة: هل الطول جزء أم مجموع؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب OA:",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "2",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-JAMA-BADAL-DARB",
+          "value": "1"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم الشكل وضع عليه الأطوال المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الطول المطلوب جزء من قطعة أو مجموع قطعتين على المستقيم نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اجمع أو اطرح حسب موقع النقطة بين الأخريين."
+        }
+      ],
+      "feedback": {
+        "correct": "$OA^2 = 2{,}5^2 - 1{,}5^2 = 4$ إذن $OA = 2$ ، و $\\dfrac{OA}{OC} = \\dfrac{OB}{OD} = \\dfrac{1}{2}$ : (AB)//(DC).",
+        "incorrect": "راجع موقع النقطة: هل الطول جزء أم مجموع؟"
+      }
+    }
+  ]
+}

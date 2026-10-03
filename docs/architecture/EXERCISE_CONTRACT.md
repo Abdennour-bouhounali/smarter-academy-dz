@@ -420,6 +420,43 @@ textbook QCM with two or three correct options becomes ONE choice among combinat
 evaluator; `names: ['a', 'b']` for the textbook's (a ; b) and (d ; t)). New misconceptions: `MISC-JUMLA-*`,
 `MISC-TAWID-*`, `MISC-JAM-*`, `MISC-TAKHFID-NISBA` (`content/practice/misconceptions.json`).
 
+**Unit 9 « خاصية طالس » (2026-10-02) — a statement may carry a drawn GEOMETRIC FIGURE.** Geometry exercises
+depend on a figure, and the practice player had only `visual` (a `CoordPlane`: a repère with axes). An exercise
+statement may now carry **`statement.figure`**, a DECLARATIVE figure drawn in SVG by the shared
+`lessons/common/components/GeoFigure.jsx` (data model and layout in `geoFigure.js`):
+
+```json
+"figure": {
+  "points": { "A": [0, 4], "B": [-2, 0], "C": [3, 0], "M": [-1, 2], "N": [1.5, 2] },
+  "segments": [["A", "B"], ["A", "C"], { "from": "B", "to": "C", "label": "10" },
+               { "from": "M", "to": "N", "label": "x", "arrows": 1 }],
+  "ariaLabel": "مثلث ABC و (MN) يوازي (BC)"
+}
+```
+
+Points are named, in free units with y UP; `segments` (label, `ticks` 1–3 for equal lengths, `arrows` 1–2 for
+parallels, `dashed`, `bold`, `tone`), `lines` (`through` two points, `name` « (d) », `extend`), `rays`,
+`polygons` (tinted triangles), `rightAngles` (`[a, vertex, b]`), `angles` (`at`/`from`/`to`, `label` « 40° »),
+`labels` (forced label directions), `hidden` (helper points), `ariaLabel` (ARABIC, required), `maxWidth`,
+`caption`. Point names and lengths are LTR text inside the SVG. It is rendered by `ExerciseStatement` (practice
+player, daily challenge question and review — the server's `ChallengeQuestionPresenter` passes `figure` like
+`visual`), and `validate:exercises` runs `validateGeoFigure` on it (unknown key, unknown point, unknown tone or a
+missing Arabic `ariaLabel` fail). **Rule:** a statement that says « في الشكل المقابل » / « لاحظ الشكل » carries a
+`figure`; otherwise everything the question needs is stated in words. Lessons use the same component for the
+textbook's figures (one drawing language for the lesson and its bank).
+Inside a `<p>` (a `BossFinal` question prompt) pass `inline`: the figure renders as `<span>` blocks instead of
+`<figure>`/`<figcaption>` (otherwise React reports invalid DOM nesting). Labels are drawn at 13–14 px on a layout normalised to
+~300 units, so keep `maxWidth` close to the figure's natural width (≥ ~300 px) — a smaller box makes the letters unreadable. The
+unit-9 banks generate their `statement.figure` from the lesson's own `content/figures.js` (one drawing source for lesson and bank).
+
+The four unit-9 banks (4 × 50 exercises, `rational` and `choice`) test the REASONING of a figure or a construction: equal ratios,
+a fourth proportional, k and reduction / enlargement, « parallel or not » with the order of the points, how many equal marks, which
+mark to join, AM/AB from MA/MB, inside or outside the segment, a constructed length (√ compared on exact squares in the oracle).
+New misconceptions `MISC-TALIS-*` (`content/practice/misconceptions.json`): the segment instead of the side in a ratio, an inverted
+ratio, adding instead of multiplying by k, k inverted, the area multiplied by k, Thales without parallels, the forgotten order
+condition, equal approximations as a proof, marks counted instead of parts, MA/MB vs AM/AB, the diameter for the radius, a result
+unfit for reality, and the synthesis / construction ones added by their authors.
+
 ## Non-textbook sources — worksheets (2026-09-24)
 
 The textbook is the default source, but the owner may bring **other official

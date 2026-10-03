@@ -1,0 +1,133 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l3-008",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — أي مساواة صحيحة؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "النسب المتساوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P1",
+      "modelledOn": "know-1"
+    }
+  },
+  "statement": {
+    "content": "D من $[AB]$ و E من $[AC]$ و $(DE) \\parallel (BC)$ .",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          2.5,
+          4.33
+        ],
+        "C": [
+          5.909,
+          1.042
+        ],
+        "D": [
+          1.5,
+          2.598
+        ],
+        "E": [
+          3.545,
+          0.625
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "D"
+        },
+        {
+          "from": "D",
+          "to": "B"
+        },
+        {
+          "from": "A",
+          "to": "E"
+        },
+        {
+          "from": "E",
+          "to": "C"
+        },
+        {
+          "from": "B",
+          "to": "C",
+          "arrows": 1
+        },
+        {
+          "from": "D",
+          "to": "E",
+          "arrows": 1,
+          "tone": "indigo"
+        }
+      ],
+      "ariaLabel": "D من [AB] و E من [AC] و (DE) يوازي (BC)",
+      "maxWidth": 260,
+      "labels": {
+        "A": "w"
+      }
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المساواة الصحيحة هي:",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{AE}{AC} = \\dfrac{DE}{BC}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{AD}{DB} = \\dfrac{DE}{BC}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-QITAA-BADAL-DILA"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{DE}{BC} = \\dfrac{AC}{AE}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الرأس المشترك والمستقيمين المتوازيين في الشكل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في كل نسبة: ضلع من المثلث الأول على الضلع الموافق له في المثلث الثاني، بالترتيب نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب رؤوس المثلثين بالترتيب نفسه، رأسا تحت رأس، ثم اقرأ النسب."
+        }
+      ],
+      "feedback": {
+        "correct": "المثلثان ADE و ABC: $\\dfrac{AD}{AB} = \\dfrac{AE}{AC} = \\dfrac{DE}{BC}$ .",
+        "incorrect": "راجع الرؤوس المتقابلة: الرأس المشترك، ثم طرفا المستقيمين المتوازيين."
+      }
+    }
+  ]
+}

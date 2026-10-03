@@ -1,0 +1,75 @@
+{
+  "id": "ex-4am-aksiya-talis-l4-005",
+  "lessonCode": "aksiya-talis",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — أين نضع C′؟",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نفس الترتيب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_aksiya-talis_P2",
+      "modelledOn": "know-3"
+    }
+  },
+  "statement": {
+    "content": "(d) و (d′) متقاطعان في A. B′ بين A و B حيث $\\dfrac{AB'}{AB} = \\dfrac{2}{5}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أين نضع C′ على (d′) ليكون (B′C′) موازيا لـ (BC)؟",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "بين A و C ، حيث $AC' = \\dfrac{2}{5}AC$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "من الجهة الأخرى للنقطة A ، حيث $AC' = \\dfrac{2}{5}AC$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TARTIB-MANSI"
+        },
+        {
+          "id": "C",
+          "content": "في أي جهة من A، تكفي النسبة $\\dfrac{2}{5}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TARTIB-MANSI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ارسم المستقيمين المتقاطعين وضع النقط في المواقع المعطاة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "نفس الترتيب: موقع النقطة الأولى بالنسبة إلى الرأس والنقطة الأخرى يماثل موقع الثانية."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "انظر هل النقطتان في الجهة نفسها من الرأس أم في جهتين مختلفتين."
+        }
+      ],
+      "feedback": {
+        "correct": "تساوي النسبتين ونفس الترتيب: C′ في جهة C من A كما B′ في جهة B.",
+        "incorrect": "ارسم الشكل: في أي جهة من الرأس تقع كل نقطة؟"
+      }
+    }
+  ]
+}

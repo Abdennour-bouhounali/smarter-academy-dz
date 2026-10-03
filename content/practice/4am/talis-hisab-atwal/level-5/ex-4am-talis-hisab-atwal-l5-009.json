@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l5-009",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 5,
+  "metadata": {
+    "title": "وضعية — مجسّم مصغّر",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تصغير",
+      "وضعية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P3",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "رسم مهندس مخطط ساحة مثلثة ABC بتصغير في وضعية طالس: المثلث AMN على المخطط تصغير للساحة بمعامل $k = \\dfrac{1}{200}$ . طول الضلع $[MN]$ على المخطط $9\\,\\mathrm{cm}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "طول الضلع الموافق BC في الساحة بالمتر هو:",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "عدد",
+      "expectedAnswer": "18",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-MUAMIL-MAQLUB",
+          "value": "9/20000"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل التناسبية هو طول في المثلث الناتج مقسوما على الطول الموافق له في المثلث الأصلي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذا كان المعامل أصغر من الواحد فهو تصغير، وإذا كان أكبر منه فهو تكبير."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب كل طول في المعامل نفسه، ولا تُضف العدد نفسه إلى كل طول."
+        }
+      ],
+      "feedback": {
+        "correct": "$BC = 9 \\div \\dfrac{1}{200} = 1800\\,\\mathrm{cm} = 18\\,\\mathrm{m}$ .",
+        "incorrect": "راجع اتجاه النسبة: المثلث الناتج في البسط والمثلث الأصلي في المقام."
+      }
+    }
+  ]
+}

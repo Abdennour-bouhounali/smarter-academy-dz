@@ -1,0 +1,66 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l2-003",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 2,
+  "metadata": {
+    "title": "تدريب — أسطوانة محاطة: الارتفاع",
+    "estimatedMinutes": 4,
+    "tags": [
+      "مقطع محوري",
+      "معادلة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "أسطوانة دوران محاطة بمخروط دوران ارتفاعه $12\\,\\mathrm{cm}$ ونصف قطر قاعدته $4\\,\\mathrm{cm}$ (قاعدتها على قاعدة المخروط)، ونصف قطرها $r = 3\\,\\mathrm{cm}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما ارتفاع الأسطوانة $h$ (بالسنتيمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "3",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$\\dfrac{r}{4} = \\dfrac{12 - h}{12}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "عوّض r بقيمته."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة في h."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3}{4} = \\dfrac{12 - h}{12}$ أي $12 - h = 9$ ومنه $h = 3\\,\\mathrm{cm}$ .",
+        "incorrect": "المجهول h ، والضلع الموافق في المثلث الصغير هو $12 - h$ ."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 2,
+      "misconceptionSignatures": [
+        {
+          "value": "9",
+          "id": "MISC-TALIS-QITAA-BADAL-DILA"
+        }
+      ]
+    }
+  ]
+}

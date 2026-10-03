@@ -1,0 +1,77 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l5-008",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — نسبتان متساويتان وترتيب مختلف",
+    "estimatedMinutes": 7,
+    "tags": [
+      "الخاصية العكسية",
+      "الترتيب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P1",
+      "modelledOn": "act-2"
+    }
+  },
+  "statement": {
+    "content": "المستقيمان (BM) و (CN) متقاطعان في A. A بين B و M، و N بين A و C. $AB = 4$ ، $AM = 2$ ، $AC = 6$ ، $AN = 3$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المستقيمان (MN) و (BC):",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "متوازيان لأنّ $\\dfrac{AM}{AB} = \\dfrac{AN}{AC} = \\dfrac{1}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TARTIB-MANSI"
+        },
+        {
+          "id": "B",
+          "content": "غير متوازيين: النسبتان متساويتان لكن النقط ليست مرتبة بنفس الترتيب",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "غير متوازيين لأنّ النسبتين مختلفتان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-AKS-BIDUN-TASAWI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب النسبتين."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "أين M بالنسبة إلى A و B؟ وأين N بالنسبة إلى A و C؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "شرطا الخاصية العكسية: النسب والترتيب."
+        }
+      ],
+      "feedback": {
+        "correct": "النسبتان $\\dfrac{1}{2}$ لكن M من الجهة الأخرى للنقطة A و N من جهة C: الترتيب مختلف، فلا توازي.",
+        "incorrect": "تساوي النسبتين لا يكفي دون الترتيب."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 5
+    }
+  ]
+}

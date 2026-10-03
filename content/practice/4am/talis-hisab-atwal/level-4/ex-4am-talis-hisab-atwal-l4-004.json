@@ -1,0 +1,123 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l4-004",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 4,
+  "metadata": {
+    "title": "أستعدّ 4 — احسب BE",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حساب طول"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "prep",
+      "page": 103,
+      "section": "أستعدّ",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 103): ABC مثلث، D من $[AC]$ و E من $[BC]$ ، و $(AB) \\parallel (DE)$ ؛ $AD = 3$ ، $DC = 6$ ، $CE = 8$ و $AB = 7$ .",
+    "figure": {
+      "points": {
+        "C": [
+          0,
+          0
+        ],
+        "A": [
+          -3.2,
+          4.5
+        ],
+        "B": [
+          4.2,
+          3.6
+        ],
+        "D": [
+          -2.133,
+          3
+        ],
+        "E": [
+          2.8,
+          2.4
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "D",
+          "label": "3"
+        },
+        {
+          "from": "D",
+          "to": "C",
+          "label": "6"
+        },
+        {
+          "from": "C",
+          "to": "E",
+          "label": "8"
+        },
+        {
+          "from": "E",
+          "to": "B"
+        },
+        {
+          "from": "A",
+          "to": "B",
+          "label": "7",
+          "arrows": 1
+        },
+        {
+          "from": "D",
+          "to": "E",
+          "arrows": 1
+        }
+      ],
+      "ariaLabel": "المثلث ABC، D من [AC] و E من [BC]، و (AB) يوازي (DE)؛ AD = 3 و DC = 6 و CE = 8 و AB = 7",
+      "maxWidth": 240
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب BE.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "4",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-QITAA-BADAL-DILA",
+          "value": "12"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{CD}{CA} = \\dfrac{CE}{CB}$ أي $\\dfrac{6}{9} = \\dfrac{8}{CB}$ ومنه $CB = 12$ و $BE = 4$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    }
+  ]
+}

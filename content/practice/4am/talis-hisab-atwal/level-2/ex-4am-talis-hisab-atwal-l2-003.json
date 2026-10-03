@@ -1,0 +1,131 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l2-003",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 2,
+  "metadata": {
+    "title": "تمرين 2 — احسب BC",
+    "estimatedMinutes": 3,
+    "tags": [
+      "حساب طول"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-2",
+      "page": 110,
+      "section": "خاصية طالس",
+      "number": 2
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 110): A و C و F على استقامة و A و B و E على استقامة، و $(EF) \\parallel (BC)$ ؛ $AC = 4{,}5$ ، $AF = 9$ ، $AB = 3$ ، $BE = 3$ و $FE = 10$ .",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "E": [
+          2.817,
+          -5.298
+        ],
+        "F": [
+          -4.225,
+          -7.947
+        ],
+        "B": [
+          1.409,
+          -2.649
+        ],
+        "C": [
+          -2.112,
+          -3.974
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B",
+          "label": "3"
+        },
+        {
+          "from": "B",
+          "to": "E",
+          "label": "3"
+        },
+        {
+          "from": "A",
+          "to": "C",
+          "label": "4,5"
+        },
+        {
+          "from": "C",
+          "to": "F"
+        },
+        {
+          "from": "E",
+          "to": "F",
+          "label": "10",
+          "arrows": 1
+        },
+        {
+          "from": "B",
+          "to": "C",
+          "arrows": 1,
+          "tone": "indigo"
+        }
+      ],
+      "ariaLabel": "A و B و E على استقامة و A و C و F على استقامة و (EF) يوازي (BC)؛ AB = 3 و BE = 3 و AC = 4,5 و AF = 9 و EF = 10",
+      "maxWidth": 260,
+      "labels": {
+        "A": "w"
+      }
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب BC.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-QITAA-BADAL-DILA",
+          "value": "10"
+        },
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "20"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$AE = 6$ : $\\dfrac{AB}{AE} = \\dfrac{BC}{EF}$ أي $\\dfrac{3}{6} = \\dfrac{BC}{10}$ ومنه $BC = 5$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    }
+  ]
+}

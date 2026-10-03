@@ -1,0 +1,61 @@
+{
+  "id": "ex-4am-inshaat-talis-l4-001",
+  "lessonCode": "inshaat-talis",
+  "level": 4,
+  "metadata": {
+    "title": "تمرين 19 (ص 111) — P خارج [MN]",
+    "estimatedMinutes": 6,
+    "tags": [
+      "تمرين 19",
+      "نقطة خارج القطعة"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-19",
+      "page": 111,
+      "section": "وضع نقط على مستقيم",
+      "number": 19
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: ضع نقطتين متمايزتين M و N، أنشئ نقطة P من (MN) حيث $\\dfrac{PM}{PN} = \\dfrac{11}{7}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "إذا كانت P خارج [MN] فإن $\\dfrac{MP}{MN}$ تساوي (كسر):",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "كسر غير قابل للاختزال",
+      "expectedAnswer": "11/4",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-JUZ-KULL",
+          "value": "11/18"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "PM أكبر من PN : P أقرب إلى N."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "خارج [MN] : $MN = PM - PN$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "MN أربعة أجزاء ($11 - 7$) و MP أحد عشر: $\\dfrac{MP}{MN} = \\dfrac{11}{4}$ .",
+        "incorrect": "$\\dfrac{11}{18}$ للنقطة الداخلية؛ خارج القطعة نطرح ولا نجمع."
+      }
+    }
+  ]
+}

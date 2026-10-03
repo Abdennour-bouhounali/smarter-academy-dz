@@ -1,0 +1,66 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l3-008",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 3,
+  "metadata": {
+    "title": "تدريب — مصباح وظلّ",
+    "estimatedMinutes": 5,
+    "tags": [
+      "طريقة الظل",
+      "خاصية طالس"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P1",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "مصباح في أعلى عمود شاقولي. يقف أحمد (طوله $1{,}8\\,\\mathrm{m}$ ) على بعد $4\\,\\mathrm{m}$ من قدم العمود، فيصل ظلّه إلى $2\\,\\mathrm{m}$ خلفه، على استقامة واحدة مع قدم العمود."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما ارتفاع المصباح (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "5.4",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "رأس المثلثين نهاية ظلّ أحمد."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المسافة من نهاية الظلّ إلى العمود $4 + 2$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "$\\dfrac{h}{1{,}8} = \\dfrac{6}{2}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$h = 1{,}8 \\times \\dfrac{6}{2} = 5{,}4\\,\\mathrm{m}$ .",
+        "incorrect": "نقيس من نهاية الظلّ إلى قدم العمود."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 3,
+      "misconceptionSignatures": [
+        {
+          "value": "3.6",
+          "id": "MISC-TALIS-ZILL-RAS-MUSHTARAK"
+        }
+      ]
+    }
+  ]
+}

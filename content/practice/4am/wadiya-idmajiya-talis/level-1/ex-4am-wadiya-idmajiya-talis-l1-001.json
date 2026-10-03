@@ -1,0 +1,197 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l1-001",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 1,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 1 — طولان في وضعية طالس",
+    "estimatedMinutes": 3,
+    "tags": [
+      "خاصية طالس"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 112,
+      "section": "أؤكّد تعلّماتي",
+      "number": 1
+    }
+  },
+  "statement": {
+    "content": "في الشكل: ABC مثلث، I من [AB] و J من [AC] ، و (BC)//(IJ). $AI = 3$ ، $IB = 2$ ، $JC = 3$ ، $BC = 10$ ، $IJ = x$ ، $AJ = y$ .",
+    "figure": {
+      "points": {
+        "A": [
+          2.5,
+          5
+        ],
+        "B": [
+          0,
+          0
+        ],
+        "C": [
+          7,
+          0
+        ],
+        "I": [
+          1,
+          2
+        ],
+        "J": [
+          5.2,
+          2
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "I",
+          "label": "3"
+        },
+        {
+          "from": "I",
+          "to": "B",
+          "label": "2"
+        },
+        {
+          "from": "A",
+          "to": "J",
+          "label": "y"
+        },
+        {
+          "from": "J",
+          "to": "C",
+          "label": "3"
+        },
+        {
+          "from": "B",
+          "to": "C",
+          "label": "10",
+          "arrows": 1
+        },
+        {
+          "from": "I",
+          "to": "J",
+          "label": "x",
+          "arrows": 1
+        }
+      ],
+      "labels": {
+        "A": "n",
+        "B": "sw",
+        "C": "se",
+        "I": "w",
+        "J": "e"
+      },
+      "ariaLabel": "مثلث ABC، النقطة I من [AB] و J من [AC] و (IJ) يوازي (BC)؛ AI = 3 و IB = 2 و JC = 3 و BC = 10 و IJ = x و AJ = y",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "قيمة $x$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "6",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$1{,}5$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-QITAA-BADAL-DILA"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{3}{2}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-QITAA-BADAL-DILA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$AB = AI + IB$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "المثلثان AIJ و ABC في وضعية طالس."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $\\dfrac{AI}{AB} = \\dfrac{IJ}{BC}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{3}{5} = \\dfrac{x}{10}$ إذن $x = 6$ .",
+        "incorrect": "نقارن AI بالضلع AB كاملا، لا بالقطعة IB."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1
+    },
+    {
+      "id": "q2",
+      "statement": "قيمة $y$ هي:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "6",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-QITAA-BADAL-DILA"
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{9}{2}$ و $4{,}5$ كلتاهما صحيحة (عدد واحد)",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{9}{2}$ فقط ( $4{,}5$ خاطئة)",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-KITABA-MUTAKAFIA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$AC = y + 3$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{AJ}{AC} = \\dfrac{AI}{AB}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "حلّ المعادلة في y ثم قارن الكتابتين."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{y}{y + 3} = \\dfrac{3}{5}$ أي $5y = 3y + 9$ ومنه $y = \\dfrac{9}{2} = 4{,}5$ : كتابتان لعدد واحد.",
+        "incorrect": "لا ننسى أنّ AC يساوي $y + 3$ ، وأنّ لعدد واحد كتابات عدّة."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 2
+    }
+  ]
+}

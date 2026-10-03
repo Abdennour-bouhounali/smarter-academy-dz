@@ -1,0 +1,174 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l5-008",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 5,
+  "metadata": {
+    "title": "وضعية — النسب الثلاث للحساب",
+    "estimatedMinutes": 4,
+    "tags": [
+      "النسب المتساوية"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P1",
+      "modelledOn": "method-lengths"
+    }
+  },
+  "statement": {
+    "content": "المستقيمان $(EG)$ و $(FH)$ متقاطعان في O، G و H من الجهة الأخرى للنقطة O، و $(EF) \\parallel (GH)$ ؛ $OE = 4$ ، $OG = 2$ ، $EF = 5$ .",
+    "figure": {
+      "points": {
+        "O": [
+          0,
+          0
+        ],
+        "E": [
+          3.277,
+          2.294
+        ],
+        "F": [
+          4.532,
+          -2.113
+        ],
+        "G": [
+          -1.639,
+          -1.147
+        ],
+        "H": [
+          -2.266,
+          1.056
+        ]
+      },
+      "segments": [
+        {
+          "from": "O",
+          "to": "E",
+          "label": "4"
+        },
+        {
+          "from": "O",
+          "to": "G",
+          "label": "2"
+        },
+        {
+          "from": "O",
+          "to": "F"
+        },
+        {
+          "from": "O",
+          "to": "H"
+        },
+        {
+          "from": "E",
+          "to": "F",
+          "label": "5",
+          "arrows": 1
+        },
+        {
+          "from": "G",
+          "to": "H",
+          "arrows": 1,
+          "tone": "indigo"
+        }
+      ],
+      "ariaLabel": "(EG) و (FH) متقاطعان في O، و (EF) يوازي (GH)؛ OE = 4 و OG = 2 و EF = 5",
+      "maxWidth": 220
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "لحساب GH نحتفظ بالمساواة:",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{OG}{OE} = \\dfrac{GH}{EF}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{OH}{OF} = \\dfrac{GH}{EF}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
+        },
+        {
+          "id": "C",
+          "content": "$\\dfrac{OG}{OE} = \\dfrac{EF}{GH}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "حدّد الرأس المشترك والمستقيمين المتوازيين في الشكل."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "في كل نسبة: ضلع من المثلث الأول على الضلع الموافق له في المثلث الثاني، بالترتيب نفسه."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب رؤوس المثلثين بالترتيب نفسه، رأسا تحت رأس، ثم اقرأ النسب."
+        }
+      ],
+      "feedback": {
+        "correct": "المساواة المناسبة فيها GH وثلاثة أطوال معلومة: $\\dfrac{OG}{OE} = \\dfrac{GH}{EF}$ ، ومنه $GH = 2{,}5$ .",
+        "incorrect": "راجع الرؤوس المتقابلة: الرأس المشترك، ثم طرفا المستقيمين المتوازيين."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب GH.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "2,5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "10"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{2}{4} = \\dfrac{GH}{5}$ ومنه $GH = 2{,}5$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    }
+  ]
+}

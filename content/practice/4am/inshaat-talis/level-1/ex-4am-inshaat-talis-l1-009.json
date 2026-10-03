@@ -1,0 +1,54 @@
+{
+  "id": "ex-4am-inshaat-talis-l1-009",
+  "lessonCode": "inshaat-talis",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — نسبة الجزأين",
+    "estimatedMinutes": 3,
+    "tags": [
+      "نسبة معلومة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_inshaat-talis_P1",
+      "modelledOn": "method-ratio-point"
+    }
+  },
+  "statement": {
+    "content": "M نقطة من [AB] حيث $\\dfrac{MA}{MB} = \\dfrac{2}{3}$ : MA جزآن و MB ثلاثة أجزاء متساوية."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "إلى كم جزءًا متساويًا تنقسم القطعة [AB] ؟",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد طبيعي",
+      "expectedAnswer": "5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-JUZ-KULL",
+          "value": "3"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "$AB = MA + MB$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$2 + 3 = 5$ أجزاء، و $\\dfrac{AM}{AB} = \\dfrac{2}{5}$ .",
+        "incorrect": "اجمع أجزاء MA وأجزاء MB."
+      }
+    }
+  ]
+}

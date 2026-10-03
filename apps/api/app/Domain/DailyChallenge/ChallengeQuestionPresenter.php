@@ -56,6 +56,7 @@ class ChallengeQuestionPresenter
             'statement' => [
                 'content' => $exercise['statement']['content'] ?? '',
                 'visual' => $exercise['statement']['visual'] ?? null,
+                'figure' => $exercise['statement']['figure'] ?? null,
             ],
             'question' => $public,
         ];

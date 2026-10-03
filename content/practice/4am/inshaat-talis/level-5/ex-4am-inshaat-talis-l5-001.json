@@ -1,0 +1,60 @@
+{
+  "id": "ex-4am-inshaat-talis-l5-001",
+  "lessonCode": "inshaat-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تمرين 21 (ص 113) — المساحة",
+    "estimatedMinutes": 6,
+    "tags": [
+      "تمرين 21"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "ex-21",
+      "page": 113,
+      "section": "أتعمّق",
+      "number": 21
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: EFG مثلث قائم في E حيث $EF = 4\\,\\mathrm{cm}$ و $EG = 3\\,\\mathrm{cm}$ . L نقطة من نصف المستقيم [FE) لا تنتمي إلى [FE] و P نقطة من نصف المستقيم [GE) لا تنتمي إلى [GE] حيث $\\dfrac{EL}{EF} = \\dfrac{EP}{EG} = \\dfrac{2}{3}$ ، فـ $(GF) // (LP)$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المساحة $\\mathcal{A}_2$ للمثلث ELP بالسنتيمتر المربع (كسر):",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 5,
+      "answerType": "rational",
+      "answerFormat": "كسر غير قابل للاختزال",
+      "expectedAnswer": "8/3",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-MISAHA-K",
+          "value": "4"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "ELP قائم في E : $\\mathcal{A}_2 = \\dfrac{EL \\times EP}{2}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$EL = \\dfrac{2}{3} \\times 4$ و $EP = \\dfrac{2}{3} \\times 3$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\mathcal{A}_2 = \\dfrac{\\frac{8}{3} \\times 2}{2} = \\dfrac{8}{3} = \\left(\\dfrac{2}{3}\\right)^2 \\times 6$ .",
+        "incorrect": "المساحة تُضرب في مربع النسبة، لا في النسبة."
+      }
+    }
+  ]
+}

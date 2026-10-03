@@ -321,6 +321,15 @@ equations, divisions and algorithm chains all declare `dir="ltr"`.
   a bidi reversal corrected in the lesson.
 
 
+### Geometry names: the prime and « // » (unit 9, 2026-10-02)
+
+The prime ′ (U+2032) is a NEUTRAL bidi character: in plain Arabic text « نقطتين B′ من (d) » rendered « 'B », « (B′C′) » came out
+reversed, and the textbook's « (MN)//(BC) » at the end of a sentence rendered « (BC)//(MN) ». `utils/bidi.js › isolateMathRuns`
+now isolates a Latin letter followed by a prime and the `)//(` pair (asserted in `bidi.test.js`). Rules: a ratio or an equality of
+lengths is a `$…$` island (`$\dfrac{AB'}{AB}$`); a point name inside an Arabic sentence may stay plain text (now isolated); a lab
+label that is a point name is `<bdi dir="ltr">B′</bdi>`; inside an SVG figure (`GeoFigure`, the labs) point names and lengths carry
+`direction: ltr`.
+
 ### Spreadsheet formulas are LTR code, never KaTeX (unit 8, 2026-10-02)
 
 A spreadsheet formula (`=MAX(A1:G1)-MIN(A1:G1)`, `A1:G1`, `Histogramme({7,8,9,10},{6,1,4})`, `=ALEA()`) is **Latin LTR code**: never

@@ -131,6 +131,21 @@ export const VISUAL_THEMES = Object.freeze({
   beach: { kind: 'objects', shows: 'نفايات مجموعة على الشاطئ' },
   quiz: { kind: 'people', shows: 'مسابقة القسم: فوجان ومعدّلاهما' },
   medals: { kind: 'objects', shows: 'ميداليات ذهبية في الألعاب الأولمبية' },
+  // Unité 9 « خاصية طالس » (2026-10-02) :
+  //   cinema   la projection en plein air du quartier : un vidéoprojecteur, un écran qu'on recule (faisceau, نشاط 1)
+  //   camera   la chambre noire (un trou d'épingle) : l'image renversée de l'autre côté de A (وضعية الفراشة)
+  //   mural    l'échelle double des graffeurs du quartier : la barre doit être de niveau (الخاصية العكسية)
+  //   minaret  l'ombre de la minaret et du bâton (تحدّ, أدمج تعلّماتي)
+  //   cornet   le cornet de glace et le pot cylindrique (أدمج تعلّماتي, cône et cylindre)
+  //   river    viser par-dessus l'oued pour en estimer la largeur (أتعمّق 22)
+  cinema: { kind: 'objects', shows: 'عرض سينمائي في الحي: جهاز إسقاط وشاشة تُبعَد' },
+  camera: { kind: 'objects', shows: 'غرفة مظلمة بثقب: صورة مقلوبة' },
+  mural: { kind: 'objects', shows: 'سلّم مزدوج لرسّامي الجداريات وعارضة أفقية' },
+  minaret: { kind: 'objects', shows: 'مئذنة وعصا وظلاهما' },
+  cornet: { kind: 'objects', shows: 'مخروط مثلجات وعلبة أسطوانية داخله' },
+  river: { kind: 'objects', shows: 'تقدير عرض وادٍ بالتسديد البصري' },
+  //   tifo     la banderole géante des ultras du quartier, partagée en bandes égales (ou p : q) au compas (segment-divider)
+  tifo: { kind: 'lengths', shows: 'لافتة تيفو للأنصار تُقسَّم إلى أشرطة بالمسطرة غير المدرّجة والمدور' },
 });
 
 export const VISUAL_THEME_IDS = Object.freeze(Object.keys(VISUAL_THEMES));

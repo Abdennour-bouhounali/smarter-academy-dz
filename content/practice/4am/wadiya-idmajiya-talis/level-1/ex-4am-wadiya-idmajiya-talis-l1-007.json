@@ -1,0 +1,65 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l1-007",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — ظلّ عصا وظلّ شجرة",
+    "estimatedMinutes": 3,
+    "tags": [
+      "طريقة الظل"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P1",
+      "modelledOn": "challenge"
+    }
+  },
+  "statement": {
+    "content": "في اللحظة نفسها من يوم مشمس، عصا شاقولية طولها $1\\,\\mathrm{m}$ ظلّها $2\\,\\mathrm{m}$ ، وظلّ شجرة شاقولية $9\\,\\mathrm{m}$ (على أرض مستوية)."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ما ارتفاع الشجرة (بالمتر)؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "4.5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الشمس نفسها: الأشعة متوازية."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الارتفاع ÷ الظلّ هو نفسه للعصا وللشجرة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اكتب $\\dfrac{h}{9} = \\dfrac{1}{2}$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{h}{9} = \\dfrac{1}{2}$ إذن $h = 4{,}5\\,\\mathrm{m}$ .",
+        "incorrect": "نقارن ارتفاعا بظلّه في الحالتين، بالترتيب نفسه."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 1,
+      "misconceptionSignatures": [
+        {
+          "value": "18",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ]
+    }
+  ]
+}

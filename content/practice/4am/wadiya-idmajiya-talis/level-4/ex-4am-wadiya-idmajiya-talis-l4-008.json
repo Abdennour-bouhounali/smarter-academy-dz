@@ -1,0 +1,119 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l4-008",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — أيّ أسطوانة أكبر حجما؟",
+    "estimatedMinutes": 6,
+    "tags": [
+      "حجم",
+      "مقطع محوري"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P2",
+      "modelledOn": "situation"
+    }
+  },
+  "statement": {
+    "content": "في مخروط دوران ارتفاعه $18\\,\\mathrm{cm}$ ونصف قطر قاعدته $6\\,\\mathrm{cm}$ ، ثلاث أسطوانات محاطة (قاعدتها على قاعدته) ارتفاعاتها $3\\,\\mathrm{cm}$ و $6\\,\\mathrm{cm}$ و $9\\,\\mathrm{cm}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "أكبرها حجما هي التي ارتفاعها:",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$3\\,\\mathrm{cm}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TARBI-MANSI"
+        },
+        {
+          "id": "B",
+          "content": "$6\\,\\mathrm{cm}$",
+          "isCorrect": true
+        },
+        {
+          "id": "C",
+          "content": "$9\\,\\mathrm{cm}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-MULAAMA-WAQI"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "احسب r لكل ارتفاع."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$r = 6 \\times \\dfrac{18 - h}{18}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "قارن $r^2 h$ ."
+        }
+      ],
+      "feedback": {
+        "correct": "الأحجام $75\\pi$ و $96\\pi$ و $81\\pi$ : الأكبر عند $h = 6$ .",
+        "incorrect": "الأسطوانة الأعرض ليست بالضرورة الأكبر حجما."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "نكتب حجم هذه الأسطوانة $k\\pi\\,\\mathrm{cm}^3$ . ما قيمة $k$ ؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P2",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (المعامل k في الكتابة kπ)",
+      "expectedAnswer": "96",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "r عند $h = 6$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$r^2 \\times h$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب."
+        }
+      ],
+      "feedback": {
+        "correct": "$r = 4$ و $4^2 \\times 6 = 96$ ، أي $V = 96\\pi$ .",
+        "incorrect": "نصف القطر من مساواة طالس، ثم يُربَّع."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "24",
+          "id": "MISC-TALIS-TARBI-MANSI"
+        }
+      ]
+    }
+  ]
+}

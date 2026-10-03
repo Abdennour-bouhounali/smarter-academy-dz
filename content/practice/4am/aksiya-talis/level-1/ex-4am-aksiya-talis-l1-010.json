@@ -1,0 +1,104 @@
+{
+  "id": "ex-4am-aksiya-talis-l1-010",
+  "lessonCode": "aksiya-talis",
+  "level": 1,
+  "metadata": {
+    "title": "تدريب — الجداء المتصالب",
+    "estimatedMinutes": 3,
+    "tags": [
+      "جداء متصالب"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_aksiya-talis_P1",
+      "modelledOn": null
+    }
+  },
+  "statement": {
+    "content": "نريد أن نعرف هل $\\dfrac{2{,}4}{3} = \\dfrac{3{,}2}{4}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب الجداء $2{,}4 \\times 4$ :",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "rational",
+      "answerFormat": "عدد عشري بالفاصلة",
+      "expectedAnswer": "9,6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجداء المتصالب: البسط الأول في المقام الثاني، والمقام الأول في البسط الثاني."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب العددين كأنهما طبيعيان، ثم ضع الفاصلة حسب عدد الأرقام بعدها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بتقدير سريع: هل الناتج معقول؟"
+        }
+      ],
+      "feedback": {
+        "correct": "$2{,}4 \\times 4 = 9{,}6$",
+        "incorrect": "أعد الضرب وانتبه إلى موضع الفاصلة."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "ثم $3 \\times 3{,}2 = 9{,}6$ . إذن:",
+      "learningPoints": [
+        {
+          "code": "4am_aksiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 1,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "$\\dfrac{2{,}4}{3} = \\dfrac{3{,}2}{4}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "$\\dfrac{2{,}4}{3} \\neq \\dfrac{3{,}2}{4}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-SHAKL-BURHAN"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "الجداء المتصالب: البسط الأول في المقام الثاني، والمقام الأول في البسط الثاني."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اضرب العددين كأنهما طبيعيان، ثم ضع الفاصلة حسب عدد الأرقام بعدها."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "تحقّق بتقدير سريع: هل الناتج معقول؟"
+        }
+      ],
+      "feedback": {
+        "correct": "الجداءان المتصالبان متساويان ($9{,}6$)، فالنسبتان متساويتان.",
+        "incorrect": "أعد الضرب وانتبه إلى موضع الفاصلة."
+      }
+    }
+  ]
+}

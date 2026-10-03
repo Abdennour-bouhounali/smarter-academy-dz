@@ -1,0 +1,117 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l4-009",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 4,
+  "metadata": {
+    "title": "تدريب — ربع الضلع",
+    "estimatedMinutes": 4,
+    "tags": [
+      "معامل التناسبية",
+      "تصغير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_talis-hisab-atwal_P3",
+      "modelledOn": "know-2"
+    }
+  },
+  "statement": {
+    "content": "M نقطة من $[AB]$ حيث $AM = \\dfrac{1}{4}AB$ ، والمستقيم الذي يشمل M ويوازي $(BC)$ يقطع $[AC]$ في N ؛ $BC = 10$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب MN.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "2,5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-MUAMIL-MAQLUB",
+          "value": "40"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل التناسبية هو طول في المثلث الناتج مقسوما على الطول الموافق له في المثلث الأصلي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذا كان المعامل أصغر من الواحد فهو تصغير، وإذا كان أكبر منه فهو تكبير."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب كل طول في المعامل نفسه، ولا تُضف العدد نفسه إلى كل طول."
+        }
+      ],
+      "feedback": {
+        "correct": "$k = \\dfrac{AM}{AB} = \\dfrac{1}{4}$ ومنه $MN = \\dfrac{1}{4} \\times 10 = 2{,}5$ .",
+        "incorrect": "راجع اتجاه النسبة: المثلث الناتج في البسط والمثلث الأصلي في المقام."
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "المثلث AMN هو:",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P3",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 3,
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "تصغير للمثلث ABC بمعامل $\\dfrac{1}{4}$",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "تكبير للمثلث ABC بمعامل 4",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-MUAMIL-MAQLUB"
+        },
+        {
+          "id": "C",
+          "content": "تصغير للمثلث ABC بمعامل $\\dfrac{3}{4}$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-QITAA-BADAL-DILA"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "معامل التناسبية هو طول في المثلث الناتج مقسوما على الطول الموافق له في المثلث الأصلي."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "إذا كان المعامل أصغر من الواحد فهو تصغير، وإذا كان أكبر منه فهو تكبير."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "اضرب كل طول في المعامل نفسه، ولا تُضف العدد نفسه إلى كل طول."
+        }
+      ],
+      "feedback": {
+        "correct": "$k = \\dfrac{1}{4} < 1$ : تصغير.",
+        "incorrect": "راجع اتجاه النسبة: المثلث الناتج في البسط والمثلث الأصلي في المقام."
+      }
+    }
+  ]
+}

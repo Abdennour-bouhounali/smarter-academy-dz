@@ -1,0 +1,119 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l5-002",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — توازٍ ثم طول عبر النهر",
+    "estimatedMinutes": 7,
+    "tags": [
+      "الخاصية العكسية",
+      "مسافة غير مباشرة"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P1",
+      "modelledOn": "ex-22"
+    }
+  },
+  "statement": {
+    "content": "على ضفّة نهر: النقط O و A و C على استقامة بهذا الترتيب، والنقط O و B و D كذلك. $OA = 3\\,\\mathrm{m}$ ، $OC = 7{,}5\\,\\mathrm{m}$ ، $OB = 4\\,\\mathrm{m}$ ، $OD = 10\\,\\mathrm{m}$ ، $AB = 2{,}4\\,\\mathrm{m}$ ."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "المستقيمان (AB) و (CD):",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "متوازيان: $\\dfrac{3}{7{,}5} = \\dfrac{4}{10}$ والترتيب نفسه",
+          "isCorrect": true
+        },
+        {
+          "id": "B",
+          "content": "غير متوازيين لأنّ $OC - OA \\neq OD - OB$",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-JAMA-BADAL-DARB"
+        },
+        {
+          "id": "C",
+          "content": "لا يمكن الحكم دون AB و CD معًا",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAWAZI-GHAYR-MUTAHAQQAQ"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "قارن $\\dfrac{OA}{OC}$ و $\\dfrac{OB}{OD}$ ."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "الجداء التصالبي."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "ثم شرط الترتيب."
+        }
+      ],
+      "feedback": {
+        "correct": "$3 \\times 10 = 30 = 7{,}5 \\times 4$ والترتيب نفسه: (AB)//(CD).",
+        "incorrect": "الخاصية العكسية تقارن نسبتين."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4
+    },
+    {
+      "id": "q2",
+      "statement": "احسب CD (بالمتر).",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح أو عشري بالفاصلة، أو كسر)",
+      "expectedAnswer": "6",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "(AB)//(CD): وضعية طالس."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "$\\dfrac{OA}{OC} = \\dfrac{AB}{CD}$ ."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "جداء تصالبي."
+        }
+      ],
+      "feedback": {
+        "correct": "$CD = 2{,}4 \\times \\dfrac{7{,}5}{3} = 6\\,\\mathrm{m}$ .",
+        "incorrect": "CD في المثلث الكبير: أكبر من AB."
+      },
+      "cognitiveDemand": "apply",
+      "difficulty": 4,
+      "misconceptionSignatures": [
+        {
+          "value": "0.96",
+          "id": "MISC-TALIS-NISBA-MAQLUBA"
+        }
+      ]
+    }
+  ]
+}

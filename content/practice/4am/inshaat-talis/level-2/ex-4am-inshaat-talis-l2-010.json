@@ -1,0 +1,185 @@
+{
+  "id": "ex-4am-inshaat-talis-l2-010",
+  "lessonCode": "inshaat-talis",
+  "level": 2,
+  "metadata": {
+    "title": "أؤكّد تعلّماتي 4 (ص 112) — التدريج المنتظم",
+    "estimatedMinutes": 4,
+    "tags": [
+      "تقسيم قطعة",
+      "أؤكّد تعلّماتي"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "qcm",
+      "page": 112,
+      "section": "أؤكّد تعلّماتي",
+      "number": 4
+    }
+  },
+  "statement": {
+    "content": "من الكتاب: نختار تدريجا منتظما على [AB] ونرسم مستقيمات موازية لـ (BC)، كما هو مبيّن في الشكل: [AB] مقسمة إلى 5 قطع متقايسة و M النقطة الثالثة من A، و N على [AC].",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          10,
+          0
+        ],
+        "C": [
+          7,
+          5
+        ],
+        "M": [
+          6,
+          0
+        ],
+        "N": [
+          4.199999999999999,
+          3
+        ],
+        "g1": [
+          2,
+          0
+        ],
+        "g2": [
+          4,
+          0
+        ],
+        "g4": [
+          8,
+          0
+        ],
+        "h1": [
+          1.4,
+          1
+        ],
+        "h2": [
+          2.8,
+          2
+        ],
+        "h4": [
+          5.6,
+          4
+        ]
+      },
+      "segments": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "A",
+          "C"
+        ],
+        {
+          "from": "B",
+          "to": "C",
+          "arrows": 1,
+          "tone": "indigo"
+        },
+        {
+          "from": "g1",
+          "to": "h1",
+          "arrows": 1,
+          "tone": "indigo"
+        },
+        {
+          "from": "g2",
+          "to": "h2",
+          "arrows": 1,
+          "tone": "indigo"
+        },
+        {
+          "from": "M",
+          "to": "N",
+          "arrows": 1,
+          "tone": "indigo"
+        },
+        {
+          "from": "g4",
+          "to": "h4",
+          "arrows": 1,
+          "tone": "indigo"
+        },
+        {
+          "from": "A",
+          "to": "g1",
+          "ticks": 1
+        },
+        {
+          "from": "g1",
+          "to": "g2",
+          "ticks": 1
+        },
+        {
+          "from": "g2",
+          "to": "M",
+          "ticks": 1
+        },
+        {
+          "from": "M",
+          "to": "g4",
+          "ticks": 1
+        },
+        {
+          "from": "g4",
+          "to": "B",
+          "ticks": 1
+        }
+      ],
+      "hidden": [
+        "g1",
+        "g2",
+        "g4",
+        "h1",
+        "h2",
+        "h4"
+      ],
+      "labels": {
+        "A": "sw",
+        "B": "se",
+        "C": "n",
+        "M": "s",
+        "N": "nw"
+      },
+      "ariaLabel": "مثلث ABC، الضلع [AB] مقسم بتدريج منتظم إلى 5 قطع متقايسة و M النقطة الثالثة من A، وموازيات للمستقيم (BC) تقطع [AC]، و N على [AC]",
+      "maxWidth": 300
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "$\\dfrac{AM}{AB}$ تساوي (كسر):",
+      "learningPoints": [
+        {
+          "code": "4am_inshaat-talis_P1",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "كسر غير قابل للاختزال",
+      "expectedAnswer": "3/5",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "التدريج منتظم: كم قطعة في [AB] ؟"
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "M النقطة الثالثة من A."
+        }
+      ],
+      "feedback": {
+        "correct": "ثلاث قطع من خمس: $\\dfrac{AM}{AB} = \\dfrac{3}{5}$ ، وبخاصية طالس $\\dfrac{AN}{AC} = \\dfrac{3}{5}$ أيضًا.",
+        "incorrect": "عدّ القطع بين A و M، ثم القطع في [AB] كلها."
+      }
+    }
+  ]
+}

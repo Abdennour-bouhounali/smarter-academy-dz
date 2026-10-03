@@ -1,0 +1,163 @@
+{
+  "id": "ex-4am-talis-hisab-atwal-l4-002",
+  "lessonCode": "talis-hisab-atwal",
+  "level": 4,
+  "metadata": {
+    "title": "طرائق — حساب DN",
+    "estimatedMinutes": 4,
+    "tags": [
+      "حساب طول",
+      "متوازي أضلاع"
+    ],
+    "source": {
+      "type": "textbook",
+      "elementId": "method-lengths",
+      "page": 107,
+      "section": "طرائق"
+    }
+  },
+  "statement": {
+    "content": "من الكتاب (ص 107): ABCD متوازي أضلاع حيث $AB = 5$ و $BC = 3$ . M نقطة من $[AD]$ حيث $AM = 2$ . المستقيم $(BM)$ يقطع المستقيم $(DC)$ في N.",
+    "figure": {
+      "points": {
+        "A": [
+          0,
+          0
+        ],
+        "B": [
+          5,
+          0
+        ],
+        "C": [
+          6.2,
+          2.75
+        ],
+        "D": [
+          1.2,
+          2.75
+        ],
+        "M": [
+          0.8,
+          1.833
+        ],
+        "N": [
+          -1.3,
+          2.75
+        ]
+      },
+      "segments": [
+        {
+          "from": "A",
+          "to": "B",
+          "label": "5"
+        },
+        {
+          "from": "B",
+          "to": "C",
+          "label": "3"
+        },
+        {
+          "from": "C",
+          "to": "D"
+        },
+        {
+          "from": "D",
+          "to": "A"
+        },
+        {
+          "from": "B",
+          "to": "N"
+        },
+        {
+          "from": "N",
+          "to": "D"
+        }
+      ],
+      "ariaLabel": "متوازي الأضلاع ABCD حيث AB = 5 و BC = 3، M من [AD]، و (BM) يقطع (DC) في N",
+      "maxWidth": 300,
+      "labels": {
+        "N": "n",
+        "D": "n",
+        "M": "w"
+      }
+    }
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "احسب MD.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 2,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "1",
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$MD = AD - AM = 3 - 2 = 1$ ($AD = BC = 3$).",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    },
+    {
+      "id": "q2",
+      "statement": "احسب DN.",
+      "learningPoints": [
+        {
+          "code": "4am_talis-hisab-atwal_P2",
+          "role": "primary"
+        }
+      ],
+      "difficulty": 4,
+      "answerType": "rational",
+      "answerFormat": "عدد (صحيح، أو عشري بالفاصلة مثل 3,6 ، أو كسر مثل 5/7)",
+      "expectedAnswer": "2,5",
+      "misconceptionSignatures": [
+        {
+          "id": "MISC-TALIS-NISBA-MAQLUBA",
+          "value": "10"
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "تحقّق من وضعية طالس: مستقيمان متقاطعان يقطعهما مستقيمان متوازيان."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "اكتب النسب الثلاث واحتفظ بالمساواة التي فيها الطول المطلوب وثلاثة أطوال معلومة."
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "احسب بالجداء المتصالب، ثم اطرح أو اجمع إن كان المطلوب طول قطعة."
+        }
+      ],
+      "feedback": {
+        "correct": "$\\dfrac{MA}{MD} = \\dfrac{AB}{DN}$ أي $\\dfrac{2}{1} = \\dfrac{5}{DN}$ ومنه $DN = 2{,}5$ .",
+        "incorrect": "راجع المساواة المختارة: هل الطول المطلوب في مكانه، وهل الأطوال من المثلث نفسه في البسط؟"
+      }
+    }
+  ]
+}

@@ -45,8 +45,12 @@ const JOINED = new RegExp(`\\d\\s*${OPERATOR}\\s*\\d|[A-Za-z]`);
  * termes. Un mot latin de 4 lettres ou plus (PGCD, GeoGebra, Excel) n'est
  * jamais pris pour une formule.
  */
-const ALG_RUN = /[−\-(√A-Za-z0-9π][A-Za-z0-9√²³⁻()+\-−×÷/=<>≤≥≠≈·.,π ]*[A-Za-z0-9²³)π]|√/g;
-const ALG_MARK = /[√²³]|^[−\-]\s*[0-9A-Za-z√(π]|[A-Za-z0-9)²³]\s*[=×+\-−÷/<>≤≥≠≈·]\s*[A-Za-z0-9(√−π]/;
+// Le PRIME « ′ » (U+2032) des points de la géométrie (unité 9 « خاصية طالس », 2026-10-02) est lui aussi NEUTRE :
+// « نقطتين B′ من (d) » s'affichait « 'B », « (B′C′) » s'affichait « ('B'C) ». Une lettre suivie d'un prime
+// (B′, (d′)) est donc une écriture à isoler, comme un radical ; et le parallélisme du manuel « (MN)//(BC) » en
+// fin de phrase s'affichait « (BC)//(MN) » : « )//( » lie deux droites comme un opérateur.
+const ALG_RUN = /[−\-(√A-Za-z0-9π][A-Za-z0-9√²³⁻()+\-−×÷/=<>≤≥≠≈·.,π ′]*[A-Za-z0-9²³)π′]|√/g;
+const ALG_MARK = /[√²³]|[A-Za-z]′|\)\s*\/\/\s*\(|^[−\-]\s*[0-9A-Za-z√(π]|[A-Za-z0-9)²³]\s*[=×+\-−÷/<>≤≥≠≈·]\s*[A-Za-z0-9(√−π]/;
 const LATIN_WORD = /[A-Za-z]{4,}/;
 const ISOLATED = new RegExp(`(${LRI}[^${PDI}]*${PDI})`);
 

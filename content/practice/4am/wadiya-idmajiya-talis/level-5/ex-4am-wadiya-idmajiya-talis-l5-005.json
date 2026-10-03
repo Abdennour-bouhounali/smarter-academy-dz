@@ -1,0 +1,77 @@
+{
+  "id": "ex-4am-wadiya-idmajiya-talis-l5-005",
+  "lessonCode": "wadiya-idmajiya-talis",
+  "level": 5,
+  "metadata": {
+    "title": "تدريب — قيمتان مقرّبتان متساويتان",
+    "estimatedMinutes": 7,
+    "tags": [
+      "الخاصية العكسية",
+      "تبرير"
+    ],
+    "source": {
+      "type": "platform_addition",
+      "reason": "practice_generation",
+      "learningPoint": "4am_wadiya-idmajiya-talis_P3",
+      "modelledOn": "ex-16"
+    }
+  },
+  "statement": {
+    "content": "النقط M و O و A على استقامة، والنقط N و O و P على استقامة، بنفس الترتيب. $OM = 8$ ، $OA = 5{,}2$ ، $ON = 10$ ، $OP = 6{,}5$ . كتب تلميذ: « $8 \\div 5{,}2 \\approx 1{,}54$ و $10 \\div 6{,}5 \\approx 1{,}54$ ، إذن (MN)//(AP) »."
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "statement": "ماذا نقول عن حلّه؟",
+      "learningPoints": [
+        {
+          "code": "4am_wadiya-idmajiya-talis_P3",
+          "role": "primary"
+        }
+      ],
+      "answerType": "choice",
+      "choices": [
+        {
+          "id": "A",
+          "content": "التبرير كاف لأنّ القيمتين المقرّبتين متساويتان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-TAQRIB-BURHAN"
+        },
+        {
+          "id": "B",
+          "content": "الاستنتاج خاطئ لأنّ النسبتين مختلفتان",
+          "isCorrect": false,
+          "misconceptionId": "MISC-TALIS-AKS-BIDUN-TASAWI"
+        },
+        {
+          "id": "C",
+          "content": "الاستنتاج صحيح لكن التبرير ناقص: $8 \\times 6{,}5 = 52 = 5{,}2 \\times 10$ يثبت تساوي النسبتين",
+          "isCorrect": true
+        }
+      ],
+      "hints": [
+        {
+          "id": "h1",
+          "type": "look",
+          "content": "القيمة المقرّبة ليست القيمة المضبوطة."
+        },
+        {
+          "id": "h2",
+          "type": "direction",
+          "content": "كيف نثبت تساوي نسبتين بدقة؟"
+        },
+        {
+          "id": "h3",
+          "type": "strategy",
+          "content": "الجداء التصالبي."
+        }
+      ],
+      "feedback": {
+        "correct": "الجداءان متساويان (52)، فالنسبتان متساويتان فعلا، والترتيب نفسه: (MN)//(AP)؛ لكن التقريب وحده لا يثبت ذلك.",
+        "incorrect": "قيمتان مقرّبتان متساويتان لا تكفيان برهانا."
+      },
+      "cognitiveDemand": "reason",
+      "difficulty": 5
+    }
+  ]
+}
